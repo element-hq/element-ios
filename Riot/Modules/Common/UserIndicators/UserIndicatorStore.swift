@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import CommonKit
+import Foundation
 
 /// An abstraction on top of `UserIndicatorTypePresenterProtocol` which manages and stores the individual user indicators.
 /// When used to present an indicator the `UserIndicatorStore` will instead returns a simple callback function to the clients
@@ -25,15 +25,15 @@ import CommonKit
     private var indicators: [UserIndicator]
     
     @objc init(from viewController: UIViewController) {
-        self.presenter = UserIndicatorTypePresenter(presentingViewController: viewController)
-        self.indicators = []
+        presenter = UserIndicatorTypePresenter(presentingViewController: viewController)
+        indicators = []
 
         super.init()
     }
     
     init(presenter: UserIndicatorTypePresenterProtocol) {
         self.presenter = presenter
-        self.indicators = []
+        indicators = []
     }
     
     /// Present a new type of user indicator, such as loading spinner or success message.

@@ -1,6 +1,6 @@
 // File created from TemplateAdvancedRoomsExample
 // $ createSwiftUITwoScreen.sh Spaces/SpaceCreation SpaceCreation SpaceCreationMenu SpaceCreationSettings
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@
 import SwiftUI
 
 struct SpaceCreationMenu: View {
-    
     // MARK: - Properties
     
     @ObservedObject var viewModel: SpaceCreationMenuViewModelType.Context
@@ -100,7 +99,6 @@ struct SpaceCreationMenu: View {
 // MARK: - Previews
 
 struct SpaceCreationMenu_Previews: PreviewProvider {
-    
     static let stateRenderer = MockSpaceCreationMenuScreenState.stateRenderer
     
     static var previews: some View {

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,13 +39,13 @@ struct AnalyticsSettings {
 
 extension AnalyticsSettings {
     // Private as AnalyticsSettings should only be created from an MXSession
-    private init(dictionary: Dictionary<AnyHashable, Any>?) {
-        self.id = dictionary?[Constants.idKey] as? String
-        self.webOptIn = dictionary?[Constants.webOptInKey] as? Bool
+    private init(dictionary: [AnyHashable: Any]?) {
+        id = dictionary?[Constants.idKey] as? String
+        webOptIn = dictionary?[Constants.webOptInKey] as? Bool
     }
     
     /// A dictionary representation of the settings.
-    var dictionary: Dictionary<AnyHashable, Any> {
+    var dictionary: [AnyHashable: Any] {
         var dictionary = [AnyHashable: Any]()
         dictionary[Constants.idKey] = id
         dictionary[Constants.webOptInKey] = webOptIn

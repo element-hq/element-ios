@@ -31,7 +31,6 @@ protocol KeyVerificationDataLoadingViewModelCoordinatorDelegate: AnyObject {
 
 /// Protocol describing the view model used by `KeyVerificationDataLoadingViewController`
 protocol KeyVerificationDataLoadingViewModelType {
-        
     var viewDelegate: KeyVerificationDataLoadingViewModelViewDelegate? { get set }
     var coordinatorDelegate: KeyVerificationDataLoadingViewModelCoordinatorDelegate? { get set }
     

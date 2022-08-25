@@ -19,7 +19,6 @@
 import Foundation
 
 final class SpaceChildRoomDetailViewModel: SpaceChildRoomDetailViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -42,8 +41,8 @@ final class SpaceChildRoomDetailViewModel: SpaceChildRoomDetailViewModelType {
     // MARK: - Setup
     
     init(parameters: SpaceChildRoomDetailCoordinatorParameters) {
-        self.session = parameters.session
-        self.childInfo = parameters.childInfo
+        session = parameters.session
+        childInfo = parameters.childInfo
     }
     
     deinit {
@@ -55,42 +54,42 @@ final class SpaceChildRoomDetailViewModel: SpaceChildRoomDetailViewModelType {
     func process(viewAction: SpaceChildRoomDetailViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .complete:
-            if self.isRoomJoined {
-                self.coordinatorDelegate?.spaceChildRoomDetailViewModel(self, didOpenRoomWith: self.childInfo.childRoomId)
+            if isRoomJoined {
+                coordinatorDelegate?.spaceChildRoomDetailViewModel(self, didOpenRoomWith: childInfo.childRoomId)
             } else {
                 joinRoom()
             }
         case .cancel:
-            self.cancelOperations()
-            self.coordinatorDelegate?.spaceChildRoomDetailViewModelDidCancel(self)
+            cancelOperations()
+            coordinatorDelegate?.spaceChildRoomDetailViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        let avatarViewData = AvatarViewData(matrixItemId: self.childInfo.childRoomId,
-                                            displayName: self.childInfo.displayName,
-                                            avatarUrl: self.childInfo.avatarUrl,
-                                            mediaManager: self.session.mediaManager,
-                                            fallbackImage: .matrixItem(self.childInfo.childRoomId, self.childInfo.name))
-        self.update(viewState: .loaded(self.childInfo, avatarViewData, self.isRoomJoined))
+        let avatarViewData = AvatarViewData(matrixItemId: childInfo.childRoomId,
+                                            displayName: childInfo.displayName,
+                                            avatarUrl: childInfo.avatarUrl,
+                                            mediaManager: session.mediaManager,
+                                            fallbackImage: .matrixItem(childInfo.childRoomId, childInfo.name))
+        update(viewState: .loaded(childInfo, avatarViewData, isRoomJoined))
     }
     
     private func update(viewState: SpaceChildRoomDetailViewState) {
-        self.viewDelegate?.spaceChildRoomDetailViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.spaceChildRoomDetailViewModel(self, didUpdateViewState: viewState)
     }
     
     private func cancelOperations() {
-        self.currentOperation?.cancel()
+        currentOperation?.cancel()
     }
     
     private func joinRoom() {
-        self.update(viewState: .loading)
-        if let canonicalAlias = self.childInfo.canonicalAlias {
-            self.session.matrixRestClient.resolveRoomAlias(canonicalAlias) { [weak self] (response) in
+        update(viewState: .loading)
+        if let canonicalAlias = childInfo.canonicalAlias {
+            session.matrixRestClient.resolveRoomAlias(canonicalAlias) { [weak self] response in
                 guard let self = self else { return }
                 switch response {
                 case .success(let resolution):
@@ -102,12 +101,12 @@ final class SpaceChildRoomDetailViewModel: SpaceChildRoomDetailViewModelType {
             }
         } else {
             MXLog.warning("[SpaceChildRoomDetailViewModel] joinRoom: no canonical alias provided.")
-            joinRoom(withId: self.childInfo.childRoomId, via: nil)
+            joinRoom(withId: childInfo.childRoomId, via: nil)
         }
     }
     
     private func joinRoom(withId roomId: String, via viaServers: [String]?) {
-        self.session.joinRoom(roomId, viaServers: viaServers, withSignUrl: nil) { [weak self] response in
+        session.joinRoom(roomId, viaServers: viaServers, withSignUrl: nil) { [weak self] response in
             guard let self = self else { return }
             switch response {
             case .success:

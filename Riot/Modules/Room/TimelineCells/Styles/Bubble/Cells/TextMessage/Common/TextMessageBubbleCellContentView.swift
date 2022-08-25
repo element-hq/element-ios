@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,25 +14,24 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 final class TextMessageBubbleCellContentView: UIView, NibLoadable {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private(set) weak var bubbleBackgroundView: RoomMessageBubbleBackgroundView!
+    @IBOutlet private(set) var bubbleBackgroundView: RoomMessageBubbleBackgroundView!
     
-    @IBOutlet weak var bubbleBackgroundViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var bubbleBackgroundViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet var bubbleBackgroundViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var bubbleBackgroundViewTrailingConstraint: NSLayoutConstraint!
     
-    @IBOutlet private(set) weak var textView: UITextView!
+    @IBOutlet private(set) var textView: UITextView!
     
     // MARK: - Setup
     
     static func instantiate() -> TextMessageBubbleCellContentView {
-        return TextMessageBubbleCellContentView.loadFromNib()
+        TextMessageBubbleCellContentView.loadFromNib()
     }
 }

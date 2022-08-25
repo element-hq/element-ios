@@ -17,7 +17,6 @@
 import Foundation
 
 final class CloseButton: UIButton, Themable {
-    
     // MARK: - Constants
     
     private enum CircleBackgroundConstants {
@@ -38,7 +37,7 @@ final class CloseButton: UIButton, Themable {
     
     override var isHighlighted: Bool {
         didSet {
-            self.circleBackgroundView.alpha = self.isHighlighted ? CircleBackgroundConstants.highlightedAlha : CircleBackgroundConstants.normalAlha
+            circleBackgroundView.alpha = isHighlighted ? CircleBackgroundConstants.highlightedAlha : CircleBackgroundConstants.normalAlha
         }
     }
     
@@ -60,24 +59,23 @@ final class CloseButton: UIButton, Themable {
     }
     
     private func setup() {
-        self.backgroundColor = UIColor.clear
-        self.setImage(Asset.Images.closeButton.image, for: .normal)
-        self.setupCircleView()
+        backgroundColor = UIColor.clear
+        setImage(Asset.Images.closeButton.image, for: .normal)
+        setupCircleView()
         
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.sendSubviewToBack(self.circleBackgroundView)
-        self.circleBackgroundView.layer.cornerRadius = self.circleBackgroundView.bounds.height/2
+        sendSubviewToBack(circleBackgroundView)
+        circleBackgroundView.layer.cornerRadius = circleBackgroundView.bounds.height / 2
     }
     
     // MARK: - Private
     
     private func setupCircleView() {
-        
         //  sanity check
         if circleBackgroundView != nil {
             //  already set up
@@ -90,18 +88,18 @@ final class CloseButton: UIButton, Themable {
         view.isUserInteractionEnabled = false
         view.layer.masksToBounds = true
         
-        self.addSubview(view)
+        addSubview(view)
         
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: CircleBackgroundConstants.height),
             view.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1.0),
-            view.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            view.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-            ])
+            view.centerXAnchor.constraint(equalTo: centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
         
-        self.sendSubviewToBack(view)
+        sendSubviewToBack(view)
         
-        self.circleBackgroundView = view
+        circleBackgroundView = view
     }
     
     // MARK: - Themable
@@ -109,6 +107,6 @@ final class CloseButton: UIButton, Themable {
     func update(theme: Theme) {
         self.theme = theme
         
-        self.circleBackgroundView.backgroundColor = theme.secondaryCircleButtonBackgroundColor
+        circleBackgroundView.backgroundColor = theme.secondaryCircleButtonBackgroundColor
     }
 }

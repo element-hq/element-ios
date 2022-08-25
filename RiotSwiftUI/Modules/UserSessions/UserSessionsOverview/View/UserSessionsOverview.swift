@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct UserSessionsOverview: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -29,11 +28,10 @@ struct UserSessionsOverview: View {
     @ObservedObject var viewModel: UserSessionsOverviewViewModel.Context
     
     var body: some View {
-        VStack {
-        }
-        .background(theme.colors.background)
-        .frame(maxHeight: .infinity)
-        .navigationTitle(VectorL10n.userSessionsOverviewTitle)
+        VStack { }
+            .background(theme.colors.background)
+            .frame(maxHeight: .infinity)
+            .navigationTitle(VectorL10n.userSessionsOverviewTitle)
     }
 }
 

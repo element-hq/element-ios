@@ -28,7 +28,6 @@ import Foundation
 /// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class SpaceMembersCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -54,7 +53,7 @@ final class SpaceMembersCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let parameters = SpaceMembersCoordinatorParameters(userSessionsService: self.userSessionsService, session: self.session, spaceId: self.spaceId)
+        let parameters = SpaceMembersCoordinatorParameters(userSessionsService: userSessionsService, session: session, spaceId: spaceId)
         let spaceMemberListCoordinator = SpaceMembersCoordinator(parameters: parameters)
         spaceMemberListCoordinator.delegate = self
         let presentable = spaceMemberListCoordinator.toPresentable()
@@ -62,11 +61,11 @@ final class SpaceMembersCoordinatorBridgePresenter: NSObject {
         viewController.present(presentable, animated: animated, completion: nil)
         spaceMemberListCoordinator.start()
         
-        self.coordinator = spaceMemberListCoordinator
+        coordinator = spaceMemberListCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -80,18 +79,17 @@ final class SpaceMembersCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - SpaceMembersCoordinatorDelegate
+
 extension SpaceMembersCoordinatorBridgePresenter: SpaceMembersCoordinatorDelegate {
     func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
-        self.delegate?.spaceMembersCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.spaceMembersCoordinatorBridgePresenterDelegateDidComplete(self)
     }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
 extension SpaceMembersCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.spaceMembersCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.spaceMembersCoordinatorBridgePresenterDelegateDidComplete(self)
     }
-    
 }

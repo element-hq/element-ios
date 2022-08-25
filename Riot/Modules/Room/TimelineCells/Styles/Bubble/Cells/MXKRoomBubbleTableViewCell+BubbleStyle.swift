@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,13 +17,11 @@
 import Foundation
 
 extension MXKRoomBubbleTableViewCell {
-    
     // Enables to get existing bubble background view
     // This used while there is no dedicated cell classes for bubble style
     var messageBubbleBackgroundView: RoomMessageBubbleBackgroundView? {
-        
-        let foundView = self.contentView.subviews.first { view in
-            return view is RoomMessageBubbleBackgroundView
+        let foundView = contentView.subviews.first { view in
+            view is RoomMessageBubbleBackgroundView
         }
         return foundView as? RoomMessageBubbleBackgroundView
     }

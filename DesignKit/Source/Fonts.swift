@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,6 @@ import UIKit
 /// Font names are based on Element typograhy  https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=1362%3A0 which is based on Apple font text styles (UIFont.TextStyle): https://developer.apple.com/documentation/uikit/uifonttextstyle
 /// Create a custom TextStyle enum (like DesignKit.Fonts.TextStyle) is also a possiblity
 public protocol Fonts {
-    
     associatedtype FontType
     
     /// The font for large titles.

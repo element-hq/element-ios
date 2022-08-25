@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,9 @@
 import Foundation
 import Reusable
 
-extension MXKTableViewCellWithTextView: Reusable {}
+extension MXKTableViewCellWithTextView: Reusable { }
 
 extension MXKTableViewCellWithTextView: Themable {
-    
     func update(theme: Theme) {
         mxkTextView.backgroundColor = .clear
         mxkTextView.textColor = theme.textPrimaryColor
@@ -28,5 +27,4 @@ extension MXKTableViewCellWithTextView: Themable {
         backgroundColor = theme.backgroundColor
         contentView.backgroundColor = .clear
     }
-    
 }

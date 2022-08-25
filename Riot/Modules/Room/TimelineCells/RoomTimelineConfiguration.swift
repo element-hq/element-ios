@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// RoomTimelineConfiguration enables to manage room timeline appearance configuration
 @objcMembers
 class RoomTimelineConfiguration: NSObject {
-    
     // MARK: - Constants
     
     static let shared = RoomTimelineConfiguration()
@@ -31,20 +30,19 @@ class RoomTimelineConfiguration: NSObject {
     // MARK: - Setup
     
     init(style: RoomTimelineStyle) {
-        self.currentStyle = style
+        currentStyle = style
         
         super.init()
         
-        self.registerThemeDidChange()
+        registerThemeDidChange()
     }
     
     convenience init(styleIdentifier: RoomTimelineStyleIdentifier) {
-        
         let style = type(of: self).style(for: styleIdentifier)
         self.init(style: style)
     }
     
-    convenience override init() {
+    override convenience init() {
         let styleIdentifier = RiotSettings.shared.roomTimelineStyleIdentifier
         self.init(styleIdentifier: styleIdentifier)
     }
@@ -52,34 +50,30 @@ class RoomTimelineConfiguration: NSObject {
     // MARK: - Public
     
     func updateStyle(_ roomTimelineStyle: RoomTimelineStyle) {
-        self.currentStyle = roomTimelineStyle
+        currentStyle = roomTimelineStyle
     }
     
     func updateStyle(withIdentifier identifier: RoomTimelineStyleIdentifier) {
-        
         let style = type(of: self).style(for: identifier)
         
-        self.updateStyle(style)
+        updateStyle(style)
     }
     
     // MARK: - Private
     
     private func registerThemeDidChange() {
         NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange(notification:)), name: .themeServiceDidChangeTheme, object: nil)
-        
     }
     
     @objc private func themeDidChange(notification: Notification) {
-        
         guard let themeService = notification.object as? ThemeService else {
             return
         }
         
-        self.currentStyle.update(theme: themeService.theme)
+        currentStyle.update(theme: themeService.theme)
     }
         
     private class func style(for identifier: RoomTimelineStyleIdentifier) -> RoomTimelineStyle {
-        
         let roomTimelineStyle: RoomTimelineStyle
         
         let theme = ThemeService.shared().theme

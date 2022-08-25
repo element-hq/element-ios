@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,17 +22,16 @@ import UIKit
 /// This class can also be set as `transitioningDelegate` as presented view controller, as it's conforming `UIViewControllerTransitioningDelegate`.
 @objcMembers
 class CustomSizedPresentationController: UIPresentationController {
-    
     //  MARK: - Public Properties
     
     /// Corner radius for presented view controller's view. Default value is `8.0`.
     var cornerRadius: CGFloat = 8.0
     
     /// Background color of dimming view, which is located behind the presented view controller's view. Default value is `white with 0.5 alpha`.
-    var dimColor: UIColor = UIColor(white: 0.0, alpha: 0.5)
+    var dimColor = UIColor(white: 0.0, alpha: 0.5)
     
     /// Dismiss view controller when background tapped. Default value is `true`.
-    var dismissOnBackgroundTap: Bool = true
+    var dismissOnBackgroundTap = true
     
     //  MARK: - Private Properties
     
@@ -86,7 +85,7 @@ class CustomSizedPresentationController: UIPresentationController {
             // effect calls for only the top two corners to be rounded we size
             // the view such that the bottom CORNER_RADIUS points lie below
             // the bottom edge of the screen.
-            let cornerViewRect = presentationWrapperView.bounds// .inset(by: UIEdgeInsets(top: 0, left: 0, bottom: -cornerRadius, right: 0))
+            let cornerViewRect = presentationWrapperView.bounds // .inset(by: UIEdgeInsets(top: 0, left: 0, bottom: -cornerRadius, right: 0))
             
             let presentationRoundedCornerView = UIView(frame: cornerViewRect)
             presentationRoundedCornerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -131,7 +130,7 @@ class CustomSizedPresentationController: UIPresentationController {
             
             // Get the transition coordinator for the presentation so we can
             // fade in the dimmingView alongside the presentation animation.
-            let transitionCoordinator = self.presentingViewController.transitionCoordinator
+            let transitionCoordinator = presentingViewController.transitionCoordinator
             
             dimmingView.alpha = 0.0
             transitionCoordinator?.animate(alongsideTransition: { _ in
@@ -170,7 +169,7 @@ class CustomSizedPresentationController: UIPresentationController {
     //  MARK: - Overrides
     
     override var presentedView: UIView? {
-        return presentationWrappingView
+        presentationWrappingView
     }
     
     override func size(forChildContentContainer container: UIContentContainer,
@@ -191,7 +190,7 @@ class CustomSizedPresentationController: UIPresentationController {
         }
         
         //  half of the width/height by default
-        return CGSize(width: parentSize.width/2.0, height: parentSize.height/2.0)
+        return CGSize(width: parentSize.width / 2.0, height: parentSize.height / 2.0)
     }
     
     override var frameOfPresentedViewInContainerView: CGRect {
@@ -214,8 +213,8 @@ class CustomSizedPresentationController: UIPresentationController {
         }
         
         //  center presented view by default
-        let origin = CGPoint(x: (containerView.bounds.width - size.width)/2,
-                             y: (containerView.bounds.height - size.height)/2)
+        let origin = CGPoint(x: (containerView.bounds.width - size.width) / 2,
+                             y: (containerView.bounds.height - size.height) / 2)
         
         return CGRect(origin: origin, size: size)
     }
@@ -223,24 +222,22 @@ class CustomSizedPresentationController: UIPresentationController {
     override func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
         
-        self.dimmingView?.frame = containerView?.bounds ?? .zero
-        self.presentationWrappingView?.frame = frameOfPresentedViewInContainerView
+        dimmingView?.frame = containerView?.bounds ?? .zero
+        presentationWrappingView?.frame = frameOfPresentedViewInContainerView
     }
     
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         super.preferredContentSizeDidChange(forChildContentContainer: container)
         
         if container === presentedViewController {
-            self.containerView?.setNeedsLayout()
+            containerView?.setNeedsLayout()
         }
     }
-    
 }
 
 //  MARK: - UIViewControllerTransitioningDelegate
 
 extension CustomSizedPresentationController: UIViewControllerTransitioningDelegate {
-    
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         let controller = CustomSizedPresentationController(presentedViewController: presented, presenting: presenting)
         controller.cornerRadius = cornerRadius
@@ -248,5 +245,4 @@ extension CustomSizedPresentationController: UIViewControllerTransitioningDelega
         controller.dismissOnBackgroundTap = dismissOnBackgroundTap
         return controller
     }
-    
 }

@@ -18,11 +18,10 @@ import UIKit
 
 /// `SlidingModalPresentationController` handles sliding transition presentation life cycle.
 final class SlidingModalPresentationController: UIPresentationController {
-    
     // MARK: - Properties
     
     private var slidingModalContainerView: SlidingModalContainerView? {
-        return self.containerView?.subviews.first(where: { (view) -> Bool in
+        self.containerView?.subviews.first(where: { view -> Bool in
             view is SlidingModalContainerView
         }) as? SlidingModalContainerView
     }
@@ -38,15 +37,14 @@ final class SlidingModalPresentationController: UIPresentationController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
-        if let slidingModalPresentable = self.presentedViewController as? SlidingModalPresentable, let slidingModalContainerView = self.slidingModalContainerView {
-            
+        if let slidingModalPresentable = presentedViewController as? SlidingModalPresentable, let slidingModalContainerView = slidingModalContainerView {
             let slidingModalContainerViewContentViewWidth = slidingModalContainerView.contentViewWidthFittingSize(size)
             
             let presentableHeight = slidingModalPresentable.layoutHeightFittingWidth(slidingModalContainerViewContentViewWidth)
             slidingModalContainerView.updateContentViewMaxHeight(presentableHeight)
         }
         
-        coordinator.animate(alongsideTransition: { (UIViewControllerTransitionCoordinatorContext) -> Void in
+        coordinator.animate(alongsideTransition: { _ in
             self.slidingModalContainerView?.updateContentViewLayout()
         }, completion: { _ in
             
@@ -65,7 +63,7 @@ final class SlidingModalPresentationController: UIPresentationController {
     }
     
     override func presentationTransitionDidEnd(_ completed: Bool) {
-        self.slidingModalContainerView?.delegate = self
+        slidingModalContainerView?.delegate = self
     }
     
     override func dismissalTransitionWillBegin() {
@@ -73,7 +71,7 @@ final class SlidingModalPresentationController: UIPresentationController {
             return
         }
 
-        coordinator.animate(alongsideTransition: { [weak self] _ -> Void in
+        coordinator.animate(alongsideTransition: { [weak self] _ in
             // Update status bar appearance of presenting view controller
             self?.presentingViewController.setNeedsStatusBarAppearanceUpdate()
         }, completion: nil)
@@ -81,26 +79,25 @@ final class SlidingModalPresentationController: UIPresentationController {
     
     override func dismissalTransitionDidEnd(_ completed: Bool) {
         if completed {
-            self.slidingModalContainerView?.removeFromSuperview()
+            slidingModalContainerView?.removeFromSuperview()
         }
     }
 }
 
 // MARK: - SlidingModalContainerViewDelegate
+
 extension SlidingModalPresentationController: SlidingModalContainerViewDelegate {
-    
     func slidingModalContainerViewDidTapBackground(_ view: SlidingModalContainerView) {
-        
         let isDismissOnBackgroundTapAllowed: Bool
         
-        if let slidingModalPresentable = self.presentedViewController as? SlidingModalPresentable {
+        if let slidingModalPresentable = presentedViewController as? SlidingModalPresentable {
             isDismissOnBackgroundTapAllowed = slidingModalPresentable.allowsDismissOnBackgroundTap()
         } else {
             isDismissOnBackgroundTapAllowed = true
         }
         
         if isDismissOnBackgroundTapAllowed {
-            self.presentedViewController.dismiss(animated: true, completion: nil)
+            presentedViewController.dismiss(animated: true, completion: nil)
         }
     }
 }

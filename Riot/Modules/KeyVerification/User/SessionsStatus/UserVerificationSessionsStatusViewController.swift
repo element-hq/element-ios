@@ -19,7 +19,6 @@
 import UIKit
 
 final class UserVerificationSessionsStatusViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -30,12 +29,12 @@ final class UserVerificationSessionsStatusViewController: UIViewController {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var badgeImageImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var closeButton: UIButton!
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var sessionsTableViewTitle: UILabel!
-    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private var badgeImageImageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var closeButton: UIButton!
+    @IBOutlet private var informationLabel: UILabel!
+    @IBOutlet private var sessionsTableViewTitle: UILabel!
+    @IBOutlet private var tableView: UITableView!
     
     // MARK: Private
 
@@ -62,34 +61,34 @@ final class UserVerificationSessionsStatusViewController: UIViewController {
         
         // Do any additional setup after loading the view.
                 
-        self.setupViews()
-        self.vc_removeBackTitle()
-        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        vc_removeBackTitle()
+        activityIndicatorPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        self.theme.statusBarStyle
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        self.closeButton.layer.cornerRadius = self.closeButton.frame.size.width/2
+        closeButton.layer.cornerRadius = closeButton.frame.size.width / 2
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let selectedIndexPath = self.tableView.indexPathForSelectedRow {
-            self.tableView.deselectRow(at: selectedIndexPath, animated: animated)
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: selectedIndexPath, animated: animated)
         }
     }
     
@@ -98,16 +97,16 @@ final class UserVerificationSessionsStatusViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.closeButton.vc_setBackgroundColor(theme.headerTextSecondaryColor, for: .normal)
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textPrimaryColor
-        self.sessionsTableViewTitle.textColor = theme.textPrimaryColor
+        closeButton.vc_setBackgroundColor(theme.headerTextSecondaryColor, for: .normal)
+        titleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
+        sessionsTableViewTitle.textColor = theme.textPrimaryColor
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -115,67 +114,66 @@ final class UserVerificationSessionsStatusViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.closeButton.layer.masksToBounds = true
-        self.setupTableView()
-        self.updateTitleViews()
+        closeButton.layer.masksToBounds = true
+        setupTableView()
+        updateTitleViews()
         
-        self.sessionsTableViewTitle.text = VectorL10n.userVerificationSessionsListTableTitle
-        self.informationLabel.text = VectorL10n.userVerificationSessionsListInformation
+        sessionsTableViewTitle.text = VectorL10n.userVerificationSessionsListTableTitle
+        informationLabel.text = VectorL10n.userVerificationSessionsListInformation
     }
     
     private func setupTableView() {
-        self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.estimatedRowHeight = Constants.estimatedRowHeight
-        self.tableView.separatorStyle = .none
-        self.tableView.tableFooterView = UIView()
-        self.tableView.alwaysBounceVertical = false
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = Constants.estimatedRowHeight
+        tableView.separatorStyle = .none
+        tableView.tableFooterView = UIView()
+        tableView.alwaysBounceVertical = false
         
-        self.tableView.register(cellType: UserVerificationSessionStatusCell.self)
+        tableView.register(cellType: UserVerificationSessionStatusCell.self)
     }
     
     private func render(viewState: UserVerificationSessionsStatusViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(userTrustLevel: let userTrustLevel, sessionsStatusViewData: let sessionsStatusViewData):
-            self.renderLoaded(userTrustLevel: userTrustLevel, sessionsStatusViewData: sessionsStatusViewData)
+            renderLoaded(userTrustLevel: userTrustLevel, sessionsStatusViewData: sessionsStatusViewData)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
 
     private func renderLoading() {
-        self.tableView.isUserInteractionEnabled = false
-        self.activityIndicatorPresenter.presentActivityIndicator(on: self.view, animated: true)
+        tableView.isUserInteractionEnabled = false
+        activityIndicatorPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(userTrustLevel: UserEncryptionTrustLevel, sessionsStatusViewData: [UserVerificationSessionStatusViewData]) {
-        self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-        self.tableView.isUserInteractionEnabled = true
+        activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+        tableView.isUserInteractionEnabled = true
         
-        self.userEncryptionTrustLevel = userTrustLevel
+        userEncryptionTrustLevel = userTrustLevel
         self.sessionsStatusViewData = sessionsStatusViewData
         
-        self.updateTitleViews()
-        self.tableView.reloadData()
+        updateTitleViews()
+        tableView.reloadData()
     }
     
     private func render(error: Error) {
-        self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-        self.tableView.isUserInteractionEnabled = true
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+        tableView.isUserInteractionEnabled = true
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     private func updateTitleViews() {
-        
         let badgeImage: UIImage
         let title: String
         
-        switch self.userEncryptionTrustLevel {
+        switch userEncryptionTrustLevel {
         case .trusted:
             badgeImage = Asset.Images.encryptionTrusted.image
             title = VectorL10n.userVerificationSessionsListUserTrustLevelTrustedTitle
@@ -187,30 +185,30 @@ final class UserVerificationSessionsStatusViewController: UIViewController {
             title = VectorL10n.userVerificationSessionsListUserTrustLevelUnknownTitle
         }
         
-        self.badgeImageImageView.image = badgeImage
-        self.titleLabel.text = title
+        badgeImageImageView.image = badgeImage
+        titleLabel.text = title
     }
     
     // MARK: - Actions
 
     @IBAction private func closeButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .close)
+        viewModel.process(viewAction: .close)
     }
 }
 
 // MARK: - UITableViewDataSource
+
 extension UserVerificationSessionsStatusViewController: UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.sessionsStatusViewData.count
+        sessionsStatusViewData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath, cellType: UserVerificationSessionStatusCell.self)
         
-        let viewData = self.sessionsStatusViewData[indexPath.row]
+        let viewData = sessionsStatusViewData[indexPath.row]
         
-        cell.update(theme: self.theme)
+        cell.update(theme: theme)
         cell.fill(viewData: viewData)
         
         return cell
@@ -218,17 +216,18 @@ extension UserVerificationSessionsStatusViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
+
 extension UserVerificationSessionsStatusViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let viewData = self.sessionsStatusViewData[indexPath.row]
-        self.viewModel.process(viewAction: .selectSession(deviceId: viewData.deviceId))
+        let viewData = sessionsStatusViewData[indexPath.row]
+        viewModel.process(viewAction: .selectSession(deviceId: viewData.deviceId))
     }
 }
 
 // MARK: - UserVerificationSessionsStatusViewModelViewDelegate
-extension UserVerificationSessionsStatusViewController: UserVerificationSessionsStatusViewModelViewDelegate {
 
+extension UserVerificationSessionsStatusViewController: UserVerificationSessionsStatusViewModelViewDelegate {
     func userVerificationSessionsStatusViewModel(_ viewModel: UserVerificationSessionsStatusViewModelType, didUpdateViewState viewSate: UserVerificationSessionsStatusViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

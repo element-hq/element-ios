@@ -1,21 +1,21 @@
 /*
-Copyright 2020 The Matrix.org Foundation C.I.C
+ Copyright 2020 The Matrix.org Foundation C.I.C
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 
-import Foundation
 import Down
+import Foundation
 import libcmark
 
 @objc public protocol MarkdownToHTMLRendererProtocol: NSObjectProtocol {
@@ -24,17 +24,15 @@ import libcmark
 
 @objcMembers
 public class MarkdownToHTMLRenderer: NSObject {
-    
     fileprivate var options: DownOptions = []
     
     //  Do not expose an initializer with options, because `DownOptions` is not ObjC compatible.
-    public override init() {
+    override public init() {
         super.init()
     }
 }
 
 extension MarkdownToHTMLRenderer: MarkdownToHTMLRendererProtocol {
-    
     public func renderToHTML(markdown: String) -> String? {
         do {
             let ast = try DownASTRenderer.stringToAST(markdown, options: options)
@@ -48,25 +46,23 @@ extension MarkdownToHTMLRenderer: MarkdownToHTMLRendererProtocol {
             return nil
         }
     }
-    
 }
 
 @objcMembers
 public class MarkdownToHTMLRendererHardBreaks: MarkdownToHTMLRenderer {
-    
-    public override init() {
+    override public init() {
         super.init()
         options = .hardBreaks
     }
-    
 }
 
 // MARK: - AST-handling private extensions
+
 private extension CMarkNode {
     /// Formatting symbol associated with given note type
     /// Note: this is only defined for node types that are handled in repairLinks
     var formattingSymbol: String {
-        switch self.type {
+        switch type {
         case CMARK_NODE_EMPH:
             return "_"
         case CMARK_NODE_STRONG:
@@ -170,6 +166,6 @@ private extension String {
             return []
         }
 
-        return detector.matches(in: self, options: [], range: NSRange(location: 0, length: self.utf16.count))
+        return detector.matches(in: self, options: [], range: NSRange(location: 0, length: utf16.count))
     }
 }

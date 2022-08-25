@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,8 @@ import Foundation
 import MatrixSDK
 
 extension MXBeaconInfoSummaryProtocol {
-    
     /// Indicate true if a beacon info summary can be displayed on a map
     var isDisplayable: Bool {
-        return self.isActive && self.lastBeacon != nil
+        isActive && lastBeacon != nil
     }
 }

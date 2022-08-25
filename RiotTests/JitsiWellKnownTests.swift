@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import XCTest
 @testable import Element
 
 class JitsiWellKnownTests: XCTestCase {
-
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -31,7 +30,6 @@ class JitsiWellKnownTests: XCTestCase {
     // MARK: - Tests
     
     func testJitsiWellKnownParsingKnownValue() {
-
         let wellKnownDictionary: [String: Any] = [
             "auth": "openidtoken-jwt"
         ]
@@ -52,7 +50,6 @@ class JitsiWellKnownTests: XCTestCase {
     }
     
     func testJitsiWellKnownParsingUnknownValue() {
-
         let expectedAuthenticationTypeString = "other-authentication"
         
         let wellKnownDictionary: [String: Any] = [

@@ -28,7 +28,6 @@ protocol EditHistoryViewModelCoordinatorDelegate: AnyObject {
 
 /// Protocol describing the view model used by `EditHistoryViewController`
 protocol EditHistoryViewModelType {
-        
     var viewDelegate: EditHistoryViewModelViewDelegate? { get set }
     var coordinatorDelegate: EditHistoryViewModelCoordinatorDelegate? { get set }
     

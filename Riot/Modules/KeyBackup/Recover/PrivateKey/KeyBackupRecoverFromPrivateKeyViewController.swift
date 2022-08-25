@@ -19,16 +19,15 @@
 import UIKit
 
 final class KeyBackupRecoverFromPrivateKeyViewController: UIViewController {
-    
     // MARK: - Constants
     
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var shieldImageView: UIImageView!
+    @IBOutlet private var shieldImageView: UIImageView!
     
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
     // MARK: Private
 
@@ -53,18 +52,18 @@ final class KeyBackupRecoverFromPrivateKeyViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.keyBackupRecoverTitle
+        title = VectorL10n.keyBackupRecoverTitle
         
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .recover)
+        viewModel.process(viewAction: .recover)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -76,9 +75,8 @@ final class KeyBackupRecoverFromPrivateKeyViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
-    
     
     // MARK: - Private
     
@@ -87,72 +85,70 @@ final class KeyBackupRecoverFromPrivateKeyViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
         let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
             self?.cancelButtonAction()
         }
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
         let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
-        self.shieldImageView.image = shieldImage
+        shieldImageView.image = shieldImage
         
-        self.informationLabel.text = VectorL10n.keyBackupRecoverFromPrivateKeyInfo
+        informationLabel.text = VectorL10n.keyBackupRecoverFromPrivateKeyInfo
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.shieldImageView.tintColor = theme.textPrimaryColor
+        shieldImageView.tintColor = theme.textPrimaryColor
         
-        self.informationLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
     }
 
     private func render(viewState: KeyBackupRecoverFromPrivateKeyViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded:
-            self.renderLoaded()
+            renderLoaded()
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
-    
     // MARK: - Actions
 
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
 
-
 // MARK: - KeyBackupRecoverFromPrivateKeyViewModelViewDelegate
-extension KeyBackupRecoverFromPrivateKeyViewController: KeyBackupRecoverFromPrivateKeyViewModelViewDelegate {
 
+extension KeyBackupRecoverFromPrivateKeyViewController: KeyBackupRecoverFromPrivateKeyViewModelViewDelegate {
     func keyBackupRecoverFromPrivateKeyViewModel(_ viewModel: KeyBackupRecoverFromPrivateKeyViewModelType, didUpdateViewState viewSate: KeyBackupRecoverFromPrivateKeyViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

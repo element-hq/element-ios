@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,7 @@ import UIKit
  UIView subclass that ignores touches on itself.
  */
 class PassthroughView: UIView {
-    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    override public func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let hitTarget = super.hitTest(point, with: event)
         
         guard hitTarget == self else {

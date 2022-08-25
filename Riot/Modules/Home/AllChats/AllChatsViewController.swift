@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +14,17 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 class AllChatsViewController: HomeViewController {
-    
     // MARK: - Class methods
     
-    static override func nib() -> UINib! {
-        return UINib(nibName: String(describing: self), bundle: Bundle(for: self.classForCoder()))
+    override static func nib() -> UINib! {
+        UINib(nibName: String(describing: self), bundle: Bundle(for: classForCoder()))
     }
     
-    static override func instantiate() -> Self {
+    override static func instantiate() -> Self {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         guard let viewController = storyboard.instantiateViewController(withIdentifier: "AllChatsViewController") as? Self else {
             fatalError("No view controller of type \(self) in the main storyboard")
@@ -64,26 +63,26 @@ class AllChatsViewController: HomeViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.setupEditOptions), name: AllChatsLayoutSettingsManager.didUpdateSettings, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setupEditOptions), name: AllChatsLayoutSettingsManager.didUpdateSettings, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.isToolbarHidden = false
-        self.navigationController?.toolbar.tintColor = ThemeService.shared().theme.colors.accent
-        if self.tabBarController?.navigationItem.searchController == nil {
-            self.tabBarController?.navigationItem.searchController = searchController
+        navigationController?.isToolbarHidden = false
+        navigationController?.toolbar.tintColor = ThemeService.shared().theme.colors.accent
+        if tabBarController?.navigationItem.searchController == nil {
+            tabBarController?.navigationItem.searchController = searchController
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.spaceListDidChange), name: MXSpaceService.didInitialise, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.spaceListDidChange), name: MXSpaceService.didBuildSpaceGraph, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(spaceListDidChange), name: MXSpaceService.didInitialise, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(spaceListDidChange), name: MXSpaceService.didBuildSpaceGraph, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.navigationController?.isToolbarHidden = true
+        navigationController?.isToolbarHidden = true
     }
     
     // MARK: - HomeViewController
@@ -93,7 +92,7 @@ class AllChatsViewController: HomeViewController {
     }
     
     @objc private func spaceListDidChange() {
-        guard self.editActionProvider.shouldUpdate(with: self.mainSession, parentSpace: self.dataSource?.currentSpace) else {
+        guard editActionProvider.shouldUpdate(with: mainSession, parentSpace: dataSource?.currentSpace) else {
             return
         }
         
@@ -104,8 +103,8 @@ class AllChatsViewController: HomeViewController {
         // Nothing to do. We don't need FAB
     }
 
-    @objc private func sections() -> Array<Int> {
-        return [
+    @objc private func sections() -> [Int] {
+        [
             RecentsDataSourceSectionType.directory.rawValue,
             RecentsDataSourceSectionType.invites.rawValue,
             RecentsDataSourceSectionType.favorites.rawValue,
@@ -122,8 +121,8 @@ class AllChatsViewController: HomeViewController {
     
     @objc private func showSpaceSelectorAction(sender: AnyObject) {
         Analytics.shared.viewRoomTrigger = .roomList
-        let currentSpaceId = self.dataSource.currentSpace?.spaceId ?? SpaceSelectorConstants.homeSpaceId
-        let spaceSelectorBridgePresenter = SpaceSelectorBottomSheetCoordinatorBridgePresenter(session: self.mainSession, selectedSpaceId: currentSpaceId, showHomeSpace: true)
+        let currentSpaceId = dataSource.currentSpace?.spaceId ?? SpaceSelectorConstants.homeSpaceId
+        let spaceSelectorBridgePresenter = SpaceSelectorBottomSheetCoordinatorBridgePresenter(session: mainSession, selectedSpaceId: currentSpaceId, showHomeSpace: true)
         spaceSelectorBridgePresenter.present(from: self, animated: true)
         spaceSelectorBridgePresenter.delegate = self
         self.spaceSelectorBridgePresenter = spaceSelectorBridgePresenter
@@ -179,39 +178,39 @@ class AllChatsViewController: HomeViewController {
     private var lastScrollPosition: Double = 0
 
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        lastScrollPosition = self.recentsTableView.contentOffset.y
+        lastScrollPosition = recentsTableView.contentOffset.y
     }
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         super.scrollViewDidScroll(scrollView)
         
-        if self.recentsTableView.contentOffset.y == 0 {
-            self.navigationController?.setToolbarHidden(false, animated: true)
+        if recentsTableView.contentOffset.y == 0 {
+            navigationController?.setToolbarHidden(false, animated: true)
         }
 
-        guard self.recentsTableView.isDragging else {
+        guard recentsTableView.isDragging else {
             return
         }
 
-        let scrollPosition = max(self.recentsTableView.contentOffset.y, 0)
-        guard scrollPosition < self.recentsTableView.contentSize.height - self.recentsTableView.bounds.height else {
+        let scrollPosition = max(recentsTableView.contentOffset.y, 0)
+        guard scrollPosition < recentsTableView.contentSize.height - recentsTableView.bounds.height else {
             return
         }
 
-        self.navigationController?.setToolbarHidden(scrollPosition - lastScrollPosition > 0, animated: true)
+        navigationController?.setToolbarHidden(scrollPosition - lastScrollPosition > 0, animated: true)
         lastScrollPosition = scrollPosition
     }
     
     // MARK: - Empty view management
     
     override func updateEmptyView() {
-        guard let mainSession = self.mainSession else {
+        guard let mainSession = mainSession else {
             return
         }
         
         let title: String
         let informationText: String
-        if let currentSpace = self.dataSource?.currentSpace {
+        if let currentSpace = dataSource?.currentSpace {
             title = VectorL10n.allChatsEmptyViewTitle(currentSpace.summary?.displayname ?? VectorL10n.spaceTag)
             informationText = VectorL10n.allChatsEmptySpaceInformation
         } else {
@@ -222,10 +221,10 @@ class AllChatsViewController: HomeViewController {
             informationText = VectorL10n.allChatsEmptyViewInformation
         }
         
-        self.emptyView?.fill(with: emptyViewArtwork,
-                             title: title,
-                             informationText: informationText,
-                             displayMode: self.dataSource?.currentSpace == nil ? .default : .icon)
+        emptyView?.fill(with: emptyViewArtwork,
+                        title: title,
+                        informationText: informationText,
+                        displayMode: dataSource?.currentSpace == nil ? .default : .icon)
     }
     
     private var emptyViewArtwork: UIImage {
@@ -240,11 +239,11 @@ class AllChatsViewController: HomeViewController {
         let shouldShowEmptyView = super.shouldShowEmptyView()
         
         if shouldShowEmptyView {
-            self.tabBarController?.navigationItem.searchController = nil
+            tabBarController?.navigationItem.searchController = nil
             navigationItem.largeTitleDisplayMode = .never
             navigationController?.navigationBar.prefersLargeTitles = false
         } else {
-            self.tabBarController?.navigationItem.searchController = searchController
+            tabBarController?.navigationItem.searchController = searchController
             navigationItem.largeTitleDisplayMode = .automatic
             navigationController?.navigationBar.prefersLargeTitles = true
         }
@@ -252,27 +251,26 @@ class AllChatsViewController: HomeViewController {
         return shouldShowEmptyView
     }
     
-
     // MARK: - Theme management
     
     override func userInterfaceThemeDidChange() {
         super.userInterfaceThemeDidChange()
         
-        guard self.tabBarController?.toolbarItems != nil else {
+        guard tabBarController?.toolbarItems != nil else {
             return
         }
         
-        self.update(with: ThemeService.shared().theme)
+        update(with: ThemeService.shared().theme)
     }
     
     private func update(with theme: Theme) {
-        self.navigationController?.toolbar?.tintColor = theme.colors.accent
+        navigationController?.toolbar?.tintColor = theme.colors.accent
     }
     
     // MARK: - Private
     
     @objc private func setupEditOptions() {
-        guard let currentSpace = self.dataSource?.currentSpace else {
+        guard let currentSpace = dataSource?.currentSpace else {
             updateRightNavigationItem(with: AllChatsActionProvider().menu)
             return
         }
@@ -283,8 +281,8 @@ class AllChatsViewController: HomeViewController {
     }
 
     private func updateUI() {
-        let currentSpace = self.dataSource?.currentSpace
-        self.tabBarController?.title = currentSpace?.summary?.displayname ?? VectorL10n.allChatsTitle
+        let currentSpace = dataSource?.currentSpace
+        tabBarController?.title = currentSpace?.summary?.displayname ?? VectorL10n.allChatsTitle
         
         setupEditOptions()
         updateToolbar(with: editActionProvider.updateMenu(with: mainSession, parentSpace: currentSpace, completion: { [weak self] menu in
@@ -294,23 +292,23 @@ class AllChatsViewController: HomeViewController {
     }
     
     private func updateRightNavigationItem(with menu: UIMenu) {
-        self.tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: menu)
+        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: menu)
     }
     
     private func updateToolbar(with menu: UIMenu) {
-        self.navigationController?.isToolbarHidden = false
-        self.update(with: ThemeService.shared().theme)
-        self.tabBarController?.setToolbarItems([
-            UIBarButtonItem(image: Asset.Images.allChatsSpacesIcon.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
+        navigationController?.isToolbarHidden = false
+        update(with: ThemeService.shared().theme)
+        tabBarController?.setToolbarItems([
+            UIBarButtonItem(image: Asset.Images.allChatsSpacesIcon.image, style: .done, target: self, action: #selector(showSpaceSelectorAction(sender:))),
             UIBarButtonItem.flexibleSpace(),
             UIBarButtonItem(image: Asset.Images.allChatsEditIcon.image, menu: menu)
         ], animated: true)
     }
     
     private func showCreateSpace(parentSpaceId: String?) {
-        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: self.mainSession, parentSpaceId: parentSpaceId))
+        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: mainSession, parentSpaceId: parentSpaceId))
         let presentable = coordinator.toPresentable()
-        self.present(presentable, animated: true, completion: nil)
+        present(presentable, animated: true, completion: nil)
         coordinator.callback = { [weak self] result in
             guard let self = self else {
                 return
@@ -334,29 +332,29 @@ class AllChatsViewController: HomeViewController {
         searchController.isActive = false
 
         guard let spaceId = spaceId else {
-            self.dataSource.currentSpace = nil
+            dataSource.currentSpace = nil
             updateUI()
 
             return
         }
 
-        guard let space = self.mainSession.spaceService.getSpace(withId: spaceId) else {
+        guard let space = mainSession.spaceService.getSpace(withId: spaceId) else {
             MXLog.warning("[AllChatsViewController] switchSpace: no space found with id \(spaceId)")
             return
         }
         
-        self.dataSource.currentSpace = space
+        dataSource.currentSpace = space
         updateUI()
         
-        self.recentsTableView.setContentOffset(.zero, animated: true)
+        recentsTableView.setContentOffset(.zero, animated: true)
     }
     
     private func add(childCoordinator: Coordinator) {
-        self.childCoordinators.append(childCoordinator)
+        childCoordinators.append(childCoordinator)
     }
     
     private func remove(childCoordinator: Coordinator) {
-        self.childCoordinators.append(childCoordinator)
+        childCoordinators.append(childCoordinator)
     }
     
     private func showSpaceInvite() {
@@ -391,7 +389,7 @@ class AllChatsViewController: HomeViewController {
         }
         
         let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId, parentSpaceId: nil))
-        coordinator.callback = { [weak self] result in
+        coordinator.callback = { [weak self] _ in
             guard let self = self else { return }
             
             coordinator.toPresentable().dismiss(animated: true) {
@@ -426,7 +424,7 @@ class AllChatsViewController: HomeViewController {
         coordinator.toPresentable().presentationController?.delegate = self
         coordinator.start()
         add(childCoordinator: coordinator)
-        coordinator.completion = { [weak self] result in
+        coordinator.completion = { [weak self] _ in
             // switching to home space
             self?.switchSpace(withId: nil)
             coordinator.toPresentable().dismiss(animated: true) {
@@ -438,17 +436,17 @@ class AllChatsViewController: HomeViewController {
     
     private func showRoomInviteList() {
         let invitesViewController = RoomInvitesViewController.instantiate()
-        invitesViewController.userIndicatorStore = self.userIndicatorStore
+        invitesViewController.userIndicatorStore = userIndicatorStore
         let recentsListService = RecentsListService(withSession: mainSession)
         let recentsDataSource = RecentsDataSource(matrixSession: mainSession, recentsListService: recentsListService)
         invitesViewController.displayList(recentsDataSource)
-        self.navigationController?.pushViewController(invitesViewController, animated: true)
+        navigationController?.pushViewController(invitesViewController, animated: true)
     }
 }
 
 // MARK: - SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate
+
 extension AllChatsViewController: SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate {
-    
     func spaceSelectorBottomSheetCoordinatorBridgePresenterDidCancel(_ coordinatorBridgePresenter: SpaceSelectorBottomSheetCoordinatorBridgePresenter) {
         coordinatorBridgePresenter.dismiss(animated: true) {
             self.spaceSelectorBridgePresenter = nil
@@ -475,28 +473,26 @@ extension AllChatsViewController: SpaceSelectorBottomSheetCoordinatorBridgePrese
         coordinatorBridgePresenter.dismiss(animated: true) {
             self.spaceSelectorBridgePresenter = nil
         }
-        self.showCreateSpace(parentSpaceId: parentSpaceId)
+        showCreateSpace(parentSpaceId: parentSpaceId)
     }
-
 }
 
 // MARK: - UISearchResultsUpdating
+
 extension AllChatsViewController: UISearchResultsUpdating {
-    
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
-            self.dataSource.search(withPatterns: nil)
+            dataSource.search(withPatterns: nil)
             return
         }
         
-        self.dataSource.search(withPatterns: [searchText])
+        dataSource.search(withPatterns: [searchText])
     }
-
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
+
 extension AllChatsViewController: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         guard let coordinator = childCoordinators.last else {
             return
@@ -507,8 +503,8 @@ extension AllChatsViewController: UIAdaptivePresentationControllerDelegate {
 }
 
 // MARK: - AllChatsEditActionProviderDelegate
+
 extension AllChatsViewController: AllChatsEditActionProviderDelegate {
-    
     func allChatsEditActionProvider(_ actionProvider: AllChatsEditActionProvider, didSelect option: AllChatsEditActionProviderOption) {
         switch option {
         case .exploreRooms:
@@ -521,10 +517,10 @@ extension AllChatsViewController: AllChatsEditActionProviderDelegate {
             showCreateSpace(parentSpaceId: dataSource.currentSpace?.spaceId)
         }
     }
-    
 }
 
 // MARK: - AllChatsSpaceActionProviderDelegate
+
 extension AllChatsViewController: AllChatsSpaceActionProviderDelegate {
     func allChatsSpaceActionProvider(_ actionProvider: AllChatsSpaceActionProvider, didSelect option: AllChatsSpaceActionProviderOption) {
         switch option {
@@ -541,27 +537,23 @@ extension AllChatsViewController: AllChatsSpaceActionProviderDelegate {
 }
 
 // MARK: - ContactsPickerCoordinatorDelegate
+
 extension AllChatsViewController: ContactsPickerCoordinatorDelegate {
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) { }
     
-    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
-    }
-    
-    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
-    }
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) { }
     
     func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol) {
         remove(childCoordinator: coordinator)
     }
-    
 }
 
 // MARK: - SpaceMembersCoordinatorDelegate
+
 extension AllChatsViewController: SpaceMembersCoordinatorDelegate {
-    
     func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
         coordinator.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
         }
     }
-    
 }

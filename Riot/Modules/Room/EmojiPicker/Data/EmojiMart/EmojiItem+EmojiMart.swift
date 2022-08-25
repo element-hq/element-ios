@@ -17,7 +17,6 @@
 import Foundation
 
 extension EmojiItem: Decodable {
-
     /// JSON keys associated to EmojiItem properties.
     /// See https://github.com/missive/emoji-mart/blob/master/src/utils/data.js for minified letters informations.
     ///
@@ -49,7 +48,7 @@ extension EmojiItem: Decodable {
         
         for unicodeStringComponent in unicodeStringComponents {
             if let unicodeCodePoint = Int(unicodeStringComponent, radix: 16),
-                let emojiUnicodeScalar = UnicodeScalar(unicodeCodePoint) {
+               let emojiUnicodeScalar = UnicodeScalar(unicodeCodePoint) {
                 emoji.append(String(emojiUnicodeScalar))
             } else {
                 throw DecodingError.dataCorruptedError(forKey: .codepoint, in: container, debugDescription: "Cannot initialize emoji")

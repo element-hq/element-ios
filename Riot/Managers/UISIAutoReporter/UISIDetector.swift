@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import MatrixSDK
 import Foundation
+import MatrixSDK
 
 protocol UISIDetectorDelegate: AnyObject {
     var reciprocateToDeviceEventType: String { get }
@@ -32,7 +32,7 @@ struct UISIDetectedMessage {
     let sessionId: String
     
     static func fromEvent(event: MXEvent) -> UISIDetectedMessage {
-        return UISIDetectedMessage(
+        UISIDetectedMessage(
             eventId: event.eventId ?? "",
             roomId: event.roomId,
             senderUserId: event.sender,
@@ -46,7 +46,6 @@ struct UISIDetectedMessage {
 /// Detects decryption errors that occur and don't recover within a grace period.
 /// see `UISIDetectorDelegate` for listening to detections.
 class UISIDetector: MXLiveEventListener {
-    
     weak var delegate: UISIDetectorDelegate?
     var enabled = false
     
@@ -104,12 +103,12 @@ class UISIDetector: MXLiveEventListener {
     private func triggerUISI(source: UISIDetectedMessage) {
         guard enabled else { return }
         MXLog.info("[UISIDetector] triggerUISI: Unable To Decrypt \(source)")
-        self.delegate?.uisiDetected(source: source)
+        delegate?.uisiDetected(source: source)
     }
     
     // MARK: - Static
     
     private static func trackedEventId(roomId: String, eventId: String) -> String {
-        return "\(roomId)-\(eventId)"
+        "\(roomId)-\(eventId)"
     }
 }

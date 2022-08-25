@@ -22,7 +22,6 @@ import UIKit
     func settingsKeyBackupTableViewSection(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, textCellForRow: Int) -> MXKTableViewCellWithTextView
     func settingsKeyBackupTableViewSection(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, buttonCellForRow: Int) -> MXKTableViewCellWithButton
 
-
     func settingsKeyBackupTableViewSectionShowKeyBackupSetup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection)
     func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showKeyBackupRecover keyBackupVersion: MXKeyBackupVersion)
     func settingsKeyBackup(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, showKeyBackupDeleteConfirm keyBackupVersion: MXKeyBackupVersion)
@@ -39,7 +38,6 @@ private enum BackupRows {
 }
 
 @objc final class SettingsKeyBackupTableViewSection: NSObject {
-
     // MARK: - Properties
 
     @objc weak var delegate: SettingsKeyBackupTableViewSectionDelegate?
@@ -53,7 +51,7 @@ private enum BackupRows {
     // Need to know the state to make `cellForRow` deliver cells accordingly
     private var viewState: SettingsKeyBackupViewState = .checkingBackup {
         didSet {
-            self.updateBackupRows()
+            updateBackupRows()
         }
     }
 
@@ -64,24 +62,24 @@ private enum BackupRows {
     // MARK: - Public
 
     @objc init(withKeyBackup keyBackup: MXKeyBackup, userDevice: MXDeviceInfo) {
-        self.viewModel = SettingsKeyBackupViewModel(keyBackup: keyBackup)
+        viewModel = SettingsKeyBackupViewModel(keyBackup: keyBackup)
         self.userDevice = userDevice
         super.init()
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .load)
+        viewModel.process(viewAction: .load)
     }
     
     @objc func numberOfRows() -> Int {
-        return self.backupRows.count
+        backupRows.count
     }
     
     @objc func cellForRow(atRow row: Int) -> UITableViewCell {
-        guard let delegate = self.delegate else {
+        guard let delegate = delegate else {
             return UITableViewCell()
         }
         
-        let backupRow = self.backupRows[row]
+        let backupRow = backupRows[row]
         
         var cell: UITableViewCell
         switch backupRow {
@@ -90,31 +88,30 @@ private enum BackupRows {
             infoCell.mxkTextView.text = infoText
             cell = infoCell
         case .createAction:
-            cell = self.buttonCellForCreate(atRow: row)
+            cell = buttonCellForCreate(atRow: row)
         case .restoreAction(keyBackupVersion: let keyBackupVersion, let title):
-            cell = self.buttonCellForRestore(keyBackupVersion: keyBackupVersion, title: title, atRow: row)
+            cell = buttonCellForRestore(keyBackupVersion: keyBackupVersion, title: title, atRow: row)
         case .deleteAction(keyBackupVersion: let keyBackupVersion):
-            cell = self.buttonCellForDelete(keyBackupVersion: keyBackupVersion, atRow: row)
+            cell = buttonCellForDelete(keyBackupVersion: keyBackupVersion, atRow: row)
         }
         
         return cell
     }
 
     @objc func reload() {
-        self.viewModel.process(viewAction: .load)
+        viewModel.process(viewAction: .load)
     }
 
     @objc func delete(keyBackupVersion: MXKeyBackupVersion) {
-        self.viewModel.process(viewAction: .delete(keyBackupVersion))
+        viewModel.process(viewAction: .delete(keyBackupVersion))
     }
 
     // MARK: - Data Computing
     
     private func updateBackupRows() {
-        
         let backupRows: [BackupRows]
         
-        switch self.viewState {
+        switch viewState {
         case .checkingBackup:
             
             let info = VectorL10n.settingsKeyBackupInfo
@@ -152,7 +149,7 @@ private enum BackupRows {
             let additionalStrings = [version, algorithm, uploadStatus]
             let additionalInfoText = additionalStrings.joined(separator: "\n")
             
-            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust)
+            let backupTrust = stringForKeyBackupTrust(keyBackupVersionTrust)
             let backupTrustInfoText = backupTrust.joined(separator: "\n")
             
             var backupViewStateRows: [BackupRows] = [
@@ -184,7 +181,7 @@ private enum BackupRows {
             let additionalStrings = [version, algorithm, uploadStatus]
             let additionalInfoText = additionalStrings.joined(separator: "\n")
             
-            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust)
+            let backupTrust = stringForKeyBackupTrust(keyBackupVersionTrust)
             let backupTrustInfoText = backupTrust.joined(separator: "\n")
             
             var backupAndRunningViewStateRows: [BackupRows] = [
@@ -215,7 +212,7 @@ private enum BackupRows {
             let additionalStrings = [version, algorithm]
             let additionalInfoText = additionalStrings.joined(separator: "\n")
             
-            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust)
+            let backupTrust = stringForKeyBackupTrust(keyBackupVersionTrust)
             let backupTrustInfoText = backupTrust.joined(separator: "\n")
             
             var backupNotTrustedViewStateRows: [BackupRows] = [
@@ -238,8 +235,7 @@ private enum BackupRows {
     }
 
     private func stringForKeyBackupTrust(_ keyBackupVersionTrust: MXKeyBackupVersionTrust) -> [String] {
-
-        return keyBackupVersionTrust.signatures.map { (signature) -> String in
+        keyBackupVersionTrust.signatures.map { signature -> String in
             guard let device = signature.device else {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureUnknown(signature.deviceId)
             }
@@ -248,17 +244,17 @@ private enum BackupRows {
 
             if device.fingerprint == self.userDevice.fingerprint {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureValid
-            } else if signature.valid
-                && (device.trustLevel.localVerificationStatus == .verified) {
+            } else if signature.valid,
+                      device.trustLevel.localVerificationStatus == .verified {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureValidDeviceVerified(displayName)
-            } else if signature.valid
-                && (device.trustLevel.localVerificationStatus != .verified) {
+            } else if signature.valid,
+                      device.trustLevel.localVerificationStatus != .verified {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureValidDeviceUnverified(displayName)
-            } else if !signature.valid
-                && (device.trustLevel.localVerificationStatus == .verified) {
+            } else if !signature.valid,
+                      device.trustLevel.localVerificationStatus == .verified {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureInvalidDeviceVerified(displayName)
-            } else if !signature.valid
-                && (device.trustLevel.localVerificationStatus != .verified) {
+            } else if !signature.valid,
+                      device.trustLevel.localVerificationStatus != .verified {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureInvalidDeviceUnverified(displayName)
             }
 
@@ -269,8 +265,7 @@ private enum BackupRows {
     // MARK: - Button cells
 
     private func buttonCellForCreate(atRow row: Int) -> UITableViewCell {
-
-        guard let delegate = self.delegate else {
+        guard let delegate = delegate else {
             return UITableViewCell()
         }
 
@@ -288,7 +283,7 @@ private enum BackupRows {
     }
 
     private func buttonCellForRestore(keyBackupVersion: MXKeyBackupVersion, title: String, atRow row: Int) -> UITableViewCell {
-        guard let delegate = self.delegate else {
+        guard let delegate = delegate else {
             return UITableViewCell()
         }
 
@@ -302,7 +297,7 @@ private enum BackupRows {
     }
 
     private func buttonCellForDelete(keyBackupVersion: MXKeyBackupVersion, atRow row: Int) -> UITableViewCell {
-        guard let delegate = self.delegate else {
+        guard let delegate = delegate else {
             return UITableViewCell()
         }
 
@@ -319,36 +314,36 @@ private enum BackupRows {
     }
 }
 
-
 // MARK: - KeyBackupSetupRecoveryKeyViewModelViewDelegate
+
 extension SettingsKeyBackupTableViewSection: SettingsKeyBackupViewModelViewDelegate {
     func settingsKeyBackupViewModel(_ viewModel: SettingsKeyBackupViewModelType, didUpdateViewState viewState: SettingsKeyBackupViewState) {
         self.viewState = viewState
 
         // The tableview datasource will call `self.cellForRow()`
-        self.delegate?.settingsKeyBackupTableViewSectionDidUpdate(self)
+        delegate?.settingsKeyBackupTableViewSectionDidUpdate(self)
     }
 
     func settingsKeyBackupViewModel(_ viewModel: SettingsKeyBackupViewModelType, didUpdateNetworkRequestViewState networkRequestViewSate: SettingsKeyBackupNetworkRequestViewState) {
         switch networkRequestViewSate {
         case .loading:
-            self.delegate?.settingsKeyBackup(self, showActivityIndicator: true)
+            delegate?.settingsKeyBackup(self, showActivityIndicator: true)
         case .loaded:
-            self.delegate?.settingsKeyBackup(self, showActivityIndicator: false)
+            delegate?.settingsKeyBackup(self, showActivityIndicator: false)
         case .error(let error):
-            self.delegate?.settingsKeyBackup(self, showError: error)
+            delegate?.settingsKeyBackup(self, showError: error)
         }
     }
 
     func settingsKeyBackupViewModelShowKeyBackupSetup(_ viewModel: SettingsKeyBackupViewModelType) {
-        self.delegate?.settingsKeyBackupTableViewSectionShowKeyBackupSetup(self)
+        delegate?.settingsKeyBackupTableViewSectionShowKeyBackupSetup(self)
     }
 
     func settingsKeyBackup(_ viewModel: SettingsKeyBackupViewModelType, showKeyBackupRecover keyBackupVersion: MXKeyBackupVersion) {
-        self.delegate?.settingsKeyBackup(self, showKeyBackupRecover: keyBackupVersion)
+        delegate?.settingsKeyBackup(self, showKeyBackupRecover: keyBackupVersion)
     }
     
     func settingsKeyBackup(_ viewModel: SettingsKeyBackupViewModelType, showKeyBackupDeleteConfirm keyBackupVersion: MXKeyBackupVersion) {
-        self.delegate?.settingsKeyBackup(self, showKeyBackupDeleteConfirm: keyBackupVersion)
+        delegate?.settingsKeyBackup(self, showKeyBackupDeleteConfirm: keyBackupVersion)
     }
 }

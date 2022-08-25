@@ -17,21 +17,20 @@
 import UIKit
 
 final class TemplateScreenViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
-        static let aConstant: Int = 666
+        static let aConstant = 666
     }
     
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var doneButton: UIButton!
+    @IBOutlet private var informationLabel: UILabel!
+    @IBOutlet private var doneButton: UIButton!
     
     // MARK: Private
 
@@ -57,33 +56,33 @@ final class TemplateScreenViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: scrollView)
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.keyboardAvoider?.startAvoiding()
+        keyboardAvoider?.startAvoiding()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.keyboardAvoider?.stopAvoiding()
+        keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -91,18 +90,17 @@ final class TemplateScreenViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-
         // TODO: Set view colors here
-        self.informationLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
 
-        self.doneButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.doneButton)
+        doneButton.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: doneButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -110,7 +108,7 @@ final class TemplateScreenViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -118,13 +116,13 @@ final class TemplateScreenViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.title = "Template"
+        title = "Template"
         
-        self.scrollView.keyboardDismissMode = .interactive
+        scrollView.keyboardDismissMode = .interactive
         
-        self.informationLabel.text = "VectorL10n.templateScreenTitle"
+        informationLabel.text = "VectorL10n.templateScreenTitle"
     }
 
     private func render(viewState: TemplateScreenViewState) {
@@ -132,47 +130,45 @@ final class TemplateScreenViewController: UIViewController {
         case .idle:
             break
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let displayName):
-            self.renderLoaded(displayName: displayName)
+            renderLoaded(displayName: displayName)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        self.informationLabel.text = "Fetch display name"
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
+        informationLabel.text = "Fetch display name"
     }
     
     private func renderLoaded(displayName: String) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-        self.informationLabel.text = "You display name: \(displayName)"
+        informationLabel.text = "You display name: \(displayName)"
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
-    
     // MARK: - Actions
 
     @IBAction private func doneButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .complete)
+        viewModel.process(viewAction: .complete)
     }
 
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
 
-
 // MARK: - TemplateScreenViewModelViewDelegate
-extension TemplateScreenViewController: TemplateScreenViewModelViewDelegate {
 
+extension TemplateScreenViewController: TemplateScreenViewModelViewDelegate {
     func templateScreenViewModel(_ viewModel: TemplateScreenViewModelProtocol, didUpdateViewState viewSate: TemplateScreenViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

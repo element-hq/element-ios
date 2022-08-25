@@ -14,29 +14,28 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class ReactionHistoryViewCell: UITableViewCell, NibReusable, Themable {
-
     // MARK: - Properties
     
-    @IBOutlet private weak var reactionLabel: UILabel!
-    @IBOutlet private weak var userDisplayNameLabel: UILabel!
-    @IBOutlet private weak var timestampLabel: UILabel!
+    @IBOutlet private var reactionLabel: UILabel!
+    @IBOutlet private var userDisplayNameLabel: UILabel!
+    @IBOutlet private var timestampLabel: UILabel!
     
     // MARK: - Public
     
     func fill(with viewData: ReactionHistoryViewData) {
-        self.reactionLabel.text = viewData.reaction
-        self.userDisplayNameLabel.text = viewData.userDisplayName
-        self.timestampLabel.text = viewData.dateString
+        reactionLabel.text = viewData.reaction
+        userDisplayNameLabel.text = viewData.userDisplayName
+        timestampLabel.text = viewData.dateString
     }
     
     func update(theme: Theme) {
-        self.backgroundColor = theme.backgroundColor
-        self.reactionLabel.textColor = theme.textPrimaryColor
-        self.userDisplayNameLabel.textColor = theme.textPrimaryColor
-        self.timestampLabel.textColor = theme.textSecondaryColor
+        backgroundColor = theme.backgroundColor
+        reactionLabel.textColor = theme.textPrimaryColor
+        userDisplayNameLabel.textColor = theme.textPrimaryColor
+        timestampLabel.textColor = theme.textSecondaryColor
     }
 }

@@ -14,31 +14,30 @@
  limitations under the License.
  */
 
-import UIKit
 import MobileCoreServices
+import UIKit
 
 final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBOutlet private weak var shieldImageView: UIImageView!
+    @IBOutlet private var shieldImageView: UIImageView!
     
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var recoveryKeyTitleLabel: UILabel!
-    @IBOutlet private weak var recoveryKeyTextField: UITextField!
-    @IBOutlet private weak var recoveryKeyTextFieldBackgroundView: UIView!
+    @IBOutlet private var recoveryKeyTitleLabel: UILabel!
+    @IBOutlet private var recoveryKeyTextField: UITextField!
+    @IBOutlet private var recoveryKeyTextFieldBackgroundView: UIView!
     
-    @IBOutlet private weak var importFileButton: UIButton!
+    @IBOutlet private var importFileButton: UIButton!
     
-    @IBOutlet private weak var unknownRecoveryKeyButton: UIButton!
+    @IBOutlet private var unknownRecoveryKeyButton: UIButton!
     
-    @IBOutlet private weak var recoverButtonBackgroundView: UIView!
-    @IBOutlet private weak var recoverButton: UIButton!
+    @IBOutlet private var recoverButtonBackgroundView: UIView!
+    @IBOutlet private var recoverButton: UIButton!
     
     // MARK: Private
     
@@ -67,22 +66,22 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.keyBackupRecoverTitle
-        self.vc_removeBackTitle()
+        title = VectorL10n.keyBackupRecoverTitle
+        vc_removeBackTitle()
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: scrollView)
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -92,57 +91,57 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.scrollView.keyboardDismissMode = .interactive
+        scrollView.keyboardDismissMode = .interactive
         
         let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
-        self.shieldImageView.image = shieldImage
+        shieldImageView.image = shieldImage
         
-        self.informationLabel.text = VectorL10n.keyBackupRecoverFromRecoveryKeyInfo
+        informationLabel.text = VectorL10n.keyBackupRecoverFromRecoveryKeyInfo
         
-        self.recoveryKeyTitleLabel.text = VectorL10n.keyBackupRecoverFromRecoveryKeyRecoveryKeyTitle
-        self.recoveryKeyTextField.addTarget(self, action: #selector(recoveryKeyTextFieldDidChange(_:)), for: .editingChanged)
+        recoveryKeyTitleLabel.text = VectorL10n.keyBackupRecoverFromRecoveryKeyRecoveryKeyTitle
+        recoveryKeyTextField.addTarget(self, action: #selector(recoveryKeyTextFieldDidChange(_:)), for: .editingChanged)
         
         let importFileImage = Asset.Images.importFilesButton.image.withRenderingMode(.alwaysTemplate)
-        self.importFileButton.setImage(importFileImage, for: .normal)
+        importFileButton.setImage(importFileImage, for: .normal)
         
-        self.unknownRecoveryKeyButton.vc_enableMultiLinesTitle()
-        self.unknownRecoveryKeyButton.setTitle(VectorL10n.keyBackupRecoverFromRecoveryKeyLostRecoveryKeyAction, for: .normal)
+        unknownRecoveryKeyButton.vc_enableMultiLinesTitle()
+        unknownRecoveryKeyButton.setTitle(VectorL10n.keyBackupRecoverFromRecoveryKeyLostRecoveryKeyAction, for: .normal)
         // Interaction is disabled for the moment
-        self.unknownRecoveryKeyButton.isUserInteractionEnabled = false
+        unknownRecoveryKeyButton.isUserInteractionEnabled = false
         
-        self.recoverButton.vc_enableMultiLinesTitle()
-        self.recoverButton.setTitle(VectorL10n.keyBackupRecoverFromPassphraseRecoverAction, for: .normal)
+        recoverButton.vc_enableMultiLinesTitle()
+        recoverButton.setTitle(VectorL10n.keyBackupRecoverFromPassphraseRecoverAction, for: .normal)
         
-        self.updateRecoverButton()
+        updateRecoverButton()
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.informationLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.shieldImageView.tintColor = theme.textPrimaryColor
+        shieldImageView.tintColor = theme.textPrimaryColor
         
-        self.recoveryKeyTextFieldBackgroundView.backgroundColor = theme.backgroundColor
-        self.recoveryKeyTitleLabel.textColor = theme.textPrimaryColor
-        theme.applyStyle(onTextField: self.recoveryKeyTextField)
-        self.recoveryKeyTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.keyBackupRecoverFromRecoveryKeyRecoveryKeyPlaceholder,
-                                                                            attributes: [.foregroundColor: theme.placeholderTextColor])
+        recoveryKeyTextFieldBackgroundView.backgroundColor = theme.backgroundColor
+        recoveryKeyTitleLabel.textColor = theme.textPrimaryColor
+        theme.applyStyle(onTextField: recoveryKeyTextField)
+        recoveryKeyTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.keyBackupRecoverFromRecoveryKeyRecoveryKeyPlaceholder,
+                                                                        attributes: [.foregroundColor: theme.placeholderTextColor])
         
-        theme.applyStyle(onButton: self.importFileButton)        
+        theme.applyStyle(onButton: importFileButton)
         
-        self.recoverButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.recoverButton)
+        recoverButtonBackgroundView.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: recoverButton)
         
-        self.unknownRecoveryKeyButton.setTitleColor(theme.textPrimaryColor, for: .normal)
+        unknownRecoveryKeyButton.setTitleColor(theme.textPrimaryColor, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -150,46 +149,45 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func updateRecoverButton() {
-        self.recoverButton.isEnabled = self.viewModel.isFormValid
+        recoverButton.isEnabled = viewModel.isFormValid
     }
     
     private func render(viewState: KeyBackupRecoverFromRecoveryKeyViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded:
-            self.renderLoaded()
+            renderLoaded()
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.view.endEditing(true)
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        view.endEditing(true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-        if (error as NSError).domain == MXKeyBackupErrorDomain
-            && (error as NSError).code == Int(MXKeyBackupErrorInvalidRecoveryKeyCode.rawValue) {
-
-            self.errorPresenter.presentError(from: self,
-                                             title: VectorL10n.keyBackupRecoverInvalidRecoveryKeyTitle,
-                                             message: VectorL10n.keyBackupRecoverInvalidRecoveryKey,
-                                             animated: true,
-                                             handler: nil)
+        if (error as NSError).domain == MXKeyBackupErrorDomain,
+           (error as NSError).code == Int(MXKeyBackupErrorInvalidRecoveryKeyCode.rawValue) {
+            errorPresenter.presentError(from: self,
+                                        title: VectorL10n.keyBackupRecoverInvalidRecoveryKeyTitle,
+                                        message: VectorL10n.keyBackupRecoverInvalidRecoveryKey,
+                                        animated: true,
+                                        handler: nil)
         } else {
-            self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+            errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
         }
     }
     
@@ -197,15 +195,15 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
         // Show only text documents
         let documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeText as String], in: .import)
         documentPicker.delegate = self
-        self.present(documentPicker, animated: true, completion: nil)
+        present(documentPicker, animated: true, completion: nil)
     }
     
     private func importRecoveryKey(from url: URL) {
-        if let recoveryKey = self.getDocumentContent(from: url) {
-            self.recoveryKeyTextField.text = recoveryKey
-            self.recoveryKeyTextFieldDidChange(self.recoveryKeyTextField)
+        if let recoveryKey = getDocumentContent(from: url) {
+            recoveryKeyTextField.text = recoveryKey
+            recoveryKeyTextFieldDidChange(recoveryKeyTextField)
         } else {
-            self.errorPresenter.presentGenericError(from: self, animated: true, handler: nil)
+            errorPresenter.presentGenericError(from: self, animated: true, handler: nil)
         }
     }
     
@@ -225,30 +223,30 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
     // MARK: - Actions
     
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
     
     @IBAction private func importFileButtonAction(_ sender: Any) {
-        self.showFileSelection()
+        showFileSelection()
     }
     
     @objc private func recoveryKeyTextFieldDidChange(_ textField: UITextField) {
-        self.viewModel.recoveryKey = textField.text
-        self.updateRecoverButton()
+        viewModel.recoveryKey = textField.text
+        updateRecoverButton()
     }
     
     @IBAction private func usePassphraseButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .recover)
+        viewModel.process(viewAction: .recover)
     }
     
     @IBAction private func unknownPassphraseButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .unknownRecoveryKey)
+        viewModel.process(viewAction: .unknownRecoveryKey)
     }
 }
 
 // MARK: - UITextFieldDelegate
+
 extension KeyBackupRecoverFromRecoveryKeyViewController: UITextFieldDelegate {
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -256,23 +254,24 @@ extension KeyBackupRecoverFromRecoveryKeyViewController: UITextFieldDelegate {
 }
 
 // MARK: - KeyBackupRecoverFromRecoveryKeyViewModelViewDelegate
+
 extension KeyBackupRecoverFromRecoveryKeyViewController: KeyBackupRecoverFromRecoveryKeyViewModelViewDelegate {
     func keyBackupRecoverFromPassphraseViewModel(_ viewModel: KeyBackupRecoverFromRecoveryKeyViewModelType, didUpdateViewState viewSate: KeyBackupRecoverFromRecoveryKeyViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
 // MARK: - UIDocumentPickerDelegate
+
 extension KeyBackupRecoverFromRecoveryKeyViewController: UIDocumentPickerDelegate {
-    
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let documentUrl = urls.first else {
             return
         }
-        self.importRecoveryKey(from: documentUrl)
+        importRecoveryKey(from: documentUrl)
     }
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        self.importRecoveryKey(from: url)
+        importRecoveryKey(from: url)
     }
 }

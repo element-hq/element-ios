@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// `HomeserverConfigurationBuilder` build `HomeserverConfiguration` objects according to injected inputs
 @objcMembers
 final class HomeserverConfigurationBuilder: NSObject {
-
     // MARK: - Properties
     
     private let vectorWellKnownParser = VectorWellKnownParser()
@@ -31,9 +30,9 @@ final class HomeserverConfigurationBuilder: NSObject {
         var vectorWellKnownEncryptionConfiguration: VectorWellKnownEncryptionConfiguration?
         var vectorWellKnownJitsiConfiguration: VectorWellKnownJitsiConfiguration?
         
-        if let wellKnown = wellKnown, let vectorWellKnown = self.vectorWellKnownParser.parse(jsonDictionary: wellKnown.jsonDictionary()) {
-            vectorWellKnownEncryptionConfiguration = self.getEncryptionConfiguration(from: vectorWellKnown)
-            vectorWellKnownJitsiConfiguration = self.getJitsiConfiguration(from: vectorWellKnown)
+        if let wellKnown = wellKnown, let vectorWellKnown = vectorWellKnownParser.parse(jsonDictionary: wellKnown.jsonDictionary()) {
+            vectorWellKnownEncryptionConfiguration = getEncryptionConfiguration(from: vectorWellKnown)
+            vectorWellKnownJitsiConfiguration = getJitsiConfiguration(from: vectorWellKnown)
         }
 
         // Encryption configuration
@@ -94,7 +93,6 @@ final class HomeserverConfigurationBuilder: NSObject {
     // MARK: - Private
     
     private func getJitsiConfiguration(from vectorWellKnown: VectorWellKnown) -> VectorWellKnownJitsiConfiguration? {
-                
         let jitsiConfiguration: VectorWellKnownJitsiConfiguration?
         
         if let lastJitsiConfiguration = vectorWellKnown.jitsi {
@@ -111,7 +109,6 @@ final class HomeserverConfigurationBuilder: NSObject {
     }
     
     private func getEncryptionConfiguration(from vectorWellKnown: VectorWellKnown) -> VectorWellKnownEncryptionConfiguration? {
-        
         let encryptionConfiguration: VectorWellKnownEncryptionConfiguration?
         
         if let lastEncryptionConfiguration = vectorWellKnown.encryption {

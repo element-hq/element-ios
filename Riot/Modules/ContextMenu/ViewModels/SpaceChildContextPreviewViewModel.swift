@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// `SpaceChildContextPreviewViewModel` provides the data to the `RoomContextPreviewViewController` from an instance of `MXSpaceChildInfo`
 class SpaceChildContextPreviewViewModel: RoomContextPreviewViewModelProtocol {
-    
     // MARK: - Properties
     
     private let childInfo: MXSpaceChildInfo
@@ -35,7 +34,7 @@ class SpaceChildContextPreviewViewModel: RoomContextPreviewViewModelProtocol {
     func process(viewAction: RoomContextPreviewViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         }
     }
     
@@ -52,7 +51,8 @@ class SpaceChildContextPreviewViewModel: RoomContextPreviewViewModelProtocol {
             membership: .unknown,
             inviterId: nil,
             inviter: nil,
-            membersCount: childInfo.activeMemberCount)
-        self.viewDelegate?.roomContextPreviewViewModel(self, didUpdateViewState: .loaded(parameters))
+            membersCount: childInfo.activeMemberCount
+        )
+        viewDelegate?.roomContextPreviewViewModel(self, didUpdateViewState: .loaded(parameters))
     }
 }

@@ -45,7 +45,6 @@ import UIKit
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class SetPinCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -82,18 +81,18 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let setPinCoordinator = SetPinCoordinator(session: self.session, viewMode: self.viewMode, pinCodePreferences: .shared)
+        let setPinCoordinator = SetPinCoordinator(session: session, viewMode: viewMode, pinCodePreferences: .shared)
         setPinCoordinator.delegate = self
         viewController.present(setPinCoordinator.toPresentable(), animated: animated, completion: nil)
         setPinCoordinator.start()
         
-        self.coordinator = setPinCoordinator
+        coordinator = setPinCoordinator
     }
     
     func presentWithMainAppWindow(_ window: UIWindow) {
         let pinCoordinatorWindow = UIWindow(frame: window.bounds)
         
-        let setPinCoordinator = SetPinCoordinator(session: self.session, viewMode: self.viewMode, pinCodePreferences: .shared)
+        let setPinCoordinator = SetPinCoordinator(session: session, viewMode: viewMode, pinCodePreferences: .shared)
         setPinCoordinator.delegate = self
         guard let view = setPinCoordinator.toPresentable().view else { return }
         pinCoordinatorWindow.addSubview(view)
@@ -107,11 +106,11 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
         setPinCoordinator.start()
         
         self.pinCoordinatorWindow = pinCoordinatorWindow
-        self.coordinator = setPinCoordinator
+        coordinator = setPinCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         
@@ -132,17 +131,17 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - SetPinCoordinatorDelegate
+
 extension SetPinCoordinatorBridgePresenter: SetPinCoordinatorDelegate {
-    
     func setPinCoordinatorDidComplete(_ coordinator: SetPinCoordinatorType) {
-        self.delegate?.setPinCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.setPinCoordinatorBridgePresenterDelegateDidComplete(self)
     }
     
     func setPinCoordinatorDidCompleteWithReset(_ coordinator: SetPinCoordinatorType, dueToTooManyErrors: Bool) {
-        self.delegate?.setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset?(self, dueToTooManyErrors: dueToTooManyErrors)
+        delegate?.setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset?(self, dueToTooManyErrors: dueToTooManyErrors)
     }
     
     func setPinCoordinatorDidCancel(_ coordinator: SetPinCoordinatorType) {
-        self.delegate?.setPinCoordinatorBridgePresenterDelegateDidCancel?(self)
+        delegate?.setPinCoordinatorBridgePresenterDelegateDidCancel?(self)
     }
 }

@@ -17,9 +17,9 @@
  */
 
 import Foundation
-import UIKit
-import SideMenu
 import SafariServices
+import SideMenu
+import UIKit
 
 class SideMenuCoordinatorParameters {
     let appNavigator: AppNavigatorProtocol
@@ -36,7 +36,6 @@ class SideMenuCoordinatorParameters {
 }
 
 final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
-    
     // MARK: - Constants
     
     private enum SideMenu {
@@ -53,9 +52,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     
     private weak var spaceListCoordinator: SpaceListCoordinatorType?
     
-    private lazy var sideMenuNavigationViewController: SideMenuNavigationController = {
-        return self.createSideMenuNavigationController(with: self.sideMenuViewController)
-    }()
+    private lazy var sideMenuNavigationViewController: SideMenuNavigationController = self.createSideMenuNavigationController(with: self.sideMenuViewController)
     
     private let sideMenuViewController: SideMenuViewController
     
@@ -81,48 +78,47 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.parameters = parameters
         
         let sideMenuViewModel = SideMenuViewModel(userSessionsService: self.parameters.userSessionsService, appInfo: parameters.appInfo)
-        self.sideMenuViewController = SideMenuViewController.instantiate(with: sideMenuViewModel)
+        sideMenuViewController = SideMenuViewController.instantiate(with: sideMenuViewModel)
         self.sideMenuViewModel = sideMenuViewModel
     }
     
     // MARK: - Public methods
     
-    func start() {            
-        self.sideMenuViewModel.coordinatorDelegate = self
+    func start() {
+        sideMenuViewModel.coordinatorDelegate = self
         
-        self.sideMenuNavigationViewController.sideMenuDelegate = self
-        self.sideMenuNavigationViewController.dismissOnRotation = false
+        sideMenuNavigationViewController.sideMenuDelegate = self
+        sideMenuNavigationViewController.dismissOnRotation = false
         
         // Set the sideMenuNavigationViewController as default left menu
-        SideMenuManager.default.leftMenuNavigationController = self.sideMenuNavigationViewController
+        SideMenuManager.default.leftMenuNavigationController = sideMenuNavigationViewController
         
-        self.addSpaceListIfNeeded()
-        self.registerUserSessionsServiceNotifications()
+        addSpaceListIfNeeded()
+        registerUserSessionsServiceNotifications()
     }
     
     func toPresentable() -> UIViewController {
-        return self.sideMenuNavigationViewController
+        sideMenuNavigationViewController
     }
     
     @discardableResult func addScreenEdgePanGesturesToPresent(to view: UIView) -> UIScreenEdgePanGestureRecognizer {
-        return self.sideMenuNavigationViewController.sideMenuManager.addScreenEdgePanGesturesToPresent(toView: view, forMenu: .left)
+        sideMenuNavigationViewController.sideMenuManager.addScreenEdgePanGesturesToPresent(toView: view, forMenu: .left)
     }
     
     @discardableResult func addPanGestureToPresent(to view: UIView) -> UIPanGestureRecognizer {
-        return self.sideMenuNavigationViewController.sideMenuManager.addPanGestureToPresent(toView: view)
+        sideMenuNavigationViewController.sideMenuManager.addPanGestureToPresent(toView: view)
     }
     
     func select(spaceWithId spaceId: String) {
-        self.spaceListCoordinator?.select(spaceWithId: spaceId)
+        spaceListCoordinator?.select(spaceWithId: spaceId)
     }
     
     // MARK: - Private
     
     private func createSideMenuNavigationController(with rootViewController: UIViewController) -> SideMenuNavigationController {
-
         var sideMenuSettings = SideMenuSettings()
         sideMenuSettings.presentationStyle = .viewSlideOut
-        sideMenuSettings.menuWidth = self.getMenuWidth()
+        sideMenuSettings.menuWidth = getMenuWidth()
         
         let navigationController = SideMenuNavigationController(rootViewController: rootViewController, settings: sideMenuSettings)
         
@@ -149,19 +145,19 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     }
     
     private func addSpaceListIfNeeded() {
-        guard self.spaceListCoordinator == nil else {
+        guard spaceListCoordinator == nil else {
             return
         }
         
-        guard let mainMatrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+        guard let mainMatrixSession = parameters.userSessionsService.mainUserSession?.matrixSession else {
             return
         }
         
-        self.addSpaceList(with: mainMatrixSession)
+        addSpaceList(with: mainMatrixSession)
     }
 
     private func addSpaceList(with matrixSession: MXSession) {
-        let parameters = SpaceListCoordinatorParameters(userSessionsService: self.parameters.userSessionsService)
+        let parameters = SpaceListCoordinatorParameters(userSessionsService: parameters.userSessionsService)
         
         let spaceListCoordinator = SpaceListCoordinator(parameters: parameters)
         spaceListCoordinator.delegate = self
@@ -170,26 +166,26 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         let spaceListPresentable = spaceListCoordinator.toPresentable()
             
         // sideMenuViewController.spaceListContainerView can be nil, load controller view to avoid this case
-        self.sideMenuViewController.loadViewIfNeeded()
+        sideMenuViewController.loadViewIfNeeded()
         
-        self.sideMenuViewController.vc_addChildViewController(viewController: spaceListPresentable, onView: self.sideMenuViewController.spaceListContainerView)
+        sideMenuViewController.vc_addChildViewController(viewController: spaceListPresentable, onView: sideMenuViewController.spaceListContainerView)
         
-        self.add(childCoordinator: spaceListCoordinator)
+        add(childCoordinator: spaceListCoordinator)
         
         self.spaceListCoordinator = spaceListCoordinator
     }
     
     private func createSettingsViewController() -> SettingsViewController {
-        let viewController: SettingsViewController = SettingsViewController.instantiate()
+        let viewController = SettingsViewController.instantiate()
         viewController.loadViewIfNeeded()
         return viewController
     }
     
     private func showSettings() {
-        let viewController = self.createSettingsViewController()
+        let viewController = createSettingsViewController()
         
         // Push view controller and dismiss side menu
-        self.sideMenuNavigationViewController.pushViewController(viewController, animated: true)
+        sideMenuNavigationViewController.pushViewController(viewController, animated: true)
     }
     
     private func showBugReport() {
@@ -199,7 +195,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         bugReportViewController.modalPresentationStyle = .fullScreen
         bugReportViewController.modalTransitionStyle = .crossDissolve
         
-        self.sideMenuNavigationViewController.present(bugReportViewController, animated: true)
+        sideMenuNavigationViewController.present(bugReportViewController, animated: true)
     }
     
     private func showHelp() {
@@ -211,7 +207,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         
         // Show in fullscreen to animate presentation along side menu dismiss
         safariViewController.modalPresentationStyle = .fullScreen
-        self.sideMenuNavigationViewController.present(safariViewController, animated: true, completion: nil)
+        sideMenuNavigationViewController.present(safariViewController, animated: true, completion: nil)
     }
     
     private func showExploreRooms(spaceId: String, session: MXSession) {
@@ -219,56 +215,56 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         exploreRoomCoordinator.delegate = self
         let presentable = exploreRoomCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
-        self.sideMenuViewController.present(presentable, animated: true, completion: nil)
+        sideMenuViewController.present(presentable, animated: true, completion: nil)
         exploreRoomCoordinator.start()
         
         self.exploreRoomCoordinator = exploreRoomCoordinator
     }
     
     private func showMembers(spaceId: String, session: MXSession) {
-        let parameters = SpaceMembersCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, session: session, spaceId: spaceId)
+        let parameters = SpaceMembersCoordinatorParameters(userSessionsService: parameters.userSessionsService, session: session, spaceId: spaceId)
         let spaceMembersCoordinator = SpaceMembersCoordinator(parameters: parameters)
         spaceMembersCoordinator.delegate = self
         let presentable = spaceMembersCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
-        self.sideMenuViewController.present(presentable, animated: true, completion: nil)
+        sideMenuViewController.present(presentable, animated: true, completion: nil)
         spaceMembersCoordinator.start()
         
-        self.membersCoordinator = spaceMembersCoordinator
+        membersCoordinator = spaceMembersCoordinator
     }
 
     private func showInviteFriends(from sourceView: UIView?) {
-        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
+        let myUserId = parameters.userSessionsService.mainUserSession?.userId ?? ""
         
         let inviteFriendsPresenter = InviteFriendsPresenter()
-        inviteFriendsPresenter.present(for: myUserId, from: self.sideMenuViewController, sourceView: sourceView, animated: true)
+        inviteFriendsPresenter.present(for: myUserId, from: sideMenuViewController, sourceView: sourceView, animated: true)
     }
     
     private func showMenu(forSpaceWithId spaceId: String, from sourceView: UIView?) {
-        guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+        guard let session = parameters.userSessionsService.mainUserSession?.matrixSession else {
             return
         }
-        self.spaceMenuPresenter.delegate = self
-        self.spaceMenuPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
+        spaceMenuPresenter.delegate = self
+        spaceMenuPresenter.present(forSpaceWithId: spaceId, from: sideMenuViewController, sourceView: sourceView, session: session, animated: true)
     }
     
     private func showSpaceDetail(forSpaceWithId spaceId: String, from sourceView: UIView?) {
-        guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+        guard let session = parameters.userSessionsService.mainUserSession?.matrixSession else {
             return
         }
-        self.spaceDetailPresenter.delegate = self
-        self.spaceDetailPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
+        spaceDetailPresenter.delegate = self
+        spaceDetailPresenter.present(forSpaceWithId: spaceId, from: sideMenuViewController, sourceView: sourceView, session: session, animated: true)
     }
     
     private func showCreateSpace() {
-        guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+        guard let session = parameters.userSessionsService.mainUserSession?.matrixSession else {
             return
         }
         
         let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: session, parentSpaceId: nil))
         let presentable = coordinator.toPresentable()
         presentable.presentationController?.delegate = self
-        self.sideMenuViewController.present(presentable, animated: true, completion: nil)
+        sideMenuViewController.present(presentable, animated: true, completion: nil)
         coordinator.callback = { [weak self] result in
             guard let self = self else {
                 return
@@ -286,7 +282,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         }
         coordinator.start()
         
-        self.createSpaceCoordinator = coordinator
+        createSpaceCoordinator = coordinator
     }
     
     private func showAddRoom(spaceId: String, session: MXSession) {
@@ -302,7 +298,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     
     private func showSpaceSettings(spaceId: String, session: MXSession) {
         let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId, parentSpaceId: nil))
-        coordinator.callback = { [weak self] result in
+        coordinator.callback = { [weak self] _ in
             guard let self = self else { return }
             
             coordinator.toPresentable().dismiss(animated: true) {
@@ -315,7 +311,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         presentable.presentationController?.delegate = self
         toPresentable().present(presentable, animated: true, completion: nil)
         coordinator.start()
-        self.spaceSettingsCoordinator = coordinator
+        spaceSettingsCoordinator = coordinator
     }
     
     func showSpaceInvite(spaceId: String, session: MXSession) {
@@ -359,84 +355,76 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     // MARK: UserSessions management
     
     private func registerUserSessionsServiceNotifications() {
-        
         // Listen only notifications from the current UserSessionsService instance
-        let userSessionService = self.parameters.userSessionsService
+        let userSessionService = parameters.userSessionsService
         
         NotificationCenter.default.addObserver(self, selector: #selector(userSessionsServiceDidAddUserSession(_:)), name: UserSessionsService.didAddUserSession, object: userSessionService)
     }
     
     @objc private func userSessionsServiceDidAddUserSession(_ notification: Notification) {
-        self.addSpaceListIfNeeded()
+        addSpaceListIfNeeded()
     }
 }
 
 // MARK: - SideMenuViewModelCoordinatorDelegate
+
 extension SideMenuCoordinator: SideMenuViewModelCoordinatorDelegate {
-    
     func sideMenuViewModel(_ viewModel: SideMenuViewModelType, didTapMenuItem menuItem: SideMenuItem, fromSourceView sourceView: UIView) {
-        
         switch menuItem {
         case .inviteFriends:
-            self.showInviteFriends(from: sourceView)
+            showInviteFriends(from: sourceView)
         case .settings:
-            self.showSettings()
+            showSettings()
         case .help:
-            self.showHelp()
+            showHelp()
         case .feedback:
-            self.showBugReport()
+            showBugReport()
         }
         
-        self.delegate?.sideMenuCoordinator(self, didTapMenuItem: menuItem, fromSourceView: sourceView)
+        delegate?.sideMenuCoordinator(self, didTapMenuItem: menuItem, fromSourceView: sourceView)
     }
 }
 
 // MARK: - SideMenuNavigationControllerDelegate
+
 extension SideMenuCoordinator: SideMenuNavigationControllerDelegate {
- 
-    func sideMenuWillAppear(menu: SideMenuNavigationController, animated: Bool) {
-    }
+    func sideMenuWillAppear(menu: SideMenuNavigationController, animated: Bool) { }
     
-    func sideMenuDidAppear(menu: SideMenuNavigationController, animated: Bool) {
-    }
+    func sideMenuDidAppear(menu: SideMenuNavigationController, animated: Bool) { }
     
-    func sideMenuWillDisappear(menu: SideMenuNavigationController, animated: Bool) {
-    }
+    func sideMenuWillDisappear(menu: SideMenuNavigationController, animated: Bool) { }
     
-    func sideMenuDidDisappear(menu: SideMenuNavigationController, animated: Bool) {
-    }
+    func sideMenuDidDisappear(menu: SideMenuNavigationController, animated: Bool) { }
 }
 
 // MARK: - SideMenuNavigationControllerDelegate
+
 extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
     func spaceListCoordinatorDidSelectHomeSpace(_ coordinator: SpaceListCoordinatorType) {
-        self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
-            
-        }
-        self.parameters.appNavigator.navigate(to: .homeSpace)
+        parameters.appNavigator.sideMenu.dismiss(animated: true) { }
+        parameters.appNavigator.navigate(to: .homeSpace)
     }
     
     func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didSelectSpaceWithId spaceId: String) {
-        self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
-            
-        }
-        self.parameters.appNavigator.navigate(to: .space(spaceId))
+        parameters.appNavigator.sideMenu.dismiss(animated: true) { }
+        parameters.appNavigator.navigate(to: .space(spaceId))
     }
     
     func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didSelectInviteWithId spaceId: String, from sourceView: UIView?) {
-        self.showSpaceDetail(forSpaceWithId: spaceId, from: sourceView)
+        showSpaceDetail(forSpaceWithId: spaceId, from: sourceView)
     }
     
     func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView) {
-        self.showMenu(forSpaceWithId: spaceId, from: sourceView)
+        showMenu(forSpaceWithId: spaceId, from: sourceView)
     }
     
     func spaceListCoordinatorDidSelectCreateSpace(_ coordinator: SpaceListCoordinatorType) {
-        self.showCreateSpace()
+        showCreateSpace()
     }
 }
 
 // MARK: - SpaceMenuPresenterDelegate
+
 extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
     func spaceMenuPresenter(_ presenter: SpaceMenuPresenter, didCompleteWith action: SpaceMenuPresenter.Actions, forSpaceWithId spaceId: String, with session: MXSession) {
         presenter.dismiss(animated: false) {
@@ -470,23 +458,24 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
 
 extension SideMenuCoordinator: SpaceDetailPresenterDelegate {
     func spaceDetailPresenter(_ presenter: SpaceDetailPresenter, didJoinSpaceWithId spaceId: String) {
-        self.spaceListCoordinator?.select(spaceWithId: spaceId)
+        spaceListCoordinator?.select(spaceWithId: spaceId)
     }
     
     func spaceDetailPresenter(_ presenter: SpaceDetailPresenter, didOpenSpaceWithId spaceId: String) {
         // this use case cannot happen here as the space list open directly joined spaces on tap
-        self.spaceListCoordinator?.revertItemSelection()
+        spaceListCoordinator?.revertItemSelection()
     }
     
     func spaceDetailPresenterDidComplete(_ presenter: SpaceDetailPresenter) {
-        self.spaceListCoordinator?.revertItemSelection()
+        spaceListCoordinator?.revertItemSelection()
     }
 }
 
 // MARK: - ExploreRoomCoordinatorDelegate
+
 extension SideMenuCoordinator: ExploreRoomCoordinatorDelegate {
     func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType) {
-        self.exploreRoomCoordinator?.toPresentable().dismiss(animated: true) {
+        exploreRoomCoordinator?.toPresentable().dismiss(animated: true) {
             self.exploreRoomCoordinator = nil
             self.resetExploringSpaceIfNeeded()
         }
@@ -494,9 +483,10 @@ extension SideMenuCoordinator: ExploreRoomCoordinatorDelegate {
 }
 
 // MARK: - SpaceMembersCoordinatorDelegate
+
 extension SideMenuCoordinator: SpaceMembersCoordinatorDelegate {
     func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
-        self.membersCoordinator?.toPresentable().dismiss(animated: true) {
+        membersCoordinator?.toPresentable().dismiss(animated: true) {
             self.membersCoordinator = nil
             self.resetExploringSpaceIfNeeded()
         }
@@ -504,6 +494,7 @@ extension SideMenuCoordinator: SpaceMembersCoordinatorDelegate {
 }
 
 // MARK: - CreateRoomCoordinatorDelegate
+
 extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
         coordinator.toPresentable().dismiss(animated: true) {
@@ -538,12 +529,11 @@ extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
 }
 
 // MARK: - ContactsPickerCoordinatorDelegate
+
 extension SideMenuCoordinator: ContactsPickerCoordinatorDelegate {
-    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
-    }
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) { }
     
-    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
-    }
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) { }
     
     func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol) {
         remove(childCoordinator: coordinator)
@@ -551,14 +541,14 @@ extension SideMenuCoordinator: ContactsPickerCoordinatorDelegate {
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
+
 extension SideMenuCoordinator: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.exploreRoomCoordinator = nil
-        self.membersCoordinator = nil
-        self.createSpaceCoordinator = nil
-        self.createRoomCoordinator = nil
-        self.spaceSettingsCoordinator = nil
-        self.resetExploringSpaceIfNeeded()
+        exploreRoomCoordinator = nil
+        membersCoordinator = nil
+        createSpaceCoordinator = nil
+        createRoomCoordinator = nil
+        spaceSettingsCoordinator = nil
+        resetExploringSpaceIfNeeded()
     }
 }

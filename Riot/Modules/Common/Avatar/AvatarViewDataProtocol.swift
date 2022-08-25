@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import UIKit
 
 enum AvatarFallbackImage {
-    
     /// matrixItem represent a Matrix item like a room, space, user
     /// matrixItemId: Matrix item identifier (user id or room id)
     /// displayName: Matrix item display name (user or room display name)
@@ -36,7 +35,7 @@ protocol AvatarViewDataProtocol: AvatarProtocol {
     var displayName: String? { get }
     
     /// Matrix item avatar URL (user or room avatar url)
-    var avatarUrl: String? { get }            
+    var avatarUrl: String? { get }
         
     /// Matrix media handler
     var mediaManager: MXMediaManager? { get }

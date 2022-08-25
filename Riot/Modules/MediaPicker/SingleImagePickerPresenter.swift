@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
+import AVFoundation
 import Foundation
 import UIKit
-import AVFoundation
 
 @objc protocol SingleImagePickerPresenterDelegate: AnyObject {
     func singleImagePickerPresenter(_ presenter: SingleImagePickerPresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?)
@@ -26,7 +26,6 @@ import AVFoundation
 /// SingleImagePickerPresenter enables to present an image picker with single selection
 @objcMembers
 final class SingleImagePickerPresenter: NSObject {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -61,7 +60,6 @@ final class SingleImagePickerPresenter: NSObject {
                  animated: Bool) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        
         let cameraAction = UIAlertAction(title: VectorL10n.imagePickerActionCamera, style: .default, handler: { _ in
             self.presentCamera(animated: animated)
         })
@@ -86,9 +84,9 @@ final class SingleImagePickerPresenter: NSObject {
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        if let cameraPresenter = self.cameraPresenter {
+        if let cameraPresenter = cameraPresenter {
             cameraPresenter.dismiss(animated: animated, completion: completion)
-        } else if let mediaPickerPresenter = self.mediaPickerPresenter {
+        } else if let mediaPickerPresenter = mediaPickerPresenter {
             mediaPickerPresenter.dismiss(animated: animated, completion: completion)
         }
     }
@@ -96,7 +94,7 @@ final class SingleImagePickerPresenter: NSObject {
     // MARK: - Private
     
     private func presentCamera(animated: Bool) {
-        guard let presentingViewController = self.presentingViewController else {
+        guard let presentingViewController = presentingViewController else {
             return
         }
         
@@ -107,51 +105,52 @@ final class SingleImagePickerPresenter: NSObject {
     }
     
     private func presentPhotoLibray(sourceView: UIView?, sourceRect: CGRect, animated: Bool) {
-        guard let presentingViewController = self.presentingViewController else {
+        guard let presentingViewController = presentingViewController else {
             return
         }
         
-        let mediaPickerPresenter = MediaPickerCoordinatorBridgePresenter(session: self.session, mediaUTIs: [.image], allowsMultipleSelection: false)
+        let mediaPickerPresenter = MediaPickerCoordinatorBridgePresenter(session: session, mediaUTIs: [.image], allowsMultipleSelection: false)
         mediaPickerPresenter.delegate = self
         
         mediaPickerPresenter.present(from: presentingViewController, sourceView: sourceView, sourceRect: sourceRect, animated: animated)
         self.mediaPickerPresenter = mediaPickerPresenter
     }
-    
 }
 
 // MARK: - CameraPresenterDelegate
+
 extension SingleImagePickerPresenter: CameraPresenterDelegate {
-    
     func cameraPresenter(_ cameraPresenter: CameraPresenter, didSelectImage image: UIImage) {
         if let imageData = image.jpegData(compressionQuality: Constants.jpegCompressionQuality) {
-            self.delegate?.singleImagePickerPresenter(self, didSelectImageData: imageData, withUTI: MXKUTI.jpeg)
+            delegate?.singleImagePickerPresenter(self, didSelectImageData: imageData, withUTI: MXKUTI.jpeg)
         }
     }
     
     func cameraPresenterDidCancel(_ cameraPresenter: CameraPresenter) {
-        self.delegate?.singleImagePickerPresenterDidCancel(self)
+        delegate?.singleImagePickerPresenterDidCancel(self)
     }
     
     func cameraPresenter(_ cameraPresenter: CameraPresenter, didSelectVideoAt url: URL) {
-        self.delegate?.singleImagePickerPresenterDidCancel(self)
+        delegate?.singleImagePickerPresenterDidCancel(self)
     }
 }
+
 // MARK: - MediaPickerCoordinatorBridgePresenterDelegate
+
 extension SingleImagePickerPresenter: MediaPickerCoordinatorBridgePresenterDelegate {
     func mediaPickerCoordinatorBridgePresenter(_ coordinatorBridgePresenter: MediaPickerCoordinatorBridgePresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?) {
-        self.delegate?.singleImagePickerPresenter(self, didSelectImageData: imageData, withUTI: uti)
+        delegate?.singleImagePickerPresenter(self, didSelectImageData: imageData, withUTI: uti)
     }
     
     func mediaPickerCoordinatorBridgePresenter(_ coordinatorBridgePresenter: MediaPickerCoordinatorBridgePresenter, didSelectVideo videoAsset: AVAsset) {
-        self.delegate?.singleImagePickerPresenterDidCancel(self)
+        delegate?.singleImagePickerPresenterDidCancel(self)
     }
     
     func mediaPickerCoordinatorBridgePresenter(_ coordinatorBridgePresenter: MediaPickerCoordinatorBridgePresenter, didSelectAssets assets: [PHAsset]) {
-        self.delegate?.singleImagePickerPresenterDidCancel(self)
+        delegate?.singleImagePickerPresenterDidCancel(self)
     }
     
     func mediaPickerCoordinatorBridgePresenterDidCancel(_ coordinatorBridgePresenter: MediaPickerCoordinatorBridgePresenter) {
-        self.delegate?.singleImagePickerPresenterDidCancel(self)
+        delegate?.singleImagePickerPresenterDidCancel(self)
     }
 }

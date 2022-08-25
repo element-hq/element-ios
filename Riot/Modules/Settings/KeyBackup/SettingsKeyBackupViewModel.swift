@@ -17,35 +17,36 @@
 import UIKit
 
 final class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
-
     // MARK: - Properties
+
     weak var viewDelegate: SettingsKeyBackupViewModelViewDelegate?
 
     // MARK: Private
+
     private let keyBackup: MXKeyBackup
 
     init(keyBackup: MXKeyBackup) {
         self.keyBackup = keyBackup
-        self.registerKeyBackupVersionDidChangeStateNotification()
+        registerKeyBackupVersionDidChangeStateNotification()
     }
 
     private func registerKeyBackupVersionDidChangeStateNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyBackupDidStateChange), name: NSNotification.Name.mxKeyBackupDidStateChange, object: self.keyBackup)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyBackupDidStateChange), name: NSNotification.Name.mxKeyBackupDidStateChange, object: keyBackup)
     }
 
     @objc private func keyBackupDidStateChange() {
-        self.checkKeyBackupState()
+        checkKeyBackupState()
     }
 
     func process(viewAction: SettingsKeyBackupViewAction) {
-        guard let viewDelegate = self.viewDelegate else {
+        guard let viewDelegate = viewDelegate else {
             return
         }
 
         switch viewAction {
         case .load:
             viewDelegate.settingsKeyBackupViewModel(self, didUpdateViewState: .checkingBackup)
-            self.checkKeyBackupState()
+            checkKeyBackupState()
         case .create:
             viewDelegate.settingsKeyBackupViewModelShowKeyBackupSetup(self)
         case .restore(let keyBackupVersion):
@@ -53,20 +54,18 @@ final class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
         case .confirmDelete(let keyBackupVersion):
             viewDelegate.settingsKeyBackup(self, showKeyBackupDeleteConfirm: keyBackupVersion)
         case .delete(let keyBackupVersion):
-            self.deleteKeyBackupVersion(keyBackupVersion)
+            deleteKeyBackupVersion(keyBackupVersion)
         }
     }
 
     // MARK: - Private
 
     private func checkKeyBackupState() {
-
         // Check homeserver update in background
-        self.keyBackup.forceRefresh(nil, failure: nil)
+        keyBackup.forceRefresh(nil, failure: nil)
 
-        if let keyBackupVersion = self.keyBackup.keyBackupVersion {
-
-            self.keyBackup.trust(for: keyBackupVersion, onComplete: { [weak self] (keyBackupVersionTrust) in
+        if let keyBackupVersion = keyBackup.keyBackupVersion {
+            keyBackup.trust(for: keyBackupVersion, onComplete: { [weak self] keyBackupVersionTrust in
 
                 guard let sself = self else {
                     return
@@ -80,10 +79,8 @@ final class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
     }
 
     private func computeState(withBackupVersionTrust keyBackupVersionTrust: MXKeyBackupVersionTrust? = nil) {
-
         var viewState: SettingsKeyBackupViewState?
-        switch self.keyBackup.state {
-
+        switch keyBackup.state {
         case MXKeyBackupStateUnknown,
              MXKeyBackupStateCheckingBackUpOnHomeserver:
             viewState = .checkingBackup
@@ -92,24 +89,24 @@ final class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
             viewState = .noBackup
 
         case MXKeyBackupStateNotTrusted:
-            guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
+            guard let keyBackupVersion = keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
                 return
             }
             viewState = .backupNotTrusted(keyBackupVersion, keyBackupVersionTrust)
 
         case MXKeyBackupStateReadyToBackUp:
-            guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
+            guard let keyBackupVersion = keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
                 return
             }
             viewState = .backup(keyBackupVersion, keyBackupVersionTrust)
 
         case MXKeyBackupStateWillBackUp, MXKeyBackupStateBackingUp:
-            guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
+            guard let keyBackupVersion = keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
                 return
             }
 
             // Get the backup progress before updating the state
-            self.keyBackup.backupProgress { [weak self] (progress) in
+            keyBackup.backupProgress { [weak self] progress in
                 guard let sself = self else {
                     return
                 }
@@ -121,28 +118,28 @@ final class SettingsKeyBackupViewModel: SettingsKeyBackupViewModelType {
         }
 
         if let vviewState = viewState {
-            self.viewDelegate?.settingsKeyBackupViewModel(self, didUpdateViewState: vviewState)
+            viewDelegate?.settingsKeyBackupViewModel(self, didUpdateViewState: vviewState)
         }
     }
 
     private func deleteKeyBackupVersion(_ keyBackupVersion: MXKeyBackupVersion) {
-        guard let keyBackupVersionVersion = keyBackupVersion.version  else {
+        guard let keyBackupVersionVersion = keyBackupVersion.version else {
             return
         }
 
-        self.viewDelegate?.settingsKeyBackupViewModel(self, didUpdateNetworkRequestViewState: .loading)
+        viewDelegate?.settingsKeyBackupViewModel(self, didUpdateNetworkRequestViewState: .loading)
 
-        self.keyBackup.deleteVersion(keyBackupVersionVersion, success: { [weak self] () in
+        keyBackup.deleteVersion(keyBackupVersionVersion, success: { [weak self] () in
             guard let sself = self else {
                 return
             }
             sself.viewDelegate?.settingsKeyBackupViewModel(sself, didUpdateNetworkRequestViewState: .loaded)
 
-            }, failure: { [weak self] error in
-                guard let sself = self else {
-                    return
-                }
-                sself.viewDelegate?.settingsKeyBackupViewModel(sself, didUpdateNetworkRequestViewState: .error(error))
+        }, failure: { [weak self] error in
+            guard let sself = self else {
+                return
+            }
+            sself.viewDelegate?.settingsKeyBackupViewModel(sself, didUpdateNetworkRequestViewState: .error(error))
         })
     }
 }

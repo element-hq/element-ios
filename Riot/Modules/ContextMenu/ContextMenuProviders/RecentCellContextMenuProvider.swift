@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,6 @@ protocol RecentCellContextMenuProviderDelegate: AnyObject {
 /// Helper class `RecentCellContextMenuProvider` that provides an instace of `UIContextMenuConfiguration` from an instance of `MXKRecentCellDataStoring`
 @objcMembers
 class RecentCellContextMenuProvider: NSObject {
-
     weak var serviceDelegate: RoomContextActionServiceDelegate?
     weak var menuProviderDelegate: RecentCellContextMenuProviderDelegate?
     private var currentService: RoomContextActionServiceProtocol?
@@ -33,17 +32,17 @@ class RecentCellContextMenuProvider: NSObject {
     func contextMenuConfiguration(with cellData: MXKRecentCellDataStoring, from cell: UIView, session: MXSession) -> UIContextMenuConfiguration? {
         if cellData.isSuggestedRoom, let childInfo = cellData.roomSummary.spaceChildInfo {
             let service = UnownedRoomContextActionService(roomId: childInfo.childRoomId, canonicalAlias: childInfo.canonicalAlias, session: session, delegate: serviceDelegate)
-            self.currentService = service
+            currentService = service
             let actionProvider = SpaceChildActionProvider(spaceChildInfo: childInfo, service: service)
             return UIContextMenuConfiguration(identifier: "" as NSString) {
                 let viewModel = SpaceChildContextPreviewViewModel(childInfo: childInfo)
                 return RoomContextPreviewViewController.instantiate(with: viewModel, mediaManager: session.mediaManager)
-            } actionProvider: { suggestedActions in
-                return actionProvider.menu
+            } actionProvider: { _ in
+                actionProvider.menu
             }
         } else if let room = session.room(withRoomId: cellData.roomIdentifier) {
             let service = RoomContextActionService(room: room, delegate: serviceDelegate)
-            self.currentService = service
+            currentService = service
             let actionProvider = RoomActionProvider(service: service)
             return UIContextMenuConfiguration(identifier: cellData.roomIdentifier as NSString) { [weak self] in
                 if let self = self {
@@ -74,8 +73,8 @@ class RecentCellContextMenuProvider: NSObject {
                     let viewModel = RoomContextPreviewViewModel(room: room)
                     return RoomContextPreviewViewController.instantiate(with: viewModel, mediaManager: session.mediaManager)
                 }
-            } actionProvider: { suggestedActions in
-                return actionProvider.menu
+            } actionProvider: { _ in
+                actionProvider.menu
             }
         }
         

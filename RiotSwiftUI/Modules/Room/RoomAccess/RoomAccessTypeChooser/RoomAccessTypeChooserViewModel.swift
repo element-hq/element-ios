@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +14,13 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
     
 typealias RoomAccessTypeChooserViewModelType = StateStoreViewModel<RoomAccessTypeChooserViewState,
-                                                              RoomAccessTypeChooserStateAction,
-                                                              RoomAccessTypeChooserViewAction>
+    RoomAccessTypeChooserStateAction,
+    RoomAccessTypeChooserViewAction>
 class RoomAccessTypeChooserViewModel: RoomAccessTypeChooserViewModelType, RoomAccessTypeChooserViewModelProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -43,7 +42,8 @@ class RoomAccessTypeChooserViewModel: RoomAccessTypeChooserViewModelType, RoomAc
     private static func defaultState(roomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol) -> RoomAccessTypeChooserViewState {
         let bindings = RoomAccessTypeChooserViewModelBindings(
             showUpgradeRoomAlert: roomAccessTypeChooserService.roomUpgradeRequiredSubject.value,
-            waitingMessage: roomAccessTypeChooserService.waitingMessageSubject.value, isLoading: roomAccessTypeChooserService.waitingMessageSubject.value != nil)
+            waitingMessage: roomAccessTypeChooserService.waitingMessageSubject.value, isLoading: roomAccessTypeChooserService.waitingMessageSubject.value != nil
+        )
         return RoomAccessTypeChooserViewState(accessItems: roomAccessTypeChooserService.accessItemsSubject.value, bindings: bindings)
     }
     
@@ -130,7 +130,7 @@ class RoomAccessTypeChooserViewModel: RoomAccessTypeChooserViewModelType, RoomAc
     
     private func didSelect(accessType: RoomAccessTypeChooserAccessType) {
         roomAccessTypeChooserService.updateSelection(with: accessType)
-        if accessType == .restricted && !roomAccessTypeChooserService.roomUpgradeRequiredSubject.value {
+        if accessType == .restricted, !roomAccessTypeChooserService.roomUpgradeRequiredSubject.value {
             callback?(.spaceSelection(roomAccessTypeChooserService.currentRoomId, .restricted))
         }
     }

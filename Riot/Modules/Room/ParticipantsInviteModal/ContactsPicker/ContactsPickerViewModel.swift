@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
-    
     private class RoomMembers {
         var actualParticipants: [Contact] = []
         var invitedParticipants: [Contact] = []
@@ -27,7 +26,7 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
     // MARK: - Properties
     
     weak var coordinatorDelegate: ContactsPickerViewModelCoordinatorDelegate?
-    private(set) var areParticipantsLoaded: Bool = false
+    private(set) var areParticipantsLoaded = false
 
     // MARK: - Private
     
@@ -90,7 +89,7 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
     }
     
     func prepare(contactsViewController: RoomInviteViewController, currentSearchText: String?) -> Bool {
-        contactsViewController.room = self.room
+        contactsViewController.room = room
 
         // Set delegate to handle action on member (start chat, mention)
         contactsViewController.contactsTableViewControllerDelegate = self
@@ -120,7 +119,7 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
             }
         }
         
-        if let userParticipantId = self.userParticipant?.mxMember.userId {
+        if let userParticipantId = userParticipant?.mxMember.userId {
             contactsDataSource.ignoredContactsByMatrixId[userParticipantId] = userParticipant
         }
         
@@ -185,16 +184,16 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
     }
     
     private func finalize(participants roomMembers: RoomMembers) {
-        self.actualParticipants = roomMembers.actualParticipants
-        self.invitedParticipants = roomMembers.invitedParticipants
-        self.userParticipant = roomMembers.userParticipant
-        self.coordinatorDelegate?.contactsPickerViewModelDidEndLoading(self)
+        actualParticipants = roomMembers.actualParticipants
+        invitedParticipants = roomMembers.invitedParticipants
+        userParticipant = roomMembers.userParticipant
+        coordinatorDelegate?.contactsPickerViewModelDidEndLoading(self)
     }
 }
 
 // MARK: - ContactsTableViewControllerDelegate
+
 extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
-    
     func contactsTableViewController(_ contactsTableViewController: ContactsTableViewController!, didSelect contact: MXKContact?) {
         guard let contact = contact else {
             MXLog.error("[ContactsPickerViewModel] contactsTableViewController: nil contact found")
@@ -206,7 +205,7 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
         
         coordinatorDelegate?.contactsPickerViewModel(self, display: message, title: VectorL10n.roomParticipantsInvitePromptTitle, actions: [
             UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil),
-            UIAlertAction(title: VectorL10n.invite, style: .default, handler: { [weak self] action in
+            UIAlertAction(title: VectorL10n.invite, style: .default, handler: { [weak self] _ in
                 self?.invite(contact: contact)
             })
         ])
@@ -214,9 +213,8 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
     
     private func invite(contact: MXKContact) {
         if let identifiers = contact.matrixIdentifiers as? [String], let participantId = identifiers.first {
-
             // Invite this user if a room is defined
-            self.coordinatorDelegate?.contactsPickerViewModelDidStartInvite(self)
+            coordinatorDelegate?.contactsPickerViewModelDidStartInvite(self)
             room.invite(.userId(participantId)) { [weak self] response in
                 guard let self = self else { return }
                 
@@ -245,7 +243,7 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
                 return
             }
 
-            self.coordinatorDelegate?.contactsPickerViewModelDidStartInvite(self)
+            coordinatorDelegate?.contactsPickerViewModelDidStartInvite(self)
             // Is it an email or a Matrix user ID?
             if MXTools.isEmailAddress(participantId) {
                 room.invite(.email(participantId)) { [weak self] response in
@@ -280,5 +278,4 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
             }
         }
     }
-    
 }

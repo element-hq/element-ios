@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,11 +24,10 @@ enum BiometricsAuthenticationPresenterError: Error {
 /// Presenter for user authentication with biometry.
 @objcMembers
 final class BiometricsAuthenticationPresenter: NSObject {
-
     /// Whether the presenter currently showing the biometrics setup or unlock dialog.
     /// Showing biometrics dialog will cause the app to resign active.
     /// This property can be used in order to distinguish real resignations and biometrics case.
-    static private(set) var isPresenting: Bool = false
+    private(set) static var isPresenting = false
     
     /// Presents the user authentication with biometry.
     /// - Parameters:
@@ -41,12 +40,12 @@ final class BiometricsAuthenticationPresenter: NSObject {
         }
         BiometricsAuthenticationPresenter.isPresenting = true
 
-        LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: message) { (success, error) in
+        LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: message) { success, error in
             if success {
                 // Complete after a little delay
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     BiometricsAuthenticationPresenter.isPresenting = false
-                    completion(.success(Void()))
+                    completion(.success(()))
                 }
             } else {
                 let finalError: Error

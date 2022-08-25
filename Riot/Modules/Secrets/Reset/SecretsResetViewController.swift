@@ -19,23 +19,22 @@
 import UIKit
 
 final class SecretsResetViewController: UIViewController {
-    
     // MARK: - Constants
     
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBOutlet private weak var warningImage: UIImageView!
+    @IBOutlet private var warningImage: UIImageView!
             
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var warningTitle: UILabel!
-    @IBOutlet private weak var warningMessage: UILabel!
+    @IBOutlet private var warningTitle: UILabel!
+    @IBOutlet private var warningMessage: UILabel!
     
-    @IBOutlet private weak var resetButton: RoundedButton!
+    @IBOutlet private var resetButton: RoundedButton!
     
     // MARK: Private
 
@@ -60,22 +59,22 @@ final class SecretsResetViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.vc_removeBackTitle()
+        vc_removeBackTitle()
         
-        self.setupViews()        
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -83,20 +82,20 @@ final class SecretsResetViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.warningImage.tintColor = theme.warningColor
+        warningImage.tintColor = theme.warningColor
         
-        self.informationLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.warningTitle.textColor = theme.warningColor
-        self.warningMessage.textColor = theme.textPrimaryColor
+        warningTitle.textColor = theme.warningColor
+        warningMessage.textColor = theme.textPrimaryColor
 
-        self.resetButton.update(theme: theme)
+        resetButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -104,7 +103,7 @@ final class SecretsResetViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -112,60 +111,59 @@ final class SecretsResetViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.title = VectorL10n.secretsResetTitle
+        title = VectorL10n.secretsResetTitle
         
-        self.scrollView.keyboardDismissMode = .interactive
+        scrollView.keyboardDismissMode = .interactive
         
-        self.informationLabel.text = VectorL10n.secretsResetInformation
+        informationLabel.text = VectorL10n.secretsResetInformation
         
-        self.warningTitle.text = VectorL10n.secretsResetWarningTitle
-        self.warningMessage.text = VectorL10n.secretsResetWarningMessage
+        warningTitle.text = VectorL10n.secretsResetWarningTitle
+        warningMessage.text = VectorL10n.secretsResetWarningMessage
         
-        self.resetButton.setTitle(VectorL10n.secretsResetResetAction, for: .normal)
+        resetButton.setTitle(VectorL10n.secretsResetResetAction, for: .normal)
     }
 
     private func render(viewState: SecretsResetViewState) {
         switch viewState {
         case .resetting:
-            self.renderLoading()
+            renderLoading()
         case .resetDone:
-            self.renderLoaded()
+            renderLoaded()
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     // MARK: - Actions
 
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
     
     @IBAction private func resetAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .reset)
-    }    
+        viewModel.process(viewAction: .reset)
+    }
 }
 
-
 // MARK: - SecretsResetViewModelViewDelegate
-extension SecretsResetViewController: SecretsResetViewModelViewDelegate {
 
+extension SecretsResetViewController: SecretsResetViewModelViewDelegate {
     func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, didUpdateViewState viewSate: SecretsResetViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

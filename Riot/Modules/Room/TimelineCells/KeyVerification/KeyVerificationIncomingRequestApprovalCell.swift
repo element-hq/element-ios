@@ -18,7 +18,6 @@ import UIKit
 
 @objcMembers
 class KeyVerificationIncomingRequestApprovalCell: KeyVerificationBaseCell {
-
     // MARK: - Constants
     
     private enum Sizing {
@@ -29,15 +28,16 @@ class KeyVerificationIncomingRequestApprovalCell: KeyVerificationBaseCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.commonInit()
+        commonInit()
     }
     
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private func commonInit() {
-        guard let keyVerificationCellInnerContentView = self.keyVerificationCellInnerContentView else {
+        guard let keyVerificationCellInnerContentView = keyVerificationCellInnerContentView else {
             fatalError("[KeyVerificationIncomingRequestApprovalBubbleCell] keyVerificationCellInnerContentView should not be nil")
         }
         
@@ -51,18 +51,18 @@ class KeyVerificationIncomingRequestApprovalCell: KeyVerificationBaseCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.keyVerificationCellInnerContentView?.acceptActionHandler = nil
-        self.keyVerificationCellInnerContentView?.declineActionHandler = nil
+        keyVerificationCellInnerContentView?.acceptActionHandler = nil
+        keyVerificationCellInnerContentView?.declineActionHandler = nil
     }
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        guard let keyVerificationCellInnerContentView = self.keyVerificationCellInnerContentView,
-            let bubbleData = self.bubbleData,
-            let viewData = self.viewData(from: bubbleData) else {
+        guard let keyVerificationCellInnerContentView = keyVerificationCellInnerContentView,
+              let bubbleData = bubbleData,
+              let viewData = viewData(from: bubbleData) else {
             MXLog.debug("[KeyVerificationIncomingRequestApprovalBubbleCell] Fail to render \(String(describing: cellData))")
-                return
+            return
         }
         
         keyVerificationCellInnerContentView.title = viewData.title
@@ -86,15 +86,14 @@ class KeyVerificationIncomingRequestApprovalCell: KeyVerificationBaseCell {
     }
     
     override class func sizingView() -> KeyVerificationBaseCell {
-        return self.Sizing.view
+        Sizing.view
     }
     
     // MARK: - Private
     
     private func viewData(from bubbleData: MXKRoomBubbleCellData) -> KeyVerificationIncomingRequestApprovalViewData? {
-        
-        let senderId = self.senderId(from: bubbleData)
-        let senderDisplayName = self.senderDisplayName(from: bubbleData)
+        let senderId = senderId(from: bubbleData)
+        let senderDisplayName = senderDisplayName(from: bubbleData)
         let title = VectorL10n.keyVerificationTileRequestIncomingTitle
         
         return KeyVerificationIncomingRequestApprovalViewData(title: title,

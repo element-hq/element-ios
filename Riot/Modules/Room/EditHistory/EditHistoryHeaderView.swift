@@ -14,23 +14,22 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class EditHistoryHeaderView: UITableViewHeaderFooterView, NibLoadable, Reusable, Themable {
-    
     // MARK: - Properties
     
-    @IBOutlet private weak var dateLabel: UILabel!
+    @IBOutlet private var dateLabel: UILabel!
     
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.contentView.backgroundColor = theme.backgroundColor
-        self.dateLabel.textColor = theme.headerTextPrimaryColor
+        contentView.backgroundColor = theme.backgroundColor
+        dateLabel.textColor = theme.headerTextPrimaryColor
     }
     
     func fill(with dateString: String) {
-        self.dateLabel.text = dateString
+        dateLabel.text = dateString
     }
 }

@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class RoomInfoListCoordinator: RoomInfoListCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -51,28 +50,27 @@ final class RoomInfoListCoordinator: RoomInfoListCoordinatorType {
     
     // MARK: - Public methods
     
-    func start() {            
-        self.roomInfoListViewModel.coordinatorDelegate = self
+    func start() {
+        roomInfoListViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.roomInfoListViewController
+        roomInfoListViewController
     }
 }
 
 // MARK: - RoomInfoListViewModelCoordinatorDelegate
+
 extension RoomInfoListCoordinator: RoomInfoListViewModelCoordinatorDelegate {
-    
     func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, wantsToNavigateTo target: RoomInfoListTarget) {
-        self.delegate?.roomInfoListCoordinator(self, wantsToNavigateTo: target)
+        delegate?.roomInfoListCoordinator(self, wantsToNavigateTo: target)
     }
     
     func roomInfoListViewModelDidCancel(_ viewModel: RoomInfoListViewModelType) {
-        self.delegate?.roomInfoListCoordinatorDidCancel(self)
+        delegate?.roomInfoListCoordinatorDidCancel(self)
     }
     
     func roomInfoListViewModelDidLeaveRoom(_ viewModel: RoomInfoListViewModelType) {
-        self.delegate?.roomInfoListCoordinatorDidLeaveRoom(self)
+        delegate?.roomInfoListCoordinatorDidLeaveRoom(self)
     }
-
 }

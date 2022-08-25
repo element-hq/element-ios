@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-import Foundation
 import AVFoundation
 import DSWaveformImage
+import Foundation
 
 @objc public protocol VoiceMessageControllerDelegate: AnyObject {
     func voiceMessageControllerDidRequestMicrophonePermission(_ voiceMessageController: VoiceMessageController)
@@ -24,7 +24,6 @@ import DSWaveformImage
 }
 
 public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, VoiceMessageAudioRecorderDelegate, VoiceMessageAudioPlayerDelegate {
-    
     private enum Constants {
         static let maximumAudioRecordingDuration: TimeInterval = 120.0
         static let maximumAudioRecordingLengthReachedThreshold: TimeInterval = 10.0
@@ -44,7 +43,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     private var waveformAnalyser: WaveformAnalyzer?
     
     private var audioSamples: [Float] = []
-    private var isInLockedMode: Bool = false
+    private var isInLockedMode = false
     private var notifiedRemainingTime = false
     private var recordDuration: TimeInterval?
     
@@ -66,11 +65,11 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     @objc public weak var delegate: VoiceMessageControllerDelegate?
     
     @objc public var isRecordingAudio: Bool {
-        return audioRecorder?.isRecording ?? false || isInLockedMode
+        audioRecorder?.isRecording ?? false || isInLockedMode
     }
     
     @objc public var voiceMessageToolbarView: UIView {
-        return _voiceMessageToolbarView
+        _voiceMessageToolbarView
     }
     
     @objc public var roomId: String? {
@@ -104,7 +103,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     func voiceMessageToolbarViewDidRequestRecordingStart(_ toolbarView: VoiceMessageToolbarView) {
         guard let temporaryFileURL = temporaryFileURL else {
-             return
+            return
         }
         guard AVAudioSession.sharedInstance().recordPermission == .granted else {
             delegate?.voiceMessageControllerDidRequestMicrophonePermission(self)
@@ -174,7 +173,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     func voiceMessageToolbarViewDidRequestSend(_ toolbarView: VoiceMessageToolbarView) {
         guard let temporaryFileURL = temporaryFileURL else {
-             return
+            return
         }
         audioPlayer?.stop()
         audioRecorder?.stopRecording()
@@ -233,7 +232,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     private func checkForRecording() {
         guard let temporaryFileURL = temporaryFileURL else {
-             return
+            return
         }
         if FileManager.default.fileExists(atPath: temporaryFileURL.path) {
             isInLockedMode = true
@@ -245,7 +244,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     private func finishRecording() {
         guard let temporaryFileURL = temporaryFileURL else {
-             return
+            return
         }
         let recordDuration = audioRecorder?.currentTime
         self.recordDuration = recordDuration
@@ -281,7 +280,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     private func loadDraftRecording() {
         guard let temporaryFileURL = temporaryFileURL,
               let roomId = roomId else {
-             return
+            return
         }
         audioPlayer = mediaServiceProvider.audioPlayerForIdentifier(roomId)
         audioPlayer?.registerDelegate(self)
@@ -291,7 +290,6 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     private func sendRecordingAtURL(_ sourceURL: URL) {
-        
         let dispatchGroup = DispatchGroup()
         
         var duration = 0.0
@@ -320,7 +318,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             // Dispatch back from the WaveformAnalyzer's internal queue
             DispatchQueue.main.async {
                 if let samples = samples {
-                    invertedSamples = samples.compactMap { return 1.0 - $0 } // linearly normalized to [0, 1] (1 -> -50 dB)
+                    invertedSamples = samples.compactMap { 1.0 - $0 } // linearly normalized to [0, 1] (1 -> -50 dB)
                 } else {
                     MXLog.error("[VoiceMessageController] Failed sampling recorder voice message.")
                 }
@@ -350,7 +348,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             self.delegate?.voiceMessageController(self, didRequestSendForFileAtURL: url,
                                                   duration: UInt(duration * 1000),
                                                   samples: invertedSamples) { [weak self] success in
-                UINotificationFeedbackGenerator().notificationOccurred((success ? .success : .error))
+                UINotificationFeedbackGenerator().notificationOccurred(success ? .success : .error)
                 self?.deleteRecordingAtURL(sourceURL)
                 
                 // Do not delete the file to be sent if request failed, the retry flow will need it
@@ -388,7 +386,6 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     private func updateUI() {
-        
         let shouldUpdateFromAudioPlayer = isInLockedMode && !(audioRecorder?.isRecording ?? false)
 
         if shouldUpdateFromAudioPlayer {
@@ -427,8 +424,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         if isRecording {
             if currentTime >= Constants.maximumAudioRecordingDuration - Constants.maximumAudioRecordingLengthReachedThreshold {
-                
-                if !self.notifiedRemainingTime {
+                if !notifiedRemainingTime {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }
                 
@@ -453,12 +449,12 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         displayLink.isPaused = !audioPlayer.isPlaying
         
         let requiredNumberOfSamples = _voiceMessageToolbarView.getRequiredNumberOfSamples()
-        if audioSamples.count != requiredNumberOfSamples  && requiredNumberOfSamples > 0 {
+        if audioSamples.count != requiredNumberOfSamples, requiredNumberOfSamples > 0 {
             padSamplesArrayToSize(requiredNumberOfSamples)
             
             waveformAnalyser = WaveformAnalyzer(audioAssetURL: temporaryFileURL)
             waveformAnalyser?.samples(count: requiredNumberOfSamples, completionHandler: { [weak self] samples in
-                guard let samples =  samples else {
+                guard let samples = samples else {
                     MXLog.error("Could not sample audio recording.")
                     return
                 }
@@ -479,13 +475,12 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             recordDuration = duration
         }
         
-        
         var details = VoiceMessageToolbarViewDetails()
         details.state = (audioRecorder?.isRecording ?? false ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
         // Show the current time if the player is paused, show duration when at 0.
         let currentTime = audioPlayer.currentTime
         let displayTime = currentTime > 0 ? currentTime : duration
-        details.elapsedTime =  VoiceMessageController.elapsedTimeFormatter.string(from: Date(timeIntervalSinceReferenceDate: displayTime))
+        details.elapsedTime = VoiceMessageController.elapsedTimeFormatter.string(from: Date(timeIntervalSinceReferenceDate: displayTime))
         details.progress = duration > 0 ? currentTime / duration : 0
         details.audioSamples = audioSamples
         details.isPlaying = audioPlayer.isPlaying

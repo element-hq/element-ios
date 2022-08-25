@@ -17,13 +17,12 @@
 import Foundation
 
 final class KeyVerificationService {
-    
     private let cameraAccessManager: CameraAccessManager
         
     private var supportSetupKeyVerificationByUser: [String: Bool] = [:] // Cached server response
     
     init() {
-        self.cameraAccessManager = CameraAccessManager()
+        cameraAccessManager = CameraAccessManager()
     }
     
     func supportedKeyVerificationMethods() -> [String] {
@@ -33,7 +32,7 @@ final class KeyVerificationService {
             MXKeyVerificationMethodReciprocate
         ]
         
-        if self.cameraAccessManager.isCameraAvailable {
+        if cameraAccessManager.isCameraAvailable {
             supportedMethods.append(MXKeyVerificationMethodQRCodeScan)
         }
         

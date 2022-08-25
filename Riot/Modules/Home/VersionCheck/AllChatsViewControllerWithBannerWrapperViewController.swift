@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,9 @@
 import Foundation
 
 class AllChatsViewControllerWithBannerWrapperViewController: HomeViewControllerWithBannerWrapperViewController {
-    
     // MARK: - MasterTabBarItemDisplayProtocol
     
     override var masterTabBarItemTitle: String {
-        return VectorL10n.allChatsTitle
+        VectorL10n.allChatsTitle
     }
 }

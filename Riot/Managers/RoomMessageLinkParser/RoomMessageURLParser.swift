@@ -26,7 +26,6 @@ import Foundation
 /// URL parser for room messages.
 @objcMembers
 final class RoomMessageURLParser: NSObject {
-    
     // MARK: - Constants
     
     private enum Scheme {
@@ -42,7 +41,6 @@ final class RoomMessageURLParser: NSObject {
     // MARK: - Public
     
     func parseURL(_ url: URL) -> RoomMessageURLType {
-        
         let roomMessageLink: RoomMessageURLType
         
         if let scheme = url.scheme?.lowercased() {

@@ -19,12 +19,11 @@ import WeakDictionary
 
 /// `NavigationRouter` is a concrete implementation of NavigationRouterType.
 final class NavigationRouter: NSObject, NavigationRouterType {
-    
     // MARK: - Properties
     
     // MARK: Private
     
-    private var completions: [UIViewController : () -> Void]
+    private var completions: [UIViewController: () -> Void]
     private let navigationController: UINavigationController
     
     /// Stores the association between the added Presentable and his view controller.
@@ -35,36 +34,36 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     
     /// Returns the presentables associated to each view controller
     var modules: [Presentable] {
-        return self.viewControllers.map { (viewController) -> Presentable in
-            return self.module(for: viewController)
+        viewControllers.map { viewController -> Presentable in
+            self.module(for: viewController)
         }
     }
     
     /// Return the view controllers stack
     var viewControllers: [UIViewController] {
-        return navigationController.viewControllers
+        navigationController.viewControllers
     }
     
     // MARK: - Setup
     
     init(navigationController: UINavigationController = RiotNavigationController()) {
         self.navigationController = navigationController
-        self.completions = [:]
+        completions = [:]
         super.init()
         self.navigationController.delegate = self
         self.navigationController.overrideUserInterfaceStyle = ThemeService.shared().theme.userInterfaceStyle
 
         // Post local notification on NavigationRouter creation
         let userInfo: [String: Any] = [NavigationRouter.NotificationUserInfoKey.navigationRouter: self,
-                        NavigationRouter.NotificationUserInfoKey.navigationController: navigationController]
+                                       NavigationRouter.NotificationUserInfoKey.navigationController: navigationController]
         NotificationCenter.default.post(name: NavigationRouter.didCreate, object: self, userInfo: userInfo)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.themeDidChange), name: Notification.Name.themeServiceDidChangeTheme, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: Notification.Name.themeServiceDidChangeTheme, object: nil)
     }
     
     deinit {
         // Post local notification on NavigationRouter deinit
         let userInfo: [String: Any] = [NavigationRouter.NotificationUserInfoKey.navigationRouter: self,
-                        NavigationRouter.NotificationUserInfoKey.navigationController: navigationController]
+                                       NavigationRouter.NotificationUserInfoKey.navigationController: navigationController]
         NotificationCenter.default.post(name: NavigationRouter.willDestroy, object: self, userInfo: userInfo)
     }
     
@@ -91,9 +90,9 @@ final class NavigationRouter: NSObject, NavigationRouterType {
             return
         }
         
-        self.addModule(module, for: controller)
+        addModule(module, for: controller)
         
-        let controllersToPop = self.navigationController.viewControllers.reversed()
+        let controllersToPop = navigationController.viewControllers.reversed()
         
         controllersToPop.forEach {
             self.willPopViewController($0)
@@ -103,7 +102,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
             completions[controller] = popCompletion
         }
         
-        self.willPushViewController(controller)
+        willPushViewController(controller)
         
         navigationController.setViewControllers([controller], animated: animated)
         navigationController.isNavigationBarHidden = hideNavigationBar
@@ -114,22 +113,21 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         }
         
         // Add again controller to module association, in case same module instance is added back
-        self.addModule(module, for: controller)
+        addModule(module, for: controller)
         
-        self.didPushViewController(controller)
+        didPushViewController(controller)
     }
         
     func setModules(_ modules: [NavigationModule], hideNavigationBar: Bool, animated: Bool) {
-        
         MXLog.debug("[NavigationRouter] Set modules \(modules)")
         
-        let controllers = modules.map { (module) -> UIViewController in
+        let controllers = modules.map { module -> UIViewController in
             let controller = module.presentable.toPresentable()
             self.addModule(module.presentable, for: controller)
             return controller
         }
                 
-        let controllersToPop = self.navigationController.viewControllers.reversed()
+        let controllersToPop = navigationController.viewControllers.reversed()
         
         controllersToPop.forEach {
             self.willPopViewController($0)
@@ -149,7 +147,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         }
         
         // Add again controller to module association, in case same modules instance are added back
-        modules.forEach { (module) in
+        modules.forEach { module in
             self.addModule(module.presentable, for: module.presentable.toPresentable())
         }
         
@@ -161,7 +159,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     func popToRootModule(animated: Bool) {
         MXLog.debug("[NavigationRouter] Pop to root module")
         
-        let controllers = self.navigationController.viewControllers
+        let controllers = navigationController.viewControllers
         
         if controllers.count > 1 {
             let controllersToPop = controllers[1..<controllers.count]
@@ -182,7 +180,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         MXLog.debug("[NavigationRouter] Pop to module \(module)")
         
         let controller = module.toPresentable()
-        let controllersBeforePop = self.navigationController.viewControllers
+        let controllersBeforePop = navigationController.viewControllers
         
         if let controllerIndex = controllersBeforePop.firstIndex(of: controller) {
             let controllersToPop = controllersBeforePop[controllerIndex..<controllersBeforePop.count]
@@ -210,17 +208,17 @@ final class NavigationRouter: NSObject, NavigationRouterType {
             return
         }
         
-        self.addModule(module, for: controller)
+        addModule(module, for: controller)
         
         if let completion = popCompletion {
             completions[controller] = completion
         }
         
-        self.willPushViewController(controller)
+        willPushViewController(controller)
         
         navigationController.pushViewController(controller, animated: animated)
         
-        self.didPushViewController(controller)
+        didPushViewController(controller)
     }
     
     func push(_ modules: [NavigationModule], animated: Bool) {
@@ -234,22 +232,22 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         
         for module in modules {
             let controller = module.presentable.toPresentable()
-            self.addModule(module.presentable, for: controller)
+            addModule(module.presentable, for: controller)
             
             if let completion = module.popCompletion {
                 completions[controller] = completion
             }
             
-            self.willPushViewController(controller)
+            willPushViewController(controller)
         }
         
         var viewControllers = navigationController.viewControllers
-        viewControllers.append(contentsOf: modules.map({ $0.presentable.toPresentable() }))
+        viewControllers.append(contentsOf: modules.map { $0.presentable.toPresentable() })
         navigationController.setViewControllers(viewControllers, animated: animated)
         
         for module in modules {
             let controller = module.presentable.toPresentable()
-            self.didPushViewController(controller)
+            didPushViewController(controller)
         }
     }
     
@@ -257,22 +255,22 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         MXLog.debug("[NavigationRouter] Pop module")
         
         if let lastController = navigationController.viewControllers.last {
-            self.willPopViewController(lastController)
+            willPopViewController(lastController)
         }
         
         if let controller = navigationController.popViewController(animated: animated) {
-            self.didPopViewController(controller)
+            didPopViewController(controller)
         }
     }
     
     func popAllModules(animated: Bool) {
         MXLog.debug("[NavigationRouter] Pop all modules")
         
-        let controllersToPop = self.navigationController.viewControllers.reversed()
+        let controllersToPop = navigationController.viewControllers.reversed()
         
         controllersToPop.forEach {
             self.willPopViewController($0)
-        }        
+        }
         
         navigationController.setViewControllers([], animated: animated)
         
@@ -282,39 +280,37 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     }
     
     func contains(_ module: Presentable) -> Bool {
-        
         let controller = module.toPresentable()
-        return self.navigationController.viewControllers.contains(controller)
+        return navigationController.viewControllers.contains(controller)
     }
         
     // MARK: Presentable
     
     func toPresentable() -> UIViewController {
-        return navigationController
+        navigationController
     }
     
     // MARK: - Theme management
     
     @objc private func themeDidChange() {
-        self.navigationController.overrideUserInterfaceStyle = ThemeService.shared().theme.userInterfaceStyle
+        navigationController.overrideUserInterfaceStyle = ThemeService.shared().theme.userInterfaceStyle
     }
     
     // MARK: - Private
     
     private func module(for viewController: UIViewController) -> Presentable {
-        
-        guard let module = self.storedModules[viewController] as? Presentable else {
+        guard let module = storedModules[viewController] as? Presentable else {
             return viewController
         }
         return module
     }
     
     private func addModule(_ module: Presentable, for viewController: UIViewController) {
-        self.storedModules[viewController] = module as AnyObject
+        storedModules[viewController] = module as AnyObject
     }
     
     private func removeModule(for viewController: UIViewController) {
-        self.storedModules[viewController] = nil
+        storedModules[viewController] = nil
     }
     
     private func runCompletion(for controller: UIViewController) {
@@ -326,30 +322,29 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     }
     
     private func willPushViewController(_ viewController: UIViewController) {
-        self.postNotification(withName: NavigationRouter.willPushModule, for: viewController)
+        postNotification(withName: NavigationRouter.willPushModule, for: viewController)
     }
     
     private func didPushViewController(_ viewController: UIViewController) {
-        self.postNotification(withName: NavigationRouter.didPushModule, for: viewController)
+        postNotification(withName: NavigationRouter.didPushModule, for: viewController)
     }
     
     private func willPopViewController(_ viewController: UIViewController) {
-        self.postNotification(withName: NavigationRouter.willPopModule, for: viewController)
+        postNotification(withName: NavigationRouter.willPopModule, for: viewController)
     }
     
-    private func didPopViewController(_ viewController: UIViewController) {                
-        self.postNotification(withName: NavigationRouter.didPopModule, for: viewController)
+    private func didPopViewController(_ viewController: UIViewController) {
+        postNotification(withName: NavigationRouter.didPopModule, for: viewController)
         
         // Call completion closure associated to the view controller
         // So associated coordinator can be deallocated
         runCompletion(for: viewController)
         
-        self.removeModule(for: viewController)
+        removeModule(for: viewController)
     }
     
     private func postNotification(withName name: Notification.Name, for viewController: UIViewController) {
-        
-        let module = self.module(for: viewController)
+        let module = module(for: viewController)
         
         let userInfo: [String: Any] = [
             NotificationUserInfoKey.navigationRouter: self,
@@ -361,30 +356,28 @@ final class NavigationRouter: NSObject, NavigationRouterType {
 }
 
 // MARK: - UINavigationControllerDelegate
+
 extension NavigationRouter: UINavigationControllerDelegate {
-    
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        
         // TODO: Try to post `NavigationRouter.willPopModule` notification here
     }
     
     func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-        
         // Ensure the view controller is popping
         guard let poppedViewController = navigationController.transitionCoordinator?.viewController(forKey: .from),
-            !navigationController.viewControllers.contains(poppedViewController) else {
-                return
+              !navigationController.viewControllers.contains(poppedViewController) else {
+            return
         }
         
         MXLog.debug("[NavigationRouter] Popped module: \(poppedViewController)")
         
-        self.didPopViewController(poppedViewController)
+        didPopViewController(poppedViewController)
     }
 }
 
 // MARK: - NavigationRouter notification constants
+
 extension NavigationRouter {
-    
     // MARK: Notification names
     
     public static let willPushModule = Notification.Name("NavigationRouterWillPushModule")
@@ -397,8 +390,7 @@ extension NavigationRouter {
     
     // MARK: Notification keys
     
-    public struct NotificationUserInfoKey {
-        
+    public enum NotificationUserInfoKey {
         /// The associated view controller (UIViewController).
         static let viewController = "viewController"
         

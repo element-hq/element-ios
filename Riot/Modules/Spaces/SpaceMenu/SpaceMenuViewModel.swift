@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// View model used by `SpaceMenuViewController`
 class SpaceMenuViewModel: SpaceMenuViewModelType {
-    
     // MARK: - Properties
     
     weak var coordinatorDelegate: SpaceMenuModelViewModelCoordinatorDelegate?
@@ -46,9 +45,9 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
         self.spaceId = spaceId
         
         if spaceId != SpaceListViewModel.Constants.homeSpaceId {
-            self.menuItems = spaceMenuItems
+            menuItems = spaceMenuItems
         } else {
-            self.menuItems = [
+            menuItems = [
                 SpaceMenuListItemViewData(action: .showAllRoomsInHomeSpace, style: .toggle, title: VectorL10n.spaceHomeShowAllRooms, icon: nil, value: RiotSettings.shared.showAllRoomsInHomeSpace)
             ]
         }
@@ -59,13 +58,13 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
     func process(viewAction: SpaceMenuViewAction) {
         switch viewAction {
         case .dismiss:
-            self.coordinatorDelegate?.spaceMenuViewModelDidDismiss(self)
+            coordinatorDelegate?.spaceMenuViewModelDidDismiss(self)
         case .selectRow(at: let indexPath):
-            self.processAction(with: menuItems[indexPath.row].action, at: indexPath)
+            processAction(with: menuItems[indexPath.row].action, at: indexPath)
         case .leaveSpaceAndKeepRooms:
-            self.leaveSpaceAndKeepRooms()
+            leaveSpaceAndKeepRooms()
         case .leaveSpaceAndLeaveRooms:
-            self.leaveSpaceAndLeaveAllRooms()
+            leaveSpaceAndLeaveAllRooms()
         }
     }
     
@@ -75,41 +74,41 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
         switch action {
         case .showAllRoomsInHomeSpace:
             RiotSettings.shared.showAllRoomsInHomeSpace.toggle()
-            self.menuItems[indexPath.row].value = RiotSettings.shared.showAllRoomsInHomeSpace
-            self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .deselect)
+            menuItems[indexPath.row].value = RiotSettings.shared.showAllRoomsInHomeSpace
+            viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .deselect)
         case .leaveSpace:
-            self.leaveSpace()
+            leaveSpace()
         default:
-            self.coordinatorDelegate?.spaceMenuViewModel(self, didSelectItemWith: action)
+            coordinatorDelegate?.spaceMenuViewModel(self, didSelectItemWith: action)
         }
     }
 
     private func leaveSpace() {
-        self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .deselect)
-        self.coordinatorDelegate?.spaceMenuViewModel(self, didSelectItemWith: .leaveSpaceAndChooseRooms)
+        viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .deselect)
+        coordinatorDelegate?.spaceMenuViewModel(self, didSelectItemWith: .leaveSpaceAndChooseRooms)
     }
     
     private func leaveSpaceAndKeepRooms() {
-        guard let space = self.session.spaceService.getSpace(withId: self.spaceId) else {
+        guard let space = session.spaceService.getSpace(withId: spaceId) else {
             return
         }
 
-        self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .loading)
-        self.leaveSpace(space)
+        viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .loading)
+        leaveSpace(space)
     }
     
     private func leaveSpaceAndLeaveAllRooms() {
-        guard let space = self.session.spaceService.getSpace(withId: self.spaceId) else {
+        guard let space = session.spaceService.getSpace(withId: spaceId) else {
             return
         }
 
-        self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .loading)
+        viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .loading)
         
-        let allRoomsAndSpaces = space.childRoomIds + space.childSpaces.map({ space in
+        let allRoomsAndSpaces = space.childRoomIds + space.childSpaces.map { space in
             space.spaceId
-        })
+        }
 
-        self.leaveAllRooms(from: allRoomsAndSpaces, at: 0) { [weak self] error in
+        leaveAllRooms(from: allRoomsAndSpaces, at: 0) { [weak self] error in
             guard let self = self else {
                 return
             }
@@ -125,10 +124,10 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
     }
 
     private func leaveAllRooms(from roomIds: [String], at index: Int, completion: @escaping (_ error: Error?) -> Void) {
-        guard index < roomIds.count, let room = self.session.room(withRoomId: roomIds[index]), !room.isDirect else {
-            let nextIndex = index+1
+        guard index < roomIds.count, let room = session.room(withRoomId: roomIds[index]), !room.isDirect else {
+            let nextIndex = index + 1
             if nextIndex < roomIds.count {
-                self.leaveAllRooms(from: roomIds, at: nextIndex, completion: completion)
+                leaveAllRooms(from: roomIds, at: nextIndex, completion: completion)
             } else {
                 completion(nil)
             }
@@ -145,7 +144,7 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
                 return
             }
             
-            let nextIndex = index+1
+            let nextIndex = index + 1
             if nextIndex < roomIds.count {
                 self.leaveAllRooms(from: roomIds, at: nextIndex, completion: completion)
             } else {

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,13 +17,11 @@
 import Foundation
 
 extension MXFileStore {
-
     func displayName(ofUserWithId userId: String) async -> String? {
-        await withCheckedContinuation({ continuation in
+        await withCheckedContinuation { continuation in
             asyncUsers(withUserIds: [userId]) { users in
                 continuation.resume(returning: users.first?.displayname)
             }
-        })
+        }
     }
-
 }

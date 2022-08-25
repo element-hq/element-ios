@@ -32,7 +32,7 @@ protocol DeviceVerificationStartViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `DeviceVerificationStartViewController`
-protocol DeviceVerificationStartViewModelType {        
+protocol DeviceVerificationStartViewModelType {
     var viewDelegate: DeviceVerificationStartViewModelViewDelegate? { get set }
     var coordinatorDelegate: DeviceVerificationStartViewModelCoordinatorDelegate? { get set }
     

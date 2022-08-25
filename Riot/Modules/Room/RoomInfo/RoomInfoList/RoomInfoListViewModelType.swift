@@ -29,10 +29,9 @@ protocol RoomInfoListViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `RoomInfoListViewController`
-protocol RoomInfoListViewModelType {        
-        
+protocol RoomInfoListViewModelType {
     var viewDelegate: RoomInfoListViewModelViewDelegate? { get set }
     var coordinatorDelegate: RoomInfoListViewModelCoordinatorDelegate? { get set }
     
-    func process(viewAction: RoomInfoListViewAction)    
+    func process(viewAction: RoomInfoListViewAction)
 }

@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class KeyVerificationSelfVerifyStartCoordinator: KeyVerificationSelfVerifyStartCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,23 +48,23 @@ final class KeyVerificationSelfVerifyStartCoordinator: KeyVerificationSelfVerify
     
     // MARK: - Public methods
     
-    func start() {            
-        self.keyVerificationSelfVerifyStartViewModel.coordinatorDelegate = self
+    func start() {
+        keyVerificationSelfVerifyStartViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.keyVerificationSelfVerifyStartViewController
+        keyVerificationSelfVerifyStartViewController
     }
 }
 
 // MARK: - KeyVerificationSelfVerifyStartViewModelCoordinatorDelegate
+
 extension KeyVerificationSelfVerifyStartCoordinator: KeyVerificationSelfVerifyStartViewModelCoordinatorDelegate {
-    
     func keyVerificationSelfVerifyStartViewModel(_ viewModel: KeyVerificationSelfVerifyStartViewModelType, otherDidAcceptRequest request: MXKeyVerificationRequest) {
-        self.delegate?.keyVerificationSelfVerifyStartCoordinator(self, otherDidAcceptRequest: request)
+        delegate?.keyVerificationSelfVerifyStartCoordinator(self, otherDidAcceptRequest: request)
     }
     
     func keyVerificationSelfVerifyStartViewModelDidCancel(_ viewModel: KeyVerificationSelfVerifyStartViewModelType) {
-        self.delegate?.keyVerificationSelfVerifyStartCoordinatorDidCancel(self)
+        delegate?.keyVerificationSelfVerifyStartCoordinatorDidCancel(self)
     }
 }

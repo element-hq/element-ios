@@ -18,7 +18,6 @@ import UIKit
 
 @objcMembers
 class KeyVerificationRequestStatusCell: KeyVerificationBaseCell {
-
     // MARK: - Constants
     
     private enum Sizing {
@@ -29,15 +28,16 @@ class KeyVerificationRequestStatusCell: KeyVerificationBaseCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.commonInit()
+        commonInit()
     }
     
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private func commonInit() {
-        guard let keyVerificationCellInnerContentView = self.keyVerificationCellInnerContentView else {
+        guard let keyVerificationCellInnerContentView = keyVerificationCellInnerContentView else {
             fatalError("[KeyVerificationRequestStatusBubbleCell] keyVerificationCellInnerContentView should not be nil")
         }
         
@@ -51,9 +51,9 @@ class KeyVerificationRequestStatusCell: KeyVerificationBaseCell {
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        guard let keyVerificationCellInnerContentView = self.keyVerificationCellInnerContentView,
-              let roomBubbleCellData = self.bubbleData as? RoomBubbleCellData,
-              let viewData = self.viewData(from: roomBubbleCellData) else {
+        guard let keyVerificationCellInnerContentView = keyVerificationCellInnerContentView,
+              let roomBubbleCellData = bubbleData as? RoomBubbleCellData,
+              let viewData = viewData(from: roomBubbleCellData) else {
             MXLog.debug("[KeyVerificationRequestStatusBubbleCell] Fail to render \(String(describing: cellData))")
             return
         }
@@ -64,15 +64,14 @@ class KeyVerificationRequestStatusCell: KeyVerificationBaseCell {
     }
     
     override class func sizingView() -> KeyVerificationBaseCell {
-        return self.Sizing.view
+        Sizing.view
     }
     
     // MARK: - Private
     
     private func viewData(from roomBubbleCellData: RoomBubbleCellData) -> KeyVerificationRequestStatusViewData? {
-        
-        let senderId = self.senderId(from: bubbleData)
-        let senderDisplayName = self.senderDisplayName(from: bubbleData)
+        let senderId = senderId(from: bubbleData)
+        let senderDisplayName = senderDisplayName(from: bubbleData)
         let title: String
         let statusText: String?
         
@@ -87,7 +86,7 @@ class KeyVerificationRequestStatusCell: KeyVerificationBaseCell {
             case .requestPending:
                 if !roomBubbleCellData.isIncoming {
                     statusText = VectorL10n.keyVerificationTileRequestStatusWaiting
-                } else {                    
+                } else {
                     if roomBubbleCellData.isKeyVerificationOperationPending {
                         statusText = VectorL10n.keyVerificationTileRequestStatusDataLoading
                     } else {

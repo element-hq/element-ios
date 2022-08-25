@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,14 +18,13 @@ import UIKit
 
 /// Used as a placeholder for UISplitViewController detail view controller
 final class PlaceholderDetailViewController: UIViewController, Themable {
-
     // MARK: - Constants
     
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var logoImageView: UIImageView!
+    @IBOutlet private var logoImageView: UIImageView!
     
     // MARK: Private
     
@@ -37,13 +36,13 @@ final class PlaceholderDetailViewController: UIViewController, Themable {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.setupViews()
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        setupViews()
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Public
@@ -61,10 +60,10 @@ final class PlaceholderDetailViewController: UIViewController, Themable {
     func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.backgroundColor
-        self.logoImageView.tintColor = theme.tintColor
+        view.backgroundColor = theme.backgroundColor
+        logoImageView.tintColor = theme.tintColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
     }
@@ -76,10 +75,10 @@ final class PlaceholderDetailViewController: UIViewController, Themable {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.logoImageView.image = Asset.Images.launchScreenLogo.image
+        logoImageView.image = Asset.Images.launchScreenLogo.image
     }
 }

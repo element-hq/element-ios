@@ -19,12 +19,11 @@
 import Foundation
 
 final class SpaceListViewModel: SpaceListViewModelType {
-    
     // MARK: - Constants
     
     enum Constants {
-        static let homeSpaceId: String = "home"
-        static let addSpaceId: String = "add_space"
+        static let homeSpaceId = "home"
+        static let addSpaceId = "add_space"
     }
     
     // MARK: - Properties
@@ -35,12 +34,13 @@ final class SpaceListViewModel: SpaceListViewModelType {
     
     private var currentOperation: MXHTTPOperation?
     private var sections: [SpaceListSection] = []
-    private var selectedIndexPath: IndexPath = IndexPath(row: 0, section: 0) {
+    private var selectedIndexPath = IndexPath(row: 0, section: 0) {
         didSet {
-            self.selectedItemId = self.itemId(with: self.selectedIndexPath) ?? Constants.homeSpaceId
+            selectedItemId = itemId(with: selectedIndexPath) ?? Constants.homeSpaceId
         }
     }
-    private var homeIndexPath: IndexPath = IndexPath(row: 0, section: 0)
+
+    private var homeIndexPath = IndexPath(row: 0, section: 0)
     private var selectedItemId: String = Constants.homeSpaceId
 
     // MARK: Public
@@ -53,12 +53,11 @@ final class SpaceListViewModel: SpaceListViewModelType {
     init(userSessionsService: UserSessionsService) {
         self.userSessionsService = userSessionsService
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.sessionDidSync(notification:)), name: MXSpaceService.didBuildSpaceGraph, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionDidSync(notification:)), name: MXSpaceService.didBuildSpaceGraph, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.counterDidUpdateNotificationCount(notification:)), name: MXSpaceNotificationCounter.didUpdateNotificationCount, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(counterDidUpdateNotificationCount(notification:)), name: MXSpaceNotificationCounter.didUpdateNotificationCount, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.loadData), name: NSNotification.Name.themeServiceDidChangeTheme, object: nil)
-
+        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: NSNotification.Name.themeServiceDidChangeTheme, object: nil)
     }
     
     deinit {
@@ -70,55 +69,55 @@ final class SpaceListViewModel: SpaceListViewModelType {
     func process(viewAction: SpaceListViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .selectRow(at: let indexPath, from: let sourceView):
-            guard self.selectedIndexPath != indexPath else {
+            guard selectedIndexPath != indexPath else {
                 Analytics.shared.trackInteraction(.spacePanelSelectedSpace)
                 return
             }
             
-            let section = self.sections[indexPath.section]
+            let section = sections[indexPath.section]
             switch section {
             case .home:
-                self.selectHome()
-                self.selectedIndexPath = indexPath
+                selectHome()
+                selectedIndexPath = indexPath
                 Analytics.shared.trackInteraction(.spacePanelSwitchSpace)
-                self.update(viewState: .selectionChanged(indexPath))
+                update(viewState: .selectionChanged(indexPath))
             case .spaces(let viewDataList):
                 let spaceViewData = viewDataList[indexPath.row]
                 if spaceViewData.isInvite {
-                    self.selectInvite(with: spaceViewData.spaceId, from: sourceView)
+                    selectInvite(with: spaceViewData.spaceId, from: sourceView)
                 } else {
-                    self.selectSpace(with: spaceViewData.spaceId)
-                    self.selectedIndexPath = indexPath
+                    selectSpace(with: spaceViewData.spaceId)
+                    selectedIndexPath = indexPath
                     Analytics.shared.trackInteraction(.spacePanelSwitchSpace)
-                    self.update(viewState: .selectionChanged(indexPath))
+                    update(viewState: .selectionChanged(indexPath))
                 }
             case .addSpace:
-                self.update(viewState: .selectionChanged(self.selectedIndexPath))
+                update(viewState: .selectionChanged(selectedIndexPath))
                 addSpace()
             }
         case .moreAction(at: let indexPath, from: let sourceView):
-            let section = self.sections[indexPath.section]
+            let section = sections[indexPath.section]
             switch section {
             case .home:
-                self.coordinatorDelegate?.spaceListViewModel(self, didPressMoreForSpaceWithId: Constants.homeSpaceId, from: sourceView)
+                coordinatorDelegate?.spaceListViewModel(self, didPressMoreForSpaceWithId: Constants.homeSpaceId, from: sourceView)
             case .addSpace: break
             case .spaces(let viewDataList):
                 let spaceViewData = viewDataList[indexPath.row]
-                self.coordinatorDelegate?.spaceListViewModel(self, didPressMoreForSpaceWithId: spaceViewData.spaceId, from: sourceView)
+                coordinatorDelegate?.spaceListViewModel(self, didPressMoreForSpaceWithId: spaceViewData.spaceId, from: sourceView)
             }
         }
     }
     
     func revertItemSelection() {
-        self.update(viewState: .selectionChanged(self.selectedIndexPath))
+        update(viewState: .selectionChanged(selectedIndexPath))
     }
     
     func select(spaceWithId spaceId: String) {
         var foundIndexPath: IndexPath?
         
-        if let spaceService = self.userSessionsService.mainUserSession?.matrixSession.spaceService,
+        if let spaceService = userSessionsService.mainUserSession?.matrixSession.spaceService,
            let firstRootAncestor = spaceService.firstRootAncestorForRoom(withId: spaceId) {
             foundIndexPath = indexPathOf(spaceWithId: firstRootAncestor.spaceId)
         } else {
@@ -126,9 +125,9 @@ final class SpaceListViewModel: SpaceListViewModelType {
         }
         
         if let indexPath = foundIndexPath {
-            self.selectSpace(with: spaceId)
-            self.selectedIndexPath = indexPath
-            self.update(viewState: .selectionChanged(indexPath))
+            selectSpace(with: spaceId)
+            selectedIndexPath = indexPath
+            update(viewState: .selectionChanged(indexPath))
         }
     }
     
@@ -143,23 +142,23 @@ final class SpaceListViewModel: SpaceListViewModelType {
     }
     
     @objc private func loadData() {
-        guard let session = self.userSessionsService.mainUserSession?.matrixSession else {
+        guard let session = userSessionsService.mainUserSession?.matrixSession else {
             // If there is no main session, reset current selection and give an empty section list
-            // It can happen when the user make a clear cache or logout 
-            self.resetList()
+            // It can happen when the user make a clear cache or logout
+            resetList()
             return
         }
 
-        self.update(viewState: .loading)
+        update(viewState: .loading)
                 
-        let homeViewData = self.createHomeViewData(session: session)
+        let homeViewData = createHomeViewData(session: session)
         let viewDataList = getSpacesViewData(session: session)
 
         var sections: [SpaceListSection] = viewDataList.invites.isEmpty ? [
-                .home(homeViewData),
-                .spaces(viewDataList.spaces)
-            ]
-        :
+            .home(homeViewData),
+            .spaces(viewDataList.spaces)
+        ]
+            :
             [
                 .spaces(viewDataList.invites),
                 .home(homeViewData),
@@ -167,14 +166,14 @@ final class SpaceListViewModel: SpaceListViewModelType {
             ]
 
         let spacesSectionIndex = sections.count - 1
-        let addSpaceViewData = self.createAddSpaceViewData(session: session)
+        let addSpaceViewData = createAddSpaceViewData(session: session)
         sections.append(.addSpace(addSpaceViewData))
         
         self.sections = sections
         let homeIndexPath = viewDataList.invites.isEmpty ? IndexPath(row: 0, section: 0) : IndexPath(row: 0, section: 1)
-        if self.selectedIndexPath.section == self.homeIndexPath.section {
-            self.selectedIndexPath = homeIndexPath
-        } else if self.selectedItemId != self.itemId(with: self.selectedIndexPath) {
+        if selectedIndexPath.section == self.homeIndexPath.section {
+            selectedIndexPath = homeIndexPath
+        } else if selectedItemId != itemId(with: selectedIndexPath) {
             var newSelection: IndexPath?
             let section = sections[spacesSectionIndex]
             switch section {
@@ -182,7 +181,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
             case .spaces(let viewDataList):
                 var index = 0
                 for itemViewData in viewDataList {
-                    if itemViewData.spaceId == self.selectedItemId {
+                    if itemViewData.spaceId == selectedItemId {
                         newSelection = IndexPath(row: index, section: spacesSectionIndex)
                     }
                     index += 1
@@ -190,31 +189,31 @@ final class SpaceListViewModel: SpaceListViewModelType {
             }
             
             if let selection = newSelection {
-                self.selectedIndexPath = selection
+                selectedIndexPath = selection
             } else {
-                self.selectedIndexPath = homeIndexPath
-                self.coordinatorDelegate?.spaceListViewModelDidSelectHomeSpace(self)
+                selectedIndexPath = homeIndexPath
+                coordinatorDelegate?.spaceListViewModelDidSelectHomeSpace(self)
             }
         }
         self.homeIndexPath = homeIndexPath
-        self.update(viewState: .loaded(sections))
-        self.update(viewState: .selectionChanged(self.selectedIndexPath))
+        update(viewState: .loaded(sections))
+        update(viewState: .selectionChanged(selectedIndexPath))
     }
     
     private func selectHome() {
-        self.coordinatorDelegate?.spaceListViewModelDidSelectHomeSpace(self)
+        coordinatorDelegate?.spaceListViewModelDidSelectHomeSpace(self)
     }
     
     private func addSpace() {
-        self.coordinatorDelegate?.spaceListViewModelDidSelectCreateSpace(self)
+        coordinatorDelegate?.spaceListViewModelDidSelectCreateSpace(self)
     }
     
     private func selectSpace(with spaceId: String) {
-        self.coordinatorDelegate?.spaceListViewModel(self, didSelectSpaceWithId: spaceId)
+        coordinatorDelegate?.spaceListViewModel(self, didSelectSpaceWithId: spaceId)
     }
     
     private func selectInvite(with spaceId: String, from sourceView: UIView?) {
-        self.coordinatorDelegate?.spaceListViewModel(self, didSelectInviteWithId: spaceId, from: sourceView)
+        coordinatorDelegate?.spaceListViewModel(self, didSelectInviteWithId: spaceId, from: sourceView)
     }
     
     private func createHomeViewData(session: MXSession) -> SpaceListItemViewData {
@@ -266,26 +265,26 @@ final class SpaceListViewModel: SpaceListViewModelType {
     }
     
     private func update(viewState: SpaceListViewState) {
-        self.viewDelegate?.spaceListViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.spaceListViewModel(self, didUpdateViewState: viewState)
     }
     
     private func cancelOperations() {
-        self.currentOperation?.cancel()
+        currentOperation?.cancel()
     }
     
     private func itemId(with indexPath: IndexPath) -> String? {
-        guard self.selectedIndexPath.section < self.sections.count else {
+        guard selectedIndexPath.section < sections.count else {
             return Constants.homeSpaceId
         }
-        let section = self.sections[self.selectedIndexPath.section]
+        let section = sections[selectedIndexPath.section]
         switch section {
         case .home:
             return Constants.homeSpaceId
         case .spaces(let viewDataList):
-            guard self.selectedIndexPath.row < viewDataList.count else {
+            guard selectedIndexPath.row < viewDataList.count else {
                 return nil
             }
-            let spaceViewData = viewDataList[self.selectedIndexPath.row]
+            let spaceViewData = viewDataList[selectedIndexPath.row]
             return spaceViewData.spaceId
         case .addSpace:
             return Constants.addSpaceId
@@ -293,21 +292,21 @@ final class SpaceListViewModel: SpaceListViewModelType {
     }
     
     private func resetList() {
-        self.sections = []
+        sections = []
         
         let selectedIndexPath = IndexPath(row: 0, section: 0)
         
         self.selectedIndexPath = selectedIndexPath
-        self.homeIndexPath = selectedIndexPath
+        homeIndexPath = selectedIndexPath
         
-        self.update(viewState: .loaded([]))
+        update(viewState: .loaded([]))
     }
     
     private func indexPathOf(spaceWithId spaceId: String) -> IndexPath? {
-        for (sectionIndex, section) in self.sections.enumerated() {
+        for (sectionIndex, section) in sections.enumerated() {
             switch section {
             case .home: break
-            case .addSpace:  break
+            case .addSpace: break
             case .spaces(let viewDataList):
                 for (row, itemViewData) in viewDataList.enumerated() where itemViewData.spaceId == spaceId {
                     return IndexPath(row: row, section: sectionIndex)
@@ -317,5 +316,4 @@ final class SpaceListViewModel: SpaceListViewModelType {
         
         return nil
     }
-    
 }

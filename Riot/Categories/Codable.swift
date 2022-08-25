@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,7 @@ extension Encodable {
     /// Convenience method to get the json string of an Encodable
     var jsonString: String? {
         let encoder = JSONEncoder()
-        guard let jsonData =  try? encoder.encode(self) else { return nil }
+        guard let jsonData = try? encoder.encode(self) else { return nil }
         return String(data: jsonData, encoding: .utf8)
     }
 }

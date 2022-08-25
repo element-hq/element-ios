@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// ShareInviteLinkPresenter enables to share room alias to someone else
 @objcMembers
 final class ShareInviteLinkPresenter: NSObject {
-    
     // MARK: - Constants
     
     // MARK: - Properties
@@ -35,28 +34,26 @@ final class ShareInviteLinkPresenter: NSObject {
                  from viewController: UIViewController,
                  sourceView: UIView?,
                  animated: Bool) {
-        
-        self.presentingViewController = viewController
+        presentingViewController = viewController
         self.sourceView = sourceView
         
-        self.shareInvite(from: room)
+        shareInvite(from: room)
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        self.presentingViewController?.dismiss(animated: animated, completion: completion)
+        presentingViewController?.dismiss(animated: animated, completion: completion)
     }
     
     // MARK: - Private
     
     private func shareInvite(from room: MXRoom) {
-        
-        let shareText = self.buildShareText(with: room)
+        let shareText = buildShareText(with: room)
         
         // Set up activity view controller
-        let activityItems: [Any] = [ shareText ]
+        let activityItems: [Any] = [shareText]
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         
-        self.present(activityViewController, animated: true)
+        present(activityViewController, animated: true)
     }
     
     private func buildShareText(with room: MXRoom) -> String {
@@ -75,13 +72,12 @@ final class ShareInviteLinkPresenter: NSObject {
     }
     
     private func present(_ viewController: UIViewController, animated: Bool) {
-        
         // Configure source view when view controller is presented with a popover
-        if let sourceView = self.sourceView, let popoverPresentationController = viewController.popoverPresentationController {
+        if let sourceView = sourceView, let popoverPresentationController = viewController.popoverPresentationController {
             popoverPresentationController.sourceView = sourceView
             popoverPresentationController.sourceRect = sourceView.bounds
         }
         
-        self.presentingViewController?.present(viewController, animated: animated, completion: nil)
+        presentingViewController?.present(viewController, animated: animated, completion: nil)
     }
 }

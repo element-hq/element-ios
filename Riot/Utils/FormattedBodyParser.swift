@@ -1,24 +1,23 @@
 /*
-Copyright 2020 New Vector Ltd
+ Copyright 2020 New Vector Ltd
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 
 import Foundation
 
 @objcMembers
 final class FormattedBodyParser: NSObject {
-
     private struct HTMLURLAnchor {
         let link: URL
         let content: String
@@ -28,9 +27,7 @@ final class FormattedBodyParser: NSObject {
         static let htmlURLAnchorTagRegexPattern = "<a href=\"(.*?)\">([^<]*)</a>"
     }
 
-    private lazy var htmlURLAnchorRegex: NSRegularExpression? = {
-        return try? NSRegularExpression(pattern: Constants.htmlURLAnchorTagRegexPattern, options: .caseInsensitive)
-    }()
+    private lazy var htmlURLAnchorRegex: NSRegularExpression? = try? NSRegularExpression(pattern: Constants.htmlURLAnchorTagRegexPattern, options: .caseInsensitive)
 
     private func getHTMLURLAnchors(forURL url: URL, inFormattedBody formattedBody: String) -> [HTMLURLAnchor] {
         // Use regex here self.htmlURLAnchorRegex
@@ -40,7 +37,7 @@ final class FormattedBodyParser: NSObject {
             return []
         }
 
-        return regex.matches(in: formattedBody, options: [], range: NSRange(formattedBody.startIndex..., in: formattedBody)).compactMap { (result) -> HTMLURLAnchor? in
+        return regex.matches(in: formattedBody, options: [], range: NSRange(formattedBody.startIndex..., in: formattedBody)).compactMap { result -> HTMLURLAnchor? in
             guard result.numberOfRanges > 2 else { return nil }
             guard let urlRange = Range(result.range(at: 1), in: formattedBody) else {
                 return nil
@@ -64,7 +61,6 @@ final class FormattedBodyParser: NSObject {
     /// - Returns: visible url if found, otherwise nil
     func getVisibleURL(forURL url: URL, inFormattedBody formattedBody: String) -> URL? {
         //  TODO: returning first link here. Get url range in formattedBody to detect which link is actually tapped.
-        return self.getHTMLURLAnchors(forURL: url, inFormattedBody: formattedBody).compactMap { URL(string: $0.content) }.first
+        getHTMLURLAnchors(forURL: url, inFormattedBody: formattedBody).compactMap { URL(string: $0.content) }.first
     }
-    
 }

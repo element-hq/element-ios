@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,38 +21,37 @@ private let MSEC_PER_SEC: TimeInterval = 1000
 
 @objcMembers
 class RoomDirectCallStatusCell: RoomCallBaseCell {
-    
     private static var className: String {
-        return String(describing: self)
+        String(describing: self)
     }
     
     /// Action identifier used when the user pressed "Call back" button for a declined call.
     /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the declined call.
     static var callBackAction: String {
-        return self.className + ".callBack"
+        className + ".callBack"
     }
     
     /// Action identifier used when the user pressed "Answer" button for an incoming call.
     /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
     static var answerAction: String {
-        return self.className + ".answer"
+        className + ".answer"
     }
     
     /// Action identifier used when the user pressed "Decline" button for an incoming call.
     /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
     static var declineAction: String {
-        return self.className + ".decline"
+        className + ".decline"
     }
     
     /// Action identifier used when the user pressed "End call" button for an incoming call.
     /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
     static var endCallAction: String {
-        return self.className + ".endCall"
+        className + ".endCall"
     }
     
-    private var callDurationString: String = ""
-    private var isVideoCall: Bool = false
-    private var isIncoming: Bool = false
+    private var callDurationString = ""
+    private var isVideoCall = false
+    private var isIncoming = false
     private var callInviteEvent: MXEvent?
     private var viewState: ViewState = .unknown {
         didSet {
@@ -183,9 +182,9 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
     private func configure(withCall call: MXCall) {
         switch call.state {
         case .fledgling,
-            .waitLocalMedia,
-            .createOffer,
-            .connecting:
+             .waitLocalMedia,
+             .createOffer,
+             .connecting:
             viewState = .active
             if call.isIncoming {
                 statusText = isVideoCall ? VectorL10n.eventFormatterCallActiveVideo : VectorL10n.eventFormatterCallActiveVoice
@@ -245,7 +244,6 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
     }
     
     private func configureForRejectedCall(withEvent event: MXEvent? = nil, call: MXCall? = nil, bubbleCellData: RoomBubbleCellData? = nil) {
-        
         let isMyReject: Bool
         
         if let call = call, call.isIncoming {
@@ -306,30 +304,30 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
     
     @objc
     private func callBackAction(_ sender: CallTileActionButton) {
-        self.delegate?.cell(self,
-                            didRecognizeAction: Self.callBackAction,
-                            userInfo: actionUserInfo)
+        delegate?.cell(self,
+                       didRecognizeAction: Self.callBackAction,
+                       userInfo: actionUserInfo)
     }
     
     @objc
     private func declineCallAction(_ sender: CallTileActionButton) {
-        self.delegate?.cell(self,
-                            didRecognizeAction: Self.declineAction,
-                            userInfo: actionUserInfo)
+        delegate?.cell(self,
+                       didRecognizeAction: Self.declineAction,
+                       userInfo: actionUserInfo)
     }
     
     @objc
     private func answerCallAction(_ sender: CallTileActionButton) {
-        self.delegate?.cell(self,
-                            didRecognizeAction: Self.answerAction,
-                            userInfo: actionUserInfo)
+        delegate?.cell(self,
+                       didRecognizeAction: Self.answerAction,
+                       userInfo: actionUserInfo)
     }
     
     @objc
     private func endCallAction(_ sender: CallTileActionButton) {
-        self.delegate?.cell(self,
-                            didRecognizeAction: Self.endCallAction,
-                            userInfo: actionUserInfo)
+        delegate?.cell(self,
+                       didRecognizeAction: Self.endCallAction,
+                       userInfo: actionUserInfo)
     }
     
     //  MARK: - MXKCellRendering
@@ -358,24 +356,24 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
                                                                  withDisplayName: user?.displayname)
                 
                 innerContentView.avatarImageView.setImageURI(user?.avatarUrl,
-                                            withType: nil,
-                                            andImageOrientation: .up,
-                                            toFitViewSize: innerContentView.avatarImageView.frame.size,
-                                            with: MXThumbnailingMethodCrop,
-                                            previewImage: placeholder,
-                                            mediaManager: bubbleCellData.mxSession.mediaManager)
+                                                             withType: nil,
+                                                             andImageOrientation: .up,
+                                                             toFitViewSize: innerContentView.avatarImageView.frame.size,
+                                                             with: MXThumbnailingMethodCrop,
+                                                             previewImage: placeholder,
+                                                             mediaManager: bubbleCellData.mxSession.mediaManager)
                 innerContentView.avatarImageView.defaultBackgroundColor = .clear
                 
                 innerContentView.callerNameLabel.text = user?.displayname
             }
         } else {
             innerContentView.avatarImageView.setImageURI(bubbleCellData.senderAvatarUrl,
-                                        withType: nil,
-                                        andImageOrientation: .up,
-                                        toFitViewSize: innerContentView.avatarImageView.frame.size,
-                                        with: MXThumbnailingMethodCrop,
-                                        previewImage: bubbleCellData.senderAvatarPlaceholder,
-                                        mediaManager: bubbleCellData.mxSession.mediaManager)
+                                                         withType: nil,
+                                                         andImageOrientation: .up,
+                                                         toFitViewSize: innerContentView.avatarImageView.frame.size,
+                                                         with: MXThumbnailingMethodCrop,
+                                                         previewImage: bubbleCellData.senderAvatarPlaceholder,
+                                                         mediaManager: bubbleCellData.mxSession.mediaManager)
             innerContentView.avatarImageView.defaultBackgroundColor = .clear
             
             innerContentView.callerNameLabel.text = bubbleCellData.senderDisplayName
@@ -391,7 +389,6 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
         updateCallIcon()
         let callId = callInviteEventContent.callId
         guard let call = bubbleCellData.mxSession.callManager.call(withCallId: callId) else {
-            
             //  check events include a reject event
             if let rejectEvent = events.first(where: { $0.eventType == .callReject }) {
                 configureForRejectedCall(withEvent: rejectEvent, bubbleCellData: bubbleCellData)
@@ -425,9 +422,9 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
             return 0
         }
         guard let endDate = events.first(where: { $0.eventType == .callHangup })?.originServerTs
-                ?? events.first(where: { $0.eventType == .callReject })?.originServerTs else {
+            ?? events.first(where: { $0.eventType == .callReject })?.originServerTs else {
             //  not ended yet, compute the diff from now
-            return (NSTimeIntervalSince1970 - TimeInterval(startDate))/MSEC_PER_SEC
+            return (NSTimeIntervalSince1970 - TimeInterval(startDate)) / MSEC_PER_SEC
         }
         
         guard startDate < endDate else {
@@ -436,7 +433,7 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
         }
         
         //  ended, compute the diff between two dates
-        return TimeInterval(endDate - startDate)/MSEC_PER_SEC
+        return TimeInterval(endDate - startDate) / MSEC_PER_SEC
     }
     
     private func readableCallDuration(from events: [MXEvent]) -> String {
@@ -448,5 +445,4 @@ class RoomDirectCallStatusCell: RoomCallBaseCell {
         
         return RoomDirectCallStatusCell.callDurationFormatter.string(from: duration) ?? ""
     }
-    
 }

@@ -18,7 +18,6 @@ import UIKit
 
 /// Wrapper for the Notification userInfo values associated with a keyboard notification.
 public struct KeyboardNotification {
-    
     let userInfo: [AnyHashable: Any]
     
     public init?(notification: Notification) {
@@ -59,7 +58,7 @@ public struct KeyboardNotification {
     
     /// Convert UIViewAnimationCurve raw value to UIViewAnimationOptions
     public func animationOptions(fallbackAnimationCurveValue: Int = UIView.AnimationCurve.easeInOut.rawValue) -> UIView.AnimationOptions {
-        let animationCurveRawValue = self.animationCurveRawValue ?? fallbackAnimationCurveValue
+        let animationCurveRawValue = animationCurveRawValue ?? fallbackAnimationCurveValue
         return UIView.AnimationOptions(rawValue: UInt(animationCurveRawValue << 16))
     }
 }

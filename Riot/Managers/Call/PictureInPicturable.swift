@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +17,9 @@
 import Foundation
 
 @objc protocol PictureInPicturable {
-    
     @objc optional func willEnterPiP()
     @objc optional func didEnterPiP()
     
     @objc optional func willExitPiP()
     @objc optional func didExitPiP()
-    
 }

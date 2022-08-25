@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,9 @@
 import UIKit
 
 class FileWithoutThumbnailIncomingWithoutSenderInfoBubbleCell: FileWithoutThumbnailIncomingBubbleCell {
-    
     override func setupViews() {
         super.setupViews()
         
-        roomCellContentView?.showSenderInfo = false        
+        roomCellContentView?.showSenderInfo = false
     }
 }

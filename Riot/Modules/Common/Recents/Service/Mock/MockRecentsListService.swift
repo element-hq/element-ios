@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 @objcMembers
 public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
-    
     private var rooms: [MockRoomSummary]
     
     private var _invitedRoomListData: MXRoomListData?
@@ -52,13 +51,13 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
                 favorited.append(summary)
             }
             if summary.isTyped(.direct) {
-                people.append( summary)
+                people.append(summary)
             }
             if !summary.isTyped([.direct,
-                                .invited,
-                                .favorited,
-                                .lowPriority,
-                                .serverNotice]) {
+                                 .invited,
+                                 .favorited,
+                                 .lowPriority,
+                                 .serverNotice]) {
                 conversation.append(summary)
             }
             if summary.isTyped(.lowPriority) {
@@ -83,7 +82,7 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     public static func generate(withNumberOfRooms numberOfRooms: Int) -> MockRecentsListService {
         var rooms: [MockRoomSummary] = []
         for i in 0..<numberOfRooms {
-            let room = MockRoomSummary(withRoomId: "!room_\(i+1):matrix.org")
+            let room = MockRoomSummary(withRoomId: "!room_\(i + 1):matrix.org")
             if i % 2 == 0 {
                 room.dataTypes = .direct
             } else if i % 3 == 0 {
@@ -95,7 +94,7 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
             } else if i % 11 == 0 {
                 room.dataTypes = .serverNotice
             }
-            room.displayname = "Room \(i+1)"
+            room.displayname = "Room \(i + 1)"
             if let event = MXEvent(fromJSON: [
                 "event_id": MXTools.generateTransactionId() as Any,
                 "room_id": room.roomId,
@@ -103,7 +102,7 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
                 "origin_server_ts": Date().timeIntervalSince1970,
                 "content": [
                     "type": kMXMessageTypeText,
-                    "content": "Message \(i+1)"
+                    "content": "Message \(i + 1)"
                 ]
             ]) {
                 room.lastMessage = MXRoomLastMessage(event: event)
@@ -226,7 +225,6 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     private func notifyDataChange() {
-        multicastDelegate.invoke({ $0.recentsListServiceDidChangeData?(self, totalCountsChanged: true) })
+        multicastDelegate.invoke { $0.recentsListServiceDidChangeData?(self, totalCountsChanged: true) }
     }
-    
 }

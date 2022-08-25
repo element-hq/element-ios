@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,24 +18,22 @@ import UIKit
 
 @objcMembers
 class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
-    
     // MARK: - Properties
     
     // TODO: Conforms to Themable and don't use ThemeService
     var theme: Theme {
-        return ThemeService.shared().theme
+        ThemeService.shared().theme
     }
     
     // MARK: - RoomTimelineCellDecorator
     
     func addTimestampLabelIfNeeded(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
-                
-        guard cellData.containsLastMessage && cellData.isCollapsableAndCollapsed == false else {
+        guard cellData.containsLastMessage, cellData.isCollapsableAndCollapsed == false else {
             return
         }
         
         // Display timestamp of the last message
-        self.addTimestampLabel(toCell: cell, cellData: cellData)
+        addTimestampLabel(toCell: cell, cellData: cellData)
     }
 
     func addTimestampLabel(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
@@ -73,7 +71,6 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                          cellData: RoomBubbleCellData,
                          contentViewPositionY: CGFloat,
                          upperDecorationView: UIView?) {
-
         cell.addTemporarySubview(reactionsView)
 
         if let reactionsDisplayable = cell as? RoomCellReactionsDisplayable {
@@ -115,13 +112,11 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                              cellData: RoomBubbleCellData,
                              contentViewPositionY: CGFloat,
                              upperDecorationView: UIView?) {
-
         cell.addTemporarySubview(readReceiptsView)
 
         if let readReceiptsDisplayable = cell as? RoomCellReadReceiptsDisplayable {
             readReceiptsDisplayable.addReadReceiptsView(readReceiptsView)
         } else {
-
             let cellContentView = cell.contentView
 
             cellContentView.addSubview(readReceiptsView)
@@ -148,7 +143,6 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                 trailingConstraint,
                 topConstraint
             ])
-            
         }
     }
 
@@ -157,7 +151,6 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                               cellData: RoomBubbleCellData,
                               contentViewPositionY: CGFloat,
                               upperDecorationView: UIView?) {
-
         cell.addTemporarySubview(threadSummaryView)
 
         if let threadSummaryDisplayable = cell as? RoomCellThreadSummaryDisplayable {
@@ -209,9 +202,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                            toCell cell: MXKRoomBubbleTableViewCell,
                            cellData: MXKRoomBubbleCellData,
                            contentViewPositionY: CGFloat) {
-        
         if let readMarkerDisplayable = cell as? RoomCellReadMarkerDisplayable {
-            
             readMarkerDisplayable.addReadMarkerView(readMarkerView)
             
         } else {
@@ -256,7 +247,6 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                                 cellData: RoomBubbleCellData,
                                 animated: Bool,
                                 completion: @escaping () -> Void) {
-        
         guard let readMarkerView = cell.readMarkerView, let readMarkerContainerView = readMarkerView.superview else {
             return
         }
@@ -270,8 +260,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
             
             // Animate the layout to hide the read marker
             DispatchQueue.main.async {
-                
-                let readMarkerContainerViewHalfWidth = readMarkerContainerView.frame.size.width/2
+                let readMarkerContainerViewHalfWidth = readMarkerContainerView.frame.size.width / 2
                 
                 cell.readMarkerViewLeadingConstraint?.constant = readMarkerContainerViewHalfWidth
                 cell.readMarkerViewTrailingConstraint?.constant = -readMarkerContainerViewHalfWidth
@@ -279,11 +268,10 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                 UIView.animate(withDuration: 1.5,
                                delay: 0.3,
                                options: [.beginFromCurrentState, .curveEaseIn]) {
-                    
                     readMarkerView.alpha = 0
                     readMarkerContainerView.layoutIfNeeded()
                     
-                } completion: { finished in
+                } completion: { _ in
                     readMarkerView.isHidden = true
                     readMarkerView.alpha = 1
                     

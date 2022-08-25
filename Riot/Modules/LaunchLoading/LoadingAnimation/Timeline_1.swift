@@ -4,14 +4,15 @@
 //
 // swiftlint:disable all
 
-import UIKit
 import FlowCommoniOS
+import UIKit
 
 public class Timeline_1: Timeline {
     public convenience init(view: ElementView, duration: TimeInterval, autoreverses: Bool = false, repeatCount: Float = 0) {
         let animationsByLayer = Timeline_1.animationsByLayer(view: view, duration: duration)
         self.init(view: view, animationsByLayer: animationsByLayer, sounds: [], duration: duration, autoreverses: autoreverses, repeatCount: repeatCount)
     }
+
     private static func animationsByLayer(view: ElementView, duration: TimeInterval) -> [CALayer: [CAKeyframeAnimation]] {
         // Keyframe Animations for icon
         let position_x_icon: CAKeyframeAnimation = {

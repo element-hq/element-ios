@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -82,14 +82,14 @@ struct PollEditFormViewState: BindableState {
     
     var confirmationButtonEnabled: Bool {
         !bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-            bindings.answerOptions.filter({ !$0.text.isEmpty }).count >= minAnswerOptionsCount
+            bindings.answerOptions.filter { !$0.text.isEmpty }.count >= minAnswerOptionsCount
     }
     
     var addAnswerOptionButtonEnabled: Bool {
         bindings.answerOptions.count < maxAnswerOptionsCount
     }
     
-    var showLoadingIndicator: Bool = false
+    var showLoadingIndicator = false
 }
 
 struct PollEditFormViewStateBindings {

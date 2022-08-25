@@ -17,9 +17,8 @@
 import Foundation
 
 extension String {
-
     private enum Constants {
-        static let RTLOverrideChar: String = "\u{202E}"
+        static let RTLOverrideChar = "\u{202E}"
     }
     
     /// Calculates a numeric hash same as Riot Web
@@ -40,34 +39,33 @@ extension String {
     /// - Parameter other: The other string.
     /// - Returns: true if current string contains other string.
     func vc_caseInsensitiveContains(_ other: String) -> Bool {
-        return self.range(of: other, options: .caseInsensitive) != nil
+        range(of: other, options: .caseInsensitive) != nil
     }
     
     /// Returns a globally unique string
     static var vc_unique: String {
-        return ProcessInfo.processInfo.globallyUniqueString
+        ProcessInfo.processInfo.globallyUniqueString
     }
     
     /// Returns a new string by removing all whitespaces from the receiver object
     /// - Returns: New string without whitespaces from the receiver
     func vc_removingAllWhitespaces() -> String {
-        return components(separatedBy: .whitespaces).joined()
+        components(separatedBy: .whitespaces).joined()
     }
 
     /// Returns if the string contains an RTL override character
     func vc_containsRTLOverride() -> Bool {
-        return contains(Constants.RTLOverrideChar)
+        contains(Constants.RTLOverrideChar)
     }
 
     /// Returns a new string which is reversed of the receiver
     func vc_reversed() -> String {
-        return String(self.reversed())
+        String(reversed())
     }
 }
 
 extension Optional where Wrapped == String {
-    
     var isEmptyOrNil: Bool {
-        return self?.isEmpty ?? true
+        self?.isEmpty ?? true
     }
 }

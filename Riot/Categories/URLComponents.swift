@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,11 @@
 import Foundation
 
 extension URLComponents {
-    
     func vc_getQueryItem(with name: String) -> URLQueryItem? {
-        return self.queryItems?.first(where: { $0.name == name })
+        queryItems?.first(where: { $0.name == name })
     }
     
     func vc_getQueryItemValue(for name: String) -> String? {
-        return self.vc_getQueryItem(with: name)?.value
+        vc_getQueryItem(with: name)?.value
     }
 }

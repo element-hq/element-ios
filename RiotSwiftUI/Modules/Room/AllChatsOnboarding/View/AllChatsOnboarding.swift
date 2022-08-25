@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AllChatsOnboarding: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -41,7 +40,7 @@ struct AllChatsOnboarding: View {
                     AllChatsOnboardingPage(image: page.image,
                                            title: page.title,
                                            message: page.message)
-                    .tag(index)
+                        .tag(index)
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
@@ -61,7 +60,7 @@ struct AllChatsOnboarding: View {
     // MARK: - Private
     
     private func onCallToAction() {
-        if (selectedTab == viewModel.viewState.pages.count - 1) {
+        if selectedTab == viewModel.viewState.pages.count - 1 {
             viewModel.send(viewAction: .cancel)
         } else {
             withAnimation {

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,9 +21,10 @@ struct RoomCreationParameters {
     var topic: String?
     var address: String?
     var avatarImage: UIImage? {
-        return userSelectedAvatar
+        userSelectedAvatar
     }
-    var isEncrypted: Bool = false
+
+    var isEncrypted = false
     var joinRule: MXRoomJoinRule = .private {
         didSet {
             switch joinRule {
@@ -38,8 +39,9 @@ struct RoomCreationParameters {
             }
         }
     }
-    var showInDirectory: Bool = false
-    var isRoomSuggested: Bool = false
+
+    var showInDirectory = false
+    var isRoomSuggested = false
     
     var userSelectedAvatar: UIImage?
 }

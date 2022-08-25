@@ -20,21 +20,20 @@ protocol KeyBackupSetupSuccessFromPassphraseViewControllerDelegate: AnyObject {
     func keyBackupSetupSuccessFromPassphraseViewControllerDidTapDoneAction(_ viewController: KeyBackupSetupSuccessFromPassphraseViewController)
 }
 
-final class KeyBackupSetupSuccessFromPassphraseViewController: UIViewController {    
-    
+final class KeyBackupSetupSuccessFromPassphraseViewController: UIViewController {
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var keyBackupLogoImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var keyBackupLogoImageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var saveRecoveryKeyButtonBackgroundView: UIView!
-    @IBOutlet private weak var saveRecoveryKeyButton: UIButton!
+    @IBOutlet private var saveRecoveryKeyButtonBackgroundView: UIView!
+    @IBOutlet private var saveRecoveryKeyButton: UIButton!
     
-    @IBOutlet private weak var doneButtonBackgroundView: UIView!
-    @IBOutlet private weak var doneButton: UIButton!
+    @IBOutlet private var doneButtonBackgroundView: UIView!
+    @IBOutlet private var doneButton: UIButton!
     
     // MARK: Private
     
@@ -61,56 +60,55 @@ final class KeyBackupSetupSuccessFromPassphraseViewController: UIViewController 
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.keyBackupSetupTitle
+        title = VectorL10n.keyBackupSetupTitle
         
-        self.setupViews()
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        setupViews()
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Hide back button
-        self.navigationItem.setHidesBackButton(true, animated: animated)
+        navigationItem.setHidesBackButton(true, animated: animated)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
     
     private func setupViews() {
-        
         let keybackupLogoImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
-        self.keyBackupLogoImageView.image = keybackupLogoImage
+        keyBackupLogoImageView.image = keybackupLogoImage
         
-        self.titleLabel.text = VectorL10n.keyBackupSetupSuccessTitle
-        self.informationLabel.text = VectorL10n.keyBackupSetupSuccessFromPassphraseInfo
+        titleLabel.text = VectorL10n.keyBackupSetupSuccessTitle
+        informationLabel.text = VectorL10n.keyBackupSetupSuccessFromPassphraseInfo
         
-        self.saveRecoveryKeyButton.setTitle(VectorL10n.keyBackupSetupSuccessFromPassphraseSaveRecoveryKeyAction, for: .normal)
-        self.doneButton.setTitle(VectorL10n.keyBackupSetupSuccessFromPassphraseDoneAction, for: .normal)
+        saveRecoveryKeyButton.setTitle(VectorL10n.keyBackupSetupSuccessFromPassphraseSaveRecoveryKeyAction, for: .normal)
+        doneButton.setTitle(VectorL10n.keyBackupSetupSuccessFromPassphraseDoneAction, for: .normal)
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.keyBackupLogoImageView.tintColor = theme.textPrimaryColor
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textPrimaryColor
+        keyBackupLogoImageView.tintColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.saveRecoveryKeyButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.saveRecoveryKeyButton)
+        saveRecoveryKeyButtonBackgroundView.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: saveRecoveryKeyButton)
         
-        self.doneButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.doneButton)
+        doneButtonBackgroundView.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: doneButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -118,35 +116,35 @@ final class KeyBackupSetupSuccessFromPassphraseViewController: UIViewController 
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func shareRecoveryKey() {
-        guard let recoveryKey = self.recoveryKey else {
+        guard let recoveryKey = recoveryKey else {
             return
         }
         
         // Set up activity view controller
-        let activityItems: [Any] = [ recoveryKey ]
+        let activityItems: [Any] = [recoveryKey]
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         
         // Configure source view when activity view controller is presented with a popover
         if let popoverPresentationController = activityViewController.popoverPresentationController {
-            popoverPresentationController.sourceView = self.saveRecoveryKeyButton
-            popoverPresentationController.sourceRect = self.saveRecoveryKeyButton.bounds
+            popoverPresentationController.sourceView = saveRecoveryKeyButton
+            popoverPresentationController.sourceRect = saveRecoveryKeyButton.bounds
             popoverPresentationController.permittedArrowDirections = [.down, .up]
         }
         
-        self.present(activityViewController, animated: true)
+        present(activityViewController, animated: true)
     }
     
     // MARK: - Actions
     
     @IBAction private func saveRecoveryKeyButtonAction(_ sender: Any) {
-        self.shareRecoveryKey()
+        shareRecoveryKey()
     }
     
     @IBAction private func doneButtonAction(_ sender: Any) {
-        self.delegate?.keyBackupSetupSuccessFromPassphraseViewControllerDidTapDoneAction(self)
+        delegate?.keyBackupSetupSuccessFromPassphraseViewControllerDidTapDoneAction(self)
     }
 }

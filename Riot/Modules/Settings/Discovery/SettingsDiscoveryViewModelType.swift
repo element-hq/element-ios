@@ -26,7 +26,6 @@ protocol SettingsDiscoveryViewModelViewDelegate: AnyObject {
 }
 
 protocol SettingsDiscoveryViewModelType {
-    
     var viewDelegate: SettingsDiscoveryViewModelViewDelegate? { get set }
     
     var coordinatorDelegate: SettingsDiscoveryViewModelCoordinatorDelegate? { get set }

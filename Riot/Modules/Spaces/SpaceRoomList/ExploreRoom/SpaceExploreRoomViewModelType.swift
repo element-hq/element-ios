@@ -33,8 +33,7 @@ protocol SpaceExploreRoomViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `SpaceExploreRoomViewController`
-protocol SpaceExploreRoomViewModelType {        
-        
+protocol SpaceExploreRoomViewModelType {
     var viewDelegate: SpaceExploreRoomViewModelViewDelegate? { get set }
     var coordinatorDelegate: SpaceExploreRoomViewModelCoordinatorDelegate? { get set }
     var showCancelMenuItem: Bool { get }

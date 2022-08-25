@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +14,10 @@
 // limitations under the License.
 //
 
-import UIKit
-import Reusable
 import Mapbox
+import Reusable
 import SwiftUI
+import UIKit
 
 protocol RoomTimelineLocationViewDelegate: AnyObject {
     func roomTimelineLocationViewDidTapStopButton(_ roomTimelineLocationView: RoomTimelineLocationView)
@@ -41,11 +41,11 @@ struct TimelineLiveLocationViewData {
     let coordinate: CLLocationCoordinate2D?
     
     var showTimer: Bool {
-        return timeLeftString != nil
+        timeLeftString != nil
     }
     
     var showRightButton: Bool {
-        return rightButtonTitle != nil
+        rightButtonTitle != nil
     }
     
     var showMap: Bool {
@@ -61,7 +61,6 @@ enum TimelineLiveLocationViewState {
     case outgoing(_ status: LiveLocationSharingStatus) // live location started from current user
 }
 
-
 enum LiveLocationSharingStatus {
     case starting
     case started(_ coordinate: CLLocationCoordinate2D, _ timeleft: TimeInterval)
@@ -75,10 +74,9 @@ enum RightButtonTag: Int {
 }
 
 class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegate {
-
     // MARK: - Constants
     
-    private struct Constants {
+    private enum Constants {
         static let mapHeight: CGFloat = 300.0
         static let mapZoomLevel = 15.0
         static let cellBorderRadius: CGFloat = 1.0
@@ -86,6 +84,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     }
     
     // MARK: - Properties
+
     // MARK: Private
     
     @IBOutlet private var descriptionContainerView: UIView!
@@ -94,6 +93,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     @IBOutlet private var attributionLabel: UILabel!
     
     // MARK: - Live Location
+
     @IBOutlet private var placeholderBackground: UIImageView!
     @IBOutlet private var placeholderIconView: UIImageView!
     @IBOutlet private var liveLocationContainerView: UIView!
@@ -110,13 +110,14 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     private var mapView: MGLMapView!
     
-    private var isMapViewLoadingFailed: Bool = false {
+    private var isMapViewLoadingFailed = false {
         didSet {
             if oldValue != isMapViewLoadingFailed {
-                self.mapViewLoadingStateDidChange()
+                mapViewLoadingStateDidChange()
             }
         }
     }
+
     private var annotationView: LocationMarkerView?
     private static var usernameColorGenerator = UserNameColorGenerator()
     private var theme: Theme!
@@ -179,12 +180,11 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     // MARK: - Private
     
     private func resetMapViewLoadingState() {
-        self.isMapViewLoadingFailed = false
+        isMapViewLoadingFailed = false
     }
     
     private func mapViewLoadingStateDidChange() {
-        
-        if mapView.isHidden == false && self.isMapViewLoadingFailed {
+        if mapView.isHidden == false, isMapViewLoadingFailed {
             mapLoadingErrorContainerView.isHidden = false
             mapView.isHidden = true
             attributionLabel.isHidden = true
@@ -197,7 +197,6 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
                                  userAvatarData: AvatarViewData? = nil,
                                  mapStyleURL: URL,
                                  bannerViewData: TimelineLiveLocationViewData? = nil) {
-        
         resetMapViewLoadingState()
         
         if let location = location {
@@ -270,7 +269,6 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     }
     
     private func liveLocationBannerViewData(from viewState: TimelineLiveLocationViewState) -> TimelineLiveLocationViewData {
-        
         let status: LiveLocationSharingStatus
         let iconTint: UIColor
         let title: String
@@ -329,13 +327,13 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         }
         
         return TimelineLiveLocationViewData(status: status,
-                                          iconTint: iconTint,
-                                          title: title,
-                                          titleColor: titleColor,
-                                          timeLeftString: timeLeftString,
-                                          rightButtonTitle: rightButtonTitle,
-                                          rightButtonTag: rightButtonTag,
-                                          coordinate: liveCoordinate)
+                                            iconTint: iconTint,
+                                            title: title,
+                                            titleColor: titleColor,
+                                            timeLeftString: timeLeftString,
+                                            rightButtonTitle: rightButtonTitle,
+                                            rightButtonTag: rightButtonTag,
+                                            coordinate: liveCoordinate)
     }
     
     private func generateTimerString(for timestamp: Double,
@@ -367,9 +365,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
                         userAvatarData: viewData.userAvatarData,
                         mapStyleURL: viewData.mapStyleURL,
                         bannerViewData: bannerViewData)
-        
     }
-    
     
     // MARK: - Themable
     
@@ -391,18 +387,17 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     // MARK: - MGLMapViewDelegate
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-        return annotationView
+        annotationView
     }
     
     func mapViewDidFailLoadingMap(_ mapView: MGLMapView, withError error: Error) {
-        
         MXLog.error("[RoomTimelineLocationView] Failed to load map", context: error)
         
-        self.isMapViewLoadingFailed = true
+        isMapViewLoadingFailed = true
     }
     
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
-        self.isMapViewLoadingFailed = false
+        isMapViewLoadingFailed = false
     }
     
     // MARK: - Action

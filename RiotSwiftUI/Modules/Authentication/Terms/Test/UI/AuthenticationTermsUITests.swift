@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class AuthenticationTermsUITests: MockScreenTestCase {
     func testMatrixDotOrg() {
@@ -38,5 +38,4 @@ class AuthenticationTermsUITests: MockScreenTestCase {
         XCTAssertTrue(nextButton.exists, "The next button should always exist.")
         XCTAssertEqual(nextButton.isEnabled, accepted, "The next button should be enabled when the terms are accepted")
     }
-
 }

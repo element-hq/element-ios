@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class SegmentedRouter: NSObject, TabbedRouterType {
-    
     // MARK: - Private
     
     let segmentedController: SegmentedController
@@ -25,7 +24,7 @@ class SegmentedRouter: NSObject, TabbedRouterType {
     /// Returns the presentables associated to each view controller
     var tabs: [TabbedRouterTab] = [] {
         didSet {
-            segmentedController.tabs = tabs.compactMap({ tab in
+            segmentedController.tabs = tabs.compactMap { tab in
                 let viewController = tab.module.toPresentable()
                 
                 guard viewController is UITabBarController == false else {
@@ -33,7 +32,7 @@ class SegmentedRouter: NSObject, TabbedRouterType {
                 }
                 
                 return SegmentedControllerTab(title: tab.title, viewController: viewController)
-            })
+            }
         }
     }
     
@@ -54,8 +53,6 @@ class SegmentedRouter: NSObject, TabbedRouterType {
     }
 
     func toPresentable() -> UIViewController {
-        return segmentedController
+        segmentedController
     }
-    
-    
 }

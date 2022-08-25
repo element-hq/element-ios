@@ -19,7 +19,6 @@
 import UIKit
 
 final class ReactionHistoryViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum TableView {
@@ -31,7 +30,7 @@ final class ReactionHistoryViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private var tableView: UITableView!
     
     // MARK: Private
 
@@ -39,11 +38,10 @@ final class ReactionHistoryViewController: UIViewController {
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
-    private var isViewAppearedOnce: Bool = false
+    private var isViewAppearedOnce = false
     
     private var reactionHistoryViewDataList: [ReactionHistoryViewData] = []
     
-
     // MARK: - Setup
     
     class func instantiate(with viewModel: ReactionHistoryViewModelType) -> ReactionHistoryViewController {
@@ -60,31 +58,31 @@ final class ReactionHistoryViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.reactionHistoryTitle
+        title = VectorL10n.reactionHistoryTitle
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
         
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.setupViews()
+        setupViews()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.process(viewAction: .loadMore)
+        viewModel.process(viewAction: .loadMore)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if self.isViewAppearedOnce == false {
-            self.isViewAppearedOnce = true
+        if isViewAppearedOnce == false {
+            isViewAppearedOnce = true
         }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -92,10 +90,10 @@ final class ReactionHistoryViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
-        self.tableView.backgroundColor = theme.backgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
+        tableView.backgroundColor = theme.backgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
     }
@@ -105,17 +103,17 @@ final class ReactionHistoryViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupTableView() {
-        self.tableView.contentInset = TableView.contentInset
+        tableView.contentInset = TableView.contentInset
         
-        self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.estimatedRowHeight = TableView.estimatedRowHeight
-        self.tableView.register(cellType: ReactionHistoryViewCell.self)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = TableView.estimatedRowHeight
+        tableView.register(cellType: ReactionHistoryViewCell.self)
         
-        self.tableView.tableFooterView = UIView()
+        tableView.tableFooterView = UIView()
     }
     
     private func setupViews() {
@@ -123,57 +121,57 @@ final class ReactionHistoryViewController: UIViewController {
             self?.closeButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = closeBarButtonItem
+        navigationItem.rightBarButtonItem = closeBarButtonItem
         
-        self.setupTableView()
+        setupTableView()
     }
 
     private func render(viewState: ReactionHistoryViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(reactionHistoryViewDataList: let reactionHistoryViewDataList, allDataLoaded: let allDataLoaded):
-            self.renderLoaded(reactionHistoryViewDataList: reactionHistoryViewDataList, allDataLoaded: allDataLoaded)
+            renderLoaded(reactionHistoryViewDataList: reactionHistoryViewDataList, allDataLoaded: allDataLoaded)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(reactionHistoryViewDataList: [ReactionHistoryViewData], allDataLoaded: Bool) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.reactionHistoryViewDataList = reactionHistoryViewDataList
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     // MARK: - Actions
 
     private func closeButtonAction() {
-        self.viewModel.process(viewAction: .close)
+        viewModel.process(viewAction: .close)
     }
 }
 
 // MARK: - UITableViewDataSource
+
 extension ReactionHistoryViewController: UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.reactionHistoryViewDataList.count
+        reactionHistoryViewDataList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reactionHistoryCell = tableView.dequeueReusableCell(for: indexPath, cellType: ReactionHistoryViewCell.self)
 
-        let reactionHistoryViewData = self.reactionHistoryViewDataList[indexPath.row]
+        let reactionHistoryViewData = reactionHistoryViewDataList[indexPath.row]
 
-        reactionHistoryCell.update(theme: self.theme)
+        reactionHistoryCell.update(theme: theme)
         reactionHistoryCell.fill(with: reactionHistoryViewData)
 
         return reactionHistoryCell
@@ -181,26 +179,25 @@ extension ReactionHistoryViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
+
 extension ReactionHistoryViewController: UITableViewDelegate {
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        guard self.isViewAppearedOnce else {
+        guard isViewAppearedOnce else {
             return
         }
         
         // Check if a scroll beyond scroll view content occurs
         let distanceFromBottom = scrollView.contentSize.height - scrollView.contentOffset.y
         if distanceFromBottom < scrollView.frame.size.height {
-            self.viewModel.process(viewAction: .loadMore)
+            viewModel.process(viewAction: .loadMore)
         }
     }
 }
 
 // MARK: - ReactionHistoryViewModelViewDelegate
-extension ReactionHistoryViewController: ReactionHistoryViewModelViewDelegate {
 
+extension ReactionHistoryViewController: ReactionHistoryViewModelViewDelegate {
     func reactionHistoryViewModel(_ viewModel: ReactionHistoryViewModelType, didUpdateViewState viewSate: ReactionHistoryViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

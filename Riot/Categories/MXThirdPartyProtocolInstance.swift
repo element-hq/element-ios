@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,9 +17,8 @@
 import Foundation
 
 extension MXThirdPartyProtocolInstance {
-    
-    open override func jsonDictionary() -> [AnyHashable: Any]! {
-        return [
+    override open func jsonDictionary() -> [AnyHashable: Any]! {
+        [
             "network_id": networkId as Any,
             "fields": fields as Any,
             "instance_id": instanceId as Any,

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,12 +18,11 @@ import Foundation
 import Reusable
 
 class SpaceMenuSwitchViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
-    
     // MARK: - Properties
     
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var selectionView: UIView!
-    @IBOutlet private weak var switchView: UISwitch!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var selectionView: UIView!
+    @IBOutlet private var switchView: UISwitch!
 
     // MARK: - Private
     
@@ -34,9 +33,9 @@ class SpaceMenuSwitchViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        self.selectionStyle = .none
-        self.selectionView.layer.cornerRadius = 8.0
-        self.selectionView.layer.masksToBounds = true
+        selectionStyle = .none
+        selectionView.layer.cornerRadius = 8.0
+        selectionView.layer.masksToBounds = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -50,24 +49,25 @@ class SpaceMenuSwitchViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
     // MARK: - Public
     
     func update(with viewData: SpaceMenuListItemViewData) {
-        self.titleLabel.text = viewData.title
-        self.switchView.isOn = (viewData.value as? Bool) ?? false
+        titleLabel.text = viewData.title
+        switchView.isOn = (viewData.value as? Bool) ?? false
         
         viewData.delegate = self
     }
     
     func update(theme: Theme) {
         self.theme = theme
-        self.backgroundColor = theme.colors.background
-        self.titleLabel.textColor = theme.colors.primaryContent
-        self.titleLabel.font = theme.fonts.body
-        self.selectionView.backgroundColor = theme.colors.separator
+        backgroundColor = theme.colors.background
+        titleLabel.textColor = theme.colors.primaryContent
+        titleLabel.font = theme.fonts.body
+        selectionView.backgroundColor = theme.colors.separator
     }
 }
 
 // MARK: - SpaceMenuListItemViewDataDelegate
+
 extension SpaceMenuSwitchViewCell: SpaceMenuListItemViewDataDelegate {
     func spaceMenuItemValueDidChange(_ item: SpaceMenuListItemViewData) {
-        self.switchView.setOn((item.value as? Bool) ?? false, animated: true)
+        switchView.setOn((item.value as? Bool) ?? false, animated: true)
     }
 }

@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class DeviceVerificationStartCoordinator: DeviceVerificationStartCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,30 +48,31 @@ final class DeviceVerificationStartCoordinator: DeviceVerificationStartCoordinat
     
     // MARK: - Public methods
     
-    func start() {            
-        self.deviceVerificationStartViewModel.coordinatorDelegate = self
+    func start() {
+        deviceVerificationStartViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.deviceVerificationStartViewController
+        deviceVerificationStartViewController
     }
 }
 
 // MARK: - DeviceVerificationStartViewModelCoordinatorDelegate
+
 extension DeviceVerificationStartCoordinator: DeviceVerificationStartViewModelCoordinatorDelegate {
     func deviceVerificationStartViewModelDidUseLegacyVerification(_ viewModel: DeviceVerificationStartViewModelType) {
-        self.delegate?.deviceVerificationStartCoordinatorDidCancel(self) 
+        delegate?.deviceVerificationStartCoordinatorDidCancel(self)
     }
 
     func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
-        self.delegate?.deviceVerificationStartCoordinator(self, didCompleteWithOutgoingTransaction: transaction)
+        delegate?.deviceVerificationStartCoordinator(self, didCompleteWithOutgoingTransaction: transaction)
     }
 
     func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didTransactionCancelled transaction: MXSASTransaction) {
-        self.delegate?.deviceVerificationStartCoordinator(self, didTransactionCancelled: transaction)
+        delegate?.deviceVerificationStartCoordinator(self, didTransactionCancelled: transaction)
     }
     
     func deviceVerificationStartViewModelDidCancel(_ viewModel: DeviceVerificationStartViewModelType) {
-        self.delegate?.deviceVerificationStartCoordinatorDidCancel(self)
+        delegate?.deviceVerificationStartCoordinatorDidCancel(self)
     }
 }

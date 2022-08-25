@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class TemplateRoomListService: TemplateRoomListServiceProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -27,6 +26,7 @@ class TemplateRoomListService: TemplateRoomListServiceProtocol {
     private var listenerReference: Any?
     
     // MARK: Public
+
     private(set) var roomsSubject: CurrentValueSubject<[TemplateRoomListRoom], Never>
     
     // MARK: - Setup
@@ -35,15 +35,13 @@ class TemplateRoomListService: TemplateRoomListServiceProtocol {
         self.session = session
         
         let unencryptedRooms = session.rooms
-            .filter({ !$0.summary.isEncrypted })
+            .filter { !$0.summary.isEncrypted }
             .map(TemplateRoomListRoom.init(mxRoom:))
-        self.roomsSubject = CurrentValueSubject(unencryptedRooms)
+        roomsSubject = CurrentValueSubject(unencryptedRooms)
     }
-
 }
 
-fileprivate extension TemplateRoomListRoom {
-    
+private extension TemplateRoomListRoom {
     init(mxRoom: MXRoom) {
         self.init(id: mxRoom.roomId, avatar: mxRoom.avatarData, displayName: mxRoom.summary.displayname)
     }

@@ -19,7 +19,6 @@
 import Foundation
 
 final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -72,13 +71,13 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     func process(viewAction: RoomInfoListViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .navigate(let target):
-            self.navigate(to: target)
+            navigate(to: target)
         case .leave:
-            self.leave()
+            leave()
         case .cancel:
-            self.coordinatorDelegate?.roomInfoListViewModelDidCancel(self)
+            coordinatorDelegate?.roomInfoListViewModelDidCancel(self)
         }
     }
     
@@ -94,21 +93,21 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     
     @objc private func roomSummaryUpdated(_ notification: Notification) {
         //  force update view
-        self.update(viewState: .loaded(viewData: viewData))
+        update(viewState: .loaded(viewData: viewData))
     }
     
     private func loadData() {
-        self.update(viewState: .loaded(viewData: viewData))
+        update(viewState: .loaded(viewData: viewData))
     }
     
     private func navigate(to target: RoomInfoListTarget) {
-        self.coordinatorDelegate?.roomInfoListViewModel(self, wantsToNavigateTo: target)
+        coordinatorDelegate?.roomInfoListViewModel(self, wantsToNavigateTo: target)
     }
     
     private func leave() {
-        self.stopObservingSummaryChanges()
-        self.update(viewState: .loading)
-        self.room.leave { (response) in
+        stopObservingSummaryChanges()
+        update(viewState: .loading)
+        room.leave { response in
             switch response {
             case .success:
                 self.coordinatorDelegate?.roomInfoListViewModelDidLeaveRoom(self)
@@ -120,6 +119,6 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     }
     
     private func update(viewState: RoomInfoListViewState) {
-        self.viewDelegate?.roomInfoListViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.roomInfoListViewModel(self, didUpdateViewState: viewState)
     }
 }

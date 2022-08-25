@@ -23,16 +23,14 @@ protocol Presentable {
 
 extension UIViewController: Presentable {
     public func toPresentable() -> UIViewController {
-        return self
+        self
     }
 }
 
 extension Presentable {
-    
     /// Returns a new module from the presentable without a pop completion block
     /// - Returns: Module
     func toModule() -> NavigationModule {
-        return NavigationModule(presentable: self, popCompletion: nil)
+        NavigationModule(presentable: self, popCompletion: nil)
     }
-    
 }

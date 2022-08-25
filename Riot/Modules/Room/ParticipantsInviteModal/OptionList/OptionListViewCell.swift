@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,18 +18,17 @@ import Foundation
 import Reusable
 
 class OptionListViewCell: UITableViewCell, NibReusable {
-    
     // MARK: - Properties
     
-    @IBOutlet private weak var iconView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var detailLabel: UILabel!
-    @IBOutlet private weak var selectionView: UIView!
-    @IBOutlet private weak var chevronView: UIImageView!
+    @IBOutlet private var iconView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var detailLabel: UILabel!
+    @IBOutlet private var selectionView: UIView!
+    @IBOutlet private var chevronView: UIImageView!
     
-    var isEnabled: Bool = true {
+    var isEnabled = true {
         didSet {
-            self.contentView.alpha = isEnabled ? 1 : 0.3
+            contentView.alpha = isEnabled ? 1 : 0.3
         }
     }
 
@@ -42,9 +41,9 @@ class OptionListViewCell: UITableViewCell, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        self.selectionStyle = .none
-        self.selectionView.layer.cornerRadius = 8.0
-        self.selectionView.layer.masksToBounds = true
+        selectionStyle = .none
+        selectionView.layer.cornerRadius = 8.0
+        selectionView.layer.masksToBounds = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -60,26 +59,26 @@ class OptionListViewCell: UITableViewCell, NibReusable {
     // MARK: - Public
     
     func update(with viewData: OptionListItemViewData) {
-        self.iconView.image = viewData.image?.withRenderingMode(.alwaysTemplate)
-        self.titleLabel.text = viewData.title
-        self.detailLabel.text = viewData.detail
-        self.chevronView.image = viewData.accessoryImage?.withRenderingMode(.alwaysTemplate)
-        self.isEnabled = viewData.enabled
+        iconView.image = viewData.image?.withRenderingMode(.alwaysTemplate)
+        titleLabel.text = viewData.title
+        detailLabel.text = viewData.detail
+        chevronView.image = viewData.accessoryImage?.withRenderingMode(.alwaysTemplate)
+        isEnabled = viewData.enabled
     }
     
     func update(theme: Theme) {
         self.theme = theme
-        self.backgroundColor = theme.colors.background
-        self.iconView.tintColor = theme.colors.secondaryContent
+        backgroundColor = theme.colors.background
+        iconView.tintColor = theme.colors.secondaryContent
         
-        self.titleLabel.textColor = theme.colors.primaryContent
-        self.titleLabel.font = theme.fonts.bodySB
+        titleLabel.textColor = theme.colors.primaryContent
+        titleLabel.font = theme.fonts.bodySB
         
-        self.detailLabel.textColor = theme.colors.secondaryContent
-        self.detailLabel.font = theme.fonts.footnote
+        detailLabel.textColor = theme.colors.secondaryContent
+        detailLabel.font = theme.fonts.footnote
         
-        self.selectionView.backgroundColor = theme.colors.quinaryContent
+        selectionView.backgroundColor = theme.colors.quinaryContent
         
-        self.chevronView.tintColor = theme.colors.quarterlyContent
+        chevronView.tintColor = theme.colors.quarterlyContent
     }
 }

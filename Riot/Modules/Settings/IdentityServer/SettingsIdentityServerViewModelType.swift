@@ -24,7 +24,6 @@ protocol SettingsIdentityServerViewModelViewDelegate: AnyObject {
 
 /// Protocol describing the view model used by `SettingsIdentityServerViewController`
 protocol SettingsIdentityServerViewModelType {
-        
     var viewDelegate: SettingsIdentityServerViewModelViewDelegate? { get set }
 
     var identityServer: String? { get }

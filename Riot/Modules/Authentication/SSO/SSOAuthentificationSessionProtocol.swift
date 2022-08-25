@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,6 @@ protocol SSOAuthenticationSessionContextProviding {
 
 /// SSOAuthentificationSessionProtocol abstract a session that an app uses to authenticate a user through a web service (SFAuthenticationSession or ASWebAuthenticationSession).
 protocol SSOAuthentificationSessionProtocol {
-    
     /// Cancels the authentication session. Dismiss displayed authentication screen.
     func cancel()
     

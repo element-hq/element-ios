@@ -25,16 +25,15 @@ protocol SecureBackupSetupIntroViewControllerDelegate: AnyObject {
 
 @objcMembers
 final class SecureBackupSetupIntroViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var informationLabel: UILabel!    
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var topSeparatorView: UIView!
-    @IBOutlet private weak var secureKeyCell: SecureBackupSetupIntroCell!
-    @IBOutlet private weak var securePassphraseCell: SecureBackupSetupIntroCell!
+    @IBOutlet private var topSeparatorView: UIView!
+    @IBOutlet private var secureKeyCell: SecureBackupSetupIntroCell!
+    @IBOutlet private var securePassphraseCell: SecureBackupSetupIntroCell!
     
     // MARK: Private
     
@@ -66,58 +65,58 @@ final class SecureBackupSetupIntroViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.vc_removeBackTitle()
+        vc_removeBackTitle()
         
-        self.setupViews()
-        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityIndicatorPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.checkKeyBackup()
+        checkKeyBackup()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
     
     private func setupViews() {
-        if self.cancellable {
+        if cancellable {
             let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
                 guard let self = self else {
                     return
                 }
                 self.delegate?.secureBackupSetupIntroViewControllerDidCancel(self, showSkipAlert: true)
             }
-            self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+            navigationItem.rightBarButtonItem = cancelBarButtonItem
         }
         
-        self.title = VectorL10n.secureKeyBackupSetupIntroTitle
+        title = VectorL10n.secureKeyBackupSetupIntroTitle
                 
-        self.informationLabel.text = VectorL10n.secureKeyBackupSetupIntroInfo
+        informationLabel.text = VectorL10n.secureKeyBackupSetupIntroInfo
         
-        self.secureKeyCell.fill(title: VectorL10n.secureKeyBackupSetupIntroUseSecurityKeyTitle,
-                                information: VectorL10n.secureKeyBackupSetupIntroUseSecurityKeyInfo,
-                                image: Asset.Images.secretsSetupKey.image)
+        secureKeyCell.fill(title: VectorL10n.secureKeyBackupSetupIntroUseSecurityKeyTitle,
+                           information: VectorL10n.secureKeyBackupSetupIntroUseSecurityKeyInfo,
+                           image: Asset.Images.secretsSetupKey.image)
         
-        self.secureKeyCell.action = { [weak self] in
+        secureKeyCell.action = { [weak self] in
             guard let self = self else {
                 return
             }
             self.delegate?.secureBackupSetupIntroViewControllerDidTapUseKey(self)
         }
         
-        self.securePassphraseCell.fill(title: VectorL10n.secureKeyBackupSetupIntroUseSecurityPassphraseTitle,
-                                information: VectorL10n.secureKeyBackupSetupIntroUseSecurityPassphraseInfo,
-                                image: Asset.Images.secretsSetupPassphrase.image)
+        securePassphraseCell.fill(title: VectorL10n.secureKeyBackupSetupIntroUseSecurityPassphraseTitle,
+                                  information: VectorL10n.secureKeyBackupSetupIntroUseSecurityPassphraseInfo,
+                                  image: Asset.Images.secretsSetupPassphrase.image)
         
-        self.securePassphraseCell.action = { [weak self] in
+        securePassphraseCell.action = { [weak self] in
             guard let self = self else {
                 return
             }
@@ -128,45 +127,45 @@ final class SecureBackupSetupIntroViewController: UIViewController {
     }
 
     private func setupBackupMethods() {
-        let secureBackupSetupMethods = self.viewModel.homeserverEncryptionConfiguration.secureBackupSetupMethods
+        let secureBackupSetupMethods = viewModel.homeserverEncryptionConfiguration.secureBackupSetupMethods
 
         // Hide setup methods that are not listed
         if !secureBackupSetupMethods.contains(.key) {
-            self.secureKeyCell.isHidden = true
+            secureKeyCell.isHidden = true
         }
 
         if !secureBackupSetupMethods.contains(.passphrase) {
-            self.securePassphraseCell.isHidden = true
+            securePassphraseCell.isHidden = true
         }
     }
     
     private func renderLoading() {
-        self.activityIndicatorPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityIndicatorPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded() {
-        self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+        activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
     }
     
     private func render(error: Error) {
-        self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.informationLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.topSeparatorView.backgroundColor = theme.lineBreakColor
-        self.secureKeyCell.update(theme: theme)
-        self.securePassphraseCell.update(theme: theme)
+        topSeparatorView.backgroundColor = theme.lineBreakColor
+        secureKeyCell.update(theme: theme)
+        securePassphraseCell.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -174,36 +173,35 @@ final class SecureBackupSetupIntroViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     // TODO: To remove
     private func checkKeyBackup() {
-        guard self.viewModel.checkKeyBackup else {            
+        guard viewModel.checkKeyBackup else {
             return
         }
         
-        guard let keyBackup = self.viewModel.keyBackup else {
+        guard let keyBackup = viewModel.keyBackup else {
             return
         }
         
         // If a backup already exists and we do not have the private key,
         // we need to get this private key first. Ask the user to make a key backup restore to catch it
-        if keyBackup.keyBackupVersion != nil && keyBackup.hasPrivateKeyInCryptoStore == false {
-            
+        if keyBackup.keyBackupVersion != nil, keyBackup.hasPrivateKeyInCryptoStore == false {
             let alertController = UIAlertController(title: VectorL10n.secureKeyBackupSetupExistingBackupErrorTitle,
-                                                   message: VectorL10n.secureKeyBackupSetupExistingBackupErrorInfo,
-                                                   preferredStyle: .alert)
+                                                    message: VectorL10n.secureKeyBackupSetupExistingBackupErrorInfo,
+                                                    preferredStyle: .alert)
 
-            let connectAction = UIAlertAction(title: VectorL10n.secureKeyBackupSetupExistingBackupErrorUnlockIt, style: .default) { (_) in
+            let connectAction = UIAlertAction(title: VectorL10n.secureKeyBackupSetupExistingBackupErrorUnlockIt, style: .default) { _ in
                 self.delegate?.secureBackupSetupIntroViewControllerDidTapConnectToKeyBackup(self)
             }
             
-            let resetAction = UIAlertAction(title: VectorL10n.secureKeyBackupSetupExistingBackupErrorDeleteIt, style: .destructive) { (_) in
+            let resetAction = UIAlertAction(title: VectorL10n.secureKeyBackupSetupExistingBackupErrorDeleteIt, style: .destructive) { _ in
                 self.deleteKeybackup()
             }
             
-            let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel) { (_) in
+            let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel) { _ in
                 self.delegate?.secureBackupSetupIntroViewControllerDidCancel(self, showSkipAlert: false)
             }
             
@@ -211,24 +209,24 @@ final class SecureBackupSetupIntroViewController: UIViewController {
             alertController.addAction(resetAction)
             alertController.addAction(cancelAction)
             
-            self.present(alertController, animated: true)
+            present(alertController, animated: true)
         }
     }
     
     // TODO: Move to view model
     private func deleteKeybackup() {
-        guard let keyBackup = self.viewModel.keyBackup, let keybackupVersion = keyBackup.keyBackupVersion?.version else {
+        guard let keyBackup = viewModel.keyBackup, let keybackupVersion = keyBackup.keyBackupVersion?.version else {
             return
         }
         
-        self.renderLoading()
+        renderLoading()
         keyBackup.deleteVersion(keybackupVersion, success: { [weak self] in
             guard let self = self else {
                 return
             }
             self.renderLoaded()
             self.checkKeyBackup()
-        }, failure: { [weak self] (error) in
+        }, failure: { [weak self] error in
             guard let self = self else {
                 return
             }

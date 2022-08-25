@@ -25,7 +25,6 @@ enum KeyVerificationDataLoadingViewModelError: Error {
 }
 
 final class KeyVerificationDataLoadingViewModel: KeyVerificationDataLoadingViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -52,14 +51,14 @@ final class KeyVerificationDataLoadingViewModel: KeyVerificationDataLoadingViewM
         self.verificationKind = verificationKind
         self.otherUserId = otherUserId
         self.otherDeviceId = otherDeviceId
-        self.keyVerificationRequest = nil
+        keyVerificationRequest = nil
     }
     
     init(session: MXSession, verificationKind: KeyVerificationKind, keyVerificationRequest: MXKeyVerificationRequest) {
         self.session = session
         self.verificationKind = verificationKind
-        self.otherUserId = nil
-        self.otherDeviceId = nil
+        otherUserId = nil
+        otherDeviceId = nil
         self.keyVerificationRequest = keyVerificationRequest
     }
     
@@ -72,34 +71,33 @@ final class KeyVerificationDataLoadingViewModel: KeyVerificationDataLoadingViewM
     func process(viewAction: KeyVerificationDataLoadingViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .cancel:
-            self.coordinatorDelegate?.keyVerificationDataLoadingViewModelDidCancel(self)
+            coordinatorDelegate?.keyVerificationDataLoadingViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        if let keyVerificationRequest = self.keyVerificationRequest {
-            self.acceptKeyVerificationRequest(keyVerificationRequest)
+        if let keyVerificationRequest = keyVerificationRequest {
+            acceptKeyVerificationRequest(keyVerificationRequest)
         } else {
-            self.downloadOtherDeviceKeys()
+            downloadOtherDeviceKeys()
         }
     }
     
     private func acceptKeyVerificationRequest(_ keyVerificationRequest: MXKeyVerificationRequest) {
+        update(viewState: .loading)
         
-        self.update(viewState: .loading)
-        
-        keyVerificationRequest.accept(withMethods: self.keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] in
+        keyVerificationRequest.accept(withMethods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] in
             guard let self = self else {
                 return
             }
             
             self.coordinatorDelegate?.keyVerificationDataLoadingViewModel(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
             
-        }, failure: { [weak self] (error) in
+        }, failure: { [weak self] error in
             guard let self = self else {
                 return
             }
@@ -109,18 +107,17 @@ final class KeyVerificationDataLoadingViewModel: KeyVerificationDataLoadingViewM
     
     private func downloadOtherDeviceKeys() {
         guard let crypto = session.crypto,
-            let otherUserId = self.otherUserId,
-            let otherDeviceId = self.otherDeviceId else {
-            self.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
+              let otherUserId = otherUserId,
+              let otherDeviceId = otherDeviceId else {
+            update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
             MXLog.debug("[KeyVerificationDataLoadingViewModel] Error session.crypto is nil")
             return
         }
         
         if let otherUser = session.user(withUserId: otherUserId) {
-            
-            self.update(viewState: .loading)
+            update(viewState: .loading)
            
-            self.currentOperation = crypto.downloadKeys([otherUserId], forceDownload: false, success: { [weak self] (usersDevicesMap, crossSigningKeysMap) in
+            currentOperation = crypto.downloadKeys([otherUserId], forceDownload: false, success: { [weak self] usersDevicesMap, _ in
                 guard let sself = self else {
                     return
                 }
@@ -132,22 +129,22 @@ final class KeyVerificationDataLoadingViewModel: KeyVerificationDataLoadingViewM
                     sself.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
                 }
                 
-                }, failure: { [weak self] (error) in
-                    guard let sself = self else {
-                        return
-                    }
+            }, failure: { [weak self] error in
+                guard let sself = self else {
+                    return
+                }
                     
-                    let finalError = error ?? KeyVerificationDataLoadingViewModelError.unknown
+                let finalError = error ?? KeyVerificationDataLoadingViewModelError.unknown
                     
-                    sself.update(viewState: .error(finalError))
+                sself.update(viewState: .error(finalError))
             })
             
         } else {
-            self.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
+            update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
         }
     }
     
     private func update(viewState: KeyVerificationDataLoadingViewState) {
-        self.viewDelegate?.keyVerificationDataLoadingViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.keyVerificationDataLoadingViewModel(self, didUpdateViewState: viewState)
     }
 }

@@ -14,8 +14,7 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-class UserSessionsOverviewUITests: MockScreenTestCase {
-}
+class UserSessionsOverviewUITests: MockScreenTestCase { }

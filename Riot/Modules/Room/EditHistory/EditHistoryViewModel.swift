@@ -19,7 +19,6 @@
 import Foundation
 
 final class EditHistoryViewModel: EditHistoryViewModelType {
-
     // MARK: - Constants
 
     private enum Pagination {
@@ -53,11 +52,11 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
          formatter: MXKEventFormatter,
          event: MXEvent) {
         self.session = session
-        self.aggregations = session.aggregations
+        aggregations = session.aggregations
         self.formatter = formatter
         self.event = event
-        self.roomId = event.roomId
-        self.messageFormattingQueue = DispatchQueue(label: "\(type(of: self)).messageFormattingQueue")
+        roomId = event.roomId
+        messageFormattingQueue = DispatchQueue(label: "\(type(of: self)).messageFormattingQueue")
     }
     
     // MARK: - Public
@@ -65,16 +64,16 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     func process(viewAction: EditHistoryViewAction) {
         switch viewAction {
         case .loadMore:
-            self.loadMoreHistory()
+            loadMoreHistory()
         case .close:
-            self.coordinatorDelegate?.editHistoryViewModelDidClose(self)
+            coordinatorDelegate?.editHistoryViewModelDidClose(self)
         }
     }
     
     // MARK: - Private
     
     private func canLoadMoreHistory() -> Bool {
-        guard let viewState = self.viewState else {
+        guard let viewState = viewState else {
             return true
         }
         
@@ -93,19 +92,19 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     }
     
     private func loadMoreHistory() {
-        guard self.canLoadMoreHistory() else {
+        guard canLoadMoreHistory() else {
             MXLog.debug("[EditHistoryViewModel] loadMoreHistory: pending loading or all data loaded")
             return
         }
         
-        guard self.operation == nil else {
+        guard operation == nil else {
             MXLog.debug("[EditHistoryViewModel] loadMoreHistory: operation already pending")
             return
         }
         
-        self.update(viewState: .loading)
+        update(viewState: .loading)
         
-        self.operation = self.aggregations.replaceEvents(forEvent: self.event.eventId, isEncrypted: self.event.isEncrypted, inRoom: self.roomId, from: self.nextBatch, limit: Int(Pagination.count), success: { [weak self] (response) in
+        operation = aggregations.replaceEvents(forEvent: event.eventId, isEncrypted: event.isEncrypted, inRoom: roomId, from: nextBatch, limit: Int(Pagination.count), success: { [weak self] response in
             guard let sself = self else {
                 return
             }
@@ -116,23 +115,23 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
             sself.process(editEvents: response.chunk, originalEvent: response.originalEvent, nextBatch: response.nextBatch)
  
         }, failure: { [weak self] error in
-                guard let sself = self else {
-                    return
-                }
+            guard let sself = self else {
+                return
+            }
 
-                sself.operation = nil
-                sself.update(viewState: .error(error))
+            sself.operation = nil
+            sself.update(viewState: .error(error))
         })
     }
 
     private func process(editEvents: [MXEvent], originalEvent: MXEvent?, nextBatch: String?) {
-        self.messageFormattingQueue.async {
+        messageFormattingQueue.async {
             var newMessages: [EditHistoryMessage] = []
 
             let editsMessages = editEvents.reversed()
-                .compactMap { (editEvent) -> EditHistoryMessage? in
-                    return self.process(editEvent: editEvent)
-            }
+                .compactMap { editEvent -> EditHistoryMessage? in
+                    self.process(editEvent: editEvent)
+                }
 
             newMessages.append(contentsOf: editsMessages)
 
@@ -159,8 +158,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     }
 
     private func process(originalEvent: MXEvent) {
-        self.messageFormattingQueue.async {
-
+        messageFormattingQueue.async {
             var addedCount = 0
             if let newMessage = self.process(event: originalEvent, ts: originalEvent.originServerTs) {
                 addedCount = 1
@@ -176,7 +174,6 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     }
     
     private func editHistorySections(from editHistoryMessages: [EditHistoryMessage]) -> [EditHistorySection] {
-        
         // Group edit messages by day
         
         let initial: [Date: [EditHistoryMessage]] = [:]
@@ -211,21 +208,20 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
 
     private func process(editEvent: MXEvent) -> EditHistoryMessage? {
         // Create a temporary MXEvent that represents this edition
-        guard let editedEvent = self.event.editedEvent(fromReplacementEvent: editEvent) else {
+        guard let editedEvent = event.editedEvent(fromReplacementEvent: editEvent) else {
             MXLog.debug("[EditHistoryViewModel] processEditEvent: Cannot build edited event: \(editEvent.eventId ?? "")")
             return nil
         }
 
-        return self.process(event: editedEvent, ts: editEvent.originServerTs)
+        return process(event: editedEvent, ts: editEvent.originServerTs)
     }
 
     private func process(event: MXEvent, ts: UInt64) -> EditHistoryMessage? {
-
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-        guard let message = self.formatter.attributedString(from: event,
-                                                            with: nil,
-                                                            andLatestRoomState: nil,
-                                                            error: formatterError) else {
+        guard let message = formatter.attributedString(from: event,
+                                                       with: nil,
+                                                       andLatestRoomState: nil,
+                                                       error: formatterError) else {
             MXLog.debug("[EditHistoryViewModel] processEditEvent: cannot format(error: \(formatterError)) event: \(event.eventId ?? "")")
             return nil
         }
@@ -237,6 +233,6 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     
     private func update(viewState: EditHistoryViewState) {
         self.viewState = viewState
-        self.viewDelegate?.editHistoryViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.editHistoryViewModel(self, didUpdateViewState: viewState)
     }
 }

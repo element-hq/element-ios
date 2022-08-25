@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class PublicRoomsDirectoryViewModel {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -28,11 +27,11 @@ class PublicRoomsDirectoryViewModel {
     // MARK: Public
     
     var roomsCount: Int {
-        return Int(dataSource.roomsCount)
+        Int(dataSource.roomsCount)
     }
     
     var directoryServerDisplayname: String? {
-        return dataSource.directoryServerDisplayname
+        dataSource.directoryServerDisplayname
     }
     
     // MARK: - Setup
@@ -45,12 +44,12 @@ class PublicRoomsDirectoryViewModel {
     // MARK: - Public
     
     func roomViewModel(at row: Int) -> DirectoryRoomTableViewCellVM? {
-        self.roomViewModel(at: IndexPath(row: row, section: 0))
+        roomViewModel(at: IndexPath(row: row, section: 0))
     }
     
     func roomViewModel(at indexPath: IndexPath) -> DirectoryRoomTableViewCellVM? {
         guard let publicRoom = dataSource.room(at: indexPath) else { return nil }
-        return self.roomCellViewModel(with: publicRoom)
+        return roomCellViewModel(with: publicRoom)
     }
     
     // MARK: - Private

@@ -18,7 +18,6 @@ import Foundation
 
 @objcMembers
 class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
-    
     // MARK: - Constants
     
     private enum Sizing {
@@ -73,18 +72,18 @@ class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.commonInit()
+        commonInit()
     }
     
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private func commonInit() {
-        
-        self.selectionStyle = .none
-        self.setupContentView()
-        self.update(theme: ThemeService.shared().theme)
+        selectionStyle = .none
+        setupContentView()
+        update(theme: ThemeService.shared().theme)
         
         super.setupViews()
     }
@@ -92,12 +91,11 @@ class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.roomCellContentView?.update(theme: theme)
-        self.keyVerificationCellInnerContentView?.update(theme: theme)
+        roomCellContentView?.update(theme: theme)
+        keyVerificationCellInnerContentView?.update(theme: theme)
     }
     
     func buildUserInfoText(with userId: String, userDisplayName: String?) -> String {
-        
         let userInfoText: String
         
         if let userDisplayName = userDisplayName {
@@ -110,11 +108,11 @@ class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
     }
     
     func senderId(from bubbleCellData: MXKRoomBubbleCellData) -> String {
-        return bubbleCellData.senderId ?? ""
+        bubbleCellData.senderId ?? ""
     }
     
     func senderDisplayName(from bubbleCellData: MXKRoomBubbleCellData) -> String? {
-        let senderId = self.senderId(from: bubbleCellData)
+        let senderId = senderId(from: bubbleCellData)
         guard let senderDisplayName = bubbleCellData.senderDisplayName, senderId != senderDisplayName else {
             return nil
         }
@@ -122,21 +120,19 @@ class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
     }
     
     class func sizingView() -> KeyVerificationBaseCell {
-        fatalError("[KeyVerificationBaseBubbleCell] Subclass should implement this method")       
+        fatalError("[KeyVerificationBaseBubbleCell] Subclass should implement this method")
     }
     
     class func sizingViewHeightHashValue(from bubbleCellData: MXKRoomBubbleCellData) -> Int {
-        
         var hasher = Hasher()
         
-        let sizingView = self.sizingView()
+        let sizingView = sizingView()
         sizingView.render(bubbleCellData)
         
         // Add cell class name
-        hasher.combine(self.defaultReuseIdentifier())
+        hasher.combine(defaultReuseIdentifier())
         
         if let keyVerificationCellInnerContentView = sizingView.keyVerificationCellInnerContentView {
-        
             // Add other user info
             if let otherUserInfo = keyVerificationCellInnerContentView.otherUserInfo {
                 hasher.combine(otherUserInfo)
@@ -144,7 +140,7 @@ class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
             
             // Add request status text
             if keyVerificationCellInnerContentView.isRequestStatusHidden == false,
-                let requestStatusText = sizingView.keyVerificationCellInnerContentView?.requestStatusText {
+               let requestStatusText = sizingView.keyVerificationCellInnerContentView?.requestStatusText {
                 hasher.combine(requestStatusText)
             }
         }
@@ -155,12 +151,12 @@ class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
     // MARK: - Overrides
     
     override class func defaultReuseIdentifier() -> String! {
-        return String(describing: self)
+        String(describing: self)
     }
     
     override func didEndDisplay() {
         super.didEndDisplay()
-        self.removeReadReceiptsView()
+        removeReadReceiptsView()
     }
     
     override class func height(for cellData: MXKCellData!, withMaximumWidth maxWidth: CGFloat) -> CGFloat {
@@ -174,12 +170,12 @@ class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
         
         let height: CGFloat
         
-        let sizingViewHeight = self.findOrCreateSizingViewHeight(from: roomBubbleCellData)
+        let sizingViewHeight = findOrCreateSizingViewHeight(from: roomBubbleCellData)
         
         if let cachedHeight = sizingViewHeight.heights[maxWidth] {
             height = cachedHeight
         } else {
-            height = self.contentViewHeight(for: roomBubbleCellData, fitting: maxWidth)
+            height = contentViewHeight(for: roomBubbleCellData, fitting: maxWidth)
             sizingViewHeight.heights[maxWidth] = height
         }
         
@@ -189,10 +185,10 @@ class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        if let bubbleData = self.bubbleData,
-            let roomCellContentView = self.roomCellContentView,
-            let paginationDate = bubbleData.date,
-            roomCellContentView.showPaginationTitle {
+        if let bubbleData = bubbleData,
+           let roomCellContentView = roomCellContentView,
+           let paginationDate = bubbleData.date,
+           roomCellContentView.showPaginationTitle {
             roomCellContentView.paginationLabel.text = bubbleData.eventFormatter.dateString(from: paginationDate, withTime: false)?.uppercased()
         }
     }
@@ -200,28 +196,26 @@ class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
     // MARK: - Private
     
     private func setupContentView() {
-        if self.roomCellContentView == nil {
-            
+        if roomCellContentView == nil {
             let roomCellContentView = RoomCellContentView.instantiate()
             
             let innerContentView = KeyVerificationCellInnerContentView.instantiate()
             
             roomCellContentView.innerContentView.vc_addSubViewMatchingParent(innerContentView)
             
-            self.contentView.vc_addSubViewMatchingParent(roomCellContentView)
+            contentView.vc_addSubViewMatchingParent(roomCellContentView)
             
             self.roomCellContentView = roomCellContentView
-            self.keyVerificationCellInnerContentView = innerContentView
+            keyVerificationCellInnerContentView = innerContentView
         }
     }
     
     private static func findOrCreateSizingViewHeight(from bubbleData: MXKRoomBubbleCellData) -> SizingViewHeight {
-        
         let sizingViewHeight: SizingViewHeight
         let bubbleDataHashValue = bubbleData.hashValue
         
-        if let foundSizingViewHeight = self.Sizing.sizes.first(where: { (sizingViewHeight) -> Bool in
-            return sizingViewHeight.uniqueIdentifier == bubbleDataHashValue
+        if let foundSizingViewHeight = Sizing.sizes.first(where: { sizingViewHeight -> Bool in
+            sizingViewHeight.uniqueIdentifier == bubbleDataHashValue
         }) {
             sizingViewHeight = foundSizingViewHeight
         } else {
@@ -232,7 +226,7 @@ class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
     }
     
     private static func contentViewHeight(for cellData: MXKCellData, fitting width: CGFloat) -> CGFloat {
-        let sizingView = self.sizingView()
+        let sizingView = sizingView()
         
         sizingView.render(cellData)
         sizingView.layoutIfNeeded()
@@ -241,7 +235,7 @@ class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
         var height = sizingView.systemLayoutSizeFitting(fittingSize).height
         
         if let roomBubbleCellData = cellData as? RoomBubbleCellData, let readReceipts = roomBubbleCellData.readReceipts, readReceipts.count > 0 {
-            height+=PlainRoomCellLayoutConstants.readReceiptsViewHeight
+            height += PlainRoomCellLayoutConstants.readReceiptsViewHeight
         }
         
         return height
@@ -249,13 +243,13 @@ class KeyVerificationBaseCell: MXKRoomBubbleTableViewCell {
 }
 
 // MARK: - RoomCellReadReceiptsDisplayable
+
 extension KeyVerificationBaseCell: RoomCellReadReceiptsDisplayable {
-    
     func addReadReceiptsView(_ readReceiptsView: UIView) {
-        self.roomCellContentView?.addReadReceiptsView(readReceiptsView)
+        roomCellContentView?.addReadReceiptsView(readReceiptsView)
     }
     
     func removeReadReceiptsView() {
-        self.roomCellContentView?.removeReadReceiptsView()
+        roomCellContentView?.removeReadReceiptsView()
     }
 }

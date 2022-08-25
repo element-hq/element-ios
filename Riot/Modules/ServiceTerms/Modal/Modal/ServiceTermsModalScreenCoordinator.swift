@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class ServiceTermsModalScreenCoordinator: ServiceTermsModalScreenCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -38,7 +37,6 @@ final class ServiceTermsModalScreenCoordinator: ServiceTermsModalScreenCoordinat
     // MARK: - Setup
     
     init(serviceTerms: MXServiceTerms) {
-        
         let serviceTermsModalScreenViewModel = ServiceTermsModalScreenViewModel(serviceTerms: serviceTerms)
         let serviceTermsModalScreenViewController = ServiceTermsModalScreenViewController.instantiate(with: serviceTermsModalScreenViewModel)
         self.serviceTermsModalScreenViewModel = serviceTermsModalScreenViewModel
@@ -47,27 +45,27 @@ final class ServiceTermsModalScreenCoordinator: ServiceTermsModalScreenCoordinat
     
     // MARK: - Public methods
     
-    func start() {            
-        self.serviceTermsModalScreenViewModel.coordinatorDelegate = self
+    func start() {
+        serviceTermsModalScreenViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.serviceTermsModalScreenViewController
+        serviceTermsModalScreenViewController
     }
 }
 
 // MARK: - ServiceTermsModalScreenViewModelCoordinatorDelegate
-extension ServiceTermsModalScreenCoordinator: ServiceTermsModalScreenViewModelCoordinatorDelegate {
 
+extension ServiceTermsModalScreenCoordinator: ServiceTermsModalScreenViewModelCoordinatorDelegate {
     func serviceTermsModalScreenViewModelDidAccept(_ viewModel: ServiceTermsModalScreenViewModelType) {
-        self.delegate?.serviceTermsModalScreenCoordinatorDidAccept(self)
+        delegate?.serviceTermsModalScreenCoordinatorDidAccept(self)
     }
 
     func serviceTermsModalScreenViewModel(_ coordinator: ServiceTermsModalScreenViewModelType, displayPolicy policy: MXLoginPolicyData) {
-        self.delegate?.serviceTermsModalScreenCoordinator(self, displayPolicy: policy)
+        delegate?.serviceTermsModalScreenCoordinator(self, displayPolicy: policy)
     }
 
     func serviceTermsModalScreenViewModelDidDecline(_ viewModel: ServiceTermsModalScreenViewModelType) {
-        self.delegate?.serviceTermsModalScreenCoordinatorDidDecline(self)
+        delegate?.serviceTermsModalScreenCoordinatorDidDecline(self)
     }
 }

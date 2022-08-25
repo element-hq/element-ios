@@ -20,7 +20,6 @@ import Foundation
 
 /// ThreadsCoordinator input parameters
 struct ThreadsCoordinatorParameters {
-    
     /// The Matrix session
     let session: MXSession
     

@@ -19,7 +19,6 @@
 import Foundation
 
 final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -48,25 +47,25 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
     func process(viewAction: SecretsSetupRecoveryKeyViewAction) {
         switch viewAction {
         case .loadData:
-            self.update(viewState: .loaded(self.passphraseOnly))
-            self.createSecureKey()
+            update(viewState: .loaded(passphraseOnly))
+            createSecureKey()
         case .done:
-            self.coordinatorDelegate?.secretsSetupRecoveryKeyViewModelDidComplete(self)
+            coordinatorDelegate?.secretsSetupRecoveryKeyViewModelDidComplete(self)
         case .errorAlertOk:
-            self.coordinatorDelegate?.secretsSetupRecoveryKeyViewModelDidFailed(self)
+            coordinatorDelegate?.secretsSetupRecoveryKeyViewModelDidFailed(self)
         case .cancel:
-            self.coordinatorDelegate?.secretsSetupRecoveryKeyViewModelDidCancel(self)
+            coordinatorDelegate?.secretsSetupRecoveryKeyViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func createSecureKey() {
-        self.update(viewState: .loading)
+        update(viewState: .loading)
         
-        if allowOverwrite && self.recoveryService.hasRecovery() {
+        if allowOverwrite, recoveryService.hasRecovery() {
             MXLog.debug("[SecretsSetupRecoveryKeyViewModel] createSecureKey: Overwrite existing secure backup")
-            self.recoveryService.deleteRecovery(withDeleteServicesBackups: true) {
+            recoveryService.deleteRecovery(withDeleteServicesBackups: true) {
                 self.createSecureKey()
             } failure: { error in
                 self.update(viewState: .error(error))
@@ -74,7 +73,7 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
             return
         }
                 
-        self.recoveryService.createRecovery(forSecrets: nil, withPassphrase: self.passphrase, createServicesBackups: true, success: { secretStorageKeyCreationInfo in
+        recoveryService.createRecovery(forSecrets: nil, withPassphrase: passphrase, createServicesBackups: true, success: { secretStorageKeyCreationInfo in
             self.update(viewState: .recoveryCreated(secretStorageKeyCreationInfo.recoveryKey))
         }, failure: { error in
             self.update(viewState: .error(error))
@@ -82,6 +81,6 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
     }
     
     private func update(viewState: SecretsSetupRecoveryKeyViewState) {
-        self.viewDelegate?.secretsSetupRecoveryKeyViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.secretsSetupRecoveryKeyViewModel(self, didUpdateViewState: viewState)
     }
 }

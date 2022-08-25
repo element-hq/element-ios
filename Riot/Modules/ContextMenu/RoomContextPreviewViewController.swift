@@ -16,12 +16,11 @@
  limitations under the License.
  */
 
-import UIKit
 import MatrixSDK
+import UIKit
 
 /// `RoomContextPreviewViewController` is used to dsplay room preview data within a `UIContextMenuContentPreviewProvider`
 final class RoomContextPreviewViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -30,23 +29,23 @@ final class RoomContextPreviewViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var avatarView: RoomAvatarView!
-    @IBOutlet private weak var spaceAvatarView: SpaceAvatarView!
-    @IBOutlet private weak var userIconView: UIImageView!
-    @IBOutlet private weak var membersLabel: UILabel!
-    @IBOutlet private weak var roomsIconView: UIImageView!
-    @IBOutlet private weak var roomsLabel: UILabel!
-    @IBOutlet private weak var topicLabel: UILabel!
-    @IBOutlet private weak var topicLabelBottomMargin: NSLayoutConstraint!
-    @IBOutlet private weak var spaceTagView: UIView!
-    @IBOutlet private weak var spaceTagLabel: UILabel!
-    @IBOutlet private weak var stackView: UIStackView!
-    @IBOutlet private weak var inviteHeaderView: UIView!
-    @IBOutlet private weak var inviterAvatarView: UserAvatarView!
-    @IBOutlet private weak var inviteTitleLabel: UILabel!
-    @IBOutlet private weak var inviteDetailLabel: UILabel!
-    @IBOutlet private weak var inviteSeparatorView: UIView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var avatarView: RoomAvatarView!
+    @IBOutlet private var spaceAvatarView: SpaceAvatarView!
+    @IBOutlet private var userIconView: UIImageView!
+    @IBOutlet private var membersLabel: UILabel!
+    @IBOutlet private var roomsIconView: UIImageView!
+    @IBOutlet private var roomsLabel: UILabel!
+    @IBOutlet private var topicLabel: UILabel!
+    @IBOutlet private var topicLabelBottomMargin: NSLayoutConstraint!
+    @IBOutlet private var spaceTagView: UIView!
+    @IBOutlet private var spaceTagLabel: UILabel!
+    @IBOutlet private var stackView: UIStackView!
+    @IBOutlet private var inviteHeaderView: UIView!
+    @IBOutlet private var inviterAvatarView: UserAvatarView!
+    @IBOutlet private var inviteTitleLabel: UILabel!
+    @IBOutlet private var inviteDetailLabel: UILabel!
+    @IBOutlet private var inviteSeparatorView: UIView!
 
     // MARK: Private
 
@@ -73,14 +72,14 @@ final class RoomContextPreviewViewController: UIViewController {
         viewModel.viewDelegate = self
         
         setupView()
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
-        self.viewModel.process(viewAction: .loadData)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
+        viewModel.process(viewAction: .loadData)
     }
 
     override var preferredContentSize: CGSize {
         get {
-            return CGSize(width: Constants.popoverWidth, height: self.intrisicHeight(with: Constants.popoverWidth))
+            CGSize(width: Constants.popoverWidth, height: intrisicHeight(with: Constants.popoverWidth))
         }
         set {
             super.preferredContentSize = newValue
@@ -92,39 +91,39 @@ final class RoomContextPreviewViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.titleLabel.font = theme.fonts.title3SB
+        titleLabel.textColor = theme.textPrimaryColor
+        titleLabel.font = theme.fonts.title3SB
         
-        self.membersLabel.font = theme.fonts.caption1
-        self.membersLabel.textColor = theme.colors.tertiaryContent
+        membersLabel.font = theme.fonts.caption1
+        membersLabel.textColor = theme.colors.tertiaryContent
         
-        self.topicLabel.font = theme.fonts.caption1
-        self.topicLabel.textColor = theme.colors.tertiaryContent
+        topicLabel.font = theme.fonts.caption1
+        topicLabel.textColor = theme.colors.tertiaryContent
         
-        self.userIconView.tintColor = theme.colors.tertiaryContent
+        userIconView.tintColor = theme.colors.tertiaryContent
         
-        self.roomsIconView.tintColor = theme.colors.tertiaryContent
-        self.roomsLabel.font = theme.fonts.caption1
-        self.roomsLabel.textColor = theme.colors.tertiaryContent
+        roomsIconView.tintColor = theme.colors.tertiaryContent
+        roomsLabel.font = theme.fonts.caption1
+        roomsLabel.textColor = theme.colors.tertiaryContent
         
-        self.spaceTagView.backgroundColor = theme.colors.quinaryContent
-        self.spaceTagLabel.font = theme.fonts.caption1
-        self.spaceTagLabel.textColor = theme.colors.tertiaryContent
+        spaceTagView.backgroundColor = theme.colors.quinaryContent
+        spaceTagLabel.font = theme.fonts.caption1
+        spaceTagLabel.textColor = theme.colors.tertiaryContent
         
-        self.inviteTitleLabel.textColor = theme.colors.tertiaryContent
-        self.inviteTitleLabel.font = theme.fonts.calloutSB
+        inviteTitleLabel.textColor = theme.colors.tertiaryContent
+        inviteTitleLabel.font = theme.fonts.calloutSB
         
-        self.inviteDetailLabel.textColor = theme.colors.tertiaryContent
-        self.inviteDetailLabel.font = theme.fonts.caption1
+        inviteDetailLabel.textColor = theme.colors.tertiaryContent
+        inviteDetailLabel.font = theme.fonts.caption1
         
-        self.inviteSeparatorView.backgroundColor = theme.colors.quinaryContent
-        self.inviterAvatarView.alpha = 0.7
+        inviteSeparatorView.backgroundColor = theme.colors.quinaryContent
+        inviterAvatarView.alpha = 0.7
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -132,16 +131,16 @@ final class RoomContextPreviewViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func renderLoaded(with parameters: RoomContextPreviewLoadedParameters) {
-        self.titleLabel.text = parameters.displayName
+        titleLabel.text = parameters.displayName
 
-        self.spaceTagView.isHidden = parameters.roomType != .space
+        spaceTagView.isHidden = parameters.roomType != .space
         
-        self.avatarView.isHidden = parameters.roomType == .space
-        self.spaceAvatarView.isHidden = parameters.roomType != .space
+        avatarView.isHidden = parameters.roomType == .space
+        spaceAvatarView.isHidden = parameters.roomType != .space
         
         let avatarViewData = AvatarViewData(matrixItemId: parameters.roomId,
                                             displayName: parameters.displayName,
@@ -149,19 +148,19 @@ final class RoomContextPreviewViewController: UIViewController {
                                             mediaManager: mediaManager,
                                             fallbackImage: .matrixItem(parameters.roomId, parameters.displayName))
 
-        if !self.avatarView.isHidden {
-            self.avatarView.fill(with: avatarViewData)
+        if !avatarView.isHidden {
+            avatarView.fill(with: avatarViewData)
         }
-        if !self.spaceAvatarView.isHidden {
-            self.spaceAvatarView.fill(with: avatarViewData)
+        if !spaceAvatarView.isHidden {
+            spaceAvatarView.fill(with: avatarViewData)
         }
         
         if parameters.membership != .invite {
-            self.stackView.removeArrangedSubview(self.inviteHeaderView)
-            self.inviteHeaderView.isHidden = true
+            stackView.removeArrangedSubview(inviteHeaderView)
+            inviteHeaderView.isHidden = true
         }
         
-        self.membersLabel.text = parameters.membersCount == 1 ? VectorL10n.roomTitleOneMember : VectorL10n.roomTitleMembers("\(parameters.membersCount)")
+        membersLabel.text = parameters.membersCount == 1 ? VectorL10n.roomTitleOneMember : VectorL10n.roomTitleMembers("\(parameters.membersCount)")
         
         if let inviterId = parameters.inviterId {
             if let inviter = parameters.inviter {
@@ -170,40 +169,40 @@ final class RoomContextPreviewViewController: UIViewController {
                                                 avatarUrl: inviter.avatarUrl,
                                                 mediaManager: mediaManager,
                                                 fallbackImage: .matrixItem(inviterId, inviter.displayname))
-                self.inviterAvatarView.fill(with: avatarData)
+                inviterAvatarView.fill(with: avatarData)
                 if let inviterName = inviter.displayname {
-                    self.inviteTitleLabel.text = VectorL10n.noticeRoomInviteYou(inviterName)
-                    self.inviteDetailLabel.text = inviterId
+                    inviteTitleLabel.text = VectorL10n.noticeRoomInviteYou(inviterName)
+                    inviteDetailLabel.text = inviterId
                 } else {
-                    self.inviteTitleLabel.text = VectorL10n.noticeRoomInviteYou(inviterId)
+                    inviteTitleLabel.text = VectorL10n.noticeRoomInviteYou(inviterId)
                 }
             } else {
-                self.inviteTitleLabel.text = VectorL10n.noticeRoomInviteYou(inviterId)
+                inviteTitleLabel.text = VectorL10n.noticeRoomInviteYou(inviterId)
             }
         }
         
-        self.topicLabel.text = parameters.topic
-        topicLabelBottomMargin.constant = self.topicLabel.text.isEmptyOrNil ? 0 : 16
+        topicLabel.text = parameters.topic
+        topicLabelBottomMargin.constant = topicLabel.text.isEmptyOrNil ? 0 : 16
 
-        self.roomsIconView.isHidden = parameters.roomType != .space
-        self.roomsLabel.isHidden = parameters.roomType != .space
+        roomsIconView.isHidden = parameters.roomType != .space
+        roomsLabel.isHidden = parameters.roomType != .space
         
-        self.view.layoutIfNeeded()
+        view.layoutIfNeeded()
     }
     
     private func setupView() {
-        self.spaceTagView.layer.masksToBounds = true
-        self.spaceTagView.layer.cornerRadius = 2
-        self.spaceTagLabel.text = VectorL10n.spaceTag
+        spaceTagView.layer.masksToBounds = true
+        spaceTagView.layer.cornerRadius = 2
+        spaceTagLabel.text = VectorL10n.spaceTag
     }
     
     private func intrisicHeight(with width: CGFloat) -> CGFloat {
-        if self.topicLabel.text.isEmptyOrNil {
-            return self.topicLabel.frame.minY
+        if topicLabel.text.isEmptyOrNil {
+            return topicLabel.frame.minY
         }
 
-        let topicHeight = self.topicLabel.sizeThatFits(CGSize(width: width - self.topicLabel.frame.minX * 2, height: 0)).height
-        return self.topicLabel.frame.minY + topicHeight + 16
+        let topicHeight = topicLabel.sizeThatFits(CGSize(width: width - topicLabel.frame.minX * 2, height: 0)).height
+        return topicLabel.frame.minY + topicHeight + 16
     }
 }
 
@@ -213,7 +212,7 @@ extension RoomContextPreviewViewController: RoomContextPreviewViewModelViewDeleg
     func roomContextPreviewViewModel(_ viewModel: RoomContextPreviewViewModelProtocol, didUpdateViewState viewSate: RoomContextPreviewViewState) {
         switch viewSate {
         case .loaded(let parameters):
-            self.renderLoaded(with: parameters)
+            renderLoaded(with: parameters)
         }
     }
 }

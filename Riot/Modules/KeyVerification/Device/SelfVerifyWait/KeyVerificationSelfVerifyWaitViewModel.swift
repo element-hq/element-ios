@@ -19,7 +19,6 @@
 import Foundation
 
 final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWaitViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -40,10 +39,10 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     
     init(session: MXSession, isNewSignIn: Bool) {
         self.session = session
-        self.verificationManager = session.crypto.keyVerificationManager
-        self.keyVerificationService = KeyVerificationService()
+        verificationManager = session.crypto.keyVerificationManager
+        keyVerificationService = KeyVerificationService()
         self.isNewSignIn = isNewSignIn
-        self.secretsRecoveryAvailability = session.crypto.recoveryService.vc_availability
+        secretsRecoveryAvailability = session.crypto.recoveryService.vc_availability
     }
     
     deinit {
@@ -55,15 +54,15 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     func process(viewAction: KeyVerificationSelfVerifyWaitViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .cancel:
-            self.cancel()
+            cancel()
         case .recoverSecrets:
-            switch self.secretsRecoveryAvailability {
+            switch secretsRecoveryAvailability {
             case .notAvailable:
                 fatalError("Should not happen: When recovery is not available button is hidden")
             case .available(let secretsRecoveryMode):
-                self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, wantsToRecoverSecretsWith: secretsRecoveryMode)
+                coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, wantsToRecoverSecretsWith: secretsRecoveryMode)
             }
         }
     }
@@ -71,12 +70,11 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     // MARK: - Private
     
     private func loadData() {
-        
-        if !self.isNewSignIn {
+        if !isNewSignIn {
             MXLog.debug("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices")
             
             let keyVerificationService = KeyVerificationService()
-            self.verificationManager.requestVerificationByToDevice(withUserId: self.session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
+            verificationManager.requestVerificationByToDevice(withUserId: session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] keyVerificationRequest in
                 guard let self = self else {
                     return
                 }
@@ -91,12 +89,11 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
         } else {
             //  be sure that session has completed its first sync
             if session.state >= .running {
-                
                 // Always send request instead of waiting for an incoming one as per recent EW changes
                 MXLog.debug("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices instead of waiting")
                 
                 let keyVerificationService = KeyVerificationService()
-                self.verificationManager.requestVerificationByToDevice(withUserId: self.session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
+                verificationManager.requestVerificationByToDevice(withUserId: session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] keyVerificationRequest in
                     guard let self = self else {
                         return
                     }
@@ -109,7 +106,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
                 continueLoadData()
             } else {
                 //  show loader
-                self.update(viewState: .secretsRecoveryCheckingAvailability(VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsCheckingAvailability))
+                update(viewState: .secretsRecoveryCheckingAvailability(VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsCheckingAvailability))
                 NotificationCenter.default.addObserver(self, selector: #selector(sessionStateChanged), name: .mxSessionStateDidChange, object: session)
             }
         }
@@ -125,45 +122,44 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     
     private func continueLoadData() {
         //  update availability again
-        self.secretsRecoveryAvailability = session.crypto.recoveryService.vc_availability
+        secretsRecoveryAvailability = session.crypto.recoveryService.vc_availability
         
-        let viewData = KeyVerificationSelfVerifyWaitViewData(isNewSignIn: self.isNewSignIn, secretsRecoveryAvailability: self.secretsRecoveryAvailability)
+        let viewData = KeyVerificationSelfVerifyWaitViewData(isNewSignIn: isNewSignIn, secretsRecoveryAvailability: secretsRecoveryAvailability)
         
-        self.registerKeyVerificationManagerNewRequestNotification(for: self.verificationManager)
-        self.update(viewState: .loaded(viewData))
-        self.registerTransactionDidStateChangeNotification()
-        self.registerKeyVerificationRequestChangeNotification()
+        registerKeyVerificationManagerNewRequestNotification(for: verificationManager)
+        update(viewState: .loaded(viewData))
+        registerTransactionDidStateChangeNotification()
+        registerKeyVerificationRequestChangeNotification()
     }
     
     private func cancel() {
-        self.unregisterKeyVerificationRequestChangeNotification()
-        self.unregisterKeyVerificationManagerNewRequestNotification()
-        self.cancelKeyVerificationRequest()
-        self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModelDidCancel(self)
+        unregisterKeyVerificationRequestChangeNotification()
+        unregisterKeyVerificationManagerNewRequestNotification()
+        cancelKeyVerificationRequest()
+        coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModelDidCancel(self)
     }
     
     private func update(viewState: KeyVerificationSelfVerifyWaitViewState) {
-        self.viewDelegate?.keyVerificationSelfVerifyWaitViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.keyVerificationSelfVerifyWaitViewModel(self, didUpdateViewState: viewState)
     }
     
     private func cancelKeyVerificationRequest() {
-        self.keyVerificationRequest?.cancel(with: MXTransactionCancelCode.user(), success: nil, failure: nil)
+        keyVerificationRequest?.cancel(with: MXTransactionCancelCode.user(), success: nil, failure: nil)
     }
     
     private func acceptKeyVerificationRequest(_ keyVerificationRequest: MXKeyVerificationRequest) {
-        
-        keyVerificationRequest.accept(withMethods: self.keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] in
+        keyVerificationRequest.accept(withMethods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] in
             guard let self = self else {
                 return
             }
             
             self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
             
-            }, failure: { [weak self] (error) in
-                guard let self = self else {
-                    return
-                }
-                self.update(viewState: .error(error))
+        }, failure: { [weak self] error in
+            guard let self = self else {
+                return
+            }
+            self.update(viewState: .error(error))
         })
     }
     
@@ -180,19 +176,18 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     }
     
     @objc private func keyVerificationManagerNewRequestNotification(notification: Notification) {
-        
         guard let userInfo = notification.userInfo, let keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey] as? MXKeyVerificationByToDeviceRequest else {
             return
         }
         
         guard keyVerificationRequest.isFromMyUser,
-            keyVerificationRequest.isFromMyDevice == false,
-            keyVerificationRequest.state == MXKeyVerificationRequestStatePending else {
+              keyVerificationRequest.isFromMyDevice == false,
+              keyVerificationRequest.state == MXKeyVerificationRequestStatePending else {
             return
         }
         
-        self.unregisterTransactionDidStateChangeNotification()
-        self.acceptKeyVerificationRequest(keyVerificationRequest)
+        unregisterTransactionDidStateChangeNotification()
+        acceptKeyVerificationRequest(keyVerificationRequest)
     }
     
     // MARK: MXKeyVerificationRequestDidChangeNotification
@@ -225,9 +220,9 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
         }
         
         if keyVerificationRequest.state == MXKeyVerificationRequestStateReady {
-            self.unregisterKeyVerificationRequestChangeNotification()
-            self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self,
-                                                                             didAcceptKeyVerificationRequest: keyVerificationRequest)
+            unregisterKeyVerificationRequestChangeNotification()
+            coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self,
+                                                                        didAcceptKeyVerificationRequest: keyVerificationRequest)
         }
     }
     
@@ -243,10 +238,10 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
 
     @objc private func transactionDidStateChange(notification: Notification) {
         guard let sasTransaction = notification.object as? MXIncomingSASTransaction,
-            sasTransaction.otherUserId == self.session.myUserId else {
+              sasTransaction.otherUserId == self.session.myUserId else {
             return
         }
-        self.sasTransactionDidStateChange(sasTransaction)
+        sasTransactionDidStateChange(sasTransaction)
     }
 
     private func sasTransactionDidStateChange(_ transaction: MXIncomingSASTransaction) {
@@ -254,20 +249,20 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
         case MXSASTransactionStateIncomingShowAccept:
             transaction.accept()
         case MXSASTransactionStateShowSAS:
-            self.unregisterTransactionDidStateChangeNotification()
-            self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, didAcceptIncomingSASTransaction: transaction)
+            unregisterTransactionDidStateChangeNotification()
+            coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, didAcceptIncomingSASTransaction: transaction)
         case MXSASTransactionStateCancelled:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelled(reason))
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .cancelled(reason))
         case MXSASTransactionStateCancelledByMe:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelledByMe(reason))
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .cancelledByMe(reason))
         default:
             break
         }

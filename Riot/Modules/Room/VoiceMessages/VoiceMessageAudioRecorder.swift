@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import AVFoundation
+import Foundation
 
 protocol VoiceMessageAudioRecorderDelegate: AnyObject {
     func audioRecorderDidStartRecording(_ audioRecorder: VoiceMessageAudioRecorder)
@@ -28,7 +28,6 @@ enum VoiceMessageAudioRecorderError: Error {
 }
 
 class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
-    
     private enum Constants {
         static let silenceThreshold: Float = -50.0
     }
@@ -37,22 +36,21 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
     private let delegateContainer = DelegateContainer()
     
     var url: URL? {
-        return audioRecorder?.url
+        audioRecorder?.url
     }
     
     var currentTime: TimeInterval {
-        return audioRecorder?.currentTime ?? 0
+        audioRecorder?.currentTime ?? 0
     }
     
     var isRecording: Bool {
-        return audioRecorder?.isRecording ?? false
+        audioRecorder?.isRecording ?? false
     }
     
     func recordWithOutputURL(_ url: URL) {
-        
         let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
                         AVSampleRateKey: 48000,
-                        AVEncoderBitRateKey: 128000,
+                        AVEncoderBitRateKey: 128_000,
                         AVNumberOfChannelsKey: 1,
                         AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue]
         
@@ -79,29 +77,29 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
             try AVAudioSession.sharedInstance().setActive(false)
         } catch {
             delegateContainer.notifyDelegatesWithBlock { delegate in
-                (delegate as? VoiceMessageAudioRecorderDelegate)?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError) }
+                (delegate as? VoiceMessageAudioRecorderDelegate)?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError)
+            }
         }
-
     }
     
     func peakPowerForChannelNumber(_ channelNumber: Int) -> Float {
-        guard self.isRecording, let audioRecorder = audioRecorder else {
+        guard isRecording, let audioRecorder = audioRecorder else {
             return 0.0
         }
         
         audioRecorder.updateMeters()
 
-        return self.normalizedPowerLevelFromDecibels(audioRecorder.peakPower(forChannel: channelNumber))
+        return normalizedPowerLevelFromDecibels(audioRecorder.peakPower(forChannel: channelNumber))
     }
     
     func averagePowerForChannelNumber(_ channelNumber: Int) -> Float {
-        guard self.isRecording, let audioRecorder = audioRecorder else {
+        guard isRecording, let audioRecorder = audioRecorder else {
             return 0.0
         }
         
         audioRecorder.updateMeters()
         
-        return self.normalizedPowerLevelFromDecibels(audioRecorder.averagePower(forChannel: channelNumber))
+        return normalizedPowerLevelFromDecibels(audioRecorder.averagePower(forChannel: channelNumber))
     }
     
     func registerDelegate(_ delegate: VoiceMessageAudioPlayerDelegate) {
@@ -133,12 +131,12 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
     }
     
     private func normalizedPowerLevelFromDecibels(_ decibels: Float) -> Float {
-        return decibels / Constants.silenceThreshold
+        decibels / Constants.silenceThreshold
     }
 }
 
 extension String: LocalizedError {
-    public var errorDescription: String? { return self }
+    public var errorDescription: String? { self }
 }
 
 extension VoiceMessageAudioRecorderDelegate {

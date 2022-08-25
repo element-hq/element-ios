@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 protocol VoiceMessageToolbarViewDelegate: AnyObject {
     func voiceMessageToolbarViewDidRequestRecordingStart(_ toolbarView: VoiceMessageToolbarView)
@@ -36,15 +36,14 @@ enum VoiceMessageToolbarViewUIState {
 
 struct VoiceMessageToolbarViewDetails {
     var state: VoiceMessageToolbarViewUIState = .idle
-    var elapsedTime: String = ""
+    var elapsedTime = ""
     var audioSamples: [Float] = []
-    var isPlaying: Bool = false
-    var progress: Double = 0.0
+    var isPlaying = false
+    var progress = 0.0
     var toastMessage: String?
 }
 
 class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGestureRecognizerDelegate, VoiceMessagePlaybackViewDelegate {
-    
     private enum Constants {
         static let longPressMinimumDuration: TimeInterval = 0.0
         static let animationDuration: TimeInterval = 0.25
@@ -139,16 +138,16 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     func configureWithDetails(_ details: VoiceMessageToolbarViewDetails) {
         elapsedTimeLabel.text = details.elapsedTime
         
-        self.updateToastNotificationsWithDetails(details)
-        self.updatePlaybackViewWithDetails(details)
+        updateToastNotificationsWithDetails(details)
+        updatePlaybackViewWithDetails(details)
         
         if self.details?.state != details.state {
             switch details.state {
             case .record:
-                var convertedFrame = self.convert(slideToCancelLabel.frame, from: slideToCancelContainerView)
+                var convertedFrame = convert(slideToCancelLabel.frame, from: slideToCancelContainerView)
                 cancelLabelToRecordButtonDistance = recordButtonsContainerView.frame.minX - convertedFrame.maxX
                 
-                convertedFrame = self.convert(lockChevron.frame, from: lockContainerView)
+                convertedFrame = convert(lockChevron.frame, from: lockContainerView)
                 lockChevronToRecordButtonDistance = recordButtonsContainerView.frame.midY + convertedFrame.maxY
                 
                 lockChevronToLockButtonDistance = (lockChevron.frame.minY - lockButtonsContainerView.frame.midY) / 2
@@ -158,7 +157,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
                 cancelDrag()
             }
             
-            if details.state == .lockedModeRecord && self.details?.state == .record {
+            if details.state == .lockedModeRecord, self.details?.state == .record {
                 UIView.animate(withDuration: Constants.animationDuration) {
                     self.lockButtonsContainerView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
                 } completion: { _ in
@@ -173,7 +172,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     }
     
     func getRequiredNumberOfSamples() -> Int {
-        return playbackView.getRequiredNumberOfSamples()
+        playbackView.getRequiredNumberOfSamples()
     }
     
     // MARK: - Themable
@@ -186,11 +185,11 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     // MARK: - UIGestureRecognizerDelegate
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+        true
     }
     
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer == self.tapGesture, self.lastUIState != .lockedModeRecord {
+        if gestureRecognizer == tapGesture, lastUIState != .lockedModeRecord {
             return false
         }
         return true
@@ -206,9 +205,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         delegate?.voiceMessageToolbarViewDidRequestSeek(to: progress)
     }
     
-    func voiceMessagePlaybackViewDidChangeWidth() {
-        
-    }
+    func voiceMessagePlaybackViewDidChangeWidth() { }
     
     // MARK: - Private
     
@@ -224,13 +221,13 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     }
     
     @objc private func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
-        guard details?.state == .record && gestureRecognizer.state == .changed else {
+        guard details?.state == .record, gestureRecognizer.state == .changed else {
             return
         }
         
         let translation = gestureRecognizer.translation(in: self)
         
-        if abs(translation.x) <= Constants.panDirectionChangeThreshold && abs(translation.y) <= Constants.panDirectionChangeThreshold {
+        if abs(translation.x) <= Constants.panDirectionChangeThreshold, abs(translation.y) <= Constants.panDirectionChangeThreshold {
             panDirection = nil
         } else if panDirection == nil {
             if abs(translation.x) >= abs(translation.y) {
@@ -244,7 +241,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
             secondaryRecordButton.transform = CGAffineTransform(translationX: min(translation.x, 0.0), y: 0.0)
             slideToCancelContainerView.transform = CGAffineTransform(translationX: min(translation.x + cancelLabelToRecordButtonDistance, 0.0), y: 0.0)
             
-            if abs(translation.x - recordButtonsContainerView.frame.width / 2.0) > self.bounds.width / 2.0 {
+            if abs(translation.x - recordButtonsContainerView.frame.width / 2.0) > bounds.width / 2.0 {
                 delegate?.voiceMessageToolbarViewDidRequestRecordingCancel(self)
             }
         } else if panDirection == .up {
@@ -262,7 +259,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
             secondaryLockButton.alpha = transitionPercentage
             
             if transitionPercentage >= 1.0 {
-                self.delegate?.voiceMessageToolbarViewDidRequestLockedModeRecording(self)
+                delegate?.voiceMessageToolbarViewDidRequestLockedModeRecording(self)
             }
             
         } else {
@@ -282,7 +279,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
             return
         }
         
-        UIView.animate(withDuration: (animated ? Constants.animationDuration : 0.0), delay: 0.0, options: .beginFromCurrentState) {
+        UIView.animate(withDuration: animated ? Constants.animationDuration : 0.0, delay: 0.0, options: .beginFromCurrentState) {
             switch details.state {
             case .record:
                 self.lockContainerBackgroundView.alpha = 1.0
@@ -335,8 +332,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     private var lastUIState: VoiceMessageToolbarViewUIState = .idle
     
     private func updateToastNotificationsWithDetails(_ details: VoiceMessageToolbarViewDetails, animated: Bool = true) {
-        
-        guard self.toastNotificationLabel.text != details.toastMessage || lastUIState != details.state else {
+        guard toastNotificationLabel.text != details.toastMessage || lastUIState != details.state else {
             return
         }
         
@@ -349,15 +345,15 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         toastIdleTimer = nil
         
         if shouldShowNotification {
-            self.toastNotificationLabel.text = details.toastMessage
+            toastNotificationLabel.text = details.toastMessage
         }
         
-        UIView.animate(withDuration: (animated ? Constants.animationDuration : 0.0)) {
+        UIView.animate(withDuration: animated ? Constants.animationDuration : 0.0) {
             self.toastNotificationContainerView.alpha = requiredAlpha
         }
         
         if shouldShowNotification {
-            toastIdleTimer = Timer.scheduledTimer(withTimeInterval: Constants.toastDisplayTimeout, repeats: false) { [weak self] timer in
+            toastIdleTimer = Timer.scheduledTimer(withTimeInterval: Constants.toastDisplayTimeout, repeats: false) { [weak self] _ in
                 guard let self = self else {
                     return
                 }
@@ -373,7 +369,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     }
     
     private func updatePlaybackViewWithDetails(_ details: VoiceMessageToolbarViewDetails, animated: Bool = true) {
-        UIView.animate(withDuration: (animated ? Constants.animationDuration : 0.0)) {
+        UIView.animate(withDuration: animated ? Constants.animationDuration : 0.0) {
             var playbackViewDetails = VoiceMessagePlaybackViewDetails()
             playbackViewDetails.recording = (details.state == .record || details.state == .lockedModeRecord)
             playbackViewDetails.playing = details.isPlaying
@@ -386,7 +382,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     }
     
     private func startAnimatingRecordingIndicator() {
-        if self.details?.state != .record {
+        if details?.state != .record {
             return
         }
         
@@ -398,7 +394,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
             }
         } completion: { [weak self] _ in
             self?.startAnimatingRecordingIndicator()
-        }        
+        }
     }
     
     @IBAction private func onTrashButtonTap(_ sender: UIBarItem) {
@@ -410,7 +406,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     }
     
     @objc private func handleWaveformTap(_ gestureRecognizer: UITapGestureRecognizer) {
-        guard self.lastUIState == .lockedModeRecord else {
+        guard lastUIState == .lockedModeRecord else {
             return
         }
 

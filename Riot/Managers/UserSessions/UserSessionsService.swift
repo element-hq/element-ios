@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,13 +17,14 @@
 import Foundation
 
 // MARK: - UserSessionsService notification constants
-extension UserSessionsService {
-    public static let didAddUserSession = Notification.Name("UserSessionsServiceDidAddUserSession")
-    public static let willRemoveUserSession = Notification.Name("UserSessionsServiceWillRemoveUserSession")
-    public static let didRemoveUserSession = Notification.Name("UserSessionsServiceDidRemoveUserSession")
-    public static let userSessionDidChange = Notification.Name("UserSessionsServiceUserSessionDidChange")
+
+public extension UserSessionsService {
+    static let didAddUserSession = Notification.Name("UserSessionsServiceDidAddUserSession")
+    static let willRemoveUserSession = Notification.Name("UserSessionsServiceWillRemoveUserSession")
+    static let didRemoveUserSession = Notification.Name("UserSessionsServiceDidRemoveUserSession")
+    static let userSessionDidChange = Notification.Name("UserSessionsServiceUserSessionDidChange")
     
-    public struct NotificationUserInfoKey {
+    enum NotificationUserInfoKey {
         static let userSession = "userSession"
         static let userId = "userId"
     }
@@ -33,23 +34,22 @@ extension UserSessionsService {
 /// TODO: Move MXSession and MXKAccountManager code from LegacyAppDelegate to this place. Create a UserSessionService to make per session management if needed.
 @objcMembers
 class UserSessionsService: NSObject {
-    
     // MARK: - Singleton
     
-    static public let shared: UserSessionsService = UserSessionsService()
+    public static let shared = UserSessionsService()
     
     // MARK: - Properties
     
     // MARK: Private
     
     private(set) var userSessions: [UserSession] = []
-    private var accountManager: MXKAccountManager = MXKAccountManager.shared()
+    private var accountManager = MXKAccountManager.shared()
     
     // MARK: Public
     
     /// At the moment the main session is the first one added
     var mainUserSession: UserSession? {
-        return self.userSessions.first
+        self.userSessions.first
     }
     
     // MARK: - Setup
@@ -57,25 +57,25 @@ class UserSessionsService: NSObject {
     override init() {
         super.init()
         
-        for account in self.accountManager.accounts {
-            self.addUserSession(fromAccount: account, postNotification: false)
+        for account in accountManager.accounts {
+            addUserSession(fromAccount: account, postNotification: false)
         }
         
-        self.registerAccountNotifications()
+        registerAccountNotifications()
     }
     
     // MARK: - Public
     
     func addUserSession(fromAccount account: MXKAccount) {
-        self.addUserSession(fromAccount: account, postNotification: true)
+        addUserSession(fromAccount: account, postNotification: true)
     }
     
     func removeUserSession(relatedToAccount account: MXKAccount) {
-        self.removeUserSession(relatedToAccount: account, postNotification: true)
+        removeUserSession(relatedToAccount: account, postNotification: true)
     }
     
     func removeUserSession(relatedToMatrixSession matrixSession: MXSession) {
-        let foundUserSession = self.userSessions.first { (userSession) -> Bool in
+        let foundUserSession = userSessions.first { userSession -> Bool in
             userSession.matrixSession == matrixSession
         }
         
@@ -83,18 +83,18 @@ class UserSessionsService: NSObject {
             return
         }
         
-        self.removeUserSession(relatedToAccount: userSessionToRemove.account)
+        removeUserSession(relatedToAccount: userSessionToRemove.account)
     }
     
     func isUserSessionExists(withUserId userId: String) -> Bool {
-        return self.userSessions.contains { (userSession) -> Bool in
-            return userSession.userId == userId
+        userSessions.contains { userSession -> Bool in
+            userSession.userId == userId
         }
     }
     
     func userSession(withUserId userId: String) -> UserSession? {
-        return self.userSessions.first { (userSession) -> Bool in
-            return userSession.userId == userId
+        userSessions.first { userSession -> Bool in
+            userSession.userId == userId
         }
     }
     
@@ -102,7 +102,7 @@ class UserSessionsService: NSObject {
     
     @discardableResult
     private func addUserSession(fromAccount account: MXKAccount, postNotification: Bool) -> Bool {
-        guard self.canAddAccount(account) else {
+        guard canAddAccount(account) else {
             return false
         }
         
@@ -111,7 +111,7 @@ class UserSessionsService: NSObject {
         }
         
         let userSession = UserSession(account: account, matrixSession: matrixSession)
-        self.userSessions.append(userSession)
+        userSessions.append(userSession)
         
         MXLog.debug("[UserSessionsService] addUserSession from account with user id: \(userSession.userId)")
                 
@@ -123,7 +123,7 @@ class UserSessionsService: NSObject {
     }
     
     private func removeUserSession(relatedToAccount account: MXKAccount, postNotification: Bool) {
-        guard let userId = account.mxCredentials.userId, let userSession = self.userSession(withUserId: userId) else {
+        guard let userId = account.mxCredentials.userId, let userSession = userSession(withUserId: userId) else {
             return
         }
         
@@ -134,8 +134,8 @@ class UserSessionsService: NSObject {
         // Clear any stored user properties from this session.
         userSession.userProperties.delete()
         
-        self.userSessions.removeAll { (userSession) -> Bool in
-            return userId == userSession.userId
+        userSessions.removeAll { userSession -> Bool in
+            userId == userSession.userId
         }
         
         MXLog.debug("[UserSessionsService] removeUserSession related to account with user id: \(userId)")
@@ -177,9 +177,9 @@ class UserSessionsService: NSObject {
         }
         
         // Wait before MXKAccount.mxSession is set before adding a UserSession with the associated account
-        if let account = self.accountManager.account(forUserId: userId), self.canAddAccount(account) {
-            self.addUserSession(fromAccount: account)
-        } else if let userSession = self.userSession(withUserId: userId) {
+        if let account = accountManager.account(forUserId: userId), canAddAccount(account) {
+            addUserSession(fromAccount: account)
+        } else if let userSession = userSession(withUserId: userId) {
             NotificationCenter.default.post(name: UserSessionsService.userSessionDidChange, object: self, userInfo: [NotificationUserInfoKey.userSession: userSession])
         }
     }

@@ -19,7 +19,6 @@ import XCTest
 @testable import Element
 
 class EmojiStoreTests: XCTestCase {
-
     func testFinds💯WhenSearchingForHundred() {
         find("hundred", expect: "💯")
     }
@@ -40,7 +39,7 @@ class EmojiStoreTests: XCTestCase {
     
     private func find(_ searchText: String, expect emoji: String) {
         loadEmojiStore { emojiStore in
-            let emojis = emojiStore.findEmojiItemsSortedByCategory(with: searchText).flatMap { $0.emojis.map { $0.value } }
+            let emojis = emojiStore.findEmojiItemsSortedByCategory(with: searchText).flatMap { $0.emojis.map(\.value) }
             XCTAssert(emojis.contains(emoji), "Search text \"\(searchText)\" should find \"\(emoji)\" but only found \(emojis)")
         }
     }

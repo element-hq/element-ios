@@ -19,9 +19,8 @@ import Foundation
 /// Plain room cells layout constants
 @objcMembers
 final class PlainRoomCellLayoutConstants: NSObject {
-    
     /// Inner content view margins
-    static let innerContentViewMargins: UIEdgeInsets = UIEdgeInsets(top: 0, left: 57, bottom: 0.0, right: 0)
+    static let innerContentViewMargins = UIEdgeInsets(top: 0, left: 57, bottom: 0.0, right: 0)
     
     // Reactions
     

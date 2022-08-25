@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import UIKit
 
 @objcMembers
 class BadgedBarButtonItem: UIBarButtonItem {
-    
     var baseButton: UIButton
     private var badgeLabel: UILabel
     
@@ -29,21 +28,25 @@ class BadgedBarButtonItem: UIBarButtonItem {
             updateBadgeLabel()
         }
     }
+
     var badgeBackgroundColor: UIColor {
         didSet {
             updateBadgeLabel()
         }
     }
+
     var badgeTextColor: UIColor {
         didSet {
             updateBadgeLabel()
         }
     }
+
     var badgeFont: UIFont {
         didSet {
             updateBadgeLabel()
         }
     }
+
     var badgePadding: UIOffset {
         didSet {
             updateBadgeLabel()
@@ -74,6 +77,7 @@ class BadgedBarButtonItem: UIBarButtonItem {
         updateBadgeLabel()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -92,12 +96,12 @@ class BadgedBarButtonItem: UIBarButtonItem {
             width = height
         }
         baseButton.sizeToFit()
-        badgeLabel.frame = CGRect(x: baseButton.frame.width - baseButton.contentEdgeInsets.right - width/2,
-                                  y: baseButton.contentEdgeInsets.top - height/2,
+        badgeLabel.frame = CGRect(x: baseButton.frame.width - baseButton.contentEdgeInsets.right - width / 2,
+                                  y: baseButton.contentEdgeInsets.top - height / 2,
                                   width: width,
                                   height: height)
         badgeLabel.text = badgeText
-        badgeLabel.layer.cornerRadius = badgeLabel.frame.height/2
+        badgeLabel.layer.cornerRadius = badgeLabel.frame.height / 2
     }
     
     private func calculateLabelSize() -> CGSize {
@@ -107,16 +111,13 @@ class BadgedBarButtonItem: UIBarButtonItem {
         tmpLabel.sizeToFit()
         return tmpLabel.frame.size
     }
-    
 }
 
 extension BadgedBarButtonItem: Themable {
-    
     func update(theme: Theme) {
         self.theme = theme
         
         tintColor = theme.colors.accent
         baseButton.tintColor = theme.colors.accent
     }
-    
 }

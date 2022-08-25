@@ -20,7 +20,6 @@ import UIKit
 /// Generate a user name color from user id
 @objcMembers
 final class UserNameColorGenerator: NSObject {
-    
     // MARK: - Properties
     
     /// User name colors.
@@ -36,24 +35,24 @@ final class UserNameColorGenerator: NSObject {
     /// - Parameter userId: The user ID of the user.
     /// - Returns: A color associated to the user ID.
     func color(from userId: String) -> UIColor {
-        guard self.userNameColors.isEmpty == false else {
-            return self.defaultColor
+        guard userNameColors.isEmpty == false else {
+            return defaultColor
         }
         
         guard userId.isEmpty == false else {
-            return self.userNameColors[0]
+            return userNameColors[0]
         }
         
-        let senderNameColorIndex = Int(userId.vc_hashCode % Int32(self.userNameColors.count))
-        return self.userNameColors[senderNameColorIndex]
+        let senderNameColorIndex = Int(userId.vc_hashCode % Int32(userNameColors.count))
+        return userNameColors[senderNameColorIndex]
     }
 }
 
 // MARK: - Themable
+
 extension UserNameColorGenerator: Themable {
-    
     func update(theme: Theme) {
-        self.defaultColor = theme.colors.primaryContent
-        self.userNameColors = theme.colors.namesAndAvatars
+        defaultColor = theme.colors.primaryContent
+        userNameColors = theme.colors.namesAndAvatars
     }
 }

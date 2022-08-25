@@ -14,105 +14,104 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 /// `RoomCellContentView` is a container view that display the default room message outer views and enables to manage them. Like pagination title, sender info, read receipts, reactions, encryption status.
 @objcMembers
 final class RoomCellContentView: UIView, NibLoadable {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet weak var paginationTitleContainerView: UIView!
-    @IBOutlet weak var paginationLabel: UILabel!
-    @IBOutlet weak var paginationSeparatorView: UIView!
+    @IBOutlet var paginationTitleContainerView: UIView!
+    @IBOutlet var paginationLabel: UILabel!
+    @IBOutlet var paginationSeparatorView: UIView!
     
-    @IBOutlet weak var userNameContainerView: UIView!
-    @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var userNameTouchMaskView: UIView!
+    @IBOutlet var userNameContainerView: UIView!
+    @IBOutlet var userNameLabel: UILabel!
+    @IBOutlet var userNameTouchMaskView: UIView!
     
-    @IBOutlet weak var userNameLabelTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var userNameLabelBottomConstraint: NSLayoutConstraint!
+    @IBOutlet var userNameLabelTopConstraint: NSLayoutConstraint!
+    @IBOutlet var userNameLabelBottomConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var avatarContainerView: UIView!
-    @IBOutlet weak var avatarImageView: MXKImageView!
+    @IBOutlet var avatarContainerView: UIView!
+    @IBOutlet var avatarImageView: MXKImageView!
     
-    @IBOutlet weak var innerContentView: UIView!
+    @IBOutlet var innerContentView: UIView!
     
-    @IBOutlet weak var innerContentViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var innerContentViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var innerContentViewTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var innerContentViewBottomContraint: NSLayoutConstraint!
+    @IBOutlet var innerContentViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet var innerContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var innerContentViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet var innerContentViewBottomContraint: NSLayoutConstraint!
     
-    @IBOutlet weak var encryptionStatusContainerView: UIView!
-    @IBOutlet weak var encryptionImageView: UIImageView!
+    @IBOutlet var encryptionStatusContainerView: UIView!
+    @IBOutlet var encryptionImageView: UIImageView!
     
-    @IBOutlet weak var bubbleInfoContainer: UIView!
-    @IBOutlet weak var bubbleInfoContainerTopConstraint: NSLayoutConstraint!
+    @IBOutlet var bubbleInfoContainer: UIView!
+    @IBOutlet var bubbleInfoContainerTopConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var urlPreviewContainerView: UIView!
-    @IBOutlet weak var urlPreviewContentView: UIView!
-    @IBOutlet weak var urlPreviewContentViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var urlPreviewContentViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet var urlPreviewContainerView: UIView!
+    @IBOutlet var urlPreviewContentView: UIView!
+    @IBOutlet var urlPreviewContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var urlPreviewContentViewTrailingConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var readReceiptsContainerView: UIView!
-    @IBOutlet weak var readReceiptsContentView: UIView!
+    @IBOutlet var readReceiptsContainerView: UIView!
+    @IBOutlet var readReceiptsContentView: UIView!
     
-    @IBOutlet weak var readMarkerContainerView: UIView!
-    @IBOutlet weak var readMarkerContentView: UIView!
+    @IBOutlet var readMarkerContainerView: UIView!
+    @IBOutlet var readMarkerContentView: UIView!
     
     var readMarkerViewLeadingConstraint: NSLayoutConstraint?
     var readMarkerViewTrailingConstraint: NSLayoutConstraint?
     
-    @IBOutlet weak var reactionsContainerView: UIView!
-    @IBOutlet weak var reactionsContentView: UIView!
-    @IBOutlet weak var reactionsContentViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var reactionsContentViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet var reactionsContainerView: UIView!
+    @IBOutlet var reactionsContentView: UIView!
+    @IBOutlet var reactionsContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var reactionsContentViewTrailingConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var threadSummaryContainerView: UIView!
-    @IBOutlet weak var threadSummaryContentView: UIView!
-    @IBOutlet weak var threadSummaryContentViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var threadSummaryContentViewTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var threadSummaryContentViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet var threadSummaryContainerView: UIView!
+    @IBOutlet var threadSummaryContentView: UIView!
+    @IBOutlet var threadSummaryContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var threadSummaryContentViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet var threadSummaryContentViewBottomConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var bubbleOverlayContainer: UIView!
+    @IBOutlet var bubbleOverlayContainer: UIView!
     
     // MARK: Private
     
     private var showURLPreview: Bool {
         get {
-            return !self.urlPreviewContainerView.isHidden
+            !urlPreviewContainerView.isHidden
         }
         set {
-            self.urlPreviewContainerView.isHidden = !newValue
+            urlPreviewContainerView.isHidden = !newValue
         }
     }
     
     private var showReadReceipts: Bool {
         get {
-            return !self.readReceiptsContainerView.isHidden
+            !readReceiptsContainerView.isHidden
         }
         set {
-            self.readReceiptsContainerView.isHidden = !newValue
+            readReceiptsContainerView.isHidden = !newValue
         }
     }
     
     private var showReactions: Bool {
         get {
-            return !self.reactionsContainerView.isHidden
+            !reactionsContainerView.isHidden
         }
         set {
-            self.reactionsContainerView.isHidden = !newValue
+            reactionsContainerView.isHidden = !newValue
         }
     }
 
     private var showThreadSummary: Bool {
         get {
-            return !self.threadSummaryContainerView.isHidden
+            !threadSummaryContainerView.isHidden
         } set {
-            self.threadSummaryContainerView.isHidden = !newValue
+            threadSummaryContainerView.isHidden = !newValue
         }
     }
     
@@ -120,56 +119,56 @@ final class RoomCellContentView: UIView, NibLoadable {
     
     var showPaginationTitle: Bool {
         get {
-            return !self.paginationTitleContainerView.isHidden
+            !paginationTitleContainerView.isHidden
         }
         set {
-            self.paginationTitleContainerView.isHidden = !newValue                        
+            paginationTitleContainerView.isHidden = !newValue
         }
     }
     
     var showSenderInfo: Bool {
         get {
-            return self.showSenderAvatar && self.showSenderName
+            showSenderAvatar && showSenderName
         }
         set {
-            self.showSenderAvatar = newValue
-            self.showSenderName = newValue
+            showSenderAvatar = newValue
+            showSenderName = newValue
         }
     }
     
     var showSenderAvatar: Bool {
         get {
-            return !self.avatarContainerView.isHidden
+            !avatarContainerView.isHidden
         }
         set {
-            self.avatarContainerView.isHidden = !newValue
+            avatarContainerView.isHidden = !newValue
         }
     }
     
     var showSenderName: Bool {
         get {
-            return !self.userNameContainerView.isHidden
+            !userNameContainerView.isHidden
         }
         set {
-            self.userNameContainerView.isHidden = !newValue
+            userNameContainerView.isHidden = !newValue
         }
     }
     
     var showEncryptionStatus: Bool {
         get {
-            return !self.encryptionStatusContainerView.isHidden
+            !encryptionStatusContainerView.isHidden
         }
         set {
-            self.encryptionStatusContainerView.isHidden = !newValue
+            encryptionStatusContainerView.isHidden = !newValue
         }
     }
     
     var showReadMarker: Bool {
         get {
-            return !self.readMarkerContainerView.isHidden
+            !readMarkerContainerView.isHidden
         }
         set {
-            self.readMarkerContainerView.isHidden = !newValue
+            readMarkerContainerView.isHidden = !newValue
         }
     }
     
@@ -178,45 +177,44 @@ final class RoomCellContentView: UIView, NibLoadable {
     // MARK: - Setup
     
     class func instantiate() -> RoomCellContentView {
-        return RoomCellContentView.loadFromNib()
+        RoomCellContentView.loadFromNib()
     }
     
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.backgroundColor = theme.backgroundColor
-        self.paginationLabel.textColor = theme.tintColor
-        self.paginationSeparatorView.backgroundColor = theme.tintColor
+        backgroundColor = theme.backgroundColor
+        paginationLabel.textColor = theme.tintColor
+        paginationSeparatorView.backgroundColor = theme.tintColor
     }
 }
 
 // MARK: - RoomCellReadReceiptsDisplayable
+
 extension RoomCellContentView: RoomCellReadReceiptsDisplayable {
-    
     func addReadReceiptsView(_ readReceiptsView: UIView) {
-        self.readReceiptsContentView.vc_removeAllSubviews()
-        self.readReceiptsContentView.vc_addSubViewMatchingParent(readReceiptsView)
-        self.showReadReceipts = true
+        readReceiptsContentView.vc_removeAllSubviews()
+        readReceiptsContentView.vc_addSubViewMatchingParent(readReceiptsView)
+        showReadReceipts = true
     }
     
     func removeReadReceiptsView() {
-        self.showReadReceipts = false
-        self.readReceiptsContentView.vc_removeAllSubviews()
+        showReadReceipts = false
+        readReceiptsContentView.vc_removeAllSubviews()
     }
 }
 
 // MARK: - RoomCellReactionsDisplayable
+
 extension RoomCellContentView: RoomCellReactionsDisplayable {
-    
     func addReactionsView(_ reactionsView: UIView) {
-        self.reactionsContentView.vc_removeAllSubviews()
+        reactionsContentView.vc_removeAllSubviews()
         
         // Update reactions alignment according to current decoration alignment
         if let reactionsView = reactionsView as? RoomReactionsView {
-            
             let reactionsAlignment: RoomReactionsViewAlignment
             
-            switch self.decorationViewsAlignment {
+            switch decorationViewsAlignment {
             case .left:
                 reactionsAlignment = .left
             case .right:
@@ -226,23 +224,22 @@ extension RoomCellContentView: RoomCellReactionsDisplayable {
             reactionsView.alignment = reactionsAlignment
         }
         
-        self.reactionsContentView.vc_addSubViewMatchingParent(reactionsView)
+        reactionsContentView.vc_addSubViewMatchingParent(reactionsView)
         
-        self.showReactions = true
+        showReactions = true
     }
     
     func removeReactionsView() {
-        self.showReactions = false
-        self.reactionsContentView.vc_removeAllSubviews()
+        showReactions = false
+        reactionsContentView.vc_removeAllSubviews()
     }
 }
 
 // MARK: - RoomCellThreadSummaryDisplayable
+
 extension RoomCellContentView: RoomCellThreadSummaryDisplayable {
-    
     func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
-        
-        guard let containerView = self.threadSummaryContentView else {
+        guard let containerView = threadSummaryContentView else {
             return
         }
         
@@ -254,12 +251,12 @@ extension RoomCellContentView: RoomCellThreadSummaryDisplayable {
         let leadingConstraint: NSLayoutConstraint
         let trailingConstraint: NSLayoutConstraint
         
-        if self.decorationViewsAlignment == .right {
+        if decorationViewsAlignment == .right {
             leadingConstraint = threadSummaryView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor)
             trailingConstraint = threadSummaryView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         } else {
             leadingConstraint = threadSummaryView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor)
-            trailingConstraint =             threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor)
+            trailingConstraint = threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor)
         }
         
         NSLayoutConstraint.activate([
@@ -270,21 +267,20 @@ extension RoomCellContentView: RoomCellThreadSummaryDisplayable {
             trailingConstraint
         ])
         
-        self.showThreadSummary = true
+        showThreadSummary = true
     }
 
     func removeThreadSummaryView() {
-        self.showThreadSummary = false
-        self.threadSummaryContentView.vc_removeAllSubviews()
+        showThreadSummary = false
+        threadSummaryContentView.vc_removeAllSubviews()
     }
 }
 
 // MARK: - RoomCellURLPreviewDisplayable
-extension RoomCellContentView: RoomCellURLPreviewDisplayable {
 
+extension RoomCellContentView: RoomCellURLPreviewDisplayable {
     func addURLPreviewView(_ urlPreviewView: UIView) {
-        
-        guard let containerView = self.urlPreviewContentView else {
+        guard let containerView = urlPreviewContentView else {
             return
         }
         
@@ -300,12 +296,12 @@ extension RoomCellContentView: RoomCellURLPreviewDisplayable {
         let leadingConstraint: NSLayoutConstraint
         let trailingConstraint: NSLayoutConstraint
         
-        if self.decorationViewsAlignment == .right {
+        if decorationViewsAlignment == .right {
             leadingConstraint = urlPreviewView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor)
             trailingConstraint = urlPreviewView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         } else {
             leadingConstraint = urlPreviewView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor)
-            trailingConstraint =             urlPreviewView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor)
+            trailingConstraint = urlPreviewView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor)
         }
         
         NSLayoutConstraint.activate([
@@ -315,28 +311,28 @@ extension RoomCellContentView: RoomCellURLPreviewDisplayable {
             trailingConstraint
         ])
         
-        self.showURLPreview = true
+        showURLPreview = true
     }
     
     func removeURLPreviewView() {
-        self.showURLPreview = false
-        self.urlPreviewContentView.vc_removeAllSubviews()
+        showURLPreview = false
+        urlPreviewContentView.vc_removeAllSubviews()
     }
 }
 
 // MARK: - RoomCellReadMarkerDisplayable
+
 extension RoomCellContentView: RoomCellReadMarkerDisplayable {
-    
     func addReadMarkerView(_ readMarkerView: UIView) {
-        guard let containerView = self.readMarkerContainerView else {
+        guard let containerView = readMarkerContainerView else {
             return
         }
         
-        self.readMarkerContentView.vc_removeAllSubviews()
+        readMarkerContentView.vc_removeAllSubviews()
         
         readMarkerView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.readMarkerContentView.addSubview(readMarkerView)
+        readMarkerContentView.addSubview(readMarkerView)
         
         // Force read marker constraints
         let topConstraint = readMarkerView.topAnchor.constraint(equalTo: containerView.topAnchor)
@@ -355,14 +351,14 @@ extension RoomCellContentView: RoomCellReadMarkerDisplayable {
                                      heightConstraint,
                                      bottomContraint])
         
-        self.readMarkerViewLeadingConstraint = leadingConstraint
-        self.readMarkerViewTrailingConstraint = trailingConstraint
+        readMarkerViewLeadingConstraint = leadingConstraint
+        readMarkerViewTrailingConstraint = trailingConstraint
         
-        self.showReadMarker = true
+        showReadMarker = true
     }
     
     func removeReadMarkerView() {
-        self.showReadMarker = false
-        self.readMarkerContentView.vc_removeAllSubviews()
+        showReadMarker = false
+        readMarkerContentView.vc_removeAllSubviews()
     }
 }

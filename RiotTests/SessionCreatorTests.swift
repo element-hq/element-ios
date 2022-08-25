@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import XCTest
 @testable import Element
+import XCTest
 
 class SessionCreatorTests: XCTestCase {
-
     func testIdentityServer() throws {
         let sessionCreator = SessionCreator(withAccountManager: .mock)
 
@@ -35,15 +34,12 @@ class SessionCreatorTests: XCTestCase {
         XCTAssertEqual(session.credentials.identityServer, mockIS)
         XCTAssertEqual(session.identityService?.identityServer, mockIS)
     }
-
 }
 
 private extension MXKAccountManager {
-
     static var mock: MXKAccountManager {
         let result = MXKAccountManager.shared()
         result!.isSavingAccountsEnabled = false
         return result!
     }
-
 }

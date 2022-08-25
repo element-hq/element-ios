@@ -32,7 +32,6 @@ import Foundation
 /// once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class ThreadsCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Constants
     
     private enum NavigationType {
@@ -81,10 +80,9 @@ final class ThreadsCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        
-        let threadsCoordinatorParameters = ThreadsCoordinatorParameters(session: self.session,
-                                                                        roomId: self.roomId,
-                                                                        threadId: self.threadId,
+        let threadsCoordinatorParameters = ThreadsCoordinatorParameters(session: session,
+                                                                        roomId: roomId,
+                                                                        threadId: threadId,
                                                                         userIndicatorPresenter: userIndicatorPresenter)
         
         let threadsCoordinator = ThreadsCoordinator(parameters: threadsCoordinatorParameters)
@@ -93,17 +91,16 @@ final class ThreadsCoordinatorBridgePresenter: NSObject {
         viewController.present(presentable, animated: animated, completion: nil)
         threadsCoordinator.start()
         
-        self.coordinator = threadsCoordinator
-        self.navigationType = .present
+        coordinator = threadsCoordinator
+        navigationType = .present
     }
     
     func push(from navigationController: UINavigationController, animated: Bool) {
-                
         let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
-        let threadsCoordinatorParameters = ThreadsCoordinatorParameters(session: self.session,
-                                                                        roomId: self.roomId,
-                                                                        threadId: self.threadId,
+        let threadsCoordinatorParameters = ThreadsCoordinatorParameters(session: session,
+                                                                        roomId: roomId,
+                                                                        threadId: threadId,
                                                                         userIndicatorPresenter: userIndicatorPresenter,
                                                                         navigationRouter: navigationRouter)
         
@@ -111,12 +108,12 @@ final class ThreadsCoordinatorBridgePresenter: NSObject {
         threadsCoordinator.delegate = self
         threadsCoordinator.start() // Will trigger the view controller push
         
-        self.coordinator = threadsCoordinator        
-        self.navigationType = .push
+        coordinator = threadsCoordinator
+        navigationType = .push
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
 
@@ -139,17 +136,17 @@ final class ThreadsCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - ThreadsCoordinatorDelegate
+
 extension ThreadsCoordinatorBridgePresenter: ThreadsCoordinatorDelegate {
-    
     func threadsCoordinatorDidComplete(_ coordinator: ThreadsCoordinatorProtocol) {
-        self.delegate?.threadsCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.threadsCoordinatorBridgePresenterDelegateDidComplete(self)
     }
     
     func threadsCoordinatorDidSelect(_ coordinator: ThreadsCoordinatorProtocol, roomId: String, eventId: String?) {
-        self.delegate?.threadsCoordinatorBridgePresenterDelegateDidSelect(self, roomId: roomId, eventId: eventId)
+        delegate?.threadsCoordinatorBridgePresenterDelegateDidSelect(self, roomId: roomId, eventId: eventId)
     }
     
     func threadsCoordinatorDidDismissInteractively(_ coordinator: ThreadsCoordinatorProtocol) {
-        self.delegate?.threadsCoordinatorBridgePresenterDidDismissInteractively(self)
+        delegate?.threadsCoordinatorBridgePresenterDidDismissInteractively(self)
     }
 }

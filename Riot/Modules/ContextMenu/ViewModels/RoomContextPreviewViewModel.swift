@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// `RoomContextPreviewViewModel` provides the data to the `RoomContextPreviewViewController` from an instance of `MXRoom`
 class RoomContextPreviewViewModel: RoomContextPreviewViewModelProtocol {
-    
     // MARK: - Properties
     
     private let room: MXRoom
@@ -35,7 +34,7 @@ class RoomContextPreviewViewModel: RoomContextPreviewViewModelProtocol {
     func process(viewAction: RoomContextPreviewViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         }
     }
     
@@ -43,29 +42,30 @@ class RoomContextPreviewViewModel: RoomContextPreviewViewModelProtocol {
     
     private func loadData() {
         let parameters = RoomContextPreviewLoadedParameters(
-            roomId: self.room.roomId,
-            roomType: self.room.summary?.roomType ?? .none,
-            displayName: self.room.displayName,
-            topic: self.room.summary?.topic,
-            avatarUrl: self.room.summary?.avatar,
+            roomId: room.roomId,
+            roomType: room.summary?.roomType ?? .none,
+            displayName: room.displayName,
+            topic: room.summary?.topic,
+            avatarUrl: room.summary?.avatar,
             joinRule: .public,
-            membership: self.room.summary?.membership ?? .unknown,
+            membership: room.summary?.membership ?? .unknown,
             inviterId: nil,
             inviter: nil,
-            membersCount: 0)
-        self.viewDelegate?.roomContextPreviewViewModel(self, didUpdateViewState: .loaded(parameters))
+            membersCount: 0
+        )
+        viewDelegate?.roomContextPreviewViewModel(self, didUpdateViewState: .loaded(parameters))
 
         room.state { roomState in
             let membersCount = roomState?.members.joinedMembers.count ?? 0
 
             var inviteEvent: MXEvent?
-            roomState?.stateEvents.forEach({ event in
+            roomState?.stateEvents.forEach { event in
                 guard let membership = event.wireContent["membership"] as? String, membership == "invite", event.stateKey == self.room.mxSession.myUserId else {
                     return
                 }
 
                 inviteEvent = event
-            })
+            }
             
             let inviter: MXUser?
             if let inviterId = inviteEvent?.sender {
@@ -84,7 +84,8 @@ class RoomContextPreviewViewModel: RoomContextPreviewViewModelProtocol {
                 membership: self.room.summary?.membership ?? .unknown,
                 inviterId: inviteEvent?.sender,
                 inviter: inviter,
-                membersCount: membersCount)
+                membersCount: membersCount
+            )
             self.viewDelegate?.roomContextPreviewViewModel(self, didUpdateViewState: .loaded(parameters))
         }
     }

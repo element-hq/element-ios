@@ -19,7 +19,6 @@ import UIKit
 
 @objcMembers
 public class MXKPasteboardManager: NSObject {
-    
     public static let shared = MXKPasteboardManager(withPasteboard: .general)
     
     private init(withPasteboard pasteboard: UIPasteboard) {
@@ -29,5 +28,4 @@ public class MXKPasteboardManager: NSObject {
     
     /// Pasteboard to use on copy operations. Defaults to `UIPasteboard.generalPasteboard`.
     public var pasteboard: UIPasteboard
-    
 }

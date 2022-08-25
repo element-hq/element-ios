@@ -19,7 +19,6 @@
 import UIKit
 
 final class SpaceMemberListViewController: RoomParticipantsViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -55,20 +54,20 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
         
-        self.title = ""
+        title = ""
         
-        self.setupTableViewHeader()
+        setupTableViewHeader()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,7 +78,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -92,16 +91,16 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        theme.applyStyle(onSearchBar: self.searchBarView)
-        self.titleView.update(theme: theme)
+        theme.applyStyle(onSearchBar: searchBarView)
+        titleView.update(theme: theme)
         
-        self.inviteHeaderView.update(theme: theme)
+        inviteHeaderView.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -109,7 +108,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -117,65 +116,65 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.leftBarButtonItem = cancelBarButtonItem
+        navigationItem.leftBarButtonItem = cancelBarButtonItem
         
-        self.titleView = MainTitleView()
-        self.titleView.titleLabel.text = VectorL10n.roomDetailsPeople
-        self.navigationItem.titleView = self.titleView
+        titleView = MainTitleView()
+        titleView.titleLabel.text = VectorL10n.roomDetailsPeople
+        navigationItem.titleView = titleView
     }
 
     private func render(viewState: SpaceMemberListViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let space):
-            self.renderLoaded(space: space)
+            renderLoaded(space: space)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(space: MXSpace) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.mxRoom = space.room
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        mxRoom = space.room
         if let spaceName = space.summary?.displayname {
-            self.titleView.breadcrumbView.breadcrumbs = [spaceName]
+            titleView.breadcrumbView.breadcrumbs = [spaceName]
         } else {
-            self.titleView.breadcrumbView.breadcrumbs = []
+            titleView.breadcrumbView.breadcrumbs = []
         }
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
     @objc private func showDetail(for member: MXRoomMember, from sourceView: UIView?) {
-        self.viewModel.process(viewAction: .complete(member, sourceView))
+        viewModel.process(viewAction: .complete(member, sourceView))
     }
     
     // MARK: - Actions
 
     @objc private func onAddParticipantButtonPressed() {
-        self.viewModel.process(viewAction: .invite)
+        viewModel.process(viewAction: .invite)
     }
     
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
     
     // MARK: - UISearchBarDelegate
 
     override func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        return true
+        true
     }
     
     override func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        return true
+        true
     }
     
     override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -186,26 +185,26 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
 
     override func roomMemberDetailsViewController(_ roomMemberDetailsViewController: MXKRoomMemberDetailsViewController!, startChatWithMemberId matrixId: String!, completion: (() -> Void)!) {
         completion()
-        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName), animated: true, handler: nil)
+        errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName), animated: true, handler: nil)
     }
 
     override func roomMemberDetailsViewController(_ roomMemberDetailsViewController: MXKRoomMemberDetailsViewController!, placeVoipCallWithMemberId matrixId: String!, andVideo isVideoCall: Bool) {
-        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName), animated: true, handler: nil)
+        errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName), animated: true, handler: nil)
     }
 }
 
-
 // MARK: - SpaceMemberListViewModelViewDelegate
+
 extension SpaceMemberListViewController: SpaceMemberListViewModelViewDelegate {
-
     func spaceMemberListViewModel(_ viewModel: SpaceMemberListViewModelType, didUpdateViewState viewSate: SpaceMemberListViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
 // MARK: - SpaceMemberListViewModelViewDelegate
+
 extension SpaceMemberListViewController: AddItemHeaderViewDelegate {
     func addItemHeaderView(_ headerView: AddItemHeaderView, didTapButton button: UIButton) {
-        self.viewModel.process(viewAction: .invite)
+        viewModel.process(viewAction: .invite)
     }
 }

@@ -16,8 +16,7 @@
 
 import Foundation
 
-final class KeyBackupRecoverFromRecoveryKeyCoordinator: KeyBackupRecoverFromRecoveryKeyCoordinatorType {    
-    
+final class KeyBackupRecoverFromRecoveryKeyCoordinator: KeyBackupRecoverFromRecoveryKeyCoordinatorType {
     // MARK: - Properties
     
     // MARK: Private
@@ -48,21 +47,22 @@ final class KeyBackupRecoverFromRecoveryKeyCoordinator: KeyBackupRecoverFromReco
     // MARK: - Public
     
     func start() {
-        self.keyBackupRecoverFromRecoveryKeyViewModel.coordinatorDelegate = self
+        keyBackupRecoverFromRecoveryKeyViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.keyBackupRecoverFromRecoveryKeyViewController
+        keyBackupRecoverFromRecoveryKeyViewController
     }
 }
 
 // MARK: - KeyBackupRecoverFromRecoveryKeyViewModelCoordinatorDelegate
+
 extension KeyBackupRecoverFromRecoveryKeyCoordinator: KeyBackupRecoverFromRecoveryKeyViewModelCoordinatorDelegate {
     func keyBackupRecoverFromRecoveryKeyViewModelDidRecover(_ viewModel: KeyBackupRecoverFromRecoveryKeyViewModelType) {
-        self.delegate?.keyBackupRecoverFromPassphraseCoordinatorDidRecover(self)
+        delegate?.keyBackupRecoverFromPassphraseCoordinatorDidRecover(self)
     }
     
     func keyBackupRecoverFromRecoveryKeyViewModelDidCancel(_ viewModel: KeyBackupRecoverFromRecoveryKeyViewModelType) {
-        self.delegate?.keyBackupRecoverFromPassphraseCoordinatorDidCancel(self)
+        delegate?.keyBackupRecoverFromPassphraseCoordinatorDidCancel(self)
     }
 }

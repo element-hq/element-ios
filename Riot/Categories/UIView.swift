@@ -17,10 +17,9 @@
 import Foundation
 
 extension UIView {
-    
     /// Add a subview matching parent view using autolayout
     @objc func vc_addSubViewMatchingParent(_ subView: UIView) {
-        self.addSubview(subView)
+        addSubview(subView)
         subView.translatesAutoresizingMaskIntoConstraints = false
         let views = ["view": subView]
         ["H:|[view]|", "V:|[view]|"].forEach { vfl in
@@ -34,26 +33,26 @@ extension UIView {
     
     /// Add a subview matching the safe area of the parent view using autolayout
     @objc func vc_addSubViewMatchingParentSafeArea(_ subView: UIView) {
-        self.addSubview(subView)
+        addSubview(subView)
         subView.translatesAutoresizingMaskIntoConstraints = false
-        subView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        subView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
-        subView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        subView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        subView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
+        subView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+        subView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
+        subView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
     /// Add a subview matching parent view with additional insets using autolayout
     @objc func vc_addSubViewMatchingParent(_ subView: UIView, withInsets insets: UIEdgeInsets) {
-        self.addSubview(subView)
+        addSubview(subView)
         subView.translatesAutoresizingMaskIntoConstraints = false
-        subView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: insets.left).isActive = true
-        subView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: insets.top).isActive = true
-        subView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: insets.right).isActive = true
-        subView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: insets.bottom).isActive = true
+        subView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: insets.left).isActive = true
+        subView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: insets.top).isActive = true
+        subView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: insets.right).isActive = true
+        subView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: insets.bottom).isActive = true
     }
     
     @objc func vc_removeAllSubviews() {
-        for subView in self.subviews {
+        for subView in subviews {
             subView.removeFromSuperview()
         }
     }
@@ -76,20 +75,20 @@ extension UIView {
     }
     
     @objc func vc_setupAccessibilityTraitsButton(withTitle title: String, hint: String, isEnabled: Bool) {
-        self.isAccessibilityElement = true
-        self.accessibilityLabel = title
-        self.accessibilityHint = hint
-        self.accessibilityTraits = .button
+        isAccessibilityElement = true
+        accessibilityLabel = title
+        accessibilityHint = hint
+        accessibilityTraits = .button
         if !isEnabled {
-            self.accessibilityTraits.insert(.notEnabled)
+            accessibilityTraits.insert(.notEnabled)
         }
     }
     
     @objc func vc_setupAccessibilityTraitsImage(withTitle title: String) {
-        self.isAccessibilityElement = false
-        self.accessibilityLabel = title
-        self.accessibilityHint = nil
-        self.accessibilityTraits = .image
+        isAccessibilityElement = false
+        accessibilityLabel = title
+        accessibilityHint = nil
+        accessibilityTraits = .image
     }
     
     @objc func vc_addShadow(withColor color: UIColor, offset: CGSize, radius: CGFloat, opacity: CGFloat) {
@@ -102,5 +101,4 @@ extension UIView {
     @objc func vc_removeShadow() {
         layer.shadowColor = UIColor.clear.cgColor
     }
-    
 }

@@ -14,19 +14,18 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Themable {
-    
     // MARK: - Constants
 
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var reactionBackgroundView: UIView!
-    @IBOutlet private weak var actionLabel: UILabel!
+    @IBOutlet private var reactionBackgroundView: UIView!
+    @IBOutlet private var actionLabel: UILabel!
     
     // MARK: Private
     
@@ -38,13 +37,13 @@ final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Thema
         super.awakeFromNib()
         // Initialization code
         
-        self.reactionBackgroundView.layer.masksToBounds = true
+        reactionBackgroundView.layer.masksToBounds = true
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        self.reactionBackgroundView.layer.cornerRadius = self.reactionBackgroundView.bounds.midY
+        reactionBackgroundView.layer.cornerRadius = reactionBackgroundView.bounds.midY
     }
 
     // MARK: - Life cycle
@@ -56,7 +55,7 @@ final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Thema
          (42138227) — Workaround: Don't call the cell's setNeedsUpdateConstraints() method unless you need to support live constraint changes.
          If you need to support live constraint changes, call updateConstraintsIfNeeded() before calling systemLayoutSizeFitting(_:)."
          */
-        self.updateConstraintsIfNeeded()
+        updateConstraintsIfNeeded()
         
         return super.preferredLayoutAttributesFitting(layoutAttributes)
     }
@@ -64,29 +63,29 @@ final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Thema
     // MARK: - Public
     
     func fill(actionString: String) {
-        self.actionLabel.text = actionString
-        self.updateViews()
+        actionLabel.text = actionString
+        updateViews()
     }
     
     func fill(actionIcon: UIImage) {
         let attachment = NSTextAttachment()
-        attachment.image = actionIcon.vc_resized(with: CGSize(width: self.actionLabel.bounds.size.height, height: self.actionLabel.bounds.size.height))?.withRenderingMode(.alwaysTemplate)
+        attachment.image = actionIcon.vc_resized(with: CGSize(width: actionLabel.bounds.size.height, height: actionLabel.bounds.size.height))?.withRenderingMode(.alwaysTemplate)
 
-        self.actionLabel.attributedText = NSAttributedString(attachment: attachment)
-        self.updateViews()
+        actionLabel.attributedText = NSAttributedString(attachment: attachment)
+        updateViews()
     }
     
     func update(theme: Theme) {
         self.theme = theme
-        self.updateViews()
+        updateViews()
     }
     
     // MARK: - Private
     
     private func updateViews() {
-        self.actionLabel.textColor = self.theme?.textSecondaryColor
+        actionLabel.textColor = theme?.textSecondaryColor
         
-        self.reactionBackgroundView.layer.borderWidth = 0.0
-        self.reactionBackgroundView.backgroundColor = self.theme?.headerBackgroundColor
+        reactionBackgroundView.layer.borderWidth = 0.0
+        reactionBackgroundView.backgroundColor = theme?.headerBackgroundColor
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import XCTest
 @testable import Element
+import XCTest
 
 class OnboardingTests: XCTestCase {
-    
     let userId = "@test:matrix.org"
     
     override func setUp() {
@@ -86,5 +85,4 @@ class OnboardingTests: XCTestCase {
         // Then the use case property should still return Personal Messaging
         XCTAssertEqual(newProperties.useCase, .personalMessaging, "The use case should be Personal Messaging")
     }
-    
 }

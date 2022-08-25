@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class VoiceMessagePlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable, RoomCellThreadSummaryDisplayable {
-    
     private(set) var playbackController: VoiceMessagePlaybackController!
     
     override func render(_ cellData: MXKCellData!) {
@@ -35,7 +34,7 @@ class VoiceMessagePlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, 
             playbackController.attachment = data.attachment
         }
         
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     override func setupViews() {
@@ -56,7 +55,6 @@ class VoiceMessagePlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, 
     }
     
     override func update(theme: Theme) {
-        
         super.update(theme: theme)
         
         guard let playbackController = playbackController else {

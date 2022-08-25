@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 struct DirectoryRoomTableViewCellVM {
-        
     let title: String?
     let numberOfUsers: Int
     let subtitle: String?
@@ -27,11 +26,10 @@ struct DirectoryRoomTableViewCellVM {
 
     // TODO: Use AvatarView subclass in the cell view
     func setAvatar(in avatarImageView: MXKImageView) {
-        
         let defaultAvatarImage: UIImage?
         var defaultAvatarImageContentMode: UIView.ContentMode = .scaleAspectFill
         
-        switch self.avatarViewData.fallbackImage {
+        switch avatarViewData.fallbackImage {
         case .matrixItem(let matrixItemId, let matrixItemDisplayName):
             defaultAvatarImage = AvatarGenerator.generateAvatar(forMatrixItem: matrixItemId, withDisplayName: matrixItemDisplayName)
         case .image(let image, let contentMode):
@@ -41,7 +39,7 @@ struct DirectoryRoomTableViewCellVM {
             defaultAvatarImage = nil
         }
         
-        if let avatarUrl = self.avatarViewData.avatarUrl {
+        if let avatarUrl = avatarViewData.avatarUrl {
             avatarImageView.enableInMemoryCache = true
 
             avatarImageView.setImageURI(avatarUrl,
@@ -50,7 +48,7 @@ struct DirectoryRoomTableViewCellVM {
                                         toFitViewSize: avatarImageView.frame.size,
                                         with: MXThumbnailingMethodCrop,
                                         previewImage: defaultAvatarImage,
-                                        mediaManager: self.avatarViewData.mediaManager)
+                                        mediaManager: avatarViewData.mediaManager)
             avatarImageView.contentMode = .scaleAspectFill
         } else {
             avatarImageView.image = defaultAvatarImage

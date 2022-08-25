@@ -18,12 +18,11 @@ import UIKit
 
 /// Protocol describing a router that wraps the root navigation of the application.
 /// Routers are used to be passed between coordinators. They handles only `physical` navigation.
-protocol RootRouterType: AnyObject {          
-    
+protocol RootRouterType: AnyObject {
     /// Update the root view controller
     ///
     /// - Parameter module: The new root view controller to set
-    func setRootModule(_ module: Presentable)        
+    func setRootModule(_ module: Presentable)
     
     /// Dismiss the root view controller
     ///

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import XCTest
 @testable import RiotSwiftUI
 
 class AuthenticationForgotPasswordViewModelTests: XCTestCase {
-
     var viewModel: AuthenticationForgotPasswordViewModelProtocol!
     var context: AuthenticationForgotPasswordViewModelType.Context!
     

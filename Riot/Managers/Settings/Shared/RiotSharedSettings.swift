@@ -28,20 +28,20 @@ import MatrixSDK
 /// It implements https://github.com/vector-im/riot-meta/blob/master/spec/settings.md
 @objcMembers
 class RiotSharedSettings: NSObject {
-
     // MARK: - Constants
+
     private enum Settings {
         static let breadcrumbs = "im.vector.setting.breadcrumbs"
         static let integrationProvisioning = "im.vector.setting.integration_provisioning"
         static let allowedWidgets = "im.vector.setting.allowed_widgets"
     }
 
-
     // MARK: - Properties
+
     // MARK: Private
+
     private let session: MXSession
     private lazy var serializationService: SerializationServiceType = SerializationService()
-
 
     // MARK: - Setup
 
@@ -49,13 +49,12 @@ class RiotSharedSettings: NSObject {
         self.session = session
     }
 
-
     // MARK: - Public
 
     // MARK: Integration provisioning
 
     var hasIntegrationProvisioningEnabled: Bool {
-        return getIntegrationProvisioning()?.enabled ?? true
+        getIntegrationProvisioning()?.enabled ?? true
     }
 
     func getIntegrationProvisioning() -> RiotSettingIntegrationProvisioning? {
@@ -71,7 +70,6 @@ class RiotSharedSettings: NSObject {
                                     success: @escaping () -> Void,
                                     failure: @escaping (Error?) -> Void)
         -> MXHTTPOperation? {
-
         // Update only the "widgets" field in the account data
         var integrationProvisioningDict = getAccountData(forEventType: Settings.integrationProvisioning) ?? [:]
         integrationProvisioningDict[RiotSettingIntegrationProvisioning.CodingKeys.enabled.rawValue] = enabled
@@ -79,8 +77,8 @@ class RiotSharedSettings: NSObject {
         return session.setAccountData(integrationProvisioningDict, forType: Settings.integrationProvisioning, success: success, failure: failure)
     }
 
-
     // MARK: Allowed widgets
+
     func permission(for widget: Widget) -> WidgetPermission {
         guard let allowedWidgets = getAllowedWidgets() else {
             return .undefined
@@ -103,11 +101,10 @@ class RiotSharedSettings: NSObject {
 
     @discardableResult
     func setPermission(_ permission: WidgetPermission,
-                                          for widget: Widget,
-                                          success: @escaping () -> Void,
-                                          failure: @escaping (Error?) -> Void)
+                       for widget: Widget,
+                       success: @escaping () -> Void,
+                       failure: @escaping (Error?) -> Void)
         -> MXHTTPOperation? {
-
         guard let widgetEventId = widget.widgetEvent.eventId else {
             return nil
         }
@@ -129,7 +126,6 @@ class RiotSharedSettings: NSObject {
 
         return session.setAccountData(allowedWidgetsDict, forType: Settings.allowedWidgets, success: success, failure: failure)
     }
-
 
     // MARK: Allowed native widgets
 
@@ -172,7 +168,6 @@ class RiotSharedSettings: NSObject {
                        success: @escaping () -> Void,
                        failure: @escaping (Error?) -> Void)
         -> MXHTTPOperation? {
-
         guard let type = widget.type, let domain = domainForNativeWidget(widget, fromUrl: url) else {
             return nil
         }
@@ -198,10 +193,10 @@ class RiotSharedSettings: NSObject {
         return session.setAccountData(allowedWidgetsDict, forType: Settings.allowedWidgets, success: success, failure: failure)
     }
 
-
     // MARK: - Private
+
     private func getAccountData(forEventType eventType: String) -> [String: Any]? {
-        return session.accountData.accountData(forEventType: eventType) as? [String: Any]
+        session.accountData.accountData(forEventType: eventType) as? [String: Any]
     }
 
     private func domainForNativeWidget(_ widget: Widget, fromUrl url: URL? = nil) -> String? {

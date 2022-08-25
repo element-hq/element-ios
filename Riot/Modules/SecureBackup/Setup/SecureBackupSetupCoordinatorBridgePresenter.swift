@@ -27,7 +27,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class SecureBackupSetupCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -37,10 +36,11 @@ final class SecureBackupSetupCoordinatorBridgePresenter: NSObject {
     private var coordinator: SecureBackupSetupCoordinator?
     
     // MARK: Public
+
     weak var delegate: SecureBackupSetupCoordinatorBridgePresenterDelegate?
 
     var isPresenting: Bool {
-        return self.coordinator != nil
+        coordinator != nil
     }
 
     // MARK: - Setup
@@ -59,20 +59,20 @@ final class SecureBackupSetupCoordinatorBridgePresenter: NSObject {
     // }
 
     func present(from viewController: UIViewController, animated: Bool) {
-        self.present(from: viewController, animated: animated, cancellable: true)
+        present(from: viewController, animated: animated, cancellable: true)
     }
     
     func present(from viewController: UIViewController, animated: Bool, cancellable: Bool) {
-        let secureBackupSetupCoordinator = SecureBackupSetupCoordinator(session: self.session, allowOverwrite: self.allowOverwrite, cancellable: cancellable)
+        let secureBackupSetupCoordinator = SecureBackupSetupCoordinator(session: session, allowOverwrite: allowOverwrite, cancellable: cancellable)
         secureBackupSetupCoordinator.delegate = self
         viewController.present(secureBackupSetupCoordinator.toPresentable(), animated: animated, completion: nil)
         secureBackupSetupCoordinator.start()
         
-        self.coordinator = secureBackupSetupCoordinator
+        coordinator = secureBackupSetupCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -86,12 +86,13 @@ final class SecureBackupSetupCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - SecureBackupSetupCoordinatorDelegate
+
 extension SecureBackupSetupCoordinatorBridgePresenter: SecureBackupSetupCoordinatorDelegate {
     func secureBackupSetupCoordinatorDidComplete(_ coordinator: SecureBackupSetupCoordinatorType) {
-        self.delegate?.secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete(self)
     }
     
     func secureBackupSetupCoordinatorDidCancel(_ coordinator: SecureBackupSetupCoordinatorType) {
-        self.delegate?.secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel(self)
+        delegate?.secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel(self)
     }
 }

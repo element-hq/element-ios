@@ -26,7 +26,6 @@ import Foundation
 /// **WARNING**: This class breaks the Coordinator abstraction and it has been introduced for **Objective-C compatibility only** (mainly for integration in legacy view controllers). Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class FlowTemplateCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Constants
     
     private enum NavigationType {
@@ -61,8 +60,7 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        
-        let flowTemplateCoordinatorParameters = FlowTemplateCoordinatorParameters(session: self.session)
+        let flowTemplateCoordinatorParameters = FlowTemplateCoordinatorParameters(session: session)
         
         let flowTemplateCoordinator = FlowTemplateCoordinator(parameters: flowTemplateCoordinatorParameters)
         flowTemplateCoordinator.delegate = self
@@ -70,26 +68,25 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
         viewController.present(presentable, animated: animated, completion: nil)
         flowTemplateCoordinator.start()
         
-        self.coordinator = flowTemplateCoordinator
-        self.navigationType = .present
+        coordinator = flowTemplateCoordinator
+        navigationType = .present
     }
     
     func push(from navigationController: UINavigationController, animated: Bool) {
-                
         let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
-        let flowTemplateCoordinatorParameters = FlowTemplateCoordinatorParameters(session: self.session, navigationRouter: navigationRouter)
+        let flowTemplateCoordinatorParameters = FlowTemplateCoordinatorParameters(session: session, navigationRouter: navigationRouter)
         
         let flowTemplateCoordinator = FlowTemplateCoordinator(parameters: flowTemplateCoordinatorParameters)
         flowTemplateCoordinator.delegate = self
         flowTemplateCoordinator.start() // Will trigger the view controller push
         
-        self.coordinator = flowTemplateCoordinator        
-        self.navigationType = .push
+        coordinator = flowTemplateCoordinator
+        navigationType = .push
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
 
@@ -119,13 +116,13 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - FlowTemplateCoordinatorDelegate
+
 extension FlowTemplateCoordinatorBridgePresenter: FlowTemplateCoordinatorDelegate {
-    
     func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorProtocol) {
-        self.delegate?.flowTemplateCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.flowTemplateCoordinatorBridgePresenterDelegateDidComplete(self)
     }
     
     func flowTemplateCoordinatorDidDismissInteractively(_ coordinator: FlowTemplateCoordinatorProtocol) {
-        self.delegate?.flowTemplateCoordinatorBridgePresenterDidDismissInteractively(self)
+        delegate?.flowTemplateCoordinatorBridgePresenterDidDismissInteractively(self)
     }
 }

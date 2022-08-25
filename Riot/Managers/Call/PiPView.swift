@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@ import UIKit
 
 @objc enum PiPViewPosition: Int {
     case bottomLeft
-    case bottomRight    //  default value
+    case bottomRight //  default value
     case topRight
     case topLeft
 }
@@ -30,35 +30,34 @@ import UIKit
 
 @objcMembers
 class PiPView: UIView {
-    
     private enum Defaults {
-        static let margins: UIEdgeInsets = UIEdgeInsets(top: 64, left: 20, bottom: 64, right: 20)
+        static let margins = UIEdgeInsets(top: 64, left: 20, bottom: 64, right: 20)
         static let cornerRadius: CGFloat = 8
         static let animationDuration: TimeInterval = 0.25
     }
     
     var margins: UIEdgeInsets = Defaults.margins {
         didSet {
-            guard self.superview != nil else { return }
-            self.move(to: self.position, animated: true)
+            guard superview != nil else { return }
+            move(to: position, animated: true)
         }
     }
+
     var cornerRadius: CGFloat = Defaults.cornerRadius {
         didSet {
             layer.cornerRadius = cornerRadius
         }
     }
+
     var position: PiPViewPosition = .bottomRight
     weak var delegate: PiPViewDelegate?
     
     private var originalCenter: CGPoint = .zero
-    private var isMoving: Bool = false
-    private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
-        return UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
-    }()
-    private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
-        return UIPanGestureRecognizer(target: self, action: #selector(panned(_:)))
-    }()
+    private var isMoving = false
+    private lazy var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
+
+    private lazy var panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panned(_:)))
+
     private var rotationObserver: NSObjectProtocol?
     
     init() {
@@ -86,7 +85,7 @@ class PiPView: UIView {
             if let contentView = contentView {
                 contentView.isUserInteractionEnabled = false
                 addSubview(contentView)
-NSLayoutConstraint.activate([
+                NSLayoutConstraint.activate([
                     contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
                     contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
                     contentView.topAnchor.constraint(equalTo: topAnchor),
@@ -101,14 +100,13 @@ NSLayoutConstraint.activate([
               targetSize: CGSize? = nil,
               animated: Bool = false,
               completion: ((Bool) -> Void)? = nil) {
-        
         let block = {
             let targetFrame = self.targetFrame(for: position, in: view, targetSize: targetSize)
             self.frame = targetFrame
         }
         
         if animated {
-            UIView.animate(withDuration: Defaults.animationDuration, animations: block) { (completed) in
+            UIView.animate(withDuration: Defaults.animationDuration, animations: block) { completed in
                 self.position = position
                 completion?(completed)
             }
@@ -133,7 +131,7 @@ NSLayoutConstraint.activate([
         layer.cornerRadius = cornerRadius
         addGestureRecognizer(tapGestureRecognizer)
         addGestureRecognizer(panGestureRecognizer)
-        rotationObserver = NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] (_) in
+        rotationObserver = NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
             guard let self = self else { return }
             guard self.superview != nil else { return }
             self.move(to: self.position, animated: true)
@@ -207,7 +205,7 @@ NSLayoutConstraint.activate([
             }
             
             if isMoving {
-                guard let superview = self.superview else { return }
+                guard let superview = superview else { return }
                 
                 let translation = sender.translation(in: superview)
                 
@@ -234,7 +232,7 @@ NSLayoutConstraint.activate([
                     }
                 }
                 
-                move(to: newPosition) { (_) in
+                move(to: newPosition) { _ in
                     self.delegate?.pipView?(self, didMoveTo: newPosition)
                 }
             }
@@ -246,5 +244,4 @@ NSLayoutConstraint.activate([
             isMoving = false
         }
     }
-    
 }

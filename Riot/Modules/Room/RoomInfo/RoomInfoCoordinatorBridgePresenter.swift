@@ -29,7 +29,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class RoomInfoCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -50,7 +49,7 @@ final class RoomInfoCoordinatorBridgePresenter: NSObject {
     // MARK: - Setup
     
     init(parameters: RoomInfoCoordinatorParameters) {
-        self.coordinatorParameters = parameters
+        coordinatorParameters = parameters
         super.init()
     }
     
@@ -62,30 +61,30 @@ final class RoomInfoCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let roomInfoCoordinator = RoomInfoCoordinator(parameters: self.coordinatorParameters)
+        let roomInfoCoordinator = RoomInfoCoordinator(parameters: coordinatorParameters)
         roomInfoCoordinator.delegate = self
         let presentable = roomInfoCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
         viewController.present(presentable, animated: animated, completion: nil)
         roomInfoCoordinator.start()
         
-        self.coordinator = roomInfoCoordinator
-        self.navigationType = .present
+        coordinator = roomInfoCoordinator
+        navigationType = .present
     }
     
     func push(from navigationController: UINavigationController, animated: Bool) {
         let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
-        let roomInfoCoordinator = RoomInfoCoordinator(parameters: self.coordinatorParameters, navigationRouter: navigationRouter)
+        let roomInfoCoordinator = RoomInfoCoordinator(parameters: coordinatorParameters, navigationRouter: navigationRouter)
         roomInfoCoordinator.delegate = self
         roomInfoCoordinator.start()
         
-        self.coordinator = roomInfoCoordinator
-        self.navigationType = .push
+        coordinator = roomInfoCoordinator
+        navigationType = .push
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         switch navigationType {
@@ -112,31 +111,29 @@ final class RoomInfoCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - RoomInfoCoordinatorDelegate
+
 extension RoomInfoCoordinatorBridgePresenter: RoomInfoCoordinatorDelegate {
-    
     func roomInfoCoordinatorDidComplete(_ coordinator: RoomInfoCoordinatorType) {
-        self.delegate?.roomInfoCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.roomInfoCoordinatorBridgePresenterDelegateDidComplete(self)
     }
     
     func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didRequestMentionForMember member: MXRoomMember) {
-        self.delegate?.roomInfoCoordinatorBridgePresenter(self, didRequestMentionForMember: member)
+        delegate?.roomInfoCoordinatorBridgePresenter(self, didRequestMentionForMember: member)
     }
     
     func roomInfoCoordinatorDidLeaveRoom(_ coordinator: RoomInfoCoordinatorType) {
-        self.delegate?.roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom(self)
+        delegate?.roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom(self)
     }
     
     func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didReplaceRoomWithReplacementId roomId: String) {
-        self.delegate?.roomInfoCoordinatorBridgePresenter(self, didReplaceRoomWithReplacementId: roomId)
+        delegate?.roomInfoCoordinatorBridgePresenter(self, didReplaceRoomWithReplacementId: roomId)
     }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
 extension RoomInfoCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.roomInfoCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.roomInfoCoordinatorBridgePresenterDelegateDidComplete(self)
     }
-    
 }

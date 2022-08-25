@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class UserVerificationSessionsStatusCoordinator: UserVerificationSessionsStatusCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,22 +48,23 @@ final class UserVerificationSessionsStatusCoordinator: UserVerificationSessionsS
     
     // MARK: - Public methods
     
-    func start() {            
-        self.userVerificationSessionsStatusViewModel.coordinatorDelegate = self
+    func start() {
+        userVerificationSessionsStatusViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.userVerificationSessionsStatusViewController
+        userVerificationSessionsStatusViewController
     }
 }
 
 // MARK: - UserVerificationSessionsStatusViewModelCoordinatorDelegate
+
 extension UserVerificationSessionsStatusCoordinator: UserVerificationSessionsStatusViewModelCoordinatorDelegate {
     func userVerificationSessionsStatusViewModel(_ viewModel: UserVerificationSessionsStatusViewModelType, didSelectDeviceWithId deviceId: String, for userId: String) {
-        self.delegate?.userVerificationSessionsStatusCoordinator(self, didSelectDeviceWithId: deviceId, for: userId)
+        delegate?.userVerificationSessionsStatusCoordinator(self, didSelectDeviceWithId: deviceId, for: userId)
     }
     
     func userVerificationSessionsStatusViewModelDidClose(_ viewModel: UserVerificationSessionsStatusViewModelType) {
-        self.delegate?.userVerificationSessionsStatusCoordinatorDidClose(self)
+        delegate?.userVerificationSessionsStatusCoordinatorDidClose(self)
     }
 }

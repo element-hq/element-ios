@@ -17,7 +17,6 @@
 import Foundation
 
 struct EmojiItem {
-    
     // MARK: - Properties
     
     /// The commonly-agreed short name for the emoji, as supported in GitHub and others via the :short_name: syntax (e.g. "grinning" for 😀).
@@ -46,7 +45,6 @@ struct EmojiItem {
          shortNames: [String] = [],
          keywords: [String] = [],
          variations: [EmojiItem] = []) {
-        
         self.shortName = shortName
         self.value = value
         self.name = name

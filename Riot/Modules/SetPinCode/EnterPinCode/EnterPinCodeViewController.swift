@@ -19,30 +19,29 @@
 import UIKit
 
 final class EnterPinCodeViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
-        static let aConstant: Int = 666
+        static let aConstant = 666
     }
     
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var mainStackView: UIStackView!
-    @IBOutlet private weak var inactiveView: UIView!
-    @IBOutlet private weak var inactiveLogoImageView: UIImageView!
-    @IBOutlet private weak var logoImageView: UIImageView!
-    @IBOutlet private weak var placeholderStackView: UIStackView!
-    @IBOutlet private weak var notAllowedPinView: UIView!
-    @IBOutlet private weak var notAllowedPinLineView: UIView!
-    @IBOutlet private weak var notAllowedPinLabel: UILabel!
-    @IBOutlet private weak var digitsStackView: UIStackView!
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var explanatoryLabel: UILabel!
-    @IBOutlet private weak var forgotPinButton: UIButton!
-    @IBOutlet private weak var bottomView: UIView!
+    @IBOutlet private var mainStackView: UIStackView!
+    @IBOutlet private var inactiveView: UIView!
+    @IBOutlet private var inactiveLogoImageView: UIImageView!
+    @IBOutlet private var logoImageView: UIImageView!
+    @IBOutlet private var placeholderStackView: UIStackView!
+    @IBOutlet private var notAllowedPinView: UIView!
+    @IBOutlet private var notAllowedPinLineView: UIView!
+    @IBOutlet private var notAllowedPinLabel: UILabel!
+    @IBOutlet private var digitsStackView: UIStackView!
+    @IBOutlet private var informationLabel: UILabel!
+    @IBOutlet private var explanatoryLabel: UILabel!
+    @IBOutlet private var forgotPinButton: UIButton!
+    @IBOutlet private var bottomView: UIView!
     
     // MARK: Private
 
@@ -67,16 +66,16 @@ final class EnterPinCodeViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
         
         //  force orientation to portrait if phone
         if UIDevice.current.isPhone {
@@ -91,7 +90,7 @@ final class EnterPinCodeViewController: UIViewController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        self.theme.statusBarStyle
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -114,16 +113,16 @@ final class EnterPinCodeViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.informationLabel.textColor = theme.textPrimaryColor
-        self.explanatoryLabel.textColor = theme.textSecondaryColor
-        self.notAllowedPinLineView.backgroundColor = theme.noticeColor
-        self.notAllowedPinLabel.textColor = theme.noticeColor
+        informationLabel.textColor = theme.textPrimaryColor
+        explanatoryLabel.textColor = theme.textSecondaryColor
+        notAllowedPinLineView.backgroundColor = theme.noticeColor
+        notAllowedPinLabel.textColor = theme.noticeColor
 
         updateThemesOfAllImages(in: placeholderStackView, with: theme)
         updateThemesOfAllButtons(in: digitsStackView, with: theme)
@@ -157,7 +156,7 @@ final class EnterPinCodeViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -165,10 +164,10 @@ final class EnterPinCodeViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         showCancelButton()
         
-        self.title = ""
+        title = ""
         
         notAllowedPinLabel.text = VectorL10n.pinProtectionNotAllowedPin
         
@@ -183,81 +182,81 @@ final class EnterPinCodeViewController: UIViewController {
     }
     
     private func showCancelButton() {
-        self.navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isHidden = false
     }
     
     private func hideCancelButton() {
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
     }
     
     private func render(viewState: EnterPinCodeViewState) {
         switch viewState {
         case .choosePin:
-            self.renderChoosePin()
+            renderChoosePin()
         case .choosePinAfterLogin:
-            self.renderChoosePinAfterLogin()
+            renderChoosePinAfterLogin()
         case .choosePinAfterRegister:
-            self.renderChoosePinAfterRegister()
+            renderChoosePinAfterRegister()
         case .notAllowedPin:
-            self.renderNotAllowedPin()
+            renderNotAllowedPin()
         case .confirmPin:
-            self.renderConfirmPin()
+            renderConfirmPin()
         case .pinsDontMatch:
-            self.renderPinsDontMatch()
+            renderPinsDontMatch()
         case .unlock:
-            self.renderUnlockByPin()
+            renderUnlockByPin()
         case .wrongPin:
-            self.renderWrongPin()
+            renderWrongPin()
         case .wrongPinTooManyTimes:
-            self.renderWrongPinTooManyTimes()
+            renderWrongPinTooManyTimes()
         case .forgotPin:
-            self.renderForgotPin()
+            renderForgotPin()
         case .confirmPinToDisable:
-            self.renderConfirmPinToDisable()
+            renderConfirmPinToDisable()
         case .inactive:
-            self.renderInactive()
+            renderInactive()
         case .changePin:
-            self.renderChangePin()
+            renderChangePin()
         }
     }
     
     private func renderChoosePin() {
-        self.inactiveView.isHidden = true
-        self.mainStackView.isHidden = false
-        self.logoImageView.isHidden = true
-        self.informationLabel.text = VectorL10n.pinProtectionChoosePin
-        self.explanatoryLabel.isHidden = false
-        self.forgotPinButton.isHidden = true
-        self.bottomView.isHidden = false
-        self.notAllowedPinView.isHidden = true
+        inactiveView.isHidden = true
+        mainStackView.isHidden = false
+        logoImageView.isHidden = true
+        informationLabel.text = VectorL10n.pinProtectionChoosePin
+        explanatoryLabel.isHidden = false
+        forgotPinButton.isHidden = true
+        bottomView.isHidden = false
+        notAllowedPinView.isHidden = true
     }
     
     private func renderChoosePinAfterLogin() {
         renderChoosePin()
-        self.informationLabel.text = VectorL10n.pinProtectionChoosePinWelcomeAfterLogin + "\n" + VectorL10n.pinProtectionChoosePin
+        informationLabel.text = VectorL10n.pinProtectionChoosePinWelcomeAfterLogin + "\n" + VectorL10n.pinProtectionChoosePin
     }
     
     private func renderChoosePinAfterRegister() {
         renderChoosePin()
-        self.informationLabel.text = VectorL10n.pinProtectionChoosePinWelcomeAfterRegister + "\n" + VectorL10n.pinProtectionChoosePin
+        informationLabel.text = VectorL10n.pinProtectionChoosePinWelcomeAfterRegister + "\n" + VectorL10n.pinProtectionChoosePin
     }
     
     private func renderNotAllowedPin() {
-        self.inactiveView.isHidden = true
-        self.mainStackView.isHidden = false
-        self.logoImageView.isHidden = true
-        self.forgotPinButton.isHidden = true
-        self.bottomView.isHidden = false
-        self.notAllowedPinView.isHidden = false
+        inactiveView.isHidden = true
+        mainStackView.isHidden = false
+        logoImageView.isHidden = true
+        forgotPinButton.isHidden = true
+        bottomView.isHidden = false
+        notAllowedPinView.isHidden = false
         
         renderPlaceholdersCount(.max, error: true)
     }
     
     private func renderConfirmPin() {
-        self.inactiveView.isHidden = true
-        self.mainStackView.isHidden = false
-        self.informationLabel.text = VectorL10n.pinProtectionConfirmPin
-        self.notAllowedPinView.isHidden = true
+        inactiveView.isHidden = true
+        mainStackView.isHidden = false
+        informationLabel.text = VectorL10n.pinProtectionConfirmPin
+        notAllowedPinView.isHidden = true
         
         //  reset placeholders
         renderPlaceholdersCount(0)
@@ -267,38 +266,38 @@ final class EnterPinCodeViewController: UIViewController {
         let error = MXKErrorViewModel(title: VectorL10n.pinProtectionMismatchErrorTitle,
                                       message: VectorL10n.pinProtectionMismatchErrorMessage)
         
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, for: error, animated: true) {
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, for: error, animated: true) {
             self.viewModel.process(viewAction: .pinsDontMatchAlertAction)
         }
     }
     
     private func renderUnlockByPin() {
         hideCancelButton()
-        self.inactiveView.isHidden = true
-        self.mainStackView.isHidden = false
-        self.logoImageView.isHidden = false
-        self.informationLabel.text = VectorL10n.pinProtectionEnterPin
-        self.explanatoryLabel.isHidden = true
-        self.forgotPinButton.isHidden = false
-        self.bottomView.isHidden = true
-        self.notAllowedPinView.isHidden = true
+        inactiveView.isHidden = true
+        mainStackView.isHidden = false
+        logoImageView.isHidden = false
+        informationLabel.text = VectorL10n.pinProtectionEnterPin
+        explanatoryLabel.isHidden = true
+        forgotPinButton.isHidden = false
+        bottomView.isHidden = true
+        notAllowedPinView.isHidden = true
     }
     
     private func renderWrongPin() {
-        self.inactiveView.isHidden = true
-        self.mainStackView.isHidden = false
-        self.notAllowedPinView.isHidden = true
-        self.explanatoryLabel.isHidden = true
-        self.placeholderStackView.vc_shake()
+        inactiveView.isHidden = true
+        mainStackView.isHidden = false
+        notAllowedPinView.isHidden = true
+        explanatoryLabel.isHidden = true
+        placeholderStackView.vc_shake()
     }
     
     private func renderWrongPinTooManyTimes() {
         let error = MXKErrorViewModel(title: VectorL10n.pinProtectionMismatchErrorTitle,
                                       message: VectorL10n.pinProtectionMismatchTooManyTimesErrorMessage)
         
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, for: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, for: error, animated: true, handler: nil)
     }
     
     private func renderForgotPin() {
@@ -306,47 +305,47 @@ final class EnterPinCodeViewController: UIViewController {
                                            message: VectorL10n.pinProtectionResetAlertMessage,
                                            preferredStyle: .alert)
         
-        let resetAction = UIAlertAction(title: VectorL10n.pinProtectionResetAlertActionReset, style: .default) { (_) in
+        let resetAction = UIAlertAction(title: VectorL10n.pinProtectionResetAlertActionReset, style: .default) { _ in
             self.viewModel.process(viewAction: .forgotPinAlertResetAction)
         }
         
-        let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel) { (_) in
+        let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel) { _ in
             self.viewModel.process(viewAction: .forgotPinAlertCancelAction)
         }
         
         controller.addAction(resetAction)
         controller.addAction(cancelAction)
-        self.present(controller, animated: true, completion: nil)
+        present(controller, animated: true, completion: nil)
     }
     
     private func renderConfirmPinToDisable() {
-        self.inactiveView.isHidden = true
-        self.mainStackView.isHidden = false
-        self.logoImageView.isHidden = true
-        self.informationLabel.text = VectorL10n.pinProtectionConfirmPinToDisable
-        self.explanatoryLabel.isHidden = true
-        self.forgotPinButton.isHidden = true
-        self.bottomView.isHidden = false
-        self.notAllowedPinView.isHidden = true
+        inactiveView.isHidden = true
+        mainStackView.isHidden = false
+        logoImageView.isHidden = true
+        informationLabel.text = VectorL10n.pinProtectionConfirmPinToDisable
+        explanatoryLabel.isHidden = true
+        forgotPinButton.isHidden = true
+        bottomView.isHidden = false
+        notAllowedPinView.isHidden = true
     }
     
     private func renderInactive() {
-        self.hideCancelButton()
-        self.inactiveView.isHidden = false
-        self.mainStackView.isHidden = true
-        self.notAllowedPinView.isHidden = true
-        self.explanatoryLabel.isHidden = true
+        hideCancelButton()
+        inactiveView.isHidden = false
+        mainStackView.isHidden = true
+        notAllowedPinView.isHidden = true
+        explanatoryLabel.isHidden = true
     }
     
     private func renderChangePin() {
-        self.inactiveView.isHidden = true
-        self.mainStackView.isHidden = false
-        self.logoImageView.isHidden = true
-        self.informationLabel.text = VectorL10n.pinProtectionConfirmPinToChange
-        self.explanatoryLabel.isHidden = true
-        self.forgotPinButton.isHidden = true
-        self.bottomView.isHidden = false
-        self.notAllowedPinView.isHidden = true
+        inactiveView.isHidden = true
+        mainStackView.isHidden = false
+        logoImageView.isHidden = true
+        informationLabel.text = VectorL10n.pinProtectionConfirmPinToChange
+        explanatoryLabel.isHidden = true
+        forgotPinButton.isHidden = true
+        bottomView.isHidden = false
+        notAllowedPinView.isHidden = true
     }
     
     private func renderPlaceholdersCount(_ count: Int, error: Bool = false) {
@@ -368,28 +367,27 @@ final class EnterPinCodeViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction private func digitButtonAction(_ sender: UIButton) {
-        self.viewModel.process(viewAction: .digitPressed(sender.tag))
+        viewModel.process(viewAction: .digitPressed(sender.tag))
     }
     
     @IBAction private func forgotPinButtonAction(_ sender: UIButton) {
-        self.viewModel.process(viewAction: .forgotPinPressed)
+        viewModel.process(viewAction: .forgotPinPressed)
     }
 
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
 
-
 // MARK: - EnterPinCodeViewModelViewDelegate
-extension EnterPinCodeViewController: EnterPinCodeViewModelViewDelegate {
 
+extension EnterPinCodeViewController: EnterPinCodeViewModelViewDelegate {
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didUpdateViewState viewSate: EnterPinCodeViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
     
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didUpdatePlaceholdersCount count: Int) {
-        self.renderPlaceholdersCount(count)
+        renderPlaceholdersCount(count)
     }
     
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didUpdateCancelButtonHidden isHidden: Bool) {
@@ -399,5 +397,4 @@ extension EnterPinCodeViewController: EnterPinCodeViewModelViewDelegate {
             showCancelButton()
         }
     }
-    
 }

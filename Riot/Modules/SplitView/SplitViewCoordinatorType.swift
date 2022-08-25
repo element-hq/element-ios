@@ -23,7 +23,6 @@ protocol SplitViewCoordinatorDelegate: AnyObject {
 
 /// `SplitViewCoordinatorType` is a protocol describing a Coordinator that handles split view navigation flow.
 protocol SplitViewCoordinatorType: Coordinator, Presentable {
-    
     var delegate: SplitViewCoordinatorDelegate? { get }
     
     /// Start coordinator by selecting a Space.
@@ -34,7 +33,7 @@ protocol SplitViewCoordinatorType: Coordinator, Presentable {
     func popToHome(animated: Bool, completion: (() -> Void)?)
         
     // TODO: Do not expose publicly this method
-    /// Remove detail screens and display placeholder if needed 
+    /// Remove detail screens and display placeholder if needed
     func resetDetails(animated: Bool)
     
     /// Displays an error using a `UserIndicator`. The messages is dimissed automatically.

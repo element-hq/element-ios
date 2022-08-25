@@ -19,7 +19,6 @@
 import Foundation
 
 final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -44,12 +43,12 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
     init(session: MXSession, otherUser: MXUser, transaction: MXIncomingSASTransaction) {
         self.session = session
         self.transaction = transaction
-        self.userId = otherUser.userId
-        self.userDisplayName = otherUser.displayname
-        self.avatarUrl = otherUser.avatarUrl
-        self.deviceId = transaction.otherDeviceId
+        userId = otherUser.userId
+        userDisplayName = otherUser.displayname
+        avatarUrl = otherUser.avatarUrl
+        deviceId = transaction.otherDeviceId
 
-        self.mediaManager = session.mediaManager
+        mediaManager = session.mediaManager
     }
 
     // MARK: - Public
@@ -57,28 +56,28 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
     func process(viewAction: DeviceVerificationIncomingViewAction) {
         switch viewAction {
         case .loadData:
-            self.registerTransactionDidStateChangeNotification(transaction: transaction)
+            registerTransactionDidStateChangeNotification(transaction: transaction)
         case .accept:
-            self.acceptIncomingDeviceVerification()
+            acceptIncomingDeviceVerification()
         case .cancel:
-            self.rejectIncomingDeviceVerification()
-            self.coordinatorDelegate?.deviceVerificationIncomingViewModelDidCancel(self)
+            rejectIncomingDeviceVerification()
+            coordinatorDelegate?.deviceVerificationIncomingViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func acceptIncomingDeviceVerification() {
-        self.update(viewState: .loading)
-        self.transaction.accept()
+        update(viewState: .loading)
+        transaction.accept()
     }
 
     private func rejectIncomingDeviceVerification() {
-        self.transaction.cancel(with: MXTransactionCancelCode.user())
+        transaction.cancel(with: MXTransactionCancelCode.user())
     }
     
     private func update(viewState: DeviceVerificationIncomingViewState) {
-        self.viewDelegate?.deviceVerificationIncomingViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.deviceVerificationIncomingViewModel(self, didUpdateViewState: viewState)
     }
 
     // MARK: - MXKeyVerificationTransactionDidChange
@@ -98,21 +97,21 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
 
         switch transaction.state {
         case MXSASTransactionStateShowSAS:
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .loaded)
-            self.coordinatorDelegate?.deviceVerificationIncomingViewModel(self, didAcceptTransaction: self.transaction)
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .loaded)
+            coordinatorDelegate?.deviceVerificationIncomingViewModel(self, didAcceptTransaction: self.transaction)
         case MXSASTransactionStateCancelled:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelled(reason))
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .cancelled(reason))
         case MXSASTransactionStateCancelledByMe:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelledByMe(reason))
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .cancelledByMe(reason))
         default:
             break
         }

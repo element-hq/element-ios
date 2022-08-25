@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import UIKit
 
 class ThreadsBetaViewController: UIViewController {
-
     // MARK: Constants
 
     private enum Constants {
@@ -26,15 +25,16 @@ class ThreadsBetaViewController: UIViewController {
 
     // MARK: Outlets
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var separatorLineView: UIView!
-    @IBOutlet private weak var informationTextView: UITextView! {
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var separatorLineView: UIView!
+    @IBOutlet private var informationTextView: UITextView! {
         didSet {
             informationTextView.textContainer.lineFragmentPadding = 0
         }
     }
-    @IBOutlet private weak var enableButton: UIButton!
-    @IBOutlet private weak var cancelButton: UIButton!
+
+    @IBOutlet private var enableButton: UIButton!
+    @IBOutlet private var cancelButton: UIButton!
 
     // MARK: Private
 
@@ -52,21 +52,21 @@ class ThreadsBetaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.setupViews()
+        setupViews()
 
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // Hide back button
-        self.navigationItem.setHidesBackButton(true, animated: animated)
+        navigationItem.setHidesBackButton(true, animated: animated)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
 
     // MARK: - Setup
@@ -89,17 +89,17 @@ class ThreadsBetaViewController: UIViewController {
     }
 
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
 
     private func setupViews() {
-        self.vc_removeBackTitle()
+        vc_removeBackTitle()
 
-        self.enableButton.setTitle(VectorL10n.threadsBetaEnable, for: .normal)
-        self.cancelButton.setTitle(VectorL10n.threadsBetaCancel, for: .normal)
+        enableButton.setTitle(VectorL10n.threadsBetaEnable, for: .normal)
+        cancelButton.setTitle(VectorL10n.threadsBetaCancel, for: .normal)
 
-        self.titleLabel.text = VectorL10n.threadsBetaTitle
-        guard let font = self.informationTextView.font else {
+        titleLabel.text = VectorL10n.threadsBetaTitle
+        guard let font = informationTextView.font else {
             return
         }
         let attributedString = NSMutableAttributedString(string: infoText,
@@ -113,52 +113,48 @@ class ThreadsBetaViewController: UIViewController {
             attributedString.append(NSAttributedString(string: additionalText,
                                                        attributes: [.font: font]))
         }
-        self.informationTextView.attributedText = attributedString
+        informationTextView.attributedText = attributedString
     }
 
     // MARK: - Actions
 
     @IBAction private func enableButtonAction(_ sender: UIButton) {
-        self.didTapEnableButton?()
+        didTapEnableButton?()
     }
 
     @IBAction private func cancelButtonAction(_ sender: UIButton) {
-        self.didTapCancelButton?()
+        didTapCancelButton?()
     }
-
 }
 
 // MARK: - Themable
 
 extension ThreadsBetaViewController: Themable {
-
     func update(theme: Theme) {
         self.theme = theme
 
-        self.view.backgroundColor = theme.colors.background
+        view.backgroundColor = theme.colors.background
 
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.separatorLineView.backgroundColor = theme.colors.system
-        self.informationTextView.textColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        separatorLineView.backgroundColor = theme.colors.system
+        informationTextView.textColor = theme.textPrimaryColor
 
-        self.enableButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
-        self.enableButton.setTitleColor(theme.baseTextPrimaryColor, for: .normal)
-        self.cancelButton.vc_setBackgroundColor(.clear, for: .normal)
-        self.cancelButton.setTitleColor(theme.tintColor, for: .normal)
+        enableButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
+        enableButton.setTitleColor(theme.baseTextPrimaryColor, for: .normal)
+        cancelButton.vc_setBackgroundColor(.clear, for: .normal)
+        cancelButton.setTitleColor(theme.tintColor, for: .normal)
     }
-
 }
 
 // MARK: - SlidingModalPresentable
 
 extension ThreadsBetaViewController: SlidingModalPresentable {
-
     func allowsDismissOnBackgroundTap() -> Bool {
-        return false
+        false
     }
 
     func layoutHeightFittingWidth(_ width: CGFloat) -> CGFloat {
@@ -176,5 +172,4 @@ extension ThreadsBetaViewController: SlidingModalPresentable {
             + UIWindow().safeAreaInsets.top
             + UIWindow().safeAreaInsets.bottom
     }
-
 }

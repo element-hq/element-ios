@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import UIKit
 
 @objcMembers
 class AllChatsFilterOptions: NSObject {
-
     func createFilterListView() -> AllChatsFilterOptionListView? {
         guard optionsCount > 0 else {
             return nil
@@ -84,7 +83,7 @@ class AllChatsFilterOptions: NSObject {
     }
     
     var optionsCount: Int {
-        return options.count
+        options.count
     }
     
     private var options: [AllChatsFilterOptionListView.Option] {

@@ -28,8 +28,7 @@ protocol OptionListViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `OptionListViewController`
-protocol OptionListViewModelProtocol {        
-        
+protocol OptionListViewModelProtocol {
     var viewDelegate: OptionListViewModelViewDelegate? { get set }
     var coordinatorDelegate: OptionListViewModelCoordinatorDelegate? { get set }
     

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 struct DirectoryNetworkVM {
     var title: String?
@@ -26,14 +26,14 @@ struct DirectoryNetworkVM {
 }
 
 class DirectoryNetworkTableHeaderFooterView: UITableViewHeaderFooterView {
-    
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var switchButton: UIButton! {
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var switchButton: UIButton! {
         didSet {
             switchButton.setTitle(VectorL10n.switch, for: .normal)
         }
     }
-    @IBOutlet private weak var separatorView: UIView!
+
+    @IBOutlet private var separatorView: UIView!
     
     weak var delegate: DirectoryNetworkTableHeaderFooterViewDelegate?
 
@@ -46,10 +46,9 @@ class DirectoryNetworkTableHeaderFooterView: UITableViewHeaderFooterView {
     }
 }
 
-extension DirectoryNetworkTableHeaderFooterView: NibReusable {}
+extension DirectoryNetworkTableHeaderFooterView: NibReusable { }
 
 extension DirectoryNetworkTableHeaderFooterView: Themable {
-    
     func update(theme: Theme) {
         //  bg
         let view = UIView()
@@ -60,5 +59,4 @@ extension DirectoryNetworkTableHeaderFooterView: Themable {
         theme.applyStyle(onButton: switchButton)
         separatorView.backgroundColor = theme.lineBreakColor
     }
-    
 }

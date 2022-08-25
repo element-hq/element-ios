@@ -22,17 +22,16 @@ protocol SimpleScreenTemplateViewControllerDelegate: AnyObject {
 }
 
 final class SimpleScreenTemplateViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var logoImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var logoImageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var okButtonBackgroundView: UIView!
-    @IBOutlet private weak var okButton: UIButton!
+    @IBOutlet private var okButtonBackgroundView: UIView!
+    @IBOutlet private var okButton: UIButton!
     
     // MARK: Private
     
@@ -57,16 +56,16 @@ final class SimpleScreenTemplateViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        self.title = "Template"
-        self.vc_removeBackTitle()
+        title = "Template"
+        vc_removeBackTitle()
         
-        self.setupViews()
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        setupViews()
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -75,7 +74,7 @@ final class SimpleScreenTemplateViewController: UIViewController {
         let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
             self?.cancelButtonAction()
         }
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
 //        let logoImage = Asset.Images.*
 //        self.logoImageView.image = keybackupLogoImage
@@ -89,20 +88,20 @@ final class SimpleScreenTemplateViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.logoImageView.tintColor = theme.textPrimaryColor
+        logoImageView.tintColor = theme.textPrimaryColor
         
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.okButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.okButton)
-            }
+        okButtonBackgroundView.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: okButton)
+    }
     
     private func registerThemeServiceDidChangeThemeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
@@ -111,14 +110,14 @@ final class SimpleScreenTemplateViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     @IBAction private func validateButtonAction(_ sender: Any) {
-        self.delegate?.simpleScreenTemplateViewControllerDidTapSetupAction(self)
+        delegate?.simpleScreenTemplateViewControllerDidTapSetupAction(self)
     }
 
     private func cancelButtonAction() {
-        self.delegate?.simpleScreenTemplateViewControllerDidCancel(self)
+        delegate?.simpleScreenTemplateViewControllerDidCancel(self)
     }
 }

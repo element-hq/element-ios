@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,10 +18,9 @@ import Foundation
 import MatrixSDK
 
 extension MXEvent {
-    
     /// Get MXMessageType if any
     var messageType: MXMessageType? {
-        guard let messageTypeString = self.content["msgtype"] as? String else {
+        guard let messageTypeString = content["msgtype"] as? String else {
             return nil
         }
         return MXMessageType(identifier: messageTypeString)
@@ -30,7 +29,7 @@ extension MXEvent {
     /// Lightweight version of the receiver, in which reply-specific keys are stripped. Returns the same event with the receiver if not a reply event.
     /// Should be used only to update formatting behavior.
     var replyStrippedVersion: MXEvent {
-        if self.isReply(), let newMessage = self.copy() as? MXEvent {
+        if isReply(), let newMessage = copy() as? MXEvent {
             var jsonDict = newMessage.isEncrypted ? newMessage.clear?.jsonDictionary() : newMessage.jsonDictionary()
             if var content = jsonDict?["content"] as? [String: Any] {
                 content.removeValue(forKey: "format")

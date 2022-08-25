@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 @objcMembers
 class LocalAuthenticationService: NSObject {
-    
     private let pinCodePreferences: PinCodePreferences
     
     init(pinCodePreferences: PinCodePreferences) {
@@ -32,7 +31,7 @@ class LocalAuthenticationService: NSObject {
     
     private var systemUptime: TimeInterval {
         var uptime = timespec()
-        if 0 != clock_gettime(CLOCK_MONOTONIC_RAW, &uptime) {
+        if clock_gettime(CLOCK_MONOTONIC_RAW, &uptime) != 0 {
             fatalError("Could not execute clock_gettime, errno: \(errno)")
         }
 
@@ -44,7 +43,7 @@ class LocalAuthenticationService: NSObject {
     }
     
     var shouldShowPinCode: Bool {
-        if !pinCodePreferences.isPinSet && !pinCodePreferences.isBiometricsSet {
+        if !pinCodePreferences.isPinSet, !pinCodePreferences.isBiometricsSet {
             return false
         }
         if MXKAccountManager.shared()?.activeAccounts.count == 0 {
@@ -57,7 +56,7 @@ class LocalAuthenticationService: NSObject {
     }
     
     var isProtectionSet: Bool {
-        return pinCodePreferences.isPinSet || pinCodePreferences.isBiometricsSet
+        pinCodePreferences.isPinSet || pinCodePreferences.isBiometricsSet
     }
 
     func applicationWillResignActive() {
@@ -65,13 +64,12 @@ class LocalAuthenticationService: NSObject {
     }
     
     func shouldLogOutUser() -> Bool {
-        if BuildSettings.logOutUserWhenPINFailuresExceeded && pinCodePreferences.numberOfPinFailures >= pinCodePreferences.maxAllowedNumberOfPinFailures {
+        if BuildSettings.logOutUserWhenPINFailuresExceeded, pinCodePreferences.numberOfPinFailures >= pinCodePreferences.maxAllowedNumberOfPinFailures {
             return true
         }
-        if BuildSettings.logOutUserWhenBiometricsFailuresExceeded && pinCodePreferences.numberOfBiometricsFailures >= pinCodePreferences.maxAllowedNumberOfBiometricsFailures {
+        if BuildSettings.logOutUserWhenBiometricsFailuresExceeded, pinCodePreferences.numberOfBiometricsFailures >= pinCodePreferences.maxAllowedNumberOfBiometricsFailures {
             return true
         }
         return false
     }
-
 }

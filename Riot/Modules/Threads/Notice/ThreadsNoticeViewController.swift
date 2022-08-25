@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,13 +17,12 @@
 import UIKit
 
 class ThreadsNoticeViewController: UIViewController {
-
     // MARK: Outlets
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var separatorLineView: UIView!
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var doneButton: UIButton!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var separatorLineView: UIView!
+    @IBOutlet private var informationLabel: UILabel!
+    @IBOutlet private var doneButton: UIButton!
 
     // MARK: Private
 
@@ -38,21 +37,21 @@ class ThreadsNoticeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.setupViews()
+        setupViews()
 
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // Hide back button
-        self.navigationItem.setHidesBackButton(true, animated: animated)
+        navigationItem.setHidesBackButton(true, animated: animated)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
 
     // MARK: - Setup
@@ -73,54 +72,50 @@ class ThreadsNoticeViewController: UIViewController {
     }
 
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
 
     private func setupViews() {
-        self.vc_removeBackTitle()
+        vc_removeBackTitle()
 
-        self.titleLabel.text = VectorL10n.threadsNoticeTitle
-        self.informationLabel.setHTMLFromString(VectorL10n.threadsNoticeInformation)
-        self.doneButton.setTitle(VectorL10n.threadsNoticeDone, for: .normal)
+        titleLabel.text = VectorL10n.threadsNoticeTitle
+        informationLabel.setHTMLFromString(VectorL10n.threadsNoticeInformation)
+        doneButton.setTitle(VectorL10n.threadsNoticeDone, for: .normal)
     }
 
     // MARK: - Actions
 
     @IBAction private func doneButtonAction(_ sender: UIButton) {
-        self.didTapDoneButton?()
+        didTapDoneButton?()
     }
-
 }
 
 // MARK: - Themable
 
 extension ThreadsNoticeViewController: Themable {
-
     func update(theme: Theme) {
         self.theme = theme
 
-        self.view.backgroundColor = theme.colors.background
+        view.backgroundColor = theme.colors.background
 
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.separatorLineView.backgroundColor = theme.colors.system
-        self.informationLabel.textColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        separatorLineView.backgroundColor = theme.colors.system
+        informationLabel.textColor = theme.textPrimaryColor
 
-        self.doneButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
-        self.doneButton.setTitleColor(theme.baseTextPrimaryColor, for: .normal)
+        doneButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
+        doneButton.setTitleColor(theme.baseTextPrimaryColor, for: .normal)
     }
-
 }
 
 // MARK: - SlidingModalPresentable
 
 extension ThreadsNoticeViewController: SlidingModalPresentable {
-
     func allowsDismissOnBackgroundTap() -> Bool {
-        return false
+        false
     }
 
     func layoutHeightFittingWidth(_ width: CGFloat) -> CGFloat {
@@ -138,5 +133,4 @@ extension ThreadsNoticeViewController: SlidingModalPresentable {
             + UIWindow().safeAreaInsets.top
             + UIWindow().safeAreaInsets.bottom
     }
-
 }

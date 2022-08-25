@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,11 @@
 import Foundation
 
 class RoomInviteViewController: ContactsTableViewController {
-    
     var room: MXRoom?
     private var roomAlias: String?
     private var joinRule: MXRoomJoinRule?
     
-    private lazy var shareLinkPresenter: ShareInviteLinkPresenter = ShareInviteLinkPresenter()
+    private lazy var shareLinkPresenter = ShareInviteLinkPresenter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +54,7 @@ class RoomInviteViewController: ContactsTableViewController {
 }
 
 // MARK: - ShareInviteLinkHeaderViewDelegate
+
 extension RoomInviteViewController: ShareInviteLinkHeaderViewDelegate {
     func shareInviteLinkHeaderView(_ headerView: ShareInviteLinkHeaderView, didTapButton button: UIButton) {
         showInviteLink(from: button)

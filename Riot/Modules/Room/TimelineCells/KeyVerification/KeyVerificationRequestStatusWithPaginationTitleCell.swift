@@ -18,7 +18,6 @@ import UIKit
 
 @objcMembers
 final class KeyVerificationRequestStatusWithPaginationTitleCell: KeyVerificationRequestStatusCell {
-    
     // MARK: - Constants
     
     private enum Sizing {
@@ -29,15 +28,16 @@ final class KeyVerificationRequestStatusWithPaginationTitleCell: KeyVerification
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.commonInit()
+        commonInit()
     }
     
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private func commonInit() {
-        guard let roomCellContentView = self.roomCellContentView else {
+        guard let roomCellContentView = roomCellContentView else {
             fatalError("[KeyVerificationRequestStatusWithPaginationTitleCell] roomCellContentView should not be nil")
         }
         
@@ -47,6 +47,6 @@ final class KeyVerificationRequestStatusWithPaginationTitleCell: KeyVerification
     // MARK: - Overrides
     
     override class func sizingView() -> KeyVerificationBaseCell {
-        return self.Sizing.view
+        Sizing.view
     }
 }

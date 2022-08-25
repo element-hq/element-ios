@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,17 +14,16 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 /// SideMenuVersionView displays application version
 final class SideMenuVersionView: UIView, NibOwnerLoadable {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var label: UILabel!
+    @IBOutlet private var label: UILabel!
     
     // MARK: Private
     
@@ -40,8 +39,7 @@ final class SideMenuVersionView: UIView, NibOwnerLoadable {
         return view
     }
     
-    private func commonInit() {
-    }
+    private func commonInit() { }
     
     convenience init() {
         self.init(frame: CGRect.zero)
@@ -49,29 +47,29 @@ final class SideMenuVersionView: UIView, NibOwnerLoadable {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadNibContent()
-        self.commonInit()
+        loadNibContent()
+        commonInit()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadNibContent()
-        self.commonInit()
+        loadNibContent()
+        commonInit()
     }
     
     // MARK: - Public
     
     func fill(with version: String) {
-        self.label.text = VectorL10n.sideMenuAppVersion(version)
+        label.text = VectorL10n.sideMenuAppVersion(version)
     }
 }
 
 // MARK: - Themable
+
 extension SideMenuVersionView: Themable {
-    
     func update(theme: Theme) {
         self.theme = theme
         
-        self.label.textColor = theme.textSecondaryColor
+        label.textColor = theme.textSecondaryColor
     }
 }

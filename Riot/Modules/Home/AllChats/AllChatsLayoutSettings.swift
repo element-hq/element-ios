@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 @objcMembers
 class AllChatsLayoutSettings: NSObject, NSCoding {
-    
     fileprivate enum Constants {
         static let sectionsKey = "sections"
         static let filtersKey = "filters"
@@ -44,8 +43,8 @@ class AllChatsLayoutSettings: NSObject, NSCoding {
     }
     
     required init?(coder: NSCoder) {
-        self.sections = AllChatsLayoutSectionType(rawValue: UInt(coder.decodeInteger(forKey: Constants.sectionsKey)))
-        self.filters = AllChatsLayoutFilterType(rawValue: UInt(coder.decodeInteger(forKey: Constants.filtersKey)))
-        self.sorting = AllChatsLayoutSortingType(rawValue: UInt(coder.decodeInteger(forKey: Constants.sortingKey))) ?? .activity
+        sections = AllChatsLayoutSectionType(rawValue: UInt(coder.decodeInteger(forKey: Constants.sectionsKey)))
+        filters = AllChatsLayoutFilterType(rawValue: UInt(coder.decodeInteger(forKey: Constants.filtersKey)))
+        sorting = AllChatsLayoutSortingType(rawValue: UInt(coder.decodeInteger(forKey: Constants.sortingKey))) ?? .activity
     }
 }

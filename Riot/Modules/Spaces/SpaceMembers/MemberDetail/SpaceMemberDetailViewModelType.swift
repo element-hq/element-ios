@@ -28,8 +28,7 @@ protocol SpaceMemberDetailViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `SpaceMemberDetailViewController`
-protocol SpaceMemberDetailViewModelType {        
-        
+protocol SpaceMemberDetailViewModelType {
     var viewDelegate: SpaceMemberDetailViewModelViewDelegate? { get set }
     var coordinatorDelegate: SpaceMemberDetailViewModelCoordinatorDelegate? { get set }
     var showCancelMenuItem: Bool { get }

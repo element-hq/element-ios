@@ -19,28 +19,27 @@
 import UIKit
 
 final class SecretsSetupRecoveryKeyViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var secureKeyImageView: UIImageView!
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var recoveryKeyLabel: UILabel!
-    @IBOutlet private weak var exportButton: RoundedButton!
-    @IBOutlet private weak var doneButton: RoundedButton!
+    @IBOutlet private var secureKeyImageView: UIImageView!
+    @IBOutlet private var informationLabel: UILabel!
+    @IBOutlet private var recoveryKeyLabel: UILabel!
+    @IBOutlet private var exportButton: RoundedButton!
+    @IBOutlet private var doneButton: RoundedButton!
     
     // MARK: Private
 
     private var viewModel: SecretsSetupRecoveryKeyViewModelType!
-    private var isPassphraseOnly: Bool = true
+    private var isPassphraseOnly = true
     private var cancellable: Bool!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     
     private var recoveryKey: String?
-    private var hasSavedRecoveryKey: Bool = false
+    private var hasSavedRecoveryKey = false
 
     // MARK: - Setup
     
@@ -59,27 +58,27 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Hide back button
-        self.navigationItem.setHidesBackButton(true, animated: animated)
+        navigationItem.setHidesBackButton(true, animated: animated)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -87,18 +86,18 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.secureKeyImageView.tintColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textPrimaryColor
-        self.recoveryKeyLabel.textColor = theme.textSecondaryColor
+        secureKeyImageView.tintColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
+        recoveryKeyLabel.textColor = theme.textSecondaryColor
         
-        self.exportButton.update(theme: theme)
-        self.doneButton.update(theme: theme)
+        exportButton.update(theme: theme)
+        doneButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -106,48 +105,48 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        if self.cancellable {
+        if cancellable {
             let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
                 self?.cancelButtonAction()
             }
 
-            self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+            navigationItem.rightBarButtonItem = cancelBarButtonItem
         }
 
-        self.vc_removeBackTitle()                
+        vc_removeBackTitle()
         
-        self.title = VectorL10n.secretsSetupRecoveryKeyTitle
+        title = VectorL10n.secretsSetupRecoveryKeyTitle
         
-        self.secureKeyImageView.image = Asset.Images.secretsSetupKey.image.withRenderingMode(.alwaysTemplate)
-        self.informationLabel.text = VectorL10n.secretsSetupRecoveryKeyInformation
-        self.recoveryKeyLabel.text = VectorL10n.secretsSetupRecoveryKeyLoading
+        secureKeyImageView.image = Asset.Images.secretsSetupKey.image.withRenderingMode(.alwaysTemplate)
+        informationLabel.text = VectorL10n.secretsSetupRecoveryKeyInformation
+        recoveryKeyLabel.text = VectorL10n.secretsSetupRecoveryKeyLoading
         
-        self.exportButton.setTitle(VectorL10n.secretsSetupRecoveryKeyExportAction, for: .normal)
-        self.exportButton.isEnabled = false
-        self.doneButton.setTitle(VectorL10n.continue, for: .normal)
+        exportButton.setTitle(VectorL10n.secretsSetupRecoveryKeyExportAction, for: .normal)
+        exportButton.isEnabled = false
+        doneButton.setTitle(VectorL10n.continue, for: .normal)
         
-        self.updateDoneButton()
+        updateDoneButton()
     }
 
     private func render(viewState: SecretsSetupRecoveryKeyViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let passphraseOnly):
-            self.renderLoaded(passphraseOnly: passphraseOnly)
+            renderLoaded(passphraseOnly: passphraseOnly)
         case .recoveryCreated(let recoveryKey):
-            self.renderRecoveryCreated(recoveryKey: recoveryKey)
+            renderRecoveryCreated(recoveryKey: recoveryKey)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
-    private func renderLoaded(passphraseOnly: Bool) {        
-        self.isPassphraseOnly = passphraseOnly
+    private func renderLoaded(passphraseOnly: Bool) {
+        isPassphraseOnly = passphraseOnly
 
         let title: String
         let secretsLogoImage: UIImage
@@ -167,37 +166,37 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         }
 
         self.title = title
-        self.secureKeyImageView.image = secretsLogoImage
-        self.informationLabel.text = informationText
-        self.exportButton.isHidden = passphraseOnly
-        self.recoveryKeyLabel.text = recoveryKeyText
+        secureKeyImageView.image = secretsLogoImage
+        informationLabel.text = informationText
+        exportButton.isHidden = passphraseOnly
+        recoveryKeyLabel.text = recoveryKeyText
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderRecoveryCreated(recoveryKey: String) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        self.exportButton.isEnabled = !self.isPassphraseOnly
-        self.doneButton.isEnabled = self.isPassphraseOnly
+        exportButton.isEnabled = !isPassphraseOnly
+        doneButton.isEnabled = isPassphraseOnly
         
-        if !self.isPassphraseOnly {
+        if !isPassphraseOnly {
             self.recoveryKey = recoveryKey
-            self.recoveryKeyLabel.text = recoveryKey
+            recoveryKeyLabel.text = recoveryKey
         }
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true) {
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true) {
             self.viewModel.process(viewAction: .errorAlertOk)
         }
     }
     
     private func updateDoneButton() {
-        self.doneButton.isEnabled = self.hasSavedRecoveryKey
+        doneButton.isEnabled = hasSavedRecoveryKey
     }
     
     private func presentKeepSafeAlert() {
@@ -205,23 +204,23 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
                                                 message: VectorL10n.secretsSetupRecoveryKeyStorageAlertMessage,
                                                 preferredStyle: .alert)
         
-        alertController.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: { action in
+        alertController.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: { _ in
             self.viewModel.process(viewAction: .done)
         }))
         
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
     private func shareRecoveryKey() {
-        guard let recoveryKey = self.recoveryKey else {
+        guard let recoveryKey = recoveryKey else {
             return
         }
         
         // Set up activity view controller
-        let activityItems: [Any] = [ recoveryKey ]
+        let activityItems: [Any] = [recoveryKey]
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         
-        activityViewController.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
+        activityViewController.completionWithItemsHandler = { _, completed, _, _ in
             
             // Enable made copy button only if user has selected an activity item and has setup recovery key without passphrase
             if completed {
@@ -232,38 +231,37 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         
         // Configure source view when activity view controller is presented with a popover
         if let popoverPresentationController = activityViewController.popoverPresentationController {
-            popoverPresentationController.sourceView = self.exportButton
-            popoverPresentationController.sourceRect = self.exportButton.bounds
+            popoverPresentationController.sourceView = exportButton
+            popoverPresentationController.sourceRect = exportButton.bounds
             popoverPresentationController.permittedArrowDirections = [.down, .up]
         }
         
-        self.present(activityViewController, animated: true)
+        present(activityViewController, animated: true)
     }
     
     // MARK: - Actions
 
     @IBAction private func exportButtonAction(_ sender: Any) {
-        self.shareRecoveryKey()
+        shareRecoveryKey()
     }
     
     @IBAction private func doneButtonAction(_ sender: Any) {
-        
-        if self.isPassphraseOnly {
-            self.viewModel.process(viewAction: .done)
+        if isPassphraseOnly {
+            viewModel.process(viewAction: .done)
         } else {
-            self.presentKeepSafeAlert()
+            presentKeepSafeAlert()
         }
     }
 
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
 
 // MARK: - SecretsSetupRecoveryKeyViewModelViewDelegate
-extension SecretsSetupRecoveryKeyViewController: SecretsSetupRecoveryKeyViewModelViewDelegate {
 
+extension SecretsSetupRecoveryKeyViewController: SecretsSetupRecoveryKeyViewModelViewDelegate {
     func secretsSetupRecoveryKeyViewModel(_ viewModel: SecretsSetupRecoveryKeyViewModelType, didUpdateViewState viewSate: SecretsSetupRecoveryKeyViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

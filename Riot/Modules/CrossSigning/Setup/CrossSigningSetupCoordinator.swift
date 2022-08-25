@@ -20,7 +20,6 @@ import UIKit
 
 @objcMembers
 final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -39,24 +38,23 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
     
     init(parameters: CrossSigningSetupCoordinatorParameters) {
         self.parameters = parameters
-        self.crossSigningService = CrossSigningService()
-    }    
+        crossSigningService = CrossSigningService()
+    }
     
     // MARK: - Public methods
     
     func start() {
-        self.showReauthentication()
+        showReauthentication()
     }
     
     func toPresentable() -> UIViewController {
-        return self.parameters.presenter.toPresentable()
+        parameters.presenter.toPresentable()
     }
     
     // MARK: - Private methods
 
     private func showReauthentication() {
-        
-        let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
+        let setupCrossSigningRequest = crossSigningService.setupCrossSigningRequest()
         
         let reauthenticationParameters = ReauthenticationCoordinatorParameters(session: parameters.session,
                                                                                presenter: parameters.presenter,
@@ -66,13 +64,13 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
         
         let coordinator = ReauthenticationCoordinator(parameters: reauthenticationParameters)
         coordinator.delegate = self
-        self.add(childCoordinator: coordinator)
+        add(childCoordinator: coordinator)
         
         coordinator.start()
     }
     
     private func setupCrossSigning(with authenticationParameters: [String: Any]) {
-        guard let crossSigning = self.parameters.session.crypto.crossSigning else {
+        guard let crossSigning = parameters.session.crypto.crossSigning else {
             return
         }
         
@@ -91,17 +89,17 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
 }
 
 // MARK: - ReauthenticationCoordinatorDelegate
+
 extension CrossSigningSetupCoordinator: ReauthenticationCoordinatorDelegate {
-        
     func reauthenticationCoordinatorDidComplete(_ coordinator: ReauthenticationCoordinatorType, withAuthenticationParameters authenticationParameters: [String: Any]?) {
-        self.setupCrossSigning(with: authenticationParameters ?? [:])
+        setupCrossSigning(with: authenticationParameters ?? [:])
     }
     
     func reauthenticationCoordinatorDidCancel(_ coordinator: ReauthenticationCoordinatorType) {
-        self.delegate?.crossSigningSetupCoordinatorDidCancel(self)
+        delegate?.crossSigningSetupCoordinatorDidCancel(self)
     }
     
     func reauthenticationCoordinator(_ coordinator: ReauthenticationCoordinatorType, didFailWithError error: Error) {
-        self.delegate?.crossSigningSetupCoordinator(self, didFailWithError: error)
+        delegate?.crossSigningSetupCoordinator(self, didFailWithError: error)
     }
 }

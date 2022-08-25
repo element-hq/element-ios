@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,11 @@
 import UIKit
 
 /// Base view class for mention Pills.
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 @objcMembers
 class PillAttachmentView: UIView {
     // MARK: - Internal Structs
+
     /// Sizes provided alongside frame to build `PillAttachmentView` layout.
     struct Sizes {
         var verticalMargin: CGFloat
@@ -28,20 +29,24 @@ class PillAttachmentView: UIView {
         var avatarSideLength: CGFloat
 
         var pillBackgroundHeight: CGFloat {
-            return avatarSideLength + 2 * verticalMargin
+            avatarSideLength + 2 * verticalMargin
         }
+
         var pillHeight: CGFloat {
-            return pillBackgroundHeight + 2 * verticalMargin
+            pillBackgroundHeight + 2 * verticalMargin
         }
+
         var displaynameLabelLeading: CGFloat {
-            return avatarSideLength + 2 * horizontalMargin
+            avatarSideLength + 2 * horizontalMargin
         }
+
         var totalWidthWithoutLabel: CGFloat {
-            return displaynameLabelLeading + 2 * horizontalMargin
+            displaynameLabelLeading + 2 * horizontalMargin
         }
     }
 
     // MARK: - Init
+
     /// Create a Mention Pill view for given data.
     ///
     /// - Parameters:
@@ -68,9 +73,9 @@ class PillAttachmentView: UIView {
                              height: sizes.pillBackgroundHeight)
 
         let pillBackgroundView = UIView(frame: CGRect(x: 0,
-                                        y: sizes.verticalMargin,
-                                        width: labelSize.width + sizes.totalWidthWithoutLabel,
-                                        height: sizes.pillBackgroundHeight))
+                                                      y: sizes.verticalMargin,
+                                                      width: labelSize.width + sizes.totalWidthWithoutLabel,
+                                                      height: sizes.pillBackgroundHeight))
 
         let avatarView = UserAvatarView(frame: CGRect(x: sizes.horizontalMargin,
                                                       y: sizes.verticalMargin,
@@ -90,14 +95,15 @@ class PillAttachmentView: UIView {
         pillBackgroundView.backgroundColor = pillData.isHighlighted ? theme.colors.alert : theme.colors.quinaryContent
         pillBackgroundView.layer.cornerRadius = sizes.pillBackgroundHeight / 2.0
 
-        self.addSubview(pillBackgroundView)
-        self.alpha = pillData.alpha
+        addSubview(pillBackgroundView)
+        alpha = pillData.alpha
     }
 
     // MARK: - Override
+
     override var isHidden: Bool {
         get {
-            return false
+            false
         }
         // swiftlint:disable:next unused_setter_value
         set {

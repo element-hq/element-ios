@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,6 @@
 
 @objcMembers
 class RoomInputToolbarTextView: UITextView {
-    
     private var heightConstraint: NSLayoutConstraint!
         
     weak var toolbarDelegate: RoomInputToolbarTextViewDelegate?
@@ -32,7 +31,7 @@ class RoomInputToolbarTextView: UITextView {
         }
     }
     
-    var placeholderColor: UIColor = UIColor(white: 0.8, alpha: 1.0) {
+    var placeholderColor = UIColor(white: 0.8, alpha: 1.0) {
         didSet {
             setNeedsDisplay()
         }
@@ -80,7 +79,7 @@ class RoomInputToolbarTextView: UITextView {
         if let heightConstraint = constraints.filter({ $0.firstAttribute == .height && $0.relation == .equal }).first {
             self.heightConstraint = heightConstraint
         } else {
-            heightConstraint = self.heightAnchor.constraint(equalToConstant: minHeight)
+            heightConstraint = heightAnchor.constraint(equalToConstant: minHeight)
             addConstraint(heightConstraint)
         }
     }
@@ -113,7 +112,7 @@ class RoomInputToolbarTextView: UITextView {
     }
     
     override var keyCommands: [UIKeyCommand]? {
-        return [UIKeyCommand(input: "\r", modifierFlags: [], action: #selector(keyCommandSelector(_:)))]
+        [UIKeyCommand(input: "\r", modifierFlags: [], action: #selector(keyCommandSelector(_:)))]
     }
     
     /// Overrides paste to handle images pasted from Safari, passing them up to the input toolbar.
@@ -144,7 +143,7 @@ class RoomInputToolbarTextView: UITextView {
         height = maxHeight > 0 ? min(height, maxHeight) : height
         
         // Update placeholder
-        self.setNeedsDisplay()
+        setNeedsDisplay()
         
         guard height != heightConstraint.constant else {
             return
@@ -155,7 +154,7 @@ class RoomInputToolbarTextView: UITextView {
     }
     
     @objc private func keyCommandSelector(_ keyCommand: UIKeyCommand) {
-        guard keyCommand.input == "\r", let delegate = (self.delegate as? RoomInputToolbarView) else {
+        guard keyCommand.input == "\r", let delegate = (delegate as? RoomInputToolbarView) else {
             return
         }
         

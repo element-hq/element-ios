@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class TemplateRoomListUITests: MockScreenTestCase {
     func testTemplateRoomListNoRooms() {
@@ -29,8 +29,7 @@ class TemplateRoomListUITests: MockScreenTestCase {
     func testTemplateRoomListRooms() {
         app.goToScreenWithIdentifier(MockTemplateRoomListScreenState.rooms.title)
         
-        let displayNameCount = app.buttons.matching(identifier:"roomNameText").count
+        let displayNameCount = app.buttons.matching(identifier: "roomNameText").count
         XCTAssertEqual(displayNameCount, 3)
     }
-
 }

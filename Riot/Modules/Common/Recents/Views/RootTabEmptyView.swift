@@ -28,17 +28,16 @@ enum RootTabEmptyViewDisplayMode {
 /// `RootTabEmptyView` is a view to display when there is no UI item to display on a screen.
 @objcMembers
 final class RootTabEmptyView: UIView, NibLoadable {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var iconBackgroundView: UIView!
-    @IBOutlet private weak var iconView: UIImageView!
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private(set) weak var contentView: UIView!
+    @IBOutlet private var iconBackgroundView: UIView!
+    @IBOutlet private var iconView: UIImageView!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
+    @IBOutlet private(set) var contentView: UIView!
 
     // MARK: Private
     
@@ -59,11 +58,11 @@ final class RootTabEmptyView: UIView, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.informationLabel.text = VectorL10n.homeEmptyViewInformation
+        informationLabel.text = VectorL10n.homeEmptyViewInformation
         
-        self.iconBackgroundView.layer.masksToBounds = true
-        self.iconBackgroundView.layer.cornerRadius = self.iconBackgroundView.bounds.width / 2
-        self.iconBackgroundView.isHidden = true
+        iconBackgroundView.layer.masksToBounds = true
+        iconBackgroundView.layer.cornerRadius = iconBackgroundView.bounds.width / 2
+        iconBackgroundView.isHidden = true
     }
     
     // MARK: - Public
@@ -73,26 +72,26 @@ final class RootTabEmptyView: UIView, NibLoadable {
     }
     
     func fill(with image: UIImage, title: String, informationText: String, displayMode: RootTabEmptyViewDisplayMode) {
-        self.imageView.image = image
-        self.iconView.image = image.withRenderingMode(.alwaysTemplate)
-        self.titleLabel.text = title
-        self.informationLabel.text = informationText
-        self.imageView.isHidden = displayMode != .default
-        self.iconBackgroundView.isHidden = displayMode != .icon
+        imageView.image = image
+        iconView.image = image.withRenderingMode(.alwaysTemplate)
+        titleLabel.text = title
+        informationLabel.text = informationText
+        imageView.isHidden = displayMode != .default
+        iconBackgroundView.isHidden = displayMode != .icon
     }
 }
 
 // MARK: - Themable
+
 extension RootTabEmptyView: Themable {
-    
     func update(theme: Theme) {
         self.theme = theme
         
-        self.backgroundColor = theme.backgroundColor
+        backgroundColor = theme.backgroundColor
         
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textSecondaryColor
-        self.iconBackgroundView.backgroundColor = theme.colors.quinaryContent
-        self.iconView.tintColor = theme.textSecondaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textSecondaryColor
+        iconBackgroundView.backgroundColor = theme.colors.quinaryContent
+        iconView.tintColor = theme.textSecondaryColor
     }
 }

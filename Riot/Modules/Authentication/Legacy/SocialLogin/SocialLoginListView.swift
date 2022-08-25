@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 @objc protocol SocialLoginListViewDelegate: AnyObject {
     func socialLoginListView(_ socialLoginListView: SocialLoginListView, didTapSocialButtonWithProvider identityProvider: SSOIdentityProvider)
@@ -24,7 +24,6 @@ import Reusable
 /// SocialLoginListView displays a list of social login buttons according to a given array of SSO Identity Providers.
 @objcMembers
 final class SocialLoginListView: UIView, NibLoadable {
-    
     // MARK: - Constants
     
     private static let sizingView = SocialLoginListView.instantiate()
@@ -37,12 +36,12 @@ final class SocialLoginListView: UIView, NibLoadable {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var buttonsStackView: UIStackView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var buttonsStackView: UIStackView!
     
     // MARK: Private
     
-    private let socialButtonFactory: SocialLoginButtonFactory = SocialLoginButtonFactory()
+    private let socialButtonFactory = SocialLoginButtonFactory()
     private var theme: Theme!
     private var buttons: [SocialLoginButton] = []
     private(set) var mode: SocialLoginButtonMode = .continue
@@ -55,11 +54,11 @@ final class SocialLoginListView: UIView, NibLoadable {
     
     static func instantiate() -> SocialLoginListView {
         let view = SocialLoginListView.loadFromNib()
-        view.theme = ThemeService.shared().theme        
+        view.theme = ThemeService.shared().theme
         return view
     }
     
-    // MARK: - Public            
+    // MARK: - Public
     
     func update(with identityProviders: [MXLoginSSOIdentityProvider], mode: SocialLoginButtonMode) {
         self.mode = mode
@@ -75,15 +74,15 @@ final class SocialLoginListView: UIView, NibLoadable {
             title = VectorL10n.socialLoginListTitleSignUp
         }
         
-        self.titleLabel.text = title
+        titleLabel.text = title
         
-        self.removeButtons()
-        let buttons = self.socialLoginButtons(for: identityProviders, mode: mode)
+        removeButtons()
+        let buttons = socialLoginButtons(for: identityProviders, mode: mode)
         
         for button in buttons {
             button.translatesAutoresizingMaskIntoConstraints = false
             button.heightAnchor.constraint(equalToConstant: Constants.buttonHeight).isActive = true
-            self.buttonsStackView.addArrangedSubview(button)
+            buttonsStackView.addArrangedSubview(button)
         }
         
         self.buttons = buttons
@@ -92,7 +91,7 @@ final class SocialLoginListView: UIView, NibLoadable {
     static func contentViewHeight(identityProviders: [MXLoginSSOIdentityProvider],
                                   mode: SocialLoginButtonMode,
                                   fitting width: CGFloat) -> CGFloat {
-        let sizingView = self.sizingView
+        let sizingView = sizingView
         
         sizingView.frame = CGRect(x: 0, y: 0, width: width, height: 1)
         
@@ -109,16 +108,15 @@ final class SocialLoginListView: UIView, NibLoadable {
     // MARK: - Private
     
     private func removeButtons() {
-        self.buttonsStackView.vc_removeAllSubviews()
-        self.buttons = []
+        buttonsStackView.vc_removeAllSubviews()
+        buttons = []
     }
         
     private func socialLoginButtons(for identityProviders: [MXLoginSSOIdentityProvider], mode: SocialLoginButtonMode) -> [SocialLoginButton] {
-        
         var buttons: [SocialLoginButton] = []
         
         // Order alphabeticaly by Identity Provider identifier
-        let sortedIdentityProviders = identityProviders.sorted { (firstIdentityProvider, secondIdentityProvider) -> Bool in
+        let sortedIdentityProviders = identityProviders.sorted { firstIdentityProvider, secondIdentityProvider -> Bool in
             if let firstIdentityProviderBrand = firstIdentityProvider.brand, let secondIdentityProviderBrand = secondIdentityProvider.brand {
                 return firstIdentityProviderBrand < secondIdentityProviderBrand
             } else {
@@ -127,8 +125,8 @@ final class SocialLoginListView: UIView, NibLoadable {
         }
         
         for identityProvider in sortedIdentityProviders {
-            let socialLoginButton = self.socialButtonFactory.build(with: identityProvider, mode: mode)
-            socialLoginButton.update(theme: self.theme)
+            let socialLoginButton = socialButtonFactory.build(with: identityProvider, mode: mode)
+            socialLoginButton.update(theme: theme)
             socialLoginButton.addTarget(self, action: #selector(socialButtonAction(_:)), for: .touchUpInside)
             buttons.append(socialLoginButton)
         }
@@ -142,18 +140,19 @@ final class SocialLoginListView: UIView, NibLoadable {
         guard let provider = socialLoginButton.identityProvider else {
             return
         }
-        self.delegate?.socialLoginListView(self, didTapSocialButtonWithProvider: provider)
+        delegate?.socialLoginListView(self, didTapSocialButtonWithProvider: provider)
     }
 }
 
 // MARK: - Themable
+
 extension SocialLoginListView: Themable {
     func update(theme: Theme) {
         self.theme = theme
         
-        self.titleLabel.textColor = theme.textSecondaryColor
+        titleLabel.textColor = theme.textSecondaryColor
         
-        for button in self.buttons {
+        for button in buttons {
             button.update(theme: theme)
         }
     }

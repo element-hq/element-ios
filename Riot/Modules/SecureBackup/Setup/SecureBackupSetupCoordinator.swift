@@ -20,7 +20,6 @@ import UIKit
 
 @objcMembers
 final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -35,7 +34,7 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     private let cancellable: Bool
 
     private var isBackupSetupMethodKeySupported: Bool {
-        let homeserverEncryptionConfiguration = self.session.vc_homeserverConfiguration().encryption
+        let homeserverEncryptionConfiguration = session.vc_homeserverConfiguration().encryption
         return homeserverEncryptionConfiguration.secureBackupSetupMethods.contains(.key)
     }
 
@@ -56,10 +55,10 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     ///   - cancellable: Whether secure backup can be cancelled
     init(session: MXSession, checkKeyBackup: Bool = true, allowOverwrite: Bool = false, navigationRouter: NavigationRouterType? = nil, cancellable: Bool) {
         self.session = session
-        self.recoveryService = session.crypto.recoveryService
-        self.keyBackup = session.crypto.backup
+        recoveryService = session.crypto.recoveryService
+        keyBackup = session.crypto.backup
         self.checkKeyBackup = checkKeyBackup
-        self.homeserverEncryptionConfiguration = session.vc_homeserverConfiguration().encryption
+        homeserverEncryptionConfiguration = session.vc_homeserverConfiguration().encryption
         self.allowOverwrite = allowOverwrite
         self.cancellable = cancellable
         
@@ -73,62 +72,62 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        let rootViewController = self.createIntro()
+        let rootViewController = createIntro()
         
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootViewController, animated: true, popCompletion: nil)
+        if navigationRouter.modules.isEmpty == false {
+            navigationRouter.push(rootViewController, animated: true, popCompletion: nil)
         } else {
-            self.navigationRouter.setRootModule(rootViewController)
+            navigationRouter.setRootModule(rootViewController)
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter
+        navigationRouter
             .toPresentable()
-            .vc_setModalFullScreen(!self.cancellable)
+            .vc_setModalFullScreen(!cancellable)
     }
     
     // MARK: - Private methods
 
     private func createIntro() -> SecureBackupSetupIntroViewController {
         // TODO: Use a coordinator
-        let viewModel = SecureBackupSetupIntroViewModel(keyBackup: self.keyBackup,
-                                                        checkKeyBackup: self.checkKeyBackup,
-                                                        homeserverEncryptionConfiguration: self.homeserverEncryptionConfiguration)
-        let introViewController = SecureBackupSetupIntroViewController.instantiate(with: viewModel, cancellable: self.cancellable)
+        let viewModel = SecureBackupSetupIntroViewModel(keyBackup: keyBackup,
+                                                        checkKeyBackup: checkKeyBackup,
+                                                        homeserverEncryptionConfiguration: homeserverEncryptionConfiguration)
+        let introViewController = SecureBackupSetupIntroViewController.instantiate(with: viewModel, cancellable: cancellable)
         introViewController.delegate = self
         return introViewController
     }
     
     private func showSetupKey(passphraseOnly: Bool, passphrase: String? = nil) {
-        let coordinator = SecretsSetupRecoveryKeyCoordinator(recoveryService: self.recoveryService, passphrase: passphrase, passphraseOnly: passphraseOnly, allowOverwrite: allowOverwrite, cancellable: self.cancellable)
+        let coordinator = SecretsSetupRecoveryKeyCoordinator(recoveryService: recoveryService, passphrase: passphrase, passphraseOnly: passphraseOnly, allowOverwrite: allowOverwrite, cancellable: cancellable)
         coordinator.delegate = self
         coordinator.start()
         
-        self.add(childCoordinator: coordinator)
-        self.navigationRouter.push(coordinator, animated: true) { [weak self] in
+        add(childCoordinator: coordinator)
+        navigationRouter.push(coordinator, animated: true) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
     }
     
     private func showSetupPassphrase() {
-        let coordinator = SecretsSetupRecoveryPassphraseCoordinator(passphraseInput: .new, cancellable: self.cancellable)
+        let coordinator = SecretsSetupRecoveryPassphraseCoordinator(passphraseInput: .new, cancellable: cancellable)
         coordinator.delegate = self
         coordinator.start()
 
-        self.add(childCoordinator: coordinator)
-        self.navigationRouter.push(coordinator, animated: true) { [weak self] in
+        add(childCoordinator: coordinator)
+        navigationRouter.push(coordinator, animated: true) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
     }
     
     private func showSetupPassphraseConfirmation(with passphrase: String) {
-        let coordinator = SecretsSetupRecoveryPassphraseCoordinator(passphraseInput: .confirm(passphrase), cancellable: self.cancellable)
+        let coordinator = SecretsSetupRecoveryPassphraseCoordinator(passphraseInput: .confirm(passphrase), cancellable: cancellable)
         coordinator.delegate = self
         coordinator.start()
         
-        self.add(childCoordinator: coordinator)
-        self.navigationRouter.push(coordinator, animated: true) { [weak self] in
+        add(childCoordinator: coordinator)
+        navigationRouter.push(coordinator, animated: true) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
     }
@@ -138,102 +137,102 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
                                                 message: VectorL10n.secureKeyBackupSetupCancelAlertMessage,
                                                 preferredStyle: .alert)
         
-        alertController.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: { action in
+        alertController.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: { _ in
         }))
         
-        alertController.addAction(UIAlertAction(title: VectorL10n.keyBackupSetupSkipAlertSkipAction, style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: VectorL10n.keyBackupSetupSkipAlertSkipAction, style: .default, handler: { _ in
             self.delegate?.secureBackupSetupCoordinatorDidCancel(self)
         }))
         
-        self.navigationRouter.present(alertController, animated: true)
+        navigationRouter.present(alertController, animated: true)
     }
     
     private func showKeyBackupRestore() {
-        guard let keyBackupVersion = self.keyBackup?.keyBackupVersion else {
+        guard let keyBackupVersion = keyBackup?.keyBackupVersion else {
             return
         }
         
-        let coordinator = KeyBackupRecoverCoordinator(session: self.session, keyBackupVersion: keyBackupVersion, navigationRouter: self.navigationRouter)
+        let coordinator = KeyBackupRecoverCoordinator(session: session, keyBackupVersion: keyBackupVersion, navigationRouter: navigationRouter)
         
-        self.add(childCoordinator: coordinator)
+        add(childCoordinator: coordinator)
         coordinator.delegate = self
         coordinator.start() // Will trigger view controller push
     }
     
     private func didCancel(showSkipAlert: Bool = true) {
         if showSkipAlert {
-            self.showCancelAlert()
+            showCancelAlert()
         } else {
-            self.delegate?.secureBackupSetupCoordinatorDidCancel(self)
+            delegate?.secureBackupSetupCoordinatorDidCancel(self)
         }
     }
     
     private func didComplete() {
-        self.delegate?.secureBackupSetupCoordinatorDidComplete(self)
+        delegate?.secureBackupSetupCoordinatorDidComplete(self)
     }
 }
 
 // MARK: - SecureBackupSetupIntroViewControllerDelegate
+
 extension SecureBackupSetupCoordinator: SecureBackupSetupIntroViewControllerDelegate {
-    
     func secureBackupSetupIntroViewControllerDidTapUseKey(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
-        self.showSetupKey(passphraseOnly: false)
+        showSetupKey(passphraseOnly: false)
     }
     
     func secureBackupSetupIntroViewControllerDidTapUsePassphrase(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
-        self.showSetupPassphrase()
+        showSetupPassphrase()
     }
     
     func secureBackupSetupIntroViewControllerDidCancel(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController, showSkipAlert: Bool) {
-        self.didCancel(showSkipAlert: showSkipAlert)
+        didCancel(showSkipAlert: showSkipAlert)
     }
     
     func secureBackupSetupIntroViewControllerDidTapConnectToKeyBackup(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
-        self.showKeyBackupRestore()
+        showKeyBackupRestore()
     }
 }
 
 // MARK: - SecretsSetupRecoveryKeyCoordinatorDelegate
+
 extension SecureBackupSetupCoordinator: SecretsSetupRecoveryKeyCoordinatorDelegate {
-    
     func secretsSetupRecoveryKeyCoordinatorDidComplete(_ coordinator: SecretsSetupRecoveryKeyCoordinatorType) {
-        self.didComplete()
+        didComplete()
     }
     
     func secretsSetupRecoveryKeyCoordinatorDidFailed(_ coordinator: SecretsSetupRecoveryKeyCoordinatorType) {
-        self.didCancel(showSkipAlert: false)
+        didCancel(showSkipAlert: false)
     }
     
     func secretsSetupRecoveryKeyCoordinatorDidCancel(_ coordinator: SecretsSetupRecoveryKeyCoordinatorType) {
-        self.didCancel()
+        didCancel()
     }
 }
 
 // MARK: - SecretsSetupRecoveryPassphraseCoordinatorDelegate
+
 extension SecureBackupSetupCoordinator: SecretsSetupRecoveryPassphraseCoordinatorDelegate {
-    
     func secretsSetupRecoveryPassphraseCoordinator(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType, didEnterNewPassphrase passphrase: String) {
-        self.showSetupPassphraseConfirmation(with: passphrase)
+        showSetupPassphraseConfirmation(with: passphrase)
     }
     
     func secretsSetupRecoveryPassphraseCoordinator(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType, didConfirmPassphrase passphrase: String) {
-
         // Do not present recovery key export screen if secure backup setup key method is not supported
-        self.showSetupKey(passphraseOnly: !self.isBackupSetupMethodKeySupported, passphrase: passphrase)
+        showSetupKey(passphraseOnly: !isBackupSetupMethodKeySupported, passphrase: passphrase)
     }
     
     func secretsSetupRecoveryPassphraseCoordinatorDidCancel(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType) {
-        self.didCancel()
+        didCancel()
     }
 }
 
 // MARK: - KeyBackupRecoverCoordinatorDelegate
+
 extension SecureBackupSetupCoordinator: KeyBackupRecoverCoordinatorDelegate {
     func keyBackupRecoverCoordinatorDidCancel(_ keyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType) {
-        self.navigationRouter.popToRootModule(animated: true)
+        navigationRouter.popToRootModule(animated: true)
     }
     
     func keyBackupRecoverCoordinatorDidRecover(_ keyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType) {
-        self.navigationRouter.popToRootModule(animated: true)
+        navigationRouter.popToRootModule(animated: true)
     }
 }

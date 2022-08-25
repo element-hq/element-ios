@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +14,20 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 protocol ServiceTermsModalTableHeaderViewDelegate: AnyObject {
     func tableHeaderViewDidTapInformationButton()
 }
 
 class ServiceTermsModalTableHeaderView: UIView, NibLoadable, Themable {
-    
     // MARK: - Properties
     
     weak var delegate: ServiceTermsModalTableHeaderViewDelegate?
     
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var serviceURLLabel: UILabel!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var serviceURLLabel: UILabel!
     
     // MARK: - Setup
     
@@ -52,5 +51,4 @@ class ServiceTermsModalTableHeaderView: UIView, NibLoadable, Themable {
     @IBAction private func buttonAction(_ sender: Any) {
         delegate?.tableHeaderViewDidTapInformationButton()
     }
-    
 }

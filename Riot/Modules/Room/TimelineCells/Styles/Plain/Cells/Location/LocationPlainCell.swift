@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 import MatrixSDK
 
 class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
-    
     private var locationView: RoomTimelineLocationView!
     private var event: MXEvent?
     
@@ -83,7 +82,6 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
     }
     
     private func locationSharingViewState(from beaconInfoSummary: MXBeaconInfoSummaryProtocol) -> TimelineLiveLocationViewState {
-        
         let viewState: TimelineLiveLocationViewState
         
         let liveLocationStatus: LiveLocationSharingStatus
@@ -91,8 +89,7 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         if beaconInfoSummary.hasStopped || beaconInfoSummary.hasExpired {
             liveLocationStatus = .stopped
         } else if let lastBeacon = beaconInfoSummary.lastBeacon {
-            
-            let expiryTimeinterval = TimeInterval(beaconInfoSummary.expiryTimestamp/1000) // Timestamp is in millisecond in the SDK
+            let expiryTimeinterval = TimeInterval(beaconInfoSummary.expiryTimestamp / 1000) // Timestamp is in millisecond in the SDK
             
             let coordinate = CLLocationCoordinate2D(latitude: lastBeacon.location.latitude, longitude: lastBeacon.location.longitude)
             
@@ -118,8 +115,8 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
         roomCellContentView?.showPaginationTitle = false
         
         guard let contentView = roomCellContentView?.innerContentView else {
-                  return
-              }
+            return
+        }
         
         locationView = RoomTimelineLocationView.loadFromNib()
         
@@ -128,14 +125,13 @@ class LocationPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, Room
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.event = nil
+        event = nil
     }
     
     override func onLongPressGesture(_ longPressGestureRecognizer: UILongPressGestureRecognizer!) {
-        
         var userInfo: [String: Any]?
         
-        if let event = self.event {
+        if let event = event {
             userInfo = [kMXKRoomBubbleCellEventKey: event]
         }
         

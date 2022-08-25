@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +14,11 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 @objcMembers
 class CallPiPView: UIView {
-    
     private enum Constants {
         static let viewWidth: CGFloat = 90
         static let smallDotWidth: CGFloat = 8
@@ -28,38 +27,40 @@ class CallPiPView: UIView {
         static let placeholderFontScale: CGFloat = 0.7
     }
     
-    @IBOutlet private weak var bgView: UIView!
-    @IBOutlet private weak var bgImageView: MXKImageView!
+    @IBOutlet private var bgView: UIView!
+    @IBOutlet private var bgImageView: MXKImageView!
     
-    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private var stackView: UIStackView!
     
-    @IBOutlet private weak var mainCallAvatarImageView: MXKImageView! {
+    @IBOutlet private var mainCallAvatarImageView: MXKImageView! {
         didSet {
             mainCallAvatarImageView.clipsToBounds = true
-            mainCallAvatarImageView.layer.cornerRadius = mainCallAvatarImageView.bounds.width/2
+            mainCallAvatarImageView.layer.cornerRadius = mainCallAvatarImageView.bounds.width / 2
         }
     }
-    @IBOutlet private weak var mainCallPauseIcon: UIImageView!
+
+    @IBOutlet private var mainCallPauseIcon: UIImageView!
     
-    @IBOutlet private weak var onHoldCallView: UIView!
-    @IBOutlet private weak var onHoldCallAvatarImageView: MXKImageView! {
+    @IBOutlet private var onHoldCallView: UIView!
+    @IBOutlet private var onHoldCallAvatarImageView: MXKImageView! {
         didSet {
             onHoldCallAvatarImageView.clipsToBounds = true
-            onHoldCallAvatarImageView.layer.cornerRadius = onHoldCallAvatarImageView.bounds.width/2
+            onHoldCallAvatarImageView.layer.cornerRadius = onHoldCallAvatarImageView.bounds.width / 2
         }
     }
-    @IBOutlet private weak var onHoldCallEffectView: UIVisualEffectView! {
+
+    @IBOutlet private var onHoldCallEffectView: UIVisualEffectView! {
         didSet {
             onHoldCallEffectView.clipsToBounds = true
-            onHoldCallEffectView.layer.cornerRadius = onHoldCallEffectView.bounds.width/2
+            onHoldCallEffectView.layer.cornerRadius = onHoldCallEffectView.bounds.width / 2
         }
     }
     
-    @IBOutlet private weak var connectingView: DotsView! {
+    @IBOutlet private var connectingView: DotsView! {
         didSet {
-            connectingView.dotMinWidth = self.bounds.width * Constants.smallDotWidth/Constants.viewWidth
-            connectingView.dotMaxWidth = self.bounds.width * Constants.bigDotWidth/Constants.viewWidth
-            connectingView.interSpaceMargin = self.bounds.width * Constants.spaceBetweenDots/Constants.viewWidth
+            connectingView.dotMinWidth = bounds.width * Constants.smallDotWidth / Constants.viewWidth
+            connectingView.dotMaxWidth = bounds.width * Constants.bigDotWidth / Constants.viewWidth
+            connectingView.interSpaceMargin = bounds.width * Constants.spaceBetweenDots / Constants.viewWidth
         }
     }
     
@@ -67,7 +68,7 @@ class CallPiPView: UIView {
     private var session: MXSession!
     
     static func instantiate(withSession session: MXSession) -> CallPiPView {
-        let view = self.loadFromNib()
+        let view = loadFromNib()
         view.session = session
         return view
     }
@@ -166,15 +167,12 @@ class CallPiPView: UIView {
         return MXKTools.paint(Asset.Images.placeholder.image,
                               with: theme.tintColor)
     }
-    
 }
 
-extension CallPiPView: NibReusable {}
+extension CallPiPView: NibReusable { }
 
 extension CallPiPView: Themable {
-    
     func update(theme: Theme) {
         self.theme = theme
     }
-    
 }

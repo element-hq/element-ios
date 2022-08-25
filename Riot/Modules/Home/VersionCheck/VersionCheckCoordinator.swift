@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -87,7 +87,6 @@ class VersionCheckCoordinator: Coordinator, VersionCheckBannerViewDelegate, Vers
     }
     
     func bannerViewDidRequestInteraction(_ bannerView: VersionCheckBannerView) {
-        
         let versionCheckAlertViewController = VersionCheckAlertViewController.instantiate(themeService: themeService)
         versionCheckAlertViewController.delegate = self
         

@@ -20,7 +20,6 @@ import Foundation
 /// By default, it uses URLs defined in the app settings but they can be overidden.
 @objcMembers
 class WidgetManagerConfig: NSObject, NSCoding {
-
     /// The URL for the REST api
     let apiUrl: NSString?
     /// The URL of the integration manager interface
@@ -29,7 +28,7 @@ class WidgetManagerConfig: NSObject, NSCoding {
     var scalarToken: NSString?
 
     var hasUrls: Bool {
-        if apiUrl != nil && uiUrl != nil {
+        if apiUrl != nil, uiUrl != nil {
             return true
         } else {
             return false
@@ -52,7 +51,7 @@ class WidgetManagerConfig: NSObject, NSCoding {
         // Once we've fully transitioned to _matrix URLs, we can give people
         // a grace period to update their configs, then use the rest url as
         // a regular base url.
-        guard let apiUrl = self.apiUrl as String?, let imApiUrl = URL(string: apiUrl) else {
+        guard let apiUrl = apiUrl as String?, let imApiUrl = URL(string: apiUrl) else {
             return nil
         }
 
@@ -75,21 +74,21 @@ class WidgetManagerConfig: NSObject, NSCoding {
         super.init()
     }
 
-    /// MARK: - NSCoding
+    // MARK: - NSCoding
 
     enum CodingKeys: String {
-        case apiUrl = "apiUrl"
-        case uiUrl = "uiUrl"
-        case scalarToken = "scalarToken"
+        case apiUrl
+        case uiUrl
+        case scalarToken
     }
 
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.apiUrl, forKey: CodingKeys.apiUrl.rawValue)
-        aCoder.encode(self.uiUrl, forKey: CodingKeys.uiUrl.rawValue)
-        aCoder.encode(self.scalarToken, forKey: CodingKeys.scalarToken.rawValue)
+        aCoder.encode(apiUrl, forKey: CodingKeys.apiUrl.rawValue)
+        aCoder.encode(uiUrl, forKey: CodingKeys.uiUrl.rawValue)
+        aCoder.encode(scalarToken, forKey: CodingKeys.scalarToken.rawValue)
     }
 
-    convenience required init?(coder aDecoder: NSCoder) {
+    required convenience init?(coder aDecoder: NSCoder) {
         let apiUrl = aDecoder.decodeObject(forKey: CodingKeys.apiUrl.rawValue) as? NSString
         let uiUrl = aDecoder.decodeObject(forKey: CodingKeys.uiUrl.rawValue) as? NSString
         let scalarToken = aDecoder.decodeObject(forKey: CodingKeys.scalarToken.rawValue) as? NSString

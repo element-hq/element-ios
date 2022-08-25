@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 /// A subclass of `UITableViewHeaderFooterView` that conforms to `Themable`
 /// to create a consistent looking custom footer inside of the app. If using gesture
 /// recognizers on the view, be aware that these will be automatically removed on reuse.
 @objcMembers
 class SectionFooterView: UITableViewHeaderFooterView, NibLoadable, Themable {
-    
     // MARK: - Properties
     
     static var defaultReuseIdentifier: String {
@@ -43,9 +42,9 @@ class SectionFooterView: UITableViewHeaderFooterView, NibLoadable, Themable {
     /// The text label added in the xib file. Using our own label was necessary due to the behaviour
     /// on iOS 12-14 where any customisation to the existing text label is wiped out after being
     /// set in `tableView:viewForFooterInSection`. This behaviour is fixed in iOS 15.
-    @IBOutlet private weak var footerLabel: UILabel!
+    @IBOutlet private var footerLabel: UILabel!
     /// The label's leading constraint, relative to the safe area insets.
-    @IBOutlet private weak var footerLabelLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private var footerLabelLeadingConstraint: NSLayoutConstraint!
     
     // MARK: - Public
     

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -79,7 +79,7 @@ class SessionVerificationListener {
             unregisterSessionStateChangeNotification()
             
             if let crypto = session.crypto, let crossSigning = crypto.crossSigning {
-                crossSigning.refreshState { [weak self] stateUpdated in
+                crossSigning.refreshState { [weak self] _ in
                     guard let self = self else { return }
                     
                     MXLog.debug("[SessionVerificationListener] sessionStateDidChange: crossSigning.state: \(crossSigning.state)")
@@ -108,7 +108,7 @@ class SessionVerificationListener {
                                 self.crossSigningService.setupCrossSigningWithoutAuthentication(for: session) {
                                     MXLog.debug("[SessionVerificationListener] sessionStateDidChange: Bootstrap succeeded without credentials")
                                     self.completion?(.authenticationIsComplete)
-                                } failure: { error in
+                                } failure: { _ in
                                     MXLog.error("[SessionVerificationListener] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.")
                                     crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
                                     self.completion?(.authenticationIsComplete)

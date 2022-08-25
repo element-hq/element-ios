@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +14,11 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 class RoomCallBaseCell: MXKRoomBubbleTableViewCell {
-    
-    lazy var innerContentView: CallCellContentView = {
-        return CallCellContentView.loadFromNib()
-    }()
+    lazy var innerContentView = CallCellContentView.loadFromNib()
     
     override required init!(style: UITableViewCell.CellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -36,7 +33,7 @@ class RoomCallBaseCell: MXKRoomBubbleTableViewCell {
     override func setupViews() {
         super.setupViews()
         
-        self.contentView.vc_addSubViewMatchingParent(innerContentView)
+        contentView.vc_addSubViewMatchingParent(innerContentView)
     }
 
     //  Bottom content view. Will be spanned in bottomContainerView
@@ -48,7 +45,7 @@ class RoomCallBaseCell: MXKRoomBubbleTableViewCell {
     
     var statusText: String? {
         get {
-            return innerContentView.statusText
+            innerContentView.statusText
         } set {
             innerContentView.statusText = newValue
         }
@@ -66,7 +63,7 @@ class RoomCallBaseCell: MXKRoomBubbleTableViewCell {
     }
     
     class func createSizingView() -> RoomCallBaseCell {
-        return self.init(style: .default, reuseIdentifier: self.defaultReuseIdentifier())
+        self.init(style: .default, reuseIdentifier: defaultReuseIdentifier())
     }
     
     //  MARK: - Overrides
@@ -125,7 +122,7 @@ class RoomCallBaseCell: MXKRoomBubbleTableViewCell {
         }
         
         let fittingSize = CGSize(width: maxWidth, height: UIView.layoutFittingCompressedSize.height)
-        guard let cell = self.init(style: .default, reuseIdentifier: self.defaultReuseIdentifier()) else {
+        guard let cell = self.init(style: .default, reuseIdentifier: defaultReuseIdentifier()) else {
             return 0
         }
         cell.render(cellData)
@@ -141,11 +138,9 @@ class RoomCallBaseCell: MXKRoomBubbleTableViewCell {
         
         return cell.contentView.systemLayoutSizeFitting(fittingSize).height + readReceiptsHeight
     }
-    
 }
 
 extension RoomCallBaseCell: RoomCellReadReceiptsDisplayable {
-    
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         innerContentView.addReadReceiptsView(readReceiptsView)
     }
@@ -153,20 +148,15 @@ extension RoomCallBaseCell: RoomCellReadReceiptsDisplayable {
     func removeReadReceiptsView() {
         innerContentView.removeReadReceiptsView()
     }
-    
 }
 
 extension RoomCallBaseCell: Themable {
-    
     func update(theme: Theme) {
         innerContentView.update(theme: theme)
         if let themable = bottomContentView as? Themable {
             themable.update(theme: theme)
         }
     }
-    
 }
 
-extension RoomCallBaseCell: NibReusable {
-    
-}
+extension RoomCallBaseCell: NibReusable { }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import UIKit
 
 class BubbleRoomTimelineStyle: RoomTimelineStyle {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -38,33 +37,31 @@ class BubbleRoomTimelineStyle: RoomTimelineStyle {
     
     init(theme: Theme) {
         self.theme = theme
-        self.identifier = .bubble
-        self.cellLayoutUpdater = BubbleRoomCellLayoutUpdater(theme: theme)
-        self.cellProvider = BubbleRoomTimelineCellProvider()
-        self.cellDecorator = BubbleRoomTimelineCellDecorator()
+        identifier = .bubble
+        cellLayoutUpdater = BubbleRoomCellLayoutUpdater(theme: theme)
+        cellProvider = BubbleRoomTimelineCellProvider()
+        cellDecorator = BubbleRoomTimelineCellDecorator()
     }
     
     // MARK: - Public
     
     func canAddEvent(_ event: MXEvent, and roomState: MXRoomState, to cellData: MXKRoomBubbleCellData) -> Bool {
-        return false
+        false
     }
 
     func canMerge(cellData: MXKRoomBubbleCellDataStoring, into receiverCellData: MXKRoomBubbleCellDataStoring) -> Bool {
-        return false
+        false
     }
     
     func applySelectedStyleIfNeeded(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
-        
         // Check whether the selected event belongs to this bubble
         let selectedComponentIndex = cellData.selectedComponentIndex
         if selectedComponentIndex != NSNotFound {
-            
             cell.selectComponent(UInt(selectedComponentIndex),
                                  showEditButton: false,
                                  showTimestamp: false)
             
-            self.cellDecorator.addTimestampLabel(toCell: cell, cellData: cellData)
+            cellDecorator.addTimestampLabel(toCell: cell, cellData: cellData)
         } else {
             cell.blurred = true
         }
@@ -73,8 +70,7 @@ class BubbleRoomTimelineStyle: RoomTimelineStyle {
     // MARK: Themable
     
     func update(theme: Theme) {
-        self.theme = theme        
-        self.cellLayoutUpdater?.update(theme: theme)
+        self.theme = theme
+        cellLayoutUpdater?.update(theme: theme)
     }
-    
 }

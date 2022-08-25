@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 class CallAudioRouteView: UIView {
-    
-    @IBOutlet private weak var iconImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var selectedIconImageView: UIImageView!
-    @IBOutlet private weak var bottomLineView: UIView!
+    @IBOutlet private var iconImageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var selectedIconImageView: UIImageView!
+    @IBOutlet private var bottomLineView: UIView!
 
     let route: MXiOSAudioOutputRoute
     private let isSelected: Bool
@@ -41,6 +40,7 @@ class CallAudioRouteView: UIView {
         setup()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -63,13 +63,11 @@ class CallAudioRouteView: UIView {
         
         update(theme: theme)
     }
-    
 }
 
-extension CallAudioRouteView: NibOwnerLoadable {}
+extension CallAudioRouteView: NibOwnerLoadable { }
 
 extension CallAudioRouteView: Themable {
-    
     func update(theme: Theme) {
         self.theme = theme
         
@@ -80,5 +78,4 @@ extension CallAudioRouteView: Themable {
         selectedIconImageView.tintColor = theme.colors.primaryContent
         bottomLineView.backgroundColor = theme.colors.secondaryContent
     }
-    
 }

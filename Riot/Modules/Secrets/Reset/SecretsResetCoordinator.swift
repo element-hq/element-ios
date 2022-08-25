@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class SecretsResetCoordinator: SecretsResetCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,61 +48,59 @@ final class SecretsResetCoordinator: SecretsResetCoordinatorType {
     
     // MARK: - Public methods
     
-    func start() {            
-        self.secretsResetViewModel.coordinatorDelegate = self
+    func start() {
+        secretsResetViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.secretsResetViewController
+        secretsResetViewController
     }
     
     // MARK: - Private
     
     private func showAuthentication(with request: AuthenticatedEndpointRequest) {
-        
-        let reauthenticationCoordinatorParameters =  ReauthenticationCoordinatorParameters(session: self.session,
-                                                                                           presenter: self.toPresentable(),
-                                                                                           title: nil,
-                                                                                           message: VectorL10n.secretsResetAuthenticationMessage,
-                                                                                           authenticatedEndpointRequest: request)
+        let reauthenticationCoordinatorParameters = ReauthenticationCoordinatorParameters(session: session,
+                                                                                          presenter: toPresentable(),
+                                                                                          title: nil,
+                                                                                          message: VectorL10n.secretsResetAuthenticationMessage,
+                                                                                          authenticatedEndpointRequest: request)
         
         let coordinator = ReauthenticationCoordinator(parameters: reauthenticationCoordinatorParameters)
         coordinator.delegate = self
         coordinator.start()
-        self.add(childCoordinator: coordinator)
+        add(childCoordinator: coordinator)
     }
 }
 
 // MARK: - SecretsResetViewModelCoordinatorDelegate
+
 extension SecretsResetCoordinator: SecretsResetViewModelCoordinatorDelegate {
-    
     func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, needsToAuthenticateWith request: AuthenticatedEndpointRequest) {
-        self.showAuthentication(with: request)
+        showAuthentication(with: request)
     }
     
     func secretsResetViewModelDidResetSecrets(_ viewModel: SecretsResetViewModelType) {
-        self.delegate?.secretsResetCoordinatorDidResetSecrets(self)
+        delegate?.secretsResetCoordinatorDidResetSecrets(self)
     }
     
     func secretsResetViewModelDidCancel(_ viewModel: SecretsResetViewModelType) {
-        self.delegate?.secretsResetCoordinatorDidCancel(self)
+        delegate?.secretsResetCoordinatorDidCancel(self)
     }
 }
 
 // MARK: - ReauthenticationCoordinatorDelegate
+
 extension SecretsResetCoordinator: ReauthenticationCoordinatorDelegate {
-    
     func reauthenticationCoordinatorDidComplete(_ coordinator: ReauthenticationCoordinatorType, withAuthenticationParameters authenticationParameters: [String: Any]?) {
-        
-        self.secretsResetViewModel.process(viewAction: .authenticationInfoEntered(authenticationParameters ?? [:]))
+        secretsResetViewModel.process(viewAction: .authenticationInfoEntered(authenticationParameters ?? [:]))
     }
     
     func reauthenticationCoordinatorDidCancel(_ coordinator: ReauthenticationCoordinatorType) {
-        self.remove(childCoordinator: coordinator)
+        remove(childCoordinator: coordinator)
     }
     
     func reauthenticationCoordinator(_ coordinator: ReauthenticationCoordinatorType, didFailWithError error: Error) {
-        self.secretsResetViewModel.update(viewState: .error(error))
-        self.remove(childCoordinator: coordinator)
+        secretsResetViewModel.update(viewState: .error(error))
+        remove(childCoordinator: coordinator)
     }
 }

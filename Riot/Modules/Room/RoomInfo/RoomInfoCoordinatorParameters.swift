@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,6 @@ enum RoomInfoSection: Int {
 
 @objcMembers
 class RoomInfoCoordinatorParameters: NSObject {
-    
     let session: MXSession
     let room: MXRoom
     let parentSpaceId: String?

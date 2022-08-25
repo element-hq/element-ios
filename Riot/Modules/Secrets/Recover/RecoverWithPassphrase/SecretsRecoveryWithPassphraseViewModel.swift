@@ -17,7 +17,6 @@
 import Foundation
 
 final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphraseViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -31,7 +30,7 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
     var passphrase: String?
     
     var isFormValid: Bool {
-        return self.passphrase?.isEmpty == false
+        self.passphrase?.isEmpty == false
     }
     
     weak var viewDelegate: SecretsRecoveryWithPassphraseViewModelViewDelegate?
@@ -49,26 +48,26 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
     func process(viewAction: SecretsRecoveryWithPassphraseViewAction) {
         switch viewAction {
         case .recover:
-            self.recoverWithPassphrase()
+            recoverWithPassphrase()
         case .cancel:
-            self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelDidCancel(self)
+            coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelDidCancel(self)
         case .useRecoveryKey:
-            self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelWantsToRecoverByKey(self)
+            coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelWantsToRecoverByKey(self)
         case .resetSecrets:
-            self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelWantsToResetSecrets(self)
+            coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelWantsToResetSecrets(self)
         }
     }
     
     // MARK: - Private
     
     private func recoverWithPassphrase() {
-        guard let passphrase = self.passphrase else {
+        guard let passphrase = passphrase else {
             return
         }
         
-        self.update(viewState: .loading)
+        update(viewState: .loading)
         
-        self.recoveryService.privateKey(fromPassphrase: passphrase, success: { [weak self] privateKey in
+        recoveryService.privateKey(fromPassphrase: passphrase, success: { [weak self] privateKey in
             guard let self = self else {
                 return
             }
@@ -91,13 +90,13 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
     private func recoverSecrets(privateKey: Data) {
         let secretIds: [String]?
         
-        if case SecretsRecoveryGoal.keyBackup = self.recoveryGoal {
+        if case SecretsRecoveryGoal.keyBackup = recoveryGoal {
             secretIds = [MXSecretId.keyBackup.takeUnretainedValue() as String]
         } else {
             secretIds = nil
         }
         
-        self.recoveryService.recoverSecrets(secretIds, withPrivateKey: privateKey, recoverServices: true, success: { [weak self] _ in
+        recoveryService.recoverSecrets(secretIds, withPrivateKey: privateKey, recoverServices: true, success: { [weak self] _ in
             guard let self = self else {
                 return
             }
@@ -113,7 +112,7 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
     
     private func execute(block: @escaping (_ privateKey: Data, _ completion: @escaping (Result<Void, Error>) -> Void) -> Void, privateKey: Data) {
         // Check the private key is valid before using it
-        self.recoveryService.checkPrivateKey(privateKey) { match in
+        recoveryService.checkPrivateKey(privateKey) { match in
             guard match else {
                 // Reuse already managed error
                 let error = NSError(domain: MXRecoveryServiceErrorDomain, code: Int(MXRecoveryServiceErrorCode.badRecoveryKeyErrorCode.rawValue), userInfo: nil)
@@ -137,6 +136,6 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
     }
     
     private func update(viewState: SecretsRecoveryWithPassphraseViewState) {
-        self.viewDelegate?.secretsRecoveryWithPassphraseViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.secretsRecoveryWithPassphraseViewModel(self, didUpdateViewState: viewState)
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,17 +21,17 @@ protocol CallPresenterDelegate: AnyObject {
     //  Call screens
     func callPresenter(_ presenter: CallPresenter,
                        presentCallViewController viewController: UIViewController,
-                       completion:(() -> Void)?)
+                       completion: (() -> Void)?)
     func callPresenter(_ presenter: CallPresenter,
                        dismissCallViewController viewController: UIViewController,
-                       completion:(() -> Void)?)
+                       completion: (() -> Void)?)
     
     //  PiP
     func callPresenter(_ presenter: CallPresenter,
                        enterPipForCallViewController viewController: UIViewController,
-                       completion:(() -> Void)?)
+                       completion: (() -> Void)?)
     
     func callPresenter(_ presenter: CallPresenter,
                        exitPipForCallViewController viewController: UIViewController,
-                       completion:(() -> Void)?)
+                       completion: (() -> Void)?)
 }

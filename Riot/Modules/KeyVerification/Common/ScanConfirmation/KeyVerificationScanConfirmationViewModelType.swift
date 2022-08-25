@@ -28,8 +28,7 @@ protocol KeyVerificationScanConfirmationViewModelCoordinatorDelegate: AnyObject 
 }
 
 /// Protocol describing the view model used by `KeyVerificationScanConfirmationViewController`
-protocol KeyVerificationScanConfirmationViewModelType {        
-        
+protocol KeyVerificationScanConfirmationViewModelType {
     var viewDelegate: KeyVerificationScanConfirmationViewModelViewDelegate? { get set }
     var coordinatorDelegate: KeyVerificationScanConfirmationViewModelCoordinatorDelegate? { get set }
     

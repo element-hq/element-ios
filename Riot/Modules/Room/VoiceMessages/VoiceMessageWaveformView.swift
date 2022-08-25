@@ -17,10 +17,9 @@
 import UIKit
 
 class VoiceMessageWaveformView: UIView {
-
     private let lineWidth: CGFloat = 2.0
     private let linePadding: CGFloat = 2.0
-    private let renderingQueue: DispatchQueue = DispatchQueue(label: "io.element.VoiceMessageWaveformView.queue", qos: .userInitiated)
+    private let renderingQueue = DispatchQueue(label: "io.element.VoiceMessageWaveformView.queue", qos: .userInitiated)
 
     var samples: [Float] = [] {
         didSet {
@@ -34,6 +33,7 @@ class VoiceMessageWaveformView: UIView {
             backgroundLayer.fillColor = primaryLineColor.cgColor
         }
     }
+
     var secondaryLineColor = UIColor.darkGray {
         didSet {
             progressLayer.strokeColor = secondaryLineColor.cgColor
@@ -48,13 +48,13 @@ class VoiceMessageWaveformView: UIView {
         didSet {
             CATransaction.begin()
             CATransaction.setDisableActions(true)
-            progressLayer.frame = CGRect(origin: self.bounds.origin, size: CGSize(width: self.bounds.width * CGFloat(self.progress), height: self.bounds.height))
+            progressLayer.frame = CGRect(origin: bounds.origin, size: CGSize(width: bounds.width * CGFloat(progress), height: bounds.height))
             CATransaction.commit()
         }
     }
 
     var requiredNumberOfSamples: Int {
-        return Int(self.bounds.size.width / (lineWidth + linePadding))
+        Int(self.bounds.size.width / (lineWidth + linePadding))
     }
     
     override init(frame: CGRect) {
@@ -67,6 +67,7 @@ class VoiceMessageWaveformView: UIView {
         computeWaveForm()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError()
     }
@@ -74,8 +75,8 @@ class VoiceMessageWaveformView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        backgroundLayer.frame = self.bounds
-        progressLayer.frame = CGRect(origin: self.bounds.origin, size: CGSize(width: self.bounds.width * CGFloat(self.progress), height: self.bounds.height))
+        backgroundLayer.frame = bounds
+        progressLayer.frame = CGRect(origin: bounds.origin, size: CGSize(width: bounds.width * CGFloat(progress), height: bounds.height))
         computeWaveForm()
     }
     
@@ -112,11 +113,11 @@ class VoiceMessageWaveformView: UIView {
     }
     
     private func setupAndAdd(_ shapeLayer: CAShapeLayer, with color: UIColor) {
-        shapeLayer.frame = self.bounds
+        shapeLayer.frame = bounds
         shapeLayer.strokeColor = color.cgColor
         shapeLayer.fillColor = color.cgColor
         shapeLayer.lineCap = .round
         shapeLayer.lineWidth = lineWidth
-        self.layer.addSublayer(shapeLayer)
+        layer.addSublayer(shapeLayer)
     }
 }

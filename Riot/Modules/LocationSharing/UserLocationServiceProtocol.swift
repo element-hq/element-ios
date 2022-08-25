@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// Describes service that monitor and share current user device location to rooms where user shared is location
 protocol UserLocationServiceProtocol {
-    
     /// Request location permissions that enables live location sharing
     func requestAuthorization(_ handler: @escaping LocationAuthorizationHandler)
 

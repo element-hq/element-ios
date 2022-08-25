@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,12 +19,11 @@ import Foundation
 /// Class to build an event menu.
 @objcMembers
 class EventMenuBuilder: NSObject {
-    
     private var items: [EventMenuItemType: UIAlertAction] = [:]
     
     /// Returns true if no items or only one item with the type `EventMenuItemType.cancel`.
     var isEmpty: Bool {
-        return items.isEmpty || (items.count == 1 && items.first?.key == .cancel)
+        items.isEmpty || (items.count == 1 && items.first?.key == .cancel)
     }
     
     /// Add a menu item.
@@ -46,5 +45,4 @@ class EventMenuBuilder: NSObject {
     func reset() {
         items.removeAll()
     }
-    
 }

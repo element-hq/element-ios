@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// Navigation parameters to display a preview of a space that is unknown for the user.
 @objcMembers
 class SpacePreviewNavigationParameters: SpaceNavigationParameters {
-    
     // MARK: - Properties
 
     /// The data for the room preview
@@ -34,7 +33,7 @@ class SpacePreviewNavigationParameters: SpaceNavigationParameters {
          mxSession: MXSession,
          presentationParameters: ScreenPresentationParameters) {
         self.publicRoom = publicRoom
-        self.senderId = nil
+        senderId = nil
         
         super.init(roomId: publicRoom.roomId,
                    mxSession: mxSession,

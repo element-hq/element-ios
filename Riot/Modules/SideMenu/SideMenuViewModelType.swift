@@ -27,8 +27,7 @@ protocol SideMenuViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `SideMenuViewController`
-protocol SideMenuViewModelType {        
-        
+protocol SideMenuViewModelType {
     var viewDelegate: SideMenuViewModelViewDelegate? { get set }
     var coordinatorDelegate: SideMenuViewModelCoordinatorDelegate? { get set }
     

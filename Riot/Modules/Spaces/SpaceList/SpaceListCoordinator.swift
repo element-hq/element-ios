@@ -21,7 +21,6 @@ import UIKit
 
 /// Side menu space list
 final class SpaceListCoordinator: SpaceListCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -50,44 +49,43 @@ final class SpaceListCoordinator: SpaceListCoordinatorType {
     
     // MARK: - Public methods
     
-    func start() {            
-        self.spaceListViewModel.coordinatorDelegate = self
+    func start() {
+        spaceListViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.spaceListViewController
+        spaceListViewController
     }
     
     func revertItemSelection() {
-        self.spaceListViewModel.revertItemSelection()
+        spaceListViewModel.revertItemSelection()
     }
     
     func select(spaceWithId spaceId: String) {
-        self.spaceListViewModel.select(spaceWithId: spaceId)
+        spaceListViewModel.select(spaceWithId: spaceId)
     }
 }
 
 // MARK: - SpaceListViewModelCoordinatorDelegate
+
 extension SpaceListCoordinator: SpaceListViewModelCoordinatorDelegate {
-    
     func spaceListViewModelDidSelectHomeSpace(_ viewModel: SpaceListViewModelType) {
-        self.delegate?.spaceListCoordinatorDidSelectHomeSpace(self)
+        delegate?.spaceListCoordinatorDidSelectHomeSpace(self)
     }
     
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectSpaceWithId spaceId: String) {
-        self.delegate?.spaceListCoordinator(self, didSelectSpaceWithId: spaceId)
+        delegate?.spaceListCoordinator(self, didSelectSpaceWithId: spaceId)
     }
     
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectInviteWithId spaceId: String, from sourceView: UIView?) {
-        self.delegate?.spaceListCoordinator(self, didSelectInviteWithId: spaceId, from: sourceView)
+        delegate?.spaceListCoordinator(self, didSelectInviteWithId: spaceId, from: sourceView)
     }
     
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView) {
-        self.delegate?.spaceListCoordinator(self, didPressMoreForSpaceWithId: spaceId, from: sourceView)
+        delegate?.spaceListCoordinator(self, didPressMoreForSpaceWithId: spaceId, from: sourceView)
     }
     
     func spaceListViewModelDidSelectCreateSpace(_ viewModel: SpaceListViewModelType) {
-        self.delegate?.spaceListCoordinatorDidSelectCreateSpace(self)
+        delegate?.spaceListCoordinatorDidSelectCreateSpace(self)
     }
-    
 }

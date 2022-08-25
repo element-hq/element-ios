@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import XCTest
 @testable import Element
 
 class VectorWellKnownTests: XCTestCase {
-
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -31,22 +30,21 @@ class VectorWellKnownTests: XCTestCase {
     // MARK: - Tests
     
     func testVectorWellKnownParsing() {
-        
         let expectedJitsiServer = "your.jitsi.example.org"
         let expectedE2EEEByDefaultEnabled = false
         
         let wellKnownDictionary: [String: Any] = [
-            "im.vector.riot.e2ee" : [
-                "default" : expectedE2EEEByDefaultEnabled
+            "im.vector.riot.e2ee": [
+                "default": expectedE2EEEByDefaultEnabled
             ],
-            "im.vector.riot.jitsi" : [
-                "preferredDomain" : expectedJitsiServer
+            "im.vector.riot.jitsi": [
+                "preferredDomain": expectedJitsiServer
             ],
-            "io.element.e2ee" : [
-                "default" : expectedE2EEEByDefaultEnabled
+            "io.element.e2ee": [
+                "default": expectedE2EEEByDefaultEnabled
             ],
-            "io.element.jitsi" : [
-                "preferredDomain" : expectedJitsiServer
+            "io.element.jitsi": [
+                "preferredDomain": expectedJitsiServer
             ]
         ]
                         
@@ -76,15 +74,14 @@ class VectorWellKnownTests: XCTestCase {
         } catch {
             XCTFail("Fail with error: \(error)")
         }
-    }        
+    }
     
     func testVectorWellKnownParsingMissingKey() {
-                
         let expectedE2EEEByDefaultEnabled = false
         
         let wellKnownDictionary: [String: Any] = [
-            "io.element.e2ee" : [
-                "default" : expectedE2EEEByDefaultEnabled
+            "io.element.e2ee": [
+                "default": expectedE2EEEByDefaultEnabled
             ]
         ]
                         

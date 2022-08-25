@@ -18,7 +18,6 @@ import Foundation
 
 /// FlowTemplateCoordinator input parameters
 struct FlowTemplateCoordinatorParameters {
-    
     /// The Matrix session
     let session: MXSession
                 

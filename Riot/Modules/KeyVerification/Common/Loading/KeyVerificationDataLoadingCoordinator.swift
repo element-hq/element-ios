@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class KeyVerificationDataLoadingCoordinator: KeyVerificationDataLoadingCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -53,31 +52,31 @@ final class KeyVerificationDataLoadingCoordinator: KeyVerificationDataLoadingCoo
     
     // MARK: - Public methods
     
-    func start() {            
-        self.keyVerificationDataLoadingViewModel.coordinatorDelegate = self
+    func start() {
+        keyVerificationDataLoadingViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.keyVerificationDataLoadingViewController
+        keyVerificationDataLoadingViewController
     }
 }
 
 // MARK: - KeyVerificationDataLoadingViewModelCoordinatorDelegate
+
 extension KeyVerificationDataLoadingCoordinator: KeyVerificationDataLoadingViewModelCoordinatorDelegate {
-    
     func keyVerificationDataLoadingViewModel(_ viewModel: KeyVerificationDataLoadingViewModelType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest) {
-        self.delegate?.keyVerificationDataLoadingCoordinator(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
-    }    
+        delegate?.keyVerificationDataLoadingCoordinator(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
+    }
     
     func keyVerificationDataLoadingViewModel(_ viewModel: KeyVerificationDataLoadingViewModelType, didAcceptKeyVerificationWithTransaction transaction: MXKeyVerificationTransaction) {
-        self.delegate?.keyVerificationDataLoadingCoordinator(self, didAcceptKeyVerificationRequestWithTransaction: transaction)
+        delegate?.keyVerificationDataLoadingCoordinator(self, didAcceptKeyVerificationRequestWithTransaction: transaction)
     }
     
     func keyVerificationDataLoadingViewModel(_ viewModel: KeyVerificationDataLoadingViewModelType, didLoadUser user: MXUser, device: MXDeviceInfo) {
-        self.delegate?.keyVerificationDataLoadingCoordinator(self, didLoadUser: user, device: device)
+        delegate?.keyVerificationDataLoadingCoordinator(self, didLoadUser: user, device: device)
     }
 
     func keyVerificationDataLoadingViewModelDidCancel(_ viewModel: KeyVerificationDataLoadingViewModelType) {
-        self.delegate?.keyVerificationDataLoadingCoordinatorDidCancel(self)
+        delegate?.keyVerificationDataLoadingCoordinatorDidCancel(self)
     }
 }

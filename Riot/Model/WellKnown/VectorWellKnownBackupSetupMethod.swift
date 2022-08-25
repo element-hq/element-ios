@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,8 +22,8 @@ import Foundation
     case key
 
     private enum Constants {
-        static let setupMethodPassphrase: String = "passphrase"
-        static let setupMethodKey: String = "key"
+        static let setupMethodPassphrase = "passphrase"
+        static let setupMethodKey = "key"
     }
 
     init?(key: String) {

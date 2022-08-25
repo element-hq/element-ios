@@ -30,7 +30,6 @@ protocol KeyBackupRecoverFromPrivateKeyViewModelCoordinatorDelegate: AnyObject {
 
 /// Protocol describing the view model used by `KeyBackupRecoverFromPrivateKeyViewController`
 protocol KeyBackupRecoverFromPrivateKeyViewModelType {
-
     var viewDelegate: KeyBackupRecoverFromPrivateKeyViewModelViewDelegate? { get set }
     var coordinatorDelegate: KeyBackupRecoverFromPrivateKeyViewModelCoordinatorDelegate? { get set }
     

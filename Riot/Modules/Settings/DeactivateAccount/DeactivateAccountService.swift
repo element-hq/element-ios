@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,7 +58,7 @@ enum DeactivateAccountServiceError: Error {
     /// - Parameter session: The session with the account to be deactivated.
     init(session: MXSession) {
         self.session = session
-        self.uiaService = UserInteractiveAuthenticationService(session: session)
+        uiaService = UserInteractiveAuthenticationService(session: session)
     }
     
     /// Checks the authentication required for deactivation.
@@ -110,7 +110,6 @@ enum DeactivateAccountServiceError: Error {
             sessionID = authenticationSession.session
             return (.requiresFallback, fallbackURL)
         }
-        
     }
     
     /// Deactivates the account with the supplied password.
@@ -122,7 +121,7 @@ enum DeactivateAccountServiceError: Error {
             let parameters = try DeactivateAccountPasswordParameters(user: session.myUserId, password: password).dictionary()
             deactivateAccount(parameters: parameters, eraseAccount: eraseAccount)
         } catch {
-            self.delegate?.deactivateAccountServiceDidEncounterError(error)
+            delegate?.deactivateAccountServiceDidEncounterError(error)
         }
     }
     
@@ -133,10 +132,9 @@ enum DeactivateAccountServiceError: Error {
             let parameters = try DeactivateAccountDummyParameters(user: session.myUserId, session: sessionID ?? "").dictionary()
             deactivateAccount(parameters: parameters, eraseAccount: eraseAccount)
         } catch {
-            self.delegate?.deactivateAccountServiceDidEncounterError(error)
+            delegate?.deactivateAccountServiceDidEncounterError(error)
         }
     }
-    
     
     /// Deactivated the account using the specified parameters.
     /// - Parameters:

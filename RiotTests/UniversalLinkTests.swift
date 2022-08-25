@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import XCTest
 @testable import Element
+import XCTest
 
 class UniversalLinkTests: XCTestCase {
-
     enum UniversalLinkTestError: Error {
         case invalidURL
     }
@@ -94,5 +93,4 @@ class UniversalLinkTests: XCTestCase {
         let desc = String(format: "<UniversalLink: %@>", str)
         XCTAssertEqual(universalLink.description, desc)
     }
-
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,6 @@ protocol SpaceDetailModelViewModelCoordinatorDelegate: AnyObject {
 
 /// Protocol describing the view model used by `SpaceDetailViewController`
 protocol SpaceDetailViewModelType {
-
     var viewDelegate: SpaceDetailViewModelViewDelegate? { get set }
     var coordinatorDelegate: SpaceDetailModelViewModelCoordinatorDelegate? { get set }
 

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// Enables to setup or update a room timeline cell view
 @objc
 protocol RoomCellLayoutUpdating: Themable {
-    
     func updateLayoutIfNeeded(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData)
             
     func setupLayout(forIncomingTextMessageCell cell: MXKRoomBubbleTableViewCell)

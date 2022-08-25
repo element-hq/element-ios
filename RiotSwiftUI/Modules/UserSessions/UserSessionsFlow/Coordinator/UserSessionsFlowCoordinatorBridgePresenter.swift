@@ -24,7 +24,6 @@ import UIKit
 /// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class UserSessionsFlowCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Constants
 
     // MARK: - Properties
@@ -48,14 +47,12 @@ final class UserSessionsFlowCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
 
     func push(from navigationController: UINavigationController, animated: Bool) {
-        
-        self.startUserSessionsFlow(mxSession: self.mxSession, navigationController: navigationController)
+        startUserSessionsFlow(mxSession: mxSession, navigationController: navigationController)
     }
     
     // MARK: - Private
     
     private func startUserSessionsFlow(mxSession: MXSession, navigationController: UINavigationController?) {
-        
         var navigationRouter: NavigationRouterType?
         
         if let navigationController = navigationController {
@@ -64,7 +61,7 @@ final class UserSessionsFlowCoordinatorBridgePresenter: NSObject {
         
         let coordinatorParameters = UserSessionsFlowCoordinatorParameters(session: mxSession, router: navigationRouter)
         
-        let userSessionsFlowCoordinator = UserSessionsFlowCoordinator(parameters: coordinatorParameters)        
+        let userSessionsFlowCoordinator = UserSessionsFlowCoordinator(parameters: coordinatorParameters)
         
         userSessionsFlowCoordinator.completion = { [weak self] in
             
@@ -78,6 +75,6 @@ final class UserSessionsFlowCoordinatorBridgePresenter: NSObject {
         
         userSessionsFlowCoordinator.start()
         
-        self.coordinator = userSessionsFlowCoordinator
+        coordinator = userSessionsFlowCoordinator
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,6 +23,7 @@ struct JitsiWellKnown {
 }
 
 // MARK: Decodable
+
 extension JitsiWellKnown: Decodable {
     /// JSON keys associated to VectorWellKnown properties
     enum CodingKeys: String, CodingKey {
@@ -30,13 +31,12 @@ extension JitsiWellKnown: Decodable {
     }
     
     init(from decoder: Decoder) throws {
-        
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         if let authenticationTypeString = try container.decodeIfPresent(String.self, forKey: .authenticationType) {
-            self.authenticationType = JitsiAuthenticationType(authenticationTypeString)
+            authenticationType = JitsiAuthenticationType(authenticationTypeString)
         } else {
-            self.authenticationType = nil
+            authenticationType = nil
         }
     }
 }

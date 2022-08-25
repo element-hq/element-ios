@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 import SwiftBase32
 
 final class Base32Coder {
-    
     static func encodedString(_ string: String, padding: Bool = true) -> String {
         let encodedString = string.base32EncodedString
         return padding ? encodedString : encodedString.replacingOccurrences(of: "=", with: "")

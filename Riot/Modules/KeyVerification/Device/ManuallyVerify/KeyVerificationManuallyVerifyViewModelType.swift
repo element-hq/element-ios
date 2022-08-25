@@ -28,8 +28,7 @@ protocol KeyVerificationManuallyVerifyViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `KeyVerificationManuallyVerifyViewController`
-protocol KeyVerificationManuallyVerifyViewModelType {        
-        
+protocol KeyVerificationManuallyVerifyViewModelType {
     var viewDelegate: KeyVerificationManuallyVerifyViewModelViewDelegate? { get set }
     var coordinatorDelegate: KeyVerificationManuallyVerifyViewModelCoordinatorDelegate? { get set }
     

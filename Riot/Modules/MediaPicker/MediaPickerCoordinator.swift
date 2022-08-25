@@ -19,7 +19,6 @@
 import UIKit
 
 final class MediaPickerCoordinator: NSObject, MediaPickerCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -44,7 +43,7 @@ final class MediaPickerCoordinator: NSObject, MediaPickerCoordinatorType {
         self.mediaUTIs = mediaUTIs
         self.allowsMultipleSelection = allowsMultipleSelection
         
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         
         super.init()
     }
@@ -52,27 +51,26 @@ final class MediaPickerCoordinator: NSObject, MediaPickerCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        let mediaTypes = self.mediaUTIs.map { (uti) -> String in
-            return uti.rawValue
+        let mediaTypes = mediaUTIs.map { uti -> String in
+            uti.rawValue
         }
         
-        let mediaPickerViewController: MediaPickerViewController = MediaPickerViewController.instantiate()
+        let mediaPickerViewController = MediaPickerViewController.instantiate()
         mediaPickerViewController.mediaTypes = mediaTypes
-        mediaPickerViewController.allowsMultipleSelection = self.allowsMultipleSelection
-        self.navigationRouter.setRootModule(mediaPickerViewController)
+        mediaPickerViewController.allowsMultipleSelection = allowsMultipleSelection
+        navigationRouter.setRootModule(mediaPickerViewController)
         mediaPickerViewController.delegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
 }
 
 // MARK: - MediaPickerViewControllerDelegate
+
 extension MediaPickerCoordinator: MediaPickerViewControllerDelegate {
-    
     func mediaPickerController(_ mediaPickerController: MediaPickerViewController!, didSelectImage imageData: Data!, withMimeType mimetype: String!, isPhotoLibraryAsset: Bool) {
-        
         let uti: MXKUTI?
         if let mimetype = mimetype {
             uti = MXKUTI(mimeType: mimetype)
@@ -80,18 +78,18 @@ extension MediaPickerCoordinator: MediaPickerViewControllerDelegate {
             uti = nil
         }
         
-        self.delegate?.mediaPickerCoordinator(self, didSelectImageData: imageData, withUTI: uti)
+        delegate?.mediaPickerCoordinator(self, didSelectImageData: imageData, withUTI: uti)
     }
     
     func mediaPickerController(_ mediaPickerController: MediaPickerViewController!, didSelectVideo videoAsset: AVAsset!) {
-        self.delegate?.mediaPickerCoordinator(self, didSelectVideo: videoAsset)
+        delegate?.mediaPickerCoordinator(self, didSelectVideo: videoAsset)
     }
     
     func mediaPickerController(_ mediaPickerController: MediaPickerViewController!, didSelect assets: [PHAsset]!) {
-        self.delegate?.mediaPickerCoordinator(self, didSelectAssets: assets)
+        delegate?.mediaPickerCoordinator(self, didSelectAssets: assets)
     }
     
     func mediaPickerControllerDidCancel(_ mediaPickerController: MediaPickerViewController!) {
-        self.delegate?.mediaPickerCoordinatorDidCancel(self)
+        delegate?.mediaPickerCoordinatorDidCancel(self)
     }
 }

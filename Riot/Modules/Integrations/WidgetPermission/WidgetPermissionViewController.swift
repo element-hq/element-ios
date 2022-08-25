@@ -20,7 +20,6 @@ import UIKit
 
 @objc
 final class WidgetPermissionViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -36,27 +35,28 @@ final class WidgetPermissionViewController: UIViewController {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var closeButton: UIButton!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var closeButton: UIButton!
     
-    @IBOutlet private weak var creatorInfoTitleLabel: UILabel!
-    @IBOutlet private weak var creatorAvatarImageView: MXKImageView!
-    @IBOutlet private weak var creatorDisplayNameLabel: UILabel!
-    @IBOutlet private weak var creatorUserIDLabel: UILabel!
+    @IBOutlet private var creatorInfoTitleLabel: UILabel!
+    @IBOutlet private var creatorAvatarImageView: MXKImageView!
+    @IBOutlet private var creatorDisplayNameLabel: UILabel!
+    @IBOutlet private var creatorUserIDLabel: UILabel!
     
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var continueButton: UIButton!
+    @IBOutlet private var continueButton: UIButton!
     
     // MARK: Private
     
     private var viewModel: WidgetPermissionViewModel! {
         didSet {
-            self.updateViews()
+            updateViews()
         }
     }
+
     private var theme: Theme!
     
     // MARK: Public
@@ -80,29 +80,29 @@ final class WidgetPermissionViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.updateViews()
+        setupViews()
+        updateViews()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.scrollView.flashScrollIndicators()
+        scrollView.flashScrollIndicators()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
                 
-        self.creatorAvatarImageView.layer.cornerRadius = self.creatorAvatarImageView.frame.size.width/2
-        self.continueButton.layer.cornerRadius = Constants.continueButtonCornerRadius
-        self.closeButton.layer.cornerRadius = self.closeButton.frame.size.width/2
+        creatorAvatarImageView.layer.cornerRadius = creatorAvatarImageView.frame.size.width / 2
+        continueButton.layer.cornerRadius = Constants.continueButtonCornerRadius
+        closeButton.layer.cornerRadius = closeButton.frame.size.width / 2
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -110,19 +110,19 @@ final class WidgetPermissionViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        self.titleLabel.textColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
         
-        self.closeButton.vc_setBackgroundColor(theme.headerTextSecondaryColor, for: .normal)
+        closeButton.vc_setBackgroundColor(theme.headerTextSecondaryColor, for: .normal)
         
-        self.creatorInfoTitleLabel.textColor = theme.textSecondaryColor
-        self.creatorDisplayNameLabel.textColor = theme.textSecondaryColor
-        self.creatorUserIDLabel.textColor = theme.textSecondaryColor
+        creatorInfoTitleLabel.textColor = theme.textSecondaryColor
+        creatorDisplayNameLabel.textColor = theme.textSecondaryColor
+        creatorUserIDLabel.textColor = theme.textSecondaryColor
         
-        self.informationLabel.textColor = theme.textSecondaryColor
+        informationLabel.textColor = theme.textSecondaryColor
         
-        self.continueButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
+        continueButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -130,83 +130,81 @@ final class WidgetPermissionViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.closeButton.layer.masksToBounds = true
+        closeButton.layer.masksToBounds = true
         
-        self.setupCreatorAvatarImageView()
+        setupCreatorAvatarImageView()
         
-        self.titleLabel.text = VectorL10n.roomWidgetPermissionTitle
-        self.creatorInfoTitleLabel.text = VectorL10n.roomWidgetPermissionCreatorInfoTitle
-        self.informationLabel.text = ""
+        titleLabel.text = VectorL10n.roomWidgetPermissionTitle
+        creatorInfoTitleLabel.text = VectorL10n.roomWidgetPermissionCreatorInfoTitle
+        informationLabel.text = ""
         
-        self.setupContinueButton()
+        setupContinueButton()
     }
     
     private func updateViews() {
-        
-        if let avatarImageView = self.creatorAvatarImageView {
-            let defaultavatarImage = AvatarGenerator.generateAvatar(forMatrixItem: self.viewModel.creatorUserId, withDisplayName: self.viewModel.creatorDisplayName)
-            avatarImageView.setImageURI(self.viewModel.creatorAvatarUrl, withType: nil, andImageOrientation: .up, previewImage: defaultavatarImage, mediaManager: self.viewModel.mediaManager)
+        if let avatarImageView = creatorAvatarImageView {
+            let defaultavatarImage = AvatarGenerator.generateAvatar(forMatrixItem: viewModel.creatorUserId, withDisplayName: viewModel.creatorDisplayName)
+            avatarImageView.setImageURI(viewModel.creatorAvatarUrl, withType: nil, andImageOrientation: .up, previewImage: defaultavatarImage, mediaManager: viewModel.mediaManager)
         }
         
-        if let creatorDisplayNameLabel = self.creatorDisplayNameLabel {
-            if let creatorDisplayName = self.viewModel.creatorDisplayName {
+        if let creatorDisplayNameLabel = creatorDisplayNameLabel {
+            if let creatorDisplayName = viewModel.creatorDisplayName {
                 creatorDisplayNameLabel.text = creatorDisplayName
             } else {
                 creatorDisplayNameLabel.isHidden = true
             }
         }
         
-        if let creatorUserIDLabel = self.creatorUserIDLabel {
-            creatorUserIDLabel.text = self.viewModel.creatorUserId
+        if let creatorUserIDLabel = creatorUserIDLabel {
+            creatorUserIDLabel.text = viewModel.creatorUserId
         }
         
-        if let informationLabel = self.informationLabel {
-            informationLabel.text = self.viewModel.permissionsInformationText
+        if let informationLabel = informationLabel {
+            informationLabel.text = viewModel.permissionsInformationText
         }
     }
     
     private func setupCreatorAvatarImageView() {
-        self.creatorAvatarImageView.defaultBackgroundColor = UIColor.clear
-        self.creatorAvatarImageView.enableInMemoryCache = true
-        self.creatorAvatarImageView.clipsToBounds = true
+        creatorAvatarImageView.defaultBackgroundColor = UIColor.clear
+        creatorAvatarImageView.enableInMemoryCache = true
+        creatorAvatarImageView.clipsToBounds = true
     }
     
     private func setupContinueButton() {
-        self.continueButton.layer.masksToBounds = true
-        self.continueButton.setTitle(VectorL10n.continue, for: .normal)
+        continueButton.layer.masksToBounds = true
+        continueButton.setTitle(VectorL10n.continue, for: .normal)
     }
     
     // MARK: - Actions
     
     @IBAction private func closeButtonAction(_ sender: Any) {
-        self.didTapCloseButton?()
+        didTapCloseButton?()
     }
     
     @IBAction private func continueButtonAction(_ sender: Any) {
-        self.didTapContinueButton?()
+        didTapContinueButton?()
     }
 }
 
 // MARK: - SlidingModalPresentable
+
 extension WidgetPermissionViewController: SlidingModalPresentable {
-    
     func allowsDismissOnBackgroundTap() -> Bool {
-        return false
+        false
     }
     
     func layoutHeightFittingWidth(_ width: CGFloat) -> CGFloat {
-        
         let sizingViewContoller: WidgetPermissionViewController
         
         if let viewController = WidgetPermissionViewController.Sizing.viewController {
-            viewController.viewModel = self.viewModel
+            viewController.viewModel = viewModel
             sizingViewContoller = viewController
         } else {
-            sizingViewContoller = WidgetPermissionViewController.instantiate(with: self.viewModel)
+            sizingViewContoller = WidgetPermissionViewController.instantiate(with: viewModel)
             WidgetPermissionViewController.Sizing.viewController = sizingViewContoller
         }
         

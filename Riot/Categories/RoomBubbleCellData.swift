@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 @objc extension RoomBubbleCellData {
-    
     /// Gathers all collapsable events in both directions (previous and next)
     /// - Returns: Array of events containing collapsable events in both sides.
     func allLinkedEvents() -> [MXEvent] {
@@ -47,10 +46,10 @@ import Foundation
         return result
     }
 
-    open override func refreshProfilesIfNeeded(_ latestRoomState: MXRoomState!) {
+    override open func refreshProfilesIfNeeded(_ latestRoomState: MXRoomState!) {
         super.refreshProfilesIfNeeded(latestRoomState)
 
-        if #available(iOS 15.0, *), let attributedTextMessage = self.attributedTextMessage {
+        if #available(iOS 15.0, *), let attributedTextMessage = attributedTextMessage {
             // Pills are displayed with the latest data regardless of `roomScreenUseOnlyLatestUserAvatarAndName`.
             PillsFormatter.refreshPills(in: attributedTextMessage, with: latestRoomState)
         }

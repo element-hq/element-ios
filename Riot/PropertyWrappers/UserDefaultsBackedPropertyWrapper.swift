@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,6 @@ import Foundation
 
 @propertyWrapper
 struct UserDefault<Value> {
-    
     private let key: String
     private let defaultValue: Value
     private let storage: UserDefaults

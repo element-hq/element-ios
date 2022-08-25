@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class KeyBackupRecoverFromPrivateKeyCoordinator: KeyBackupRecoverFromPrivateKeyCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -38,7 +37,6 @@ final class KeyBackupRecoverFromPrivateKeyCoordinator: KeyBackupRecoverFromPriva
     // MARK: - Setup
     
     init(keyBackup: MXKeyBackup, keyBackupVersion: MXKeyBackupVersion) {
-        
         let keyBackupRecoverFromPrivateKeyViewModel = KeyBackupRecoverFromPrivateKeyViewModel(keyBackup: keyBackup, keyBackupVersion: keyBackupVersion)
         let keyBackupRecoverFromPrivateKeyViewController = KeyBackupRecoverFromPrivateKeyViewController.instantiate(with: keyBackupRecoverFromPrivateKeyViewModel)
         self.keyBackupRecoverFromPrivateKeyViewModel = keyBackupRecoverFromPrivateKeyViewModel
@@ -47,26 +45,27 @@ final class KeyBackupRecoverFromPrivateKeyCoordinator: KeyBackupRecoverFromPriva
     
     // MARK: - Public methods
     
-    func start() {            
-        self.keyBackupRecoverFromPrivateKeyViewModel.coordinatorDelegate = self
+    func start() {
+        keyBackupRecoverFromPrivateKeyViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.keyBackupRecoverFromPrivateKeyViewController
+        keyBackupRecoverFromPrivateKeyViewController
     }
 }
 
 // MARK: - KeyBackupRecoverFromPrivateKeyViewModelCoordinatorDelegate
+
 extension KeyBackupRecoverFromPrivateKeyCoordinator: KeyBackupRecoverFromPrivateKeyViewModelCoordinatorDelegate {
     func keyBackupRecoverFromPrivateKeyViewModelDidRecover(_ viewModel: KeyBackupRecoverFromPrivateKeyViewModelType) {
-        self.delegate?.keyBackupRecoverFromPrivateKeyCoordinatorDidRecover(self)
+        delegate?.keyBackupRecoverFromPrivateKeyCoordinatorDidRecover(self)
     }
     
     func keyBackupRecoverFromPrivateKeyViewModelDidPrivateKeyFail(_ viewModel: KeyBackupRecoverFromPrivateKeyViewModelType) {
-        self.delegate?.keyBackupRecoverFromPrivateKeyCoordinatorDidPrivateKeyFail(self)
+        delegate?.keyBackupRecoverFromPrivateKeyCoordinatorDidPrivateKeyFail(self)
     }
     
     func keyBackupRecoverFromPrivateKeyViewModelDidCancel(_ viewModel: KeyBackupRecoverFromPrivateKeyViewModelType) {
-        self.delegate?.keyBackupRecoverFromPrivateKeyCoordinatorDidCancel(self)
+        delegate?.keyBackupRecoverFromPrivateKeyCoordinatorDidCancel(self)
     }
 }

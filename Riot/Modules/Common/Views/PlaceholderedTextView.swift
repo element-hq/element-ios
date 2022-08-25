@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import UIKit
 
 class PlaceholderedTextView: UITextView {
-    
     private var kvoLineFragmentPadding: NSKeyValueObservation?
     private lazy var placeholderTextView: UITextView = {
         let view = UITextView()
@@ -48,11 +47,13 @@ class PlaceholderedTextView: UITextView {
             placeholderTextView.text = placeholder
         }
     }
+
     var attributedPlaceholder: NSAttributedString? {
         didSet {
             placeholderTextView.attributedText = attributedPlaceholder
         }
     }
+
     var placeholderColor: UIColor = .lightGray {
         didSet {
             placeholderTextView.textColor = placeholderColor
@@ -94,9 +95,9 @@ class PlaceholderedTextView: UITextView {
 
     private func setup() {
         NotificationCenter.default.addObserver(self, selector: #selector(textViewTextChanged(_:)), name: UITextView.textDidChangeNotification, object: self)
-        kvoLineFragmentPadding = observe(\.textContainer.lineFragmentPadding, options: [.new]) { [weak self] (_, change) in
+        kvoLineFragmentPadding = observe(\.textContainer.lineFragmentPadding, options: [.new]) { [weak self] _, change in
             guard let self = self else { return }
-            let newValue = change.newValue ?? 0            
+            let newValue = change.newValue ?? 0
             self.placeholderTextView.textContainer.lineFragmentPadding = newValue
         }
     }
@@ -115,5 +116,4 @@ class PlaceholderedTextView: UITextView {
     private func updatePlaceholderVisibility() {
         placeholderTextView.isHidden = text.count > 0
     }
-    
 }

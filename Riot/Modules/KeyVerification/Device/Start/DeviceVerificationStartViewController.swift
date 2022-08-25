@@ -19,22 +19,21 @@
 import UIKit
 
 final class DeviceVerificationStartViewController: UIViewController {
-    
     // MARK: - Constants
     
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var waitingPartnerLabel: UILabel!
-    @IBOutlet private weak var useLegacyVerificationLabel: UILabel!
-    @IBOutlet private weak var verifyButtonBackgroundView: UIView!
-    @IBOutlet private weak var verifyButton: UIButton!
-    @IBOutlet private weak var useLegacyVerificationButton: UIButton!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
+    @IBOutlet private var waitingPartnerLabel: UILabel!
+    @IBOutlet private var useLegacyVerificationLabel: UILabel!
+    @IBOutlet private var verifyButtonBackgroundView: UIView!
+    @IBOutlet private var verifyButton: UIButton!
+    @IBOutlet private var useLegacyVerificationButton: UIButton!
 
     // MARK: Private
 
@@ -59,21 +58,21 @@ final class DeviceVerificationStartViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.keyVerificationOtherSessionTitle
-        self.vc_removeBackTitle()
+        title = VectorL10n.keyVerificationOtherSessionTitle
+        vc_removeBackTitle()
         
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -81,21 +80,21 @@ final class DeviceVerificationStartViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textPrimaryColor
-        self.waitingPartnerLabel.textColor = theme.textPrimaryColor
-        self.useLegacyVerificationLabel.textColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
+        waitingPartnerLabel.textColor = theme.textPrimaryColor
+        useLegacyVerificationLabel.textColor = theme.textPrimaryColor
 
-        self.verifyButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.verifyButton)
+        verifyButtonBackgroundView.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: verifyButton)
 
-        theme.applyStyle(onButton: self.useLegacyVerificationButton)
+        theme.applyStyle(onButton: useLegacyVerificationButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -103,7 +102,7 @@ final class DeviceVerificationStartViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -111,53 +110,53 @@ final class DeviceVerificationStartViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.scrollView.keyboardDismissMode = .interactive
+        scrollView.keyboardDismissMode = .interactive
 
-        self.titleLabel.text = VectorL10n.deviceVerificationStartTitle
-        self.informationLabel.text = VectorL10n.deviceVerificationSecurityAdviceNumber
-        self.waitingPartnerLabel.text = VectorL10n.deviceVerificationStartWaitPartner
-        self.useLegacyVerificationLabel.text = VectorL10n.deviceVerificationStartUseLegacy
+        titleLabel.text = VectorL10n.deviceVerificationStartTitle
+        informationLabel.text = VectorL10n.deviceVerificationSecurityAdviceNumber
+        waitingPartnerLabel.text = VectorL10n.deviceVerificationStartWaitPartner
+        useLegacyVerificationLabel.text = VectorL10n.deviceVerificationStartUseLegacy
 
-        self.waitingPartnerLabel.isHidden = true
-        self.useLegacyVerificationLabel.isHidden = true
+        waitingPartnerLabel.isHidden = true
+        useLegacyVerificationLabel.isHidden = true
 
-        self.verifyButton.setTitle(VectorL10n.deviceVerificationStartVerifyButton, for: .normal)
-        self.useLegacyVerificationButton.setTitle(VectorL10n.deviceVerificationStartUseLegacyAction, for: .normal)
+        verifyButton.setTitle(VectorL10n.deviceVerificationStartVerifyButton, for: .normal)
+        useLegacyVerificationButton.setTitle(VectorL10n.deviceVerificationStartUseLegacyAction, for: .normal)
     }
 
     private func render(viewState: DeviceVerificationStartViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded:
-            self.renderStarted()
+            renderStarted()
         case .verifyUsingLegacy(let session, let deviceInfo):
-            self.renderVerifyUsingLegacy(session: session, deviceInfo: deviceInfo)
+            renderVerifyUsingLegacy(session: session, deviceInfo: deviceInfo)
         case .cancelled(let reason):
-            self.renderCancelled(reason: reason)
+            renderCancelled(reason: reason)
         case .cancelledByMe(let reason):
-            self.renderCancelledByMe(reason: reason)
+            renderCancelledByMe(reason: reason)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderStarted() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-        self.verifyButtonBackgroundView.isHidden = true
-        self.waitingPartnerLabel.isHidden = false
-        self.useLegacyVerificationLabel.isHidden = false
+        verifyButtonBackgroundView.isHidden = true
+        waitingPartnerLabel.isHidden = false
+        useLegacyVerificationLabel.isHidden = false
     }
 
     private func renderVerifyUsingLegacy(session: MXSession, deviceInfo: MXDeviceInfo) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
 
         guard let encryptionInfoView = EncryptionInfoView(deviceInfo: deviceInfo, andMatrixSession: session) else {
             return
@@ -170,67 +169,66 @@ final class DeviceVerificationStartViewController: UIViewController {
 
         // Display the legacy verification view in full screen
         // TODO: Do not reuse the legacy EncryptionInfoView and create a screen from scratch
-        self.view.vc_addSubViewMatchingParent(encryptionInfoView)
-        self.navigationController?.isNavigationBarHidden = true
+        view.vc_addSubViewMatchingParent(encryptionInfoView)
+        navigationController?.isNavigationBarHidden = true
     }
 
     private func renderCancelled(reason: MXTransactionCancelCode) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-        self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+        errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
             self.viewModel.process(viewAction: .cancel)
         }
     }
 
     private func renderCancelledByMe(reason: MXTransactionCancelCode) {
         if reason.value != MXTransactionCancelCode.user().value {
-            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+            activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-            self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
+            errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
                 self.viewModel.process(viewAction: .cancel)
             }
         } else {
-            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+            activityPresenter.removeCurrentActivityIndicator(animated: true)
         }
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
-    
     // MARK: - Actions
 
     @IBAction private func verifyButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .beginVerifying)
+        viewModel.process(viewAction: .beginVerifying)
     }
 
     @IBAction private func useLegacyVerificationButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .verifyUsingLegacy)
+        viewModel.process(viewAction: .verifyUsingLegacy)
     }
 
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
 
-
 // MARK: - DeviceVerificationStartViewModelViewDelegate
+
 extension DeviceVerificationStartViewController: DeviceVerificationStartViewModelViewDelegate {
-
     func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didUpdateViewState viewSate: DeviceVerificationStartViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
 // MARK: - DeviceVerificationStartViewModelViewDelegate
+
 extension DeviceVerificationStartViewController: MXKEncryptionInfoViewDelegate {
     func encryptionInfoView(_ encryptionInfoView: MXKEncryptionInfoView!, didDeviceInfoVerifiedChange deviceInfo: MXDeviceInfo!) {
-        self.viewModel.process(viewAction: .verifiedUsingLegacy)
+        viewModel.process(viewAction: .verifiedUsingLegacy)
     }
 
     func encryptionInfoViewDidClose(_ encryptionInfoView: MXKEncryptionInfoView!) {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }

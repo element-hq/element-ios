@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
+@testable import Element
 import Foundation
 import XCTest
-@testable import Element
 
 class RecentsDataSourceSectionsTests: XCTestCase {
     func test_canCreateWithNSNumbers() {
@@ -24,7 +24,7 @@ class RecentsDataSourceSectionsTests: XCTestCase {
             NSNumber(value: -1),
             NSNumber(value: 0),
             NSNumber(value: 2),
-            NSNumber(value: 100),
+            NSNumber(value: 100)
         ])
         
         XCTAssertEqual(sections.count, 2)
@@ -82,7 +82,7 @@ class RecentsDataSourceSectionsTests: XCTestCase {
             .favorites,
             .invites,
             .lowPriority,
-            .searchedRoom,
+            .searchedRoom
         ])
         
         XCTAssertEqual(sections.sectionType(forSectionIndex: 0), .favorites)
@@ -99,7 +99,7 @@ class RecentsDataSourceSectionsTests: XCTestCase {
             .favorites,
             .invites,
             .lowPriority,
-            .searchedRoom,
+            .searchedRoom
         ])
         
         XCTAssertEqual(
@@ -108,7 +108,7 @@ class RecentsDataSourceSectionsTests: XCTestCase {
                 NSNumber(value: RecentsDataSourceSectionType.favorites.rawValue),
                 NSNumber(value: RecentsDataSourceSectionType.invites.rawValue),
                 NSNumber(value: RecentsDataSourceSectionType.lowPriority.rawValue),
-                NSNumber(value: RecentsDataSourceSectionType.searchedRoom.rawValue),
+                NSNumber(value: RecentsDataSourceSectionType.searchedRoom.rawValue)
             ]
         )
     }
@@ -118,25 +118,25 @@ class RecentsDataSourceSectionsTests: XCTestCase {
             .favorites,
             .invites,
             .lowPriority,
-            .searchedRoom,
+            .searchedRoom
         ])
         let sameOrder = RecentsDataSourceSections(sectionTypes: [
             .favorites,
             .invites,
             .lowPriority,
-            .searchedRoom,
+            .searchedRoom
         ])
         let differentOrder = RecentsDataSourceSections(sectionTypes: [
             .lowPriority,
             .favorites,
             .invites,
-            .searchedRoom,
+            .searchedRoom
         ])
         let differentSections = RecentsDataSourceSections(sectionTypes: [
             .favorites,
             .serverNotice,
             .lowPriority,
-            .searchedRoom,
+            .searchedRoom
         ])
         
         XCTAssertEqual(original, sameOrder)

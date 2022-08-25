@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,14 +18,13 @@ import Foundation
 import Reusable
 
 class SpaceMenuListViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
-    
     // MARK: - Properties
     
-    @IBOutlet private weak var iconView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var betaView: UIView!
-    @IBOutlet private weak var betaLabel: UILabel!
-    @IBOutlet private weak var selectionView: UIView!
+    @IBOutlet private var iconView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var betaView: UIView!
+    @IBOutlet private var betaLabel: UILabel!
+    @IBOutlet private var selectionView: UIView!
 
     // MARK: - Private
     
@@ -36,9 +35,9 @@ class SpaceMenuListViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        self.selectionStyle = .none
-        self.selectionView.layer.cornerRadius = 8.0
-        self.selectionView.layer.masksToBounds = true
+        selectionStyle = .none
+        selectionView.layer.cornerRadius = 8.0
+        selectionView.layer.masksToBounds = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -52,35 +51,35 @@ class SpaceMenuListViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
     // MARK: - Public
     
     func update(with viewData: SpaceMenuListItemViewData) {
-        self.iconView.image = viewData.icon
-        self.titleLabel.text = viewData.title
+        iconView.image = viewData.icon
+        titleLabel.text = viewData.title
         
-        guard let theme = self.theme else {
+        guard let theme = theme else {
             return
         }
         
         if viewData.style == .destructive {
-            self.titleLabel.textColor = theme.colors.alert
-            self.iconView.tintColor = theme.colors.alert
+            titleLabel.textColor = theme.colors.alert
+            iconView.tintColor = theme.colors.alert
         } else {
-            self.titleLabel.textColor = theme.colors.primaryContent
-            self.iconView.tintColor = theme.colors.secondaryContent
+            titleLabel.textColor = theme.colors.primaryContent
+            iconView.tintColor = theme.colors.secondaryContent
         }
         
-        self.betaView.layer.masksToBounds = true
-        self.betaView.layer.cornerRadius = 4
-        self.betaView.isHidden = !viewData.isBeta
+        betaView.layer.masksToBounds = true
+        betaView.layer.cornerRadius = 4
+        betaView.isHidden = !viewData.isBeta
     }
     
     func update(theme: Theme) {
         self.theme = theme
-        self.backgroundColor = theme.colors.background
-        self.iconView.tintColor = theme.colors.secondaryContent
-        self.titleLabel.textColor = theme.colors.primaryContent
-        self.titleLabel.font = theme.fonts.body
-        self.selectionView.backgroundColor = theme.colors.separator
-        self.betaLabel.font = theme.fonts.caption2SB
-        self.betaLabel.textColor = theme.colors.secondaryContent
-        self.betaView.backgroundColor = theme.colors.quinaryContent
+        backgroundColor = theme.colors.background
+        iconView.tintColor = theme.colors.secondaryContent
+        titleLabel.textColor = theme.colors.primaryContent
+        titleLabel.font = theme.fonts.body
+        selectionView.backgroundColor = theme.colors.separator
+        betaLabel.font = theme.fonts.caption2SB
+        betaLabel.textColor = theme.colors.secondaryContent
+        betaView.backgroundColor = theme.colors.quinaryContent
     }
 }

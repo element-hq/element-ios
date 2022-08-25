@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,14 +19,13 @@ import Foundation
 /// Used to handle the application information
 @objcMembers
 final class AppInfo: NSObject {
-    
     // MARK: - Constants
     
     /// Current application information
     static var current: AppInfo {
-        return AppInfo(displayName: self.bundleDisplayName,
-                       appVersion: AppVersion.current,
-                       buildInfo: BuildInfo())
+        AppInfo(displayName: bundleDisplayName,
+                appVersion: AppVersion.current,
+                buildInfo: BuildInfo())
     }
     
     // MARK: - Properties

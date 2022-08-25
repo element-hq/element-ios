@@ -14,10 +14,10 @@
  limitations under the License.
  */
 
+import CommonKit
 import Foundation
 import Intents
 import MatrixSDK
-import CommonKit
 import UIKit
 
 #if DEBUG
@@ -31,7 +31,6 @@ import FLEX
 /// `MXSession` or push notification management should be handled in dedicated classes and report only navigation
 /// changes to the AppCoordinator.
 final class AppCoordinator: NSObject, AppCoordinatorType {
-    
     // MARK: - Constants
     
     // MARK: - Properties
@@ -45,9 +44,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     fileprivate let legacyAppDelegate: LegacyAppDelegate = AppDelegate.theDelegate()
     // swiftlint:enable weak_delegate
     
-    private lazy var appNavigator: AppNavigatorProtocol = {
-        return AppNavigator(appCoordinator: self)
-    }()
+    private lazy var appNavigator: AppNavigatorProtocol = AppNavigator(appCoordinator: self)
     
     fileprivate weak var splitViewCoordinator: SplitViewCoordinatorType?
     fileprivate weak var sideMenuCoordinator: SideMenuCoordinatorType?
@@ -56,7 +53,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         
     /// Main user Matrix session
     private var mainMatrixSession: MXSession? {
-        return self.userSessionsService.mainUserSession?.matrixSession
+        userSessionsService.mainUserSession?.matrixSession
     }
         
     private var currentSpaceId: String?
@@ -68,9 +65,9 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     // MARK: - Setup
     
     init(router: RootRouterType, window: UIWindow) {
-        self.rootRouter = router
-        self.customSchemeURLParser = CustomSchemeURLParser()
-        self.userSessionsService = UserSessionsService.shared
+        rootRouter = router
+        customSchemeURLParser = CustomSchemeURLParser()
+        userSessionsService = UserSessionsService.shared
         
         super.init()
         
@@ -81,9 +78,9 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        self.setupLogger()
-        self.setupTheme()
-        self.excludeAllItemsFromBackup()
+        setupLogger()
+        setupTheme()
+        excludeAllItemsFromBackup()
         
         // Setup navigation router store
         _ = NavigationRouterStore.shared
@@ -92,10 +89,10 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         _ = UserLocationServiceProvider.shared
         
         if BuildSettings.enableSideMenu {
-            self.addSideMenu()
+            addSideMenu()
         }
         
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.appDelegateNetworkStatusDidChange, object: nil, queue: OperationQueue.main) { [weak self] notification in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.appDelegateNetworkStatusDidChange, object: nil, queue: OperationQueue.main) { [weak self] _ in
             guard let self = self else { return }
 
             if AppDelegate.theDelegate().isOffline {
@@ -106,10 +103,10 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         }
         
         // NOTE: When split view is shown there can be no Matrix sessions ready. Keep this behavior or use a loading screen before showing the split view.
-        self.showSplitView()
+        showSplitView()
         MXLog.debug("[AppCoordinator] Showed split view")
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.themeDidChange), name: Notification.Name.themeServiceDidChangeTheme, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: Notification.Name.themeServiceDidChangeTheme, object: nil)
     }
     
     func open(url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -117,8 +114,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         // https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app
         
         do {
-            let deepLinkOption = try self.customSchemeURLParser.parse(url: url, options: options)
-            return self.handleDeepLinkOption(deepLinkOption)
+            let deepLinkOption = try customSchemeURLParser.parse(url: url, options: options)
+            return handleDeepLinkOption(deepLinkOption)
         } catch {
             MXLog.debug("[AppCoordinator] Custom scheme URL parsing failed with error: \(error)")
             return false
@@ -138,6 +135,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     }
     
     // MARK: - Private methods
+
     private func setupLogger() {
         UILog.configure(logger: MatrixSDKLogger.self)
     }
@@ -154,7 +152,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         
         // Always republish theme change events, and again always getting the identifier from the theme.
         let themeIdPublisher = NotificationCenter.default.publisher(for: Notification.Name.themeServiceDidChangeTheme)
-            .compactMap({ _ in ThemeIdentifier(rawValue: ThemeService.shared().theme.identifier) })
+            .compactMap { _ in ThemeIdentifier(rawValue: ThemeService.shared().theme.identifier) }
             .eraseToAnyPublisher()
 
         ThemePublisher.shared.republish(themeIdPublisher: themeIdPublisher)
@@ -184,24 +182,24 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     }
     
     private func showSplitView() {
-        let coordinatorParameters = SplitViewCoordinatorParameters(router: self.rootRouter, userSessionsService: self.userSessionsService, appNavigator: self.appNavigator)
+        let coordinatorParameters = SplitViewCoordinatorParameters(router: rootRouter, userSessionsService: userSessionsService, appNavigator: appNavigator)
                         
         let splitViewCoordinator = SplitViewCoordinator(parameters: coordinatorParameters)
         splitViewCoordinator.delegate = self
         splitViewCoordinator.start()
-        self.add(childCoordinator: splitViewCoordinator)
+        add(childCoordinator: splitViewCoordinator)
         self.splitViewCoordinator = splitViewCoordinator
     }
     
     private func addSideMenu() {
         let appInfo = AppInfo.current
-        let coordinatorParameters = SideMenuCoordinatorParameters(appNavigator: self.appNavigator, userSessionsService: self.userSessionsService, appInfo: appInfo)
+        let coordinatorParameters = SideMenuCoordinatorParameters(appNavigator: appNavigator, userSessionsService: userSessionsService, appInfo: appInfo)
         
         let coordinator = SideMenuCoordinator(parameters: coordinatorParameters)
         coordinator.delegate = self
         coordinator.start()
-        self.add(childCoordinator: coordinator)
-        self.sideMenuCoordinator = coordinator
+        add(childCoordinator: coordinator)
+        sideMenuCoordinator = coordinator
     }
     
     private func checkAppVersion() {
@@ -209,7 +207,6 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     }
     
     private func handleDeepLinkOption(_ deepLinkOption: DeepLinkOption) -> Bool {
-        
         let canOpenLink: Bool
         
         switch deepLinkOption {
@@ -239,82 +236,81 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         switch destination {
         case .homeSpace:
             MXLog.verbose("Switch to home space")
-            self.navigateToSpace(with: nil)
+            navigateToSpace(with: nil)
             Analytics.shared.activeSpace = nil
         case .space(let spaceId):
             MXLog.verbose("Switch to space with id: \(spaceId)")
-            self.navigateToSpace(with: spaceId)
+            navigateToSpace(with: spaceId)
             Analytics.shared.activeSpace = userSessionsService.mainUserSession?.matrixSession.spaceService.getSpace(withId: spaceId)
         }
     }
     
     private func navigateToSpace(with spaceId: String?) {
-        guard spaceId != self.currentSpaceId else {
+        guard spaceId != currentSpaceId else {
             MXLog.verbose("Space with id: \(String(describing: spaceId)) is already selected")
             return
         }
         
-        self.currentSpaceId = spaceId
+        currentSpaceId = spaceId
         
         // Reload split view with selected space id
-        self.splitViewCoordinator?.start(with: spaceId)
+        splitViewCoordinator?.start(with: spaceId)
     }
 }
 
 // MARK: - LegacyAppDelegateDelegate
+
 extension AppCoordinator: LegacyAppDelegateDelegate {
-            
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, wantsToPopToHomeViewControllerAnimated animated: Bool, completion: (() -> Void)!) {
-        
         MXLog.debug("[AppCoordinator] wantsToPopToHomeViewControllerAnimated")
         
-        self.splitViewCoordinator?.popToHome(animated: animated, completion: completion)
+        splitViewCoordinator?.popToHome(animated: animated, completion: completion)
     }
     
     func legacyAppDelegateRestoreEmptyDetailsViewController(_ legacyAppDelegate: LegacyAppDelegate!) {
-        self.splitViewCoordinator?.resetDetails(animated: false)
+        splitViewCoordinator?.resetDetails(animated: false)
     }
     
-    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didAddMatrixSession session: MXSession!) {
-    }
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didAddMatrixSession session: MXSession!) { }
     
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemoveMatrixSession session: MXSession?) {
         guard let session = session else { return }
         // Handle user session removal on clear cache. On clear cache the account has his session closed but the account is not removed.
-        self.userSessionsService.removeUserSession(relatedToMatrixSession: session)
+        userSessionsService.removeUserSession(relatedToMatrixSession: session)
     }
     
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didAdd account: MXKAccount!) {
-        self.userSessionsService.addUserSession(fromAccount: account)
+        userSessionsService.addUserSession(fromAccount: account)
     }
     
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemove account: MXKAccount!) {
-        self.userSessionsService.removeUserSession(relatedToAccount: account)
+        userSessionsService.removeUserSession(relatedToAccount: account)
     }
     
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didNavigateToSpaceWithId spaceId: String!) {
-        self.sideMenuCoordinator?.select(spaceWithId: spaceId)
+        sideMenuCoordinator?.select(spaceWithId: spaceId)
     }
 }
 
 // MARK: - SplitViewCoordinatorDelegate
+
 extension AppCoordinator: SplitViewCoordinatorDelegate {
     func splitViewCoordinatorDidCompleteAuthentication(_ coordinator: SplitViewCoordinatorType) {
-        self.legacyAppDelegate.authenticationDidComplete()
+        legacyAppDelegate.authenticationDidComplete()
     }
 }
 
 // MARK: - SideMenuCoordinatorDelegate
+
 extension AppCoordinator: SideMenuCoordinatorDelegate {
-    func sideMenuCoordinator(_ coordinator: SideMenuCoordinatorType, didTapMenuItem menuItem: SideMenuItem, fromSourceView sourceView: UIView) {
-    }
+    func sideMenuCoordinator(_ coordinator: SideMenuCoordinatorType, didTapMenuItem menuItem: SideMenuItem, fromSourceView sourceView: UIView) { }
 }
 
 // MARK: - AppNavigator
 
 // swiftlint:disable private_over_fileprivate
-fileprivate class AppNavigator: AppNavigatorProtocol {
-// swiftlint:enable private_over_fileprivate
+private class AppNavigator: AppNavigatorProtocol {
+    // swiftlint:enable private_over_fileprivate
     
     // MARK: - Properties
     
@@ -337,6 +333,6 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
     // MARK: - Public
     
     func navigate(to destination: AppNavigatorDestination) {
-        self.appCoordinator.navigate(to: destination)
+        appCoordinator.navigate(to: destination)
     }
 }

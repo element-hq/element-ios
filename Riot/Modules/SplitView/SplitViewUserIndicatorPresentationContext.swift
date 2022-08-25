@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,19 +14,17 @@
 // limitations under the License.
 //
 
-import Foundation
 import CommonKit
+import Foundation
 
 class SplitViewUserIndicatorPresentationContext: UserIndicatorPresentationContext {
     private weak var splitViewController: UISplitViewController?
     private weak var tabBarCoordinator: TabBarCoordinator?
     private weak var detailNavigationController: UINavigationController?
     
-    init(
-        splitViewController: UISplitViewController,
-        tabBarCoordinator: TabBarCoordinator,
-        detailNavigationController: UINavigationController
-    ) {
+    init(splitViewController: UISplitViewController,
+         tabBarCoordinator: TabBarCoordinator,
+         detailNavigationController: UINavigationController) {
         self.splitViewController = splitViewController
         self.tabBarCoordinator = tabBarCoordinator
         self.detailNavigationController = detailNavigationController

@@ -17,7 +17,6 @@
 import Foundation
 
 struct EmojiCategory {
-    
     /// Emoji category identifier (e.g. "people")
     let identifier: String
     
@@ -26,7 +25,7 @@ struct EmojiCategory {
     
     /// Emoji category localized name
     var name: String {
-        let categoryNameLocalizationKey = "emoji_picker_\(self.identifier)_category"
+        let categoryNameLocalizationKey = "emoji_picker_\(identifier)_category"
         return VectorL10n.tr("Vector", categoryNameLocalizationKey)
     }
 }

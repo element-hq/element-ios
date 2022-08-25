@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import PostHog
 import AnalyticsEvents
+import PostHog
 
 /// A class responsible for managing a variety of analytics clients
 /// and sending events through these clients.
@@ -37,7 +37,6 @@ import AnalyticsEvents
 /// 4. Make sure to commit `Podfile.lock` with the new commit hash.
 ///
 @objcMembers class Analytics: NSObject {
-    
     // MARK: - Properties
     
     /// The singleton instance to be used within the Riot target.
@@ -91,7 +90,7 @@ import AnalyticsEvents
     // MARK: - Private
     
     /// keep an instance of `AnalyticsSpaceTracker` to track space metrics when space graph is built.
-    private let spaceTracker: AnalyticsSpaceTracker = AnalyticsSpaceTracker()
+    private let spaceTracker = AnalyticsSpaceTracker()
     
     // MARK: - Public
     
@@ -223,11 +222,12 @@ import AnalyticsEvents
 }
 
 // MARK: - Public tracking methods
+
 // The following methods are exposed for compatibility with Objective-C as
 // the `capture` method and the generated events cannot be bridged from Swift.
 extension Analytics {
     /// Updates any user properties to help with creating cohorts.
-    /// 
+    ///
     /// Only non-nil properties will be updated when calling this method.
     func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil, numFavouriteRooms: Int? = nil, numSpaces: Int? = nil, allChatsActiveFilter: UserSessionProperties.AllChatsActiveFilter? = nil) {
         let userProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: ftueUseCase?.analyticsName,
@@ -327,6 +327,7 @@ extension Analytics {
 }
 
 // MARK: - MXAnalyticsDelegate
+
 extension Analytics: MXAnalyticsDelegate {
     func trackDuration(_ milliseconds: Int, name: MXTaskProfileName, units: UInt) {
         guard let analyticsName = name.analyticsName else {
@@ -369,7 +370,7 @@ extension Analytics: MXAnalyticsDelegate {
         let event = AnalyticsEvent.JoinedRoom(isDM: isDM, isSpace: isSpace, roomSize: roomSize, trigger: joinedRoomTrigger.trigger)
         capture(event: event)
         
-        self.joinedRoomTrigger = .unknown
+        joinedRoomTrigger = .unknown
     }
     
     /// **Note** This method isn't currently implemented.

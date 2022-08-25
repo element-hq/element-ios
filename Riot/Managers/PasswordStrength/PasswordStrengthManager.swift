@@ -19,7 +19,6 @@ import zxcvbn_ios
 
 /// PasswordStrengthManager computes password strength for a given string.
 final class PasswordStrengthManager {
-    
     // MARK: - Properties
     
     private let zxcvbn = DBZxcvbn()
@@ -30,7 +29,7 @@ final class PasswordStrengthManager {
         guard let result = zxcvbn.passwordStrength(password) else {
             return .tooGuessable
         }
-        return self.passwordStrength(from: result.score)
+        return passwordStrength(from: result.score)
     }
     
     // MARK: - Private

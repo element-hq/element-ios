@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,31 +16,28 @@
 
 import Foundation
 
-protocol BubbleOutgoingRoomCellProtocol: BubbleRoomCellProtocol {
-        
-}
+protocol BubbleOutgoingRoomCellProtocol: BubbleRoomCellProtocol { }
 
 // MARK: - Default implementation
+
 extension BubbleOutgoingRoomCellProtocol {
-    
     // MARK: - Public
     
     func setupBubbleDecorations() {
-        self.roomCellContentView?.decorationViewsAlignment = .right
-        self.setupDecorationConstraints()
+        roomCellContentView?.decorationViewsAlignment = .right
+        setupDecorationConstraints()
     }
     
     // MARK: - Private
     
     private func setupDecorationConstraints() {
-        
-        self.setupURLPreviewContentViewContraints()
-        self.setupReactionsContentViewContraints()
-        self.setupThreadSummaryViewContentViewContraints()
+        setupURLPreviewContentViewContraints()
+        setupReactionsContentViewContraints()
+        setupThreadSummaryViewContentViewContraints()
     }
     
     private func setupReactionsContentViewContraints() {
-        guard let roomCellContentView = self.roomCellContentView, let reactionsContentView = roomCellContentView.reactionsContentView, let reactionsContainerView = roomCellContentView.reactionsContainerView else {
+        guard let roomCellContentView = roomCellContentView, let reactionsContentView = roomCellContentView.reactionsContentView, let reactionsContainerView = roomCellContentView.reactionsContainerView else {
             return
         }
         
@@ -51,7 +48,7 @@ extension BubbleOutgoingRoomCellProtocol {
         
         // Setup new leading constraint
         
-        let leadingConstraint = self.setupDecorationViewLeadingContraint(containerView: reactionsContainerView, contentView: reactionsContentView)
+        let leadingConstraint = setupDecorationViewLeadingContraint(containerView: reactionsContainerView, contentView: reactionsContentView)
         
         roomCellContentView.reactionsContentViewLeadingConstraint = leadingConstraint
         
@@ -61,8 +58,7 @@ extension BubbleOutgoingRoomCellProtocol {
     }
     
     private func setupThreadSummaryViewContentViewContraints() {
-        
-        guard let roomCellContentView = self.roomCellContentView, let threadSummaryContentView = roomCellContentView.threadSummaryContentView, let threadSummaryContainerView = roomCellContentView.threadSummaryContainerView else {
+        guard let roomCellContentView = roomCellContentView, let threadSummaryContentView = roomCellContentView.threadSummaryContentView, let threadSummaryContainerView = roomCellContentView.threadSummaryContainerView else {
             return
         }
         
@@ -73,7 +69,7 @@ extension BubbleOutgoingRoomCellProtocol {
         
         // Setup new leading constraint
         
-        let leadingConstraint = self.setupDecorationViewLeadingContraint(containerView: threadSummaryContainerView, contentView: threadSummaryContentView)
+        let leadingConstraint = setupDecorationViewLeadingContraint(containerView: threadSummaryContainerView, contentView: threadSummaryContentView)
         
         roomCellContentView.threadSummaryContentViewLeadingConstraint = leadingConstraint
         
@@ -87,8 +83,7 @@ extension BubbleOutgoingRoomCellProtocol {
     }
     
     private func setupURLPreviewContentViewContraints() {
-        
-        guard let roomCellContentView = self.roomCellContentView, let contentView = roomCellContentView.urlPreviewContentView, let containerView = roomCellContentView.urlPreviewContainerView else {
+        guard let roomCellContentView = roomCellContentView, let contentView = roomCellContentView.urlPreviewContentView, let containerView = roomCellContentView.urlPreviewContainerView else {
             return
         }
         
@@ -99,7 +94,7 @@ extension BubbleOutgoingRoomCellProtocol {
         
         // Setup new leading constraint
         
-        let leadingConstraint = self.setupDecorationViewLeadingContraint(containerView: containerView, contentView: contentView)
+        let leadingConstraint = setupDecorationViewLeadingContraint(containerView: containerView, contentView: contentView)
         
         roomCellContentView.urlPreviewContentViewLeadingConstraint = leadingConstraint
         
@@ -109,8 +104,7 @@ extension BubbleOutgoingRoomCellProtocol {
     }
     
     private func setupDecorationViewLeadingContraint(containerView: UIView,
-                                                      contentView: UIView) -> NSLayoutConstraint {
-                                                
+                                                     contentView: UIView) -> NSLayoutConstraint {
         let leadingConstraint = contentView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left)
         leadingConstraint.isActive = true
         return leadingConstraint

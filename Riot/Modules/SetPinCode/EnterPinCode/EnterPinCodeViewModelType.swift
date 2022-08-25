@@ -32,8 +32,7 @@ protocol EnterPinCodeViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `EnterPinCodeViewController`
-protocol EnterPinCodeViewModelType {        
-        
+protocol EnterPinCodeViewModelType {
     var viewDelegate: EnterPinCodeViewModelViewDelegate? { get set }
     var coordinatorDelegate: EnterPinCodeViewModelCoordinatorDelegate? { get set }
     

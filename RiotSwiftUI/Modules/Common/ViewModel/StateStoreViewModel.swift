@@ -14,12 +14,11 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
-
 import Foundation
-import Combine
 
+import Combine
+import Foundation
 
 /// A constrained and concise interface for interacting with the ViewModel.
 ///
@@ -34,7 +33,7 @@ import Combine
 /// It provides a nice layer of consistency and also safety. As we are not passing the `ViewModel` to the view directly, shortcuts/hacks
 /// can't be made into the `ViewModel`.
 @dynamicMemberLookup
-class ViewModelContext<ViewState:BindableState, ViewAction>: ObservableObject {
+class ViewModelContext<ViewState: BindableState, ViewAction>: ObservableObject {
     // MARK: - Properties
 
     // MARK: Private
@@ -75,7 +74,6 @@ class ViewModelContext<ViewState:BindableState, ViewAction>: ObservableObject {
 /// If we decide to add more features to our state management (like doing state processing off the main thread)
 /// we can do it in this centralised place.
 class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
-
     typealias Context = ViewModelContext<State, ViewAction>
 
     // MARK: - Properties
@@ -98,8 +96,8 @@ class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
     // MARK: Setup
 
     init(initialViewState: State) {
-        self.context = Context(initialViewState: initialViewState)
-        self.context.viewActions.sink { [weak self] action in
+        context = Context(initialViewState: initialViewState)
+        context.viewActions.sink { [weak self] action in
             guard let self = self else { return }
             self.process(viewAction: action)
         }
@@ -131,12 +129,12 @@ class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
     ///   - state: The `inout` state to be modified,
     ///   - action: The action that defines which state modification should take place.
     class func reducer(state: inout State, action: StateAction) {
-        //Default implementation, -no-op
+        // Default implementation, -no-op
     }
 
     /// Override to handles incoming `ViewAction`s from the `ViewModel`.
     /// - Parameter viewAction: The `ViewAction` to be processed in `ViewModel` implementation.
     func process(viewAction: ViewAction) {
-        //Default implementation, -no-op
+        // Default implementation, -no-op
     }
 }

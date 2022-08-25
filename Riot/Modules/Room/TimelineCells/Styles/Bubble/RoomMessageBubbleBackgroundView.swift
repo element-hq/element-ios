@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 import UIKit
 
 class RoomMessageBubbleBackgroundView: UIView {
-    
     // MARK: - Properties
     
     private var heightConstraint: NSLayoutConstraint?
@@ -32,26 +31,25 @@ class RoomMessageBubbleBackgroundView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.commonInit()
+        commonInit()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        self.commonInit()
+        commonInit()
     }
     
     private func commonInit() {
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.layer.masksToBounds = true
-        self.layer.cornerRadius = BubbleRoomCellLayoutConstants.bubbleCornerRadius
+        translatesAutoresizingMaskIntoConstraints = false
+        layer.masksToBounds = true
+        layer.cornerRadius = BubbleRoomCellLayoutConstants.bubbleCornerRadius
     }
     
     // MARK: - Public
     
     @discardableResult
     func updateHeight(_ height: CGFloat) -> Bool {
-        if let heightConstraint = self.heightConstraint {
-            
+        if let heightConstraint = heightConstraint {
             guard heightConstraint.constant != height else {
                 return false
             }
@@ -60,7 +58,7 @@ class RoomMessageBubbleBackgroundView: UIView {
             
             return true
         } else {
-            let heightConstraint = self.heightAnchor.constraint(equalToConstant: height)
+            let heightConstraint = heightAnchor.constraint(equalToConstant: height)
             heightConstraint.isActive = true
             self.heightConstraint = heightConstraint
             
@@ -70,18 +68,17 @@ class RoomMessageBubbleBackgroundView: UIView {
 }
 
 // MARK: - TimestampDisplayable
+
 extension RoomMessageBubbleBackgroundView: TimestampDisplayable {
-    
     func addTimestampView(_ timestampView: UIView) {
+        removeTimestampView()
         
-        self.removeTimestampView()
-        
-        self.addTimestampView(timestampView, rightMargin: BubbleRoomCellLayoutConstants.bubbleTimestampViewMargins.right, bottomMargin: BubbleRoomCellLayoutConstants.bubbleTimestampViewMargins.bottom)
+        addTimestampView(timestampView, rightMargin: BubbleRoomCellLayoutConstants.bubbleTimestampViewMargins.right, bottomMargin: BubbleRoomCellLayoutConstants.bubbleTimestampViewMargins.bottom)
         self.timestampView = timestampView
     }
     
     func removeTimestampView() {
-        self.timestampView?.removeFromSuperview()
+        timestampView?.removeFromSuperview()
     }
     
     func addTimestampView(_ timestampView: UIView,
@@ -89,11 +86,11 @@ extension RoomMessageBubbleBackgroundView: TimestampDisplayable {
                           bottomMargin: CGFloat) {
         timestampView.translatesAutoresizingMaskIntoConstraints = false
                 
-        self.addSubview(timestampView)
+        addSubview(timestampView)
         
-        let trailingConstraint = timestampView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -rightMargin)
+        let trailingConstraint = timestampView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -rightMargin)
 
-        let bottomConstraint = timestampView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -bottomMargin)
+        let bottomConstraint = timestampView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -bottomMargin)
 
         NSLayoutConstraint.activate([
             trailingConstraint,

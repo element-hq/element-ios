@@ -19,7 +19,6 @@ import UIKit
 
 /// Used to present activity indicator on a view
 final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -35,24 +34,24 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
     private weak var presentingView: UIView?
     
     var isPresenting: Bool {
-        return self.activityIndicatorView != nil
+        activityIndicatorView != nil
     }
     
     // MARK: - Public
     
     func presentActivityIndicator(on view: UIView, animated: Bool, completion: (() -> Void)? = nil) {
-        if self.presentingView != nil {
+        if presentingView != nil {
             if let completion = completion {
                 completion()
             }
             return
         }
 
-        self.presentingView = view
+        presentingView = view
         
         view.isUserInteractionEnabled = false
         
-        let backgroundOverlayView = self.createBackgroundOverlayView(with: view.frame)
+        let backgroundOverlayView = createBackgroundOverlayView(with: view.frame)
         
         let activityIndicatorView = ActivityIndicatorView()
         
@@ -89,9 +88,9 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
     }
     
     func removeCurrentActivityIndicator(animated: Bool, completion: (() -> Void)? = nil) {
-        guard let presentingView = self.presentingView,
-            let backgroundOverlayView = self.backgroundOverlayView,
-            let activityIndicatorView = self.activityIndicatorView else {
+        guard let presentingView = presentingView,
+              let backgroundOverlayView = backgroundOverlayView,
+              let activityIndicatorView = activityIndicatorView else {
             return
         }
         

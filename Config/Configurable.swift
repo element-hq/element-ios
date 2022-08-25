@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,11 +20,14 @@ import MatrixSDK
 /// Configurable expose settings app and its entensions must use.
 @objc protocol Configurable {
     // MARK: - Global settings
+
     func setupSettings()
     
     // MARK: - Per matrix session settings
+
     func setupSettings(for matrixSession: MXSession)
     
     // MARK: - Per loaded matrix session settings
+
     func setupSettingsWhenLoaded(for matrixSession: MXSession)
 }

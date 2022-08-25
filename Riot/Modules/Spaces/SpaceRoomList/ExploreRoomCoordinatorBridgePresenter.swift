@@ -28,7 +28,6 @@ import Foundation
 /// been integrated by another Coordinator.
 @objcMembers
 final class ExploreRoomCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -57,18 +56,18 @@ final class ExploreRoomCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let exploreRoomCoordinator = ExploreRoomCoordinator(session: self.session, spaceId: self.spaceId)
+        let exploreRoomCoordinator = ExploreRoomCoordinator(session: session, spaceId: spaceId)
         exploreRoomCoordinator.delegate = self
         let presentable = exploreRoomCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
         viewController.present(presentable, animated: animated, completion: nil)
         exploreRoomCoordinator.start()
         
-        self.coordinator = exploreRoomCoordinator
+        coordinator = exploreRoomCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -82,17 +81,17 @@ final class ExploreRoomCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - ExploreRoomCoordinatorDelegate
+
 extension ExploreRoomCoordinatorBridgePresenter: ExploreRoomCoordinatorDelegate {
     func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType) {
-        self.delegate?.exploreRoomCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.exploreRoomCoordinatorBridgePresenterDelegateDidComplete(self)
     }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
+
 extension ExploreRoomCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.exploreRoomCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.exploreRoomCoordinatorBridgePresenterDelegateDidComplete(self)
     }
-    
 }

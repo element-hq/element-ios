@@ -16,11 +16,10 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class EmojiPickerViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum CollectionViewLayout {
@@ -36,7 +35,7 @@ final class EmojiPickerViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var collectionView: UICollectionView!
+    @IBOutlet private var collectionView: UICollectionView!
     
     // MARK: Private
 
@@ -64,27 +63,27 @@ final class EmojiPickerViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.emojiPickerTitle
+        title = VectorL10n.emojiPickerTitle
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.collectionView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: collectionView)
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.viewDelegate = self
+        viewModel.process(viewAction: .loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.keyboardAvoider?.startAvoiding()
+        keyboardAvoider?.startAvoiding()
         
         // Update theme here otherwise the UISearchBar search text color is not updated
-        self.update(theme: self.theme)
+        update(theme: theme)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -98,11 +97,11 @@ final class EmojiPickerViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.keyboardAvoider?.stopAvoiding()
+        keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -110,13 +109,13 @@ final class EmojiPickerViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.backgroundColor
+        view.backgroundColor = theme.backgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        if let searchController = self.searchController {
+        if let searchController = searchController {
             theme.applyStyle(onSearchBar: searchController.searchBar)
         }
     }
@@ -126,7 +125,7 @@ final class EmojiPickerViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -134,20 +133,20 @@ final class EmojiPickerViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.setupCollectionView()
+        setupCollectionView()
         
-        self.setupSearchController()
+        setupSearchController()
     }
     
     private func setupCollectionView() {
-        self.collectionView.delegate = self
-        self.collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
-        self.collectionView.keyboardDismissMode = .interactive
+        collectionView.keyboardDismissMode = .interactive
         
-        if let collectionViewFlowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+        if let collectionViewFlowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             collectionViewFlowLayout.minimumInteritemSpacing = CollectionViewLayout.minimumInteritemSpacing
             collectionViewFlowLayout.minimumLineSpacing = CollectionViewLayout.minimumLineSpacing
             collectionViewFlowLayout.itemSize = CollectionViewLayout.itemSize
@@ -158,8 +157,8 @@ final class EmojiPickerViewController: UIViewController {
             collectionViewFlowLayout.sectionInsetReference = .fromSafeArea
         }
         
-        self.collectionView.register(supplementaryViewType: EmojiPickerHeaderView.self, ofKind: UICollectionView.elementKindSectionHeader)
-        self.collectionView.register(cellType: EmojiPickerViewCell.self)
+        collectionView.register(supplementaryViewType: EmojiPickerHeaderView.self, ofKind: UICollectionView.elementKindSectionHeader)
+        collectionView.register(cellType: EmojiPickerViewCell.self)
     }
     
     private func setupSearchController() {
@@ -169,11 +168,11 @@ final class EmojiPickerViewController: UIViewController {
         searchController.searchBar.placeholder = VectorL10n.searchDefaultPlaceholder
         searchController.hidesNavigationBarDuringPresentation = false
         
-        self.navigationItem.searchController = searchController
+        navigationItem.searchController = searchController
         // Make the search bar visible on first view appearance
-        self.navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.hidesSearchBarWhenScrolling = false
         
-        self.definesPresentationContext = true
+        definesPresentationContext = true
         
         self.searchController = searchController
     }
@@ -181,43 +180,42 @@ final class EmojiPickerViewController: UIViewController {
     private func render(viewState: EmojiPickerViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(emojiCategories: let emojiCategories):
-            self.renderLoaded(emojiCategories: emojiCategories)
+            renderLoaded(emojiCategories: emojiCategories)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(emojiCategories: [EmojiPickerCategoryViewData]) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.update(emojiCategories: emojiCategories)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        update(emojiCategories: emojiCategories)
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     private func update(emojiCategories: [EmojiPickerCategoryViewData]) {
         self.emojiCategories = emojiCategories
-        self.collectionView.reloadData()
+        collectionView.reloadData()
     }
     
     private func emojiItemViewData(at indexPath: IndexPath) -> EmojiPickerItemViewData {
-        return self.emojiCategories[indexPath.section].emojiViewDataList[indexPath.row]
+        emojiCategories[indexPath.section].emojiViewDataList[indexPath.row]
     }
     
     private func emojiCategoryViewData(at section: Int) -> EmojiPickerCategoryViewData? {
-        return self.emojiCategories[section]
+        emojiCategories[section]
     }
     
     private func headerViewSize(for title: String) -> CGSize {
-        
         let sizingHeaderView = EmojiPickerViewController.sizingHeaderView
         
         sizingHeaderView.fill(with: title)
@@ -225,7 +223,7 @@ final class EmojiPickerViewController: UIViewController {
         sizingHeaderView.layoutIfNeeded()
         
         var fittingSize = UIView.layoutFittingCompressedSize
-        fittingSize.width = self.collectionView.bounds.size.width
+        fittingSize.width = collectionView.bounds.size.width
         
         return sizingHeaderView.systemLayoutSizeFitting(fittingSize)
     }
@@ -233,25 +231,26 @@ final class EmojiPickerViewController: UIViewController {
     // MARK: - Actions
 
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
 
 // MARK: - UICollectionViewDataSource
+
 extension EmojiPickerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.emojiCategories.count
+        emojiCategories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.emojiCategories[section].emojiViewDataList.count
+        emojiCategories[section].emojiViewDataList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let emojiPickerCategory = self.emojiCategories[indexPath.section]
+        let emojiPickerCategory = emojiCategories[indexPath.section]
         
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, for: indexPath) as EmojiPickerHeaderView
-        headerView.update(theme: self.theme)
+        headerView.update(theme: theme)
         headerView.fill(with: emojiPickerCategory.name)
         
         return headerView
@@ -260,11 +259,11 @@ extension EmojiPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: EmojiPickerViewCell = collectionView.dequeueReusableCell(for: indexPath)
         
-        if let theme = self.theme {
+        if let theme = theme {
             cell.update(theme: theme)
         }
         
-        let viewData = self.emojiItemViewData(at: indexPath)
+        let viewData = emojiItemViewData(at: indexPath)
         cell.fill(viewData: viewData)
         
         return cell
@@ -272,11 +271,11 @@ extension EmojiPickerViewController: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegate
+
 extension EmojiPickerViewController: UICollectionViewDelegate {
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let emojiItemViewData = self.emojiItemViewData(at: indexPath)
-        self.viewModel.process(viewAction: .tap(emojiItemViewData: emojiItemViewData))
+        let emojiItemViewData = emojiItemViewData(at: indexPath)
+        viewModel.process(viewAction: .tap(emojiItemViewData: emojiItemViewData))
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
@@ -286,27 +285,28 @@ extension EmojiPickerViewController: UICollectionViewDelegate {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
+
 extension EmojiPickerViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let emojiCategory = self.emojiCategories[section]
-        let headerSize = self.headerViewSize(for: emojiCategory.name)
+        let emojiCategory = emojiCategories[section]
+        let headerSize = headerViewSize(for: emojiCategory.name)
         return headerSize
     }
 }
 
 // MARK: - EmojiPickerViewModelViewDelegate
-extension EmojiPickerViewController: EmojiPickerViewModelViewDelegate {
 
+extension EmojiPickerViewController: EmojiPickerViewModelViewDelegate {
     func emojiPickerViewModel(_ viewModel: EmojiPickerViewModelType, didUpdateViewState viewSate: EmojiPickerViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
 // MARK: - UISearchResultsUpdating
+
 extension EmojiPickerViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text
-        self.viewModel.process(viewAction: .search(text: searchText))
+        viewModel.process(viewAction: .search(text: searchText))
     }
 }

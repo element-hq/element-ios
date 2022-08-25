@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,9 +22,9 @@ import Foundation
 class LocaleProvider: LocaleProviderType {
     static var locale: Locale? {
         if let localeIdentifier = Bundle.mxk_language() {
-           return Locale(identifier: localeIdentifier)
+            return Locale(identifier: localeIdentifier)
         } else if let fallbackLocaleIdentifier = Bundle.mxk_fallbackLanguage() {
-           return Locale(identifier: fallbackLocaleIdentifier)
+            return Locale(identifier: fallbackLocaleIdentifier)
         }
         return nil
     }

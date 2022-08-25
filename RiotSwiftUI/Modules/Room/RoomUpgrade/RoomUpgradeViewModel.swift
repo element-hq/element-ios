@@ -14,14 +14,13 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 typealias RoomUpgradeViewModelType = StateStoreViewModel<RoomUpgradeViewState,
-                                                                 Never,
-                                                                 RoomUpgradeViewAction>
+    Never,
+    RoomUpgradeViewAction>
 class RoomUpgradeViewModel: RoomUpgradeViewModelType, RoomUpgradeViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private
@@ -35,7 +34,7 @@ class RoomUpgradeViewModel: RoomUpgradeViewModelType, RoomUpgradeViewModelProtoc
     // MARK: - Setup
 
     static func makeRoomUpgradeViewModel(roomUpgradeService: RoomUpgradeServiceProtocol) -> RoomUpgradeViewModelProtocol {
-        return RoomUpgradeViewModel(roomUpgradeService: roomUpgradeService)
+        RoomUpgradeViewModel(roomUpgradeService: roomUpgradeService)
     }
 
     private init(roomUpgradeService: RoomUpgradeServiceProtocol) {
@@ -45,7 +44,7 @@ class RoomUpgradeViewModel: RoomUpgradeViewModelType, RoomUpgradeViewModelProtoc
     }
 
     private static func defaultState(roomUpgradeService: RoomUpgradeServiceProtocol) -> RoomUpgradeViewState {
-        return RoomUpgradeViewState(waitingMessage: nil, isLoading: false, parentSpaceName: roomUpgradeService.parentSpaceName)
+        RoomUpgradeViewState(waitingMessage: nil, isLoading: false, parentSpaceName: roomUpgradeService.parentSpaceName)
     }
     
     private func setupObservers() {
@@ -53,7 +52,7 @@ class RoomUpgradeViewModel: RoomUpgradeViewModelType, RoomUpgradeViewModelProtoc
             .upgradingSubject
             .sink { [weak self] isUpgrading in
                 self?.state.isLoading = isUpgrading
-                self?.state.waitingMessage = isUpgrading ? VectorL10n.roomAccessSettingsScreenUpgradeAlertUpgrading: nil
+                self?.state.waitingMessage = isUpgrading ? VectorL10n.roomAccessSettingsScreenUpgradeAlertUpgrading : nil
             }
             .store(in: &cancellables)
     }
@@ -65,7 +64,7 @@ class RoomUpgradeViewModel: RoomUpgradeViewModelType, RoomUpgradeViewModelProtoc
         case .cancel:
             completion?(.cancel(roomUpgradeService.currentRoomId))
         case .done(let autoInviteUsers):
-            roomUpgradeService.upgradeRoom(autoInviteUsers: autoInviteUsers) { [weak self] success, roomId in
+            roomUpgradeService.upgradeRoom(autoInviteUsers: autoInviteUsers) { [weak self] success, _ in
                 guard let self = self else { return }
                 if success {
                     self.completion?(.done(self.roomUpgradeService.currentRoomId))

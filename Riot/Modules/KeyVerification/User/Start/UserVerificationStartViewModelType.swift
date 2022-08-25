@@ -23,7 +23,6 @@ protocol UserVerificationStartViewModelViewDelegate: AnyObject {
 }
 
 protocol UserVerificationStartViewModelCoordinatorDelegate: AnyObject {
-    
     func userVerificationStartViewModel(_ viewModel: UserVerificationStartViewModelType, otherDidAcceptRequest request: MXKeyVerificationRequest)
     
     func userVerificationStartViewModelDidCancel(_ viewModel: UserVerificationStartViewModelType)
@@ -31,7 +30,6 @@ protocol UserVerificationStartViewModelCoordinatorDelegate: AnyObject {
 
 /// Protocol describing the view model used by `UserVerificationStartViewController`
 protocol UserVerificationStartViewModelType {
-            
     var viewDelegate: UserVerificationStartViewModelViewDelegate? { get set }
     var coordinatorDelegate: UserVerificationStartViewModelCoordinatorDelegate? { get set }
     

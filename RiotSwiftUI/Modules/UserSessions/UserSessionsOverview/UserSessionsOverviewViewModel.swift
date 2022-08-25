@@ -17,11 +17,10 @@
 import SwiftUI
 
 typealias UserSessionsOverviewViewModelType = StateStoreViewModel<UserSessionsOverviewViewState,
-                                                                 Never,
-                                                                 UserSessionsOverviewViewAction>
+    Never,
+    UserSessionsOverviewViewAction>
 
 class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSessionsOverviewViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private

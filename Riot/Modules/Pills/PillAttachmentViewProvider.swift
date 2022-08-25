@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,22 +20,24 @@ import UIKit
 @available(iOS 15.0, *)
 @objc class PillAttachmentViewProvider: NSTextAttachmentViewProvider {
     // MARK: - Properties
+
     private static let pillAttachmentViewSizes = PillAttachmentView.Sizes(verticalMargin: 2.0,
                                                                           horizontalMargin: 4.0,
                                                                           avatarSideLength: 16.0)
     private weak var messageTextView: MXKMessageTextView?
 
     // MARK: - Override
+
     override init(textAttachment: NSTextAttachment, parentView: UIView?, textLayoutManager: NSTextLayoutManager?, location: NSTextLocation) {
         super.init(textAttachment: textAttachment, parentView: parentView, textLayoutManager: textLayoutManager, location: location)
 
-        self.messageTextView = parentView?.superview as? MXKMessageTextView
+        messageTextView = parentView?.superview as? MXKMessageTextView
     }
 
     override func loadView() {
         super.loadView()
 
-        guard let textAttachment = self.textAttachment as? PillTextAttachment else {
+        guard let textAttachment = textAttachment as? PillTextAttachment else {
             MXLog.debug("[PillAttachmentViewProvider]: attachment is missing or not of expected class")
             return
         }
@@ -49,10 +51,10 @@ import UIKit
 
         let pillView = PillAttachmentView(frame: CGRect(origin: .zero, size: Self.size(forDisplayText: pillData.displayText,
                                                                                        andFont: pillData.font)),
-                                          sizes: Self.pillAttachmentViewSizes,
-                                          theme: ThemeService.shared().theme,
-                                          mediaManager: mainSession?.mediaManager,
-                                          andPillData: pillData)
+        sizes: Self.pillAttachmentViewSizes,
+        theme: ThemeService.shared().theme,
+        mediaManager: mainSession?.mediaManager,
+        andPillData: pillData)
         view = pillView
         messageTextView?.registerPillView(pillView)
     }

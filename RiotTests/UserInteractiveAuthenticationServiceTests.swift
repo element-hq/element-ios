@@ -19,7 +19,6 @@ import XCTest
 @testable import Element
 
 class UserInteractiveAuthenticationServiceTests: XCTestCase {
-
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -31,7 +30,6 @@ class UserInteractiveAuthenticationServiceTests: XCTestCase {
     // MARK: - Tests
     
     func testGetFirstUncompletedStage() {
-        
         let flow1 = MXLoginFlow()
         flow1.stages = ["example.type.foo", "example.type.bar"]
         

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import UIKit
 
 public extension UIFont {
-    
     // MARK: - Convenient methods
     
     /// Update current font with a SymbolicTraits
@@ -42,14 +41,14 @@ public extension UIFont {
     // MARK: - Shortcuts
     
     var vc_bold: UIFont {
-        return self.vc_withTraits(.traitBold)
+        vc_withTraits(.traitBold)
     }
     
     var vc_semiBold: UIFont {
-        return self.vc_withWeight(weight: .semibold)
+        vc_withWeight(weight: .semibold)
     }
 
     var vc_italic: UIFont {
-        return self.vc_withTraits(.traitItalic)
+        vc_withTraits(.traitItalic)
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// Supported destinations used by AppNavigator to navigate in screen hierarchy
 enum AppNavigatorDestination {
-    
     /// Show home space
     case homeSpace
         

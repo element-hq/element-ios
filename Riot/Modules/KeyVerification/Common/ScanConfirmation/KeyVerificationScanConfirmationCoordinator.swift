@@ -25,7 +25,6 @@ enum KeyVerificationScanning {
 }
 
 final class KeyVerificationScanConfirmationCoordinator: KeyVerificationScanConfirmationCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -54,23 +53,23 @@ final class KeyVerificationScanConfirmationCoordinator: KeyVerificationScanConfi
     
     // MARK: - Public methods
     
-    func start() {            
-        self.keyVerificationScanConfirmationViewModel.coordinatorDelegate = self
+    func start() {
+        keyVerificationScanConfirmationViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.keyVerificationScanConfirmationViewController
+        keyVerificationScanConfirmationViewController
     }
 }
 
 // MARK: - KeyVerificationScanConfirmationViewModelCoordinatorDelegate
+
 extension KeyVerificationScanConfirmationCoordinator: KeyVerificationScanConfirmationViewModelCoordinatorDelegate {
-    
     func keyVerificationScanConfirmationViewModelDidComplete(_ viewModel: KeyVerificationScanConfirmationViewModelType) {
-        self.delegate?.keyVerificationScanConfirmationCoordinatorDidComplete(self)
+        delegate?.keyVerificationScanConfirmationCoordinatorDidComplete(self)
     }
     
     func keyVerificationScanConfirmationViewModelDidCancel(_ viewModel: KeyVerificationScanConfirmationViewModelType) {
-        self.delegate?.keyVerificationScanConfirmationCoordinatorDidCancel(self)
+        delegate?.keyVerificationScanConfirmationCoordinatorDidCancel(self)
     }
 }

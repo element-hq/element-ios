@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,9 +17,8 @@
 import Foundation
 
 extension MXSession {
-    
     func avatarInput(for userId: String) -> AvatarInput {
-        let user = self.user(withUserId: userId)
+        let user = user(withUserId: userId)
         
         return AvatarInput(mxContentUri: user?.avatarUrl,
                            matrixItemId: userId,

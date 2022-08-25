@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 @objc
 protocol RemoveJitsiWidgetViewDelegate: AnyObject {
-    
     /// Tells the delegate that the user complete sliding on the view
     /// - Parameter view: The view instance
     func removeJitsiWidgetViewDidCompleteSliding(_ view: RemoveJitsiWidgetView)

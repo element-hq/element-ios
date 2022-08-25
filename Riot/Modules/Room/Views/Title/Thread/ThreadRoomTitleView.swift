@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,6 @@ enum ThreadRoomTitleViewMode {
 
 @objcMembers
 class ThreadRoomTitleView: RoomTitleView {
-
     private enum Constants {
         static let roomNameLeadingMarginForEncryptedRoom: CGFloat = 10
         static let roomNameLeadingMarginForPlainRoom: CGFloat = 4
@@ -36,11 +35,11 @@ class ThreadRoomTitleView: RoomTitleView {
         }
     }
     
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var roomAvatarView: RoomAvatarView!
-    @IBOutlet private weak var roomEncryptionBadgeView: UIImageView!
-    @IBOutlet private weak var roomNameLabel: UILabel!
-    @IBOutlet private weak var roomNameLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var roomAvatarView: RoomAvatarView!
+    @IBOutlet private var roomEncryptionBadgeView: UIImageView!
+    @IBOutlet private var roomNameLabel: UILabel!
+    @IBOutlet private var roomNameLeadingConstraint: NSLayoutConstraint!
     
     //  MARK: - Methods
     
@@ -69,7 +68,7 @@ class ThreadRoomTitleView: RoomTitleView {
     }
     
     override class func nib() -> UINib! {
-        return self.nib
+        nib
     }
     
     override func refreshDisplay() {
@@ -126,19 +125,16 @@ class ThreadRoomTitleView: RoomTitleView {
     //  MARK: - Actions
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
-
 }
 
-extension ThreadRoomTitleView: NibLoadable {}
+extension ThreadRoomTitleView: NibLoadable { }
 
 extension ThreadRoomTitleView: Themable {
-    
     func update(theme: Theme) {
         roomAvatarView.backgroundColor = .clear
         titleLabel.textColor = theme.colors.primaryContent
         roomNameLabel.textColor = theme.colors.secondaryContent
     }
-    
 }

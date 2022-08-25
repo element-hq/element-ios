@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +16,7 @@
 
 import UIKit
 
-class TextMessageOutgoingWithoutSenderInfoBubbleCell: TextMessageBaseBubbleCell, BubbleOutgoingRoomCellProtocol {    
-    
+class TextMessageOutgoingWithoutSenderInfoBubbleCell: TextMessageBaseBubbleCell, BubbleOutgoingRoomCellProtocol {
     // MARK: - Overrides
     
     override func setupViews() {
@@ -25,37 +24,36 @@ class TextMessageOutgoingWithoutSenderInfoBubbleCell: TextMessageBaseBubbleCell,
         
         roomCellContentView?.showSenderInfo = false
         
-        self.setupBubbleConstraints()
-        self.setupBubbleDecorations()
+        setupBubbleConstraints()
+        setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {
         super.update(theme: theme)
         
-        self.textMessageContentView?.bubbleBackgroundView?.backgroundColor = theme.roomCellOutgoingBubbleBackgroundColor
+        textMessageContentView?.bubbleBackgroundView?.backgroundColor = theme.roomCellOutgoingBubbleBackgroundColor
     }
     
     // MARK: - Private
     
     private func setupBubbleConstraints() {
+        roomCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
+        roomCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
         
-        self.roomCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
-        self.roomCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
-        
-        guard let containerView = self.textMessageContentView, let bubbleBackgroundView = containerView.bubbleBackgroundView else {
+        guard let containerView = textMessageContentView, let bubbleBackgroundView = containerView.bubbleBackgroundView else {
             return
         }
         
         // Remove existing contraints
         
-        if let bubbleBackgroundViewLeadingConstraint = self.textMessageContentView?.bubbleBackgroundViewLeadingConstraint {
+        if let bubbleBackgroundViewLeadingConstraint = textMessageContentView?.bubbleBackgroundViewLeadingConstraint {
             bubbleBackgroundViewLeadingConstraint.isActive = false
-            self.textMessageContentView?.bubbleBackgroundViewLeadingConstraint = nil
+            textMessageContentView?.bubbleBackgroundViewLeadingConstraint = nil
         }
         
-        if let bubbleBackgroundViewTrailingConstraint = self.textMessageContentView?.bubbleBackgroundViewTrailingConstraint {
+        if let bubbleBackgroundViewTrailingConstraint = textMessageContentView?.bubbleBackgroundViewTrailingConstraint {
             bubbleBackgroundViewTrailingConstraint.isActive = false
-            self.textMessageContentView?.bubbleBackgroundViewTrailingConstraint = nil
+            textMessageContentView?.bubbleBackgroundViewTrailingConstraint = nil
         }
         
         // Setup new constraints
@@ -69,8 +67,8 @@ class TextMessageOutgoingWithoutSenderInfoBubbleCell: TextMessageBaseBubbleCell,
             trailingConstraint
         ])
                 
-        self.textMessageContentView?.bubbleBackgroundViewLeadingConstraint = leadingConstraint
+        textMessageContentView?.bubbleBackgroundViewLeadingConstraint = leadingConstraint
         
-        self.textMessageContentView?.bubbleBackgroundViewTrailingConstraint = trailingConstraint
+        textMessageContentView?.bubbleBackgroundViewTrailingConstraint = trailingConstraint
     }
 }

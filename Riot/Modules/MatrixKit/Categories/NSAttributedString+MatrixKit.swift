@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 The Matrix.org Foundation C.I.C
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@ public extension NSAttributedString {
     @objc func mxk_unquotedString() -> NSString? {
         var unquotedSubstrings = [String]()
         
-        enumerateAttributes(in: NSRange(location: 0, length: self.length), options: []) { attributes, range, stop in
+        enumerateAttributes(in: NSRange(location: 0, length: length), options: []) { attributes, range, _ in
             guard !attributes.keys.contains(where: { $0.rawValue == kMXKToolsBlockquoteMarkAttribute }) else { return }
             unquotedSubstrings.append(self.attributedSubstring(from: range).string)
         }

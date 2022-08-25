@@ -20,7 +20,6 @@ import UIKit
 /// Coordinators are the objects which control the navigation flow of the application.
 /// It helps to isolate and reuse view controllers and pass dependencies down the navigation hierarchy.
 protocol Coordinator: AnyObject {
-    
     /// Starts job of the coordinator.
     func start()
     
@@ -40,12 +39,11 @@ protocol Coordinator: AnyObject {
 
 // `Coordinator` default implementation
 extension Coordinator {
-    
     func add(childCoordinator coordinator: Coordinator) {
         childCoordinators.append(coordinator)
     }
     
     func remove(childCoordinator: Coordinator) {
-        self.childCoordinators = self.childCoordinators.filter { $0 !== childCoordinator }
+        childCoordinators = childCoordinators.filter { $0 !== childCoordinator }
     }
 }

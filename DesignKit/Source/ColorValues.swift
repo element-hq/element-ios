@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,6 @@ import UIKit
  Struct for holding colour values for a particular theme.
  */
 public struct ColorValues: Colors {
-    
     public let accent: UIColor
     
     public let alert: UIColor

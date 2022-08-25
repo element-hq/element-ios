@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,10 @@ import Foundation
 import UIKit
 
 /// Data associated with a Pill text attachment.
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 struct PillTextAttachmentData: Codable {
     // MARK: - Properties
+
     /// Matrix item identifier (user id or room id)
     var matrixItemId: String
     /// Matrix item display name (user or room display name)
@@ -45,6 +46,7 @@ struct PillTextAttachmentData: Codable {
     }
 
     // MARK: - Init
+
     /// Init.
     ///
     /// - Parameters:
@@ -69,6 +71,7 @@ struct PillTextAttachmentData: Codable {
     }
 
     // MARK: - Codable
+
     enum CodingKeys: String, CodingKey {
         case matrixItemId
         case displayName

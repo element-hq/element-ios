@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct TemplateRoomChatBubbleContentView: View {
-    
     // MARK: - Properties
     
     // MARK: Private

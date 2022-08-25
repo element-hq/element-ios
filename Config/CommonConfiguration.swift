@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import MatrixSDK
 
 /// CommonConfiguration is the central point to setup settings for MatrixSDK, MatrixKit and common configurations for all targets.
 class CommonConfiguration: NSObject, Configurable {
-    
     // MARK: - Global settings
     
     func setupSettings() {
@@ -82,7 +81,6 @@ class CommonConfiguration: NSObject, Configurable {
         MXKeyProvider.sharedInstance().delegate = EncryptionKeyManager.shared
     }
     
-    
     // MARK: - Per matrix session settings
     
     func setupSettings(for matrixSession: MXSession) {
@@ -103,12 +101,10 @@ class CommonConfiguration: NSObject, Configurable {
         }
     }
     
-    
     // MARK: - Per loaded matrix session settings
     
     func setupSettingsWhenLoaded(for matrixSession: MXSession) {
         // Do not warn for unknown devices. We have cross-signing now
         matrixSession.crypto.warnOnUnknowDevices = false
     }
-    
 }

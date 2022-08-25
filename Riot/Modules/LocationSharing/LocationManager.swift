@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import CoreLocation
+import Foundation
 
 protocol LocationManagerDelegate: AnyObject {
     func locationManager(_ manager: LocationManager, didUpdateLocation location: CLLocation)
@@ -29,7 +29,6 @@ enum LocationManagerAccuracy {
 
 /// LocationManager handles device geolocalization
 class LocationManager: NSObject {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -47,7 +46,7 @@ class LocationManager: NSObject {
     // MARK: Public
     
     class var isLocationEnabled: Bool {
-        return CLLocationManager.locationServicesEnabled()
+        CLLocationManager.locationServicesEnabled()
     }
     
     private(set) var accuracy: LocationManagerAccuracy
@@ -61,7 +60,6 @@ class LocationManager: NSObject {
     // MARK: - Setup
         
     init(accuracy: LocationManagerAccuracy, allowsBackgroundLocationUpdates: Bool) {
-
         self.accuracy = accuracy
         
         let locationManager = CLLocationManager()
@@ -91,47 +89,44 @@ class LocationManager: NSObject {
     
     /// Start monitoring user location
     func start() {
-        
-        self.locationManager.delegate = self
+        locationManager.delegate = self
         
         switch accuracy {
         case .full:
-            self.locationManager.startUpdatingLocation()
+            locationManager.startUpdatingLocation()
         case .reduced:
             // Only listen to significant changes
             // roughly after 500 meters moves or every 5 minutes minimum
             // as mentioned in the Apple documentation https://developer.apple.com/documentation/corelocation/cllocationmanager/1423531-startmonitoringsignificantlocati
-            self.locationManager.startMonitoringSignificantLocationChanges()
+            locationManager.startMonitoringSignificantLocationChanges()
         }
 
-        self.isUpdatingLocation = true
+        isUpdatingLocation = true
     }
     
     /// Stop monitoring user location
     func stop() {
-        
         switch accuracy {
         case .full:
-            self.locationManager.stopUpdatingLocation()
+            locationManager.stopUpdatingLocation()
         case .reduced:
-            self.locationManager.stopMonitoringSignificantLocationChanges()
+            locationManager.stopMonitoringSignificantLocationChanges()
         }
 
-        self.locationManager.delegate = nil
-        self.isUpdatingLocation = false
+        locationManager.delegate = nil
+        isUpdatingLocation = false
     }
     
     /// Request location authorization
     func requestAuthorization(_ handler: @escaping LocationAuthorizationHandler) {
-        
-        let status = self.locationManager.authorizationStatus
+        let status = locationManager.authorizationStatus
                 
         switch status {
         case .notDetermined, .authorizedWhenInUse:
             // Try to resquest always authorization
-            self.tryToRequestAlwaysAuthorization(handler: handler)
+            tryToRequestAlwaysAuthorization(handler: handler)
         default:
-            handler(self.locationAuthorizationStatus(from: status))
+            handler(locationAuthorizationStatus(from: status))
         }
     }
     
@@ -143,8 +138,8 @@ class LocationManager: NSObject {
     // - If the user responded to requestWhenInUseAuthorization() with Allow Once, then Core Location ignores further calls to requestAlwaysAuthorization() due to the temporary authorization.
     // See https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization?changes=_6_6
     private func tryToRequestAlwaysAuthorization(handler: @escaping LocationAuthorizationHandler) {
-        self.authorizationHandler = handler
-        self.locationManager.requestAlwaysAuthorization()
+        authorizationHandler = handler
+        locationManager.requestAlwaysAuthorization()
         
         Timer.scheduledTimer(withTimeInterval: Constants.waitForAuthorizationStatusDelay, repeats: false) { [weak self] _ in
             guard let self = self else {
@@ -156,7 +151,6 @@ class LocationManager: NSObject {
     }
     
     private func locationAuthorizationStatus(from clLocationAuthorizationStatus: CLAuthorizationStatus) -> LocationAuthorizationStatus {
-        
         let status: LocationAuthorizationStatus
         
         switch clLocationAuthorizationStatus {
@@ -176,33 +170,31 @@ class LocationManager: NSObject {
     }
     
     private func authorizationRequestDidComplete(with status: CLAuthorizationStatus) {
-        guard let authorizationHandler = self.authorizationHandler else {
+        guard let authorizationHandler = authorizationHandler else {
             return
         }
 
-        authorizationHandler(self.locationAuthorizationStatus(from: status))
+        authorizationHandler(locationAuthorizationStatus(from: status))
         self.authorizationHandler = nil
     }
 }
 
 // MARK: - CLLocationManagerDelegate
-extension LocationManager: CLLocationManagerDelegate {
 
+extension LocationManager: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        
-        let status = self.locationManager.authorizationStatus
-        self.authorizationRequestDidComplete(with: status)
+        let status = locationManager.authorizationStatus
+        authorizationRequestDidComplete(with: status)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
         guard let lastLocation = locations.last else {
             return
         }
         
         self.lastLocation = lastLocation
         
-        self.delegate?.locationManager(self, didUpdateLocation: lastLocation)
+        delegate?.locationManager(self, didUpdateLocation: lastLocation)
     }
     
     func locationManagerDidResumeLocationUpdates(_ manager: CLLocationManager) {

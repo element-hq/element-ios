@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,39 +16,35 @@
 
 import Foundation
 
-protocol BubbleIncomingRoomCellProtocol: BubbleRoomCellProtocol {
-}
+protocol BubbleIncomingRoomCellProtocol: BubbleRoomCellProtocol { }
 
 extension BubbleIncomingRoomCellProtocol {
-    
     // MARK: - Public
     
     func setupBubbleDecorations() {
-        self.roomCellContentView?.decorationViewsAlignment = .left
-        self.setupDecorationConstraints()
+        roomCellContentView?.decorationViewsAlignment = .left
+        setupDecorationConstraints()
     }
     
     // MARK: - Private
     
     private func setupDecorationConstraints() {
-        
-        self.setupURLPreviewContentViewContraints()
-        self.setupReactionsContentViewContraints()
-        self.setupThreadSummaryViewContentViewContraints()
+        setupURLPreviewContentViewContraints()
+        setupReactionsContentViewContraints()
+        setupThreadSummaryViewContentViewContraints()
     }
     
     private func setupReactionsContentViewContraints() {
-        
-        self.roomCellContentView?.reactionsContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+        roomCellContentView?.reactionsContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
     }
     
     private func setupThreadSummaryViewContentViewContraints() {
-        self.roomCellContentView?.threadSummaryContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+        roomCellContentView?.threadSummaryContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
         
-        self.roomCellContentView?.threadSummaryContentViewBottomConstraint.constant = BubbleRoomCellLayoutConstants.threadSummaryViewMargins.bottom
+        roomCellContentView?.threadSummaryContentViewBottomConstraint.constant = BubbleRoomCellLayoutConstants.threadSummaryViewMargins.bottom
     }
     
     private func setupURLPreviewContentViewContraints() {
-        self.roomCellContentView?.urlPreviewContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+        roomCellContentView?.urlPreviewContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,6 @@ struct UserSessionsFlowCoordinatorParameters {
 }
 
 final class UserSessionsFlowCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -41,7 +40,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     init(parameters: UserSessionsFlowCoordinatorParameters) {
         self.parameters = parameters
         
-        self.navigationRouter = parameters.router ?? NavigationRouter(navigationController: RiotNavigationController())
+        navigationRouter = parameters.router ?? NavigationRouter(navigationController: RiotNavigationController())
     }
     
     // MARK: - Public
@@ -49,21 +48,21 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     func start() {
         MXLog.debug("[UserSessionsFlowCoordinator] did start.")
         
-        let rootCoordinatorParameters = UserSessionsOverviewCoordinatorParameters(session: self.parameters.session)
+        let rootCoordinatorParameters = UserSessionsOverviewCoordinatorParameters(session: parameters.session)
         
         let rootCoordinator = UserSessionsOverviewCoordinator(parameters: rootCoordinatorParameters)
         
         rootCoordinator.start()
 
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
 
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+        if navigationRouter.modules.isEmpty == false {
+            navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
                 self?.completion?()
             })
         } else {
-            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+            navigationRouter.setRootModule(rootCoordinator) { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
                 self?.completion?()
             }
@@ -71,6 +70,6 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
 }

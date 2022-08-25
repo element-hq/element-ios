@@ -19,7 +19,6 @@
 import Foundation
 
 final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -34,11 +33,11 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
 
     weak var viewDelegate: EnterNewRoomDetailsViewModelViewDelegate?
     weak var coordinatorDelegate: EnterNewRoomDetailsViewModelCoordinatorDelegate?
-    var roomCreationParameters: RoomCreationParameters = RoomCreationParameters()
+    var roomCreationParameters = RoomCreationParameters()
     
     private(set) var viewState: EnterNewRoomDetailsViewState {
         didSet {
-            self.viewDelegate?.enterNewRoomDetailsViewModel(self, didUpdateViewState: viewState)
+            viewDelegate?.enterNewRoomDetailsViewModel(self, didUpdateViewState: viewState)
         }
     }
     
@@ -51,7 +50,7 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     init(session: MXSession, parentSpace: MXSpace?) {
         self.session = session
         self.parentSpace = parentSpace
-        roomCreationParameters.isEncrypted = session.vc_homeserverConfiguration().encryption.isE2EEByDefaultEnabled &&  RiotSettings.shared.roomCreationScreenRoomIsEncrypted
+        roomCreationParameters.isEncrypted = session.vc_homeserverConfiguration().encryption.isE2EEByDefaultEnabled && RiotSettings.shared.roomCreationScreenRoomIsEncrypted
         roomCreationParameters.joinRule = RiotSettings.shared.roomCreationScreenRoomIsPublic ? .public : .private
         viewState = .loaded
     }
@@ -65,16 +64,16 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     func process(viewAction: EnterNewRoomDetailsViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .chooseAvatar(let sourceView):
-            self.chooseAvatar(sourceView: sourceView)
+            chooseAvatar(sourceView: sourceView)
         case .removeAvatar:
-            self.removeAvatar()
+            removeAvatar()
         case .cancel:
-            self.cancelOperations()
-            self.coordinatorDelegate?.enterNewRoomDetailsViewModelDidCancel(self)
+            cancelOperations()
+            coordinatorDelegate?.enterNewRoomDetailsViewModelDidCancel(self)
         case .create:
-            self.createRoom()
+            createRoom()
         }
     }
     
@@ -85,12 +84,12 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     }
     
     private func chooseAvatar(sourceView: UIView) {
-        self.coordinatorDelegate?.enterNewRoomDetailsViewModel(self, didTapChooseAvatar: sourceView)
+        coordinatorDelegate?.enterNewRoomDetailsViewModel(self, didTapChooseAvatar: sourceView)
     }
 
     private func removeAvatar() {
-        self.roomCreationParameters.userSelectedAvatar = nil
-        self.process(viewAction: .loadData)
+        roomCreationParameters.userSelectedAvatar = nil
+        process(viewAction: .loadData)
     }
     
     private func fixRoomAlias(alias: String?) -> String? {
@@ -124,21 +123,22 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
             aliasLocalPart: fixRoomAlias(alias: roomCreationParameters.address),
             isEncrypted: roomCreationParameters.isEncrypted,
             completion: { response in
-              switch response {
-              case .success(let room):
-                  self.viewState = .loaded
+                switch response {
+                case .success(let room):
+                    self.viewState = .loaded
                   
-                  if let parentSpace = self.parentSpace {
-                      self.add(room, to: parentSpace)
-                  } else {
-                      self.uploadAvatarIfRequired(ofRoom: room)
-                      self.currentOperation = nil
-                  }
-              case .failure(let error):
-                  self.viewState = .error(error)
-                  self.currentOperation = nil
-              }
-          })
+                    if let parentSpace = self.parentSpace {
+                        self.add(room, to: parentSpace)
+                    } else {
+                        self.uploadAvatarIfRequired(ofRoom: room)
+                        self.currentOperation = nil
+                    }
+                case .failure(let error):
+                    self.viewState = .error(error)
+                    self.currentOperation = nil
+                }
+            }
+        )
     }
     
     private func add(_ room: MXRoom, to space: MXSpace) {
@@ -157,7 +157,7 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     private func uploadAvatarIfRequired(ofRoom room: MXRoom) {
         guard let avatar = roomCreationParameters.userSelectedAvatar else {
             //  no avatar set, continue
-            self.coordinatorDelegate?.enterNewRoomDetailsViewModel(self, didCreateNewRoom: room)
+            coordinatorDelegate?.enterNewRoomDetailsViewModel(self, didCreateNewRoom: room)
             return
         }
         
@@ -167,20 +167,20 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
         mediaUploader?.uploadData(avatarUp?.jpegData(compressionQuality: 0.5),
                                   filename: nil,
                                   mimeType: "image/jpeg",
-                                  success: { [weak self] (urlString) in
-                                    guard let self = self else { return }
-                                    guard let urlString = urlString else { return }
-                                    guard let url = URL(string: urlString) else { return }
-                                    self.setAvatar(ofRoom: room, withURL: url)
-        }, failure: { [weak self] (error) in
-            guard let self = self else { return }
-            guard let error = error else { return }
-            self.viewState = .error(error)
-        })
+                                  success: { [weak self] urlString in
+                                      guard let self = self else { return }
+                                      guard let urlString = urlString else { return }
+                                      guard let url = URL(string: urlString) else { return }
+                                      self.setAvatar(ofRoom: room, withURL: url)
+                                  }, failure: { [weak self] error in
+                                      guard let self = self else { return }
+                                      guard let error = error else { return }
+                                      self.viewState = .error(error)
+                                  })
     }
     
     private func setAvatar(ofRoom room: MXRoom, withURL url: URL) {
-        currentOperation = room.setAvatar(url: url) { (response) in
+        currentOperation = room.setAvatar(url: url) { response in
             switch response {
             case .success:
                 self.coordinatorDelegate?.enterNewRoomDetailsViewModel(self, didCreateNewRoom: room)
@@ -193,6 +193,6 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     }
         
     private func cancelOperations() {
-        self.currentOperation?.cancel()
+        currentOperation?.cancel()
     }
 }

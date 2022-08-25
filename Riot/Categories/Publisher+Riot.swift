@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Combine
 
 extension Publisher {
-    
     ///
     /// Buffer upstream items and guarantee a time interval spacing out the published items.
     /// - Parameters:
@@ -28,9 +27,9 @@ extension Publisher {
         Publishers.SetFailureType<Publishers.Delay<Just<Publishers.Buffer<Self>.Output>, DispatchQueue>, Publishers.Buffer<Self>.Failure>,
         Publishers.Buffer<Self>
     > {
-         return buffer(size: .max, prefetch: .byRequest, whenFull: .dropNewest)
-        .flatMap(maxPublishers: .max(1)) {
-            Just($0).delay(for: .seconds(spacingDelay), scheduler: scheduler)
-        }
+        buffer(size: .max, prefetch: .byRequest, whenFull: .dropNewest)
+            .flatMap(maxPublishers: .max(1)) {
+                Just($0).delay(for: .seconds(spacingDelay), scheduler: scheduler)
+            }
     }
 }

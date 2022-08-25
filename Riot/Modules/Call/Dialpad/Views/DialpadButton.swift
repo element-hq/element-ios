@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import UIKit
 
 /// Digit button class for Dialpad screen
 class DialpadButton: UIButton {
-    
     struct ViewData {
         let title: String
         let tone: SystemSoundID
@@ -37,7 +36,7 @@ class DialpadButton: UIButton {
     private var theme: Theme = ThemeService.shared().theme
     
     private enum Constants {
-        static let size: CGSize = CGSize(width: 68, height: 68)
+        static let size = CGSize(width: 68, height: 68)
         static let titleFont: UIFont = .boldSystemFont(ofSize: 32)
         static let subtitleFont: UIFont = .boldSystemFont(ofSize: 12)
     }
@@ -58,7 +57,7 @@ class DialpadButton: UIButton {
     
     private func setup() {
         clipsToBounds = true
-        layer.cornerRadius = Constants.size.width/2
+        layer.cornerRadius = Constants.size.width / 2
         vc_enableMultiLinesTitle()
     }
     
@@ -67,8 +66,8 @@ class DialpadButton: UIButton {
         
         let totalAttributedString = NSMutableAttributedString(string: viewData.title,
                                                               attributes: [
-                                                                .font: Constants.titleFont,
-                                                                .foregroundColor: theme.textPrimaryColor
+                                                                  .font: Constants.titleFont,
+                                                                  .foregroundColor: theme.textPrimaryColor
                                                               ])
         
         if let subtitle = viewData.subtitle {
@@ -85,22 +84,19 @@ class DialpadButton: UIButton {
         
         setAttributedTitle(totalAttributedString, for: .normal)
     }
-    
 }
 
 //  MARK: - Themable
 
 extension DialpadButton: Themable {
-    
     func update(theme: Theme) {
         self.theme = theme
         
         backgroundColor = theme.headerBackgroundColor
         
         //  re-render view data if set
-        if let viewData = self.viewData {
+        if let viewData = viewData {
             render(withViewData: viewData)
         }
     }
-    
 }

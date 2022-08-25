@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 @objcMembers
 class SearchEmptyView: UIStackView, Themable {
-    
     // MARK: - Properties
     
     public private(set) var titleLabel: UILabel!
@@ -39,29 +38,29 @@ class SearchEmptyView: UIStackView, Themable {
     // MARK: - Themable
     
     func update(theme: Theme) {
-        self.titleLabel.textColor = theme.colors.primaryContent
-        self.titleLabel.font = theme.fonts.bodySB
+        titleLabel.textColor = theme.colors.primaryContent
+        titleLabel.font = theme.fonts.bodySB
         
-        self.detailLabel.textColor = theme.colors.secondaryContent
-        self.detailLabel.font = theme.fonts.callout
+        detailLabel.textColor = theme.colors.secondaryContent
+        detailLabel.font = theme.fonts.callout
     }
     
     // MARK: - Private
     
     private func setupView() {
-        self.titleLabel = UILabel(frame: .zero)
-        self.titleLabel.backgroundColor = .clear
-        self.titleLabel.numberOfLines = 0
+        titleLabel = UILabel(frame: .zero)
+        titleLabel.backgroundColor = .clear
+        titleLabel.numberOfLines = 0
 
-        self.detailLabel = UILabel(frame: .zero)
-        self.detailLabel.backgroundColor = .clear
-        self.detailLabel.numberOfLines = 0
+        detailLabel = UILabel(frame: .zero)
+        detailLabel.backgroundColor = .clear
+        detailLabel.numberOfLines = 0
 
-        self.addArrangedSubview(titleLabel)
-        self.addArrangedSubview(detailLabel)
-        self.distribution = .equalSpacing
-        self.axis = .vertical
-        self.alignment = .leading
-        self.spacing = 8
+        addArrangedSubview(titleLabel)
+        addArrangedSubview(detailLabel)
+        distribution = .equalSpacing
+        axis = .vertical
+        alignment = .leading
+        spacing = 8
     }
 }

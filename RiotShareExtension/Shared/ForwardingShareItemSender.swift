@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 @objcMembers
 class ForwardingShareItemSender: NSObject, ShareItemSenderProtocol {
-    
     static let errorDomain = "ForwardingShareItemSenderErrorDomain"
 
     enum ErrorCode: Int {
@@ -29,7 +28,7 @@ class ForwardingShareItemSender: NSObject, ShareItemSenderProtocol {
     
     weak var delegate: ShareItemSenderDelegate?
     
-    @objc public init(withEvent event: MXEvent) {
+    public init(withEvent event: MXEvent) {
         self.event = event
     }
     
@@ -37,12 +36,12 @@ class ForwardingShareItemSender: NSObject, ShareItemSenderProtocol {
         guard event.sentState == MXEventSentStateSent else {
             MXLog.error("[ForwardingShareItemSender] Cannot forward unsent event")
             failure([NSError(domain: Self.errorDomain,
-                            code: ErrorCode.eventNotSentYet.rawValue,
-                            userInfo: nil)])
+                             code: ErrorCode.eventNotSentYet.rawValue,
+                             userInfo: nil)])
             return
         }
         
-        self.delegate?.shareItemSenderDidStartSending(self)
+        delegate?.shareItemSenderDidStartSending(self)
         
         var errors = [Error]()
         

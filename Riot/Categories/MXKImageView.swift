@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,11 +22,11 @@ extension MXKImageView {
         let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: roomId, withDisplayName: displayName)
 
         if let avatarUrl = url {
-            self.enableInMemoryCache = true
-            self.setImageURI(avatarUrl, withType: nil, andImageOrientation: .up, toFitViewSize: self.frame.size, with: MXThumbnailingMethodCrop, previewImage: avatarImage, mediaManager: mediaManager)
+            enableInMemoryCache = true
+            setImageURI(avatarUrl, withType: nil, andImageOrientation: .up, toFitViewSize: frame.size, with: MXThumbnailingMethodCrop, previewImage: avatarImage, mediaManager: mediaManager)
         } else {
-            self.image = avatarImage
+            image = avatarImage
         }
-        self.contentMode = .scaleAspectFill
+        contentMode = .scaleAspectFill
     }
 }

@@ -17,7 +17,6 @@
 import Foundation
 
 final class EmojiStore {
-    
     static let shared = EmojiStore()
     
     // MARK: - Properties
@@ -27,7 +26,7 @@ final class EmojiStore {
     // MARK: - Public
     
     func getAll() -> [EmojiCategory] {
-        return self.emojiCategories
+        emojiCategories
     }
     
     func set(_ emojiCategories: [EmojiCategory]) {
@@ -37,9 +36,9 @@ final class EmojiStore {
     func findEmojiItemsSortedByCategory(with searchText: String) -> [EmojiCategory] {
         let initial: [EmojiCategory] = []
         
-        let filteredEmojiCategories = emojiCategories.reduce(into: initial) { (filteredEmojiCategories, emojiCategory) in
+        let filteredEmojiCategories = emojiCategories.reduce(into: initial) { filteredEmojiCategories, emojiCategory in
             
-            let filteredEmojiItems = emojiCategory.emojis.filter({ (emojiItem) -> Bool in
+            let filteredEmojiItems = emojiCategory.emojis.filter { emojiItem -> Bool in
                 
                 // Do not use `String.localizedCaseInsensitiveContains` here as EmojiItem data is not localized for the moment
                 
@@ -56,11 +55,11 @@ final class EmojiStore {
                 }
                 
                 let shortNamesMatch = emojiItem.shortNames.contains { text -> Bool in
-                    return text.vc_caseInsensitiveContains(searchText)
+                    text.vc_caseInsensitiveContains(searchText)
                 }
                 
                 return shortNamesMatch
-            })
+            }
             
             if filteredEmojiItems.isEmpty == false {
                 let filteredEmojiCategory = EmojiCategory(identifier: emojiCategory.identifier, emojis: filteredEmojiItems)

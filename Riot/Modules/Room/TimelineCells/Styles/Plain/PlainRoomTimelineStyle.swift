@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class PlainRoomTimelineStyle: RoomTimelineStyle {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -38,28 +37,26 @@ class PlainRoomTimelineStyle: RoomTimelineStyle {
     
     init(theme: Theme) {
         self.theme = theme
-        self.identifier = .plain
-        self.cellLayoutUpdater = nil
-        self.cellProvider = PlainRoomTimelineCellProvider()
-        self.cellDecorator = PlainRoomTimelineCellDecorator()
+        identifier = .plain
+        cellLayoutUpdater = nil
+        cellProvider = PlainRoomTimelineCellProvider()
+        cellDecorator = PlainRoomTimelineCellDecorator()
     }
     
     // MARK: - Methods
     
     func canAddEvent(_ event: MXEvent, and roomState: MXRoomState, to cellData: MXKRoomBubbleCellData) -> Bool {
-        return true
+        true
     }
 
     func canMerge(cellData: MXKRoomBubbleCellDataStoring, into receiverCellData: MXKRoomBubbleCellDataStoring) -> Bool {
-        return true
+        true
     }
     
     func applySelectedStyleIfNeeded(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
-        
         // Check whether the selected event belongs to this bubble
         let selectedComponentIndex = cellData.selectedComponentIndex
         if selectedComponentIndex != NSNotFound {
-            
             let showTimestamp = cellData.showTimestampForSelectedComponent
             
             cell.selectComponent(UInt(selectedComponentIndex),

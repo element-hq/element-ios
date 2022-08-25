@@ -16,8 +16,8 @@
  limitations under the License.
  */
 
-import UIKit
 import CommonKit
+import UIKit
 
 struct AuthenticationCoordinatorParameters {
     let navigationRouter: NavigationRouterType
@@ -29,7 +29,6 @@ struct AuthenticationCoordinatorParameters {
 
 /// A coordinator that handles authentication, verification and setting a PIN.
 final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtocol {
-    
     enum EntryPoint {
         case registration
         case login
@@ -77,9 +76,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     // MARK: - Setup
     
     init(parameters: AuthenticationCoordinatorParameters) {
-        self.navigationRouter = parameters.navigationRouter
-        self.initialScreen = parameters.initialScreen
-        self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
+        navigationRouter = parameters.navigationRouter
+        initialScreen = parameters.initialScreen
+        canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
 
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: parameters.navigationRouter.toPresentable())
         
@@ -230,11 +229,11 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             
-            alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel) { action in
+            alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel) { _ in
                 continuation.resume(with: .success(false))
             })
             
-            alert.addAction(UIAlertAction(title: VectorL10n.sslTrust, style: .default) { action in
+            alert.addAction(UIAlertAction(title: VectorL10n.sslTrust, style: .default) { _ in
                 continuation.resume(with: .success(true))
             })
             
@@ -479,6 +478,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     // MARK: - Registration Handlers
+
     /// Determines the next screen to show from the flow result and pushes it.
     @MainActor private func handleRegistrationResult(_ result: RegistrationResult) {
         switch result {
@@ -703,8 +703,8 @@ extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
 }
 
 // MARK: - AuthenticationServiceDelegate
+
 extension AuthenticationCoordinator: AuthenticationServiceDelegate {
-    
     func authenticationService(_ service: AuthenticationService, needsPromptFor unrecognizedCertificate: Data?, completion: @escaping (Bool) -> Void) {
         guard let certificate = unrecognizedCertificate else {
             completion(false)
@@ -747,6 +747,7 @@ extension AuthenticationCoordinator: AuthenticationServiceDelegate {
 }
 
 // MARK: - KeyVerificationCoordinatorDelegate
+
 extension AuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
         if let crypto = session?.crypto,
@@ -768,16 +769,16 @@ extension AuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
+
 extension AuthenticationCoordinator: UIAdaptivePresentationControllerDelegate {
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
         // Prevent Key Verification from using swipe to dismiss
-        return false
+        false
     }
 }
 
-
-
 // MARK: - Unused conformances
+
 extension AuthenticationCoordinator {
     func update(authenticationFlow: AuthenticationFlow) {
         // unused
@@ -785,6 +786,7 @@ extension AuthenticationCoordinator {
 }
 
 // MARK: - AuthFallBackViewControllerDelegate
+
 extension AuthenticationCoordinator: AuthFallBackViewControllerDelegate {
     func authFallBackViewController(_ authFallBackViewController: AuthFallBackViewController,
                                     didLoginWith loginResponse: MXLoginResponse) {
@@ -801,5 +803,4 @@ extension AuthenticationCoordinator: AuthFallBackViewControllerDelegate {
     func authFallBackViewControllerDidClose(_ authFallBackViewController: AuthFallBackViewController) {
         dismissFallback()
     }
-
 }

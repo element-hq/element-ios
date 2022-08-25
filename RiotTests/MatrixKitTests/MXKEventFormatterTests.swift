@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import MatrixSDK
+import XCTest
 
 private enum Constants {
     static let roomId = "someRoomId"
@@ -36,7 +36,7 @@ class MXKEventFormatterTests: XCTestCase {
         let formatter = MXKEventFormatter()
         let repliedEvent = MXEvent()
         let event = MXEvent()
-        func buildHTML() -> String? { return formatter.buildHTMLString(for: event, inReplyTo: repliedEvent) }
+        func buildHTML() -> String? { formatter.buildHTMLString(for: event, inReplyTo: repliedEvent) }
 
         // Initial setup.
         repliedEvent.sender = "alice"

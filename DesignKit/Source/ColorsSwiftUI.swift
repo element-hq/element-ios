@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,6 @@ import SwiftUI
  Struct for holding colors for use in SwiftUI.
  */
 public struct ColorSwiftUI: Colors {
-
     public let accent: Color
     
     public let alert: Color
@@ -64,6 +63,6 @@ public struct ColorSwiftUI: Colors {
         navigation = Color(values.navigation)
         background = Color(values.background)
         ems = Color(values.ems)
-        namesAndAvatars = values.namesAndAvatars.map({ Color($0) })
+        namesAndAvatars = values.namesAndAvatars.map { Color($0) }
     }
 }

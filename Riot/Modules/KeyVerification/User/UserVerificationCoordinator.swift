@@ -20,7 +20,6 @@ import UIKit
 
 @objcMembers
 final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -43,7 +42,7 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
     
     init(presenter: Presentable, session: MXSession, userId: String, userDisplayName: String?) {
         self.presenter = presenter
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.userId = userId
         self.userDisplayName = userDisplayName
@@ -58,73 +57,72 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
     
     func start() {
         // Do not start again if existing coordinators are presented
-        guard self.childCoordinators.isEmpty else {
+        guard childCoordinators.isEmpty else {
             return
         }
         
-        guard self.session.crypto.crossSigning.canCrossSign  else {
-            self.presentBootstrapNotSetup()
+        guard session.crypto.crossSigning.canCrossSign else {
+            presentBootstrapNotSetup()
             return
         }
         
         let rootCoordinator: Coordinator & Presentable
         
-        if let deviceId = self.deviceId {
-            rootCoordinator = self.createSessionStatusCoordinator(with: deviceId, for: self.userId, userDisplayName: self.userDisplayName)
+        if let deviceId = deviceId {
+            rootCoordinator = createSessionStatusCoordinator(with: deviceId, for: userId, userDisplayName: userDisplayName)
         } else {
-            rootCoordinator = self.createUserVerificationSessionsStatusCoordinator()
+            rootCoordinator = createUserVerificationSessionsStatusCoordinator()
         }
         
         rootCoordinator.start()
 
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
         
-        self.navigationRouter.setRootModule(rootCoordinator, hideNavigationBar: true, animated: false, popCompletion: {
+        navigationRouter.setRootModule(rootCoordinator, hideNavigationBar: true, animated: false, popCompletion: {
             self.remove(childCoordinator: rootCoordinator)
         })
         
-        let rootViewController = self.navigationRouter.toPresentable()
+        let rootViewController = navigationRouter.toPresentable()
         rootViewController.modalPresentationStyle = .formSheet
         
-        self.presenter.toPresentable().present(rootViewController, animated: true, completion: nil)
+        presenter.toPresentable().present(rootViewController, animated: true, completion: nil)
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private methods
     
     private func createUserVerificationSessionsStatusCoordinator() -> UserVerificationSessionsStatusCoordinator {
-        let coordinator = UserVerificationSessionsStatusCoordinator(session: self.session, userId: self.userId)
+        let coordinator = UserVerificationSessionsStatusCoordinator(session: session, userId: userId)
         coordinator.delegate = self
         return coordinator
     }
     
     private func createSessionStatusCoordinator(with deviceId: String, for userId: String, userDisplayName: String?) -> UserVerificationSessionStatusCoordinator {
-        let coordinator = UserVerificationSessionStatusCoordinator(session: self.session, userId: userId, userDisplayName: userDisplayName, deviceId: deviceId)
+        let coordinator = UserVerificationSessionStatusCoordinator(session: session, userId: userId, userDisplayName: userDisplayName, deviceId: deviceId)
         coordinator.delegate = self
         return coordinator
     }
     
     private func presentSessionStatus(with deviceId: String, for userId: String, userDisplayName: String?) {
-        let coordinator = self.createSessionStatusCoordinator(with: deviceId, for: userId, userDisplayName: userDisplayName)
+        let coordinator = createSessionStatusCoordinator(with: deviceId, for: userId, userDisplayName: userDisplayName)
         coordinator.start()
         
-        self.navigationRouter.push(coordinator, animated: true) {
+        navigationRouter.push(coordinator, animated: true) {
             self.remove(childCoordinator: coordinator)
         }
     }
     
     private func presentDeviceVerification(for deviceId: String) {
-        
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .verifyDevice(userId: self.userId, deviceId: deviceId), navigationRouter: self.navigationRouter, cancellable: true)
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: session, flow: .verifyDevice(userId: userId, deviceId: deviceId), navigationRouter: navigationRouter, cancellable: true)
         keyVerificationCoordinator.delegate = self
         keyVerificationCoordinator.start()
         
-        self.add(childCoordinator: keyVerificationCoordinator)
+        add(childCoordinator: keyVerificationCoordinator)
         
-        self.navigationRouter.push(keyVerificationCoordinator, animated: true, popCompletion: {
+        navigationRouter.push(keyVerificationCoordinator, animated: true, popCompletion: {
             self.remove(childCoordinator: keyVerificationCoordinator)
         })
     }
@@ -137,56 +135,55 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
         let cancelAction = UIAlertAction(title: VectorL10n.ok, style: .cancel)
         alert.addAction(cancelAction)
         
-        self.presenter.toPresentable().present(alert, animated: true, completion: nil)        
+        presenter.toPresentable().present(alert, animated: true, completion: nil)
     }
     
     private func presentManualDeviceVerification(for deviceId: String, of userId: String) {
-        let coordinator = KeyVerificationManuallyVerifyCoordinator(session: self.session, deviceId: deviceId, userId: userId)
+        let coordinator = KeyVerificationManuallyVerifyCoordinator(session: session, deviceId: deviceId, userId: userId)
         coordinator.delegate = self
         coordinator.start()
         
-        self.navigationRouter.push(coordinator, animated: true) {
+        navigationRouter.push(coordinator, animated: true) {
             self.remove(childCoordinator: coordinator)
         }
     }
 }
 
 // MARK: - UserVerificationSessionsStatusCoordinatorDelegate
+
 extension UserVerificationCoordinator: UserVerificationSessionsStatusCoordinatorDelegate {
     func userVerificationSessionsStatusCoordinatorDidClose(_ coordinator: UserVerificationSessionsStatusCoordinatorType) {
-        
-        self.presenter.toPresentable().dismiss(animated: true) {
+        presenter.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
         }
     }
     
     func userVerificationSessionsStatusCoordinator(_ coordinator: UserVerificationSessionsStatusCoordinatorType, didSelectDeviceWithId deviceId: String, for userId: String) {
-        self.presentSessionStatus(with: deviceId, for: userId, userDisplayName: self.userDisplayName)
+        presentSessionStatus(with: deviceId, for: userId, userDisplayName: userDisplayName)
     }
 }
 
 // MARK: - UserVerificationSessionStatusCoordinatorDelegate
+
 extension UserVerificationCoordinator: UserVerificationSessionStatusCoordinatorDelegate {
-    
     func userVerificationSessionStatusCoordinator(_ coordinator: UserVerificationSessionStatusCoordinatorType, wantsToVerifyDeviceWithId deviceId: String, for userId: String) {
-        self.presentDeviceVerification(for: deviceId)
+        presentDeviceVerification(for: deviceId)
     }
     
     func userVerificationSessionStatusCoordinator(_ coordinator: UserVerificationSessionStatusCoordinatorType, wantsToManuallyVerifyDeviceWithId deviceId: String, for userId: String) {
-        self.presentManualDeviceVerification(for: deviceId, of: userId)
+        presentManualDeviceVerification(for: deviceId, of: userId)
     }
     
     func userVerificationSessionStatusCoordinatorDidClose(_ coordinator: UserVerificationSessionStatusCoordinatorType) {
-        
-        self.presenter.toPresentable().dismiss(animated: true) {
+        presenter.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
         }
     }
 }
 
 // MARK: - UserVerificationCoordinatorDelegate
+
 extension UserVerificationCoordinator: KeyVerificationCoordinatorDelegate {
-    
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
         dismissPresenter(coordinator: coordinator)
     }
@@ -196,23 +193,23 @@ extension UserVerificationCoordinator: KeyVerificationCoordinatorDelegate {
     }
     
     func dismissPresenter(coordinator: KeyVerificationCoordinatorType) {
-        self.presenter.toPresentable().dismiss(animated: true) {
+        presenter.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
         }
     }
 }
 
 // MARK: - KeyVerificationManuallyVerifyCoordinatorDelegate
+
 extension UserVerificationCoordinator: KeyVerificationManuallyVerifyCoordinatorDelegate {
-    
     func keyVerificationManuallyVerifyCoordinator(_ coordinator: KeyVerificationManuallyVerifyCoordinatorType, didVerifiedDeviceWithId deviceId: String, of userId: String) {
-        self.presenter.toPresentable().dismiss(animated: true) {
+        presenter.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
         }
     }
     
     func keyVerificationManuallyVerifyCoordinatorDidCancel(_ coordinator: KeyVerificationManuallyVerifyCoordinatorType) {
-        self.presenter.toPresentable().dismiss(animated: true) {
+        presenter.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
         }
     }

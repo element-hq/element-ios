@@ -19,7 +19,7 @@
 import Foundation
 
 /// ReactionHistoryViewController view actions exposed to view model
-enum ReactionHistoryViewAction {    
+enum ReactionHistoryViewAction {
     case loadMore
     case close
 }

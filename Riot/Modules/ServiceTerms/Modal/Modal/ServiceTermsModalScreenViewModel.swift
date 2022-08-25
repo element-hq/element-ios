@@ -19,7 +19,6 @@
 import Foundation
 
 final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelType {
-
     // MARK: - Properties
 
     // MARK: Private
@@ -29,11 +28,13 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
     // MARK: Public
 
     var serviceUrl: String {
-        return serviceTerms.baseUrl
+        serviceTerms.baseUrl
     }
+
     var serviceType: MXServiceType {
-        return serviceTerms.serviceType
+        serviceTerms.serviceType
     }
+
     var policies: [MXLoginPolicyData]?
     var alreadyAcceptedPoliciesUrls: [String] = []
 
@@ -51,23 +52,22 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
     func process(viewAction: ServiceTermsModalScreenViewAction) {
         switch viewAction {
         case .load:
-            self.loadTerms()
+            loadTerms()
         case .display(let policy):
-            self.coordinatorDelegate?.serviceTermsModalScreenViewModel(self, displayPolicy: policy)
+            coordinatorDelegate?.serviceTermsModalScreenViewModel(self, displayPolicy: policy)
         case .accept:
-            self.acceptTerms()
+            acceptTerms()
         case .decline:
-            self.coordinatorDelegate?.serviceTermsModalScreenViewModelDidDecline(self)
+            coordinatorDelegate?.serviceTermsModalScreenViewModelDidDecline(self)
         }
     }
     
     // MARK: - Private
 
     private func loadTerms() {
+        update(viewState: .loading)
 
-        self.update(viewState: .loading)
-
-        self.serviceTerms.terms({ [weak self] (terms, alreadyAcceptedTermsUrls) in
+        serviceTerms.terms({ [weak self] terms, alreadyAcceptedTermsUrls in
             guard let self = self else {
                 return
             }
@@ -77,20 +77,19 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
             self.alreadyAcceptedPoliciesUrls = alreadyAcceptedTermsUrls ?? []
             self.update(viewState: .loaded(policies: policies, alreadyAcceptedPoliciesUrls: self.alreadyAcceptedPoliciesUrls))
 
-            }, failure: { [weak self] error in
-                guard let self = self else {
-                    return
-                }
+        }, failure: { [weak self] error in
+            guard let self = self else {
+                return
+            }
 
-                self.update(viewState: .error(error))
+            self.update(viewState: .error(error))
         })
     }
 
     private func acceptTerms() {
+        update(viewState: .loading)
 
-        self.update(viewState: .loading)
-
-        self.serviceTerms.agree(toTerms: self.termsUrls, success: { [weak self] in
+        serviceTerms.agree(toTerms: termsUrls, success: { [weak self] in
             guard let self = self else {
                 return
             }
@@ -105,12 +104,12 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
             // Notify the delegate.
             self.coordinatorDelegate?.serviceTermsModalScreenViewModelDidAccept(self)
 
-            }, failure: { [weak self] (error) in
-                guard let self = self else {
-                    return
-                }
+        }, failure: { [weak self] error in
+            guard let self = self else {
+                return
+            }
 
-                self.update(viewState: .error(error))
+            self.update(viewState: .error(error))
         })
     }
 
@@ -124,13 +123,13 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
     }
 
     private var termsUrls: [String] {
-        guard let policies = self.policies else {
+        guard let policies = policies else {
             return []
         }
-        return policies.map({ return $0.url })
+        return policies.map(\.url)
     }
 
     private func update(viewState: ServiceTermsModalScreenViewState) {
-        self.viewDelegate?.serviceTermsModalScreenViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.serviceTermsModalScreenViewModel(self, didUpdateViewState: viewState)
     }
 }

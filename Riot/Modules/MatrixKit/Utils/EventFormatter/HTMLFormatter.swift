@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import DTCoreText
+import Foundation
 import UIKit
 
 @objcMembers
@@ -53,9 +53,9 @@ class HTMLFormatter: NSObject {
             DTDefaultLinkDecoration: false,
             DTWillFlushBlockCallBack: sanitizeCallback
         ]
-        options.merge(extraOptions) { (_, new) in new }
+        options.merge(extraOptions) { _, new in new }
 
-        guard let string = self.formatHTML(data, options: options) else {
+        guard let string = formatHTML(data, options: options) else {
             return NSAttributedString(string: htmlString)
         }
 

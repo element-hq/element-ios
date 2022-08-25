@@ -23,13 +23,12 @@ protocol KeyBackupSetupPassphraseViewModelViewDelegate: AnyObject {
 
 protocol KeyBackupSetupPassphraseViewModelCoordinatorDelegate: AnyObject {
     func keyBackupSetupPassphraseViewModel(_ viewModel: KeyBackupSetupPassphraseViewModelType, didCreateBackupFromPassphraseWithResultingRecoveryKey recoveryKey: String)
-    func keyBackupSetupPassphraseViewModel(_ viewModel: KeyBackupSetupPassphraseViewModelType, didCreateBackupFromRecoveryKey recoveryKey: String)    
+    func keyBackupSetupPassphraseViewModel(_ viewModel: KeyBackupSetupPassphraseViewModelType, didCreateBackupFromRecoveryKey recoveryKey: String)
     func keyBackupSetupPassphraseViewModelDidCancel(_ viewModel: KeyBackupSetupPassphraseViewModelType)
 }
 
 /// Protocol describing the view model used by `KeyBackupSetupPassphraseViewController`
 protocol KeyBackupSetupPassphraseViewModelType {
-    
     var passphrase: String? { get set }
     var confirmPassphrase: String? { get set }
     var passphraseStrength: PasswordStrength { get }

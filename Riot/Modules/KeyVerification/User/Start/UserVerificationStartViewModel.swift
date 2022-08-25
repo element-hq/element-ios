@@ -29,7 +29,6 @@ struct UserVerificationStartViewData {
 }
 
 final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -42,10 +41,10 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
     private var keyVerificationRequest: MXKeyVerificationRequest?
     
     private var viewData: UserVerificationStartViewData {
-        return UserVerificationStartViewData(userId: self.roomMember.userId, userDisplayName: self.roomMember.displayname, userAvatarURL: self.roomMember.avatarUrl)
+        UserVerificationStartViewData(userId: self.roomMember.userId, userDisplayName: self.roomMember.displayname, userAvatarURL: self.roomMember.avatarUrl)
     }
     
-    // MARK: Public        
+    // MARK: Public
 
     weak var viewDelegate: UserVerificationStartViewModelViewDelegate?
     weak var coordinatorDelegate: UserVerificationStartViewModelCoordinatorDelegate?
@@ -54,9 +53,9 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
     
     init(session: MXSession, roomMember: MXRoomMember) {
         self.session = session
-        self.verificationManager = session.crypto.keyVerificationManager
+        verificationManager = session.crypto.keyVerificationManager
         self.roomMember = roomMember
-        self.keyVerificationService = KeyVerificationService()
+        keyVerificationService = KeyVerificationService()
     }
     
     // MARK: - Public
@@ -64,47 +63,47 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
     func process(viewAction: UserVerificationStartViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .startVerification:
-            self.startVerification()
+            startVerification()
         case .cancel:
-            self.cancelKeyVerificationRequest()
-            self.coordinatorDelegate?.userVerificationStartViewModelDidCancel(self)
+            cancelKeyVerificationRequest()
+            coordinatorDelegate?.userVerificationStartViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        self.update(viewState: .loaded(self.viewData))
+        update(viewState: .loaded(viewData))
     }
     
     private func startVerification() {
-        self.update(viewState: .verificationPending)
+        update(viewState: .verificationPending)
         
-        self.verificationManager.requestVerificationByDM(withUserId: self.roomMember.userId,
-                                                         roomId: nil,
-                                                         fallbackText: "",
-                                                         methods: self.keyVerificationService.supportedKeyVerificationMethods(),
-                                                         success: { [weak self] (keyVerificationRequest) in
-                                                            guard let self = self else {
-                                                                return
-                                                            }
+        verificationManager.requestVerificationByDM(withUserId: roomMember.userId,
+                                                    roomId: nil,
+                                                    fallbackText: "",
+                                                    methods: keyVerificationService.supportedKeyVerificationMethods(),
+                                                    success: { [weak self] keyVerificationRequest in
+                                                        guard let self = self else {
+                                                            return
+                                                        }
                                                             
-                                                            self.keyVerificationRequest = keyVerificationRequest
-                                                            self.update(viewState: .loaded(self.viewData))
-                                                            self.registerKeyVerificationRequestDidChangeNotification(for: keyVerificationRequest)
-        }, failure: { [weak self]  error in
-            self?.update(viewState: .error(error))
-        })
+                                                        self.keyVerificationRequest = keyVerificationRequest
+                                                        self.update(viewState: .loaded(self.viewData))
+                                                        self.registerKeyVerificationRequestDidChangeNotification(for: keyVerificationRequest)
+                                                    }, failure: { [weak self] error in
+                                                        self?.update(viewState: .error(error))
+                                                    })
     }
     
     private func update(viewState: UserVerificationStartViewState) {
-        self.viewDelegate?.userVerificationStartViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.userVerificationStartViewModel(self, didUpdateViewState: viewState)
     }
     
     private func cancelKeyVerificationRequest() {
-        guard let keyVerificationRequest = self.keyVerificationRequest  else {
+        guard let keyVerificationRequest = keyVerificationRequest else {
             return
         }
 
@@ -131,27 +130,27 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
         }
         
         switch keyVerificationRequest.state {
-        case MXKeyVerificationRequestStateAccepted:            
-            self.unregisterKeyVerificationRequestDidChangeNotification()
-            self.coordinatorDelegate?.userVerificationStartViewModel(self, otherDidAcceptRequest: currentKeyVerificationRequest)
+        case MXKeyVerificationRequestStateAccepted:
+            unregisterKeyVerificationRequestDidChangeNotification()
+            coordinatorDelegate?.userVerificationStartViewModel(self, otherDidAcceptRequest: currentKeyVerificationRequest)
         case MXKeyVerificationRequestStateReady:
-            self.unregisterKeyVerificationRequestDidChangeNotification()
-            self.coordinatorDelegate?.userVerificationStartViewModel(self, otherDidAcceptRequest: currentKeyVerificationRequest)
+            unregisterKeyVerificationRequestDidChangeNotification()
+            coordinatorDelegate?.userVerificationStartViewModel(self, otherDidAcceptRequest: currentKeyVerificationRequest)
         case MXKeyVerificationRequestStateCancelled:
             guard let reason = keyVerificationRequest.reasonCancelCode else {
                 return
             }
-            self.unregisterKeyVerificationRequestDidChangeNotification()
-            self.update(viewState: .cancelled(reason))
+            unregisterKeyVerificationRequestDidChangeNotification()
+            update(viewState: .cancelled(reason))
         case MXKeyVerificationRequestStateCancelledByMe:
             guard let reason = keyVerificationRequest.reasonCancelCode else {
                 return
             }
-            self.unregisterKeyVerificationRequestDidChangeNotification()
-            self.update(viewState: .cancelledByMe(reason))
+            unregisterKeyVerificationRequestDidChangeNotification()
+            update(viewState: .cancelledByMe(reason))
         case MXKeyVerificationRequestStateExpired:
-            self.unregisterKeyVerificationRequestDidChangeNotification()
-            self.update(viewState: .error(UserVerificationStartViewModelError.keyVerificationRequestExpired))
+            unregisterKeyVerificationRequestDidChangeNotification()
+            update(viewState: .error(UserVerificationStartViewModelError.keyVerificationRequestExpired))
         default:
             break
         }

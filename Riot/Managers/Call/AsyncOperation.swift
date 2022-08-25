@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class AsyncOperation: Operation {
-    
     @objc private enum State: Int {
         case ready
         case executing
@@ -30,7 +29,7 @@ class AsyncOperation: Operation {
     
     @objc private dynamic var state: State {
         get {
-            return stateQueue.sync {
+            stateQueue.sync {
                 _state
             }
         } set {
@@ -41,19 +40,19 @@ class AsyncOperation: Operation {
     }
     
     override var isAsynchronous: Bool {
-        return true
+        true
     }
     
     override var isReady: Bool {
-        return super.isReady && state == .ready
+        super.isReady && state == .ready
     }
     
     override var isExecuting: Bool {
-        return state == .executing
+        state == .executing
     }
     
     override var isFinished: Bool {
-        return state == .finished
+        state == .finished
     }
     
     override func start() {
@@ -61,7 +60,7 @@ class AsyncOperation: Operation {
             finish()
             return
         }
-        self.state = .executing
+        state = .executing
         main()
     }
     
@@ -70,21 +69,20 @@ class AsyncOperation: Operation {
     }
     
     @objc class var keyPathsForValuesAffectingIsReady: Set<String> {
-        return [#keyPath(state)]
+        [#keyPath(state)]
     }
     
     @objc class var keyPathsForValuesAffectingIsExecuting: Set<String> {
-        return [#keyPath(state)]
+        [#keyPath(state)]
     }
     
     @objc class var keyPathsForValuesAffectingIsFinished: Set<String> {
-        return [#keyPath(state)]
+        [#keyPath(state)]
     }
     
     func finish() {
         if isExecuting {
-            self.state = .finished
+            state = .finished
         }
     }
-    
 }

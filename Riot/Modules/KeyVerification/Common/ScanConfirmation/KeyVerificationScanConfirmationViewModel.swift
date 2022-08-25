@@ -19,7 +19,6 @@
 import Foundation
 
 final class KeyVerificationScanConfirmationViewModel: KeyVerificationScanConfirmationViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -58,48 +57,48 @@ final class KeyVerificationScanConfirmationViewModel: KeyVerificationScanConfirm
     func process(viewAction: KeyVerificationScanConfirmationViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .acknowledgeOtherScannedMyCode(let otherHasScannedMyCode):
-            self.transaction.otherUserScannedMyQrCode(otherHasScannedMyCode)
-            if otherHasScannedMyCode == false {                self.coordinatorDelegate?.keyVerificationScanConfirmationViewModelDidCancel(self)
+            transaction.otherUserScannedMyQrCode(otherHasScannedMyCode)
+            if otherHasScannedMyCode == false { coordinatorDelegate?.keyVerificationScanConfirmationViewModelDidCancel(self)
             } else {
-                self.update(viewState: .loading)
+                update(viewState: .loading)
             }
         case .cancel:
-            self.cancel()
+            cancel()
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        let otherUserId = self.transaction.otherUserId
-        let otherUser = self.session.user(withUserId: otherUserId)
+        let otherUserId = transaction.otherUserId
+        let otherUser = session.user(withUserId: otherUserId)
         let otherDisplayName = otherUser?.displayname ?? otherUserId
         
-        let viewData = KeyVerificationScanConfirmationViewData(isScanning: self.isScanning, verificationKind: self.verificationKind, otherDisplayName: otherDisplayName)
-        self.update(viewState: .loaded(viewData))
+        let viewData = KeyVerificationScanConfirmationViewData(isScanning: isScanning, verificationKind: verificationKind, otherDisplayName: otherDisplayName)
+        update(viewState: .loaded(viewData))
         
-        self.registerTransactionDidStateChangeNotification()
+        registerTransactionDidStateChangeNotification()
         
-        if case .scannedOtherQRCode(let qrCodeData) = self.codeScanning {
+        if case .scannedOtherQRCode(let qrCodeData) = codeScanning {
             self.transaction.userHasScannedOtherQrCodeData(qrCodeData)
         }
     }
     
     private func update(viewState: KeyVerificationScanConfirmationViewState) {
-        self.viewDelegate?.keyVerificationScanConfirmationViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.keyVerificationScanConfirmationViewModel(self, didUpdateViewState: viewState)
     }
     
     private func cancel() {
-        self.transaction.cancel(with: MXTransactionCancelCode.user())
-        self.coordinatorDelegate?.keyVerificationScanConfirmationViewModelDidCancel(self)
+        transaction.cancel(with: MXTransactionCancelCode.user())
+        coordinatorDelegate?.keyVerificationScanConfirmationViewModelDidCancel(self)
     }
     
     // MARK: - MXKeyVerificationTransactionDidChange
     
     private func registerTransactionDidStateChangeNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: .MXKeyVerificationTransactionDidChange, object: self.transaction)
+        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: .MXKeyVerificationTransactionDidChange, object: transaction)
     }
     
     private func unregisterTransactionDidStateChangeNotification() {
@@ -113,20 +112,20 @@ final class KeyVerificationScanConfirmationViewModel: KeyVerificationScanConfirm
 
         switch transaction.state {
         case .verified:
-            self.unregisterTransactionDidStateChangeNotification()
-            self.coordinatorDelegate?.keyVerificationScanConfirmationViewModelDidComplete(self)
+            unregisterTransactionDidStateChangeNotification()
+            coordinatorDelegate?.keyVerificationScanConfirmationViewModelDidComplete(self)
         case .cancelled:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelled(reason))
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .cancelled(reason))
         case .cancelledByMe:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelledByMe(reason))
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .cancelledByMe(reason))
         default:
             break
         }

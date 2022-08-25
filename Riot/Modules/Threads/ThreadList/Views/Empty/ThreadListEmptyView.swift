@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,15 +24,14 @@ protocol ThreadListEmptyViewDelegate: AnyObject {
 
 /// View to be shown on the thread list screen when no thread is available. Use a `ThreadListEmptyModel` instance to configure.
 class ThreadListEmptyView: UIView {
-    
     @IBOutlet weak var delegate: ThreadListEmptyViewDelegate?
     
-    @IBOutlet private weak var iconBackgroundView: UIView!
-    @IBOutlet private weak var iconView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var infoLabel: UILabel!
-    @IBOutlet private weak var tipLabel: UILabel!
-    @IBOutlet private weak var showAllThreadsButton: UIButton!
+    @IBOutlet private var iconBackgroundView: UIView!
+    @IBOutlet private var iconView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var infoLabel: UILabel!
+    @IBOutlet private var tipLabel: UILabel!
+    @IBOutlet private var showAllThreadsButton: UIButton!
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -56,13 +55,11 @@ class ThreadListEmptyView: UIView {
     @IBAction private func showAllThreadsButtonTapped(_ sender: UIButton) {
         delegate?.threadListEmptyViewTappedShowAllThreads(self)
     }
-    
 }
 
-extension ThreadListEmptyView: NibOwnerLoadable {}
+extension ThreadListEmptyView: NibOwnerLoadable { }
 
 extension ThreadListEmptyView: Themable {
-    
     func update(theme: Theme) {
         iconBackgroundView.backgroundColor = theme.colors.system
         iconView.tintColor = theme.colors.secondaryContent
@@ -71,5 +68,4 @@ extension ThreadListEmptyView: Themable {
         tipLabel.textColor = theme.colors.secondaryContent
         showAllThreadsButton.tintColor = theme.colors.accent
     }
-    
 }

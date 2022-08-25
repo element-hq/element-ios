@@ -19,7 +19,6 @@
 import Foundation
 
 final class SpaceMemberDetailViewModel: NSObject, SpaceMemberDetailViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -57,38 +56,38 @@ final class SpaceMemberDetailViewModel: NSObject, SpaceMemberDetailViewModelType
     func process(viewAction: SpaceMemberDetailViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .openRoom(let roomId):
             Analytics.shared.viewRoomTrigger = .spaceMemberDetail
-            self.coordinatorDelegate?.spaceMemberDetailViewModel(self, showRoomWithId: roomId)
+            coordinatorDelegate?.spaceMemberDetailViewModel(self, showRoomWithId: roomId)
         case .createRoom(let memberId):
-            self.createDirectRoom(forMemberWithId: memberId)
+            createDirectRoom(forMemberWithId: memberId)
         case .cancel:
-            self.cancelOperations()
-            self.coordinatorDelegate?.spaceMemberDetailViewModelDidCancel(self)
+            cancelOperations()
+            coordinatorDelegate?.spaceMemberDetailViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        self.space = self.session.spaceService.getSpace(withId: self.spaceId)
-        self.update(viewState: .loaded(self.member, self.space?.room))
+        space = session.spaceService.getSpace(withId: spaceId)
+        update(viewState: .loaded(member, space?.room))
     }
     
     private func update(viewState: SpaceMemberDetailViewState) {
-        self.viewDelegate?.spaceMemberDetailViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.spaceMemberDetailViewModel(self, didUpdateViewState: viewState)
     }
     
     private func createDirectRoom(forMemberWithId memberId: String) {
-        self.update(viewState: .loading)
-        guard let account = self.userSessionsService.mainUserSession?.account, let session = account.mxSession else {
-            self.update(viewState: .loaded(self.member, self.space?.room))
+        update(viewState: .loading)
+        guard let account = userSessionsService.mainUserSession?.account, let session = account.mxSession else {
+            update(viewState: .loaded(member, space?.room))
             return
         }
         
         let invite: [String]? = (session.myUserId != memberId) ? [memberId] : nil
-        self.currentOperation = session.vc_canEnableE2EByDefaultInNewRoom(withUsers: invite) { canEnableE2E in
+        currentOperation = session.vc_canEnableE2EByDefaultInNewRoom(withUsers: invite) { canEnableE2E in
             self.currentOperation = nil
             let roomCreationParameters = MXRoomCreationParameters()
             roomCreationParameters.visibility = kMXRoomDirectoryVisibilityPrivate
@@ -121,6 +120,6 @@ final class SpaceMemberDetailViewModel: NSObject, SpaceMemberDetailViewModelType
     }
 
     private func cancelOperations() {
-        self.currentOperation?.cancel()
+        currentOperation?.cancel()
     }
 }

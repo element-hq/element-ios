@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,6 @@ struct NotificationSettingsKeywords: View {
             placeholder: VectorL10n.settingsNewKeyword
         )
         .disabled(!(viewModel.viewState.selectionState[.keywords] ?? false))
-
     }
 }
 

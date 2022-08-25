@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,8 @@ import UIKit
 
 extension RoomViewController {
     // MARK: - Override
-    open override func mention(_ roomMember: MXRoomMember) {
+
+    override open func mention(_ roomMember: MXRoomMember) {
         guard let inputToolbar = inputToolbar else {
             return
         }
@@ -34,7 +35,7 @@ extension RoomViewController {
                 newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
             }
             newAttributedString.appendString(" ")
-        } else if roomMember.userId == self.mainSession.myUser.userId {
+        } else if roomMember.userId == mainSession.myUser.userId {
             newAttributedString.appendString("/me ")
         } else {
             if #available(iOS 15.0, *) {
@@ -51,13 +52,12 @@ extension RoomViewController {
         inputToolbar.becomeFirstResponder()
     }
 
-
     /// Send given attributed text message to the room
-    /// 
+    ///
     /// - Parameter attributedTextMsg: the attributed text message
     @objc func sendAttributedTextMessage(_ attributedTextMsg: NSAttributedString) {
-        let eventModified = self.roomDataSource.event(withEventId: customizedRoomDataSource?.selectedEventId)
-        self.setupRoomDataSource { roomDataSource in
+        let eventModified = roomDataSource.event(withEventId: customizedRoomDataSource?.selectedEventId)
+        setupRoomDataSource { roomDataSource in
             guard let roomDataSource = roomDataSource as? RoomDataSource else { return }
 
             if self.inputToolbar?.sendMode == .reply, let eventModified = eventModified {
@@ -83,7 +83,8 @@ extension RoomViewController {
                         MXLog.error("[RoomViewController] sendAttributedTextMessage failed while updating event", context: [
                             "event_id": eventModified.eventId
                         ])
-                })
+                    }
+                )
             } else {
                 roomDataSource.sendAttributedTextMessage(attributedTextMsg) { response in
                     switch response {
@@ -103,8 +104,9 @@ extension RoomViewController {
 }
 
 // MARK: - Private Helpers
+
 private extension RoomViewController {
     var inputToolbar: RoomInputToolbarView? {
-        return self.inputToolbarView as? RoomInputToolbarView
+        inputToolbarView as? RoomInputToolbarView
     }
 }

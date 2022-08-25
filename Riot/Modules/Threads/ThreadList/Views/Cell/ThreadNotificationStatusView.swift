@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import UIKit
 
 /// Dot view for a thread notification status
 class ThreadNotificationStatusView: UIView {
-    
     private var theme: Theme
 
     init(withTheme theme: Theme) {
@@ -48,15 +47,12 @@ class ThreadNotificationStatusView: UIView {
             backgroundColor = theme.colors.alert
         }
     }
-    
 }
 
 extension ThreadNotificationStatusView: Themable {
-    
     func update(theme: Theme) {
         self.theme = theme
         
         updateBgColor()
     }
-    
 }

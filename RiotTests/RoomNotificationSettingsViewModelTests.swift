@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import XCTest
 @testable import Element
+import XCTest
 
 class MockRoomNotificationSettingsView: RoomNotificationSettingsViewModelViewDelegate {
-    
     var viewState: RoomNotificationSettingsViewStateType?
     
     func roomNotificationSettingsViewModel(_ viewModel: RoomNotificationSettingsViewModelType, didUpdateViewState viewState: RoomNotificationSettingsViewStateType) {
@@ -27,7 +26,6 @@ class MockRoomNotificationSettingsView: RoomNotificationSettingsViewModelViewDel
 }
 
 class MockRoomNotificationSettingsCoordinator: RoomNotificationSettingsViewModelCoordinatorDelegate {
-    
     var didComplete = false
     var didCancel = false
     func roomNotificationSettingsViewModelDidComplete(_ viewModel: RoomNotificationSettingsViewModelType) {
@@ -40,11 +38,10 @@ class MockRoomNotificationSettingsCoordinator: RoomNotificationSettingsViewModel
 }
 
 class RoomNotificationSettingsViewModelTests: XCTestCase {
-    
-    enum Constants{
-        static let roomDisplayName: String = "Test Room Name"
-        static let roomId: String = "1"
-        static let avatarUrl: String = "http://test.url.com"
+    enum Constants {
+        static let roomDisplayName = "Test Room Name"
+        static let roomId = "1"
+        static let avatarUrl = "http://test.url.com"
         static let avatarData = RoomAvatarViewData(roomId: "1", displayName: roomDisplayName, avatarUrl: avatarUrl, mediaManager: MXMediaManager())
     }
     
@@ -124,5 +121,4 @@ class RoomNotificationSettingsViewModelTests: XCTestCase {
         XCTAssertNotNil(view.viewState)
         XCTAssertTrue(view.viewState!.notificationState == .mute)
     }
-    
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// `RoomContextActionService` implements all the possible actions for a room not owned by the user (e.g. `MXPublicRoom`, `MXSpaceChildInfo`)
 class UnownedRoomContextActionService: NSObject, RoomContextActionServiceProtocol {
-    
     // MARK: - RoomContextActionServiceProtocol
 
     internal let roomId: String
@@ -41,9 +40,9 @@ class UnownedRoomContextActionService: NSObject, RoomContextActionServiceProtoco
     // MARK: - Public
     
     func joinRoom() {
-        self.delegate?.roomContextActionService(self, updateActivityIndicator: true)
+        delegate?.roomContextActionService(self, updateActivityIndicator: true)
         if let canonicalAlias = canonicalAlias {
-            self.session.matrixRestClient.resolveRoomAlias(canonicalAlias) { [weak self] (response) in
+            session.matrixRestClient.resolveRoomAlias(canonicalAlias) { [weak self] response in
                 guard let self = self else { return }
                 switch response {
                 case .success(let resolution):
@@ -55,14 +54,14 @@ class UnownedRoomContextActionService: NSObject, RoomContextActionServiceProtoco
             }
         } else {
             MXLog.warning("[UnownedRoomContextActionService] joinRoom: no canonical alias provided.")
-            joinRoom(withId: self.roomId, via: nil)
+            joinRoom(withId: roomId, via: nil)
         }
     }
     
     // MARK: - Private
     
     private func joinRoom(withId roomId: String, via viaServers: [String]?) {
-        self.session.joinRoom(roomId, viaServers: viaServers, withSignUrl: nil) { [weak self] response in
+        session.joinRoom(roomId, viaServers: viaServers, withSignUrl: nil) { [weak self] response in
             guard let self = self else { return }
             switch response {
             case .success:

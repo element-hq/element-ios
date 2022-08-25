@@ -22,7 +22,6 @@ import Foundation
     func reauthenticationCoordinatorBridgePresenterDidComplete(_ bridgePresenter: ReauthenticationCoordinatorBridgePresenter, withAuthenticationParameters authenticationParameters: [String: Any]?)
     func reauthenticationCoordinatorBridgePresenterDidCancel(_ bridgePresenter: ReauthenticationCoordinatorBridgePresenter)
     func reauthenticationCoordinatorBridgePresenter(_ bridgePresenter: ReauthenticationCoordinatorBridgePresenter, didFailWithError error: Error)
-    
 }
 
 /// ReauthenticationCoordinatorBridgePresenter enables to start ReauthenticationCoordinator from a view controller.
@@ -31,7 +30,6 @@ import Foundation
 /// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class ReauthenticationCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -51,10 +49,9 @@ final class ReauthenticationCoordinatorBridgePresenter: NSObject {
                  success: @escaping ([String: Any]?) -> Void,
                  cancel: @escaping () -> Void,
                  failure: @escaping (Error) -> Void) {
-        
-        self.didComplete = success
-        self.didCancel = cancel
-        self.didFail = failure
+        didComplete = success
+        didCancel = cancel
+        didFail = failure
         
         let coordinator = ReauthenticationCoordinator(parameters: parameters)
         coordinator.delegate = self
@@ -64,9 +61,9 @@ final class ReauthenticationCoordinatorBridgePresenter: NSObject {
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        self.resetCompletions()
+        resetCompletions()
         
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -78,26 +75,27 @@ final class ReauthenticationCoordinatorBridgePresenter: NSObject {
         }
     }
     
-    // MARK - Private
+    // MARK: - Private
     
     private func resetCompletions() {
-        self.didComplete = nil
-        self.didCancel = nil
-        self.didFail = nil
+        didComplete = nil
+        didCancel = nil
+        didFail = nil
     }
 }
 
 // MARK: - ReauthenticationCoordinatorDelegate
+
 extension ReauthenticationCoordinatorBridgePresenter: ReauthenticationCoordinatorDelegate {
     func reauthenticationCoordinatorDidComplete(_ coordinator: ReauthenticationCoordinatorType, withAuthenticationParameters authenticationParameters: [String: Any]?) {
-        self.didComplete?(authenticationParameters)
+        didComplete?(authenticationParameters)
     }
     
     func reauthenticationCoordinatorDidCancel(_ coordinator: ReauthenticationCoordinatorType) {
-        self.didCancel?()
+        didCancel?()
     }
     
     func reauthenticationCoordinator(_ coordinator: ReauthenticationCoordinatorType, didFailWithError error: Error) {
-        self.didFail?(error)
+        didFail?(error)
     }
 }

@@ -17,7 +17,6 @@
 import Foundation
 
 final class EncryptionKeysExportPresenter: NSObject {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -30,7 +29,7 @@ final class EncryptionKeysExportPresenter: NSObject {
 
     private let session: MXSession
     private let activityViewPresenter: ActivityIndicatorPresenterType
-    private let keyExportFileURL: URL    
+    private let keyExportFileURL: URL
     
     private weak var presentingViewController: UIViewController?
     private weak var sourceView: UIView?
@@ -43,8 +42,8 @@ final class EncryptionKeysExportPresenter: NSObject {
 
     init(session: MXSession) {
         self.session = session
-        self.activityViewPresenter = ActivityIndicatorPresenter()
-        self.keyExportFileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(Constants.keyExportFileName)
+        activityViewPresenter = ActivityIndicatorPresenter()
+        keyExportFileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(Constants.keyExportFileName)
         super.init()
     }
     
@@ -55,92 +54,90 @@ final class EncryptionKeysExportPresenter: NSObject {
     // MARK: - Public
 
     func present(from viewController: UIViewController, sourceView: UIView?) {
-        self.presentingViewController = viewController
+        presentingViewController = viewController
         self.sourceView = sourceView
         
-        let keysExportView: MXKEncryptionKeysExportView = MXKEncryptionKeysExportView(matrixSession: self.session)
+        let keysExportView = MXKEncryptionKeysExportView(matrixSession: session)
 
         // Make sure the file is empty
-        self.deleteKeyExportFile()
+        deleteKeyExportFile()
 
         keysExportView.show(in: viewController,
-                         toExportKeysToFile: self.keyExportFileURL,
-                         onLoading: { [weak self] (loading) in
+                            toExportKeysToFile: keyExportFileURL,
+                            onLoading: { [weak self] loading in
 
-                            guard let self = self else {
-                                return
-                            }
+                                guard let self = self else {
+                                    return
+                                }
                             
-                            if loading {
-                                self.activityViewPresenter.presentActivityIndicator(on: viewController.view, animated: true)
-                            } else {
-                                self.activityViewPresenter.removeCurrentActivityIndicator(animated: true)
-                            }
-        }, onComplete: { [weak self] (success) in
-            guard let self = self else {
-                return
-            }
+                                if loading {
+                                    self.activityViewPresenter.presentActivityIndicator(on: viewController.view, animated: true)
+                                } else {
+                                    self.activityViewPresenter.removeCurrentActivityIndicator(animated: true)
+                                }
+                            }, onComplete: { [weak self] success in
+                                guard let self = self else {
+                                    return
+                                }
 
-            guard success else {
-                self.encryptionKeysExportView = nil
-                return
-            }
+                                guard success else {
+                                    self.encryptionKeysExportView = nil
+                                    return
+                                }
 
-            self.presentInteractionDocumentController()
-        })
+                                self.presentInteractionDocumentController()
+                            })
         
-        self.encryptionKeysExportView = keysExportView
+        encryptionKeysExportView = keysExportView
     }
     
     // MARK: - Private
 
     private func presentInteractionDocumentController() {
-        
         let sourceRect: CGRect
         
-        guard let presentingView = self.presentingViewController?.view else {
-            self.encryptionKeysExportView = nil
+        guard let presentingView = presentingViewController?.view else {
+            encryptionKeysExportView = nil
             return
         }
         
-        if let sourceView = self.sourceView {
+        if let sourceView = sourceView {
             sourceRect = sourceView.convert(sourceView.bounds, to: presentingView)
         } else {
             sourceRect = presentingView.bounds
         }
         
-        let documentInteractionController = UIDocumentInteractionController(url: self.keyExportFileURL)
+        let documentInteractionController = UIDocumentInteractionController(url: keyExportFileURL)
         documentInteractionController.delegate = self
 
         if documentInteractionController.presentOptionsMenu(from: sourceRect, in: presentingView, animated: true) {
             self.documentInteractionController = documentInteractionController
         } else {
-            self.encryptionKeysExportView = nil
-            self.deleteKeyExportFile()
+            encryptionKeysExportView = nil
+            deleteKeyExportFile()
         }
     }
 
     @objc private func deleteKeyExportFile() {
-        
         let fileManager = FileManager.default
         
-        if fileManager.fileExists(atPath: self.keyExportFileURL.path) {
-            try? fileManager.removeItem(atPath: self.keyExportFileURL.path)
+        if fileManager.fileExists(atPath: keyExportFileURL.path) {
+            try? fileManager.removeItem(atPath: keyExportFileURL.path)
         }
     }
 }
 
 // MARK: - UIDocumentInteractionControllerDelegate
-extension EncryptionKeysExportPresenter: UIDocumentInteractionControllerDelegate {
 
+extension EncryptionKeysExportPresenter: UIDocumentInteractionControllerDelegate {
     // Note: This method is not called in all cases (see http://stackoverflow.com/a/21867096).
     func documentInteractionController(_ controller: UIDocumentInteractionController, didEndSendingToApplication application: String?) {
-        self.deleteKeyExportFile()
-        self.documentInteractionController = nil
+        deleteKeyExportFile()
+        documentInteractionController = nil
     }
     
     func documentInteractionControllerDidDismissOptionsMenu(_ controller: UIDocumentInteractionController) {
-        self.encryptionKeysExportView = nil
-        self.documentInteractionController = nil
+        encryptionKeysExportView = nil
+        documentInteractionController = nil
     }
 }

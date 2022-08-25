@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ extension UserInteractiveAuthenticationServiceError: CustomNSError {
     static let errorDomain = "UserInteractiveAuthenticationServiceErrorDomain"
     
     var errorCode: Int {
-        return self.rawValue
+        rawValue
     }
     
     var errorUserInfo: [String: Any] {
@@ -48,7 +48,6 @@ enum AuthenticatedEndpointStatus {
 /// UserInteractiveAuthenticationService enables to check if an API endpoint needs authentication.
 @objcMembers
 final class UserInteractiveAuthenticationService: NSObject {
-    
     // MARK: - Constants
     
     // MARK: - Properties
@@ -75,8 +74,7 @@ final class UserInteractiveAuthenticationService: NSObject {
     /// - Returns: A `MXHTTPOperation` instance.
     @discardableResult
     func authenticatedEndpointStatus(for request: AuthenticatedEndpointRequest, completion: @escaping (Result<AuthenticatedEndpointStatus, Error>) -> Void) -> MXHTTPOperation {
-        
-        return self.authenticationSession(with: request) { (authenticationSession) in
+        authenticationSession(with: request) { authenticationSession in
             
             let status: AuthenticatedEndpointStatus
             
@@ -87,7 +85,7 @@ final class UserInteractiveAuthenticationService: NSObject {
             }
             
             completion(.success(status))
-        } failure: { (error) in
+        } failure: { error in
             completion(.failure(error))
         }
     }
@@ -99,8 +97,7 @@ final class UserInteractiveAuthenticationService: NSObject {
     /// - Returns: A `MXHTTPOperation` instance.
     @discardableResult
     func canAuthenticate(with request: AuthenticatedEndpointRequest, completion: @escaping (Result<Bool, Error>) -> Void) -> MXHTTPOperation {
-        
-        return self.authenticatedEndpointStatus(for: request) { (result) in
+        authenticatedEndpointStatus(for: request) { result in
             switch result {
             case .success(let authenticationSessionResult):
                 let canAuthenticate: Bool
@@ -131,13 +128,12 @@ final class UserInteractiveAuthenticationService: NSObject {
                                success: @escaping (MXAuthenticationSession?) -> Void,
                                failure: @escaping (Error) -> Void) -> MXHTTPOperation {
         // Get the authentication flow required for this API
-        return self.session.matrixRestClient.authSessionForRequest(withMethod: request.httpMethod, path: request.path, parameters: [:], success: { [weak self] (authenticationSession) in
+        session.matrixRestClient.authSessionForRequest(withMethod: request.httpMethod, path: request.path, parameters: [:], success: { [weak self] authenticationSession in
             guard let self = self else {
                 return
             }
             
             if let authenticationSession = authenticationSession {
-                
                 if let flows = authenticationSession.flows {
                     // Check if a supported flow exists
                     if self.isThereAKnownFlow(inFlows: flows) {
@@ -153,7 +149,7 @@ final class UserInteractiveAuthenticationService: NSObject {
                 // No need to authenticate
                 success(nil)
             }
-        }, failure: { (error) in
+        }, failure: { error in
             guard let error = error else {
                 return
             }
@@ -165,7 +161,6 @@ final class UserInteractiveAuthenticationService: NSObject {
     /// - Parameter error: A request error.
     /// - Returns: An AuthenticatedEndpointStatus if the error can indicates authentication status or nil for other errors
     func getAuthenticatedEndpointStatus(fromRequestError error: Error) -> AuthenticatedEndpointStatus? {
-        
         guard let urlResponse = MXHTTPOperation.urlResponse(fromError: error) else {
             return nil
         }
@@ -194,9 +189,7 @@ final class UserInteractiveAuthenticationService: NSObject {
     ///   - success: The closure executed the operation succeed. Get an MXAuthenticationSession if authentication is required or nil if there is no authentication needed.
     ///   - failure: The closure executed the operation fails.
     func authenticationSession(fromRequestError error: Error, success: @escaping (MXAuthenticationSession?) -> Void, failure: @escaping (Error) -> Void) {
-        
-        if let authenticatedEndpointStatus = self.getAuthenticatedEndpointStatus(fromRequestError: error) {
-            
+        if let authenticatedEndpointStatus = getAuthenticatedEndpointStatus(fromRequestError: error) {
             if case .authenticationNeeded(let authenticationSession) = authenticatedEndpointStatus {
                 success(authenticationSession)
             } else {
@@ -211,10 +204,10 @@ final class UserInteractiveAuthenticationService: NSObject {
     /// - Parameter authenticationSession: An authentication session for a given request.
     /// - Returns: The fallback URL for the first uncompleted stage found.
     func firstUncompletedStageAuthenticationFallbackURL(for authenticationSession: MXAuthenticationSession) -> URL? {
-        guard let sessiondId = authenticationSession.session, let firstUncompletedStageIdentifier = self.firstUncompletedFlowIdentifier(in: authenticationSession) else {
+        guard let sessiondId = authenticationSession.session, let firstUncompletedStageIdentifier = firstUncompletedFlowIdentifier(in: authenticationSession) else {
             return nil
         }
-        return self.authenticationFallbackURL(for: firstUncompletedStageIdentifier, sessionId: sessiondId)
+        return authenticationFallbackURL(for: firstUncompletedStageIdentifier, sessionId: sessiondId)
     }
     
     /// Build UIA fallback authentication URL for a given stage (https://matrix.org/docs/spec/client_server/latest#fallback)
@@ -223,11 +216,11 @@ final class UserInteractiveAuthenticationService: NSObject {
     ///   - sessionId:  The the ID of the session given by the homeserver.
     /// - Returns: a `MXHTTPOperation` instance.
     func authenticationFallbackURL(for flowIdentifier: String, sessionId: String) -> URL? {
-        guard let homeserverStringURL = self.session.matrixRestClient.credentials.homeServer, let homeserverURL = URL(string: homeserverStringURL) else {
+        guard let homeserverStringURL = session.matrixRestClient.credentials.homeServer, let homeserverURL = URL(string: homeserverStringURL) else {
             return nil
-        }                
+        }
         
-        let fallbackPath =  "\(kMXAPIPrefixPathR0)/auth/\(flowIdentifier)/fallback/web?session=\(sessionId)"
+        let fallbackPath = "\(kMXAPIPrefixPathR0)/auth/\(flowIdentifier)/fallback/web?session=\(sessionId)"
         
         return URL(string: fallbackPath, relativeTo: homeserverURL)
     }
@@ -236,7 +229,6 @@ final class UserInteractiveAuthenticationService: NSObject {
     /// - Parameter authenticationSession: An authentication session for a given request.
     /// - Returns: Uncompleted login flow stage identifier.
     func firstUncompletedFlowIdentifier(in authenticationSession: MXAuthenticationSession) -> String? {
-        
         let completedStages = authenticationSession.completed ?? []
         
         guard let flows = authenticationSession.flows else {
@@ -244,7 +236,7 @@ final class UserInteractiveAuthenticationService: NSObject {
         }
                
         // Remove nil values
-        let allNonNullStages = flows.compactMap { $0.stages }
+        let allNonNullStages = flows.compactMap(\.stages)
         
         // Make a flat array of all stages
         let allStages: [String] = allNonNullStages.flatMap { $0 }
@@ -274,16 +266,15 @@ final class UserInteractiveAuthenticationService: NSObject {
     // MARK: - Private
     
     private func isThereAKnownFlow(inFlows flows: [MXLoginFlow]) -> Bool {
-        return self.hasPasswordFlow(inFlows: flows)
+        hasPasswordFlow(inFlows: flows)
     }
     
     private func canAuthenticate(with authenticationSession: MXAuthenticationSession) -> Bool {
-                        
-        if self.isThereAKnownFlow(inFlows: authenticationSession.flows) {
+        if isThereAKnownFlow(inFlows: authenticationSession.flows) {
             return true
         }
         
-        if self.firstUncompletedStageAuthenticationFallbackURL(for: authenticationSession) != nil {
+        if firstUncompletedStageAuthenticationFallbackURL(for: authenticationSession) != nil {
             return true
         }
         

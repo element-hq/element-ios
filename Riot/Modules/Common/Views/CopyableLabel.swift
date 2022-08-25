@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,35 +19,34 @@ import UIKit
 /// Enables to copy text content of the label
 /// https://stackoverflow.com/a/62978837
 class CopyableLabel: UILabel {
-
     // MARK: - Setup
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.sharedInit()
+        sharedInit()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.sharedInit()
+        sharedInit()
     }
 
     func sharedInit() {
-        self.isUserInteractionEnabled = true
-        self.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(self.showMenu)))
+        isUserInteractionEnabled = true
+        addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(showMenu)))
     }
     
     // MARK: - Public
     
     @objc func showMenu(sender: AnyObject?) {
-        self.becomeFirstResponder()
+        becomeFirstResponder()
 
         let menu = UIMenuController.shared
 
         if !menu.isMenuVisible {
             if #available(iOS 13.0, *) {
                 menu.showMenu(from: self, rect: self.bounds)
-            } 
+            }
         }
     }
     
@@ -56,16 +55,16 @@ class CopyableLabel: UILabel {
     override func copy(_ sender: Any?) {
         let board = UIPasteboard.general
 
-        board.string = self.text
+        board.string = text
         
         // Note that the UIMenuController will be dismissed by itself after copying the text
     }
 
     override var canBecomeFirstResponder: Bool {
-        return true
+        true
     }
 
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        return action == #selector(UIResponderStandardEditActions.copy)
-    }        
+        action == #selector(UIResponderStandardEditActions.copy)
+    }
 }

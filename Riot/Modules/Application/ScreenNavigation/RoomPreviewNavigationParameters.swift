@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,6 @@ import Foundation
 /// This room can come from an email invitation link or a simple link to a room.
 @objcMembers
 class RoomPreviewNavigationParameters: RoomNavigationParameters {
-    
     // MARK: - Properties
 
     /// The data for the room preview

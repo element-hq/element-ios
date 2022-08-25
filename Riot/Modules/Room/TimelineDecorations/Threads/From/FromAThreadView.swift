@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,17 +19,16 @@ import Reusable
 
 @objcMembers
 class FromAThreadView: UIView {
-
     private enum Constants {
         static let viewHeight: CGFloat = 18
     }
 
-    @IBOutlet private weak var iconView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private var iconView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
 
     static func contentViewHeight(forEvent event: MXEvent,
                                   fitting maxWidth: CGFloat) -> CGFloat {
-        return Constants.viewHeight
+        Constants.viewHeight
     }
 
     static func instantiate() -> FromAThreadView {
@@ -38,17 +37,14 @@ class FromAThreadView: UIView {
         view.titleLabel.text = VectorL10n.messageFromAThread
         return view
     }
-
 }
 
-extension FromAThreadView: NibLoadable {}
+extension FromAThreadView: NibLoadable { }
 
 extension FromAThreadView: Themable {
-
     func update(theme: Theme) {
         backgroundColor = .clear
         iconView.tintColor = theme.colors.secondaryContent
         titleLabel.textColor = theme.colors.secondaryContent
     }
-
 }

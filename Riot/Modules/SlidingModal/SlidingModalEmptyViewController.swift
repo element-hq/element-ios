@@ -18,7 +18,6 @@ import Foundation
 
 /// Empty view controller used to embed a view conforming to `SlidingModalPresentable`.
 final class SlidingModalEmptyViewController: UIViewController {
-    
     // MARK: - Properties
     
     private var modalView: SlidingModalPresentable.ViewType!
@@ -34,18 +33,18 @@ final class SlidingModalEmptyViewController: UIViewController {
     // MARK: - Life cycle
     
     override func loadView() {
-        self.view = self.modalView
+        view = modalView
     }
 }
 
 // MARK: - SlidingModalPresentable
+
 extension SlidingModalEmptyViewController: SlidingModalPresentable {
-    
     func allowsDismissOnBackgroundTap() -> Bool {
-        return self.modalView.allowsDismissOnBackgroundTap()
+        modalView.allowsDismissOnBackgroundTap()
     }
     
     func layoutHeightFittingWidth(_ width: CGFloat) -> CGFloat {
-        return self.modalView.layoutHeightFittingWidth(width)
+        modalView.layoutHeightFittingWidth(width)
     }
 }

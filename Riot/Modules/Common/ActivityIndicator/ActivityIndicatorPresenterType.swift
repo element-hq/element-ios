@@ -25,10 +25,10 @@ protocol ActivityIndicatorPresenterType {
 // `ActivityIndicatorPresenterType` default implementation
 extension ActivityIndicatorPresenterType {
     func presentActivityIndicator(on view: UIView, animated: Bool) {
-        self.presentActivityIndicator(on: view, animated: animated, completion: nil)
+        presentActivityIndicator(on: view, animated: animated, completion: nil)
     }
     
     func removeCurrentActivityIndicator(animated: Bool) {
-        self.removeCurrentActivityIndicator(animated: animated, completion: nil)
+        removeCurrentActivityIndicator(animated: animated, completion: nil)
     }
 }

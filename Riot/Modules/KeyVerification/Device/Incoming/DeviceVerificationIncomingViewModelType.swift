@@ -23,13 +23,12 @@ protocol DeviceVerificationIncomingViewModelViewDelegate: AnyObject {
 }
 
 protocol DeviceVerificationIncomingViewModelCoordinatorDelegate: AnyObject {
-    func deviceVerificationIncomingViewModel(_ viewModel: DeviceVerificationIncomingViewModelType, didAcceptTransaction transaction: MXSASTransaction)    
+    func deviceVerificationIncomingViewModel(_ viewModel: DeviceVerificationIncomingViewModelType, didAcceptTransaction transaction: MXSASTransaction)
     func deviceVerificationIncomingViewModelDidCancel(_ viewModel: DeviceVerificationIncomingViewModelType)
 }
 
 /// Protocol describing the view model used by `DeviceVerificationIncomingViewController`
 protocol DeviceVerificationIncomingViewModelType {
-
     var userId: String { get }
     var userDisplayName: String? { get }
     var avatarUrl: String? { get }

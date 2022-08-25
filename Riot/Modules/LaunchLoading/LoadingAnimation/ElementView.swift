@@ -3,12 +3,12 @@
 // DO NOT MODIFY, your changes will be lost when this file is regenerated.
 //
 
-import UIKit
 import FlowCommoniOS
+import UIKit
 
 @IBDesignable
 public class ElementView: UIView {
-    public struct Defaults {
+    public enum Defaults {
         public static let size = CGSize(width: 130.16, height: 127.75)
         public static let backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.021)
     }
@@ -20,11 +20,11 @@ public class ElementView: UIView {
     public var path_2: ShapeView!
     public var path_3: ShapeView!
 
-    public override var intrinsicContentSize: CGSize {
-        return Defaults.size
+    override public var intrinsicContentSize: CGSize {
+        Defaults.size
     }
 
-    public override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
@@ -39,7 +39,7 @@ public class ElementView: UIView {
         clipsToBounds = false
         createViews()
         addSubviews()
-        //scale(to: frame.size)
+        // scale(to: frame.size)
     }
 
     /// Scales `self` and its subviews to `size`.
@@ -107,7 +107,6 @@ public class ElementView: UIView {
         path.shapeLayer.lineDashPhase = 0
         path.shapeLayer.lineWidth = 0
         path.shapeLayer.path = CGPathCreateWithSVGString("M0,7.2c0,-3.976,3.224,-7.2,7.2,-7.2 26.51,0,48,21.49,48,48 0,3.976,-3.224,7.2,-7.2,7.2 -3.976,0,-7.2,-3.224,-7.2,-7.2 0,-18.557,-15.043,-33.6,-33.6,-33.6 -3.976,0,-7.2,-3.224,-7.2,-7.2zM0,7.2")!
-
     }
 
     private func createPath1() {
@@ -125,7 +124,6 @@ public class ElementView: UIView {
         path_1.shapeLayer.lineDashPhase = 0
         path_1.shapeLayer.lineWidth = 0
         path_1.shapeLayer.path = CGPathCreateWithSVGString("M55.2,48c0,3.976,-3.224,7.2,-7.2,7.2 -26.51,0,-48,-21.49,-48,-48 0,-3.976,3.224,-7.2,7.2,-7.2 3.976,0,7.2,3.224,7.2,7.2 0,18.557,15.043,33.6,33.6,33.6 3.976,0,7.2,3.224,7.2,7.2zM55.2,48")!
-
     }
 
     private func createPath2() {
@@ -143,7 +141,6 @@ public class ElementView: UIView {
         path_2.shapeLayer.lineDashPhase = 0
         path_2.shapeLayer.lineWidth = 0
         path_2.shapeLayer.path = CGPathCreateWithSVGString("M7.2,55.2c-3.976,0,-7.2,-3.224,-7.2,-7.2 0,-26.51,21.49,-48,48,-48 3.976,0,7.2,3.224,7.2,7.2 0,3.976,-3.224,7.2,-7.2,7.2 -18.557,0,-33.6,15.043,-33.6,33.6 0,3.976,-3.224,7.2,-7.2,7.2zM7.2,55.2")!
-
     }
 
     private func createPath3() {
@@ -161,7 +158,6 @@ public class ElementView: UIView {
         path_3.shapeLayer.lineDashPhase = 0
         path_3.shapeLayer.lineWidth = 0
         path_3.shapeLayer.path = CGPathCreateWithSVGString("M48,0c3.976,0,7.2,3.224,7.2,7.2 0,26.51,-21.49,48,-48,48 -3.976,0,-7.2,-3.224,-7.2,-7.2 0,-3.976,3.224,-7.2,7.2,-7.2 18.557,0,33.6,-15.043,33.6,-33.6 0,-3.976,3.224,-7.2,7.2,-7.2zM48,0")!
-
     }
 
     private func addSubviews() {

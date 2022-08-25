@@ -19,18 +19,17 @@
 import UIKit
 
 final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBOutlet private weak var threePidBackgroundView: UIView!
-    @IBOutlet private weak var threePidTitleLabel: UILabel!
-    @IBOutlet private weak var threePidAdressLabel: UILabel!
-    @IBOutlet private weak var operationButton: UIButton!
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var threePidBackgroundView: UIView!
+    @IBOutlet private var threePidTitleLabel: UILabel!
+    @IBOutlet private var threePidAdressLabel: UILabel!
+    @IBOutlet private var operationButton: UIButton!
+    @IBOutlet private var informationLabel: UILabel!
     
     // MARK: Private
 
@@ -59,33 +58,33 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: scrollView)
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .load)
+        viewModel.process(viewAction: .load)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.keyboardAvoider?.startAvoiding()
+        keyboardAvoider?.startAvoiding()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.keyboardAvoider?.stopAvoiding()
+        keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -93,19 +92,19 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.threePidBackgroundView.backgroundColor = theme.backgroundColor
-        self.threePidTitleLabel.textColor = theme.textPrimaryColor
-        self.threePidAdressLabel.textColor = theme.textSecondaryColor
+        threePidBackgroundView.backgroundColor = theme.backgroundColor
+        threePidTitleLabel.textColor = theme.textPrimaryColor
+        threePidAdressLabel.textColor = theme.textSecondaryColor
         
-        self.informationLabel.textColor = theme.textSecondaryColor
-        self.operationButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.operationButton)
+        informationLabel.textColor = theme.textSecondaryColor
+        operationButton.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: operationButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -113,18 +112,16 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
+        scrollView.keyboardDismissMode = .interactive
         
-        self.scrollView.keyboardDismissMode = .interactive
-        
-        self.render(threePid: self.viewModel.threePid)
+        render(threePid: viewModel.threePid)
     }
     
     private func render(threePid: MX3PID) {
-        
         let title: String
         let threePidTitle: String
         let informationText: String
@@ -149,46 +146,46 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
         }
         
         self.title = title
-        self.threePidTitleLabel.text = threePidTitle
-        self.threePidAdressLabel.text = formattedThreePid
-        self.informationLabel.text = informationText
+        threePidTitleLabel.text = threePidTitle
+        threePidAdressLabel.text = formattedThreePid
+        informationLabel.text = informationText
     }
     
     private func render(viewState: SettingsDiscoveryThreePidDetailsViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(displayMode: let displayMode):
-            self.renderLoaded(displayMode: displayMode)
+            renderLoaded(displayMode: displayMode)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoaded(displayMode: SettingsDiscoveryThreePidDetailsDisplayMode) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         
         let operationButtonTitle: String?
         let operationButtonColor: UIColor?
         let operationButtonEnabled: Bool
         
-        self.presentedAlertController?.dismiss(animated: false, completion: nil)
+        presentedAlertController?.dismiss(animated: false, completion: nil)
         
         switch displayMode {
         case .share:
             operationButtonTitle = VectorL10n.settingsDiscoveryThreePidDetailsShareAction
-            operationButtonColor = self.theme.tintColor
+            operationButtonColor = theme.tintColor
             operationButtonEnabled = true
         case .revoke:
             operationButtonTitle = VectorL10n.settingsDiscoveryThreePidDetailsRevokeAction
-            operationButtonColor = self.theme.warningColor
+            operationButtonColor = theme.warningColor
             operationButtonEnabled = true
         case .pendingThreePidVerification:
-            switch self.viewModel.threePid.medium {
+            switch viewModel.threePid.medium {
             case .email:
-                self.presentPendingEmailVerificationAlert()
+                presentPendingEmailVerificationAlert()
             case .msisdn:
-                self.presentPendingMSISDNVerificationAlert()
+                presentPendingMSISDNVerificationAlert()
             default:
                 break
             }
@@ -199,33 +196,32 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
         }
         
         if let operationButtonTitle = operationButtonTitle {
-            self.operationButton.setTitle(operationButtonTitle, for: .normal)
+            operationButton.setTitle(operationButtonTitle, for: .normal)
         }
         
         if let operationButtonColor = operationButtonColor {
-            self.operationButton.setTitleColor(operationButtonColor, for: .normal)
+            operationButton.setTitleColor(operationButtonColor, for: .normal)
         }
         
-        self.operationButton.isEnabled = operationButtonEnabled
+        operationButton.isEnabled = operationButtonEnabled
         
         self.displayMode = displayMode
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        self.operationButton.isEnabled = false
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
+        operationButton.isEnabled = false
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: {
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: {
             self.viewModel.process(viewAction: .cancelThreePidValidation)
         })
-        self.operationButton.isEnabled = true
+        operationButton.isEnabled = true
     }
     
     private func presentPendingEmailVerificationAlert() {
-        
         let alert = UIAlertController(title: VectorL10n.accountEmailValidationTitle,
                                       message: VectorL10n.accountEmailValidationMessage,
                                       preferredStyle: .alert)
@@ -238,23 +234,22 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
             self.viewModel.process(viewAction: .cancelThreePidValidation)
         }))
         
-        self.present(alert, animated: true, completion: nil)
-        self.presentedAlertController = alert
+        present(alert, animated: true, completion: nil)
+        presentedAlertController = alert
     }
     
     private func presentPendingMSISDNVerificationAlert() {
-        
         let alert = UIAlertController(title: VectorL10n.accountMsisdnValidationTitle,
                                       message: VectorL10n.accountMsisdnValidationMessage,
                                       preferredStyle: .alert)
         
-        alert.addTextField { (textField) in
+        alert.addTextField { textField in
             textField.placeholder = nil
             textField.keyboardType = .phonePad
         }
         
         alert.addAction(UIAlertAction(title: VectorL10n.continue, style: .default, handler: { _ in
-            guard let textField =  alert.textFields?.first, let smsCode = textField.text, smsCode.isEmpty == false else {
+            guard let textField = alert.textFields?.first, let smsCode = textField.text, smsCode.isEmpty == false else {
                 return
             }
             self.viewModel.process(viewAction: .confirmMSISDNValidation(code: smsCode))
@@ -264,14 +259,14 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
             self.viewModel.process(viewAction: .cancelThreePidValidation)
         }))
         
-        self.present(alert, animated: true, completion: nil)
-        self.presentedAlertController = alert
+        present(alert, animated: true, completion: nil)
+        presentedAlertController = alert
     }
     
     // MARK: - Actions
 
     @IBAction private func operationButtonAction(_ sender: Any) {
-        guard let displayMode = self.displayMode else {
+        guard let displayMode = displayMode else {
             return
         }
         
@@ -287,15 +282,15 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
         }
         
         if let viewAction = viewAction {
-            self.viewModel.process(viewAction: viewAction)
+            viewModel.process(viewAction: viewAction)
         }
     }
 }
 
 // MARK: - SettingsDiscoveryThreePidDetailsViewModelViewDelegate
-extension SettingsDiscoveryThreePidDetailsViewController: SettingsDiscoveryThreePidDetailsViewModelViewDelegate {
 
+extension SettingsDiscoveryThreePidDetailsViewController: SettingsDiscoveryThreePidDetailsViewModelViewDelegate {
     func settingsDiscoveryThreePidDetailsViewModel(_ viewModel: SettingsDiscoveryThreePidDetailsViewModelType, didUpdateViewState viewSate: SettingsDiscoveryThreePidDetailsViewState) {
-        self.render(viewState: viewSate)
-    }        
+        render(viewState: viewSate)
+    }
 }

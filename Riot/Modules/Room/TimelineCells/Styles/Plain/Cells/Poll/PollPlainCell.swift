@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class PollPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
-    
     private var pollView: UIView?
     private var event: MXEvent?
     
@@ -33,7 +32,7 @@ class PollPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCell
         }
         
         self.event = event
-        self.addPollView(view, on: contentView)
+        addPollView(view, on: contentView)
     }
     
     override func setupViews() {
@@ -46,7 +45,7 @@ class PollPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCell
     
     // The normal flow for tapping on cell content views doesn't work for bubbles without attributed strings
     override func onContentViewTap(_ sender: UITapGestureRecognizer) {
-        guard let event = self.event else {
+        guard let event = event else {
             return
         }
         
@@ -54,11 +53,10 @@ class PollPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCell
     }
     
     func addPollView(_ pollView: UIView, on contentView: UIView) {
-        
         self.pollView?.removeFromSuperview()
         contentView.vc_addSubViewMatchingParent(pollView)
         self.pollView = pollView
     }
 }
 
-extension PollPlainCell: RoomCellThreadSummaryDisplayable {}
+extension PollPlainCell: RoomCellThreadSummaryDisplayable { }

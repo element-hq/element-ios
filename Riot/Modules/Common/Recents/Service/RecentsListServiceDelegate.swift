@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 @objc
 public protocol RecentsListServiceDelegate: AnyObject {
-    
     /// Delegate method to be called when service data updated
     /// - Parameter service: service object
     /// - Parameter totalCountsChanged: true if total rooms count changed

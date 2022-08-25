@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,35 +14,34 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 protocol SpaceListViewCellDelegate: AnyObject {
     func spaceListViewCell(_ cell: SpaceListViewCell, didPressMore button: UIButton)
 }
 
 final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
-
     // MARK: - Properties
     
-    @IBOutlet private weak var avatarView: SpaceAvatarView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var selectionView: UIView!
-    @IBOutlet private weak var moreButton: UIButton!
-    @IBOutlet private weak var badgeLabel: BadgeLabel!
+    @IBOutlet private var avatarView: SpaceAvatarView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var selectionView: UIView!
+    @IBOutlet private var moreButton: UIButton!
+    @IBOutlet private var badgeLabel: BadgeLabel!
     
     public weak var delegate: SpaceListViewCellDelegate?
     
     private var theme: Theme?
-    private var isBadgeAlert: Bool = false
+    private var isBadgeAlert = false
     
     // MARK: - Life cycle
     
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        self.selectionView.layer.cornerRadius = 8.0
-        self.selectionView.layer.masksToBounds = true
+        selectionView.layer.cornerRadius = 8.0
+        selectionView.layer.masksToBounds = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -56,42 +55,42 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
     // MARK: - Public
     
     func fill(with viewData: SpaceListItemViewData) {
-        self.avatarView.fill(with: viewData.avatarViewData)
-        self.titleLabel.text = viewData.title
-        self.moreButton.isHidden = viewData.spaceId == SpaceListViewModel.Constants.addSpaceId || viewData.isInvite
+        avatarView.fill(with: viewData.avatarViewData)
+        titleLabel.text = viewData.title
+        moreButton.isHidden = viewData.spaceId == SpaceListViewModel.Constants.addSpaceId || viewData.isInvite
         if viewData.isInvite {
-            self.isBadgeAlert = true
-            self.badgeLabel.isHidden = false
-            if let theme = self.theme {
-                self.badgeLabel.badgeColor = theme.colors.alert
+            isBadgeAlert = true
+            badgeLabel.isHidden = false
+            if let theme = theme {
+                badgeLabel.badgeColor = theme.colors.alert
             }
-            self.badgeLabel.text = "!"
+            badgeLabel.text = "!"
         } else {
-            self.isBadgeAlert = viewData.highlightedNotificationCount > 0
+            isBadgeAlert = viewData.highlightedNotificationCount > 0
             let notificationCount = viewData.notificationCount
-            self.badgeLabel.isHidden = notificationCount == 0
-            if let theme = self.theme {
-                self.badgeLabel.badgeColor = viewData.highlightedNotificationCount == 0 ? theme.colors.tertiaryContent : theme.colors.alert
+            badgeLabel.isHidden = notificationCount == 0
+            if let theme = theme {
+                badgeLabel.badgeColor = viewData.highlightedNotificationCount == 0 ? theme.colors.tertiaryContent : theme.colors.alert
             }
-            self.badgeLabel.text = "\(notificationCount)"
+            badgeLabel.text = "\(notificationCount)"
         }
     }
     
     func update(theme: Theme) {
         self.theme = theme
-        self.backgroundColor = theme.colors.background
-        self.avatarView.update(theme: theme)
-        self.titleLabel.textColor = theme.colors.primaryContent
-        self.titleLabel.font = theme.fonts.calloutSB
-        self.selectionView.backgroundColor = theme.colors.separator
-        self.moreButton.tintColor = theme.colors.secondaryContent
-        self.badgeLabel.borderColor = theme.colors.background
-        self.badgeLabel.badgeColor = self.isBadgeAlert ? theme.colors.alert : theme.colors.tertiaryContent
+        backgroundColor = theme.colors.background
+        avatarView.update(theme: theme)
+        titleLabel.textColor = theme.colors.primaryContent
+        titleLabel.font = theme.fonts.calloutSB
+        selectionView.backgroundColor = theme.colors.separator
+        moreButton.tintColor = theme.colors.secondaryContent
+        badgeLabel.borderColor = theme.colors.background
+        badgeLabel.badgeColor = isBadgeAlert ? theme.colors.alert : theme.colors.tertiaryContent
     }
     
     // MARK: - IBActions
     
     @IBAction private func moreAction(sender: UIButton) {
-        delegate?.spaceListViewCell(self, didPressMore: self.moreButton)
+        delegate?.spaceListViewCell(self, didPressMore: moreButton)
     }
 }

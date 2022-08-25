@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import UIKit
 
 /// AutosizedTableView is a convenient UITableView that makes dynamic sizing easier when using Auto Layout
 class AutosizedTableView: UITableView {
-    
     override var contentSize: CGSize {
         didSet {
             self.invalidateIntrinsicContentSize()
@@ -26,7 +25,6 @@ class AutosizedTableView: UITableView {
     }
     
     override var intrinsicContentSize: CGSize {
-        return self.contentSize
+        contentSize
     }
-    
 }

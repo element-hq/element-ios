@@ -20,7 +20,6 @@ import UIKit
 
 @objcMembers
 final class ServiceTermsModalCoordinator: NSObject, ServiceTermsModalCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -37,55 +36,56 @@ final class ServiceTermsModalCoordinator: NSObject, ServiceTermsModalCoordinator
     weak var delegate: ServiceTermsModalCoordinatorDelegate?
     
     // MARK: - Setup
+
     init(session: MXSession, baseUrl: String, serviceType: MXServiceType, accessToken: String) {
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
-        self.serviceTerms = MXServiceTerms(baseUrl: baseUrl, serviceType: serviceType, matrixSession: session, accessToken: accessToken)
+        serviceTerms = MXServiceTerms(baseUrl: baseUrl, serviceType: serviceType, matrixSession: session, accessToken: accessToken)
     }
     
     // MARK: - Public methods
     
     func start() {
-        let rootCoordinator = self.createServiceTermsModalLoadTermsScreenCoordinator()
+        let rootCoordinator = createServiceTermsModalLoadTermsScreenCoordinator()
 
         rootCoordinator.start()
 
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
         
-        self.toPresentable().presentationController?.delegate = self
+        toPresentable().presentationController?.delegate = self
 
-        self.navigationRouter.setRootModule(rootCoordinator)
+        navigationRouter.setRootModule(rootCoordinator)
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private methods
 
     private func createServiceTermsModalLoadTermsScreenCoordinator() -> ServiceTermsModalScreenCoordinator {
-        let coordinator = ServiceTermsModalScreenCoordinator(serviceTerms: self.serviceTerms)
+        let coordinator = ServiceTermsModalScreenCoordinator(serviceTerms: serviceTerms)
         coordinator.delegate = self
         return coordinator
     }
 
     private func showPolicy(policy: MXLoginPolicyData) {
         // Display the policy webpage into our webview
-        let webViewViewController: WebViewViewController = WebViewViewController(url: policy.url)
+        let webViewViewController = WebViewViewController(url: policy.url)
         webViewViewController.title = policy.name
 
-        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "back_icon"), style: .plain, target: self, action: #selector(didTapCancelOnPolicyScreen))
+        let leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back_icon"), style: .plain, target: self, action: #selector(didTapCancelOnPolicyScreen))
         webViewViewController.navigationItem.leftBarButtonItem = leftBarButtonItem
 
-        self.navigationRouter.push(webViewViewController, animated: true, popCompletion: nil)
+        navigationRouter.push(webViewViewController, animated: true, popCompletion: nil)
     }
 
     private func removePolicyScreen() {
-        self.navigationRouter.popModule(animated: true)
+        navigationRouter.popModule(animated: true)
     }
 
     @objc private func didTapCancelOnPolicyScreen() {
-        self.removePolicyScreen()
+        removePolicyScreen()
     }
     
     /// Removes the identity server from the `MXSession` and it's account data.
@@ -102,18 +102,18 @@ final class ServiceTermsModalCoordinator: NSObject, ServiceTermsModalCoordinator
 }
 
 // MARK: - ServiceTermsModalLoadTermsScreenCoordinatorDelegate
-extension ServiceTermsModalCoordinator: ServiceTermsModalScreenCoordinatorDelegate {
 
+extension ServiceTermsModalCoordinator: ServiceTermsModalScreenCoordinatorDelegate {
     func serviceTermsModalScreenCoordinatorDidAccept(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
         if serviceTerms.serviceType == MXServiceTypeIdentityService {
             Analytics.shared.trackIdentityServerAccepted(true)
         }
         
-        self.delegate?.serviceTermsModalCoordinatorDidAccept(self)
+        delegate?.serviceTermsModalCoordinatorDidAccept(self)
     }
 
     func serviceTermsModalScreenCoordinator(_ coordinator: ServiceTermsModalScreenCoordinatorType, displayPolicy policy: MXLoginPolicyData) {
-        self.showPolicy(policy: policy)
+        showPolicy(policy: policy)
     }
 
     func serviceTermsModalScreenCoordinatorDidDecline(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
@@ -122,17 +122,18 @@ extension ServiceTermsModalCoordinator: ServiceTermsModalScreenCoordinatorDelega
             disableIdentityServer()
         }
         
-        self.delegate?.serviceTermsModalCoordinatorDidDecline(self)
+        delegate?.serviceTermsModalCoordinatorDidDecline(self)
     }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
+
 extension ServiceTermsModalCoordinator: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         if serviceTerms.serviceType == MXServiceTypeIdentityService {
             Analytics.shared.trackIdentityServerAccepted(false)
         }
         
-        self.delegate?.serviceTermsModalCoordinatorDidDismissInteractively(self)
+        delegate?.serviceTermsModalCoordinatorDidDismissInteractively(self)
     }
 }

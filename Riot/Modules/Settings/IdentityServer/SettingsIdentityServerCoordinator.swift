@@ -20,7 +20,6 @@ import UIKit
 
 @objcMembers
 final class SettingsIdentityServerCoordinator: SettingsIdentityServerCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -45,10 +44,9 @@ final class SettingsIdentityServerCoordinator: SettingsIdentityServerCoordinator
     
     // MARK: - Public methods
     
-    func start() {
-    }
+    func start() { }
     
     func toPresentable() -> UIViewController {
-        return self.settingsIdentityServerViewController
+        settingsIdentityServerViewController
     }
 }

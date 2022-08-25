@@ -19,7 +19,6 @@ import Foundation
 @objcMembers
 /// Avoid keyboard overlap with scroll view content
 final class KeyboardAvoider: NSObject {
-    
     // MARK: - Constants
     
     private enum KeyboardAnimation {
@@ -48,12 +47,12 @@ final class KeyboardAvoider: NSObject {
     
     /// Start keyboard avoiding
     func startAvoiding() {
-        self.registerKeyboardNotifications()
+        registerKeyboardNotifications()
     }
     
     /// Stop keyboard avoiding
     func stopAvoiding() {
-        self.unregisterKeyboardNotifications()
+        unregisterKeyboardNotifications()
     }
     
     // MARK: - Private
@@ -64,12 +63,14 @@ final class KeyboardAvoider: NSObject {
             self,
             selector: #selector(keyboardWillShow(notification:)),
             name: UIResponder.keyboardWillShowNotification,
-            object: nil)
+            object: nil
+        )
         notificationCenter.addObserver(
             self,
             selector: #selector(keyboardWillHide(notification:)),
             name: UIResponder.keyboardWillHideNotification,
-            object: nil)
+            object: nil
+        )
     }
     
     private func unregisterKeyboardNotifications() {
@@ -78,13 +79,13 @@ final class KeyboardAvoider: NSObject {
     }
     
     @objc private func keyboardWillShow(notification: Notification) {
-        guard let view = self.scrollViewContainerView, let scrollView = self.scrollView else {
+        guard let view = scrollViewContainerView, let scrollView = scrollView else {
             return
         }
         
         guard let keyboardNotification = KeyboardNotification(notification: notification),
-            let keyboardFrame = keyboardNotification.keyboardFrameEnd else {
-                return
+              let keyboardFrame = keyboardNotification.keyboardFrameEnd else {
+            return
         }
         
         let animationDuration = keyboardNotification.animationDuration ?? KeyboardAnimation.defaultDuration
@@ -100,14 +101,13 @@ final class KeyboardAvoider: NSObject {
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
                        options: animationOptions, animations: {
-                        
-                        scrollView.contentInset.bottom = scrollViewBottomInset
-                        scrollView.scrollIndicatorInsets.bottom = scrollViewBottomInset
-        }, completion: nil)
+                           scrollView.contentInset.bottom = scrollViewBottomInset
+                           scrollView.scrollIndicatorInsets.bottom = scrollViewBottomInset
+                       }, completion: nil)
     }
     
     @objc private func keyboardWillHide(notification: Notification) {
-        guard let scrollView = self.scrollView else {
+        guard let scrollView = scrollView else {
             return
         }
         
@@ -125,8 +125,8 @@ final class KeyboardAvoider: NSObject {
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
                        options: animationOptions, animations: {
-                        scrollView.contentInset.bottom = scrollViewBottomInset
-                        scrollView.scrollIndicatorInsets.bottom = scrollViewBottomInset
-        }, completion: nil)
+                           scrollView.contentInset.bottom = scrollViewBottomInset
+                           scrollView.scrollIndicatorInsets.bottom = scrollViewBottomInset
+                       }, completion: nil)
     }
 }

@@ -17,28 +17,27 @@
 import UIKit
 
 final class SecretsRecoveryWithPassphraseViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBOutlet private weak var shieldImageView: UIImageView!
+    @IBOutlet private var shieldImageView: UIImageView!
     
-    @IBOutlet private weak var informationLabel: UILabel!        
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var passphraseTitleLabel: UILabel!
-    @IBOutlet private weak var passphraseTextField: UITextField!
-    @IBOutlet private weak var passphraseTextFieldBackgroundView: UIView!
+    @IBOutlet private var passphraseTitleLabel: UILabel!
+    @IBOutlet private var passphraseTextField: UITextField!
+    @IBOutlet private var passphraseTextFieldBackgroundView: UIView!
     
-    @IBOutlet private weak var passphraseVisibilityButton: UIButton!
+    @IBOutlet private var passphraseVisibilityButton: UIButton!
     
-    @IBOutlet private weak var useRecoveryKeyButton: UIButton!
+    @IBOutlet private var useRecoveryKeyButton: UIButton!
         
-    @IBOutlet private weak var recoverButton: RoundedButton!
+    @IBOutlet private var recoverButton: RoundedButton!
     
-    @IBOutlet private weak var resetSecretsButton: UIButton!
+    @IBOutlet private var resetSecretsButton: UIButton!
     
     // MARK: Private
     
@@ -68,46 +67,46 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.vc_removeBackTitle()
+        vc_removeBackTitle()
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: scrollView)
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
     
     private func setupViews() {
-        if self.cancellable {
+        if cancellable {
             let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
                 self?.viewModel.process(viewAction: .cancel)
             }
-            self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+            navigationItem.rightBarButtonItem = cancelBarButtonItem
         }
 
-        self.title = VectorL10n.secretsRecoveryWithPassphraseTitle
+        title = VectorL10n.secretsRecoveryWithPassphraseTitle
         
-        self.scrollView.keyboardDismissMode = .interactive
+        scrollView.keyboardDismissMode = .interactive
         
         let shieldImage = Asset.Images.secretsRecoveryPassphrase.image.withRenderingMode(.alwaysTemplate)
-        self.shieldImageView.image = shieldImage
+        shieldImageView.image = shieldImage
         
         let visibilityImage = Asset.Images.revealPasswordButton.image.withRenderingMode(.alwaysTemplate)
-        self.passphraseVisibilityButton.setImage(visibilityImage, for: .normal)
+        passphraseVisibilityButton.setImage(visibilityImage, for: .normal)
         
-        let informationText: String        
+        let informationText: String
         
-        switch self.viewModel.recoveryGoal {
+        switch viewModel.recoveryGoal {
         case .default, .keyBackup, .restoreSecureBackup:
             informationText = VectorL10n.secretsRecoveryWithPassphraseInformationDefault
         case .unlockSecureBackup:
@@ -116,45 +115,45 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
             informationText = VectorL10n.secretsRecoveryWithPassphraseInformationVerifyDevice
         }
         
-        self.informationLabel.text = informationText
+        informationLabel.text = informationText
         
-        self.passphraseTitleLabel.text = VectorL10n.secretsRecoveryWithPassphrasePassphraseTitle
-        self.passphraseTextField.addTarget(self, action: #selector(passphraseTextFieldDidChange(_:)), for: .editingChanged)
+        passphraseTitleLabel.text = VectorL10n.secretsRecoveryWithPassphrasePassphraseTitle
+        passphraseTextField.addTarget(self, action: #selector(passphraseTextFieldDidChange(_:)), for: .editingChanged)
         
-        self.useRecoveryKeyButton.vc_enableMultiLinesTitle()
+        useRecoveryKeyButton.vc_enableMultiLinesTitle()
         
-        self.recoverButton.vc_enableMultiLinesTitle()
-        self.recoverButton.setTitle(VectorL10n.secretsRecoveryWithPassphraseRecoverAction, for: .normal)
+        recoverButton.vc_enableMultiLinesTitle()
+        recoverButton.setTitle(VectorL10n.secretsRecoveryWithPassphraseRecoverAction, for: .normal)
         
-        self.updateRecoverButton()
+        updateRecoverButton()
                 
-        self.resetSecretsButton.vc_enableMultiLinesTitle()
+        resetSecretsButton.vc_enableMultiLinesTitle()
         
-        self.resetSecretsButton.isHidden = !RiotSettings.shared.secretsRecoveryAllowReset
+        resetSecretsButton.isHidden = !RiotSettings.shared.secretsRecoveryAllowReset
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.informationLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.shieldImageView.tintColor = theme.textPrimaryColor
+        shieldImageView.tintColor = theme.textPrimaryColor
         
-        self.passphraseTextFieldBackgroundView.backgroundColor = theme.backgroundColor
-        self.passphraseTitleLabel.textColor = theme.textPrimaryColor
-        theme.applyStyle(onTextField: self.passphraseTextField)
-        self.passphraseTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.secretsRecoveryWithPassphrasePassphrasePlaceholder,
-                                                                            attributes: [.foregroundColor: theme.placeholderTextColor])
+        passphraseTextFieldBackgroundView.backgroundColor = theme.backgroundColor
+        passphraseTitleLabel.textColor = theme.textPrimaryColor
+        theme.applyStyle(onTextField: passphraseTextField)
+        passphraseTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.secretsRecoveryWithPassphrasePassphrasePlaceholder,
+                                                                       attributes: [.foregroundColor: theme.placeholderTextColor])
         
-        self.theme.applyStyle(onButton: self.passphraseVisibilityButton)
+        self.theme.applyStyle(onButton: passphraseVisibilityButton)
         
-        self.recoverButton.update(theme: theme)
+        recoverButton.update(theme: theme)
         
         // Use recovery key button
         
@@ -165,7 +164,7 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         useRecoveryKeyAttributedString.append(unknownRecoveryKeyAttributedStringPart2)
         useRecoveryKeyAttributedString.append(unknownRecoveryKeyAttributedStringPart3)
         
-        self.useRecoveryKeyButton.setAttributedTitle(useRecoveryKeyAttributedString, for: .normal)
+        useRecoveryKeyButton.setAttributedTitle(useRecoveryKeyAttributedString, for: .normal)
         
         // Reset secrets button
         
@@ -174,7 +173,7 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         
         resetSecretsAttributedString.append(resetSecretsAttributedStringPart2)
         
-        self.resetSecretsButton.setAttributedTitle(resetSecretsAttributedString, for: .normal)
+        resetSecretsButton.setAttributedTitle(resetSecretsAttributedString, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -182,79 +181,77 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func updateRecoverButton() {
-        self.recoverButton.isEnabled = self.viewModel.isFormValid
+        recoverButton.isEnabled = viewModel.isFormValid
     }
     
     private func render(viewState: SecretsRecoveryWithPassphraseViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded:
-            self.renderLoaded()
+            renderLoaded()
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.view.endEditing(true)
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        view.endEditing(true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         
         let nsError = error as NSError
         
-        if nsError.domain == MXRecoveryServiceErrorDomain
-            && nsError.code == Int(MXRecoveryServiceErrorCode.badRecoveryKeyErrorCode.rawValue) {
-
-            self.errorPresenter.presentError(from: self,
-                                             title: VectorL10n.secretsRecoveryWithPassphraseInvalidPassphraseTitle,
-                                             message: VectorL10n.secretsRecoveryWithPassphraseInvalidPassphraseMessage,
-                                             animated: true,
-                                             handler: nil)
+        if nsError.domain == MXRecoveryServiceErrorDomain,
+           nsError.code == Int(MXRecoveryServiceErrorCode.badRecoveryKeyErrorCode.rawValue) {
+            errorPresenter.presentError(from: self,
+                                        title: VectorL10n.secretsRecoveryWithPassphraseInvalidPassphraseTitle,
+                                        message: VectorL10n.secretsRecoveryWithPassphraseInvalidPassphraseMessage,
+                                        animated: true,
+                                        handler: nil)
         } else {
-            self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+            errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
         }
     }
     
     // MARK: - Actions
     
     @IBAction private func passphraseVisibilityButtonAction(_ sender: Any) {
-        self.passphraseTextField.isSecureTextEntry = !self.passphraseTextField.isSecureTextEntry
+        passphraseTextField.isSecureTextEntry = !passphraseTextField.isSecureTextEntry
     }
     
     @objc private func passphraseTextFieldDidChange(_ textField: UITextField) {
-        self.viewModel.passphrase = textField.text
-        self.updateRecoverButton()
+        viewModel.passphrase = textField.text
+        updateRecoverButton()
     }
     
     @IBAction private func recoverButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .recover)
+        viewModel.process(viewAction: .recover)
     }
     
     @IBAction private func useRecoveryKeyButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .useRecoveryKey)
+        viewModel.process(viewAction: .useRecoveryKey)
     }
     
-    
     @IBAction private func resetSecretsAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .resetSecrets)
+        viewModel.process(viewAction: .resetSecrets)
     }
 }
 
 // MARK: - UITextFieldDelegate
+
 extension SecretsRecoveryWithPassphraseViewController: UITextFieldDelegate {
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -262,8 +259,9 @@ extension SecretsRecoveryWithPassphraseViewController: UITextFieldDelegate {
 }
 
 // MARK: - SecretsRecoveryWithPassphraseViewModelViewDelegate
+
 extension SecretsRecoveryWithPassphraseViewController: SecretsRecoveryWithPassphraseViewModelViewDelegate {
     func secretsRecoveryWithPassphraseViewModel(_ viewModel: SecretsRecoveryWithPassphraseViewModelType, didUpdateViewState viewSate: SecretsRecoveryWithPassphraseViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

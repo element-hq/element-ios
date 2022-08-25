@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import WeakDictionary
 
 /// `NavigationRouterStore` enables to get a NavigationRouter from a UINavigationController instance.
 class NavigationRouterStore: NavigationRouterStoreProtocol {
-    
     // MARK: - Constants
     
     static let shared = NavigationRouterStore()
@@ -34,14 +33,13 @@ class NavigationRouterStore: NavigationRouterStoreProtocol {
     
     /// As we are ensuring that there is only one navigation controller per NavigationRouter, the class here should be used as a singleton.
     private init() {
-        self.registerNavigationRouterNotifications()
+        registerNavigationRouterNotifications()
     }
     
     // MARK: - Public
     
     func navigationRouter(for navigationController: UINavigationController) -> NavigationRouterType {
-        
-        if let existingNavigationRouter = self.findNavigationRouter(for: navigationController) {
+        if let existingNavigationRouter = findNavigationRouter(for: navigationController) {
             return existingNavigationRouter
         }
         
@@ -52,11 +50,11 @@ class NavigationRouterStore: NavigationRouterStoreProtocol {
     // MARK: - Private
     
     private func findNavigationRouter(for navigationController: UINavigationController) -> NavigationRouterType? {
-        return self.navigationRouters[navigationController]
+        navigationRouters[navigationController]
     }
     
     private func removeNavigationRouter(for navigationController: UINavigationController) {
-        self.navigationRouters[navigationController] = nil
+        navigationRouters[navigationController] = nil
     }
     
     private func registerNavigationRouterNotifications() {
@@ -65,19 +63,18 @@ class NavigationRouterStore: NavigationRouterStoreProtocol {
     }
     
     @objc private func navigationRouterDidCreate(_ notification: Notification) {
-                
         guard let userInfo = notification.userInfo,
               let navigationRouter = userInfo[NavigationRouter.NotificationUserInfoKey.navigationRouter] as? NavigationRouterType,
               let navigationController = userInfo[NavigationRouter.NotificationUserInfoKey.navigationController] as? UINavigationController else {
             return
         }
         
-        if let existingNavigationRouter = self.findNavigationRouter(for: navigationController) {
+        if let existingNavigationRouter = findNavigationRouter(for: navigationController) {
             fatalError("\(existingNavigationRouter) is already tied to the same navigation controller as \(navigationRouter). We should have only one NavigationRouter per navigation controller")
         } else {
             // FIXME: WeakDictionary does not work with protocol
             // Find a way to avoid this cast
-            self.navigationRouters[navigationController] = navigationRouter as? NavigationRouter
+            navigationRouters[navigationController] = navigationRouter as? NavigationRouter
         }
     }
     
@@ -88,10 +85,10 @@ class NavigationRouterStore: NavigationRouterStoreProtocol {
             return
         }
         
-        if let existingNavigationRouter = self.findNavigationRouter(for: navigationController), existingNavigationRouter !== navigationRouter {
+        if let existingNavigationRouter = findNavigationRouter(for: navigationController), existingNavigationRouter !== navigationRouter {
             fatalError("\(existingNavigationRouter) is already tied to the same navigation controller as \(navigationRouter). We should have only one NavigationRouter per navigation controller")
         }
         
-        self.removeNavigationRouter(for: navigationController)
+        removeNavigationRouter(for: navigationController)
     }
 }

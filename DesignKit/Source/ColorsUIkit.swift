@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,6 @@ import UIKit
  ObjC class for holding colors for use in UIKit.
  */
 @objcMembers public class ColorsUIKit: NSObject {
-    
     public let accent: UIColor
 
     public let alert: UIColor
@@ -64,4 +63,3 @@ import UIKit
         namesAndAvatars = values.namesAndAvatars
     }
 }
-

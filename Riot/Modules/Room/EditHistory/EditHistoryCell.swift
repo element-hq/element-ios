@@ -14,25 +14,24 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class EditHistoryCell: UITableViewCell, NibReusable, Themable {
-
     // MARK: - Properties
     
-    @IBOutlet private weak var timestampLabel: UILabel!
-    @IBOutlet private weak var messageLabel: UILabel!
+    @IBOutlet private var timestampLabel: UILabel!
+    @IBOutlet private var messageLabel: UILabel!
     
     // MARK: - Public
     
     func fill(with timeString: String, and attributedMessage: NSAttributedString) {
-        self.timestampLabel.text = timeString
-        self.messageLabel.attributedText = attributedMessage
+        timestampLabel.text = timeString
+        messageLabel.attributedText = attributedMessage
     }
     
     func update(theme: Theme) {
-        self.backgroundColor = theme.backgroundColor
-        self.timestampLabel.textColor = theme.textSecondaryColor
+        backgroundColor = theme.backgroundColor
+        timestampLabel.textColor = theme.textSecondaryColor
     }
 }

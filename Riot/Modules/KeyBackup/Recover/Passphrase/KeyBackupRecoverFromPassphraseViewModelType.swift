@@ -28,7 +28,6 @@ protocol KeyBackupRecoverFromPassphraseViewModelCoordinatorDelegate: AnyObject {
 
 /// Protocol describing the view model used by `KeyBackupRecoverFromPassphraseViewController`
 protocol KeyBackupRecoverFromPassphraseViewModelType {
-    
     var passphrase: String? { get set }
     var isFormValid: Bool { get }
     

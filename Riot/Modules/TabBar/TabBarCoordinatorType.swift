@@ -25,7 +25,6 @@ protocol TabBarCoordinatorDelegate: AnyObject {
 
 /// `TabBarCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
 protocol TabBarCoordinatorType: Coordinator, SplitViewMasterPresentable {
-    
     var delegate: TabBarCoordinatorDelegate? { get }
         
     /// Start coordinator by selecting a Space.

@@ -26,7 +26,6 @@ import UIKit
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class EmojiPickerCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -55,13 +54,12 @@ final class EmojiPickerCoordinatorBridgePresenter: NSObject {
                  sourceView: UIView?,
                  sourceRect: CGRect,
                  animated: Bool) {
-        let emojiPickerCoordinator = EmojiPickerCoordinator(session: self.session, roomId: self.roomId, eventId: self.eventId)
+        let emojiPickerCoordinator = EmojiPickerCoordinator(session: session, roomId: roomId, eventId: eventId)
         emojiPickerCoordinator.delegate = self
         
         let emojiPickerPresentable = emojiPickerCoordinator.toPresentable()
         
         if let sourceView = sourceView {
-            
             emojiPickerPresentable.modalPresentationStyle = .popover
             
             if let popoverPresentationController = emojiPickerPresentable.popoverPresentationController {
@@ -83,11 +81,11 @@ final class EmojiPickerCoordinatorBridgePresenter: NSObject {
         
         emojiPickerCoordinator.start()
         
-        self.coordinator = emojiPickerCoordinator
+        coordinator = emojiPickerCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -101,17 +99,17 @@ final class EmojiPickerCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - EmojiPickerCoordinatorDelegate
+
 extension EmojiPickerCoordinatorBridgePresenter: EmojiPickerCoordinatorDelegate {
-    
     func emojiPickerCoordinator(_ coordinator: EmojiPickerCoordinatorType, didAddEmoji emoji: String, forEventId eventId: String) {
-        self.delegate?.emojiPickerCoordinatorBridgePresenter(self, didAddEmoji: emoji, forEventId: eventId)
+        delegate?.emojiPickerCoordinatorBridgePresenter(self, didAddEmoji: emoji, forEventId: eventId)
     }
     
     func emojiPickerCoordinator(_ coordinator: EmojiPickerCoordinatorType, didRemoveEmoji emoji: String, forEventId eventId: String) {
-        self.delegate?.emojiPickerCoordinatorBridgePresenter(self, didRemoveEmoji: emoji, forEventId: eventId)
+        delegate?.emojiPickerCoordinatorBridgePresenter(self, didRemoveEmoji: emoji, forEventId: eventId)
     }
     
     func emojiPickerCoordinatorDidCancel(_ coordinator: EmojiPickerCoordinatorType) {
-        self.delegate?.emojiPickerCoordinatorBridgePresenterDidCancel(self)
+        delegate?.emojiPickerCoordinatorBridgePresenterDidCancel(self)
     }
 }

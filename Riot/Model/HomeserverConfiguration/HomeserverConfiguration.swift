@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// Represents the homeserver configuration (usually based on HS Well-Known or hardcoded values in the project)
 @objcMembers
 final class HomeserverConfiguration: NSObject {
-    
     // Note: Use an object per configuration subject when there is multiple properties related
     let jitsi: HomeserverJitsiConfiguration
     let encryption: HomeserverEncryptionConfiguration

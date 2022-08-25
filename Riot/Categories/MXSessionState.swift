@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,9 +17,7 @@
 import Foundation
 
 extension MXSessionState: Comparable {
-    
     public static func < (lhs: MXSessionState, rhs: MXSessionState) -> Bool {
-        return lhs.rawValue < rhs.rawValue
+        lhs.rawValue < rhs.rawValue
     }
-    
 }

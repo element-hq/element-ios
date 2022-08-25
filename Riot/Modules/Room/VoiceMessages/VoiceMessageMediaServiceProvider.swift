@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,11 +18,10 @@ import Foundation
 import MediaPlayer
 
 @objc public class VoiceMessageMediaServiceProvider: NSObject, VoiceMessageAudioPlayerDelegate, VoiceMessageAudioRecorderDelegate {
-    
     private enum Constants {
-        static let roomAvatarImageSize: CGSize = CGSize(width: 600, height: 600)
+        static let roomAvatarImageSize = CGSize(width: 600, height: 600)
         static let roomAvatarFontSize: CGFloat = 40.0
-        static let roomAvatarMimetype: String = "image/jpeg"
+        static let roomAvatarMimetype = "image/jpeg"
     }
     
     private var roomAvatarLoader: MXMediaLoader?
@@ -30,8 +29,6 @@ import MediaPlayer
     private let audioRecorders: NSHashTable<VoiceMessageAudioRecorder>
     
     private var displayLink: CADisplayLink!
-    
-    
     
     // Retain active audio players(playing or paused) so it doesn't stop playing on timeline cell reuse
     // and we can pause/resume players on switching rooms.
@@ -60,7 +57,7 @@ import MediaPlayer
                                                                  inFolder: currentRoomSummary?.roomId,
                                                                  toFitViewSize: Constants.roomAvatarImageSize,
                                                                  with: MXThumbnailingMethodCrop),
-               FileManager.default.fileExists(atPath: cachePath) {
+                FileManager.default.fileExists(atPath: cachePath) {
                 //  found in the cache, load it
                 roomAvatar = MXMediaManager.loadThroughCache(withFilePath: cachePath)
             } else {
@@ -79,18 +76,18 @@ import MediaPlayer
                                                                   toFitViewSize: Constants.roomAvatarImageSize,
                                                                   with: MXThumbnailingMethodCrop,
                                                                   success: { filePath in
-                                                                    if let filePath = filePath {
-                                                                        self.roomAvatar = MXMediaManager.loadThroughCache(withFilePath: filePath)
-                                                                    }
-                                                                    self.roomAvatarLoader = nil
-                                                                  }, failure: { error in
-                                                                    self.roomAvatarLoader = nil
+                                                                      if let filePath = filePath {
+                                                                          self.roomAvatar = MXMediaManager.loadThroughCache(withFilePath: filePath)
+                                                                      }
+                                                                      self.roomAvatarLoader = nil
+                                                                  }, failure: { _ in
+                                                                      self.roomAvatarLoader = nil
                                                                   })
             }
         }
     }
     
-    private override init() {
+    override private init() {
         audioPlayers = NSMapTable<NSString, VoiceMessageAudioPlayer>(valueOptions: .weakMemory)
         audioRecorders = NSHashTable<VoiceMessageAudioRecorder>(options: .weakMemory)
         activeAudioPlayers = Set<VoiceMessageAudioPlayer>()
@@ -191,7 +188,7 @@ import MediaPlayer
         
         commandCenter.playCommand.isEnabled = true
         commandCenter.playCommand.removeTarget(nil)
-        commandCenter.playCommand.addTarget { [weak self] event in
+        commandCenter.playCommand.addTarget { [weak self] _ in
             guard let audioPlayer = self?.currentlyPlayingAudioPlayer else {
                 return MPRemoteCommandHandlerStatus.commandFailed
             }
@@ -203,7 +200,7 @@ import MediaPlayer
         
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.pauseCommand.removeTarget(nil)
-        commandCenter.pauseCommand.addTarget { [weak self] event in
+        commandCenter.pauseCommand.addTarget { [weak self] _ in
             guard let audioPlayer = self?.currentlyPlayingAudioPlayer else {
                 return MPRemoteCommandHandlerStatus.commandFailed
             }
@@ -252,8 +249,8 @@ import MediaPlayer
             return
         }
         
-        let artwork = MPMediaItemArtwork(boundsSize: Constants.roomAvatarImageSize) { [weak self] size in
-            return self?.roomAvatar ?? UIImage()
+        let artwork = MPMediaItemArtwork(boundsSize: Constants.roomAvatarImageSize) { [weak self] _ in
+            self?.roomAvatar ?? UIImage()
         }
         
         let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()

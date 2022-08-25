@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import UIKit
 
 class PollBaseBubbleCell: PollPlainCell {
-    
     // MARK: - Properties
     
     var bubbleBackgroundColor: UIColor?
@@ -27,36 +26,34 @@ class PollBaseBubbleCell: PollPlainCell {
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
         
     override func setupViews() {
         super.setupViews()
         
-        self.setupBubbleBackgroundView()
+        setupBubbleBackgroundView()
     }
     
     override func addPollView(_ pollView: UIView, on contentView: UIView) {
         super.addPollView(pollView, on: contentView)
         
-        self.addBubbleBackgroundViewIfNeeded(for: pollView)
+        addBubbleBackgroundViewIfNeeded(for: pollView)
     }
     
     // MARK: - Private
     
     private func addBubbleBackgroundViewIfNeeded(for pollView: UIView) {
-        
-        guard let messageBubbleBackgroundView = self.getBubbleBackgroundView() else {
+        guard let messageBubbleBackgroundView = getBubbleBackgroundView() else {
             return
         }
         
-        self.addBubbleBackgroundView( messageBubbleBackgroundView, to: pollView)
-        messageBubbleBackgroundView.backgroundColor = self.bubbleBackgroundColor
+        addBubbleBackgroundView(messageBubbleBackgroundView, to: pollView)
+        messageBubbleBackgroundView.backgroundColor = bubbleBackgroundColor
     }
     
     private func addBubbleBackgroundView(_ bubbleBackgroundView: RoomMessageBubbleBackgroundView,
                                          to pollView: UIView) {
-        
         let topMargin = BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.top
         let leftMargin = BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.left
         let rightMargin = BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.right
@@ -77,34 +74,34 @@ class PollBaseBubbleCell: PollPlainCell {
         
     private func setupBubbleBackgroundView() {
         let bubbleBackgroundView = RoomMessageBubbleBackgroundView()
-        self.roomCellContentView?.insertSubview(bubbleBackgroundView, at: 0)
+        roomCellContentView?.insertSubview(bubbleBackgroundView, at: 0)
     }
     
     // The extension property MXKRoomBubbleTableViewCell.messageBubbleBackgroundView is not working there even by doing recursion
     private func getBubbleBackgroundView() -> RoomMessageBubbleBackgroundView? {
-        guard let contentView = self.roomCellContentView else {
+        guard let contentView = roomCellContentView else {
             return nil
         }
         
         let foundView = contentView.subviews.first { view in
-            return view is RoomMessageBubbleBackgroundView
+            view is RoomMessageBubbleBackgroundView
         }
         return foundView as? RoomMessageBubbleBackgroundView
     }
 }
 
 // MARK: - RoomCellTimestampDisplayable
+
 extension PollBaseBubbleCell: TimestampDisplayable {
-    
     func addTimestampView(_ timestampView: UIView) {
-        guard let messageBubbleBackgroundView = self.getBubbleBackgroundView() else {
+        guard let messageBubbleBackgroundView = getBubbleBackgroundView() else {
             return
         }
         messageBubbleBackgroundView.addTimestampView(timestampView)
     }
     
     func removeTimestampView() {
-        guard let messageBubbleBackgroundView = self.getBubbleBackgroundView() else {
+        guard let messageBubbleBackgroundView = getBubbleBackgroundView() else {
             return
         }
         messageBubbleBackgroundView.removeTimestampView()

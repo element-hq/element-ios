@@ -18,7 +18,6 @@ import UIKit
 
 /// `SlidingModalPresentationAnimator` handles the animations for a custom sliding view controller transition.
 final class SlidingModalPresentationAnimator: NSObject {
-    
     // MARK: - Constants
     
     private enum AnimationDuration {
@@ -37,7 +36,7 @@ final class SlidingModalPresentationAnimator: NSObject {
     ///
     /// - Parameter isPresenting: true to animate presentation or false to animate dismissal
     /// - Parameter isSpanning: true to remove left, bottom and right spaces between the screen edges and the content view
-    required public init(isPresenting: Bool, options: SlidingModalOption) {
+    public required init(isPresenting: Bool, options: SlidingModalOption) {
         self.isPresenting = isPresenting
         self.options = options
         super.init()
@@ -48,8 +47,8 @@ final class SlidingModalPresentationAnimator: NSObject {
     // Animate presented view controller presentation
     private func animatePresentation(using transitionContext: UIViewControllerContextTransitioning) {
         guard let presentedViewController = transitionContext.viewController(forKey: .to),
-            transitionContext.viewController(forKey: .from) != nil else {
-                return
+              transitionContext.viewController(forKey: .from) != nil else {
+            return
         }
         
         guard let presentedViewControllerView = presentedViewController.view else {
@@ -72,7 +71,7 @@ final class SlidingModalPresentationAnimator: NSObject {
         containerView.vc_addSubViewMatchingParent(slidingModalContainerView)
         containerView.layoutIfNeeded()
         
-        // Adapt slidingModalContainerView content view height from presentedViewControllerView height 
+        // Adapt slidingModalContainerView content view height from presentedViewControllerView height
         if let slidingModalPresentable = presentedViewController as? SlidingModalPresentable {
             let slidingModalContainerViewContentViewWidth = slidingModalContainerView.contentViewFrame.width
             let presentableHeight = slidingModalPresentable.layoutHeightFittingWidth(slidingModalContainerViewContentViewWidth)
@@ -84,7 +83,7 @@ final class SlidingModalPresentationAnimator: NSObject {
         slidingModalContainerView.prepareDismissAnimation()
         containerView.layoutIfNeeded()
         
-        let animationDuration = self.transitionDuration(using: transitionContext)
+        let animationDuration = transitionDuration(using: transitionContext)
         
         slidingModalContainerView.preparePresentAnimation()
         slidingModalContainerView.alpha = 1
@@ -99,12 +98,11 @@ final class SlidingModalPresentationAnimator: NSObject {
     
     // Animate presented view controller dismissal
     private func animateDismissal(using transitionContext: UIViewControllerContextTransitioning) {
-        
         let containerView = transitionContext.containerView
         
-        let slidingModalContainerView = self.slidingModalContainerView(from: transitionContext)
+        let slidingModalContainerView = slidingModalContainerView(from: transitionContext)
         
-        let animationDuration = self.transitionDuration(using: transitionContext)
+        let animationDuration = transitionDuration(using: transitionContext)
         
         slidingModalContainerView?.prepareDismissAnimation()
         
@@ -125,17 +123,17 @@ final class SlidingModalPresentationAnimator: NSObject {
 }
 
 // MARK: - UIViewControllerAnimatedTransitioning
+
 extension SlidingModalPresentationAnimator: UIViewControllerAnimatedTransitioning {
-    
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return self.isPresenting ? AnimationDuration.presentation : AnimationDuration.dismissal
+        isPresenting ? AnimationDuration.presentation : AnimationDuration.dismissal
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        if self.isPresenting {
-            self.animatePresentation(using: transitionContext)
+        if isPresenting {
+            animatePresentation(using: transitionContext)
         } else {
-            self.animateDismissal(using: transitionContext)
+            animateDismissal(using: transitionContext)
         }
     }
 }

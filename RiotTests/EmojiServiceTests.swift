@@ -19,7 +19,6 @@ import XCTest
 @testable import Element
 
 class EmojiServiceTests: XCTestCase {
-    
     // MARK: - Constants
     
     private let defaultTimeout: TimeInterval = 10
@@ -81,7 +80,7 @@ class EmojiServiceTests: XCTestCase {
         }
         
         static var all: [ExpectedEmojiCategory] {
-            return [
+            [
                 .people, .nature, .foods, .activity, .places, .objects, .symbols, .flags
             ]
         }
@@ -100,11 +99,10 @@ class EmojiServiceTests: XCTestCase {
     // MARK: - Tests
     
     func testEmojiService() {
-        
-        let expectation = self.expectation(description: "get Emoji categories")
+        let expectation = expectation(description: "get Emoji categories")
         
         let emojiService = EmojiMartService()
-        emojiService.getEmojiCategories { (response) in
+        emojiService.getEmojiCategories { response in
             switch response {
             case .success(let emojiCategories):
                 
@@ -118,7 +116,7 @@ class EmojiServiceTests: XCTestCase {
                     }
                     XCTAssertEqual(emojiCategory.identifier, expectedEmojiCategory.identifier)
                     XCTAssertEqual(emojiCategory.emojis.count, expectedEmojiCategory.emojisCount)
-                    index+=1
+                    index += 1
                 }
                 
                 let peopleEmojiCategory = emojiCategories[ExpectedEmojiCategory.people.rawValue]
@@ -135,7 +133,7 @@ class EmojiServiceTests: XCTestCase {
             }
         }
         
-        self.waitForExpectations(timeout: self.defaultTimeout) {error in
+        waitForExpectations(timeout: defaultTimeout) { error in
             XCTAssertNil(error)
         }
     }

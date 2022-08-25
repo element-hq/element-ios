@@ -27,7 +27,6 @@ import MobileCoreServices
 /// MXKUTI wraps UTI class from SwiftUTI library (https://github.com/mkeiser/SwiftUTI) to make it available for Objective-C.
 @objcMembers
 open class MXKUTI: NSObject, RawRepresentable {
-    
     public typealias RawValue = String
     
     // MARK: - Properties
@@ -40,17 +39,17 @@ open class MXKUTI: NSObject, RawRepresentable {
     
     /// UTI string
     public var rawValue: String {
-        return utiWrapper.rawValue
+        utiWrapper.rawValue
     }
     
     /// Return associated prefered file extension (e.g. "png").
     public var fileExtension: String? {
-        return utiWrapper.fileExtension
+        utiWrapper.fileExtension
     }
     
     /// Return associated prefered mime-type (e.g. "image/png").
     public var mimeType: String? {
-        return utiWrapper.mimeType
+        utiWrapper.mimeType
     }
     
     // MARK: - Setup
@@ -102,7 +101,7 @@ open class MXKUTI: NSObject, RawRepresentable {
     /// - Parameter otherUTI: UTI which to conform with.
     /// - Returns: true if self conforms to other UTI.
     public func conforms(to otherUTI: MXKUTI) -> Bool {
-        return self.utiWrapper.conforms(to: otherUTI.utiWrapper)
+        utiWrapper.conforms(to: otherUTI.utiWrapper)
     }
     
     /// Check whether the current UTI conforms to any UTIs within an array.
@@ -121,15 +120,15 @@ open class MXKUTI: NSObject, RawRepresentable {
 }
 
 // MARK: - Other convenients initializers
+
 extension MXKUTI {
-    
     /// Initialize with image data.
     ///
     /// - Parameter imageData: Image data.
     convenience init?(imageData: Data) {
         guard let imageSource = CGImageSourceCreateWithData(imageData as CFData, nil),
-            let uti = CGImageSourceGetType(imageSource) else {
-                return nil
+              let uti = CGImageSourceGetType(imageSource) else {
+            return nil
         }
         self.init(rawValue: uti as String)
     }
@@ -144,8 +143,8 @@ extension MXKUTI {
     ///   - loadResourceValues: Indicate true to prefetch `typeIdentifierKey` URLResourceKey
     convenience init?(localFileURL: URL, loadResourceValues: Bool = true) {
         if loadResourceValues,
-            let _ = try? FileManager.default.contentsOfDirectory(at: localFileURL.deletingLastPathComponent(), includingPropertiesForKeys: [.typeIdentifierKey], options: []),
-            let uti = try? localFileURL.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier {
+           let _ = try? FileManager.default.contentsOfDirectory(at: localFileURL.deletingLastPathComponent(), includingPropertiesForKeys: [.typeIdentifierKey], options: []),
+           let uti = try? localFileURL.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier {
             self.init(rawValue: uti)
         } else if localFileURL.pathExtension.isEmpty == false {
             let fileExtension = localFileURL.pathExtension
@@ -163,49 +162,51 @@ extension MXKUTI {
 }
 
 // MARK: - Convenients conformance UTIs methods
-extension MXKUTI {
-    public var isImage: Bool {
-        return self.conforms(to: MXKUTI.image)
+
+public extension MXKUTI {
+    var isImage: Bool {
+        conforms(to: MXKUTI.image)
     }
     
-    public var isVideo: Bool {
-        return self.conforms(to: MXKUTI.movie)
+    var isVideo: Bool {
+        conforms(to: MXKUTI.movie)
     }
     
-    public var isFile: Bool {
-        return self.conforms(to: MXKUTI.data)
+    var isFile: Bool {
+        conforms(to: MXKUTI.data)
     }
 }
 
 // swiftlint:disable force_unwrapping
 
 // MARK: - Some system defined UTIs
-extension MXKUTI {
-    public static let data = MXKUTI(cfRawValue: kUTTypeData)!
-    public static let text = MXKUTI(cfRawValue: kUTTypeText)!
-    public static let audio = MXKUTI(cfRawValue: kUTTypeAudio)!
-    public static let video = MXKUTI(cfRawValue: kUTTypeVideo)!
-    public static let movie = MXKUTI(cfRawValue: kUTTypeMovie)!
-    public static let image = MXKUTI(cfRawValue: kUTTypeImage)!
-    public static let png = MXKUTI(cfRawValue: kUTTypePNG)!
-    public static let jpeg = MXKUTI(cfRawValue: kUTTypeJPEG)!
-    public static let svg = MXKUTI(cfRawValue: kUTTypeScalableVectorGraphics)!
-    public static let url = MXKUTI(cfRawValue: kUTTypeURL)!
-    public static let fileUrl = MXKUTI(cfRawValue: kUTTypeFileURL)!
-    public static let html = MXKUTI(cfRawValue: kUTTypeHTML)!
-    public static let xml = MXKUTI(cfRawValue: kUTTypeXML)!
+
+public extension MXKUTI {
+    static let data = MXKUTI(cfRawValue: kUTTypeData)!
+    static let text = MXKUTI(cfRawValue: kUTTypeText)!
+    static let audio = MXKUTI(cfRawValue: kUTTypeAudio)!
+    static let video = MXKUTI(cfRawValue: kUTTypeVideo)!
+    static let movie = MXKUTI(cfRawValue: kUTTypeMovie)!
+    static let image = MXKUTI(cfRawValue: kUTTypeImage)!
+    static let png = MXKUTI(cfRawValue: kUTTypePNG)!
+    static let jpeg = MXKUTI(cfRawValue: kUTTypeJPEG)!
+    static let svg = MXKUTI(cfRawValue: kUTTypeScalableVectorGraphics)!
+    static let url = MXKUTI(cfRawValue: kUTTypeURL)!
+    static let fileUrl = MXKUTI(cfRawValue: kUTTypeFileURL)!
+    static let html = MXKUTI(cfRawValue: kUTTypeHTML)!
+    static let xml = MXKUTI(cfRawValue: kUTTypeXML)!
 }
 
 // swiftlint:enable force_unwrapping
 
 // MARK: - Convenience static methods
-extension MXKUTI {
-    
-    public static func mimeType(from fileExtension: String) -> String? {
-        return MXKUTI(fileExtension: fileExtension).mimeType
+
+public extension MXKUTI {
+    static func mimeType(from fileExtension: String) -> String? {
+        MXKUTI(fileExtension: fileExtension).mimeType
     }
     
-    public static func fileExtension(from mimeType: String) -> String? {
-        return MXKUTI(mimeType: mimeType)?.fileExtension
+    static func fileExtension(from mimeType: String) -> String? {
+        MXKUTI(mimeType: mimeType)?.fileExtension
     }
 }

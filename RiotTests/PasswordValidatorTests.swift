@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import XCTest
 @testable import Element
+import XCTest
 
 class PasswordValidatorTests: XCTestCase {
-
     func testOnlyLength() throws {
         let minLengthRule = PasswordValidatorRule.minLength(8)
         let validator = PasswordValidator(withRules: [minLengthRule])
@@ -94,5 +93,4 @@ class PasswordValidatorTests: XCTestCase {
             XCTAssertEqual(error.unmetRules.first, .containSymbol)
         }
     }
-
 }

@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class SpaceMemberListCoordinator: SpaceMemberListCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -51,27 +50,27 @@ final class SpaceMemberListCoordinator: SpaceMemberListCoordinatorType {
     
     // MARK: - Public methods
     
-    func start() {            
-        self.spaceMemberListViewModel.coordinatorDelegate = self
+    func start() {
+        spaceMemberListViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.spaceMemberListViewController
+        spaceMemberListViewController
     }
 }
 
 // MARK: - SpaceMemberListViewModelCoordinatorDelegate
-extension SpaceMemberListCoordinator: SpaceMemberListViewModelCoordinatorDelegate {
 
+extension SpaceMemberListCoordinator: SpaceMemberListViewModelCoordinatorDelegate {
     func spaceMemberListViewModel(_ viewModel: SpaceMemberListViewModelType, didSelect member: MXRoomMember, from sourceView: UIView?) {
-        self.delegate?.spaceMemberListCoordinator(self, didSelect: member, from: sourceView)
+        delegate?.spaceMemberListCoordinator(self, didSelect: member, from: sourceView)
     }
     
     func spaceMemberListViewModelDidCancel(_ viewModel: SpaceMemberListViewModelType) {
-        self.delegate?.spaceMemberListCoordinatorDidCancel(self)
+        delegate?.spaceMemberListCoordinatorDidCancel(self)
     }
     
     func spaceMemberListViewModelShowInvite(_ viewModel: SpaceMemberListViewModelType) {
-        self.delegate?.spaceMemberListCoordinatorShowInvite(self)
+        delegate?.spaceMemberListCoordinatorShowInvite(self)
     }
 }

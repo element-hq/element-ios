@@ -19,7 +19,6 @@
 import UIKit
 
 final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -30,19 +29,19 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var desktopClientImageView: UIImageView!
-    @IBOutlet private weak var mobileClientImageView: UIImageView!
+    @IBOutlet private var desktopClientImageView: UIImageView!
+    @IBOutlet private var mobileClientImageView: UIImageView!
     
-    @IBOutlet private weak var additionalInformationLabel: UILabel!
+    @IBOutlet private var additionalInformationLabel: UILabel!
     
-    @IBOutlet private weak var recoverSecretsAvailabilityLoadingContainerView: UIView!
-    @IBOutlet private weak var recoverSecretsAvailabilityLoadingLabel: UILabel!
-    @IBOutlet private weak var recoverSecretsAvailabilityActivityIndicatorView: UIActivityIndicatorView!
-    @IBOutlet private weak var recoverSecretsContainerView: UIView!
-    @IBOutlet private weak var recoverSecretsButton: RoundedButton!
-    @IBOutlet private weak var recoverSecretsAdditionalInformationLabel: UILabel!
+    @IBOutlet private var recoverSecretsAvailabilityLoadingContainerView: UIView!
+    @IBOutlet private var recoverSecretsAvailabilityLoadingLabel: UILabel!
+    @IBOutlet private var recoverSecretsAvailabilityActivityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet private var recoverSecretsContainerView: UIView!
+    @IBOutlet private var recoverSecretsButton: RoundedButton!
+    @IBOutlet private var recoverSecretsAdditionalInformationLabel: UILabel!
     
     // MARK: Private
 
@@ -71,19 +70,19 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.viewDelegate = self
+        viewModel.process(viewAction: .loadData)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -91,18 +90,18 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.informationLabel.textColor = theme.textPrimaryColor
-        self.desktopClientImageView.tintColor = theme.tintColor
-        self.mobileClientImageView.tintColor = theme.tintColor
-        self.additionalInformationLabel.textColor = theme.textPrimaryColor
-        self.recoverSecretsAvailabilityLoadingLabel.textColor = theme.textSecondaryColor
-        self.recoverSecretsAvailabilityActivityIndicatorView.color = theme.tintColor
+        informationLabel.textColor = theme.textPrimaryColor
+        desktopClientImageView.tintColor = theme.tintColor
+        mobileClientImageView.tintColor = theme.tintColor
+        additionalInformationLabel.textColor = theme.textPrimaryColor
+        recoverSecretsAvailabilityLoadingLabel.textColor = theme.textSecondaryColor
+        recoverSecretsAvailabilityActivityIndicatorView.color = theme.tintColor
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -110,66 +109,66 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        if self.cancellable {
+        if cancellable {
             let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.skip, style: .plain) { [weak self] in
                 self?.cancelButtonAction()
             }
 
-            self.vc_removeBackTitle()
+            vc_removeBackTitle()
 
-            self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+            navigationItem.rightBarButtonItem = cancelBarButtonItem
             self.cancelBarButtonItem = cancelBarButtonItem
         }
         
-        self.title = VectorL10n.deviceVerificationSelfVerifyWaitTitle
+        title = VectorL10n.deviceVerificationSelfVerifyWaitTitle
         
-        self.informationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitInformation(AppInfo.current.displayName)
+        informationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitInformation(AppInfo.current.displayName)
         
-        self.desktopClientImageView.image = Asset.Images.monitor.image.withRenderingMode(.alwaysTemplate)
-        self.mobileClientImageView.image = Asset.Images.smartphone.image.withRenderingMode(.alwaysTemplate)
+        desktopClientImageView.image = Asset.Images.monitor.image.withRenderingMode(.alwaysTemplate)
+        mobileClientImageView.image = Asset.Images.smartphone.image.withRenderingMode(.alwaysTemplate)
         
-        self.additionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitAdditionalInformation(AppInfo.current.displayName)
+        additionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitAdditionalInformation(AppInfo.current.displayName)
         
-        self.recoverSecretsAdditionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalInformation
+        recoverSecretsAdditionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalInformation
     }
 
     private func render(viewState: KeyVerificationSelfVerifyWaitViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .secretsRecoveryCheckingAvailability(let text):
-            self.renderSecretsRecoveryCheckingAvailability(withText: text)
+            renderSecretsRecoveryCheckingAvailability(withText: text)
         case .loaded(let viewData):
-            self.renderLoaded(viewData: viewData)
+            renderLoaded(viewData: viewData)
         case .cancelled(let reason):
-            self.renderCancelled(reason: reason)
+            renderCancelled(reason: reason)
         case .cancelledByMe(let reason):
-            self.renderCancelledByMe(reason: reason)
+            renderCancelledByMe(reason: reason)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderSecretsRecoveryCheckingAvailability(withText text: String?) {
-        self.recoverSecretsAvailabilityLoadingLabel.text = text
-        self.recoverSecretsAvailabilityActivityIndicatorView.startAnimating()
-        self.recoverSecretsAvailabilityLoadingContainerView.isHidden = false
-        self.recoverSecretsContainerView.isHidden = true
+        recoverSecretsAvailabilityLoadingLabel.text = text
+        recoverSecretsAvailabilityActivityIndicatorView.startAnimating()
+        recoverSecretsAvailabilityLoadingContainerView.isHidden = false
+        recoverSecretsContainerView.isHidden = true
     }
     
     private func renderLoaded(viewData: KeyVerificationSelfVerifyWaitViewData) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        self.title = viewData.isNewSignIn ? VectorL10n.deviceVerificationSelfVerifyWaitNewSignInTitle : VectorL10n.deviceVerificationSelfVerifyWaitTitle
-        self.cancelBarButtonItem?.title = viewData.isNewSignIn ? VectorL10n.skip : VectorL10n.cancel
+        title = viewData.isNewSignIn ? VectorL10n.deviceVerificationSelfVerifyWaitNewSignInTitle : VectorL10n.deviceVerificationSelfVerifyWaitTitle
+        cancelBarButtonItem?.title = viewData.isNewSignIn ? VectorL10n.skip : VectorL10n.cancel
    
         let hideRecoverSecrets: Bool
         let recoverSecretsButtonTitle: String?
@@ -189,53 +188,52 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
             }
         }
         
-        self.recoverSecretsAvailabilityLoadingContainerView.isHidden = true
-        self.recoverSecretsAvailabilityActivityIndicatorView.stopAnimating()
-        self.recoverSecretsContainerView.isHidden = hideRecoverSecrets
-        self.recoverSecretsButton.setTitle(recoverSecretsButtonTitle, for: .normal)
+        recoverSecretsAvailabilityLoadingContainerView.isHidden = true
+        recoverSecretsAvailabilityActivityIndicatorView.stopAnimating()
+        recoverSecretsContainerView.isHidden = hideRecoverSecrets
+        recoverSecretsButton.setTitle(recoverSecretsButtonTitle, for: .normal)
     }
     
     private func renderCancelled(reason: MXTransactionCancelCode) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+        errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
             self.viewModel.process(viewAction: .cancel)
         }
     }
     
     private func renderCancelledByMe(reason: MXTransactionCancelCode) {
         if reason.value != MXTransactionCancelCode.user().value {
-            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+            activityPresenter.removeCurrentActivityIndicator(animated: true)
             
-            self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
+            errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
                 self.viewModel.process(viewAction: .cancel)
             }
         } else {
-            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+            activityPresenter.removeCurrentActivityIndicator(animated: true)
         }
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     // MARK: - Actions
     
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
     
     @IBAction private func recoverSecretsButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .recoverSecrets)
+        viewModel.process(viewAction: .recoverSecrets)
     }
 }
 
-
 // MARK: - KeyVerificationSelfVerifyWaitViewModelViewDelegate
-extension KeyVerificationSelfVerifyWaitViewController: KeyVerificationSelfVerifyWaitViewModelViewDelegate {
 
+extension KeyVerificationSelfVerifyWaitViewController: KeyVerificationSelfVerifyWaitViewModelViewDelegate {
     func keyVerificationSelfVerifyWaitViewModel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType, didUpdateViewState viewSate: KeyVerificationSelfVerifyWaitViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

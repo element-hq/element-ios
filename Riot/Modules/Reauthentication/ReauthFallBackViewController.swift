@@ -18,7 +18,6 @@ import UIKit
 
 /// View controller used for User-Interactive Authentication fallback (https://matrix.org/docs/spec/client_server/latest#fallback)
 final class ReauthFallBackViewController: AuthFallBackViewController, Themable {
-    
     // MARK: - Properties
                     
     // MARK: Public
@@ -36,9 +35,9 @@ final class ReauthFallBackViewController: AuthFallBackViewController, Themable {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.setupNavigationBar()
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        setupNavigationBar()
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     // MARK: - Public
@@ -46,7 +45,7 @@ final class ReauthFallBackViewController: AuthFallBackViewController, Themable {
     func update(theme: Theme) {
         self.theme = theme
                 
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
     }
@@ -58,21 +57,21 @@ final class ReauthFallBackViewController: AuthFallBackViewController, Themable {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupNavigationBar() {
         let doneBarButtonItem = MXKBarButtonItem(title: VectorL10n.close, style: .plain) { [weak self] in
             self?.didValidate?()
-        }        
-        self.navigationItem.leftBarButtonItem = doneBarButtonItem
+        }
+        navigationItem.leftBarButtonItem = doneBarButtonItem
     }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
+
 extension ReauthFallBackViewController: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.didCancel?()
+        didCancel?()
     }
 }

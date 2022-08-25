@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,15 +17,13 @@
 import Foundation
 import Reusable
 
-extension MXKTableViewCellWithLabelAndSwitch: Reusable {}
+extension MXKTableViewCellWithLabelAndSwitch: Reusable { }
 
 extension MXKTableViewCellWithLabelAndSwitch: Themable {
-
     func update(theme: Theme) {
         mxkLabel.textColor = theme.textPrimaryColor
         backgroundColor = theme.backgroundColor
         contentView.backgroundColor = .clear
         mxkSwitch.onTintColor = theme.tintColor
-   }
-
+    }
 }

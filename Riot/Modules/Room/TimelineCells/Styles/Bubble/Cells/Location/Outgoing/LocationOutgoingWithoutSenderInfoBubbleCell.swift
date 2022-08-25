@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class LocationOutgoingWithoutSenderInfoBubbleCell: LocationPlainCell, BubbleOutgoingRoomCellProtocol {
-    
     override func setupViews() {
         super.setupViews()
         
@@ -26,6 +25,6 @@ class LocationOutgoingWithoutSenderInfoBubbleCell: LocationPlainCell, BubbleOutg
         roomCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
         roomCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
         
-        self.setupBubbleDecorations()
+        setupBubbleDecorations()
     }
 }

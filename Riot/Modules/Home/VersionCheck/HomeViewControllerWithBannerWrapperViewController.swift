@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKViewControllerActivityHandling, BannerPresentationProtocol, MasterTabBarItemDisplayProtocol {
-    
     @objc let homeViewController: HomeViewController
     private var bannerContainerView: UIView!
     private var stackView: UIStackView!
@@ -27,17 +26,18 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
     }
     
     init(viewController: HomeViewController) {
-        self.homeViewController = viewController
+        homeViewController = viewController
         
         super.init(nibName: nil, bundle: nil)
         
         extendedLayoutIncludesOpaqueBars = true
         
-        self.tabBarItem.tag = viewController.tabBarItem.tag
-        self.tabBarItem.image = viewController.tabBarItem.image
-        self.accessibilityLabel = viewController.accessibilityLabel
+        tabBarItem.tag = viewController.tabBarItem.tag
+        tabBarItem.image = viewController.tabBarItem.image
+        accessibilityLabel = viewController.accessibilityLabel
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
@@ -54,10 +54,10 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
         stackView.alignment = .fill
         
         view.addSubview(stackView)
-        NSLayoutConstraint.activate([stackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-                                     stackView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-                                     stackView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-                                     stackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)])
+        NSLayoutConstraint.activate([stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                                     stackView.leftAnchor.constraint(equalTo: view.leftAnchor),
+                                     stackView.rightAnchor.constraint(equalTo: view.rightAnchor),
+                                     stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
 
         addChild(homeViewController)
         stackView.addArrangedSubview(homeViewController.view)
@@ -69,10 +69,10 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
     func presentBannerView(_ bannerView: UIView, animated: Bool) {
         bannerView.alpha = 0.0
         bannerView.isHidden = true
-        self.stackView.insertArrangedSubview(bannerView, at: 0)
-        self.stackView.layoutIfNeeded()
+        stackView.insertArrangedSubview(bannerView, at: 0)
+        stackView.layoutIfNeeded()
         
-        UIView.animate(withDuration: (animated ? 0.25 : 0.0)) {
+        UIView.animate(withDuration: animated ? 0.25 : 0.0) {
             bannerView.alpha = 1.0
             bannerView.isHidden = false
             self.stackView.layoutIfNeeded()
@@ -80,11 +80,11 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
     }
     
     func dismissBannerView(animated: Bool) {
-        guard stackView.arrangedSubviews.count > 1, let bannerView = self.stackView.arrangedSubviews.first else {
+        guard stackView.arrangedSubviews.count > 1, let bannerView = stackView.arrangedSubviews.first else {
             return
         }
         
-        UIView.animate(withDuration: (animated ? 0.25 : 0.0)) {
+        UIView.animate(withDuration: animated ? 0.25 : 0.0) {
             bannerView.alpha = 0.0
             bannerView.isHidden = true
             self.stackView.layoutIfNeeded()
@@ -94,9 +94,10 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
     }
     
     // MARK: - MXKViewControllerActivityHandling
+
     var activityIndicator: UIActivityIndicatorView! {
         get {
-            return homeViewController.activityIndicator
+            homeViewController.activityIndicator
         }
         set {
             homeViewController.activityIndicator = newValue
@@ -104,7 +105,7 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
     }
     
     var providesCustomActivityIndicator: Bool {
-        return homeViewController.providesCustomActivityIndicator
+        homeViewController.providesCustomActivityIndicator
     }
 
     func startActivityIndicator() {
@@ -118,6 +119,6 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
     // MARK: - MasterTabBarItemDisplayProtocol
     
     var masterTabBarItemTitle: String {
-        return VectorL10n.titleHome
+        VectorL10n.titleHome
     }
 }

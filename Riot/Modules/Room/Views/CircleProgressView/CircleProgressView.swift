@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,20 +31,23 @@ class CircleProgressView: MXKPieChartView {
             shapeLayer?.strokeColor = lineColor.cgColor
         }
     }
+
     @IBInspectable var lineWidth: CGFloat = 2 {
         didSet {
             shapeLayer?.lineWidth = lineWidth
         }
     }
+
     var value: CGFloat = 0 {
         didSet {
             stopAnimating()
             strokeEnd = max(min(value, CircleProgressView.maxStrokeEnd), CircleProgressView.minStrokeEnd)
         }
     }
+
     override var progress: CGFloat {
         get {
-            return value
+            value
         }
         set {
             value = newValue
@@ -59,7 +62,8 @@ class CircleProgressView: MXKPieChartView {
             shapeLayer?.strokeEnd = strokeEnd
         }
     }
-    private var startAngle: CGFloat = -.pi/2
+
+    private var startAngle: CGFloat = -.pi / 2
     private(set) var isAnimating = false
 
     // MARK: - Lifecycle
@@ -79,7 +83,7 @@ class CircleProgressView: MXKPieChartView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        shapeLayer?.frame = self.layer.bounds
+        shapeLayer?.frame = layer.bounds
         initPath()
     }
     
@@ -141,7 +145,7 @@ class CircleProgressView: MXKPieChartView {
     
     private func initPath() {
         let endAngle: CGFloat = startAngle + .pi * 2
-        let path = UIBezierPath(arcCenter: CGPoint(x: self.bounds.midX, y: self.bounds.midY), radius: (self.bounds.width - lineWidth) / 2, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        let path = UIBezierPath(arcCenter: CGPoint(x: bounds.midX, y: bounds.midY), radius: (bounds.width - lineWidth) / 2, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         shapeLayer?.path = path.cgPath
     }
 }

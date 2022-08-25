@@ -17,7 +17,6 @@
 import Foundation
 
 final class SerializationService: SerializationServiceType {
-    
     // MARK: - Properties
     
     private let decoder = JSONDecoder()
@@ -26,7 +25,7 @@ final class SerializationService: SerializationServiceType {
     // MARK: - Public
     
     func deserialize<T: Decodable>(_ data: Data) throws -> T {
-        return try decoder.decode(T.self, from: data)
+        try decoder.decode(T.self, from: data)
     }
 
     func deserialize<T: Decodable>(_ object: Any) throws -> T {
@@ -40,8 +39,7 @@ final class SerializationService: SerializationServiceType {
         return try decoder.decode(T.self, from: jsonData)
     }
     
-    
     func serialize<T: Encodable>(_ object: T) throws -> Data {
-        return try encoder.encode(object)
+        try encoder.encode(object)
     }
 }

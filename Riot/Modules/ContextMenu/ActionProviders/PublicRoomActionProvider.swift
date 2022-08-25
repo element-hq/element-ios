@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// `PublicRoomActionProvider` provides the menu for `MXPUblicRoom` instances
 @available(iOS 13.0, *)
 class PublicRoomActionProvider: RoomActionProviderProtocol {
-    
     // MARK: - Properties
     
     private let publicRoom: MXPublicRoom
@@ -35,17 +34,17 @@ class PublicRoomActionProvider: RoomActionProviderProtocol {
     // MARK: - RoomActionProviderProtocol
     
     var menu: UIMenu {
-        return UIMenu(children: [
-            self.joinAction
+        UIMenu(children: [
+            joinAction
         ])
     }
     
     // MARK: - Private
     
     private var joinAction: UIAction {
-        return UIAction(
-            title: VectorL10n.join) { [weak self] action in
+        UIAction(
+            title: VectorL10n.join) { [weak self] _ in
                 self?.service.joinRoom()
-        }
+            }
     }
 }

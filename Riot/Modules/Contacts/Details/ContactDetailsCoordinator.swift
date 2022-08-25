@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class ContactDetailsCoordinator: ContactDetailsCoordinatorProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -39,7 +38,7 @@ final class ContactDetailsCoordinator: ContactDetailsCoordinatorProtocol {
     
     init(parameters: ContactDetailsCoordinatorParameters) {
         self.parameters = parameters
-        let contactDetailsViewController: ContactDetailsViewController = ContactDetailsViewController.instantiate()
+        let contactDetailsViewController = ContactDetailsViewController.instantiate()
         contactDetailsViewController.contact = self.parameters.contact
         contactDetailsViewController.enableVoipCall = self.parameters.enableVoipCall
         self.contactDetailsViewController = contactDetailsViewController
@@ -47,10 +46,9 @@ final class ContactDetailsCoordinator: ContactDetailsCoordinatorProtocol {
     
     // MARK: - Public
     
-    func start() {
-    }
+    func start() { }
     
     func toPresentable() -> UIViewController {
-        return self.contactDetailsViewController
+        contactDetailsViewController
     }
 }

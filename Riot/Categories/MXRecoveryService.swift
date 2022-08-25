@@ -17,12 +17,11 @@
 import Foundation
 
 extension MXRecoveryService {
-    
     var vc_availability: SecretsRecoveryAvailability {
-        guard self.hasRecovery() else {
+        guard hasRecovery() else {
             return .notAvailable
         }
-        let secretsRecoveryMode: SecretsRecoveryMode = self.usePassphrase() ? .passphraseOrKey : .onlyKey
+        let secretsRecoveryMode: SecretsRecoveryMode = usePassphrase() ? .passphraseOrKey : .onlyKey
         return .available(secretsRecoveryMode)
     }
 }

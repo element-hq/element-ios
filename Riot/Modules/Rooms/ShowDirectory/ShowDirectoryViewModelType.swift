@@ -31,8 +31,7 @@ protocol ShowDirectoryViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `ShowDirectoryViewController`
-protocol ShowDirectoryViewModelType {        
-        
+protocol ShowDirectoryViewModelType {
     var viewDelegate: ShowDirectoryViewModelViewDelegate? { get set }
     var coordinatorDelegate: ShowDirectoryViewModelCoordinatorDelegate? { get set }
     

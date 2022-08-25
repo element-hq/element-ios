@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct TemplateRoomChatBubbleView: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -29,10 +28,10 @@ struct TemplateRoomChatBubbleView: View {
     let bubble: TemplateRoomChatBubble
     
     var body: some View {
-        HStack(alignment: .top){
+        HStack(alignment: .top) {
             AvatarImage(avatarData: bubble.sender.avatarData, size: .xSmall)
                 .accessibility(identifier: "bubbleImage")
-            VStack(alignment: .leading){
+            VStack(alignment: .leading) {
                 Text(bubble.sender.displayName ?? "")
                     .foregroundColor(theme.userColor(for: bubble.sender.id))
                     .font(theme.fonts.bodySB)
@@ -42,7 +41,7 @@ struct TemplateRoomChatBubbleView: View {
             }
             Spacer()
         }
-        //add to a style
+        // add to a style
         .padding(.horizontal)
         .padding(.vertical, 8)
         .frame(maxWidth: .infinity)

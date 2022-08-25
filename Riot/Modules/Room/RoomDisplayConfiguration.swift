@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 @objcMembers
 class RoomDisplayConfiguration: NSObject {
-    
     let callsEnabled: Bool
     
     let integrationsEnabled: Bool
@@ -38,13 +37,13 @@ class RoomDisplayConfiguration: NSObject {
         super.init()
     }
     
-    static let `default`: RoomDisplayConfiguration = RoomDisplayConfiguration(callsEnabled: true,
-                                                                              integrationsEnabled: true,
-                                                                              jitsiWidgetRemoverEnabled: true,
-                                                                              sendingPollsEnabled: true)
+    static let `default` = RoomDisplayConfiguration(callsEnabled: true,
+                                                    integrationsEnabled: true,
+                                                    jitsiWidgetRemoverEnabled: true,
+                                                    sendingPollsEnabled: true)
     
-    static let forThreads: RoomDisplayConfiguration = RoomDisplayConfiguration(callsEnabled: false,
-                                                                               integrationsEnabled: false,
-                                                                               jitsiWidgetRemoverEnabled: false,
-                                                                               sendingPollsEnabled: false)
+    static let forThreads = RoomDisplayConfiguration(callsEnabled: false,
+                                                     integrationsEnabled: false,
+                                                     jitsiWidgetRemoverEnabled: false,
+                                                     sendingPollsEnabled: false)
 }

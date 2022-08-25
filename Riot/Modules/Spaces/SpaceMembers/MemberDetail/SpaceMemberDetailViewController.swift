@@ -19,11 +19,10 @@
 import UIKit
 
 final class SpaceMemberDetailViewController: RoomMemberDetailsViewController {
-    
     // MARK: - Constants
     
     override class func nib() -> UINib! {
-        return UINib(nibName: "RoomMemberDetailsViewController", bundle: Bundle(for: RoomMemberDetailsViewController.self))
+        UINib(nibName: "RoomMemberDetailsViewController", bundle: Bundle(for: RoomMemberDetailsViewController.self))
     }
     
     // MARK: - Properties
@@ -54,34 +53,34 @@ final class SpaceMemberDetailViewController: RoomMemberDetailsViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.tableView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: tableView)
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.viewDelegate = self
+        viewModel.process(viewAction: .loadData)
         
-        self.delegate = self
+        delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.keyboardAvoider?.startAvoiding()
+        keyboardAvoider?.startAvoiding()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.keyboardAvoider?.stopAvoiding()
+        keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -89,12 +88,11 @@ final class SpaceMemberDetailViewController: RoomMemberDetailsViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
-
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -102,7 +100,7 @@ final class SpaceMemberDetailViewController: RoomMemberDetailsViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -111,63 +109,61 @@ final class SpaceMemberDetailViewController: RoomMemberDetailsViewController {
                 self?.cancelButtonAction()
             }
             
-            self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+            navigationItem.rightBarButtonItem = cancelBarButtonItem
         }
     }
 
     private func render(viewState: SpaceMemberDetailViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let member, let space):
-            self.renderLoaded(member: member, space: space)
+            renderLoaded(member: member, space: space)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(member: MXRoomMember, space: MXRoom?) {
-        self.display(member, withMatrixRoom: space)
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        display(member, withMatrixRoom: space)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     // MARK: - RoomMemberDetailsViewController private
 
     @objc private func showRoom(withId roomId: String!) {
-        self.viewModel.process(viewAction: .openRoom(roomId))
+        viewModel.process(viewAction: .openRoom(roomId))
     }
 
     // MARK: - Actions
 
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
 
-
 // MARK: - SpaceMemberDetailViewModelViewDelegate
-extension SpaceMemberDetailViewController: SpaceMemberDetailViewModelViewDelegate {
 
+extension SpaceMemberDetailViewController: SpaceMemberDetailViewModelViewDelegate {
     func spaceMemberDetailViewModel(_ viewModel: SpaceMemberDetailViewModelType, didUpdateViewState viewSate: SpaceMemberDetailViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
 // MARK: - MXKRoomMemberDetailsViewControllerDelegate
-extension SpaceMemberDetailViewController: MXKRoomMemberDetailsViewControllerDelegate {
 
+extension SpaceMemberDetailViewController: MXKRoomMemberDetailsViewControllerDelegate {
     func roomMemberDetailsViewController(_ roomMemberDetailsViewController: MXKRoomMemberDetailsViewController!, startChatWithMemberId memberId: String!, completion: (() -> Void)!) {
         completion()
-        self.viewModel.process(viewAction: .createRoom(memberId))
+        viewModel.process(viewAction: .createRoom(memberId))
     }
-
 }

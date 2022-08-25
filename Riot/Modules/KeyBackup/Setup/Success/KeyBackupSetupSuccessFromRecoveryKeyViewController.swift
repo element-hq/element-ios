@@ -21,32 +21,31 @@ protocol KeyBackupSetupSuccessFromRecoveryKeyViewControllerDelegate: AnyObject {
 }
 
 final class KeyBackupSetupSuccessFromRecoveryKeyViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var keyBackupLogoImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var keyBackupLogoImageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var recoveryKeySectionBackgroundView: UIView!
+    @IBOutlet private var recoveryKeySectionBackgroundView: UIView!
     
-    @IBOutlet private weak var recoveryKeyTitleLabel: UILabel!
-    @IBOutlet private weak var recoveryKeyLabel: UILabel!
+    @IBOutlet private var recoveryKeyTitleLabel: UILabel!
+    @IBOutlet private var recoveryKeyLabel: UILabel!
     
-    @IBOutlet private weak var separatorView: UIView!
+    @IBOutlet private var separatorView: UIView!
     
-    @IBOutlet private weak var makeACopyButton: UIButton!
+    @IBOutlet private var makeACopyButton: UIButton!
     
-    @IBOutlet private weak var madeACopyButtonBackgroundView: UIView!
-    @IBOutlet private weak var madeACopyButton: UIButton!
+    @IBOutlet private var madeACopyButtonBackgroundView: UIView!
+    @IBOutlet private var madeACopyButton: UIButton!
     
     // MARK: Private
     
     private var theme: Theme!
     private var recoveryKey: String!
-    private var hasMadeARecoveryKeyCopy: Bool = false
+    private var hasMadeARecoveryKeyCopy = false
     
     // MARK: Public
     
@@ -68,68 +67,67 @@ final class KeyBackupSetupSuccessFromRecoveryKeyViewController: UIViewController
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.keyBackupSetupTitle
+        title = VectorL10n.keyBackupSetupTitle
         
-        self.setupViews()
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        setupViews()
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Hide back button
-        self.navigationItem.setHidesBackButton(true, animated: animated)
+        navigationItem.setHidesBackButton(true, animated: animated)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
     
     private func setupViews() {
-        
         let keybackupLogoImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
-        self.keyBackupLogoImageView.image = keybackupLogoImage
+        keyBackupLogoImageView.image = keybackupLogoImage
         
-        self.titleLabel.text = VectorL10n.keyBackupSetupSuccessTitle
-        self.informationLabel.text = VectorL10n.keyBackupSetupSuccessFromRecoveryKeyInfo
+        titleLabel.text = VectorL10n.keyBackupSetupSuccessTitle
+        informationLabel.text = VectorL10n.keyBackupSetupSuccessFromRecoveryKeyInfo
         
-        self.recoveryKeyTitleLabel.text = VectorL10n.keyBackupSetupSuccessFromRecoveryKeyRecoveryKeyTitle
-        self.recoveryKeyLabel.text = self.recoveryKey
+        recoveryKeyTitleLabel.text = VectorL10n.keyBackupSetupSuccessFromRecoveryKeyRecoveryKeyTitle
+        recoveryKeyLabel.text = recoveryKey
         
-        self.makeACopyButton.setTitle(VectorL10n.keyBackupSetupSuccessFromRecoveryKeyMakeCopyAction, for: .normal)
-        self.madeACopyButton.setTitle(VectorL10n.keyBackupSetupSuccessFromRecoveryKeyMadeCopyAction, for: .normal)
+        makeACopyButton.setTitle(VectorL10n.keyBackupSetupSuccessFromRecoveryKeyMakeCopyAction, for: .normal)
+        madeACopyButton.setTitle(VectorL10n.keyBackupSetupSuccessFromRecoveryKeyMadeCopyAction, for: .normal)
         
-        self.updateDoneButton()
+        updateDoneButton()
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.keyBackupLogoImageView.tintColor = theme.textPrimaryColor
+        keyBackupLogoImageView.tintColor = theme.textPrimaryColor
         
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.recoveryKeySectionBackgroundView.backgroundColor = theme.backgroundColor
+        recoveryKeySectionBackgroundView.backgroundColor = theme.backgroundColor
         
-        self.recoveryKeyTitleLabel.textColor = theme.textPrimaryColor
-        self.recoveryKeyLabel.textColor = theme.textPrimaryColor
+        recoveryKeyTitleLabel.textColor = theme.textPrimaryColor
+        recoveryKeyLabel.textColor = theme.textPrimaryColor
         
-        self.separatorView.backgroundColor = theme.lineBreakColor
+        separatorView.backgroundColor = theme.lineBreakColor
         
-        theme.applyStyle(onButton: self.makeACopyButton)
+        theme.applyStyle(onButton: makeACopyButton)
         
-        self.madeACopyButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.madeACopyButton)
+        madeACopyButtonBackgroundView.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: madeACopyButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -137,16 +135,15 @@ final class KeyBackupSetupSuccessFromRecoveryKeyViewController: UIViewController
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func shareRecoveryKey() {
-        
         // Set up activity view controller
-        let activityItems: [Any] = [ self.recoveryKey as Any ]
+        let activityItems: [Any] = [recoveryKey as Any]
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         
-        activityViewController.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
+        activityViewController.completionWithItemsHandler = { _, completed, _, _ in
             
             // Enable made copy button only if user has selected an activity item and has setup recovery key without passphrase
             if completed {
@@ -157,25 +154,25 @@ final class KeyBackupSetupSuccessFromRecoveryKeyViewController: UIViewController
         
         // Configure source view when activity view controller is presented with a popover
         if let popoverPresentationController = activityViewController.popoverPresentationController {
-            popoverPresentationController.sourceView = self.makeACopyButton
-            popoverPresentationController.sourceRect = self.makeACopyButton.bounds
+            popoverPresentationController.sourceView = makeACopyButton
+            popoverPresentationController.sourceRect = makeACopyButton.bounds
             popoverPresentationController.permittedArrowDirections = [.down, .up]
         }
         
-        self.present(activityViewController, animated: true)
+        present(activityViewController, animated: true)
     }
     
     private func updateDoneButton() {
-        self.madeACopyButton.isEnabled = self.hasMadeARecoveryKeyCopy
+        madeACopyButton.isEnabled = hasMadeARecoveryKeyCopy
     }
     
     // MARK: - Actions
     
     @IBAction private func saveRecoveryKeyButtonAction(_ sender: Any) {
-        self.shareRecoveryKey()
+        shareRecoveryKey()
     }
     
     @IBAction private func doneButtonAction(_ sender: Any) {
-        self.delegate?.keyBackupSetupSuccessFromRecoveryKeyViewControllerDidTapDoneAction(self)
+        delegate?.keyBackupSetupSuccessFromRecoveryKeyViewControllerDidTapDoneAction(self)
     }
 }

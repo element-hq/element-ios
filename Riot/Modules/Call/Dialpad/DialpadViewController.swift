@@ -16,8 +16,8 @@
  limitations under the License.
  */
 
-import UIKit
 import libPhoneNumber_iOS
+import UIKit
 
 @objc protocol DialpadViewControllerDelegate: AnyObject {
     @objc optional func dialpadViewControllerDidTapCall(_ viewController: DialpadViewController,
@@ -29,27 +29,29 @@ import libPhoneNumber_iOS
 
 @objcMembers
 class DialpadViewController: UIViewController {
-    
     // MARK: Outlets
     
-    @IBOutlet private weak var phoneNumberTextFieldTopConstraint: NSLayoutConstraint! {
+    @IBOutlet private var phoneNumberTextFieldTopConstraint: NSLayoutConstraint! {
         didSet {
-            if !configuration.showsTitle && !configuration.showsCloseButton {
+            if !configuration.showsTitle, !configuration.showsCloseButton {
                 phoneNumberTextFieldTopConstraint.constant = 0
             }
         }
     }
-    @IBOutlet private weak var closeButton: UIButton! {
+
+    @IBOutlet private var closeButton: UIButton! {
         didSet {
             closeButton.isHidden = !configuration.showsCloseButton
         }
     }
-    @IBOutlet private weak var titleLabel: UILabel! {
+
+    @IBOutlet private var titleLabel: UILabel! {
         didSet {
             titleLabel.isHidden = !configuration.showsTitle
         }
     }
-    @IBOutlet private weak var phoneNumberTextField: UITextField! {
+
+    @IBOutlet private var phoneNumberTextField: UITextField! {
         didSet {
             phoneNumberTextField.text = nil
             //  avoid showing keyboard on text field
@@ -58,22 +60,25 @@ class DialpadViewController: UIViewController {
             phoneNumberTextField.isUserInteractionEnabled = configuration.editingEnabled
         }
     }
-    @IBOutlet private weak var lineView: UIView!
-    @IBOutlet private weak var digitsStackView: UIStackView!
+
+    @IBOutlet private var lineView: UIView!
+    @IBOutlet private var digitsStackView: UIStackView!
     @IBOutlet private var digitButtons: [DialpadButton]!
-    @IBOutlet private weak var backspaceButton: DialpadActionButton! {
+    @IBOutlet private var backspaceButton: DialpadActionButton! {
         didSet {
             backspaceButton.type = .backspace
             backspaceButton.isHidden = !configuration.showsBackspaceButton
         }
     }
-    @IBOutlet private weak var callButton: DialpadActionButton! {
+
+    @IBOutlet private var callButton: DialpadActionButton! {
         didSet {
             callButton.type = .call
             callButton.isHidden = !configuration.showsCallButton
         }
     }
-    @IBOutlet private weak var spaceButton: UIButton! {
+
+    @IBOutlet private var spaceButton: UIButton! {
         didSet {
             spaceButton.isHidden = !configuration.showsBackspaceButton || !configuration.showsCallButton
         }
@@ -82,7 +87,7 @@ class DialpadViewController: UIViewController {
     // MARK: Private
     
     private enum Constants {
-        static let sizeOniPad: CGSize = CGSize(width: 375, height: 667)
+        static let sizeOniPad = CGSize(width: 375, height: 667)
         static let additionalTopInset: CGFloat = 20
         static let digitButtonViewDatas: [Int: DialpadButton.ViewData] = [
             -2: .init(title: "#", tone: 1211),
@@ -100,25 +105,27 @@ class DialpadViewController: UIViewController {
         ]
     }
     
-    private var wasCursorAtTheEnd: Bool = true
+    private var wasCursorAtTheEnd = true
     
     /// Phone number as formatted
-    private var phoneNumber: String = "" {
+    private var phoneNumber = "" {
         willSet {
             if configuration.editingEnabled {
                 wasCursorAtTheEnd = isCursorAtTheEnd()
             }
         } didSet {
             phoneNumberTextField.text = phoneNumber
-            if configuration.editingEnabled && wasCursorAtTheEnd {
+            if configuration.editingEnabled, wasCursorAtTheEnd {
                 moveCursorToTheEnd()
             }
         }
     }
+
     /// Phone number as non-formatted
     var rawPhoneNumber: String {
-        return phoneNumber.vc_removingAllWhitespaces()
+        phoneNumber.vc_removingAllWhitespaces()
     }
+
     private var theme: Theme!
     private var configuration: DialpadConfiguration!
     
@@ -143,8 +150,8 @@ class DialpadViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         titleLabel.text = VectorL10n.dialpadTitle
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
         //  force orientation to portrait if phone
         if UIDevice.current.isPhone {
@@ -165,7 +172,7 @@ class DialpadViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        self.theme.statusBarStyle
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -177,7 +184,7 @@ class DialpadViewController: UIViewController {
     }
     
     override var shouldAutorotate: Bool {
-        return false
+        false
     }
     
     override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
@@ -233,9 +240,9 @@ class DialpadViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.backgroundColor
+        view.backgroundColor = theme.backgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
@@ -277,7 +284,7 @@ class DialpadViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     @IBAction private func closeButtonAction(_ sender: UIButton) {
@@ -353,10 +360,10 @@ class DialpadViewController: UIViewController {
                     //  already at the beginning of the text, no more text to remove here
                     return
                 }
-                phoneNumber.replaceSubrange((phoneNumber.index(phoneNumber.startIndex, offsetBy: cursorStartPos-1))..<(phoneNumber.index(phoneNumber.startIndex, offsetBy: cursorEndPos)), with: "")
+                phoneNumber.replaceSubrange((phoneNumber.index(phoneNumber.startIndex, offsetBy: cursorStartPos - 1))..<(phoneNumber.index(phoneNumber.startIndex, offsetBy: cursorEndPos)), with: "")
                 
                 rangePos = phoneNumberTextField.position(from: phoneNumberTextField.beginningOfDocument,
-                                                         offset: cursorStartPos-1)
+                                                         offset: cursorStartPos - 1)
             } else {
                 //  really some text selected, remove selected range of text
                 
@@ -381,13 +388,11 @@ class DialpadViewController: UIViewController {
         phoneNumber = phoneNumberTextField.text ?? ""
         delegate?.dialpadViewControllerDidTapCall?(self, withPhoneNumber: rawPhoneNumber)
     }
-    
 }
 
 //  MARK: - CustomSizedPresentable
 
 extension DialpadViewController: CustomSizedPresentable {
-    
     func customSize(withParentContainerSize containerSize: CGSize) -> CGSize {
         if UIDevice.current.isPhone {
             return CGSize(width: containerSize.width, height: containerSize.height - topSafeAreaInset())
@@ -402,8 +407,7 @@ extension DialpadViewController: CustomSizedPresentable {
             return CGPoint(x: 0, y: topSafeAreaInset())
         }
         
-        return CGPoint(x: (containerSize.width - mySize.width)/2,
-                       y: (containerSize.height - mySize.height)/2)
+        return CGPoint(x: (containerSize.width - mySize.width) / 2,
+                       y: (containerSize.height - mySize.height) / 2)
     }
-    
 }

@@ -23,6 +23,6 @@ enum KeyVerificationVerifyByScanningViewAction {
     case loadData
     case cancel
     case scannedCode(payloadData: Data)
-    case cannotScan    
+    case cannotScan
     case acknowledgeMyUserScannedOtherCode
 }

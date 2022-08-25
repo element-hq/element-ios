@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,8 @@ import Foundation
 import Reusable
 
 class RoomNotificationSettingsAvatarView: UIView {
-    
-    @IBOutlet weak var avatarView: RoomAvatarView!
-    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet var avatarView: RoomAvatarView!
+    @IBOutlet var nameLabel: UILabel!
     
     func configure(viewData: AvatarViewDataProtocol) {
         avatarView.fill(with: viewData)

@@ -14,12 +14,11 @@
 // limitations under the License.
 //
 
-import UIKit
 import PushKit
+import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
     // MARK: - Properties
 
     // MARK: Private
@@ -28,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var rootRouter: RootRouterType!
 
     private var legacyAppDelegate: LegacyAppDelegate {
-        return AppDelegate.theDelegate()
+        AppDelegate.theDelegate()
     }
     
     // MARK: Public
@@ -51,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Life cycle
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        return self.legacyAppDelegate.application(application, willFinishLaunchingWithOptions: launchOptions)
+        legacyAppDelegate.application(application, willFinishLaunchingWithOptions: launchOptions)
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -60,66 +59,66 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
         
         // Create AppCoordinator
-        self.rootRouter = RootRouter(window: window)
+        rootRouter = RootRouter(window: window)
         
-        let appCoordinator = AppCoordinator(router: self.rootRouter, window: window)
+        let appCoordinator = AppCoordinator(router: rootRouter, window: window)
         appCoordinator.start()
-        self.legacyAppDelegate.delegate = appCoordinator
+        legacyAppDelegate.delegate = appCoordinator
         
         self.appCoordinator = appCoordinator
         
         // Call legacy AppDelegate
-        self.legacyAppDelegate.window = window
-        self.legacyAppDelegate.application(application, didFinishLaunchingWithOptions: launchOptions)
+        legacyAppDelegate.window = window
+        legacyAppDelegate.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         return true
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        self.legacyAppDelegate.applicationDidBecomeActive(application)
+        legacyAppDelegate.applicationDidBecomeActive(application)
     }
     
-    func applicationWillResignActive(_ application: UIApplication) {        
-        self.legacyAppDelegate.applicationWillResignActive(application)
+    func applicationWillResignActive(_ application: UIApplication) {
+        legacyAppDelegate.applicationWillResignActive(application)
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        self.legacyAppDelegate.applicationDidEnterBackground(application)
+        legacyAppDelegate.applicationDidEnterBackground(application)
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        self.legacyAppDelegate.applicationWillEnterForeground(application)
+        legacyAppDelegate.applicationWillEnterForeground(application)
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        self.legacyAppDelegate.applicationWillTerminate(application)
+        legacyAppDelegate.applicationWillTerminate(application)
     }
     
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        self.legacyAppDelegate.applicationDidReceiveMemoryWarning(application)
+        legacyAppDelegate.applicationDidReceiveMemoryWarning(application)
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        return self.appCoordinator.open(url: url, options: options)
+        appCoordinator.open(url: url, options: options)
     }
     
     // MARK: User Activity Continuation
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        return self.legacyAppDelegate.application(application, continue: userActivity, restorationHandler: restorationHandler)
+        legacyAppDelegate.application(application, continue: userActivity, restorationHandler: restorationHandler)
     }
     
     // MARK: Push Notifications
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        self.legacyAppDelegate.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        legacyAppDelegate.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        self.legacyAppDelegate.application(application, didFailToRegisterForRemoteNotificationsWithError: error)
+        legacyAppDelegate.application(application, didFailToRegisterForRemoteNotificationsWithError: error)
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        self.legacyAppDelegate.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+        legacyAppDelegate.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
     }
 }

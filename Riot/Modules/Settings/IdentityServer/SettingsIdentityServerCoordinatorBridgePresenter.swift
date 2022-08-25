@@ -26,7 +26,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class SettingsIdentityServerCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,10 +48,9 @@ final class SettingsIdentityServerCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func push(from navigationController: UINavigationController, animated: Bool, popCompletion: (() -> Void)?) {
-        
         let router = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
-        let settingsIdentityServerCoordinator = SettingsIdentityServerCoordinator(session: self.session)
+        let settingsIdentityServerCoordinator = SettingsIdentityServerCoordinator(session: session)
         
         router.push(settingsIdentityServerCoordinator, animated: animated) { [weak self] in
             self?.coordinator = nil
@@ -62,7 +60,7 @@ final class SettingsIdentityServerCoordinatorBridgePresenter: NSObject {
         
         settingsIdentityServerCoordinator.start()
         
-        self.coordinator = settingsIdentityServerCoordinator
+        coordinator = settingsIdentityServerCoordinator
         self.router = router
     }
 }

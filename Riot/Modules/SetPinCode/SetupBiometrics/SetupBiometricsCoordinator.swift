@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class SetupBiometricsCoordinator: SetupBiometricsCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -51,27 +50,27 @@ final class SetupBiometricsCoordinator: SetupBiometricsCoordinatorType {
     
     // MARK: - Public methods
     
-    func start() {            
-        self.setupBiometricsViewModel.coordinatorDelegate = self
+    func start() {
+        setupBiometricsViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.setupBiometricsViewController
+        setupBiometricsViewController
     }
 }
 
 // MARK: - SetupBiometricsViewModelCoordinatorDelegate
+
 extension SetupBiometricsCoordinator: SetupBiometricsViewModelCoordinatorDelegate {
-    
     func setupBiometricsViewModelDidComplete(_ viewModel: SetupBiometricsViewModelType) {
-        self.delegate?.setupBiometricsCoordinatorDidComplete(self)
+        delegate?.setupBiometricsCoordinatorDidComplete(self)
     }
     
     func setupBiometricsViewModelDidCompleteWithReset(_ viewModel: SetupBiometricsViewModelType, dueToTooManyErrors: Bool) {
-        self.delegate?.setupBiometricsCoordinatorDidCompleteWithReset(self, dueToTooManyErrors: dueToTooManyErrors)
+        delegate?.setupBiometricsCoordinatorDidCompleteWithReset(self, dueToTooManyErrors: dueToTooManyErrors)
     }
     
     func setupBiometricsViewModelDidCancel(_ viewModel: SetupBiometricsViewModelType) {
-        self.delegate?.setupBiometricsCoordinatorDidCancel(self)
+        delegate?.setupBiometricsCoordinatorDidCancel(self)
     }
 }

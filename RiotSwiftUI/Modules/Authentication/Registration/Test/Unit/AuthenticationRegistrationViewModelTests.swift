@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import Combine
+import XCTest
 
 @testable import RiotSwiftUI
 
@@ -110,7 +110,7 @@ import Combine
         XCTAssertEqual(context.viewState.usernameFooterMessage, VectorL10n.authenticationRegistrationUsernameFooterAvailable("@bob:matrix.org"),
                        "The footer message should display that the username is available.")
         XCTAssertFalse(context.viewState.isUsernameInvalid,
-                      "The username should continue to be valid when it is available.")
+                       "The username should continue to be valid when it is available.")
         
         // When clearing the error.
         context.send(viewAction: .resetUsernameAvailability)
@@ -190,7 +190,7 @@ import Combine
         
         // Then the username should be valid but the credentials should still be invalid.
         XCTAssertTrue(context.viewState.isPasswordInvalid, "An empty password should be invalid.")
-        XCTAssertFalse(context.viewState.isUsernameInvalid,  "The username should be valid when unverified.")
+        XCTAssertFalse(context.viewState.isUsernameInvalid, "The username should be valid when unverified.")
         XCTAssertFalse(context.viewState.hasValidCredentials, "The credentials should be invalid.")
     }
     

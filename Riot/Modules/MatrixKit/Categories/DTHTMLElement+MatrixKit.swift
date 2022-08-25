@@ -26,7 +26,6 @@ public extension DTHTMLElement {
     ///   - imageHandler: An optional image handler to be run on `img` tags (if allowed) to update the `src` attribute.
     @objc func sanitize(with allowedHTMLTags: [String], bodyFont font: UIFont, imageHandler: ImageHandler?) {
         if let name = name, !allowedHTMLTags.contains(name) {
-            
             // This is an unsupported tag.
             // Remove any attachments to fix rendering.
             textAttachment = nil

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 import WeakDictionary
 
 class TabBarRouter: NSObject, TabbedRouterType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -39,7 +38,7 @@ class TabBarRouter: NSObject, TabbedRouterType {
                 return
             }
             
-            tabBarController.viewControllers = tabs.compactMap({ tab in
+            tabBarController.viewControllers = tabs.compactMap { tab in
                 let viewController = tab.module.toPresentable()
                 
                 guard viewController is UITabBarController == false else {
@@ -52,13 +51,13 @@ class TabBarRouter: NSObject, TabbedRouterType {
                 }
                 
                 return viewController
-            })
+            }
         }
     }
     
     /// Return the view controllers stack
     var viewControllers: [UIViewController] {
-        return tabBarController.viewControllers ?? []
+        tabBarController.viewControllers ?? []
     }
     
     // MARK: - Setup
@@ -87,21 +86,17 @@ class TabBarRouter: NSObject, TabbedRouterType {
     // MARK: Presentable
     
     func toPresentable() -> UIViewController {
-        return tabBarController
+        tabBarController
     }
     
     // MARK: - Private
     
     private func module(for viewController: UIViewController) -> Presentable {
-        
-        guard let module = self.storedModules[viewController] as? Presentable else {
+        guard let module = storedModules[viewController] as? Presentable else {
             return viewController
         }
         return module
     }
-    
 }
 
-extension TabBarRouter: UITabBarControllerDelegate {
-    
-}
+extension TabBarRouter: UITabBarControllerDelegate { }

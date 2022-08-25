@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// Presenter for space detail screen
 class SpaceDetailPresenter: NSObject {
-    
     // MARK: - Constants
     
     enum Actions {
@@ -35,9 +34,8 @@ class SpaceDetailPresenter: NSObject {
     private weak var presentingViewController: UIViewController?
     private var viewModel: SpaceDetailViewModel!
     private weak var sourceView: UIView?
-    private lazy var slidingModalPresenter: SlidingModalPresenter = {
-        return SlidingModalPresenter()
-    }()
+    private lazy var slidingModalPresenter = SlidingModalPresenter()
+
     private var session: MXSession!
     private var spaceId: String!
     private var senderId: String?
@@ -45,52 +43,51 @@ class SpaceDetailPresenter: NSObject {
     // MARK: - Public
     
     @objc func present(forSpaceWithId spaceId: String,
-                 from viewController: UIViewController,
-                 sourceView: UIView?,
-                 session: MXSession,
-                 animated: Bool) {
+                       from viewController: UIViewController,
+                       sourceView: UIView?,
+                       session: MXSession,
+                       animated: Bool) {
         self.session = session
         self.spaceId = spaceId
         
-        self.viewModel = SpaceDetailViewModel(session: session, spaceId: spaceId)
-        self.viewModel.coordinatorDelegate = self
-        self.presentingViewController = viewController
+        viewModel = SpaceDetailViewModel(session: session, spaceId: spaceId)
+        viewModel.coordinatorDelegate = self
+        presentingViewController = viewController
         self.sourceView = sourceView
         
-        self.show(with: session)
+        show(with: session)
     }
     
     @objc func present(forSpaceWithPublicRoom publicRoom: MXPublicRoom, senderId: String?,
-                 from viewController: UIViewController,
-                 sourceView: UIView?,
-                 session: MXSession,
-                 animated: Bool) {
+                       from viewController: UIViewController,
+                       sourceView: UIView?,
+                       session: MXSession,
+                       animated: Bool) {
         self.session = session
-        self.spaceId = publicRoom.roomId
+        spaceId = publicRoom.roomId
         self.senderId = senderId
 
-        self.viewModel = SpaceDetailViewModel(session: session, publicRoom: publicRoom, senderId: senderId)
-        self.viewModel.coordinatorDelegate = self
-        self.presentingViewController = viewController
+        viewModel = SpaceDetailViewModel(session: session, publicRoom: publicRoom, senderId: senderId)
+        viewModel.coordinatorDelegate = self
+        presentingViewController = viewController
         self.sourceView = sourceView
         
-        self.show(with: session)
+        show(with: session)
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        self.presentingViewController?.dismiss(animated: animated, completion: completion)
+        presentingViewController?.dismiss(animated: animated, completion: completion)
     }
     
     // MARK: - Private
     
     private func show(with session: MXSession) {
-        let viewController = SpaceDetailViewController.instantiate(mediaManager: session.mediaManager, viewModel: self.viewModel, showCancel: true)
-        self.present(viewController, animated: true)
+        let viewController = SpaceDetailViewController.instantiate(mediaManager: session.mediaManager, viewModel: viewModel, showCancel: true)
+        present(viewController, animated: true)
     }
     
     private func present(_ viewController: SpaceDetailViewController, animated: Bool) {
-        
-        guard let presentingViewController = self.presentingViewController?.presentedViewController ?? self.presentingViewController else {
+        guard let presentingViewController = presentingViewController?.presentedViewController ?? presentingViewController else {
             MXLog.error("[SpaceDetailPresenter] present no presentingViewController found")
             return
         }
@@ -101,7 +98,6 @@ class SpaceDetailPresenter: NSObject {
             // Configure source view when view controller is presented with a popover
             viewController.modalPresentationStyle = .popover
             if let popoverPresentationController = viewController.popoverPresentationController, let sourceView = sourceView ?? presentingViewController.view {
-                
                 popoverPresentationController.sourceView = sourceView
                 popoverPresentationController.sourceRect = sourceView.bounds
             }
@@ -115,23 +111,23 @@ class SpaceDetailPresenter: NSObject {
 
 extension SpaceDetailPresenter: SpaceDetailModelViewModelCoordinatorDelegate {
     func spaceDetailViewModelDidJoin(_ viewModel: SpaceDetailViewModelType) {
-        self.dismiss(animated: true) {
+        dismiss(animated: true) {
             self.delegate?.spaceDetailPresenter(self, didJoinSpaceWithId: self.spaceId)
         }
     }
     
     func spaceDetailViewModelDidOpen(_ viewModel: SpaceDetailViewModelType) {
-        self.dismiss(animated: false) {
+        dismiss(animated: false) {
             self.delegate?.spaceDetailPresenter(self, didOpenSpaceWithId: self.spaceId)
         }
     }
     
     func spaceDetailViewModelDidCancel(_ viewModel: SpaceDetailViewModelType) {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     func spaceDetailViewModelDidDismiss(_ viewModel: SpaceDetailViewModelType) {
-        self.delegate?.spaceDetailPresenterDidComplete(self)
+        delegate?.spaceDetailPresenterDidComplete(self)
     }
 }
 

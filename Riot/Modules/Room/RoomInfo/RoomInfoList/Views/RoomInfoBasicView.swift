@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,37 +14,38 @@
 // limitations under the License.
 //
 
-import UIKit
-import Reusable
 import ReadMoreTextView
+import Reusable
+import UIKit
 
 class RoomInfoBasicView: UIView {
-    
     private enum TopicTextViewConstants {
         static let font = UIFont.systemFont(ofSize: 15)
         static let defaultNumberOfLines = 4
         static let moreLessTextPadding = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     }
 
-    @IBOutlet private weak var mainStackView: UIStackView!
-    @IBOutlet private weak var avatarContainerView: UIView!
-    @IBOutlet private weak var avatarImageView: MXKImageView!
-    @IBOutlet private weak var badgeImageView: UIImageView!
-    @IBOutlet private weak var presenceIndicatorView: PresenceIndicatorView! {
+    @IBOutlet private var mainStackView: UIStackView!
+    @IBOutlet private var avatarContainerView: UIView!
+    @IBOutlet private var avatarImageView: MXKImageView!
+    @IBOutlet private var badgeImageView: UIImageView!
+    @IBOutlet private var presenceIndicatorView: PresenceIndicatorView! {
         didSet {
             presenceIndicatorView.delegate = self
         }
     }
-    @IBOutlet private weak var roomNameStackView: UIStackView!
-    @IBOutlet private weak var roomNameLabel: UILabel!
-    @IBOutlet private weak var roomAddressLabel: UILabel!
-    @IBOutlet private weak var topicContainerView: UIView!
-    @IBOutlet private weak var topicTitleLabel: UILabel! {
+
+    @IBOutlet private var roomNameStackView: UIStackView!
+    @IBOutlet private var roomNameLabel: UILabel!
+    @IBOutlet private var roomAddressLabel: UILabel!
+    @IBOutlet private var topicContainerView: UIView!
+    @IBOutlet private var topicTitleLabel: UILabel! {
         didSet {
             topicTitleLabel.text = VectorL10n.roomDetailsTopic
         }
     }
-    @IBOutlet private weak var roomTopicTextView: ReadMoreTextView! {
+
+    @IBOutlet private var roomTopicTextView: ReadMoreTextView! {
         didSet {
             roomTopicTextView.contentInset = .zero
             roomTopicTextView.textContainerInset = .zero
@@ -59,9 +60,10 @@ class RoomInfoBasicView: UIView {
             }
         }
     }
-    @IBOutlet private weak var securityContainerView: UIView!
-    @IBOutlet private weak var securityTitleLabel: UILabel!
-    @IBOutlet private weak var securityInformationLabel: UILabel!
+
+    @IBOutlet private var securityContainerView: UIView!
+    @IBOutlet private var securityTitleLabel: UILabel!
+    @IBOutlet private var securityInformationLabel: UILabel!
     
     /// Block to be invoked when topic text view changes its content size.
     var onTopicSizeChange: ((RoomInfoBasicView) -> Void)?
@@ -135,10 +137,9 @@ class RoomInfoBasicView: UIView {
     }
 }
 
-extension RoomInfoBasicView: NibLoadable {}
+extension RoomInfoBasicView: NibLoadable { }
 
 extension RoomInfoBasicView: Themable {
-    
     func update(theme: Theme) {
         backgroundColor = theme.headerBackgroundColor
         roomNameLabel.textColor = theme.textPrimaryColor
@@ -172,7 +173,6 @@ extension RoomInfoBasicView: Themable {
         securityInformationLabel.textColor = theme.textPrimaryColor
         presenceIndicatorView.borderColor = theme.headerBackgroundColor
     }
-    
 }
 
 extension RoomInfoBasicView: PresenceIndicatorViewDelegate {

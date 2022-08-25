@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// An object to report the screen's display to the `Analytics` object.
 @objcMembers class AnalyticsScreenTracker: NSObject {
-    
     // MARK: - Properties
     
     /// The screen being tracked.
@@ -45,5 +44,4 @@ import Foundation
     static func trackScreen(_ screen: AnalyticsScreen) {
         Analytics.shared.trackScreen(screen)
     }
-    
 }

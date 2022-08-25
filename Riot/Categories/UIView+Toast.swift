@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,6 @@ enum ToastPosition: Int {
 //  MARK: - UIView Extension
 
 extension UIView {
-    
     private enum Constants {
         static let defaultDuration: TimeInterval = 2.0
         static let defaultPosition: ToastPosition = .bottom
@@ -85,7 +84,6 @@ extension UIView {
                                        completion: nil)
         Self.operationQueue.addOperation(operation)
     }
-    
 }
 
 //  MARK: - ToastOperation
@@ -95,9 +93,8 @@ extension UIView {
 /// Note: a more recent `Activity` and `ActivityCenter` aim to achieve the same goal of abstracting away the scheduling and display
 /// of visual notifications, without using `OperationQueue`.
 private class ToastOperation: AsyncOperation {
-    
     private enum Constants {
-        static let margin: UIEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        static let margin = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let animationDuration: TimeInterval = 0.15
         static let timeBetweenToasts: TimeInterval = 0.5
     }
@@ -188,9 +185,9 @@ private class ToastOperation: AsyncOperation {
                        delay: 0.0,
                        options: [.curveEaseOut, .allowUserInteraction],
                        animations: {
-                        self.toastView.alpha = 1.0
+                           self.toastView.alpha = 1.0
                        }, completion: { _ in
-                        completion()
+                           completion()
                        })
     }
     
@@ -199,13 +196,13 @@ private class ToastOperation: AsyncOperation {
                        delay: 0.0,
                        options: [.curveEaseIn, .beginFromCurrentState],
                        animations: {
-                        self.toastView.alpha = 0.0
+                           self.toastView.alpha = 0.0
                        }, completion: { _ in
-                        self.toastView.removeFromSuperview()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.timeBetweenToasts) {
-                            self.finish()
-                            self.completion?()
-                        }
+                           self.toastView.removeFromSuperview()
+                           DispatchQueue.main.asyncAfter(deadline: .now() + Constants.timeBetweenToasts) {
+                               self.finish()
+                               self.completion?()
+                           }
                        })
     }
     
@@ -213,5 +210,4 @@ private class ToastOperation: AsyncOperation {
         timer?.invalidate()
         timer = nil
     }
-    
 }

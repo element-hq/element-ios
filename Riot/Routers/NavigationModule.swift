@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,9 +28,7 @@ struct NavigationModule {
 //  MARK: - CustomStringConvertible
 
 extension NavigationModule: CustomStringConvertible {
-    
     var description: String {
-        return "NavigationModule: \(presentable), pop completion: \(String(describing: popCompletion))"
+        "NavigationModule: \(presentable), pop completion: \(String(describing: popCompletion))"
     }
-    
 }

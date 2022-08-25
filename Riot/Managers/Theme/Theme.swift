@@ -14,13 +14,12 @@
  limitations under the License.
  */
 
-import UIKit
 import DesignKit
+import UIKit
 
 /// Provide color constant values defined by the designer
 /// https://app.zeplin.io/project/5c122fa790c5b4241ffa6be7/screen/5c619592daff2f1241d82e75
 @objc protocol Theme: ThemeV2 {
-    
     var identifier: String { get }
 
     var backgroundColor: UIColor { get }
@@ -84,7 +83,6 @@ import DesignKit
     
     var userInterfaceStyle: UIUserInterfaceStyle { get }
 
-
     // MARK: - Colors not defined in the design palette
     
     var secondaryCircleButtonBackgroundColor: UIColor { get }
@@ -112,7 +110,6 @@ import DesignKit
     
     // MARK: - Customisation methods
 
-    
     /// Apply the theme on a tab bar.
     ///
     /// - Parameter tabBar: The tab bar to customise.

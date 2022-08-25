@@ -25,27 +25,25 @@ extension CrossSigningServiceError: CustomNSError {
     public static let errorDomain = "CrossSigningService"
 
     public var errorCode: Int {
-        return Int(rawValue)
+        Int(rawValue)
     }
 
     public var errorUserInfo: [String: Any] {
-        return [:]
+        [:]
     }
 }
 
 @objcMembers
 final class CrossSigningService: NSObject {
-    
-    // MARK - Properties
+    // MARK: - Properties
     
     private var supportSetupKeyVerificationByUser: [String: Bool] = [:] // Cached server response
     private var userInteractiveAuthenticationService: UserInteractiveAuthenticationService?
     
-    // MARK - Public
+    // MARK: - Public
     
     @discardableResult
     func canSetupCrossSigning(for session: MXSession, success: @escaping ((Bool) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation? {
-        
         guard let crossSigning = session.crypto?.crossSigning, crossSigning.state == .notBootstrapped else {
             // Cross-signing already setup
             success(false)
@@ -54,7 +52,7 @@ final class CrossSigningService: NSObject {
         
         let userId: String = session.myUserId
         
-        if let supportSetupKeyVerification = self.supportSetupKeyVerificationByUser[userId] {
+        if let supportSetupKeyVerification = supportSetupKeyVerificationByUser[userId] {
             // Return cached response
             success(supportSetupKeyVerification)
             return nil
@@ -64,9 +62,9 @@ final class CrossSigningService: NSObject {
         
         self.userInteractiveAuthenticationService = userInteractiveAuthenticationService
                 
-        let request = self.setupCrossSigningRequest()
+        let request = setupCrossSigningRequest()
         
-        return userInteractiveAuthenticationService.canAuthenticate(with: request) { (result) in
+        return userInteractiveAuthenticationService.canAuthenticate(with: request) { result in
             switch result {
             case .success(let succeeded):
                 success(succeeded)
@@ -84,7 +82,6 @@ final class CrossSigningService: NSObject {
     /// Setup cross-signing without authentication. Useful when a grace period is enabled.
     @discardableResult
     func setupCrossSigningWithoutAuthentication(for session: MXSession, success: @escaping (() -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation? {
-        
         guard let crossSigning = session.crypto.crossSigning else {
             failure(CrossSigningServiceError.unknown)
             return nil
@@ -93,7 +90,7 @@ final class CrossSigningService: NSObject {
         let userInteractiveAuthenticationService = UserInteractiveAuthenticationService(session: session)
         self.userInteractiveAuthenticationService = userInteractiveAuthenticationService
                         
-        let request = self.setupCrossSigningRequest()
+        let request = setupCrossSigningRequest()
         
         return userInteractiveAuthenticationService.authenticatedEndpointStatus(for: request) { result in
             switch result {

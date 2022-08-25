@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 final class VectorWellKnownParser {
-    
     func parse(jsonDictionary: [AnyHashable: Any]) -> VectorWellKnown? {
         let serializationService = SerializationService()
         let vectorWellKnown: VectorWellKnown?

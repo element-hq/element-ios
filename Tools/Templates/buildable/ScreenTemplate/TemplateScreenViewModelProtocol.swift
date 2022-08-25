@@ -26,8 +26,7 @@ protocol TemplateScreenViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `TemplateScreenViewController`
-protocol TemplateScreenViewModelProtocol {        
-        
+protocol TemplateScreenViewModelProtocol {
     var viewDelegate: TemplateScreenViewModelViewDelegate? { get set }
     var coordinatorDelegate: TemplateScreenViewModelCoordinatorDelegate? { get set }
     

@@ -21,7 +21,6 @@ struct OnboardingCelebrationCoordinatorParameters {
 }
 
 final class OnboardingCelebrationCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,6 +48,7 @@ final class OnboardingCelebrationCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[OnboardingCelebrationCoordinator] did start.")
         onboardingCelebrationViewModel.completion = { [weak self] in
@@ -59,6 +59,6 @@ final class OnboardingCelebrationCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.onboardingCelebrationHostingController
+        onboardingCelebrationHostingController
     }
 }

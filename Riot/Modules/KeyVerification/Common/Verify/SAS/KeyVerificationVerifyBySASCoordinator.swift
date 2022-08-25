@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class KeyVerificationVerifyBySASCoordinator: KeyVerificationVerifyBySASCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,23 +48,23 @@ final class KeyVerificationVerifyBySASCoordinator: KeyVerificationVerifyBySASCoo
     
     // MARK: - Public methods
     
-    func start() {            
-        self.keyVerificationVerifyViewModel.coordinatorDelegate = self
+    func start() {
+        keyVerificationVerifyViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.keyVerificationVerifyViewController
+        keyVerificationVerifyViewController
     }
 }
 
 // MARK: - DeviceVerificationVerifyViewModelCoordinatorDelegate
-extension KeyVerificationVerifyBySASCoordinator: KeyVerificationVerifyBySASViewModelCoordinatorDelegate {
 
+extension KeyVerificationVerifyBySASCoordinator: KeyVerificationVerifyBySASViewModelCoordinatorDelegate {
     func keyVerificationVerifyViewModelDidComplete(_ viewModel: KeyVerificationVerifyBySASViewModelType) {
-        self.delegate?.keyVerificationVerifyBySASCoordinatorDidComplete(self)
+        delegate?.keyVerificationVerifyBySASCoordinatorDidComplete(self)
     }
     
     func keyVerificationVerifyViewModelDidCancel(_ viewModel: KeyVerificationVerifyBySASViewModelType) {
-        self.delegate?.keyVerificationVerifyBySASCoordinatorDidCancel(self)
+        delegate?.keyVerificationVerifyBySASCoordinatorDidCancel(self)
     }
 }

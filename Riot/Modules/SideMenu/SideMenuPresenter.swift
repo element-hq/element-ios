@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class SideMenuPresenter: SideMenuPresentable {
-
     // MARK: - Properties
     
     private let sideMenuCoordinator: SideMenuCoordinatorType
@@ -38,14 +37,14 @@ class SideMenuPresenter: SideMenuPresentable {
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        self.sideMenuCoordinator.toPresentable().dismiss(animated: animated, completion: completion)
+        sideMenuCoordinator.toPresentable().dismiss(animated: animated, completion: completion)
     }
     
     @discardableResult func addScreenEdgePanGesturesToPresent(to view: UIView) -> UIScreenEdgePanGestureRecognizer {
-        return sideMenuCoordinator.addScreenEdgePanGesturesToPresent(to: view)
+        sideMenuCoordinator.addScreenEdgePanGesturesToPresent(to: view)
     }
     
     @discardableResult func addPanGestureToPresent(to view: UIView) -> UIPanGestureRecognizer {
-        return sideMenuCoordinator.addPanGestureToPresent(to: view)
+        sideMenuCoordinator.addPanGestureToPresent(to: view)
     }
 }

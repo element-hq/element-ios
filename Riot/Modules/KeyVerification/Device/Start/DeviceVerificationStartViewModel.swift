@@ -19,7 +19,6 @@
 import Foundation
 
 final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -40,7 +39,7 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     
     init(session: MXSession, otherUser: MXUser, otherDevice: MXDeviceInfo) {
         self.session = session
-        self.verificationManager = session.crypto.keyVerificationManager
+        verificationManager = session.crypto.keyVerificationManager
         self.otherUser = otherUser
         self.otherDevice = otherDevice
     }
@@ -50,29 +49,29 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     func process(viewAction: DeviceVerificationStartViewAction) {
         switch viewAction {
         case .beginVerifying:
-            self.beginVerifying()
+            beginVerifying()
         case .verifyUsingLegacy:
-           self.cancelTransaction()
-           self.update(viewState: .verifyUsingLegacy(self.session, self.otherDevice))
+            cancelTransaction()
+            update(viewState: .verifyUsingLegacy(session, otherDevice))
         case .verifiedUsingLegacy:
-            self.coordinatorDelegate?.deviceVerificationStartViewModelDidUseLegacyVerification(self)
+            coordinatorDelegate?.deviceVerificationStartViewModelDidUseLegacyVerification(self)
         case .cancel:
-            self.cancelTransaction()
-            self.coordinatorDelegate?.deviceVerificationStartViewModelDidCancel(self)
+            cancelTransaction()
+            coordinatorDelegate?.deviceVerificationStartViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func beginVerifying() {
-        self.update(viewState: .loading)
+        update(viewState: .loading)
 
-        self.verificationManager.beginKeyVerification(withUserId: self.otherUser.userId, andDeviceId: self.otherDevice.deviceId, method: MXKeyVerificationMethodSAS, success: { [weak self] (transaction) in
+        verificationManager.beginKeyVerification(withUserId: otherUser.userId, andDeviceId: otherDevice.deviceId, method: MXKeyVerificationMethodSAS, success: { [weak self] transaction in
 
             guard let sself = self else {
                 return
             }
-            guard let sasTransaction: MXOutgoingSASTransaction = transaction as? MXOutgoingSASTransaction  else {
+            guard let sasTransaction: MXOutgoingSASTransaction = transaction as? MXOutgoingSASTransaction else {
                 return
             }
 
@@ -80,13 +79,13 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
 
             sself.update(viewState: .loaded)
             sself.registerTransactionDidStateChangeNotification(transaction: sasTransaction)
-        }, failure: {[weak self]  error in
+        }, failure: { [weak self] error in
             self?.update(viewState: .error(error))
         })
     }
 
     private func cancelTransaction() {
-        guard let transaction = self.transaction  else {
+        guard let transaction = transaction else {
             return
         }
 
@@ -94,9 +93,8 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     }
     
     private func update(viewState: DeviceVerificationStartViewState) {
-        self.viewDelegate?.deviceVerificationStartViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.deviceVerificationStartViewModel(self, didUpdateViewState: viewState)
     }
-
 
     // MARK: - MXKeyVerificationTransactionDidChange
 
@@ -115,20 +113,20 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
 
         switch transaction.state {
         case MXSASTransactionStateShowSAS:
-            self.unregisterTransactionDidStateChangeNotification()
-            self.coordinatorDelegate?.deviceVerificationStartViewModel(self, didCompleteWithOutgoingTransaction: transaction)
+            unregisterTransactionDidStateChangeNotification()
+            coordinatorDelegate?.deviceVerificationStartViewModel(self, didCompleteWithOutgoingTransaction: transaction)
         case MXSASTransactionStateCancelled:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelled(reason))
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .cancelled(reason))
         case MXSASTransactionStateCancelledByMe:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelledByMe(reason))
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .cancelledByMe(reason))
         default:
             break
         }

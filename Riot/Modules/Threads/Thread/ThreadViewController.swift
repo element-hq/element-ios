@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class ThreadViewController: RoomViewController {
-    
     // MARK: Private
     
     private(set) var threadId: String!
@@ -36,13 +35,13 @@ class ThreadViewController: RoomViewController {
     
     override class func nib() -> UINib! {
         //  reuse 'RoomViewController.xib' file as the nib
-        return UINib(nibName: String(describing: RoomViewController.self), bundle: .main)
+        UINib(nibName: String(describing: RoomViewController.self), bundle: .main)
     }
     
     override func finalizeInit() {
         super.finalizeInit()
         
-        self.saveProgressTextInput = false
+        saveProgressTextInput = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -55,7 +54,7 @@ class ThreadViewController: RoomViewController {
     override func setRoomTitleViewClass(_ roomTitleViewClass: AnyClass!) {
         super.setRoomTitleViewClass(ThreadRoomTitleView.self)
         
-        guard let threadTitleView = self.titleView as? ThreadRoomTitleView else {
+        guard let threadTitleView = titleView as? ThreadRoomTitleView else {
             return
         }
         
@@ -79,25 +78,25 @@ class ThreadViewController: RoomViewController {
         
         let viewInRoomAction = UIAlertAction(title: VectorL10n.roomEventActionViewInRoom,
                                              style: .default,
-                                             handler: { [weak self] action in
-                                                guard let self = self else { return }
-                                                self.delegate?.roomViewController(self,
-                                                                                  showRoomWithId: self.roomDataSource.roomId,
-                                                                                  eventId: self.threadId)
+                                             handler: { [weak self] _ in
+                                                 guard let self = self else { return }
+                                                 self.delegate?.roomViewController(self,
+                                                                                   showRoomWithId: self.roomDataSource.roomId,
+                                                                                   eventId: self.threadId)
                                              })
         alertController.addAction(viewInRoomAction)
         
         let copyLinkAction = UIAlertAction(title: VectorL10n.threadCopyLinkToThread,
                                            style: .default,
-                                           handler: { [weak self] action in
-                                            guard let self = self else { return }
-                                            self.copyPermalink()
+                                           handler: { [weak self] _ in
+                                               guard let self = self else { return }
+                                               self.copyPermalink()
                                            })
         alertController.addAction(copyLinkAction)
         
         let shareAction = UIAlertAction(title: VectorL10n.roomEventActionShare,
                                         style: .default,
-                                        handler: { [weak self] action in
+                                        handler: { [weak self] _ in
                                             guard let self = self else { return }
                                             self.sharePermalink()
                                         })
@@ -109,7 +108,7 @@ class ThreadViewController: RoomViewController {
         
         alertController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
     private func copyPermalink() {
@@ -120,7 +119,7 @@ class ThreadViewController: RoomViewController {
         MXKPasteboardManager.shared.pasteboard.url = url
         view.vc_toast(message: VectorL10n.roomEventCopyLinkInfo,
                       image: Asset.Images.linkIcon.image,
-                      additionalMargin: self.roomInputToolbarContainerHeightConstraint.constant)
+                      additionalMargin: roomInputToolbarContainerHeightConstraint.constant)
     }
     
     private func sharePermalink() {
@@ -134,5 +133,4 @@ class ThreadViewController: RoomViewController {
         activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(activityVC, animated: true, completion: nil)
     }
-    
 }

@@ -26,7 +26,6 @@ protocol SettingsKeyBackupViewModelViewDelegate: AnyObject {
 }
 
 protocol SettingsKeyBackupViewModelType {
-
     var viewDelegate: SettingsKeyBackupViewModelViewDelegate? { get set }
 
     func process(viewAction: SettingsKeyBackupViewAction)

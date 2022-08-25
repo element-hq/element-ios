@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,6 @@ enum VoiceMessageAudioPlayerError: Error {
 }
 
 class VoiceMessageAudioPlayer: NSObject {
-    
     private var playerItem: AVPlayerItem?
     private var audioPlayer: AVPlayer?
     
@@ -56,11 +55,11 @@ class VoiceMessageAudioPlayer: NSObject {
     }
     
     var duration: TimeInterval {
-        return abs(CMTimeGetSeconds(self.audioPlayer?.currentItem?.duration ?? .zero))
+        abs(CMTimeGetSeconds(audioPlayer?.currentItem?.duration ?? .zero))
     }
     
     var currentTime: TimeInterval {
-        return abs(CMTimeGetSeconds(audioPlayer?.currentTime() ?? .zero))
+        abs(CMTimeGetSeconds(audioPlayer?.currentTime() ?? .zero))
     }
     
     private(set) var isStopped = true
@@ -121,7 +120,7 @@ class VoiceMessageAudioPlayer: NSObject {
         audioPlayer?.seek(to: .zero)
     }
     
-    func seekToTime(_ time: TimeInterval, completionHandler:@escaping (Bool) -> Void = { _ in }) {
+    func seekToTime(_ time: TimeInterval, completionHandler: @escaping (Bool) -> Void = { _ in }) {
         audioPlayer?.seek(to: CMTime(seconds: time, preferredTimescale: 60000), completionHandler: completionHandler)
     }
     
@@ -140,7 +139,7 @@ class VoiceMessageAudioPlayer: NSObject {
             return
         }
         
-        statusObserver = playerItem.observe(\.status, options: [.old, .new]) { [weak self] item, change in
+        statusObserver = playerItem.observe(\.status, options: [.old, .new]) { [weak self] _, _ in
             guard let self = self else { return }
             
             switch playerItem.status {
@@ -157,7 +156,7 @@ class VoiceMessageAudioPlayer: NSObject {
             }
         }
         
-        playbackBufferEmptyObserver = playerItem.observe(\.isPlaybackBufferEmpty, options: [.old, .new]) { [weak self] item, change in
+        playbackBufferEmptyObserver = playerItem.observe(\.isPlaybackBufferEmpty, options: [.old, .new]) { [weak self] _, _ in
             guard let self = self else { return }
             
             if playerItem.isPlaybackBufferEmpty {
@@ -171,7 +170,7 @@ class VoiceMessageAudioPlayer: NSObject {
             }
         }
         
-        rateObserver = audioPlayer.observe(\.rate, options: [.old, .new]) { [weak self] player, change in
+        rateObserver = audioPlayer.observe(\.rate, options: [.old, .new]) { [weak self] _, _ in
             guard let self = self else { return }
             
             if audioPlayer.rate == 0.0 {
@@ -191,7 +190,7 @@ class VoiceMessageAudioPlayer: NSObject {
             }
         }
         
-        playToEndObserver = NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem, queue: nil) { [weak self] notification in
+        playToEndObserver = NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem, queue: nil) { [weak self] _ in
             guard let self = self else { return }
             
             self.delegateContainer.notifyDelegatesWithBlock { delegate in

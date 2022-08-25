@@ -22,13 +22,12 @@ protocol ReactionHistoryViewModelViewDelegate: AnyObject {
     func reactionHistoryViewModel(_ viewModel: ReactionHistoryViewModelType, didUpdateViewState viewSate: ReactionHistoryViewState)
 }
 
-protocol ReactionHistoryViewModelCoordinatorDelegate: AnyObject {        
+protocol ReactionHistoryViewModelCoordinatorDelegate: AnyObject {
     func reactionHistoryViewModelDidClose(_ viewModel: ReactionHistoryViewModelType)
 }
 
 /// Protocol describing the view model used by `ReactionHistoryViewController`
-protocol ReactionHistoryViewModelType {    
-        
+protocol ReactionHistoryViewModelType {
     var viewDelegate: ReactionHistoryViewModelViewDelegate? { get set }
     var coordinatorDelegate: ReactionHistoryViewModelCoordinatorDelegate? { get set }
     

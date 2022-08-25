@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 @objc
 protocol AddItemHeaderViewDelegate: AnyObject {
@@ -26,7 +26,6 @@ protocol AddItemHeaderViewDelegate: AnyObject {
 /// With this view we can add an extra action cell with icon and text as for SpaceMemberList and SpaceExploreRooms
 @objcMembers
 final class AddItemHeaderView: UIView, NibLoadable, Themable {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -35,10 +34,10 @@ final class AddItemHeaderView: UIView, NibLoadable, Themable {
     
     // MARK: - Properties
     
-    @IBOutlet private weak var button: UIButton!
-    @IBOutlet private weak var iconBackgroundView: UIView!
-    @IBOutlet private weak var iconView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private var button: UIButton!
+    @IBOutlet private var iconBackgroundView: UIView!
+    @IBOutlet private var iconView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
 
     weak var delegate: AddItemHeaderViewDelegate?
     
@@ -47,6 +46,7 @@ final class AddItemHeaderView: UIView, NibLoadable, Themable {
             titleLabel.text = title
         }
     }
+
     private var icon: UIImage? {
         didSet {
             iconView.image = icon

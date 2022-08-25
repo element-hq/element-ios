@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,14 +17,13 @@
 import UIKit
 
 final class SpaceFeatureUnaivableViewController: UIViewController {
-
     // MARK: - Properties
     
     // MARK: Outlets
         
-    @IBOutlet private weak var artworkImageView: UIImageView!
-    @IBOutlet private weak var subtitleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var artworkImageView: UIImageView!
+    @IBOutlet private var subtitleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
     // MARK: Private
  
@@ -43,14 +42,14 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.setupViews()
+        setupViews()
                 
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -60,14 +59,14 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.title = VectorL10n.spaceFeatureUnavailableTitle
+        title = VectorL10n.spaceFeatureUnavailableTitle
         
-        self.subtitleLabel.text = VectorL10n.spaceFeatureUnavailableSubtitle
-        self.informationLabel.text = VectorL10n.spaceFeatureUnavailableInformation
+        subtitleLabel.text = VectorL10n.spaceFeatureUnavailableSubtitle
+        informationLabel.text = VectorL10n.spaceFeatureUnavailableInformation
     }
     
     // MARK: - Public
@@ -75,23 +74,23 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
     func update(theme: Theme) {
         self.theme = theme
                 
-        self.view.backgroundColor = theme.backgroundColor
+        view.backgroundColor = theme.backgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.subtitleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textSecondaryColor
+        subtitleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textSecondaryColor
         
         // Artwork image view
         
-        let artworkImage = ThemeService.shared().isCurrentThemeDark() ?   Asset.Images.featureUnavaibleArtworkDark.image : Asset.Images.featureUnavaibleArtwork.image
+        let artworkImage = ThemeService.shared().isCurrentThemeDark() ? Asset.Images.featureUnavaibleArtworkDark.image : Asset.Images.featureUnavaibleArtwork.image
         
-        self.artworkImageView.image = artworkImage
+        artworkImageView.image = artworkImage
     }
     
     func fill(informationText: String, shareLink: URL) {
-        self.subtitleLabel.text = informationText
+        subtitleLabel.text = informationText
     }
 }

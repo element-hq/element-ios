@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -188,7 +188,7 @@ extension MXRestClient {
     
     private func getResponse<T, U, V>(_ callback: (@escaping (T?, U?, V?) -> Void, @escaping (Error?) -> Void) -> MXHTTPOperation) async throws -> (T?, U?, V?) {
         try await withCheckedThrowingContinuation { continuation in
-            _ = callback { arg1, arg2, arg3  in
+            _ = callback { arg1, arg2, arg3 in
                 continuation.resume(with: .success((arg1, arg2, arg3)))
             } _: { error in
                 continuation.resume(with: .failure(error ?? ClientError.unknownError))

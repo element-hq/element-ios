@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,6 @@ import UIKit
 /// The preview will display a snapshot of whichever view is passed into the init.
 @objcMembers
 class ContextMenuSnapshotPreviewViewController: UIViewController {
-    
     // MARK: - Private
     
     private let snapshotView: UIView?
@@ -30,10 +29,11 @@ class ContextMenuSnapshotPreviewViewController: UIViewController {
     /// Creates a new preview by snapshotting the supplied view.
     /// - Parameter view: The view to use as a preview.
     init(view: UIView) {
-        self.snapshotView = view.snapshotView(afterScreenUpdates: false)
+        snapshotView = view.snapshotView(afterScreenUpdates: false)
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -48,5 +48,4 @@ class ContextMenuSnapshotPreviewViewController: UIViewController {
         
         preferredContentSize = snapshotView.bounds.size
     }
-    
 }

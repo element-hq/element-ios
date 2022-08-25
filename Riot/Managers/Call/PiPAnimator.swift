@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,9 +23,8 @@ import Foundation
 
 @objcMembers
 class PiPAnimator: NSObject {
-    
     private enum Constants {
-        static let pipViewSize: CGSize = CGSize(width: 90, height: 130)
+        static let pipViewSize = CGSize(width: 90, height: 130)
     }
 
     let animationDuration: TimeInterval
@@ -66,7 +65,7 @@ class PiPAnimator: NSObject {
         pipView.delegate = pipViewDelegate
         keyWindow.addSubview(pipView)
         
-        let scale = Constants.pipViewSize.width/pipView.frame.width
+        let scale = Constants.pipViewSize.width / pipView.frame.width
         let transform = CGAffineTransform(scaleX: scale, y: scale)
         let targetSize = Constants.pipViewSize
         pipView.cornerRadius = pipView.cornerRadius / scale
@@ -78,7 +77,7 @@ class PiPAnimator: NSObject {
                          targetSize: targetSize)
         }
         
-        animator.addCompletion { (position) in
+        animator.addCompletion { _ in
             if let pipable = fromVC as? PictureInPicturable {
                 pipable.didEnterPiP?()
             }
@@ -127,7 +126,7 @@ class PiPAnimator: NSObject {
             snapshot.frame = context.finalFrame(for: toVC)
         }
         
-        animator.addCompletion { (position) in
+        animator.addCompletion { _ in
             
             toVC.additionalSafeAreaInsets = .zero
             toVC.view.frame = context.finalFrame(for: toVC)
@@ -146,9 +145,8 @@ class PiPAnimator: NSObject {
 }
 
 extension PiPAnimator: UIViewControllerAnimatedTransitioning {
-    
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return animationDuration
+        animationDuration
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -159,5 +157,4 @@ extension PiPAnimator: UIViewControllerAnimatedTransitioning {
             exitAnimation(context: transitionContext)
         }
     }
-    
 }

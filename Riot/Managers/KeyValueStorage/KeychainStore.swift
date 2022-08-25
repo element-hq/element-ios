@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 import KeychainAccess
 
 class KeychainStore {
-    
     private var keychain: Keychain
     
     /// Initializer
@@ -26,11 +25,9 @@ class KeychainStore {
     init(withKeychain keychain: Keychain) {
         self.keychain = keychain
     }
-    
 }
 
 extension KeychainStore: KeyValueStore {
-    
     //  setters
     func set(_ value: Data?, forKey key: KeyValueStoreKey) throws {
         guard let value = value else {
@@ -79,15 +76,15 @@ extension KeychainStore: KeyValueStore {
     
     //  getters
     func data(forKey key: KeyValueStoreKey) throws -> Data? {
-        return try keychain.getData(key)
+        try keychain.getData(key)
     }
     
     func string(forKey key: KeyValueStoreKey) throws -> String? {
-        return try keychain.getString(key)
+        try keychain.getString(key)
     }
     
     func bool(forKey key: KeyValueStoreKey) throws -> Bool? {
-        return try keychain.getBool(key)
+        try keychain.getBool(key)
     }
     
     func integer(forKey key: KeyValueStoreKey) throws -> Int? {
@@ -106,7 +103,7 @@ extension KeychainStore: KeyValueStore {
     
     //  checkers
     func containsObject(forKey key: KeyValueStoreKey) -> Bool {
-        return (try? keychain.contains(key)) ?? false
+        (try? keychain.contains(key)) ?? false
     }
     
     //  remove
@@ -117,5 +114,4 @@ extension KeychainStore: KeyValueStore {
     func removeAll() throws {
         try keychain.removeAll()
     }
-    
 }

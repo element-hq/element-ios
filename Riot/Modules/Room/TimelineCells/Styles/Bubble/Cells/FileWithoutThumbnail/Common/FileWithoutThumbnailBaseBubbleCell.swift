@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,18 +17,17 @@
 import UIKit
 
 class FileWithoutThumbnailBaseBubbleCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
-    
     weak var fileAttachementView: FileWithoutThumbnailCellContentView?
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        let attributedText = NSMutableAttributedString(attributedString: self.suitableAttributedTextMessage)
+        let attributedText = NSMutableAttributedString(attributedString: suitableAttributedTextMessage)
         attributedText.addAttributes([.foregroundColor: ThemeService.shared().theme.colors.secondaryContent],
                                      range: NSRange(location: 0, length: attributedText.length))
-        self.fileAttachementView?.titleLabel.attributedText = attributedText
+        fileAttachementView?.titleLabel.attributedText = attributedText
         
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     override func setupViews() {
@@ -48,9 +47,8 @@ class FileWithoutThumbnailBaseBubbleCell: SizableBaseRoomCell, RoomCellReactions
     }
     
     override func onContentViewTap(_ sender: UITapGestureRecognizer!) {
-        
-        if let bubbleData = self.bubbleData, bubbleData.isAttachment {
-            self.delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnAttachmentView, userInfo: nil)            
+        if let bubbleData = bubbleData, bubbleData.isAttachment {
+            delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnAttachmentView, userInfo: nil)
         } else {
             super.onContentViewTap(sender)
         }

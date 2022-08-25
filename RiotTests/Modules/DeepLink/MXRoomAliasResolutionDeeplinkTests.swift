@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
+@testable import Element
 import Foundation
 import XCTest
-@testable import Element
 
 class MXRoomAliasResolutionDeeplinkTests: XCTestCase {
     func test_fragmentIsNilForInvalidResolution() {

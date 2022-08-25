@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@ class AccessibleCollectionView: UICollectionView {
     private var numberOfItemsInFirstSection = 0
     
     override func accessibilityElementCount() -> Int {
-        return numberOfItemsInFirstSection
+        numberOfItemsInFirstSection
     }
     
     override func numberOfItems(inSection section: Int) -> Int {

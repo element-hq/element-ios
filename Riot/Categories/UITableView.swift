@@ -18,12 +18,11 @@
 import Foundation
 
 extension UITableView {
-
     /// Returns safe area insetted separator inset. Should only be used when custom constraints on custom table view cells are being set according to separator insets.
     @objc var vc_separatorInset: UIEdgeInsets {
         var result = separatorInset
-        result.left -= self.safeAreaInsets.left
-        result.right -= self.safeAreaInsets.right
+        result.left -= safeAreaInsets.left
+        result.right -= safeAreaInsets.right
         return result
     }
     
@@ -63,8 +62,7 @@ extension UITableView {
     /// - Parameter indexPath: index path to check
     /// - Returns: True if table view has the index path, otherwise false
     @objc func vc_hasIndexPath(_ indexPath: IndexPath) -> Bool {
-        return numberOfSections > indexPath.section
+        numberOfSections > indexPath.section
             && numberOfRows(inSection: indexPath.section) > indexPath.row
     }
-
 }

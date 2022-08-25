@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +14,11 @@
 // limitations under the License.
 //
 
-import XCTest
-import UIKit
 @testable import Element
+import UIKit
+import XCTest
 
 class EventMenuBuilderTests: XCTestCase {
-    
     func testSorting() {
         let builder = EventMenuBuilder()
         
@@ -55,5 +54,4 @@ class EventMenuBuilderTests: XCTestCase {
         
         XCTAssertTrue(builder.isEmpty, "Builder must be empty again after reset")
     }
-    
 }

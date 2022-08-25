@@ -19,7 +19,6 @@
 import Foundation
 
 final class SecretsSetupRecoveryPassphraseViewModel: SecretsSetupRecoveryPassphraseViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -39,7 +38,7 @@ final class SecretsSetupRecoveryPassphraseViewModel: SecretsSetupRecoveryPassphr
     
     init(passphraseInput: SecretsSetupRecoveryPassphraseInput) {
         self.passphraseInput = passphraseInput
-        self.passwordStrengthManager = PasswordStrengthManager()
+        passwordStrengthManager = PasswordStrengthManager()
     }
     
     // MARK: - Public
@@ -47,23 +46,22 @@ final class SecretsSetupRecoveryPassphraseViewModel: SecretsSetupRecoveryPassphr
     func process(viewAction: SecretsSetupRecoveryPassphraseViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .updatePassphrase(let passphrase):
-            self.updatePassphrase(passphrase)
+            updatePassphrase(passphrase)
         case .validate:
-            self.validate()
+            validate()
         case .cancel:
-            self.coordinatorDelegate?.secretsSetupRecoveryPassphraseViewModelDidCancel(self)
+            coordinatorDelegate?.secretsSetupRecoveryPassphraseViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        
         let viewDataMode: SecretsSetupRecoveryPassphraseViewDataMode
         
-        switch self.passphraseInput {
+        switch passphraseInput {
         case .new:
             viewDataMode = .newPassphrase(strength: .tooGuessable)
         case .confirm:
@@ -72,21 +70,20 @@ final class SecretsSetupRecoveryPassphraseViewModel: SecretsSetupRecoveryPassphr
         
         let viewData = SecretsSetupRecoveryPassphraseViewData(mode: viewDataMode, isFormValid: false)
         
-        self.update(viewState: .loaded(viewData))
+        update(viewState: .loaded(viewData))
     }
     
     private func update(viewState: SecretsSetupRecoveryPassphraseViewState) {
-        self.viewDelegate?.secretsSetupRecoveryPassphraseViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.secretsSetupRecoveryPassphraseViewModel(self, didUpdateViewState: viewState)
     }
     
     private func updatePassphrase(_ passphrase: String?) {
-        
         let viewDataMode: SecretsSetupRecoveryPassphraseViewDataMode
         let isFormValid: Bool
         
-        switch self.passphraseInput {
+        switch passphraseInput {
         case .new:
-            let passphraseStrength = self.passwordStrength(for: passphrase)
+            let passphraseStrength = passwordStrength(for: passphrase)
             viewDataMode = .newPassphrase(strength: passphraseStrength)
             isFormValid = passphraseStrength == .veryUnguessable
         case .confirm(let passphraseToConfirm):
@@ -97,23 +94,23 @@ final class SecretsSetupRecoveryPassphraseViewModel: SecretsSetupRecoveryPassphr
         let viewData = SecretsSetupRecoveryPassphraseViewData(mode: viewDataMode, isFormValid: isFormValid)
         
         self.passphrase = passphrase
-        self.currentViewData = viewData
+        currentViewData = viewData
         
-        self.update(viewState: .formUpdated(viewData))
+        update(viewState: .formUpdated(viewData))
     }
     
     private func validate() {
-        guard let viewData = self.currentViewData,
-            viewData.isFormValid,
-            let passphrase = self.passphrase else {
+        guard let viewData = currentViewData,
+              viewData.isFormValid,
+              let passphrase = passphrase else {
             return
         }
         
-        switch self.passphraseInput {
+        switch passphraseInput {
         case .new:
-            self.coordinatorDelegate?.secretsSetupRecoveryPassphraseViewModel(self, didEnterNewPassphrase: passphrase)
+            coordinatorDelegate?.secretsSetupRecoveryPassphraseViewModel(self, didEnterNewPassphrase: passphrase)
         case .confirm:
-            self.coordinatorDelegate?.secretsSetupRecoveryPassphraseViewModel(self, didConfirmPassphrase: passphrase)
+            coordinatorDelegate?.secretsSetupRecoveryPassphraseViewModel(self, didConfirmPassphrase: passphrase)
         }
     }
     
@@ -121,6 +118,6 @@ final class SecretsSetupRecoveryPassphraseViewModel: SecretsSetupRecoveryPassphr
         guard let password = password else {
             return .tooGuessable
         }
-        return self.passwordStrengthManager.passwordStrength(for: password)
+        return passwordStrengthManager.passwordStrength(for: password)
     }
 }

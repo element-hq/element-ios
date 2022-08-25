@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,15 +23,14 @@ enum CallTileActionButtonStyle {
 }
 
 class CallTileActionButton: UIButton {
-    
     // MARK: - Constants
     
     private enum Constants {
         static let cornerRadius: CGFloat = 8.0
         static let fontSize: CGFloat = 17.0
-        static let contentEdgeInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        static let contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         static let spaceBetweenImageAndTitle: CGFloat = 8
-        static let imageSize: CGSize = CGSize(width: 16, height: 16)
+        static let imageSize = CGSize(width: 16, height: 16)
     }
     
     private var theme: Theme = ThemeService.shared().theme {
@@ -41,7 +40,7 @@ class CallTileActionButton: UIButton {
     }
     
     private var hasImage: Bool {
-        return image(for: .normal) != nil
+        image(for: .normal) != nil
     }
     
     var style: CallTileActionButtonStyle = .positive {
@@ -111,7 +110,7 @@ class CallTileActionButton: UIButton {
         guard hasImage else {
             return result
         }
-        result.origin.x -= Constants.spaceBetweenImageAndTitle/2
+        result.origin.x -= Constants.spaceBetweenImageAndTitle / 2
         return result
     }
     
@@ -120,16 +119,13 @@ class CallTileActionButton: UIButton {
         guard hasImage else {
             return result
         }
-        result.origin.x += Constants.spaceBetweenImageAndTitle/2
+        result.origin.x += Constants.spaceBetweenImageAndTitle / 2
         return result
     }
-    
 }
 
 extension CallTileActionButton: Themable {
-    
     func update(theme: Theme) {
         self.theme = theme
     }
-    
 }

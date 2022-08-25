@@ -28,7 +28,6 @@ protocol SettingsSecureBackupViewModelViewDelegate: AnyObject {
 }
 
 protocol SettingsSecureBackupViewModelType {
-
     var viewDelegate: SettingsSecureBackupViewModelViewDelegate? { get set }
 
     func process(viewAction: SettingsSecureBackupViewAction)

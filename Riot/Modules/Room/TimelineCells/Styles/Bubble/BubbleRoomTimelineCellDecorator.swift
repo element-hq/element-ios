@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,73 +17,65 @@
 import UIKit
 
 class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
-        
     override func addTimestampLabelIfNeeded(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
-        
-        guard self.canShowTimestamp(forCellData: cellData) else {
+        guard canShowTimestamp(forCellData: cellData) else {
             return
         }
         
-        self.addTimestampLabel(toCell: cell, cellData: cellData)
+        addTimestampLabel(toCell: cell, cellData: cellData)
     }
         
     override func addTimestampLabel(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
-        
-        guard let timestampLabel = self.createTimestampLabel(for: cellData) else {
+        guard let timestampLabel = createTimestampLabel(for: cellData) else {
             super.addTimestampLabel(toCell: cell, cellData: cellData)
             return
         }
         
         if let timestampDisplayable = cell as? TimestampDisplayable {
-            
             timestampDisplayable.addTimestampView(timestampLabel)
             
         } else if cellData.isAttachmentWithThumbnail {
-                                                 
             if cellData.attachment?.type == .sticker,
                let attachmentView = cell.attachmentView {
-                
                 // Prevent overlap with send status icon
                 let bottomMargin: CGFloat = BubbleRoomCellLayoutConstants.stickerTimestampViewMargins.bottom
                 let rightMargin: CGFloat = BubbleRoomCellLayoutConstants.stickerTimestampViewMargins.right
                 
-                self.addTimestampLabel(timestampLabel,
-                                       to: cell,
-                                       on: cell.contentView,
-                                       constrainingView: attachmentView,
-                                       rightMargin: rightMargin,
-                                       bottomMargin: bottomMargin)
+                addTimestampLabel(timestampLabel,
+                                  to: cell,
+                                  on: cell.contentView,
+                                  constrainingView: attachmentView,
+                                  rightMargin: rightMargin,
+                                  bottomMargin: bottomMargin)
                 
             } else if let attachmentView = cell.attachmentView {
                 // For media with thumbnail cells, add timestamp inside thumbnail
                 
-                timestampLabel.textColor = self.theme.baseIconPrimaryColor
+                timestampLabel.textColor = theme.baseIconPrimaryColor
                 
-                self.addTimestampLabel(timestampLabel,
-                                       to: cell,
-                                       on: cell.contentView,
-                                       constrainingView: attachmentView)
+                addTimestampLabel(timestampLabel,
+                                  to: cell,
+                                  on: cell.contentView,
+                                  constrainingView: attachmentView)
                 
             } else {
                 super.addTimestampLabel(toCell: cell, cellData: cellData)
             }
         } else if let voiceMessageCell = cell as? VoiceMessagePlainCell, let playbackView = voiceMessageCell.playbackController?.playbackView {
-            
             // Add timestamp on cell inherting from VoiceMessageBubbleCell
             
-            self.addTimestampLabel(timestampLabel,
-                                   to: cell,
-                                   on: cell.contentView,
-                                   constrainingView: playbackView)
+            addTimestampLabel(timestampLabel,
+                              to: cell,
+                              on: cell.contentView,
+                              constrainingView: playbackView)
             
         } else if let fileWithoutThumbnailCell = cell as? FileWithoutThumbnailBaseBubbleCell, let fileAttachementView = fileWithoutThumbnailCell.fileAttachementView {
-            
             // Add timestamp on cell inherting from VoiceMessageBubbleCell
             
-            self.addTimestampLabel(timestampLabel,
-                                   to: cell,
-                                   on: fileAttachementView,
-                                   constrainingView: fileAttachementView)
+            addTimestampLabel(timestampLabel,
+                              to: cell,
+                              on: fileAttachementView,
+                              constrainingView: fileAttachementView)
             
         } else {
             super.addTimestampLabel(toCell: cell, cellData: cellData)
@@ -92,7 +84,6 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     
     override func addReactionView(_ reactionsView: RoomReactionsView,
                                   toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData, contentViewPositionY: CGFloat, upperDecorationView: UIView?) {
-        
         if let reactionsDisplayable = cell as? RoomCellReactionsDisplayable {
             reactionsDisplayable.addReactionsView(reactionsView)
             return
@@ -112,7 +103,6 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                 
         // Incoming message
         if cellData.isIncoming {
-            
             var incomingLeftMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
             
             if cellData.containsBubbleComponentWithEncryptionBadge {
@@ -161,7 +151,6 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                                     toCell cell: MXKRoomBubbleTableViewCell,
                                     cellData: RoomBubbleCellData,
                                     contentViewPositionY: CGFloat) {
-        
         if let urlPreviewDisplayable = cell as? RoomCellURLPreviewDisplayable {
             urlPreviewView.translatesAutoresizingMaskIntoConstraints = false
             urlPreviewDisplayable.addURLPreviewView(urlPreviewView)
@@ -176,10 +165,8 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             
             let leadingOrTrailingConstraint: NSLayoutConstraint
             
-            
             // Incoming message
             if cellData.isIncoming {
-
                 var leftMargin = PlainRoomCellLayoutConstants.reactionsViewLeftMargin
                 if cellData.containsBubbleComponentWithEncryptionBadge {
                     leftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
@@ -205,15 +192,13 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     }
     
     override func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView,
-                              toCell cell: MXKRoomBubbleTableViewCell,
-                              cellData: RoomBubbleCellData,
-                              contentViewPositionY: CGFloat,
-                              upperDecorationView: UIView?) {
-
+                                       toCell cell: MXKRoomBubbleTableViewCell,
+                                       cellData: RoomBubbleCellData,
+                                       contentViewPositionY: CGFloat,
+                                       upperDecorationView: UIView?) {
         if let threadSummaryDisplayable = cell as? RoomCellThreadSummaryDisplayable {
             threadSummaryDisplayable.addThreadSummaryView(threadSummaryView)
         } else {
-            
             cell.addTemporarySubview(threadSummaryView)
             threadSummaryView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -229,7 +214,6 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                         
             // Incoming message
             if cellData.isIncoming {
-
                 leftMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
                 if cellData.containsBubbleComponentWithEncryptionBadge {
                     leftMargin += PlainRoomCellLayoutConstants.encryptedContentLeftMargin
@@ -238,7 +222,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                 rightMargin = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
                 
                 leadingConstraint = threadSummaryView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor,
-                                                           constant: leftMargin)
+                                                                               constant: leftMargin)
                 trailingConstraint = threadSummaryView.trailingAnchor.constraint(lessThanOrEqualTo: cellContentView.trailingAnchor,
                                                                                  constant: -rightMargin)
             } else {
@@ -248,7 +232,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                 rightMargin = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
                 
                 leadingConstraint = threadSummaryView.leadingAnchor.constraint(greaterThanOrEqualTo: cellContentView.leadingAnchor,
-                                                           constant: leftMargin)
+                                                                               constant: leftMargin)
                 trailingConstraint = threadSummaryView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor,
                                                                                  constant: -rightMargin)
             }
@@ -282,13 +266,12 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     // MARK: Timestamp management
     
     private func createTimestampLabel(cellData: MXKRoomBubbleCellData, bubbleComponent: MXKRoomBubbleComponent, viewTag: Int, textColor: UIColor) -> UILabel {
-        
         let timeLabel = UILabel()
 
         timeLabel.text = cellData.eventFormatter.timeString(from: bubbleComponent.date)
         timeLabel.textAlignment = .right
         timeLabel.textColor = textColor
-        timeLabel.font = self.theme.fonts.caption2
+        timeLabel.font = theme.fonts.caption2
         timeLabel.adjustsFontSizeToFitWidth = true
         timeLabel.tag = viewTag
         timeLabel.accessibilityIdentifier = "timestampLabel"
@@ -297,11 +280,10 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     }
     
     func createTimestampLabel(for cellData: RoomBubbleCellData) -> UILabel? {
-        return self.createTimestampLabel(for: cellData, textColor: self.theme.textSecondaryColor)
+        createTimestampLabel(for: cellData, textColor: theme.textSecondaryColor)
     }
     
     private func createTimestampLabel(for cellData: RoomBubbleCellData, textColor: UIColor) -> UILabel? {
-        
         let componentIndex = cellData.mostRecentComponentIndex
         
         guard let bubbleComponents = cellData.bubbleComponents, componentIndex < bubbleComponents.count else {
@@ -310,11 +292,10 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         
         let component = bubbleComponents[componentIndex]
 
-        return self.createTimestampLabel(cellData: cellData, bubbleComponent: component, viewTag: componentIndex, textColor: textColor)
+        return createTimestampLabel(cellData: cellData, bubbleComponent: component, viewTag: componentIndex, textColor: textColor)
     }
     
     private func canShowTimestamp(forCellData cellData: MXKRoomBubbleCellData) -> Bool {
-        
         guard cellData.isCollapsableAndCollapsed == false else {
             return false
         }

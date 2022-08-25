@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ extension UITextView {
     ///   - point: The point inside the UITextView bounds
     /// - Returns: true to indicate that a link has been detected near the location point.
     @objc func isThereALinkNearLocation(_ point: CGPoint) -> Bool {
-        return urlForLinkAtLocation(point) != nil
+        urlForLinkAtLocation(point) != nil
     }
     
     /// Detect link near a location point in UITextView bounds.

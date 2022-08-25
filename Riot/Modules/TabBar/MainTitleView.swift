@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 @objcMembers
 class MainTitleView: UIStackView, Themable {
-    
     // MARK: - Properties
     
     public private(set) var titleLabel: UILabel!
@@ -39,25 +38,25 @@ class MainTitleView: UIStackView, Themable {
     // MARK: - Themable
     
     func update(theme: Theme) {
-        self.titleLabel.textColor = theme.colors.primaryContent
-        self.titleLabel.font = theme.fonts.calloutSB
+        titleLabel.textColor = theme.colors.primaryContent
+        titleLabel.font = theme.fonts.calloutSB
         
-        self.breadcrumbView.update(theme: theme)
+        breadcrumbView.update(theme: theme)
     }
     
     // MARK: - Private
     
     private func setupView() {
-        self.titleLabel = UILabel(frame: .zero)
-        self.titleLabel.backgroundColor = .clear
+        titleLabel = UILabel(frame: .zero)
+        titleLabel.backgroundColor = .clear
 
-        self.breadcrumbView = BreadcrumbView(frame: .zero)
+        breadcrumbView = BreadcrumbView(frame: .zero)
 
-        self.addArrangedSubview(titleLabel)
-        self.addArrangedSubview(breadcrumbView)
-        self.distribution = .equalCentering
-        self.axis = .vertical
-        self.alignment = .center
-        self.spacing = 0.5
+        addArrangedSubview(titleLabel)
+        addArrangedSubview(breadcrumbView)
+        distribution = .equalCentering
+        axis = .vertical
+        alignment = .center
+        spacing = 0.5
     }
 }

@@ -20,7 +20,6 @@ import UIKit
 
 @objcMembers
 final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -29,7 +28,7 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
     private var selectedThreadCoordinator: RoomCoordinator?
     
     private var navigationRouter: NavigationRouterType {
-        return self.parameters.navigationRouter
+        parameters.navigationRouter
     }
     
     // MARK: Public
@@ -48,12 +47,11 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
                                                selector: #selector(didPopModule(_:)),
                                                name: NavigationRouter.didPopModule,
                                                object: nil)
-    }    
+    }
     
     // MARK: - Public
     
     func start() {
-
         let rootCoordinator: Coordinator & Presentable
         if let threadId = parameters.threadId {
             rootCoordinator = createThreadCoordinator(forThreadId: threadId)
@@ -63,21 +61,21 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
         
         rootCoordinator.start()
 
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
         
         // Detect when view controller has been dismissed by gesture when presented modally (not in full screen).
-        self.navigationRouter.toPresentable().presentationController?.delegate = self
+        navigationRouter.toPresentable().presentationController?.delegate = self
         
         guard parameters.threadId == nil else {
             return
         }
         
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+        if navigationRouter.modules.isEmpty == false {
+            navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             })
         } else {
-            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+            navigationRouter.setRootModule(rootCoordinator) { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             }
         }
@@ -85,7 +83,7 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
     
     func stop() {
         if selectedThreadCoordinator != nil {
-            let modules = self.navigationRouter.modules
+            let modules = navigationRouter.modules
             //  if a thread is selected from the thread list coordinator, then navigation stack will look like:
             //  ... -> Screen A -> Thread List Screen -> Thread Screen
             //  we'll try to pop to Screen A here
@@ -94,14 +92,14 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
                 return
             }
             let moduleToGoBack = modules[modules.count - 3]
-            self.navigationRouter.popToModule(moduleToGoBack, animated: true)
+            navigationRouter.popToModule(moduleToGoBack, animated: true)
         } else {
-            self.navigationRouter.popModule(animated: true)
+            navigationRouter.popModule(animated: true)
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private
@@ -122,8 +120,8 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
     }
 
     private func createThreadListCoordinator() -> ThreadListCoordinator {
-        let coordinatorParameters = ThreadListCoordinatorParameters(session: self.parameters.session,
-                                                                    roomId: self.parameters.roomId)
+        let coordinatorParameters = ThreadListCoordinatorParameters(session: parameters.session,
+                                                                    roomId: parameters.roomId)
         let coordinator = ThreadListCoordinator(parameters: coordinatorParameters)
         coordinator.delegate = self
         return coordinator
@@ -147,57 +145,46 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
+
 extension ThreadsCoordinator: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.threadsCoordinatorDidDismissInteractively(self)
+        delegate?.threadsCoordinatorDidDismissInteractively(self)
     }
 }
 
 // MARK: - ThreadListCoordinatorDelegate
+
 extension ThreadsCoordinator: ThreadListCoordinatorDelegate {
-    func threadListCoordinatorDidLoadThreads(_ coordinator: ThreadListCoordinatorProtocol) {
-        
-    }
+    func threadListCoordinatorDidLoadThreads(_ coordinator: ThreadListCoordinatorProtocol) { }
     
     func threadListCoordinatorDidSelectThread(_ coordinator: ThreadListCoordinatorProtocol, thread: MXThreadProtocol) {
         let roomCoordinator = createThreadCoordinator(forThreadId: thread.id)
         selectedThreadCoordinator = roomCoordinator
         roomCoordinator.start()
-        self.add(childCoordinator: roomCoordinator)
+        add(childCoordinator: roomCoordinator)
     }
     
     func threadListCoordinatorDidSelectRoom(_ coordinator: ThreadListCoordinatorProtocol, roomId: String, eventId: String) {
-        self.delegate?.threadsCoordinatorDidSelect(self, roomId: roomId, eventId: eventId)
+        delegate?.threadsCoordinatorDidSelect(self, roomId: roomId, eventId: eventId)
     }
     
     func threadListCoordinatorDidCancel(_ coordinator: ThreadListCoordinatorProtocol) {
-        self.delegate?.threadsCoordinatorDidComplete(self)
+        delegate?.threadsCoordinatorDidComplete(self)
     }
 }
 
 //  MARK: - RoomCoordinatorDelegate
 
 extension ThreadsCoordinator: RoomCoordinatorDelegate {
+    func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) { }
     
-    func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
-        
-    }
-    
-    func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) {
-        
-    }
+    func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) { }
     
     func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?) {
-        self.delegate?.threadsCoordinatorDidSelect(self, roomId: roomId, eventId: eventId)
+        delegate?.threadsCoordinatorDidSelect(self, roomId: roomId, eventId: eventId)
     }
     
-    func roomCoordinatorDidDismissInteractively(_ coordinator: RoomCoordinatorProtocol) {
-        
-    }
+    func roomCoordinatorDidDismissInteractively(_ coordinator: RoomCoordinatorProtocol) { }
     
-    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didReplaceRoomWithReplacementId roomId: String) {
-        
-    }
-
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didReplaceRoomWithReplacementId roomId: String) { }
 }

@@ -17,7 +17,6 @@
 import Foundation
 
 @objc final class SettingsDiscoveryViewModel: NSObject, SettingsDiscoveryViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -41,11 +40,11 @@ import Foundation
         let identityService = session.identityService
         
         if let identityService = identityService {
-            self.serviceTerms = MXServiceTerms(baseUrl: identityService.identityServer, serviceType: MXServiceTypeIdentityService, matrixSession: session, accessToken: nil)
+            serviceTerms = MXServiceTerms(baseUrl: identityService.identityServer, serviceType: MXServiceTypeIdentityService, matrixSession: session, accessToken: nil)
         }
         
         self.identityService = identityService
-        self.threePIDs = SettingsDiscoveryViewModel.threePids(from: thirdPartyIdentifiers)
+        threePIDs = SettingsDiscoveryViewModel.threePids(from: thirdPartyIdentifiers)
         super.init()
     }
     
@@ -63,11 +62,11 @@ import Foundation
     }
     
     @objc func update(thirdPartyIdentifiers: [MXThirdPartyIdentifier]) {
-        self.threePIDs = SettingsDiscoveryViewModel.threePids(from: thirdPartyIdentifiers)
+        threePIDs = SettingsDiscoveryViewModel.threePids(from: thirdPartyIdentifiers)
         
         // Update view state only if three3pids was previously
-        guard let viewState = self.viewState,
-            case let .loaded(displayMode: displayMode) = viewState else {
+        guard let viewState = viewState,
+              case let .loaded(displayMode: displayMode) = viewState else {
             return
         }
         
@@ -81,25 +80,25 @@ import Foundation
         }
         
         if canDisplayThreePids {
-            self.updateViewStateFromCurrentThreePids()
+            updateViewStateFromCurrentThreePids()
         }
     }
     
     // MARK: - Private
     
     private func checkTerms() {
-        guard let identityService = self.identityService, let serviceTerms = self.serviceTerms else {
-            self.update(viewState: .loaded(displayMode: .noIdentityServer))
+        guard let identityService = identityService, let serviceTerms = serviceTerms else {
+            update(viewState: .loaded(displayMode: .noIdentityServer))
             return
         }
         
-        guard self.canCheckTerms() else {
+        guard canCheckTerms() else {
             return
         }
         
-        self.update(viewState: .loading)
+        update(viewState: .loading)
         
-        serviceTerms.areAllTermsAgreed({ (agreedTermsProgress) in
+        serviceTerms.areAllTermsAgreed({ agreedTermsProgress in
             if agreedTermsProgress.isFinished || agreedTermsProgress.totalUnitCount == 0 {
                 // Display three pids if presents
                 self.updateViewStateFromCurrentThreePids()
@@ -109,13 +108,13 @@ import Foundation
                 
                 self.update(viewState: .loaded(displayMode: .termsNotSigned(host: identityServerHost)))
             }
-        }, failure: { (error) in
+        }, failure: { error in
             self.update(viewState: .error(error))
         })
     }
     
     private func canCheckTerms() -> Bool {
-        guard let viewState = self.viewState else {
+        guard let viewState = viewState else {
             return true
         }
         
@@ -131,17 +130,16 @@ import Foundation
     }
     
     private func updateViewStateFromCurrentThreePids() {
-        self.updateViewState(with: self.threePIDs)
+        updateViewState(with: threePIDs)
     }
     
     private func updateViewState(with threePids: [MX3PID]) {
-        
         let viewState: SettingsDiscoveryViewState
         
         if threePids.isEmpty {
             viewState = .loaded(displayMode: .noThreePidsAdded)
         } else {
-            let emails = threePids.compactMap { (threePid) -> MX3PID? in
+            let emails = threePids.compactMap { threePid -> MX3PID? in
                 if case .email = threePid.medium {
                     return threePid
                 } else {
@@ -149,7 +147,7 @@ import Foundation
                 }
             }
             
-            let phoneNumbers = threePids.compactMap { (threePid) -> MX3PID? in
+            let phoneNumbers = threePids.compactMap { threePid -> MX3PID? in
                 if case .msisdn = threePid.medium {
                     return threePid
                 } else {
@@ -160,17 +158,17 @@ import Foundation
             viewState = .loaded(displayMode: .threePidsAdded(emails: emails, phoneNumbers: phoneNumbers))
         }
         
-        self.update(viewState: viewState)
+        update(viewState: viewState)
     }
     
     private func update(viewState: SettingsDiscoveryViewState) {
         self.viewState = viewState
-        self.viewDelegate?.settingsDiscoveryViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.settingsDiscoveryViewModel(self, didUpdateViewState: viewState)
     }
     
     private class func threePids(from thirdPartyIdentifiers: [MXThirdPartyIdentifier]) -> [MX3PID] {
-        return thirdPartyIdentifiers.map({ (thirdPartyIdentifier) -> MX3PID in
-            return MX3PID(medium: MX3PID.Medium(identifier: thirdPartyIdentifier.medium), address: thirdPartyIdentifier.address)
-        })
-    }    
+        thirdPartyIdentifiers.map { thirdPartyIdentifier -> MX3PID in
+            MX3PID(medium: MX3PID.Medium(identifier: thirdPartyIdentifier.medium), address: thirdPartyIdentifier.address)
+        }
+    }
 }

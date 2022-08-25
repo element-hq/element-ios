@@ -28,7 +28,6 @@ protocol RoomCreationEventsModalViewModelCoordinatorDelegate: AnyObject {
 
 /// Protocol describing the view model used by `RoomCreationEventsModalViewController`
 protocol RoomCreationEventsModalViewModelType {
-        
     var viewDelegate: RoomCreationEventsModalViewModelViewDelegate? { get set }
     var coordinatorDelegate: RoomCreationEventsModalViewModelCoordinatorDelegate? { get set }
     

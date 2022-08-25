@@ -19,7 +19,6 @@
 import Foundation
 
 final class SpaceMemberListViewModel: SpaceMemberListViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -33,8 +32,9 @@ final class SpaceMemberListViewModel: SpaceMemberListViewModelType {
     // MARK: Public
 
     var space: MXSpace? {
-        return session.spaceService.getSpace(withId: spaceId)
+        session.spaceService.getSpace(withId: spaceId)
     }
+
     weak var viewDelegate: SpaceMemberListViewModelViewDelegate?
     weak var coordinatorDelegate: SpaceMemberListViewModelCoordinatorDelegate?
     
@@ -54,30 +54,30 @@ final class SpaceMemberListViewModel: SpaceMemberListViewModelType {
     func process(viewAction: SpaceMemberListViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .complete(let selectedMember, let sourceView):
-            self.coordinatorDelegate?.spaceMemberListViewModel(self, didSelect: selectedMember, from: sourceView)
+            coordinatorDelegate?.spaceMemberListViewModel(self, didSelect: selectedMember, from: sourceView)
         case .cancel:
-            self.cancelOperations()
-            self.coordinatorDelegate?.spaceMemberListViewModelDidCancel(self)
+            cancelOperations()
+            coordinatorDelegate?.spaceMemberListViewModelDidCancel(self)
         case .invite:
-            self.coordinatorDelegate?.spaceMemberListViewModelShowInvite(self)
+            coordinatorDelegate?.spaceMemberListViewModelShowInvite(self)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        if let space = self.session.spaceService.getSpace(withId: spaceId) {
-            self.update(viewState: .loaded(space))
+        if let space = session.spaceService.getSpace(withId: spaceId) {
+            update(viewState: .loaded(space))
         }
     }
     
     private func update(viewState: SpaceMemberListViewState) {
-        self.viewDelegate?.spaceMemberListViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.spaceMemberListViewModel(self, didUpdateViewState: viewState)
     }
     
     private func cancelOperations() {
-        self.currentOperation?.cancel()
+        currentOperation?.cancel()
     }
 }

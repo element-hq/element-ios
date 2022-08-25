@@ -28,7 +28,6 @@ protocol SecretsRecoveryWithKeyViewModelCoordinatorDelegate: AnyObject {
 
 /// Protocol describing the view model used by `SecretsRecoveryWithPassphraseViewController`
 protocol SecretsRecoveryWithKeyViewModelType {
-    
     var recoveryKey: String? { get set }
     var isFormValid: Bool { get }
     var recoveryGoal: SecretsRecoveryGoal { get }

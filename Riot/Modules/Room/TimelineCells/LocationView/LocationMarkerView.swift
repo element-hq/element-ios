@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +14,11 @@
 // limitations under the License.
 //
 
-import UIKit
-import Reusable
 import Mapbox
+import Reusable
+import UIKit
 
 class LocationMarkerView: MGLAnnotationView, NibLoadable {
-    
     @IBOutlet private var backgroundImageView: UIImageView!
     @IBOutlet private var avatarView: UserAvatarView!
     

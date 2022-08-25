@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -102,7 +102,7 @@ extension MockAuthenticationRestClient {
             case .loginOnly, .ssoOnly:
                 throw MockError.registrationDisabled
             case .unknown:
-                throw  MockError.unhandled
+                throw MockError.unhandled
             }
         }
         

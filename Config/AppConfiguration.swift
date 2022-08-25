@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// AppConfiguration is CommonConfiguration plus configurations dedicated to the app
 class AppConfiguration: CommonConfiguration {
-    
     // MARK: - Global settings
     
     override func setupSettings() {
@@ -50,7 +49,6 @@ class AppConfiguration: CommonConfiguration {
         MXSDKOptions.sharedInstance().enableKeyBackupWhenStartingMXCrypto = true
     }
     
-    
     // MARK: - Per matrix session settings
     
     override func setupSettings(for matrixSession: MXSession) {
@@ -65,5 +63,4 @@ class AppConfiguration: CommonConfiguration {
 
         matrixSession.acknowledgableEventTypes = acknowledgableEventTypes
     }
-    
 }

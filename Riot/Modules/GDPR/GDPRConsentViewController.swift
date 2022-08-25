@@ -21,22 +21,21 @@ import Foundation
 }
 
 /// GPDR consent screen.
-final public class GDPRConsentViewController: WebViewViewController {
-    
+public final class GDPRConsentViewController: WebViewViewController {
     // MARK: - Constants
     
     private static let consentSuccessURLPath = "/_matrix/consent"
     
-    // MARK: - Properties        
+    // MARK: - Properties
     
     @objc weak var delegate: GDPRConsentViewControllerDelegate?
     
     // MARK: - View life cycle
     
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = VectorL10n.settingsTermConditions
+        title = VectorL10n.settingsTermConditions
     }
     
     // MARK: - Superclass Overrides
@@ -47,7 +46,7 @@ final public class GDPRConsentViewController: WebViewViewController {
         // When navigation finish on path `consentSuccessURLPath` with no query, it means that user consent to GDPR
         if let url = webView.url, url.path == GDPRConsentViewController.consentSuccessURLPath, url.query == nil {
             MXLog.debug("[GDPRConsentViewController] User consent to GDPR")
-            self.delegate?.gdprConsentViewControllerDidConsentToGDPRWithSuccess(self)
+            delegate?.gdprConsentViewControllerDidConsentToGDPRWithSuccess(self)
         }
     }
 }

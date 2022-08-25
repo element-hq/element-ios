@@ -23,13 +23,12 @@ protocol KeyVerificationVerifyBySASViewModelViewDelegate: AnyObject {
 }
 
 protocol KeyVerificationVerifyBySASViewModelCoordinatorDelegate: AnyObject {
-    func keyVerificationVerifyViewModelDidComplete(_ viewModel: KeyVerificationVerifyBySASViewModelType)    
+    func keyVerificationVerifyViewModelDidComplete(_ viewModel: KeyVerificationVerifyBySASViewModelType)
     func keyVerificationVerifyViewModelDidCancel(_ viewModel: KeyVerificationVerifyBySASViewModelType)
 }
 
 /// Protocol describing the view model used by `KeyVerificationVerifyBySASViewController`
 protocol KeyVerificationVerifyBySASViewModelType {
-        
     var viewDelegate: KeyVerificationVerifyBySASViewModelViewDelegate? { get set }
     var coordinatorDelegate: KeyVerificationVerifyBySASViewModelCoordinatorDelegate? { get set }
     

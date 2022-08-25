@@ -19,7 +19,6 @@
 import UIKit
 
 final class SecretsSetupRecoveryPassphraseViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -30,25 +29,25 @@ final class SecretsSetupRecoveryPassphraseViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBOutlet private weak var securePassphraseImageView: UIImageView!
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var securePassphraseImageView: UIImageView!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var formBackgroundView: UIView!
+    @IBOutlet private var formBackgroundView: UIView!
     
-    @IBOutlet private weak var passphraseTitleLabel: UILabel!
-    @IBOutlet private weak var passphraseTextField: UITextField!
-    @IBOutlet private weak var passphraseVisibilityButton: UIButton!
+    @IBOutlet private var passphraseTitleLabel: UILabel!
+    @IBOutlet private var passphraseTextField: UITextField!
+    @IBOutlet private var passphraseVisibilityButton: UIButton!
     
-    @IBOutlet private weak var passphraseAdditionalInfoView: UIView!
-    @IBOutlet private weak var passphraseStrengthContainerView: UIView!
-    @IBOutlet private weak var passphraseStrengthView: PasswordStrengthView!
-    @IBOutlet private weak var passphraseAdditionalLabel: UILabel!
+    @IBOutlet private var passphraseAdditionalInfoView: UIView!
+    @IBOutlet private var passphraseStrengthContainerView: UIView!
+    @IBOutlet private var passphraseStrengthView: PasswordStrengthView!
+    @IBOutlet private var passphraseAdditionalLabel: UILabel!
     
-    @IBOutlet private weak var additionalInformationLabel: UILabel!
+    @IBOutlet private var additionalInformationLabel: UILabel!
     
-    @IBOutlet private weak var validateButton: RoundedButton!
+    @IBOutlet private var validateButton: RoundedButton!
     
     // MARK: Private
 
@@ -58,8 +57,8 @@ final class SecretsSetupRecoveryPassphraseViewController: UIViewController {
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
-    private var isFirstViewAppearing: Bool = true
-    private var isPassphraseTextFieldEditedOnce: Bool = false
+    private var isFirstViewAppearing = true
+    private var isPassphraseTextFieldEditedOnce = false
 
     private var currentViewData: SecretsSetupRecoveryPassphraseViewData?
     
@@ -80,106 +79,106 @@ final class SecretsSetupRecoveryPassphraseViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: scrollView)
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.keyboardAvoider?.startAvoiding()
+        keyboardAvoider?.startAvoiding()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if self.isFirstViewAppearing {
-            self.isFirstViewAppearing = false
+        if isFirstViewAppearing {
+            isFirstViewAppearing = false
         }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.view.endEditing(true)
-        self.keyboardAvoider?.stopAvoiding()
+        view.endEditing(true)
+        keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
     
     private func setupViews() {
-        if self.cancellable {
+        if cancellable {
             let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
                 self?.cancelButtonAction()
             }
 
-            self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+            navigationItem.rightBarButtonItem = cancelBarButtonItem
         }
         
-        self.vc_removeBackTitle()
+        vc_removeBackTitle()
         
-        self.title = VectorL10n.secretsSetupRecoveryPassphraseTitle
+        title = VectorL10n.secretsSetupRecoveryPassphraseTitle
         
-        self.scrollView.keyboardDismissMode = .interactive
+        scrollView.keyboardDismissMode = .interactive
         
-        self.securePassphraseImageView.image = Asset.Images.secretsSetupPassphrase.image.withRenderingMode(.alwaysTemplate)
+        securePassphraseImageView.image = Asset.Images.secretsSetupPassphrase.image.withRenderingMode(.alwaysTemplate)
         
-        self.passphraseTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        self.passphraseAdditionalInfoView.isHidden = true
+        passphraseTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        passphraseAdditionalInfoView.isHidden = true
         
         let visibilityImage = Asset.Images.revealPasswordButton.image.withRenderingMode(.alwaysTemplate)
-        self.passphraseVisibilityButton.setImage(visibilityImage, for: .normal)
+        passphraseVisibilityButton.setImage(visibilityImage, for: .normal)
         
-        self.additionalInformationLabel.text = VectorL10n.secretsSetupRecoveryPassphraseAdditionalInformation
+        additionalInformationLabel.text = VectorL10n.secretsSetupRecoveryPassphraseAdditionalInformation
         
-        self.validateButton.setTitle(VectorL10n.continue, for: .normal)
+        validateButton.setTitle(VectorL10n.continue, for: .normal)
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.securePassphraseImageView.tintColor = theme.textPrimaryColor
+        securePassphraseImageView.tintColor = theme.textPrimaryColor
         
-        self.informationLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.formBackgroundView.backgroundColor = theme.backgroundColor
-        self.passphraseTitleLabel.textColor = theme.textPrimaryColor
-        theme.applyStyle(onTextField: self.passphraseTextField)
+        formBackgroundView.backgroundColor = theme.backgroundColor
+        passphraseTitleLabel.textColor = theme.textPrimaryColor
+        theme.applyStyle(onTextField: passphraseTextField)
         
         let passphraseTitle: String
             
-        if let viewData = self.currentViewData, case .confimPassphrase = viewData.mode {
+        if let viewData = currentViewData, case .confimPassphrase = viewData.mode {
             passphraseTitle = VectorL10n.secretsSetupRecoveryPassphraseConfirmPassphrasePlaceholder
         } else {
             passphraseTitle = VectorL10n.keyBackupSetupPassphrasePassphrasePlaceholder
         }
         
-        self.passphraseTextField.attributedPlaceholder = NSAttributedString(string: passphraseTitle,
-                                                                            attributes: [.foregroundColor: theme.placeholderTextColor])
-        self.passphraseVisibilityButton.tintColor = theme.tintColor
+        passphraseTextField.attributedPlaceholder = NSAttributedString(string: passphraseTitle,
+                                                                       attributes: [.foregroundColor: theme.placeholderTextColor])
+        passphraseVisibilityButton.tintColor = theme.tintColor
         
-        self.additionalInformationLabel.textColor = theme.textSecondaryColor
+        additionalInformationLabel.textColor = theme.textSecondaryColor
 
-        self.validateButton.update(theme: theme)
+        validateButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -187,23 +186,22 @@ final class SecretsSetupRecoveryPassphraseViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
 
     private func render(viewState: SecretsSetupRecoveryPassphraseViewState) {
         switch viewState {
         case .loaded(let viewData):
-            self.renderLoaded(viewData: viewData)
+            renderLoaded(viewData: viewData)
         case .formUpdated(let viewData):
-            self.renderFormUpdated(viewData: viewData)
+            renderFormUpdated(viewData: viewData)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoaded(viewData: SecretsSetupRecoveryPassphraseViewData) {
-        
-        self.currentViewData = viewData
+        currentViewData = viewData
         
         let informationText: String
         let passphraseTitle: String
@@ -214,50 +212,50 @@ final class SecretsSetupRecoveryPassphraseViewController: UIViewController {
             informationText = VectorL10n.secretsSetupRecoveryPassphraseInformation
             passphraseTitle = VectorL10n.keyBackupSetupPassphrasePassphraseTitle
             showPasswordStrength = true
-            self.passphraseStrengthView.strength = strength
+            passphraseStrengthView.strength = strength
         case .confimPassphrase:
             informationText = VectorL10n.secretsSetupRecoveryPassphraseConfirmInformation
             passphraseTitle = VectorL10n.secretsSetupRecoveryPassphraseConfirmPassphraseTitle
             showPasswordStrength = false
         }
         
-        self.informationLabel.text = informationText
-        self.passphraseTitleLabel.text = passphraseTitle
+        informationLabel.text = informationText
+        passphraseTitleLabel.text = passphraseTitle
         
-        self.passphraseStrengthContainerView.isHidden = !showPasswordStrength
+        passphraseStrengthContainerView.isHidden = !showPasswordStrength
         
-        self.update(theme: self.theme)
+        update(theme: theme)
     }
     
     private func renderFormUpdated(viewData: SecretsSetupRecoveryPassphraseViewData) {
-        self.currentViewData = viewData
+        currentViewData = viewData
         
         if case .newPassphrase(strength: let strength) = viewData.mode {
             self.passphraseStrengthView.strength = strength
         }
         
-        self.validateButton.isEnabled = viewData.isFormValid
-        self.updatePassphraseAdditionalLabel(viewData: viewData)
+        validateButton.isEnabled = viewData.isFormValid
+        updatePassphraseAdditionalLabel(viewData: viewData)
         
         // Show passphrase additional info at first character entered
-        if self.isPassphraseTextFieldEditedOnce == false, self.passphraseTextField.text?.isEmpty == false {
-            self.isPassphraseTextFieldEditedOnce = true
-            self.showPassphraseAdditionalInfo(animated: true)
+        if isPassphraseTextFieldEditedOnce == false, passphraseTextField.text?.isEmpty == false {
+            isPassphraseTextFieldEditedOnce = true
+            showPassphraseAdditionalInfo(animated: true)
         }
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
     private func showPassphraseAdditionalInfo(animated: Bool) {
-        guard self.passphraseAdditionalInfoView.isHidden else {
+        guard passphraseAdditionalInfoView.isHidden else {
             return
         }
         
         // Workaround to layout passphraseStrengthView corner radius
-        self.passphraseStrengthView.setNeedsLayout()        
+        passphraseStrengthView.setNeedsLayout()
         
         UIView.animate(withDuration: Constants.animationDuration) {
             self.passphraseAdditionalInfoView.isHidden = false
@@ -265,7 +263,6 @@ final class SecretsSetupRecoveryPassphraseViewController: UIViewController {
     }
     
     private func updatePassphraseAdditionalLabel(viewData: SecretsSetupRecoveryPassphraseViewData) {
-        
         let text: String
         let textColor: UIColor
         
@@ -277,7 +274,7 @@ final class SecretsSetupRecoveryPassphraseViewController: UIViewController {
                 text = VectorL10n.keyBackupSetupPassphraseConfirmPassphraseValid
             }
             
-            textColor = self.theme.tintColor
+            textColor = theme.tintColor
         } else {
             switch viewData.mode {
             case .newPassphrase:
@@ -286,42 +283,42 @@ final class SecretsSetupRecoveryPassphraseViewController: UIViewController {
                 text = VectorL10n.keyBackupSetupPassphraseConfirmPassphraseInvalid
             }
             
-            textColor = self.theme.noticeColor
+            textColor = theme.noticeColor
         }
         
-        self.passphraseAdditionalLabel.text = text
-        self.passphraseAdditionalLabel.textColor = textColor
+        passphraseAdditionalLabel.text = text
+        passphraseAdditionalLabel.textColor = textColor
     }
     
     // MARK: - Actions
     
     @IBAction private func passphraseVisibilityButtonAction(_ sender: Any) {
-        guard self.isPassphraseTextFieldEditedOnce else {
+        guard isPassphraseTextFieldEditedOnce else {
             return
         }
-        self.passphraseTextField.isSecureTextEntry.toggle()
+        passphraseTextField.isSecureTextEntry.toggle()
     }
     
     @objc private func textFieldDidChange(_ textField: UITextField) {
-        guard textField == self.passphraseTextField else {
+        guard textField == passphraseTextField else {
             return
         }
-        self.viewModel.process(viewAction: .updatePassphrase(textField.text))
+        viewModel.process(viewAction: .updatePassphrase(textField.text))
     }
 
     @IBAction private func validateButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .validate)
+        viewModel.process(viewAction: .validate)
     }
 
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
 
 // MARK: - SecretsSetupRecoveryPassphraseViewModelViewDelegate
-extension SecretsSetupRecoveryPassphraseViewController: SecretsSetupRecoveryPassphraseViewModelViewDelegate {
 
+extension SecretsSetupRecoveryPassphraseViewController: SecretsSetupRecoveryPassphraseViewModelViewDelegate {
     func secretsSetupRecoveryPassphraseViewModel(_ viewModel: SecretsSetupRecoveryPassphraseViewModelType, didUpdateViewState viewSate: SecretsSetupRecoveryPassphraseViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

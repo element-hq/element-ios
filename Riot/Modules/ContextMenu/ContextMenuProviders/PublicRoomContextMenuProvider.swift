@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// Helper class `PublicRoomContextMenuProvider` that provides an instace of `UIContextMenuConfiguration` from an instance of `MXPublicRoom`
 @objcMembers
 class PublicRoomContextMenuProvider: NSObject {
-    
     weak var serviceDelegate: RoomContextActionServiceDelegate?
     private var currentService: RoomContextActionServiceProtocol?
     
@@ -27,7 +26,7 @@ class PublicRoomContextMenuProvider: NSObject {
     func contextMenuConfiguration(with publicRoom: MXPublicRoom, from cell: UIView, session: MXSession) -> UIContextMenuConfiguration? {
         if let room = session.room(withRoomId: publicRoom.roomId) {
             let service = RoomContextActionService(room: room, delegate: serviceDelegate)
-            self.currentService = service
+            currentService = service
             let actionProvider = RoomActionProvider(service: service)
             return UIContextMenuConfiguration(identifier: publicRoom.jsonString() as? NSString) {
                 if room.summary?.isJoined == true {
@@ -54,18 +53,18 @@ class PublicRoomContextMenuProvider: NSObject {
                     let viewModel = RoomContextPreviewViewModel(room: room)
                     return RoomContextPreviewViewController.instantiate(with: viewModel, mediaManager: session.mediaManager)
                 }
-            } actionProvider: { suggestedActions in
-                return actionProvider.menu
+            } actionProvider: { _ in
+                actionProvider.menu
             }
         } else {
             let service = UnownedRoomContextActionService(roomId: publicRoom.roomId, canonicalAlias: publicRoom.canonicalAlias, session: session, delegate: serviceDelegate)
-            self.currentService = service
+            currentService = service
             let actionProvider = PublicRoomActionProvider(publicRoom: publicRoom, service: service)
             return UIContextMenuConfiguration(identifier: publicRoom.jsonString() as? NSString) {
                 let viewModel = PublicRoomContextPreviewViewModel(publicRoom: publicRoom)
                 return RoomContextPreviewViewController.instantiate(with: viewModel, mediaManager: session.mediaManager)
-            } actionProvider: { suggestedActions in
-                return actionProvider.menu
+            } actionProvider: { _ in
+                actionProvider.menu
             }
         }
     }

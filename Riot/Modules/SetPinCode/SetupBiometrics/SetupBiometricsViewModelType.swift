@@ -29,8 +29,7 @@ protocol SetupBiometricsViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `SetupBiometricsViewController`
-protocol SetupBiometricsViewModelType {        
-        
+protocol SetupBiometricsViewModelType {
     var viewDelegate: SetupBiometricsViewModelViewDelegate? { get set }
     var coordinatorDelegate: SetupBiometricsViewModelCoordinatorDelegate? { get set }
     

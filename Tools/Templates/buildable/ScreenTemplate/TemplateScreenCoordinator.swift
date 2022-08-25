@@ -18,7 +18,6 @@ import Foundation
 import UIKit
 
 final class TemplateScreenCoordinator: TemplateScreenCoordinatorProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -46,23 +45,23 @@ final class TemplateScreenCoordinator: TemplateScreenCoordinatorProtocol {
     
     // MARK: - Public
     
-    func start() {            
-        self.templateScreenViewModel.coordinatorDelegate = self
+    func start() {
+        templateScreenViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.templateScreenViewController
+        templateScreenViewController
     }
 }
 
 // MARK: - TemplateScreenViewModelCoordinatorDelegate
+
 extension TemplateScreenCoordinator: TemplateScreenViewModelCoordinatorDelegate {
-    
     func templateScreenViewModel(_ viewModel: TemplateScreenViewModelProtocol, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.templateScreenCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
+        delegate?.templateScreenCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
     }
     
     func templateScreenViewModelDidCancel(_ viewModel: TemplateScreenViewModelProtocol) {
-        self.delegate?.templateScreenCoordinatorDidCancel(self)
+        delegate?.templateScreenCoordinatorDidCancel(self)
     }
 }

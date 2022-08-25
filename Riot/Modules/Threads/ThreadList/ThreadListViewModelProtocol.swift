@@ -30,8 +30,7 @@ protocol ThreadListViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `ThreadListViewController`
-protocol ThreadListViewModelProtocol {        
-        
+protocol ThreadListViewModelProtocol {
     var viewDelegate: ThreadListViewModelViewDelegate? { get set }
     var coordinatorDelegate: ThreadListViewModelCoordinatorDelegate? { get set }
     

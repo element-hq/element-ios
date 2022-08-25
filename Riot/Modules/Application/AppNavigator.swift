@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +14,13 @@
 // limitations under the License.
 //
 
-import Foundation
 import CommonKit
+import Foundation
 
 /// AppNavigatorProtocol abstract a navigator at app level.
 /// It enables to perform the navigation within the global app scope (open the side menu, open a room and so on)
 /// Note: Presentation of the pattern here https://www.swiftbysundell.com/articles/navigation-in-swift/#where-to-navigator
 protocol AppNavigatorProtocol {
-    
     var sideMenu: SideMenuPresentable { get }
     
     /// Navigate to a destination screen or a state

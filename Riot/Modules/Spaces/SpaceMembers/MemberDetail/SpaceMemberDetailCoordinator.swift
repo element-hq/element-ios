@@ -28,7 +28,6 @@ struct SpaceMemberDetailCoordinatorParameters {
 }
 
 final class SpaceMemberDetailCoordinator: NSObject, SpaceMemberDetailCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -66,34 +65,32 @@ final class SpaceMemberDetailCoordinator: NSObject, SpaceMemberDetailCoordinator
     
     // MARK: - Public methods
     
-    func start() {            
-        self.spaceMemberDetailViewModel.coordinatorDelegate = self
+    func start() {
+        spaceMemberDetailViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.spaceMemberDetailViewController
+        spaceMemberDetailViewController
     }
 }
 
 // MARK: - SpaceMemberDetailViewModelCoordinatorDelegate
+
 extension SpaceMemberDetailCoordinator: SpaceMemberDetailViewModelCoordinatorDelegate {
-    
     func spaceMemberDetailViewModel(_ viewModel: SpaceMemberDetailViewModelType, showRoomWithId roomId: String) {
-        self.delegate?.spaceMemberDetailCoordinator(self, showRoomWithId: roomId)
+        delegate?.spaceMemberDetailCoordinator(self, showRoomWithId: roomId)
     }
         
     func spaceMemberDetailViewModelDidCancel(_ viewModel: SpaceMemberDetailViewModelType) {
-        self.delegate?.spaceMemberDetailCoordinatorDidCancel(self)
+        delegate?.spaceMemberDetailCoordinatorDidCancel(self)
     }
-    
 }
 
 // MARK: - MXKRoomMemberDetailsViewControllerDelegate
-extension SpaceMemberDetailCoordinator: MXKRoomMemberDetailsViewControllerDelegate {
 
+extension SpaceMemberDetailCoordinator: MXKRoomMemberDetailsViewControllerDelegate {
     func roomMemberDetailsViewController(_ roomMemberDetailsViewController: MXKRoomMemberDetailsViewController!, startChatWithMemberId memberId: String!, completion: (() -> Void)!) {
         completion()
-        self.spaceMemberDetailViewModel.process(viewAction: .createRoom(memberId))
+        spaceMemberDetailViewModel.process(viewAction: .createRoom(memberId))
     }
-
 }

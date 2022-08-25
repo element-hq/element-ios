@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +14,12 @@
 // limitations under the License.
 //
 
-import Foundation
 import AnalyticsEvents
+import Foundation
 
-extension AnalyticsEvent.UserProperties {
-
+public extension AnalyticsEvent.UserProperties {
     //  Initializer for Element. Strips all Web properties.
-    public init(ftueUseCaseSelection: FtueUseCaseSelection?, numFavouriteRooms: Int?, numSpaces: Int?, allChatsActiveFilter: AllChatsActiveFilter?) {
+    init(ftueUseCaseSelection: FtueUseCaseSelection?, numFavouriteRooms: Int?, numSpaces: Int?, allChatsActiveFilter: AllChatsActiveFilter?) {
         self.init(WebMetaSpaceFavouritesEnabled: nil,
                   WebMetaSpaceHomeAllRooms: nil,
                   WebMetaSpaceHomeEnabled: nil,
@@ -31,5 +30,4 @@ extension AnalyticsEvent.UserProperties {
                   numFavouriteRooms: numFavouriteRooms,
                   numSpaces: numSpaces)
     }
-
 }

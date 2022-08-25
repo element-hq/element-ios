@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +14,15 @@
 // limitations under the License.
 //
 
-import UIKit
 import MatrixSDK
+import UIKit
 
 /// Text attachment for pills display.
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 @objcMembers
 class PillTextAttachment: NSTextAttachment {
     // MARK: - Properties
+
     /// Return `PillTextAttachmentData` contained in the text attachment.
     var data: PillTextAttachmentData? {
         get {
@@ -37,9 +38,11 @@ class PillTextAttachment: NSTextAttachment {
             updateBounds()
         }
     }
+
     private static let serializationService: SerializationServiceType = SerializationService()
 
     // MARK: - Init
+
     override init(data contentData: Data?, ofType uti: String?) {
         super.init(data: contentData, ofType: uti)
 
@@ -74,13 +77,14 @@ class PillTextAttachment: NSTextAttachment {
 }
 
 // MARK: - Private
-@available (iOS 15.0, *)
+
+@available(iOS 15.0, *)
 private extension PillTextAttachment {
     func updateBounds() {
         guard let data = data else { return }
         let pillSize = PillAttachmentViewProvider.size(forDisplayText: data.displayText, andFont: data.font)
         // Offset to align pill centerY with text centerY.
         let offset = data.font.descender + (data.font.lineHeight - pillSize.height) / 2.0
-        self.bounds = CGRect(origin: CGPoint(x: 0.0, y: offset), size: pillSize)
+        bounds = CGRect(origin: CGPoint(x: 0.0, y: offset), size: pillSize)
     }
 }

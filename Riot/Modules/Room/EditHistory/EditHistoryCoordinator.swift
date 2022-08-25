@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class EditHistoryCoordinator: EditHistoryCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -40,7 +39,6 @@ final class EditHistoryCoordinator: EditHistoryCoordinatorType {
     init(session: MXSession,
          formatter: MXKEventFormatter,
          event: MXEvent) {
-        
         let editHistoryViewModel = EditHistoryViewModel(session: session, formatter: formatter, event: event)
         let editHistoryViewController = EditHistoryViewController.instantiate(with: editHistoryViewModel)
         self.editHistoryViewModel = editHistoryViewModel
@@ -49,19 +47,19 @@ final class EditHistoryCoordinator: EditHistoryCoordinatorType {
     
     // MARK: - Public methods
     
-    func start() {            
-        self.editHistoryViewModel.coordinatorDelegate = self
+    func start() {
+        editHistoryViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.editHistoryViewController
+        editHistoryViewController
     }
 }
 
 // MARK: - EditHistoryViewModelCoordinatorDelegate
-extension EditHistoryCoordinator: EditHistoryViewModelCoordinatorDelegate {
 
+extension EditHistoryCoordinator: EditHistoryViewModelCoordinatorDelegate {
     func editHistoryViewModelDidClose(_ viewModel: EditHistoryViewModelType) {
-        self.delegate?.editHistoryCoordinatorDidComplete(self)
+        delegate?.editHistoryCoordinatorDidComplete(self)
     }
 }

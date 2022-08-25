@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,13 +17,11 @@
 import Foundation
 import Reusable
 
-protocol TextViewTableViewHeaderFooterViewDelegate: UITextViewDelegate {
-    
-}
+protocol TextViewTableViewHeaderFooterViewDelegate: UITextViewDelegate { }
 
 class TextViewTableViewHeaderFooterView: UITableViewHeaderFooterView {
-    
-    // MARK - Private
+    // MARK: - Private
+
     private var _textView: UITextView?
     
     private var textViewLeftConstraint: NSLayoutConstraint?
@@ -31,11 +29,11 @@ class TextViewTableViewHeaderFooterView: UITableViewHeaderFooterView {
     private var textViewRightConstraint: NSLayoutConstraint?
     private var textViewBottomConstraint: NSLayoutConstraint?
     
-    // MARK - Public
+    // MARK: - Public
     
     weak var delegate: TextViewTableViewHeaderFooterViewDelegate?
     
-    var textViewInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) {
+    var textViewInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) {
         didSet {
             setNeedsUpdateConstraints()
         }
@@ -86,32 +84,27 @@ class TextViewTableViewHeaderFooterView: UITableViewHeaderFooterView {
         super.prepareForReuse()
         textViewInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
     }
-    
 }
 
 extension TextViewTableViewHeaderFooterView: Reusable { }
 
 extension TextViewTableViewHeaderFooterView: Themable {
-    
     func update(theme: Theme) {
         contentView.backgroundColor = theme.headerBackgroundColor
         textLabel?.textColor = theme.textSecondaryColor
         _textView?.textColor = theme.textSecondaryColor
         _textView?.linkTextAttributes = [NSAttributedString.Key.foregroundColor: theme.tintColor]
     }
-    
 }
 
 extension TextViewTableViewHeaderFooterView: UITextViewDelegate {
-    
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        return delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange, interaction: interaction) ?? (interaction == .invokeDefaultAction)
+        delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange, interaction: interaction) ?? (interaction == .invokeDefaultAction)
     }
     
     func textViewDidChangeSelection(_ textView: UITextView) {
-        return delegate?.textViewDidChangeSelection?(textView) ?? {
+        delegate?.textViewDidChangeSelection?(textView) ?? {
             textView.selectedRange = NSRange(location: 0, length: 0)
-            }()
+        }()
     }
-    
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class ContactsPickerCoordinator: ContactsPickerCoordinatorProtocol {
-    
     private weak var currentAlert: UIAlertController?
 
     // MARK: - Private
@@ -59,12 +58,12 @@ class ContactsPickerCoordinator: ContactsPickerCoordinatorProtocol {
     // MARK: - Public methods
     
     func start() {
-        guard let room = self.room else {
+        guard let room = room else {
             MXLog.error("[ContactsCoordinator] start: no room")
             return
         }
         
-        let viewModel = ContactsPickerViewModel(room: room, actualParticipants: self.actualParticipants, invitedParticipants: self.invitedParticipants, userParticipant: self.userParticipant)
+        let viewModel = ContactsPickerViewModel(room: room, actualParticipants: actualParticipants, invitedParticipants: invitedParticipants, userParticipant: userParticipant)
         viewModel.coordinatorDelegate = self
         self.viewModel = viewModel
         
@@ -77,7 +76,7 @@ class ContactsPickerCoordinator: ContactsPickerCoordinatorProtocol {
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private methods
@@ -86,7 +85,7 @@ class ContactsPickerCoordinator: ContactsPickerCoordinatorProtocol {
         // Push the contacts picker.
         let contactsViewController = RoomInviteViewController()
         viewModel?.prepare(contactsViewController: contactsViewController, currentSearchText: initialSearchText)
-        self.navigationRouter.push(contactsViewController, animated: true) { [weak self] in
+        navigationRouter.push(contactsViewController, animated: true) { [weak self] in
             guard let self = self else { return }
             self.delegate?.contactsPickerCoordinatorDidClose(self)
         }

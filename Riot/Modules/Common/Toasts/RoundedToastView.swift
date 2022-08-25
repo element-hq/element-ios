@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
+import DesignKit
 import Foundation
 import UIKit
-import DesignKit
 
 class RoundedToastView: UIView, Themable {
     private struct ShadowStyle {
@@ -25,7 +25,7 @@ class RoundedToastView: UIView, Themable {
         let opacity: Float
     }
     
-    private struct Constants {
+    private enum Constants {
         static let padding = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
         static let activityIndicatorScale = CGFloat(0.75)
         static let imageViewSize = CGFloat(15)
@@ -59,15 +59,14 @@ class RoundedToastView: UIView, Themable {
         return stack
     }()
     
-    private let label: UILabel = {
-        return UILabel()
-    }()
+    private let label = UILabel()
 
     init(viewState: ToastViewState) {
         super.init(frame: .zero)
         setup(viewState: viewState)
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

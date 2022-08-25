@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class DeviceVerificationIncomingCoordinator: DeviceVerificationIncomingCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,23 +48,23 @@ final class DeviceVerificationIncomingCoordinator: DeviceVerificationIncomingCoo
     
     // MARK: - Public methods
     
-    func start() {            
-        self.deviceVerificationIncomingViewModel.coordinatorDelegate = self
+    func start() {
+        deviceVerificationIncomingViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.deviceVerificationIncomingViewController
+        deviceVerificationIncomingViewController
     }
 }
 
 // MARK: - DeviceVerificationIncomingViewModelCoordinatorDelegate
+
 extension DeviceVerificationIncomingCoordinator: DeviceVerificationIncomingViewModelCoordinatorDelegate {
-    
     func deviceVerificationIncomingViewModel(_ viewModel: DeviceVerificationIncomingViewModelType, didAcceptTransaction transaction: MXSASTransaction) {
-        self.delegate?.deviceVerificationIncomingCoordinator(self, didAcceptTransaction: transaction)
+        delegate?.deviceVerificationIncomingCoordinator(self, didAcceptTransaction: transaction)
     }
     
     func deviceVerificationIncomingViewModelDidCancel(_ viewModel: DeviceVerificationIncomingViewModelType) {
-        self.delegate?.deviceVerificationIncomingCoordinatorDidCancel(self)
+        delegate?.deviceVerificationIncomingCoordinatorDidCancel(self)
     }
 }

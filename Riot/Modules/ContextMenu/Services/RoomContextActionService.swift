@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,13 +18,13 @@ import Foundation
 
 /// `RoomContextActionService` implements all the possible actions for an instance of `MXRoom`
 class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
-    
     // MARK: - RoomContextActionServiceProtocol
 
     private(set) var session: MXSession
     var roomId: String {
-        return room.roomId
+        room.roomId
     }
+
     internal weak var delegate: RoomContextActionServiceDelegate?
 
     // MARK: - Properties
@@ -37,11 +37,11 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
     init(room: MXRoom, delegate: RoomContextActionServiceDelegate?) {
         self.room = room
         self.delegate = delegate
-        self.isRoomJoined = room.summary?.isJoined ?? false
-        self.hasUnread = room.summary?.hasAnyUnread ?? false
-        self.roomMembership = room.summary?.membership ?? .unknown
-        self.session = room.mxSession
-        self.unownedRoomService = UnownedRoomContextActionService(roomId: room.roomId, canonicalAlias: room.summary?.aliases?.first, session: self.session, delegate: delegate)
+        isRoomJoined = room.summary?.isJoined ?? false
+        hasUnread = room.summary?.hasAnyUnread ?? false
+        roomMembership = room.summary?.membership ?? .unknown
+        session = room.mxSession
+        unownedRoomService = UnownedRoomContextActionService(roomId: room.roomId, canonicalAlias: room.summary?.aliases?.first, session: session, delegate: delegate)
     }
     
     // MARK: - Public
@@ -52,7 +52,7 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
     
     var isRoomDirect: Bool {
         get {
-            return room.isDirect
+            room.isDirect
         }
         set {
             delegate?.roomContextActionService(self, updateActivityIndicator: true)
@@ -75,13 +75,13 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
 
     var isRoomMuted: Bool {
         get {
-            return room.isMuted || room.isMentionsOnly
+            room.isMuted || room.isMentionsOnly
         }
         set {
             if BuildSettings.showNotificationsV2 {
-                self.delegate?.roomContextActionService(self, showRoomNotificationSettingsForRoomWithId: room.roomId)
+                delegate?.roomContextActionService(self, showRoomNotificationSettingsForRoomWithId: room.roomId)
             } else {
-                self.muteRoomNotifications(newValue)
+                muteRoomNotifications(newValue)
             }
         }
     }
@@ -92,7 +92,7 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
             return currentTag?.name == kMXRoomTagFavourite
         }
         set {
-            self.updateRoom(tag: newValue ? kMXRoomTagFavourite : nil)
+            updateRoom(tag: newValue ? kMXRoomTagFavourite : nil)
         }
     }
     
@@ -102,7 +102,7 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
             return currentTag?.name == kMXRoomTagLowPriority
         }
         set {
-            self.updateRoom(tag: newValue ? kMXRoomTagLowPriority : nil)
+            updateRoom(tag: newValue ? kMXRoomTagLowPriority : nil)
         }
     }
     
@@ -113,7 +113,7 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
     // MARK: - Private
     
     private func muteRoomNotifications(_ isMuted: Bool) {
-        self.delegate?.roomContextActionService(self, updateActivityIndicator: true)
+        delegate?.roomContextActionService(self, updateActivityIndicator: true)
         if isMuted {
             room.mentionsOnly { [weak self] in
                 guard let self = self else { return }
@@ -128,7 +128,7 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
     }
     
     private func updateRoom(tag: String?) {
-        self.delegate?.roomContextActionService(self, updateActivityIndicator: true)
+        delegate?.roomContextActionService(self, updateActivityIndicator: true)
         room.setRoomTag(tag) {
             self.delegate?.roomContextActionService(self, updateActivityIndicator: false)
         }
@@ -136,7 +136,7 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
     
     func leaveRoom(promptUser: Bool) {
         guard promptUser else {
-            self.leaveRoom()
+            leaveRoom()
             return
         }
         
@@ -145,10 +145,10 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: VectorL10n.leave, style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: VectorL10n.leave, style: .default, handler: { _ in
             self.leaveRoom()
         }))
-        self.delegate?.roomContextActionService(self, presentAlert: alertController)
+        delegate?.roomContextActionService(self, presentAlert: alertController)
     }
 
     func joinRoom() {
@@ -156,16 +156,16 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
     }
     
     private func leaveRoom() {
-        self.delegate?.roomContextActionService(self, updateActivityIndicator: true)
+        delegate?.roomContextActionService(self, updateActivityIndicator: true)
         // cancel pending uploads/downloads
         // they are useless by now
-        MXMediaManager.cancelDownloads(inCacheFolder: self.room.roomId)
+        MXMediaManager.cancelDownloads(inCacheFolder: room.roomId)
         
         // TODO: GFO cancel pending uploads related to this room
         
-        MXLog.debug("[RoomContextActionService] leaving room \(self.room.roomId ?? "nil")")
+        MXLog.debug("[RoomContextActionService] leaving room \(room.roomId ?? "nil")")
         
-        self.room.leave { [weak self] response in
+        room.leave { [weak self] response in
             guard let self = self else { return }
 
             switch response {

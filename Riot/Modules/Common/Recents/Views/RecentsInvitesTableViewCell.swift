@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,20 +14,19 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 /// `RecentsInvitesTableViewCell` can be used as a placeholder to show invites number
 class RecentsInvitesTableViewCell: UITableViewCell, NibReusable, Themable {
-    
     // MARK: - Outlet
     
-    @IBOutlet weak private var badgeLabel: BadgeLabel!
-    @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet private var badgeLabel: BadgeLabel!
+    @IBOutlet private var titleLabel: UILabel!
     
     // MARK: - Properties
     
-    @objc var invitesCount: Int = 0 {
+    @objc var invitesCount = 0 {
         didSet {
             badgeLabel.text = "\(invitesCount)"
         }
@@ -36,7 +35,7 @@ class RecentsInvitesTableViewCell: UITableViewCell, NibReusable, Themable {
     // MARK: - NibReusable
     
     @objc static func defaultReuseIdentifier() -> String {
-        return reuseIdentifier
+        reuseIdentifier
     }
     
     // MARK: - Life cycle
@@ -51,7 +50,7 @@ class RecentsInvitesTableViewCell: UITableViewCell, NibReusable, Themable {
     // MARK: - Themable
     
     func update(theme: Theme) {
-        self.backgroundColor = theme.colors.background
+        backgroundColor = theme.colors.background
         
         badgeLabel.badgeColor = theme.colors.alert
         badgeLabel.textColor = theme.colors.background
@@ -63,7 +62,7 @@ class RecentsInvitesTableViewCell: UITableViewCell, NibReusable, Themable {
     // MARK: - Private
     
     private func setupView() {
-        self.selectionStyle = .none
+        selectionStyle = .none
         
         titleLabel.text = VectorL10n.roomRecentsInvitesSection.capitalized
         update(theme: ThemeService.shared().theme)

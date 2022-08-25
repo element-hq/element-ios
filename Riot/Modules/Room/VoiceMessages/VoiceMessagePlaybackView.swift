@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +15,9 @@
 //
 
 import Foundation
+import MatrixSDK
 import Reusable
 import UIKit
-import MatrixSDK
 
 protocol VoiceMessagePlaybackViewDelegate: AnyObject {
     func voiceMessagePlaybackViewDidRequestPlaybackToggle()
@@ -26,17 +26,16 @@ protocol VoiceMessagePlaybackViewDelegate: AnyObject {
 }
 
 struct VoiceMessagePlaybackViewDetails {
-    var currentTime: String = ""
+    var currentTime = ""
     var progress = 0.0
     var samples: [Float] = []
-    var playing: Bool = false
+    var playing = false
     var playbackEnabled = false
-    var recording: Bool = false
-    var loading: Bool = false
+    var recording = false
+    var loading = false
 }
 
 class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
-    
     private enum Constants {
         static let backgroundCornerRadius: CGFloat = 12.0
     }
@@ -49,7 +48,7 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
     @IBOutlet private var playButton: UIButton!
     @IBOutlet private var elapsedTimeLabel: UILabel!
     @IBOutlet private var waveformContainerView: UIView!
-    @IBOutlet private (set)var stackViewTrailingContraint: NSLayoutConstraint!
+    @IBOutlet private(set) var stackViewTrailingContraint: NSLayoutConstraint!
     
     private var longPressGestureRecognizer: UILongPressGestureRecognizer!
     private var panGestureRecognizer: UIPanGestureRecognizer!
@@ -59,7 +58,7 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
     var details: VoiceMessagePlaybackViewDetails?
     
     var waveformView: UIView {
-        return _waveformView
+        _waveformView
     }
     
     /// Define the `backgroundView.backgroundColor`.
@@ -104,7 +103,7 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         }
         
         playButton.isEnabled = details.playbackEnabled
-        playButton.setImage((details.playing ? Asset.Images.voiceMessagePauseButton.image : Asset.Images.voiceMessagePlayButton.image), for: .normal)
+        playButton.setImage(details.playing ? Asset.Images.voiceMessagePauseButton.image : Asset.Images.voiceMessagePlayButton.image, for: .normal)
         
         UIView.performWithoutAnimation {
             // UIStackView doesn't respond well to re-setting hidden states https://openradar.appspot.com/22819594
@@ -136,14 +135,14 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
             return
         }
         
-        self.backgroundColor = theme.colors.background
+        backgroundColor = theme.colors.background
         playButton.backgroundColor = theme.roomCellIncomingBubbleBackgroundColor
         playButton.tintColor = theme.colors.secondaryContent
         
-        let backgroundViewColor = self.customBackgroundViewColor ?? theme.colors.quinaryContent
+        let backgroundViewColor = customBackgroundViewColor ?? theme.colors.quinaryContent
         
         backgroundView.backgroundColor = backgroundViewColor
-        _waveformView.primaryLineColor =  theme.colors.quarterlyContent
+        _waveformView.primaryLineColor = theme.colors.quarterlyContent
         _waveformView.secondaryLineColor = theme.colors.secondaryContent
         elapsedTimeLabel.textColor = theme.colors.secondaryContent
         elapsedTimeLabel.font = theme.fonts.body

@@ -26,7 +26,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class RoomCreationModalCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -34,9 +33,7 @@ final class RoomCreationModalCoordinatorBridgePresenter: NSObject {
     private let session: MXSession
     private let roomState: MXRoomState
     private var coordinator: RoomCreationEventsModalCoordinator?
-    private lazy var slidingModalPresenter: SlidingModalPresenter = {
-        return SlidingModalPresenter()
-    }()
+    private lazy var slidingModalPresenter = SlidingModalPresenter()
     
     // MARK: Public
     
@@ -54,7 +51,7 @@ final class RoomCreationModalCoordinatorBridgePresenter: NSObject {
     
     func present(from viewController: UIViewController, animated: Bool) {
         slidingModalPresenter.dismiss(animated: false, completion: nil)
-        let roomCreationEventsModalCoordinator = RoomCreationEventsModalCoordinator(session: self.session, roomState: roomState)
+        let roomCreationEventsModalCoordinator = RoomCreationEventsModalCoordinator(session: session, roomState: roomState)
         roomCreationEventsModalCoordinator.delegate = self
         
         slidingModalPresenter.present(roomCreationEventsModalCoordinator.toSlidingModalPresentable(),
@@ -65,7 +62,7 @@ final class RoomCreationModalCoordinatorBridgePresenter: NSObject {
         
         roomCreationEventsModalCoordinator.start()
         
-        self.coordinator = roomCreationEventsModalCoordinator
+        coordinator = roomCreationEventsModalCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
@@ -74,10 +71,9 @@ final class RoomCreationModalCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - RoomCreationModalCoordinatorDelegate
+
 extension RoomCreationModalCoordinatorBridgePresenter: RoomCreationEventsModalCoordinatorDelegate {
-    
     func roomCreationEventsModalCoordinatorDidTapClose(_ coordinator: RoomCreationEventsModalCoordinatorType) {
-        self.delegate?.roomCreationModalCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.roomCreationModalCoordinatorBridgePresenterDelegateDidComplete(self)
     }
-    
 }

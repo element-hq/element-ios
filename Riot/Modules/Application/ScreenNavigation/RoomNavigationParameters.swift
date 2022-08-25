@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 @objcMembers
 class ThreadParameters: NSObject {
-    
     /// If not nil, the thread will be opened on this room
     let threadId: String
     
@@ -31,13 +30,11 @@ class ThreadParameters: NSObject {
         self.stackRoomScreen = stackRoomScreen
         super.init()
     }
-    
 }
 
 /// Navigation parameters to display a room with a provided identifier in a specific matrix session.
 @objcMembers
 class RoomNavigationParameters: NSObject {
-    
     // MARK: - Properties
 
     /// The room identifier
@@ -71,15 +68,14 @@ class RoomNavigationParameters: NSObject {
          mxSession: MXSession,
          threadParameters: ThreadParameters?,
          presentationParameters: ScreenPresentationParameters,
-         autoJoinInvitedRoom: Bool
-    ) {
+         autoJoinInvitedRoom: Bool) {
         self.roomId = roomId
         self.eventId = eventId
         self.mxSession = mxSession
         self.threadParameters = threadParameters
         self.presentationParameters = presentationParameters
-        self.showSettingsInitially = false
-        self.senderId = nil
+        showSettingsInitially = false
+        senderId = nil
         self.autoJoinInvitedRoom = autoJoinInvitedRoom
         
         super.init()
@@ -89,16 +85,15 @@ class RoomNavigationParameters: NSObject {
          eventId: String?,
          mxSession: MXSession,
          threadParameters: ThreadParameters?,
-         presentationParameters: ScreenPresentationParameters
-    ) {
+         presentationParameters: ScreenPresentationParameters) {
         self.roomId = roomId
         self.eventId = eventId
         self.mxSession = mxSession
         self.threadParameters = threadParameters
         self.presentationParameters = presentationParameters
-        self.showSettingsInitially = false
-        self.senderId = nil
-        self.autoJoinInvitedRoom = false
+        showSettingsInitially = false
+        senderId = nil
+        autoJoinInvitedRoom = false
 
         super.init()
     }
@@ -114,9 +109,9 @@ class RoomNavigationParameters: NSObject {
         self.mxSession = mxSession
         self.threadParameters = threadParameters
         self.presentationParameters = presentationParameters
-        self.showSettingsInitially = false
+        showSettingsInitially = false
         self.senderId = senderId
-        self.autoJoinInvitedRoom = false
+        autoJoinInvitedRoom = false
         
         super.init()
     }
@@ -131,9 +126,9 @@ class RoomNavigationParameters: NSObject {
         self.mxSession = mxSession
         self.presentationParameters = presentationParameters
         self.showSettingsInitially = showSettingsInitially
-        self.threadParameters = nil
-        self.senderId = nil
-        self.autoJoinInvitedRoom = false
+        threadParameters = nil
+        senderId = nil
+        autoJoinInvitedRoom = false
 
         super.init()
     }

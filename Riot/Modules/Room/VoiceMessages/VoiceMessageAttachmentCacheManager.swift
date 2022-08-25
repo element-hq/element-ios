@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import DSWaveformImage
+import Foundation
 
 enum VoiceMessageAttachmentCacheManagerError: Error {
     case invalidEventId
@@ -59,8 +59,7 @@ struct VoiceMessageAttachmentCacheManagerLoadResult {
 }
 
 class VoiceMessageAttachmentCacheManager {
-    
-    private struct Constants {
+    private enum Constants {
         static let taskSemaphoreTimeout = 5.0
     }
     
@@ -75,7 +74,7 @@ class VoiceMessageAttachmentCacheManager {
     private let operationQueue: OperationQueue
     
     private var temporaryFilesFolderURL: URL {
-        return URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("VoiceMessages")
+        URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("VoiceMessages")
     }
     
     private init() {
@@ -296,7 +295,7 @@ class VoiceMessageAttachmentCacheManager {
             }
         }
         
-        self.completionCallbacks[callbackKey] = nil
+        completionCallbacks[callbackKey] = nil
         
         MXLog.debug("[VoiceMessageAttachmentCacheManager] Successfully finished task")
     }
@@ -315,7 +314,7 @@ class VoiceMessageAttachmentCacheManager {
             }
         }
         
-        self.completionCallbacks[callbackKey] = nil
+        completionCallbacks[callbackKey] = nil
         
         MXLog.debug("[VoiceMessageAttachmentCacheManager] Failed task with error: \(error)")
     }

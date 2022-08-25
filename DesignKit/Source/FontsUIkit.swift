@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,6 @@ import UIKit
  ObjC class for holding fonts for use in UIKit.
  */
 @objcMembers public class FontsUIKit: NSObject, Fonts {
-    
     public var largeTitle: UIFont
     
     public var largeTitleB: UIFont
@@ -63,25 +62,25 @@ import UIKit
     public var caption2SB: UIFont
     
     public init(values: ElementFonts) {
-        self.largeTitle = values.largeTitle.uiFont
-        self.largeTitleB = values.largeTitleB.uiFont
-        self.title1 = values.title1.uiFont
-        self.title1B = values.title1B.uiFont
-        self.title2 = values.title2.uiFont
-        self.title2B = values.title2B.uiFont
-        self.title3 = values.title3.uiFont
-        self.title3SB = values.title3SB.uiFont
-        self.headline = values.headline.uiFont
-        self.subheadline = values.subheadline.uiFont
-        self.body = values.body.uiFont
-        self.bodySB = values.bodySB.uiFont
-        self.callout = values.callout.uiFont
-        self.calloutSB = values.calloutSB.uiFont
-        self.footnote = values.footnote.uiFont
-        self.footnoteSB = values.footnoteSB.uiFont
-        self.caption1 = values.caption1.uiFont
-        self.caption1SB = values.caption1SB.uiFont
-        self.caption2 = values.caption2.uiFont
-        self.caption2SB = values.caption2SB.uiFont
+        largeTitle = values.largeTitle.uiFont
+        largeTitleB = values.largeTitleB.uiFont
+        title1 = values.title1.uiFont
+        title1B = values.title1B.uiFont
+        title2 = values.title2.uiFont
+        title2B = values.title2B.uiFont
+        title3 = values.title3.uiFont
+        title3SB = values.title3SB.uiFont
+        headline = values.headline.uiFont
+        subheadline = values.subheadline.uiFont
+        body = values.body.uiFont
+        bodySB = values.bodySB.uiFont
+        callout = values.callout.uiFont
+        calloutSB = values.calloutSB.uiFont
+        footnote = values.footnote.uiFont
+        footnoteSB = values.footnoteSB.uiFont
+        caption1 = values.caption1.uiFont
+        caption1SB = values.caption1SB.uiFont
+        caption2 = values.caption2.uiFont
+        caption2SB = values.caption2SB.uiFont
     }
 }

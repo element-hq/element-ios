@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import UIKit
 
 protocol SplitViewMasterPresentableDelegate: AnyObject {
-    
     /// Detail items from the split view
     var detailModules: [Presentable] { get }
     
@@ -52,8 +51,7 @@ extension SplitViewMasterPresentableDelegate {
 
 /// Protocol used by the master view presentable of a UISplitViewController
 protocol SplitViewMasterPresentable: AnyObject, Presentable {
-        
-    var splitViewMasterPresentableDelegate: SplitViewMasterPresentableDelegate? { get set }    
+    var splitViewMasterPresentableDelegate: SplitViewMasterPresentableDelegate? { get set }
     
     /// Return the currently selected and visible NavigationRouter
     /// It will be used to manage detail controllers

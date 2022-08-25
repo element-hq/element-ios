@@ -17,11 +17,10 @@
 import Foundation
 
 @objc final class RoomReactionsViewModel: NSObject, RoomReactionsViewModelType {
-
     // MARK: - Constants
 
     private enum Constants {
-        static let maxItemsWhenLimited: Int = 8
+        static let maxItemsWhenLimited = 8
     }
 
     // MARK: - Properties
@@ -52,33 +51,33 @@ import Foundation
     func process(viewAction: RoomReactionsViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .tapReaction(let index):
-            guard index < self.aggregatedReactions.reactions.count else {
+            guard index < aggregatedReactions.reactions.count else {
                 return
             }
-            let reactionCount = self.aggregatedReactions.reactions[index]
+            let reactionCount = aggregatedReactions.reactions[index]
             if reactionCount.myUserHasReacted {
-                self.viewModelDelegate?.roomReactionsViewModel(self, didRemoveReaction: reactionCount, forEventId: self.eventId)
+                viewModelDelegate?.roomReactionsViewModel(self, didRemoveReaction: reactionCount, forEventId: eventId)
             } else {
-                self.viewModelDelegate?.roomReactionsViewModel(self, didAddReaction: reactionCount, forEventId: self.eventId)
+                viewModelDelegate?.roomReactionsViewModel(self, didAddReaction: reactionCount, forEventId: eventId)
             }
         case .addNewReaction:
             break
         case .tapShowAction(.showAll):
-            self.viewModelDelegate?.roomReactionsViewModel(self, didShowAllTappedForEventId: self.eventId)
+            viewModelDelegate?.roomReactionsViewModel(self, didShowAllTappedForEventId: eventId)
         case .tapShowAction(.showLess):
-            self.viewModelDelegate?.roomReactionsViewModel(self, didShowLessTappedForEventId: self.eventId)
+            viewModelDelegate?.roomReactionsViewModel(self, didShowLessTappedForEventId: eventId)
         case .tapShowAction(.addReaction):
-            self.viewModelDelegate?.roomReactionsViewModel(self, didTapAddReactionForEventId: self.eventId)
+            viewModelDelegate?.roomReactionsViewModel(self, didTapAddReactionForEventId: eventId)
         case .longPress:
-            self.viewModelDelegate?.roomReactionsViewModel(self, didLongPressForEventId: self.eventId)
+            viewModelDelegate?.roomReactionsViewModel(self, didLongPressForEventId: eventId)
         }
     }
 
     func loadData() {
-        var reactions = self.aggregatedReactions.reactions
-            .map { (reactionCount) -> RoomReactionViewData in
+        var reactions = aggregatedReactions.reactions
+            .map { reactionCount -> RoomReactionViewData in
                 RoomReactionViewData(emoji: reactionCount.reaction, countString: "\(reactionCount.count)", isCurrentUserReacted: reactionCount.myUserHasReacted)
             }
         var remainingReactions: [RoomReactionViewData] = []
@@ -86,7 +85,7 @@ import Foundation
 
         // Limit displayed reactions if required
         if reactions.count > Constants.maxItemsWhenLimited {
-            if self.showAll == true {
+            if showAll == true {
                 showAllButtonState = .showLess
             } else {
                 remainingReactions = Array(reactions[Constants.maxItemsWhenLimited..<reactions.count])
@@ -95,16 +94,16 @@ import Foundation
             }
         }
 
-        self.viewDelegate?.roomReactionsViewModel(self, didUpdateViewState: .loaded(reactionsViewData: reactions, remainingViewData: remainingReactions, showAllButtonState: showAllButtonState, showAddReaction: reactions.count > 0))
+        viewDelegate?.roomReactionsViewModel(self, didUpdateViewState: .loaded(reactionsViewData: reactions, remainingViewData: remainingReactions, showAllButtonState: showAllButtonState, showAddReaction: reactions.count > 0))
     }
         
     // MARK: - Hashable
     
     override var hash: Int {
         var hasher = Hasher()
-        hasher.combine(self.aggregatedReactions)
-        hasher.combine(self.eventId)
-        hasher.combine(self.showAll)
+        hasher.combine(aggregatedReactions)
+        hasher.combine(eventId)
+        hasher.combine(showAll)
         return hasher.finalize()
     }
 }

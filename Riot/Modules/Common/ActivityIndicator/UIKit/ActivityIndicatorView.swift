@@ -14,11 +14,10 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class ActivityIndicatorView: UIView, NibOwnerLoadable {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -30,24 +29,24 @@ final class ActivityIndicatorView: UIView, NibOwnerLoadable {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
-    @IBOutlet private weak var activityIndicatorBackgroundView: UIView!
+    @IBOutlet private var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet private var activityIndicatorBackgroundView: UIView!
     
     // MARK: Public
     
     var color: UIColor? {
         get {
-            return activityIndicatorView.color
+            activityIndicatorView.color
         }
-        set {            
+        set {
             activityIndicatorView.color = newValue
         }
     }
     
     // MARK: - Setup
     
-    private func commonInit() {        
-        self.activityIndicatorBackgroundView.layer.masksToBounds = true
+    private func commonInit() {
+        activityIndicatorBackgroundView.layer.masksToBounds = true
     }
     
     convenience init() {
@@ -56,36 +55,36 @@ final class ActivityIndicatorView: UIView, NibOwnerLoadable {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadNibContent()
-        self.commonInit()
+        loadNibContent()
+        commonInit()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadNibContent()
-        self.commonInit()
+        loadNibContent()
+        commonInit()
     }
     
     // MARK: - Overrides
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: self.activityIndicatorView.intrinsicContentSize.width + Constants.activityIndicatorMargin.width,
-                      height: self.activityIndicatorView.intrinsicContentSize.height + Constants.activityIndicatorMargin.height)
+        CGSize(width: self.activityIndicatorView.intrinsicContentSize.width + Constants.activityIndicatorMargin.width,
+               height: self.activityIndicatorView.intrinsicContentSize.height + Constants.activityIndicatorMargin.height)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.activityIndicatorBackgroundView.layer.cornerRadius = Constants.cornerRadius
+        activityIndicatorBackgroundView.layer.cornerRadius = Constants.cornerRadius
     }
     
     // MARK: - Public
     
     func startAnimating() {
-        self.activityIndicatorView.startAnimating()
+        activityIndicatorView.startAnimating()
     }
     
     func stopAnimating() {
-        self.activityIndicatorView.stopAnimating()
+        activityIndicatorView.stopAnimating()
     }
 }

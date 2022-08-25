@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import UIKit
 
 class AllChatsFilterOptionListView: UIView, Themable {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -41,7 +40,7 @@ class AllChatsFilterOptionListView: UIView, Themable {
         }
         
         fileprivate static func optionType(with tabListViewItem: TabListView.Item) -> AllChatsLayoutFilterType? {
-            return tabListViewItem.id as? AllChatsLayoutFilterType
+            tabListViewItem.id as? AllChatsLayoutFilterType
         }
     }
     
@@ -55,9 +54,10 @@ class AllChatsFilterOptionListView: UIView, Themable {
     
     var options: [AllChatsFilterOptionListView.Option] = [] {
         didSet {
-            tabListView.items = options.map { $0.tabListItem }
+            tabListView.items = options.map(\.tabListItem)
         }
     }
+
     var selectionChanged: ((AllChatsLayoutFilterType) -> Void)?
     var selectedOptionType: AllChatsLayoutFilterType = .all {
         didSet {
@@ -107,35 +107,34 @@ class AllChatsFilterOptionListView: UIView, Themable {
         addSubview(separator)
         
         separator.translatesAutoresizingMaskIntoConstraints = false
-        separator.bottomAnchor.constraint(equalTo: self.bottomAnchor,
+        separator.bottomAnchor.constraint(equalTo: bottomAnchor,
                                           constant: -(TabListView.Constants.cursorHeight - Constants.separatorHeight) / 2).isActive = true
-        separator.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        separator.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        separator.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        separator.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         separator.heightAnchor.constraint(equalToConstant: Constants.separatorHeight).isActive = true
 
         tabListView.delegate = self
         vc_addSubViewMatchingParent(tabListView)
         
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.themeDidChange), name: Notification.Name.themeServiceDidChangeTheme, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: Notification.Name.themeServiceDidChangeTheme, object: nil)
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
 }
 
 // MARK: - TabListViewDelegate
+
 extension AllChatsFilterOptionListView: TabListViewDelegate {
-    
     func tabListView(_ tabListView: TabListView, didSelectTabAt index: Int) {
         guard let optionType = AllChatsFilterOptionListView.Option.optionType(with: tabListView.items[index]) else {
             return
         }
         
-        self.setSelectedOptionType(optionType, animated: true)
+        setSelectedOptionType(optionType, animated: true)
         selectionChanged?(optionType)
     }
-    
 }

@@ -19,13 +19,12 @@
 import UIKit
 
 final class ThreadListViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var threadsTableView: UITableView!
-    @IBOutlet private weak var emptyView: ThreadListEmptyView!
+    @IBOutlet private var threadsTableView: UITableView!
+    @IBOutlet private var emptyView: ThreadListEmptyView!
     
     // MARK: Private
 
@@ -52,38 +51,38 @@ final class ThreadListViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.threadsTableView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: threadsTableView)
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.keyboardAvoider?.startAvoiding()
+        keyboardAvoider?.startAvoiding()
         AnalyticsScreenTracker.trackScreen(.threadList)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.keyboardAvoider?.stopAvoiding()
+        keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        self.theme.statusBarStyle
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        guard let titleView = self.titleView else { return }
+        guard let titleView = titleView else { return }
         if UIApplication.shared.statusBarOrientation.isPortrait {
             titleView.updateLayout(for: .landscapeLeft)
         } else {
@@ -96,17 +95,17 @@ final class ThreadListViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
         emptyView.update(theme: theme)
         emptyView.backgroundColor = theme.colors.background
-        self.threadsTableView.backgroundColor = theme.backgroundColor
-        self.threadsTableView.separatorColor = theme.colors.separator
-        self.threadsTableView.reloadData()
+        threadsTableView.backgroundColor = theme.backgroundColor
+        threadsTableView.separatorColor = theme.colors.separator
+        threadsTableView.reloadData()
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -114,7 +113,7 @@ final class ThreadListViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -132,9 +131,9 @@ final class ThreadListViewController: UIViewController {
                                                             target: self,
                                                             action: #selector(filterButtonTapped(_:)))
         
-        self.threadsTableView.tableFooterView = UIView()
-        self.threadsTableView.register(cellType: ThreadTableViewCell.self)
-        self.threadsTableView.keyboardDismissMode = .interactive
+        threadsTableView.tableFooterView = UIView()
+        threadsTableView.register(cellType: ThreadTableViewCell.self)
+        threadsTableView.keyboardDismissMode = .interactive
     }
 
     private func render(viewState: ThreadListViewState) {
@@ -163,13 +162,13 @@ final class ThreadListViewController: UIViewController {
     private func renderLoading() {
         emptyView.isHidden = true
         threadsTableView.isHidden = true
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         threadsTableView.isHidden = false
-        self.threadsTableView.reloadData()
+        threadsTableView.reloadData()
         navigationItem.rightBarButtonItem?.isEnabled = true
         switch viewModel.selectedFilterType {
         case .all:
@@ -180,7 +179,7 @@ final class ThreadListViewController: UIViewController {
     }
     
     private func renderEmptyView(withModel model: ThreadListEmptyModel) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         emptyView.configure(withModel: model)
         threadsTableView.isHidden = true
         emptyView.isHidden = false
@@ -198,22 +197,22 @@ final class ThreadListViewController: UIViewController {
         
         let allThreadsAction = UIAlertAction(title: ThreadListFilterType.all.title,
                                              style: .default,
-                                             handler: { [weak self] action in
+                                             handler: { [weak self] _ in
                                                  guard let self = self else { return }
                                                  self.viewModel.process(viewAction: .selectFilterType(.all))
                                              })
-        if self.viewModel.selectedFilterType == .all {
+        if viewModel.selectedFilterType == .all {
             allThreadsAction.setValue(true, forKey: "checked")
         }
         alertController.addAction(allThreadsAction)
         
         let myThreadsAction = UIAlertAction(title: ThreadListFilterType.myThreads.title,
                                             style: .default,
-                                            handler: { [weak self] action in
+                                            handler: { [weak self] _ in
                                                 guard let self = self else { return }
                                                 self.viewModel.process(viewAction: .selectFilterType(.myThreads))
                                             })
-        if self.viewModel.selectedFilterType == .myThreads {
+        if viewModel.selectedFilterType == .myThreads {
             myThreadsAction.setValue(true, forKey: "checked")
         }
         alertController.addAction(myThreadsAction)
@@ -224,7 +223,7 @@ final class ThreadListViewController: UIViewController {
         
         alertController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
     private func renderShowingLongPressActions(_ index: Int) {
@@ -232,23 +231,23 @@ final class ThreadListViewController: UIViewController {
         
         controller.addAction(UIAlertAction(title: VectorL10n.roomEventActionViewInRoom,
                                            style: .default,
-                                           handler: { [weak self] action in
-                                            guard let self = self else { return }
-                                            self.viewModel.process(viewAction: .actionViewInRoom)
+                                           handler: { [weak self] _ in
+                                               guard let self = self else { return }
+                                               self.viewModel.process(viewAction: .actionViewInRoom)
                                            }))
         
         controller.addAction(UIAlertAction(title: VectorL10n.threadCopyLinkToThread,
                                            style: .default,
-                                           handler: { [weak self] action in
-                                            guard let self = self else { return }
-                                            self.viewModel.process(viewAction: .actionCopyLinkToThread)
+                                           handler: { [weak self] _ in
+                                               guard let self = self else { return }
+                                               self.viewModel.process(viewAction: .actionCopyLinkToThread)
                                            }))
         
         controller.addAction(UIAlertAction(title: VectorL10n.roomEventActionShare,
                                            style: .default,
-                                           handler: { [weak self] action in
-                                            guard let self = self else { return }
-                                            self.viewModel.process(viewAction: .actionShare)
+                                           handler: { [weak self] _ in
+                                               guard let self = self else { return }
+                                               self.viewModel.process(viewAction: .actionShare)
                                            }))
         
         controller.addAction(UIAlertAction(title: VectorL10n.cancel,
@@ -261,7 +260,7 @@ final class ThreadListViewController: UIViewController {
             controller.popoverPresentationController?.sourceView = view
         }
 
-        self.present(controller, animated: true, completion: nil)
+        present(controller, animated: true, completion: nil)
     }
     
     private func renderShare(_ url: URL, index: Int) {
@@ -282,15 +281,15 @@ final class ThreadListViewController: UIViewController {
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
     // MARK: - Actions
     
     @objc
     private func filterButtonTapped(_ sender: UIBarButtonItem) {
-        self.viewModel.process(viewAction: .showFilterTypes)
+        viewModel.process(viewAction: .showFilterTypes)
 
         Analytics.shared.trackInteraction(.threadListFilterItem)
     }
@@ -310,25 +309,22 @@ final class ThreadListViewController: UIViewController {
             viewModel.process(viewAction: .longPressThread(indexPath.row))
         }
     }
-
 }
 
 // MARK: - ThreadListViewModelViewDelegate
 
 extension ThreadListViewController: ThreadListViewModelViewDelegate {
-
     func threadListViewModel(_ viewModel: ThreadListViewModelProtocol,
                              didUpdateViewState viewSate: ThreadListViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
 //  MARK: - UITableViewDataSource
 
 extension ThreadListViewController: UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfThreads
+        viewModel.numberOfThreads
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -341,13 +337,11 @@ extension ThreadListViewController: UITableViewDataSource {
         
         return cell
     }
-    
 }
 
 //  MARK: - UITableViewDelegate
 
 extension ThreadListViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = theme.backgroundColor
         cell.selectedBackgroundView = UIView()
@@ -361,15 +355,12 @@ extension ThreadListViewController: UITableViewDelegate {
 
         Analytics.shared.trackInteraction(.threadListThreadItem)
     }
-    
 }
 
 //  MARK: - ThreadListEmptyViewDelegate
 
 extension ThreadListViewController: ThreadListEmptyViewDelegate {
-    
     func threadListEmptyViewTappedShowAllThreads(_ emptyView: ThreadListEmptyView) {
         viewModel.process(viewAction: .selectFilterType(.all))
     }
-    
 }

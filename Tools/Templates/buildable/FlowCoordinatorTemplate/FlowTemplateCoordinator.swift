@@ -18,7 +18,6 @@ import UIKit
 
 @objcMembers
 final class FlowTemplateCoordinator: NSObject, FlowTemplateCoordinatorProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -26,7 +25,7 @@ final class FlowTemplateCoordinator: NSObject, FlowTemplateCoordinatorProtocol {
     private let parameters: FlowTemplateCoordinatorParameters
     
     private var navigationRouter: NavigationRouterType {
-        return self.parameters.navigationRouter
+        parameters.navigationRouter
     }
     
     // MARK: Public
@@ -40,40 +39,39 @@ final class FlowTemplateCoordinator: NSObject, FlowTemplateCoordinatorProtocol {
     
     init(parameters: FlowTemplateCoordinatorParameters) {
         self.parameters = parameters
-    }    
+    }
     
     // MARK: - Public
     
     func start() {
-
-        let rootCoordinator = self.createTemplateScreenCoordinator()
+        let rootCoordinator = createTemplateScreenCoordinator()
         
         rootCoordinator.start()
 
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
         
         // Detect when view controller has been dismissed by gesture when presented modally (not in full screen).
-        self.navigationRouter.toPresentable().presentationController?.delegate = self
+        navigationRouter.toPresentable().presentationController?.delegate = self
         
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+        if navigationRouter.modules.isEmpty == false {
+            navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             })
         } else {
-            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+            navigationRouter.setRootModule(rootCoordinator) { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             }
         }
-      }
+    }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private
 
     private func createTemplateScreenCoordinator() -> TemplateScreenCoordinator {
-        let coordinatorParameters = TemplateScreenCoordinatorParameters(session: self.parameters.session)
+        let coordinatorParameters = TemplateScreenCoordinatorParameters(session: parameters.session)
         let coordinator = TemplateScreenCoordinator(parameters: coordinatorParameters)
         coordinator.delegate = self
         return coordinator
@@ -81,20 +79,21 @@ final class FlowTemplateCoordinator: NSObject, FlowTemplateCoordinatorProtocol {
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
+
 extension FlowTemplateCoordinator: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.flowTemplateCoordinatorDidDismissInteractively(self)
+        delegate?.flowTemplateCoordinatorDidDismissInteractively(self)
     }
 }
 
 // MARK: - TemplateScreenCoordinatorDelegate
+
 extension FlowTemplateCoordinator: TemplateScreenCoordinatorDelegate {
     func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorProtocol, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.flowTemplateCoordinatorDidComplete(self)
+        delegate?.flowTemplateCoordinatorDidComplete(self)
     }
     
     func templateScreenCoordinatorDidCancel(_ coordinator: TemplateScreenCoordinatorProtocol) {
-        self.delegate?.flowTemplateCoordinatorDidComplete(self)
+        delegate?.flowTemplateCoordinatorDidComplete(self)
     }
 }

@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import AFNetworking
+import Foundation
 
 enum URLPreviewServiceError: Error {
     case missingResponse
@@ -25,7 +25,6 @@ enum URLPreviewServiceError: Error {
 /// A service for URL preview data that handles fetching, caching and clean-up
 /// as well as remembering which previews have been closed by the user.
 class URLPreviewService: NSObject {
-    
     // MARK: - Properties
     
     /// The shared service object.
@@ -113,10 +112,10 @@ class URLPreviewService: NSObject {
     ///   - session: The session to use to for media management.
     ///   - completion: A closure called when the operation completes. This contains the preview data.
     private func makePreviewData(from previewResponse: MXURLPreview,
-                         for url: URL,
-                         and event: MXEvent,
-                         with session: MXSession,
-                         completion: @escaping (URLPreviewData) -> Void) {
+                                 for url: URL,
+                                 and event: MXEvent,
+                                 with session: MXSession,
+                                 completion: @escaping (URLPreviewData) -> Void) {
         // Create the preview data and return if no image is needed.
         let previewData = URLPreviewData(url: url,
                                          eventID: event.eventId,
@@ -148,7 +147,7 @@ class URLPreviewService: NSObject {
             }
             previewData.image = image
             completion(previewData)
-        } failure: { error in
+        } failure: { _ in
             completion(previewData)
         }
     }

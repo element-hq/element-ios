@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class OptionListCoordinator: OptionListCoordinatorProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -28,7 +27,7 @@ final class OptionListCoordinator: OptionListCoordinatorProtocol {
     private let parameters: OptionListCoordinatorParameters
     private var optionListViewModel: OptionListViewModelProtocol
     private let optionListViewController: OptionListViewController
-    private lazy var slidingModalPresenter: SlidingModalPresenter = SlidingModalPresenter()
+    private lazy var slidingModalPresenter = SlidingModalPresenter()
 
     // MARK: Public
 
@@ -50,9 +49,9 @@ final class OptionListCoordinator: OptionListCoordinatorProtocol {
     // MARK: - Public
     
     func start() {
-        self.optionListViewModel.coordinatorDelegate = self
+        optionListViewModel.coordinatorDelegate = self
         
-        if let rootViewController = self.parameters.navigationRouter?.toPresentable() {
+        if let rootViewController = parameters.navigationRouter?.toPresentable() {
             slidingModalPresenter.present(optionListViewController, from: rootViewController, animated: true, completion: nil)
         }
     }
@@ -62,11 +61,12 @@ final class OptionListCoordinator: OptionListCoordinatorProtocol {
     }
     
     func toPresentable() -> UIViewController {
-        return self.optionListViewController
+        optionListViewController
     }
 }
 
 // MARK: - OptionListViewModelCoordinatorDelegate
+
 extension OptionListCoordinator: OptionListViewModelCoordinatorDelegate {
     func optionListViewModel(_ viewModel: OptionListViewModelProtocol, didSelectOptionAt index: Int) {
         dismiss(animated: false) {

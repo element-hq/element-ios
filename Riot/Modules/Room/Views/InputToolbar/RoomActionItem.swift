@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,7 @@ import UIKit
 @objcMembers
 class RoomActionItem: NSObject {
     let image: UIImage
-    let action: (() -> Void)
+    let action: () -> Void
 
     init(image: UIImage, andAction action: @escaping () -> Void) {
         self.image = image

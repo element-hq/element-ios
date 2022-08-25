@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,15 +18,13 @@ import Foundation
 
 /// `URLPreviewViewSizer` allows to determine reactions view height for a given urlPreviewData and width.
 class URLPreviewViewSizer {
-    
     // MARK: - Constants
     
-    private static let sizingView = URLPreviewView.instantiate()    
+    private static let sizingView = URLPreviewView.instantiate()
     
     // MARK: - Public
     
     func height(for urlPreviewData: URLPreviewData, fittingWidth width: CGFloat) -> CGFloat {
-        
         let sizingView = URLPreviewViewSizer.sizingView
         
         sizingView.frame.size.height = 1.0

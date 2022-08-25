@@ -24,7 +24,6 @@ enum KeyVerificationManuallyVerifyViewModelError: Error {
 }
 
 final class KeyVerificationManuallyVerifyViewModel: KeyVerificationManuallyVerifyViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -57,21 +56,20 @@ final class KeyVerificationManuallyVerifyViewModel: KeyVerificationManuallyVerif
     func process(viewAction: KeyVerificationManuallyVerifyViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .verify:
-            self.verifyDevice()
+            verifyDevice()
         case .cancel:
-            self.cancelOperations()
-            self.coordinatorDelegate?.keyVerificationManuallyVerifyViewModelDidCancel(self)
+            cancelOperations()
+            coordinatorDelegate?.keyVerificationManuallyVerifyViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        
-        guard let deviceInfo =  self.session.crypto.device(withDeviceId: self.deviceId, ofUser: self.userId) else {
-            self.update(viewState: .error(KeyVerificationManuallyVerifyViewModelError.deviceNotFound))
+        guard let deviceInfo = session.crypto.device(withDeviceId: deviceId, ofUser: userId) else {
+            update(viewState: .error(KeyVerificationManuallyVerifyViewModelError.deviceNotFound))
             return
         }
         
@@ -81,24 +79,23 @@ final class KeyVerificationManuallyVerifyViewModel: KeyVerificationManuallyVerif
             deviceKey = MXTools.addWhiteSpaces(to: deviceFingerprint, every: 4)
         }
         
-        let viewData = KeyVerificationManuallyVerifyViewData(deviceId: self.deviceId, deviceName: deviceInfo.displayName, deviceKey: deviceKey)
-        self.update(viewState: .loaded(viewData))
+        let viewData = KeyVerificationManuallyVerifyViewData(deviceId: deviceId, deviceName: deviceInfo.displayName, deviceKey: deviceKey)
+        update(viewState: .loaded(viewData))
     }
     
     private func update(viewState: KeyVerificationManuallyVerifyViewState) {
-        self.viewDelegate?.keyVerificationManuallyVerifyViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.keyVerificationManuallyVerifyViewModel(self, didUpdateViewState: viewState)
     }
     
     private func verifyDevice() {
+        update(viewState: .loading)
         
-        self.update(viewState: .loading)
-        
-        self.session.crypto.setDeviceVerification(.verified, forDevice: self.deviceId, ofUser: self.userId, success: { [weak self] in
+        session.crypto.setDeviceVerification(.verified, forDevice: deviceId, ofUser: userId, success: { [weak self] in
             guard let self = self else {
                 return
             }
             self.coordinatorDelegate?.keyVerificationManuallyVerifyViewModel(self, didVerifiedDeviceWithId: self.deviceId, of: self.userId)
-        }, failure: { [weak self] (error) in
+        }, failure: { [weak self] error in
             guard let self = self else {
                 return
             }
@@ -108,6 +105,6 @@ final class KeyVerificationManuallyVerifyViewModel: KeyVerificationManuallyVerif
     }
     
     private func cancelOperations() {
-        self.currentOperation?.cancel()
+        currentOperation?.cancel()
     }
 }

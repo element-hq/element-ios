@@ -20,7 +20,6 @@ import UIKit
 
 @objcMembers
 final class ThreadsBetaCoordinator: NSObject, ThreadsBetaCoordinatorProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -56,7 +55,7 @@ final class ThreadsBetaCoordinator: NSObject, ThreadsBetaCoordinatorProtocol {
         self.threadId = threadId
         self.infoText = infoText
         self.additionalText = additionalText
-    }    
+    }
     
     // MARK: - Public
     
@@ -65,6 +64,6 @@ final class ThreadsBetaCoordinator: NSObject, ThreadsBetaCoordinatorProtocol {
     }
     
     func toPresentable() -> UIViewController {
-        return viewController
+        viewController
     }
 }

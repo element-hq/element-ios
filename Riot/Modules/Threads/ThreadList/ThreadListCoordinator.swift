@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class ThreadListCoordinator: ThreadListCoordinatorProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,31 +48,31 @@ final class ThreadListCoordinator: ThreadListCoordinatorProtocol {
     
     // MARK: - Public
     
-    func start() {            
-        self.threadListViewModel.coordinatorDelegate = self
+    func start() {
+        threadListViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.threadListViewController
+        threadListViewController
     }
 }
 
 // MARK: - ThreadListViewModelCoordinatorDelegate
+
 extension ThreadListCoordinator: ThreadListViewModelCoordinatorDelegate {
-    
     func threadListViewModelDidLoadThreads(_ viewModel: ThreadListViewModelProtocol) {
-        self.delegate?.threadListCoordinatorDidLoadThreads(self)
+        delegate?.threadListCoordinatorDidLoadThreads(self)
     }
     
     func threadListViewModelDidSelectThread(_ viewModel: ThreadListViewModelProtocol, thread: MXThreadProtocol) {
-        self.delegate?.threadListCoordinatorDidSelectThread(self, thread: thread)
+        delegate?.threadListCoordinatorDidSelectThread(self, thread: thread)
     }
     
     func threadListViewModelDidSelectThreadViewInRoom(_ viewModel: ThreadListViewModelProtocol, thread: MXThreadProtocol) {
-        self.delegate?.threadListCoordinatorDidSelectRoom(self, roomId: thread.roomId, eventId: thread.id)
+        delegate?.threadListCoordinatorDidSelectRoom(self, roomId: thread.roomId, eventId: thread.id)
     }
     
     func threadListViewModelDidCancel(_ viewModel: ThreadListViewModelProtocol) {
-        self.delegate?.threadListCoordinatorDidCancel(self)
+        delegate?.threadListCoordinatorDidCancel(self)
     }
 }

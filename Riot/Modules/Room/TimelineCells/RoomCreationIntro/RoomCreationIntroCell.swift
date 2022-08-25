@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,12 +18,11 @@ import UIKit
 
 @objcMembers
 class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
-    
     // MARK: - Constants
     
     private enum Sizing {
         static var sizes = Set<SizingViewHeight>()
-        static let view: RoomCreationIntroCell = RoomCreationIntroCell(style: .default, reuseIdentifier: nil)
+        static let view = RoomCreationIntroCell(style: .default, reuseIdentifier: nil)
     }
         
     static let tapOnAvatarView = "RoomCreationIntroCellTapOnAvatarView"
@@ -39,18 +38,18 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.commonInit()
+        commonInit()
     }
     
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private func commonInit() {
-        
-        self.selectionStyle = .none
-        self.setupContentView()
-        self.update(theme: ThemeService.shared().theme)
+        selectionStyle = .none
+        setupContentView()
+        update(theme: ThemeService.shared().theme)
         
         super.setupViews()
     }
@@ -58,13 +57,13 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.roomCellContentView?.update(theme: theme)
+        roomCellContentView?.update(theme: theme)
     }
     
     // MARK: - Overrides
     
     override class func defaultReuseIdentifier() -> String! {
-        return String(describing: self)
+        String(describing: self)
     }
     
     override class func height(for cellData: MXKCellData!, withMaximumWidth maxWidth: CGFloat) -> CGFloat {
@@ -78,12 +77,12 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
         
         let height: CGFloat
         
-        let sizingViewHeight = self.findOrCreateSizingViewHeight(from: roomBubbleCellData)
+        let sizingViewHeight = findOrCreateSizingViewHeight(from: roomBubbleCellData)
         
         if let cachedHeight = sizingViewHeight.heights[maxWidth] {
             height = cachedHeight
         } else {
-            height = self.contentViewHeight(for: roomBubbleCellData, fitting: maxWidth)
+            height = contentViewHeight(for: roomBubbleCellData, fitting: maxWidth)
             sizingViewHeight.heights[maxWidth] = height
         }
         
@@ -93,13 +92,13 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        guard let roomCellContentView = self.roomCellContentView else {
+        guard let roomCellContentView = roomCellContentView else {
             MXLog.debug("[RoomCreationIntroCell] Fail to load content view")
             return
         }
         
-        guard let bubbleData = self.bubbleData,
-              let viewData = self.viewData(from: bubbleData) else {
+        guard let bubbleData = bubbleData,
+              let viewData = viewData(from: bubbleData) else {
             MXLog.debug("[RoomCreationIntroCell] Fail to render \(String(describing: cellData))")
             return
         }
@@ -110,12 +109,11 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
     // MARK: - Private
     
     private static func findOrCreateSizingViewHeight(from bubbleData: MXKRoomBubbleCellData) -> SizingViewHeight {
-        
         let sizingViewHeight: SizingViewHeight
         let bubbleDataHashValue = bubbleData.hashValue
         
-        if let foundSizingViewHeight = self.Sizing.sizes.first(where: { (sizingViewHeight) -> Bool in
-            return sizingViewHeight.uniqueIdentifier == bubbleDataHashValue
+        if let foundSizingViewHeight = Sizing.sizes.first(where: { sizingViewHeight -> Bool in
+            sizingViewHeight.uniqueIdentifier == bubbleDataHashValue
         }) {
             sizingViewHeight = foundSizingViewHeight
         } else {
@@ -126,11 +124,11 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
     }
     
     private class func sizingView() -> RoomCreationIntroCell {
-        return self.Sizing.view
+        Sizing.view
     }
     
     private static func contentViewHeight(for cellData: MXKCellData, fitting width: CGFloat) -> CGFloat {
-        let sizingView = self.sizingView()
+        let sizingView = sizingView()
         
         sizingView.render(cellData)
         sizingView.layoutIfNeeded()
@@ -146,7 +144,7 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
         }
             
         let roomCellContentView = RoomCreationIntroCellContentView.instantiate()
-        self.contentView.vc_addSubViewMatchingParent(roomCellContentView)
+        contentView.vc_addSubViewMatchingParent(roomCellContentView)
         self.roomCellContentView = roomCellContentView
         
         roomCellContentView.roomAvatarView?.action = { [weak self] in
@@ -166,9 +164,7 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
         }
     }
     
-    
     private func viewData(from bubbleData: MXKRoomBubbleCellData) -> RoomCreationIntroViewData? {
-        
         guard let session = bubbleData.mxSession, let roomId = bubbleData.roomId, let room = session.room(withRoomId: roomId) else {
             return nil
         }
@@ -199,6 +195,6 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
     }
     
     private func notifyDelegate(with actionIdentifier: String) {
-        self.delegate.cell(self, didRecognizeAction: actionIdentifier, userInfo: nil)
+        delegate.cell(self, didRecognizeAction: actionIdentifier, userInfo: nil)
     }
 }

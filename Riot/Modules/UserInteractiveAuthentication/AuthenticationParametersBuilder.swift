@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,11 +18,10 @@ import Foundation
 
 /// Build authentication parameters depending on login type
 final class AuthenticationParametersBuilder {
-    
     func buildPasswordParameters(sessionId: String,
                                  userId: String,
                                  password: String) -> [String: Any]? {
-        return [
+        [
             "type": MXLoginFlowType.password.identifier,
             "session": sessionId,
             "user": userId,
@@ -31,14 +30,14 @@ final class AuthenticationParametersBuilder {
     }
     
     func buildTokenParameters(with loginToken: String) -> [String: Any] {
-        return [
+        [
             "type": MXLoginFlowType.token.identifier,
             "token": loginToken
         ]
     }
     
     func buildOAuthParameters(with sessionId: String) -> [String: Any] {
-        return [
+        [
             "session": sessionId
         ]
     }

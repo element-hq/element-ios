@@ -15,15 +15,14 @@
  */
 
 import Foundation
-import UserNotifications
 import MatrixSDK
+import UserNotifications
 
 @objc extension UNUserNotificationCenter {
-    
     func removeUnwantedNotifications() {
-        UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
+        UNUserNotificationCenter.current().getDeliveredNotifications { notifications in
             //  get identifiers of notifications whose category identifiers are "TO_BE_REMOVED"
-            let identifiersToBeRemoved = notifications.compactMap({ $0.request.content.categoryIdentifier == Constants.toBeRemovedNotificationCategoryIdentifier ? $0.request.identifier : nil })
+            let identifiersToBeRemoved = notifications.compactMap { $0.request.content.categoryIdentifier == Constants.toBeRemovedNotificationCategoryIdentifier ? $0.request.identifier : nil }
             
             MXLog.debug("[UNUserNotificationCenter] removeUnwantedNotifications: Removing \(identifiersToBeRemoved.count) notifications.")
             //  remove the notifications with these id's
@@ -34,7 +33,6 @@ import MatrixSDK
     /// Remove call invite notifications for the given room id. If room id is not given. removes all call invite notifications.
     /// - Parameter roomId: Room identifier to be removed call invite notifications for.
     func removeCallNotifications(for roomId: String? = nil) {
-        
         func notificationShouldBeRemoved(_ notification: UNNotification) -> Bool {
             if notification.request.content.categoryIdentifier != Constants.callInviteNotificationCategoryIdentifier {
                 //  if not a call invite, should not be removed
@@ -49,14 +47,13 @@ import MatrixSDK
             return roomId == roomIdInPush
         }
         
-        UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
+        UNUserNotificationCenter.current().getDeliveredNotifications { notifications in
             //  get identifiers of notifications that should be removed
-            let identifiersToBeRemoved = notifications.compactMap({ notificationShouldBeRemoved($0) ? $0.request.identifier : nil })
+            let identifiersToBeRemoved = notifications.compactMap { notificationShouldBeRemoved($0) ? $0.request.identifier : nil }
 
             MXLog.debug("[UNUserNotificationCenter] removeCallNotifications: Removing \(identifiersToBeRemoved.count) notifications.")
             //  remove the notifications with these id's
             UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: identifiersToBeRemoved)
         }
     }
-    
 }

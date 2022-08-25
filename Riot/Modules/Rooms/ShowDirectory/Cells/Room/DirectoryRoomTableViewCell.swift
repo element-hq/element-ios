@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,27 +14,26 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 protocol DirectoryRoomTableViewCellDelegate: AnyObject {
     func directoryRoomTableViewCellDidTapJoin(_ cell: DirectoryRoomTableViewCell)
 }
 
 class DirectoryRoomTableViewCell: UITableViewCell {
-    
-    @IBOutlet private weak var avatarImageView: MXKImageView! {
+    @IBOutlet private var avatarImageView: MXKImageView! {
         didSet {
-            avatarImageView.layer.cornerRadius = avatarImageView.frame.width/2
+            avatarImageView.layer.cornerRadius = avatarImageView.frame.width / 2
         }
     }
     
-    @IBOutlet private weak var numberOfUsersIcon: UIImageView!
-    @IBOutlet private weak var displaynameLabel: UILabel!
-    @IBOutlet private weak var numberOfUsersLabel: UILabel!
-    @IBOutlet private weak var topicLabel: UILabel!
-    @IBOutlet private weak var joinButton: UIButton!
-    @IBOutlet private weak var joinActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet private var numberOfUsersIcon: UIImageView!
+    @IBOutlet private var displaynameLabel: UILabel!
+    @IBOutlet private var numberOfUsersLabel: UILabel!
+    @IBOutlet private var topicLabel: UILabel!
+    @IBOutlet private var joinButton: UIButton!
+    @IBOutlet private var joinActivityIndicator: UIActivityIndicatorView!
     
     weak var delegate: DirectoryRoomTableViewCellDelegate?
 
@@ -83,13 +82,11 @@ class DirectoryRoomTableViewCell: UITableViewCell {
     @IBAction private func joinButtonTapped(_ sender: UIButton) {
         delegate?.directoryRoomTableViewCellDidTapJoin(self)
     }
-    
 }
 
-extension DirectoryRoomTableViewCell: NibReusable {}
+extension DirectoryRoomTableViewCell: NibReusable { }
 
 extension DirectoryRoomTableViewCell: Themable {
-    
     func update(theme: Theme) {
         backgroundView = UIView()
         backgroundView?.backgroundColor = theme.backgroundColor
@@ -110,5 +107,4 @@ extension DirectoryRoomTableViewCell: Themable {
             joinButton.layer.borderColor = nil
         }
     }
-    
 }

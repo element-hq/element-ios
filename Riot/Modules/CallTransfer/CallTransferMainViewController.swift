@@ -28,21 +28,21 @@ import UIKit
 
 @objcMembers
 final class CallTransferMainViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var segmentedControl: UISegmentedControl! {
+    @IBOutlet private var segmentedControl: UISegmentedControl! {
         didSet {
             segmentedControl.setTitle(VectorL10n.callTransferUsers, forSegmentAt: 0)
             segmentedControl.setTitle(VectorL10n.callTransferDialpad, forSegmentAt: 1)
         }
     }
-    @IBOutlet private weak var containerView: UIView!
-    @IBOutlet private weak var bottomBgView: UIView!
-    @IBOutlet private weak var consultButton: UIButton!
-    @IBOutlet private weak var connectButton: RoundedButton! {
+
+    @IBOutlet private var containerView: UIView!
+    @IBOutlet private var bottomBgView: UIView!
+    @IBOutlet private var consultButton: UIButton!
+    @IBOutlet private var connectButton: RoundedButton! {
         didSet {
             connectButton.isEnabled = false
         }
@@ -55,11 +55,13 @@ final class CallTransferMainViewController: UIViewController {
             updateConnectButton()
         }
     }
+
     private var phoneNumber: String? {
         didSet {
             updateConnectButton()
         }
     }
+
     private var session: MXSession!
     private var ignoredUserIds: [String] = []
     private var theme: Theme!
@@ -100,16 +102,16 @@ final class CallTransferMainViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.callTransferTitle
-        self.vc_removeBackTitle()
+        title = VectorL10n.callTransferTitle
+        vc_removeBackTitle()
         
-        self.setupViews()
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        setupViews()
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -131,7 +133,7 @@ final class CallTransferMainViewController: UIViewController {
         let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
             self?.cancelButtonAction()
         }
-        self.navigationItem.leftBarButtonItem = cancelBarButtonItem
+        navigationItem.leftBarButtonItem = cancelBarButtonItem
         
         updateConnectButton()
         
@@ -146,16 +148,16 @@ final class CallTransferMainViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.bottomBgView.backgroundColor = theme.baseColor
-        self.consultButton.tintColor = theme.tintColor
-        self.consultButton.setTitleColor(theme.textPrimaryColor, for: .normal)
-        self.connectButton.update(theme: theme)
+        bottomBgView.backgroundColor = theme.baseColor
+        consultButton.tintColor = theme.tintColor
+        consultButton.setTitleColor(theme.textPrimaryColor, for: .normal)
+        connectButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -176,7 +178,7 @@ final class CallTransferMainViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     @IBAction private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
@@ -198,26 +200,22 @@ final class CallTransferMainViewController: UIViewController {
     }
 
     private func cancelButtonAction() {
-        self.delegate?.callTransferMainViewControllerDidCancel(self)
+        delegate?.callTransferMainViewControllerDidCancel(self)
     }
 }
 
 //  MARK: - CallTransferSelectContactViewControllerDelegate
 
 extension CallTransferMainViewController: CallTransferSelectContactViewControllerDelegate {
-    
     func callTransferSelectContactViewControllerDidSelectContact(_ viewController: CallTransferSelectContactViewController, contact: MXKContact?) {
         selectedContact = contact
     }
-    
 }
 
 //  MARK: - DialpadViewControllerDelegate
 
 extension CallTransferMainViewController: DialpadViewControllerDelegate {
-    
     func dialpadViewControllerDidTapDigit(_ viewController: DialpadViewController, digit: String) {
         phoneNumber = viewController.rawPhoneNumber
     }
-    
 }

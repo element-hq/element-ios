@@ -25,7 +25,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class SecretsRecoveryCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -41,7 +40,7 @@ final class SecretsRecoveryCoordinatorBridgePresenter: NSObject {
     weak var delegate: SecretsRecoveryCoordinatorBridgePresenterDelegate?
     
     var isPresenting: Bool {
-        return self.coordinator != nil
+        coordinator != nil
     }
     
     // MARK: - Setup
@@ -69,12 +68,11 @@ final class SecretsRecoveryCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func toPresentable() -> UIViewController? {
-        return self.coordinator?.toPresentable()
+        coordinator?.toPresentable()
     }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        
-        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: self.recoveryMode, recoveryGoal: self.recoveryGoal.goal, cancellable: true)
+        let coordinator = SecretsRecoveryCoordinator(session: session, recoveryMode: recoveryMode, recoveryGoal: recoveryGoal.goal, cancellable: true)
         coordinator.delegate = self
         
         let presentable = coordinator.toPresentable()
@@ -87,7 +85,7 @@ final class SecretsRecoveryCoordinatorBridgePresenter: NSObject {
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         
@@ -104,12 +102,13 @@ final class SecretsRecoveryCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - KeyVerificationCoordinatorDelegate
+
 extension SecretsRecoveryCoordinatorBridgePresenter: SecretsRecoveryCoordinatorDelegate {
     func secretsRecoveryCoordinatorDidRecover(_ coordinator: SecretsRecoveryCoordinatorType) {
-        self.delegate?.secretsRecoveryCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.secretsRecoveryCoordinatorBridgePresenterDelegateDidComplete(self)
     }
     
     func secretsRecoveryCoordinatorDidCancel(_ coordinator: SecretsRecoveryCoordinatorType) {
-        self.delegate?.secretsRecoveryCoordinatorBridgePresenterDelegateDidCancel(self)
+        delegate?.secretsRecoveryCoordinatorBridgePresenterDelegateDidCancel(self)
     }
 }

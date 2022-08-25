@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-import UIKit
-import PhotosUI
 import CommonKit
+import PhotosUI
+import UIKit
 
 protocol MediaPickerPresenterDelegate: AnyObject {
     func mediaPickerPresenter(_ presenter: MediaPickerPresenter, didPickImage image: UIImage)
@@ -26,7 +26,6 @@ protocol MediaPickerPresenterDelegate: AnyObject {
 /// A picker for photos and videos from the user's photo library on iOS 14+ using the
 /// new `PHPickerViewController` that doesn't require permission to be granted.
 final class MediaPickerPresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -74,17 +73,18 @@ final class MediaPickerPresenter: NSObject {
 }
 
 // MARK: - PHPickerViewControllerDelegate
+
 extension MediaPickerPresenter: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         // TODO: Handle videos and multi-selection
         guard let provider = results.first?.itemProvider, provider.canLoadObject(ofClass: UIImage.self) else {
-            self.delegate?.mediaPickerPresenterDidCancel(self)
+            delegate?.mediaPickerPresenterDidCancel(self)
             return
         }
         
         showLoadingIndicator()
         
-        provider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+        provider.loadObject(ofClass: UIImage.self) { [weak self] image, _ in
             guard let self = self else { return }
             
             guard let image = image as? UIImage else {

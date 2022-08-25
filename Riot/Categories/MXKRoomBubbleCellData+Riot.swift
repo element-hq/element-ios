@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,14 +17,12 @@
 import Foundation
 
 extension MXKRoomBubbleCellData {
-    
     // Indicate true if the cell data is collapsable and collapsed
     var isCollapsableAndCollapsed: Bool {
-        return self.collapsable && self.collapsed
+        collapsable && collapsed
     }
     
     var cellDataTag: RoomBubbleCellDataTag {
-        return RoomBubbleCellDataTag(rawValue: self.tag) ?? .message
+        RoomBubbleCellDataTag(rawValue: tag) ?? .message
     }
-    
 }

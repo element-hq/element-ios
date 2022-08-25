@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,6 @@ import Foundation
 
 /// A mock REST client that can be used for authentication.
 class MockAuthenticationRestClient: AuthenticationRestClient {
-    
     enum MockError: Error {
         /// The fixture is missing.
         case fixture
@@ -73,10 +72,10 @@ class MockAuthenticationRestClient: AuthenticationRestClient {
     ///   - homeServer: See `MockAuthenticationRestClient.Config` for various URLs that can be used.
     ///   - handler: Unused.
     required init(homeServer: URL, unrecognizedCertificateHandler handler: MXHTTPClientOnUnrecognizedCertificate?) {
-        self.config = Config(url: homeServer)
+        config = Config(url: homeServer)
         
-        self.homeserverURL = homeServer
-        self.unrecognizedCertificateHandler = handler
+        homeserverURL = homeServer
+        unrecognizedCertificateHandler = handler
     }
     
     // MARK: - Login
@@ -111,7 +110,7 @@ class MockAuthenticationRestClient: AuthenticationRestClient {
         case .thirdParty(medium: let medium, address: let address):
             guard medium == .email, address == Self.registeredAccount.email else { throw MockError.invalidCredentials }
         case .phone(country: let country, phone: let phone):
-            guard "+\(country)\(phone)" == Self.registeredAccount.phone else { throw MockError.invalidCredentials }
+            guard Self.registeredAccount.phone == "+\(country)\(phone)" else { throw MockError.invalidCredentials }
         }
         
         guard passwordParameters.password == Self.registeredAccount.password else { throw MockError.invalidCredentials }
@@ -132,7 +131,7 @@ class MockAuthenticationRestClient: AuthenticationRestClient {
                       accessToken: "1234")
     }
     
-    func login(parameters: [String : Any]) async throws -> MXCredentials {
+    func login(parameters: [String: Any]) async throws -> MXCredentials {
         throw MockError.unhandled
     }
     
@@ -187,7 +186,7 @@ class MockAuthenticationRestClient: AuthenticationRestClient {
         return true
     }
     
-    func register(parameters: [String : Any]) async throws -> MXLoginResponse {
+    func register(parameters: [String: Any]) async throws -> MXLoginResponse {
         throw MockError.unhandled
     }
     
@@ -205,7 +204,7 @@ class MockAuthenticationRestClient: AuthenticationRestClient {
         throw MockError.unhandled
     }
     
-    func resetPassword(parameters: [String : Any]) async throws {
+    func resetPassword(parameters: [String: Any]) async throws {
         throw MockError.unhandled
     }
 }

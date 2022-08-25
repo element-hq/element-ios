@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
+import Combine
 import Foundation
 import MatrixSDK
-import Combine
 
 struct UISIAutoReportData {
     let eventId: String?
@@ -38,11 +38,9 @@ extension UISIAutoReportData: Codable {
     }
 }
 
-
 /// Listens for failed decryption events and silently sends reports RageShake server.
 /// Also requests that message senders send a matching report to have both sides of the interaction.
 @objcMembers class UISIAutoReporter: NSObject, UISIDetectorDelegate {
-    
     struct ReportInfo: Hashable {
         let roomId: String
         let sessionId: String
@@ -71,7 +69,7 @@ extension UISIAutoReportData: Codable {
     // MARK: - Setup
     
     override init() {
-        self.bugReporter =  MXBugReportRestClient.vc_bugReportRestClient(appName: BuildSettings.bugReportUISIId)
+        bugReporter = MXBugReportRestClient.vc_bugReportRestClient(appName: BuildSettings.bugReportUISIId)
         super.init()
         // Simple rate limiting, for any rage-shakes emitted we guarantee a spacing between requests.
         e2eDetectedSubject
@@ -88,9 +86,9 @@ extension UISIAutoReportData: Codable {
                 self.sendMatchingRageShake(source: $0)
             }.store(in: &cancellables)
         
-        self.enabled = RiotSettings.shared.enableUISIAutoReporting
+        enabled = RiotSettings.shared.enableUISIAutoReporting
         RiotSettings.shared.publisher(for: RiotSettings.UserDefaultsKeys.enableUISIAutoReporting)
-            .sink {  [weak self] _ in
+            .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.enabled = RiotSettings.shared.enableUISIAutoReporting
             }
@@ -104,7 +102,7 @@ extension UISIAutoReportData: Codable {
     }()
     
     var reciprocateToDeviceEventType: String {
-        return Self.autoRsRequest
+        Self.autoRsRequest
     }
     
     // MARK: - Public
@@ -135,7 +133,7 @@ extension UISIAutoReportData: Codable {
     
     func uisiReciprocateRequest(source: MXEvent) {
         guard source.type == Self.autoRsRequest else { return }
-        self.matchingRSRequestSubject.send(source)
+        matchingRSRequestSubject.send(source)
     }
     
     // MARK: - Private
@@ -152,7 +150,7 @@ extension UISIAutoReportData: Codable {
             sessionId: source.sessionId
         ).jsonString ?? ""
         
-        self.bugReporter.vc_sendBugReport(
+        bugReporter.vc_sendBugReport(
             description: "Auto-reporting decryption error",
             sendLogs: true,
             sendCrashLog: true,
@@ -184,12 +182,13 @@ extension UISIAutoReportData: Codable {
                     }
                 }
             },
-            failure: { [weak self] error in
+            failure: { [weak self] _ in
                 guard let self = self else { return }
                 self.dispatchQueue.async {
                     self.alreadyReportedUisi.remove(ReportInfo(roomId: source.roomId, sessionId: source.sessionId))
                 }
-            })
+            }
+        )
     }
     
     private func sendMatchingRageShake(source: MXEvent) {
@@ -216,7 +215,7 @@ extension UISIAutoReportData: Codable {
             sessionId: sessionId
         ).jsonString ?? ""
         
-        self.bugReporter.vc_sendBugReport(
+        bugReporter.vc_sendBugReport(
             description: description,
             sendLogs: true,
             sendCrashLog: true,
@@ -231,5 +230,4 @@ extension UISIAutoReportData: Codable {
             ]
         )
     }
-    
 }

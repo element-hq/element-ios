@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class EnterPinCodeCoordinator: EnterPinCodeCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,31 +48,31 @@ final class EnterPinCodeCoordinator: EnterPinCodeCoordinatorType {
     
     // MARK: - Public methods
     
-    func start() {            
-        self.enterPinCodeViewModel.coordinatorDelegate = self
+    func start() {
+        enterPinCodeViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.enterPinCodeViewController
+        enterPinCodeViewController
     }
 }
 
 // MARK: - EnterPinCodeViewModelCoordinatorDelegate
+
 extension EnterPinCodeCoordinator: EnterPinCodeViewModelCoordinatorDelegate {
-    
     func enterPinCodeViewModelDidComplete(_ viewModel: EnterPinCodeViewModelType) {
-        self.delegate?.enterPinCodeCoordinatorDidComplete(self)
+        delegate?.enterPinCodeCoordinatorDidComplete(self)
     }
     
     func enterPinCodeViewModelDidCompleteWithReset(_ viewModel: EnterPinCodeViewModelType, dueToTooManyErrors: Bool) {
-        self.delegate?.enterPinCodeCoordinatorDidCompleteWithReset(self, dueToTooManyErrors: dueToTooManyErrors)
+        delegate?.enterPinCodeCoordinatorDidCompleteWithReset(self, dueToTooManyErrors: dueToTooManyErrors)
     }
     
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didCompleteWithPin pin: String) {
-        self.delegate?.enterPinCodeCoordinator(self, didCompleteWithPin: pin)
+        delegate?.enterPinCodeCoordinator(self, didCompleteWithPin: pin)
     }
     
     func enterPinCodeViewModelDidCancel(_ viewModel: EnterPinCodeViewModelType) {
-        self.delegate?.enterPinCodeCoordinatorDidCancel(self)
+        delegate?.enterPinCodeCoordinatorDidCancel(self)
     }
 }

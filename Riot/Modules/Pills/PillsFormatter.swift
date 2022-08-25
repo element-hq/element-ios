@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,14 +18,16 @@ import Foundation
 import UIKit
 
 /// Provides utilities funcs to handle Pills inside attributed strings.
-@available (iOS 15.0, *)
+@available(iOS 15.0, *)
 @objcMembers
 class PillsFormatter: NSObject {
     // MARK: - Internal Properties
+
     /// UTType identifier for pills. Should be declared as Document type & Exported type identifier inside Info.plist
-    static let pillUTType: String = "im.vector.app.pills"
+    static let pillUTType = "im.vector.app.pills"
 
     // MARK: - Internal Enums
+
     /// Defines a replacement mode for converting Pills to plain text.
     @objc enum PillsReplacementTextMode: Int {
         case displayname
@@ -34,6 +36,7 @@ class PillsFormatter: NSObject {
     }
 
     // MARK: - Internal Methods
+
     /// Insert text attachments for pills inside given message attributed string.
     ///
     /// - Parameters:
@@ -128,18 +131,18 @@ class PillsFormatter: NSObject {
     ///   - alpha: Alpha value to apply
     ///   - attributedString: Attributed string containing the pills
     static func setPillAlpha(_ alpha: CGFloat, inAttributedString attributedString: NSAttributedString) {
-        attributedString.vc_enumerateAttribute(.attachment) { (pill: PillTextAttachment, range: NSRange, _) in
+        attributedString.vc_enumerateAttribute(.attachment) { (pill: PillTextAttachment, _: NSRange, _) in
             pill.data?.alpha = alpha
         }
     }
 
     /// Refresh pills inside given attributed string.
-    /// 
+    ///
     /// - Parameters:
     ///   - attributedString: attributed string to update
     ///   - roomState: room state for refresh, should be the latest available
     static func refreshPills(in attributedString: NSAttributedString, with roomState: MXRoomState) {
-        attributedString.vc_enumerateAttribute(.attachment) { (pill: PillTextAttachment, range: NSRange, _) in
+        attributedString.vc_enumerateAttribute(.attachment) { (pill: PillTextAttachment, _: NSRange, _) in
             guard let userId = pill.data?.matrixItemId,
                   let roomMember = roomState.members.member(withUserId: userId) else {
                 return
@@ -152,7 +155,8 @@ class PillsFormatter: NSObject {
 }
 
 // MARK: - Private Methods
-@available (iOS 15.0, *)
+
+@available(iOS 15.0, *)
 private extension PillsFormatter {
     /// Extract user id from given permalink
     /// - Parameter permalink: the permalink
@@ -177,6 +181,6 @@ private extension PillsFormatter {
     static func roomMember(withUserId userId: String,
                            roomState: MXRoomState,
                            andLatestRoomState latestRoomState: MXRoomState?) -> MXRoomMember? {
-        return latestRoomState?.members.member(withUserId: userId) ?? roomState.members.member(withUserId: userId)
+        latestRoomState?.members.member(withUserId: userId) ?? roomState.members.member(withUserId: userId)
     }
 }

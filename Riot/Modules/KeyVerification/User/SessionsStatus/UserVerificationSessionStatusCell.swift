@@ -14,8 +14,8 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 struct UserVerificationSessionStatusViewData {
     let deviceId: String
@@ -24,14 +24,13 @@ struct UserVerificationSessionStatusViewData {
 }
 
 final class UserVerificationSessionStatusCell: UITableViewCell, NibReusable, Themable {
-
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var statusImageView: UIImageView!
-    @IBOutlet private weak var sessionNameLabel: UILabel!
-    @IBOutlet private weak var statusTextLabel: UILabel!
+    @IBOutlet private var statusImageView: UIImageView!
+    @IBOutlet private var sessionNameLabel: UILabel!
+    @IBOutlet private var statusTextLabel: UILabel!
     
     // MARK: Private
     
@@ -51,29 +50,29 @@ final class UserVerificationSessionStatusCell: UITableViewCell, NibReusable, The
             statusText = VectorL10n.userVerificationSessionsListSessionTrusted
         } else {
             statusImage = Asset.Images.encryptionWarning.image
-            statusText = VectorL10n.userVerificationSessionsListSessionUntrusted            
+            statusText = VectorL10n.userVerificationSessionsListSessionUntrusted
         }
         
-        self.statusImageView.image = statusImage
-        self.statusTextLabel.text = statusText
-        self.sessionNameLabel.text = viewData.sessionName
+        statusImageView.image = statusImage
+        statusTextLabel.text = statusText
+        sessionNameLabel.text = viewData.sessionName
         
-        self.updateStatusTextColor()
+        updateStatusTextColor()
     }
     
     func update(theme: Theme) {
         self.theme = theme
-        self.backgroundColor = theme.headerBackgroundColor
-        self.sessionNameLabel.textColor = theme.textPrimaryColor
-        self.updateStatusTextColor()
+        backgroundColor = theme.headerBackgroundColor
+        sessionNameLabel.textColor = theme.textPrimaryColor
+        updateStatusTextColor()
     }
     
     // MARK: - Private
     
     private func updateStatusTextColor() {
-        guard let viewData = self.viewData, let theme = self.theme else {
+        guard let viewData = viewData, let theme = theme else {
             return
         }
-        self.statusTextLabel.textColor = viewData.isTrusted ? theme.tintColor : theme.warningColor
+        statusTextLabel.textColor = viewData.isTrusted ? theme.tintColor : theme.warningColor
     }
 }

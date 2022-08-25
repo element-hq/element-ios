@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// Parameters describing a universal link
 @objcMembers
 class UniversalLinkParameters: NSObject {
-        
     // MARK: - Properties
         
     /// The universal link
@@ -45,7 +44,6 @@ class UniversalLinkParameters: NSObject {
     
     convenience init?(universalLink: UniversalLink,
                       presentationParameters: ScreenPresentationParameters) {
-        
         guard let fixedURL = Tools.fixURL(withSeveralHashKeys: universalLink.url), let fragment = fixedURL.fragment else {
             return nil
         }
@@ -55,7 +53,6 @@ class UniversalLinkParameters: NSObject {
 
     convenience init?(url: URL,
                       presentationParameters: ScreenPresentationParameters) {
-
         guard let fixedURL = Tools.fixURL(withSeveralHashKeys: url), let fragment = fixedURL.fragment else {
             return nil
         }

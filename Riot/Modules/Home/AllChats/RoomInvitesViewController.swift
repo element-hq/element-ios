@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +17,10 @@
 import Foundation
 
 class RoomInvitesViewController: RecentsViewController {
-    
     // MARK: - Class methods
     
-    static override func nib() -> UINib! {
-        return UINib(nibName: String(describing: self), bundle: Bundle(for: self.classForCoder()))
+    override static func nib() -> UINib! {
+        UINib(nibName: String(describing: self), bundle: Bundle(for: classForCoder()))
     }
     
     static func instantiate() -> Self {
@@ -41,20 +40,20 @@ class RoomInvitesViewController: RecentsViewController {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.enableSearchBar = false
+        enableSearchBar = false
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.recentsTableView.clipsToBounds = false
-        self.recentsTableView.tag = RecentsDataSourceMode.roomInvites.rawValue
+        recentsTableView.clipsToBounds = false
+        recentsTableView.tag = RecentsDataSourceMode.roomInvites.rawValue
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        guard let recentsDataSource = self.dataSource as? RecentsDataSource else {
+        guard let recentsDataSource = dataSource as? RecentsDataSource else {
             return
         }
         
@@ -73,13 +72,13 @@ class RoomInvitesViewController: RecentsViewController {
         super.finalizeInit()
         
         title = VectorL10n.roomRecentsInvitesSection.capitalized
-        self.screenTracker = AnalyticsScreenTracker(screen: .invites)
+        screenTracker = AnalyticsScreenTracker(screen: .invites)
         tableViewPaginationThrottler = MXThrottler(minimumDelay: 0.1)
     }
 
     override func refreshCurrentSelectedCell(_ forceVisible: Bool) {
         // Check whether the recents data source is correctly configured.
-        guard self.recentsDataSource?.recentsDataSourceMode == .roomInvites else {
+        guard recentsDataSource?.recentsDataSourceMode == .roomInvites else {
             return
         }
         
@@ -89,13 +88,13 @@ class RoomInvitesViewController: RecentsViewController {
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
+        0
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         super.tableView(tableView, willDisplay: cell, forRowAt: indexPath)
         
-        tableViewPaginationThrottler .throttle { [weak self] in
+        tableViewPaginationThrottler.throttle { [weak self] in
             guard let self = self, tableView.numberOfSections > indexPath.section else {
                 return
             }
@@ -116,5 +115,4 @@ class RoomInvitesViewController: RecentsViewController {
                         informationText: VectorL10n.roomInvitesEmptyViewInformation,
                         displayMode: .icon)
     }
-    
 }

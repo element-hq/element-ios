@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +18,8 @@ import Foundation
 
 enum ThemeIdentifier: String, RawRepresentable {
     case light = "default"
-    case dark = "dark"
-    case black = "black"
+    case dark
+    case black
     
     init?(rawValue: String) {
         switch rawValue {

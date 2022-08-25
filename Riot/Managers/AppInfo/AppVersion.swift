@@ -19,20 +19,19 @@ import Foundation
 /// A structure used to handle the application version
 @objcMembers
 final class AppVersion: NSObject {
-
     // MARK: - Constants
 
     private enum Constants {
-        static let lastBundleShortVersion: String = "lastBundleShortVersion"
-        static let lastBundleVersion: String = "lastBundleVersion"
+        static let lastBundleShortVersion = "lastBundleShortVersion"
+        static let lastBundleVersion = "lastBundleVersion"
         static let shortVersionComponentsSeparator: Character = "."
     }
     
     // Current app version from Info.plist
     static var current: AppVersion? {
         guard let bundleShortVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,
-            let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String else {
-                return nil
+              let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String else {
+            return nil
         }
         return AppVersion(bundleShortVersion: bundleShortVersion, bundleVersion: bundleVersion)
     }
@@ -40,8 +39,8 @@ final class AppVersion: NSObject {
     // Last app version used by user
     static var lastUsed: AppVersion? {
         guard let bundleShortVersion = UserDefaults.standard.string(forKey: Constants.lastBundleShortVersion),
-            let bundleVersion = UserDefaults.standard.string(forKey: Constants.lastBundleVersion) else {
-                return nil
+              let bundleVersion = UserDefaults.standard.string(forKey: Constants.lastBundleVersion) else {
+            return nil
         }
         return AppVersion(bundleShortVersion: bundleShortVersion, bundleVersion: bundleVersion)
     }
@@ -62,14 +61,13 @@ final class AppVersion: NSObject {
     // MARK: - Public
     
     func compare(_ appVersion: AppVersion) -> ComparisonResult {
-        
         let appVersionComparisonResult: ComparisonResult
         
-        let bundleShortVersionComparisonResult = AppVersion.compare(stringVersion: self.bundleShortVersion, with: appVersion.bundleShortVersion)
+        let bundleShortVersionComparisonResult = AppVersion.compare(stringVersion: bundleShortVersion, with: appVersion.bundleShortVersion)
         
         // If short versions are equal compare build version
         if bundleShortVersionComparisonResult == ComparisonResult.orderedSame {
-            appVersionComparisonResult = AppVersion.compare(stringVersion: self.bundleVersion, with: appVersion.bundleVersion)
+            appVersionComparisonResult = AppVersion.compare(stringVersion: bundleVersion, with: appVersion.bundleVersion)
         } else {
             appVersionComparisonResult = bundleShortVersionComparisonResult
         }
@@ -96,12 +94,12 @@ final class AppVersion: NSObject {
     }
     
     override var description: String {
-        return "\(bundleShortVersion)(\(bundleVersion))"
+        "\(bundleShortVersion)(\(bundleVersion))"
     }
 
     // MARK: - Private
 
     private static func compare(stringVersion: String, with otherStringVersion: String) -> ComparisonResult {
-        return stringVersion.compare(otherStringVersion, options: NSString.CompareOptions.numeric, range: nil, locale: nil)
+        stringVersion.compare(otherStringVersion, options: NSString.CompareOptions.numeric, range: nil, locale: nil)
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import UIKit
 
 class TextMessageIncomingBubbleCell: TextMessageBaseBubbleCell, BubbleIncomingRoomCellProtocol {
-    
     // MARK: - Overrides
     
     override func setupViews() {
@@ -25,22 +24,21 @@ class TextMessageIncomingBubbleCell: TextMessageBaseBubbleCell, BubbleIncomingRo
         
         roomCellContentView?.showSenderInfo = true
 
-        self.setupBubbleConstraints()
-        self.setupBubbleDecorations()
+        setupBubbleConstraints()
+        setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {
         super.update(theme: theme)
         
-        self.textMessageContentView?.bubbleBackgroundView?.backgroundColor = theme.roomCellIncomingBubbleBackgroundColor
+        textMessageContentView?.bubbleBackgroundView?.backgroundColor = theme.roomCellIncomingBubbleBackgroundColor
     }
     
     // MARK: - Private
     
     private func setupBubbleConstraints() {
+        roomCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
         
-        self.roomCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
-        
-        self.roomCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
+        roomCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
     }
 }

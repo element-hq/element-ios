@@ -17,7 +17,6 @@
 import Foundation
 
 @objc protocol SettingsDiscoveryTableViewSectionDelegate: AnyObject {
-    
     func settingsDiscoveryTableViewSection(_ settingsDiscoveryTableViewSection: SettingsDiscoveryTableViewSection, tableViewCellClass: MXKTableViewCell.Type, forRow: Int) -> MXKTableViewCell
     func settingsDiscoveryTableViewSectionDidUpdate(_ settingsDiscoveryTableViewSection: SettingsDiscoveryTableViewSection)
 }
@@ -28,7 +27,6 @@ private enum DiscoverySectionRows {
 }
 
 @objc final class SettingsDiscoveryTableViewSection: NSObject, Themable {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -50,7 +48,7 @@ private enum DiscoverySectionRows {
     // Need to know the state to make `cellForRow` deliver cells accordingly
     private var viewState: SettingsDiscoveryViewState = .loading {
         didSet {
-            self.updateRows()
+            updateRows()
         }
     }
     
@@ -59,31 +57,30 @@ private enum DiscoverySectionRows {
     // MARK: - Setup
     
     @objc init(viewModel: SettingsDiscoveryViewModel) {
-        self.theme = ThemeService.shared().theme
+        theme = ThemeService.shared().theme
         self.viewModel = viewModel
         super.init()
         self.viewModel.viewDelegate = self
         
         self.viewModel.process(viewAction: .load)
         
-        self.registerThemeServiceDidChangeThemeNotification()
+        registerThemeServiceDidChangeThemeNotification()
     }
     
     // MARK: - Public
     
     @objc func numberOfRows() -> Int {
-        return self.discoveryRows.count
+        discoveryRows.count
     }
     
     @objc func cellForRow(atRow row: Int) -> UITableViewCell {
-
-        let discoveryRow = self.discoveryRows[row]
+        let discoveryRow = discoveryRows[row]
 
         var cell: UITableViewCell?
         
         let enableInteraction: Bool
         
-        if case .loading = self.viewState {
+        if case .loading = viewState {
             enableInteraction = false
         } else {
             enableInteraction = true
@@ -91,7 +88,7 @@ private enum DiscoverySectionRows {
         
         switch discoveryRow {
         case .button(title: let title, action: let action):
-            if let buttonCell: MXKTableViewCellWithButton = self.cellType(at: row) {
+            if let buttonCell: MXKTableViewCellWithButton = cellType(at: row) {
                 buttonCell.mxkButton.setTitle(title, for: .normal)
                 buttonCell.mxkButton.setTitle(title, for: .highlighted)
                 buttonCell.mxkButton.vc_addAction(action: action)
@@ -99,14 +96,14 @@ private enum DiscoverySectionRows {
                 cell = buttonCell
             }
         case .threePid(let threePid):
-            if let detailCell: MXKTableViewCell = self.cellType(at: row) {
-                detailCell.vc_setAccessoryDisclosureIndicator(withTheme: self.theme)
+            if let detailCell: MXKTableViewCell = cellType(at: row) {
+                detailCell.vc_setAccessoryDisclosureIndicator(withTheme: theme)
                 
                 let formattedThreePid: String?
                 
                 switch threePid.medium {
                 case .email:
-                    formattedThreePid = threePid.address                  
+                    formattedThreePid = threePid.address
                 case .msisdn:
                     formattedThreePid = MXKTools.readableMSISDN(threePid.address)
                 default:
@@ -123,15 +120,15 @@ private enum DiscoverySectionRows {
     }
     
     @objc func reload() {
-        self.viewModel.process(viewAction: .load)
+        viewModel.process(viewAction: .load)
     }
     
     @objc func selectRow(_ row: Int) {
-        let discoveryRow = self.discoveryRows[row]
+        let discoveryRow = discoveryRows[row]
         
         switch discoveryRow {
         case .threePid(threePid: let threePid):
-            self.viewModel.process(viewAction: .select(threePid: threePid))
+            viewModel.process(viewAction: .select(threePid: threePid))
         default:
             break
         }
@@ -140,7 +137,7 @@ private enum DiscoverySectionRows {
     func update(theme: Theme) {
         self.theme = theme
         
-        self.updateRows()
+        updateRows()
     }
     
     // MARK: - Private
@@ -150,7 +147,7 @@ private enum DiscoverySectionRows {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func cellType<T: MXKTableViewCell>(at row: Int) -> T? {
@@ -160,14 +157,13 @@ private enum DiscoverySectionRows {
     }
     
     private func updateRows() {
-        
         // reset the footer
         attributedFooterTitle = nil
         footerShouldScrollToUserSettings = false
         
         let discoveryRows: [DiscoverySectionRows]
         
-        switch self.viewState {
+        switch viewState {
         case .loading:
             discoveryRows = self.discoveryRows
         case .loaded(let displayMode):
@@ -190,12 +186,12 @@ private enum DiscoverySectionRows {
                 footerShouldScrollToUserSettings = true
             case .threePidsAdded(let emails, let phoneNumbers):
                 
-                let emailThreePids = emails.map { (email) -> DiscoverySectionRows in
-                    return .threePid(threePid: email)
+                let emailThreePids = emails.map { email -> DiscoverySectionRows in
+                    .threePid(threePid: email)
                 }
                 
-                let phoneNumbersThreePids = phoneNumbers.map { (phoneNumber) -> DiscoverySectionRows in
-                    return .threePid(threePid: phoneNumber)
+                let phoneNumbersThreePids = phoneNumbers.map { phoneNumber -> DiscoverySectionRows in
+                    .threePid(threePid: phoneNumber)
                 }
                 
                 discoveryRows = emailThreePids + phoneNumbersThreePids
@@ -218,19 +214,19 @@ private enum DiscoverySectionRows {
     private func threePidsManagementInfoAttributedString() -> NSAttributedString {
         let attributedInfoString = NSMutableAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart1)
         attributedInfoString.append(NSAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart2,
-                                                       attributes: [.foregroundColor: self.theme.tintColor]))
+                                                       attributes: [.foregroundColor: theme.tintColor]))
         attributedInfoString.append(NSAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart3))
         return attributedInfoString
     }
 }
 
 // MARK: - SettingsDiscoveryViewModelViewDelegate
+
 extension SettingsDiscoveryTableViewSection: SettingsDiscoveryViewModelViewDelegate {
-    
     func settingsDiscoveryViewModel(_ viewModel: SettingsDiscoveryViewModelType, didUpdateViewState viewState: SettingsDiscoveryViewState) {
         self.viewState = viewState
         
         // The tableview datasource will call `self.cellForRow()`
-        self.delegate?.settingsDiscoveryTableViewSectionDidUpdate(self)
+        delegate?.settingsDiscoveryTableViewSectionDidUpdate(self)
     }
 }

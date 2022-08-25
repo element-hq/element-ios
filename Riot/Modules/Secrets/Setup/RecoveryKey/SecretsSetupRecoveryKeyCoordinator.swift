@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class SecretsSetupRecoveryKeyCoordinator: SecretsSetupRecoveryKeyCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -52,28 +51,28 @@ final class SecretsSetupRecoveryKeyCoordinator: SecretsSetupRecoveryKeyCoordinat
     
     // MARK: - Public methods
     
-    func start() {            
-        self.secretsSetupRecoveryKeyViewModel.coordinatorDelegate = self
+    func start() {
+        secretsSetupRecoveryKeyViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.secretsSetupRecoveryKeyViewController
-            .vc_setModalFullScreen(!self.cancellable)
+        secretsSetupRecoveryKeyViewController
+            .vc_setModalFullScreen(!cancellable)
     }
 }
 
 // MARK: - SecretsSetupRecoveryKeyViewModelCoordinatorDelegate
+
 extension SecretsSetupRecoveryKeyCoordinator: SecretsSetupRecoveryKeyViewModelCoordinatorDelegate {
-    
     func secretsSetupRecoveryKeyViewModelDidComplete(_ viewModel: SecretsSetupRecoveryKeyViewModelType) {
-        self.delegate?.secretsSetupRecoveryKeyCoordinatorDidComplete(self)
+        delegate?.secretsSetupRecoveryKeyCoordinatorDidComplete(self)
     }
     
     func secretsSetupRecoveryKeyViewModelDidFailed(_ viewModel: SecretsSetupRecoveryKeyViewModelType) {
-        self.delegate?.secretsSetupRecoveryKeyCoordinatorDidFailed(self)
+        delegate?.secretsSetupRecoveryKeyCoordinatorDidFailed(self)
     }
     
     func secretsSetupRecoveryKeyViewModelDidCancel(_ viewModel: SecretsSetupRecoveryKeyViewModelType) {
-        self.delegate?.secretsSetupRecoveryKeyCoordinatorDidCancel(self)
+        delegate?.secretsSetupRecoveryKeyCoordinatorDidCancel(self)
     }
 }

@@ -18,7 +18,6 @@ import Foundation
 
 @objcMembers
 final class RoomContextualMenuPresenter: NSObject {
-    
     // MARK: - Constants
     
     private enum AnimationDurations {
@@ -37,7 +36,7 @@ final class RoomContextualMenuPresenter: NSObject {
     // MARK: Public
     
     var isPresenting: Bool {
-        return self.roomContextualMenuViewController?.parent != nil
+        roomContextualMenuViewController?.parent != nil
     }
     
     // MARK: - Public
@@ -49,7 +48,7 @@ final class RoomContextualMenuPresenter: NSObject {
                  fromSingleTapGesture usedSingleTapGesture: Bool,
                  animated: Bool,
                  completion: (() -> Void)?) {
-        guard self.isPresenting == false else {
+        guard isPresenting == false else {
             return
         }
         
@@ -76,7 +75,7 @@ final class RoomContextualMenuPresenter: NSObject {
             
             UIView.animate(withDuration: animationDuration, animations: {
                 animationInstructions()
-            }, completion: { completed in
+            }, completion: { _ in
                 completion?()
             })
         } else {
@@ -86,7 +85,7 @@ final class RoomContextualMenuPresenter: NSObject {
     }
     
     func hideContextualMenu(animated: Bool, completion: (() -> Void)?) {
-        guard let roomContextualMenuViewController = self.roomContextualMenuViewController, self.isPresenting else {
+        guard let roomContextualMenuViewController = roomContextualMenuViewController, isPresenting else {
             completion?()
             return
         }
@@ -111,14 +110,14 @@ final class RoomContextualMenuPresenter: NSObject {
                     UIView.animate(withDuration: AnimationDurations.hideMenu, animations: {
                         roomContextualMenuViewController.selectedReactionAnimationsIntructionsPart2()
                         animationInstructions()
-                    }, completion: { completed in
+                    }, completion: { _ in
                         animationCompletionInstructions()
                     })
                 })
             } else {
                 UIView.animate(withDuration: AnimationDurations.hideMenu, animations: {
                     animationInstructions()
-                }, completion: { completed in
+                }, completion: { _ in
                     animationCompletionInstructions()
                 })
             }

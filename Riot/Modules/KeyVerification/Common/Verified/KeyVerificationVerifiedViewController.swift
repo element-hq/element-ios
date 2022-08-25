@@ -24,14 +24,13 @@ protocol KeyVerificationVerifiedViewControllerDelegate: AnyObject {
 }
 
 final class KeyVerificationVerifiedViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var doneButton: RoundedButton!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
+    @IBOutlet private var doneButton: RoundedButton!
     
     // MARK: Private
     
@@ -58,22 +57,22 @@ final class KeyVerificationVerifiedViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        self.vc_removeBackTitle()
+        vc_removeBackTitle()
         
-        self.setupViews()
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        setupViews()
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // Hide back button
-        self.navigationItem.setHidesBackButton(true, animated: animated)
+        navigationItem.setHidesBackButton(true, animated: animated)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -82,7 +81,7 @@ final class KeyVerificationVerifiedViewController: UIViewController {
         let bodyTitle: String
         let informationText: String
         
-        switch self.verificationKind {
+        switch verificationKind {
         case .otherSession:
             bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
             informationText = VectorL10n.keyVerificationVerifiedOtherSessionInformation
@@ -97,25 +96,25 @@ final class KeyVerificationVerifiedViewController: UIViewController {
             informationText = VectorL10n.keyVerificationVerifiedUserInformation
         }
         
-        self.title = self.verificationKind.verificationTitle
-        self.titleLabel.text =  bodyTitle
-        self.informationLabel.text = informationText
+        title = verificationKind.verificationTitle
+        titleLabel.text = bodyTitle
+        informationLabel.text = informationText
 
-        self.doneButton.setTitle(VectorL10n.deviceVerificationVerifiedGotItButton, for: .normal)
+        doneButton.setTitle(VectorL10n.deviceVerificationVerifiedGotItButton, for: .normal)
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textPrimaryColor
-        self.doneButton.update(theme: theme)
+        titleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
+        doneButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -125,10 +124,10 @@ final class KeyVerificationVerifiedViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     @IBAction private func doneButtonAction(_ sender: Any) {
-        self.delegate?.keyVerificationVerifiedViewControllerDidTapSetupAction(self)
+        delegate?.keyVerificationVerifiedViewControllerDidTapSetupAction(self)
     }
 }

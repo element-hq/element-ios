@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ class UserIndicatorTests: XCTestCase {
         presenter = UserIndicatorPresenterSpy()
     }
     
-    func makeIndicator(dismissal: UserIndicatorDismissal = .manual, callback: @escaping () -> Void = {}) -> UserIndicator {
+    func makeIndicator(dismissal: UserIndicatorDismissal = .manual, callback: @escaping () -> Void = { }) -> UserIndicator {
         let request = UserIndicatorRequest(
             presenter: presenter,
             dismissal: dismissal

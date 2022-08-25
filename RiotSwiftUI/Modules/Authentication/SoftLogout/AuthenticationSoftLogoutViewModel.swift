@@ -17,10 +17,9 @@
 import SwiftUI
 
 typealias AuthenticationSoftLogoutViewModelType = StateStoreViewModel<AuthenticationSoftLogoutViewState,
-                                                                       Never,
-                                                                       AuthenticationSoftLogoutViewAction>
+    Never,
+    AuthenticationSoftLogoutViewAction>
 class AuthenticationSoftLogoutViewModel: AuthenticationSoftLogoutViewModelType, AuthenticationSoftLogoutViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,20 +18,19 @@ import Foundation
 
 // MARK: - Notification constants
 
-extension AllChatsLayoutSettingsManager {
+public extension AllChatsLayoutSettingsManager {
     /// Posted if settings are about to change.
-    public static let willUpdateSettings = Notification.Name("AllChatLayoutSettingsManagerWillUpdateSettings")
+    static let willUpdateSettings = Notification.Name("AllChatLayoutSettingsManagerWillUpdateSettings")
     /// Posted if settings have changed.
-    public static let didUpdateSettings = Notification.Name("AllChatLayoutSettingsManagerDidUpdateSettings")
+    static let didUpdateSettings = Notification.Name("AllChatLayoutSettingsManagerDidUpdateSettings")
     
     /// Posted when active filters change
-    public static let didUpdateActiveFilters = Notification.Name("AllChatLayoutSettingsManagerDidUpdateActiveFilters")
+    static let didUpdateActiveFilters = Notification.Name("AllChatLayoutSettingsManagerDidUpdateActiveFilters")
 }
 
 /// `AllChatsLayoutSettingsManager` single instance allows to read and write the settings data for the All Chat screen.
 @objcMembers
 final class AllChatsLayoutSettingsManager: NSObject {
-    
     // MARK: - Singleton
     
     static let shared = AllChatsLayoutSettingsManager()
@@ -45,7 +44,7 @@ final class AllChatsLayoutSettingsManager: NSObject {
     
     // MARK: - Setup
     
-    private override init() {
+    override private init() {
         super.init()
     }
 

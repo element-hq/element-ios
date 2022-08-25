@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 The Matrix.org Foundation C.I.C
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 import MatrixSDK.MXLog
 
 public extension NSString {
-
     /// Gets the first URL contained in the string ignoring any links to hosts defined in
     /// the `firstURLDetectionIgnoredHosts` property of `MXKAppSettings`.
     /// - Returns: A URL if detected, otherwise nil.
@@ -41,7 +40,7 @@ public extension NSString {
         // detection of a valid link if there are invalid links preceding it
         linkDetector.enumerateMatches(in: self as String,
                                       options: [],
-                                      range: NSRange(location: 0, length: self.length)) { match, flags, stop in
+                                      range: NSRange(location: 0, length: length)) { match, _, stop in
             guard let match = match else { return }
             
             // check if the match is a valid url

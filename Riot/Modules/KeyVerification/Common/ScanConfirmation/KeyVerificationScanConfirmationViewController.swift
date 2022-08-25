@@ -19,23 +19,22 @@
 import UIKit
 
 final class KeyVerificationScanConfirmationViewController: UIViewController {
-    
     // MARK: - Constants
     
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private var titleLabel: UILabel!
     
-    @IBOutlet private weak var waitingLabel: UILabel!
+    @IBOutlet private var waitingLabel: UILabel!
     
-    @IBOutlet private weak var scannedContentView: UIView!
-    @IBOutlet private weak var scannedInformationLabel: UILabel!
-    @IBOutlet private weak var rejectButton: RoundedButton!
-    @IBOutlet private weak var confirmButton: RoundedButton!
+    @IBOutlet private var scannedContentView: UIView!
+    @IBOutlet private var scannedInformationLabel: UILabel!
+    @IBOutlet private var rejectButton: RoundedButton!
+    @IBOutlet private var confirmButton: RoundedButton!
     
     // MARK: Private
 
@@ -60,27 +59,27 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Hide back button
-        self.navigationItem.setHidesBackButton(true, animated: animated)
+        navigationItem.setHidesBackButton(true, animated: animated)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -88,17 +87,17 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.waitingLabel.textColor = theme.textSecondaryColor
-        self.scannedInformationLabel.textColor = theme.textPrimaryColor
-        self.confirmButton.update(theme: theme)
-        self.rejectButton.update(theme: theme)
+        titleLabel.textColor = theme.textPrimaryColor
+        waitingLabel.textColor = theme.textSecondaryColor
+        scannedInformationLabel.textColor = theme.textPrimaryColor
+        confirmButton.update(theme: theme)
+        rejectButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -106,7 +105,7 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -114,40 +113,40 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.confirmButton.layer.masksToBounds = true
-        self.rejectButton.layer.masksToBounds = true
+        confirmButton.layer.masksToBounds = true
+        rejectButton.layer.masksToBounds = true
         
-        self.confirmButton.setTitle(VectorL10n.yes, for: .normal)
-        self.rejectButton.setTitle(VectorL10n.no, for: .normal)
-        self.rejectButton.actionStyle = .cancel
+        confirmButton.setTitle(VectorL10n.yes, for: .normal)
+        rejectButton.setTitle(VectorL10n.no, for: .normal)
+        rejectButton.actionStyle = .cancel
     }
 
     private func render(viewState: KeyVerificationScanConfirmationViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let viewData):
-            self.renderLoaded(viewData: viewData)
+            renderLoaded(viewData: viewData)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         case .cancelled(let reason):
-            self.renderCancelled(reason: reason)
+            renderCancelled(reason: reason)
         case .cancelledByMe(let reason):
-            self.renderCancelledByMe(reason: reason)
+            renderCancelledByMe(reason: reason)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(viewData: KeyVerificationScanConfirmationViewData) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-        self.waitingLabel.isHidden = !viewData.isScanning
-        self.scannedContentView.isHidden = viewData.isScanning
+        waitingLabel.isHidden = !viewData.isScanning
+        scannedContentView.isHidden = viewData.isScanning
         
         var title: String
         var waitingInfo: String?
@@ -174,57 +173,55 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
         }
         
         self.title = viewData.verificationKind.verificationTitle
-        self.titleLabel.text = title
-        self.waitingLabel.text = waitingInfo
-        self.scannedInformationLabel.text = scannedInfo
+        titleLabel.text = title
+        waitingLabel.text = waitingInfo
+        scannedInformationLabel.text = scannedInfo
     }
     
     private func renderCancelled(reason: MXTransactionCancelCode) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+        errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
             self.viewModel.process(viewAction: .cancel)
         }
     }
     
     private func renderCancelledByMe(reason: MXTransactionCancelCode) {
         if reason.value != MXTransactionCancelCode.user().value {
-            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+            activityPresenter.removeCurrentActivityIndicator(animated: true)
             
-            self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
+            errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
                 self.viewModel.process(viewAction: .cancel)
             }
         } else {
-            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+            activityPresenter.removeCurrentActivityIndicator(animated: true)
         }
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
-    
     // MARK: - Actions
 
     @IBAction private func rejectButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .acknowledgeOtherScannedMyCode(false))
+        viewModel.process(viewAction: .acknowledgeOtherScannedMyCode(false))
     }
     
     @IBAction private func confirmButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .acknowledgeOtherScannedMyCode(true))
+        viewModel.process(viewAction: .acknowledgeOtherScannedMyCode(true))
     }
 
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
 
-
 // MARK: - KeyVerificationScanConfirmationViewModelViewDelegate
-extension KeyVerificationScanConfirmationViewController: KeyVerificationScanConfirmationViewModelViewDelegate {
 
+extension KeyVerificationScanConfirmationViewController: KeyVerificationScanConfirmationViewModelViewDelegate {
     func keyVerificationScanConfirmationViewModel(_ viewModel: KeyVerificationScanConfirmationViewModelType, didUpdateViewState viewSate: KeyVerificationScanConfirmationViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

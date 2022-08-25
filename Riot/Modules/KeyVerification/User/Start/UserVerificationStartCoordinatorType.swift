@@ -19,8 +19,7 @@
 import Foundation
 
 protocol UserVerificationStartCoordinatorDelegate: AnyObject {
-    
-    func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, otherDidAcceptRequest request: MXKeyVerificationRequest)        
+    func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, otherDidAcceptRequest request: MXKeyVerificationRequest)
     
     func userVerificationStartCoordinatorDidCancel(_ coordinator: UserVerificationStartCoordinatorType)
 }

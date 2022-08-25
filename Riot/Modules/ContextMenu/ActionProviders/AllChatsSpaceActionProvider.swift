@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import MatrixSDK
+import UIKit
 
 enum AllChatsSpaceActionProviderOption {
     case invitePeople
@@ -30,7 +30,6 @@ protocol AllChatsSpaceActionProviderDelegate: AnyObject {
 
 /// `AllChatsSpaceActionProvider` provides the menu for accessing space options according to the current space
 class AllChatsSpaceActionProvider {
-    
     // MARK: - Properties
     
     weak var delegate: AllChatsSpaceActionProviderDelegate?
@@ -42,8 +41,9 @@ class AllChatsSpaceActionProvider {
             spaceName = currentSpace?.summary?.displayname ?? VectorL10n.spaceTag
         }
     }
+
     private var spaceName: String = VectorL10n.spaceTag
-    private var isInviteAvailable: Bool = false
+    private var isInviteAvailable = false
 
     // MARK: - RoomActionProviderProtocol
     
@@ -54,11 +54,11 @@ class AllChatsSpaceActionProvider {
         
         return UIMenu(title: "", children: [
             UIMenu(title: "", options: .displayInline, children: [
-                self.spaceSettingsAction,
-                self.spaceMembersAction,
-                self.invitePeopleAction
+                spaceSettingsAction,
+                spaceMembersAction,
+                invitePeopleAction
             ]),
-            self.leaveSpaceAction
+            leaveSpaceAction
         ])
     }
     
@@ -80,7 +80,7 @@ class AllChatsSpaceActionProvider {
         isInviteAvailable = false
         
         guard let currentSpace = currentSpace, let spaceRoom = currentSpace.room, let session = session else {
-            return self.menu
+            return menu
         }
         
         spaceRoom.state { [weak self] roomState in
@@ -96,7 +96,7 @@ class AllChatsSpaceActionProvider {
             completion(self.menu)
         }
         
-        return self.menu
+        return menu
     }
     
     // MARK: - Private
@@ -104,7 +104,7 @@ class AllChatsSpaceActionProvider {
     private var invitePeopleAction: UIAction {
         UIAction(title: VectorL10n.inviteTo(spaceName),
                  image: UIImage(systemName: "square.and.arrow.up"),
-                 attributes: isInviteAvailable ? [] : .disabled) { [weak self] action in
+                 attributes: isInviteAvailable ? [] : .disabled) { [weak self] _ in
             guard let self = self else { return }
             
             self.delegate?.allChatsSpaceActionProvider(self, didSelect: .invitePeople)
@@ -113,7 +113,7 @@ class AllChatsSpaceActionProvider {
     
     private var spaceMembersAction: UIAction {
         UIAction(title: VectorL10n.roomDetailsPeople,
-                 image: UIImage(systemName: "person")) { [weak self] action in
+                 image: UIImage(systemName: "person")) { [weak self] _ in
             guard let self = self else { return }
             
             self.delegate?.allChatsSpaceActionProvider(self, didSelect: .spaceMembers)
@@ -122,7 +122,7 @@ class AllChatsSpaceActionProvider {
     
     private var spaceSettingsAction: UIAction {
         UIAction(title: VectorL10n.allChatsEditMenuSpaceSettings,
-                 image: UIImage(systemName: "gearshape")) { [weak self] action in
+                 image: UIImage(systemName: "gearshape")) { [weak self] _ in
             guard let self = self else { return }
             
             self.delegate?.allChatsSpaceActionProvider(self, didSelect: .spaceSettings)
@@ -132,7 +132,7 @@ class AllChatsSpaceActionProvider {
     private var leaveSpaceAction: UIAction {
         UIAction(title: VectorL10n.allChatsEditMenuLeaveSpace(spaceName),
                  image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"),
-                 attributes: .destructive) { [weak self] action in
+                 attributes: .destructive) { [weak self] _ in
             guard let self = self else { return }
             
             self.delegate?.allChatsSpaceActionProvider(self, didSelect: .leaveSpace)

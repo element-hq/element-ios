@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,10 +18,9 @@ import Foundation
 import MatrixSDK
 
 extension MXSession {
-    
     /// Convenient getter to retrieve UserLocationService associated to session user id
     var userLocationService: UserLocationServiceProtocol? {
-        guard let myUserId = self.myUserId else {
+        guard let myUserId = myUserId else {
             return nil
         }
         

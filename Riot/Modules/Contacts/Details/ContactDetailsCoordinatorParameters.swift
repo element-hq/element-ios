@@ -20,7 +20,6 @@ import Foundation
 
 /// ContactDetailsCoordinator input parameters
 struct ContactDetailsCoordinatorParameters {
-    
     /// The displayed contact
     let contact: MXKContact
     

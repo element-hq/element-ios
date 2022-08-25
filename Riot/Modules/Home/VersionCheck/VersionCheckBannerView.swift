@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 protocol VersionCheckBannerViewDelegate: AnyObject {
     func bannerViewDidRequestDismissal(_ bannerView: VersionCheckBannerView)
@@ -28,7 +28,6 @@ struct VersionCheckBannerViewDetails {
 }
 
 class VersionCheckBannerView: UIView, NibLoadable, Themable {
-    
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var subtitleLabel: UILabel!
     
@@ -42,7 +41,7 @@ class VersionCheckBannerView: UIView, NibLoadable, Themable {
         
         let tapGestureRecognizer = UITapGestureRecognizer()
         tapGestureRecognizer.addTarget(self, action: #selector(handleTapGesture))
-        self.addGestureRecognizer(tapGestureRecognizer)
+        addGestureRecognizer(tapGestureRecognizer)
     }
     
     func configureWithDetails(_ details: VersionCheckBannerViewDetails) {

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,17 +30,17 @@ public class DiscussionsCount: NSObject {
     
     /// Flag indicating is there any unsent
     public var hasUnsent: Bool {
-        return numberOfUnsent > 0
+        numberOfUnsent > 0
     }
     
     /// Flag indicating is there any highlight
     public var hasHighlight: Bool {
-        return numberOfHighlighted > 0
+        numberOfHighlighted > 0
     }
     
-    public static let zero: DiscussionsCount = DiscussionsCount(numberOfNotified: 0,
-                                                                numberOfHighlighted: 0,
-                                                                numberOfUnsent: 0)
+    public static let zero = DiscussionsCount(numberOfNotified: 0,
+                                              numberOfHighlighted: 0,
+                                              numberOfUnsent: 0)
     
     public init(numberOfNotified: Int,
                 numberOfHighlighted: Int,
@@ -52,9 +52,9 @@ public class DiscussionsCount: NSObject {
     }
     
     public init(withRoomListDataCounts counts: [MXRoomListDataCounts]) {
-        self.numberOfNotified = counts.reduce(0, { $0 + $1.numberOfNotifiedRooms })
-        self.numberOfHighlighted = counts.reduce(0, { $0 + $1.numberOfHighlightedRooms + $1.numberOfInvitedRooms })
-        self.numberOfUnsent = counts.reduce(0, { $0 + $1.numberOfUnsentRooms })
+        numberOfNotified = counts.reduce(0) { $0 + $1.numberOfNotifiedRooms }
+        numberOfHighlighted = counts.reduce(0) { $0 + $1.numberOfHighlightedRooms + $1.numberOfInvitedRooms }
+        numberOfUnsent = counts.reduce(0) { $0 + $1.numberOfUnsentRooms }
         super.init()
     }
 }

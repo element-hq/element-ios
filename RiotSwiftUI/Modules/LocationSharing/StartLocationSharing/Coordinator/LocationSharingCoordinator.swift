@@ -15,9 +15,9 @@
 //
 
 import Foundation
-import UIKit
-import SwiftUI
 import MatrixSDK
+import SwiftUI
+import UIKit
 
 struct LocationSharingCoordinatorParameters {
     let session: MXSession
@@ -57,7 +57,6 @@ extension LocationSharingCoordinateType {
 }
 
 final class LocationSharingCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -83,7 +82,8 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
             mapStyleURL: parameters.session.vc_homeserverConfiguration().tileServer.mapStyleURL,
             avatarData: parameters.avatarData,
             isLiveLocationSharingEnabled: true,
-            service: locationSharingService)
+            service: locationSharingService
+        )
         
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
@@ -93,6 +93,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Public
+
     func start() {
         locationSharingViewModel.completion = { [weak self] result in
             guard let self = self else { return }
@@ -111,22 +112,22 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     }
     
     static func shareLocationActivityController(_ location: CLLocationCoordinate2D) -> UIActivityViewController {
-        return UIActivityViewController(activityItems: [ShareToMapsAppActivity.urlForMapsAppType(.apple, location: location)],
-                                        applicationActivities: [ShareToMapsAppActivity(type: .apple, location: location),
-                                                                ShareToMapsAppActivity(type: .google, location: location),
-                                                                ShareToMapsAppActivity(type: .osm, location: location)])
+        UIActivityViewController(activityItems: [ShareToMapsAppActivity.urlForMapsAppType(.apple, location: location)],
+                                 applicationActivities: [ShareToMapsAppActivity(type: .apple, location: location),
+                                                         ShareToMapsAppActivity(type: .google, location: location),
+                                                         ShareToMapsAppActivity(type: .osm, location: location)])
     }
     
     // MARK: - Private
     
     private func presentShareLocationActivity(with location: CLLocationCoordinate2D) {
-        self.locationSharingHostingController.present(Self.shareLocationActivityController(location), animated: true)
+        locationSharingHostingController.present(Self.shareLocationActivityController(location), animated: true)
     }
     
     private func shareStaticLocation(latitude: Double, longitude: Double, coordinateType: LocationSharingCoordinateType) {
-        self.locationSharingViewModel.startLoading()
+        locationSharingViewModel.startLoading()
         
-        self.parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil, coordinateType: coordinateType.eventAssetType()) { [weak self] _ in
+        parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil, coordinateType: coordinateType.eventAssetType()) { [weak self] _ in
             guard let self = self else { return }
             
             self.locationSharingViewModel.stopLoading()
@@ -140,8 +141,8 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     }
     
     private func startLiveLocationSharing(with timeout: TimeInterval) {
-        guard let locationService = self.parameters.roomDataSource.mxSession.locationService, let roomId = self.parameters.roomDataSource.roomId else {
-            self.locationSharingViewModel.stopLoading(error: .locationSharingError)
+        guard let locationService = parameters.roomDataSource.mxSession.locationService, let roomId = parameters.roomDataSource.roomId else {
+            locationSharingViewModel.stopLoading(error: .locationSharingError)
             return
         }
         
@@ -166,16 +167,15 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     }
     
     private func checkLiveLocationCanBeStarted(completion: @escaping ((Result<Void, Error>) -> Void)) {
-        
-        guard self.canShareLiveLocation() else {
+        guard canShareLiveLocation() else {
             completion(.failure(LiveLocationStartError.powerLevelNotHighEnough))
             return
         }
 
-        self.showLabFlagPromotionIfNeeded { labFlagEnabled in
+        showLabFlagPromotionIfNeeded { labFlagEnabled in
             
             if labFlagEnabled {
-                completion(.success(Void()))
+                completion(.success(()))
             } else {
                 completion(.failure(LiveLocationStartError.labFlagNotEnabled))
             }
@@ -184,18 +184,18 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     
     // Check if user can send beacon info state event
     private func canShareLiveLocation() -> Bool {
-        guard let myUserId = self.parameters.roomDataSource.mxSession.myUserId else {
+        guard let myUserId = parameters.roomDataSource.mxSession.myUserId else {
             return false
         }
         
-        let userPowerLevelRawValue = self.parameters.roomDataSource.roomState.powerLevels.powerLevelOfUser(withUserID: myUserId)
+        let userPowerLevelRawValue = parameters.roomDataSource.roomState.powerLevels.powerLevelOfUser(withUserID: myUserId)
         
         guard let userPowerLevel = RoomPowerLevel(rawValue: userPowerLevelRawValue) else {
             return false
         }
         
         return userPowerLevel.rawValue >= RoomPowerLevel.moderator.rawValue
-    }    
+    }
     
     private func showLabFlagPromotionIfNeeded(completion: @escaping ((Bool) -> Void)) {
         guard RiotSettings.shared.enableLiveLocationSharing == false else {
@@ -204,11 +204,10 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
             return
         }
         
-        self.showLabFlagPromotion(completion: completion)
+        showLabFlagPromotion(completion: completion)
     }
     
     private func showLabFlagPromotion(completion: @escaping ((Bool) -> Void)) {
-        
         // TODO: Use a NavigationRouter instead of using NavigationView inside LocationSharingView
         // In order to use `NavigationRouter.present`
         
@@ -224,14 +223,14 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
             }
         }
         
-        self.locationSharingHostingController.present(coordinator.toPresentable(), animated: true)
+        locationSharingHostingController.present(coordinator.toPresentable(), animated: true)
         
-        self.add(childCoordinator: coordinator)
+        add(childCoordinator: coordinator)
     }
     
     // MARK: - Presentable
     
     func toPresentable() -> UIViewController {
-        return locationSharingHostingController
+        locationSharingHostingController
     }
 }

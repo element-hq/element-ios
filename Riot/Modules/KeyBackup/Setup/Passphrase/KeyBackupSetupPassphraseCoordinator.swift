@@ -18,7 +18,6 @@ import Foundation
 import UIKit
 
 final class KeyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -46,27 +45,27 @@ final class KeyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseCoordin
     
     // MARK: - Public methods
     
-    func start() {            
-        self.keyBackupSetupPassphraseViewModel.coordinatorDelegate = self
+    func start() {
+        keyBackupSetupPassphraseViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.keyBackupSetupPassphraseViewController
+        keyBackupSetupPassphraseViewController
     }
 }
 
 // MARK: - KeyBackupSetupPassphraseViewModelCoordinatorDelegate
+
 extension KeyBackupSetupPassphraseCoordinator: KeyBackupSetupPassphraseViewModelCoordinatorDelegate {
-    
     func keyBackupSetupPassphraseViewModel(_ viewModel: KeyBackupSetupPassphraseViewModelType, didCreateBackupFromPassphraseWithResultingRecoveryKey recoveryKey: String) {
-        self.delegate?.keyBackupSetupPassphraseCoordinator(self, didCreateBackupFromPassphraseWithResultingRecoveryKey: recoveryKey)
+        delegate?.keyBackupSetupPassphraseCoordinator(self, didCreateBackupFromPassphraseWithResultingRecoveryKey: recoveryKey)
     }
     
     func keyBackupSetupPassphraseViewModel(_ viewModel: KeyBackupSetupPassphraseViewModelType, didCreateBackupFromRecoveryKey recoveryKey: String) {
-        self.delegate?.keyBackupSetupPassphraseCoordinator(self, didCreateBackupFromRecoveryKey: recoveryKey)
+        delegate?.keyBackupSetupPassphraseCoordinator(self, didCreateBackupFromRecoveryKey: recoveryKey)
     }
     
     func keyBackupSetupPassphraseViewModelDidCancel(_ viewModel: KeyBackupSetupPassphraseViewModelType) {
-        self.delegate?.keyBackupSetupPassphraseCoordinatorDidCancel(self)
+        delegate?.keyBackupSetupPassphraseCoordinatorDidCancel(self)
     }
 }

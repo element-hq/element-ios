@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 protocol ChooseAvatarTableViewCellDelegate: AnyObject {
     func chooseAvatarTableViewCellDidTapChooseAvatar(_ cell: ChooseAvatarTableViewCell, sourceView: UIView)
@@ -23,14 +23,14 @@ protocol ChooseAvatarTableViewCellDelegate: AnyObject {
 }
 
 class ChooseAvatarTableViewCell: UITableViewCell {
-
-    @IBOutlet private weak var avatarImageView: UIImageView! {
+    @IBOutlet private var avatarImageView: UIImageView! {
         didSet {
-            avatarImageView.layer.cornerRadius = avatarImageView.frame.width/2
+            avatarImageView.layer.cornerRadius = avatarImageView.frame.width / 2
         }
     }
-    @IBOutlet private weak var chooseAvatarButton: UIButton!
-    @IBOutlet private weak var removeAvatarButton: UIButton! {
+
+    @IBOutlet private var chooseAvatarButton: UIButton!
+    @IBOutlet private var removeAvatarButton: UIButton! {
         didSet {
             removeAvatarButton.imageView?.contentMode = .scaleAspectFit
         }
@@ -55,16 +55,13 @@ class ChooseAvatarTableViewCell: UITableViewCell {
             removeAvatarButton.isHidden = true
         }
     }
-    
 }
 
-extension ChooseAvatarTableViewCell: NibReusable {}
+extension ChooseAvatarTableViewCell: NibReusable { }
 
 extension ChooseAvatarTableViewCell: Themable {
-    
     func update(theme: Theme) {
         backgroundView = UIView()
         backgroundView?.backgroundColor = theme.backgroundColor
     }
-    
 }

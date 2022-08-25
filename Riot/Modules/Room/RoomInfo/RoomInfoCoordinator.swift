@@ -20,7 +20,6 @@ import UIKit
 
 @objcMembers
 final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -47,7 +46,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         let files = RoomFilesViewController()
         files.finalizeInit()
         files.screenTracker = AnalyticsScreenTracker(screen: .roomUploads)
-        MXKRoomDataSource.load(withRoomId: self.room.roomId, andMatrixSession: self.session) { (dataSource) in
+        MXKRoomDataSource.load(withRoomId: self.room.roomId, andMatrixSession: self.session) { dataSource in
             guard let dataSource = dataSource as? MXKRoomDataSource else { return }
             dataSource.filterMessagesWithURL = true
             dataSource.finalizeInitialization()
@@ -101,52 +100,52 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
             self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         }
 
-        self.session = parameters.session
-        self.room = parameters.room
-        self.parentSpaceId = parameters.parentSpaceId
-        self.initialSection = parameters.initialSection
-        self.dismissOnCancel = parameters.dismissOnCancel
-    }    
+        session = parameters.session
+        room = parameters.room
+        parentSpaceId = parameters.parentSpaceId
+        initialSection = parameters.initialSection
+        dismissOnCancel = parameters.dismissOnCancel
+    }
     
     // MARK: - Public methods
     
     func start() {
-        let rootCoordinator = self.createRoomInfoListCoordinator()
+        let rootCoordinator = createRoomInfoListCoordinator()
 
         rootCoordinator.start()
 
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
         
-        if self.navigationRouter.modules.isEmpty == false {
+        if navigationRouter.modules.isEmpty == false {
             // push room info screen non animated if another screen needs to be pushed just after
             let animated = initialSection == .none
-            self.navigationRouter.push(rootCoordinator.toPresentable(), animated: animated, popCompletion: nil)
+            navigationRouter.push(rootCoordinator.toPresentable(), animated: animated, popCompletion: nil)
         } else {
-            self.navigationRouter.setRootModule(rootCoordinator)
+            navigationRouter.setRootModule(rootCoordinator)
         }
 
         switch initialSection {
         case .addParticipants:
-            self.showRoomDetails(with: .members, animated: false)
+            showRoomDetails(with: .members, animated: false)
         case .changeAvatar:
-            self.showRoomDetails(with: .settings(RoomSettingsViewControllerFieldAvatar), animated: false)
+            showRoomDetails(with: .settings(RoomSettingsViewControllerFieldAvatar), animated: false)
         case .changeTopic:
-            self.showRoomDetails(with: .settings(RoomSettingsViewControllerFieldTopic), animated: false)
+            showRoomDetails(with: .settings(RoomSettingsViewControllerFieldTopic), animated: false)
         case .settings:
-            self.showRoomDetails(with: .settings(RoomSettingsViewControllerFieldNone), animated: false)
+            showRoomDetails(with: .settings(RoomSettingsViewControllerFieldNone), animated: false)
         case .none:
             break
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private methods
 
     private func createRoomInfoListCoordinator() -> RoomInfoListCoordinator {
-        let coordinator = RoomInfoListCoordinator(session: self.session, room: room)
+        let coordinator = RoomInfoListCoordinator(session: session, room: room)
         coordinator.delegate = self
         return coordinator
     }
@@ -164,9 +163,9 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
                 navigationRouter.present(modularVC, animated: true)
             }
         case .search:
-            MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)?.roomDataSource(forRoom: self.room.roomId, create: false, onComplete: { (roomDataSource) in
+            MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)?.roomDataSource(forRoom: room.roomId, create: false, onComplete: { roomDataSource in
                 guard let dataSource = roomDataSource else { return }
-                let roomSearchViewController: RoomSearchViewController = RoomSearchViewController.instantiate()
+                let roomSearchViewController = RoomSearchViewController.instantiate()
                 roomSearchViewController.loadViewIfNeeded()
                 roomSearchViewController.roomDataSource = dataSource
                 self.navigationRouter.push(roomSearchViewController, animated: animated, popCompletion: nil)
@@ -174,8 +173,8 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         case .notifications:
             let coordinator = createRoomNotificationSettingsCoordinator()
             coordinator.start()
-            self.add(childCoordinator: coordinator)
-            self.navigationRouter.push(coordinator, animated: true, popCompletion: nil)
+            add(childCoordinator: coordinator)
+            navigationRouter.push(coordinator, animated: true, popCompletion: nil)
         default:
             guard let tabIndex = target.tabIndex else {
                 fatalError("No settings tab index for this target.")
@@ -192,64 +191,58 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
 }
 
 // MARK: - RoomInfoListCoordinatorDelegate
+
 extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
-    
     func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToNavigateTo target: RoomInfoListTarget) {
-        self.showRoomDetails(with: target, animated: true)
+        showRoomDetails(with: target, animated: true)
     }
     
     func roomInfoListCoordinatorDidCancel(_ coordinator: RoomInfoListCoordinatorType) {
-        self.delegate?.roomInfoCoordinatorDidComplete(self)
+        delegate?.roomInfoCoordinatorDidComplete(self)
     }
     
     func roomInfoListCoordinatorDidLeaveRoom(_ coordinator: RoomInfoListCoordinatorType) {
-        self.delegate?.roomInfoCoordinatorDidLeaveRoom(self)
+        delegate?.roomInfoCoordinatorDidLeaveRoom(self)
     }
-
 }
 
 extension RoomInfoCoordinator: RoomParticipantsViewControllerDelegate {
-    
     func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, mention member: MXRoomMember!) {
-        self.navigationRouter.popToRootModule(animated: true)
-        self.delegate?.roomInfoCoordinator(self, didRequestMentionForMember: member)
+        navigationRouter.popToRootModule(animated: true)
+        delegate?.roomInfoCoordinator(self, didRequestMentionForMember: member)
     }
-    
 }
 
 extension RoomInfoCoordinator: RoomNotificationSettingsCoordinatorDelegate {
     func roomNotificationSettingsCoordinatorDidComplete(_ coordinator: RoomNotificationSettingsCoordinatorType) {
-        self.navigationRouter.popModule(animated: true)
+        navigationRouter.popModule(animated: true)
     }
     
-    func roomNotificationSettingsCoordinatorDidCancel(_ coordinator: RoomNotificationSettingsCoordinatorType) {
-        
-    }
-    
+    func roomNotificationSettingsCoordinatorDidCancel(_ coordinator: RoomNotificationSettingsCoordinatorType) { }
 }
 
 extension RoomInfoCoordinator: RoomSettingsViewControllerDelegate {
     func roomSettingsViewControllerDidCancel(_ controller: RoomSettingsViewController!) {
-        if self.dismissOnCancel {
-            self.navigationRouter.dismissModule(animated: true, completion: nil)
+        if dismissOnCancel {
+            navigationRouter.dismissModule(animated: true, completion: nil)
         } else {
-            controller.withdrawViewController(animated: true) {}
+            controller.withdrawViewController(animated: true) { }
         }
     }
     
     func roomSettingsViewControllerDidComplete(_ controller: RoomSettingsViewController!) {
-        if self.dismissOnCancel {
-            self.navigationRouter.dismissModule(animated: true, completion: nil)
+        if dismissOnCancel {
+            navigationRouter.dismissModule(animated: true, completion: nil)
         } else {
-            controller.withdrawViewController(animated: true) {}
+            controller.withdrawViewController(animated: true) { }
         }
     }
     
     func roomSettingsViewController(_ controller: RoomSettingsViewController!, didReplaceRoomWithReplacementId newRoomId: String!) {
-        self.delegate?.roomInfoCoordinator(self, didReplaceRoomWithReplacementId: newRoomId)
+        delegate?.roomInfoCoordinator(self, didReplaceRoomWithReplacementId: newRoomId)
     }
     
     func roomSettingsViewControllerDidLeaveRoom(_ controller: RoomSettingsViewController!) {
-        self.delegate?.roomInfoCoordinatorDidLeaveRoom(self)
+        delegate?.roomInfoCoordinatorDidLeaveRoom(self)
     }
 }

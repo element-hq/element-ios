@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,6 @@ enum SpaceDetailCoordinatorResult {
 
 /// Space detail screen
 final class SpaceDetailCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -61,11 +60,11 @@ final class SpaceDetailCoordinator: Coordinator, Presentable {
     // MARK: - Public methods
     
     func start() {
-        self.viewModel.coordinatorDelegate = self
+        viewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.viewController
+        viewController
     }
 }
 

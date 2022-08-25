@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,6 @@ import SwiftUI
  (E.g. `vectorContent` modifier and theming to the NavigationController container.
  */
 class VectorHostingController: UIHostingController<AnyView> {
-    
     // MARK: Private
     
     private var theme: Theme
@@ -30,9 +29,9 @@ class VectorHostingController: UIHostingController<AnyView> {
     // MARK: Public
 
     /// Wether or not the navigation bar should be hidden. Default `false`
-    var isNavigationBarHidden: Bool = false
+    var isNavigationBarHidden = false
     /// Wether or not the title of the back item should be hidden. Default `false`
-    var hidesBackTitleWhenPushed: Bool = false
+    var hidesBackTitleWhenPushed = false
     /// Defines the behaviour of the `VectorHostingController` as a bottom sheet. Default `nil`
     var bottomSheetPreferences: VectorHostingBottomSheetPreferences?
 
@@ -46,16 +45,18 @@ class VectorHostingController: UIHostingController<AnyView> {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         statusBarStyle ?? super.preferredStatusBarStyle
     }
+
     /// Initializer
     /// - Parameter rootView: Root view for the controller.
     /// - Parameter forceZeroSafeAreaInsets: Whether to force-set the hosting view's safe area insets to zero. Useful when the view is used as part of a table view.
     init<Content>(rootView: Content,
                   forceZeroSafeAreaInsets: Bool = false) where Content: View {
-        self.theme = ThemeService.shared().theme
+        theme = ThemeService.shared().theme
         self.forceZeroSafeAreaInsets = forceZeroSafeAreaInsets
         super.init(rootView: AnyView(rootView.vectorContent()))
     }
     
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("VectorHostingViewController does not currently support init from nibs")
     }
@@ -65,10 +66,10 @@ class VectorHostingController: UIHostingController<AnyView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .clear
+        view.backgroundColor = .clear
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
         bottomSheetPreferences?.setup(viewController: self)
     }
@@ -77,7 +78,7 @@ class VectorHostingController: UIHostingController<AnyView> {
         super.viewWillAppear(animated)
         
         if isNavigationBarHidden {
-            self.navigationController?.isNavigationBarHidden = true
+            navigationController?.isNavigationBarHidden = true
         }
     }
     
@@ -123,14 +124,14 @@ class VectorHostingController: UIHostingController<AnyView> {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func update(theme: Theme) {
         // Ensure dynamic colors are shown correctly when the theme is the opposite appearance to the system.
         overrideUserInterfaceStyle = theme.userInterfaceStyle
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar, withModernScrollEdgeAppearance: enableNavigationBarScrollEdgeAppearance)
         }
     }

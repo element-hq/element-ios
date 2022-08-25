@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,19 +14,18 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 /// `RecentEmptySectionTableViewCell` can be used as a placeholder for empty sections.
 class RecentEmptySectionTableViewCell: UITableViewCell, NibReusable, Themable {
-    
     @IBOutlet private var iconBackgroundView: UIView!
     @IBOutlet var iconView: UIImageView!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var messageLabel: UILabel!
     
     @objc static func defaultReuseIdentifier() -> String {
-        return reuseIdentifier
+        reuseIdentifier
     }
     
     // MARK: - Life cycle
@@ -34,10 +33,10 @@ class RecentEmptySectionTableViewCell: UITableViewCell, NibReusable, Themable {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        self.iconBackgroundView.layer.cornerRadius = self.iconBackgroundView.bounds.height / 2
-        self.iconBackgroundView.layer.masksToBounds = true
+        iconBackgroundView.layer.cornerRadius = iconBackgroundView.bounds.height / 2
+        iconBackgroundView.layer.masksToBounds = true
         
-        self.selectionStyle = .none
+        selectionStyle = .none
         
         update(theme: ThemeService.shared().theme)
     }
@@ -45,15 +44,15 @@ class RecentEmptySectionTableViewCell: UITableViewCell, NibReusable, Themable {
     // MARK: - Themable
     
     func update(theme: Theme) {
-        self.backgroundColor = theme.colors.background
+        backgroundColor = theme.colors.background
         
-        self.iconBackgroundView.backgroundColor = theme.colors.quinaryContent
-        self.iconView.tintColor = theme.colors.secondaryContent
+        iconBackgroundView.backgroundColor = theme.colors.quinaryContent
+        iconView.tintColor = theme.colors.secondaryContent
         
-        self.titleLabel.textColor = theme.colors.primaryContent
-        self.titleLabel.font = theme.fonts.title3SB
+        titleLabel.textColor = theme.colors.primaryContent
+        titleLabel.font = theme.fonts.title3SB
         
-        self.messageLabel.textColor = theme.colors.secondaryContent
-        self.messageLabel.font = theme.fonts.callout
+        messageLabel.textColor = theme.colors.secondaryContent
+        messageLabel.font = theme.fonts.callout
     }
 }

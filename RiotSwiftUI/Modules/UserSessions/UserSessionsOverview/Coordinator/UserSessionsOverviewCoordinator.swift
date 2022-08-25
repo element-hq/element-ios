@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct UserSessionsOverviewCoordinatorParameters {
     let session: MXSession
 }
 
 final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -62,6 +61,6 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.userSessionsOverviewHostingController
+        userSessionsOverviewHostingController
     }
 }

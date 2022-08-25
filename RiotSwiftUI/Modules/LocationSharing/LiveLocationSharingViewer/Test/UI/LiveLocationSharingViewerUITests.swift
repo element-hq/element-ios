@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class LiveLocationSharingViewerUITests: MockScreenTestCase {
     // Tests to be implemented.

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import UIKit
 
 class CustomRoundedButton: UIButton {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -29,17 +28,17 @@ class CustomRoundedButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.commonInit()
+        commonInit()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        self.commonInit()
+        commonInit()
     }
     
     private func commonInit() {
-        self.layer.masksToBounds = true
-        self.titleLabel?.font = UIFont.systemFont(ofSize: Constants.fontSize)        
-        self.layer.cornerRadius = Constants.cornerRadius
+        layer.masksToBounds = true
+        titleLabel?.font = UIFont.systemFont(ofSize: Constants.fontSize)
+        layer.cornerRadius = Constants.cornerRadius
     }
 }

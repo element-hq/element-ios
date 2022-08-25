@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class SpaceExploreRoomCoordinator: SpaceExploreRoomCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -48,12 +47,12 @@ final class SpaceExploreRoomCoordinator: SpaceExploreRoomCoordinatorType {
     
     // MARK: - Public methods
     
-    func start() {            
-        self.spaceExploreRoomViewModel.coordinatorDelegate = self
+    func start() {
+        spaceExploreRoomViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.spaceExploreRoomViewController
+        spaceExploreRoomViewController
     }
     
     func reloadRooms() {
@@ -62,21 +61,22 @@ final class SpaceExploreRoomCoordinator: SpaceExploreRoomCoordinatorType {
 }
 
 // MARK: - SpaceExploreRoomViewModelCoordinatorDelegate
+
 extension SpaceExploreRoomCoordinator: SpaceExploreRoomViewModelCoordinatorDelegate {
     func spaceExploreRoomViewModel(_ viewModel: SpaceExploreRoomViewModelType, openSettingsOf item: SpaceExploreRoomListItemViewData) {
-        self.delegate?.spaceExploreRoomCoordinator(self, openSettingsOf: item)
+        delegate?.spaceExploreRoomCoordinator(self, openSettingsOf: item)
     }
     
     func spaceExploreRoomViewModel(_ coordinator: SpaceExploreRoomViewModelType, inviteTo item: SpaceExploreRoomListItemViewData) {
-        self.delegate?.spaceExploreRoomCoordinator(self, inviteTo: item)
+        delegate?.spaceExploreRoomCoordinator(self, inviteTo: item)
     }
     
     func spaceExploreRoomViewModel(_ coordinator: SpaceExploreRoomViewModelType, didSelect item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
-        self.delegate?.spaceExploreRoomCoordinator(self, didSelect: item, from: sourceView)
+        delegate?.spaceExploreRoomCoordinator(self, didSelect: item, from: sourceView)
     }
     
     func spaceExploreRoomViewModelDidCancel(_ viewModel: SpaceExploreRoomViewModelType) {
-        self.delegate?.spaceExploreRoomCoordinatorDidCancel(self)
+        delegate?.spaceExploreRoomCoordinatorDidCancel(self)
     }
     
     func spaceExploreRoomViewModelDidAddRoom(_ viewModel: SpaceExploreRoomViewModelType) {
@@ -95,12 +95,12 @@ extension SpaceExploreRoomCoordinator: SpaceExploreRoomViewModelCoordinatorDeleg
     }
     
     func spaceExploreRoomViewModel(_ coordinator: SpaceExploreRoomViewModelType, didJoin item: SpaceExploreRoomListItemViewData) {
-        self.delegate?.spaceExploreRoomCoordinator(self, didJoin: item)
+        delegate?.spaceExploreRoomCoordinator(self, didJoin: item)
     }
     
     private func showAddRoomMissingPermissionAlert() {
         let alert = UIAlertController(title: VectorL10n.spacesAddRoom, message: VectorL10n.spacesAddRoomMissingPermissionMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
-        self.toPresentable().present(alert, animated: true, completion: nil)
+        toPresentable().present(alert, animated: true, completion: nil)
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
 import CoreLocation
+import Foundation
 
 /// Location authorization request handler
 typealias LocationAuthorizationHandler = (_ authorizationStatus: LocationAuthorizationStatus) -> Void
 
 protocol LocationSharingServiceProtocol {
-        
     /// Request location authorization
     func requestAuthorization(_ handler: @escaping LocationAuthorizationHandler)
 }

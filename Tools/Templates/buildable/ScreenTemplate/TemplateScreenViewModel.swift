@@ -17,7 +17,6 @@
 import Foundation
 
 final class TemplateScreenViewModel: TemplateScreenViewModelProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -34,7 +33,7 @@ final class TemplateScreenViewModel: TemplateScreenViewModelProtocol {
     
     private(set) var viewState: TemplateScreenViewState = .idle {
         didSet {
-            self.viewDelegate?.templateScreenViewModel(self, didUpdateViewState: viewState)
+            viewDelegate?.templateScreenViewModel(self, didUpdateViewState: viewState)
         }
     }
     
@@ -53,23 +52,22 @@ final class TemplateScreenViewModel: TemplateScreenViewModelProtocol {
     func process(viewAction: TemplateScreenViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .complete:
-            self.coordinatorDelegate?.templateScreenViewModel(self, didCompleteWithUserDisplayName: self.userDisplayName)
+            coordinatorDelegate?.templateScreenViewModel(self, didCompleteWithUserDisplayName: userDisplayName)
         case .cancel:
-            self.cancelOperations()
-            self.coordinatorDelegate?.templateScreenViewModelDidCancel(self)
+            cancelOperations()
+            coordinatorDelegate?.templateScreenViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-
         viewState = .loading
 
         // Check first that the user homeserver is federated with the  Riot-bot homeserver
-        self.currentOperation = self.session.matrixRestClient.displayName(forUser: self.session.myUser.userId) { [weak self]  (response) in
+        currentOperation = session.matrixRestClient.displayName(forUser: session.myUser.userId) { [weak self] response in
 
             guard let self = self else {
                 return
@@ -86,6 +84,6 @@ final class TemplateScreenViewModel: TemplateScreenViewModelProtocol {
     }
         
     private func cancelOperations() {
-        self.currentOperation?.cancel()
+        currentOperation?.cancel()
     }
 }

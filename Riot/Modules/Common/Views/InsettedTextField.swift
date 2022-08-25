@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import UIKit
 
 class InsettedTextField: UITextField {
-    
     var insets: UIEdgeInsets = .zero {
         didSet {
             setNeedsLayout()
@@ -45,15 +44,14 @@ class InsettedTextField: UITextField {
     }
     
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: insets)
+        bounds.inset(by: insets)
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: insets)
+        bounds.inset(by: insets)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: insets)
+        bounds.inset(by: insets)
     }
-    
 }

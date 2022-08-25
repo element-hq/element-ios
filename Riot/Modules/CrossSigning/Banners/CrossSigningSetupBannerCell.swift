@@ -22,15 +22,14 @@ import UIKit
 
 @objcMembers
 final class CrossSigningSetupBannerCell: MXKTableViewCell, Themable {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var shieldImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var subtitleLabel: UILabel!
-    @IBOutlet private weak var closeButton: UIButton!
+    @IBOutlet private var shieldImageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var subtitleLabel: UILabel!
+    @IBOutlet private var closeButton: UIButton!
     
     // MARK: Public
     
@@ -39,18 +38,18 @@ final class CrossSigningSetupBannerCell: MXKTableViewCell, Themable {
     // MARK: - Overrides
     
     override class func defaultReuseIdentifier() -> String {
-        return String(describing: self)
+        String(describing: self)
     }
     
     override class func nib() -> UINib {
-        return UINib(nibName: String(describing: self), bundle: nil)
+        UINib(nibName: String(describing: self), bundle: nil)
     }
     
     override func customizeRendering() {
         super.customizeRendering()
         
         let theme = ThemeService.shared().theme
-        self.update(theme: theme)
+        update(theme: theme)
     }
     
     // MARK: - Life cycle
@@ -60,28 +59,28 @@ final class CrossSigningSetupBannerCell: MXKTableViewCell, Themable {
         
         // TODO: Image size is too small, use an higher resolution one.
         let shieldImage = Asset.Images.encryptionNormal.image.withRenderingMode(.alwaysTemplate)
-        self.shieldImageView.image = shieldImage
+        shieldImageView.image = shieldImage
         
         let closeImage = Asset.Images.closeBanner.image.withRenderingMode(.alwaysTemplate)
-        self.closeButton.setImage(closeImage, for: .normal)
+        closeButton.setImage(closeImage, for: .normal)
         
-        self.titleLabel.text = VectorL10n.crossSigningSetupBannerTitle
-        self.subtitleLabel.text = VectorL10n.crossSigningSetupBannerSubtitle
+        titleLabel.text = VectorL10n.crossSigningSetupBannerTitle
+        subtitleLabel.text = VectorL10n.crossSigningSetupBannerSubtitle
     }
     
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.shieldImageView.tintColor = theme.textPrimaryColor
-        self.closeButton.tintColor = theme.textPrimaryColor
+        shieldImageView.tintColor = theme.textPrimaryColor
+        closeButton.tintColor = theme.textPrimaryColor
         
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.subtitleLabel.textColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        subtitleLabel.textColor = theme.textPrimaryColor
     }
     
     // MARK: - Actions
     
     @IBAction private func closeButtonAction(_ sender: Any) {
-        self.delegate?.crossSigningSetupBannerCellDidTapCloseAction(self)
+        delegate?.crossSigningSetupBannerCellDidTapCloseAction(self)
     }
 }

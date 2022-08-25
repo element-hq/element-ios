@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// ReauthenticationCoordinator input parameters
 @objcMembers
 class ReauthenticationCoordinatorParameters: NSObject {
-    
     // MARK: - Properties
     
     /// The Matrix session
@@ -45,10 +44,10 @@ class ReauthenticationCoordinatorParameters: NSObject {
     // MARK: - Setup
     
     convenience init(session: MXSession,
-         presenter: UIViewController,
-         title: String?,
-         message: String?,
-         authenticatedEndpointRequest: AuthenticatedEndpointRequest) {
+                     presenter: UIViewController,
+                     title: String?,
+                     message: String?,
+                     authenticatedEndpointRequest: AuthenticatedEndpointRequest) {
         self.init(session: session,
                   presenter: presenter,
                   title: title,
@@ -58,19 +57,19 @@ class ReauthenticationCoordinatorParameters: NSObject {
     }
     
     convenience init(session: MXSession,
-         presenter: UIViewController,
-         title: String?,
-         message: String?,
-         authenticationSession: MXAuthenticationSession) {
+                     presenter: UIViewController,
+                     title: String?,
+                     message: String?,
+                     authenticationSession: MXAuthenticationSession) {
         self.init(session: session, presenter: presenter, title: title, message: message, authenticatedEndpointRequest: nil, authenticationSession: authenticationSession)
     }
     
     private init(session: MXSession,
-         presenter: UIViewController,
-         title: String?,
-         message: String?,
-         authenticatedEndpointRequest: AuthenticatedEndpointRequest?,
-         authenticationSession: MXAuthenticationSession?) {
+                 presenter: UIViewController,
+                 title: String?,
+                 message: String?,
+                 authenticatedEndpointRequest: AuthenticatedEndpointRequest?,
+                 authenticationSession: MXAuthenticationSession?) {
         self.session = session
         self.presenter = presenter
         self.title = title

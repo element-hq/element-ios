@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,8 @@ import Foundation
 import UIKit
 
 class RectangleToastView: UIView, Themable {
-    
     private enum Constants {
-        static let padding: UIEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        static let padding = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let cornerRadius: CGFloat = 8.0
     }
     
@@ -84,6 +83,7 @@ class RectangleToastView: UIView, Themable {
         themeDidChange()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -97,7 +97,7 @@ class RectangleToastView: UIView, Themable {
     
     @objc
     private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     //  MARK: Themable
@@ -108,5 +108,4 @@ class RectangleToastView: UIView, Themable {
         messageLabel.textColor = theme.colors.primaryContent
         messageLabel.font = theme.fonts.body
     }
-    
 }

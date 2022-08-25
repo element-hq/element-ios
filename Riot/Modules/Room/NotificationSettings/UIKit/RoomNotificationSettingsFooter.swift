@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,20 +14,18 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 class RoomNotificationSettingsFooter: UITableViewHeaderFooterView {
-    
     struct State {
         let showEncryptedNotice: Bool
         let showAccountLink: Bool
     }
     
-    @IBOutlet weak var label: UILabel!
+    @IBOutlet var label: UILabel!
     
     func update(footerState: State) {
-        
         // Don't include link until global settings in place
 //        let paragraphStyle = NSMutableParagraphStyle()
 //        paragraphStyle.lineHeightMultiple = 1.16
@@ -45,14 +43,11 @@ class RoomNotificationSettingsFooter: UITableViewHeaderFooterView {
 //        footer0.addAttribute(NSAttributedString.Key.link, value: Constants.linkToAccountSettings, range: linkRange)
         
         label.text = footerState.showEncryptedNotice ? VectorL10n.roomNotifsSettingsEncryptedRoomNotice : nil
-
     }
 }
 
-
-extension RoomNotificationSettingsFooter: NibReusable {}
+extension RoomNotificationSettingsFooter: NibReusable { }
 extension RoomNotificationSettingsFooter: Themable {
-    
     func update(theme: Theme) {
         contentView.backgroundColor = theme.headerBackgroundColor
         label.textColor = theme.headerTextSecondaryColor

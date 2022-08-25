@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,17 +14,17 @@
 // limitations under the License.
 //
 
-import Foundation
-import XCTest
 @testable import CommonKit
 @testable import Element
+import Foundation
 import MatrixSDK
+import XCTest
 
 class UserIndicatorStoreTests: XCTestCase {
     class PresenterSpy: UserIndicatorTypePresenterProtocol {
         class ViewPresenter: UserIndicatorViewPresentable {
-            func present() {}
-            func dismiss() {}
+            func present() { }
+            func dismiss() { }
         }
         
         var queue = UserIndicatorQueue()
@@ -47,7 +47,7 @@ class UserIndicatorStoreTests: XCTestCase {
     }
     
     func test_presentWillStartIndicator() {
-        let _ = presentLoading()
+        _ = presentLoading()
         XCTAssertEqual(indicator(at: 0)?.state, .executing)
     }
     
@@ -61,7 +61,7 @@ class UserIndicatorStoreTests: XCTestCase {
     
     func test_cancelWillStartNextIndicator() {
         let cancel = presentLoading()
-        let _ = presentLoading()
+        _ = presentLoading()
         
         cancel()
         
@@ -71,7 +71,7 @@ class UserIndicatorStoreTests: XCTestCase {
     // MARK: - Helpers
     
     private func presentLoading() -> UserIndicatorCancel {
-        return store.present(type: .loading(label: "xyz", isInteractionBlocking: false))
+        store.present(type: .loading(label: "xyz", isInteractionBlocking: false))
     }
     
     private func indicator(at index: Int) -> UserIndicator? {

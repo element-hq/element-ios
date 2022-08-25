@@ -29,11 +29,10 @@ protocol SecretsResetViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `SecretsResetViewController`
-protocol SecretsResetViewModelType {        
-        
+protocol SecretsResetViewModelType {
     var viewDelegate: SecretsResetViewModelViewDelegate? { get set }
     var coordinatorDelegate: SecretsResetViewModelCoordinatorDelegate? { get set }
     
-    func update(viewState: SecretsResetViewState)    
+    func update(viewState: SecretsResetViewState)
     func process(viewAction: SecretsResetViewAction)
 }

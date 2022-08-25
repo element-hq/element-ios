@@ -28,7 +28,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class CreateRoomCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -55,18 +54,18 @@ final class CreateRoomCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let createRoomCoordinator = CreateRoomCoordinator(parameters: self.parameters)
+        let createRoomCoordinator = CreateRoomCoordinator(parameters: parameters)
         createRoomCoordinator.delegate = self
         let presentable = createRoomCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
         viewController.present(presentable, animated: animated, completion: nil)
         createRoomCoordinator.start()
         
-        self.coordinator = createRoomCoordinator
+        coordinator = createRoomCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -82,27 +81,23 @@ final class CreateRoomCoordinatorBridgePresenter: NSObject {
 // MARK: - CreateRoomCoordinatorDelegate
 
 extension CreateRoomCoordinatorBridgePresenter: CreateRoomCoordinatorDelegate {
-    
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
-        self.delegate?.createRoomCoordinatorBridgePresenterDelegate(self, didCreateNewRoom: room)
+        delegate?.createRoomCoordinatorBridgePresenterDelegate(self, didCreateNewRoom: room)
     }
     
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
-        self.delegate?.createRoomCoordinatorBridgePresenterDelegate(self, didAddRoomsWithIds: roomIds)
+        delegate?.createRoomCoordinatorBridgePresenterDelegate(self, didAddRoomsWithIds: roomIds)
     }
 
     func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {
-        self.delegate?.createRoomCoordinatorBridgePresenterDelegateDidCancel(self)
+        delegate?.createRoomCoordinatorBridgePresenterDelegateDidCancel(self)
     }
-    
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
 extension CreateRoomCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.createRoomCoordinatorBridgePresenterDelegateDidCancel(self)
+        delegate?.createRoomCoordinatorBridgePresenterDelegateDidCancel(self)
     }
-    
 }

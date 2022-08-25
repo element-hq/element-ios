@@ -17,7 +17,6 @@
 import Foundation
 
 final class SecretsRecoveryWithKeyCoordinator: SecretsRecoveryWithKeyCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -35,7 +34,6 @@ final class SecretsRecoveryWithKeyCoordinator: SecretsRecoveryWithKeyCoordinator
     // MARK: - Setup
     
     init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal, cancellable: Bool) {
-        
         let secretsRecoveryWithKeyViewModel = SecretsRecoveryWithKeyViewModel(recoveryService: recoveryService, recoveryGoal: recoveryGoal)
         let secretsRecoveryWithKeyViewController = SecretsRecoveryWithKeyViewController.instantiate(with: secretsRecoveryWithKeyViewModel, cancellable: cancellable)
         self.secretsRecoveryWithKeyViewController = secretsRecoveryWithKeyViewController
@@ -46,24 +44,25 @@ final class SecretsRecoveryWithKeyCoordinator: SecretsRecoveryWithKeyCoordinator
     // MARK: - Public
     
     func start() {
-        self.secretsRecoveryWithKeyViewModel.coordinatorDelegate = self
+        secretsRecoveryWithKeyViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.secretsRecoveryWithKeyViewController
-            .vc_setModalFullScreen(!self.cancellable)
+        secretsRecoveryWithKeyViewController
+            .vc_setModalFullScreen(!cancellable)
     }
 }
 
 // MARK: - secretsRecoveryWithKeyViewModelCoordinatorDelegate
+
 extension SecretsRecoveryWithKeyCoordinator: SecretsRecoveryWithKeyViewModelCoordinatorDelegate {
-    func secretsRecoveryWithKeyViewModelDidRecover(_ viewModel: SecretsRecoveryWithKeyViewModelType) {        self.delegate?.secretsRecoveryWithKeyCoordinatorDidRecover(self)
+    func secretsRecoveryWithKeyViewModelDidRecover(_ viewModel: SecretsRecoveryWithKeyViewModelType) { delegate?.secretsRecoveryWithKeyCoordinatorDidRecover(self)
     }
     
-    func secretsRecoveryWithKeyViewModelDidCancel(_ viewModel: SecretsRecoveryWithKeyViewModelType) {        self.delegate?.secretsRecoveryWithKeyCoordinatorDidCancel(self)
+    func secretsRecoveryWithKeyViewModelDidCancel(_ viewModel: SecretsRecoveryWithKeyViewModelType) { delegate?.secretsRecoveryWithKeyCoordinatorDidCancel(self)
     }
     
     func secretsRecoveryWithKeyViewModelWantsToResetSecrets(_ viewModel: SecretsRecoveryWithKeyViewModelType) {
-        self.delegate?.secretsRecoveryWithKeyCoordinatorWantsToResetSecrets(self)
+        delegate?.secretsRecoveryWithKeyCoordinatorWantsToResetSecrets(self)
     }
 }

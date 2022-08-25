@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,6 @@ enum CustomSchemeURLParserError: Error {
 
 /// CustomSchemeURLParser enables to parse custom scheme URL
 class CustomSchemeURLParser {
-        
     func parse(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) throws -> DeepLinkOption {
         guard let host = url.host else {
             throw CustomSchemeURLParserError.unknownHost
@@ -38,7 +37,7 @@ class CustomSchemeURLParser {
         
         switch host {
         case CustomSchemeURLConstants.Hosts.connect:
-            if let deepLinkOpt = self.buildDeepLinkConnect(from: urlComponents) {
+            if let deepLinkOpt = buildDeepLinkConnect(from: urlComponents) {
                 deepLinkOption = deepLinkOpt
             } else {
                 throw CustomSchemeURLParserError.invalidParameters
@@ -55,7 +54,7 @@ class CustomSchemeURLParser {
             return nil
         }
         
-        guard let loginToken = urlComponents.vc_getQueryItemValue(for: SSOURLConstants.Parameters.callbackLoginToken)  else {
+        guard let loginToken = urlComponents.vc_getQueryItemValue(for: SSOURLConstants.Parameters.callbackLoginToken) else {
             return nil
         }
         

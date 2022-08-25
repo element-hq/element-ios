@@ -17,7 +17,6 @@
 import Foundation
 
 @objc final class ReactionsMenuViewModel: NSObject, ReactionsMenuViewModelType {
-    
     // MARK: - Properties
     
     private let reactions = ["👍", "👎", "😄", "🎉", "😕", "❤️", "🚀", "👀"]
@@ -47,40 +46,40 @@ import Foundation
     func process(viewAction: ReactionsMenuViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .tap(let reaction):
-            if let viewData = self.currentViewDatas.first(where: { $0.emoji == reaction }) {
+            if let viewData = currentViewDatas.first(where: { $0.emoji == reaction }) {
                 if viewData.isSelected {
-                    self.coordinatorDelegate?.reactionsMenuViewModel(self, didRemoveReaction: reaction, forEventId: self.eventId)
+                    coordinatorDelegate?.reactionsMenuViewModel(self, didRemoveReaction: reaction, forEventId: eventId)
                 } else {
-                    self.coordinatorDelegate?.reactionsMenuViewModel(self, didAddReaction: reaction, forEventId: self.eventId)
+                    coordinatorDelegate?.reactionsMenuViewModel(self, didAddReaction: reaction, forEventId: eventId)
                 }
             }
         case .moreReactions:
-            self.coordinatorDelegate?.reactionsMenuViewModelDidTapMoreReactions(self, forEventId: self.eventId)
+            coordinatorDelegate?.reactionsMenuViewModelDidTapMoreReactions(self, forEventId: eventId)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        let reactionCounts = self.aggregatedReactions?.withNonZeroCount()?.reactions ?? []
+        let reactionCounts = aggregatedReactions?.withNonZeroCount()?.reactions ?? []
         
-        var quickReactionsWithUserReactedFlag: [String: Bool] = Dictionary(uniqueKeysWithValues: self.reactions.map { ($0, false) })
+        var quickReactionsWithUserReactedFlag: [String: Bool] = Dictionary(uniqueKeysWithValues: reactions.map { ($0, false) })
         
-        reactionCounts.forEach { (reactionCount) in
+        reactionCounts.forEach { reactionCount in
             if let hasUserReacted = quickReactionsWithUserReactedFlag[reactionCount.reaction], hasUserReacted == false {
                 quickReactionsWithUserReactedFlag[reactionCount.reaction] = reactionCount.myUserHasReacted
             }
         }
         
-        let reactionMenuItemViewDatas: [ReactionMenuItemViewData] = self.reactions.map { reaction -> ReactionMenuItemViewData in
+        let reactionMenuItemViewDatas: [ReactionMenuItemViewData] = reactions.map { reaction -> ReactionMenuItemViewData in
             let isSelected = quickReactionsWithUserReactedFlag[reaction] ?? false
             return ReactionMenuItemViewData(emoji: reaction, isSelected: isSelected)
         }
         
-        self.currentViewDatas = reactionMenuItemViewDatas
+        currentViewDatas = reactionMenuItemViewDatas
         
-        self.viewDelegate?.reactionsMenuViewModel(self, didUpdateViewState: ReactionsMenuViewState.loaded(reactionsViewData: reactionMenuItemViewDatas))
+        viewDelegate?.reactionsMenuViewModel(self, didUpdateViewState: ReactionsMenuViewState.loaded(reactionsViewData: reactionMenuItemViewDatas))
     }
 }

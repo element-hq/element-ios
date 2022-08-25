@@ -17,7 +17,6 @@
 import Foundation
 
 final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecoveryKeyViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -31,7 +30,7 @@ final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecove
     var recoveryKey: String?
     
     var isFormValid: Bool {
-        return self.recoveryKey?.isEmpty == false
+        self.recoveryKey?.isEmpty == false
     }
     
     weak var viewDelegate: KeyBackupRecoverFromRecoveryKeyViewModelViewDelegate?
@@ -53,9 +52,9 @@ final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecove
     func process(viewAction: KeyBackupRecoverFromRecoveryKeyViewAction) {
         switch viewAction {
         case .recover:
-            self.recover()
+            recover()
         case .cancel:
-            self.coordinatorDelegate?.keyBackupRecoverFromRecoveryKeyViewModelDidCancel(self)
+            coordinatorDelegate?.keyBackupRecoverFromRecoveryKeyViewModelDidCancel(self)
         case .unknownRecoveryKey:
             break
         }
@@ -64,13 +63,13 @@ final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecove
     // MARK: - Private
     
     private func recover() {
-        guard let recoveryKey = self.recoveryKey else {
+        guard let recoveryKey = recoveryKey else {
             return
         }
         
-        self.update(viewState: .loading)
+        update(viewState: .loading)
         
-        self.currentHTTPOperation = self.keyBackup.restore(self.keyBackupVersion, withRecoveryKey: recoveryKey, room: nil, session: nil, success: { [weak self] (_, _) in
+        currentHTTPOperation = keyBackup.restore(keyBackupVersion, withRecoveryKey: recoveryKey, room: nil, session: nil, success: { [weak self] _, _ in
             guard let sself = self else {
                 return
             }
@@ -84,16 +83,16 @@ final class KeyBackupRecoverFromRecoveryKeyViewModel: KeyBackupRecoverFromRecove
                 ssself.update(viewState: .loaded)
                 ssself.coordinatorDelegate?.keyBackupRecoverFromRecoveryKeyViewModelDidRecover(ssself)
 
-                }, failure: {[weak sself]  error in
-                    sself?.update(viewState: .error(error))
+            }, failure: { [weak sself] error in
+                sself?.update(viewState: .error(error))
             })
 
-        }, failure: {[weak self]  error in
+        }, failure: { [weak self] error in
             self?.update(viewState: .error(error))
         })
     }
     
-    private func update(viewState: KeyBackupRecoverFromRecoveryKeyViewState) {        
-        self.viewDelegate?.keyBackupRecoverFromPassphraseViewModel(self, didUpdateViewState: viewState)
+    private func update(viewState: KeyBackupRecoverFromRecoveryKeyViewState) {
+        viewDelegate?.keyBackupRecoverFromPassphraseViewModel(self, didUpdateViewState: viewState)
     }
 }

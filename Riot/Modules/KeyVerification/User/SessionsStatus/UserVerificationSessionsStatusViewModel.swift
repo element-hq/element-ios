@@ -23,7 +23,6 @@ enum UserVerificationSessionsStatusViewModelError: Error {
 }
 
 final class UserVerificationSessionsStatusViewModel: UserVerificationSessionsStatusViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -43,7 +42,7 @@ final class UserVerificationSessionsStatusViewModel: UserVerificationSessionsSta
     init(session: MXSession, userId: String) {
         self.session = session
         self.userId = userId
-        self.userTrustLevel = .unknown
+        userTrustLevel = .unknown
     }
     
     deinit {
@@ -55,37 +54,36 @@ final class UserVerificationSessionsStatusViewModel: UserVerificationSessionsSta
     func process(viewAction: UserVerificationSessionsStatusViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .selectSession(deviceId: let deviceId):
-            self.coordinatorDelegate?.userVerificationSessionsStatusViewModel(self, didSelectDeviceWithId: deviceId, for: self.userId)
+            coordinatorDelegate?.userVerificationSessionsStatusViewModel(self, didSelectDeviceWithId: deviceId, for: userId)
         case .close:
-            self.coordinatorDelegate?.userVerificationSessionsStatusViewModelDidClose(self)
+            coordinatorDelegate?.userVerificationSessionsStatusViewModelDidClose(self)
         }
     }
     
     // MARK: - Private
 
     private func loadData() {
+        let sessionsStatusViewData = getSessionStatusViewDataListFromCache(for: userId)
+        update(viewState: .loaded(userTrustLevel: userTrustLevel, sessionsStatusViewData: sessionsStatusViewData))
         
-        let sessionsStatusViewData = self.getSessionStatusViewDataListFromCache(for: self.userId)
-        self.update(viewState: .loaded(userTrustLevel: self.userTrustLevel, sessionsStatusViewData: sessionsStatusViewData))
-        
-        self.fetchSessionStatus()
+        fetchSessionStatus()
     }
     
     private func update(viewState: UserVerificationSessionsStatusViewState) {
-        self.viewDelegate?.userVerificationSessionsStatusViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.userVerificationSessionsStatusViewModel(self, didUpdateViewState: viewState)
     }
     
     private func fetchSessionStatus() {
-        self.update(viewState: .loading)
+        update(viewState: .loading)
         
-        self.currentOperation = self.getSessionStatusViewDataList(for: self.userId) { result in
+        currentOperation = getSessionStatusViewDataList(for: userId) { result in
             switch result {
             case .success(let sessionsStatusViewData):
                 
                 let isUserTrusted = sessionsStatusViewData.contains(where: { sessionsStatusViewData -> Bool in
-                    return sessionsStatusViewData.isTrusted == false
+                    sessionsStatusViewData.isTrusted == false
                 }) == false
                 
                 let userTrustLevel: UserEncryptionTrustLevel = isUserTrusted ? .trusted : .warning
@@ -98,12 +96,12 @@ final class UserVerificationSessionsStatusViewModel: UserVerificationSessionsSta
     }
     
     private func getSessionStatusViewDataListFromCache(for userId: String) -> [UserVerificationSessionStatusViewData] {
-        let deviceInfoList = self.getDevicesFromCache(for: self.userId)
-        return self.sessionStatusViewDataList(from: deviceInfoList)
+        let deviceInfoList = getDevicesFromCache(for: self.userId)
+        return sessionStatusViewDataList(from: deviceInfoList)
     }
     
     private func getDevicesFromCache(for userId: String) -> [MXDeviceInfo] {
-        guard let deviceInfoMap = self.session.crypto.devices(forUser: self.userId) else {
+        guard let deviceInfoMap = session.crypto.devices(forUser: self.userId) else {
             return []
         }
         return Array(deviceInfoMap.values)
@@ -111,10 +109,9 @@ final class UserVerificationSessionsStatusViewModel: UserVerificationSessionsSta
     
     @discardableResult
     private func getSessionStatusViewDataList(for userId: String, completion: @escaping (Result<[UserVerificationSessionStatusViewData], Error>) -> Void) -> MXHTTPOperation? {
-        
         let httpOperation: MXHTTPOperation?
         
-        httpOperation = self.session.crypto.downloadKeys([self.userId], forceDownload: false, success: { ( usersDeviceMap: MXUsersDevicesMap<MXDeviceInfo>?, usersCrossSigningMap: [String: MXCrossSigningInfo]?) in
+        httpOperation = session.crypto.downloadKeys([self.userId], forceDownload: false, success: { (usersDeviceMap: MXUsersDevicesMap<MXDeviceInfo>?, _: [String: MXCrossSigningInfo]?) in
             
             let sessionsViewData: [UserVerificationSessionStatusViewData]
             
@@ -137,12 +134,12 @@ final class UserVerificationSessionsStatusViewModel: UserVerificationSessionsSta
     }
     
     private func sessionStatusViewData(from deviceInfo: MXDeviceInfo) -> UserVerificationSessionStatusViewData {
-        return UserVerificationSessionStatusViewData(deviceId: deviceInfo.deviceId, sessionName: deviceInfo.displayName ?? "", isTrusted: deviceInfo.trustLevel.isVerified)
+        UserVerificationSessionStatusViewData(deviceId: deviceInfo.deviceId, sessionName: deviceInfo.displayName ?? "", isTrusted: deviceInfo.trustLevel.isVerified)
     }
     
     private func sessionStatusViewDataList(from deviceInfoList: [MXDeviceInfo]) -> [UserVerificationSessionStatusViewData] {
-        return deviceInfoList.map { (deviceInfo) -> UserVerificationSessionStatusViewData in
-            return self.sessionStatusViewData(from: deviceInfo)
+        deviceInfoList.map { deviceInfo -> UserVerificationSessionStatusViewData in
+            self.sessionStatusViewData(from: deviceInfo)
         }
     }
 }

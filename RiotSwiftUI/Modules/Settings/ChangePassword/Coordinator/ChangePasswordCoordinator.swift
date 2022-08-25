@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct ChangePasswordCoordinatorParameters {
     let restClient: MXRestClient
 }
 
 final class ChangePasswordCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -77,7 +76,7 @@ final class ChangePasswordCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.changePasswordHostingController
+        changePasswordHostingController
     }
     
     // MARK: - Private

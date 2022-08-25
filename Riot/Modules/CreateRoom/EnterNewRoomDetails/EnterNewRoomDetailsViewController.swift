@@ -16,18 +16,17 @@
  limitations under the License.
  */
 
-import UIKit
 import CommonKit
+import UIKit
 
 final class EnterNewRoomDetailsViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
         static let defaultStyleCellReuseIdentifier = "default"
-        static let roomNameTextFieldTag: Int = 100
-        static let roomTopicTextViewTag: Int = 101
-        static let roomAddressTextFieldTag: Int = 102
+        static let roomNameTextFieldTag = 100
+        static let roomTopicTextViewTag = 101
+        static let roomAddressTextFieldTag = 102
         static let roomNameMinimumNumberOfChars = 3
         static let roomNameMaximumNumberOfChars = 50
         static let roomAddressMaximumNumberOfChars = 50
@@ -40,7 +39,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var mainTableView: UITableView!
+    @IBOutlet private var mainTableView: UITableView!
     
     // MARK: Private
     
@@ -65,6 +64,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         item.isEnabled = false
         return item
     }()
+
     private var screenTracker = AnalyticsScreenTracker(screen: .createRoom)
     
     private enum RowType {
@@ -102,30 +102,26 @@ final class EnterNewRoomDetailsViewController: UIViewController {
                                rows: [row_0_0],
                                footer: nil)
         
-        let row_1_0 = Row(type: .textField(tag: Constants.roomNameTextFieldTag, placeholder: VectorL10n.createRoomPlaceholderName, delegate: self), text: viewModel.roomCreationParameters.name, accessoryType: .none) {
-            
-        }
+        let row_1_0 = Row(type: .textField(tag: Constants.roomNameTextFieldTag, placeholder: VectorL10n.createRoomPlaceholderName, delegate: self), text: viewModel.roomCreationParameters.name, accessoryType: .none) { }
         let section1 = Section(header: VectorL10n.createRoomSectionHeaderName,
                                rows: [row_1_0],
                                footer: nil)
         
-        let row_2_0 = Row(type: .textView(tag: Constants.roomTopicTextViewTag, placeholder: VectorL10n.createRoomPlaceholderTopic, delegate: self), text: viewModel.roomCreationParameters.topic, accessoryType: .none) {
-            
-        }
+        let row_2_0 = Row(type: .textView(tag: Constants.roomTopicTextViewTag, placeholder: VectorL10n.createRoomPlaceholderTopic, delegate: self), text: viewModel.roomCreationParameters.topic, accessoryType: .none) { }
         let section2 = Section(header: VectorL10n.createRoomSectionHeaderTopic,
                                rows: [row_2_0],
                                footer: nil)
         
         var section3: Section?
         if RiotSettings.shared.roomCreationScreenAllowEncryptionConfiguration {
-            let row_3_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isEncrypted, onValueChanged: { [weak self] (theSwitch) in
+            let row_3_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isEncrypted, onValueChanged: { [weak self] theSwitch in
                 self?.viewModel.roomCreationParameters.isEncrypted = theSwitch.isOn
             }), text: VectorL10n.createRoomEnableEncryption, accessoryType: .none) {
                 // no-op
             }
             section3 = Section(header: VectorL10n.createRoomSectionHeaderEncryption,
-                                   rows: [row_3_0],
-                                   footer: VectorL10n.createRoomSectionFooterEncryption)
+                               rows: [row_3_0],
+                               footer: VectorL10n.createRoomSectionFooterEncryption)
         }
         
         var section4: Section?
@@ -181,8 +177,8 @@ final class EnterNewRoomDetailsViewController: UIViewController {
                 footer = VectorL10n.createRoomSectionFooterTypePublic
             }
             section4 = Section(header: VectorL10n.createRoomSectionHeaderType,
-                                   rows: rows,
-                                   footer: footer)
+                               rows: rows,
+                               footer: footer)
         }
         
         var tmpSections: [Section] = [
@@ -200,7 +196,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         }
         
         if viewModel.roomCreationParameters.joinRule == .public {
-            let row_5_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.showInDirectory, onValueChanged: { [weak self] (theSwitch) in
+            let row_5_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.showInDirectory, onValueChanged: { [weak self] theSwitch in
                 self?.viewModel.roomCreationParameters.showInDirectory = theSwitch.isOn
             }), text: VectorL10n.createRoomShowInDirectory, accessoryType: .none) {
                 // no-op
@@ -208,7 +204,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
 
             let rows: [Row]
             if viewModel.actionType == .createAndAddToSpace {
-                let row_5_1 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isRoomSuggested, onValueChanged: { [weak self] (theSwitch) in
+                let row_5_1 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isRoomSuggested, onValueChanged: { [weak self] theSwitch in
                     self?.viewModel.roomCreationParameters.isRoomSuggested = theSwitch.isOn
                 }), text: VectorL10n.createRoomSuggestRoom, accessoryType: .none) {
                     // no-op
@@ -222,9 +218,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
                                    rows: rows,
                                    footer: VectorL10n.createRoomShowInDirectoryFooter)
             
-            let row_6_0 = Row(type: .textField(tag: Constants.roomAddressTextFieldTag, placeholder: VectorL10n.createRoomPlaceholderAddress, delegate: self), text: viewModel.roomCreationParameters.address, accessoryType: .none) {
-                
-            }
+            let row_6_0 = Row(type: .textField(tag: Constants.roomAddressTextFieldTag, placeholder: VectorL10n.createRoomPlaceholderAddress, delegate: self), text: viewModel.roomCreationParameters.address, accessoryType: .none) { }
             let section6 = Section(header: VectorL10n.createRoomSectionHeaderAddress,
                                    rows: [row_6_0],
                                    footer: nil)
@@ -233,7 +227,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         }
         
         if viewModel.roomCreationParameters.joinRule == .restricted {
-            let row_5_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isRoomSuggested, onValueChanged: { [weak self] (theSwitch) in
+            let row_5_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isRoomSuggested, onValueChanged: { [weak self] theSwitch in
                 self?.viewModel.roomCreationParameters.isRoomSuggested = theSwitch.isOn
             }), text: VectorL10n.createRoomSuggestRoom, accessoryType: .none) {
                 // no-op
@@ -263,35 +257,34 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.mainTableView)
-        self.userIndicatorPresenter = UserIndicatorTypePresenter(presentingViewController: self)
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: mainTableView)
+        userIndicatorPresenter = UserIndicatorTypePresenter(presentingViewController: self)
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
         
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.keyboardAvoider?.startAvoiding()
+        keyboardAvoider?.startAvoiding()
         screenTracker.trackScreen()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.keyboardAvoider?.stopAvoiding()
-        
+        keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -299,10 +292,10 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
-        self.mainTableView.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
+        mainTableView.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
@@ -314,7 +307,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -322,11 +315,11 @@ final class EnterNewRoomDetailsViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.leftBarButtonItem = cancelBarButtonItem
+        navigationItem.leftBarButtonItem = cancelBarButtonItem
         
-        self.navigationItem.rightBarButtonItem = createBarButtonItem
+        navigationItem.rightBarButtonItem = createBarButtonItem
         
-        self.title = VectorL10n.createRoomTitle
+        title = VectorL10n.createRoomTitle
         
         mainTableView.keyboardDismissMode = .interactive
         mainTableView.register(cellType: ChooseAvatarTableViewCell.self)
@@ -360,17 +353,17 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     
     private func render(error: Error) {
         loadingIndicator = nil
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     // MARK: - Actions
     
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
     
     private func createButtonAction() {
-        self.viewModel.process(viewAction: .create)
+        viewModel.process(viewAction: .create)
     }
     
     private func updateCreateButtonState() {
@@ -386,13 +379,12 @@ final class EnterNewRoomDetailsViewController: UIViewController {
 // MARK: - UITableViewDataSource
 
 extension EnterNewRoomDetailsViewController: UITableViewDataSource {
-    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].rows.count
+        sections[section].rows.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -480,13 +472,11 @@ extension EnterNewRoomDetailsViewController: UITableViewDataSource {
             return cell
         }
     }
-    
 }
 
 // MARK: - UITableViewDelegate
 
 extension EnterNewRoomDetailsViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = theme.backgroundColor
         cell.selectedBackgroundView = UIView()
@@ -494,11 +484,11 @@ extension EnterNewRoomDetailsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].header
+        sections[section].header
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return sections[section].footer
+        sections[section].footer
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -563,13 +553,11 @@ extension EnterNewRoomDetailsViewController: UITableViewDelegate {
         }
         return UITableView.automaticDimension
     }
-    
 }
 
 // MARK: - ChooseAvatarTableViewCellDelegate
 
 extension EnterNewRoomDetailsViewController: ChooseAvatarTableViewCellDelegate {
-    
     func chooseAvatarTableViewCellDidTapChooseAvatar(_ cell: ChooseAvatarTableViewCell, sourceView: UIView) {
         viewModel.process(viewAction: .chooseAvatar(sourceView: sourceView))
     }
@@ -577,22 +565,19 @@ extension EnterNewRoomDetailsViewController: ChooseAvatarTableViewCellDelegate {
     func chooseAvatarTableViewCellDidTapRemoveAvatar(_ cell: ChooseAvatarTableViewCell) {
         viewModel.process(viewAction: .removeAvatar)
     }
-
 }
 
 // MARK: - EnterNewRoomDetailsViewModelViewDelegate
 
 extension EnterNewRoomDetailsViewController: EnterNewRoomDetailsViewModelViewDelegate {
-    
     func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didUpdateViewState viewSate: EnterNewRoomDetailsViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
 // MARK: - UITextFieldDelegate
 
 extension EnterNewRoomDetailsViewController: UITextFieldDelegate {
-    
     func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField.tag {
         case Constants.roomNameTextFieldTag:
@@ -630,13 +615,11 @@ extension EnterNewRoomDetailsViewController: UITextFieldDelegate {
             return true
         }
     }
-    
 }
 
 // MARK: - UITextViewDelegate
 
 extension EnterNewRoomDetailsViewController: UITextViewDelegate {
-    
     func textViewDidChange(_ textView: UITextView) {
         switch textView.tag {
         case Constants.roomTopicTextViewTag:
@@ -665,5 +648,4 @@ extension EnterNewRoomDetailsViewController: UITextViewDelegate {
             return true
         }
     }
-    
 }

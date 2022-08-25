@@ -18,26 +18,25 @@
 
 import UIKit
 
-final class SettingsIdentityServerViewController: UIViewController {    
-    
+final class SettingsIdentityServerViewController: UIViewController {
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBOutlet weak var identityServerContainer: UIView!
-    @IBOutlet weak var identityServerLabel: UILabel!
-    @IBOutlet weak var identityServerTextField: UITextField!
+    @IBOutlet var identityServerContainer: UIView!
+    @IBOutlet var identityServerLabel: UILabel!
+    @IBOutlet var identityServerTextField: UITextField!
 
-    @IBOutlet private weak var messageLabel: UILabel!
+    @IBOutlet private var messageLabel: UILabel!
 
-    @IBOutlet weak var addOrChangeButtonContainer: UIView!
-    @IBOutlet private weak var addOrChangeButton: UIButton!
+    @IBOutlet var addOrChangeButtonContainer: UIView!
+    @IBOutlet private var addOrChangeButton: UIButton!
     
-    @IBOutlet weak var disconnectMessageLabel: UILabel!
-    @IBOutlet weak var disconnectButtonContainer: UIView!
-    @IBOutlet weak var disconnectButton: UIButton!
+    @IBOutlet var disconnectMessageLabel: UILabel!
+    @IBOutlet var disconnectButtonContainer: UIView!
+    @IBOutlet var disconnectButton: UIButton!
 
     // MARK: Private
 
@@ -71,35 +70,35 @@ final class SettingsIdentityServerViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.identityServerSettingsTitle
+        title = VectorL10n.identityServerSettingsTitle
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: scrollView)
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .load)
+        viewModel.process(viewAction: .load)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.keyboardAvoider?.startAvoiding()
+        keyboardAvoider?.startAvoiding()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.keyboardAvoider?.stopAvoiding()
+        keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -107,25 +106,25 @@ final class SettingsIdentityServerViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.identityServerContainer.backgroundColor = theme.backgroundColor
-        self.identityServerLabel.textColor = theme.textPrimaryColor
-        theme.applyStyle(onTextField: self.identityServerTextField)
-        self.identityServerTextField.textColor = theme.textSecondaryColor
-        self.messageLabel.textColor = theme.textPrimaryColor
+        identityServerContainer.backgroundColor = theme.backgroundColor
+        identityServerLabel.textColor = theme.textPrimaryColor
+        theme.applyStyle(onTextField: identityServerTextField)
+        identityServerTextField.textColor = theme.textSecondaryColor
+        messageLabel.textColor = theme.textPrimaryColor
 
-        self.addOrChangeButtonContainer.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.addOrChangeButton)
+        addOrChangeButtonContainer.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: addOrChangeButton)
 
-        self.disconnectMessageLabel.textColor = theme.textPrimaryColor
-        self.disconnectButtonContainer.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.disconnectButton)
-        self.disconnectButton.setTitleColor(self.theme.warningColor, for: .normal)
+        disconnectMessageLabel.textColor = theme.textPrimaryColor
+        disconnectButtonContainer.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: disconnectButton)
+        disconnectButton.setTitleColor(self.theme.warningColor, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -133,81 +132,81 @@ final class SettingsIdentityServerViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.scrollView.keyboardDismissMode = .interactive
+        scrollView.keyboardDismissMode = .interactive
 
-        self.identityServerLabel.text = VectorL10n.identityServerSettingsTitle
+        identityServerLabel.text = VectorL10n.identityServerSettingsTitle
 
-        self.identityServerTextField.placeholder = VectorL10n.identityServerSettingsPlaceHolder
-        self.identityServerTextField.addTarget(self, action: #selector(identityServerTextFieldDidChange(_:)), for: .editingChanged)
-        self.identityServerTextField.addTarget(self, action: #selector(identityServerTextFieldDidEndOnExit(_:)), for: .editingDidEndOnExit)
+        identityServerTextField.placeholder = VectorL10n.identityServerSettingsPlaceHolder
+        identityServerTextField.addTarget(self, action: #selector(identityServerTextFieldDidChange(_:)), for: .editingChanged)
+        identityServerTextField.addTarget(self, action: #selector(identityServerTextFieldDidEndOnExit(_:)), for: .editingDidEndOnExit)
 
-        self.disconnectMessageLabel.text = VectorL10n.identityServerSettingsDisconnectInfo
-        self.disconnectButton.setTitle(VectorL10n.identityServerSettingsDisconnect, for: .normal)
-        self.disconnectButton.setTitle(VectorL10n.identityServerSettingsDisconnect, for: .highlighted)
+        disconnectMessageLabel.text = VectorL10n.identityServerSettingsDisconnectInfo
+        disconnectButton.setTitle(VectorL10n.identityServerSettingsDisconnect, for: .normal)
+        disconnectButton.setTitle(VectorL10n.identityServerSettingsDisconnect, for: .highlighted)
     }
 
     private func render(viewState: SettingsIdentityServerViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let displayMode):
-            self.renderLoaded(displayMode: displayMode)
+            renderLoaded(displayMode: displayMode)
         case .presentTerms(let session, let accessToken, let baseUrl, let onComplete):
-            self.presentTerms(session: session, accessToken: accessToken, baseUrl: baseUrl, onComplete: onComplete)
+            presentTerms(session: session, accessToken: accessToken, baseUrl: baseUrl, onComplete: onComplete)
         case .alert(let alert, let onContinue):
-            self.renderAlert(alert: alert, onContinue: onContinue)
+            renderAlert(alert: alert, onContinue: onContinue)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(displayMode: SettingsIdentityServerDisplayMode) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
 
         self.displayMode = displayMode
 
         switch displayMode {
         case .noIdentityServer:
-            self.renderNoIdentityServer()
+            renderNoIdentityServer()
         case .identityServer(let host):
-            self.renderIdentityServer(host: host)
+            renderIdentityServer(host: host)
         }
     }
 
     private func renderNoIdentityServer() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-        self.identityServerTextField.text = nil
-        self.messageLabel.text = VectorL10n.identityServerSettingsNoIsDescription
+        identityServerTextField.text = nil
+        messageLabel.text = VectorL10n.identityServerSettingsNoIsDescription
 
-        self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsAdd, for: .normal)
-        self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsAdd, for: .highlighted)
-        self.addOrChangeButton.isEnabled = false
+        addOrChangeButton.setTitle(VectorL10n.identityServerSettingsAdd, for: .normal)
+        addOrChangeButton.setTitle(VectorL10n.identityServerSettingsAdd, for: .highlighted)
+        addOrChangeButton.isEnabled = false
 
-        self.disconnectMessageLabel.isHidden = true
-        self.disconnectButtonContainer.isHidden = true
+        disconnectMessageLabel.isHidden = true
+        disconnectButtonContainer.isHidden = true
     }
 
     private func renderIdentityServer(host: String) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-        self.identityServerTextField.text = host
-        self.messageLabel.text = VectorL10n.identityServerSettingsDescription(host.hostname())
+        identityServerTextField.text = host
+        messageLabel.text = VectorL10n.identityServerSettingsDescription(host.hostname())
 
-        self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .normal)
-        self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .highlighted)
-        self.addOrChangeButton.isEnabled = false
+        addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .normal)
+        addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .highlighted)
+        addOrChangeButton.isEnabled = false
 
-        self.disconnectMessageLabel.isHidden = false
-        self.disconnectButtonContainer.isHidden = false
+        disconnectMessageLabel.isHidden = false
+        disconnectButtonContainer.isHidden = false
     }
 
     private func presentTerms(session: MXSession, accessToken: String, baseUrl: String, onComplete: @escaping (Bool) -> Void) {
@@ -217,85 +216,82 @@ final class SettingsIdentityServerViewController: UIViewController {
         serviceTermsModalCoordinatorBridgePresenter.delegate = self
 
         self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter
-        self.serviceTermsModalCoordinatorBridgePresenterOnComplete = onComplete
+        serviceTermsModalCoordinatorBridgePresenterOnComplete = onComplete
     }
 
     private func hideTerms(accepted: Bool) {
-        guard let serviceTermsModalCoordinatorBridgePresenterOnComplete = self.serviceTermsModalCoordinatorBridgePresenterOnComplete else {
+        guard let serviceTermsModalCoordinatorBridgePresenterOnComplete = serviceTermsModalCoordinatorBridgePresenterOnComplete else {
             return
         }
-        self.serviceTermsModalCoordinatorBridgePresenter?.dismiss(animated: true, completion: nil)
-        self.serviceTermsModalCoordinatorBridgePresenter = nil
+        serviceTermsModalCoordinatorBridgePresenter?.dismiss(animated: true, completion: nil)
+        serviceTermsModalCoordinatorBridgePresenter = nil
 
         serviceTermsModalCoordinatorBridgePresenterOnComplete(accepted)
         self.serviceTermsModalCoordinatorBridgePresenterOnComplete = nil
     }
 
     private func renderAlert(alert: SettingsIdentityServerAlert, onContinue: @escaping () -> Void) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         
         switch alert {
         case .addActionAlert(.invalidIdentityServer(let newHost)),
              .changeActionAlert(.invalidIdentityServer(let newHost)):
-            self.showAlert(title: nil,
-                           message: VectorL10n.identityServerSettingsAlertErrorInvalidIdentityServer(newHost),
-                           continueButtonTitle: nil,
-                           cancelButtonTitle: VectorL10n.cancel,
-                           onContinue: onContinue)
+            showAlert(title: nil,
+                      message: VectorL10n.identityServerSettingsAlertErrorInvalidIdentityServer(newHost),
+                      continueButtonTitle: nil,
+                      cancelButtonTitle: VectorL10n.cancel,
+                      onContinue: onContinue)
 
         case .addActionAlert(.noTerms),
              .changeActionAlert(.noTerms):
-            self.showAlert(title: VectorL10n.identityServerSettingsAlertNoTermsTitle,
-                           message: VectorL10n.identityServerSettingsAlertNoTerms,
-                           continueButtonTitle: VectorL10n.continue,
-                           cancelButtonTitle: VectorL10n.cancel,
-                           onContinue: onContinue)
+            showAlert(title: VectorL10n.identityServerSettingsAlertNoTermsTitle,
+                      message: VectorL10n.identityServerSettingsAlertNoTerms,
+                      continueButtonTitle: VectorL10n.continue,
+                      cancelButtonTitle: VectorL10n.cancel,
+                      onContinue: onContinue)
 
         case .addActionAlert(.termsNotAccepted(let newHost)),
              .changeActionAlert(.termsNotAccepted(let newHost)):
-            self.showAlert(title: nil,
-                           message: VectorL10n.identityServerSettingsAlertErrorTermsNotAccepted(newHost.hostname()),
-                           continueButtonTitle: nil,
-                           cancelButtonTitle: VectorL10n.cancel,
-                           onContinue: onContinue)
-
+            showAlert(title: nil,
+                      message: VectorL10n.identityServerSettingsAlertErrorTermsNotAccepted(newHost.hostname()),
+                      continueButtonTitle: nil,
+                      cancelButtonTitle: VectorL10n.cancel,
+                      onContinue: onContinue)
 
         case .changeActionAlert(.stillSharing3Pids(let oldHost, _)):
-            self.showAlert(title: VectorL10n.identityServerSettingsAlertChangeTitle,
-                           message: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pid(oldHost.hostname()),
-                           continueButtonTitle: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pidButton,
-                           cancelButtonTitle: VectorL10n.cancel,
-                           onContinue: onContinue)
+            showAlert(title: VectorL10n.identityServerSettingsAlertChangeTitle,
+                      message: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pid(oldHost.hostname()),
+                      continueButtonTitle: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pidButton,
+                      cancelButtonTitle: VectorL10n.cancel,
+                      onContinue: onContinue)
 
         case .changeActionAlert(.doubleConfirmation(let oldHost, let newHost)):
-            self.showAlert(title: VectorL10n.identityServerSettingsAlertChangeTitle,
-                           message: VectorL10n.identityServerSettingsAlertChange(oldHost.hostname(), newHost.hostname()),
-                           continueButtonTitle: VectorL10n.continue,
-                           cancelButtonTitle: VectorL10n.cancel,
-                           onContinue: onContinue)
-
+            showAlert(title: VectorL10n.identityServerSettingsAlertChangeTitle,
+                      message: VectorL10n.identityServerSettingsAlertChange(oldHost.hostname(), newHost.hostname()),
+                      continueButtonTitle: VectorL10n.continue,
+                      cancelButtonTitle: VectorL10n.cancel,
+                      onContinue: onContinue)
 
         case .disconnectActionAlert(.stillSharing3Pids(let oldHost)):
-            self.showAlert(title: VectorL10n.identityServerSettingsAlertDisconnectTitle,
-                           message: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pid(oldHost.hostname()),
-                           continueButtonTitle: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pidButton,
-                           cancelButtonTitle: VectorL10n.cancel,
-                           onContinue: onContinue)
+            showAlert(title: VectorL10n.identityServerSettingsAlertDisconnectTitle,
+                      message: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pid(oldHost.hostname()),
+                      continueButtonTitle: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pidButton,
+                      cancelButtonTitle: VectorL10n.cancel,
+                      onContinue: onContinue)
 
         case .disconnectActionAlert(.doubleConfirmation(let oldHost)):
-            self.showAlert(title: VectorL10n.identityServerSettingsAlertDisconnectTitle,
-                           message: VectorL10n.identityServerSettingsAlertDisconnect(oldHost.hostname()),
-                           continueButtonTitle: VectorL10n.identityServerSettingsAlertDisconnectButton,
-                           cancelButtonTitle: VectorL10n.cancel,
-                           onContinue: onContinue)
+            showAlert(title: VectorL10n.identityServerSettingsAlertDisconnectTitle,
+                      message: VectorL10n.identityServerSettingsAlertDisconnect(oldHost.hostname()),
+                      continueButtonTitle: VectorL10n.identityServerSettingsAlertDisconnectButton,
+                      cancelButtonTitle: VectorL10n.cancel,
+                      onContinue: onContinue)
         }
     }
 
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
-
 
     // MARK: - Alert
 
@@ -308,42 +304,40 @@ final class SettingsIdentityServerViewController: UIViewController {
                                                 message: message,
                                                 preferredStyle: .alert)
 
-        alertController.addAction(UIAlertAction(title: cancelButtonTitle, style: .cancel, handler: { action in
+        alertController.addAction(UIAlertAction(title: cancelButtonTitle, style: .cancel, handler: { _ in
         }))
 
         if let continueButtonTitle = continueButtonTitle {
-            alertController.addAction(UIAlertAction(title: continueButtonTitle, style: .default, handler: { action in
+            alertController.addAction(UIAlertAction(title: continueButtonTitle, style: .default, handler: { _ in
                 onContinue()
             }))
         }
 
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
         self.alertController = alertController
     }
 
     private func hideAlert(animated: Bool) {
-        self.alertController?.dismiss(animated: true, completion: nil)
+        alertController?.dismiss(animated: true, completion: nil)
     }
-
 
     // MARK: - Actions
 
     @objc private func identityServerTextFieldDidChange(_ textField: UITextField) {
-        self.addOrChangeButton.isEnabled = textField.text?.count ?? 0 > 0
-            && (textField.text?.hostname() != self.viewModel.identityServer?.hostname())
+        addOrChangeButton.isEnabled = textField.text?.count ?? 0 > 0
+            && (textField.text?.hostname() != viewModel.identityServer?.hostname())
     }
 
     @objc private func identityServerTextFieldDidEndOnExit(_ textField: UITextField) {
-        self.addOrChangeAction()
+        addOrChangeAction()
     }
 
-
     @IBAction private func addOrChangeButtonAction(_ sender: Any) {
-        self.addOrChangeAction()
+        addOrChangeAction()
     }
 
     private func addOrChangeAction() {
-        self.identityServerTextField.resignFirstResponder()
+        identityServerTextField.resignFirstResponder()
 
         guard
             let displayMode = displayMode,
@@ -364,51 +358,49 @@ final class SettingsIdentityServerViewController: UIViewController {
         }
         
         if let viewAction = viewAction {
-            self.viewModel.process(viewAction: viewAction)
+            viewModel.process(viewAction: viewAction)
         }
     }
 
     @IBAction private func disconnectButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .disconnect)
+        viewModel.process(viewAction: .disconnect)
     }
-    
 }
-
 
 // MARK: - SettingsIdentityServerViewModelViewDelegate
-extension SettingsIdentityServerViewController: SettingsIdentityServerViewModelViewDelegate {
 
+extension SettingsIdentityServerViewController: SettingsIdentityServerViewModelViewDelegate {
     func settingsIdentityServerViewModel(_ viewModel: SettingsIdentityServerViewModelType, didUpdateViewState viewState: SettingsIdentityServerViewState) {
         self.viewState = viewState
-        self.render(viewState: viewState)
+        render(viewState: viewState)
     }
 }
 
-
 // MARK: - ServiceTermsModalCoordinatorBridgePresenterDelegate
+
 extension SettingsIdentityServerViewController: ServiceTermsModalCoordinatorBridgePresenterDelegate {
     func serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter) {
-        self.hideTerms(accepted: true)
+        hideTerms(accepted: true)
     }
 
     func serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter, session: MXSession) {
-        self.hideTerms(accepted: false)
+        hideTerms(accepted: false)
     }
 
     func serviceTermsModalCoordinatorBridgePresenterDelegateDidClose(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter) {
-         self.hideTerms(accepted: false)
+        hideTerms(accepted: false)
     }
 }
 
-
 // MARK: - Private extension
-fileprivate extension String {
+
+private extension String {
     func hostname() -> String {
-        return URL(string: self)?.host ?? self
+        URL(string: self)?.host ?? self
     }
 
     func makeURLValid() -> String {
-        if self.hasPrefix("http://") || self.hasPrefix("https://") {
+        if hasPrefix("http://") || hasPrefix("https://") {
             return self
         } else {
             return "https://" + self

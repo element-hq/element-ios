@@ -16,11 +16,10 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class EditHistoryViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -33,7 +32,7 @@ final class EditHistoryViewController: UIViewController {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private var tableView: UITableView!
     
     // MARK: Private
 
@@ -75,22 +74,22 @@ final class EditHistoryViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.roomMessageEditsHistoryTitle
+        title = VectorL10n.roomMessageEditsHistoryTitle
         
-        self.setupViews()
-        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityIndicatorPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadMore)
+        viewModel.process(viewAction: .loadMore)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -98,10 +97,10 @@ final class EditHistoryViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.backgroundColor
-        self.tableView.backgroundColor = theme.backgroundColor
+        view.backgroundColor = theme.backgroundColor
+        tableView.backgroundColor = theme.backgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
     }
@@ -111,7 +110,7 @@ final class EditHistoryViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -119,75 +118,75 @@ final class EditHistoryViewController: UIViewController {
             self?.closeButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = closeBarButtonItem
+        navigationItem.rightBarButtonItem = closeBarButtonItem
         
-        self.setupTableView()
+        setupTableView()
     }
     
     private func setupTableView() {
-        self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.estimatedRowHeight = Constants.estimatedRowHeight
-        self.tableView.register(cellType: EditHistoryCell.self)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = Constants.estimatedRowHeight
+        tableView.register(cellType: EditHistoryCell.self)
         
-        self.tableView.sectionHeaderHeight = UITableView.automaticDimension
-        self.tableView.estimatedSectionHeaderHeight = Constants.estimatedSectionHeaderHeight
-        self.tableView.register(headerFooterViewType: EditHistoryHeaderView.self)
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.estimatedSectionHeaderHeight = Constants.estimatedSectionHeaderHeight
+        tableView.register(headerFooterViewType: EditHistoryHeaderView.self)
         
-        self.tableView.tableFooterView = UIView()
+        tableView.tableFooterView = UIView()
     }
 
     private func render(viewState: EditHistoryViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let sections, let addedCount, let allDataLoaded):
-            self.renderLoaded(sections: sections, addedCount: addedCount, allDataLoaded: allDataLoaded)
+            renderLoaded(sections: sections, addedCount: addedCount, allDataLoaded: allDataLoaded)
         case .error(let error):
-            self.render(error: error)            
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityIndicatorPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityIndicatorPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(sections: [EditHistorySection], addedCount: Int, allDataLoaded: Bool) {
-        self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-        self.editHistorySections = sections
-        self.tableView.reloadData()
+        activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+        editHistorySections = sections
+        tableView.reloadData()
     }
     
     private func render(error: Error) {
-        self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     // MARK: - Actions
 
     private func closeButtonAction() {
-        self.viewModel.process(viewAction: .close)
+        viewModel.process(viewAction: .close)
     }
 }
 
 // MARK: - UITableViewDataSource
+
 extension EditHistoryViewController: UITableViewDataSource {
-    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.editHistorySections.count
+        editHistorySections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.editHistorySections[section].messages.count
+        editHistorySections[section].messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let editHistoryCell = tableView.dequeueReusableCell(for: indexPath, cellType: EditHistoryCell.self)
         
-        let editHistoryMessage = self.editHistorySections[indexPath.section].messages[indexPath.row]
+        let editHistoryMessage = editHistorySections[indexPath.section].messages[indexPath.row]
         
-        let timeString = self.messageDateFormatter.string(from: editHistoryMessage.date)
+        let timeString = messageDateFormatter.string(from: editHistoryMessage.date)
         
-        editHistoryCell.update(theme: self.theme)
+        editHistoryCell.update(theme: theme)
         editHistoryCell.fill(with: timeString, and: editHistoryMessage.message)
         
         return editHistoryCell
@@ -197,32 +196,31 @@ extension EditHistoryViewController: UITableViewDataSource {
         guard let editHistoryHeaderView: EditHistoryHeaderView = tableView.dequeueReusableHeaderFooterView() else {
             return nil
         }
-        let editHistorySection = self.editHistorySections[section]
-        let dateString = self.sectionDateFormatter.string(from: editHistorySection.date)
+        let editHistorySection = editHistorySections[section]
+        let dateString = sectionDateFormatter.string(from: editHistorySection.date)
         
-        editHistoryHeaderView.update(theme: self.theme)
+        editHistoryHeaderView.update(theme: theme)
         editHistoryHeaderView.fill(with: dateString)
         return editHistoryHeaderView
     }
 }
 
 // MARK: - UITableViewDelegate
+
 extension EditHistoryViewController: UITableViewDelegate {
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
         // Check if a scroll beyond scroll view content occurs
         let distanceFromBottom = scrollView.contentSize.height - scrollView.contentOffset.y
         if distanceFromBottom < scrollView.frame.size.height {
-            self.viewModel.process(viewAction: .loadMore)
+            viewModel.process(viewAction: .loadMore)
         }
     }
 }
 
 // MARK: - EditHistoryViewModelViewDelegate
-extension EditHistoryViewController: EditHistoryViewModelViewDelegate {
 
+extension EditHistoryViewController: EditHistoryViewModelViewDelegate {
     func editHistoryViewModel(_ viewModel: EditHistoryViewModelType, didUpdateViewState viewSate: EditHistoryViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

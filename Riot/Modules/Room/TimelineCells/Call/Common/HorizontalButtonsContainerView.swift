@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,37 +14,33 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 class HorizontalButtonsContainerView: UIView {
-    
     private enum Constants {
         static let stackViewTopMargin: CGFloat = 8
         static let stackViewBottomMargin: CGFloat = 16
     }
 
-    @IBOutlet weak private var stackView: UIStackView!
+    @IBOutlet private var stackView: UIStackView!
     
-    @IBOutlet weak var firstButton: CallTileActionButton!
-    @IBOutlet weak var secondButton: CallTileActionButton!
+    @IBOutlet var firstButton: CallTileActionButton!
+    @IBOutlet var secondButton: CallTileActionButton!
     
     override var intrinsicContentSize: CGSize {
         var result = stackView.intrinsicContentSize
-        result.width = self.frame.width
+        result.width = frame.width
         result.height += Constants.stackViewTopMargin + Constants.stackViewBottomMargin
         return result
     }
-
 }
 
-extension HorizontalButtonsContainerView: NibLoadable {}
+extension HorizontalButtonsContainerView: NibLoadable { }
 
 extension HorizontalButtonsContainerView: Themable {
-    
     func update(theme: Theme) {
         firstButton.update(theme: theme)
         secondButton.update(theme: theme)
     }
-    
 }

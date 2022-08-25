@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,18 +18,16 @@ import Foundation
 import MatrixSDK
 
 extension MXLocationService {
-    
     public func isSomeoneSharingDisplayableLocation(inRoomWithId roomId: String) -> Bool {
-        return self.getDisplayableBeaconInfoSummaries(inRoomWithId: roomId).isEmpty == false
+        getDisplayableBeaconInfoSummaries(inRoomWithId: roomId).isEmpty == false
     }
     
     /// Get beacon info summaries that can be shown on a map
     func getDisplayableBeaconInfoSummaries(inRoomWithId roomId: String) -> [MXBeaconInfoSummaryProtocol] {
-        
-        let liveBeaconInfoSummaries = self.getLiveBeaconInfoSummaries(inRoomWithId: roomId)
+        let liveBeaconInfoSummaries = getLiveBeaconInfoSummaries(inRoomWithId: roomId)
         
         return liveBeaconInfoSummaries.filter { beaconInfoSummary in
-            return beaconInfoSummary.isDisplayable
+            beaconInfoSummary.isDisplayable
         }
     }
 }

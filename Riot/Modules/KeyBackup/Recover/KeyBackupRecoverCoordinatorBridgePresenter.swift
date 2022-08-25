@@ -25,7 +25,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class KeyBackupRecoverCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,29 +48,28 @@ final class KeyBackupRecoverCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let keyBackupSetupCoordinator = KeyBackupRecoverCoordinator(session: self.session, keyBackupVersion: keyBackupVersion)
+        let keyBackupSetupCoordinator = KeyBackupRecoverCoordinator(session: session, keyBackupVersion: keyBackupVersion)
         keyBackupSetupCoordinator.delegate = self
         viewController.present(keyBackupSetupCoordinator.toPresentable(), animated: animated, completion: nil)
         keyBackupSetupCoordinator.start()
         
-        self.coordinator = keyBackupSetupCoordinator
+        coordinator = keyBackupSetupCoordinator
     }
     
     func push(from navigationController: UINavigationController, animated: Bool) {
-        
         MXLog.debug("[KeyBackupRecoverCoordinatorBridgePresenter] Push complete security from \(navigationController)")
         
         let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
-        let keyBackupSetupCoordinator = KeyBackupRecoverCoordinator(session: self.session, keyBackupVersion: keyBackupVersion, navigationRouter: navigationRouter)
+        let keyBackupSetupCoordinator = KeyBackupRecoverCoordinator(session: session, keyBackupVersion: keyBackupVersion, navigationRouter: navigationRouter)
         keyBackupSetupCoordinator.delegate = self
         keyBackupSetupCoordinator.start() // Will trigger view controller push
         
-        self.coordinator = keyBackupSetupCoordinator
+        coordinator = keyBackupSetupCoordinator
     }
     
     func dismiss(animated: Bool) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -81,12 +79,13 @@ final class KeyBackupRecoverCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - KeyBackupRecoverCoordinatorDelegate
+
 extension KeyBackupRecoverCoordinatorBridgePresenter: KeyBackupRecoverCoordinatorDelegate {
     func keyBackupRecoverCoordinatorDidRecover(_ keyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType) {
-        self.delegate?.keyBackupRecoverCoordinatorBridgePresenterDidRecover(self)
+        delegate?.keyBackupRecoverCoordinatorBridgePresenterDidRecover(self)
     }
     
     func keyBackupRecoverCoordinatorDidCancel(_ keyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType) {
-        self.delegate?.keyBackupRecoverCoordinatorBridgePresenterDidCancel(self)
+        delegate?.keyBackupRecoverCoordinatorBridgePresenterDidCancel(self)
     }
 }

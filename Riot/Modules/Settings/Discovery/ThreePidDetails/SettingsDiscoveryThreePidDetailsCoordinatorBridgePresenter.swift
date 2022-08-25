@@ -22,7 +22,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -37,17 +36,16 @@ final class SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter: NSObject
     
     init(session: MXSession, medium: String, adress: String) {
         self.session = session
-        self.threePid = MX3PID(medium: MX3PID.Medium(identifier: medium), address: adress)
+        threePid = MX3PID(medium: MX3PID.Medium(identifier: medium), address: adress)
         super.init()
     }
     
     // MARK: - Public
     
     func push(from navigationController: UINavigationController, animated: Bool, popCompletion: (() -> Void)?) {
-        
         let router = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
-        let settingsDiscoveryThreePidDetailsCoordinator = SettingsDiscoveryThreePidDetailsCoordinator(session: self.session, threePid: self.threePid)
+        let settingsDiscoveryThreePidDetailsCoordinator = SettingsDiscoveryThreePidDetailsCoordinator(session: session, threePid: threePid)
         
         router.push(settingsDiscoveryThreePidDetailsCoordinator, animated: animated) { [weak self] in
             self?.coordinator = nil
@@ -57,7 +55,7 @@ final class SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter: NSObject
         
         settingsDiscoveryThreePidDetailsCoordinator.start()
         
-        self.coordinator = settingsDiscoveryThreePidDetailsCoordinator
+        coordinator = settingsDiscoveryThreePidDetailsCoordinator
         self.router = router
     }
 }

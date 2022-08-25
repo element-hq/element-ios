@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 @objc
 protocol ShareInviteLinkHeaderViewDelegate: AnyObject {
@@ -24,7 +24,6 @@ protocol ShareInviteLinkHeaderViewDelegate: AnyObject {
 
 @objcMembers
 final class ShareInviteLinkHeaderView: UIView, NibLoadable, Themable {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -33,7 +32,7 @@ final class ShareInviteLinkHeaderView: UIView, NibLoadable, Themable {
     
     // MARK: - Properties
     
-    @IBOutlet private weak var button: CustomRoundedButton!
+    @IBOutlet private var button: CustomRoundedButton!
     
     weak var delegate: ShareInviteLinkHeaderViewDelegate?
     

@@ -18,7 +18,6 @@ import UIKit
 
 @objcMembers
 class KeyVerificationConclusionCell: KeyVerificationBaseCell {
-
     // MARK: - Constants
     
     private enum Sizing {
@@ -29,16 +28,17 @@ class KeyVerificationConclusionCell: KeyVerificationBaseCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.commonInit()
+        commonInit()
     }
     
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private func commonInit() {
-        self.keyVerificationCellInnerContentView?.isButtonsHidden = true
-        self.keyVerificationCellInnerContentView?.isRequestStatusHidden = true
+        keyVerificationCellInnerContentView?.isButtonsHidden = true
+        keyVerificationCellInnerContentView?.isRequestStatusHidden = true
     }
     
     // MARK: - Overrides
@@ -46,11 +46,11 @@ class KeyVerificationConclusionCell: KeyVerificationBaseCell {
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        guard let keyVerificationCellInnerContentView = self.keyVerificationCellInnerContentView,
-            let bubbleData = self.bubbleData as? RoomBubbleCellData,
-            let viewData = self.viewData(from: bubbleData) else {
+        guard let keyVerificationCellInnerContentView = keyVerificationCellInnerContentView,
+              let bubbleData = bubbleData as? RoomBubbleCellData,
+              let viewData = viewData(from: bubbleData) else {
             MXLog.debug("[KeyVerificationConclusionBubbleCell] Fail to render \(String(describing: cellData))")
-                return
+            return
         }
         
         keyVerificationCellInnerContentView.badgeImage = viewData.badgeImage
@@ -59,7 +59,7 @@ class KeyVerificationConclusionCell: KeyVerificationBaseCell {
     }
     
     override class func sizingView() -> KeyVerificationBaseCell {
-        return self.Sizing.view
+        Sizing.view
     }
     
     // MARK: - Private
@@ -71,8 +71,8 @@ class KeyVerificationConclusionCell: KeyVerificationBaseCell {
 
         let viewData: KeyVerificationConclusionViewData?
 
-        let senderId = self.senderId(from: bubbleData)
-        let senderDisplayName = self.senderDisplayName(from: bubbleData)
+        let senderId = senderId(from: bubbleData)
+        let senderDisplayName = senderDisplayName(from: bubbleData)
         let title: String?
         let badgeImage: UIImage?
 

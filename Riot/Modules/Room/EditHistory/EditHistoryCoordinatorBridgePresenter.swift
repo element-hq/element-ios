@@ -26,7 +26,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class EditHistoryCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -56,12 +55,11 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-
-        guard let formatter = self.createEventFormatter(session: self.session) else {
+        guard let formatter = createEventFormatter(session: session) else {
             return
         }
 
-        let editHistoryCoordinator = EditHistoryCoordinator(session: self.session, formatter: formatter, event: self.event)
+        let editHistoryCoordinator = EditHistoryCoordinator(session: session, formatter: formatter, event: event)
         editHistoryCoordinator.delegate = self
 
         let navigationController = RiotNavigationController(rootViewController: editHistoryCoordinator.toPresentable())
@@ -70,11 +68,11 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
         
         editHistoryCoordinator.start()
         
-        self.coordinator = editHistoryCoordinator
+        coordinator = editHistoryCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -108,8 +106,9 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - EditHistoryCoordinatorDelegate
+
 extension EditHistoryCoordinatorBridgePresenter: EditHistoryCoordinatorDelegate {
     func editHistoryCoordinatorDidComplete(_ coordinator: EditHistoryCoordinatorType) {
-        self.delegate?.editHistoryCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.editHistoryCoordinatorBridgePresenterDelegateDidComplete(self)
     }
 }

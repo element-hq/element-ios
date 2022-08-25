@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,28 +19,26 @@ import Foundation
 /// `RoomPreviewDataSource` is used for room context menu.
 @objcMembers
 public class RoomPreviewDataSource: RoomDataSource {
-    
-    public override func finalizeInitialization() {
+    override public func finalizeInitialization() {
         super.finalizeInitialization()
         showReadMarker = false
         showBubbleReceipts = false
         showTypingRow = false
     }
     
-    public override var showReadMarker: Bool {
+    override public var showReadMarker: Bool {
         get {
-            return false
+            false
         } set {
             _ = newValue
         }
     }
     
-    public override var showBubbleReceipts: Bool {
+    override public var showBubbleReceipts: Bool {
         get {
-            return false
+            false
         } set {
             _ = newValue
         }
     }
-    
 }

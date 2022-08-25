@@ -22,30 +22,29 @@ protocol KeyBackupSetupIntroViewControllerDelegate: AnyObject {
 }
 
 final class KeyBackupSetupIntroViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var keyBackupLogoImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var keyBackupLogoImageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var setUpButtonBackgroundView: UIView!
-    @IBOutlet private weak var setUpButton: UIButton!
+    @IBOutlet private var setUpButtonBackgroundView: UIView!
+    @IBOutlet private var setUpButton: UIButton!
     
-    @IBOutlet private weak var manualExportContainerView: UIView!
-    @IBOutlet private weak var manualExportInfoLabel: UILabel!
-    @IBOutlet private weak var manualExportButton: UIButton!
+    @IBOutlet private var manualExportContainerView: UIView!
+    @IBOutlet private var manualExportInfoLabel: UILabel!
+    @IBOutlet private var manualExportButton: UIButton!
     
     // MARK: Private
     
     private var theme: Theme!
-    private var isABackupAlreadyExists: Bool = false
+    private var isABackupAlreadyExists = false
     private var encryptionKeysExportPresenter: EncryptionKeysExportPresenter?
     
     private var showManualExport: Bool {
-        return self.encryptionKeysExportPresenter != nil
+        self.encryptionKeysExportPresenter != nil
     }
     
     // MARK: Public
@@ -69,16 +68,16 @@ final class KeyBackupSetupIntroViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.keyBackupSetupTitle
-        self.vc_removeBackTitle()
+        title = VectorL10n.keyBackupSetupTitle
+        vc_removeBackTitle()
         
-        self.setupViews()
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        setupViews()
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -87,43 +86,43 @@ final class KeyBackupSetupIntroViewController: UIViewController {
         let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
             self?.showSkipAlert()
         }
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
         let keybackupLogoImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
-        self.keyBackupLogoImageView.image = keybackupLogoImage
+        keyBackupLogoImageView.image = keybackupLogoImage
         
-        self.titleLabel.text = VectorL10n.keyBackupSetupIntroTitle
-        self.informationLabel.text = VectorL10n.keyBackupSetupIntroInfo
+        titleLabel.text = VectorL10n.keyBackupSetupIntroTitle
+        informationLabel.text = VectorL10n.keyBackupSetupIntroInfo
         
-        let setupTitle = self.isABackupAlreadyExists ? VectorL10n.keyBackupSetupIntroSetupConnectActionWithExistingBackup : VectorL10n.keyBackupSetupIntroSetupActionWithoutExistingBackup
+        let setupTitle = isABackupAlreadyExists ? VectorL10n.keyBackupSetupIntroSetupConnectActionWithExistingBackup : VectorL10n.keyBackupSetupIntroSetupActionWithoutExistingBackup
         
-        self.setUpButton.setTitle(setupTitle, for: .normal)
+        setUpButton.setTitle(setupTitle, for: .normal)
         
-        self.manualExportInfoLabel.text = VectorL10n.keyBackupSetupIntroManualExportInfo
+        manualExportInfoLabel.text = VectorL10n.keyBackupSetupIntroManualExportInfo
         
-        self.manualExportContainerView.isHidden = !self.showManualExport
-        self.manualExportButton.setTitle(VectorL10n.keyBackupSetupIntroManualExportAction, for: .normal)
+        manualExportContainerView.isHidden = !showManualExport
+        manualExportButton.setTitle(VectorL10n.keyBackupSetupIntroManualExportAction, for: .normal)
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.keyBackupLogoImageView.tintColor = theme.textPrimaryColor
+        keyBackupLogoImageView.tintColor = theme.textPrimaryColor
         
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.setUpButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.setUpButton)
+        setUpButtonBackgroundView.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: setUpButton)
         
-        self.manualExportInfoLabel.textColor = theme.textPrimaryColor
-        theme.applyStyle(onButton: self.manualExportButton)
+        manualExportInfoLabel.textColor = theme.textPrimaryColor
+        theme.applyStyle(onButton: manualExportButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -135,27 +134,27 @@ final class KeyBackupSetupIntroViewController: UIViewController {
                                                 message: VectorL10n.keyBackupSetupSkipAlertMessage,
                                                 preferredStyle: .alert)
         
-        alertController.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: { action in
+        alertController.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: { _ in
         }))
         
-        alertController.addAction(UIAlertAction(title: VectorL10n.keyBackupSetupSkipAlertSkipAction, style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: VectorL10n.keyBackupSetupSkipAlertSkipAction, style: .default, handler: { _ in
             self.delegate?.keyBackupSetupIntroViewControllerDidCancel(self)
         }))
         
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
     // MARK: - Actions
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     @IBAction private func validateButtonAction(_ sender: Any) {
-        self.delegate?.keyBackupSetupIntroViewControllerDidTapSetupAction(self)
+        delegate?.keyBackupSetupIntroViewControllerDidTapSetupAction(self)
     }
     
     @IBAction private func manualExportButtonAction(_ sender: Any) {
-        self.encryptionKeysExportPresenter?.present(from: self, sourceView: self.manualExportButton)
+        encryptionKeysExportPresenter?.present(from: self, sourceView: manualExportButton)
     }
 }

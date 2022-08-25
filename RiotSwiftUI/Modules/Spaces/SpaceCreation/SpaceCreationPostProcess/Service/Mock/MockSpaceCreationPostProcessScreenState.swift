@@ -1,6 +1,6 @@
 // File created from SimpleUserProfileExample
 // $ createScreen.sh Spaces/SpaceCreation/SpaceCreationPostProcess SpaceCreationPostProcess
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,6 @@ import SwiftUI
 enum MockSpaceCreationPostProcessScreenState: MockScreenState {
     static var screenStates: [MockScreenState] = [MockSpaceCreationPostProcessScreenState.running, MockSpaceCreationPostProcessScreenState.done, MockSpaceCreationPostProcessScreenState.doneWithError]
     
-    
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
@@ -38,7 +37,7 @@ enum MockSpaceCreationPostProcessScreenState: MockScreenState {
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let service: MockSpaceCreationPostProcessService
         switch self {
         case .running:

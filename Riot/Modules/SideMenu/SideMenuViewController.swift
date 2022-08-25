@@ -19,7 +19,6 @@
 import UIKit
 
 final class SideMenuViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -30,16 +29,16 @@ final class SideMenuViewController: UIViewController {
     
     // MARK: Outlets
     
-    @IBOutlet weak var spaceListContainerView: UIView!
+    @IBOutlet var spaceListContainerView: UIView!
     
     // User info
-    @IBOutlet private weak var userAvatarView: UserAvatarView!
-    @IBOutlet private weak var userDisplayNameLabel: UILabel!
-    @IBOutlet private weak var userIdLabel: UILabel!
+    @IBOutlet private var userAvatarView: UserAvatarView!
+    @IBOutlet private var userDisplayNameLabel: UILabel!
+    @IBOutlet private var userIdLabel: UILabel!
     
     // Bottom menu items
     
-    @IBOutlet private weak var menuItemsStackView: UIStackView!
+    @IBOutlet private var menuItemsStackView: UIStackView!
     
     // MARK: Private
 
@@ -69,16 +68,16 @@ final class SideMenuViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -89,7 +88,7 @@ final class SideMenuViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -97,22 +96,22 @@ final class SideMenuViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.view.backgroundColor = theme.colors.background
+        view.backgroundColor = theme.colors.background
         
-        self.userAvatarView.update(theme: theme)
-        self.userDisplayNameLabel.textColor = theme.textPrimaryColor
-        self.userDisplayNameLabel.font = theme.fonts.title3SB
-        self.userIdLabel.textColor = theme.textSecondaryColor
+        userAvatarView.update(theme: theme)
+        userDisplayNameLabel.textColor = theme.textPrimaryColor
+        userDisplayNameLabel.font = theme.fonts.title3SB
+        userIdLabel.textColor = theme.textSecondaryColor
         
-        for sideMenuActionView in self.sideMenuActionViews {
+        for sideMenuActionView in sideMenuActionViews {
             sideMenuActionView.update(theme: theme)
         }
         
-        self.sideMenuVersionView?.update(theme: theme)
+        sideMenuVersionView?.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -120,46 +119,44 @@ final class SideMenuViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
-    private func setupViews() {
-    }
+    private func setupViews() { }
 
     private func render(viewState: SideMenuViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let viewData):
-            self.renderLoaded(viewData: viewData)
+            renderLoaded(viewData: viewData)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(viewData: SideMenuViewData) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
     
-        self.updateUserInformation(with: viewData.userAvatarViewData)
-        self.updateBottomMenuItems(with: viewData)
+        updateUserInformation(with: viewData.userAvatarViewData)
+        updateBottomMenuItems(with: viewData)
     }
     
     private func updateUserInformation(with userAvatarViewData: UserAvatarViewData) {
-        self.userIdLabel.text = userAvatarViewData.userId
-        self.userDisplayNameLabel.text = userAvatarViewData.displayName
-        self.userDisplayNameLabel.isHidden = userAvatarViewData.displayName.isEmptyOrNil
+        userIdLabel.text = userAvatarViewData.userId
+        userDisplayNameLabel.text = userAvatarViewData.displayName
+        userDisplayNameLabel.isHidden = userAvatarViewData.displayName.isEmptyOrNil
                 
-        self.userAvatarView.fill(with: userAvatarViewData)
+        userAvatarView.fill(with: userAvatarViewData)
     }
     
     private func updateBottomMenuItems(with viewData: SideMenuViewData) {
-        
-        self.menuItemsStackView.vc_removeAllSubviews()
-        self.sideMenuActionViews = []
+        menuItemsStackView.vc_removeAllSubviews()
+        sideMenuActionViews = []
         
         for sideMenuItem in viewData.sideMenuItems {
             let sideMenuActionView = SideMenuActionView.instantiate()
@@ -168,23 +165,23 @@ final class SideMenuViewController: UIViewController {
             heightConstraint.priority = .defaultLow
             heightConstraint.isActive = true
             
-            sideMenuActionView.update(theme: self.theme)
+            sideMenuActionView.update(theme: theme)
             sideMenuActionView.fill(with: sideMenuItem)
             sideMenuActionView.delegate = self
             
-            self.menuItemsStackView.addArrangedSubview(sideMenuActionView)
+            menuItemsStackView.addArrangedSubview(sideMenuActionView)
             sideMenuActionView.widthAnchor.constraint(equalTo: menuItemsStackView.widthAnchor).isActive = true
             
-            self.sideMenuActionViews.append(sideMenuActionView)
+            sideMenuActionViews.append(sideMenuActionView)
         }
         
         if let appVersion = viewData.appVersion {
             let sideMenuVersionView = SideMenuVersionView.instantiate()
             sideMenuVersionView.translatesAutoresizingMaskIntoConstraints = false
-            sideMenuVersionView.update(theme: self.theme)
+            sideMenuVersionView.update(theme: theme)
             sideMenuVersionView.fill(with: appVersion)
             
-            self.menuItemsStackView.addArrangedSubview(sideMenuVersionView)
+            menuItemsStackView.addArrangedSubview(sideMenuVersionView)
             sideMenuVersionView.widthAnchor.constraint(equalTo: menuItemsStackView.widthAnchor).isActive = true
             
             self.sideMenuVersionView = sideMenuVersionView
@@ -192,33 +189,33 @@ final class SideMenuViewController: UIViewController {
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
-    
     // MARK: - Actions
     
     @IBAction func headerTapAction(sender: UIView) {
-        self.viewModel.process(viewAction: .tapHeader(sourceView: sender))
+        viewModel.process(viewAction: .tapHeader(sourceView: sender))
     }
 }
 
 // MARK: - SideMenuViewModelViewDelegate
-extension SideMenuViewController: SideMenuViewModelViewDelegate {
 
+extension SideMenuViewController: SideMenuViewModelViewDelegate {
     func sideMenuViewModel(_ viewModel: SideMenuViewModelType, didUpdateViewState viewSate: SideMenuViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
 // MARK: - SideMenuActionViewDelegate
+
 extension SideMenuViewController: SideMenuActionViewDelegate {
     func sideMenuActionView(_ actionView: SideMenuActionView, didTapMenuItem sideMenuItem: SideMenuItem?) {
         guard let sideMenuItem = sideMenuItem else {
             return
         }
         
-        self.viewModel.process(viewAction: .tap(menuItem: sideMenuItem, sourceView: actionView))
+        viewModel.process(viewAction: .tap(menuItem: sideMenuItem, sourceView: actionView))
     }
 }

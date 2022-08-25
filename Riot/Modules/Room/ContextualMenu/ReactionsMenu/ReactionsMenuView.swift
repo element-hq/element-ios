@@ -14,11 +14,10 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class ReactionsMenuView: UIView, Themable, NibLoadable {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -29,10 +28,10 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var reactionsBackgroundView: UIView!    
-    @IBOutlet private weak var reactionsStackView: UIStackView!    
-    @IBOutlet private weak var moreReactionsBackgroundView: UIView!
-    @IBOutlet private weak var moreReactionsButton: UIButton!
+    @IBOutlet private var reactionsBackgroundView: UIView!
+    @IBOutlet private var reactionsStackView: UIStackView!
+    @IBOutlet private var moreReactionsBackgroundView: UIView!
+    @IBOutlet private var moreReactionsButton: UIButton!
     
     // MARK: Private
     
@@ -44,13 +43,13 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
     
     var viewModel: ReactionsMenuViewModelType? {
         didSet {
-            self.viewModel?.viewDelegate = self
-            self.viewModel?.process(viewAction: .loadData)
+            viewModel?.viewDelegate = self
+            viewModel?.process(viewAction: .loadData)
         }
     }
     
     var reactionHasBeenTapped: Bool {
-        return self.tappedReactionButton != nil
+        self.tappedReactionButton != nil
     }
     
     // MARK: - Life cycle
@@ -58,28 +57,28 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.reactionsBackgroundView.layer.masksToBounds = true
-        self.moreReactionsButton.setImage(Asset.Images.moreReactions.image, for: .normal)
-        self.update(theme: ThemeService.shared().theme)
+        reactionsBackgroundView.layer.masksToBounds = true
+        moreReactionsButton.setImage(Asset.Images.moreReactions.image, for: .normal)
+        update(theme: ThemeService.shared().theme)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.reactionsBackgroundView.layer.cornerRadius = self.reactionsBackgroundView.frame.size.height/2
-        self.moreReactionsBackgroundView.layer.cornerRadius = self.moreReactionsBackgroundView.frame.size.height/2
+        reactionsBackgroundView.layer.cornerRadius = reactionsBackgroundView.frame.size.height / 2
+        moreReactionsBackgroundView.layer.cornerRadius = moreReactionsBackgroundView.frame.size.height / 2
     }
     
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.reactionsBackgroundView.backgroundColor = theme.headerBackgroundColor
-        self.moreReactionsBackgroundView.backgroundColor = theme.headerBackgroundColor
-        self.moreReactionsButton.tintColor = theme.tintColor
+        reactionsBackgroundView.backgroundColor = theme.headerBackgroundColor
+        moreReactionsBackgroundView.backgroundColor = theme.headerBackgroundColor
+        moreReactionsButton.tintColor = theme.tintColor
     }
     
     func selectionAnimationInstructionPart1() {
-        guard let tappedButton = self.tappedReactionButton else {
+        guard let tappedButton = tappedReactionButton else {
             return
         }
         let scale = Constants.selectedReactionAnimationScale
@@ -88,7 +87,7 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
     }
     
     func selectionAnimationInstructionPart2() {
-        guard let tappedButton = self.tappedReactionButton else {
+        guard let tappedButton = tappedReactionButton else {
             return
         }
         tappedButton.transform = CGAffineTransform.identity
@@ -98,36 +97,35 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
     // MARK: - Private
     
     private func fill(reactionsMenuViewDatas: [ReactionMenuItemViewData]) {
-        self.reactionViewDatas = reactionsMenuViewDatas
+        reactionViewDatas = reactionsMenuViewDatas
         
-        self.reactionsStackView.vc_removeAllArrangedSubviews()
+        reactionsStackView.vc_removeAllArrangedSubviews()
         
-        let reactionsStackViewCount = self.reactionsStackView.arrangedSubviews.count
+        let reactionsStackViewCount = reactionsStackView.arrangedSubviews.count
         
         // Remove all menu buttons if reactions count has changed
-        if reactionsStackViewCount != self.reactionViewDatas.count {
-            self.reactionsStackView.vc_removeAllArrangedSubviews()
+        if reactionsStackViewCount != reactionViewDatas.count {
+            reactionsStackView.vc_removeAllArrangedSubviews()
         }
         
         var index = 0
         
-        for reactionViewData in self.reactionViewDatas {
-            
+        for reactionViewData in reactionViewDatas {
             let reactionsMenuButton: ReactionsMenuButton
             
-            if index < reactionsStackViewCount, let foundReactionsMenuButton = self.reactionsStackView.arrangedSubviews[index] as? ReactionsMenuButton {
+            if index < reactionsStackViewCount, let foundReactionsMenuButton = reactionsStackView.arrangedSubviews[index] as? ReactionsMenuButton {
                 reactionsMenuButton = foundReactionsMenuButton
             } else {
                 reactionsMenuButton = ReactionsMenuButton()
                 reactionsMenuButton.addTarget(self, action: #selector(reactionButtonAction), for: .touchUpInside)
-                self.reactionsStackView.addArrangedSubview(reactionsMenuButton)
-                self.reactionButtons.append(reactionsMenuButton)
+                reactionsStackView.addArrangedSubview(reactionsMenuButton)
+                reactionButtons.append(reactionsMenuButton)
             }
             
             reactionsMenuButton.setTitle(reactionViewData.emoji, for: .normal)
             reactionsMenuButton.isSelected = reactionViewData.isSelected
             
-            index+=1
+            index += 1
         }
     }
     
@@ -135,22 +133,22 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
         guard let tappedReaction = sender.titleLabel?.text else {
             return
         }
-        self.tappedReactionButton = sender
-        self.viewModel?.process(viewAction: .tap(reaction: tappedReaction))
+        tappedReactionButton = sender
+        viewModel?.process(viewAction: .tap(reaction: tappedReaction))
     }
     
     @IBAction private func moreReactionsAction(_ sender: Any) {
-        self.viewModel?.process(viewAction: .moreReactions)
+        viewModel?.process(viewAction: .moreReactions)
     }
 }
 
 // MARK: - ReactionsMenuViewModelViewDelegate
+
 extension ReactionsMenuView: ReactionsMenuViewModelViewDelegate {
-    
     func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModel, didUpdateViewState viewState: ReactionsMenuViewState) {
         switch viewState {
         case .loaded(reactionsViewData: let reactionsViewData):
-            self.fill(reactionsMenuViewDatas: reactionsViewData)
+            fill(reactionsMenuViewDatas: reactionsViewData)
         }
     }
 }

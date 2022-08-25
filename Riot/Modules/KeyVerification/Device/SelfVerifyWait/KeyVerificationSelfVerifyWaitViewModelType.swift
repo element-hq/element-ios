@@ -30,8 +30,7 @@ protocol KeyVerificationSelfVerifyWaitViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `KeyVerificationSelfVerifyWaitViewController`
-protocol KeyVerificationSelfVerifyWaitViewModelType {        
-        
+protocol KeyVerificationSelfVerifyWaitViewModelType {
     var viewDelegate: KeyVerificationSelfVerifyWaitViewModelViewDelegate? { get set }
     var coordinatorDelegate: KeyVerificationSelfVerifyWaitViewModelCoordinatorDelegate? { get set }
     

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,10 +29,10 @@ class MessageTypingCell: MXKTableViewCell, Themable {
 
     // MARK: - Outlets
     
-    @IBOutlet private weak var additionalUsersLabel: UILabel!
-    @IBOutlet private weak var additionalUsersLabelLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var dotsView: DotsView!
-    @IBOutlet private weak var dotsViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private var additionalUsersLabel: UILabel!
+    @IBOutlet private var additionalUsersLabelLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private var dotsView: DotsView!
+    @IBOutlet private var dotsViewLeadingConstraint: NSLayoutConstraint!
 
     // MARK: - members
     
@@ -68,7 +68,7 @@ class MessageTypingCell: MXKTableViewCell, Themable {
         var pictureViewsMaxX: CGFloat = 0
         var xOffset: CGFloat = 0
         for pictureView in userPictureViews {
-            pictureView.center = CGPoint(x: Constants.pictureMaxMargin + xOffset + pictureView.bounds.midX, y: self.bounds.midY)
+            pictureView.center = CGPoint(x: Constants.pictureMaxMargin + xOffset + pictureView.bounds.midX, y: bounds.midY)
             xOffset += round(pictureView.bounds.maxX * 2 / 3)
             pictureViewsMaxX = pictureView.frame.maxX
         }
@@ -82,11 +82,11 @@ class MessageTypingCell: MXKTableViewCell, Themable {
     // MARK: - Overrides
     
     override class func defaultReuseIdentifier() -> String {
-        return String(describing: self)
+        String(describing: self)
     }
     
     override class func nib() -> UINib {
-        return UINib(nibName: String(describing: self), bundle: nil)
+        UINib(nibName: String(describing: self), bundle: nil)
     }
     
     // MARK: - Themable
@@ -97,7 +97,6 @@ class MessageTypingCell: MXKTableViewCell, Themable {
         dotsView.dotColor = theme.textSecondaryColor
     }
 
-    
     // MARK: - Business methods
     
     func updateTypingUsers(_ typingUsers: [TypingUserInfo], mediaManager: MXMediaManager) {
@@ -119,7 +118,7 @@ class MessageTypingCell: MXKTableViewCell, Themable {
             pictureView.setImageURI(user.avatarUrl, withType: nil, andImageOrientation: .up, toFitViewSize: pictureView.bounds.size, with: MXThumbnailingMethodCrop, previewImage: defaultavatarImage, mediaManager: mediaManager)
             
             userPictureViews.append(pictureView)
-            self.contentView.addSubview(pictureView)
+            contentView.addSubview(pictureView)
         }
         
         switch typingUsers.count {
@@ -130,10 +129,10 @@ class MessageTypingCell: MXKTableViewCell, Themable {
         default:
             additionalUsersLabel.text = VectorL10n.roomMultipleTypingNotification(firstUserNameFor(typingUsers) ?? "")
         }
-        self.setNeedsLayout()
+        setNeedsLayout()
     }
     
-    private func firstUserNameFor(_ typingUsers: Array<TypingUserInfo>) -> String? {
+    private func firstUserNameFor(_ typingUsers: [TypingUserInfo]) -> String? {
         guard let firstUser = typingUsers.first else {
             return nil
         }

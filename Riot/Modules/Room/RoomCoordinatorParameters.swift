@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// RoomCoordinator input parameters
 struct RoomCoordinatorParameters {
-    
     // MARK: - Properties
     
     /// The navigation router that manage physical navigation
@@ -98,7 +97,6 @@ struct RoomCoordinatorParameters {
          showSettingsInitially: Bool,
          displayConfiguration: RoomDisplayConfiguration = .default,
          autoJoinInvitedRoom: Bool = false) {
-        
         self.init(navigationRouter: navigationRouter,
                   navigationRouterStore: navigationRouterStore,
                   userIndicatorPresenter: userIndicatorPresenter,
@@ -119,7 +117,6 @@ struct RoomCoordinatorParameters {
          userIndicatorPresenter: UserIndicatorTypePresenterProtocol,
          parentSpaceId: String?,
          previewData: RoomPreviewData) {
-        
         self.init(navigationRouter: navigationRouter,
                   navigationRouterStore: navigationRouterStore,
                   userIndicatorPresenter: userIndicatorPresenter,

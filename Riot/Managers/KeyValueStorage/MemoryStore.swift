@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class MemoryStore {
-    
     private(set) var map: [KeyValueStoreKey: Any] = [:]
     
     private func setObject(_ value: Any?, forKey key: KeyValueStoreKey) {
@@ -29,17 +28,15 @@ class MemoryStore {
     }
 
     private func object(forKey key: KeyValueStoreKey) -> Any? {
-        return map[key]
+        map[key]
     }
     
     init(withMap map: [KeyValueStoreKey: Any] = [:]) {
         self.map = map
     }
-
 }
 
 extension MemoryStore: KeyValueStore {
-    
     //  setters
     func set(_ value: Data?, forKey key: KeyValueStoreKey) throws {
         setObject(value, forKey: key)
@@ -63,28 +60,28 @@ extension MemoryStore: KeyValueStore {
     
     //  getters
     func data(forKey key: KeyValueStoreKey) throws -> Data? {
-        return object(forKey: key) as? Data
+        object(forKey: key) as? Data
     }
     
     func string(forKey key: KeyValueStoreKey) throws -> String? {
-        return object(forKey: key) as? String
+        object(forKey: key) as? String
     }
     
     func bool(forKey key: KeyValueStoreKey) throws -> Bool? {
-        return object(forKey: key) as? Bool
+        object(forKey: key) as? Bool
     }
     
     func integer(forKey key: KeyValueStoreKey) throws -> Int? {
-        return object(forKey: key) as? Int
+        object(forKey: key) as? Int
     }
     
     func unsignedInteger(forKey key: KeyValueStoreKey) throws -> UInt? {
-        return object(forKey: key) as? UInt
+        object(forKey: key) as? UInt
     }
     
     //  checkers
     func containsObject(forKey key: KeyValueStoreKey) -> Bool {
-        return object(forKey: key) != nil
+        object(forKey: key) != nil
     }
     
     //  remove
@@ -95,5 +92,4 @@ extension MemoryStore: KeyValueStore {
     func removeAll() throws {
         map.removeAll()
     }
-    
 }

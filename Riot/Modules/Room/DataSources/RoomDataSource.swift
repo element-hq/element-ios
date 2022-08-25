@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,11 +18,13 @@ import Foundation
 
 extension RoomDataSource {
     // MARK: - Private Constants
+
     private enum Constants {
         static let emoteMessageSlashCommandPrefix = String(format: "%@ ", kMXKSlashCmdEmote)
     }
 
     // MARK: - NSAttributedString Sending
+
     /// Send a text message to the room.
     /// While sending, a fake event will be echoed in the messages list.
     /// Once complete, this local echo will be replaced by the event saved by the homeserver.
@@ -47,20 +49,20 @@ extension RoomDataSource {
         if isEmote {
             room.sendEmote(rawText,
                            formattedText: html,
-                           threadId: self.threadId,
+                           threadId: threadId,
                            localEcho: &localEcho,
                            completion: completion)
         } else {
             room.sendTextMessage(rawText,
                                  formattedText: html,
-                                 threadId: self.threadId,
+                                 threadId: threadId,
                                  localEcho: &localEcho,
                                  completion: completion)
         }
 
         if localEcho != nil {
-            self.queueEvent(forProcessing: localEcho, with: self.roomState, direction: .forwards)
-            self.processQueuedEvents(nil)
+            queueEvent(forProcessing: localEcho, with: roomState, direction: .forwards)
+            processQueuedEvents(nil)
         }
     }
 
@@ -93,13 +95,13 @@ extension RoomDataSource {
                        textMessage: rawText,
                        formattedTextMessage: html,
                        stringLocalizer: stringLocalizer,
-                       threadId: self.threadId,
+                       threadId: threadId,
                        localEcho: &localEcho,
                        completion: completion)
 
         if localEcho != nil {
-            self.queueEvent(forProcessing: localEcho, with: self.roomState, direction: .forwards)
-            self.processQueuedEvents(nil)
+            queueEvent(forProcessing: localEcho, with: roomState, direction: .forwards)
+            processQueuedEvents(nil)
         }
     }
 
@@ -126,8 +128,8 @@ extension RoomDataSource {
         let eventBody = event.content[kMXMessageBodyKey] as? String
         let eventFormattedBody = event.content["formatted_body"] as? String
 
-        if rawText != eventBody && (eventFormattedBody == nil || html != eventFormattedBody) {
-            self.mxSession.aggregations.replaceTextMessageEvent(
+        if rawText != eventBody, eventFormattedBody == nil || html != eventFormattedBody {
+            mxSession.aggregations.replaceTextMessageEvent(
                 event,
                 withTextMessage: rawText,
                 formattedText: html,
@@ -141,14 +143,15 @@ extension RoomDataSource {
                     self.processQueuedEvents(nil)
                 },
                 success: success,
-                failure: failure)
+                failure: failure
+            )
         } else {
             failure(nil)
         }
     }
 
     /// Retrieve editable attributed text message from an event.
-    /// 
+    ///
     /// - Parameter event: the event
     /// - Returns: event attributed text editable by user
     @objc func editableAttributedTextMessage(for event: MXEvent) -> NSAttributedString? {
@@ -170,10 +173,10 @@ extension RoomDataSource {
             let attributed = eventFormatter.renderHTMLString(body, for: event, with: nil, andLatestRoomState: nil)
             if let attributed = attributed, #available(iOS 15.0, *) {
                 editableTextMessage = PillsFormatter.insertPills(in: attributed,
-                                                                 withSession: self.mxSession,
-                                                                 eventFormatter: self.eventFormatter,
+                                                                 withSession: mxSession,
+                                                                 eventFormatter: eventFormatter,
                                                                  event: event,
-                                                                 roomState: self.roomState,
+                                                                 roomState: roomState,
                                                                  andLatestRoomState: nil,
                                                                  isEditMode: true)
             } else {
@@ -184,10 +187,10 @@ extension RoomDataSource {
             let attributed = eventFormatter.renderHTMLString(body, for: event, with: nil, andLatestRoomState: nil)
             if let attributed = attributed, #available(iOS 15.0, *) {
                 editableTextMessage = PillsFormatter.insertPills(in: attributed,
-                                                                 withSession: self.mxSession,
-                                                                 eventFormatter: self.eventFormatter,
+                                                                 withSession: mxSession,
+                                                                 eventFormatter: eventFormatter,
                                                                  event: event,
-                                                                 roomState: self.roomState,
+                                                                 roomState: roomState,
                                                                  andLatestRoomState: nil,
                                                                  isEditMode: true)
             } else {
@@ -197,15 +200,14 @@ extension RoomDataSource {
 
         return editableTextMessage
     }
-
-    
 }
 
 // MARK: - Private Helpers
+
 private extension RoomDataSource {
     func sanitizedAttributedMessageText(_ attributedString: NSAttributedString) -> NSAttributedString {
         let newAttr = NSMutableAttributedString(attributedString: attributedString)
-        newAttr.mutableString.replaceOccurrences(of: String(format: "%C", 0x00000000), with: "", range: .init(location: 0, length: newAttr.length))
+        newAttr.mutableString.replaceOccurrences(of: String(format: "%C", 0x0000_0000), with: "", range: .init(location: 0, length: newAttr.length))
 
         if isAttributedTextMessageAnEmote(attributedString) {
             // Remove "/me " string
@@ -230,6 +232,6 @@ private extension RoomDataSource {
     }
 
     func isAttributedTextMessageAnEmote(_ attributedText: NSAttributedString) -> Bool {
-        return attributedText.string.starts(with: Constants.emoteMessageSlashCommandPrefix)
+        attributedText.string.starts(with: Constants.emoteMessageSlashCommandPrefix)
     }
 }

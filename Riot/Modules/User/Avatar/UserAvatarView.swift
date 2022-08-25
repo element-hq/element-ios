@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,36 +14,35 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 final class UserAvatarView: AvatarView {
-    
     // MARK: - Setup
     
     private func commonInit() {
         let avatarImageView = MXKImageView()
-        self.vc_addSubViewMatchingParent(avatarImageView)
+        vc_addSubViewMatchingParent(avatarImageView)
         self.avatarImageView = avatarImageView
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.commonInit()
+        commonInit()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.commonInit()
+        commonInit()
     }
     
     // MARK: - Overrides
     
     override func updateAccessibilityTraits() {
-        if self.isUserInteractionEnabled {
-            self.vc_setupAccessibilityTraitsButton(withTitle: VectorL10n.userAvatarViewAccessibilityLabel, hint: VectorL10n.userAvatarViewAccessibilityHint, isEnabled: true)
+        if isUserInteractionEnabled {
+            vc_setupAccessibilityTraitsButton(withTitle: VectorL10n.userAvatarViewAccessibilityLabel, hint: VectorL10n.userAvatarViewAccessibilityHint, isEnabled: true)
         } else {
-            self.vc_setupAccessibilityTraitsImage(withTitle: VectorL10n.userAvatarViewAccessibilityLabel)
+            vc_setupAccessibilityTraitsImage(withTitle: VectorL10n.userAvatarViewAccessibilityLabel)
         }
     }
 }

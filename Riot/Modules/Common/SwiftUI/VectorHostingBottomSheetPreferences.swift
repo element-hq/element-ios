@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// `VectorHostingBottomSheetPreferences` defines the bottom sheet behaviour using the `UISheetPresentationController` of the `UIViewController`
 class VectorHostingBottomSheetPreferences {
-    
     // MARK: - Detent
     
     enum Detent {
@@ -94,16 +93,16 @@ class VectorHostingBottomSheetPreferences {
             return
         }
         
-        sheetController.detents = self.uiSheetDetents()
-        if let prefersGrabberVisible = self.prefersGrabberVisible {
+        sheetController.detents = uiSheetDetents()
+        if let prefersGrabberVisible = prefersGrabberVisible {
             sheetController.prefersGrabberVisible = prefersGrabberVisible
         } else {
-            sheetController.prefersGrabberVisible = self.detents.count > 1
+            sheetController.prefersGrabberVisible = detents.count > 1
         }
-        sheetController.selectedDetentIdentifier = self.defaultDetent?.uiSheetDetentId()
-        sheetController.largestUndimmedDetentIdentifier = self.largestUndimmedDetent?.uiSheetDetentId()
-        sheetController.prefersScrollingExpandsWhenScrolledToEdge = self.prefersScrollingExpandsWhenScrolledToEdge
-        if let cornerRadius = self.cornerRadius {
+        sheetController.selectedDetentIdentifier = defaultDetent?.uiSheetDetentId()
+        sheetController.largestUndimmedDetentIdentifier = largestUndimmedDetent?.uiSheetDetentId()
+        sheetController.prefersScrollingExpandsWhenScrolledToEdge = prefersScrollingExpandsWhenScrolledToEdge
+        if let cornerRadius = cornerRadius {
             sheetController.preferredCornerRadius = cornerRadius
         }
     }
@@ -111,7 +110,7 @@ class VectorHostingBottomSheetPreferences {
     // MARK: - Private
 
     @available(iOS 15, *)
-    fileprivate func uiSheetDetents() -> [UISheetPresentationController.Detent] {
+    private func uiSheetDetents() -> [UISheetPresentationController.Detent] {
         var uiSheetDetents: [UISheetPresentationController.Detent] = []
         for detent in detents {
             uiSheetDetents.append(detent.uiSheetDetent())

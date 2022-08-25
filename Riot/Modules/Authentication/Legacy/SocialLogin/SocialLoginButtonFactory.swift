@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,8 +25,7 @@ enum SocialLoginButtonMode: Int {
 
 /// `SocialLoginButtonFactory` builds SocialLoginButton and apply dedicated theme if needed.
 class SocialLoginButtonFactory {
-    
-    // MARK - Public
+    // MARK: - Public
             
     func build(with identityProvider: MXLoginSSOIdentityProvider, mode: SocialLoginButtonMode) -> SocialLoginButton {
         let button = SocialLoginButton()
@@ -51,17 +50,17 @@ class SocialLoginButtonFactory {
 
             switch idpBrand {
             case .gitlab:
-                (defaultStyle, styles) = self.buildGitLabButtonStyles()
+                (defaultStyle, styles) = buildGitLabButtonStyles()
             case .github:
-                (defaultStyle, styles) = self.buildGitHubButtonStyles()
+                (defaultStyle, styles) = buildGitHubButtonStyles()
             case .apple:
-                (defaultStyle, styles) = self.buildAppleButtonStyles()
+                (defaultStyle, styles) = buildAppleButtonStyles()
             case .google:
-                (defaultStyle, styles) = self.buildGoogleButtonStyles()
+                (defaultStyle, styles) = buildGoogleButtonStyles()
             case .facebook:
-                (defaultStyle, styles) = self.buildFacebookButtonStyles()
+                (defaultStyle, styles) = buildFacebookButtonStyles()
             case .twitter:
-                (defaultStyle, styles) = self.buildTwitterButtonStyles()
+                (defaultStyle, styles) = buildTwitterButtonStyles()
             default:
                 (defaultStyle, styles) = buildDefaultButtonStyles()
             }
@@ -69,7 +68,7 @@ class SocialLoginButtonFactory {
             (defaultStyle, styles) = buildDefaultButtonStyles()
         }
         
-        let title = self.buildButtonTitle(with: identityProvider.name, mode: mode)
+        let title = buildButtonTitle(with: identityProvider.name, mode: mode)
         
         let viewData = SocialLoginButtonViewData(identityProvider: identityProvider.ssoIdentityProvider,
                                                  title: title,
@@ -81,7 +80,7 @@ class SocialLoginButtonFactory {
         return button
     }
     
-    // MARK - Private
+    // MARK: - Private
     
     private func buildButtonTitle(with providerTitle: String, mode: SocialLoginButtonMode) -> String {
         let buttonTitle: String
@@ -99,7 +98,6 @@ class SocialLoginButtonFactory {
     }
     
     private func buildAppleButtonStyles() -> (SocialLoginButtonStyle, [String: SocialLoginButtonStyle]) {
-        
         var lightImage: SourceImage?
         
         let appleLogo = Asset.Images.socialLoginButtonApple.image
@@ -136,7 +134,6 @@ class SocialLoginButtonFactory {
     }
     
     private func buildGoogleButtonStyles() -> (SocialLoginButtonStyle, [String: SocialLoginButtonStyle]) {
-        
         let logo = Asset.Images.socialLoginButtonGoogle.image
         
         let lightImage: SourceImage = .local(logo)
@@ -169,7 +166,6 @@ class SocialLoginButtonFactory {
     }
     
     private func buildTwitterButtonStyles() -> (SocialLoginButtonStyle, [String: SocialLoginButtonStyle]) {
-        
         let defaultStyle = SocialLoginButtonStyle(logo: .local(Asset.Images.socialLoginButtonTwitter.image),
                                                   titleColor: .white,
                                                   backgroundColor: UIColor(rgb: 0x47ACDF),
@@ -178,7 +174,6 @@ class SocialLoginButtonFactory {
     }
     
     private func buildFacebookButtonStyles() -> (SocialLoginButtonStyle, [String: SocialLoginButtonStyle]) {
-        
         let defaultStyle = SocialLoginButtonStyle(logo: .local(Asset.Images.socialLoginButtonFacebook.image),
                                                   titleColor: .white,
                                                   backgroundColor: UIColor(rgb: 0x3C5A99),
@@ -187,7 +182,6 @@ class SocialLoginButtonFactory {
     }
     
     private func buildGitHubButtonStyles() -> (SocialLoginButtonStyle, [String: SocialLoginButtonStyle]) {
-        
         var lightImage: SourceImage?
         
         let githubLogo = Asset.Images.socialLoginButtonGithub.image
@@ -224,7 +218,6 @@ class SocialLoginButtonFactory {
     }
     
     private func buildGitLabButtonStyles() -> (SocialLoginButtonStyle, [String: SocialLoginButtonStyle]) {
-                
         let logo: SourceImage = .local(Asset.Images.socialLoginButtonGitlab.image)
         
         let lightStyle = SocialLoginButtonStyle(logo: logo,
@@ -249,7 +242,6 @@ class SocialLoginButtonFactory {
     }
     
     private func buildDefaultButtonStyles(with image: SourceImage?) -> (SocialLoginButtonStyle, [String: SocialLoginButtonStyle]) {
-        
         let lightStyle = SocialLoginButtonStyle(logo: image,
                                                 titleColor: .black,
                                                 backgroundColor: .white,

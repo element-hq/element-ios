@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import UIKit
 
 /// Theme v2. May be named again as `Theme` when the migration completed.
 @objc public protocol ThemeV2 {
-    
     /// Colors object
     var colors: ColorsUIKit { get }
     
@@ -31,7 +30,6 @@ import UIKit
 
 /// Theme v2 for SwiftUI.
 public protocol ThemeSwiftUIType {
-    
     /// Colors object
     var colors: ColorSwiftUI { get }
     

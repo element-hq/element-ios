@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,36 +14,34 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 final class RoomAvatarView: AvatarView, NibOwnerLoadable {
-    
     // MARK: - Properties
 
     // MARK: Outlets
     
-    @IBOutlet private weak var cameraBadgeContainerView: UIView!
+    @IBOutlet private var cameraBadgeContainerView: UIView!
     
     // MARK: Public
     
-    var showCameraBadgeOnFallbackImage: Bool = false
+    var showCameraBadgeOnFallbackImage = false
     
     // MARK: - Setup
     
-    private func commonInit() {
-    }
+    private func commonInit() { }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadNibContent()
-        self.commonInit()
+        loadNibContent()
+        commonInit()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadNibContent()
-        self.commonInit()
+        loadNibContent()
+        commonInit()
     }
     
     // MARK: - Lifecycle
@@ -51,13 +49,13 @@ final class RoomAvatarView: AvatarView, NibOwnerLoadable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.avatarImageView.layer.cornerRadius = self.avatarImageView.bounds.height/2
+        avatarImageView.layer.cornerRadius = avatarImageView.bounds.height / 2
     }
     
     // MARK: - Public
     
     override func fill(with viewData: AvatarViewDataProtocol) {
-        self.updateAvatarImageView(with: viewData)
+        updateAvatarImageView(with: viewData)
 
         // Fix layoutSubviews not triggered issue
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -68,10 +66,10 @@ final class RoomAvatarView: AvatarView, NibOwnerLoadable {
     // MARK: - Overrides
     
     override func updateAccessibilityTraits() {
-        if self.isUserInteractionEnabled {
-            self.vc_setupAccessibilityTraitsButton(withTitle: VectorL10n.roomAvatarViewAccessibilityLabel, hint: VectorL10n.roomAvatarViewAccessibilityHint, isEnabled: true)
+        if isUserInteractionEnabled {
+            vc_setupAccessibilityTraitsButton(withTitle: VectorL10n.roomAvatarViewAccessibilityLabel, hint: VectorL10n.roomAvatarViewAccessibilityHint, isEnabled: true)
         } else {
-            self.vc_setupAccessibilityTraitsImage(withTitle: VectorL10n.roomAvatarViewAccessibilityLabel)
+            vc_setupAccessibilityTraitsImage(withTitle: VectorL10n.roomAvatarViewAccessibilityLabel)
         }
     }
     
@@ -80,12 +78,12 @@ final class RoomAvatarView: AvatarView, NibOwnerLoadable {
         
         let hideCameraBadge: Bool
         
-        if self.showCameraBadgeOnFallbackImage {
+        if showCameraBadgeOnFallbackImage {
             hideCameraBadge = viewData.avatarUrl != nil
         } else {
             hideCameraBadge = true
         }
         
-        self.cameraBadgeContainerView.isHidden = hideCameraBadge
+        cameraBadgeContainerView.isHidden = hideCameraBadge
     }
 }

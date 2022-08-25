@@ -19,7 +19,6 @@
 import Foundation
 
 final class SecretsResetViewModel: SecretsResetViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -37,8 +36,8 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
     
     init(session: MXSession) {
         self.session = session
-        self.recoveryService = session.crypto.recoveryService
-        self.crossSigningService = CrossSigningService()
+        recoveryService = session.crypto.recoveryService
+        crossSigningService = CrossSigningService()
     }
     
     // MARK: - Public
@@ -48,27 +47,27 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
         case .loadData:
             break
         case .reset:
-            self.askAuthentication()
+            askAuthentication()
         case .authenticationInfoEntered(let authParameters):
-            self.resetSecrets(with: authParameters)
+            resetSecrets(with: authParameters)
         case .cancel:
-            self.coordinatorDelegate?.secretsResetViewModelDidCancel(self)
+            coordinatorDelegate?.secretsResetViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     func update(viewState: SecretsResetViewState) {
-        self.viewDelegate?.secretsResetViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.secretsResetViewModel(self, didUpdateViewState: viewState)
     }
     
     private func resetSecrets(with authParameters: [String: Any]) {
-        guard let crossSigning = self.session.crypto.crossSigning else {
+        guard let crossSigning = session.crypto.crossSigning else {
             return
         }
         MXLog.debug("[SecretsResetViewModel] resetSecrets")
 
-        self.update(viewState: .resetting)
+        update(viewState: .resetting)
         crossSigning.setup(withAuthParams: authParameters, success: { [weak self] in
             guard let self = self else {
                 return
@@ -96,7 +95,7 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
     }
     
     private func askAuthentication() {
-        let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
-        self.coordinatorDelegate?.secretsResetViewModel(self, needsToAuthenticateWith: setupCrossSigningRequest)
+        let setupCrossSigningRequest = crossSigningService.setupCrossSigningRequest()
+        coordinatorDelegate?.secretsResetViewModel(self, needsToAuthenticateWith: setupCrossSigningRequest)
     }
 }

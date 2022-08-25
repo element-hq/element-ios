@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// SocialLoginButton view data
 struct SocialLoginButtonViewData {
-    
     /// Identity provider identifier
     let identityProvider: SSOIdentityProvider
     

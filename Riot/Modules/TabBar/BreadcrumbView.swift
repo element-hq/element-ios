@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,11 +20,10 @@ import UIKit
 /// `BreadcrumbView` can be used to display a path into a  single line of text and manages ellipsis.
 @objcMembers
 class BreadcrumbView: UIView, Themable {
-    
     // MARK: - Constants
     
     private enum Constants {
-        static let separator: String = "/"
+        static let separator = "/"
     }
     
     // MARK: - Properties
@@ -72,7 +71,7 @@ class BreadcrumbView: UIView, Themable {
             }
             createLabel(with: breadcrumb, at: index)
         }
-        self.layoutIfNeeded()
+        layoutIfNeeded()
     }
     
     private func createLabel(with text: String?, at index: Int) {
@@ -95,21 +94,21 @@ class BreadcrumbView: UIView, Themable {
         
         update(theme: ThemeService.shared().theme, for: label)
 
-        self.addSubview(label)
-        self.labels.append(label)
+        addSubview(label)
+        labels.append(label)
         
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
-        label.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+        label.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
         
         if let prevSibling = prevSibling(of: label) {
             label.leadingAnchor.constraint(equalTo: prevSibling.trailingAnchor).isActive = true
         } else {
-            label.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+            label.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
         }
         
-        if index == breadcrumbs.count - 1 && label.text != Constants.separator {
-            label.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        if index == breadcrumbs.count - 1, label.text != Constants.separator {
+            label.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
         }
     }
     
@@ -118,7 +117,7 @@ class BreadcrumbView: UIView, Themable {
             return nil
         }
         
-        return labels[index-1]
+        return labels[index - 1]
     }
     
     private func update(theme: Theme, for label: UILabel) {

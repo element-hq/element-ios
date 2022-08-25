@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 @objcMembers
 final class Section: NSObject {
-    
     let tag: Int
     var rows: [Row]
     var attributedHeaderTitle: NSAttributedString?
@@ -37,6 +36,7 @@ final class Section: NSObject {
             attributedHeaderTitle = NSAttributedString(string: newValue)
         }
     }
+
     var footerTitle: String? {
         get {
             attributedFooterTitle?.string
@@ -53,12 +53,12 @@ final class Section: NSObject {
     
     init(withTag tag: Int) {
         self.tag = tag
-        self.rows = []
+        rows = []
         super.init()
     }
     
     static func section(withTag tag: Int) -> Section {
-        return Section(withTag: tag)
+        Section(withTag: tag)
     }
     
     func addRow(_ row: Row) {
@@ -76,11 +76,10 @@ final class Section: NSObject {
     }
     
     func indexOfRow(withTag tag: Int) -> Int? {
-        return rows.firstIndex(where: { $0.tag == tag })
+        rows.firstIndex(where: { $0.tag == tag })
     }
     
     var hasAnyRows: Bool {
-        return rows.isEmpty == false
+        rows.isEmpty == false
     }
-    
 }

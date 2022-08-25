@@ -17,7 +17,6 @@
 import Foundation
 
 protocol EmojiServiceType {
-    
     /// Returns all available emoji categories. The completion will always be called on the main queue.
     func getEmojiCategories(completion: @escaping (MXResponse<[EmojiCategory]>) -> Void)
 }

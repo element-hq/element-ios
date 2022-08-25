@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class EnterNewRoomDetailsCoordinator: EnterNewRoomDetailsCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -58,19 +57,19 @@ final class EnterNewRoomDetailsCoordinator: EnterNewRoomDetailsCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        self.enterNewRoomDetailsViewModel.coordinatorDelegate = self
+        enterNewRoomDetailsViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.enterNewRoomDetailsViewController
+        enterNewRoomDetailsViewController
     }
 }
 
 // MARK: - EnterNewRoomDetailsViewModelCoordinatorDelegate
+
 extension EnterNewRoomDetailsCoordinator: EnterNewRoomDetailsViewModelCoordinatorDelegate {
-    
     func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didCreateNewRoom room: MXRoom) {
-        self.delegate?.enterNewRoomDetailsCoordinator(self, didCreateNewRoom: room)
+        delegate?.enterNewRoomDetailsCoordinator(self, didCreateNewRoom: room)
     }
     
     func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didTapChooseAvatar sourceView: UIView) {
@@ -78,12 +77,11 @@ extension EnterNewRoomDetailsCoordinator: EnterNewRoomDetailsViewModelCoordinato
     }
     
     func enterNewRoomDetailsViewModelDidCancel(_ viewModel: EnterNewRoomDetailsViewModelType) {
-        self.delegate?.enterNewRoomDetailsCoordinatorDidCancel(self)
+        delegate?.enterNewRoomDetailsCoordinatorDidCancel(self)
     }
 }
 
 extension EnterNewRoomDetailsCoordinator: SingleImagePickerPresenterDelegate {
-    
     func singleImagePickerPresenter(_ presenter: SingleImagePickerPresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?) {
         enterNewRoomDetailsViewModel.roomCreationParameters.userSelectedAvatar = UIImage(data: imageData)
         enterNewRoomDetailsViewModel.process(viewAction: .loadData)
@@ -93,5 +91,4 @@ extension EnterNewRoomDetailsCoordinator: SingleImagePickerPresenterDelegate {
     func singleImagePickerPresenterDidCancel(_ presenter: SingleImagePickerPresenter) {
         presenter.dismiss(animated: true, completion: nil)
     }
-    
 }

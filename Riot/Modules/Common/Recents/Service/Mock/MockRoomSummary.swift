@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ public class MockRoomSummary: NSObject, MXRoomSummaryProtocol {
     
     public var topic: String?
     
-    public var creatorUserId: String = "@room_creator:matrix.org"
+    public var creatorUserId = "@room_creator:matrix.org"
     
     public var aliases: [String] = []
     
@@ -42,17 +42,17 @@ public class MockRoomSummary: NSObject, MXRoomSummaryProtocol {
     
     public var membershipTransitionState: MXMembershipTransitionState = .joined
     
-    public var membersCount: MXRoomMembersCount = MXRoomMembersCount(members: 2, joined: 2, invited: 0)
+    public var membersCount = MXRoomMembersCount(members: 2, joined: 2, invited: 0)
     
-    public var isConferenceUserRoom: Bool = false
+    public var isConferenceUserRoom = false
     
-    public var hiddenFromUser: Bool = false
+    public var hiddenFromUser = false
     
     public var storedHash: UInt = 0
     
     public var lastMessage: MXRoomLastMessage?
     
-    public var isEncrypted: Bool = false
+    public var isEncrypted = false
     
     public var trust: MXUsersTrustLevelSummary?
     
@@ -63,19 +63,19 @@ public class MockRoomSummary: NSObject, MXRoomSummaryProtocol {
     public var highlightCount: UInt = 0
     
     public var hasAnyUnread: Bool {
-        return localUnreadEventCount > 0
+        localUnreadEventCount > 0
     }
     
     public var hasAnyNotification: Bool {
-        return notificationCount > 0
+        notificationCount > 0
     }
     
     public var hasAnyHighlight: Bool {
-        return highlightCount > 0
+        highlightCount > 0
     }
     
     public var isDirect: Bool {
-        return isTyped(.direct)
+        isTyped(.direct)
     }
     
     public var directUserId: String?
@@ -87,7 +87,7 @@ public class MockRoomSummary: NSObject, MXRoomSummaryProtocol {
     public var dataTypes: MXRoomSummaryDataTypes = []
     
     public func isTyped(_ types: MXRoomSummaryDataTypes) -> Bool {
-        return (dataTypes.rawValue & types.rawValue) != 0
+        (dataTypes.rawValue & types.rawValue) != 0
     }
     
     public var sentStatus: MXRoomSummarySentStatus = .ok
@@ -106,11 +106,11 @@ public class MockRoomSummary: NSObject, MXRoomSummaryProtocol {
     }
     
     public static func generate() -> MockRoomSummary {
-        return generate(withTypes: [])
+        generate(withTypes: [])
     }
     
     public static func generateDirect() -> MockRoomSummary {
-        return generate(withTypes: .direct)
+        generate(withTypes: .direct)
     }
     
     public static func generate(withTypes types: MXRoomSummaryDataTypes) -> MockRoomSummary {
@@ -125,5 +125,4 @@ public class MockRoomSummary: NSObject, MXRoomSummaryProtocol {
         }
         return result
     }
-    
 }

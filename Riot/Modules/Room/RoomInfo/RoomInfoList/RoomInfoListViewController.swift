@@ -16,12 +16,11 @@
  limitations under the License.
  */
 
-import UIKit
 import CommonKit
 import MatrixSDK
+import UIKit
 
 final class RoomInfoListViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -33,7 +32,7 @@ final class RoomInfoListViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var mainTableView: UITableView!
+    @IBOutlet private var mainTableView: UITableView!
     
     // MARK: Private
 
@@ -42,7 +41,7 @@ final class RoomInfoListViewController: UIViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol!
     private var loadingIndicator: UserIndicator?
-    private var isRoomDirect: Bool = false
+    private var isRoomDirect = false
     private var screenTracker = AnalyticsScreenTracker(screen: .roomDetails)
     
     private lazy var closeButton: CloseButton = {
@@ -66,7 +65,7 @@ final class RoomInfoListViewController: UIViewController {
         let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         controller.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
-        controller.addAction(UIAlertAction(title: VectorL10n.leave, style: .default, handler: { [weak self] (action) in
+        controller.addAction(UIAlertAction(title: VectorL10n.leave, style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
             self.viewModel.process(viewAction: .leave)
         }))
@@ -116,22 +115,22 @@ final class RoomInfoListViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
+        setupViews()
         
-        self.indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: self)
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: self)
     
-        self.errorPresenter = MXKErrorAlertPresentation()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        self.theme.statusBarStyle
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -151,7 +150,7 @@ final class RoomInfoListViewController: UIViewController {
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animate(alongsideTransition: {_ in
+        coordinator.animate(alongsideTransition: { _ in
             self.basicInfoView.updateTrimmingOnTopic()
         }, completion: nil)
     }
@@ -221,10 +220,10 @@ final class RoomInfoListViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
-        self.mainTableView.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
+        mainTableView.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
@@ -239,18 +238,18 @@ final class RoomInfoListViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
         if navigationController?.viewControllers.count ?? 0 <= 1 {
-            self.navigationItem.rightBarButtonItem = MXKBarButtonItem(customView: closeButton)
+            navigationItem.rightBarButtonItem = MXKBarButtonItem(customView: closeButton)
         }
         
-        self.title = ""
-        self.vc_removeBackTitle()
+        title = ""
+        vc_removeBackTitle()
         // TODO: Check string with product (+ DM specific alt ?) and move this out of Untranslated.
-        self.navigationItem.backButtonTitle = VectorL10n.roomInfoBackButtonTitle
+        navigationItem.backButtonTitle = VectorL10n.roomInfoBackButtonTitle
 
         mainTableView.register(headerFooterViewType: TextViewTableViewHeaderFooterView.self)
         mainTableView.sectionHeaderHeight = UITableView.automaticDimension
@@ -264,11 +263,11 @@ final class RoomInfoListViewController: UIViewController {
     private func render(viewState: RoomInfoListViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let viewData):
-            self.renderLoaded(viewData: viewData)
+            renderLoaded(viewData: viewData)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
@@ -283,12 +282,12 @@ final class RoomInfoListViewController: UIViewController {
     
     private func renderLoaded(viewData: RoomInfoListViewData) {
         stopLoading()
-        self.updateSections(with: viewData)
+        updateSections(with: viewData)
     }
     
     private func render(error: Error) {
         stopLoading()
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     private func stopLoading() {
@@ -298,22 +297,19 @@ final class RoomInfoListViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func closeButtonTapped(_ sender: Any) {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
-
 }
-
 
 // MARK: - UITableViewDataSource
 
 extension RoomInfoListViewController: UITableViewDataSource {
-    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].rows.count
+        sections[section].rows.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -354,13 +350,11 @@ extension RoomInfoListViewController: UITableViewDataSource {
             return cell
         }
     }
-    
 }
 
 // MARK: - UITableViewDelegate
 
 extension RoomInfoListViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = theme.backgroundColor
         cell.selectedBackgroundView = UIView()
@@ -368,11 +362,11 @@ extension RoomInfoListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].header
+        sections[section].header
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return sections[section].footer
+        sections[section].footer
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -424,15 +418,12 @@ extension RoomInfoListViewController: UITableViewDelegate {
         }
         return UITableView.automaticDimension
     }
-    
 }
 
 // MARK: - RoomInfoListViewModelViewDelegate
 
 extension RoomInfoListViewController: RoomInfoListViewModelViewDelegate {
-
     func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, didUpdateViewState viewSate: RoomInfoListViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
-    
 }

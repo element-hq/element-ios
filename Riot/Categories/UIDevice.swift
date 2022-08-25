@@ -18,7 +18,6 @@ import Foundation
 import UIKit
 
 @objc extension UIDevice {
-
     /// Returns 'true' if the current device has a notch
     var hasNotch: Bool {
         // Case 1: Portrait && top safe area inset >= 44
@@ -31,11 +30,10 @@ import UIKit
     
     /// Returns if the device is a Phone
     var isPhone: Bool {
-        return userInterfaceIdiom == .phone
+        userInterfaceIdiom == .phone
     }
     
     var initialDisplayName: String {
         isPhone ? VectorL10n.loginMobileDevice : VectorL10n.loginTabletDevice
     }
-    
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,6 @@ import SwiftUI
 /// Also renders an optional bottom section.
 /// Used in the case of keywords, for the keyword chips and input.
 struct NotificationSettings<BottomSection: View>: View {
-    
     @ObservedObject var viewModel: NotificationSettingsViewModel
     
     var bottomSection: BottomSection?

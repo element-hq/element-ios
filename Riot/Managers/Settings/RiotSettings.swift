@@ -19,7 +19,6 @@ import Foundation
 /// Store Riot specific app settings.
 @objcMembers
 final class RiotSettings: NSObject {
-    
     // MARK: - Constants
     
     public enum UserDefaultsKeys {
@@ -44,13 +43,13 @@ final class RiotSettings: NSObject {
         return userDefaults
     }()
     
-    private override init() {
+    override private init() {
         super.init()
     }
     
     /// Indicate if UserDefaults suite has been migrated once.
     var isUserDefaultsMigrated: Bool {
-        return RiotSettings.defaults.object(forKey: UserDefaultsKeys.notificationsShowDecryptedContent) != nil
+        RiotSettings.defaults.object(forKey: UserDefaultsKeys.notificationsShowDecryptedContent) != nil
     }
     
     func migrate() {
@@ -77,7 +76,7 @@ final class RiotSettings: NSObject {
     
     /// Indicate if `showDecryptedContentInNotifications` settings has been set once.
     var isShowDecryptedContentInNotificationsHasBeenSetOnce: Bool {
-        return RiotSettings.defaults.object(forKey: UserDefaultsKeys.notificationsShowDecryptedContent) != nil
+        RiotSettings.defaults.object(forKey: UserDefaultsKeys.notificationsShowDecryptedContent) != nil
     }
     
     /// Indicate if notifications should be shown whilst the app is in the foreground.
@@ -168,7 +167,7 @@ final class RiotSettings: NSObject {
     
     /// Indicate if `allowStunServerFallback` settings has been set once.
     var isAllowStunServerFallbackHasBeenSetOnce: Bool {
-        return RiotSettings.defaults.object(forKey: UserDefaultsKeys.allowStunServerFallback) != nil
+        RiotSettings.defaults.object(forKey: UserDefaultsKeys.allowStunServerFallback) != nil
     }
     
     @UserDefault(key: UserDefaultsKeys.allowStunServerFallback, defaultValue: false, storage: defaults)
@@ -220,7 +219,7 @@ final class RiotSettings: NSObject {
     var roomScreenEnableMessageBubbles
 
     var roomTimelineStyleIdentifier: RoomTimelineStyleIdentifier {
-        return self.roomScreenEnableMessageBubbles ? .bubble : .plain
+        roomScreenEnableMessageBubbles ? .bubble : .plain
     }
 
     /// A setting used to display the latest known display name and avatar in the timeline
@@ -384,6 +383,7 @@ final class RiotSettings: NSObject {
 }
 
 // MARK: - RiotSettings notification constants
+
 extension RiotSettings {
     public static let didUpdateLiveLocationSharingActivation = Notification.Name("RiotSettingsDidUpdateLiveLocationSharingActivation")
 }

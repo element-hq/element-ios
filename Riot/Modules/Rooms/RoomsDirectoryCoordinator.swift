@@ -20,7 +20,6 @@ import UIKit
 
 @objcMembers
 final class RoomsDirectoryCoordinator: RoomsDirectoryCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -39,50 +38,49 @@ final class RoomsDirectoryCoordinator: RoomsDirectoryCoordinatorType {
     // MARK: - Setup
     
     init(session: MXSession, dataSource: PublicRoomsDirectoryDataSource) {
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.dataSource = dataSource
-    }    
+    }
     
     // MARK: - Public methods
     
     func start() {
-
-        let rootCoordinator = self.createShowDirectoryCoordinator()
+        let rootCoordinator = createShowDirectoryCoordinator()
 
         rootCoordinator.start()
 
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
 
-        self.navigationRouter.setRootModule(rootCoordinator)
-      }
+        navigationRouter.setRootModule(rootCoordinator)
+    }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private methods
 
     private func createShowDirectoryCoordinator() -> ShowDirectoryCoordinator {
-        let coordinator = ShowDirectoryCoordinator(session: self.session, dataSource: dataSource)
+        let coordinator = ShowDirectoryCoordinator(session: session, dataSource: dataSource)
         coordinator.delegate = self
         return coordinator
     }
 }
 
 // MARK: - ShowDirectoryCoordinatorDelegate
+
 extension RoomsDirectoryCoordinator: ShowDirectoryCoordinatorDelegate {
-    
     func showDirectoryCoordinator(_ coordinator: ShowDirectoryCoordinatorType, didSelectRoom room: MXPublicRoom) {
-        self.delegate?.roomsDirectoryCoordinator(self, didSelectRoom: room)
+        delegate?.roomsDirectoryCoordinator(self, didSelectRoom: room)
     }
     
     func showDirectoryCoordinatorDidTapCreateNewRoom(_ coordinator: ShowDirectoryCoordinatorType) {
-        self.delegate?.roomsDirectoryCoordinatorDidTapCreateNewRoom(self)
+        delegate?.roomsDirectoryCoordinatorDidTapCreateNewRoom(self)
     }
     
     func showDirectoryCoordinatorDidCancel(_ coordinator: ShowDirectoryCoordinatorType) {
-        self.delegate?.roomsDirectoryCoordinatorDidComplete(self)
+        delegate?.roomsDirectoryCoordinatorDidComplete(self)
     }
     
     func showDirectoryCoordinatorWantsToShow(_ coordinator: ShowDirectoryCoordinatorType, viewController: UIViewController) {
@@ -90,6 +88,6 @@ extension RoomsDirectoryCoordinator: ShowDirectoryCoordinatorDelegate {
     }
     
     func showDirectoryCoordinator(_ coordinator: ShowDirectoryCoordinatorType, didSelectRoomWithIdOrAlias roomIdOrAlias: String) {
-        self.delegate?.roomsDirectoryCoordinator(self, didSelectRoomWithIdOrAlias: roomIdOrAlias)
+        delegate?.roomsDirectoryCoordinator(self, didSelectRoomWithIdOrAlias: roomIdOrAlias)
     }
 }

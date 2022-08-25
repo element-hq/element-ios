@@ -14,11 +14,10 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class SecureBackupSetupIntroCell: UIView, NibOwnerLoadable, Themable {
-    
     // MARK: - Constants
     
     private enum ImageAlpha {
@@ -29,20 +28,20 @@ final class SecureBackupSetupIntroCell: UIView, NibOwnerLoadable, Themable {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var backgroundView: UIView!
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var accessoryImageView: UIImageView!
-    @IBOutlet private weak var separatorView: UIView!
+    @IBOutlet private var backgroundView: UIView!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
+    @IBOutlet private var accessoryImageView: UIImageView!
+    @IBOutlet private var separatorView: UIView!
     
     // MARK: Private
     
     private var theme: Theme?
     
-    private var isHighlighted: Bool = false {
+    private var isHighlighted = false {
         didSet {
-            self.updateView()
+            updateView()
         }
     }
     
@@ -53,28 +52,28 @@ final class SecureBackupSetupIntroCell: UIView, NibOwnerLoadable, Themable {
     // MARK: Setup
     
     private func commonInit() {
-        self.setupGestureRecognizer()
+        setupGestureRecognizer()
         
         let accessoryTemplateImage = Asset.Images.disclosureIcon.image.withRenderingMode(.alwaysTemplate)
-        self.accessoryImageView.image = accessoryTemplateImage
-        self.accessoryImageView.highlightedImage = accessoryTemplateImage.vc_withAlpha(ImageAlpha.highlighted)
+        accessoryImageView.image = accessoryTemplateImage
+        accessoryImageView.highlightedImage = accessoryTemplateImage.vc_withAlpha(ImageAlpha.highlighted)
     }
     
     convenience init() {
         self.init(frame: CGRect.zero)
-        self.commonInit()
+        commonInit()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadNibContent()
-        self.commonInit()
+        loadNibContent()
+        commonInit()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadNibContent()
-        self.commonInit()
+        loadNibContent()
+        commonInit()
     }
     
     // MARK: - Public
@@ -82,76 +81,73 @@ final class SecureBackupSetupIntroCell: UIView, NibOwnerLoadable, Themable {
     func update(theme: Theme) {
         self.theme = theme
         
-        self.backgroundView.backgroundColor = theme.backgroundColor
-        self.imageView.tintColor = theme.textPrimaryColor
-        self.titleLabel.textColor = theme.tintColor
-        self.informationLabel.textColor = theme.textSecondaryColor
-        self.accessoryImageView.tintColor = theme.textSecondaryColor
-        self.separatorView.backgroundColor = theme.lineBreakColor
+        backgroundView.backgroundColor = theme.backgroundColor
+        imageView.tintColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.tintColor
+        informationLabel.textColor = theme.textSecondaryColor
+        accessoryImageView.tintColor = theme.textSecondaryColor
+        separatorView.backgroundColor = theme.lineBreakColor
         
-        self.updateView()
+        updateView()
     }
     
     func fill(title: String, information: String, image: UIImage) {
         let templateImage = image.withRenderingMode(.alwaysTemplate)
         
-        self.imageView.image = templateImage
-        self.imageView.highlightedImage = templateImage.vc_withAlpha(ImageAlpha.highlighted)
+        imageView.image = templateImage
+        imageView.highlightedImage = templateImage.vc_withAlpha(ImageAlpha.highlighted)
         
-        self.titleLabel.text = title
-        self.informationLabel.text = information
+        titleLabel.text = title
+        informationLabel.text = information
         
-        self.setupAccessibility(title: title, isEnabled: true)
-        self.updateView()
+        setupAccessibility(title: title, isEnabled: true)
+        updateView()
     }
     
     // MARK: - Private
     
     private func setupAccessibility(title: String, isEnabled: Bool) {
-        self.isAccessibilityElement = true
-        self.accessibilityLabel = title
-        self.accessibilityTraits = .button
+        isAccessibilityElement = true
+        accessibilityLabel = title
+        accessibilityTraits = .button
         if !isEnabled {
-            self.accessibilityTraits.insert(.notEnabled)
+            accessibilityTraits.insert(.notEnabled)
         }
     }
     
     private func setupGestureRecognizer() {
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(buttonAction(_:)))
         gestureRecognizer.minimumPressDuration = 0
-        self.addGestureRecognizer(gestureRecognizer)
+        addGestureRecognizer(gestureRecognizer)
     }
     
     private func updateView() {
-        
-        if let theme = self.theme {
-            self.backgroundView.backgroundColor = self.isHighlighted ? theme.overlayBackgroundColor : theme.backgroundColor
+        if let theme = theme {
+            backgroundView.backgroundColor = isHighlighted ? theme.overlayBackgroundColor : theme.backgroundColor
         }
         
-        self.imageView.isHighlighted = self.isHighlighted
-        self.accessoryImageView.isHighlighted = self.isHighlighted
+        imageView.isHighlighted = isHighlighted
+        accessoryImageView.isHighlighted = isHighlighted
     }
     
     // MARK: - Actions
     
     @objc private func buttonAction(_ sender: UILongPressGestureRecognizer) {
-        
         let isBackgroundViewTouched = sender.vc_isTouchingInside()
         
         switch sender.state {
         case .began, .changed:
-            self.isHighlighted = isBackgroundViewTouched
+            isHighlighted = isBackgroundViewTouched
         case .ended:
-            self.isHighlighted = false
+            isHighlighted = false
             
             if isBackgroundViewTouched {
-                self.action?()
+                action?()
             }
         case .cancelled:
-            self.isHighlighted = false
+            isHighlighted = false
         default:
             break
         }
     }
-    
 }

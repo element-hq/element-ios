@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +17,10 @@
 import Foundation
 
 class AnalyticsSpaceTracker {
-    
     // MARK: - Setup
     
     init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.spaceGraphDidUpdate(notification:)), name: MXSpaceService.didBuildSpaceGraph, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(spaceGraphDidUpdate(notification:)), name: MXSpaceService.didBuildSpaceGraph, object: nil)
     }
     
     @objc private func spaceGraphDidUpdate(notification: Notification) {

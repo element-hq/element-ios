@@ -29,7 +29,6 @@ protocol KeyVerificationSelfVerifyStartViewModelCoordinatorDelegate: AnyObject {
 
 /// Protocol describing the view model used by `KeyVerificationSelfVerifyStartViewController`
 protocol KeyVerificationSelfVerifyStartViewModelType {
-            
     var viewDelegate: KeyVerificationSelfVerifyStartViewModelViewDelegate? { get set }
     var coordinatorDelegate: KeyVerificationSelfVerifyStartViewModelCoordinatorDelegate? { get set }
     

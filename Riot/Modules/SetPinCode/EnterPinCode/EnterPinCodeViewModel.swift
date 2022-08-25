@@ -19,7 +19,6 @@
 import Foundation
 
 final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -28,14 +27,15 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
     private var originalViewMode: SetPinCoordinatorViewMode
     private var viewMode: SetPinCoordinatorViewMode
     
-    private var initialPin: String = ""
-    private var firstPin: String = ""
-    private var currentPin: String = "" {
+    private var initialPin = ""
+    private var firstPin = ""
+    private var currentPin = "" {
         didSet {
-            self.viewDelegate?.enterPinCodeViewModel(self, didUpdatePlaceholdersCount: currentPin.count)
+            viewDelegate?.enterPinCodeViewModel(self, didUpdatePlaceholdersCount: currentPin.count)
         }
     }
-    private var numberOfFailuresDuringEnterPIN: Int = 0
+
+    private var numberOfFailuresDuringEnterPIN = 0
     
     // MARK: Public
 
@@ -48,10 +48,10 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
     
     init(session: MXSession?, viewMode: SetPinCoordinatorViewMode, pinCodePreferences: PinCodePreferences) {
         self.session = session
-        self.originalViewMode = viewMode
+        originalViewMode = viewMode
         self.viewMode = viewMode
         self.pinCodePreferences = pinCodePreferences
-        self.localAuthenticationService = LocalAuthenticationService(pinCodePreferences: pinCodePreferences)
+        localAuthenticationService = LocalAuthenticationService(pinCodePreferences: pinCodePreferences)
     }
     
     // MARK: - Public
@@ -59,21 +59,21 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
     func process(viewAction: EnterPinCodeViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .digitPressed(let tag):
-            self.digitPressed(tag)
+            digitPressed(tag)
         case .forgotPinPressed:
-            self.viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .forgotPin)
+            viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .forgotPin)
         case .cancel:
-            self.coordinatorDelegate?.enterPinCodeViewModelDidCancel(self)
+            coordinatorDelegate?.enterPinCodeViewModelDidCancel(self)
         case .pinsDontMatchAlertAction:
             //  reset pins
             firstPin.removeAll()
             currentPin.removeAll()
             //  go back to first state
-            self.update(viewState: .choosePin)
+            update(viewState: .choosePin)
         case .forgotPinAlertResetAction:
-            self.coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self, dueToTooManyErrors: false)
+            coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self, dueToTooManyErrors: false)
         case .forgotPinAlertCancelAction:
             //  no-op
             break
@@ -135,20 +135,20 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                     }
                 case .changePin:
                     //  unlocking
-                    if initialPin.isEmpty && currentPin != pinCodePreferences.pin {
+                    if initialPin.isEmpty, currentPin != pinCodePreferences.pin {
                         //  no match
                         updateAfterUnlockFailed()
                     } else if initialPin.isEmpty {
                         //  match or already unlocked
                         
-                            // the user can choose a new Pin code
-                            initialPin = currentPin
-                            currentPin.removeAll()
-                            update(viewState: .choosePin)
-                        } else {
-                            //  choosing pin
-                            updateAfterPinSet()
-                        }
+                        // the user can choose a new Pin code
+                        initialPin = currentPin
+                        currentPin.removeAll()
+                        update(viewState: .choosePin)
+                    } else {
+                        //  choosing pin
+                        updateAfterPinSet()
+                    }
                 default:
                     break
                 }
@@ -176,7 +176,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
         switch viewMode {
         case .setPin, .setPinAfterLogin, .setPinAfterRegister:
             update(viewState: viewState(for: viewMode))
-            self.viewDelegate?.enterPinCodeViewModel(self, didUpdateCancelButtonHidden: pinCodePreferences.forcePinProtection)
+            viewDelegate?.enterPinCodeViewModel(self, didUpdateCancelButtonHidden: pinCodePreferences.forcePinProtection)
         case .unlock:
             update(viewState: .unlock)
         case .confirmPinToDeactivate:
@@ -191,15 +191,15 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
     }
     
     private func update(viewState: EnterPinCodeViewState) {
-        self.viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: viewState)
     }
     
     private func updateAfterUnlockFailed() {
         numberOfFailuresDuringEnterPIN += 1
         pinCodePreferences.numberOfPinFailures += 1
-        if viewMode == .unlock && localAuthenticationService.shouldLogOutUser() {
+        if viewMode == .unlock, localAuthenticationService.shouldLogOutUser() {
             //  log out user
-            self.coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
+            coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
             return
         }
         if numberOfFailuresDuringEnterPIN < pinCodePreferences.allowedNumberOfTrialsBeforeAlert {
@@ -226,13 +226,13 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
             firstPin = currentPin
             currentPin.removeAll()
             update(viewState: .confirmPin)
-        } else if firstPin == currentPin { //  check first and second pins        
-                //  complete with a little delay
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self.coordinatorDelegate?.enterPinCodeViewModel(self, didCompleteWithPin: self.firstPin)
-                }
+        } else if firstPin == currentPin { //  check first and second pins
+            //  complete with a little delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.coordinatorDelegate?.enterPinCodeViewModel(self, didCompleteWithPin: self.firstPin)
+            }
         } else {
-                update(viewState: .pinsDontMatch)
+            update(viewState: .pinsDontMatch)
         }
     }
 }

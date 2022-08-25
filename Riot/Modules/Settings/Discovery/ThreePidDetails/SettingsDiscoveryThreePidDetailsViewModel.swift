@@ -29,7 +29,6 @@ private struct ThreePidRequestTokenInfo {
 }
 
 final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePidDetailsViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,8 +48,8 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
     // MARK: - Setup
     
     init(session: MXSession, threePid: MX3PID) {
-        self.threePidAddManager = session.threePidAddManager
-        self.identityService = session.identityService
+        threePidAddManager = session.threePidAddManager
+        identityService = session.identityService
         self.threePid = threePid
     }
     
@@ -59,30 +58,30 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
     func process(viewAction: SettingsDiscoveryThreePidDetailsViewAction) {
         switch viewAction {
         case .load:
-            self.load()
+            load()
         case .share:
-            self.share()
+            share()
         case .revoke:
-            self.revoke()
+            revoke()
         case .cancelThreePidValidation:
-            self.cancelThreePidValidation()
+            cancelThreePidValidation()
         case .confirmEmailValidation:
-            self.confirmEmailValidation()
+            confirmEmailValidation()
         case .confirmMSISDNValidation(code: let code):
-            self.validatePhoneNumber(with: code)
+            validatePhoneNumber(with: code)
         }
     }
     
     // MARK: - Private
     
     private func load() {
-        self.update(viewState: .loading)
+        update(viewState: .loading)
 
-        self.checkThreePidDiscoverability()
+        checkThreePidDiscoverability()
     }
     
     private func checkThreePidDiscoverability() {
-        self.isThreePidDiscoverable(self.threePid) { (response) in
+        isThreePidDiscoverable(threePid) { response in
             switch response {
             case .success(let isDiscoverable):
                 if isDiscoverable {
@@ -97,17 +96,17 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
     }
     
     private func share() {
-        self.bind(bind: true)
+        bind(bind: true)
     }
 
     private func revoke() {
-        self.bind(bind: false)
+        bind(bind: false)
     }
 
     private func bind(bind: Bool) {
-        self.update(viewState: .loading)
+        update(viewState: .loading)
 
-        let completion: ((MXResponse<Bool>) -> Void) = { (response) in
+        let completion: ((MXResponse<Bool>) -> Void) = { response in
             switch response {
             case .success(let needValidation):
                 if needValidation {
@@ -125,21 +124,20 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
             }
         }
 
-        switch self.threePid.medium {
+        switch threePid.medium {
         case .email:
-            self.currentThreePidAddSession = self.threePidAddManager.startIdentityServerSession(withEmail: self.threePid.address, bind: bind, completion: completion)
+            currentThreePidAddSession = threePidAddManager.startIdentityServerSession(withEmail: threePid.address, bind: bind, completion: completion)
         case .msisdn:
-            let formattedPhoneNumber = self.formattedPhoneNumber(from: threePid.address)
-            self.currentThreePidAddSession = self.threePidAddManager.startIdentityServerSession(withPhoneNumber: formattedPhoneNumber, countryCode: nil, bind: bind, completion: completion)
+            let formattedPhoneNumber = formattedPhoneNumber(from: threePid.address)
+            currentThreePidAddSession = threePidAddManager.startIdentityServerSession(withPhoneNumber: formattedPhoneNumber, countryCode: nil, bind: bind, completion: completion)
         default:
             break
         }
     }
 
-    
     @discardableResult
     private func isThreePidDiscoverable(_ threePid: MX3PID, completion: @escaping (_ response: MXResponse<Bool>) -> Void) -> MXHTTPOperation? {
-        guard let identityService = self.identityService else {
+        guard let identityService = identityService else {
             completion(.failure(SettingsDiscoveryThreePidDetailsViewModelError.unknown))
             return nil
         }
@@ -155,32 +153,31 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
     }
     
     private func update(viewState: SettingsDiscoveryThreePidDetailsViewState) {
-        self.viewDelegate?.settingsDiscoveryThreePidDetailsViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.settingsDiscoveryThreePidDetailsViewModel(self, didUpdateViewState: viewState)
     }
     
     // MARK: Email
     
     private func cancelThreePidValidation() {
-        
         if case .email = threePid.medium {
             self.unregisterEmailValidationNotification()
         }
 
-        if let currentThreePidAddSession = self.currentThreePidAddSession {
-            self.threePidAddManager.cancel(session: currentThreePidAddSession)
+        if let currentThreePidAddSession = currentThreePidAddSession {
+            threePidAddManager.cancel(session: currentThreePidAddSession)
             self.currentThreePidAddSession = nil
         }
 
-        self.checkThreePidDiscoverability()
+        checkThreePidDiscoverability()
     }
     
     private func confirmEmailValidation() {
-        guard let threePidAddSession = self.currentThreePidAddSession else {
+        guard let threePidAddSession = currentThreePidAddSession else {
             return
         }
-        self.update(viewState: .loading)
+        update(viewState: .loading)
 
-        self.threePidAddManager.tryFinaliseIdentityServerEmailSession(threePidAddSession) { response in
+        threePidAddManager.tryFinaliseIdentityServerEmailSession(threePidAddSession) { response in
             switch response {
             case .success:
 
@@ -191,8 +188,8 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
                 self.checkThreePidDiscoverability()
             case .failure(let error):
                 if let mxError = MXError(nsError: error),
-                    (mxError.errcode == kMXErrCodeStringThreePIDAuthFailed
-                        || mxError.errcode == kMXErrCodeStringUnknown) {
+                   mxError.errcode == kMXErrCodeStringThreePIDAuthFailed
+                   || mxError.errcode == kMXErrCodeStringUnknown {
                     self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
                 } else {
                     if threePidAddSession.medium == kMX3PIDMediumEmail {
@@ -215,15 +212,15 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
     
     @objc private func handleEmailValidationNotification(notification: Notification) {
         guard let userInfo = notification.userInfo,
-            let clientSecret = userInfo[AppDelegateDidValidateEmailNotificationClientSecretKey] as? String,
-            let sid = userInfo[AppDelegateDidValidateEmailNotificationSIDKey] as? String,
-            let threePidAddSession = self.currentThreePidAddSession,
-            threePidAddSession.clientSecret == clientSecret,
-            threePidAddSession.sid == sid else {
-                return
+              let clientSecret = userInfo[AppDelegateDidValidateEmailNotificationClientSecretKey] as? String,
+              let sid = userInfo[AppDelegateDidValidateEmailNotificationSIDKey] as? String,
+              let threePidAddSession = currentThreePidAddSession,
+              threePidAddSession.clientSecret == clientSecret,
+              threePidAddSession.sid == sid else {
+            return
         }
 
-        self.confirmEmailValidation()
+        confirmEmailValidation()
     }
     
     // MARK: Phone number
@@ -236,12 +233,12 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
     }
     
     private func validatePhoneNumber(with activationCode: String) {
-        guard let threePidAddSession = self.currentThreePidAddSession else {
+        guard let threePidAddSession = currentThreePidAddSession else {
             return
         }
-        self.update(viewState: .loading)
+        update(viewState: .loading)
 
-        self.threePidAddManager.finaliseIdentityServerPhoneNumberSession(threePidAddSession, token: activationCode) { (response) in
+        threePidAddManager.finaliseIdentityServerPhoneNumberSession(threePidAddSession, token: activationCode) { response in
             switch response {
             case .success:
                 self.checkThreePidDiscoverability()

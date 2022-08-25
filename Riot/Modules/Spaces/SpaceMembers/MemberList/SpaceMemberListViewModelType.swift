@@ -29,8 +29,7 @@ protocol SpaceMemberListViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `SpaceMemberListViewController`
-protocol SpaceMemberListViewModelType {        
-        
+protocol SpaceMemberListViewModelType {
     var viewDelegate: SpaceMemberListViewModelViewDelegate? { get set }
     var coordinatorDelegate: SpaceMemberListViewModelCoordinatorDelegate? { get set }
     var space: MXSpace? { get }

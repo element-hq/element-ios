@@ -21,17 +21,16 @@ protocol KeyBackupRecoverSuccessViewControllerDelegate: AnyObject {
 }
 
 final class KeyBackupRecoverSuccessViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var shieldImageView: UIImageView!
+    @IBOutlet private var shieldImageView: UIImageView!
     
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var doneButtonBackgroundView: UIView!
-    @IBOutlet private weak var doneButton: UIButton!
+    @IBOutlet private var doneButtonBackgroundView: UIView!
+    @IBOutlet private var doneButton: UIButton!
     
     // MARK: Private
     
@@ -56,52 +55,52 @@ final class KeyBackupRecoverSuccessViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.keyBackupRecoverTitle
-        self.vc_removeBackTitle()
+        title = VectorL10n.keyBackupRecoverTitle
+        vc_removeBackTitle()
         
-        self.setupViews()
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)        
+        setupViews()
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Hide back button
-        self.navigationItem.setHidesBackButton(true, animated: animated)
+        navigationItem.setHidesBackButton(true, animated: animated)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
     
     private func setupViews() {
         let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
-        self.shieldImageView.image = shieldImage
+        shieldImageView.image = shieldImage
         
-        self.informationLabel.text = VectorL10n.keyBackupRecoverSuccessInfo
+        informationLabel.text = VectorL10n.keyBackupRecoverSuccessInfo
         
-        self.doneButton.vc_enableMultiLinesTitle()
-        self.doneButton.setTitle(VectorL10n.keyBackupRecoverDoneAction, for: .normal)
+        doneButton.vc_enableMultiLinesTitle()
+        doneButton.setTitle(VectorL10n.keyBackupRecoverDoneAction, for: .normal)
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.shieldImageView.tintColor = theme.textPrimaryColor
+        shieldImageView.tintColor = theme.textPrimaryColor
         
-        self.informationLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.doneButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.doneButton)
+        doneButtonBackgroundView.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: doneButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -111,10 +110,10 @@ final class KeyBackupRecoverSuccessViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     @IBAction private func doneButtonAction(_ sender: Any) {
-        self.delegate?.keyBackupRecoverSuccessViewControllerDidTapDone(self)
+        delegate?.keyBackupRecoverSuccessViewControllerDidTapDone(self)
     }
 }

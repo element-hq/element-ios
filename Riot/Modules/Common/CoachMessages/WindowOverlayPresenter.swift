@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import UIKit
 /// `WindowOverlayPresenter` allows to add a given view to the presenting view or window.
 /// The presenter also manages taps over the presenting view and the duration to dismiss the view.
 class WindowOverlayPresenter: NSObject {
-    
     // MARK: Private
 
     private weak var presentingView: UIView?
@@ -41,7 +40,7 @@ class WindowOverlayPresenter: NSObject {
             return
         }
         
-        let keyWindow: UIWindow? = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        let keyWindow: UIWindow? = UIApplication.shared.windows.filter(\.isKeyWindow).first
 
         guard let backView = presentingView ?? keyWindow else {
             MXLog.error("[WindowOverlay] show: no eligible presenting view found")
@@ -52,20 +51,20 @@ class WindowOverlayPresenter: NSObject {
         
         backView.addSubview(view)
         
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapOnBackView(sender:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapOnBackView(sender:)))
         tapGestureRecognizer.cancelsTouchesInView = false
         backView.addGestureRecognizer(tapGestureRecognizer)
-        self.gestureRecognizer = tapGestureRecognizer
+        gestureRecognizer = tapGestureRecognizer
         
         self.presentingView = backView
-        self.presentedView = view
+        presentedView = view
         
         UIView.animate(withDuration: 0.3) {
             view.alpha = 1
         }
         
         if let timeout = duration {
-            timer = Timer.scheduledTimer(withTimeInterval: timeout, repeats: false, block: { [weak self] timer in
+            timer = Timer.scheduledTimer(withTimeInterval: timeout, repeats: false, block: { [weak self] _ in
                 self?.dismiss()
             })
         }
@@ -73,11 +72,11 @@ class WindowOverlayPresenter: NSObject {
     
     /// Dismisses the currently presented view.
     func dismiss() {
-        if let gestureRecognizer = self.gestureRecognizer {
-            self.presentingView?.removeGestureRecognizer(gestureRecognizer)
+        if let gestureRecognizer = gestureRecognizer {
+            presentingView?.removeGestureRecognizer(gestureRecognizer)
         }
-        self.timer?.invalidate()
-        self.timer = nil
+        timer?.invalidate()
+        timer = nil
 
         UIView.animate(withDuration: 0.3) {
             self.presentedView?.alpha = 0
@@ -87,7 +86,6 @@ class WindowOverlayPresenter: NSObject {
                 self.presentingView = nil
             }
         }
-
     }
     
     // MARK: Private
@@ -98,6 +96,7 @@ class WindowOverlayPresenter: NSObject {
 }
 
 // MARK: Objective-C
+
 extension WindowOverlayPresenter {
     /// Add a given view to the presenting view or window.
     /// The presenter also manages taps over the presenting view and the duration to dismiss the view.
@@ -107,6 +106,6 @@ extension WindowOverlayPresenter {
     ///     - presentingView: instance of the presenting view. `nil` will display the view over the key window
     ///     - duration:if duration > 0, the view will be dismissed after the given duration. The view is never dismissed otherwise
     @objc func show(_ view: UIView, over presentingView: UIView?, duration: TimeInterval) {
-        self.show(view, over: presentingView, duration: duration > 0 ? duration : nil)
+        show(view, over: presentingView, duration: duration > 0 ? duration : nil)
     }
 }

@@ -20,7 +20,6 @@ import UIKit
 
 @objcMembers
 final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -33,10 +32,9 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     private weak var completeSecurityCoordinator: KeyVerificationSelfVerifyWaitCoordinatorType?
     
     private var otherUserId: String {
-        
         let otherUserId: String
         
-        switch self.verificationFlow {
+        switch verificationFlow {
         case .verifyUser(let roomMember):
             otherUserId = roomMember.userId
         case .verifyDevice(let userId, _):
@@ -46,17 +44,16 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         case .incomingSASTransaction(let incomingSASTransaction):
             otherUserId = incomingSASTransaction.otherUserId
         case .completeSecurity:
-            otherUserId = self.session.myUser.userId
+            otherUserId = session.myUser.userId
         }
         
         return otherUserId
     }
     
     private var otherDeviceId: String? {
-        
         let otherDeviceId: String?
         
-        switch self.verificationFlow {
+        switch verificationFlow {
         case .verifyUser:
             otherDeviceId = nil
         case .verifyDevice(_, let deviceId):
@@ -92,7 +89,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         self.navigationRouter = navigationRouter ?? NavigationRouter(navigationController: RiotNavigationController())
         
         self.session = session
-        self.verificationFlow = flow
+        verificationFlow = flow
         
         let verificationKind: KeyVerificationKind
         
@@ -123,66 +120,66 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     func start() {
         let rootCoordinator: Coordinator & Presentable
 
-        switch self.verificationFlow {
+        switch verificationFlow {
         case .verifyUser(let roomMember):
-            rootCoordinator = self.createUserVerificationStartCoordinator(with: roomMember)
+            rootCoordinator = createUserVerificationStartCoordinator(with: roomMember)
         case .verifyDevice(let userId, let deviceId):
-            if userId ==  self.session.myUser.userId {
-                rootCoordinator = self.createSelfVerificationCoordinator(otherDeviceId: deviceId)
+            if userId == session.myUser.userId {
+                rootCoordinator = createSelfVerificationCoordinator(otherDeviceId: deviceId)
             } else {
-                rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: userId, otherDeviceId: deviceId)
+                rootCoordinator = createDataLoadingScreenCoordinator(otherUserId: userId, otherDeviceId: deviceId)
             }
         case .incomingRequest(let incomingKeyVerificationRequest):
-            rootCoordinator = self.createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
+            rootCoordinator = createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
         case .incomingSASTransaction(let incomingSASTransaction):
-            rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: incomingSASTransaction.otherUserId, otherDeviceId: incomingSASTransaction.otherDeviceId)
+            rootCoordinator = createDataLoadingScreenCoordinator(otherUserId: incomingSASTransaction.otherUserId, otherDeviceId: incomingSASTransaction.otherDeviceId)
         case .completeSecurity(let isNewSignIn):
-            let coordinator = self.createCompleteSecurityCoordinator(isNewSignIn: isNewSignIn)
-            self.completeSecurityCoordinator = coordinator
+            let coordinator = createCompleteSecurityCoordinator(isNewSignIn: isNewSignIn)
+            completeSecurityCoordinator = coordinator
             rootCoordinator = coordinator
         }
 
         rootCoordinator.start()
 
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
 
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+        if navigationRouter.modules.isEmpty == false {
+            navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             })
         } else {
-            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+            navigationRouter.setRootModule(rootCoordinator) { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter
+        navigationRouter
             .toPresentable()
-            .vc_setModalFullScreen(!self.cancellable)
+            .vc_setModalFullScreen(!cancellable)
     }
     
     // MARK: - Private methods
     
     private func didComplete() {
-        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId ?? "")
+        delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: otherUserId, otherDeviceId: otherDeviceId ?? "")
     }
     
     private func didCancel() {
         // In the case of the complete security flow, come back to the root screen if any child flow
         // like device verification has been cancelled
-        if self.completeSecurityCoordinator != nil && childCoordinators.count > 1 {
+        if completeSecurityCoordinator != nil, childCoordinators.count > 1 {
             MXLog.debug("[KeyVerificationCoordinator] didCancel: popToRootModule")
-            self.navigationRouter.popToRootModule(animated: true)
+            navigationRouter.popToRootModule(animated: true)
             return
         }
         
-        self.delegate?.keyVerificationCoordinatorDidCancel(self)
+        delegate?.keyVerificationCoordinatorDidCancel(self)
     }
     
     private func createCompleteSecurityCoordinator(isNewSignIn: Bool) -> KeyVerificationSelfVerifyWaitCoordinatorType {
-        let coordinator = KeyVerificationSelfVerifyWaitCoordinator(session: self.session, isNewSignIn: isNewSignIn, cancellable: self.cancellable)
+        let coordinator = KeyVerificationSelfVerifyWaitCoordinator(session: session, isNewSignIn: isNewSignIn, cancellable: cancellable)
         coordinator.delegate = self
         coordinator.start()
         
@@ -190,15 +187,15 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
     
     private func showSecretsRecovery(with recoveryMode: SecretsRecoveryMode) {
-        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: recoveryMode, recoveryGoal: .verifyDevice, navigationRouter: self.navigationRouter, cancellable: self.cancellable)
+        let coordinator = SecretsRecoveryCoordinator(session: session, recoveryMode: recoveryMode, recoveryGoal: .verifyDevice, navigationRouter: navigationRouter, cancellable: cancellable)
         coordinator.delegate = self
         coordinator.start()
         
-        self.add(childCoordinator: coordinator)
+        add(childCoordinator: coordinator)
     }
     
     private func createSelfVerificationCoordinator(otherDeviceId: String) -> KeyVerificationSelfVerifyStartCoordinator {
-        let coordinator = KeyVerificationSelfVerifyStartCoordinator(session: self.session, otherDeviceId: otherDeviceId)
+        let coordinator = KeyVerificationSelfVerifyStartCoordinator(session: session, otherDeviceId: otherDeviceId)
         coordinator.delegate = self
         coordinator.start()
         
@@ -206,7 +203,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
 
     private func createDataLoadingScreenCoordinator(otherUserId: String, otherDeviceId: String) -> KeyVerificationDataLoadingCoordinator {
-        let coordinator = KeyVerificationDataLoadingCoordinator(session: self.session, verificationKind: self.verificationKind, otherUserId: otherUserId, otherDeviceId: otherDeviceId)
+        let coordinator = KeyVerificationDataLoadingCoordinator(session: session, verificationKind: verificationKind, otherUserId: otherUserId, otherDeviceId: otherDeviceId)
         coordinator.delegate = self
         coordinator.start()
 
@@ -214,7 +211,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
     
     private func createDataLoadingScreenCoordinator(with keyVerificationRequest: MXKeyVerificationRequest) -> KeyVerificationDataLoadingCoordinator {
-        let coordinator = KeyVerificationDataLoadingCoordinator(session: self.session, verificationKind: self.verificationKind, incomingKeyVerificationRequest: keyVerificationRequest)
+        let coordinator = KeyVerificationDataLoadingCoordinator(session: session, verificationKind: verificationKind, incomingKeyVerificationRequest: keyVerificationRequest)
         coordinator.delegate = self
         coordinator.start()
         
@@ -222,7 +219,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
     
     private func createUserVerificationStartCoordinator(with roomMember: MXRoomMember) -> UserVerificationStartCoordinator {
-        let coordinator = UserVerificationStartCoordinator(session: self.session, roomMember: roomMember)
+        let coordinator = UserVerificationStartCoordinator(session: session, roomMember: roomMember)
         coordinator.delegate = self
         coordinator.start()
         
@@ -230,240 +227,242 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
 
     private func showStart(otherUser: MXUser, otherDevice: MXDeviceInfo) {
-        let coordinator = DeviceVerificationStartCoordinator(session: self.session, otherUser: otherUser, otherDevice: otherDevice)
+        let coordinator = DeviceVerificationStartCoordinator(session: session, otherUser: otherUser, otherDevice: otherDevice)
         coordinator.delegate = self
         coordinator.start()
 
-        self.add(childCoordinator: coordinator)
-        self.navigationRouter.setRootModule(coordinator) { [weak self] in
+        add(childCoordinator: coordinator)
+        navigationRouter.setRootModule(coordinator) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
     }
 
     private func showIncoming(otherUser: MXUser, transaction: MXIncomingSASTransaction) {
-        let coordinator = DeviceVerificationIncomingCoordinator(session: self.session, otherUser: otherUser, transaction: transaction)
+        let coordinator = DeviceVerificationIncomingCoordinator(session: session, otherUser: otherUser, transaction: transaction)
         coordinator.delegate = self
         coordinator.start()
 
-        self.add(childCoordinator: coordinator)
-        self.navigationRouter.setRootModule(coordinator) { [weak self] in
+        add(childCoordinator: coordinator)
+        navigationRouter.setRootModule(coordinator) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
     }
 
     private func showVerifyBySAS(transaction: MXSASTransaction, animated: Bool) {
-        let coordinator = KeyVerificationVerifyBySASCoordinator(session: self.session, transaction: transaction, verificationKind: self.verificationKind)
+        let coordinator = KeyVerificationVerifyBySASCoordinator(session: session, transaction: transaction, verificationKind: verificationKind)
         coordinator.delegate = self
         coordinator.start()
 
-        self.add(childCoordinator: coordinator)
-        self.navigationRouter.push(coordinator, animated: animated) { [weak self] in
+        add(childCoordinator: coordinator)
+        navigationRouter.push(coordinator, animated: animated) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
     }
     
     private func showVerifyByScanning(keyVerificationRequest: MXKeyVerificationRequest, animated: Bool) {
-        let coordinator = KeyVerificationVerifyByScanningCoordinator(session: self.session, verificationKind: self.verificationKind, keyVerificationRequest: keyVerificationRequest)
+        let coordinator = KeyVerificationVerifyByScanningCoordinator(session: session, verificationKind: verificationKind, keyVerificationRequest: keyVerificationRequest)
         coordinator.delegate = self
         coordinator.start()
         
-        self.add(childCoordinator: coordinator)
-        self.navigationRouter.push(coordinator, animated: animated) { [weak self] in
+        add(childCoordinator: coordinator)
+        navigationRouter.push(coordinator, animated: animated) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
     }
     
     private func showScanConfirmation(for transaction: MXQRCodeTransaction, codeScanning: KeyVerificationScanning, animated: Bool) {
-        let coordinator = KeyVerificationScanConfirmationCoordinator(session: self.session, transaction: transaction, codeScanning: codeScanning, verificationKind: self.verificationKind)
+        let coordinator = KeyVerificationScanConfirmationCoordinator(session: session, transaction: transaction, codeScanning: codeScanning, verificationKind: verificationKind)
         coordinator.delegate = self
         coordinator.start()
         
-        self.add(childCoordinator: coordinator)
-        self.navigationRouter.push(coordinator, animated: animated) { [weak self] in
+        add(childCoordinator: coordinator)
+        navigationRouter.push(coordinator, animated: animated) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
     }
 
     private func showVerified(animated: Bool) {
-        let viewController = KeyVerificationVerifiedViewController.instantiate(with: self.verificationKind)
+        let viewController = KeyVerificationVerifiedViewController.instantiate(with: verificationKind)
         viewController.delegate = self
-        self.navigationRouter.setRootModule(viewController)
+        navigationRouter.setRootModule(viewController)
     }
 }
 
 // MARK: - KeyVerificationDataLoadingCoordinatorDelegate
+
 extension KeyVerificationCoordinator: KeyVerificationDataLoadingCoordinatorDelegate {
-    
     func keyVerificationDataLoadingCoordinator(_ coordinator: KeyVerificationDataLoadingCoordinatorType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest) {
-        self.showVerifyByScanning(keyVerificationRequest: keyVerificationRequest, animated: true)
+        showVerifyByScanning(keyVerificationRequest: keyVerificationRequest, animated: true)
     }
     
     func keyVerificationDataLoadingCoordinator(_ coordinator: KeyVerificationDataLoadingCoordinatorType, didLoadUser user: MXUser, device: MXDeviceInfo) {
-        
-        if case .incomingSASTransaction(let incomingTransaction) = self.verificationFlow {
+        if case .incomingSASTransaction(let incomingTransaction) = verificationFlow {
             self.showIncoming(otherUser: user, transaction: incomingTransaction)
         } else {
-            self.showStart(otherUser: user, otherDevice: device)
+            showStart(otherUser: user, otherDevice: device)
         }
     }
     
     func keyVerificationDataLoadingCoordinator(_ coordinator: KeyVerificationDataLoadingCoordinatorType, didAcceptKeyVerificationRequestWithTransaction transaction: MXKeyVerificationTransaction) {
-        
         if let sasTransaction = transaction as? MXSASTransaction {
-            self.showVerifyBySAS(transaction: sasTransaction, animated: true)
+            showVerifyBySAS(transaction: sasTransaction, animated: true)
         } else {
             MXLog.debug("[KeyVerificationCoordinator] Transaction \(transaction) is not supported")
-            self.didCancel()
+            didCancel()
         }
     }
 
     func keyVerificationDataLoadingCoordinatorDidCancel(_ coordinator: KeyVerificationDataLoadingCoordinatorType) {
-        self.didCancel()
+        didCancel()
     }
 }
 
 // MARK: - DeviceVerificationStartCoordinatorDelegate
+
 extension KeyVerificationCoordinator: DeviceVerificationStartCoordinatorDelegate {
     func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
-        self.showVerifyBySAS(transaction: transaction, animated: true)
+        showVerifyBySAS(transaction: transaction, animated: true)
     }
 
     func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
-        self.didCancel()
+        didCancel()
     }
 
     func deviceVerificationStartCoordinatorDidCancel(_ coordinator: DeviceVerificationStartCoordinatorType) {
-        self.didCancel()
+        didCancel()
     }
 }
 
 // MARK: - DeviceVerificationIncomingCoordinatorDelegate
+
 extension KeyVerificationCoordinator: DeviceVerificationIncomingCoordinatorDelegate {
     func deviceVerificationIncomingCoordinator(_ coordinator: DeviceVerificationIncomingCoordinatorType, didAcceptTransaction transaction: MXSASTransaction) {
-        self.showVerifyBySAS(transaction: transaction, animated: true)
+        showVerifyBySAS(transaction: transaction, animated: true)
     }
 
     func deviceVerificationIncomingCoordinatorDidCancel(_ coordinator: DeviceVerificationIncomingCoordinatorType) {
-        self.didCancel()
+        didCancel()
     }
 }
 
 // MARK: - KeyVerificationVerifyBySASCoordinatorDelegate
+
 extension KeyVerificationCoordinator: KeyVerificationVerifyBySASCoordinatorDelegate {
     func keyVerificationVerifyBySASCoordinatorDidComplete(_ coordinator: KeyVerificationVerifyBySASCoordinatorType) {
-        self.showVerified(animated: true)
+        showVerified(animated: true)
     }
 
     func keyVerificationVerifyBySASCoordinatorDidCancel(_ coordinator: KeyVerificationVerifyBySASCoordinatorType) {
-        self.didCancel()
+        didCancel()
     }
 }
 
 // MARK: - KeyVerificationVerifiedViewControllerDelegate
+
 extension KeyVerificationCoordinator: KeyVerificationVerifiedViewControllerDelegate {
     func keyVerificationVerifiedViewControllerDidTapSetupAction(_ viewController: KeyVerificationVerifiedViewController) {
-        self.didComplete()
+        didComplete()
     }
 
     func keyVerificationVerifiedViewControllerDidCancel(_ viewController: KeyVerificationVerifiedViewController) {
-        self.didCancel()
+        didCancel()
     }
 }
 
 // MARK: - UserVerificationStartCoordinatorDelegate
+
 extension KeyVerificationCoordinator: UserVerificationStartCoordinatorDelegate {
-        
     func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, otherDidAcceptRequest request: MXKeyVerificationRequest) {
-        self.showVerifyByScanning(keyVerificationRequest: request, animated: true)
+        showVerifyByScanning(keyVerificationRequest: request, animated: true)
     }
     
     func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
-        self.showVerifyBySAS(transaction: transaction, animated: true)
+        showVerifyBySAS(transaction: transaction, animated: true)
     }
     
     func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
-        self.didCancel()
+        didCancel()
     }
     
     func userVerificationStartCoordinatorDidCancel(_ coordinator: UserVerificationStartCoordinatorType) {
-        self.didCancel()
+        didCancel()
     }
 }
 
 // MARK: - KeyVerificationVerifyByScanningCoordinatorDelegate
+
 extension KeyVerificationCoordinator: KeyVerificationVerifyByScanningCoordinatorDelegate {
-    
     func keyVerificationVerifyByScanningCoordinatorDidCancel(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType) {
-         self.didCancel()
+        didCancel()
     }
     
     func keyVerificationVerifyByScanningCoordinator(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType, didScanOtherQRCodeData qrCodeData: MXQRCodeData, withTransaction transaction: MXQRCodeTransaction) {
-        self.showScanConfirmation(for: transaction, codeScanning: .scannedOtherQRCode(qrCodeData), animated: true)
+        showScanConfirmation(for: transaction, codeScanning: .scannedOtherQRCode(qrCodeData), animated: true)
     }
     
     func keyVerificationVerifyByScanningCoordinator(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType, qrCodeDidScannedByOtherWithTransaction transaction: MXQRCodeTransaction) {
-        self.showScanConfirmation(for: transaction, codeScanning: .myQRCodeScanned, animated: true)
-    }    
+        showScanConfirmation(for: transaction, codeScanning: .myQRCodeScanned, animated: true)
+    }
     
     func keyVerificationVerifyByScanningCoordinator(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType, didCompleteWithSASTransaction transaction: MXSASTransaction) {
-        self.showVerifyBySAS(transaction: transaction, animated: true)
+        showVerifyBySAS(transaction: transaction, animated: true)
     }
 }
 
 // MARK: - KeyVerificationSelfVerifyStartCoordinatorDelegate
+
 extension KeyVerificationCoordinator: KeyVerificationSelfVerifyStartCoordinatorDelegate {
-    
     func keyVerificationSelfVerifyStartCoordinator(_ coordinator: KeyVerificationSelfVerifyStartCoordinatorType, otherDidAcceptRequest request: MXKeyVerificationRequest) {
-        self.showVerifyByScanning(keyVerificationRequest: request, animated: true)
+        showVerifyByScanning(keyVerificationRequest: request, animated: true)
     }
     
     func keyVerificationSelfVerifyStartCoordinatorDidCancel(_ coordinator: KeyVerificationSelfVerifyStartCoordinatorType) {
-        self.didCancel()
+        didCancel()
     }
 }
 
 // MARK: - KeyVerificationSelfVerifyWaitCoordinatorDelegate
+
 extension KeyVerificationCoordinator: KeyVerificationSelfVerifyWaitCoordinatorDelegate {
-    
     func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest) {
-        self.showVerifyByScanning(keyVerificationRequest: keyVerificationRequest, animated: true)
+        showVerifyByScanning(keyVerificationRequest: keyVerificationRequest, animated: true)
     }
     
     func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, didAcceptIncomingSASTransaction incomingSASTransaction: MXIncomingSASTransaction) {
-        self.showVerifyBySAS(transaction: incomingSASTransaction, animated: true)                
+        showVerifyBySAS(transaction: incomingSASTransaction, animated: true)
     }
     
     func keyVerificationSelfVerifyWaitCoordinatorDidCancel(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType) {
-        self.didCancel()
+        didCancel()
     }
     
-    func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, wantsToRecoverSecretsWith secretsRecoveryMode: SecretsRecoveryMode) {        
-        self.showSecretsRecovery(with: secretsRecoveryMode)
+    func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, wantsToRecoverSecretsWith secretsRecoveryMode: SecretsRecoveryMode) {
+        showSecretsRecovery(with: secretsRecoveryMode)
     }
 }
 
 // MARK: - KeyVerificationScanConfirmationCoordinatorDelegate
+
 extension KeyVerificationCoordinator: KeyVerificationScanConfirmationCoordinatorDelegate {
-    
     func keyVerificationScanConfirmationCoordinatorDidComplete(_ coordinator: KeyVerificationScanConfirmationCoordinatorType) {
-        self.showVerified(animated: true)
+        showVerified(animated: true)
     }
     
     func keyVerificationScanConfirmationCoordinatorDidCancel(_ coordinator: KeyVerificationScanConfirmationCoordinatorType) {
-        self.didCancel()
+        didCancel()
     }
 }
 
 // MARK: - SecretsRecoveryCoordinatorDelegate
+
 extension KeyVerificationCoordinator: SecretsRecoveryCoordinatorDelegate {
-    
     func secretsRecoveryCoordinatorDidRecover(_ coordinator: SecretsRecoveryCoordinatorType) {
-        self.remove(childCoordinator: coordinator)
-        self.showVerified(animated: true)
+        remove(childCoordinator: coordinator)
+        showVerified(animated: true)
     }
     
     func secretsRecoveryCoordinatorDidCancel(_ coordinator: SecretsRecoveryCoordinatorType) {
-        self.remove(childCoordinator: coordinator)
-        self.didCancel()
+        remove(childCoordinator: coordinator)
+        didCancel()
     }
 }

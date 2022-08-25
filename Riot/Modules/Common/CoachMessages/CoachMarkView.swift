@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +14,12 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 /// `CoachMarkView` is used to display an information bubble view with a given text.
 @objcMembers
 class CoachMarkView: UIView, NibLoadable, Themable {
-    
     // MARK: Constants
     
     public static var TopLeftPosition: CGPoint {
@@ -40,16 +39,17 @@ class CoachMarkView: UIView, NibLoadable, Themable {
     
     // MARK: Private
     
-    @IBOutlet private weak var backgroundView: UIImageView!
-    @IBOutlet private weak var textLabel: UILabel!
-    @IBOutlet private weak var textLabelTopMargin: NSLayoutConstraint!
-    @IBOutlet private weak var textLabelBottomMargin: NSLayoutConstraint!
+    @IBOutlet private var backgroundView: UIImageView!
+    @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var textLabelTopMargin: NSLayoutConstraint!
+    @IBOutlet private var textLabelBottomMargin: NSLayoutConstraint!
 
     private var text: String? {
         didSet {
             textLabel.text = text
         }
     }
+
     private var markPosition: MarkPosition = .topLeft
     private var position: CGPoint!
     
@@ -121,8 +121,8 @@ class CoachMarkView: UIView, NibLoadable, Themable {
     }
     
     private func invertVerticalMargins() {
-        let temp = self.textLabelTopMargin.constant
-        self.textLabelTopMargin.constant = self.textLabelBottomMargin.constant
-        self.textLabelBottomMargin.constant = temp
+        let temp = textLabelTopMargin.constant
+        textLabelTopMargin.constant = textLabelBottomMargin.constant
+        textLabelBottomMargin.constant = temp
     }
 }

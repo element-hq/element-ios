@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class RoomCreationEventsModalCoordinator: RoomCreationEventsModalCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,24 +48,23 @@ final class RoomCreationEventsModalCoordinator: RoomCreationEventsModalCoordinat
     
     // MARK: - Public methods
     
-    func start() {            
-        self.roomCreationEventsModalViewModel.coordinatorDelegate = self
+    func start() {
+        roomCreationEventsModalViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.roomCreationEventsModalViewController
+        roomCreationEventsModalViewController
     }
     
     func toSlidingModalPresentable() -> UIViewController & SlidingModalPresentable {
-        return self.roomCreationEventsModalViewController
+        roomCreationEventsModalViewController
     }
 }
 
 // MARK: - RoomCreationEventsModalViewModelCoordinatorDelegate
+
 extension RoomCreationEventsModalCoordinator: RoomCreationEventsModalViewModelCoordinatorDelegate {
-    
     func roomCreationEventsModalViewModelDidTapClose(_ viewModel: RoomCreationEventsModalViewModelType) {
-        self.delegate?.roomCreationEventsModalCoordinatorDidTapClose(self)
+        delegate?.roomCreationEventsModalCoordinatorDidTapClose(self)
     }
-    
 }

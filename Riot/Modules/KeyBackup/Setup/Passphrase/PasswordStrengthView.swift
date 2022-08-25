@@ -18,7 +18,6 @@ import Foundation
 import Reusable
 
 final class PasswordStrengthView: UIView, NibOwnerLoadable {
-    
     // MARK: - Constants
     
     private enum StrengthColors {
@@ -33,10 +32,10 @@ final class PasswordStrengthView: UIView, NibOwnerLoadable {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var firstStrengthView: UIView!
-    @IBOutlet private weak var secondStrengthView: UIView!
-    @IBOutlet private weak var thirdStrengthView: UIView!
-    @IBOutlet private weak var fourthStrengthView: UIView!
+    @IBOutlet private var firstStrengthView: UIView!
+    @IBOutlet private var secondStrengthView: UIView!
+    @IBOutlet private var thirdStrengthView: UIView!
+    @IBOutlet private var fourthStrengthView: UIView!
     
     // MARK: Private
     
@@ -54,12 +53,12 @@ final class PasswordStrengthView: UIView, NibOwnerLoadable {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadNibContent()
+        loadNibContent()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadNibContent()
+        loadNibContent()
     }
     
     // MARK: - Life cycle
@@ -67,12 +66,12 @@ final class PasswordStrengthView: UIView, NibOwnerLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.strengthViews = [self.firstStrengthView,
-                              self.secondStrengthView,
-                              self.thirdStrengthView,
-                              self.fourthStrengthView]
+        strengthViews = [firstStrengthView,
+                         secondStrengthView,
+                         thirdStrengthView,
+                         fourthStrengthView]
         
-        for strenghView in self.strengthViews {
+        for strenghView in strengthViews {
             strenghView.layer.masksToBounds = true
         }
     }
@@ -80,18 +79,18 @@ final class PasswordStrengthView: UIView, NibOwnerLoadable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        for strenghView in self.strengthViews {            
-            strenghView.layer.cornerRadius = strenghView.bounds.height/2
+        for strenghView in strengthViews {
+            strenghView.layer.cornerRadius = strenghView.bounds.height / 2
         }
     }
     
-    // MARK: - Private    
+    // MARK: - Private
     
     private func updateStrengthColors() {
         let strengthViewIndex: Int
         let color: UIColor
         
-        switch self.strength {
+        switch strength {
         case .tooGuessable, .veryGuessable:
             strengthViewIndex = 0
             color = StrengthColors.red
@@ -110,10 +109,9 @@ final class PasswordStrengthView: UIView, NibOwnerLoadable {
     }
     
     private func color(until strengthViewIndex: Int, with color: UIColor) {
-        var index: Int = 0
+        var index = 0
         
-        for strenghView in self.strengthViews {
-            
+        for strenghView in strengthViews {
             let strenghViewBackgroundColor: UIColor
             
             if index <= strengthViewIndex {
@@ -124,7 +122,7 @@ final class PasswordStrengthView: UIView, NibOwnerLoadable {
             
             strenghView.backgroundColor = strenghViewBackgroundColor
             
-            index+=1
+            index += 1
         }
     }
 }

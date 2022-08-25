@@ -30,7 +30,6 @@ import MatrixSDK
 /// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class ThreadsBetaCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Constants
 
     // MARK: - Properties
@@ -59,7 +58,6 @@ final class ThreadsBetaCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
 
     func present(from viewController: UIViewController, animated: Bool) {
-        
         let threadsBetaCoordinator = ThreadsBetaCoordinator(threadId: threadId,
                                                             infoText: infoText,
                                                             additionalText: additionalText)
@@ -75,7 +73,7 @@ final class ThreadsBetaCoordinatorBridgePresenter: NSObject {
                                       completion: nil)
         threadsBetaCoordinator.start()
         
-        self.coordinator = threadsBetaCoordinator
+        coordinator = threadsBetaCoordinator
     }
 
     func dismiss(animated: Bool, completion: (() -> Void)?) {
@@ -84,13 +82,13 @@ final class ThreadsBetaCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - ThreadsBetaCoordinatorDelegate
+
 extension ThreadsBetaCoordinatorBridgePresenter: ThreadsBetaCoordinatorDelegate {
-    
     func threadsBetaCoordinatorDidTapEnable(_ coordinator: ThreadsBetaCoordinatorProtocol) {
-        self.delegate?.threadsBetaCoordinatorBridgePresenterDelegateDidTapEnable(self)
+        delegate?.threadsBetaCoordinatorBridgePresenterDelegateDidTapEnable(self)
     }
     
     func threadsBetaCoordinatorDidTapCancel(_ coordinator: ThreadsBetaCoordinatorProtocol) {
-        self.delegate?.threadsBetaCoordinatorBridgePresenterDelegateDidTapCancel(self)
+        delegate?.threadsBetaCoordinatorBridgePresenterDelegateDidTapCancel(self)
     }
 }

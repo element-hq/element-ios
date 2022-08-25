@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,34 +14,33 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 final class FileWithoutThumbnailCellContentView: UIView, NibLoadable {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var iconBackgroundView: UIView!
-    @IBOutlet private weak var iconImageView: UIImageView!
-    @IBOutlet private(set) weak var titleLabel: UILabel!
+    @IBOutlet private var iconBackgroundView: UIView!
+    @IBOutlet private var iconImageView: UIImageView!
+    @IBOutlet private(set) var titleLabel: UILabel!
 
     // MARK: Public
     
     var badgeImage: UIImage? {
         get {
-            return self.iconImageView.image
+            iconImageView.image
         }
         set {
-            self.iconImageView.image = newValue
+            iconImageView.image = newValue
         }
     }
     
     // MARK: - Setup
     
     static func instantiate() -> FileWithoutThumbnailCellContentView {
-        return FileWithoutThumbnailCellContentView.loadFromNib()
+        FileWithoutThumbnailCellContentView.loadFromNib()
     }
     
     // MARK: - Life cycle
@@ -49,9 +48,9 @@ final class FileWithoutThumbnailCellContentView: UIView, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.layer.masksToBounds = true
-        self.iconImageView.image = Asset.Images.fileAttachment.image.withRenderingMode(.alwaysTemplate)
-        self.iconBackgroundView.layer.masksToBounds = true
+        layer.masksToBounds = true
+        iconImageView.image = Asset.Images.fileAttachment.image.withRenderingMode(.alwaysTemplate)
+        iconBackgroundView.layer.masksToBounds = true
         
         update(theme: ThemeService.shared().theme)
     }
@@ -59,14 +58,14 @@ final class FileWithoutThumbnailCellContentView: UIView, NibLoadable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.layer.cornerRadius = BubbleRoomCellLayoutConstants.bubbleCornerRadius
-        self.iconBackgroundView.layer.cornerRadius = self.iconBackgroundView.bounds.midX
+        layer.cornerRadius = BubbleRoomCellLayoutConstants.bubbleCornerRadius
+        iconBackgroundView.layer.cornerRadius = iconBackgroundView.bounds.midX
     }
     
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.iconBackgroundView.backgroundColor = theme.roomCellIncomingBubbleBackgroundColor
-        self.iconImageView.tintColor = theme.colors.secondaryContent
+        iconBackgroundView.backgroundColor = theme.roomCellIncomingBubbleBackgroundColor
+        iconImageView.tintColor = theme.colors.secondaryContent
     }
 }

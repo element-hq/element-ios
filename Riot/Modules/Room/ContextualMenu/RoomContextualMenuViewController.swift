@@ -22,7 +22,6 @@ import UIKit
 
 @objcMembers
 final class RoomContextualMenuViewController: UIViewController, Themable {
-        
     // MARK: - Constants
     
     private enum Constants {
@@ -34,15 +33,15 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var backgroundOverlayView: UIView!
-    @IBOutlet private weak var menuToolbarView: RoomContextualMenuToolbarView!
+    @IBOutlet private var backgroundOverlayView: UIView!
+    @IBOutlet private var menuToolbarView: RoomContextualMenuToolbarView!
     
-    @IBOutlet private weak var menuToolbarViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var menuToolbarViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var menuToolbarViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var menuToolbarViewBottomConstraint: NSLayoutConstraint!
     
-    @IBOutlet private weak var reactionsMenuContainerView: UIView!
-    @IBOutlet private weak var reactionsMenuViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var reactionsMenuViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var reactionsMenuContainerView: UIView!
+    @IBOutlet private var reactionsMenuViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var reactionsMenuViewBottomConstraint: NSLayoutConstraint!
     
     // MARK: Private
     
@@ -58,20 +57,20 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     private var hiddenToolbarViewBottomConstant: CGFloat {
         let bottomSafeAreaHeight: CGFloat
         
-        bottomSafeAreaHeight = self.view.safeAreaInsets.bottom
+        bottomSafeAreaHeight = view.safeAreaInsets.bottom
         
-        return -(self.menuToolbarViewHeightConstraint.constant + bottomSafeAreaHeight)
+        return -(menuToolbarViewHeightConstraint.constant + bottomSafeAreaHeight)
     }
     
     private var shouldPresentReactionsMenu: Bool {
-        return self.reactionsMenuContainerView.isHidden == false
+        reactionsMenuContainerView.isHidden == false
     }
     
     // MARK: Public
     
     var contentToReactFrame: CGRect?
     var shouldPerformTappedReactionAnimation: Bool {
-        return self.reactionsMenuView?.reactionHasBeenTapped ?? false
+        self.reactionsMenuView?.reactionHasBeenTapped ?? false
     }
     
     weak var delegate: RoomContextualMenuViewControllerDelegate?
@@ -89,15 +88,15 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.        
+        // Do any additional setup after loading the view.
 
-        self.backgroundOverlayView.isUserInteractionEnabled = true
-        self.setupBackgroundOverlayGestureRecognizers()
+        backgroundOverlayView.isUserInteractionEnabled = true
+        setupBackgroundOverlayGestureRecognizers()
         
-        self.updateViews()
+        updateViews()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     // MARK: - Public
@@ -105,31 +104,31 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     func update(contextualMenuItems: [RoomContextualMenuItem], reactionsMenuViewModel: ReactionsMenuViewModel?) {
         self.contextualMenuItems = contextualMenuItems
         self.reactionsMenuViewModel = reactionsMenuViewModel
-        if self.isViewLoaded {
-            self.updateViews()
+        if isViewLoaded {
+            updateViews()
         }
     }
     
     func showMenuToolbar() {
-        self.menuToolbarViewBottomConstraint.constant = 0
-        self.menuToolbarView.alpha = 1
+        menuToolbarViewBottomConstraint.constant = 0
+        menuToolbarView.alpha = 1
         
         // Force VoiceOver to focus on the menu bar actions
-        UIAccessibility.post(notification: .screenChanged, argument: self.menuToolbarView)
+        UIAccessibility.post(notification: .screenChanged, argument: menuToolbarView)
     }
     
     func hideMenuToolbar() {
-        self.menuToolbarViewBottomConstraint.constant = self.hiddenToolbarViewBottomConstant
-        self.menuToolbarView.alpha = 0
+        menuToolbarViewBottomConstraint.constant = hiddenToolbarViewBottomConstant
+        menuToolbarView.alpha = 0
         UIAccessibility.post(notification: .screenChanged, argument: nil)
     }
     
     func prepareReactionsMenuAnimations() {
-        guard let frame = self.contentToReactFrame, frame.equalTo(CGRect.null) == false else {
+        guard let frame = contentToReactFrame, frame.equalTo(CGRect.null) == false else {
             return
         }
         
-        let menuHeight = self.reactionsMenuViewHeightConstraint.constant
+        let menuHeight = reactionsMenuViewHeightConstraint.constant
         let verticalMargin = Constants.reactionsMenuViewVerticalMargin
         
         let reactionsMenuViewBottomStartConstraintConstant: CGFloat?
@@ -140,17 +139,17 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
         // Else, keep the position defined in the storyboard
         if frame.origin.y - verticalMargin >= menuHeight {
             let menuViewBottomY = frame.origin.y - verticalMargin
-            reactionsMenuViewBottomStartConstraintConstant = menuViewBottomY + menuHeight/2
+            reactionsMenuViewBottomStartConstraintConstant = menuViewBottomY + menuHeight / 2
             reactionsMenuViewBottomEndConstraintConstant = menuViewBottomY
         } else {
             let frameBottomY = frame.origin.y + frame.size.height + verticalMargin
-            let visibleViewHeight = self.view.frame.size.height - self.menuToolbarView.frame.size.height
+            let visibleViewHeight = view.frame.size.height - menuToolbarView.frame.size.height
             
             if frameBottomY + menuHeight < visibleViewHeight {
                 let menuViewBottomY = frameBottomY + menuHeight
                 
                 reactionsMenuViewBottomEndConstraintConstant = menuViewBottomY
-                reactionsMenuViewBottomStartConstraintConstant = menuViewBottomY - menuHeight/2
+                reactionsMenuViewBottomStartConstraintConstant = menuViewBottomY - menuHeight / 2
             } else {
                 reactionsMenuViewBottomEndConstraintConstant = nil
                 reactionsMenuViewBottomStartConstraintConstant = nil
@@ -160,16 +159,16 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
         self.reactionsMenuViewBottomStartConstraintConstant = reactionsMenuViewBottomStartConstraintConstant
         self.reactionsMenuViewBottomEndConstraintConstant = reactionsMenuViewBottomEndConstraintConstant
         
-        self.reactionsMenuContainerView.isHidden = false
+        reactionsMenuContainerView.isHidden = false
     }
     
     func showReactionsMenu() {
-        guard self.shouldPresentReactionsMenu, let reactionsMenuView = self.reactionsMenuView else {
+        guard shouldPresentReactionsMenu, let reactionsMenuView = reactionsMenuView else {
             return
         }
         
-        if let reactionsMenuViewBottomEndConstraintConstant = self.reactionsMenuViewBottomEndConstraintConstant {
-            self.reactionsMenuViewBottomConstraint.constant = reactionsMenuViewBottomEndConstraintConstant
+        if let reactionsMenuViewBottomEndConstraintConstant = reactionsMenuViewBottomEndConstraintConstant {
+            reactionsMenuViewBottomConstraint.constant = reactionsMenuViewBottomEndConstraintConstant
         }
         
         reactionsMenuView.alpha = 1
@@ -177,64 +176,62 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     }
     
     func hideReactionsMenu() {
-        guard self.shouldPresentReactionsMenu, let reactionsMenuView = self.reactionsMenuView else {
+        guard shouldPresentReactionsMenu, let reactionsMenuView = reactionsMenuView else {
             return
         }
         
-        if let reactionsMenuViewBottomStartConstraintConstant = self.reactionsMenuViewBottomStartConstraintConstant {
-            self.reactionsMenuViewBottomConstraint.constant = reactionsMenuViewBottomStartConstraintConstant
+        if let reactionsMenuViewBottomStartConstraintConstant = reactionsMenuViewBottomStartConstraintConstant {
+            reactionsMenuViewBottomConstraint.constant = reactionsMenuViewBottomStartConstraintConstant
         }
         
         reactionsMenuView.alpha = 0
         
         let transformScale = Constants.reactionsMenuViewHiddenScale
-        self.reactionsMenuContainerView.transform = CGAffineTransform(scaleX: transformScale, y: transformScale)
+        reactionsMenuContainerView.transform = CGAffineTransform(scaleX: transformScale, y: transformScale)
     }
     
     func selectedReactionAnimationsIntructionsPart1() {
-        self.reactionsMenuView?.selectionAnimationInstructionPart1()
+        reactionsMenuView?.selectionAnimationInstructionPart1()
     }
     
     func selectedReactionAnimationsIntructionsPart2() {
-        self.reactionsMenuView?.selectionAnimationInstructionPart2()
+        reactionsMenuView?.selectionAnimationInstructionPart2()
     }
     
     func update(theme: Theme) {
-        self.menuToolbarView.update(theme: theme)
-        self.reactionsMenuView?.update(theme: theme)
+        menuToolbarView.update(theme: theme)
+        reactionsMenuView?.update(theme: theme)
     }
     
     // MARK: - Private
     
     private func updateViews() {
-        self.menuToolbarView.fill(contextualMenuItems: self.contextualMenuItems)
+        menuToolbarView.fill(contextualMenuItems: contextualMenuItems)
         
         let hideReactionMenu: Bool
         
-        if let reactionsMenuViewModel = self.reactionsMenuViewModel {
+        if let reactionsMenuViewModel = reactionsMenuViewModel {
             hideReactionMenu = false
-            self.updateReactionsMenu(with: reactionsMenuViewModel)
+            updateReactionsMenu(with: reactionsMenuViewModel)
         } else {
             hideReactionMenu = true
         }
         
-        self.reactionsMenuContainerView.isHidden = hideReactionMenu
+        reactionsMenuContainerView.isHidden = hideReactionMenu
     }
     
     private func updateReactionsMenu(with viewModel: ReactionsMenuViewModel) {
-        
-        if self.reactionsMenuContainerView.subviews.isEmpty {
+        if reactionsMenuContainerView.subviews.isEmpty {
             let reactionsMenuView = ReactionsMenuView.loadFromNib()
-            self.reactionsMenuContainerView.vc_addSubViewMatchingParent(reactionsMenuView)
-            reactionsMenuView.update(theme: self.theme)
+            reactionsMenuContainerView.vc_addSubViewMatchingParent(reactionsMenuView)
+            reactionsMenuView.update(theme: theme)
             self.reactionsMenuView = reactionsMenuView
         }
         
-        self.reactionsMenuView?.viewModel = viewModel
+        reactionsMenuView?.viewModel = viewModel
     }
     
     private func setupBackgroundOverlayGestureRecognizers() {
-        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handle(gestureRecognizer:)))
         tapGestureRecognizer.delegate = self
         
@@ -242,12 +239,12 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
         swipeGestureRecognizer.direction = [.down, .up]
         swipeGestureRecognizer.delegate = self
         
-        self.backgroundOverlayView.addGestureRecognizer(tapGestureRecognizer)
-        self.backgroundOverlayView.addGestureRecognizer(swipeGestureRecognizer)
+        backgroundOverlayView.addGestureRecognizer(tapGestureRecognizer)
+        backgroundOverlayView.addGestureRecognizer(swipeGestureRecognizer)
     }
     
     @objc private func handle(gestureRecognizer: UIGestureRecognizer) {
-        self.delegate?.roomContextualMenuViewControllerDidTapBackgroundOverlay(self)
+        delegate?.roomContextualMenuViewControllerDidTapBackgroundOverlay(self)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -255,15 +252,15 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
 }
 
 // MARK: - UIGestureRecognizerDelegate
+
 extension RoomContextualMenuViewController: UIGestureRecognizerDelegate {
-    
     // Avoid triggering background overlay gesture recognizers when touching reactions menu
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        return touch.vc_isInside(view: self.reactionsMenuContainerView) == false
+        touch.vc_isInside(view: reactionsMenuContainerView) == false
     }
 }

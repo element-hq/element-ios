@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// `PublicRoomContextPreviewViewModel` provides the data to the `RoomContextPreviewViewController` from an instance of `MXPublicRoom`
 class PublicRoomContextPreviewViewModel: RoomContextPreviewViewModelProtocol {
-    
     // MARK: - Properties
     
     private let publicRoom: MXPublicRoom
@@ -35,7 +34,7 @@ class PublicRoomContextPreviewViewModel: RoomContextPreviewViewModelProtocol {
     func process(viewAction: RoomContextPreviewViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         }
     }
     
@@ -53,7 +52,8 @@ class PublicRoomContextPreviewViewModel: RoomContextPreviewViewModelProtocol {
             membership: .unknown,
             inviterId: nil,
             inviter: nil,
-            membersCount: publicRoom.numJoinedMembers)
-        self.viewDelegate?.roomContextPreviewViewModel(self, didUpdateViewState: .loaded(parameters))
+            membersCount: publicRoom.numJoinedMembers
+        )
+        viewDelegate?.roomContextPreviewViewModel(self, didUpdateViewState: .loaded(parameters))
     }
 }

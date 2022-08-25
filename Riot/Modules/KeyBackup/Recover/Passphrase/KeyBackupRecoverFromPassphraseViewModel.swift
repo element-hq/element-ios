@@ -17,7 +17,6 @@
 import Foundation
 
 final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphraseViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -31,7 +30,7 @@ final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphr
     var passphrase: String?
     
     var isFormValid: Bool {
-        return self.passphrase?.isEmpty == false
+        self.passphrase?.isEmpty == false
     }
     
     weak var viewDelegate: KeyBackupRecoverFromPassphraseViewModelViewDelegate?
@@ -53,24 +52,24 @@ final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphr
     func process(viewAction: KeyBackupRecoverFromPassphraseViewAction) {
         switch viewAction {
         case .recover:
-            self.recoverWithPassphrase()
+            recoverWithPassphrase()
         case .cancel:
-            self.coordinatorDelegate?.keyBackupRecoverFromPassphraseViewModelDidCancel(self)
+            coordinatorDelegate?.keyBackupRecoverFromPassphraseViewModelDidCancel(self)
         case .unknownPassphrase:
-            self.coordinatorDelegate?.keyBackupRecoverFromPassphraseViewModelDoNotKnowPassphrase(self)
+            coordinatorDelegate?.keyBackupRecoverFromPassphraseViewModelDoNotKnowPassphrase(self)
         }
     }
     
     // MARK: - Private
     
     private func recoverWithPassphrase() {
-        guard let passphrase = self.passphrase else {
+        guard let passphrase = passphrase else {
             return
         }
         
-        self.update(viewState: .loading)
+        update(viewState: .loading)
         
-        self.currentHTTPOperation = self.keyBackup.restore(self.keyBackupVersion, withPassword: passphrase, room: nil, session: nil, success: { [weak self] (_, _) in
+        currentHTTPOperation = keyBackup.restore(keyBackupVersion, withPassword: passphrase, room: nil, session: nil, success: { [weak self] _, _ in
             guard let sself = self else {
                 return
             }
@@ -84,8 +83,8 @@ final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphr
                 ssself.update(viewState: .loaded)
                 ssself.coordinatorDelegate?.keyBackupRecoverFromPassphraseViewModelDidRecover(ssself)
 
-                }, failure: { [weak sself] error in
-                    sself?.update(viewState: .error(error))
+            }, failure: { [weak sself] error in
+                sself?.update(viewState: .error(error))
             })
 
         }, failure: { [weak self] error in
@@ -94,6 +93,6 @@ final class KeyBackupRecoverFromPassphraseViewModel: KeyBackupRecoverFromPassphr
     }
     
     private func update(viewState: KeyBackupRecoverFromPassphraseViewState) {
-        self.viewDelegate?.keyBackupRecoverFromPassphraseViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.keyBackupRecoverFromPassphraseViewModel(self, didUpdateViewState: viewState)
     }
 }

@@ -19,7 +19,6 @@
 import Foundation
 
 final class KeyVerificationVerifyBySASViewModel: KeyVerificationVerifyBySASViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -41,8 +40,8 @@ final class KeyVerificationVerifyBySASViewModel: KeyVerificationVerifyBySASViewM
     init(session: MXSession, transaction: MXSASTransaction, verificationKind: KeyVerificationKind) {
         self.session = session
         self.transaction = transaction
-        self.emojis = self.transaction.sasEmoji
-        self.decimal = self.transaction.sasDecimal
+        emojis = self.transaction.sasEmoji
+        decimal = self.transaction.sasDecimal
         self.verificationKind = verificationKind
     }
     
@@ -51,31 +50,31 @@ final class KeyVerificationVerifyBySASViewModel: KeyVerificationVerifyBySASViewM
     func process(viewAction: KeyVerificationVerifyBySASViewAction) {
         switch viewAction {
         case .loadData:
-            self.registerTransactionDidStateChangeNotification(transaction: transaction)
+            registerTransactionDidStateChangeNotification(transaction: transaction)
         case .confirm:
-            self.confirmTransaction()
+            confirmTransaction()
         case .complete:
-            self.coordinatorDelegate?.keyVerificationVerifyViewModelDidComplete(self)
+            coordinatorDelegate?.keyVerificationVerifyViewModelDidComplete(self)
         case .cancel:
-            self.cancelTransaction()
-            self.coordinatorDelegate?.keyVerificationVerifyViewModelDidCancel(self)
+            cancelTransaction()
+            coordinatorDelegate?.keyVerificationVerifyViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func confirmTransaction() {
-        self.update(viewState: .loading)
+        update(viewState: .loading)
 
-        self.transaction.confirmSASMatch()
+        transaction.confirmSASMatch()
     }
 
     private func cancelTransaction() {
-        self.transaction.cancel(with: MXTransactionCancelCode.user())
+        transaction.cancel(with: MXTransactionCancelCode.user())
     }
     
     private func update(viewState: KeyVerificationVerifyViewState) {
-        self.viewDelegate?.keyVerificationVerifyBySASViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.keyVerificationVerifyBySASViewModel(self, didUpdateViewState: viewState)
     }
 
     // MARK: - MXKeyVerificationTransactionDidChange
@@ -95,27 +94,27 @@ final class KeyVerificationVerifyBySASViewModel: KeyVerificationVerifyBySASViewM
 
         switch transaction.state {
         case MXSASTransactionStateVerified:
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .loaded)
-            self.coordinatorDelegate?.keyVerificationVerifyViewModelDidComplete(self)
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .loaded)
+            coordinatorDelegate?.keyVerificationVerifyViewModelDidComplete(self)
         case MXSASTransactionStateCancelled:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelled(reason))
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .cancelled(reason))
         case MXSASTransactionStateError:
             guard let error = transaction.error else {
                 return
             }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .error(error))
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .error(error))
         case MXSASTransactionStateCancelledByMe:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelledByMe(reason))
+            unregisterTransactionDidStateChangeNotification()
+            update(viewState: .cancelledByMe(reason))
         default:
             break
         }

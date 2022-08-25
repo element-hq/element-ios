@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,14 +17,13 @@
 import UIKit
 
 class TextMessageBaseBubbleCell: SizableBaseRoomCell, RoomCellURLPreviewDisplayable, RoomCellReactionsDisplayable, RoomCellThreadSummaryDisplayable, RoomCellReadReceiptsDisplayable, RoomCellReadMarkerDisplayable {
-    
     // MARK: - Properties
     
     weak var textMessageContentView: TextMessageBubbleCellContentView?
         
     override var messageTextView: UITextView! {
         get {
-            return self.textMessageContentView?.textView
+            self.textMessageContentView?.textView
         }
         set { }
     }
@@ -32,7 +31,6 @@ class TextMessageBaseBubbleCell: SizableBaseRoomCell, RoomCellURLPreviewDisplaya
     // MARK: - Overrides
     
     override func setupViews() {
-        
         roomCellContentView?.backgroundColor = .clear
         
         roomCellContentView?.innerContentViewBottomContraint.constant = BubbleRoomCellLayoutConstants.innerContentViewMargins.bottom
@@ -55,17 +53,17 @@ class TextMessageBaseBubbleCell: SizableBaseRoomCell, RoomCellURLPreviewDisplaya
     override func update(theme: Theme) {
         super.update(theme: theme)
         
-        if let messageTextView = self.messageTextView {
+        if let messageTextView = messageTextView {
             messageTextView.tintColor = theme.tintColor
         }
     }
 }
 
 // MARK: - RoomCellTimestampDisplayable
+
 extension TextMessageBaseBubbleCell: TimestampDisplayable {
-    
     func addTimestampView(_ timestampView: UIView) {
-        guard let messageBubbleBackgroundView = self.textMessageContentView?.bubbleBackgroundView else {
+        guard let messageBubbleBackgroundView = textMessageContentView?.bubbleBackgroundView else {
             return
         }
         messageBubbleBackgroundView.removeTimestampView()
@@ -73,7 +71,7 @@ extension TextMessageBaseBubbleCell: TimestampDisplayable {
     }
     
     func removeTimestampView() {
-        guard let messageBubbleBackgroundView = self.textMessageContentView?.bubbleBackgroundView else {
+        guard let messageBubbleBackgroundView = textMessageContentView?.bubbleBackgroundView else {
             return
         }
         messageBubbleBackgroundView.removeTimestampView()

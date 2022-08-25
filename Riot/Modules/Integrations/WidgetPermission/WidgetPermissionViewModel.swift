@@ -19,7 +19,6 @@ import Foundation
 /// View model used by `WidgetPermissionViewController`
 @objcMembers
 final class WidgetPermissionViewModel: NSObject {
-    
     // MARK: - Properties
     
     let creatorUserId: String
@@ -30,9 +29,7 @@ final class WidgetPermissionViewModel: NSObject {
     let widgetPermissions: [String]
     let mediaManager: MXMediaManager
     
-    lazy var permissionsInformationText: String = {
-        return self.buildPermissionsInformationText()
-    }()
+    lazy var permissionsInformationText: String = self.buildPermissionsInformationText()
     
     // MARK: - Setup
     
@@ -49,18 +46,17 @@ final class WidgetPermissionViewModel: NSObject {
     // MARK: - Private
     
     private func buildPermissionsInformationText() -> String {
-        
         let informationTitle: String
-        let widgetDomain = self.widgetDomain ?? ""
+        let widgetDomain = widgetDomain ?? ""
         
-        if self.isWebviewWidget {
+        if isWebviewWidget {
             informationTitle = VectorL10n.roomWidgetPermissionWebviewInformationTitle(widgetDomain)
         } else {
             informationTitle = VectorL10n.roomWidgetPermissionInformationTitle(widgetDomain)
         }
         
-        let permissionsList = self.widgetPermissions.reduce("") { (accumulatedPermissions, permission) -> String in
-            return accumulatedPermissions + "\n• \(permission)"
+        let permissionsList = widgetPermissions.reduce("") { accumulatedPermissions, permission -> String in
+            accumulatedPermissions + "\n• \(permission)"
         }
         
         return informationTitle + permissionsList

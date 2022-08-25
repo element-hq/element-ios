@@ -6,10 +6,10 @@
 import UIKit
 
 public class ElementViewController: UIViewController {
-    @IBOutlet public weak var element: ElementView!
+    @IBOutlet public var element: ElementView!
     public var timeline: Timeline_1!
 
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         timeline = Timeline_1(view: element, duration: 2)
 

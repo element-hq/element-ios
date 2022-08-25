@@ -14,16 +14,15 @@
  limitations under the License.
  */
 
-import UIKit
 import AVFoundation
+import UIKit
 
 /// MXKVideoThumbnailGenerator is a utility class to generate a thumbnail image from a video file.
 @objcMembers
 public class MXKVideoThumbnailGenerator: NSObject {
-    
     public static let shared = MXKVideoThumbnailGenerator()
     
-    // MARK - Public
+    // MARK: - Public
     
     /// Generate thumbnail image from a video URL.
     /// Note: Do not make `maximumSize` optional with default nil value for Objective-C compatibility.
@@ -34,18 +33,18 @@ public class MXKVideoThumbnailGenerator: NSObject {
     /// - Returns: Thumbnail image or nil.
     public func generateThumbnail(from url: URL, with maximumSize: CGSize) -> UIImage? {
         let finalSize: CGSize? = maximumSize != .zero ? maximumSize : nil
-        return self.generateThumbnail(from: url, with: finalSize)
-    }    
+        return generateThumbnail(from: url, with: finalSize)
+    }
     
     /// Generate thumbnail image from a video URL.
     ///
     /// - Parameter url: Video URL.
     /// - Returns: Thumbnail image or nil.
     public func generateThumbnail(from url: URL) -> UIImage? {
-        return generateThumbnail(from: url, with: nil)
+        generateThumbnail(from: url, with: nil)
     }
     
-    // MARK - Private
+    // MARK: - Private
     
     /// Generate thumbnail image from a video URL.
     ///

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class VoiceMessageIncomingBubbleCell: VoiceMessagePlainCell, BubbleIncomingRoomCellProtocol {
-        
     override func setupViews() {
         super.setupViews()
                 
@@ -26,11 +25,10 @@ class VoiceMessageIncomingBubbleCell: VoiceMessagePlainCell, BubbleIncomingRoomC
         
         playbackController.playbackView.stackViewTrailingContraint.constant = BubbleRoomCellLayoutConstants.voiceMessagePlaybackViewRightMargin
         
-        self.setupBubbleDecorations()
+        setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {
-                
         guard let playbackController = playbackController else {
             return
         }

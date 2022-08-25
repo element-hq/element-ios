@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +17,10 @@
 import Foundation
 
 class ArrowsAnimationView: UIView {
-    
     private enum Constants {
-        static let numberOfArrows: Int = 3
-        static let arrowSize: CGSize = CGSize(width: 14, height: 14)
-        static let gradientAnimationKey: String = "gradient"
+        static let numberOfArrows = 3
+        static let arrowSize = CGSize(width: 14, height: 14)
+        static let gradientAnimationKey = "gradient"
         static let gradientRatios: [CGFloat] = [1.0, 0.3, 0.2]
     }
     
@@ -34,6 +33,7 @@ class ArrowsAnimationView: UIView {
         animation.duration = 1
         return animation
     }()
+
     private var theme: Theme = ThemeService.shared().theme
     private var arrowImageViews: [UIImageView] = []
     
@@ -71,8 +71,8 @@ class ArrowsAnimationView: UIView {
         gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
         //  this color doesn't have to come from the theme, it's only used as a mask
         let color = UIColor.black
-        let colors = Constants.gradientRatios.map({ color.withAlphaComponent($0) })
-        gradientLayer.colors = colors.map({ $0.cgColor })
+        let colors = Constants.gradientRatios.map { color.withAlphaComponent($0) }
+        gradientLayer.colors = colors.map(\.cgColor)
 
         layer.mask = gradientLayer
     }
@@ -85,7 +85,7 @@ class ArrowsAnimationView: UIView {
     
     //  MARK: - API
     
-    var isAnimating: Bool = false {
+    var isAnimating = false {
         didSet {
             if isAnimating {
                 if gradientLayer.animation(forKey: Constants.gradientAnimationKey) == nil {
@@ -104,11 +104,9 @@ class ArrowsAnimationView: UIView {
 //  MARK: - Themable
 
 extension ArrowsAnimationView: Themable {
-    
     func update(theme: Theme) {
         self.theme = theme
         
-        arrowImageViews.forEach({ $0.tintColor = theme.tabBarUnselectedItemTintColor })
+        arrowImageViews.forEach { $0.tintColor = theme.tabBarUnselectedItemTintColor }
     }
-    
 }

@@ -17,7 +17,6 @@
 import UIKit
 
 extension UIViewController {
-    
     private enum UIViewControllerConstants {
         static let fabButtonSize = CGSize(width: 78, height: 78)
         static let fabButtonTrailingMargin: CGFloat = 0
@@ -27,16 +26,15 @@ extension UIViewController {
     /// Remove back bar button title when pushing a view controller.
     /// This method should be called on the previous controller in UINavigationController stack.
     @objc func vc_removeBackTitle() {
-        self.navigationItem.backButtonDisplayMode = .minimal
+        navigationItem.backButtonDisplayMode = .minimal
     }
 
     /// Add a child view controller matching current view controller view.
     ///
     /// - Parameter viewController: The child view controller to add.
     func vc_addChildViewController(viewController: UIViewController) {
-        self.vc_addChildViewController(viewController: viewController, onView: self.view)
+        vc_addChildViewController(viewController: viewController, onView: view)
     }
-    
     
     /// Add a child view controller on current view controller.
     ///
@@ -45,7 +43,7 @@ extension UIViewController {
     ///   - view: The view on which to add the child view controller view.
     ///   - animated: true to add a fade in animation
     func vc_addChildViewController(viewController: UIViewController, onView view: UIView, animated: Bool = false) {
-        self.addChild(viewController)
+        addChild(viewController)
         
         viewController.view.frame = view.bounds
         if animated {
@@ -60,7 +58,6 @@ extension UIViewController {
         viewController.didMove(toParent: self)
     }
     
-    
     /// Remove a child view controller from current view controller.
     ///
     /// - Parameters:
@@ -71,7 +68,7 @@ extension UIViewController {
         if animated {
             UIView.animate(withDuration: 0.2) {
                 viewController.view.alpha = 0
-            } completion: { finished in
+            } completion: { _ in
                 viewController.view.removeFromSuperview()
                 viewController.view.alpha = 1
             }
@@ -81,12 +78,11 @@ extension UIViewController {
         viewController.removeFromParent()
     }
     
-    
     /// Remove current view controller from parent.
     ///
     /// - Parameter animated: true to add a fade out animation
     func vc_removeFromParent(animated: Bool = false) {
-        self.vc_removeChildViewController(viewController: self, animated: animated)
+        vc_removeChildViewController(viewController: self, animated: animated)
     }
     
     /// Adds a floating action button to the bottom-right of the page.
@@ -99,7 +95,6 @@ extension UIViewController {
     @objc func vc_addFAB(withImage image: UIImage,
                          target: Any?,
                          action: Selector?) -> UIImageView {
-        
         let fabImageView = UIImageView(image: image)
         fabImageView.translatesAutoresizingMaskIntoConstraints = false
         fabImageView.backgroundColor = .clear
@@ -108,14 +103,14 @@ extension UIViewController {
         fabImageView.layer.shadowOffset = CGSize(width: 0, height: 3)
         fabImageView.isUserInteractionEnabled = true
         
-        self.view.addSubview(fabImageView)
+        view.addSubview(fabImageView)
         
         fabImageView.widthAnchor.constraint(equalToConstant: UIViewControllerConstants.fabButtonSize.width).isActive = true
         fabImageView.heightAnchor.constraint(equalToConstant: UIViewControllerConstants.fabButtonSize.height).isActive = true
-        fabImageView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
+        fabImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                                                constant: UIViewControllerConstants.fabButtonTrailingMargin).isActive = true
-        self.view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: fabImageView.bottomAnchor,
-                                                              constant: UIViewControllerConstants.fabButtonBottomMargin).isActive = true
+        view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: fabImageView.bottomAnchor,
+                                                         constant: UIViewControllerConstants.fabButtonBottomMargin).isActive = true
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: target, action: action)
         tapGestureRecognizer.numberOfTouchesRequired = 1
@@ -131,7 +126,7 @@ extension UIViewController {
     @objc func vc_setLargeTitleDisplayMode(_ largeTitleDisplayMode: UINavigationItem.LargeTitleDisplayMode) {
         switch largeTitleDisplayMode {
         case .automatic:
-              guard let navigationController = navigationController else { break }
+            guard let navigationController = navigationController else { break }
             if let index = navigationController.children.firstIndex(of: self) {
                 vc_setLargeTitleDisplayMode(index == 0 ? .always : .never)
             } else {
@@ -149,13 +144,13 @@ extension UIViewController {
     /// Set leftBarButtonItem with split view display mode button if there is no leftBarButtonItem defined and splitViewController exists.
     /// To be Used when view controller is displayed as detail controller in split view.
     func vc_setupDisplayModeLeftBarButtonItemIfNeeded() {
-        guard let splitViewController = self.splitViewController, self.navigationItem.leftBarButtonItem == nil else {
+        guard let splitViewController = splitViewController, navigationItem.leftBarButtonItem == nil else {
             return
         }
         
         // If there is no leftBarButtonItem defined,
         // set split view display mode button as left bar button item
-        self.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
+        navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
     }
 
     /// Set the view controller to be displayed in fullscreen modal presentation style on any iOS version.

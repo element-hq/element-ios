@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 public extension NSAttributedString {
-
     /// Returns a new attributed string by removing all links from the receiver.
     @objc var vc_byRemovingLinks: NSAttributedString {
         let result = NSMutableAttributedString(attributedString: self)
@@ -36,9 +35,9 @@ public extension NSAttributedString {
                                   in enumerationRange: NSRange? = nil,
                                   options opts: NSAttributedString.EnumerationOptions = [],
                                   using block: (T, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void) {
-        self.enumerateAttribute(attrName,
-                                in: enumerationRange ?? .init(location: 0, length: length),
-                                options: opts) { (attr: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
+        enumerateAttribute(attrName,
+                           in: enumerationRange ?? .init(location: 0, length: length),
+                           options: opts) { (attr: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
             guard let typedAttr = attr as? T else { return }
             
             block(typedAttr, range, stop)

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,12 +22,9 @@ import Foundation
 /// @Inject var someClass: SomeClass
 /// ```
 @propertyWrapper struct Inject<Value> {
-    
-    static subscript<T: Injectable>(
-        _enclosingInstance instance: T,
-        wrapped wrappedKeyPath: ReferenceWritableKeyPath<T, Value>,
-        storage storageKeyPath: ReferenceWritableKeyPath<T, Self>
-    ) -> Value {
+    static subscript<T: Injectable>(_enclosingInstance instance: T,
+                                    wrapped wrappedKeyPath: ReferenceWritableKeyPath<T, Value>,
+                                    storage storageKeyPath: ReferenceWritableKeyPath<T, Self>) -> Value {
         get {
             // Resolve dependencies from enclosing instance's `dependencies` property
             let v: Value = instance.dependencies.resolve()
@@ -38,9 +35,9 @@ import Foundation
         }
     }
     
-    @available(*, unavailable, message:  "This property wrapper can only be applied to classes")
+    @available(*, unavailable, message: "This property wrapper can only be applied to classes")
     var wrappedValue: Value {
         get { fatalError("wrappedValue get not used") }
-        set { fatalError("wrappedValue set not used. \(newValue)" ) }
+        set { fatalError("wrappedValue set not used. \(newValue)") }
     }
 }

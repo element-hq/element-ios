@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
+import AVFoundation
 import Foundation
 import UIKit
-import AVFoundation
 
 @objc protocol CameraPresenterDelegate: AnyObject {
     func cameraPresenter(_ presenter: CameraPresenter, didSelectImage image: UIImage)
@@ -26,7 +26,6 @@ import AVFoundation
 
 /// CameraPresenter enables to present native camera
 @objc final class CameraPresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -45,8 +44,8 @@ import AVFoundation
     // MARK: - Setup
     
     override init() {
-        self.cameraAccessManager = CameraAccessManager()
-        self.cameraAccessAlertPresenter = CameraAccessAlertPresenter()
+        cameraAccessManager = CameraAccessManager()
+        cameraAccessAlertPresenter = CameraAccessAlertPresenter()
         super.init()
     }
     
@@ -55,11 +54,11 @@ import AVFoundation
     @objc func presentCamera(from presentingViewController: UIViewController, with mediaUTIs: [MXKUTI], animated: Bool) {
         self.presentingViewController = presentingViewController
         self.mediaUTIs = mediaUTIs
-        self.checkCameraPermissionAndPresentCamera(animated: animated)
+        checkCameraPermissionAndPresentCamera(animated: animated)
     }
     
     @objc func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let cameraViewController = self.cameraViewController else {
+        guard let cameraViewController = cameraViewController else {
             return
         }
         cameraViewController.dismiss(animated: animated, completion: completion)
@@ -68,16 +67,16 @@ import AVFoundation
     // MARK: - Private
     
     private func checkCameraPermissionAndPresentCamera(animated: Bool) {
-        guard let presentingViewController = self.presentingViewController else {
+        guard let presentingViewController = presentingViewController else {
             return
         }
         
-        guard self.cameraAccessManager.isCameraAvailable else {
-            self.cameraAccessAlertPresenter.presentCameraUnavailableAlert(from: presentingViewController, animated: animated)
+        guard cameraAccessManager.isCameraAvailable else {
+            cameraAccessAlertPresenter.presentCameraUnavailableAlert(from: presentingViewController, animated: animated)
             return
         }
         
-        self.cameraAccessManager.askAndRequestCameraAccessIfNeeded { (granted) in
+        cameraAccessManager.askAndRequestCameraAccessIfNeeded { granted in
             if granted {
                 self.presentCameraController(animated: animated)
             } else {
@@ -87,11 +86,11 @@ import AVFoundation
     }
     
     private func presentCameraController(animated: Bool) {
-        guard let presentingViewController = self.presentingViewController else {
+        guard let presentingViewController = presentingViewController else {
             return
         }
         
-        guard let cameraViewController = self.buildCameraViewController() else {
+        guard let cameraViewController = buildCameraViewController() else {
             return
         }
         
@@ -104,8 +103,8 @@ import AVFoundation
             return nil
         }
         
-        let mediaTypes = self.mediaUTIs.map { (uti) -> String in
-            return uti.rawValue
+        let mediaTypes = mediaUTIs.map { uti -> String in
+            uti.rawValue
         }
         
         let imagePickerController = UIImagePickerController()
@@ -120,21 +119,21 @@ import AVFoundation
 }
 
 // MARK: - UIImagePickerControllerDelegate
+
 extension CameraPresenter: UIImagePickerControllerDelegate {
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let videoURL = info[.mediaURL] as? URL {
-            self.delegate?.cameraPresenter(self, didSelectVideoAt: videoURL)
+            delegate?.cameraPresenter(self, didSelectVideoAt: videoURL)
         } else if let image = (info[.editedImage] ?? info[.originalImage]) as? UIImage {
-            self.delegate?.cameraPresenter(self, didSelectImage: image)
+            delegate?.cameraPresenter(self, didSelectImage: image)
         }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.delegate?.cameraPresenterDidCancel(self)
+        delegate?.cameraPresenterDidCancel(self)
     }
 }
 
 // MARK: - UINavigationControllerDelegate
-extension CameraPresenter: UINavigationControllerDelegate {
-}
+
+extension CameraPresenter: UINavigationControllerDelegate { }

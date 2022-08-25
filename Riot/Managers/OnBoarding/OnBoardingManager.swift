@@ -17,13 +17,12 @@
 import Foundation
 
 /// `OnBoardingManager` is used to manage onboarding steps, like create DM room with riot bot.
-final public class OnBoardingManager: NSObject {
-    
+public final class OnBoardingManager: NSObject {
     // MARK: - Constants
     
     private enum Constants {
         static let riotBotMatrixId = "@riot-bot:matrix.org"
-        static let createRiotBotDMRequestMaxNumberOfTries: UInt = UInt.max
+        static let createRiotBotDMRequestMaxNumberOfTries = UInt.max
     }
     
     // MARK: - Properties
@@ -41,23 +40,22 @@ final public class OnBoardingManager: NSObject {
     // MARK: - Public
     
     @objc public func createRiotBotDirectMessageIfNeeded(success: (() -> Void)?, failure: ((Error) -> Void)?) {
-        
         // Check user has joined no rooms so is a new comer
-        guard self.isUserJoinedARoom() == false else {
+        guard isUserJoinedARoom() == false else {
             // As the user has already rooms, one of their riot client has already created a room with riot bot
             success?()
             return
         }
 
         // Check first that the user homeserver is federated with the  Riot-bot homeserver
-        self.session.matrixRestClient.avatarUrl(forUser: Constants.riotBotMatrixId) { (response) in
+        session.matrixRestClient.avatarUrl(forUser: Constants.riotBotMatrixId) { response in
 
             switch response {
             case .success:
 
                 // Create DM room with Riot-bot
                 let roomCreationParameters = MXRoomCreationParameters(forDirectRoomWithUser: Constants.riotBotMatrixId)
-                let httpOperation = self.session.createRoom(parameters: roomCreationParameters) { (response) in
+                let httpOperation = self.session.createRoom(parameters: roomCreationParameters) { response in
 
                     switch response {
                     case .success:

@@ -34,8 +34,7 @@ enum EnterNewRoomActionType {
 }
 
 /// Protocol describing the view model used by `EnterNewRoomDetailsViewController`
-protocol EnterNewRoomDetailsViewModelType {        
-        
+protocol EnterNewRoomDetailsViewModelType {
     var viewDelegate: EnterNewRoomDetailsViewModelViewDelegate? { get set }
     var coordinatorDelegate: EnterNewRoomDetailsViewModelCoordinatorDelegate? { get set }
     

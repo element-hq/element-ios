@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import DSWaveformImage
+import Foundation
 
 enum VoiceMessagePlaybackControllerState {
     case stopped
@@ -25,7 +25,6 @@ enum VoiceMessagePlaybackControllerState {
 }
 
 class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMessagePlaybackViewDelegate {
-    
     private enum Constants {
         static let elapsedTimeFormat = "m:ss"
     }
@@ -38,7 +37,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     private var samples: [Float] = []
     private var duration: TimeInterval = 0
     private var urlToLoad: URL?
-    private var loading: Bool = false
+    private var loading = false
     
     private var state: VoiceMessagePlaybackControllerState = .stopped {
         didSet {
@@ -53,7 +52,6 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         return dateFormatter
     }()
 
-    
     let playbackView: VoiceMessagePlaybackView
     
     init(mediaServiceProvider: VoiceMessageMediaServiceProvider, cacheManager: VoiceMessageAttachmentCacheManager) {
@@ -107,7 +105,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
             audioPlayer.loadContentFromURL(url, displayName: attachment?.originalFileName)
         }
         
-        audioPlayer.seekToTime(self.duration * Double(progress)) { [weak self] _ in
+        audioPlayer.seekToTime(duration * Double(progress)) { [weak self] _ in
             guard let self = self else { return }
             self.updateUI()
         }
@@ -160,12 +158,12 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         details.playing = (state == .playing)
         details.samples = samples
         // Show the current time if the player is paused, show duration when at 0.
-        let duration = self.duration
+        let duration = duration
         let currentTime = audioPlayer?.currentTime ?? 0
         let displayTime = currentTime > 0 ? currentTime : duration
         details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: displayTime))
         details.progress = duration > 0 ? currentTime / duration : 0
-        details.loading = self.loading
+        details.loading = loading
         playbackView.configureWithDetails(details)
     }
         
@@ -174,7 +172,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
             return
         }
         
-        self.state = .stopped
+        state = .stopped
         updateUI()
         
         let requiredNumberOfSamples = playbackView.getRequiredNumberOfSamples()

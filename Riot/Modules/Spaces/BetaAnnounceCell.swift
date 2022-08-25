@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 @objc protocol BetaAnnounceCellDelegate: AnyObject {
     func betaAnnounceCellDidTapCloseButton(_ cell: BetaAnnounceCell)
@@ -23,7 +23,6 @@ import Reusable
 
 /// BetaAnnounceCell enables to show coming beta feature
 final class BetaAnnounceCell: UITableViewCell, Themable {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -32,13 +31,13 @@ final class BetaAnnounceCell: UITableViewCell, Themable {
     
     // MARK: - Properties
         
-    @IBOutlet private weak var cardBackgroundView: UIView!
-    @IBOutlet private weak var closeButton: CloseButton!
-    @IBOutlet private weak var badgeView: UIView!
-    @IBOutlet private weak var badgeLabel: UILabel!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var subtitleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var cardBackgroundView: UIView!
+    @IBOutlet private var closeButton: CloseButton!
+    @IBOutlet private var badgeView: UIView!
+    @IBOutlet private var badgeLabel: UILabel!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var subtitleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
     @objc weak var delegate: BetaAnnounceCellDelegate?
     
@@ -48,47 +47,47 @@ final class BetaAnnounceCell: UITableViewCell, Themable {
         super.awakeFromNib()
         // Initialization code
         
-        self.badgeLabel.text = VectorL10n.spaceBetaAnnounceBadge
-        self.titleLabel.text = VectorL10n.spaceBetaAnnounceTitle
-        self.subtitleLabel.text = VectorL10n.spaceBetaAnnounceSubtitle
-        self.informationLabel.text = VectorL10n.spaceBetaAnnounceInformation
+        badgeLabel.text = VectorL10n.spaceBetaAnnounceBadge
+        titleLabel.text = VectorL10n.spaceBetaAnnounceTitle
+        subtitleLabel.text = VectorL10n.spaceBetaAnnounceSubtitle
+        informationLabel.text = VectorL10n.spaceBetaAnnounceInformation
                 
-        self.badgeView.layer.masksToBounds = true
-        self.cardBackgroundView.layer.masksToBounds = true
+        badgeView.layer.masksToBounds = true
+        cardBackgroundView.layer.masksToBounds = true
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.cardBackgroundView.layer.cornerRadius = Constants.cardBackgroundViewCornersRadius
-        self.badgeView.layer.cornerRadius = self.badgeView.frame.height/2
+        cardBackgroundView.layer.cornerRadius = Constants.cardBackgroundViewCornersRadius
+        badgeView.layer.cornerRadius = badgeView.frame.height / 2
     }
         
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.closeButton.update(theme: theme)
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.subtitleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textSecondaryColor
-        self.cardBackgroundView.backgroundColor = theme.baseColor
-        self.contentView.backgroundColor = theme.backgroundColor
+        closeButton.update(theme: theme)
+        titleLabel.textColor = theme.textPrimaryColor
+        subtitleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textSecondaryColor
+        cardBackgroundView.backgroundColor = theme.baseColor
+        contentView.backgroundColor = theme.backgroundColor
     }
     
     // MARK: - Actions
     
     @IBAction private func closeButtonAction(_ sender: Any) {
-        self.delegate?.betaAnnounceCellDidTapCloseButton(self)
+        delegate?.betaAnnounceCellDidTapCloseButton(self)
     }
 }
 
 // Copy paste from NibReusable in order to expose these methods to ObjC
 extension BetaAnnounceCell {
     @objc static var reuseIdentifier: String {
-      return String(describing: self)
+        String(describing: self)
     }
     
     @objc static var nib: UINib {
-      return UINib(nibName: String(describing: self), bundle: Bundle(for: self))
+        UINib(nibName: String(describing: self), bundle: Bundle(for: self))
     }
 }

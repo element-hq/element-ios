@@ -19,7 +19,6 @@
 import Foundation
 
 final class KeyVerificationSelfVerifyStartViewModel: KeyVerificationSelfVerifyStartViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -31,7 +30,7 @@ final class KeyVerificationSelfVerifyStartViewModel: KeyVerificationSelfVerifySt
     
     private var keyVerificationRequest: MXKeyVerificationRequest?
     
-    // MARK: Public    
+    // MARK: Public
 
     weak var viewDelegate: KeyVerificationSelfVerifyStartViewModelViewDelegate?
     weak var coordinatorDelegate: KeyVerificationSelfVerifyStartViewModelCoordinatorDelegate?
@@ -40,9 +39,9 @@ final class KeyVerificationSelfVerifyStartViewModel: KeyVerificationSelfVerifySt
     
     init(session: MXSession, otherDeviceId: String) {
         self.session = session
-        self.verificationManager = session.crypto.keyVerificationManager
+        verificationManager = session.crypto.keyVerificationManager
         self.otherDeviceId = otherDeviceId
-        self.keyVerificationService = KeyVerificationService()
+        keyVerificationService = KeyVerificationService()
     }
     
     // MARK: - Public
@@ -50,25 +49,25 @@ final class KeyVerificationSelfVerifyStartViewModel: KeyVerificationSelfVerifySt
     func process(viewAction: KeyVerificationSelfVerifyStartViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .startVerification:
-            self.startVerification()
+            startVerification()
         case .cancel:
-            self.cancelKeyVerificationRequest()
-            self.coordinatorDelegate?.keyVerificationSelfVerifyStartViewModelDidCancel(self)
+            cancelKeyVerificationRequest()
+            coordinatorDelegate?.keyVerificationSelfVerifyStartViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        self.startVerification()
+        startVerification()
     }
     
     private func startVerification() {
-        self.update(viewState: .verificationPending)
+        update(viewState: .verificationPending)
         
-        self.verificationManager.requestVerificationByToDevice(withUserId: session.myUser.userId, deviceIds: [otherDeviceId], methods: self.keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
+        verificationManager.requestVerificationByToDevice(withUserId: session.myUser.userId, deviceIds: [otherDeviceId], methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] keyVerificationRequest in
             guard let self = self else {
                 return
             }
@@ -76,17 +75,17 @@ final class KeyVerificationSelfVerifyStartViewModel: KeyVerificationSelfVerifySt
             self.keyVerificationRequest = keyVerificationRequest
             self.update(viewState: .loaded)
             self.registerKeyVerificationRequestDidChangeNotification(for: keyVerificationRequest)
-            }, failure: { [weak self]  error in
-                self?.update(viewState: .error(error))
+        }, failure: { [weak self] error in
+            self?.update(viewState: .error(error))
         })
     }
     
     private func update(viewState: KeyVerificationSelfVerifyStartViewState) {
-        self.viewDelegate?.keyVerificationSelfVerifyStartViewModel(self, didUpdateViewState: viewState)
-    }        
+        viewDelegate?.keyVerificationSelfVerifyStartViewModel(self, didUpdateViewState: viewState)
+    }
     
     private func cancelKeyVerificationRequest() {
-        guard let keyVerificationRequest = self.keyVerificationRequest  else {
+        guard let keyVerificationRequest = keyVerificationRequest else {
             return
         }
         
@@ -114,26 +113,26 @@ final class KeyVerificationSelfVerifyStartViewModel: KeyVerificationSelfVerifySt
         
         switch keyVerificationRequest.state {
         case MXKeyVerificationRequestStateAccepted:
-            self.unregisterKeyVerificationRequestDidChangeNotification()
-            self.coordinatorDelegate?.keyVerificationSelfVerifyStartViewModel(self, otherDidAcceptRequest: currentKeyVerificationRequest)
+            unregisterKeyVerificationRequestDidChangeNotification()
+            coordinatorDelegate?.keyVerificationSelfVerifyStartViewModel(self, otherDidAcceptRequest: currentKeyVerificationRequest)
         case MXKeyVerificationRequestStateReady:
-            self.unregisterKeyVerificationRequestDidChangeNotification()
-            self.coordinatorDelegate?.keyVerificationSelfVerifyStartViewModel(self, otherDidAcceptRequest: currentKeyVerificationRequest)
+            unregisterKeyVerificationRequestDidChangeNotification()
+            coordinatorDelegate?.keyVerificationSelfVerifyStartViewModel(self, otherDidAcceptRequest: currentKeyVerificationRequest)
         case MXKeyVerificationRequestStateCancelled:
             guard let reason = keyVerificationRequest.reasonCancelCode else {
                 return
             }
-            self.unregisterKeyVerificationRequestDidChangeNotification()
-            self.update(viewState: .cancelled(reason))
+            unregisterKeyVerificationRequestDidChangeNotification()
+            update(viewState: .cancelled(reason))
         case MXKeyVerificationRequestStateCancelledByMe:
             guard let reason = keyVerificationRequest.reasonCancelCode else {
                 return
             }
-            self.unregisterKeyVerificationRequestDidChangeNotification()
-            self.update(viewState: .cancelledByMe(reason))
+            unregisterKeyVerificationRequestDidChangeNotification()
+            update(viewState: .cancelledByMe(reason))
         case MXKeyVerificationRequestStateExpired:
-            self.unregisterKeyVerificationRequestDidChangeNotification()
-            self.update(viewState: .error(UserVerificationStartViewModelError.keyVerificationRequestExpired))
+            unregisterKeyVerificationRequestDidChangeNotification()
+            update(viewState: .error(UserVerificationStartViewModelError.keyVerificationRequestExpired))
         default:
             break
         }

@@ -17,7 +17,6 @@
 import Foundation
 
 final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -31,7 +30,7 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
     var recoveryKey: String?
     
     var isFormValid: Bool {
-        return self.recoveryKey?.isEmpty == false
+        self.recoveryKey?.isEmpty == false
     }
     
     weak var viewDelegate: SecretsRecoveryWithKeyViewModelViewDelegate?
@@ -49,35 +48,35 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
     func process(viewAction: SecretsRecoveryWithKeyViewAction) {
         switch viewAction {
         case .recover:
-            self.recover()
+            recover()
         case .resetSecrets:
-            self.coordinatorDelegate?.secretsRecoveryWithKeyViewModelWantsToResetSecrets(self)
+            coordinatorDelegate?.secretsRecoveryWithKeyViewModelWantsToResetSecrets(self)
         case .cancel:
-            self.coordinatorDelegate?.secretsRecoveryWithKeyViewModelDidCancel(self)
+            coordinatorDelegate?.secretsRecoveryWithKeyViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func recover() {
-        guard let recoveryKey = self.recoveryKey else {
+        guard let recoveryKey = recoveryKey else {
             return
         }
         
-        self.update(viewState: .loading)
+        update(viewState: .loading)
         
         do {
             let secretIds: [String]?
             
-            if case SecretsRecoveryGoal.keyBackup = self.recoveryGoal {
+            if case SecretsRecoveryGoal.keyBackup = recoveryGoal {
                 secretIds = [MXSecretId.keyBackup.takeUnretainedValue() as String]
             } else {
                 secretIds = nil
             }
             
-            let privateKey = try self.recoveryService.privateKey(fromRecoveryKey: recoveryKey)
+            let privateKey = try recoveryService.privateKey(fromRecoveryKey: recoveryKey)
             
-            self.recoveryService.recoverSecrets(secretIds, withPrivateKey: privateKey, recoverServices: true, success: { [weak self] _ in
+            recoveryService.recoverSecrets(secretIds, withPrivateKey: privateKey, recoverServices: true, success: { [weak self] _ in
                 guard let self = self else {
                     return
                 }
@@ -90,11 +89,11 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
                 self.update(viewState: .error(error))
             })
         } catch {
-            self.update(viewState: .error(error))
-        }            
+            update(viewState: .error(error))
+        }
     }
     
     private func update(viewState: SecretsRecoveryWithKeyViewState) {
-        self.viewDelegate?.secretsRecoveryWithKeyViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.secretsRecoveryWithKeyViewModel(self, didUpdateViewState: viewState)
     }
 }

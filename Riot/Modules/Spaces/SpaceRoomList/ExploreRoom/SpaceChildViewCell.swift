@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +14,20 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 class SpaceChildViewCell: UITableViewCell, Themable, NibReusable {
-
     // MARK: - Properties
     
-    @IBOutlet internal weak var avatarView: AvatarView!
-    @IBOutlet internal weak var titleLabel: UILabel!
-    @IBOutlet internal weak var titleLabelTrailingMargin: NSLayoutConstraint!
-    @IBOutlet internal weak var selectionView: UIView!
-    @IBOutlet internal weak var userIconView: UIImageView!
-    @IBOutlet internal weak var membersLabel: UILabel!
-    @IBOutlet internal weak var topicLabel: UILabel!
-    @IBOutlet internal weak var suggestedLabel: UILabel!
+    @IBOutlet internal var avatarView: AvatarView!
+    @IBOutlet internal var titleLabel: UILabel!
+    @IBOutlet internal var titleLabelTrailingMargin: NSLayoutConstraint!
+    @IBOutlet internal var selectionView: UIView!
+    @IBOutlet internal var userIconView: UIImageView!
+    @IBOutlet internal var membersLabel: UILabel!
+    @IBOutlet internal var topicLabel: UILabel!
+    @IBOutlet internal var suggestedLabel: UILabel!
 
     // MARK: - Private
     
@@ -40,9 +39,9 @@ class SpaceChildViewCell: UITableViewCell, Themable, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        self.selectionView.layer.cornerRadius = 8.0
-        self.selectionView.layer.masksToBounds = true
-        self.titleLabelDefaultTrailingMargin = self.titleLabelTrailingMargin.constant
+        selectionView.layer.cornerRadius = 8.0
+        selectionView.layer.masksToBounds = true
+        titleLabelDefaultTrailingMargin = titleLabelTrailingMargin.constant
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -56,28 +55,28 @@ class SpaceChildViewCell: UITableViewCell, Themable, NibReusable {
     // MARK: - Public
     
     func fill(with viewData: SpaceExploreRoomListItemViewData) {
-        self.avatarView.fill(with: viewData.avatarViewData)
-        self.titleLabel.text = viewData.childInfo.name ?? viewData.childInfo.canonicalAlias
-        self.membersLabel.text = "\(viewData.childInfo.activeMemberCount)"
-        self.topicLabel.text = viewData.childInfo.topic
-        self.suggestedLabel.text = viewData.childInfo.suggested ? VectorL10n.spacesSuggestedRoom : nil
-        self.titleLabelTrailingMargin.constant = viewData.childInfo.suggested ? self.titleLabelDefaultTrailingMargin : 0
-        self.titleLabel.layoutIfNeeded()
+        avatarView.fill(with: viewData.avatarViewData)
+        titleLabel.text = viewData.childInfo.name ?? viewData.childInfo.canonicalAlias
+        membersLabel.text = "\(viewData.childInfo.activeMemberCount)"
+        topicLabel.text = viewData.childInfo.topic
+        suggestedLabel.text = viewData.childInfo.suggested ? VectorL10n.spacesSuggestedRoom : nil
+        titleLabelTrailingMargin.constant = viewData.childInfo.suggested ? titleLabelDefaultTrailingMargin : 0
+        titleLabel.layoutIfNeeded()
     }
     
     func update(theme: Theme) {
         self.theme = theme
-        self.backgroundColor = theme.colors.background
-        self.avatarView.update(theme: theme)
-        self.titleLabel.textColor = theme.colors.primaryContent
-        self.titleLabel.font = theme.fonts.calloutSB
-        self.selectionView.backgroundColor = theme.colors.separator
-        self.membersLabel.font = theme.fonts.caption1
-        self.membersLabel.textColor = theme.colors.tertiaryContent
-        self.topicLabel.font = theme.fonts.caption1
-        self.topicLabel.textColor = theme.colors.tertiaryContent
-        self.userIconView.tintColor = theme.colors.tertiaryContent
-        self.suggestedLabel.font = theme.fonts.caption2
-        self.suggestedLabel.textColor = theme.colors.tertiaryContent
+        backgroundColor = theme.colors.background
+        avatarView.update(theme: theme)
+        titleLabel.textColor = theme.colors.primaryContent
+        titleLabel.font = theme.fonts.calloutSB
+        selectionView.backgroundColor = theme.colors.separator
+        membersLabel.font = theme.fonts.caption1
+        membersLabel.textColor = theme.colors.tertiaryContent
+        topicLabel.font = theme.fonts.caption1
+        topicLabel.textColor = theme.colors.tertiaryContent
+        userIconView.tintColor = theme.colors.tertiaryContent
+        suggestedLabel.font = theme.fonts.caption2
+        suggestedLabel.textColor = theme.colors.tertiaryContent
     }
 }

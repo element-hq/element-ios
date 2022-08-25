@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,6 @@ import MatrixSDK
 @objcMembers
 /// URL validation result object
 class URLValidationResult: NSObject {
-
     /// Should confirm the tapped url
     let shouldShowConfirmationAlert: Bool
     /// User visible string the user tapped
@@ -39,7 +38,6 @@ class URLValidationResult: NSObject {
 
 @objcMembers
 class URLValidator: NSObject {
-
     /// Validated tapped url in the given event
     /// - Parameters:
     ///   - url: User tapped URL
@@ -72,5 +70,4 @@ class URLValidator: NSObject {
         
         return .passed
     }
-
 }

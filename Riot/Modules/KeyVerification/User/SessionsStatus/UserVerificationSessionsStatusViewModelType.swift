@@ -29,7 +29,6 @@ protocol UserVerificationSessionsStatusViewModelCoordinatorDelegate: AnyObject {
 
 /// Protocol describing the view model used by `UserVerificationSessionsStatusViewController`
 protocol UserVerificationSessionsStatusViewModelType {
-            
     var viewDelegate: UserVerificationSessionsStatusViewModelViewDelegate? { get set }
     var coordinatorDelegate: UserVerificationSessionsStatusViewModelCoordinatorDelegate? { get set }
     

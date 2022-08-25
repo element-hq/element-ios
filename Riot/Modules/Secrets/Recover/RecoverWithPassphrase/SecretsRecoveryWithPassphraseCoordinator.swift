@@ -17,7 +17,6 @@
 import Foundation
 
 final class SecretsRecoveryWithPassphraseCoordinator: SecretsRecoveryWithPassphraseCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -45,30 +44,31 @@ final class SecretsRecoveryWithPassphraseCoordinator: SecretsRecoveryWithPassphr
     // MARK: - Public
     
     func start() {
-        self.secretsRecoveryWithPassphraseViewModel.coordinatorDelegate = self
+        secretsRecoveryWithPassphraseViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.secretsRecoveryWithPassphraseViewController
-            .vc_setModalFullScreen(!self.cancellable)
+        secretsRecoveryWithPassphraseViewController
+            .vc_setModalFullScreen(!cancellable)
     }
 }
 
 // MARK: - SecretsRecoveryWithPassphraseViewModelCoordinatorDelegate
+
 extension SecretsRecoveryWithPassphraseCoordinator: SecretsRecoveryWithPassphraseViewModelCoordinatorDelegate {
     func secretsRecoveryWithPassphraseViewModelWantsToRecoverByKey(_ viewModel: SecretsRecoveryWithPassphraseViewModelType) {
-        self.delegate?.secretsRecoveryWithPassphraseCoordinatorDoNotKnowPassphrase(self)
+        delegate?.secretsRecoveryWithPassphraseCoordinatorDoNotKnowPassphrase(self)
     }
     
     func secretsRecoveryWithPassphraseViewModelDidRecover(_ viewModel: SecretsRecoveryWithPassphraseViewModelType) {
-        self.delegate?.secretsRecoveryWithPassphraseCoordinatorDidRecover(self)
+        delegate?.secretsRecoveryWithPassphraseCoordinatorDidRecover(self)
     }
     
     func secretsRecoveryWithPassphraseViewModelDidCancel(_ viewModel: SecretsRecoveryWithPassphraseViewModelType) {
-        self.delegate?.secretsRecoveryWithPassphraseCoordinatorDidCancel(self)
+        delegate?.secretsRecoveryWithPassphraseCoordinatorDidCancel(self)
     }
     
     func secretsRecoveryWithPassphraseViewModelWantsToResetSecrets(_ viewModel: SecretsRecoveryWithPassphraseViewModelType) {
-        self.delegate?.secretsRecoveryWithPassphraseCoordinatorWantsToResetSecrets(self)
+        delegate?.secretsRecoveryWithPassphraseCoordinatorWantsToResetSecrets(self)
     }
 }

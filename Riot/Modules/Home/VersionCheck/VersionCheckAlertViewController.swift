@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 protocol VersionCheckAlertViewControllerDelegate: AnyObject {
     func alertViewControllerDidRequestDismissal(_ alertViewController: VersionCheckAlertViewController)
@@ -29,7 +29,6 @@ struct VersionCheckAlertViewControllerDetails {
 }
 
 class VersionCheckAlertViewController: UIViewController {
-    
     @IBOutlet private var alertContainerView: UIView!
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var subtitleLabel: UILabel!
@@ -67,7 +66,7 @@ class VersionCheckAlertViewController: UIViewController {
             return
         }
         
-        guard self.isViewLoaded else {
+        guard isViewLoaded else {
             self.details = details
             return
         }

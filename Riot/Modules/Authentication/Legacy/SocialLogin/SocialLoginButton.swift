@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +14,11 @@
 // limitations under the License.
 //
 
-import UIKit
 import AFNetworking
+import UIKit
 
 /// SocialLoginButton represents a button associated to a social login provider.
 final class SocialLoginButton: UIButton, Themable {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -44,6 +43,7 @@ final class SocialLoginButton: UIButton, Themable {
     var identifier: String? {
         viewData?.identityProvider.id
     }
+
     var identityProvider: SSOIdentityProvider? {
         viewData?.identityProvider
     }
@@ -52,21 +52,21 @@ final class SocialLoginButton: UIButton, Themable {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.commonInit()
+        commonInit()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        self.commonInit()
+        commonInit()
     }
     
     private func commonInit() {
-        self.clipsToBounds = true
-        self.layer.masksToBounds = true
-        self.layer.cornerRadius = Constants.cornerRadius
-        self.titleLabel?.font = UIFont.systemFont(ofSize: Constants.fontSize)
-        self.imageEdgeInsets.right = Constants.imageEdgeInsetRight
-        self.update(theme: ThemeService.shared().theme)
+        clipsToBounds = true
+        layer.masksToBounds = true
+        layer.cornerRadius = Constants.cornerRadius
+        titleLabel?.font = UIFont.systemFont(ofSize: Constants.fontSize)
+        imageEdgeInsets.right = Constants.imageEdgeInsetRight
+        update(theme: ThemeService.shared().theme)
     }
     
     // MARK: - Public
@@ -74,15 +74,15 @@ final class SocialLoginButton: UIButton, Themable {
     func fill(with viewData: SocialLoginButtonViewData) {
         self.viewData = viewData
         
-        self.setTitle(viewData.title, for: .normal)
+        setTitle(viewData.title, for: .normal)
         
-        self.updateWithCurrentTheme()
+        updateWithCurrentTheme()
     }
     
     // MARK: - Private
     
     private func updateButtonStyle(with theme: Theme) {
-        guard let viewData = self.viewData else {
+        guard let viewData = viewData else {
             return
         }
         
@@ -94,53 +94,52 @@ final class SocialLoginButton: UIButton, Themable {
             buttonStyle = viewData.defaultStyle
         }
         
-        self.update(with: buttonStyle)
+        update(with: buttonStyle)
     }
     
     private func update(with buttonStyle: SocialLoginButtonStyle) {
-        
         // Image
         if let sourceImage = buttonStyle.logo {
             switch sourceImage {
             case .local(let image):
-                self.setImage(image, for: .normal)
+                setImage(image, for: .normal)
             case .remote(let imageURL):
                 let urlRequest = URLRequest(url: imageURL)
-                self.setImageFor(.normal, with: urlRequest, placeholderImage: nil) { (urlRequest, httpURLResponse, image) in
+                setImageFor(.normal, with: urlRequest, placeholderImage: nil) { _, _, image in
                     let resizedImage = image.vc_resized(with: Constants.imageTargetSize)
                     self.setImage(resizedImage, for: .normal)
-                } failure: { (urlRequest, httpURLResponse, error) in
+                } failure: { _, _, _ in
                     self.setImage(nil, for: .normal)
                 }
             }
         } else {
-            self.setImage(nil, for: .normal)
+            setImage(nil, for: .normal)
         }
         
         // Background
         
-        self.vc_setBackgroundColor(buttonStyle.backgroundColor, for: .normal)
+        vc_setBackgroundColor(buttonStyle.backgroundColor, for: .normal)
         
-        self.layer.borderWidth = buttonStyle.borderColor != nil ? Constants.borderWidth : 0.0
-        self.layer.borderColor = buttonStyle.borderColor?.cgColor
+        layer.borderWidth = buttonStyle.borderColor != nil ? Constants.borderWidth : 0.0
+        layer.borderColor = buttonStyle.borderColor?.cgColor
         
         // Title
         
-        self.setTitleColor(buttonStyle.titleColor, for: .normal)
-        self.setTitleColor(buttonStyle.titleColor.withAlphaComponent(Constants.highlightedAlpha), for: .highlighted)
+        setTitleColor(buttonStyle.titleColor, for: .normal)
+        setTitleColor(buttonStyle.titleColor.withAlphaComponent(Constants.highlightedAlpha), for: .highlighted)
     }
     
     private func updateWithCurrentTheme() {
-        guard let theme = self.theme else {
+        guard let theme = theme else {
             return
         }
-        self.update(theme: theme)
+        update(theme: theme)
     }
     
     // MARK: - Themable
     
     func update(theme: Theme) {
         self.theme = theme
-        self.updateButtonStyle(with: theme)
+        updateButtonStyle(with: theme)
     }
 }

@@ -14,11 +14,10 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class RoomReactionViewCell: UICollectionViewCell, NibReusable, Themable {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -29,9 +28,9 @@ final class RoomReactionViewCell: UICollectionViewCell, NibReusable, Themable {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var reactionBackgroundView: UIView!
-    @IBOutlet private weak var emojiLabel: UILabel!
-    @IBOutlet private weak var countLabel: UILabel!
+    @IBOutlet private var reactionBackgroundView: UIView!
+    @IBOutlet private var emojiLabel: UILabel!
+    @IBOutlet private var countLabel: UILabel!
     
     // MARK: Private
     
@@ -39,7 +38,7 @@ final class RoomReactionViewCell: UICollectionViewCell, NibReusable, Themable {
     
     // MARK: Public
     
-    private var isReactionSelected: Bool = false
+    private var isReactionSelected = false
     
     // MARK: - Life cycle
     
@@ -47,13 +46,13 @@ final class RoomReactionViewCell: UICollectionViewCell, NibReusable, Themable {
         super.awakeFromNib()
         // Initialization code
         
-        self.reactionBackgroundView.layer.masksToBounds = true
+        reactionBackgroundView.layer.masksToBounds = true
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        self.reactionBackgroundView.layer.cornerRadius = self.reactionBackgroundView.frame.size.height/2.0
+        reactionBackgroundView.layer.cornerRadius = reactionBackgroundView.frame.size.height / 2.0
     }
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
@@ -63,7 +62,7 @@ final class RoomReactionViewCell: UICollectionViewCell, NibReusable, Themable {
          (42138227) — Workaround: Don't call the cell's setNeedsUpdateConstraints() method unless you need to support live constraint changes.
          If you need to support live constraint changes, call updateConstraintsIfNeeded() before calling systemLayoutSizeFitting(_:)."
          */
-        self.updateConstraintsIfNeeded()
+        updateConstraintsIfNeeded()
 
         return super.preferredLayoutAttributesFitting(layoutAttributes)
     }
@@ -71,37 +70,36 @@ final class RoomReactionViewCell: UICollectionViewCell, NibReusable, Themable {
     // MARK: - Public
     
     func fill(viewData: RoomReactionViewData) {
-        self.emojiLabel.text = viewData.emoji
-        self.countLabel.text = viewData.countString
-        self.isReactionSelected = viewData.isCurrentUserReacted
+        emojiLabel.text = viewData.emoji
+        countLabel.text = viewData.countString
+        isReactionSelected = viewData.isCurrentUserReacted
         
-        self.updateViews()
+        updateViews()
     }
     
     func update(theme: Theme) {
         self.theme = theme
-        self.reactionBackgroundView.layer.borderColor = theme.tintColor.cgColor
-        self.emojiLabel.textColor = theme.textPrimaryColor
-        self.countLabel.textColor = theme.textPrimaryColor
-        self.updateViews()
+        reactionBackgroundView.layer.borderColor = theme.tintColor.cgColor
+        emojiLabel.textColor = theme.textPrimaryColor
+        countLabel.textColor = theme.textPrimaryColor
+        updateViews()
     }
     
     // MARK: - Private
     
     private func updateViews() {
-        
         let reactionBackgroundColor: UIColor?
         let reactionBackgroundBorderWidth: CGFloat
         
-        if self.isReactionSelected {
-            reactionBackgroundColor = self.theme?.tintBackgroundColor
+        if isReactionSelected {
+            reactionBackgroundColor = theme?.tintBackgroundColor
             reactionBackgroundBorderWidth = Constants.selectedBorderWidth
         } else {
-            reactionBackgroundColor = self.theme?.headerBackgroundColor
+            reactionBackgroundColor = theme?.headerBackgroundColor
             reactionBackgroundBorderWidth = 0.0
         }
         
-        self.reactionBackgroundView.layer.borderWidth = reactionBackgroundBorderWidth
-        self.reactionBackgroundView.backgroundColor = reactionBackgroundColor
+        reactionBackgroundView.layer.borderWidth = reactionBackgroundBorderWidth
+        reactionBackgroundView.backgroundColor = reactionBackgroundColor
     }
 }

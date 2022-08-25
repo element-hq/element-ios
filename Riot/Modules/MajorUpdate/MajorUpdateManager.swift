@@ -18,8 +18,7 @@ import Foundation
 
 /// `MajorUpdateManager` is used to indicate if a major update alert should be displayed.
 @objcMembers
-final public class MajorUpdateManager: NSObject {
-    
+public final class MajorUpdateManager: NSObject {
     // MARK: - Constants
     
     private enum Constants {

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,6 @@ protocol UserSessionProtocol {
 /// Note: UserSessionProtocol can be renamed UserSession and UserSession -> MatrixUserSession if we keep this abstraction.
 @objcMembers
 class UserSession: NSObject, UserSessionProtocol {
-        
     // MARK: - Properties
     
     // MARK: Public
@@ -47,7 +46,7 @@ class UserSession: NSObject, UserSessionProtocol {
         self.account = account
         self.matrixSession = matrixSession
         self.userId = userId
-        self.userProperties = UserSessionProperties(userId: userId)
+        userProperties = UserSessionProperties(userId: userId)
         super.init()
     }
 }

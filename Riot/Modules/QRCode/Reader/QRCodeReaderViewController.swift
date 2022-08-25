@@ -25,25 +25,24 @@ protocol QRCodeReaderViewControllerDelegate: AnyObject {
 /// QRCodeReaderViewController is a view controller used to scan a QR code
 /// Some methods are based on [ZXing sample](https://github.com/zxingify/zxingify-objc/blob/master/examples/BarcodeScannerSwift/BarcodeScannerSwift/ViewController.swift)
 final class QRCodeReaderViewController: UIViewController {
-    
     // MARK: - Constants
     
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var closeButton: CloseButton!
-    @IBOutlet private weak var codeReaderContainerView: UIView!
+    @IBOutlet private var closeButton: CloseButton!
+    @IBOutlet private var codeReaderContainerView: UIView!
     
     // MARK: Private
     
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     
-    private lazy var zxCapture: ZXCapture = ZXCapture()
+    private lazy var zxCapture = ZXCapture()
     private var captureSizeTransform: CGAffineTransform?
-    private var isScanning: Bool = false
-    private var isFirstApplyOrientation: Bool = false
+    private var isScanning = false
+    private var isFirstApplyOrientation = false
     
     // MARK: Public
     
@@ -69,27 +68,27 @@ final class QRCodeReaderViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.startScanning()
+        startScanning()
     }
     
     override public func viewWillDisappear(_ animated: Bool) {
-        self.stopScanning()
+        stopScanning()
         
         super.viewWillDisappear(animated)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        self.theme.statusBarStyle
     }
     
     override func viewDidLayoutSubviews() {
@@ -106,9 +105,9 @@ final class QRCodeReaderViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
-        coordinator.animate(alongsideTransition: { (context) in
+        coordinator.animate(alongsideTransition: { _ in
             // do nothing
-        }, completion: { [weak self] (context) in
+        }, completion: { [weak self] _ in
             guard let self = self else {
                 return
             }
@@ -119,12 +118,12 @@ final class QRCodeReaderViewController: UIViewController {
     // MARK: - Public
     
     func startScanning() {
-        self.zxCapture.start()
+        zxCapture.start()
         isScanning = true
     }
     
     func stopScanning() {
-        self.zxCapture.stop()
+        zxCapture.stop()
         isScanning = false
     }
     
@@ -133,7 +132,7 @@ final class QRCodeReaderViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.closeButton.update(theme: theme)
+        closeButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -141,11 +140,11 @@ final class QRCodeReaderViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.setupQRCodeReaderView()
+        setupQRCodeReaderView()
     }
     
     private func setupQRCodeReaderView() {
@@ -157,7 +156,6 @@ final class QRCodeReaderViewController: UIViewController {
     }
     
     private func applyOrientation() {
-        
         let orientation = UIApplication.shared.statusBarOrientation
         let captureRotation: Double
         let scanRectRotation: Double
@@ -192,8 +190,8 @@ final class QRCodeReaderViewController: UIViewController {
     
     private func applyRectOfInterest(orientation: UIInterfaceOrientation) {
         guard var transformedVideoRect = codeReaderContainerView?.frame,
-            let cameraSessionPreset = zxCapture.sessionPreset
-            else { return }
+              let cameraSessionPreset = zxCapture.sessionPreset
+        else { return }
         
         var scaleVideoX, scaleVideoY: CGFloat
         var videoHeight, videoWidth: CGFloat
@@ -208,24 +206,24 @@ final class QRCodeReaderViewController: UIViewController {
         }
         
         if orientation == UIInterfaceOrientation.portrait {
-            scaleVideoX = self.view.frame.width / videoHeight
-            scaleVideoY = self.view.frame.height / videoWidth
+            scaleVideoX = view.frame.width / videoHeight
+            scaleVideoY = view.frame.height / videoWidth
             
             // Convert CGPoint under portrait mode to map with orientation of image
             // because the image will be cropped before rotate
             // reference: https://github.com/TheLevelUp/ZXingObjC/issues/222
             let realX = transformedVideoRect.origin.y
-            let realY = self.view.frame.size.width - transformedVideoRect.size.width - transformedVideoRect.origin.x
+            let realY = view.frame.size.width - transformedVideoRect.size.width - transformedVideoRect.origin.x
             let realWidth = transformedVideoRect.size.height
             let realHeight = transformedVideoRect.size.width
             transformedVideoRect = CGRect(x: realX, y: realY, width: realWidth, height: realHeight)
             
         } else {
-            scaleVideoX = self.view.frame.width / videoWidth
-            scaleVideoY = self.view.frame.height / videoHeight
+            scaleVideoX = view.frame.width / videoWidth
+            scaleVideoY = view.frame.height / videoHeight
         }
         
-        captureSizeTransform = CGAffineTransform(scaleX: 1.0/scaleVideoX, y: 1.0/scaleVideoY)
+        captureSizeTransform = CGAffineTransform(scaleX: 1.0 / scaleVideoX, y: 1.0 / scaleVideoY)
         
         guard let _captureSizeTransform = captureSizeTransform else {
             return
@@ -238,13 +236,13 @@ final class QRCodeReaderViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction private func closeButtonAction(_ sender: Any) {
-        self.delegate?.qrCodeReaderViewControllerDidCancel(self)
+        delegate?.qrCodeReaderViewControllerDidCancel(self)
     }
 }
 
 // MARK: - ZXCaptureDelegate
+
 extension QRCodeReaderViewController: ZXCaptureDelegate {
-    
     func captureCameraIsReady(_ capture: ZXCapture!) {
         isScanning = true
     }
@@ -258,14 +256,13 @@ extension QRCodeReaderViewController: ZXCaptureDelegate {
             return
         }
         
-        self.stopScanning()
+        stopScanning()
         
         if let bytes = result.resultMetadata.object(forKey: kResultMetadataTypeByteSegments.rawValue) as? NSArray,
-            let byteArray = bytes.firstObject as? ZXByteArray {
-            
+           let byteArray = bytes.firstObject as? ZXByteArray {
             let data = Data(bytes: UnsafeRawPointer(byteArray.array), count: Int(byteArray.length))
             
-            self.delegate?.qrCodeReaderViewController(self, didFound: data)
+            delegate?.qrCodeReaderViewController(self, didFound: data)
         }
     }
 }

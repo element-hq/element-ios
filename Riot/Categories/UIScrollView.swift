@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 extension UIScrollView {
-    
     /// Scroll to the given view, which must be a view in the scrollView.
     /// - Parameters:
     ///   - view: The view to scroll
@@ -43,5 +42,4 @@ extension UIScrollView {
             setContentOffset(bottomOffset, animated: animated)
         }
     }
-    
 }

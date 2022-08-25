@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// SideMenuPresentable absract a side menu presenter
 protocol SideMenuPresentable {
-    
     /// Show side menu
     func show(from presentable: Presentable, animated: Bool, completion: (() -> Void)?)
     
@@ -33,13 +32,13 @@ protocol SideMenuPresentable {
 }
 
 // MARK: Default implementation
+
 extension SideMenuPresentable {
-    
     func show(from presentable: Presentable, animated: Bool) {
-        return self.show(from: presentable, animated: animated, completion: nil)
+        show(from: presentable, animated: animated, completion: nil)
     }
     
     func dismiss(animated: Bool) {
-        return self.dismiss(animated: animated, completion: nil)
+        dismiss(animated: animated, completion: nil)
     }
 }

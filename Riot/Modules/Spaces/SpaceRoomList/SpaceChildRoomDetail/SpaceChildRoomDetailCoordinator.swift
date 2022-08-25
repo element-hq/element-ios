@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class SpaceChildRoomDetailCoordinator: SpaceChildRoomDetailCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -46,26 +45,27 @@ final class SpaceChildRoomDetailCoordinator: SpaceChildRoomDetailCoordinatorType
     
     // MARK: - Public methods
     
-    func start() {            
-        self.spaceChildRoomDetailViewModel.coordinatorDelegate = self
+    func start() {
+        spaceChildRoomDetailViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.spaceChildRoomDetailViewController
+        spaceChildRoomDetailViewController
     }
     
     func toSlidingPresentable() -> UIViewController & SlidingModalPresentable {
-        return self.spaceChildRoomDetailViewController
+        spaceChildRoomDetailViewController
     }
 }
 
 // MARK: - SpaceChildRoomDetailViewModelCoordinatorDelegate
+
 extension SpaceChildRoomDetailCoordinator: SpaceChildRoomDetailViewModelCoordinatorDelegate {
     func spaceChildRoomDetailViewModel(_ viewModel: SpaceChildRoomDetailViewModelType, didOpenRoomWith roomId: String) {
-        self.delegate?.spaceChildRoomDetailCoordinator(self, didOpenRoomWith: roomId)
+        delegate?.spaceChildRoomDetailCoordinator(self, didOpenRoomWith: roomId)
     }
     
     func spaceChildRoomDetailViewModelDidCancel(_ viewModel: SpaceChildRoomDetailViewModelType) {
-        self.delegate?.spaceChildRoomDetailCoordinatorDidCancel(self)
+        delegate?.spaceChildRoomDetailCoordinatorDidCancel(self)
     }
 }

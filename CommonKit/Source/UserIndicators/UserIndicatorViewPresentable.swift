@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,4 +23,3 @@ public protocol UserIndicatorViewPresentable {
     /// Called when the `UserIndicator` is manually cancelled or completed
     func dismiss()
 }
-

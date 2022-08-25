@@ -24,7 +24,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class ReactionHistoryCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -37,7 +36,7 @@ final class ReactionHistoryCoordinatorBridgePresenter: NSObject {
     // MARK: Public
     
     var isPresenting: Bool {
-        return self.coordinator != nil
+        self.coordinator != nil
     }
     
     weak var delegate: ReactionHistoryCoordinatorBridgePresenterDelegate?
@@ -54,8 +53,7 @@ final class ReactionHistoryCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
-        
-        let reactionHistoryCoordinator = ReactionHistoryCoordinator(session: self.session, roomId: self.roomId, eventId: self.eventId)
+        let reactionHistoryCoordinator = ReactionHistoryCoordinator(session: session, roomId: roomId, eventId: eventId)
         reactionHistoryCoordinator.delegate = self
         
         let coordinatorPresentable = reactionHistoryCoordinator.toPresentable()
@@ -65,11 +63,11 @@ final class ReactionHistoryCoordinatorBridgePresenter: NSObject {
         
         reactionHistoryCoordinator.start()
         
-        self.coordinator = reactionHistoryCoordinator
+        coordinator = reactionHistoryCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -83,18 +81,17 @@ final class ReactionHistoryCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - ReactionHistoryCoordinatorDelegate
+
 extension ReactionHistoryCoordinatorBridgePresenter: ReactionHistoryCoordinatorDelegate {
     func reactionHistoryCoordinatorDidClose(_ coordinator: ReactionHistoryCoordinatorType) {
-        self.delegate?.reactionHistoryCoordinatorBridgePresenterDelegateDidClose(self)
+        delegate?.reactionHistoryCoordinatorBridgePresenterDelegateDidClose(self)
     }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
 extension ReactionHistoryCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.reactionHistoryCoordinatorBridgePresenterDelegateDidClose(self)
+        delegate?.reactionHistoryCoordinatorBridgePresenterDelegateDidClose(self)
     }
-    
 }

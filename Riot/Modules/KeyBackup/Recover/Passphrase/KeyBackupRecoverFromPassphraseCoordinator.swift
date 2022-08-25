@@ -17,7 +17,6 @@
 import Foundation
 
 final class KeyBackupRecoverFromPassphraseCoordinator: KeyBackupRecoverFromPassphraseCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -48,25 +47,26 @@ final class KeyBackupRecoverFromPassphraseCoordinator: KeyBackupRecoverFromPassp
     // MARK: - Public
     
     func start() {
-        self.keyBackupRecoverFromPassphraseViewModel.coordinatorDelegate = self
+        keyBackupRecoverFromPassphraseViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.keyBackupRecoverFromPassphraseViewController
+        keyBackupRecoverFromPassphraseViewController
     }
 }
 
 // MARK: - KeyBackupRecoverFromPassphraseViewModelCoordinatorDelegate
+
 extension KeyBackupRecoverFromPassphraseCoordinator: KeyBackupRecoverFromPassphraseViewModelCoordinatorDelegate {
     func keyBackupRecoverFromPassphraseViewModelDoNotKnowPassphrase(_ viewModel: KeyBackupRecoverFromPassphraseViewModelType) {
-        self.delegate?.keyBackupRecoverFromPassphraseCoordinatorDoNotKnowPassphrase(self)
+        delegate?.keyBackupRecoverFromPassphraseCoordinatorDoNotKnowPassphrase(self)
     }
     
     func keyBackupRecoverFromPassphraseViewModelDidRecover(_ viewModel: KeyBackupRecoverFromPassphraseViewModelType) {
-        self.delegate?.keyBackupRecoverFromPassphraseCoordinatorDidRecover(self)
+        delegate?.keyBackupRecoverFromPassphraseCoordinatorDidRecover(self)
     }
     
     func keyBackupRecoverFromPassphraseViewModelDidCancel(_ viewModel: KeyBackupRecoverFromPassphraseViewModelType) {
-        self.delegate?.keyBackupRecoverFromPassphraseCoordinatorDidCancel(self)
-    }        
+        delegate?.keyBackupRecoverFromPassphraseCoordinatorDidCancel(self)
+    }
 }

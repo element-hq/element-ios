@@ -38,7 +38,6 @@ enum RoomInfoListTarget: Equatable {
             return nil
         }
     }
-    
 }
 
 /// RoomInfoListViewController view actions exposed to view model

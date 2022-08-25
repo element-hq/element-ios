@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 @objc protocol FindYourContactsFooterViewDelegate {
     func contactsFooterViewDidRequestFindContacts(_ footerView: FindYourContactsFooterView)
@@ -23,7 +23,6 @@ import Reusable
 
 @objcMembers
 class FindYourContactsFooterView: UIView, NibLoadable, Themable {
-    
     // MARK: - Properties
     
     weak var delegate: FindYourContactsFooterViewDelegate?
@@ -34,11 +33,11 @@ class FindYourContactsFooterView: UIView, NibLoadable, Themable {
         set { button.isEnabled = newValue }
     }
     
-    @IBOutlet weak private var containerView: UIView!
-    @IBOutlet weak private var titleLabel: UILabel!
-    @IBOutlet weak private var messageLabel: UILabel!
-    @IBOutlet weak private var button: CustomRoundedButton!
-    @IBOutlet weak private var footerLabel: UILabel!
+    @IBOutlet private var containerView: UIView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var messageLabel: UILabel!
+    @IBOutlet private var button: CustomRoundedButton!
+    @IBOutlet private var footerLabel: UILabel!
     
     // MARK: - Setup
     

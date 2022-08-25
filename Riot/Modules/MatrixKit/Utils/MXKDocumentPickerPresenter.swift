@@ -14,8 +14,8 @@
  limitations under the License.
  */
 
-import UIKit
 import MobileCoreServices
+import UIKit
 
 @objc public protocol MXKDocumentPickerPresenterDelegate {
     func documentPickerPresenter(_ presenter: MXKDocumentPickerPresenter, didPickDocumentsAt url: URL)
@@ -28,7 +28,6 @@ import MobileCoreServices
 /// (see https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451)
 @objcMembers
 public class MXKDocumentPickerPresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -40,7 +39,7 @@ public class MXKDocumentPickerPresenter: NSObject {
     public weak var delegate: MXKDocumentPickerPresenterDelegate?
     
     public var isPresenting: Bool {
-        return self.presentingViewController?.parent != nil
+        presentingViewController?.parent != nil
     }
     
     // MARK: - Public
@@ -53,29 +52,29 @@ public class MXKDocumentPickerPresenter: NSObject {
     ///   - animated: Indicate true to animate.
     ///   - completion: Animation completion.
     public func presentDocumentPicker(with allowedUTIs: [MXKUTI], from viewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
-        let documentTypes = allowedUTIs.map { return $0.rawValue }
+        let documentTypes = allowedUTIs.map(\.rawValue)
         let documentPicker = UIDocumentPickerViewController(documentTypes: documentTypes, in: .import)
         documentPicker.delegate = self
         viewController.present(documentPicker, animated: animated, completion: completion)
-        self.presentingViewController = viewController
+        presentingViewController = viewController
     }
 }
 
-// MARK - UIDocumentPickerDelegate
+// MARK: - UIDocumentPickerDelegate
+
 extension MXKDocumentPickerPresenter: UIDocumentPickerDelegate {
-    
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first else {
             return
         }
-        self.delegate?.documentPickerPresenter(self, didPickDocumentsAt: url)
+        delegate?.documentPickerPresenter(self, didPickDocumentsAt: url)
     }
     
     public func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        self.delegate?.documentPickerPresenterWasCancelled(self)
+        delegate?.documentPickerPresenterWasCancelled(self)
     }
     
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        self.delegate?.documentPickerPresenter(self, didPickDocumentsAt: url)
+        delegate?.documentPickerPresenter(self, didPickDocumentsAt: url)
     }
 }

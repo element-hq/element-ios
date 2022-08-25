@@ -19,7 +19,6 @@
 import Foundation
 
 final class ThreadListViewModel: ThreadListViewModelProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -41,7 +40,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     
     private(set) var viewState: ThreadListViewState = .idle {
         didSet {
-            self.viewDelegate?.threadListViewModel(self, didUpdateViewState: viewState)
+            viewDelegate?.threadListViewModel(self, didUpdateViewState: viewState)
         }
     }
     
@@ -89,7 +88,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     }
     
     var numberOfThreads: Int {
-        return threads.count
+        threads.count
     }
     
     func threadModel(at index: Int) -> ThreadModel? {
@@ -231,7 +230,6 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     }
     
     private func loadData(showLoading: Bool = true) {
-
         if showLoading {
             viewState = .loading
         }
@@ -268,7 +266,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         guard let eventFormatter = session.roomSummaryUpdateDelegate as? MXKEventFormatter,
               let room = session.room(withRoomId: roomId) else {
             //  go into loaded state
-            self.viewState = .loaded
+            viewState = .loaded
             
             return
         }
@@ -332,14 +330,12 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     }
     
     private func cancelOperations() {
-        self.currentOperation?.cancel()
+        currentOperation?.cancel()
     }
 }
 
 extension ThreadListViewModel: MXThreadingServiceDelegate {
-    
     func threadingServiceDidUpdateThreads(_ service: MXThreadingService) {
         loadData(showLoading: false)
     }
-    
 }

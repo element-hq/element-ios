@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,12 +19,14 @@ import Foundation
 /// Dedicated listener object for a user Presence status.
 class PresenceIndicatorListener {
     // MARK: - Properties
+
     private let userId: String
     private var presence: MXPresence
     private let onUpdate: (MXPresence) -> Void
     private var presenceObserver: Any?
 
     // MARK: - Setup
+
     /// Init.
     ///
     /// - Parameters:

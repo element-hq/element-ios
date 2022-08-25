@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 class PaginationLoadingViewCell: UITableViewCell, NibReusable, Themable {
-    
     // MARK: - Properties
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
@@ -26,7 +25,7 @@ class PaginationLoadingViewCell: UITableViewCell, NibReusable, Themable {
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.activityIndicator.tintColor = theme.colors.tertiaryContent
-        self.activityIndicator.startAnimating()
+        activityIndicator.tintColor = theme.colors.tertiaryContent
+        activityIndicator.startAnimating()
     }
 }

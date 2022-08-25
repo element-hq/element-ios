@@ -37,8 +37,7 @@ public enum RoomPowerLevel: Int {
 
 @objcMembers
 public final class RoomPowerLevelHelper: NSObject {
-    
     static func roomPowerLevel(from rawValue: Int) -> RoomPowerLevel {
-        return RoomPowerLevel(rawValue: rawValue) ?? .user
+        RoomPowerLevel(rawValue: rawValue) ?? .user
     }
 }

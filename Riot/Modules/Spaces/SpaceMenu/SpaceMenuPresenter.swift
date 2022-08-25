@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// Presenter for spaces contextual menu
 class SpaceMenuPresenter: NSObject {
-    
     // MARK: - Constants
     
     enum Actions {
@@ -39,9 +38,8 @@ class SpaceMenuPresenter: NSObject {
     private weak var presentingViewController: UIViewController?
     private var viewModel: SpaceMenuViewModel!
     private weak var sourceView: UIView?
-    private lazy var slidingModalPresenter: SlidingModalPresenter = {
-        return SlidingModalPresenter()
-    }()
+    private lazy var slidingModalPresenter = SlidingModalPresenter()
+
     private weak var selectedSpace: MXSpace?
     private var session: MXSession!
     private var spaceId: String!
@@ -58,31 +56,30 @@ class SpaceMenuPresenter: NSObject {
         self.session = session
         self.spaceId = spaceId
         
-        self.viewModel = SpaceMenuViewModel(session: session, spaceId: spaceId)
-        self.viewModel.coordinatorDelegate = self
-        self.presentingViewController = viewController
+        viewModel = SpaceMenuViewModel(session: session, spaceId: spaceId)
+        viewModel.coordinatorDelegate = self
+        presentingViewController = viewController
         self.sourceView = sourceView
-        self.selectedSpace = session.spaceService.getSpace(withId: spaceId)
+        selectedSpace = session.spaceService.getSpace(withId: spaceId)
         
-        self.showMenu(for: spaceId, session: session)
+        showMenu(for: spaceId, session: session)
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        self.presentingViewController?.dismiss(animated: animated, completion: completion)
+        presentingViewController?.dismiss(animated: animated, completion: completion)
     }
     
     // MARK: - Private
     
     private func showMenu(for spaceId: String, session: MXSession) {
-        let menuViewController = SpaceMenuViewController.instantiate(forSpaceWithId: spaceId, matrixSession: session, viewModel: self.viewModel)
-        self.present(menuViewController, animated: true)
-        self.spaceMenuViewController = menuViewController
+        let menuViewController = SpaceMenuViewController.instantiate(forSpaceWithId: spaceId, matrixSession: session, viewModel: viewModel)
+        present(menuViewController, animated: true)
+        spaceMenuViewController = menuViewController
     }
     
     private func present(_ viewController: SpaceMenuViewController, animated: Bool) {
-        
         if UIDevice.current.isPhone {
-            guard let rootViewController = self.presentingViewController else {
+            guard let rootViewController = presentingViewController else {
                 MXLog.error("[SpaceMenuPresenter] present no rootViewController found")
                 return
             }
@@ -91,12 +88,12 @@ class SpaceMenuPresenter: NSObject {
         } else {
             // Configure source view when view controller is presented with a popover
             viewController.modalPresentationStyle = .popover
-            if let sourceView = self.sourceView, let popoverPresentationController = viewController.popoverPresentationController {
+            if let sourceView = sourceView, let popoverPresentationController = viewController.popoverPresentationController {
                 popoverPresentationController.sourceView = sourceView
                 popoverPresentationController.sourceRect = sourceView.bounds
             }
 
-            self.presentingViewController?.present(viewController, animated: animated, completion: nil)
+            presentingViewController?.present(viewController, animated: animated, completion: nil)
         }
     }
     
@@ -114,12 +111,12 @@ class SpaceMenuPresenter: NSObject {
                                                                 itemsProcessor: LeaveSpaceItemsProcessor(spaceId: spaceId, session: session))
         let coordinator = MatrixItemChooserCoordinator(parameters: paramaters)
         coordinator.start()
-        self.leaveSpaceCoordinator = coordinator
-        coordinator.completion = { [weak self] result in
+        leaveSpaceCoordinator = coordinator
+        coordinator.completion = { [weak self] _ in
             self?.spaceMenuViewController?.dismiss(animated: true)
             self?.leaveSpaceCoordinator = nil
         }
-        self.spaceMenuViewController?.present(coordinator.toPresentable(), animated: true)
+        spaceMenuViewController?.present(coordinator.toPresentable(), animated: true)
     }
 }
 
@@ -127,26 +124,26 @@ class SpaceMenuPresenter: NSObject {
 
 extension SpaceMenuPresenter: SpaceMenuModelViewModelCoordinatorDelegate {
     func spaceMenuViewModelDidDismiss(_ viewModel: SpaceMenuViewModelType) {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     func spaceMenuViewModel(_ viewModel: SpaceMenuViewModelType, didSelectItemWith action: SpaceMenuListItemAction) {
         switch action {
         case .leaveSpace: break
         case .exploreSpaceMembers:
-            self.delegate?.spaceMenuPresenter(self, didCompleteWith: .exploreMembers, forSpaceWithId: self.spaceId, with: self.session)
+            delegate?.spaceMenuPresenter(self, didCompleteWith: .exploreMembers, forSpaceWithId: spaceId, with: session)
         case .exploreSpaceRooms:
-            self.delegate?.spaceMenuPresenter(self, didCompleteWith: .exploreRooms, forSpaceWithId: self.spaceId, with: self.session)
+            delegate?.spaceMenuPresenter(self, didCompleteWith: .exploreRooms, forSpaceWithId: spaceId, with: session)
         case .addRoom:
-            self.delegate?.spaceMenuPresenter(self, didCompleteWith: .addRoom, forSpaceWithId: self.spaceId, with: self.session)
+            delegate?.spaceMenuPresenter(self, didCompleteWith: .addRoom, forSpaceWithId: spaceId, with: session)
         case .addSpace:
-            self.delegate?.spaceMenuPresenter(self, didCompleteWith: .addSpace, forSpaceWithId: self.spaceId, with: self.session)
+            delegate?.spaceMenuPresenter(self, didCompleteWith: .addSpace, forSpaceWithId: spaceId, with: session)
         case .settings:
-            self.delegate?.spaceMenuPresenter(self, didCompleteWith: .settings, forSpaceWithId: self.spaceId, with: self.session)
+            delegate?.spaceMenuPresenter(self, didCompleteWith: .settings, forSpaceWithId: spaceId, with: session)
         case .invite:
-            self.delegate?.spaceMenuPresenter(self, didCompleteWith: .invite, forSpaceWithId: self.spaceId, with: self.session)
+            delegate?.spaceMenuPresenter(self, didCompleteWith: .invite, forSpaceWithId: spaceId, with: session)
         case .leaveSpaceAndChooseRooms:
-            self.showLeaveSpace()
+            showLeaveSpace()
         default:
             MXLog.error("[SpaceMenuPresenter] spaceListViewModel didSelectItem: invalid action", context: [
                 "action": action

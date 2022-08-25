@@ -25,7 +25,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class KeyBackupSetupCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -48,22 +47,22 @@ final class KeyBackupSetupCoordinatorBridgePresenter: NSObject {
     
     // NOTE: Default value feature is not compatible with Objective-C.
     func present(from viewController: UIViewController, animated: Bool) {
-        self.present(from: viewController, isStartedFromSignOut: false, animated: animated)
+        present(from: viewController, isStartedFromSignOut: false, animated: animated)
     }
     
     func present(from viewController: UIViewController, isStartedFromSignOut: Bool, animated: Bool) {
-        let keyBackupSetupCoordinator = KeyBackupSetupCoordinator(session: self.session, isStartedFromSignOut: isStartedFromSignOut)
+        let keyBackupSetupCoordinator = KeyBackupSetupCoordinator(session: session, isStartedFromSignOut: isStartedFromSignOut)
         keyBackupSetupCoordinator.delegate = self
         viewController.present(keyBackupSetupCoordinator.toPresentable(), animated: animated, completion: nil)
         keyBackupSetupCoordinator.start()
         
-        self.coordinator = keyBackupSetupCoordinator
+        coordinator = keyBackupSetupCoordinator
     }
     
     func dismiss(animated: Bool) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
-        }        
+        }
         coordinator.toPresentable().dismiss(animated: animated) {
             self.coordinator = nil
         }
@@ -71,12 +70,13 @@ final class KeyBackupSetupCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - KeyBackupSetupCoordinatorDelegate
+
 extension KeyBackupSetupCoordinatorBridgePresenter: KeyBackupSetupCoordinatorDelegate {
     func keyBackupSetupCoordinatorDidCancel(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinatorType) {
-        self.delegate?.keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel(self)
+        delegate?.keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel(self)
     }
     
     func keyBackupSetupCoordinatorDidSetupRecoveryKey(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinatorType) {
-        self.delegate?.keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey(self)
+        delegate?.keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey(self)
     }
 }

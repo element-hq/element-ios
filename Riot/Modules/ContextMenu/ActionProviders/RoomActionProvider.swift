@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import UIKit
 /// `RoomActionProvider` provides the menu for `MXRoom` instances
 @available(iOS 13.0, *)
 class RoomActionProvider: RoomActionProviderProtocol {
-
     // MARK: - Properties
     
     private let service: RoomContextActionService
@@ -34,24 +33,24 @@ class RoomActionProvider: RoomActionProviderProtocol {
     
     var menu: UIMenu {
         if service.isRoomJoined {
-            var children = service.hasUnread ? [self.markAsReadAction] : []
+            var children = service.hasUnread ? [markAsReadAction] : []
             children.append(contentsOf: [
-                self.directChatAction,
-                self.notificationsAction,
-                self.favouriteAction,
-                self.lowPriorityAction,
-                self.leaveAction
+                directChatAction,
+                notificationsAction,
+                favouriteAction,
+                lowPriorityAction,
+                leaveAction
             ])
             return UIMenu(children: children)
         } else {
             if service.roomMembership == .invite {
                 return UIMenu(children: [
-                    self.acceptInviteAction,
-                    self.declineInviteAction
+                    acceptInviteAction,
+                    declineInviteAction
                 ])
             } else {
                 return UIMenu(children: [
-                    self.joinAction
+                    joinAction
                 ])
             }
         }
@@ -60,11 +59,12 @@ class RoomActionProvider: RoomActionProviderProtocol {
     // MARK: - Private
     
     private var directChatAction: UIAction {
-        return UIAction(
+        UIAction(
             title: service.isRoomDirect ? VectorL10n.homeContextMenuMakeRoom : VectorL10n.homeContextMenuMakeDm,
-            image: UIImage(systemName: service.isRoomDirect  ? "person.crop.circle.badge.xmark" : "person.circle")) { [weak self] action in
-                guard let self = self else { return }
-                self.service.isRoomDirect = !self.service.isRoomDirect
+            image: UIImage(systemName: service.isRoomDirect ? "person.crop.circle.badge.xmark" : "person.circle")
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            self.service.isRoomDirect = !self.service.isRoomDirect
         }
     }
     
@@ -76,47 +76,51 @@ class RoomActionProvider: RoomActionProviderProtocol {
             notificationsImage = UIImage(systemName: "bell")
         } else {
             notificationsTitle = service.isRoomMuted ? VectorL10n.homeContextMenuUnmute : VectorL10n.homeContextMenuMute
-            notificationsImage = UIImage(systemName: service.isRoomMuted ? "bell.slash": "bell")
+            notificationsImage = UIImage(systemName: service.isRoomMuted ? "bell.slash" : "bell")
         }
 
         return UIAction(
             title: notificationsTitle,
-            image: notificationsImage) { [weak self] action in
-                guard let self = self else { return }
-                self.service.isRoomMuted = !self.service.isRoomMuted
+            image: notificationsImage
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            self.service.isRoomMuted = !self.service.isRoomMuted
         }
     }
     
     private var favouriteAction: UIAction {
-        return UIAction(
-            title: self.service.isRoomFavourite ? VectorL10n.homeContextMenuUnfavourite : VectorL10n.homeContextMenuFavourite,
-            image: UIImage(systemName: self.service.isRoomFavourite ? "star.slash" : "star")) { [weak self] action in
-                guard let self = self else { return }
-                self.service.isRoomFavourite = !self.service.isRoomFavourite
+        UIAction(
+            title: service.isRoomFavourite ? VectorL10n.homeContextMenuUnfavourite : VectorL10n.homeContextMenuFavourite,
+            image: UIImage(systemName: service.isRoomFavourite ? "star.slash" : "star")
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            self.service.isRoomFavourite = !self.service.isRoomFavourite
         }
     }
 
     private var lowPriorityAction: UIAction {
-        return UIAction(
-            title: self.service.isRoomLowPriority ? VectorL10n.homeContextMenuNormalPriority : VectorL10n.homeContextMenuLowPriority,
-            image: UIImage(systemName: self.service.isRoomLowPriority ? "arrow.up" : "arrow.down")) { [weak self] action in
-                guard let self = self else { return }
-                self.service.isRoomLowPriority = !self.service.isRoomLowPriority
+        UIAction(
+            title: service.isRoomLowPriority ? VectorL10n.homeContextMenuNormalPriority : VectorL10n.homeContextMenuLowPriority,
+            image: UIImage(systemName: service.isRoomLowPriority ? "arrow.up" : "arrow.down")
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            self.service.isRoomLowPriority = !self.service.isRoomLowPriority
         }
     }
     
     private var markAsReadAction: UIAction {
-        return UIAction(
+        UIAction(
             title: VectorL10n.homeContextMenuMarkAsRead,
-            image: UIImage(systemName: "envelope.open")) { [weak self] action in
-                guard let self = self else { return }
-                self.service.markAsRead()
+            image: UIImage(systemName: "envelope.open")
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            self.service.markAsRead()
         }
     }
     
     private var leaveAction: UIAction {
         let image = UIImage(systemName: "rectangle.righthalf.inset.fill.arrow.right")
-        let action = UIAction(title: VectorL10n.homeContextMenuLeave, image: image) { [weak self] action in
+        let action = UIAction(title: VectorL10n.homeContextMenuLeave, image: image) { [weak self] _ in
             guard let self = self else { return }
             self.service.leaveRoom(promptUser: true)
         }
@@ -125,28 +129,28 @@ class RoomActionProvider: RoomActionProviderProtocol {
     }
     
     private var acceptInviteAction: UIAction {
-        return UIAction(
-            title: VectorL10n.accept) { [weak self] action in
+        UIAction(
+            title: VectorL10n.accept) { [weak self] _ in
                 guard let self = self else { return }
                 self.service.joinRoom()
-        }
+            }
     }
     
     private var declineInviteAction: UIAction {
         let action = UIAction(
-            title: VectorL10n.decline) { [weak self] action in
+            title: VectorL10n.decline) { [weak self] _ in
                 guard let self = self else { return }
                 self.service.leaveRoom(promptUser: false)
-        }
+            }
         action.attributes = .destructive
         return action
     }
     
     private var joinAction: UIAction {
-        return UIAction(
-            title: VectorL10n.join) { [weak self] action in
+        UIAction(
+            title: VectorL10n.join) { [weak self] _ in
                 guard let self = self else { return }
                 self.service.joinRoom()
-        }
+            }
     }
 }

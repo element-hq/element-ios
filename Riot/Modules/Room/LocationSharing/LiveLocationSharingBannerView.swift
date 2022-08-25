@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,14 +20,13 @@ import UIKit
 
 @objcMembers
 final class LiveLocationSharingBannerView: UIView, NibLoadable, Themable {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var iconImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var stopButton: UIButton!
+    @IBOutlet private var iconImageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var stopButton: UIButton!
     
     // MARK: Private
     
@@ -51,10 +50,10 @@ final class LiveLocationSharingBannerView: UIView, NibLoadable, Themable {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.setupBackgroundTapGestureRecognizer()
+        setupBackgroundTapGestureRecognizer()
         
-        self.titleLabel.text = VectorL10n.liveLocationSharingBannerTitle
-        self.stopButton.setTitle(VectorL10n.liveLocationSharingBannerStop, for: .normal)
+        titleLabel.text = VectorL10n.liveLocationSharingBannerTitle
+        stopButton.setTitle(VectorL10n.liveLocationSharingBannerStop, for: .normal)
     }
     
     // MARK: - Public
@@ -64,33 +63,33 @@ final class LiveLocationSharingBannerView: UIView, NibLoadable, Themable {
         
         let tintColor = theme.colors.background
         
-        self.backgroundColor = theme.tintColor
+        backgroundColor = theme.tintColor
         
-        self.iconImageView.tintColor = tintColor
+        iconImageView.tintColor = tintColor
         
-        self.titleLabel.textColor = tintColor
-        self.titleLabel.font = theme.fonts.footnote
+        titleLabel.textColor = tintColor
+        titleLabel.font = theme.fonts.footnote
         
-        self.stopButton.vc_setTitleFont(theme.fonts.footnote)
-        self.stopButton.tintColor = tintColor
-        self.stopButton.setTitleColor(tintColor, for: .normal)
-        self.stopButton.setTitleColor(tintColor.withAlphaComponent(0.5), for: .highlighted)
+        stopButton.vc_setTitleFont(theme.fonts.footnote)
+        stopButton.tintColor = tintColor
+        stopButton.setTitleColor(tintColor, for: .normal)
+        stopButton.setTitleColor(tintColor.withAlphaComponent(0.5), for: .highlighted)
     }
     
     // MARK: - Private
     
     private func setupBackgroundTapGestureRecognizer() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleBackgroundViewTap(_:)))
-        self.addGestureRecognizer(tapGestureRecognizer)
+        addGestureRecognizer(tapGestureRecognizer)
     }
     
     // MARK: - Actions
     
     @objc private func handleBackgroundViewTap(_ gestureRecognizer: UITapGestureRecognizer) {
-        self.didTapBackground?()
+        didTapBackground?()
     }
 
     @IBAction private func stopButtonAction(_ sender: Any) {
-        self.didTapStopButton?()
+        didTapStopButton?()
     }
 }

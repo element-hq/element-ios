@@ -29,7 +29,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class RoomsDirectoryCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -58,18 +57,18 @@ final class RoomsDirectoryCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let roomsDirectoryCoordinator = RoomsDirectoryCoordinator(session: self.session, dataSource: dataSource)
+        let roomsDirectoryCoordinator = RoomsDirectoryCoordinator(session: session, dataSource: dataSource)
         roomsDirectoryCoordinator.delegate = self
         let presentable = roomsDirectoryCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
         viewController.present(presentable, animated: animated, completion: nil)
         roomsDirectoryCoordinator.start()
         
-        self.coordinator = roomsDirectoryCoordinator
+        coordinator = roomsDirectoryCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -83,31 +82,29 @@ final class RoomsDirectoryCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - RoomsDirectoryCoordinatorDelegate
+
 extension RoomsDirectoryCoordinatorBridgePresenter: RoomsDirectoryCoordinatorDelegate {
-    
     func roomsDirectoryCoordinator(_ coordinator: RoomsDirectoryCoordinatorType, didSelectRoom room: MXPublicRoom) {
-        self.delegate?.roomsDirectoryCoordinatorBridgePresenterDelegate(self, didSelectRoom: room)
+        delegate?.roomsDirectoryCoordinatorBridgePresenterDelegate(self, didSelectRoom: room)
     }
     
     func roomsDirectoryCoordinatorDidTapCreateNewRoom(_ coordinator: RoomsDirectoryCoordinatorType) {
-        self.delegate?.roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom(self)
+        delegate?.roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom(self)
     }
     
     func roomsDirectoryCoordinatorDidComplete(_ coordinator: RoomsDirectoryCoordinatorType) {
-        self.delegate?.roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete(self)
     }
     
     func roomsDirectoryCoordinator(_ coordinator: RoomsDirectoryCoordinatorType, didSelectRoomWithIdOrAlias roomIdOrAlias: String) {
-        self.delegate?.roomsDirectoryCoordinatorBridgePresenterDelegate(self, didSelectRoomWithIdOrAlias: roomIdOrAlias)
+        delegate?.roomsDirectoryCoordinatorBridgePresenterDelegate(self, didSelectRoomWithIdOrAlias: roomIdOrAlias)
     }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
 extension RoomsDirectoryCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete(self)
     }
-    
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import UIKit
 /// SpaceFeatureUnavailablePresenter enables to present modals for unavailable space features
 @objcMembers
 final class SpaceFeatureUnavailablePresenter: NSObject {
-    
     // MARK: - Constants
     
     // MARK: - Properties
@@ -32,7 +31,6 @@ final class SpaceFeatureUnavailablePresenter: NSObject {
     
     func presentUnavailableFeature(from presentingViewController: UIViewController,
                                    animated: Bool) {
-        
         let spaceFeatureUnavailableVC = SpaceFeatureUnaivableViewController.instantiate()
         
         let navigationVC = RiotNavigationController(rootViewController: spaceFeatureUnavailableVC)

@@ -16,12 +16,11 @@
  limitations under the License.
  */
 
-import UIKit
 import CommonKit
+import UIKit
 
 /// OnboardingCoordinator input parameters
 struct OnboardingCoordinatorParameters {
-                
     /// The navigation router that manage physical navigation
     let router: NavigationRouterType
     
@@ -33,7 +32,6 @@ struct OnboardingCoordinatorParameters {
 @objcMembers
 /// A coordinator to manage the full onboarding flow with pre-auth screens, authentication and setup screens once signed in.
 final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -41,15 +39,18 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private let parameters: OnboardingCoordinatorParameters
     
     // MARK: Navigation State
+
     private var navigationRouter: NavigationRouterType {
         parameters.router
     }
+
     /// A strong ref to the legacy authVC as we need to init early to preload its view.
     private let legacyAuthenticationCoordinator: LegacyAuthenticationCoordinator
     /// The currently active authentication coordinator, otherwise `nil`.
     private weak var authenticationCoordinator: AuthenticationCoordinatorProtocol?
     
     // MARK: Screen results
+
     private var splashScreenResult: OnboardingSplashScreenViewModelResult?
     private var useCaseResult: OnboardingUseCaseViewModelResult?
     /// The flow being used for authentication.
@@ -91,7 +92,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: parameters.router.toPresentable())
         
         super.init()
-    }    
+    }
     
     // MARK: - Public
     
@@ -601,7 +602,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                                                 message: VectorL10n.authSoftlogoutClearDataSignOutMsg,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: VectorL10n.authSoftlogoutClearDataSignOut, style: .destructive) { [weak self] action in
+        alertController.addAction(UIAlertAction(title: VectorL10n.authSoftlogoutClearDataSignOut, style: .destructive) { [weak self] _ in
             guard let self = self else { return }
             MXLog.debug("[OnboardingCoordinator] showClearAllDataConfirmation: clear all data after soft logout")
             self.authenticationService.reset()

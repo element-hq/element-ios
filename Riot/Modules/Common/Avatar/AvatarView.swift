@@ -19,14 +19,13 @@ import UIKit
 /// Base class to support an avatar view
 /// Note: This class is made to be sublcassed
 class AvatarView: UIView, Themable {
-    
     // MARK: - Properties
 
     // MARK: Outlets
     
-    @IBOutlet weak var avatarImageView: MXKImageView! {
+    @IBOutlet var avatarImageView: MXKImageView! {
         didSet {
-            self.setupAvatarImageView()
+            setupAvatarImageView()
         }
     }
     
@@ -38,18 +37,18 @@ class AvatarView: UIView, Themable {
     
     override var isUserInteractionEnabled: Bool {
         get {
-            return super.isUserInteractionEnabled
+            super.isUserInteractionEnabled
         }
         set {
             super.isUserInteractionEnabled = newValue
-            self.updateAccessibilityTraits()
+            updateAccessibilityTraits()
         }
     }
     
     /// Indicate highlighted state
-    var isHighlighted: Bool = false {
+    var isHighlighted = false {
         didSet {
-            self.updateView()
+            updateView()
         }
     }
 
@@ -58,18 +57,18 @@ class AvatarView: UIView, Themable {
     // MARK: - Setup
     
     private func commonInit() {
-        self.setupGestureRecognizer()
-        self.updateAccessibilityTraits()
+        setupGestureRecognizer()
+        updateAccessibilityTraits()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.commonInit()
+        commonInit()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.commonInit()
+        commonInit()
     }
     
     // MARK: - Lifecycle
@@ -77,14 +76,14 @@ class AvatarView: UIView, Themable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.avatarImageView.layer.cornerRadius = self.avatarImageView.bounds.height/2
+        avatarImageView.layer.cornerRadius = avatarImageView.bounds.height / 2
     }
     
     // MARK: - Public
     
     func fill(with viewData: AvatarViewDataProtocol) {
-        self.updateAvatarImageView(with: viewData)
-        self.setNeedsLayout()
+        updateAvatarImageView(with: viewData)
+        setNeedsLayout()
     }
         
     func update(theme: Theme) {
@@ -96,13 +95,13 @@ class AvatarView: UIView, Themable {
     }
     
     func setupAvatarImageView() {
-        self.avatarImageView.defaultBackgroundColor = UIColor.clear
-        self.avatarImageView.enableInMemoryCache = true
-        self.avatarImageView.layer.masksToBounds = true
+        avatarImageView.defaultBackgroundColor = UIColor.clear
+        avatarImageView.enableInMemoryCache = true
+        avatarImageView.layer.masksToBounds = true
     }
     
     func updateAvatarImageView(with viewData: AvatarViewDataProtocol) {
-        guard let avatarImageView = self.avatarImageView else {
+        guard let avatarImageView = avatarImageView else {
             return
         }
         
@@ -146,26 +145,25 @@ class AvatarView: UIView, Themable {
     private func setupGestureRecognizer() {
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(buttonAction(_:)))
         gestureRecognizer.minimumPressDuration = 0
-        self.addGestureRecognizer(gestureRecognizer)
+        addGestureRecognizer(gestureRecognizer)
     }
         
     // MARK: - Actions
 
     @objc private func buttonAction(_ sender: UILongPressGestureRecognizer) {
-
         let isBackgroundViewTouched = sender.vc_isTouchingInside()
 
         switch sender.state {
         case .began, .changed:
-            self.isHighlighted = isBackgroundViewTouched
+            isHighlighted = isBackgroundViewTouched
         case .ended:
-            self.isHighlighted = false
+            isHighlighted = false
 
             if isBackgroundViewTouched {
-                self.action?()
+                action?()
             }
         case .cancelled:
-            self.isHighlighted = false
+            isHighlighted = false
         default:
             break
         }

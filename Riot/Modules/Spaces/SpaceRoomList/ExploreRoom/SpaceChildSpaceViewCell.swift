@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +14,21 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 class SpaceChildSpaceViewCell: SpaceChildViewCell {
-    
-    @IBOutlet private weak var roomsIcon: UIImageView!
-    @IBOutlet private weak var roomNumberLabel: UILabel!
-    @IBOutlet private weak var spaceTagView: UIView!
+    @IBOutlet private var roomsIcon: UIImageView!
+    @IBOutlet private var roomNumberLabel: UILabel!
+    @IBOutlet private var spaceTagView: UIView!
 
     // MARK: - Life cycle
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.spaceTagView.layer.masksToBounds = true
-        self.spaceTagView.layer.cornerRadius = 2
+        spaceTagView.layer.masksToBounds = true
+        spaceTagView.layer.cornerRadius = 2
     }
 
     // MARK: - Public
@@ -37,16 +36,16 @@ class SpaceChildSpaceViewCell: SpaceChildViewCell {
     override func fill(with viewData: SpaceExploreRoomListItemViewData) {
         super.fill(with: viewData)
         
-        self.roomNumberLabel.text = "\(viewData.childInfo.childrenIds.count)"
-        self.topicLabel.text = VectorL10n.spaceTag
+        roomNumberLabel.text = "\(viewData.childInfo.childrenIds.count)"
+        topicLabel.text = VectorL10n.spaceTag
     }
     
     override func update(theme: Theme) {
         super.update(theme: theme)
         
-        self.roomNumberLabel.font = theme.fonts.caption1
-        self.roomNumberLabel.textColor = theme.colors.tertiaryContent
-        self.roomsIcon.tintColor = theme.colors.tertiaryContent
-        self.spaceTagView.backgroundColor = theme.colors.quinaryContent
+        roomNumberLabel.font = theme.fonts.caption1
+        roomNumberLabel.textColor = theme.colors.tertiaryContent
+        roomsIcon.tintColor = theme.colors.tertiaryContent
+        spaceTagView.backgroundColor = theme.colors.quinaryContent
     }
 }

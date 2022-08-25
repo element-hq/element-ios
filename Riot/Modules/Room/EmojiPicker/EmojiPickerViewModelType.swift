@@ -30,7 +30,6 @@ protocol EmojiPickerViewModelCoordinatorDelegate: AnyObject {
 
 /// Protocol describing the view model used by `EmojiPickerViewController`
 protocol EmojiPickerViewModelType {
-            
     var viewDelegate: EmojiPickerViewModelViewDelegate? { get set }
     var coordinatorDelegate: EmojiPickerViewModelCoordinatorDelegate? { get set }
     

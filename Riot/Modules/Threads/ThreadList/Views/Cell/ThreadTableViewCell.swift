@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,31 +14,30 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 class ThreadTableViewCell: UITableViewCell {
-    
     private enum Constants {
-        static let separatorInset: UIEdgeInsets = UIEdgeInsets(top: 0, left: 56, bottom: 0, right: 0)
+        static let separatorInset = UIEdgeInsets(top: 0, left: 56, bottom: 0, right: 0)
     }
 
     private var theme: Theme = ThemeService.shared().theme
     private var configuredSenderId: String?
-    private var configuredRootMessageRedacted: Bool = false
+    private var configuredRootMessageRedacted = false
 
     private var rootMessageColor: UIColor {
-        return configuredRootMessageRedacted ?
+        configuredRootMessageRedacted ?
             theme.colors.secondaryContent :
             theme.colors.primaryContent
     }
     
-    @IBOutlet private weak var rootMessageAvatarView: UserAvatarView!
-    @IBOutlet private weak var rootMessageSenderLabel: UILabel!
-    @IBOutlet private weak var rootMessageContentLabel: UILabel!
-    @IBOutlet private weak var lastMessageTimeLabel: UILabel!
-    @IBOutlet private weak var summaryView: ThreadSummaryView!
-    @IBOutlet private weak var notificationStatusView: ThreadNotificationStatusView!
+    @IBOutlet private var rootMessageAvatarView: UserAvatarView!
+    @IBOutlet private var rootMessageSenderLabel: UILabel!
+    @IBOutlet private var rootMessageContentLabel: UILabel!
+    @IBOutlet private var lastMessageTimeLabel: UILabel!
+    @IBOutlet private var summaryView: ThreadSummaryView!
+    @IBOutlet private var notificationStatusView: ThreadNotificationStatusView!
     
     private static var usernameColorGenerator = UserNameColorGenerator()
 
@@ -85,13 +84,11 @@ class ThreadTableViewCell: UITableViewCell {
         ], range: NSRange(location: 0, length: mutable.length))
         rootMessageContentLabel.attributedText = mutable
     }
-
 }
 
-extension ThreadTableViewCell: NibReusable {}
+extension ThreadTableViewCell: NibReusable { }
 
 extension ThreadTableViewCell: Themable {
-    
     func update(theme: Theme) {
         self.theme = theme
         Self.usernameColorGenerator.update(theme: theme)
@@ -105,5 +102,4 @@ extension ThreadTableViewCell: Themable {
         summaryView.backgroundColor = .clear
         notificationStatusView.update(theme: theme)
     }
-    
 }

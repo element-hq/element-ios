@@ -17,7 +17,6 @@
 import UIKit
 
 final class KeyBackupSetupPassphraseViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -28,39 +27,39 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var formBackgroundView: UIView!
+    @IBOutlet private var formBackgroundView: UIView!
     
-    @IBOutlet private weak var passphraseTitleLabel: UILabel!
-    @IBOutlet private weak var passphraseTextField: UITextField!
+    @IBOutlet private var passphraseTitleLabel: UILabel!
+    @IBOutlet private var passphraseTextField: UITextField!
     
-    @IBOutlet private weak var passphraseAdditionalInfoView: UIView!
-    @IBOutlet private weak var passphraseStrengthView: PasswordStrengthView!
-    @IBOutlet private weak var passphraseAdditionalLabel: UILabel!
+    @IBOutlet private var passphraseAdditionalInfoView: UIView!
+    @IBOutlet private var passphraseStrengthView: PasswordStrengthView!
+    @IBOutlet private var passphraseAdditionalLabel: UILabel!
     
-    @IBOutlet private weak var formSeparatorView: UIView!
+    @IBOutlet private var formSeparatorView: UIView!
     
-    @IBOutlet private weak var confirmPassphraseTitleLabel: UILabel!
-    @IBOutlet private weak var confirmPassphraseTextField: UITextField!
+    @IBOutlet private var confirmPassphraseTitleLabel: UILabel!
+    @IBOutlet private var confirmPassphraseTextField: UITextField!
     
-    @IBOutlet private weak var confirmPassphraseAdditionalInfoView: UIView!
-    @IBOutlet private weak var confirmPassphraseAdditionalLabel: UILabel!
+    @IBOutlet private var confirmPassphraseAdditionalInfoView: UIView!
+    @IBOutlet private var confirmPassphraseAdditionalLabel: UILabel!
     
-    @IBOutlet private weak var setPassphraseButtonBackgroundView: UIView!
-    @IBOutlet private weak var setPassphraseButton: UIButton!
+    @IBOutlet private var setPassphraseButtonBackgroundView: UIView!
+    @IBOutlet private var setPassphraseButton: UIButton!
     
-    @IBOutlet private weak var setUpRecoveryKeyInfoLabel: UILabel!
-    @IBOutlet private weak var setUpRecoveryKeyButton: UIButton!
+    @IBOutlet private var setUpRecoveryKeyInfoLabel: UILabel!
+    @IBOutlet private var setUpRecoveryKeyButton: UIButton!
     
     // MARK: Private
     
-    private var isFirstViewAppearing: Bool = true
-    private var isPassphraseTextFieldEditedOnce: Bool = false
-    private var isConfirmPassphraseTextFieldEditedOnce: Bool = false
+    private var isFirstViewAppearing = true
+    private var isPassphraseTextFieldEditedOnce = false
+    private var isConfirmPassphraseTextFieldEditedOnce = false
     private var keyboardAvoider: KeyboardAvoider?
     private var viewModel: KeyBackupSetupPassphraseViewModelType!
     private var theme: Theme!
@@ -84,52 +83,52 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.keyBackupSetupTitle
-        self.vc_removeBackTitle()
+        title = VectorL10n.keyBackupSetupTitle
+        vc_removeBackTitle()
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: scrollView)
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.keyboardAvoider?.startAvoiding()
+        keyboardAvoider?.startAvoiding()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if self.isFirstViewAppearing {
-            self.isFirstViewAppearing = false
+        if isFirstViewAppearing {
+            isFirstViewAppearing = false
         }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.view.endEditing(true)
-        self.keyboardAvoider?.stopAvoiding()
+        view.endEditing(true)
+        keyboardAvoider?.stopAvoiding()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if self.isFirstViewAppearing {
+        if isFirstViewAppearing {
             // Workaround to layout passphraseStrengthView corner radius
-            self.passphraseStrengthView.setNeedsLayout()
+            passphraseStrengthView.setNeedsLayout()
         }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -137,35 +136,35 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.formBackgroundView.backgroundColor = theme.backgroundColor
-        self.passphraseTitleLabel.textColor = theme.textPrimaryColor
-        theme.applyStyle(onTextField: self.passphraseTextField)
-        self.passphraseTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.keyBackupSetupPassphrasePassphrasePlaceholder,
-                                                                            attributes: [.foregroundColor: theme.placeholderTextColor])
-        self.updatePassphraseAdditionalLabel()
+        formBackgroundView.backgroundColor = theme.backgroundColor
+        passphraseTitleLabel.textColor = theme.textPrimaryColor
+        theme.applyStyle(onTextField: passphraseTextField)
+        passphraseTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.keyBackupSetupPassphrasePassphrasePlaceholder,
+                                                                       attributes: [.foregroundColor: theme.placeholderTextColor])
+        updatePassphraseAdditionalLabel()
         
-        self.formSeparatorView.backgroundColor = theme.lineBreakColor
+        formSeparatorView.backgroundColor = theme.lineBreakColor
         
-        self.confirmPassphraseTitleLabel.textColor = theme.textPrimaryColor
-        theme.applyStyle(onTextField: self.confirmPassphraseTextField)
-        self.confirmPassphraseTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.keyBackupSetupPassphraseConfirmPassphraseTitle,
-                                                                                   attributes: [.foregroundColor: theme.placeholderTextColor])
-        self.updateConfirmPassphraseAdditionalLabel()
+        confirmPassphraseTitleLabel.textColor = theme.textPrimaryColor
+        theme.applyStyle(onTextField: confirmPassphraseTextField)
+        confirmPassphraseTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.keyBackupSetupPassphraseConfirmPassphraseTitle,
+                                                                              attributes: [.foregroundColor: theme.placeholderTextColor])
+        updateConfirmPassphraseAdditionalLabel()
         
-        self.setPassphraseButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.setPassphraseButton)
+        setPassphraseButton.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: setPassphraseButton)
         
-        self.setUpRecoveryKeyInfoLabel.textColor = theme.textPrimaryColor
-        theme.applyStyle(onButton: self.setUpRecoveryKeyButton)
+        setUpRecoveryKeyInfoLabel.textColor = theme.textPrimaryColor
+        theme.applyStyle(onButton: setUpRecoveryKeyButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -173,7 +172,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -181,30 +180,30 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.scrollView.keyboardDismissMode = .interactive
+        scrollView.keyboardDismissMode = .interactive
         
-        self.titleLabel.text = VectorL10n.keyBackupSetupPassphraseTitle
-        self.informationLabel.text = VectorL10n.keyBackupSetupPassphraseInfo
+        titleLabel.text = VectorL10n.keyBackupSetupPassphraseTitle
+        informationLabel.text = VectorL10n.keyBackupSetupPassphraseInfo
         
-        self.passphraseTitleLabel.text = VectorL10n.keyBackupSetupPassphrasePassphraseTitle
-        self.passphraseTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        self.passphraseStrengthView.strength = self.viewModel.passphraseStrength
-        self.passphraseAdditionalInfoView.isHidden = true
+        passphraseTitleLabel.text = VectorL10n.keyBackupSetupPassphrasePassphraseTitle
+        passphraseTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        passphraseStrengthView.strength = viewModel.passphraseStrength
+        passphraseAdditionalInfoView.isHidden = true
         
-        self.confirmPassphraseTitleLabel.text = VectorL10n.keyBackupSetupPassphraseConfirmPassphraseTitle
-        self.confirmPassphraseTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        self.confirmPassphraseAdditionalInfoView.isHidden = true
+        confirmPassphraseTitleLabel.text = VectorL10n.keyBackupSetupPassphraseConfirmPassphraseTitle
+        confirmPassphraseTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        confirmPassphraseAdditionalInfoView.isHidden = true
         
-        self.setPassphraseButton.vc_enableMultiLinesTitle()
-        self.setPassphraseButton.setTitle(VectorL10n.keyBackupSetupPassphraseSetPassphraseAction, for: .normal)
+        setPassphraseButton.vc_enableMultiLinesTitle()
+        setPassphraseButton.setTitle(VectorL10n.keyBackupSetupPassphraseSetPassphraseAction, for: .normal)
         
-        self.updateSetPassphraseButton()
+        updateSetPassphraseButton()
     }
     
     private func showPassphraseAdditionalInfo(animated: Bool) {
-        guard self.passphraseAdditionalInfoView.isHidden else {
+        guard passphraseAdditionalInfoView.isHidden else {
             return
         }
         
@@ -214,7 +213,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
     }
     
     private func showConfirmPassphraseAdditionalInfo(animated: Bool) {
-        guard self.confirmPassphraseAdditionalInfoView.isHidden else {
+        guard confirmPassphraseAdditionalInfoView.isHidden else {
             return
         }
         
@@ -224,7 +223,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
     }
     
     private func hideConfirmPassphraseAdditionalInfo(animated: Bool) {
-        guard self.confirmPassphraseAdditionalInfoView.isHidden == false else {
+        guard confirmPassphraseAdditionalInfoView.isHidden == false else {
             return
         }
         
@@ -234,75 +233,73 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
     }
     
     private func updatePassphraseStrengthView() {
-        self.passphraseStrengthView.strength = self.viewModel.passphraseStrength
+        passphraseStrengthView.strength = viewModel.passphraseStrength
     }
     
     private func updatePassphraseAdditionalLabel() {
-        
         let text: String
         let textColor: UIColor
         
-        if self.viewModel.isPassphraseValid {
+        if viewModel.isPassphraseValid {
             text = VectorL10n.keyBackupSetupPassphrasePassphraseValid
-            textColor = self.theme.tintColor
+            textColor = theme.tintColor
         } else {
             text = VectorL10n.keyBackupSetupPassphrasePassphraseInvalid
-            textColor = self.theme.noticeColor
+            textColor = theme.noticeColor
         }
         
-        self.passphraseAdditionalLabel.text = text
-        self.passphraseAdditionalLabel.textColor = textColor
+        passphraseAdditionalLabel.text = text
+        passphraseAdditionalLabel.textColor = textColor
     }
     
     private func updateConfirmPassphraseAdditionalLabel() {
-        
         let text: String
         let textColor: UIColor
         
-        if self.viewModel.isConfirmPassphraseValid {
+        if viewModel.isConfirmPassphraseValid {
             text = VectorL10n.keyBackupSetupPassphraseConfirmPassphraseValid
-            textColor = self.theme.tintColor
+            textColor = theme.tintColor
         } else {
             text = VectorL10n.keyBackupSetupPassphraseConfirmPassphraseInvalid
-            textColor = self.theme.noticeColor
+            textColor = theme.noticeColor
         }
         
-        self.confirmPassphraseAdditionalLabel.text = text
-        self.confirmPassphraseAdditionalLabel.textColor = textColor
+        confirmPassphraseAdditionalLabel.text = text
+        confirmPassphraseAdditionalLabel.textColor = textColor
     }
     
     private func updateSetPassphraseButton() {
-        self.setPassphraseButton.isEnabled = self.viewModel.isFormValid
+        setPassphraseButton.isEnabled = viewModel.isFormValid
     }
     
     private func render(viewState: KeyBackupSetupPassphraseViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded:
-            self.renderLoaded()
+            renderLoaded()
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.view.endEditing(true)
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        view.endEditing(true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.hideSkipAlert(animated: false)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        hideSkipAlert(animated: false)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     private func showSkipAlert() {
-        guard self.skipAlertController == nil else {
+        guard skipAlertController == nil else {
             return
         }
         
@@ -310,89 +307,87 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
                                                 message: VectorL10n.keyBackupSetupSkipAlertMessage,
                                                 preferredStyle: .alert)
         
-        alertController.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: { action in
+        alertController.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: { _ in
             self.viewModel.process(viewAction: .skipAlertContinue)
         }))
         
-        alertController.addAction(UIAlertAction(title: VectorL10n.keyBackupSetupSkipAlertSkipAction, style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: VectorL10n.keyBackupSetupSkipAlertSkipAction, style: .default, handler: { _ in
             self.viewModel.process(viewAction: .skipAlertSkip)
         }))
         
-        self.present(alertController, animated: true, completion: nil)
-        self.skipAlertController = alertController
+        present(alertController, animated: true, completion: nil)
+        skipAlertController = alertController
     }
     
     private func hideSkipAlert(animated: Bool) {
-        self.skipAlertController?.dismiss(animated: true, completion: nil)
+        skipAlertController?.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Actions
     
     @IBAction private func passphraseVisibilityButtonAction(_ sender: Any) {
-        guard self.isPassphraseTextFieldEditedOnce else {
+        guard isPassphraseTextFieldEditedOnce else {
             return
         }
-        self.passphraseTextField.isSecureTextEntry = !self.passphraseTextField.isSecureTextEntry
+        passphraseTextField.isSecureTextEntry = !passphraseTextField.isSecureTextEntry
         // TODO: Use this when project will be migrated to Swift 4.2
         // self.passphraseTextField.isSecureTextEntry.toggle()
     }
     
     @objc private func textFieldDidChange(_ textField: UITextField) {
-        
-        if textField == self.passphraseTextField {
-            self.viewModel.passphrase = textField.text
+        if textField == passphraseTextField {
+            viewModel.passphrase = textField.text
             
-            self.updatePassphraseAdditionalLabel()
-            self.updatePassphraseStrengthView()
+            updatePassphraseAdditionalLabel()
+            updatePassphraseStrengthView()
             
             // Show passphrase additional info at first character entered
-            if self.isPassphraseTextFieldEditedOnce == false && textField.text?.isEmpty == false {
-                self.isPassphraseTextFieldEditedOnce = true
-                self.showPassphraseAdditionalInfo(animated: true)
+            if isPassphraseTextFieldEditedOnce == false, textField.text?.isEmpty == false {
+                isPassphraseTextFieldEditedOnce = true
+                showPassphraseAdditionalInfo(animated: true)
             }
         } else {
-            self.viewModel.confirmPassphrase = textField.text
+            viewModel.confirmPassphrase = textField.text
         }
         
         // Show confirm passphrase additional info if needed
-        self.updateConfirmPassphraseAdditionalLabel()
-        if self.viewModel.confirmPassphrase?.isEmpty == false && self.viewModel.isPassphraseValid {
-            self.showConfirmPassphraseAdditionalInfo(animated: true)
+        updateConfirmPassphraseAdditionalLabel()
+        if viewModel.confirmPassphrase?.isEmpty == false, viewModel.isPassphraseValid {
+            showConfirmPassphraseAdditionalInfo(animated: true)
         } else {
-            self.hideConfirmPassphraseAdditionalInfo(animated: true)
+            hideConfirmPassphraseAdditionalInfo(animated: true)
         }
         
         // Enable validate button if form is valid
-        self.updateSetPassphraseButton()
+        updateSetPassphraseButton()
     }
     
     @IBAction private func setPassphraseButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .setupPassphrase)
+        viewModel.process(viewAction: .setupPassphrase)
     }
     
     @IBAction private func setUpRecoveryKeyButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .setupRecoveryKey)
+        viewModel.process(viewAction: .setupRecoveryKey)
     }
     
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .skip)
+        viewModel.process(viewAction: .skip)
     }
 }
 
 // MARK: - UITextFieldDelegate
+
 extension KeyBackupSetupPassphraseViewController: UITextFieldDelegate {
-    
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        self.textFieldDidChange(textField)
+        textFieldDidChange(textField)
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        if textField == self.passphraseTextField {
-           self.confirmPassphraseTextField.becomeFirstResponder()
+        if textField == passphraseTextField {
+            confirmPassphraseTextField.becomeFirstResponder()
         } else {
-           textField.resignFirstResponder()
+            textField.resignFirstResponder()
         }
         
         return true
@@ -400,12 +395,13 @@ extension KeyBackupSetupPassphraseViewController: UITextFieldDelegate {
 }
 
 // MARK: - KeyBackupSetupPassphraseViewModelViewDelegate
+
 extension KeyBackupSetupPassphraseViewController: KeyBackupSetupPassphraseViewModelViewDelegate {
     func keyBackupSetupPassphraseViewModel(_ viewModel: KeyBackupSetupPassphraseViewModelType, didUpdateViewState viewSate: KeyBackupSetupPassphraseViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
     
     func keyBackupSetupPassphraseViewModelShowSkipAlert(_ viewModel: KeyBackupSetupPassphraseViewModelType) {
-        self.showSkipAlert()
+        showSkipAlert()
     }
 }

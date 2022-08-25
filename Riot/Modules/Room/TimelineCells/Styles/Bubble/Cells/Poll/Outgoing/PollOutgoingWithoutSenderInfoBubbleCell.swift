@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class PollOutgoingWithoutSenderInfoBubbleCell: PollBaseBubbleCell, BubbleOutgoingRoomCellProtocol {
-        
     override func setupViews() {
         super.setupViews()
         
@@ -29,12 +28,12 @@ class PollOutgoingWithoutSenderInfoBubbleCell: PollBaseBubbleCell, BubbleOutgoin
         roomCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
         roomCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
         
-        self.setupBubbleDecorations()
+        setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {
         super.update(theme: theme)
         
-        self.bubbleBackgroundColor = theme.roomCellOutgoingBubbleBackgroundColor
+        bubbleBackgroundColor = theme.roomCellOutgoingBubbleBackgroundColor
     }
 }

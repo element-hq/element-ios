@@ -21,7 +21,6 @@ import XCTest
 import MobileCoreServices
 
 class MXKUTITests: XCTestCase {
-
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -54,7 +53,6 @@ class MXKUTITests: XCTestCase {
     }
     
     func testUTIFromLocalFileURLLoadingResourceValues() {
-        
         let bundle = Bundle(for: type(of: self))
         
         guard let localFileURL = bundle.url(forResource: "Text", withExtension: "txt") else {
@@ -76,7 +74,6 @@ class MXKUTITests: XCTestCase {
     }
     
     func testUTIFromLocalFileURL() {
-        
         let bundle = Bundle(for: type(of: self))
         
         guard let localFileURL = bundle.url(forResource: "Text", withExtension: "txt") else {

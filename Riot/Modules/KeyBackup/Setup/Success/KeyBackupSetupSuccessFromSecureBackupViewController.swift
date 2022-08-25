@@ -20,18 +20,17 @@ protocol KeyBackupSetupSuccessFromSecureBackupViewControllerDelegate: AnyObject 
     func keyBackupSetupSuccessFromSecureBackupViewControllerDidTapDoneAction(_ viewController: KeyBackupSetupSuccessFromSecureBackupViewController)
 }
 
-final class KeyBackupSetupSuccessFromSecureBackupViewController: UIViewController {    
-    
+final class KeyBackupSetupSuccessFromSecureBackupViewController: UIViewController {
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var keyBackupLogoImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var keyBackupLogoImageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var doneButtonBackgroundView: UIView!
-    @IBOutlet private weak var doneButton: UIButton!
+    @IBOutlet private var doneButtonBackgroundView: UIView!
+    @IBOutlet private var doneButton: UIButton!
     
     // MARK: Private
     
@@ -56,52 +55,51 @@ final class KeyBackupSetupSuccessFromSecureBackupViewController: UIViewControlle
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.keyBackupSetupTitle
+        title = VectorL10n.keyBackupSetupTitle
         
-        self.setupViews()
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        setupViews()
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Hide back button
-        self.navigationItem.setHidesBackButton(true, animated: animated)
+        navigationItem.setHidesBackButton(true, animated: animated)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
     
     private func setupViews() {
-        
         let keybackupLogoImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
-        self.keyBackupLogoImageView.image = keybackupLogoImage
+        keyBackupLogoImageView.image = keybackupLogoImage
         
-        self.titleLabel.text = VectorL10n.keyBackupSetupSuccessTitle
-        self.informationLabel.text = VectorL10n.keyBackupSetupSuccessFromSecureBackupInfo
+        titleLabel.text = VectorL10n.keyBackupSetupSuccessTitle
+        informationLabel.text = VectorL10n.keyBackupSetupSuccessFromSecureBackupInfo
         
-        self.doneButton.setTitle(VectorL10n.keyBackupSetupSuccessFromPassphraseDoneAction, for: .normal)
+        doneButton.setTitle(VectorL10n.keyBackupSetupSuccessFromPassphraseDoneAction, for: .normal)
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.keyBackupLogoImageView.tintColor = theme.textPrimaryColor
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textPrimaryColor
+        keyBackupLogoImageView.tintColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.doneButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.doneButton)
+        doneButtonBackgroundView.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: doneButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -109,12 +107,12 @@ final class KeyBackupSetupSuccessFromSecureBackupViewController: UIViewControlle
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     // MARK: - Actions
     
     @IBAction private func doneButtonAction(_ sender: Any) {
-        self.delegate?.keyBackupSetupSuccessFromSecureBackupViewControllerDidTapDoneAction(self)
+        delegate?.keyBackupSetupSuccessFromSecureBackupViewControllerDidTapDoneAction(self)
     }
 }

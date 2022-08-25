@@ -19,7 +19,6 @@
 import Foundation
 
 final class OptionListViewModel: OptionListViewModelProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -34,7 +33,7 @@ final class OptionListViewModel: OptionListViewModelProtocol {
     
     private(set) var viewState: OptionListViewState = .idle {
         didSet {
-            self.viewDelegate?.optionListViewModel(self, didUpdateViewState: viewState)
+            viewDelegate?.optionListViewModel(self, didUpdateViewState: viewState)
         }
     }
     
@@ -50,17 +49,17 @@ final class OptionListViewModel: OptionListViewModelProtocol {
     func process(viewAction: OptionListViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .selected(let index):
-            self.coordinatorDelegate?.optionListViewModel(self, didSelectOptionAt: index)
+            coordinatorDelegate?.optionListViewModel(self, didSelectOptionAt: index)
         case .cancel:
-            self.coordinatorDelegate?.optionListViewModelDidCancel(self)
+            coordinatorDelegate?.optionListViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        self.viewState = .loaded(title, options)
+        viewState = .loaded(title, options)
     }
 }

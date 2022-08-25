@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 import Reusable
 
 class UserAnnotationCalloutContentView: UIView, Themable, NibLoadable {
-    
     // MARK: - Constants
     
     private static let sizingView = UserAnnotationCalloutContentView.instantiate()
@@ -39,16 +38,16 @@ class UserAnnotationCalloutContentView: UIView, Themable, NibLoadable {
     // MARK: - Setup
     
     static func instantiate() -> UserAnnotationCalloutContentView {
-        return UserAnnotationCalloutContentView.loadFromNib()
+        UserAnnotationCalloutContentView.loadFromNib()
     }
     
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.backgroundView.backgroundColor = theme.colors.background
-        self.titleLabel.textColor = theme.colors.secondaryContent
-        self.titleLabel.font = theme.fonts.callout
-        self.shareButton.tintColor = theme.colors.secondaryContent
+        backgroundView.backgroundColor = theme.colors.background
+        titleLabel.textColor = theme.colors.secondaryContent
+        titleLabel.font = theme.fonts.callout
+        shareButton.tintColor = theme.colors.secondaryContent
     }
 
     // MARK: - Life cycle
@@ -56,18 +55,18 @@ class UserAnnotationCalloutContentView: UIView, Themable, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.titleLabel.text = VectorL10n.locationSharingLiveMapCalloutTitle
-        self.backgroundView.layer.masksToBounds = true
+        titleLabel.text = VectorL10n.locationSharingLiveMapCalloutTitle
+        backgroundView.layer.masksToBounds = true
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.backgroundView.layer.cornerRadius = Constants.cornerRadius
+        backgroundView.layer.cornerRadius = Constants.cornerRadius
     }
     
     static func contentViewSize() -> CGSize {
-        let sizingView = self.sizingView
+        let sizingView = sizingView
 
         sizingView.frame = CGRect(x: 0, y: 0, width: 1, height: Constants.height)
 
@@ -77,8 +76,8 @@ class UserAnnotationCalloutContentView: UIView, Themable, NibLoadable {
         let fittingSize = CGSize(width: UIView.layoutFittingCompressedSize.width, height: Constants.height)
 
         let size = sizingView.systemLayoutSizeFitting(fittingSize,
-                                                             withHorizontalFittingPriority: .fittingSizeLevel,
-                                                             verticalFittingPriority: .required)
+                                                      withHorizontalFittingPriority: .fittingSizeLevel,
+                                                      verticalFittingPriority: .required)
 
         return size
     }

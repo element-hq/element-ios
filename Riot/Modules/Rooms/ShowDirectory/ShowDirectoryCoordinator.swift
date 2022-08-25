@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -52,12 +51,12 @@ final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
     
     // MARK: - Public methods
     
-    func start() {            
-        self.showDirectoryViewModel.coordinatorDelegate = self
+    func start() {
+        showDirectoryViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.showDirectoryViewController
+        showDirectoryViewController
     }
     
     // MARK: - Private
@@ -65,11 +64,11 @@ final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
     private func createDirectoryServerPickerViewController() -> DirectoryServerPickerViewController {
         let controller = DirectoryServerPickerViewController()
         controller.finalizeInit()
-        let dataSource: MXKDirectoryServersDataSource = MXKDirectoryServersDataSource(matrixSession: session)
+        let dataSource = MXKDirectoryServersDataSource(matrixSession: session)
         dataSource.finalizeInitialization()
         dataSource.roomDirectoryServers = BuildSettings.publicRoomsDirectoryServers
         
-        controller.display(with: dataSource) { [weak self] (cellData) in
+        controller.display(with: dataSource) { [weak self] cellData in
             guard let self = self else { return }
             guard let cellData = cellData else { return }
             
@@ -81,25 +80,26 @@ final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
 }
 
 // MARK: - ShowDirectoryViewModelCoordinatorDelegate
+
 extension ShowDirectoryCoordinator: ShowDirectoryViewModelCoordinatorDelegate {
     func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didSelectRoomWithIdOrAlias roomIdOrAlias: String) {
-        self.delegate?.showDirectoryCoordinator(self, didSelectRoomWithIdOrAlias: roomIdOrAlias)
+        delegate?.showDirectoryCoordinator(self, didSelectRoomWithIdOrAlias: roomIdOrAlias)
     }
     
     func showDirectoryViewModelDidSelect(_ viewModel: ShowDirectoryViewModelType, room: MXPublicRoom) {
-        self.delegate?.showDirectoryCoordinator(self, didSelectRoom: room)
+        delegate?.showDirectoryCoordinator(self, didSelectRoom: room)
     }
     
     func showDirectoryViewModelDidTapCreateNewRoom(_ viewModel: ShowDirectoryViewModelType) {
-        self.delegate?.showDirectoryCoordinatorDidTapCreateNewRoom(self)
+        delegate?.showDirectoryCoordinatorDidTapCreateNewRoom(self)
     }
     
     func showDirectoryViewModelDidCancel(_ viewModel: ShowDirectoryViewModelType) {
-        self.delegate?.showDirectoryCoordinatorDidCancel(self)
+        delegate?.showDirectoryCoordinatorDidCancel(self)
     }
     
     func showDirectoryViewModelWantsToShowDirectoryServerPicker(_ viewModel: ShowDirectoryViewModelType) {
-        let controller = self.createDirectoryServerPickerViewController()
-        self.delegate?.showDirectoryCoordinatorWantsToShow(self, viewController: controller)
+        let controller = createDirectoryServerPickerViewController()
+        delegate?.showDirectoryCoordinatorWantsToShow(self, viewController: controller)
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import UIKit
 /// An object to record how long a screen has been presented for and
 /// report the screen's display to the `Analytics` object.
 @objcMembers class AnalyticsScreenTimer: NSObject {
-    
     // MARK: - Properties
     
     /// The screen being tracked.
@@ -70,7 +69,7 @@ import UIKit
         guard let duration = duration else { return }
         
         Analytics.shared.trackScreen(screen, duration: duration)
-        self.startDate = nil
+        startDate = nil
     }
     
     // MARK: - Private

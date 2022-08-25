@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,25 +18,25 @@ import Foundation
 import UIKit
 
 extension RoomInputToolbarView {
-    open override func sendCurrentMessage() {
+    override open func sendCurrentMessage() {
         // Triggers auto-correct if needed.
-        if self.isFirstResponder {
+        if isFirstResponder {
             let temp = UITextField(frame: .zero)
             temp.isHidden = true
-            self.addSubview(temp)
+            addSubview(temp)
             temp.becomeFirstResponder()
-            self.becomeFirstResponder()
+            becomeFirstResponder()
             temp.removeFromSuperview()
         }
 
         // Send message if any.
-        if let messageToSend = self.attributedTextMessage, messageToSend.length > 0 {
-            self.delegate.roomInputToolbarView(self, sendAttributedTextMessage: messageToSend)
+        if let messageToSend = attributedTextMessage, messageToSend.length > 0 {
+            delegate.roomInputToolbarView(self, sendAttributedTextMessage: messageToSend)
         }
 
         // Reset message, disable view animation during the update to prevent placeholder distorsion.
         UIView.setAnimationsEnabled(false)
-        self.attributedTextMessage = nil
+        attributedTextMessage = nil
         UIView.setAnimationsEnabled(true)
     }
 }

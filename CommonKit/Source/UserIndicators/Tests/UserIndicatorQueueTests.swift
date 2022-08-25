@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,7 @@ class UserIndicatorQueueTests: XCTestCase {
     }
     
     func makeRequest() -> UserIndicatorRequest {
-        return UserIndicatorRequest(
+        UserIndicatorRequest(
             presenter: UserIndicatorPresenterSpy(),
             dismissal: .manual
         )

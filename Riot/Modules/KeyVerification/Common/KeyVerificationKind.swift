@@ -17,12 +17,11 @@ import Foundation
 
 enum KeyVerificationKind {
     case otherSession // An other session
-    case thisSession  // My current session is new
-    case newSession   // My other session is new
-    case user         // Another user
+    case thisSession // My current session is new
+    case newSession // My other session is new
+    case user // Another user
     
     var verificationTitle: String {
-        
         let title: String
         
         switch self {

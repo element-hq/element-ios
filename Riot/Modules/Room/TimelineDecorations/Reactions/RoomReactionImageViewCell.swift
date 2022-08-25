@@ -14,19 +14,18 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class RoomReactionImageViewCell: UICollectionViewCell, NibReusable, Themable {
-    
     // MARK: - Constants
 
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var reactionBackgroundView: UIView!
-    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private var reactionBackgroundView: UIView!
+    @IBOutlet private var imageView: UIImageView!
     
     // MARK: Private
     
@@ -38,13 +37,13 @@ final class RoomReactionImageViewCell: UICollectionViewCell, NibReusable, Themab
         super.awakeFromNib()
         // Initialization code
         
-        self.reactionBackgroundView.layer.masksToBounds = true
+        reactionBackgroundView.layer.masksToBounds = true
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        self.reactionBackgroundView.layer.cornerRadius = self.reactionBackgroundView.bounds.midY
+        reactionBackgroundView.layer.cornerRadius = reactionBackgroundView.bounds.midY
     }
 
     // MARK: - Life cycle
@@ -56,7 +55,7 @@ final class RoomReactionImageViewCell: UICollectionViewCell, NibReusable, Themab
          (42138227) — Workaround: Don't call the cell's setNeedsUpdateConstraints() method unless you need to support live constraint changes.
          If you need to support live constraint changes, call updateConstraintsIfNeeded() before calling systemLayoutSizeFitting(_:)."
          */
-        self.updateConstraintsIfNeeded()
+        updateConstraintsIfNeeded()
         
         return super.preferredLayoutAttributesFitting(layoutAttributes)
     }
@@ -65,20 +64,20 @@ final class RoomReactionImageViewCell: UICollectionViewCell, NibReusable, Themab
     
     func fill(actionIcon: UIImage) {
         imageView.image = actionIcon.withRenderingMode(.alwaysTemplate)
-        self.updateViews()
+        updateViews()
     }
     
     func update(theme: Theme) {
         self.theme = theme
-        self.updateViews()
+        updateViews()
     }
     
     // MARK: - Private
     
     private func updateViews() {
-        self.imageView.tintColor = self.theme?.textSecondaryColor
+        imageView.tintColor = theme?.textSecondaryColor
         
-        self.reactionBackgroundView.layer.borderWidth = 0.0
-        self.reactionBackgroundView.backgroundColor = self.theme?.headerBackgroundColor
+        reactionBackgroundView.layer.borderWidth = 0.0
+        reactionBackgroundView.backgroundColor = theme?.headerBackgroundColor
     }
 }

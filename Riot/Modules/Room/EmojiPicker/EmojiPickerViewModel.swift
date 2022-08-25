@@ -19,7 +19,6 @@
 import Foundation
 
 final class EmojiPickerViewModel: EmojiPickerViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -31,9 +30,7 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
     private let emojiStore: EmojiStore
     private let processingQueue: DispatchQueue
     
-    private lazy var aggregatedReactionsByEmoji: [String: MXReactionCount] = {
-        return self.buildAggregatedReactionsByEmoji()
-    }()
+    private lazy var aggregatedReactionsByEmoji: [String: MXReactionCount] = self.buildAggregatedReactionsByEmoji()
     
     // MARK: Public
 
@@ -46,9 +43,9 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
         self.session = session
         self.roomId = roomId
         self.eventId = eventId
-        self.emojiService = EmojiMartService()
-        self.emojiStore = EmojiStore.shared
-        self.processingQueue = DispatchQueue(label: "\(type(of: self))")
+        emojiService = EmojiMartService()
+        emojiStore = EmojiStore.shared
+        processingQueue = DispatchQueue(label: "\(type(of: self))")
     }
     
     // MARK: - Public
@@ -56,32 +53,32 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
     func process(viewAction: EmojiPickerViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .tap(emojiItemViewData: let emojiItemViewData):
             let emoji = emojiItemViewData.emoji
             
             if emojiItemViewData.isSelected {
-                self.coordinatorDelegate?.emojiPickerViewModel(self, didRemoveEmoji: emoji, forEventId: self.eventId)
+                coordinatorDelegate?.emojiPickerViewModel(self, didRemoveEmoji: emoji, forEventId: eventId)
             } else {
-                self.coordinatorDelegate?.emojiPickerViewModel(self, didAddEmoji: emoji, forEventId: self.eventId)
+                coordinatorDelegate?.emojiPickerViewModel(self, didAddEmoji: emoji, forEventId: eventId)
             }
         case .search(text: let searchText):
-            self.searchEmojis(with: searchText)
+            searchEmojis(with: searchText)
         case .cancel:
-            self.coordinatorDelegate?.emojiPickerViewModelDidCancel(self)
+            coordinatorDelegate?.emojiPickerViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        if self.emojiStore.getAll().isEmpty == false {
-            let emojiCategories = self.emojiStore.getAll()
-            let emojiCatagoryViewDataList = self.emojiCatagoryViewDataList(from: emojiCategories)
-            self.update(viewState: .loaded(emojiCategories: emojiCatagoryViewDataList))
+        if emojiStore.getAll().isEmpty == false {
+            let emojiCategories = emojiStore.getAll()
+            let emojiCatagoryViewDataList = emojiCatagoryViewDataList(from: emojiCategories)
+            update(viewState: .loaded(emojiCategories: emojiCatagoryViewDataList))
         } else {
-            self.update(viewState: .loading)
-            self.emojiService.getEmojiCategories { response in
+            update(viewState: .loading)
+            emojiService.getEmojiCategories { response in
                 switch response {
                 case .success(let emojiCategories):
                     
@@ -97,7 +94,7 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
     }
     
     private func searchEmojis(with searchText: String?) {
-        self.processingQueue.async {
+        processingQueue.async {
             let filteredEmojiCategories: [EmojiCategory]
             
             if let searchText = searchText, searchText.isEmpty == false {
@@ -115,34 +112,34 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
     }
     
     private func update(viewState: EmojiPickerViewState) {
-        self.viewDelegate?.emojiPickerViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.emojiPickerViewModel(self, didUpdateViewState: viewState)
     }
         
     private func emojiCatagoryViewDataList(from emojiCategories: [EmojiCategory]) -> [EmojiPickerCategoryViewData] {
-        return emojiCategories.map { (emojiCategory) -> EmojiPickerCategoryViewData in
-            let emojiPickerViewDataList = emojiCategory.emojis.map({ (emojiItem) -> EmojiPickerItemViewData in
+        emojiCategories.map { emojiCategory -> EmojiPickerCategoryViewData in
+            let emojiPickerViewDataList = emojiCategory.emojis.map { emojiItem -> EmojiPickerItemViewData in
                 let isSelected = self.isUserReacted(with: emojiItem.value)
                 return EmojiPickerItemViewData(identifier: emojiItem.shortName, emoji: emojiItem.value, isSelected: isSelected)
-            })
+            }
             return EmojiPickerCategoryViewData(identifier: emojiCategory.identifier, name: emojiCategory.name, emojiViewDataList: emojiPickerViewDataList)
         }
     }
     
     private func isUserReacted(with emoji: String) -> Bool {
-        guard let reactionCount = self.aggregatedReactionsByEmoji[emoji] else {
+        guard let reactionCount = aggregatedReactionsByEmoji[emoji] else {
             return false
         }
         return reactionCount.myUserHasReacted
     }
     
     private func buildAggregatedReactionsByEmoji() -> [String: MXReactionCount] {
-        guard let aggregatedReactions = self.session.aggregations.aggregatedReactions(onEvent: self.eventId, inRoom: self.roomId) else {
+        guard let aggregatedReactions = session.aggregations.aggregatedReactions(onEvent: eventId, inRoom: roomId) else {
             return [:]
         }
         
         let initial: [String: MXReactionCount] = [:]
         
-        return aggregatedReactions.reactions.reduce(into: initial) { (aggregatedReactionsByEmoji, reactionCount) in
+        return aggregatedReactions.reactions.reduce(into: initial) { aggregatedReactionsByEmoji, reactionCount in
             aggregatedReactionsByEmoji[reactionCount.reaction] = reactionCount
         }
     }

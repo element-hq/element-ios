@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import Foundation
 
-
 class SpaceDetailViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -33,31 +31,31 @@ class SpaceDetailViewController: UIViewController {
     private var viewModel: SpaceDetailViewModelType!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
-    private var isJoined: Bool = false
-    private var showCancel: Bool = true
+    private var isJoined = false
+    private var showCancel = true
 
     // MARK: Outlets
 
-    @IBOutlet private weak var inviterPanelHeight: NSLayoutConstraint!
-    @IBOutlet private weak var inviterAvatarView: RoomAvatarView!
-    @IBOutlet private weak var inviterTitleLabel: UILabel!
-    @IBOutlet private weak var inviterIdLabel: UILabel!
-    @IBOutlet private weak var inviterSeparatorView: UIView!
+    @IBOutlet private var inviterPanelHeight: NSLayoutConstraint!
+    @IBOutlet private var inviterAvatarView: RoomAvatarView!
+    @IBOutlet private var inviterTitleLabel: UILabel!
+    @IBOutlet private var inviterIdLabel: UILabel!
+    @IBOutlet private var inviterSeparatorView: UIView!
 
-    @IBOutlet private weak var avatarView: SpaceAvatarView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var closeButton: UIButton!
-    @IBOutlet private weak var spaceTypeIconView: UIImageView!
-    @IBOutlet private weak var spaceTypeLabel: UILabel!
-    @IBOutlet private weak var topicLabel: UILabel!
-    @IBOutlet private weak var topicScrollView: UIScrollView!
+    @IBOutlet private var avatarView: SpaceAvatarView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var closeButton: UIButton!
+    @IBOutlet private var spaceTypeIconView: UIImageView!
+    @IBOutlet private var spaceTypeLabel: UILabel!
+    @IBOutlet private var topicLabel: UILabel!
+    @IBOutlet private var topicScrollView: UIScrollView!
 
-    @IBOutlet private weak var joinButtonTopMargin: NSLayoutConstraint!
-    @IBOutlet private weak var joinButtonBottomMargin: NSLayoutConstraint!
-    @IBOutlet private weak var joinButton: UIButton!
-    @IBOutlet private weak var declineButton: UIButton!
-    @IBOutlet private weak var acceptButton: UIButton!
-    @IBOutlet private weak var inviteActionPanel: UIView!
+    @IBOutlet private var joinButtonTopMargin: NSLayoutConstraint!
+    @IBOutlet private var joinButtonBottomMargin: NSLayoutConstraint!
+    @IBOutlet private var joinButton: UIButton!
+    @IBOutlet private var declineButton: UIButton!
+    @IBOutlet private var acceptButton: UIButton!
+    @IBOutlet private var inviteActionPanel: UIView!
 
     // MARK: - Setup
     
@@ -77,24 +75,24 @@ class SpaceDetailViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
 
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.viewDelegate = self
+        viewModel.process(viewAction: .loadData)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        self.theme.statusBarStyle
     }
     
     override var preferredContentSize: CGSize {
         get {
-            return CGSize(width: Constants.popoverWidth, height: self.intrisicHeight(with: Constants.popoverWidth))
+            CGSize(width: Constants.popoverWidth, height: self.intrisicHeight(with: Constants.popoverWidth))
         }
         set {
             super.preferredContentSize = newValue
@@ -104,25 +102,25 @@ class SpaceDetailViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.viewModel.process(viewAction: .dismissed)
+        viewModel.process(viewAction: .dismissed)
     }
     
     // MARK: - IBActions
     
     @IBAction private func closeAction(sender: UIButton) {
-        self.viewModel.process(viewAction: .dismiss)
+        viewModel.process(viewAction: .dismiss)
     }
     
     @IBAction private func joinAction(sender: UIButton) {
         if isJoined {
-            self.viewModel.process(viewAction: .open)
+            viewModel.process(viewAction: .open)
         } else {
-            self.viewModel.process(viewAction: .join)
+            viewModel.process(viewAction: .join)
         }
     }
     
     @IBAction private func leaveAction(sender: UIButton) {
-        self.viewModel.process(viewAction: .leave)
+        viewModel.process(viewAction: .leave)
     }
     
     // MARK: - Private
@@ -130,34 +128,34 @@ class SpaceDetailViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.colors.background
+        view.backgroundColor = theme.colors.background
         
-        self.inviterAvatarView.update(theme: theme)
-        self.inviterTitleLabel.textColor = theme.colors.secondaryContent
-        self.inviterTitleLabel.font = theme.fonts.calloutSB
-        self.inviterIdLabel.textColor = theme.colors.secondaryContent
-        self.inviterIdLabel.font = theme.fonts.footnote
-        self.inviterSeparatorView.backgroundColor = theme.colors.navigation
+        inviterAvatarView.update(theme: theme)
+        inviterTitleLabel.textColor = theme.colors.secondaryContent
+        inviterTitleLabel.font = theme.fonts.calloutSB
+        inviterIdLabel.textColor = theme.colors.secondaryContent
+        inviterIdLabel.font = theme.fonts.footnote
+        inviterSeparatorView.backgroundColor = theme.colors.navigation
         
-        self.titleLabel.textColor = theme.colors.primaryContent
-        self.titleLabel.font = theme.fonts.title3SB
-        self.closeButton.backgroundColor = theme.roomInputTextBorder
-        self.closeButton.tintColor = theme.noticeSecondaryColor
-        self.avatarView.update(theme: theme)
+        titleLabel.textColor = theme.colors.primaryContent
+        titleLabel.font = theme.fonts.title3SB
+        closeButton.backgroundColor = theme.roomInputTextBorder
+        closeButton.tintColor = theme.noticeSecondaryColor
+        avatarView.update(theme: theme)
 
-        self.spaceTypeIconView.tintColor = theme.colors.tertiaryContent
-        self.spaceTypeLabel.font = theme.fonts.callout
-        self.spaceTypeLabel.textColor = theme.colors.tertiaryContent
-        self.topicLabel.font = theme.fonts.caption1
-        self.topicLabel.textColor = theme.colors.tertiaryContent
+        spaceTypeIconView.tintColor = theme.colors.tertiaryContent
+        spaceTypeLabel.font = theme.fonts.callout
+        spaceTypeLabel.textColor = theme.colors.tertiaryContent
+        topicLabel.font = theme.fonts.caption1
+        topicLabel.textColor = theme.colors.tertiaryContent
 
-        apply(theme: theme, on: self.joinButton)
-        apply(theme: theme, on: self.acceptButton)
+        apply(theme: theme, on: joinButton)
+        apply(theme: theme, on: acceptButton)
         
-        self.declineButton.layer.borderColor = theme.colors.alert.cgColor
-        self.declineButton.tintColor = theme.colors.alert
-        self.declineButton.setTitleColor(theme.colors.alert, for: .normal)
-        self.declineButton.titleLabel?.font = theme.fonts.body
+        declineButton.layer.borderColor = theme.colors.alert.cgColor
+        declineButton.tintColor = theme.colors.alert
+        declineButton.setTitleColor(theme.colors.alert, for: .normal)
+        declineButton.titleLabel?.font = theme.fonts.body
     }
     
     private func apply(theme: Theme, on button: UIButton) {
@@ -172,18 +170,18 @@ class SpaceDetailViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.closeButton.layer.masksToBounds = true
-        self.closeButton.layer.cornerRadius = self.closeButton.bounds.height / 2
-        self.closeButton.isHidden = !self.showCancel
+        closeButton.layer.masksToBounds = true
+        closeButton.layer.cornerRadius = closeButton.bounds.height / 2
+        closeButton.isHidden = !showCancel
         
-        self.setup(button: self.joinButton, withTitle: VectorL10n.join)
-        self.setup(button: self.acceptButton, withTitle: VectorL10n.accept)
-        self.setup(button: self.declineButton, withTitle: VectorL10n.decline)
-        self.declineButton.layer.borderWidth = 1.0
+        setup(button: joinButton, withTitle: VectorL10n.join)
+        setup(button: acceptButton, withTitle: VectorL10n.accept)
+        setup(button: declineButton, withTitle: VectorL10n.decline)
+        declineButton.layer.borderWidth = 1.0
     }
     
     private func setup(button: UIButton, withTitle title: String) {
@@ -195,62 +193,62 @@ class SpaceDetailViewController: UIViewController {
     private func render(viewState: SpaceDetailViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let parameters):
-            self.renderLoaded(parameters: parameters)
+            renderLoaded(parameters: parameters)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(parameters: SpaceDetailLoadedParameters) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         
         switch parameters.membership {
         case .invite:
-            self.title = VectorL10n.spaceInviteNavTitle
-            self.joinButton.isHidden = true
-            self.inviteActionPanel.isHidden = false
+            title = VectorL10n.spaceInviteNavTitle
+            joinButton.isHidden = true
+            inviteActionPanel.isHidden = false
         case .join:
-            self.title = VectorL10n.spaceDetailNavTitle
-            self.inviterPanelHeight.constant = 0
-            self.joinButton.setTitle(VectorL10n.open, for: .normal)
-            self.isJoined = true
+            title = VectorL10n.spaceDetailNavTitle
+            inviterPanelHeight.constant = 0
+            joinButton.setTitle(VectorL10n.open, for: .normal)
+            isJoined = true
         default:
-            self.title = VectorL10n.spaceDetailNavTitle
-            self.inviterPanelHeight.constant = 0
+            title = VectorL10n.spaceDetailNavTitle
+            inviterPanelHeight.constant = 0
         }
         
         let avatarViewData = AvatarViewData(matrixItemId: parameters.spaceId,
                                             displayName: parameters.displayName,
                                             avatarUrl: parameters.avatarUrl,
-                                            mediaManager: self.mediaManager,
+                                            mediaManager: mediaManager,
                                             fallbackImage: .matrixItem(parameters.spaceId, parameters.displayName))
 
-        self.titleLabel.text = parameters.displayName
-        self.avatarView.fill(with: avatarViewData)
-        self.topicLabel.text = parameters.topic
+        titleLabel.text = parameters.displayName
+        avatarView.fill(with: avatarViewData)
+        topicLabel.text = parameters.topic
         
         let joinRuleString = parameters.joinRule == .public ? VectorL10n.spacePublicJoinRule : VectorL10n.spacePrivateJoinRule
         
         let membersCount = parameters.membersCount
         let membersString = membersCount == 1 ? VectorL10n.roomTitleOneMember : VectorL10n.roomTitleMembers("\(membersCount)")
-        self.spaceTypeLabel.text = "\(joinRuleString) · \(membersString)"
+        spaceTypeLabel.text = "\(joinRuleString) · \(membersString)"
         
         let joinRuleIcon = parameters.joinRule == .public ? Asset.Images.spaceTypeIcon : Asset.Images.spacePrivateIcon
-        self.spaceTypeIconView.image = joinRuleIcon.image
+        spaceTypeIconView.image = joinRuleIcon.image
         
-        self.inviterIdLabel.text = parameters.inviterId
+        inviterIdLabel.text = parameters.inviterId
         if let inviterId = parameters.inviterId {
-            self.inviterTitleLabel.text = "\(parameters.inviter?.displayname ?? inviterId) invited you"
+            inviterTitleLabel.text = "\(parameters.inviter?.displayname ?? inviterId) invited you"
             
             if let inviter = parameters.inviter {
-                let avatarViewData = AvatarViewData(matrixItemId: inviter.userId, displayName: inviter.displayname, avatarUrl: inviter.avatarUrl, mediaManager: self.mediaManager, fallbackImage: .matrixItem(inviter.userId, inviter.displayname))
-                self.inviterAvatarView.fill(with: avatarViewData)
+                let avatarViewData = AvatarViewData(matrixItemId: inviter.userId, displayName: inviter.displayname, avatarUrl: inviter.avatarUrl, mediaManager: mediaManager, fallbackImage: .matrixItem(inviter.userId, inviter.displayname))
+                inviterAvatarView.fill(with: avatarViewData)
             }
         }
         
@@ -258,34 +256,32 @@ class SpaceDetailViewController: UIViewController {
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     private func intrisicHeight(with width: CGFloat) -> CGFloat {
-        let topicHeight = min(self.topicLabel.sizeThatFits(CGSize(width: width - self.topicScrollView.frame.minX * 2, height: 0)).height, Constants.topicMaxHeight)
-        return self.topicScrollView.frame.minY + topicHeight + self.joinButton.frame.height + self.joinButtonTopMargin.constant + self.joinButtonBottomMargin.constant
+        let topicHeight = min(topicLabel.sizeThatFits(CGSize(width: width - topicScrollView.frame.minX * 2, height: 0)).height, Constants.topicMaxHeight)
+        return topicScrollView.frame.minY + topicHeight + joinButton.frame.height + joinButtonTopMargin.constant + joinButtonBottomMargin.constant
     }
 }
 
 // MARK: - SlidingModalPresentable
 
 extension SpaceDetailViewController: SlidingModalPresentable {
-    
     func allowsDismissOnBackgroundTap() -> Bool {
-        return true
+        true
     }
     
     func layoutHeightFittingWidth(_ width: CGFloat) -> CGFloat {
-        return self.intrisicHeight(with: width) + self.joinButtonTopMargin.constant + self.joinButtonBottomMargin.constant
+        intrisicHeight(with: width) + joinButtonTopMargin.constant + joinButtonBottomMargin.constant
     }
-    
 }
 
 // MARK: - SpaceDetailViewModelViewDelegate
 
 extension SpaceDetailViewController: SpaceDetailViewModelViewDelegate {
     func spaceDetailViewModel(_ viewModel: SpaceDetailViewModelType, didUpdateViewState viewSate: SpaceDetailViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

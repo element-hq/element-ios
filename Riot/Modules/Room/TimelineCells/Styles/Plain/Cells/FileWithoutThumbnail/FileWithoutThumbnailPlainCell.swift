@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class FileWithoutThumbnailPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable, RoomCellThreadSummaryDisplayable {
-    
     private(set) var fileAttachementView: FileWithoutThumbnailCellContentView!
     
     override func render(_ cellData: MXKCellData!) {
@@ -31,12 +30,12 @@ class FileWithoutThumbnailPlainCell: SizableBaseRoomCell, RoomCellReactionsDispl
             fatalError("Invalid attachment type passed to a file without thumbnail cell.")
         }
         
-        let attributedText = NSMutableAttributedString(attributedString: self.suitableAttributedTextMessage)
+        let attributedText = NSMutableAttributedString(attributedString: suitableAttributedTextMessage)
         attributedText.addAttributes([.foregroundColor: ThemeService.shared().theme.colors.secondaryContent],
                                      range: NSRange(location: 0, length: attributedText.length))
-        self.fileAttachementView.titleLabel.attributedText = attributedText
+        fileAttachementView.titleLabel.attributedText = attributedText
 
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     override func setupViews() {
@@ -65,9 +64,8 @@ class FileWithoutThumbnailPlainCell: SizableBaseRoomCell, RoomCellReactionsDispl
     }
     
     override func onContentViewTap(_ sender: UITapGestureRecognizer!) {
-        
-        if let bubbleData = self.bubbleData, bubbleData.isAttachment {
-            self.delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnAttachmentView, userInfo: nil)
+        if let bubbleData = bubbleData, bubbleData.isAttachment {
+            delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnAttachmentView, userInfo: nil)
         } else {
             super.onContentViewTap(sender)
         }

@@ -19,7 +19,6 @@
 import Foundation
 
 final class SideMenuViewModel: SideMenuViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -42,7 +41,7 @@ final class SideMenuViewModel: SideMenuViewModelType {
     }
     
     deinit {
-        self.cancelOperations()        
+        self.cancelOperations()
     }
     
     // MARK: - Public
@@ -50,26 +49,25 @@ final class SideMenuViewModel: SideMenuViewModelType {
     func process(viewAction: SideMenuViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .tap(menuItem: let menuItem, sourceView: let sourceView):
-            self.coordinatorDelegate?.sideMenuViewModel(self, didTapMenuItem: menuItem, fromSourceView: sourceView)
+            coordinatorDelegate?.sideMenuViewModel(self, didTapMenuItem: menuItem, fromSourceView: sourceView)
         case .tapHeader(sourceView: let sourceView):
-            self.coordinatorDelegate?.sideMenuViewModel(self, didTapMenuItem: .settings, fromSourceView: sourceView)
+            coordinatorDelegate?.sideMenuViewModel(self, didTapMenuItem: .settings, fromSourceView: sourceView)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
+        update(viewState: .loading)
 
-        self.update(viewState: .loading)
-
-        guard let mainUserSession = self.userSessionsService.mainUserSession else {
+        guard let mainUserSession = userSessionsService.mainUserSession else {
             return
         }
-        self.updateView(with: mainUserSession)
+        updateView(with: mainUserSession)
         
-        self.registerUserSessionsServiceNotifications()
+        registerUserSessionsServiceNotifications()
     }
     
     private func userAvatarViewData(from mxSession: MXSession) -> UserAvatarViewData? {
@@ -87,15 +85,15 @@ final class SideMenuViewModel: SideMenuViewModelType {
     }
     
     private func update(viewState: SideMenuViewState) {
-        self.viewDelegate?.sideMenuViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.sideMenuViewModel(self, didUpdateViewState: viewState)
     }
     
     private func cancelOperations() {
-        self.currentOperation?.cancel()
+        currentOperation?.cancel()
     }
     
     private func updateView(with userSession: UserSession) {
-        guard let userAvatarViewData = self.userAvatarViewData(from: userSession.matrixSession) else {
+        guard let userAvatarViewData = userAvatarViewData(from: userSession.matrixSession) else {
             return
         }
         
@@ -115,14 +113,13 @@ final class SideMenuViewModel: SideMenuViewModelType {
         
         let viewData = SideMenuViewData(userAvatarViewData: userAvatarViewData, sideMenuItems: sideMenuItems, appVersion: appVersion)
         
-        self.update(viewState: .loaded(viewData))
+        update(viewState: .loaded(viewData))
     }
     
     private func registerUserSessionsServiceNotifications() {
-        
         // Listen only notifications from the current UserSessionsService instance
                 
-        NotificationCenter.default.addObserver(self, selector: #selector(userSessionDidChange(_:)), name: UserSessionsService.userSessionDidChange, object: self.userSessionsService)
+        NotificationCenter.default.addObserver(self, selector: #selector(userSessionDidChange(_:)), name: UserSessionsService.userSessionDidChange, object: userSessionsService)
     }
     
     @objc private func userSessionDidChange(_ notification: Notification) {
@@ -131,8 +128,8 @@ final class SideMenuViewModel: SideMenuViewModelType {
         }
         
         // Main user session did change (maybe avatar or display name changed)
-        if let mainUserSession =  self.userSessionsService.mainUserSession, mainUserSession.userId == userSession.userId {
-            self.updateView(with: mainUserSession)
+        if let mainUserSession = userSessionsService.mainUserSession, mainUserSession.userId == userSession.userId {
+            updateView(with: mainUserSession)
         }
     }
 }

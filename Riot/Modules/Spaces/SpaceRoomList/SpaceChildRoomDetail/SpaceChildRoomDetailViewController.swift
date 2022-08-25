@@ -19,7 +19,6 @@
 import UIKit
 
 final class SpaceChildRoomDetailViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -29,16 +28,16 @@ final class SpaceChildRoomDetailViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var closeButton: UIButton!
-    @IBOutlet private weak var joinButton: UIButton!
-    @IBOutlet private weak var joinButtonTopMargin: NSLayoutConstraint!
-    @IBOutlet private weak var joinButtonBottomMargin: NSLayoutConstraint!
-    @IBOutlet private weak var avatarView: RoomAvatarView!
-    @IBOutlet private weak var userIconView: UIImageView!
-    @IBOutlet private weak var membersLabel: UILabel!
-    @IBOutlet private weak var topicLabel: UILabel!
-    @IBOutlet private weak var topicScrollView: UIScrollView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var closeButton: UIButton!
+    @IBOutlet private var joinButton: UIButton!
+    @IBOutlet private var joinButtonTopMargin: NSLayoutConstraint!
+    @IBOutlet private var joinButtonBottomMargin: NSLayoutConstraint!
+    @IBOutlet private var avatarView: RoomAvatarView!
+    @IBOutlet private var userIconView: UIImageView!
+    @IBOutlet private var membersLabel: UILabel!
+    @IBOutlet private var topicLabel: UILabel!
+    @IBOutlet private var topicScrollView: UIScrollView!
 
     // MARK: Private
 
@@ -63,16 +62,16 @@ final class SpaceChildRoomDetailViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,12 +81,12 @@ final class SpaceChildRoomDetailViewController: UIViewController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        self.theme.statusBarStyle
     }
     
     override var preferredContentSize: CGSize {
         get {
-            return CGSize(width: Constants.popoverWidth, height: self.intrisicHeight(with: Constants.popoverWidth))
+            CGSize(width: Constants.popoverWidth, height: intrisicHeight(with: Constants.popoverWidth))
         }
         set {
             super.preferredContentSize = newValue
@@ -99,24 +98,24 @@ final class SpaceChildRoomDetailViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.titleLabel.font = theme.fonts.title3SB
-        self.joinButton.backgroundColor = theme.colors.accent
-        self.joinButton.tintColor = theme.colors.background
-        self.joinButton.setTitleColor(theme.colors.background, for: .normal)
-        self.membersLabel.font = theme.fonts.caption1
-        self.membersLabel.textColor = theme.colors.tertiaryContent
-        self.topicLabel.font = theme.fonts.caption1
-        self.topicLabel.textColor = theme.colors.tertiaryContent
-        self.userIconView.tintColor = theme.colors.tertiaryContent
-        self.closeButton.backgroundColor = theme.roomInputTextBorder
-        self.closeButton.tintColor = theme.noticeSecondaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        titleLabel.font = theme.fonts.title3SB
+        joinButton.backgroundColor = theme.colors.accent
+        joinButton.tintColor = theme.colors.background
+        joinButton.setTitleColor(theme.colors.background, for: .normal)
+        membersLabel.font = theme.fonts.caption1
+        membersLabel.textColor = theme.colors.tertiaryContent
+        topicLabel.font = theme.fonts.caption1
+        topicLabel.textColor = theme.colors.tertiaryContent
+        userIconView.tintColor = theme.colors.tertiaryContent
+        closeButton.backgroundColor = theme.roomInputTextBorder
+        closeButton.tintColor = theme.noticeSecondaryColor
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -124,83 +123,80 @@ final class SpaceChildRoomDetailViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.closeButton.layer.masksToBounds = true
-        self.closeButton.layer.cornerRadius = self.closeButton.bounds.height / 2
+        closeButton.layer.masksToBounds = true
+        closeButton.layer.cornerRadius = closeButton.bounds.height / 2
 
-        self.title = VectorL10n.roomDetailsTitle
-        self.joinButton.layer.masksToBounds = true
-        self.joinButton.layer.cornerRadius = 8.0
-        self.joinButton.setTitle(VectorL10n.join, for: .normal)
+        title = VectorL10n.roomDetailsTitle
+        joinButton.layer.masksToBounds = true
+        joinButton.layer.cornerRadius = 8.0
+        joinButton.setTitle(VectorL10n.join, for: .normal)
     }
 
     private func render(viewState: SpaceChildRoomDetailViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let roomInfo, let avatarViewData, let isJoined):
-            self.renderLoaded(roomInfo: roomInfo, avatarViewData: avatarViewData, isJoined: isJoined)
+            renderLoaded(roomInfo: roomInfo, avatarViewData: avatarViewData, isJoined: isJoined)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(roomInfo: MXSpaceChildInfo, avatarViewData: AvatarViewData, isJoined: Bool) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.titleLabel.text = roomInfo.displayName
-        self.avatarView.fill(with: avatarViewData)
-        self.membersLabel.text = roomInfo.activeMemberCount == 1 ? VectorL10n.roomTitleOneMember : VectorL10n.roomTitleMembers("\(roomInfo.activeMemberCount)")
-        self.topicLabel.text = roomInfo.topic
-        self.joinButton .setTitle(isJoined ? VectorL10n.open : VectorL10n.join, for: .normal)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        titleLabel.text = roomInfo.displayName
+        avatarView.fill(with: avatarViewData)
+        membersLabel.text = roomInfo.activeMemberCount == 1 ? VectorL10n.roomTitleOneMember : VectorL10n.roomTitleMembers("\(roomInfo.activeMemberCount)")
+        topicLabel.text = roomInfo.topic
+        joinButton.setTitle(isJoined ? VectorL10n.open : VectorL10n.join, for: .normal)
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     private func intrisicHeight(with width: CGFloat) -> CGFloat {
-        let topicHeight = min(self.topicLabel.sizeThatFits(CGSize(width: width - self.topicScrollView.frame.minX * 2, height: 0)).height, Constants.topicMaxHeight)
-        return self.topicScrollView.frame.minY + topicHeight + self.joinButton.frame.height
+        let topicHeight = min(topicLabel.sizeThatFits(CGSize(width: width - topicScrollView.frame.minX * 2, height: 0)).height, Constants.topicMaxHeight)
+        return topicScrollView.frame.minY + topicHeight + joinButton.frame.height
     }
 
     // MARK: - IBActions
     
     @IBAction private func closeAction(sender: UIButton) {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
     
     @IBAction private func doneButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .complete)
+        viewModel.process(viewAction: .complete)
     }
 }
 
-
 // MARK: - SpaceChildRoomDetailViewModelViewDelegate
-extension SpaceChildRoomDetailViewController: SpaceChildRoomDetailViewModelViewDelegate {
 
+extension SpaceChildRoomDetailViewController: SpaceChildRoomDetailViewModelViewDelegate {
     func spaceChildRoomDetailViewModel(_ viewModel: SpaceChildRoomDetailViewModelType, didUpdateViewState viewSate: SpaceChildRoomDetailViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
 // MARK: - SlidingModalPresentable
 
 extension SpaceChildRoomDetailViewController: SlidingModalPresentable {
-    
     func allowsDismissOnBackgroundTap() -> Bool {
-        return true
+        true
     }
     
     func layoutHeightFittingWidth(_ width: CGFloat) -> CGFloat {
-        return self.intrisicHeight(with: width) + self.joinButtonTopMargin.constant + self.joinButtonBottomMargin.constant
+        intrisicHeight(with: width) + joinButtonTopMargin.constant + joinButtonBottomMargin.constant
     }
-
 }

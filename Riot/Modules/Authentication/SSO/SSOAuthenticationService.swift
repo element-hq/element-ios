@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,6 @@ enum SSOAuthenticationServiceError: Error {
 
 @objcMembers
 final class SSOAuthenticationService: NSObject {
-    
     // MARK: - Constants
     
     // MARK: - Properties
@@ -37,14 +36,14 @@ final class SSOAuthenticationService: NSObject {
     
     init(homeserverStringURL: String) {
         self.homeserverStringURL = homeserverStringURL
-        self.callBackURLScheme = BuildSettings.applicationURLScheme
+        callBackURLScheme = BuildSettings.applicationURLScheme
         super.init()
     }
     
     // MARK: - Public
     
     func authenticationURL(for identityProvider: String?, transactionId: String) -> URL? {
-        guard var authenticationComponent = URLComponents(string: self.homeserverStringURL) else {
+        guard var authenticationComponent = URLComponents(string: homeserverStringURL) else {
             return nil
         }
         
@@ -58,7 +57,7 @@ final class SSOAuthenticationService: NSObject {
         
         var queryItems: [URLQueryItem] = []
         
-        if let callBackURLScheme = self.buildCallBackURL(with: transactionId) {
+        if let callBackURLScheme = buildCallBackURL(with: transactionId) {
             queryItems.append(URLQueryItem(name: SSOURLConstants.Parameters.redirectURL, value: callBackURLScheme))
         }
         
@@ -79,7 +78,7 @@ final class SSOAuthenticationService: NSObject {
     // MARK: - Private
     
     private func buildCallBackURL(with transactionId: String) -> String? {
-        guard let callBackURLScheme = self.callBackURLScheme else {
+        guard let callBackURLScheme = callBackURLScheme else {
             return nil
         }
         var urlComponents = URLComponents()

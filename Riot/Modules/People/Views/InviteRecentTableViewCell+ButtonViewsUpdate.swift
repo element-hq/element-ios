@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,11 @@
 import Foundation
 
 extension InviteRecentTableViewCell {
-    
     @objc func resetButtonViews() {
-        self.leftButton.isEnabled = true
-        self.rightButton.isEnabled = true        
-        self.leftButtonActivityIndicator.stopAnimating()
-        self.rightButtonActivityIndicator.stopAnimating()
+        leftButton.isEnabled = true
+        rightButton.isEnabled = true
+        leftButtonActivityIndicator.stopAnimating()
+        rightButtonActivityIndicator.stopAnimating()
     }
     
     /// Update buttons according to current MXMembershipChangeState of the room
@@ -43,19 +42,19 @@ extension InviteRecentTableViewCell {
         
         let areButtonsEnabled = !(joinButtonIsLoading || leaveButtonIsLoading)
         
-        self.leftButton.isEnabled = areButtonsEnabled
-        self.rightButton.isEnabled = areButtonsEnabled
+        leftButton.isEnabled = areButtonsEnabled
+        rightButton.isEnabled = areButtonsEnabled
         
         if leaveButtonIsLoading {
-            self.leftButtonActivityIndicator.startAnimating()
+            leftButtonActivityIndicator.startAnimating()
         } else {
-            self.leftButtonActivityIndicator.stopAnimating()
+            leftButtonActivityIndicator.stopAnimating()
         }
         
         if joinButtonIsLoading {
-            self.rightButtonActivityIndicator.startAnimating()
+            rightButtonActivityIndicator.startAnimating()
         } else {
-            self.rightButtonActivityIndicator.stopAnimating()
+            rightButtonActivityIndicator.stopAnimating()
         }
     }
 }

@@ -19,25 +19,24 @@
 import UIKit
 
 final class KeyVerificationVerifyBySASViewController: UIViewController {
-
     // MARK: - Constants
     
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var decimalLabel: UILabel!
-    @IBOutlet private weak var emojisCollectionView: UICollectionView!
-    @IBOutlet private weak var waitingPartnerLabel: UILabel!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
+    @IBOutlet private var decimalLabel: UILabel!
+    @IBOutlet private var emojisCollectionView: UICollectionView!
+    @IBOutlet private var waitingPartnerLabel: UILabel!
     
-    @IBOutlet private weak var buttonsStackView: UIStackView!
-    @IBOutlet private weak var cancelButton: RoundedButton!
-    @IBOutlet private weak var validateButton: RoundedButton!
-    @IBOutlet private weak var additionalInformationLabel: UILabel!
+    @IBOutlet private var buttonsStackView: UIStackView!
+    @IBOutlet private var cancelButton: RoundedButton!
+    @IBOutlet private var validateButton: RoundedButton!
+    @IBOutlet private var additionalInformationLabel: UILabel!
     
     // MARK: Private
 
@@ -62,28 +61,28 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.vc_removeBackTitle()
+        vc_removeBackTitle()
         
-        self.setupViews()
-        self.errorPresenter = MXKErrorAlertPresentation()
-        self.activityPresenter = ActivityIndicatorPresenter()
+        setupViews()
+        errorPresenter = MXKErrorAlertPresentation()
+        activityPresenter = ActivityIndicatorPresenter()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.viewDelegate = self
+        viewModel.process(viewAction: .loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // Hide back button
-        self.navigationItem.setHidesBackButton(true, animated: animated)
+        navigationItem.setHidesBackButton(true, animated: animated)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -91,19 +90,19 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textPrimaryColor
-        self.decimalLabel.textColor = theme.textPrimaryColor
-        self.waitingPartnerLabel.textColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
+        decimalLabel.textColor = theme.textPrimaryColor
+        waitingPartnerLabel.textColor = theme.textPrimaryColor
 
-        self.cancelButton.update(theme: theme)
-        self.validateButton.update(theme: theme)
+        cancelButton.update(theme: theme)
+        validateButton.update(theme: theme)
 
         emojisCollectionView.reloadData()
     }
@@ -113,7 +112,7 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -121,17 +120,17 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
             self?.cancelAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.scrollView.keyboardDismissMode = .interactive
+        scrollView.keyboardDismissMode = .interactive
 
         let isVerificationByEmoji = viewModel.emojis != nil
         
         if isVerificationByEmoji {
-            self.decimalLabel.isHidden = true
+            decimalLabel.isHidden = true
         } else {
-            self.emojisCollectionView.isHidden = true
-            self.decimalLabel.text = self.viewModel.decimal
+            emojisCollectionView.isHidden = true
+            decimalLabel.text = viewModel.decimal
         }
         
         let instructionText: String
@@ -145,118 +144,113 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
             adviceText = VectorL10n.deviceVerificationSecurityAdviceNumber
         }
 
-        self.title = self.viewModel.verificationKind.verificationTitle
-        self.titleLabel.text = instructionText
-        self.informationLabel.text = adviceText
-        self.waitingPartnerLabel.text = VectorL10n.deviceVerificationVerifyWaitPartner
+        title = viewModel.verificationKind.verificationTitle
+        titleLabel.text = instructionText
+        informationLabel.text = adviceText
+        waitingPartnerLabel.text = VectorL10n.deviceVerificationVerifyWaitPartner
 
-        self.waitingPartnerLabel.isHidden = true
+        waitingPartnerLabel.isHidden = true
 
-        self.cancelButton.setTitle(VectorL10n.keyVerificationVerifySasCancelAction, for: .normal)
-        self.cancelButton.actionStyle = .cancel
-        self.validateButton.setTitle(VectorL10n.keyVerificationVerifySasValidateAction, for: .normal)
+        cancelButton.setTitle(VectorL10n.keyVerificationVerifySasCancelAction, for: .normal)
+        cancelButton.actionStyle = .cancel
+        validateButton.setTitle(VectorL10n.keyVerificationVerifySasValidateAction, for: .normal)
         
-        self.additionalInformationLabel.text = VectorL10n.keyVerificationVerifySasAdditionalInformation
+        additionalInformationLabel.text = VectorL10n.keyVerificationVerifySasAdditionalInformation
     }
 
     private func render(viewState: KeyVerificationVerifyViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded:
-            self.renderVerified()
+            renderVerified()
         case .cancelled(let reason):
-            self.renderCancelled(reason: reason)
+            renderCancelled(reason: reason)
         case .cancelledByMe(let reason):
-            self.renderCancelledByMe(reason: reason)
+            renderCancelledByMe(reason: reason)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderVerified() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        self.buttonsStackView.isHidden = true
-        self.waitingPartnerLabel.isHidden = false
+        buttonsStackView.isHidden = true
+        waitingPartnerLabel.isHidden = false
     }
 
     private func renderCancelled(reason: MXTransactionCancelCode) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-        self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+        errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
             self.viewModel.process(viewAction: .cancel)
         }
     }
 
     private func renderCancelledByMe(reason: MXTransactionCancelCode) {
         if reason.value != MXTransactionCancelCode.user().value {
-            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+            activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-            self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
+            errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
                 self.viewModel.process(viewAction: .cancel)
             }
         } else {
-            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+            activityPresenter.removeCurrentActivityIndicator(animated: true)
         }
     }
 
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
-    
     // MARK: - Actions
 
     private func cancelAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
     
     @IBAction private func cancelButtonAction(_ sender: Any) {
-        self.cancelAction()
+        cancelAction()
     }
     
     @IBAction private func validateButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .confirm)
+        viewModel.process(viewAction: .confirm)
     }
 }
-
 
 // MARK: - DeviceVerificationVerifyViewModelViewDelegate
-extension KeyVerificationVerifyBySASViewController: KeyVerificationVerifyBySASViewModelViewDelegate {
 
+extension KeyVerificationVerifyBySASViewController: KeyVerificationVerifyBySASViewModelViewDelegate {
     func keyVerificationVerifyBySASViewModel(_ viewModel: KeyVerificationVerifyBySASViewModelType, didUpdateViewState viewSate: KeyVerificationVerifyViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
-
 extension KeyVerificationVerifyBySASViewController: UICollectionViewDataSource {
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let emojis = self.viewModel.emojis else {
+        guard let emojis = viewModel.emojis else {
             return 0
         }
         return emojis.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(for: indexPath, cellType: VerifyEmojiCollectionViewCell.self)
 
-        guard let emoji = self.viewModel.emojis?[indexPath.row] else {
+        guard let emoji = viewModel.emojis?[indexPath.row] else {
             return UICollectionViewCell()
         }
 
         cell.emoji.text = emoji.emoji
-        cell.name.text =  VectorL10n.tr("Vector", "device_verification_emoji_\(emoji.name)")
+        cell.name.text = VectorL10n.tr("Vector", "device_verification_emoji_\(emoji.name)")
         
-        cell.update(theme: self.theme)
+        cell.update(theme: theme)
 
         return cell
     }

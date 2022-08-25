@@ -19,7 +19,6 @@
 import Foundation
 
 final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
-    
     // MARK: - Constants
     
     private enum Pagination {
@@ -42,9 +41,7 @@ final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
     private var nextBatch: String?
     private var viewState: ReactionHistoryViewState?
     
-    private lazy var roomMembers: MXRoomMembers? = {
-        return buildRoomMembers()
-    }()
+    private lazy var roomMembers: MXRoomMembers? = buildRoomMembers()
     
     // MARK: Public
 
@@ -55,11 +52,11 @@ final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
     
     init(session: MXSession, roomId: String, eventId: String) {
         self.session = session
-        self.aggregations = session.aggregations
+        aggregations = session.aggregations
         self.roomId = roomId
         self.eventId = eventId
-        self.eventFormatter = EventFormatter(matrixSession: session)
-        self.reactionsFormattingQueue = DispatchQueue(label: "\(type(of: self)).reactionsFormattingQueue")
+        eventFormatter = EventFormatter(matrixSession: session)
+        reactionsFormattingQueue = DispatchQueue(label: "\(type(of: self)).reactionsFormattingQueue")
     }
     
     // MARK: - Public
@@ -67,17 +64,16 @@ final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
     func process(viewAction: ReactionHistoryViewAction) {
         switch viewAction {
         case .loadMore:
-            self.loadMoreHistory()
+            loadMoreHistory()
         case .close:
-            self.coordinatorDelegate?.reactionHistoryViewModelDidClose(self)
+            coordinatorDelegate?.reactionHistoryViewModelDidClose(self)
         }
     }
     
     // MARK: - Private
     
-    
     private func canLoadMoreHistory() -> Bool {
-        guard let viewState = self.viewState else {
+        guard let viewState = viewState else {
             return true
         }
         
@@ -96,19 +92,19 @@ final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
     }
     
     private func loadMoreHistory() {
-        guard self.canLoadMoreHistory() else {
+        guard canLoadMoreHistory() else {
             MXLog.debug("[ReactionHistoryViewModel] loadMoreHistory: pending loading or all data loaded")
             return
         }
         
-        guard self.operation == nil else {
+        guard operation == nil else {
             MXLog.debug("[ReactionHistoryViewModel] loadMoreHistory: operation already pending")
             return
         }
         
-        self.update(viewState: .loading)
+        update(viewState: .loading)
         
-        self.operation = self.aggregations.reactionsEvents(forEvent: self.eventId, inRoom: self.roomId, from: self.nextBatch, limit: Int(Pagination.count), success: { [weak self] (response) in
+        operation = aggregations.reactionsEvents(forEvent: eventId, inRoom: roomId, from: nextBatch, limit: Int(Pagination.count), success: { [weak self] response in
             guard let self = self else {
                 return
             }
@@ -129,10 +125,9 @@ final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
     }
     
     private func process(reactionEvents: [MXEvent], nextBatch: String?) {
-        self.reactionsFormattingQueue.async {
-            
-            let reactionHistoryList = reactionEvents.compactMap { (reactionEvent) -> ReactionHistoryViewData? in
-                return self.reactionHistoryViewData(from: reactionEvent)
+        reactionsFormattingQueue.async {
+            let reactionHistoryList = reactionEvents.compactMap { reactionEvent -> ReactionHistoryViewData? in
+                self.reactionHistoryViewData(from: reactionEvent)
             }
             
             self.reactionHistoryViewDataList.append(contentsOf: reactionHistoryList)
@@ -147,18 +142,18 @@ final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
     
     private func reactionHistoryViewData(from reactionEvent: MXEvent) -> ReactionHistoryViewData? {
         guard let userId = reactionEvent.sender,
-            let reaction = reactionEvent.relatesTo?.key,
-            let reactionDateString = self.eventFormatter.dateString(fromTimestamp: reactionEvent.originServerTs, withTime: true) else {
+              let reaction = reactionEvent.relatesTo?.key,
+              let reactionDateString = eventFormatter.dateString(fromTimestamp: reactionEvent.originServerTs, withTime: true) else {
             return nil
         }
         
-        let userDisplayName = self.userDisplayName(from: userId) ?? userId
+        let userDisplayName = userDisplayName(from: userId) ?? userId
         
         return ReactionHistoryViewData(reaction: reaction, userDisplayName: userDisplayName, dateString: reactionDateString)
     }
     
     private func userDisplayName(from userId: String) -> String? {
-        guard let roomMembers = self.roomMembers else {
+        guard let roomMembers = roomMembers else {
             return nil
         }
         let roomMember = roomMembers.member(withUserId: userId)
@@ -166,7 +161,7 @@ final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
     }
     
     private func buildRoomMembers() -> MXRoomMembers? {
-        guard let room = self.session.room(withRoomId: self.roomId) else {
+        guard let room = session.room(withRoomId: roomId) else {
             return nil
         }
         return room.dangerousSyncState?.members
@@ -174,6 +169,6 @@ final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
     
     private func update(viewState: ReactionHistoryViewState) {
         self.viewState = viewState
-        self.viewDelegate?.reactionHistoryViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.reactionHistoryViewModel(self, didUpdateViewState: viewState)
     }
 }

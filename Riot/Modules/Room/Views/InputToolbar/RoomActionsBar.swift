@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@ class RoomActionsBar: UIScrollView, Themable {
     
     var itemSpacing: CGFloat = 20 {
         didSet {
-            self.setNeedsLayout()
+            setNeedsLayout()
         }
     }
     
@@ -39,8 +39,8 @@ class RoomActionsBar: UIScrollView, Themable {
                 addSubview(button)
             }
             self.actionButtons = actionButtons
-            self.lastBounds = .zero
-            self.setNeedsLayout()
+            lastBounds = .zero
+            setNeedsLayout()
         }
     }
     
@@ -69,20 +69,20 @@ class RoomActionsBar: UIScrollView, Themable {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        guard lastBounds != self.bounds else {
+        guard lastBounds != bounds else {
             return
         }
 
-        lastBounds = self.bounds
+        lastBounds = bounds
 
         var currentX: CGFloat = 0
         for button in actionButtons {
             button.transform = CGAffineTransform.identity
-            button.frame = CGRect(x: currentX, y: 0, width: self.bounds.height, height: self.bounds.height)
+            button.frame = CGRect(x: currentX, y: 0, width: bounds.height, height: bounds.height)
             currentX = button.frame.maxX + itemSpacing
         }
 
-        self.contentSize = CGSize(width: currentX - itemSpacing, height: self.bounds.height)
+        contentSize = CGSize(width: currentX - itemSpacing, height: bounds.height)
     }
     
     // MARK: - Themable
@@ -98,12 +98,12 @@ class RoomActionsBar: UIScrollView, Themable {
     func animate(showIn: Bool, completion: ((Bool) -> Void)? = nil) {
         if showIn {
             for button in actionButtons {
-                button.transform = CGAffineTransform(translationX: 0, y: self.bounds.height)
+                button.transform = CGAffineTransform(translationX: 0, y: bounds.height)
             }
             for (index, button) in actionButtons.enumerated() {
                 UIView.animate(withDuration: 0.3, delay: 0.05 * Double(index), usingSpringWithDamping: 0.45, initialSpringVelocity: 11, options: .curveEaseInOut) {
                     button.transform = CGAffineTransform.identity
-                } completion: { (finished) in
+                } completion: { finished in
                     completion?(finished)
                 }
             }
@@ -111,7 +111,7 @@ class RoomActionsBar: UIScrollView, Themable {
             for (index, button) in actionButtons.enumerated() {
                 UIView.animate(withDuration: 0.25, delay: 0.05 * Double(index), options: .curveEaseInOut) {
                     button.transform = CGAffineTransform(translationX: 0, y: self.bounds.height)
-                } completion: { (finished) in
+                } completion: { finished in
                     if index == self.actionButtons.count - 1 {
                         completion?(finished)
                     }
@@ -127,6 +127,6 @@ class RoomActionsBar: UIScrollView, Themable {
     }
     
     private func setupView() {
-        self.showsHorizontalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
     }
 }

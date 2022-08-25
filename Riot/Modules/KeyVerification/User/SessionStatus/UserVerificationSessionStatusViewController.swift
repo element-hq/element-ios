@@ -19,7 +19,6 @@
 import UIKit
 
 final class UserVerificationSessionStatusViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -34,18 +33,18 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var badgeImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var closeButton: UIButton!
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var badgeImageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var closeButton: UIButton!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var deviceStatusImageView: UIImageView!
-    @IBOutlet private weak var deviceInformationLabel: UILabel!
+    @IBOutlet private var deviceStatusImageView: UIImageView!
+    @IBOutlet private var deviceInformationLabel: UILabel!
     
-    @IBOutlet private weak var untrustedSessionContainerView: UIView!
-    @IBOutlet private weak var untrustedSessionInformationLabel: UILabel!
-    @IBOutlet private weak var verifyButton: UIButton!
-    @IBOutlet private weak var manuallyVerifyButton: UIButton!
+    @IBOutlet private var untrustedSessionContainerView: UIView!
+    @IBOutlet private var untrustedSessionInformationLabel: UILabel!
+    @IBOutlet private var verifyButton: UIButton!
+    @IBOutlet private var manuallyVerifyButton: UIButton!
     
     // MARK: Private
 
@@ -69,29 +68,29 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.                
+        // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.vc_removeBackTitle()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        vc_removeBackTitle()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.viewDelegate = self
+        viewModel.process(viewAction: .loadData)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        self.theme.statusBarStyle
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        self.verifyButton.layer.cornerRadius = Constants.verifyButtonCornerRadius
-        self.closeButton.layer.cornerRadius = self.closeButton.frame.size.width/2
+        verifyButton.layer.cornerRadius = Constants.verifyButtonCornerRadius
+        closeButton.layer.cornerRadius = closeButton.frame.size.width / 2
     }
     
     // MARK: - Private
@@ -99,21 +98,21 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.closeButton.vc_setBackgroundColor(theme.headerTextSecondaryColor, for: .normal)
+        titleLabel.textColor = theme.textPrimaryColor
+        closeButton.vc_setBackgroundColor(theme.headerTextSecondaryColor, for: .normal)
         
-        self.informationLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.untrustedSessionInformationLabel.textColor = theme.textPrimaryColor
-        self.verifyButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
+        untrustedSessionInformationLabel.textColor = theme.textPrimaryColor
+        verifyButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
         
-        theme.applyStyle(onButton: self.manuallyVerifyButton)
+        theme.applyStyle(onButton: manuallyVerifyButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -121,40 +120,40 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.closeButton.layer.masksToBounds = true
-        self.verifyButton.layer.masksToBounds = true
+        closeButton.layer.masksToBounds = true
+        verifyButton.layer.masksToBounds = true
         
-        self.manuallyVerifyButton.setTitle(VectorL10n.userVerificationSessionDetailsVerifyActionCurrentUserManually, for: .normal)
+        manuallyVerifyButton.setTitle(VectorL10n.userVerificationSessionDetailsVerifyActionCurrentUserManually, for: .normal)
     }
 
     private func render(viewState: UserVerificationSessionStatusViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(viewData: let sessionStatusViewData):
-            self.renderLoaded(viewData: sessionStatusViewData)
+            renderLoaded(viewData: sessionStatusViewData)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(viewData: SessionStatusViewData) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         
         let badgeImage: UIImage
         let title: String
         
-        self.untrustedSessionContainerView.isHidden = viewData.isDeviceTrusted
+        untrustedSessionContainerView.isHidden = viewData.isDeviceTrusted
         
-        self.manuallyVerifyButton.isHidden = !viewData.isCurrentUser
+        manuallyVerifyButton.isHidden = !viewData.isCurrentUser
         
         if viewData.isDeviceTrusted {
             badgeImage = Asset.Images.encryptionTrusted.image
@@ -175,21 +174,20 @@ final class UserVerificationSessionStatusViewController: UIViewController {
             verifyButtonTitle = VectorL10n.userVerificationSessionDetailsVerifyActionOtherUser
         }
         
-        self.badgeImageView.image = badgeImage
-        self.titleLabel.text = title
-        self.informationLabel.attributedText = self.buildInformationAttributedText(with: viewData)
+        badgeImageView.image = badgeImage
+        titleLabel.text = title
+        informationLabel.attributedText = buildInformationAttributedText(with: viewData)
         
-        self.deviceStatusImageView.image = badgeImage
-        self.deviceInformationLabel.attributedText = self.builDeviceInfoAttributedText(with: viewData)
+        deviceStatusImageView.image = badgeImage
+        deviceInformationLabel.attributedText = builDeviceInfoAttributedText(with: viewData)
         
-        self.untrustedSessionInformationLabel.text = unstrustedInformationText
-        self.verifyButton.setTitle(verifyButtonTitle, for: .normal)
+        untrustedSessionInformationLabel.text = unstrustedInformationText
+        verifyButton.setTitle(verifyButtonTitle, for: .normal)
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: {
-            
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: {
             if case UserVerificationSessionStatusViewModelError.deviceNotFound = error {
                 self.viewModel.process(viewAction: .close)
             }
@@ -197,7 +195,6 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     }
     
     private func buildUserInfoText(with userId: String, userDisplayName: String?) -> String {
-        
         let userInfoText: String
         
         if let userDisplayName = userDisplayName {
@@ -210,19 +207,17 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     }
     
     private func buildInformationAttributedText(with viewData: SessionStatusViewData) -> NSAttributedString {
+        let informationAttributedText = NSMutableAttributedString()
         
-        let informationAttributedText: NSMutableAttributedString = NSMutableAttributedString()
-        
-        let informationTextDefaultAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: self.theme.textPrimaryColor,
+        let informationTextDefaultAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: theme.textPrimaryColor,
                                                                                .font: Constants.informationTextDefaultFont]
         
-        let informationTextBoldAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: self.theme.textPrimaryColor,
+        let informationTextBoldAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: theme.textPrimaryColor,
                                                                             .font: Constants.informationTextBoldFont]
         
-        let userInfoText = self.buildUserInfoText(with: viewData.userId, userDisplayName: viewData.userDisplayName)
+        let userInfoText = buildUserInfoText(with: viewData.userId, userDisplayName: viewData.userDisplayName)
         
         if viewData.isDeviceTrusted {
-            
             if viewData.isCurrentUser {
                 let informationAttributedStringPart1 = NSAttributedString(string: VectorL10n.userVerificationSessionDetailsInformationTrustedCurrentUser, attributes: informationTextDefaultAttributes)
                 informationAttributedText.append(informationAttributedStringPart1)
@@ -254,8 +249,8 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     
     private func builDeviceInfoAttributedText(with viewData: SessionStatusViewData) -> NSAttributedString {
         let deviceInfoAttributedText = NSMutableAttributedString()
-        let deviceInfoAttributedTextPart1 = NSAttributedString(string: "\(viewData.deviceName) ", attributes: [.foregroundColor: self.theme.textPrimaryColor, .font: Constants.deviceNameFont])
-        let deviceInfoAttributedTextPart2 = NSAttributedString(string: "(\(viewData.deviceId))", attributes: [.foregroundColor: self.theme.textSecondaryColor, .font: Constants.deviceIdFont])
+        let deviceInfoAttributedTextPart1 = NSAttributedString(string: "\(viewData.deviceName) ", attributes: [.foregroundColor: theme.textPrimaryColor, .font: Constants.deviceNameFont])
+        let deviceInfoAttributedTextPart2 = NSAttributedString(string: "(\(viewData.deviceId))", attributes: [.foregroundColor: theme.textSecondaryColor, .font: Constants.deviceIdFont])
         deviceInfoAttributedText.append(deviceInfoAttributedTextPart1)
         deviceInfoAttributedText.append(deviceInfoAttributedTextPart2)
         return deviceInfoAttributedText
@@ -264,23 +259,22 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction private func closeButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .close)
+        viewModel.process(viewAction: .close)
     }
     
     @IBAction private func verifyButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .verify)
+        viewModel.process(viewAction: .verify)
     }
     
     @IBAction private func manuallyVerifyButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .verifyManually)
+        viewModel.process(viewAction: .verifyManually)
     }
 }
 
-
 // MARK: - UserVerificationSessionStatusViewModelViewDelegate
-extension UserVerificationSessionStatusViewController: UserVerificationSessionStatusViewModelViewDelegate {
 
+extension UserVerificationSessionStatusViewController: UserVerificationSessionStatusViewModelViewDelegate {
     func userVerificationSessionStatusViewModel(_ viewModel: UserVerificationSessionStatusViewModelType, didUpdateViewState viewSate: UserVerificationSessionStatusViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

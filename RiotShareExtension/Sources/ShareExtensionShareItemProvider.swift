@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,16 +48,14 @@ private class ShareExtensionItem: ShareItemProtocol {
 }
 
 @objcMembers
-public class ShareExtensionShareItemProvider: NSObject	 {
-    
+public class ShareExtensionShareItemProvider: NSObject {
     public let items: [ShareItemProtocol]
     
     public init(extensionContext: NSExtensionContext) {
-        
         var items: [ShareItemProtocol] = []
         for case let extensionItem as NSExtensionItem in extensionContext.inputItems {
             guard let attachments = extensionItem.attachments else {
-                continue;
+                continue
             }
             
             for itemProvider in attachments {
@@ -68,7 +66,7 @@ public class ShareExtensionShareItemProvider: NSObject	 {
     }
     
     public func areAllItemsLoaded() -> Bool {
-        for case let item as ShareExtensionItem in self.items {
+        for case let item as ShareExtensionItem in items {
             if !item.loaded {
                 return false
             }
@@ -78,7 +76,7 @@ public class ShareExtensionShareItemProvider: NSObject	 {
     }
     
     func areAllItemsImages() -> Bool {
-        for case let item as ShareExtensionItem in self.items {
+        for case let item as ShareExtensionItem in items {
             if item.type != .image {
                 return false
             }

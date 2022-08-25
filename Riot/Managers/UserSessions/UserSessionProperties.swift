@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +18,8 @@ import Foundation
 
 /// User properties that are tied to a particular user ID.
 class UserSessionProperties: NSObject {
-    
     // MARK: - Constants
+
     private enum Constants {
         static let useCaseKey = "useCase"
         static let activeFilterKey = "activeFilter"

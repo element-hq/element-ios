@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import MatrixSDK
+import UIKit
 
 enum AllChatsEditActionProviderOption {
     case exploreRooms
@@ -30,47 +30,47 @@ protocol AllChatsEditActionProviderDelegate: AnyObject {
 
 /// `AllChatsEditActionProvider` provides the menu for accessing edit screens according to the current parent space
 class AllChatsEditActionProvider {
-    
     // MARK: - Properties
     
     weak var delegate: AllChatsEditActionProviderDelegate?
     
     // MARK: - Private
     
-    private var rootSpaceCount: Int = 0
+    private var rootSpaceCount = 0
     private var parentSpace: MXSpace? {
         didSet {
             parentName = parentSpace?.summary?.displayname ?? VectorL10n.spaceTag
         }
     }
+
     private var parentName: String = VectorL10n.spaceTag
-    private var isInviteAvailable: Bool = false
-    private var isAddRoomAvailable: Bool = true
+    private var isInviteAvailable = false
+    private var isAddRoomAvailable = true
 
     // MARK: - RoomActionProviderProtocol
     
     var menu: UIMenu {
         guard parentSpace != nil else {
             var createActions = [
-                self.createRoomAction,
-                self.startChatAction
+                createRoomAction,
+                startChatAction
             ]
             if rootSpaceCount > 0 {
-                createActions.insert(self.createSpaceAction, at: 0)
+                createActions.insert(createSpaceAction, at: 0)
             }
             return UIMenu(title: "", children: [
-                self.exploreRoomsAction,
+                exploreRoomsAction,
                 UIMenu(title: "", options: .displayInline, children: createActions)
             ])
         }
         
         return UIMenu(title: "", children: [
             UIMenu(title: "", options: .displayInline, children: [
-                self.exploreRoomsAction
+                exploreRoomsAction
             ]),
             UIMenu(title: "", options: .displayInline, children: [
-                self.createSpaceAction,
-                self.createRoomAction
+                createSpaceAction,
+                createRoomAction
             ])
         ])
     }
@@ -103,12 +103,12 @@ class AllChatsEditActionProvider {
     /// - Returns: If the `parentSpace` is `nil`, the context menu, the temporary context menu otherwise.
     func updateMenu(with session: MXSession?, parentSpace: MXSpace?, completion: @escaping (UIMenu) -> Void) -> UIMenu {
         self.parentSpace = parentSpace
-        self.rootSpaceCount = session?.spaceService.rootSpaces.count ?? 0
+        rootSpaceCount = session?.spaceService.rootSpaces.count ?? 0
         isInviteAvailable = false
         isAddRoomAvailable = parentSpace == nil
         
         guard let parentSpace = parentSpace, let spaceRoom = parentSpace.room, let session = session else {
-            return self.menu
+            return menu
         }
         
         spaceRoom.state { [weak self] roomState in
@@ -125,14 +125,14 @@ class AllChatsEditActionProvider {
             completion(self.menu)
         }
         
-        return self.menu
+        return menu
     }
     
     // MARK: - Private
     
     private var exploreRoomsAction: UIAction {
         UIAction(title: parentSpace == nil ? VectorL10n.spacesExploreRooms : VectorL10n.spacesExploreRoomsFormat(parentName),
-                 image: UIImage(systemName: "list.bullet")) { [weak self] action in
+                 image: UIImage(systemName: "list.bullet")) { [weak self] _ in
             guard let self = self else { return }
             
             self.delegate?.allChatsEditActionProvider(self, didSelect: .exploreRooms)
@@ -142,7 +142,7 @@ class AllChatsEditActionProvider {
     private var createRoomAction: UIAction {
         UIAction(title: parentSpace == nil ? VectorL10n.roomRecentsCreateEmptyRoom : VectorL10n.spacesAddRoom,
                  image: UIImage(systemName: "number"),
-                 attributes: isAddRoomAvailable ? [] : .disabled) { [weak self] action in
+                 attributes: isAddRoomAvailable ? [] : .disabled) { [weak self] _ in
             guard let self = self else { return }
             
             self.delegate?.allChatsEditActionProvider(self, didSelect: .createRoom)
@@ -151,7 +151,7 @@ class AllChatsEditActionProvider {
     
     private var startChatAction: UIAction {
         UIAction(title: VectorL10n.roomRecentsStartChatWith,
-                 image: UIImage(systemName: "person")) { [weak self] action in
+                 image: UIImage(systemName: "person")) { [weak self] _ in
             guard let self = self else { return }
             
             self.delegate?.allChatsEditActionProvider(self, didSelect: .startChat)
@@ -161,7 +161,7 @@ class AllChatsEditActionProvider {
     private var createSpaceAction: UIAction {
         UIAction(title: parentSpace == nil ? VectorL10n.spacesCreateSpaceTitle : VectorL10n.spacesCreateSubspaceTitle,
                  image: UIImage(systemName: "plus"),
-                 attributes: isAddRoomAvailable ? [] : .disabled) { [weak self] action in
+                 attributes: isAddRoomAvailable ? [] : .disabled) { [weak self] _ in
             guard let self = self else { return }
             
             self.delegate?.allChatsEditActionProvider(self, didSelect: .createSpace)

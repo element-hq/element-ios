@@ -19,7 +19,6 @@ import UIKit
 /// Protocol describing a router that wraps a UINavigationController and add convenient completion handlers. Completions are called when a Presentable is removed.
 /// Routers are used to be passed between coordinators. They handles only `physical` navigation.
 protocol NavigationRouterType: AnyObject, Presentable {
-
     /// Present modally a view controller on the navigation controller
     ///
     /// - Parameter module: The Presentable to present.
@@ -90,7 +89,6 @@ protocol NavigationRouterType: AnyObject, Presentable {
 
 // `NavigationRouterType` default implementation
 extension NavigationRouterType {
-    
     func setRootModule(_ module: Presentable) {
         setRootModule(module, hideNavigationBar: false, animated: false, popCompletion: nil)
     }
@@ -106,13 +104,11 @@ extension NavigationRouterType {
     func setModules(_ modules: [Presentable], animated: Bool) {
         setModules(modules, hideNavigationBar: false, animated: animated)
     }
-    
 }
 
 //  MARK: - Presentable <--> NavigationModule Transitive Methods
 
 extension NavigationRouterType {
-    
     func setRootModule(_ module: NavigationModule) {
         setRootModule(module.presentable, popCompletion: module.popCompletion)
     }
@@ -131,5 +127,4 @@ extension NavigationRouterType {
         push(modules.map { $0.toModule() },
              animated: animated)
     }
-    
 }

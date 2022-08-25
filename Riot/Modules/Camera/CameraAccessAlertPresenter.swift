@@ -17,7 +17,6 @@
 import Foundation
 
 final class CameraAccessAlertPresenter {
-        
     // MARK: - Public
     
     func presentPermissionDeniedAlert(from presentingViewController: UIViewController, animated: Bool) {
@@ -34,7 +33,7 @@ final class CameraAccessAlertPresenter {
         
         let settingsActionTitle = VectorL10n.settings
         let settingsAction = UIAlertAction(title: settingsActionTitle, style: .default, handler: { _ in
-            UIApplication.shared.open(settingsURL, options: [:], completionHandler: { (succeed) in
+            UIApplication.shared.open(settingsURL, options: [:], completionHandler: { succeed in
                 if !succeed {
                     MXLog.debug("[CameraPresenter] Fails to open settings")
                 }
@@ -48,7 +47,6 @@ final class CameraAccessAlertPresenter {
     }
     
     func presentCameraUnavailableAlert(from presentingViewController: UIViewController, animated: Bool) {
-        
         let alert = UIAlertController(title: VectorL10n.camera, message: VectorL10n.cameraUnavailable, preferredStyle: .alert)
         
         let okAction = UIAlertAction(title: VectorL10n.accept, style: .default, handler: nil)

@@ -29,8 +29,7 @@ protocol SecretsSetupRecoveryKeyViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `SecretsSetupRecoveryKeyViewController`
-protocol SecretsSetupRecoveryKeyViewModelType {        
-        
+protocol SecretsSetupRecoveryKeyViewModelType {
     var viewDelegate: SecretsSetupRecoveryKeyViewModelViewDelegate? { get set }
     var coordinatorDelegate: SecretsSetupRecoveryKeyViewModelCoordinatorDelegate? { get set }
     

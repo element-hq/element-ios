@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import AuthenticationServices
+import Foundation
 
 /// Provides context to target where in an application's UI the authorization view should be shown.
 class SSOAuthenticationSessionContextProvider: NSObject, SSOAuthenticationSessionContextProviding, ASWebAuthenticationPresentationContextProviding {
@@ -26,14 +26,13 @@ class SSOAuthenticationSessionContextProvider: NSObject, SSOAuthenticationSessio
     }
     
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        return window
+        window
     }
 }
 
 /// SSOAuthentificationSession is session used to authenticate a user through a web service on iOS 12+. It uses ASWebAuthenticationSession.
 /// More information: https://developer.apple.com/documentation/authenticationservices/authenticating_a_user_through_a_web_service
 final class SSOAuthentificationSession: SSOAuthentificationSessionProtocol {
-    
     // MARK: - Constants
 
     // MARK: - Properties
@@ -48,8 +47,7 @@ final class SSOAuthentificationSession: SSOAuthentificationSessionProtocol {
     }
     
     func authenticate(with url: URL, callbackURLScheme: String?, completionHandler: @escaping SSOAuthenticationSessionCompletionHandler) {
-        
-        let authentificationSession = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackURLScheme) { (callbackURL, error) in
+        let authentificationSession = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackURLScheme) { callbackURL, error in
                         
             var finalError: Error?
             
@@ -75,6 +73,6 @@ final class SSOAuthentificationSession: SSOAuthentificationSessionProtocol {
     }
 
     func cancel() {
-        self.authentificationSession?.cancel()
+        authentificationSession?.cancel()
     }
 }

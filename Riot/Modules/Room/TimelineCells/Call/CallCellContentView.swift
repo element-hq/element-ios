@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,35 +14,34 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 class CallCellContentView: UIView {
-    
     private enum Constants {
         static let callSummaryWithBottomViewHeight: CGFloat = 20
         static let callSummaryStandaloneViewHeight: CGFloat = 20 + 44
     }
     
-    @IBOutlet private weak var paginationTitleView: UIView!
-    @IBOutlet private weak var paginationLabel: UILabel!
-    @IBOutlet private weak var paginationSeparatorView: UIView!
+    @IBOutlet private var paginationTitleView: UIView!
+    @IBOutlet private var paginationLabel: UILabel!
+    @IBOutlet private var paginationSeparatorView: UIView!
     
-    @IBOutlet private weak var bgView: UIView!
-    @IBOutlet weak var avatarImageView: MXKImageView!
-    @IBOutlet weak var callerNameLabel: UILabel!
-    @IBOutlet weak var callIconView: UIImageView!
-    @IBOutlet private weak var callStatusLabel: UILabel!
-    @IBOutlet private weak var callSummaryHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var bgView: UIView!
+    @IBOutlet var avatarImageView: MXKImageView!
+    @IBOutlet var callerNameLabel: UILabel!
+    @IBOutlet var callIconView: UIImageView!
+    @IBOutlet private var callStatusLabel: UILabel!
+    @IBOutlet private var callSummaryHeightConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var bubbleInfoContainer: UIView!
-    @IBOutlet weak var bubbleOverlayContainer: UIView!
-    @IBOutlet weak var bubbleInfoContainerTopConstraint: NSLayoutConstraint!
+    @IBOutlet var bubbleInfoContainer: UIView!
+    @IBOutlet var bubbleOverlayContainer: UIView!
+    @IBOutlet var bubbleInfoContainerTopConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var readReceiptsContainerView: UIView!
-    @IBOutlet weak var readReceiptsContentView: UIView!
+    @IBOutlet var readReceiptsContainerView: UIView!
+    @IBOutlet var readReceiptsContentView: UIView!
     
-    @IBOutlet weak var bottomContainerView: UIView!
+    @IBOutlet var bottomContainerView: UIView!
     
     /// Inter-item spacing in the main content stack view
     let interItemSpacing: CGFloat = 8
@@ -57,9 +56,9 @@ class CallCellContentView: UIView {
     
     private var showReadReceipts: Bool {
         get {
-            return !self.readReceiptsContainerView.isHidden
+            !readReceiptsContainerView.isHidden
         } set {
-            self.readReceiptsContainerView.isHidden = !newValue
+            readReceiptsContainerView.isHidden = !newValue
         }
     }
     
@@ -85,15 +84,11 @@ class CallCellContentView: UIView {
         
         avatarImageView.enableInMemoryCache = true
     }
-
 }
 
-extension CallCellContentView: NibLoadable {
-    
-}
+extension CallCellContentView: NibLoadable { }
 
 extension CallCellContentView: Themable {
-    
     func update(theme: Theme) {
         self.theme = theme
         
@@ -109,21 +104,19 @@ extension CallCellContentView: Themable {
             bottomContainerView.update(theme: theme)
         }
     }
-    
 }
 
 // MARK: - RoomCellReadReceiptsDisplayable
 
 extension CallCellContentView: RoomCellReadReceiptsDisplayable {
-    
     func addReadReceiptsView(_ readReceiptsView: UIView) {
-        self.readReceiptsContentView.vc_removeAllSubviews()
-        self.readReceiptsContentView.vc_addSubViewMatchingParent(readReceiptsView)
-        self.showReadReceipts = true
+        readReceiptsContentView.vc_removeAllSubviews()
+        readReceiptsContentView.vc_addSubViewMatchingParent(readReceiptsView)
+        showReadReceipts = true
     }
     
     func removeReadReceiptsView() {
-        self.showReadReceipts = false
-        self.readReceiptsContentView.vc_removeAllSubviews()
+        showReadReceipts = false
+        readReceiptsContentView.vc_removeAllSubviews()
     }
 }

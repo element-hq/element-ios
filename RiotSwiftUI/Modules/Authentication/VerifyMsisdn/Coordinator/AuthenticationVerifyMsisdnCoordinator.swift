@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
 import libPhoneNumber_iOS
+import SwiftUI
 
 struct AuthenticationVerifyMsisdnCoordinatorParameters {
     let registrationWizard: RegistrationWizard
@@ -25,7 +25,6 @@ struct AuthenticationVerifyMsisdnCoordinatorParameters {
 }
 
 final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -75,7 +74,7 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationVerifyMsisdnHostingController
+        authenticationVerifyMsisdnHostingController
     }
     
     // MARK: - Private
@@ -174,7 +173,6 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
                 self?.stopLoading()
                 self?.handleError(error)
             }
-
         }
     }
     

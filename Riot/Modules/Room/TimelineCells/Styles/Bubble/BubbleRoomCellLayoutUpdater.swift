@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,17 +18,16 @@ import UIKit
 
 @objcMembers
 class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
-    
     // MARK: - Properties
     
     private var theme: Theme
     
     private var incomingColor: UIColor {
-        return self.theme.roomCellIncomingBubbleBackgroundColor
+        theme.roomCellIncomingBubbleBackgroundColor
     }
     
     private var outgoingColor: UIColor {
-        return self.theme.roomCellOutgoingBubbleBackgroundColor
+        theme.roomCellOutgoingBubbleBackgroundColor
     }
     
     // MARK: - Setup
@@ -40,32 +39,25 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     // MARK: - Public
     
     func updateLayoutIfNeeded(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) {
-        
         if cellData.isIncoming {
-            self.updateLayout(forIncomingTextMessageCell: cell, andCellData: cellData)
+            updateLayout(forIncomingTextMessageCell: cell, andCellData: cellData)
         } else {
-            self.updateLayout(forOutgoingTextMessageCell: cell, andCellData: cellData)
+            updateLayout(forOutgoingTextMessageCell: cell, andCellData: cellData)
         }
     }
             
-    func updateLayout(forIncomingTextMessageCell cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) {
-        
-    }
+    func updateLayout(forIncomingTextMessageCell cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) { }
     
-    func updateLayout(forOutgoingTextMessageCell cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) {
-
-    }
+    func updateLayout(forOutgoingTextMessageCell cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) { }
     
     func setupLayout(forIncomingTextMessageCell cell: MXKRoomBubbleTableViewCell) {
-        
-        self.setupIncomingMessageTextViewMargins(for: cell)
+        setupIncomingMessageTextViewMargins(for: cell)
         
         cell.setNeedsUpdateConstraints()
     }
     
     func setupLayout(forOutgoingTextMessageCell cell: MXKRoomBubbleTableViewCell) {
-        
-        self.setupOutgoingMessageTextViewMargins(for: cell)
+        setupOutgoingMessageTextViewMargins(for: cell)
         
         // Hide avatar view
         cell.pictureView?.isHidden = true
@@ -74,31 +66,27 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     }
     
     func setupLayout(forOutgoingFileAttachmentCell cell: MXKRoomBubbleTableViewCell) {
-                
         // Hide avatar view
         cell.pictureView?.isHidden = true
         
-        self.setupOutgoingFileAttachViewMargins(for: cell)
+        setupOutgoingFileAttachViewMargins(for: cell)
     }
     
     func setupLayout(forIncomingFileAttachmentCell cell: MXKRoomBubbleTableViewCell) {
-
-        self.setupIncomingFileAttachViewMargins(for: cell)
+        setupIncomingFileAttachViewMargins(for: cell)
     }
     
     func updateLayout(forSelectedStickerCell cell: RoomSelectedStickerBubbleCell) {
-        
         if cell.bubbleData.isIncoming {
-            self.setupLayout(forIncomingFileAttachmentCell: cell)
+            setupLayout(forIncomingFileAttachmentCell: cell)
         } else {
-            self.setupLayout(forOutgoingFileAttachmentCell: cell)
+            setupLayout(forOutgoingFileAttachmentCell: cell)
             cell.userNameLabel?.isHidden = true
             cell.pictureView?.isHidden = true
         }
     }
     
     func maximumTextViewWidth(for cell: MXKRoomBubbleTableViewCell, cellData: MXKCellData, maximumCellWidth: CGFloat) -> CGFloat {
-        
         guard cell.messageTextView != nil else {
             return 0
         }
@@ -109,15 +97,14 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         let textViewRightMargin: CGFloat
         
         if let roomBubbleCellData = cellData as? RoomBubbleCellData, cell is MXKRoomIncomingTextMsgBubbleCell || cell is MXKRoomOutgoingTextMsgBubbleCell {
-            
             if roomBubbleCellData.isIncoming {
-                let textViewInsets = self.getIncomingMessageTextViewInsets(from: cell)
+                let textViewInsets = getIncomingMessageTextViewInsets(from: cell)
                 
                 textViewleftMargin = cell.msgTextViewLeadingConstraint.constant + textViewInsets.left
                 // Right inset is in fact margin in this case
                 textViewRightMargin = textViewInsets.right
             } else {
-                let textViewMargins = self.getOutgoingMessageTextViewMargins(from: cell)
+                let textViewMargins = getOutgoingMessageTextViewMargins(from: cell)
                 
                 textViewleftMargin = textViewMargins.left
                 textViewRightMargin = textViewMargins.right
@@ -151,7 +138,6 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     // MARK: Text message
     
     private func getIncomingMessageTextViewInsets(from bubbleCell: MXKRoomBubbleTableViewCell) -> UIEdgeInsets {
-        
         let messageViewMarginTop: CGFloat = 0
         let messageViewMarginBottom: CGFloat = 0
         let messageViewMarginLeft: CGFloat = 0
@@ -163,12 +149,11 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     }
     
     private func setupIncomingMessageTextViewMargins(for cell: MXKRoomBubbleTableViewCell) {
-        
         guard cell.messageTextView != nil else {
             return
         }
         
-        let messageViewInsets = self.getIncomingMessageTextViewInsets(from: cell)
+        let messageViewInsets = getIncomingMessageTextViewInsets(from: cell)
         
         cell.msgTextViewBottomConstraint.constant += messageViewInsets.bottom
         cell.msgTextViewTopConstraint.constant += messageViewInsets.top
@@ -179,7 +164,6 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     }
     
     private func getOutgoingMessageTextViewMargins(from bubbleCell: MXKRoomBubbleTableViewCell) -> UIEdgeInsets {
-        
         let messageViewMarginTop: CGFloat = 0
         let messageViewMarginBottom: CGFloat = 0
         let messageViewMarginLeft = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left + BubbleRoomCellLayoutConstants.bubbleTextViewInsets.left
@@ -192,14 +176,13 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     }
     
     private func setupOutgoingMessageTextViewMargins(for cell: MXKRoomBubbleTableViewCell) {
-        
         guard let messageTextView = cell.messageTextView else {
             return
         }
         
         let contentView = cell.contentView
         
-        let messageViewMargins = self.getOutgoingMessageTextViewMargins(from: cell)
+        let messageViewMargins = getOutgoingMessageTextViewMargins(from: cell)
         
         cell.msgTextViewLeadingConstraint.isActive = false
         cell.msgTextViewTrailingConstraint.isActive = false
@@ -222,7 +205,6 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     // MARK: File attachment
     
     private func setupOutgoingFileAttachViewMargins(for cell: MXKRoomBubbleTableViewCell) {
-        
         guard let attachmentView = cell.attachmentView else {
             return
         }
@@ -246,7 +228,6 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     }
     
     private func setupIncomingFileAttachViewMargins(for cell: MXKRoomBubbleTableViewCell) {
-        
         guard let attachmentView = cell.attachmentView,
               cell.attachViewLeadingConstraint == nil || cell.attachViewLeadingConstraint.isActive == false else {
             return

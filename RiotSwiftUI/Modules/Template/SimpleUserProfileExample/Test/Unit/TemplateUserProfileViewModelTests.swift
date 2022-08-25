@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import Combine
+import XCTest
 
 @testable import RiotSwiftUI
 
@@ -24,6 +24,7 @@ class TemplateUserProfileViewModelTests: XCTestCase {
         static let presenceInitialValue: TemplateUserProfilePresence = .offline
         static let displayName = "Alice"
     }
+
     var service: MockTemplateUserProfileService!
     var viewModel: TemplateUserProfileViewModelProtocol!
     var context: TemplateUserProfileViewModelType.Context!

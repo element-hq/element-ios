@@ -16,8 +16,8 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 protocol CallTransferSelectContactViewControllerDelegate: AnyObject {
     func callTransferSelectContactViewControllerDidSelectContact(_ viewController: CallTransferSelectContactViewController,
@@ -25,12 +25,11 @@ protocol CallTransferSelectContactViewControllerDelegate: AnyObject {
 }
 
 final class CallTransferSelectContactViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var mainTableView: UITableView!
+    @IBOutlet private var mainTableView: UITableView!
     
     // MARK: Private
     
@@ -50,6 +49,7 @@ final class CallTransferSelectContactViewController: UIViewController {
             contactsDataSource.delegate = self
         }
     }
+
     private var ignoredUserIds: [String] = []
     private var selectedIndexPath: IndexPath?
     
@@ -99,11 +99,11 @@ final class CallTransferSelectContactViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        self.vc_removeBackTitle()
+        vc_removeBackTitle()
         
-        self.setupViews()
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        setupViews()
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
         updateSections()
     }
@@ -115,7 +115,7 @@ final class CallTransferSelectContactViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -168,10 +168,10 @@ final class CallTransferSelectContactViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
-        self.mainTableView.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
+        mainTableView.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
@@ -187,21 +187,19 @@ final class CallTransferSelectContactViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
-    
 }
 
 //  MARK: - UITableViewDataSource
 
 extension CallTransferSelectContactViewController: UITableViewDataSource {
-    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].rows.count
+        sections[section].rows.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -222,13 +220,11 @@ extension CallTransferSelectContactViewController: UITableViewDataSource {
         
         return cell
     }
-    
 }
 
 //  MARK: - UITableViewDelegate
 
 extension CallTransferSelectContactViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = theme.backgroundColor
         cell.selectedBackgroundView = UIView()
@@ -236,7 +232,7 @@ extension CallTransferSelectContactViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].header
+        sections[section].header
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -267,13 +263,11 @@ extension CallTransferSelectContactViewController: UITableViewDelegate {
         
         updateSections()
     }
-    
 }
 
 //  MARK: - UISearchBarDelegate
 
 extension CallTransferSelectContactViewController {
-    
     override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         contactsDataSource.search(withPattern: searchText, forceReset: false)
     }
@@ -305,19 +299,17 @@ extension CallTransferSelectContactViewController {
             searchBar.setShowsCancelButton(false, animated: false)
         }
     }
-    
 }
 
 //  MARK: - MXKDataSourceDelegate
 
 extension CallTransferSelectContactViewController: MXKDataSourceDelegate {
-    
     func cellViewClass(for cellData: MXKCellData!) -> MXKCellRendering.Type! {
-        return nil
+        nil
     }
     
     func cellReuseIdentifier(for cellData: MXKCellData!) -> String! {
-        return nil
+        nil
     }
     
     func dataSource(_ dataSource: MXKDataSource!, didCellChange changes: Any!) {
@@ -327,7 +319,6 @@ extension CallTransferSelectContactViewController: MXKDataSourceDelegate {
     func dataSource(_ dataSource: MXKDataSource!, didStateChange state: MXKDataSourceState) {
         updateSections()
     }
-    
 }
 
-extension ContactTableViewCell: Reusable {}
+extension ContactTableViewCell: Reusable { }

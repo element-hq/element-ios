@@ -19,7 +19,6 @@
 import UIKit
 
 final class SpaceListViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -30,9 +29,9 @@ final class SpaceListViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet var tableView: UITableView!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     // MARK: Private
 
@@ -58,19 +57,19 @@ final class SpaceListViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -78,15 +77,15 @@ final class SpaceListViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.colors.background
-        self.tableView.backgroundColor = theme.colors.background
+        view.backgroundColor = theme.colors.background
+        tableView.backgroundColor = theme.colors.background
         
-        self.tableView.reloadData()
+        tableView.reloadData()
         
-        self.titleLabel.textColor = theme.colors.primaryContent
-        self.titleLabel.font = theme.fonts.bodySB
+        titleLabel.textColor = theme.colors.primaryContent
+        titleLabel.font = theme.fonts.bodySB
         
-        self.activityIndicator.color = theme.colors.secondaryContent
+        activityIndicator.color = theme.colors.secondaryContent
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -94,75 +93,74 @@ final class SpaceListViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.setupTableView()
-        self.titleLabel.text = VectorL10n.spacesLeftPanelTitle
+        setupTableView()
+        titleLabel.text = VectorL10n.spacesLeftPanelTitle
     }
     
     private func setupTableView() {
-        self.tableView.separatorStyle = .none
-        self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.estimatedRowHeight = Constants.estimatedRowHeight
-        self.tableView.allowsSelection = true
-        self.tableView.register(cellType: SpaceListViewCell.self)
-        self.tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = Constants.estimatedRowHeight
+        tableView.allowsSelection = true
+        tableView.register(cellType: SpaceListViewCell.self)
+        tableView.tableFooterView = UIView()
     }
 
     private func render(viewState: SpaceListViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let sections):
-            self.renderLoaded(sections: sections)
+            renderLoaded(sections: sections)
         case .selectionChanged(let indexPath):
-            self.renderSelectionChanged(at: indexPath)
+            renderSelectionChanged(at: indexPath)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityIndicator.startAnimating()
+        activityIndicator.startAnimating()
     }
     
     private func renderLoaded(sections: [SpaceListSection]) {
-        self.activityIndicator.stopAnimating()
+        activityIndicator.stopAnimating()
         self.sections = sections
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     private func renderSelectionChanged(at indexPath: IndexPath) {
-        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
     }
     
     private func render(error: Error) {
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 }
 
-
 // MARK: - SpaceListViewModelViewDelegate
+
 extension SpaceListViewController: SpaceListViewModelViewDelegate {
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didUpdateViewState viewSate: SpaceListViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
 // MARK: - UITableViewDataSource
+
 extension SpaceListViewController: UITableViewDataSource {
-    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.sections.count
+        sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         let numberOfRows: Int
         
-        let spaceListSection = self.sections[section]
+        let spaceListSection = sections[section]
         
         switch spaceListSection {
         case .home:
@@ -181,7 +179,7 @@ extension SpaceListViewController: UITableViewDataSource {
         
         let viewData: SpaceListItemViewData
         
-        let spaceListSection = self.sections[indexPath.section]
+        let spaceListSection = sections[indexPath.section]
         
         switch spaceListSection {
         case .home(let spaceViewData):
@@ -192,7 +190,7 @@ extension SpaceListViewController: UITableViewDataSource {
             viewData = spaceViewData
         }
         
-        cell.update(theme: self.theme)
+        cell.update(theme: theme)
         cell.fill(with: viewData)
         cell.selectionStyle = .none
         cell.delegate = self
@@ -202,21 +200,21 @@ extension SpaceListViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
+
 extension SpaceListViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.viewModel.process(viewAction: .selectRow(at: indexPath, from: tableView.cellForRow(at: indexPath)))
+        viewModel.process(viewAction: .selectRow(at: indexPath, from: tableView.cellForRow(at: indexPath)))
     }
 }
 
 // MARK: - SpaceListViewCellDelegate
-extension SpaceListViewController: SpaceListViewCellDelegate {
 
+extension SpaceListViewController: SpaceListViewCellDelegate {
     func spaceListViewCell(_ cell: SpaceListViewCell, didPressMore button: UIButton) {
-        guard let indexPath = self.tableView.indexPath(for: cell) else {
+        guard let indexPath = tableView.indexPath(for: cell) else {
             MXLog.warning("[SpaceListViewController] didPressMore called from invalid cell.")
             return
         }
-        self.viewModel.process(viewAction: .moreAction(at: indexPath, from: button))
+        viewModel.process(viewAction: .moreAction(at: indexPath, from: button))
     }
 }

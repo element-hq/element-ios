@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ struct PasswordValidatorError: LocalizedError {
     /// Error description for the error
     var errorDescription: String? {
         var result = VectorL10n.passwordValidationErrorHeader + "\n"
-        result += unmetRules.map { $0.descriptionInList }.joined(separator: "\n")
+        result += unmetRules.map(\.descriptionInList).joined(separator: "\n")
         return result
     }
 }
@@ -55,7 +55,7 @@ enum PasswordValidatorRule: CustomStringConvertible, Hashable {
     }
 
     var descriptionInList: String {
-        return "• " + description
+        "• " + description
     }
 
     func metBy(password: String) -> Bool {
@@ -79,7 +79,6 @@ enum PasswordValidatorRule: CustomStringConvertible, Hashable {
 
 /// A utility class to validate a password against some rules.
 class PasswordValidator {
-
     /// Validation rules
     let rules: [PasswordValidatorRule]
 
@@ -111,8 +110,7 @@ class PasswordValidator {
         if !rules.isEmpty {
             result += "\n"
         }
-        result += rules.map { $0.descriptionInList }.joined(separator: "\n")
+        result += rules.map(\.descriptionInList).joined(separator: "\n")
         return result
     }
-
 }

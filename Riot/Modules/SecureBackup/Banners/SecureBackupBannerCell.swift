@@ -22,15 +22,14 @@ import UIKit
 
 @objcMembers
 final class SecureBackupBannerCell: MXKTableViewCell, Themable {
-    
     // MARK: - Properties
 
     // MARK: Outlets
 
-    @IBOutlet private weak var shieldImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var subtitleLabel: UILabel!
-    @IBOutlet private weak var closeButton: UIButton!
+    @IBOutlet private var shieldImageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var subtitleLabel: UILabel!
+    @IBOutlet private var closeButton: UIButton!
     
     // MARK: Public
     
@@ -39,18 +38,18 @@ final class SecureBackupBannerCell: MXKTableViewCell, Themable {
     // MARK: - Overrides
     
     override class func defaultReuseIdentifier() -> String {
-        return String(describing: self)
+        String(describing: self)
     }
     
     override class func nib() -> UINib {
-        return UINib(nibName: String(describing: self), bundle: nil)
+        UINib(nibName: String(describing: self), bundle: nil)
     }
     
     override func customizeRendering() {
         super.customizeRendering()
         
         let theme = ThemeService.shared().theme
-        self.update(theme: theme)
+        update(theme: theme)
     }
     
     // MARK: - Life cycle
@@ -59,16 +58,15 @@ final class SecureBackupBannerCell: MXKTableViewCell, Themable {
         super.awakeFromNib()
         
         let shieldImage = Asset.Images.secretsSetupKey.image.withRenderingMode(.alwaysTemplate)
-        self.shieldImageView.image = shieldImage 
+        shieldImageView.image = shieldImage
         
         let closeImage = Asset.Images.closeBanner.image.withRenderingMode(.alwaysTemplate)
-        self.closeButton.setImage(closeImage, for: .normal)
+        closeButton.setImage(closeImage, for: .normal)
     }
     
     // MARK: - Public
     
     func configure(for bannerDisplay: SecureBackupBannerDisplay) {
-        
         let title: String?
         let subtitle: String?
         
@@ -81,21 +79,21 @@ final class SecureBackupBannerCell: MXKTableViewCell, Themable {
             subtitle = nil
         }
         
-        self.titleLabel.text = title
-        self.subtitleLabel.text = subtitle
+        titleLabel.text = title
+        subtitleLabel.text = subtitle
     }
     
     func update(theme: Theme) {
-        self.shieldImageView.tintColor = theme.textPrimaryColor
-        self.closeButton.tintColor = theme.textPrimaryColor
+        shieldImageView.tintColor = theme.textPrimaryColor
+        closeButton.tintColor = theme.textPrimaryColor
         
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.subtitleLabel.textColor = theme.textPrimaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        subtitleLabel.textColor = theme.textPrimaryColor
     }
     
     // MARK: - Actions
     
     @IBAction private func closeButtonAction(_ sender: Any) {
-        self.delegate?.secureBackupBannerCellDidTapCloseAction(self)
+        delegate?.secureBackupBannerCellDidTapCloseAction(self)
     }
 }

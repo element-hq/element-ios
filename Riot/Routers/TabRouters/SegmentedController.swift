@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,6 @@ struct SegmentedControllerTab {
 }
 
 class SegmentedController: UIViewController, Themable {
-    
     // MARK: Outlets
     
     @IBOutlet private var segmentedControl: UISegmentedControl!
@@ -53,6 +52,7 @@ class SegmentedController: UIViewController, Themable {
             }
         }
     }
+
     private var theme: Theme!
     
     // MARK: Properties
@@ -87,7 +87,7 @@ class SegmentedController: UIViewController, Themable {
     // MARK: Actions
     
     @IBAction private func segmentDidChange(sender: UISegmentedControl) {
-        self.currentController = tabs[sender.selectedSegmentIndex].viewController
+        currentController = tabs[sender.selectedSegmentIndex].viewController
     }
     
     // MARK: Themable
@@ -97,13 +97,13 @@ class SegmentedController: UIViewController, Themable {
     }
     
     @objc private func themeDidChange() {
-        self.theme = ThemeService.shared().theme
-        self.update(theme: self.theme)
+        theme = ThemeService.shared().theme
+        update(theme: theme)
     }
 
     func update(theme: Theme) {
-        self.view.backgroundColor = theme.baseColor
-        self.contentView.backgroundColor = theme.baseColor
+        view.backgroundColor = theme.baseColor
+        contentView.backgroundColor = theme.baseColor
     }
     
     // MARK: Private
@@ -117,8 +117,7 @@ class SegmentedController: UIViewController, Themable {
         
         if segmentedControl.numberOfSegments > 0 {
             segmentedControl.selectedSegmentIndex = 0
-            self.currentController = tabs.first?.viewController
+            currentController = tabs.first?.viewController
         }
     }
-    
 }

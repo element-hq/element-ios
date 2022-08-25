@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@ struct MockSessionCreator: SessionCreatorProtocol {
     /// Returns a basic session created from the supplied credentials. This prevents the app from setting up the account during tests.
     func createSession(credentials: MXCredentials, client: AuthenticationRestClient, removeOtherAccounts: Bool) -> MXSession {
         let client = MXRestClient(credentials: credentials,
-                                  unauthenticatedHandler: { _,_,_,_ in }) // The handler is expected if credentials are set.
+                                  unauthenticatedHandler: { _, _, _, _ in }) // The handler is expected if credentials are set.
         return MXSession(matrixRestClient: client)
     }
 }

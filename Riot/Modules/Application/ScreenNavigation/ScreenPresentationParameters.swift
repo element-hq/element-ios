@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// Screen presentation parameters used when a universal link is triggered
 @objcMembers
 class ScreenPresentationParameters: NSObject {
-    
     // MARK: - Properties
     
     /// Indicate to pop to home and restore initial view hierarchy
@@ -37,7 +36,7 @@ class ScreenPresentationParameters: NSObject {
         
     /// The view controller from which the universal link is triggered. `nil` if triggered from some other kind of object.
     var presentingViewController: UIViewController? {
-        return self.sender as? UIViewController
+        sender as? UIViewController
     }
     
     // MARK: - Properties
@@ -52,7 +51,7 @@ class ScreenPresentationParameters: NSObject {
         self.sourceView = sourceView
         
         super.init()
-    }    
+    }
     
     convenience init(restoreInitialDisplay: Bool, stackAboveVisibleViews: Bool) {
         self.init(restoreInitialDisplay: restoreInitialDisplay, stackAboveVisibleViews: stackAboveVisibleViews, sender: nil, sourceView: nil)

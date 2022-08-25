@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +14,14 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 extension RiotSettings {
-    
     @available(iOS 13.0, *)
     func publisher(for key: String) -> AnyPublisher<Notification, Never> {
-        return NotificationCenter.default.publisher(for: .userDefaultValueUpdated)
-            .filter({ $0.object as? String == key })
+        NotificationCenter.default.publisher(for: .userDefaultValueUpdated)
+            .filter { $0.object as? String == key }
             .eraseToAnyPublisher()
     }
-    
 }

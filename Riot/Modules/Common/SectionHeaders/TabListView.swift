@@ -21,7 +21,6 @@ protocol TabListViewDelegate: AnyObject {
 }
 
 class TabListView: UIView {
-    
     // MARK: - Constants
     
     enum Constants {
@@ -54,16 +53,19 @@ class TabListView: UIView {
             populateItemViews()
         }
     }
+
     var pageIndex: Double = 0 {
         didSet {
             updateCursor()
         }
     }
+
     var unselectedItemColor: UIColor = .lightGray {
         didSet {
             updateCursor()
         }
     }
+
     var itemFont: UIFont = .preferredFont(forTextStyle: .body) {
         didSet {
             for button in itemViews {
@@ -103,7 +105,7 @@ class TabListView: UIView {
     override func tintColorDidChange() {
         super.tintColorDidChange()
         
-        self.cursorView.backgroundColor = tintColor
+        cursorView.backgroundColor = tintColor
         updateCursor()
     }
     
@@ -135,10 +137,10 @@ class TabListView: UIView {
         addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
 
         itemsContentView.backgroundColor = .clear
         itemsContentView.axis = .horizontal
@@ -216,11 +218,11 @@ class TabListView: UIView {
                                   height: Constants.cursorHeight)
         cursorView.layer.cornerRadius = cursorView.bounds.height / 2
         
-        for button in self.itemViews {
+        for button in itemViews {
             if button == focusedButton {
-                button.tintColor = self.tintColor
+                button.tintColor = tintColor
             } else {
-                button.tintColor = self.unselectedItemColor
+                button.tintColor = unselectedItemColor
             }
         }
     }
@@ -235,5 +237,4 @@ class TabListView: UIView {
                       width: titleLabel.frame.width,
                       height: titleLabel.frame.height)
     }
-
 }

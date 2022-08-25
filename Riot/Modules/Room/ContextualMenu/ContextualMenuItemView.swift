@@ -14,11 +14,10 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class ContextualMenuItemView: UIView, NibOwnerLoadable {
-    
     // MARK: - Constants
     
     private enum ColorAlpha {
@@ -35,16 +34,16 @@ final class ContextualMenuItemView: UIView, NibOwnerLoadable {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
     
     // MARK: Private
     
     private var originalImage: UIImage?
     
-    private var isHighlighted: Bool = false {
+    private var isHighlighted = false {
         didSet {
-            self.updateView()
+            updateView()
         }
     }
     
@@ -52,19 +51,19 @@ final class ContextualMenuItemView: UIView, NibOwnerLoadable {
     
     var titleColor: UIColor = .black {
         didSet {
-            self.updateView()
+            updateView()
         }
     }
     
     var imageColor: UIColor = .black {
         didSet {
-            self.updateView()
+            updateView()
         }
     }
     
-    var isEnabled: Bool = true {
+    var isEnabled = true {
         didSet {
-            self.updateView()
+            updateView()
         }
     }
     
@@ -73,7 +72,7 @@ final class ContextualMenuItemView: UIView, NibOwnerLoadable {
     // MARK: Setup
     
     private func commonInit() {
-        self.setupGestureRecognizer()
+        setupGestureRecognizer()
     }
     
     convenience init() {
@@ -82,61 +81,60 @@ final class ContextualMenuItemView: UIView, NibOwnerLoadable {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadNibContent()
-        self.commonInit()
+        loadNibContent()
+        commonInit()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadNibContent()
-        self.commonInit()
+        loadNibContent()
+        commonInit()
     }
     
     // MARK: - Public
 
     func fill(menuItem: RoomContextualMenuItem) {
-        self.fill(title: menuItem.title, image: menuItem.image)
-        self.setupAccessibility(title: menuItem.title, isEnabled: menuItem.isEnabled)
-        self.action = menuItem.action
-        self.isEnabled = menuItem.isEnabled
+        fill(title: menuItem.title, image: menuItem.image)
+        setupAccessibility(title: menuItem.title, isEnabled: menuItem.isEnabled)
+        action = menuItem.action
+        isEnabled = menuItem.isEnabled
     }
     
     // MARK: - Private
 
     private func fill(title: String, image: UIImage?) {
-        self.originalImage = image?.withRenderingMode(.alwaysTemplate)
-        self.titleLabel.text = title
-        self.updateView()
+        originalImage = image?.withRenderingMode(.alwaysTemplate)
+        titleLabel.text = title
+        updateView()
     }
 
     private func setupAccessibility(title: String, isEnabled: Bool) {
-        self.isAccessibilityElement = true
-        self.accessibilityLabel = title
-        self.accessibilityTraits = .button
+        isAccessibilityElement = true
+        accessibilityLabel = title
+        accessibilityTraits = .button
         if !isEnabled {
-            self.accessibilityTraits.insert(.notEnabled)
+            accessibilityTraits.insert(.notEnabled)
         }
     }
     
     private func setupGestureRecognizer() {
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(buttonAction(_:)))
         gestureRecognizer.minimumPressDuration = 0
-        self.addGestureRecognizer(gestureRecognizer)
+        addGestureRecognizer(gestureRecognizer)
     }
     
     private func updateView() {
+        let viewAlpha = isEnabled ? ViewAlpha.normal : ViewAlpha.disabled
+        let colorAlpha = isHighlighted ? ColorAlpha.highlighted : ColorAlpha.normal
         
-        let viewAlpha = self.isEnabled ? ViewAlpha.normal : ViewAlpha.disabled
-        let colorAlpha = self.isHighlighted ? ColorAlpha.highlighted : ColorAlpha.normal
-        
-        self.updateTitleAndImageAlpha(viewAlpha)
-        self.imageView.tintColor = self.imageColor
-        self.updateTitleAndImageColorAlpha(colorAlpha)
+        updateTitleAndImageAlpha(viewAlpha)
+        imageView.tintColor = imageColor
+        updateTitleAndImageColorAlpha(colorAlpha)
     }
     
     private func updateTitleAndImageAlpha(_ alpha: CGFloat) {
-        self.imageView.alpha = alpha
-        self.titleLabel.alpha = alpha
+        imageView.alpha = alpha
+        titleLabel.alpha = alpha
     }
     
     private func updateTitleAndImageColorAlpha(_ alpha: CGFloat) {
@@ -145,20 +143,20 @@ final class ContextualMenuItemView: UIView, NibOwnerLoadable {
         
         if alpha < 1.0 {
             titleColor = self.titleColor.withAlphaComponent(alpha)
-            image = self.originalImage?.vc_tintedImage(usingColor: self.imageColor.withAlphaComponent(alpha))
+            image = originalImage?.vc_tintedImage(usingColor: imageColor.withAlphaComponent(alpha))
         } else {
             titleColor = self.titleColor
-            image = self.originalImage
+            image = originalImage
         }
         
-        self.titleLabel.textColor = titleColor
-        self.imageView.image = image
+        titleLabel.textColor = titleColor
+        imageView.image = image
     }
     
     // MARK: - Actions
     
     @objc private func buttonAction(_ sender: UILongPressGestureRecognizer) {
-        guard self.isEnabled else {
+        guard isEnabled else {
             return
         }
         
@@ -166,15 +164,15 @@ final class ContextualMenuItemView: UIView, NibOwnerLoadable {
         
         switch sender.state {
         case .began, .changed:
-            self.isHighlighted = isBackgroundViewTouched
+            isHighlighted = isBackgroundViewTouched
         case .ended:
-            self.isHighlighted = false
+            isHighlighted = false
             
             if isBackgroundViewTouched {
-                self.action?()
+                action?()
             }
         case .cancelled:
-            self.isHighlighted = false
+            isHighlighted = false
         default:
             break
         }

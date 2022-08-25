@@ -13,11 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 import SwiftUI
 
 struct ScreenList: View {
-    
     private let allStates: [ScreenStateInfo]
     
     @State private var searchQuery = ""
@@ -25,8 +23,8 @@ struct ScreenList: View {
     
     init(screens: [MockScreenState.Type]) {
         let states = screens
-            .map { $0.stateRenderer }
-            .flatMap { $0.states }
+            .map(\.stateRenderer)
+            .flatMap(\.states)
         
         allStates = states
         filteredStates = states

@@ -14,8 +14,8 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 protocol SlidingModalContainerViewDelegate: AnyObject {
     func slidingModalContainerViewDidTapBackground(_ view: SlidingModalContainerView)
@@ -23,7 +23,6 @@ protocol SlidingModalContainerViewDelegate: AnyObject {
 
 /// `SlidingModalContainerView` is a custom UIView used as a `UIViewControllerContextTransitioning.containerView` subview to embed a `SlidingModalPresentable` during presentation.
 class SlidingModalContainerView: UIView, Themable, NibLoadable {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -40,40 +39,40 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
     // MARK: - Properties
     
     private weak var blurView: UIVisualEffectView?
-    var blurBackground: Bool = false {
+    var blurBackground = false {
         didSet {
             if blurBackground {
                 let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-                blurView.frame = self.dimmingView.bounds
+                blurView.frame = dimmingView.bounds
                 blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-                self.dimmingView.addSubview(blurView)
+                dimmingView.addSubview(blurView)
                 self.blurView = blurView
-                self.dimmingView.backgroundColor = .clear
+                dimmingView.backgroundColor = .clear
             } else {
-                self.blurView?.removeFromSuperview()
-                self.dimmingView.backgroundColor = UIColor.black.withAlphaComponent(Constants.dimmingColorAlpha)
+                blurView?.removeFromSuperview()
+                dimmingView.backgroundColor = UIColor.black.withAlphaComponent(Constants.dimmingColorAlpha)
             }
         }
     }
     
-    var centerInScreen: Bool = false
+    var centerInScreen = false
     
     // MARK: Outlets
     
-    @IBOutlet private weak var dimmingView: UIView!
-    @IBOutlet private weak var contentView: UIView!
+    @IBOutlet private var dimmingView: UIView!
+    @IBOutlet private var contentView: UIView!
     
-    @IBOutlet private weak var contentViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var contentViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var contentViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var contentViewBottomConstraint: NSLayoutConstraint!
     
     // MARK: Private
     
     private var dismissContentViewBottomConstant: CGFloat {
         let bottomSafeAreaHeight: CGFloat
         
-        bottomSafeAreaHeight = self.contentView.safeAreaInsets.bottom
+        bottomSafeAreaHeight = contentView.safeAreaInsets.bottom
         
-        return -(self.contentViewHeightConstraint.constant + bottomSafeAreaHeight)
+        return -(contentViewHeightConstraint.constant + bottomSafeAreaHeight)
     }
     
     // used to avoid changing constraint during animations
@@ -82,7 +81,7 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
     // MARK: Public
     
     var contentViewFrame: CGRect {
-        return self.contentView.frame
+        self.contentView.frame
     }
     
     weak var delegate: SlidingModalContainerViewDelegate?
@@ -90,7 +89,7 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
     // MARK: - Setup
     
     static func instantiate() -> SlidingModalContainerView {
-        return self.loadFromNib()
+        loadFromNib()
     }
         
     // MARK: - Life cycle
@@ -98,27 +97,27 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.contentView.layer.masksToBounds = true
-        self.dimmingView.backgroundColor = UIColor.black.withAlphaComponent(Constants.dimmingColorAlpha)
+        contentView.layer.masksToBounds = true
+        dimmingView.backgroundColor = UIColor.black.withAlphaComponent(Constants.dimmingColorAlpha)
 
-        self.setupBackgroundTapGestureRecognizer()
+        setupBackgroundTapGestureRecognizer()
         
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.contentView.layer.cornerRadius = Constants.cornerRadius
+        contentView.layer.cornerRadius = Constants.cornerRadius
         
         guard lastBounds != nil else {
             lastBounds = bounds
             return
         }
         
-        if UIDevice.current.userInterfaceIdiom == .pad && lastBounds != bounds {
+        if UIDevice.current.userInterfaceIdiom == .pad, lastBounds != bounds {
             lastBounds = bounds
-            self.contentViewBottomConstraint.constant = (UIScreen.main.bounds.height + self.dismissContentViewBottomConstant) / 2
+            contentViewBottomConstraint.constant = (UIScreen.main.bounds.height + dismissContentViewBottomConstant) / 2
         }
     }
     
@@ -126,10 +125,10 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
     
     func preparePresentAnimation() {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            self.contentViewBottomConstraint.constant = (UIScreen.main.bounds.height + self.dismissContentViewBottomConstant) / 2
+            contentViewBottomConstraint.constant = (UIScreen.main.bounds.height + dismissContentViewBottomConstant) / 2
         } else {
             if centerInScreen {
-                contentViewBottomConstraint.constant = (bounds.height - contentViewHeightConstraint.constant)/2
+                contentViewBottomConstraint.constant = (bounds.height - contentViewHeightConstraint.constant) / 2
             } else {
                 contentViewBottomConstraint.constant = 0
             }
@@ -137,19 +136,19 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
     }
     
     func prepareDismissAnimation() {
-        self.contentViewBottomConstraint.constant = self.dismissContentViewBottomConstant
+        contentViewBottomConstraint.constant = dismissContentViewBottomConstant
     }
     
     func update(theme: Theme) {
-        self.contentView.backgroundColor = theme.headerBackgroundColor
+        contentView.backgroundColor = theme.headerBackgroundColor
     }
     
     func updateContentViewMaxHeight(_ maxHeight: CGFloat) {
-        self.contentViewHeightConstraint.constant = maxHeight
+        contentViewHeightConstraint.constant = maxHeight
     }
     
     func updateContentViewLayout() {
-        self.layoutIfNeeded()
+        layoutIfNeeded()
     }
     
     func setContentView(_ contentView: UIView) {
@@ -160,7 +159,7 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
     }
     
     func updateDimmingViewAlpha(_ alpha: CGFloat) {
-        self.dimmingView.alpha = alpha
+        dimmingView.alpha = alpha
     }
     
     func contentViewWidthFittingSize(_ size: CGSize) -> CGFloat {
@@ -180,10 +179,10 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
             let heightConstraint = sizingView.heightAnchor.constraint(equalToConstant: size.width)
             heightConstraint.isActive = true
             SlidingModalContainerView.Sizing.heightConstraint = heightConstraint
-        }        
+        }
         
         sizingView.setNeedsLayout()
-        sizingView.layoutIfNeeded()                
+        sizingView.layoutIfNeeded()
         
         return sizingView.contentViewFrame.width
     }
@@ -192,10 +191,10 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
     
     private func setupBackgroundTapGestureRecognizer() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleBackgroundTap(_:)))
-        self.dimmingView.addGestureRecognizer(tapGestureRecognizer)
+        dimmingView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     @objc private func handleBackgroundTap(_ gestureRecognizer: UITapGestureRecognizer) {
-        self.delegate?.slidingModalContainerViewDidTapBackground(self)
+        delegate?.slidingModalContainerViewDidTapBackground(self)
     }
 }

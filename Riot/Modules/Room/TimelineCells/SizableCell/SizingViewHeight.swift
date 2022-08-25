@@ -18,14 +18,13 @@ import Foundation
 
 /// `SizingViewHeight` allows to associate a height for a given width to a unique value.
 final class SizingViewHeight: Hashable, Equatable, CustomStringConvertible {
-    
     // MARK: - Properties
     
     let uniqueIdentifier: Int
-    var heights: [CGFloat /* width */: CGFloat /* height */] = [:]
+    var heights: [CGFloat /* width */: CGFloat /* height */ ] = [:]
     
     var description: String {
-        return "<\(type(of: self))> uniqueIdentifier: \(uniqueIdentifier) - heights: \(heights)"
+        "<\(type(of: self))> uniqueIdentifier: \(uniqueIdentifier) - heights: \(heights)"
     }
     
     // MARK: - Setup
@@ -37,12 +36,12 @@ final class SizingViewHeight: Hashable, Equatable, CustomStringConvertible {
     // MARK: - Hashable
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.uniqueIdentifier)
+        hasher.combine(uniqueIdentifier)
     }
     
     // MARK: - Equatable
     
     static func == (lhs: SizingViewHeight, rhs: SizingViewHeight) -> Bool {
-        return lhs.uniqueIdentifier == rhs.uniqueIdentifier
+        lhs.uniqueIdentifier == rhs.uniqueIdentifier
     }
 }

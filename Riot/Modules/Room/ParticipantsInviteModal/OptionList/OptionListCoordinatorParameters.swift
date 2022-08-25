@@ -20,10 +20,8 @@ import Foundation
 
 /// OptionListCoordinator input parameters
 struct OptionListCoordinatorParameters {
-    
     let title: String?
     let options: [OptionListItemViewData]
     
     let navigationRouter: NavigationRouterType?
-
 }

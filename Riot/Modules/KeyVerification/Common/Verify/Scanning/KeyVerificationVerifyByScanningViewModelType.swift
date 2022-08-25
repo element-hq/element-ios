@@ -34,7 +34,6 @@ protocol KeyVerificationVerifyByScanningViewModelCoordinatorDelegate: AnyObject 
 
 /// Protocol describing the view model used by `KeyVerificationVerifyByScanningViewController`
 protocol KeyVerificationVerifyByScanningViewModelType {
-            
     var viewDelegate: KeyVerificationVerifyByScanningViewModelViewDelegate? { get set }
     var coordinatorDelegate: KeyVerificationVerifyByScanningViewModelCoordinatorDelegate? { get set }
     

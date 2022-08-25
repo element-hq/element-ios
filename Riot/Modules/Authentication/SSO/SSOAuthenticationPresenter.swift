@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,6 @@ enum SSOAuthenticationPresenterError: Error {
 /// SSOAuthenticationPresenter enables to present single sign-on authentication
 @objcMembers
 final class SSOAuthenticationPresenter: NSObject {
-    
     // MARK: - Constants
     
     // MARK: - Properties
@@ -64,9 +63,9 @@ final class SSOAuthenticationPresenter: NSObject {
                  with transactionId: String,
                  from presentingViewController: UIViewController,
                  animated: Bool) {
-        guard let authenticationURL = self.ssoAuthenticationService.authenticationURL(for: identityProvider?.id, transactionId: transactionId) else {
-            self.delegate?.ssoAuthenticationPresenter(self, authenticationDidFailWithError: SSOAuthenticationPresenterError.failToLoadAuthenticationURL)
-             return
+        guard let authenticationURL = ssoAuthenticationService.authenticationURL(for: identityProvider?.id, transactionId: transactionId) else {
+            delegate?.ssoAuthenticationPresenter(self, authenticationDidFailWithError: SSOAuthenticationPresenterError.failToLoadAuthenticationURL)
+            return
         }
         
         self.identityProvider = identityProvider
@@ -82,17 +81,17 @@ final class SSOAuthenticationPresenter: NSObject {
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        if let safariViewController = self.safariViewController {
+        if let safariViewController = safariViewController {
             safariViewController.dismiss(animated: animated, completion: completion)
         }
         
-        self.authenticationSession?.cancel()
+        authenticationSession?.cancel()
     }
     
     // MARK: - Private
     
     private func presentSafariViewController(with authenticationURL: URL, animated: Bool) {
-        guard let presentingViewController = self.presentingViewController else {
+        guard let presentingViewController = presentingViewController else {
             return
         }
         
@@ -105,7 +104,7 @@ final class SSOAuthenticationPresenter: NSObject {
     }
     
     private func startAuthenticationSession(with authenticationURL: URL) {
-        guard let presentingViewController = self.presentingViewController else {
+        guard let presentingViewController = presentingViewController else {
             return
         }
         
@@ -116,7 +115,7 @@ final class SSOAuthenticationPresenter: NSObject {
             authenticationSession.setContextProvider(contextProvider)
         }
         
-        authenticationSession.authenticate(with: authenticationURL, callbackURLScheme: self.ssoAuthenticationService.callBackURLScheme) { [weak self] (callBackURL, error) in
+        authenticationSession.authenticate(with: authenticationURL, callbackURLScheme: ssoAuthenticationService.callBackURLScheme) { [weak self] callBackURL, error in
             guard let self = self else {
                 return
             }
@@ -142,16 +141,15 @@ final class SSOAuthenticationPresenter: NSObject {
 }
 
 // MARK: - SFSafariViewControllerDelegate
+
 extension SSOAuthenticationPresenter: SFSafariViewControllerDelegate {
-    
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        self.delegate?.ssoAuthenticationPresenterDidCancel(self)
+        delegate?.ssoAuthenticationPresenterDidCancel(self)
     }
     
     func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
-        
         if !didLoadSuccessfully {
-            self.delegate?.ssoAuthenticationPresenter(self, authenticationDidFailWithError: SSOAuthenticationPresenterError.failToLoadAuthenticationURL)
+            delegate?.ssoAuthenticationPresenter(self, authenticationDidFailWithError: SSOAuthenticationPresenterError.failToLoadAuthenticationURL)
         }
     }
 }

@@ -19,7 +19,6 @@
 import UIKit
 
 final class KeyVerificationDataLoadingViewController: UIViewController {
-    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -47,36 +46,36 @@ final class KeyVerificationDataLoadingViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = self.viewModel.verificationKind.verificationTitle
-        self.vc_removeBackTitle()
+        title = viewModel.verificationKind.verificationTitle
+        vc_removeBackTitle()
         
-        self.setupViews()
+        setupViews()
 
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
 
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.viewDelegate = self
+        viewModel.process(viewAction: .loadData)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        self.theme.statusBarStyle
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let navigationController = self.navigationController {
+        if let navigationController = navigationController {
             if navigationController.navigationBar.isHidden == true {
-                self.navigationItem.hidesBackButton = true
+                navigationItem.hidesBackButton = true
                 // Show navigation bar if needed
                 navigationController.setNavigationBarHidden(false, animated: animated)
             } else {
                 // Hide back button
-                self.navigationItem.setHidesBackButton(true, animated: animated)
+                navigationItem.setHidesBackButton(true, animated: animated)
             }
         }
     }
@@ -86,9 +85,9 @@ final class KeyVerificationDataLoadingViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
     }
@@ -102,32 +101,31 @@ final class KeyVerificationDataLoadingViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
     }
 
     private func render(viewState: KeyVerificationDataLoadingViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded:
-            self.renderLoaded()
+            renderLoaded()
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         case .errorMessage(let message):
-            self.renderError(message: message)
+            renderError(message: message)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
     }
     
     private func render(error: Error) {
-        
         var shouldDisplayError = true
         var message: String?
         
@@ -145,21 +143,20 @@ final class KeyVerificationDataLoadingViewController: UIViewController {
         }
         
         if shouldDisplayError {
-            
             let completion = {
                 self.viewModel.process(viewAction: .cancel)
             }
             
             if let message = message {
-                self.errorPresenter.presentError(from: self, title: "", message: message, animated: true, handler: completion)
+                errorPresenter.presentError(from: self, title: "", message: message, animated: true, handler: completion)
             } else {
-                self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: completion)
+                errorPresenter.presentError(from: self, forError: error, animated: true, handler: completion)
             }
         }
     }
 
     private func renderError(message: String) {
-        self.errorPresenter.presentError(from: self, title: "", message: message, animated: true, handler: {
+        errorPresenter.presentError(from: self, title: "", message: message, animated: true, handler: {
             self.viewModel.process(viewAction: .cancel)
         })
     }
@@ -167,19 +164,18 @@ final class KeyVerificationDataLoadingViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
 
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
 
-
 // MARK: - KeyVerificationDataLoadingViewModelViewDelegate
-extension KeyVerificationDataLoadingViewController: KeyVerificationDataLoadingViewModelViewDelegate {
 
+extension KeyVerificationDataLoadingViewController: KeyVerificationDataLoadingViewModelViewDelegate {
     func keyVerificationDataLoadingViewModel(_ viewModel: KeyVerificationDataLoadingViewModelType, didUpdateViewState viewSate: KeyVerificationDataLoadingViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

@@ -17,7 +17,6 @@
 import Foundation
 
 final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -52,138 +51,139 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     // MARK: - Public
     
     func start() {
-        
         let rootCoordinator: Coordinator & Presentable
         
-        switch self.recoveryMode {
+        switch recoveryMode {
         case .onlyKey:
-            rootCoordinator = self.createRecoverFromKeyCoordinator()
+            rootCoordinator = createRecoverFromKeyCoordinator()
         case .passphraseOrKey:
-            rootCoordinator = self.createRecoverFromPassphraseCoordinator()
+            rootCoordinator = createRecoverFromPassphraseCoordinator()
         }
         
         rootCoordinator.start()
         
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
         
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+        if navigationRouter.modules.isEmpty == false {
+            navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             })
         } else {
-            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+            navigationRouter.setRootModule(rootCoordinator) { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter
+        navigationRouter
             .toPresentable()
-            .vc_setModalFullScreen(!self.cancellable)
+            .vc_setModalFullScreen(!cancellable)
     }
     
     // MARK: - Private
     
     private func createRecoverFromKeyCoordinator() -> SecretsRecoveryWithKeyCoordinator {
-        let coordinator = SecretsRecoveryWithKeyCoordinator(recoveryService: self.session.crypto.recoveryService, recoveryGoal: self.recoveryGoal, cancellable: self.cancellable)
+        let coordinator = SecretsRecoveryWithKeyCoordinator(recoveryService: session.crypto.recoveryService, recoveryGoal: recoveryGoal, cancellable: cancellable)
         coordinator.delegate = self
         return coordinator
     }
     
     private func createRecoverFromPassphraseCoordinator() -> SecretsRecoveryWithPassphraseCoordinator {
-        let coordinator = SecretsRecoveryWithPassphraseCoordinator(recoveryService: self.session.crypto.recoveryService, recoveryGoal: self.recoveryGoal, cancellable: self.cancellable)
+        let coordinator = SecretsRecoveryWithPassphraseCoordinator(recoveryService: session.crypto.recoveryService, recoveryGoal: recoveryGoal, cancellable: cancellable)
         coordinator.delegate = self
         return coordinator
     }
     
     private func showRecoverFromKeyCoordinator() {
-        let coordinator = self.createRecoverFromKeyCoordinator()
+        let coordinator = createRecoverFromKeyCoordinator()
         coordinator.start()
         
-        self.navigationRouter.push(coordinator.toPresentable(), animated: true, popCompletion: { [weak self] in
+        navigationRouter.push(coordinator.toPresentable(), animated: true, popCompletion: { [weak self] in
             self?.remove(childCoordinator: coordinator)
         })
-        self.add(childCoordinator: coordinator)
+        add(childCoordinator: coordinator)
     }
     
     private func showResetSecrets() {
-        let coordinator = SecretsResetCoordinator(session: self.session)
+        let coordinator = SecretsResetCoordinator(session: session)
         coordinator.delegate = self
         coordinator.start()
         
-        self.navigationRouter.push(coordinator.toPresentable(), animated: true, popCompletion: { [weak self] in
+        navigationRouter.push(coordinator.toPresentable(), animated: true, popCompletion: { [weak self] in
             self?.remove(childCoordinator: coordinator)
         })
-        self.add(childCoordinator: coordinator)
+        add(childCoordinator: coordinator)
     }
     
     private func showSecureBackupSetup(checkKeyBackup: Bool) {
-        let coordinator = SecureBackupSetupCoordinator(session: self.session, checkKeyBackup: checkKeyBackup, navigationRouter: self.navigationRouter, cancellable: self.cancellable)
+        let coordinator = SecureBackupSetupCoordinator(session: session, checkKeyBackup: checkKeyBackup, navigationRouter: navigationRouter, cancellable: cancellable)
         coordinator.delegate = self
         coordinator.start()
         
-        self.navigationRouter.push(coordinator.toPresentable(), animated: true, popCompletion: { [weak self] in
+        navigationRouter.push(coordinator.toPresentable(), animated: true, popCompletion: { [weak self] in
             self?.remove(childCoordinator: coordinator)
         })
-        self.add(childCoordinator: coordinator)
+        add(childCoordinator: coordinator)
     }
 }
 
 // MARK: - SecretsRecoveryWithKeyCoordinatorDelegate
+
 extension SecretsRecoveryCoordinator: SecretsRecoveryWithKeyCoordinatorDelegate {
-    
     func secretsRecoveryWithKeyCoordinatorDidRecover(_ coordinator: SecretsRecoveryWithKeyCoordinatorType) {
-        self.delegate?.secretsRecoveryCoordinatorDidRecover(self)
+        delegate?.secretsRecoveryCoordinatorDidRecover(self)
     }
     
     func secretsRecoveryWithKeyCoordinatorDidCancel(_ coordinator: SecretsRecoveryWithKeyCoordinatorType) {
-        self.delegate?.secretsRecoveryCoordinatorDidCancel(self)
+        delegate?.secretsRecoveryCoordinatorDidCancel(self)
     }
     
     func secretsRecoveryWithKeyCoordinatorWantsToResetSecrets(_ viewModel: SecretsRecoveryWithKeyCoordinatorType) {
-        self.showResetSecrets()
+        showResetSecrets()
     }
 }
 
 // MARK: - SecretsRecoveryWithPassphraseCoordinatorDelegate
+
 extension SecretsRecoveryCoordinator: SecretsRecoveryWithPassphraseCoordinatorDelegate {
-    
     func secretsRecoveryWithPassphraseCoordinatorDidRecover(_ coordinator: SecretsRecoveryWithPassphraseCoordinatorType) {
-        self.delegate?.secretsRecoveryCoordinatorDidRecover(self)
+        delegate?.secretsRecoveryCoordinatorDidRecover(self)
     }
     
     func secretsRecoveryWithPassphraseCoordinatorDoNotKnowPassphrase(_ coordinator: SecretsRecoveryWithPassphraseCoordinatorType) {
-        self.showRecoverFromKeyCoordinator()
+        showRecoverFromKeyCoordinator()
     }
     
     func secretsRecoveryWithPassphraseCoordinatorDidCancel(_ coordinator: SecretsRecoveryWithPassphraseCoordinatorType) {
-        self.delegate?.secretsRecoveryCoordinatorDidCancel(self)
+        delegate?.secretsRecoveryCoordinatorDidCancel(self)
     }
     
-    func secretsRecoveryWithPassphraseCoordinatorWantsToResetSecrets(_ coordinator: SecretsRecoveryWithPassphraseCoordinatorType) {        
-        self.showResetSecrets()
+    func secretsRecoveryWithPassphraseCoordinatorWantsToResetSecrets(_ coordinator: SecretsRecoveryWithPassphraseCoordinatorType) {
+        showResetSecrets()
     }
 }
 
 // MARK: - SecretsResetCoordinatorDelegate
+
 extension SecretsRecoveryCoordinator: SecretsResetCoordinatorDelegate {
     func secretsResetCoordinatorDidResetSecrets(_ coordinator: SecretsResetCoordinatorType) {
-        self.showSecureBackupSetup(checkKeyBackup: false)
+        showSecureBackupSetup(checkKeyBackup: false)
     }
     
     func secretsResetCoordinatorDidCancel(_ coordinator: SecretsResetCoordinatorType) {
-        self.delegate?.secretsRecoveryCoordinatorDidCancel(self)
+        delegate?.secretsRecoveryCoordinatorDidCancel(self)
     }
 }
 
 // MARK: - SecureBackupSetupCoordinatorDelegate
+
 extension SecretsRecoveryCoordinator: SecureBackupSetupCoordinatorDelegate {
     func secureBackupSetupCoordinatorDidComplete(_ coordinator: SecureBackupSetupCoordinatorType) {
-        self.delegate?.secretsRecoveryCoordinatorDidRecover(self)
+        delegate?.secretsRecoveryCoordinatorDidRecover(self)
     }
     
     func secureBackupSetupCoordinatorDidCancel(_ coordinator: SecureBackupSetupCoordinatorType) {
-        self.delegate?.secretsRecoveryCoordinatorDidCancel(self)
+        delegate?.secretsRecoveryCoordinatorDidCancel(self)
     }
 }

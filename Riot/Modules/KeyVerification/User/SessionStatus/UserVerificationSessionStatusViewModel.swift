@@ -33,7 +33,6 @@ enum UserVerificationSessionStatusViewModelError: Error {
 }
 
 final class UserVerificationSessionStatusViewModel: UserVerificationSessionStatusViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -62,36 +61,36 @@ final class UserVerificationSessionStatusViewModel: UserVerificationSessionStatu
     func process(viewAction: UserVerificationSessionStatusViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .verify:
-             self.coordinatorDelegate?.userVerificationSessionStatusViewModel(self, wantsToVerifyDeviceWithId: self.deviceId, for: self.userId)
+            coordinatorDelegate?.userVerificationSessionStatusViewModel(self, wantsToVerifyDeviceWithId: deviceId, for: userId)
         case .verifyManually:
-            self.coordinatorDelegate?.userVerificationSessionStatusViewModel(self, wantsToManuallyVerifyDeviceWithId: self.deviceId, for: self.userId)
+            coordinatorDelegate?.userVerificationSessionStatusViewModel(self, wantsToManuallyVerifyDeviceWithId: deviceId, for: userId)
         case .close:
-            self.coordinatorDelegate?.userVerificationSessionStatusViewModelDidClose(self)
+            coordinatorDelegate?.userVerificationSessionStatusViewModelDidClose(self)
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-        guard let deviceInfo = self.session.crypto.device(withDeviceId: self.deviceId, ofUser: self.userId) else {
-            self.update(viewState: .error(UserVerificationSessionStatusViewModelError.deviceNotFound))
+        guard let deviceInfo = session.crypto.device(withDeviceId: deviceId, ofUser: userId) else {
+            update(viewState: .error(UserVerificationSessionStatusViewModelError.deviceNotFound))
             return
         }
         
-        let isCurrentUser = self.session.myUser.userId == self.userId
+        let isCurrentUser = session.myUser.userId == userId
         
-        let viewData = SessionStatusViewData(userId: self.userId,
-                                             userDisplayName: self.userDisplayName,
+        let viewData = SessionStatusViewData(userId: userId,
+                                             userDisplayName: userDisplayName,
                                              isCurrentUser: isCurrentUser,
                                              deviceId: deviceInfo.deviceId,
                                              deviceName: deviceInfo.displayName ?? "",
                                              isDeviceTrusted: deviceInfo.trustLevel.isVerified)
-        self.update(viewState: .loaded(viewData: viewData))
+        update(viewState: .loaded(viewData: viewData))
     }
     
     private func update(viewState: UserVerificationSessionStatusViewState) {
-        self.viewDelegate?.userVerificationSessionStatusViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.userVerificationSessionStatusViewModel(self, didUpdateViewState: viewState)
     }
 }

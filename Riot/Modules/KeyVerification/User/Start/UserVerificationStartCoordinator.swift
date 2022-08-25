@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class UserVerificationStartCoordinator: UserVerificationStartCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -52,23 +51,23 @@ final class UserVerificationStartCoordinator: UserVerificationStartCoordinatorTy
     
     // MARK: - Public methods
     
-    func start() {            
-        self.userVerificationStartViewModel.coordinatorDelegate = self
+    func start() {
+        userVerificationStartViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.userVerificationStartViewController
+        userVerificationStartViewController
     }
 }
 
 // MARK: - UserVerificationStartViewModelCoordinatorDelegate
+
 extension UserVerificationStartCoordinator: UserVerificationStartViewModelCoordinatorDelegate {
-    
     func userVerificationStartViewModel(_ viewModel: UserVerificationStartViewModelType, otherDidAcceptRequest request: MXKeyVerificationRequest) {
-        self.delegate?.userVerificationStartCoordinator(self, otherDidAcceptRequest: request)
+        delegate?.userVerificationStartCoordinator(self, otherDidAcceptRequest: request)
     }
     
     func userVerificationStartViewModelDidCancel(_ viewModel: UserVerificationStartViewModelType) {
-        self.delegate?.userVerificationStartCoordinatorDidCancel(self)
+        delegate?.userVerificationStartCoordinatorDidCancel(self)
     }
 }

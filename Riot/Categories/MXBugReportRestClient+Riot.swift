@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +15,10 @@
 //
 
 import Foundation
-import MatrixSDK
 import GBDeviceInfo
+import MatrixSDK
 
 extension MXBugReportRestClient {
-    
     @objc static func vc_bugReportRestClient(appName: String) -> MXBugReportRestClient {
         let client = MXBugReportRestClient(bugReportEndpoint: BuildSettings.bugReportEndpointUrlString)
         // App info
@@ -32,17 +31,15 @@ extension MXBugReportRestClient {
         return client
     }
     
-    @objc func vc_sendBugReport(
-        description: String,
-        sendLogs: Bool,
-        sendCrashLog: Bool,
-        sendFiles: [URL]? = nil,
-        additionalLabels: [String]? = nil,
-        customFields: [String: String]? = nil,
-        progress: ((MXBugReportState, Progress?) -> Void)? = nil,
-        success: ((String?) -> Void)? = nil,
-        failure: ((Error?) -> Void)? = nil
-    ) {
+    @objc func vc_sendBugReport(description: String,
+                                sendLogs: Bool,
+                                sendCrashLog: Bool,
+                                sendFiles: [URL]? = nil,
+                                additionalLabels: [String]? = nil,
+                                customFields: [String: String]? = nil,
+                                progress: ((MXBugReportState, Progress?) -> Void)? = nil,
+                                success: ((String?) -> Void)? = nil,
+                                failure: ((Error?) -> Void)? = nil) {
         // User info (TODO: handle multi-account and find a way to expose them in rageshake API)
         var userInfo = [String: String]()
         let mainAccount = MXKAccountManager.shared().accounts.first
@@ -70,14 +67,13 @@ extension MXBugReportRestClient {
         
         if let customFields = customFields {
             // combine userInfo with custom fields overriding with custom where there is a conflict
-            userInfo.merge(customFields) { (_, new) in new }
+            userInfo.merge(customFields) { _, new in new }
         }
         others = userInfo
         
         var labels: [String] = additionalLabels ?? [String]()
         // Add a Github label giving information about the version
         if var versionLabel = version, let buildLabel = build {
-            
             // If this is not the app store version, be more accurate on the build origin
             if buildLabel == VectorL10n.settingsConfigNoBuildInfo {
                 // This is a debug session from Xcode
@@ -102,13 +98,12 @@ extension MXBugReportRestClient {
         }
         
         sendBugReport(sendDescription,
-            sendLogs: sendLogs,
-            sendCrashLog: sendCrashLog,
-            sendFiles: sendFiles,
-            attachGitHubLabels: labels,
-            progress: progress,
-            success: success,
-            failure: failure)
+                      sendLogs: sendLogs,
+                      sendCrashLog: sendCrashLog,
+                      sendFiles: sendFiles,
+                      attachGitHubLabels: labels,
+                      progress: progress,
+                      success: success,
+                      failure: failure)
     }
-    
 }

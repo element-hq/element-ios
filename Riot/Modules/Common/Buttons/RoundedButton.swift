@@ -17,7 +17,6 @@
 import UIKit
 
 final class RoundedButton: CustomRoundedButton, Themable {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -43,7 +42,7 @@ final class RoundedButton: CustomRoundedButton, Themable {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     // MARK: - Private
@@ -55,21 +54,21 @@ final class RoundedButton: CustomRoundedButton, Themable {
         
         let backgroundColor: UIColor
         
-        switch self.actionStyle {
+        switch actionStyle {
         case .default:
             backgroundColor = theme.tintColor
         default:
             backgroundColor = theme.noticeColor
         }
         
-        self.vc_setBackgroundColor(backgroundColor.withAlphaComponent(Constants.backgroundColorAlpha), for: .normal)
-        self.setTitleColor(backgroundColor, for: .normal)
+        vc_setBackgroundColor(backgroundColor.withAlphaComponent(Constants.backgroundColorAlpha), for: .normal)
+        setTitleColor(backgroundColor, for: .normal)
     }
     
     // MARK: - Themable
     
     func update(theme: Theme) {
         self.theme = theme
-        self.updateButtonStyle()
+        updateButtonStyle()
     }
 }

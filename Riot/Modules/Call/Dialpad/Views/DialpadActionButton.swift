@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,6 @@ import UIKit
 
 /// Action button class for Dialpad screen
 class DialpadActionButton: DialpadButton {
-
     var type: DialpadActionButtonType = .backspace
     
     override func update(theme: Theme) {
@@ -37,5 +36,4 @@ class DialpadActionButton: DialpadButton {
             tintColor = .white
         }
     }
-
 }

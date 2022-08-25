@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,6 @@ protocol TableViewSectionsDelegate {
 
 @objcMembers
 final class TableViewSections: NSObject {
-    
     /// Delegate object
     weak var delegate: TableViewSectionsDelegate?
     
@@ -93,5 +92,4 @@ final class TableViewSections: NSObject {
         }
         return IndexPath(row: section.rows[indexPath.row].tag, section: section.tag)
     }
-    
 }

@@ -18,7 +18,6 @@ import Foundation
 
 /// A structure that parses Matrix Room ID and constructs their constituent parts.
 struct RoomIdComponents {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -35,7 +34,7 @@ struct RoomIdComponents {
     
     init?(matrixID: String) {
         guard MXTools.isMatrixRoomIdentifier(matrixID),
-            let (localRoomId, homeServer) = RoomIdComponents.getLocalRoomIDAndHomeServer(from: matrixID) else {
+              let (localRoomId, homeServer) = RoomIdComponents.getLocalRoomIDAndHomeServer(from: matrixID) else {
             return nil
         }
         
@@ -43,7 +42,7 @@ struct RoomIdComponents {
         self.homeServer = homeServer
     }
     
-    // MARK: - Private    
+    // MARK: - Private
 
     /// Extract local room id and homeserver from Matrix ID
     ///

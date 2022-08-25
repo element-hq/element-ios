@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// Dial pad configuration object, to be passed when initializing a `DialpadViewController`.
 @objcMembers
 class DialpadConfiguration: NSObject {
-    
     /// Option for a dial pad to show the title or not.
     var showsTitle: Bool
     
@@ -42,7 +41,7 @@ class DialpadConfiguration: NSObject {
     var playTones: Bool
     
     /// Default configuration object. All options are enabled by default.
-    static let `default`: DialpadConfiguration = DialpadConfiguration()
+    static let `default` = DialpadConfiguration()
     
     init(showsTitle: Bool = true,
          showsCloseButton: Bool = true,
@@ -60,5 +59,4 @@ class DialpadConfiguration: NSObject {
         self.playTones = playTones
         super.init()
     }
-    
 }

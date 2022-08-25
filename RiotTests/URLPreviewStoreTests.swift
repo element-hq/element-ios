@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 @testable import Element
+import XCTest
 
 class URLPreviewStoreTests: XCTestCase {
     var store: URLPreviewStore!
@@ -42,7 +42,6 @@ class URLPreviewStoreTests: XCTestCase {
                        title: "Home",
                        text: "Secure and independent communication, connected via Matrix")
     }
-    
     
     /// Creates a fake `MXEvent` object to be passed to the store as needed.
     func fakeEvent() -> MXEvent {

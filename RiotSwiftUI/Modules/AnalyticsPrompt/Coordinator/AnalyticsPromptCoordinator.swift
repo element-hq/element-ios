@@ -22,17 +22,16 @@ struct AnalyticsPromptCoordinatorParameters {
 }
 
 final class AnalyticsPromptCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
     
     private let parameters: AnalyticsPromptCoordinatorParameters
     private let analyticsPromptHostingController: UIViewController
-    private var _analyticsPromptViewModel: Any? = nil
+    private var _analyticsPromptViewModel: Any?
     
     fileprivate var analyticsPromptViewModel: AnalyticsPromptViewModel {
-        return _analyticsPromptViewModel as! AnalyticsPromptViewModel
+        _analyticsPromptViewModel as! AnalyticsPromptViewModel
     }
     
     // MARK: Public
@@ -84,6 +83,6 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.analyticsPromptHostingController
+        analyticsPromptHostingController
     }
 }

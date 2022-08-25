@@ -22,8 +22,8 @@ struct EmojiMartStore {
 }
 
 // MARK: - Decodable
+
 extension EmojiMartStore: Decodable {
-    
     /// JSON keys associated to EmojiJSONStore properties.
     enum CodingKeys: String, CodingKey {
         case categories
@@ -38,8 +38,8 @@ extension EmojiMartStore: Decodable {
             self.stringValue = stringValue
         }
         
-        var intValue: Int? { return nil }
-        init?(intValue: Int) { return nil }
+        var intValue: Int? { nil }
+        init?(intValue: Int) { nil }
     }
     
     public init(from decoder: Decoder) throws {
@@ -47,7 +47,7 @@ extension EmojiMartStore: Decodable {
         
         let emojisContainer = try container.nestedContainer(keyedBy: EmojiKey.self, forKey: .emojis)
         
-        let emojis: [EmojiItem] = emojisContainer.allKeys.compactMap { (emojiKey) -> EmojiItem? in
+        let emojis: [EmojiItem] = emojisContainer.allKeys.compactMap { emojiKey -> EmojiItem? in
             let emojiItem: EmojiItem?
             
             do {

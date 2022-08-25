@@ -24,13 +24,12 @@ protocol SecretsSetupRecoveryPassphraseViewModelViewDelegate: AnyObject {
 
 protocol SecretsSetupRecoveryPassphraseViewModelCoordinatorDelegate: AnyObject {
     func secretsSetupRecoveryPassphraseViewModel(_ viewModel: SecretsSetupRecoveryPassphraseViewModelType, didEnterNewPassphrase passphrase: String)
-    func secretsSetupRecoveryPassphraseViewModel(_ viewModel: SecretsSetupRecoveryPassphraseViewModelType, didConfirmPassphrase passphrase: String)    
+    func secretsSetupRecoveryPassphraseViewModel(_ viewModel: SecretsSetupRecoveryPassphraseViewModelType, didConfirmPassphrase passphrase: String)
     func secretsSetupRecoveryPassphraseViewModelDidCancel(_ viewModel: SecretsSetupRecoveryPassphraseViewModelType)
 }
 
 /// Protocol describing the view model used by `SecretsSetupRecoveryPassphraseViewController`
 protocol SecretsSetupRecoveryPassphraseViewModelType {
-    
     var viewDelegate: SecretsSetupRecoveryPassphraseViewModelViewDelegate? { get set }
     var coordinatorDelegate: SecretsSetupRecoveryPassphraseViewModelCoordinatorDelegate? { get set }
     

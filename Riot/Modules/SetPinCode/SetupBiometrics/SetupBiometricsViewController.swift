@@ -19,23 +19,22 @@
 import UIKit
 
 final class SetupBiometricsViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
-        static let aConstant: Int = 666
+        static let aConstant = 666
     }
     
     // MARK: - Properties
     
     // MARK: Outlets
     
-    @IBOutlet private weak var logoImageView: UIImageView!
-    @IBOutlet private weak var itemsStackView: UIStackView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var subtitleLabel: UILabel!
-    @IBOutlet private weak var biometricsIconImageView: UIImageView!
-    @IBOutlet private weak var enableButton: UIButton!
+    @IBOutlet private var logoImageView: UIImageView!
+    @IBOutlet private var itemsStackView: UIStackView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var subtitleLabel: UILabel!
+    @IBOutlet private var biometricsIconImageView: UIImageView!
+    @IBOutlet private var enableButton: UIButton!
     
     // MARK: Private
 
@@ -60,25 +59,25 @@ final class SetupBiometricsViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
         
         if #available(iOS 13.0, *) {
             modalPresentationStyle = .fullScreen
             isModalInPresentation = true
         }
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -86,18 +85,18 @@ final class SetupBiometricsViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.subtitleLabel.textColor = theme.textSecondaryColor
+        titleLabel.textColor = theme.textPrimaryColor
+        subtitleLabel.textColor = theme.textSecondaryColor
 
-        self.enableButton.backgroundColor = theme.tintColor
-        self.enableButton.tintColor = theme.baseTextPrimaryColor
-        self.enableButton.setTitleColor(theme.baseTextPrimaryColor, for: .normal)
+        enableButton.backgroundColor = theme.tintColor
+        enableButton.tintColor = theme.baseTextPrimaryColor
+        enableButton.setTitleColor(theme.baseTextPrimaryColor, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -105,27 +104,27 @@ final class SetupBiometricsViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.title = ""
+        title = ""
     }
     
     private func showSkipButton() {
-        self.navigationItem.rightBarButtonItem = MXKBarButtonItem(title: VectorL10n.skip, style: .plain) { [weak self] in
+        navigationItem.rightBarButtonItem = MXKBarButtonItem(title: VectorL10n.skip, style: .plain) { [weak self] in
             self?.skipCancelButtonAction()
         }
     }
     
     private func showCancelButton() {
-        self.navigationItem.rightBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
+        navigationItem.rightBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
             self?.skipCancelButtonAction()
         }
     }
     
     private func hideSkipCancelButton() {
-        self.navigationItem.rightBarButtonItem = nil
+        navigationItem.rightBarButtonItem = nil
     }
 
     private func render(viewState: SetupBiometricsViewState) {
@@ -147,40 +146,40 @@ final class SetupBiometricsViewController: UIViewController {
         showSkipButton()
         
         guard let biometricsName = viewModel.localizedBiometricsName() else { return }
-        self.titleLabel.text = VectorL10n.biometricsSetupTitleX(biometricsName)
-        self.subtitleLabel.text = VectorL10n.biometricsSetupSubtitle
-        self.biometricsIconImageView.image = viewModel.biometricsIcon()
-        self.enableButton.setTitle(VectorL10n.biometricsSetupEnableButtonTitleX(biometricsName), for: .normal)
+        titleLabel.text = VectorL10n.biometricsSetupTitleX(biometricsName)
+        subtitleLabel.text = VectorL10n.biometricsSetupSubtitle
+        biometricsIconImageView.image = viewModel.biometricsIcon()
+        enableButton.setTitle(VectorL10n.biometricsSetupEnableButtonTitleX(biometricsName), for: .normal)
     }
     
     private func renderSetupFromSettings() {
         showCancelButton()
         
         guard let biometricsName = viewModel.localizedBiometricsName() else { return }
-        self.titleLabel.text = VectorL10n.biometricsSetupTitleX(biometricsName)
-        self.subtitleLabel.text = VectorL10n.biometricsSetupSubtitle
-        self.biometricsIconImageView.image = viewModel.biometricsIcon()
-        self.enableButton.setTitle(VectorL10n.biometricsSetupEnableButtonTitleX(biometricsName), for: .normal)
+        titleLabel.text = VectorL10n.biometricsSetupTitleX(biometricsName)
+        subtitleLabel.text = VectorL10n.biometricsSetupSubtitle
+        biometricsIconImageView.image = viewModel.biometricsIcon()
+        enableButton.setTitle(VectorL10n.biometricsSetupEnableButtonTitleX(biometricsName), for: .normal)
     }
     
     private func renderUnlock() {
         hideSkipCancelButton()
         
-        self.logoImageView.isHidden = false
+        logoImageView.isHidden = false
         //  hide all items but the logo
-        self.itemsStackView.isHidden = true
+        itemsStackView.isHidden = true
         
-        self.viewModel.process(viewAction: .unlock)
+        viewModel.process(viewAction: .unlock)
     }
     
     private func renderConfirmToDisable() {
         showCancelButton()
         
         guard let biometricsName = viewModel.localizedBiometricsName() else { return }
-        self.titleLabel.text = VectorL10n.biometricsDesetupTitleX(biometricsName)
-        self.subtitleLabel.text = nil
-        self.biometricsIconImageView.image = viewModel.biometricsIcon()
-        self.enableButton.setTitle(VectorL10n.biometricsDesetupDisableButtonTitleX(biometricsName), for: .normal)
+        titleLabel.text = VectorL10n.biometricsDesetupTitleX(biometricsName)
+        subtitleLabel.text = nil
+        biometricsIconImageView.image = viewModel.biometricsIcon()
+        enableButton.setTitle(VectorL10n.biometricsDesetupDisableButtonTitleX(biometricsName), for: .normal)
     }
     
     private func renderCantUnlocked() {
@@ -190,35 +189,34 @@ final class SetupBiometricsViewController: UIViewController {
                                            message: VectorL10n.biometricsCantUnlockedAlertMessageX(biometricsName, biometricsName),
                                            preferredStyle: .alert)
         
-        let resetAction = UIAlertAction(title: VectorL10n.biometricsCantUnlockedAlertMessageLogin, style: .default) { (_) in
+        let resetAction = UIAlertAction(title: VectorL10n.biometricsCantUnlockedAlertMessageLogin, style: .default) { _ in
             self.viewModel.process(viewAction: .cantUnlockedAlertResetAction)
         }
         
-        let retryAction = UIAlertAction(title: VectorL10n.biometricsCantUnlockedAlertMessageRetry, style: .cancel) { (_) in
+        let retryAction = UIAlertAction(title: VectorL10n.biometricsCantUnlockedAlertMessageRetry, style: .cancel) { _ in
             self.viewModel.process(viewAction: .unlock)
         }
         
         controller.addAction(resetAction)
         controller.addAction(retryAction)
-        self.present(controller, animated: true, completion: nil)
+        present(controller, animated: true, completion: nil)
     }
     
     // MARK: - Actions
 
     @IBAction private func enableButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .enableDisableTapped)
+        viewModel.process(viewAction: .enableDisableTapped)
     }
 
     private func skipCancelButtonAction() {
-        self.viewModel.process(viewAction: .skipOrCancel)
+        viewModel.process(viewAction: .skipOrCancel)
     }
 }
 
-
 // MARK: - SetupBiometricsViewModelViewDelegate
-extension SetupBiometricsViewController: SetupBiometricsViewModelViewDelegate {
 
+extension SetupBiometricsViewController: SetupBiometricsViewModelViewDelegate {
     func setupBiometricsViewModel(_ viewModel: SetupBiometricsViewModelType, didUpdateViewState viewSate: SetupBiometricsViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +14,10 @@
 // limitations under the License.
 //
 
-import UIKit
-import KeychainAccess
 import CommonCrypto
+import KeychainAccess
 import MatrixSDK
+import UIKit
 
 @objcMembers
 class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
@@ -34,7 +34,7 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
 
     private let keychainStore: KeyValueStore = KeychainStore(withKeychain: Keychain(service: keychainService, accessGroup: BuildSettings.keychainAccessGroup))
 
-    private override init() {
+    override private init() {
         super.init()
         initKeys()
     }
@@ -60,7 +60,7 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
     // MARK: - MXKeyProviderDelegate
     
     func isEncryptionAvailableForData(ofType dataType: String) -> Bool {
-        return dataType == MXKContactManagerDataType
+        dataType == MXKContactManagerDataType
             || dataType == MXKAccountManagerDataType
             || dataType == MXCryptoOlmPickleKeyDataType
             || dataType == MXRoomLastMessageDataType
@@ -134,7 +134,7 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
         
         do {
             var keyBytes = [UInt8](repeating: 0, count: size)
-              _ = SecRandomCopyBytes(kSecRandomDefault, size, &keyBytes)
+            _ = SecRandomCopyBytes(kSecRandomDefault, size, &keyBytes)
             try keychainStore.set(Data(bytes: keyBytes, count: size), forKey: key)
         } catch {
             MXLog.debug("[EncryptionKeyManager] initKeys: Failed to generate Key[\(key)]: \(error.localizedDescription)")

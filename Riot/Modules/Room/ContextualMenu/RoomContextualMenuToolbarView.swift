@@ -14,14 +14,13 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoadable, Themable {
-    
     // MARK: - Constants
     
-    private enum Constants {        
+    private enum Constants {
         static let menuItemMinWidth: CGFloat = 50.0
         static let menuItemMaxWidth: CGFloat = 80.0
     }
@@ -30,8 +29,8 @@ final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoad
     
     // MARK: Outlets
     
-    @IBOutlet private weak var menuItemsStackView: UIStackView!
-    @IBOutlet private weak var separatorView: UIView!
+    @IBOutlet private var menuItemsStackView: UIStackView!
+    @IBOutlet private var separatorView: UIView!
     
     // MARK: Private
     
@@ -42,18 +41,18 @@ final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoad
     
     @objc func update(theme: Theme) {
         self.theme = theme
-        self.backgroundColor = theme.backgroundColor
-        self.tintColor = theme.tintColor
+        backgroundColor = theme.backgroundColor
+        tintColor = theme.tintColor
         
-        for menuItemView in self.menuItemViews {
+        for menuItemView in menuItemViews {
             menuItemView.titleColor = theme.tintColor
-            menuItemView.imageColor = theme.tintColor            
+            menuItemView.imageColor = theme.tintColor
         }
     }
     
     @objc func fill(contextualMenuItems: [RoomContextualMenuItem]) {
-        self.menuItemsStackView.vc_removeAllArrangedSubviews()
-        self.menuItemViews.removeAll()
+        menuItemsStackView.vc_removeAllArrangedSubviews()
+        menuItemViews.removeAll()
         
         for menuItem in contextualMenuItems {
             let menuItemView = ContextualMenuItemView()
@@ -61,36 +60,36 @@ final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoad
             
             if let theme = theme {
                 menuItemView.titleColor = theme.textPrimaryColor
-                menuItemView.imageColor = theme.tintColor                                
+                menuItemView.imageColor = theme.tintColor
             }
             
-            self.add(menuItemView: menuItemView)
+            add(menuItemView: menuItemView)
         }
         
-        self.layoutIfNeeded()
+        layoutIfNeeded()
     }
     
     // MARK: - Setup
     
     private func commonInit() {
-        self.separatorView.isHidden = true
+        separatorView.isHidden = true
     }
     
     convenience init() {
         self.init(frame: CGRect.zero)
-        self.loadNibContent()
+        loadNibContent()
         commonInit()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.loadNibContent()
+        loadNibContent()
         commonInit()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.loadNibContent()
+        loadNibContent()
         commonInit()
     }
     
@@ -106,15 +105,15 @@ final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoad
         let menuItemContentView = UIView()
         menuItemContentView.backgroundColor = .clear
         
-        self.add(menuItemView: menuItemView, on: menuItemContentView)
+        add(menuItemView: menuItemView, on: menuItemContentView)
         
-        self.menuItemsStackView.addArrangedSubview(menuItemContentView)
+        menuItemsStackView.addArrangedSubview(menuItemContentView)
         
-        let widthConstraint = menuItemContentView.widthAnchor.constraint(equalTo: self.menuItemsStackView.widthAnchor)
+        let widthConstraint = menuItemContentView.widthAnchor.constraint(equalTo: menuItemsStackView.widthAnchor)
         widthConstraint.priority = .defaultLow
         widthConstraint.isActive = true
         
-        self.menuItemViews.append(menuItemView)
+        menuItemViews.append(menuItemView)
     }
     
     private func add(menuItemView: ContextualMenuItemView, on contentView: UIView) {
@@ -124,7 +123,7 @@ final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoad
         contentView.addSubview(menuItemView)
         
         menuItemView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        menuItemView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true           
+        menuItemView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         
         let widthConstraint = menuItemView.widthAnchor.constraint(equalToConstant: 0.0)
         widthConstraint.priority = .defaultLow

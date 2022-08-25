@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +17,10 @@
 import Foundation
 
 extension ThemeService {
-    
     var themeIdentifier: ThemeIdentifier? {
-        guard let themeId = self.themeId else {
+        guard let themeId = themeId else {
             return nil
-        }        
+        }
         return ThemeIdentifier(rawValue: themeId)
-    }    
+    }
 }

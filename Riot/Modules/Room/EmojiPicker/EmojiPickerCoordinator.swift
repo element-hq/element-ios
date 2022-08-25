@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class EmojiPickerCoordinator: EmojiPickerCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -43,34 +42,35 @@ final class EmojiPickerCoordinator: EmojiPickerCoordinatorType {
         self.session = session
         self.roomId = roomId
         self.eventId = eventId
-        self.router = NavigationRouter(navigationController: RiotNavigationController())
+        router = NavigationRouter(navigationController: RiotNavigationController())
     }
     
     // MARK: - Public methods
     
     func start() {
-        let emojiPickerViewModel = EmojiPickerViewModel(session: self.session, roomId: self.roomId, eventId: self.eventId)
+        let emojiPickerViewModel = EmojiPickerViewModel(session: session, roomId: roomId, eventId: eventId)
         let emojiPickerViewController = EmojiPickerViewController.instantiate(with: emojiPickerViewModel)
         emojiPickerViewModel.coordinatorDelegate = self
-        self.router.setRootModule(emojiPickerViewController)
+        router.setRootModule(emojiPickerViewController)
     }
     
     func toPresentable() -> UIViewController {
-        return self.router.toPresentable()
+        router.toPresentable()
     }
 }
 
 // MARK: - EmojiPickerViewModelCoordinatorDelegate
+
 extension EmojiPickerCoordinator: EmojiPickerViewModelCoordinatorDelegate {
     func emojiPickerViewModel(_ viewModel: EmojiPickerViewModelType, didAddEmoji emoji: String, forEventId eventId: String) {
-        self.delegate?.emojiPickerCoordinator(self, didAddEmoji: emoji, forEventId: eventId)
+        delegate?.emojiPickerCoordinator(self, didAddEmoji: emoji, forEventId: eventId)
     }
     
     func emojiPickerViewModel(_ viewModel: EmojiPickerViewModelType, didRemoveEmoji emoji: String, forEventId eventId: String) {
-        self.delegate?.emojiPickerCoordinator(self, didRemoveEmoji: emoji, forEventId: eventId)
+        delegate?.emojiPickerCoordinator(self, didRemoveEmoji: emoji, forEventId: eventId)
     }
     
     func emojiPickerViewModelDidCancel(_ viewModel: EmojiPickerViewModelType) {
-        self.delegate?.emojiPickerCoordinatorDidCancel(self)
+        delegate?.emojiPickerCoordinatorDidCancel(self)
     }
 }

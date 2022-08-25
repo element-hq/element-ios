@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import UIKit
 
 class FileWithoutThumbnailOutoingWithoutSenderInfoBubbleCell: FileWithoutThumbnailBaseBubbleCell, BubbleOutgoingRoomCellProtocol {
-    
     override func setupViews() {
         super.setupViews()
         
@@ -26,12 +25,12 @@ class FileWithoutThumbnailOutoingWithoutSenderInfoBubbleCell: FileWithoutThumbna
         roomCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left
         roomCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right
         
-        self.setupBubbleDecorations()
+        setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {
         super.update(theme: theme)
         
-        self.fileAttachementView?.backgroundColor = theme.roomCellOutgoingBubbleBackgroundColor
+        fileAttachementView?.backgroundColor = theme.roomCellOutgoingBubbleBackgroundColor
     }
 }

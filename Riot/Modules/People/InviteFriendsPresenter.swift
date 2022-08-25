@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Foundation
 /// InviteFriendsPresenter enables to share current user contact to someone else
 @objcMembers
 final class InviteFriendsPresenter: NSObject {
-    
     // MARK: - Constants
     
     // MARK: - Properties
@@ -35,28 +34,26 @@ final class InviteFriendsPresenter: NSObject {
                  from viewController: UIViewController,
                  sourceView: UIView?,
                  animated: Bool) {
-        
-        self.presentingViewController = viewController
+        presentingViewController = viewController
         self.sourceView = sourceView
         
-        self.shareInvite(from: userId)
+        shareInvite(from: userId)
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        self.presentingViewController?.dismiss(animated: animated, completion: completion)
+        presentingViewController?.dismiss(animated: animated, completion: completion)
     }
     
     // MARK: - Private
     
     private func shareInvite(from userId: String) {
-        
-        let shareText = self.buildShareText(with: userId)
+        let shareText = buildShareText(with: userId)
         
         // Set up activity view controller
-        let activityItems: [Any] = [ shareText ]
+        let activityItems: [Any] = [shareText]
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         
-        self.present(activityViewController, animated: true)
+        present(activityViewController, animated: true)
     }
     
     private func buildShareText(with userId: String) -> String {
@@ -65,14 +62,13 @@ final class InviteFriendsPresenter: NSObject {
     }
     
     private func present(_ viewController: UIViewController, animated: Bool) {
-        
         // Configure source view when view controller is presented with a popover
-        if let sourceView = self.sourceView, let popoverPresentationController = viewController.popoverPresentationController {
+        if let sourceView = sourceView, let popoverPresentationController = viewController.popoverPresentationController {
             popoverPresentationController.sourceView = sourceView
             popoverPresentationController.sourceRect = sourceView.bounds
         }
         
-        self.presentingViewController?.present(viewController, animated: animated, completion: nil)
+        presentingViewController?.present(viewController, animated: animated, completion: nil)
         
         AnalyticsScreenTracker.trackScreen(.inviteFriends)
     }

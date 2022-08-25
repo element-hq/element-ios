@@ -20,7 +20,6 @@ import XCTest
 @testable import Element
 
 class MXKRoomDataSourceTests: XCTestCase {
-
     // MARK: - Destruction tests
 
     func testDestroyRemovesAllBubbles() {
@@ -66,13 +65,11 @@ class MXKRoomDataSourceTests: XCTestCase {
             XCTAssertNil(error)
         }
     }
-
 }
 
 // MARK: - Test doubles
 
 private final class StubMXKRoomDataSource: MXKRoomDataSource {
-
     override init() {
         super.init()
 
@@ -87,11 +84,9 @@ private final class StubMXKRoomDataSource: MXKRoomDataSource {
 
         replaceBubbles([data1, data2, data3])
     }
-
 }
 
 private final class FakeMXKRoomDataSource: MXKRoomDataSource {
-
     class func make() throws -> FakeMXKRoomDataSource {
         let dataSource = try XCTUnwrap(FakeMXKRoomDataSource(roomId: "!foofoofoofoofoofoo:matrix.org", andMatrixSession: nil))
         dataSource.registerCellDataClass(CollapsibleBubbleCellData.self, forCellIdentifier: kMXKRoomBubbleCellDataIdentifier)
@@ -126,11 +121,9 @@ private final class FakeMXKRoomDataSource: MXKRoomDataSource {
         let message = getBubbles()?.first?.collapsedAttributedTextMessage.string
         XCTAssertEqual(message, "\(number)")
     }
-
 }
 
 private final class CollapsibleBubbleCellData: MXKRoomBubbleCellData {
-
     override init() {
         super.init()
     }
@@ -143,11 +136,9 @@ private final class CollapsibleBubbleCellData: MXKRoomBubbleCellData {
     override func collapse(with cellData: MXKRoomBubbleCellDataStoring!) -> Bool {
         true
     }
-
 }
 
 private final class CountingEventFormatter: MXKEventFormatter {
-
     override func attributedString(from events: [MXEvent]!,
                                    with roomState: MXRoomState!,
                                    andLatestRoomState latestRoomState: MXRoomState!,

@@ -26,10 +26,9 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class UserVerificationCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
-    // MARK: Private    
+    // MARK: Private
     
     private let presenter: Presentable
     private let session: MXSession
@@ -65,20 +64,19 @@ final class UserVerificationCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func start() {
-        self.present()
+        present()
     }
     
     func present() {
-        
         let userVerificationCoordinator: UserVerificationCoordinator
         
-        if let deviceId = self.deviceId {
-            userVerificationCoordinator = UserVerificationCoordinator(presenter: self.presenter, session: self.session, userId: self.userId, userDisplayName: self.userDisplayName, deviceId: deviceId)
+        if let deviceId = deviceId {
+            userVerificationCoordinator = UserVerificationCoordinator(presenter: presenter, session: session, userId: userId, userDisplayName: userDisplayName, deviceId: deviceId)
         } else {
-            userVerificationCoordinator = UserVerificationCoordinator(presenter: self.presenter, session: self.session, userId: self.userId, userDisplayName: self.userDisplayName)
+            userVerificationCoordinator = UserVerificationCoordinator(presenter: presenter, session: session, userId: userId, userDisplayName: userDisplayName)
         }
         
         userVerificationCoordinator.start()
-        self.coordinator = userVerificationCoordinator
+        coordinator = userVerificationCoordinator
     }
 }

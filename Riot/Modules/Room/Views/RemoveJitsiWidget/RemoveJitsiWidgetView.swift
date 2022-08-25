@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import Reusable
 
 @objcMembers
 class RemoveJitsiWidgetView: UIView {
-    
     private enum Constants {
         static let activationThreshold: CGFloat = 0.5
     }
@@ -43,23 +42,24 @@ class RemoveJitsiWidgetView: UIView {
         }
     }
     
-    @IBOutlet private weak var slidingViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var slidingView: UIView!
-    @IBOutlet private weak var slidingViewLabel: UILabel! {
+    @IBOutlet private var slidingViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private var slidingView: UIView!
+    @IBOutlet private var slidingViewLabel: UILabel! {
         didSet {
             slidingViewLabel.text = VectorL10n.roomSlideToEndGroupCall
         }
     }
-    @IBOutlet private weak var arrowsView: ArrowsAnimationView!
-    @IBOutlet private weak var hangupView: UIView!
-    @IBOutlet private weak var hangupImage: UIImageView!
-    @IBOutlet private weak var topSeparatorView: UIView!
-    @IBOutlet private weak var bottomSeparatorView: UIView!
+
+    @IBOutlet private var arrowsView: ArrowsAnimationView!
+    @IBOutlet private var hangupView: UIView!
+    @IBOutlet private var hangupImage: UIImageView!
+    @IBOutlet private var topSeparatorView: UIView!
+    @IBOutlet private var bottomSeparatorView: UIView!
     
     private var state: State = .notStarted
     private var theme: Theme = ThemeService.shared().theme
     
-    //  MARK - Private
+    //  MARK: - Private
     
     private func configure(withState state: State) {
         switch state {
@@ -167,7 +167,6 @@ class RemoveJitsiWidgetView: UIView {
     func reset() {
         updateState(to: .notStarted)
     }
-    
 }
 
 //  MARK: - NibLoadable
@@ -177,11 +176,10 @@ extension RemoveJitsiWidgetView: NibLoadable { }
 //  MARK: - Themable
 
 extension RemoveJitsiWidgetView: Themable {
-    
     func update(theme: Theme) {
         self.theme = theme
         
-        self.backgroundColor = theme.headerBackgroundColor
+        backgroundColor = theme.headerBackgroundColor
         
         slidingViewLabel.textColor = theme.textPrimaryColor
         arrowsView.update(theme: theme)
@@ -190,5 +188,4 @@ extension RemoveJitsiWidgetView: Themable {
         
         configure(withState: state)
     }
-    
 }

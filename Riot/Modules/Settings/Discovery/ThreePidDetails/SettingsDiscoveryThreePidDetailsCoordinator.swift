@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class SettingsDiscoveryThreePidDetailsCoordinator: SettingsDiscoveryThreePidDetailsCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -32,7 +31,7 @@ final class SettingsDiscoveryThreePidDetailsCoordinator: SettingsDiscoveryThreeP
     // MARK: Public
 
     // Must be used only internally
-    var childCoordinators: [Coordinator] = []        
+    var childCoordinators: [Coordinator] = []
     
     // MARK: - Setup
     
@@ -47,10 +46,9 @@ final class SettingsDiscoveryThreePidDetailsCoordinator: SettingsDiscoveryThreeP
     
     // MARK: - Public methods
     
-    func start() {            
-    }
+    func start() { }
     
     func toPresentable() -> UIViewController {
-        return self.settingsDiscoveryThreePidDetailsViewController
+        settingsDiscoveryThreePidDetailsViewController
     }
 }

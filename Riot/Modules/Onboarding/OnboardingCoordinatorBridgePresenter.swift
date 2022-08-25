@@ -24,7 +24,6 @@ import Foundation
 /// once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class OnboardingCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Constants
     
     private enum NavigationType {
@@ -55,24 +54,23 @@ final class OnboardingCoordinatorBridgePresenter: NSObject {
         viewController.present(presentable, animated: animated, completion: nil)
         onboardingCoordinator.start()
         
-        self.coordinator = onboardingCoordinator
-        self.navigationType = .present
+        coordinator = onboardingCoordinator
+        navigationType = .present
     }
     
     func push(from navigationController: UINavigationController, animated: Bool) {
-                
         let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
         let onboardingCoordinator = makeOnboardingCoordinator(navigationRouter: navigationRouter)
 
         onboardingCoordinator.start() // Will trigger the view controller push
         
-        self.coordinator = onboardingCoordinator
-        self.navigationType = .push
+        coordinator = onboardingCoordinator
+        navigationType = .push
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
 

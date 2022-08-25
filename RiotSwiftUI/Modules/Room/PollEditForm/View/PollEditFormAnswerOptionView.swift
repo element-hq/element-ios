@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct PollEditFormAnswerOptionView: View {
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @State private var focused = false
@@ -39,7 +38,7 @@ struct PollEditFormAnswerOptionView: View {
                 })
                 .textFieldStyle(BorderedInputFieldStyle(isEditing: focused))
                 Button(action: onDelete) {
-                    Image(uiImage:Asset.Images.pollDeleteOptionIcon.image)
+                    Image(uiImage: Asset.Images.pollDeleteOptionIcon.image)
                 }
                 .accessibilityIdentifier("Delete answer option")
             }
@@ -50,12 +49,8 @@ struct PollEditFormAnswerOptionView: View {
 struct PollEditFormAnswerOptionView_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 32.0) {
-            PollEditFormAnswerOptionView(text: Binding.constant(""), index: 0) {
-                
-            }
-            PollEditFormAnswerOptionView(text: Binding.constant("Test"), index: 5) {
-                
-            }
+            PollEditFormAnswerOptionView(text: Binding.constant(""), index: 0) { }
+            PollEditFormAnswerOptionView(text: Binding.constant("Test"), index: 5) { }
         }
     }
 }

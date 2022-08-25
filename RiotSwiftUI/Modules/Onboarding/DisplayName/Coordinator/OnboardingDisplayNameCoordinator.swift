@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct OnboardingDisplayNameCoordinatorParameters {
     let userSession: UserSession
 }
 
 final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -58,6 +57,7 @@ final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[OnboardingDisplayNameCoordinator] did start.")
         onboardingDisplayNameViewModel.completion = { [weak self] result in
@@ -74,7 +74,7 @@ final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.onboardingDisplayNameHostingController
+        onboardingDisplayNameHostingController
     }
     
     // MARK: - Private

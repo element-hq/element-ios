@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 @objc
 protocol URLPreviewViewDelegate: AnyObject {
@@ -66,19 +66,19 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     
     weak var delegate: URLPreviewViewDelegate?
     
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var closeButton: UIButton!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var closeButton: UIButton!
     
-    @IBOutlet private weak var textContainerView: UIView!
-    @IBOutlet private weak var siteNameLabel: UILabel!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var descriptionLabel: UILabel!
+    @IBOutlet private var textContainerView: UIView!
+    @IBOutlet private var siteNameLabel: UILabel!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var descriptionLabel: UILabel!
     
-    @IBOutlet private weak var loadingView: UIView!
-    @IBOutlet private weak var loadingActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet private var loadingView: UIView!
+    @IBOutlet private var loadingActivityIndicator: UIActivityIndicatorView!
     
     // The constraint that determines the view's width
-    @IBOutlet private weak var widthConstraint: NSLayoutConstraint!
+    @IBOutlet private var widthConstraint: NSLayoutConstraint!
     // Matches the label's height with the close button.
     // Use a strong reference to keep it around when deactivating.
     @IBOutlet private var siteNameLabelHeightConstraint: NSLayoutConstraint!
@@ -94,7 +94,7 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     static func instantiate() -> Self {
         let view = Self.loadFromNib()
         view.update(theme: ThemeService.shared().theme)
-        view.translatesAutoresizingMaskIntoConstraints = false      // fixes unsatisfiable constraints encountered by the sizing view
+        view.translatesAutoresizingMaskIntoConstraints = false // fixes unsatisfiable constraints encountered by the sizing view
         
         return view
     }
@@ -153,6 +153,7 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     }
     
     // MARK: - Private
+
     /// Tells the view to show in it's loading state.
     private func renderLoading() {
         // hide the content
@@ -194,6 +195,7 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     }
     
     // MARK: - Action
+
     @IBAction private func openURL(_ sender: Any) {
         MXLog.debug("[URLPreviewView] Link was tapped.")
         guard let preview = preview else { return }

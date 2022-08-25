@@ -19,16 +19,14 @@
 import Foundation
 
 final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
 
     private let session: MXSession
     private let roomState: MXRoomState
-    private lazy var eventFormatter: EventFormatter = {
-        return EventFormatter(matrixSession: self.session)
-    }()
+    private lazy var eventFormatter = EventFormatter(matrixSession: self.session)
+
     private var events: [MXEvent] = []
     private var roomCreateEvent: MXEvent?
     
@@ -38,7 +36,7 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
     weak var coordinatorDelegate: RoomCreationEventsModalViewModelCoordinatorDelegate?
     
     var numberOfRows: Int {
-        return events.count
+        events.count
     }
     
     func rowViewModel(at indexPath: IndexPath) -> RoomCreationEventRowViewModel? {
@@ -70,7 +68,7 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
             return nil
         }
         let timestamp = creationEvent.originServerTs
-        let date = Date(timeIntervalSince1970: TimeInterval(timestamp/1000))
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp / 1000))
         let formatter = DateFormatter()
         formatter.dateStyle = .full
         return formatter.string(from: date)
@@ -121,9 +119,9 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
     func process(viewAction: RoomCreationEventsModalViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
         case .close:
-            self.coordinatorDelegate?.roomCreationEventsModalViewModelDidTapClose(self)
+            coordinatorDelegate?.roomCreationEventsModalViewModelDidTapClose(self)
         }
     }
     
@@ -155,15 +153,14 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         //  remove room create event from the list, as EW and ElA do. This will also avoid duplication of "%@ joined" messages for direct rooms.
         events.removeAll(where: { $0.eventType == .roomCreate })
 
-        self.update(viewState: .loaded)
+        update(viewState: .loaded)
     }
     
     private func shouldDisplay(_ event: MXEvent) -> Bool {
-        return event.eventType != .roomPowerLevels
+        event.eventType != .roomPowerLevels
     }
     
     private func update(viewState: RoomCreationEventsModalViewState) {
-        self.viewDelegate?.roomCreationEventsModalViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.roomCreationEventsModalViewModel(self, didUpdateViewState: viewState)
     }
-    
 }

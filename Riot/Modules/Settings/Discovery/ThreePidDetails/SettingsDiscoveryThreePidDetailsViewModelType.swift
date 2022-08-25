@@ -24,7 +24,6 @@ protocol SettingsDiscoveryThreePidDetailsViewModelViewDelegate: AnyObject {
 
 /// Protocol describing the view model used by `SettingsDiscoveryThreePidDetailsViewController`
 protocol SettingsDiscoveryThreePidDetailsViewModelType {
-    
     var threePid: MX3PID { get }
             
     var viewDelegate: SettingsDiscoveryThreePidDetailsViewModelViewDelegate? { get set }

@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class SecretsSetupRecoveryPassphraseCoordinator: SecretsSetupRecoveryPassphraseCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -39,7 +38,6 @@ final class SecretsSetupRecoveryPassphraseCoordinator: SecretsSetupRecoveryPassp
     // MARK: - Setup
     
     init(passphraseInput: SecretsSetupRecoveryPassphraseInput, cancellable: Bool) {
-        
         let secretsSetupRecoveryPassphraseViewModel = SecretsSetupRecoveryPassphraseViewModel(passphraseInput: passphraseInput)
         let secretsSetupRecoveryPassphraseViewController = SecretsSetupRecoveryPassphraseViewController.instantiate(with: secretsSetupRecoveryPassphraseViewModel, cancellable: cancellable)
         self.secretsSetupRecoveryPassphraseViewModel = secretsSetupRecoveryPassphraseViewModel
@@ -49,28 +47,28 @@ final class SecretsSetupRecoveryPassphraseCoordinator: SecretsSetupRecoveryPassp
     
     // MARK: - Public methods
     
-    func start() {            
-        self.secretsSetupRecoveryPassphraseViewModel.coordinatorDelegate = self
+    func start() {
+        secretsSetupRecoveryPassphraseViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.secretsSetupRecoveryPassphraseViewController
-            .vc_setModalFullScreen(!self.cancellable)
+        secretsSetupRecoveryPassphraseViewController
+            .vc_setModalFullScreen(!cancellable)
     }
 }
 
 // MARK: - SecretsSetupRecoveryPassphraseViewModelCoordinatorDelegate
+
 extension SecretsSetupRecoveryPassphraseCoordinator: SecretsSetupRecoveryPassphraseViewModelCoordinatorDelegate {
-    
     func secretsSetupRecoveryPassphraseViewModel(_ viewModel: SecretsSetupRecoveryPassphraseViewModelType, didEnterNewPassphrase passphrase: String) {
-        self.delegate?.secretsSetupRecoveryPassphraseCoordinator(self, didEnterNewPassphrase: passphrase)
+        delegate?.secretsSetupRecoveryPassphraseCoordinator(self, didEnterNewPassphrase: passphrase)
     }
     
     func secretsSetupRecoveryPassphraseViewModel(_ viewModel: SecretsSetupRecoveryPassphraseViewModelType, didConfirmPassphrase passphrase: String) {
-        self.delegate?.secretsSetupRecoveryPassphraseCoordinator(self, didConfirmPassphrase: passphrase)
+        delegate?.secretsSetupRecoveryPassphraseCoordinator(self, didConfirmPassphrase: passphrase)
     }
     
     func secretsSetupRecoveryPassphraseViewModelDidCancel(_ viewModel: SecretsSetupRecoveryPassphraseViewModelType) {
-        self.delegate?.secretsSetupRecoveryPassphraseCoordinatorDidCancel(self)
+        delegate?.secretsSetupRecoveryPassphraseCoordinatorDidCancel(self)
     }
 }

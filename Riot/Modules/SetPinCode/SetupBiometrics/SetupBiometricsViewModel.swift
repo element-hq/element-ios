@@ -20,7 +20,6 @@ import Foundation
 import LocalAuthentication
 
 final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -42,22 +41,20 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
         self.session = session
         self.viewMode = viewMode
         self.pinCodePreferences = pinCodePreferences
-        self.localAuthenticationService = LocalAuthenticationService(pinCodePreferences: pinCodePreferences)
-        self.biometricsAuthenticationPresenter = BiometricsAuthenticationPresenter()
+        localAuthenticationService = LocalAuthenticationService(pinCodePreferences: pinCodePreferences)
+        biometricsAuthenticationPresenter = BiometricsAuthenticationPresenter()
     }
     
-    deinit {
-        
-    }
+    deinit { }
     
     // MARK: - Public
     
     func localizedBiometricsName() -> String? {
-        return pinCodePreferences.localizedBiometricsName()
+        pinCodePreferences.localizedBiometricsName()
     }
     
     func biometricsIcon() -> UIImage? {
-        return pinCodePreferences.biometricsIcon()
+        pinCodePreferences.biometricsIcon()
     }
     
     func process(viewAction: SetupBiometricsViewAction) {
@@ -78,7 +75,7 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
     // MARK: - Private
     
     private func enableDisableBiometrics() {
-        biometricsAuthenticationPresenter.present(with: VectorL10n.biometricsUsageReason) { (response) in
+        biometricsAuthenticationPresenter.present(with: VectorL10n.biometricsUsageReason) { response in
             switch response {
             case .success:
                 self.pinCodePreferences.canUseBiometricsToUnlock = nil
@@ -91,7 +88,7 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
     }
     
     private func unlockWithBiometrics() {
-        biometricsAuthenticationPresenter.present(with: VectorL10n.biometricsUsageReason) { (response) in
+        biometricsAuthenticationPresenter.present(with: VectorL10n.biometricsUsageReason) { response in
             switch response {
             case .success:
                 self.pinCodePreferences.canUseBiometricsToUnlock = nil
@@ -115,7 +112,7 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
     
     private func userCancelledUnlockWithBiometrics() {
         if pinCodePreferences.isPinSet {
-            self.pinCodePreferences.canUseBiometricsToUnlock = false
+            pinCodePreferences.canUseBiometricsToUnlock = false
             //  cascade this cancellation, coordinator should take care of it
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 self.coordinatorDelegate?.setupBiometricsViewModelDidCancel(self)
@@ -131,20 +128,19 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
     private func loadData() {
         switch viewMode {
         case .setupBiometricsAfterLogin:
-            self.update(viewState: .setupAfterLogin)
+            update(viewState: .setupAfterLogin)
         case .setupBiometricsFromSettings:
-            self.update(viewState: .setupFromSettings)
+            update(viewState: .setupFromSettings)
         case .unlock:
-            self.update(viewState: .unlock)
+            update(viewState: .unlock)
         case .confirmBiometricsToDeactivate:
-            self.update(viewState: .confirmToDisable)
+            update(viewState: .confirmToDisable)
         default:
             break
         }
     }
     
     private func update(viewState: SetupBiometricsViewState) {
-        self.viewDelegate?.setupBiometricsViewModel(self, didUpdateViewState: viewState)
+        viewDelegate?.setupBiometricsViewModel(self, didUpdateViewState: viewState)
     }
-    
 }

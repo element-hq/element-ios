@@ -19,7 +19,6 @@
 import UIKit
 
 final class RoomNotificationSettingsViewController: UIViewController {
-     
     // MARK: - Properties
     
     private enum Constants {
@@ -28,7 +27,7 @@ final class RoomNotificationSettingsViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var mainTableView: UITableView!
+    @IBOutlet private var mainTableView: UITableView!
     
     // MARK: Private
 
@@ -36,9 +35,7 @@ final class RoomNotificationSettingsViewController: UIViewController {
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
-    private lazy var avatarView: RoomNotificationSettingsAvatarView = {
-        RoomNotificationSettingsAvatarView.loadFromNib()
-    }()
+    private lazy var avatarView = RoomNotificationSettingsAvatarView.loadFromNib()
 
     private struct Row {
         var cellViewData: RoomNotificationSettingsCellViewData
@@ -87,7 +84,7 @@ final class RoomNotificationSettingsViewController: UIViewController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -113,8 +110,7 @@ final class RoomNotificationSettingsViewController: UIViewController {
     }
     
     private func setupViews() {
-        
-        self.title = VectorL10n.roomDetailsNotifs
+        title = VectorL10n.roomDetailsNotifs
         let doneBarButtonItem = MXKBarButtonItem(title: VectorL10n.roomNotifsSettingsDoneAction, style: .plain) { [weak self] in
             self?.viewModel.process(viewAction: .save)
         }
@@ -137,7 +133,6 @@ final class RoomNotificationSettingsViewController: UIViewController {
     }
     
     private func render(viewState: RoomNotificationSettingsViewStateType) {
-        
         if viewState.saving {
             activityPresenter.presentActivityIndicator(on: view, animated: true)
         } else {
@@ -153,13 +148,13 @@ final class RoomNotificationSettingsViewController: UIViewController {
     }
     
     private func updateSections() {
-        let rows = viewState.notificationOptions.map({ (setting) -> Row in
+        let rows = viewState.notificationOptions.map { setting -> Row in
             let cellViewData = RoomNotificationSettingsCellViewData(notificicationState: setting, selected: viewState.notificationState == setting)
             return Row(cellViewData: cellViewData,
                        action: {
-                        self.viewModel.process(viewAction: .selectNotificationState(setting))
-            })
-        })
+                           self.viewModel.process(viewAction: .selectNotificationState(setting))
+                       })
+        }
         let footerState = RoomNotificationSettingsFooter.State(showEncryptedNotice: viewState.roomEncrypted, showAccountLink: false)
         let section0 = Section(title: VectorL10n.roomNotifsSettingsNotifyMeFor, rows: rows, footerState: footerState)
         sections = [
@@ -169,14 +164,14 @@ final class RoomNotificationSettingsViewController: UIViewController {
 }
 
 // MARK: - UITableViewDataSource
-extension RoomNotificationSettingsViewController: UITableViewDataSource {
 
+extension RoomNotificationSettingsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].rows.count
+        sections[section].rows.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -188,18 +183,17 @@ extension RoomNotificationSettingsViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
-
 }
 
 // MARK: - UITableViewDelegate
-extension RoomNotificationSettingsViewController: UITableViewDelegate {
 
+extension RoomNotificationSettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView: TitleHeaderView = tableView.dequeueReusableHeaderFooterView() else { return nil }
         headerView.update(title: sections[section].title)
@@ -221,12 +215,11 @@ extension RoomNotificationSettingsViewController: UITableViewDelegate {
         let row = sections[indexPath.section].rows[indexPath.row]
         row.action?()
     }
-    
 }
 
 // MARK: - RoomNotificationSettingsViewModelViewDelegate
-extension RoomNotificationSettingsViewController: RoomNotificationSettingsViewModelViewDelegate {
 
+extension RoomNotificationSettingsViewController: RoomNotificationSettingsViewModelViewDelegate {
     func roomNotificationSettingsViewModel(_ viewModel: RoomNotificationSettingsViewModelType, didUpdateViewState viewSate: RoomNotificationSettingsViewStateType) {
         render(viewState: viewSate)
     }

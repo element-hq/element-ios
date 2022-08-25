@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +15,8 @@
 //
 
 import Foundation
-import Sentry
 import MatrixSDK
+import Sentry
 
 /// Sentry client used as part of the Analytics set of tools to track health metrics
 /// of the application, such as crashes, non-fatal issues and performance.

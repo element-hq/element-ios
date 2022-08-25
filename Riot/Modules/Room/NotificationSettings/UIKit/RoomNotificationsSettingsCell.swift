@@ -1,4 +1,5 @@
-// 
+//
+import Reusable
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +15,8 @@
 // limitations under the License.
 //
 import UIKit
-import Reusable
 
 class RoomNotificationSettingsCell: UITableViewCell {
-    
     func update(state: RoomNotificationSettingsCellViewData) {
         textLabel?.text = state.notificicationState.title
         if state.selected {
@@ -28,7 +27,7 @@ class RoomNotificationSettingsCell: UITableViewCell {
     }
 }
 
-extension RoomNotificationSettingsCell: Reusable {}
+extension RoomNotificationSettingsCell: Reusable { }
 
 extension RoomNotificationSettingsCell: Themable {
     func update(theme: Theme) {

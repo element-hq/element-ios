@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,11 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 class LaunchLoadingViewController: UIViewController, Reusable {
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     init() {

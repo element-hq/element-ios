@@ -19,7 +19,6 @@
 import UIKit
 
 final class ServiceTermsModalScreenViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -32,16 +31,16 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var descriptionLabel: UILabel!
-    @IBOutlet private weak var footerLabel: UILabel!
-    @IBOutlet private weak var tableView: UITableView!
-    @IBOutlet private weak var acceptButton: UIButton!
-    @IBOutlet private weak var declineButton: UIButton!
-    @IBOutlet private weak var tableViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var descriptionLabel: UILabel!
+    @IBOutlet private var footerLabel: UILabel!
+    @IBOutlet private var tableView: UITableView!
+    @IBOutlet private var acceptButton: UIButton!
+    @IBOutlet private var declineButton: UIButton!
+    @IBOutlet private var tableViewHeightConstraint: NSLayoutConstraint!
     
     // MARK: Private
 
@@ -70,16 +69,16 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         
         // Do any additional setup after loading the view.
 
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .load)
+        viewModel.process(viewAction: .load)
     }
     
     override func viewWillLayoutSubviews() {
@@ -88,7 +87,7 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -117,11 +116,11 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         acceptButton.setTitleColor(theme.colors.background, for: .normal)
         acceptButton.backgroundColor = theme.colors.accent
 
-        theme.applyStyle(onButton: self.declineButton)
+        theme.applyStyle(onButton: declineButton)
         declineButton.titleLabel?.font = theme.fonts.body
         declineButton.setTitleColor(theme.warningColor, for: .normal)
 
-        self.refreshViews()
+        refreshViews()
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -129,33 +128,33 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.setupTableView()
-        self.scrollView.keyboardDismissMode = .interactive
+        setupTableView()
+        scrollView.keyboardDismissMode = .interactive
         
-        self.titleLabel.text = VectorL10n.serviceTermsModalTitleMessage
-        self.footerLabel.text = VectorL10n.serviceTermsModalFooter
+        titleLabel.text = VectorL10n.serviceTermsModalTitleMessage
+        footerLabel.text = VectorL10n.serviceTermsModalFooter
         
-        self.tableHeaderView.serviceURLLabel.text = viewModel.serviceUrl
+        tableHeaderView.serviceURLLabel.text = viewModel.serviceUrl
 
-        self.acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .normal)
-        self.acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .highlighted)
-        self.acceptButton.layer.cornerRadius = 8
+        acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .normal)
+        acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .highlighted)
+        acceptButton.layer.cornerRadius = 8
 
-        self.declineButton.setTitle(VectorL10n.serviceTermsModalDeclineButton, for: .normal)
-        self.declineButton.setTitle(VectorL10n.serviceTermsModalDeclineButton, for: .highlighted)
+        declineButton.setTitle(VectorL10n.serviceTermsModalDeclineButton, for: .normal)
+        declineButton.setTitle(VectorL10n.serviceTermsModalDeclineButton, for: .highlighted)
         
-        if self.viewModel.serviceType == MXServiceTypeIdentityService {
-            self.descriptionLabel.text = VectorL10n.serviceTermsModalDescriptionIdentityServer
-            self.tableHeaderView.titleLabel.text = VectorL10n.serviceTermsModalTableHeaderIdentityServer
-            self.imageView.image = Asset.Images.findYourContactsFacepile.image
+        if viewModel.serviceType == MXServiceTypeIdentityService {
+            descriptionLabel.text = VectorL10n.serviceTermsModalDescriptionIdentityServer
+            tableHeaderView.titleLabel.text = VectorL10n.serviceTermsModalTableHeaderIdentityServer
+            imageView.image = Asset.Images.findYourContactsFacepile.image
         } else {
-            self.descriptionLabel.text = VectorL10n.serviceTermsModalDescriptionIntegrationManager
-            self.tableHeaderView.titleLabel.text = VectorL10n.serviceTermsModalTableHeaderIntegrationManager
-            self.imageView.image = Asset.Images.integrationManagerIconpile.image
+            descriptionLabel.text = VectorL10n.serviceTermsModalDescriptionIntegrationManager
+            tableHeaderView.titleLabel.text = VectorL10n.serviceTermsModalTableHeaderIntegrationManager
+            imageView.image = Asset.Images.integrationManagerIconpile.image
         }
     }
 
@@ -185,89 +184,86 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     private func render(viewState: ServiceTermsModalScreenViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let policies, let alreadyAcceptedPoliciesUrls):
-            self.renderLoaded(policies: policies, alreadyAcceptedPoliciesUrls: alreadyAcceptedPoliciesUrls)
+            renderLoaded(policies: policies, alreadyAcceptedPoliciesUrls: alreadyAcceptedPoliciesUrls)
         case .accepted:
-            self.renderAccepted()
+            renderAccepted()
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
 
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        self.acceptButton.isEnabled = false
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
+        acceptButton.isEnabled = false
     }
 
     private func renderLoaded(policies: [MXLoginPolicyData], alreadyAcceptedPoliciesUrls: [String]) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
 
         self.policies = policies
-        self.acceptButton.isEnabled = true
+        acceptButton.isEnabled = true
 
-        self.refreshViews()
+        refreshViews()
     }
 
     private func renderAccepting() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
 
     private func renderAccepted() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
     private func refreshViews() {
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
 
-    
     // MARK: - Actions
 
     @IBAction private func acceptButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .accept)
+        viewModel.process(viewAction: .accept)
     }
 
     @IBAction private func declineButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .decline)
+        viewModel.process(viewAction: .decline)
     }
 }
 
-
 // MARK: - ServiceTermsModalScreenViewModelViewDelegate
-extension ServiceTermsModalScreenViewController: ServiceTermsModalScreenViewModelViewDelegate {
 
+extension ServiceTermsModalScreenViewController: ServiceTermsModalScreenViewModelViewDelegate {
     func serviceTermsModalScreenViewModel(_ viewModel: ServiceTermsModalScreenViewModelType, didUpdateViewState viewSate: ServiceTermsModalScreenViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
 // MARK: - UITableViewDataSource
 
 extension ServiceTermsModalScreenViewController: UITableViewDataSource {
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         // Use individual sections for each policy so the cells aren't grouped together.
-        return policies.count
+        policies.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        1
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         // Reduce the height between sections to only be the footer height value.
-        return CGFloat.leastNormalMagnitude
+        CGFloat.leastNormalMagnitude
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         // Modify the footer size to reduce cell spacing.
-        return 8.0
+        8.0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -278,7 +274,7 @@ extension ServiceTermsModalScreenViewController: UITableViewDataSource {
         cell.textLabel?.text = policy.name
         cell.textLabel?.textColor = theme.colors.primaryContent
         cell.textLabel?.font = theme.fonts.body
-        cell.vc_setAccessoryDisclosureIndicator(withTheme: self.theme)
+        cell.vc_setAccessoryDisclosureIndicator(withTheme: theme)
         cell.accessoryView?.tintColor = theme.colors.quarterlyContent
         cell.backgroundColor = theme.colors.background
         cell.selectionStyle = .default
@@ -297,8 +293,8 @@ extension ServiceTermsModalScreenViewController: UITableViewDelegate {
     }
 }
 
-
 // MARK: - ServiceTermsModalTableHeaderViewDelegate
+
 extension ServiceTermsModalScreenViewController: ServiceTermsModalTableHeaderViewDelegate {
     func tableHeaderViewDidTapInformationButton() {
         let title: String

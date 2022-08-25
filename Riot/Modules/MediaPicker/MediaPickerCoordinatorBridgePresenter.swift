@@ -29,7 +29,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class MediaPickerCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -58,13 +57,12 @@ final class MediaPickerCoordinatorBridgePresenter: NSObject {
                  sourceView: UIView?,
                  sourceRect: CGRect,
                  animated: Bool) {
-        let mediaPickerCoordinator = MediaPickerCoordinator(session: self.session, mediaUTIs: mediaUTIs, allowsMultipleSelection: self.allowsMultipleSelection)
+        let mediaPickerCoordinator = MediaPickerCoordinator(session: session, mediaUTIs: mediaUTIs, allowsMultipleSelection: allowsMultipleSelection)
         mediaPickerCoordinator.delegate = self
         
         let mediaPickerPresentable = mediaPickerCoordinator.toPresentable()
         
         if let sourceView = sourceView {
-
             mediaPickerPresentable.modalPresentationStyle = .popover
 
             if let popoverPresentationController = mediaPickerPresentable.popoverPresentationController {
@@ -86,11 +84,11 @@ final class MediaPickerCoordinatorBridgePresenter: NSObject {
         
         mediaPickerCoordinator.start()
         
-        self.coordinator = mediaPickerCoordinator
+        coordinator = mediaPickerCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -104,21 +102,21 @@ final class MediaPickerCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - MediaPickerCoordinatorDelegate
+
 extension MediaPickerCoordinatorBridgePresenter: MediaPickerCoordinatorDelegate {
-    
     func mediaPickerCoordinator(_ coordinator: MediaPickerCoordinatorType, didSelectImageData imageData: Data, withUTI uti: MXKUTI?) {
-        self.delegate?.mediaPickerCoordinatorBridgePresenter(self, didSelectImageData: imageData, withUTI: uti)
+        delegate?.mediaPickerCoordinatorBridgePresenter(self, didSelectImageData: imageData, withUTI: uti)
     }
     
     func mediaPickerCoordinator(_ coordinator: MediaPickerCoordinatorType, didSelectVideo videoAsset: AVAsset) {
-        self.delegate?.mediaPickerCoordinatorBridgePresenter(self, didSelectVideo: videoAsset)
+        delegate?.mediaPickerCoordinatorBridgePresenter(self, didSelectVideo: videoAsset)
     }
     
     func mediaPickerCoordinator(_ coordinator: MediaPickerCoordinatorType, didSelectAssets assets: [PHAsset]) {
-        self.delegate?.mediaPickerCoordinatorBridgePresenter(self, didSelectAssets: assets)
+        delegate?.mediaPickerCoordinatorBridgePresenter(self, didSelectAssets: assets)
     }
     
     func mediaPickerCoordinatorDidCancel(_ coordinator: MediaPickerCoordinatorType) {
-        self.delegate?.mediaPickerCoordinatorBridgePresenterDidCancel(self)
+        delegate?.mediaPickerCoordinatorBridgePresenterDidCancel(self)
     }
 }

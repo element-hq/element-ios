@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +14,20 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 /// Table view cell with only a text view spanning the whole content view, insets can be configured via `textView.textContainerInset`
 class TextViewTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var textView: PlaceholderedTextView!
-    
+    @IBOutlet var textView: PlaceholderedTextView!
 }
 
-extension TextViewTableViewCell: NibReusable {}
+extension TextViewTableViewCell: NibReusable { }
 
 extension TextViewTableViewCell: Themable {
-    
     func update(theme: Theme) {
         textView.textColor = theme.textPrimaryColor
         textView.tintColor = theme.tintColor
         textView.placeholderColor = theme.placeholderTextColor
     }
-    
 }

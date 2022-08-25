@@ -19,30 +19,29 @@
 import UIKit
 
 final class KeyVerificationManuallyVerifyViewController: UIViewController {
-    
     // MARK: - Constants
     
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private var scrollView: UIScrollView!
     
-    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private var informationLabel: UILabel!
     
-    @IBOutlet private weak var deviceNameTitleLabel: UILabel!
-    @IBOutlet private weak var deviceNameLabel: UILabel!
+    @IBOutlet private var deviceNameTitleLabel: UILabel!
+    @IBOutlet private var deviceNameLabel: UILabel!
     
-    @IBOutlet private weak var deviceIdTitleLabel: UILabel!
-    @IBOutlet private weak var deviceIdLabel: UILabel!
+    @IBOutlet private var deviceIdTitleLabel: UILabel!
+    @IBOutlet private var deviceIdLabel: UILabel!
     
-    @IBOutlet private weak var deviceKeyTitleLabel: UILabel!
-    @IBOutlet private weak var deviceKeyLabel: UILabel!
+    @IBOutlet private var deviceKeyTitleLabel: UILabel!
+    @IBOutlet private var deviceKeyLabel: UILabel!
     
-    @IBOutlet private weak var additionalInformationLabel: UILabel!
+    @IBOutlet private var additionalInformationLabel: UILabel!
     
-    @IBOutlet private weak var verifyButton: RoundedButton!
-    @IBOutlet private weak var cancelButton: RoundedButton!
+    @IBOutlet private var verifyButton: RoundedButton!
+    @IBOutlet private var cancelButton: RoundedButton!
     
     // MARK: Private
 
@@ -67,29 +66,29 @@ final class KeyVerificationManuallyVerifyViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let navigationController = self.navigationController {
+        if let navigationController = navigationController {
             if navigationController.navigationBar.isHidden == true {
-                self.navigationItem.hidesBackButton = true
+                navigationItem.hidesBackButton = true
                 // Show navigation bar if needed
                 navigationController.setNavigationBarHidden(false, animated: animated)
             } else {
                 // Hide back button
-                self.navigationItem.setHidesBackButton(true, animated: animated)
+                navigationItem.setHidesBackButton(true, animated: animated)
             }
         }
     }
@@ -98,20 +97,20 @@ final class KeyVerificationManuallyVerifyViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         // Fix label height after orientation change. See here https://www.objc.io/issues/3-views/advanced-auto-layout-toolbox/#intrinsic-content-size-of-multi-line-text for more information.
-        self.informationLabel.vc_fixMultilineHeight()
-        self.deviceNameTitleLabel.vc_fixMultilineHeight()
-        self.deviceNameLabel.vc_fixMultilineHeight()
-        self.deviceIdLabel.vc_fixMultilineHeight()
-        self.deviceIdTitleLabel.vc_fixMultilineHeight()
-        self.deviceKeyTitleLabel.vc_fixMultilineHeight()
-        self.deviceKeyLabel.vc_fixMultilineHeight()
-        self.additionalInformationLabel.vc_fixMultilineHeight()
+        informationLabel.vc_fixMultilineHeight()
+        deviceNameTitleLabel.vc_fixMultilineHeight()
+        deviceNameLabel.vc_fixMultilineHeight()
+        deviceIdLabel.vc_fixMultilineHeight()
+        deviceIdTitleLabel.vc_fixMultilineHeight()
+        deviceKeyTitleLabel.vc_fixMultilineHeight()
+        deviceKeyLabel.vc_fixMultilineHeight()
+        additionalInformationLabel.vc_fixMultilineHeight()
         
-        self.view.layoutIfNeeded()
+        view.layoutIfNeeded()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -119,27 +118,27 @@ final class KeyVerificationManuallyVerifyViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.informationLabel.textColor = theme.textPrimaryColor
+        informationLabel.textColor = theme.textPrimaryColor
         
-        self.deviceNameTitleLabel.textColor = theme.textPrimaryColor
-        self.deviceNameLabel.textColor = theme.textPrimaryColor
+        deviceNameTitleLabel.textColor = theme.textPrimaryColor
+        deviceNameLabel.textColor = theme.textPrimaryColor
         
-        self.deviceIdTitleLabel.textColor = theme.textPrimaryColor
-        self.deviceIdLabel.textColor = theme.textPrimaryColor
+        deviceIdTitleLabel.textColor = theme.textPrimaryColor
+        deviceIdLabel.textColor = theme.textPrimaryColor
         
-        self.deviceKeyTitleLabel.textColor = theme.textPrimaryColor
-        self.deviceKeyLabel.textColor = theme.textPrimaryColor
+        deviceKeyTitleLabel.textColor = theme.textPrimaryColor
+        deviceKeyLabel.textColor = theme.textPrimaryColor
         
-        self.additionalInformationLabel.textColor = theme.textPrimaryColor
+        additionalInformationLabel.textColor = theme.textPrimaryColor
         
-        self.cancelButton.update(theme: theme)
-        self.verifyButton.update(theme: theme)
+        cancelButton.update(theme: theme)
+        verifyButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -147,7 +146,7 @@ final class KeyVerificationManuallyVerifyViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
@@ -155,70 +154,69 @@ final class KeyVerificationManuallyVerifyViewController: UIViewController {
             self?.cancelAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.title = VectorL10n.keyVerificationManuallyVerifyDeviceTitle
-        self.informationLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceInstruction
-        self.deviceNameTitleLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceNameTitle
-        self.deviceIdTitleLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle
-        self.deviceKeyTitleLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceKeyTitle
-        self.additionalInformationLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceAdditionalInformation
+        title = VectorL10n.keyVerificationManuallyVerifyDeviceTitle
+        informationLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceInstruction
+        deviceNameTitleLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceNameTitle
+        deviceIdTitleLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle
+        deviceKeyTitleLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceKeyTitle
+        additionalInformationLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceAdditionalInformation
         
-        self.deviceNameLabel.text = nil
-        self.deviceIdLabel.text = nil
-        self.deviceKeyLabel.text = nil
+        deviceNameLabel.text = nil
+        deviceIdLabel.text = nil
+        deviceKeyLabel.text = nil
         
-        self.cancelButton.actionStyle = .cancel
+        cancelButton.actionStyle = .cancel
     }
 
     private func render(viewState: KeyVerificationManuallyVerifyViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let viewData):
-            self.renderLoaded(viewData: viewData)
+            renderLoaded(viewData: viewData)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(viewData: KeyVerificationManuallyVerifyViewData) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        self.deviceNameLabel.text = viewData.deviceName
-        self.deviceIdLabel.text = viewData.deviceId
-        self.deviceKeyLabel.text = viewData.deviceKey
+        deviceNameLabel.text = viewData.deviceName
+        deviceIdLabel.text = viewData.deviceId
+        deviceKeyLabel.text = viewData.deviceKey
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     // MARK: - Actions
 
     @IBAction private func verifyButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .verify)
+        viewModel.process(viewAction: .verify)
     }
     
     @IBAction private func cancelButtonAction(_ sender: Any) {
-        self.cancelAction()
+        cancelAction()
     }
 
     private func cancelAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
 
-
 // MARK: - KeyVerificationManuallyVerifyViewModelViewDelegate
-extension KeyVerificationManuallyVerifyViewController: KeyVerificationManuallyVerifyViewModelViewDelegate {
 
+extension KeyVerificationManuallyVerifyViewController: KeyVerificationManuallyVerifyViewModelViewDelegate {
     func keyVerificationManuallyVerifyViewModel(_ viewModel: KeyVerificationManuallyVerifyViewModelType, didUpdateViewState viewSate: KeyVerificationManuallyVerifyViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

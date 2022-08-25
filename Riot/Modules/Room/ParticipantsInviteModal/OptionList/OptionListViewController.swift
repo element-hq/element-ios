@@ -19,7 +19,6 @@
 import UIKit
 
 final class OptionListViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -30,10 +29,10 @@ final class OptionListViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var closeButton: UIButton!
-    @IBOutlet private weak var tableView: UITableView!
-    @IBOutlet private weak var bottomMargin: NSLayoutConstraint!
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var closeButton: UIButton!
+    @IBOutlet private var tableView: UITableView!
+    @IBOutlet private var bottomMargin: NSLayoutConstraint!
 
     // MARK: Private
 
@@ -60,33 +59,33 @@ final class OptionListViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.tableView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: tableView)
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        viewModel.process(viewAction: .loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.keyboardAvoider?.startAvoiding()
+        keyboardAvoider?.startAvoiding()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.keyboardAvoider?.stopAvoiding()
+        keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -94,16 +93,16 @@ final class OptionListViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.backgroundColor
-        self.tableView.backgroundColor = theme.backgroundColor
+        view.backgroundColor = theme.backgroundColor
+        tableView.backgroundColor = theme.backgroundColor
 
-        self.titleLabel.textColor = theme.colors.primaryContent
-        self.titleLabel.font = theme.fonts.title3SB
+        titleLabel.textColor = theme.colors.primaryContent
+        titleLabel.font = theme.fonts.title3SB
         
-        self.closeButton.backgroundColor = theme.roomInputTextBorder
-        self.closeButton.tintColor = theme.noticeSecondaryColor
+        closeButton.backgroundColor = theme.roomInputTextBorder
+        closeButton.tintColor = theme.noticeSecondaryColor
         
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -111,23 +110,23 @@ final class OptionListViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.setupTableView()
+        setupTableView()
         
-        self.closeButton.layer.masksToBounds = true
-        self.closeButton.layer.cornerRadius = self.closeButton.bounds.height / 2
+        closeButton.layer.masksToBounds = true
+        closeButton.layer.cornerRadius = closeButton.bounds.height / 2
     }
     
     private func setupTableView() {
-        self.tableView.separatorStyle = .none
-        self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.estimatedRowHeight = Constants.estimatedRowHeight
-        self.tableView.allowsSelection = true
-        self.tableView.register(cellType: OptionListViewCell.self)
-        self.tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = Constants.estimatedRowHeight
+        tableView.allowsSelection = true
+        tableView.register(cellType: OptionListViewCell.self)
+        tableView.tableFooterView = UIView()
     }
 
     private func render(viewState: OptionListViewState) {
@@ -135,68 +134,68 @@ final class OptionListViewController: UIViewController {
         case .idle:
             break
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let title, let options):
-            self.renderLoaded(title: title, options: options)
+            renderLoaded(title: title, options: options)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        activityPresenter.presentActivityIndicator(on: view, animated: true)
     }
     
     private func renderLoaded(title: String?, options: [OptionListItemViewData]) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.titleLabel.text = title
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        titleLabel.text = title
         self.options = options
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        activityPresenter.removeCurrentActivityIndicator(animated: true)
+        errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
-    
     // MARK: - Actions
     
     @IBAction private func closeAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
 
-
 // MARK: - OptionListViewModelViewDelegate
-extension OptionListViewController: OptionListViewModelViewDelegate {
 
+extension OptionListViewController: OptionListViewModelViewDelegate {
     func optionListViewModel(_ viewModel: OptionListViewModelProtocol, didUpdateViewState viewSate: OptionListViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }
 
 // MARK: - SlidingModalPresentable
+
 extension OptionListViewController: SlidingModalPresentable {
     func allowsDismissOnBackgroundTap() -> Bool {
-        return true
+        true
     }
     
     func layoutHeightFittingWidth(_ width: CGFloat) -> CGFloat {
-        return tableView.frame.minY + Constants.estimatedRowHeight * CGFloat(options.count) + bottomMargin.constant
+        tableView.frame.minY + Constants.estimatedRowHeight * CGFloat(options.count) + bottomMargin.constant
     }
 }
 
 // MARK: - UITableViewDataSource
+
 extension OptionListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return options.count
+        options.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let viewData = options[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(for: indexPath, cellType: OptionListViewCell.self)
-        cell.update(theme: self.theme)
+        cell.update(theme: theme)
         cell.update(with: viewData)
 
         return cell
@@ -204,6 +203,7 @@ extension OptionListViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
+
 extension OptionListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)

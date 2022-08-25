@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,11 +20,10 @@ import Foundation
  Object container storing references weakly. Ideal for implementing simple multiple delegation.
  */
 struct DelegateContainer {
-    
     private let hashTable: NSHashTable<AnyObject>
     
     var delegates: [AnyObject] {
-        return hashTable.allObjects
+        hashTable.allObjects
     }
     
     init() {

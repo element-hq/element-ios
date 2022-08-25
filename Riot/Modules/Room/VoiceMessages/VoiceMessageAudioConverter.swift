@@ -23,7 +23,7 @@ enum VoiceMessageAudioConverterError: Error {
     case cancelled
 }
 
-struct VoiceMessageAudioConverter {
+enum VoiceMessageAudioConverter {
     static func convertToOpusOgg(sourceURL: URL, destinationURL: URL, completion: @escaping (Result<Void, VoiceMessageAudioConverterError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             do {

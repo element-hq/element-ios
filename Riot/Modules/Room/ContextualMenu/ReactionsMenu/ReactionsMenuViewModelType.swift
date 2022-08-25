@@ -27,7 +27,6 @@ protocol ReactionsMenuViewModelViewDelegate: AnyObject {
 }
 
 protocol ReactionsMenuViewModelType {
-    
     var coordinatorDelegate: ReactionsMenuViewModelCoordinatorDelegate? { get set }
     var viewDelegate: ReactionsMenuViewModelViewDelegate? { get set }
     

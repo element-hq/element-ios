@@ -14,11 +14,10 @@
  limitations under the License.
  */
 
-import UIKit
 import Reusable
+import UIKit
 
 final class EmojiPickerViewCell: UICollectionViewCell, NibReusable, Themable {
-
     // MARK: - Constants
     
     private enum Constants {
@@ -31,8 +30,8 @@ final class EmojiPickerViewCell: UICollectionViewCell, NibReusable, Themable {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var reactionBackgroundView: UIView!
-    @IBOutlet private weak var emojiLabel: UILabel!
+    @IBOutlet private var reactionBackgroundView: UIView!
+    @IBOutlet private var emojiLabel: UILabel!
     
     // MARK: Private
     
@@ -40,7 +39,7 @@ final class EmojiPickerViewCell: UICollectionViewCell, NibReusable, Themable {
     
     // MARK: Public
     
-    private var isReactionSelected: Bool = false
+    private var isReactionSelected = false
     
     override var isHighlighted: Bool {
         didSet {
@@ -54,48 +53,46 @@ final class EmojiPickerViewCell: UICollectionViewCell, NibReusable, Themable {
         super.awakeFromNib()
         // Initialization code
         
-        self.reactionBackgroundView.layer.masksToBounds = true
+        reactionBackgroundView.layer.masksToBounds = true
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.reactionBackgroundView.layer.cornerRadius = self.reactionBackgroundView.frame.width/4.0
+        reactionBackgroundView.layer.cornerRadius = reactionBackgroundView.frame.width / 4.0
     }
     
     // MARK: - Public
     
     func fill(viewData: EmojiPickerItemViewData) {
-        self.emojiLabel.text = viewData.emoji
-        self.isReactionSelected = viewData.isSelected
+        emojiLabel.text = viewData.emoji
+        isReactionSelected = viewData.isSelected
         
-        self.updateViews()
+        updateViews()
     }
     
     func update(theme: Theme) {
         self.theme = theme
-        self.reactionBackgroundView.layer.borderColor = theme.tintColor.cgColor
-        self.emojiLabel.textColor = theme.textPrimaryColor
-        self.updateViews()
+        reactionBackgroundView.layer.borderColor = theme.tintColor.cgColor
+        emojiLabel.textColor = theme.textPrimaryColor
+        updateViews()
     }
     
     // MARK: - Private
     
     private func updateViews() {
-        
         let reactionBackgroundColor: UIColor?
         let reactionBackgroundBorderWidth: CGFloat
         
-        if self.isReactionSelected {
-            reactionBackgroundColor = self.theme?.tintBackgroundColor
+        if isReactionSelected {
+            reactionBackgroundColor = theme?.tintBackgroundColor
             reactionBackgroundBorderWidth = Constants.selectedBorderWidth
         } else {
-            reactionBackgroundColor = self.theme?.backgroundColor
+            reactionBackgroundColor = theme?.backgroundColor
             reactionBackgroundBorderWidth = 0.0
         }
         
-        self.reactionBackgroundView.layer.borderWidth = reactionBackgroundBorderWidth
-        self.reactionBackgroundView.backgroundColor = reactionBackgroundColor
+        reactionBackgroundView.layer.borderWidth = reactionBackgroundBorderWidth
+        reactionBackgroundView.backgroundColor = reactionBackgroundColor
     }
-
 }

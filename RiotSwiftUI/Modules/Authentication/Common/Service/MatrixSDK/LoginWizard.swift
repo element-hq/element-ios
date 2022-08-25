@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ class LoginWizard {
         self.client = client
         self.sessionCreator = sessionCreator
         
-        self.state = State()
+        state = State()
     }
     
     /// Login to the homeserver.

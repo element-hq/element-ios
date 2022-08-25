@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,9 +41,7 @@ enum EventMenuItemType: Int {
 }
 
 extension EventMenuItemType: Comparable {
-    
     static func < (lhs: EventMenuItemType, rhs: EventMenuItemType) -> Bool {
-        return lhs.rawValue < rhs.rawValue
+        lhs.rawValue < rhs.rawValue
     }
-    
 }

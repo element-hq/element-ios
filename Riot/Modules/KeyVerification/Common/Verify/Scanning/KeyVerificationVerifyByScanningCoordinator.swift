@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class KeyVerificationVerifyByScanningCoordinator: KeyVerificationVerifyByScanningCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -52,31 +51,31 @@ final class KeyVerificationVerifyByScanningCoordinator: KeyVerificationVerifyByS
     
     // MARK: - Public methods
     
-    func start() {            
-        self.keyVerificationVerifyByScanningViewModel.coordinatorDelegate = self
+    func start() {
+        keyVerificationVerifyByScanningViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.keyVerificationVerifyByScanningViewController
+        keyVerificationVerifyByScanningViewController
     }
 }
 
 // MARK: - KeyVerificationVerifyByScanningViewModelCoordinatorDelegate
+
 extension KeyVerificationVerifyByScanningCoordinator: KeyVerificationVerifyByScanningViewModelCoordinatorDelegate {
-    
     func keyVerificationVerifyByScanningViewModelDidCancel(_ viewModel: KeyVerificationVerifyByScanningViewModelType) {
-        self.delegate?.keyVerificationVerifyByScanningCoordinatorDidCancel(self)
-    }    
+        delegate?.keyVerificationVerifyByScanningCoordinatorDidCancel(self)
+    }
     
     func keyVerificationVerifyByScanningViewModel(_ viewModel: KeyVerificationVerifyByScanningViewModelType, didStartSASVerificationWithTransaction transaction: MXSASTransaction) {
-        self.delegate?.keyVerificationVerifyByScanningCoordinator(self, didCompleteWithSASTransaction: transaction)
+        delegate?.keyVerificationVerifyByScanningCoordinator(self, didCompleteWithSASTransaction: transaction)
     }
     
     func keyVerificationVerifyByScanningViewModel(_ viewModel: KeyVerificationVerifyByScanningViewModelType, didScanOtherQRCodeData qrCodeData: MXQRCodeData, withTransaction transaction: MXQRCodeTransaction) {
-        self.delegate?.keyVerificationVerifyByScanningCoordinator(self, didScanOtherQRCodeData: qrCodeData, withTransaction: transaction)
+        delegate?.keyVerificationVerifyByScanningCoordinator(self, didScanOtherQRCodeData: qrCodeData, withTransaction: transaction)
     }
     
     func keyVerificationVerifyByScanningViewModel(_ viewModel: KeyVerificationVerifyByScanningViewModelType, qrCodeDidScannedByOtherWithTransaction transaction: MXQRCodeTransaction) {
-        self.delegate?.keyVerificationVerifyByScanningCoordinator(self, qrCodeDidScannedByOtherWithTransaction: transaction)
+        delegate?.keyVerificationVerifyByScanningCoordinator(self, qrCodeDidScannedByOtherWithTransaction: transaction)
     }
 }

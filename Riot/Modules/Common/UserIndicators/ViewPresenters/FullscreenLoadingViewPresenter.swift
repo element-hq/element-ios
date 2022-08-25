@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import CommonKit
+import Foundation
 import UIKit
 
 /// A presenter responsible for showing / hiding a full-screen loading view that obscures (and thus disables) all other controls.

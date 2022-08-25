@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,7 @@ struct VectorWellKnown {
 }
 
 // MARK: Decodable
+
 extension VectorWellKnown: Decodable {
     /// JSON keys associated to VectorWellKnown properties
     enum CodingKeys: String, CodingKey {
@@ -41,6 +42,7 @@ extension VectorWellKnown: Decodable {
 }
 
 // MARK: - Encryption
+
 struct VectorWellKnownEncryptionConfiguration {
     /// Indicate if E2EE is enabled by default
     let isE2EEByDefaultEnabled: Bool?
@@ -73,8 +75,8 @@ extension VectorWellKnownEncryptionConfiguration: Decodable {
 }
 
 // MARK: - Jitsi
+
 struct VectorWellKnownJitsiConfiguration: Decodable {
-    
     /// Default Jitsi server
     let preferredDomain: String?
 }

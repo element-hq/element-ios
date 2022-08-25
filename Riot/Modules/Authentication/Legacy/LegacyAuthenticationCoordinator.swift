@@ -26,7 +26,6 @@ struct LegacyAuthenticationCoordinatorParameters {
 
 /// A coordinator that handles authentication, verification and setting a PIN using the old UIViewController flow for iOS 12 & 13.
 final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -51,8 +50,8 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
     // MARK: - Setup
     
     init(parameters: LegacyAuthenticationCoordinatorParameters) {
-        self.navigationRouter = parameters.navigationRouter
-        self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
+        navigationRouter = parameters.navigationRouter
+        canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
         
         let authenticationViewController = AuthenticationViewController()
         self.authenticationViewController = authenticationViewController
@@ -85,7 +84,7 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationViewController
+        authenticationViewController
     }
     
     func update(authenticationFlow: AuthenticationFlow) {
@@ -139,13 +138,14 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
 }
 
 // MARK: - AuthenticationServiceDelegate
+
 extension LegacyAuthenticationCoordinator: AuthenticationServiceDelegate {
     func authenticationService(_ service: AuthenticationService, didReceive ssoLoginToken: String, with transactionID: String) -> Bool {
         authenticationViewController.continueSSOLogin(withToken: ssoLoginToken, txnId: transactionID)
     }
 
     func authenticationService(_ service: AuthenticationService, didUpdateStateWithLink link: UniversalLink) {
-        if link.pathParams.first == "register" && !link.queryParams.isEmpty {
+        if link.pathParams.first == "register", !link.queryParams.isEmpty {
             authenticationViewController.externalRegistrationParameters = link.queryParams
         } else if let homeserver = link.homeserverUrl {
             let identityServer = link.identityServerUrl
@@ -159,6 +159,7 @@ extension LegacyAuthenticationCoordinator: AuthenticationServiceDelegate {
 }
 
 // MARK: - AuthenticationViewControllerDelegate
+
 extension LegacyAuthenticationCoordinator: AuthenticationViewControllerDelegate {
     func authenticationViewController(_ authenticationViewController: AuthenticationViewController,
                                       didLoginWith session: MXSession!,
@@ -217,6 +218,7 @@ extension LegacyAuthenticationCoordinator: AuthenticationViewControllerDelegate 
 }
 
 // MARK: - KeyVerificationCoordinatorDelegate
+
 extension LegacyAuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
         if let crypto = session?.crypto,
@@ -238,15 +240,15 @@ extension LegacyAuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
+
 extension LegacyAuthenticationCoordinator: UIAdaptivePresentationControllerDelegate {
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
         // Prevent Key Verification from using swipe to dismiss
-        return false
+        false
     }
 }
 
-
-fileprivate extension AuthenticationFlow {
+private extension AuthenticationFlow {
     var mxkType: MXKAuthenticationType {
         switch self {
         case .login:
@@ -257,7 +259,7 @@ fileprivate extension AuthenticationFlow {
     }
 }
 
-fileprivate extension MXKAuthenticationType {
+private extension MXKAuthenticationType {
     var flow: AuthenticationFlow {
         switch self {
         case .register:

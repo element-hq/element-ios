@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,8 +28,8 @@ public enum AvatarSize: Int {
     case xxLarge = 80
 }
 
-extension AvatarSize {
-    public var size: CGSize {
-        return CGSize(width: self.rawValue, height: self.rawValue)
+public extension AvatarSize {
+    var size: CGSize {
+        CGSize(width: rawValue, height: rawValue)
     }
 }

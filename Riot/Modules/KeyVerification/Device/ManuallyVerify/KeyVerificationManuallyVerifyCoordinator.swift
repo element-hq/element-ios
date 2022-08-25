@@ -20,7 +20,6 @@ import Foundation
 import UIKit
 
 final class KeyVerificationManuallyVerifyCoordinator: KeyVerificationManuallyVerifyCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,23 +48,23 @@ final class KeyVerificationManuallyVerifyCoordinator: KeyVerificationManuallyVer
     
     // MARK: - Public methods
     
-    func start() {            
-        self.keyVerificationManuallyVerifyViewModel.coordinatorDelegate = self
+    func start() {
+        keyVerificationManuallyVerifyViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.keyVerificationManuallyVerifyViewController
+        keyVerificationManuallyVerifyViewController
     }
 }
 
 // MARK: - KeyVerificationManuallyVerifyViewModelCoordinatorDelegate
+
 extension KeyVerificationManuallyVerifyCoordinator: KeyVerificationManuallyVerifyViewModelCoordinatorDelegate {
-    
     func keyVerificationManuallyVerifyViewModel(_ viewModel: KeyVerificationManuallyVerifyViewModelType, didVerifiedDeviceWithId deviceId: String, of userId: String) {
-        self.delegate?.keyVerificationManuallyVerifyCoordinator(self, didVerifiedDeviceWithId: deviceId, of: userId)
-    }        
+        delegate?.keyVerificationManuallyVerifyCoordinator(self, didVerifiedDeviceWithId: deviceId, of: userId)
+    }
     
     func keyVerificationManuallyVerifyViewModelDidCancel(_ viewModel: KeyVerificationManuallyVerifyViewModelType) {
-        self.delegate?.keyVerificationManuallyVerifyCoordinatorDidCancel(self)
+        delegate?.keyVerificationManuallyVerifyCoordinatorDidCancel(self)
     }
 }

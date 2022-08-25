@@ -27,7 +27,7 @@ struct KeyVerificationScanConfirmationViewData {
 /// KeyVerificationScanConfirmationViewController view state
 enum KeyVerificationScanConfirmationViewState {
     case loading
-    case loaded(_ viewData: KeyVerificationScanConfirmationViewData)    
+    case loaded(_ viewData: KeyVerificationScanConfirmationViewData)
     case cancelled(MXTransactionCancelCode)
     case cancelledByMe(MXTransactionCancelCode)
     case error(Error)

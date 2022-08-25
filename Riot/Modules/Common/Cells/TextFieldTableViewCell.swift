@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +14,19 @@
 // limitations under the License.
 //
 
-import UIKit
 import Reusable
+import UIKit
 
 /// Table view cell with only a text field spanning the whole content view, insets can be configured via `textField.insets`
 class TextFieldTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var textField: InsettedTextField!
-    
+    @IBOutlet var textField: InsettedTextField!
 }
 
-extension TextFieldTableViewCell: NibReusable {}
+extension TextFieldTableViewCell: NibReusable { }
 
 extension TextFieldTableViewCell: Themable {
-    
     func update(theme: Theme) {
         theme.applyStyle(onTextField: textField)
         textField.placeholderColor = theme.placeholderTextColor
     }
-    
 }

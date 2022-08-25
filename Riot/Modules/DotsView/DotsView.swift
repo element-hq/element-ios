@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,13 +27,13 @@ class DotsView: UIView {
     
     @IBInspectable var dotMaxWidth: CGFloat = 10 {
         didSet {
-            self.sizeToFit()
+            sizeToFit()
         }
     }
     
     @IBInspectable var dotMinWidth: CGFloat = 8 {
         didSet {
-            self.sizeToFit()
+            sizeToFit()
         }
     }
     
@@ -45,21 +45,22 @@ class DotsView: UIView {
     
     @IBInspectable var interSpaceMargin: CGFloat = 7 {
         didSet {
-            self.sizeToFit()
+            sizeToFit()
         }
     }
     
     // MARK: - Private members
     
-    private var dotLayers: Array<CALayer> = Array()
+    private var dotLayers: [CALayer] = Array()
     private var highlightedDotIndex: UInt = 0 {
         didSet {
             updateDotViews()
         }
     }
+
     private let updateInterval: TimeInterval = 0.4
-    private var lastUpdateDate: Date = Date()
-    private var animating: Bool = false {
+    private var lastUpdateDate = Date()
+    private var animating = false {
         didSet {
             let displayLink = CADisplayLink(target: self, selector: #selector(fireTimer))
             displayLink.add(to: .current, forMode: .default)
@@ -85,7 +86,7 @@ class DotsView: UIView {
     }
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: dotMaxWidth + (CGFloat(numberOfDots) - 1) * (dotMinWidth + interSpaceMargin), height: dotMaxWidth)
+        CGSize(width: dotMaxWidth + (CGFloat(numberOfDots) - 1) * (dotMinWidth + interSpaceMargin), height: dotMaxWidth)
     }
     
     override func didMoveToSuperview() {
@@ -140,7 +141,7 @@ class DotsView: UIView {
     
     @objc private func fireTimer() {
         if Date().timeIntervalSince(lastUpdateDate) >= updateInterval {
-            self.highlightedDotIndex = (self.highlightedDotIndex + 1) % self.numberOfDots
+            highlightedDotIndex = (highlightedDotIndex + 1) % numberOfDots
         }
     }
 }

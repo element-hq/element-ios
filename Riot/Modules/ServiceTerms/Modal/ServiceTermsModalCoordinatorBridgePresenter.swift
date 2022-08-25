@@ -28,7 +28,6 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 @objcMembers
 final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -44,7 +43,7 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     weak var delegate: ServiceTermsModalCoordinatorBridgePresenterDelegate?
     
     var isPresenting: Bool {
-        return self.coordinator != nil
+        coordinator != nil
     }
     
     // MARK: - Setup
@@ -65,21 +64,21 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let serviceTermsModalCoordinator = ServiceTermsModalCoordinator(session: self.session, baseUrl: self.baseUrl, serviceType: self.serviceType, accessToken: accessToken)
+        let serviceTermsModalCoordinator = ServiceTermsModalCoordinator(session: session, baseUrl: baseUrl, serviceType: serviceType, accessToken: accessToken)
         serviceTermsModalCoordinator.delegate = self
         let presentable = serviceTermsModalCoordinator.toPresentable()
         viewController.present(presentable, animated: animated, completion: nil)
         serviceTermsModalCoordinator.start()
         
-        if let coordinator = self.coordinator {
+        if let coordinator = coordinator {
             coordinator.toPresentable().dismiss(animated: false, completion: nil)
         }
         
-        self.coordinator = serviceTermsModalCoordinator
+        coordinator = serviceTermsModalCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -93,17 +92,17 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - ServiceTermsModalCoordinatorDelegate
-extension ServiceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordinatorDelegate {
 
+extension ServiceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordinatorDelegate {
     func serviceTermsModalCoordinatorDidAccept(_ coordinator: ServiceTermsModalCoordinatorType) {
-        self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(self)
+        delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(self)
     }
 
     func serviceTermsModalCoordinatorDidDecline(_ coordinator: ServiceTermsModalCoordinatorType) {
-        self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(self, session: self.session)
+        delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(self, session: session)
     }
     
     func serviceTermsModalCoordinatorDidDismissInteractively(_ coordinator: ServiceTermsModalCoordinatorType) {
-        self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidClose(self)
+        delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidClose(self)
     }
 }

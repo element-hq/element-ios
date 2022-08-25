@@ -27,14 +27,14 @@ class SlidingModalPresentationDelegate: NSObject {
 }
 
 // MARK: - UIViewControllerTransitioningDelegate
+
 extension SlidingModalPresentationDelegate: UIViewControllerTransitioningDelegate {
-    
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SlidingModalPresentationAnimator(isPresenting: true, options: options)
+        SlidingModalPresentationAnimator(isPresenting: true, options: options)
     }
     
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SlidingModalPresentationAnimator(isPresenting: false, options: options)
+        SlidingModalPresentationAnimator(isPresenting: false, options: options)
     }
     
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -45,10 +45,10 @@ extension SlidingModalPresentationDelegate: UIViewControllerTransitioningDelegat
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
-extension SlidingModalPresentationDelegate: UIAdaptivePresentationControllerDelegate {
 
+extension SlidingModalPresentationDelegate: UIAdaptivePresentationControllerDelegate {
     // Do not adapt to size classes
     public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .none
+        .none
     }
 }

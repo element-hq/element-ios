@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,17 +18,16 @@ import Foundation
 
 /// RoomViewController live location sharing handling
 @objc extension RoomViewController {
-    
     func updateLiveLocationBannerViewVisibility() {
-        if self.shouldShowLiveLocationSharingBannerView {
-            self.showLiveLocationBannerView()
+        if shouldShowLiveLocationSharingBannerView {
+            showLiveLocationBannerView()
         } else {
-            self.hideLiveLocationBannerView()
+            hideLiveLocationBannerView()
         }
     }
     
     func hideLiveLocationBannerView() {
-        self.liveLocationSharingBannerView?.removeFromSuperview()
+        liveLocationSharingBannerView?.removeFromSuperview()
     }
     
     func showLiveLocationBannerView() {
@@ -56,8 +55,8 @@ import Foundation
             self.delegate?.roomViewControllerDidStopLiveLocationSharing(self, beaconInfoEventId: nil)
         }
         
-        self.topBannersStackView?.addArrangedSubview(bannerView)
+        topBannersStackView?.addArrangedSubview(bannerView)
 
-        self.liveLocationSharingBannerView = bannerView
+        liveLocationSharingBannerView = bannerView
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +14,11 @@
 // limitations under the License.
 //
 
-import XCTest
 @testable import Element
+import XCTest
 
 // MARK: - Inputs
+
 private enum Inputs {
     static let messageStart = "Hello "
     static let aliceDisplayname = "Alice"
@@ -34,6 +35,7 @@ private enum Inputs {
 }
 
 // MARK: - Tests
+
 @available(iOS 15.0, *)
 class PillsFormatterTests: XCTestCase {
     func testPillsInsertionAndRefresh() {
@@ -121,6 +123,7 @@ private extension PillsFormatterTests {
 }
 
 // MARK: - Mock objects
+
 private class FakeMXSession: MXSession {
     private var mockMyUserId: String
 
@@ -131,7 +134,7 @@ private class FakeMXSession: MXSession {
     }
 
     override var myUserId: String! {
-        return mockMyUserId
+        mockMyUserId
     }
 }
 
@@ -145,27 +148,27 @@ private class FakeMXRoomState: MXRoomState {
     }
 
     override var members: MXRoomMembers! {
-        return mockRoomMembers
+        mockRoomMembers
     }
 }
 
 private class FakeMXUpdatedRoomMembers: MXRoomMembers {
     override var members: [MXRoomMember]! {
-        return [Inputs.aliceMemberAway, Inputs.bobMember]
+        [Inputs.aliceMemberAway, Inputs.bobMember]
     }
 
     override func member(withUserId userId: String!) -> MXRoomMember! {
-        return members.first(where: { $0.userId == userId })
+        members.first(where: { $0.userId == userId })
     }
 }
 
 private class FakeMXRoomMembers: MXRoomMembers {
     override var members: [MXRoomMember]! {
-        return [Inputs.aliceMember, Inputs.bobMember]
+        [Inputs.aliceMember, Inputs.bobMember]
     }
 
     override func member(withUserId userId: String!) -> MXRoomMember! {
-        return members.first(where: { $0.userId == userId })
+        members.first(where: { $0.userId == userId })
     }
 }
 
@@ -182,21 +185,22 @@ private class FakeMXRoomMember: MXRoomMember {
         super.init()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError()
     }
 
     override var displayname: String! {
-        return mockDisplayname
+        mockDisplayname
     }
 
     override var avatarUrl: String! {
-        get { return mockAvatarUrl }
+        get { mockAvatarUrl }
         set { mockAvatarUrl = newValue }
     }
 
     override var userId: String! {
-        return mockUserId
+        mockUserId
     }
 }
 
@@ -209,12 +213,13 @@ private class FakeMXEvent: MXEvent {
         super.init()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError()
     }
 
     override var sender: String! {
-        get { return mockSender }
+        get { mockSender }
         set { mockSender = newValue }
     }
 }

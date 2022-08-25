@@ -27,7 +27,6 @@ import Foundation
 /// been integrated by another Coordinator.
 @objcMembers
 final class SpaceChildRoomDetailBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -35,9 +34,7 @@ final class SpaceChildRoomDetailBridgePresenter: NSObject {
     private let session: MXSession
     private let childInfo: MXSpaceChildInfo
     private var coordinator: SpaceChildRoomDetailCoordinator?
-    private lazy var slidingModalPresenter: SlidingModalPresenter = {
-        return SlidingModalPresenter()
-    }()
+    private lazy var slidingModalPresenter = SlidingModalPresenter()
 
     // MARK: Public
     
@@ -80,7 +77,7 @@ final class SpaceChildRoomDetailBridgePresenter: NSObject {
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -94,6 +91,7 @@ final class SpaceChildRoomDetailBridgePresenter: NSObject {
 }
 
 // MARK: - SpaceChildRoomDetailCoordinatorDelegate
+
 extension SpaceChildRoomDetailBridgePresenter: SpaceChildRoomDetailCoordinatorDelegate {
     func spaceChildRoomDetailCoordinator(_ coordinator: SpaceChildRoomDetailCoordinatorType, didOpenRoomWith roomId: String) {
         delegate?.spaceChildRoomDetailBridgePresenter(self, didOpenRoomWith: roomId)
@@ -105,8 +103,8 @@ extension SpaceChildRoomDetailBridgePresenter: SpaceChildRoomDetailCoordinatorDe
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
+
 extension SpaceChildRoomDetailBridgePresenter: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         delegate?.spaceChildRoomDetailBridgePresenterDidCancel(self)
     }

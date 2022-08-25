@@ -18,14 +18,12 @@ import Foundation
 import Reusable
 
 final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableViewDataSource {
-
-    @IBOutlet private weak var tableView: UITableView!
-    @IBOutlet private weak var acceptButton: UIButton!
+    @IBOutlet private var tableView: UITableView!
+    @IBOutlet private var acceptButton: UIButton!
 
     @objc weak var delegate: MXKAuthInputsViewDelegate?
 
     private var acceptedCallback: (() -> Void)?
-
 
     /// NavigationVC to display a policy content
     private var navigationController: RiotNavigationController?
@@ -39,7 +37,6 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
 
     /// The index of the policy being displayed fullscreen within `navigationController`
     private var displayedPolicyIndex: Int?
-
 
     // MARK: - Setup
 
@@ -60,7 +57,6 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
     }
 
     private func commonInit() {
-
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
@@ -77,11 +73,10 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
     }
 
     func customizeViewRendering() {
-        self.backgroundColor = UIColor.clear
-        self.tableView.backgroundColor = UIColor.clear
+        backgroundColor = UIColor.clear
+        tableView.backgroundColor = UIColor.clear
         acceptButton.backgroundColor = ThemeService.shared().theme.tintColor
     }
-
 
     // MARK: - Public
 
@@ -91,7 +86,6 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
     ///   - terms: Terms data sent by the homeserver.
     ///   - onAccepted: block called when the user has accepted all of them.
     @objc func displayTerms(terms: MXLoginTerms, onAccepted: @escaping () -> Void) {
-
         acceptedCallback = onAccepted
 
         let lang: String? = Bundle.mxk_language()
@@ -101,7 +95,6 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
 
         reload()
     }
-
 
     // MARK: - Private
 
@@ -119,21 +112,19 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         }
     }
 
-
     // MARK: - UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return policies.count
+        policies.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier(), for: indexPath) as? TableViewCellWithCheckBoxAndLabel else {
             fatalError("\(String(describing: TableViewCellWithCheckBoxAndLabel.self)) should be registered")
         }
 
         let policy = policies[indexPath.row]
-        let accepted = acceptedPolicies .contains(indexPath.row)
+        let accepted = acceptedPolicies.contains(indexPath.row)
 
         cell.label.text = policy.name
         cell.isEnabled = accepted
@@ -141,7 +132,7 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         cell.backgroundColor = UIColor.clear
 
         if let checkBox = cell.checkBox, checkBox.gestureRecognizers?.isEmpty ?? true {
-            let gesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapCheckbox))
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapCheckbox))
             gesture.numberOfTapsRequired = 1
             gesture.numberOfTouchesRequired = 1
 
@@ -154,12 +145,10 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        self.displayPolicy(policyIndex: indexPath.row)
+        displayPolicy(policyIndex: indexPath.row)
     }
 
     @objc private func didTapCheckbox(sender: UITapGestureRecognizer) {
-
         guard let policyIndex = sender.view?.tag else {
             return
         }
@@ -173,19 +162,17 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         reload()
     }
 
-
     // MARK: - Policy content display
 
     func displayPolicy(policyIndex: Int) {
-
         displayedPolicyIndex = policyIndex
         let policy = policies[policyIndex]
 
         // Display the policy webpage into our webview
-        let webViewViewController: WebViewViewController = WebViewViewController(url: policy.url)
+        let webViewViewController = WebViewViewController(url: policy.url)
         webViewViewController.title = policy.name
 
-        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "back_icon"), style: .plain, target: self, action: #selector(didTapCancelOnPolicyScreen))
+        let leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back_icon"), style: .plain, target: self, action: #selector(didTapCancelOnPolicyScreen))
         webViewViewController.navigationItem.leftBarButtonItem = leftBarButtonItem
 
         navigationController = RiotNavigationController()

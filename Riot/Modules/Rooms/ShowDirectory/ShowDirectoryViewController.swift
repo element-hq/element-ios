@@ -19,7 +19,6 @@
 import UIKit
 
 final class ShowDirectoryViewController: UIViewController {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -30,12 +29,12 @@ final class ShowDirectoryViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var mainTableView: UITableView!
-    @IBOutlet private weak var vibrancyEffectView: UIVisualEffectView!
-    @IBOutlet private weak var vibrancyEffectContentView: UIView!
-    @IBOutlet private weak var blurEffectView: UIVisualEffectView!
-    @IBOutlet private weak var blurEffectContentView: UIView!
-    @IBOutlet private weak var createRoomButton: UIButton! {
+    @IBOutlet private var mainTableView: UITableView!
+    @IBOutlet private var vibrancyEffectView: UIVisualEffectView!
+    @IBOutlet private var vibrancyEffectContentView: UIView!
+    @IBOutlet private var blurEffectView: UIVisualEffectView!
+    @IBOutlet private var blurEffectContentView: UIView!
+    @IBOutlet private var createRoomButton: UIButton! {
         didSet {
             createRoomButton.setTitle(VectorL10n.searchableDirectoryCreateNewRoom, for: .normal)
         }
@@ -57,11 +56,13 @@ final class ShowDirectoryViewController: UIViewController {
         spinner.startAnimating()
         return spinner
     }()
+
     private lazy var tableFooterView: UIView = {
         let bottomSafeAreaInset = UIApplication.shared.windows.last?.safeAreaInsets.bottom ?? 0
         let height = vibrancyEffectView.frame.height - bottomSafeAreaInset
         return UIView(frame: CGRect(x: 0, y: 0, width: 0, height: height))
     }()
+
     private lazy var mainSearchBar: UISearchBar = {
         let bar = UISearchBar(frame: CGRect(origin: .zero, size: CGSize(width: 600, height: 44)))
         bar.autoresizingMask = .flexibleWidth
@@ -92,57 +93,56 @@ final class ShowDirectoryViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.mainTableView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
+        setupViews()
+        keyboardAvoider = KeyboardAvoider(scrollViewContainerView: view, scrollView: mainTableView)
+        activityPresenter = ActivityIndicatorPresenter()
+        errorPresenter = MXKErrorAlertPresentation()
         
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
+        registerThemeServiceDidChangeThemeNotification()
+        update(theme: theme)
         
-        self.viewModel.viewDelegate = self
+        viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData(false))
+        viewModel.process(viewAction: .loadData(false))
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.keyboardAvoider?.startAvoiding()
+        keyboardAvoider?.startAvoiding()
         screenTracker.trackScreen()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.keyboardAvoider?.stopAvoiding()
-        
+        keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        theme.statusBarStyle
     }
     
     // MARK: - Private
     
     private func addSpinnerFooterView() {
         footerSpinnerView.startAnimating()
-        self.mainTableView.tableFooterView = footerSpinnerView
+        mainTableView.tableFooterView = footerSpinnerView
     }
     
     private func removeSpinnerFooterView() {
         footerSpinnerView.stopAnimating()
-        self.mainTableView.tableFooterView = tableFooterView
+        mainTableView.tableFooterView = tableFooterView
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
-        self.mainTableView.backgroundColor = theme.backgroundColor
-        self.mainTableView.separatorColor = theme.lineBreakColor
+        view.backgroundColor = theme.headerBackgroundColor
+        mainTableView.backgroundColor = theme.backgroundColor
+        mainTableView.separatorColor = theme.lineBreakColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
             navigationBar.setBackgroundImage(UIImage.vc_image(from: theme.headerBackgroundColor), for: .default)
         }
@@ -156,7 +156,7 @@ final class ShowDirectoryViewController: UIViewController {
             blurEffectContentView.overrideUserInterfaceStyle = theme.userInterfaceStyle
         }
         
-        self.mainTableView.reloadData()
+        mainTableView.reloadData()
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -164,32 +164,32 @@ final class ShowDirectoryViewController: UIViewController {
     }
     
     @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+        update(theme: ThemeService.shared().theme)
     }
     
     private func setupViews() {
-        self.mainTableView.keyboardDismissMode = .interactive
-        self.mainTableView.register(headerFooterViewType: DirectoryNetworkTableHeaderFooterView.self)
-        self.mainTableView.register(cellType: DirectoryRoomTableViewCell.self)
-        self.mainTableView.rowHeight = 76
-        self.mainTableView.tableFooterView = tableFooterView
+        mainTableView.keyboardDismissMode = .interactive
+        mainTableView.register(headerFooterViewType: DirectoryNetworkTableHeaderFooterView.self)
+        mainTableView.register(cellType: DirectoryRoomTableViewCell.self)
+        mainTableView.rowHeight = 76
+        mainTableView.tableFooterView = tableFooterView
         
         let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
             self?.cancelButtonAction()
         }
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.navigationItem.titleView = mainSearchBar
+        navigationItem.titleView = mainSearchBar
     }
 
     private func render(viewState: ShowDirectoryViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded(let sections):
-            self.renderLoaded(sections: sections)
+            renderLoaded(sections: sections)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
@@ -200,12 +200,12 @@ final class ShowDirectoryViewController: UIViewController {
     private func renderLoaded(sections: [ShowDirectorySection]) {
         removeSpinnerFooterView()
         self.sections = sections
-        self.mainTableView.reloadData()
+        mainTableView.reloadData()
     }
     
     private func render(error: Error) {
         removeSpinnerFooterView()
-        self.errorPresenter.presentError(from: self, forError: error, animated: true) {
+        errorPresenter.presentError(from: self, forError: error, animated: true) {
             // If the join failed, reload the table view
             self.mainTableView.reloadData()
         }
@@ -218,41 +218,37 @@ final class ShowDirectoryViewController: UIViewController {
     }
 
     private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+        viewModel.process(viewAction: .cancel)
     }
 }
-
 
 // MARK: - UITableViewDataSource
 
 extension ShowDirectoryViewController: UITableViewDataSource {
-    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.sections.count
+        sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        let directorySection = self.sections[section]
+        let directorySection = sections[section]
         
         switch directorySection {
         case .searchInput:
             return 1
-        case.publicRoomsDirectory(let viewModel):
+        case .publicRoomsDirectory(let viewModel):
             return viewModel.roomsCount
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-                        
-        let section = self.sections[indexPath.section]
+        let section = sections[indexPath.section]
         
         let cellViewModel: DirectoryRoomTableViewCellVM?
         
         switch section {
         case .searchInput(let searchInputViewData):
             cellViewModel = searchInputViewData
-        case.publicRoomsDirectory(let viewModel):
+        case .publicRoomsDirectory(let viewModel):
             cellViewModel = viewModel.roomViewModel(at: indexPath.row)
         }
         
@@ -262,16 +258,14 @@ extension ShowDirectoryViewController: UITableViewDataSource {
         }
         cell.indexPath = indexPath
         cell.delegate = self
-        cell.update(theme: self.theme)
+        cell.update(theme: theme)
         return cell
     }
-    
 }
 
 // MARK: - UITableViewDataDelegate
 
 extension ShowDirectoryViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = theme.backgroundColor
         
@@ -294,10 +288,9 @@ extension ShowDirectoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         let sectionHeaderView: UIView?
         
-        let directorySection = self.sections[section]
+        let directorySection = sections[section]
         
         switch directorySection {
         case .searchInput:
@@ -310,7 +303,7 @@ extension ShowDirectoryViewController: UITableViewDelegate {
                 let title = VectorL10n.searchableDirectoryXNetwork(name)
                 view.configure(withViewModel: DirectoryNetworkVM(title: title))
             }
-            view.update(theme: self.theme)
+            view.update(theme: theme)
             view.delegate = self
             sectionHeaderView = view
         }
@@ -319,12 +312,12 @@ extension ShowDirectoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView,
                    estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        let directorySection = self.sections[section]
+        let directorySection = sections[section]
         
         let estimatedHeight: CGFloat
         
@@ -342,39 +335,32 @@ extension ShowDirectoryViewController: UITableViewDelegate {
 // MARK: - UISearchBarDelegate
 
 extension ShowDirectoryViewController {
-    
     override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.process(viewAction: .search(searchText))
     }
-    
 }
 
 // MARK: -
 
 extension ShowDirectoryViewController: DirectoryRoomTableViewCellDelegate {
-    
     func directoryRoomTableViewCellDidTapJoin(_ cell: DirectoryRoomTableViewCell) {
         cell.startJoining()
         viewModel.process(viewAction: .joinRoom(cell.indexPath))
     }
-    
 }
 
 // MARK: - DirectoryNetworkTableHeaderFooterViewDelegate
 
 extension ShowDirectoryViewController: DirectoryNetworkTableHeaderFooterViewDelegate {
-    
     func directoryNetworkTableHeaderFooterViewDidTapSwitch(_ view: DirectoryNetworkTableHeaderFooterView) {
         viewModel.process(viewAction: .switchServer)
     }
-    
 }
 
-
 // MARK: - ShowDirectoryViewModelViewDelegate
-extension ShowDirectoryViewController: ShowDirectoryViewModelViewDelegate {
 
+extension ShowDirectoryViewController: ShowDirectoryViewModelViewDelegate {
     func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didUpdateViewState viewSate: ShowDirectoryViewState) {
-        self.render(viewState: viewSate)
+        render(viewState: viewSate)
     }
 }

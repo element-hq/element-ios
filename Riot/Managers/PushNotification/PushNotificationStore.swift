@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,15 +20,14 @@ import MatrixSDK
 
 @objcMembers
 final class PushNotificationStore: NSObject {
-    
     // MARK: - Constants
     
-    private struct PushNotificationConstants {
+    private enum PushNotificationConstants {
         static let pushNotificationKeychainService: String = BuildSettings.baseBundleIdentifier + ".pushnotification-service"
     }
     
-    private struct StoreKeys {
-        static let pushToken: String = "pushtoken"
+    private enum StoreKeys {
+        static let pushToken = "pushtoken"
     }
     
     /// Store. Defaults to `KeychainStore`
@@ -45,14 +44,14 @@ final class PushNotificationStore: NSObject {
         get {
             do {
                 return try store.data(forKey: StoreKeys.pushToken)
-            } catch let error {
+            } catch {
                 MXLog.debug("[PinCodePreferences] Error when reading push token from store: \(error)")
                 return nil
             }
         } set {
             do {
                 try store.set(newValue, forKey: StoreKeys.pushToken)
-            } catch let error {
+            } catch {
                 MXLog.debug("[PinCodePreferences] Error when storing push token to the store: \(error)")
             }
         }

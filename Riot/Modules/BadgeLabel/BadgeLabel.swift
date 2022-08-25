@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import UIKit
 @IBDesignable
 @objcMembers
 class BadgeLabel: UILabel {
-
     // MARK: - Public properties
     
     @IBInspectable var badgeColor: UIColor = .red {
@@ -40,7 +39,7 @@ class BadgeLabel: UILabel {
         }
     }
     
-    @IBInspectable var padding: CGSize = CGSize(width: 10, height: 3) {
+    @IBInspectable var padding = CGSize(width: 10, height: 3) {
         didSet {
             invalidateIntrinsicContentSize()
         }
@@ -61,7 +60,7 @@ class BadgeLabel: UILabel {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.layer.cornerRadius = self.bounds.size.height / 2
+        layer.cornerRadius = bounds.size.height / 2
     }
     
     override var intrinsicContentSize: CGSize {
@@ -75,7 +74,7 @@ class BadgeLabel: UILabel {
         if let context = UIGraphicsGetCurrentContext() {
             context.saveGState()
             
-            let rect = self.bounds.insetBy(dx: borderWidth / 2, dy: borderWidth / 2)
+            let rect = bounds.insetBy(dx: borderWidth / 2, dy: borderWidth / 2)
             let cornerRadius = rect.height / 2
             let path = UIBezierPath(roundedRect: rect, cornerRadius: cornerRadius)
             
@@ -106,7 +105,7 @@ class BadgeLabel: UILabel {
     // MARK: - Private methods
     
     private func setupView() {
-        self.textAlignment = .center
-        self.textColor = .white
+        textAlignment = .center
+        textColor = .white
     }
 }

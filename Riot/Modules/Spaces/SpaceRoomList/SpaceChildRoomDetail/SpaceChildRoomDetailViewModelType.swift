@@ -28,8 +28,7 @@ protocol SpaceChildRoomDetailViewModelCoordinatorDelegate: AnyObject {
 }
 
 /// Protocol describing the view model used by `SpaceChildRoomDetailViewController`
-protocol SpaceChildRoomDetailViewModelType {        
-        
+protocol SpaceChildRoomDetailViewModelType {
     var viewDelegate: SpaceChildRoomDetailViewModelViewDelegate? { get set }
     var coordinatorDelegate: SpaceChildRoomDetailViewModelCoordinatorDelegate? { get set }
     
