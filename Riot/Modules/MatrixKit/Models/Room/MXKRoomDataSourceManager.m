@@ -200,7 +200,7 @@ static Class _roomDataSourceClass;
 
     if (!roomDataSource && create && roomId)
     {
-        [_roomDataSourceClass loadRoomDataSourceWithRoomId:roomId andMatrixSession:mxSession onComplete:^(id roomDataSource) {
+        [_roomDataSourceClass loadRoomDataSourceWithRoomId:roomId threadId:nil andMatrixSession:mxSession onComplete:^(id roomDataSource) {
             [self addRoomDataSource:roomDataSource];
             onComplete(roomDataSource);
         }];
