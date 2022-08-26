@@ -1,0 +1,1 @@
+Ensure rest client async responses are processed on the main queue
