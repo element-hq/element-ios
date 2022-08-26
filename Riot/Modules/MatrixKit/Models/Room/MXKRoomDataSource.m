@@ -2848,11 +2848,14 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)setState:(MXKDataSourceState)newState
 {
-    self->state = newState;
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(dataSource:didStateChange:)])
+    if (self->state != newState)
     {
-        [self.delegate dataSource:self didStateChange:self->state];
+        self->state = newState;
+
+        if (self.delegate && [self.delegate respondsToSelector:@selector(dataSource:didStateChange:)])
+        {
+            [self.delegate dataSource:self didStateChange:self->state];
+        }
     }
 }
 
