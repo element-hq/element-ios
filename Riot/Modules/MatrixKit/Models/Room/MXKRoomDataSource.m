@@ -553,6 +553,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         }
         
         self.room = nil;
+        self.thread = nil;
         self.secondaryRoom = nil;
     }
     
