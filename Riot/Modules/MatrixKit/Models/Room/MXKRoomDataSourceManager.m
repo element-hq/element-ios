@@ -191,6 +191,11 @@ static Class _roomDataSourceClass;
     }
 }
 
+- (BOOL)hasRoomDataSourceForRoom:(NSString *)roomId
+{
+    return roomDataSources[roomId] != nil;
+}
+
 - (void)roomDataSourceForRoom:(NSString *)roomId create:(BOOL)create onComplete:(void (^)(MXKRoomDataSource *roomDataSource))onComplete
 {
     NSParameterAssert(roomId);

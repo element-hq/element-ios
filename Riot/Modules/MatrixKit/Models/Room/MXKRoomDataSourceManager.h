@@ -79,6 +79,13 @@ typedef enum : NSUInteger {
 - (void)reset;
 
 /**
+ Flag indicating the manager has a room data source for a given room id.
+
+ @param roomId the room id to check.
+ */
+- (BOOL)hasRoomDataSourceForRoom:(NSString*)roomId;
+
+/**
  Get a room data source corresponding to a room id.
  
  If a room data source already exists for this room, its reference will be returned. Else,
