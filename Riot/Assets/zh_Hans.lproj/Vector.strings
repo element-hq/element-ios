@@ -661,10 +661,10 @@
 "auth_add_email_message_2" = "设置邮箱以便恢复账户，并且之后可选让认识的人找到你。";
 "auth_add_phone_message_2" = "设置电话号码，并且之后可选让认识的人找到你。";
 "auth_add_email_phone_message_2" = "设置邮箱以便恢复账户。之后可选用邮箱或者电话号码让认识的人找到你。";
-"auth_email_is_required" = "未设置身份认证服务器，所以你不能添加邮箱地址来重设你的密码。";
-"auth_phone_is_required" = "未设置身份认证服务器，所以你不能添加电话号码来重设你的密码。";
-"auth_forgot_password_error_no_configured_identity_server" = "未设置身份认证服务器：添加服务器以重设你的密码。";
-"auth_reset_password_error_is_required" = "未设置身份认证服务器：在服务器选项中添加以便重设你的密码。";
+"auth_email_is_required" = "未配置身份服务器，所以你无法添加电子邮件地址以在以后重设你的Matrix账户密码。";
+"auth_phone_is_required" = "未配置身份服务器，所以你无法添加电话号码以在以后重设你的Matrix账户密码。";
+"auth_forgot_password_error_no_configured_identity_server" = "未配置身份服务器：添加一个以重设你的Matrix账户密码。";
+"auth_reset_password_error_is_required" = "未配置身份服务器：在服务器选项中添加以便重设你的Matrix账户密码。";
 "auth_softlogout_signed_out" = "你已登出";
 "auth_softlogout_sign_in" = "登录";
 "auth_softlogout_reason" = "你的主服务器（%1$@）管理员已将你的账户%2$@（%3$@）登出。";
@@ -2175,3 +2175,43 @@
 // MARK: User sessions management
 
 "user_sessions_overview_title" = "会话";
+"password_validation_error_contain_symbol" = "包含一个符号。";
+"password_validation_error_contain_number" = "包含一个数字。";
+"password_validation_error_contain_uppercase_letter" = "包含一个大写字母。";
+"password_validation_error_contain_lowercase_letter" = "包含一个小写字母。";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "不超过%d个字符。";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "至少%d个字符。";
+"password_validation_error_header" = "指定的密码不满足以下标准：";
+
+// MARK: Password Validation
+"password_validation_info_header" = "你的密码应该满足以下标准：";
+"authentication_recaptcha_title" = "你是人吗？";
+"authentication_terms_policy_url_error" = "无法找到选择的政策。请稍后再试。";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "请阅读%@的条款和政策";
+"authentication_terms_title" = "隐私政策";
+"authentication_verify_msisdn_invalid_phone_number" = "无效的电话号码";
+"authentication_verify_msisdn_waiting_button" = "重发代码";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "代码已发送到%@";
+"authentication_verify_msisdn_waiting_title" = "验证你的电话号码";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "确认代码";
+"authentication_verify_msisdn_text_field_placeholder" = "电话号码";
+"authentication_verify_msisdn_input_title" = "输入你的电话号码";
+"authentication_choose_password_not_verified_message" = "检查你的收件箱";
+"authentication_choose_password_not_verified_title" = "电子邮件未验证";
+"authentication_choose_password_submit_button" = "重置密码";
+"authentication_choose_password_text_field_placeholder" = "新密码";
+"authentication_choose_password_input_message" = "确保它是8个字符或更多";
+"authentication_choose_password_input_title" = "选择新密码";
+"authentication_forgot_password_waiting_button" = "重发电子邮件";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "按照发送到%@的说明操作";
+"authentication_forgot_password_waiting_title" = "检查你的电子邮件。";
+"authentication_forgot_password_text_field_placeholder" = "电子邮件";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@将给你发一条验证链接";
+"authentication_forgot_password_input_title" = "输入你的电子邮件";
+"authentication_verify_email_waiting_button" = "重发电子邮件";
