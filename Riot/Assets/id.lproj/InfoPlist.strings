@@ -1,11 +1,11 @@
 
 
-"NSContactsUsageDescription" = "Element akan menampilkan kontak Anda supaya Anda bisa mengundang mereka ke obrolan.";
+"NSContactsUsageDescription" = "Mereka akan dibagikan dengan server identitas Anda untuk membantu mencari kontak Anda di Matrix.";
 // Permissions usage explanations
-"NSCameraUsageDescription" = "Kamera digunakan untuk mengambil foto dan video, dan melakukan panggilan video.";
+"NSCameraUsageDescription" = "Kamera digunakan untuk melakukan panggilan video, atau mengambil dan mengunggah foto dan video.";
 "NSFaceIDUsageDescription" = "Face ID digunakan untuk mengakses aplikasi Anda.";
 "NSCalendarsUsageDescription" = "Lihat pertemuan yang sudah dijadwalkan di aplikasi.";
 "NSMicrophoneUsageDescription" = "Element membutuhkan akses ke mikrofon Anda untuk melakukan dan menerima panggilan, mengambil video, dan merekam pesan suara.";
-"NSPhotoLibraryUsageDescription" = "Galeri digunakan untuk mengirim foto dan video.";
+"NSPhotoLibraryUsageDescription" = "Perbolehkan pengaksesan ke foto untuk mengunggah foto dan video dan pustaka Anda.";
 "NSLocationWhenInUseUsageDescription" = "Ketika Anda membagikan lokasi Anda ke orang-orang, Element membutuhkan akses untuk menampilkan mereka sebuah peta.";
 "NSLocationAlwaysAndWhenInUseUsageDescription" = "Ketika Anda membagikan lokasi Anda kepada seseorang, Element membutuhkan akses untuk menampilkan mereka sebuah peta.";
