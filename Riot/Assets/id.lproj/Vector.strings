@@ -2572,7 +2572,7 @@
 "authentication_recaptcha_title" = "Apakah Anda seorang manusia?";
 "authentication_terms_policy_url_error" = "Tidak dapat menemukan kebijakan yang dipilih. Mohon coba lagi nanti.";
 "authentication_terms_message" = "Mohon baca ketentuan dan kebijakan %@";
-"authentication_terms_title" = "Kebijakan server";
+"authentication_terms_title" = "Kebijakan privasi";
 "authentication_verify_msisdn_invalid_phone_number" = "Nomor telepon tidak valid";
 "authentication_verify_msisdn_waiting_button" = "Kirim ulang kode";
 /* The placeholder will show the phone number that was entered. */
@@ -2658,3 +2658,37 @@
 "spaces_subspace_creation_visibility_title" = "Tipe subspace apa yang Anda ingin buat?";
 "spaces_create_subspace_title" = "Buat sebuah subspace";
 "spaces_add_subspace_title" = "Buat space dalam %@";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Sesi";
+"space_invite_nav_title" = "Undangan space";
+"space_detail_nav_title" = "Rincian space";
+"space_selector_create_space" = "Buat Space";
+"space_selector_empty_view_information" = "Space adalah cara untuk mengelompokkan ruangan dan orang. Buat sebuah space untuk memulai.";
+"space_selector_empty_view_title" = "Belum ada space.";
+"room_invites_empty_view_information" = "Ini di mana undangan Anda muncul.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Belum ada yang baru.";
+"all_chats_onboarding_try_it" = "Coba";
+"all_chats_onboarding_title" = "Apa yang baru";
+"all_chats_onboarding_page_message3" = "Ketuk profil Anda untuk memberitahukan kami bagaimana menurut Anda.";
+"all_chats_onboarding_page_title3" = "Berikan Masukan";
+"all_chats_onboarding_page_message2" = "Akses Space Anda (di kiri bawah) dengan lebih cepat dan lebih mudah dari sebelumnya.";
+"all_chats_onboarding_page_title2" = "Akses Space";
+"all_chats_onboarding_page_message1" = "Untuk membuat Element Anda lebih sederhana, fitur tab sekarang opsional. Kelola menggunakan menu kanan atas.";
+"all_chats_onboarding_page_title1" = "Selamat datang di tampilan yang baru!";
+"all_chats_nothing_found_placeholder_message" = "Coba atur pencarian Anda.";
+"all_chats_nothing_found_placeholder_title" = "Tidak ada yang ditemukan.";
+"all_chats_empty_unreads_placeholder_message" = "Ini di mana pesan Anda yang belum dibaca akan ditampilkan, ketika Anda menerimanya.";
+"all_chats_empty_list_placeholder_title" = "Anda telah melihat semuanya.";
+"all_chats_empty_view_information" = "Aplikasi obrolan aman untuk tim, teman, dan organisasi. Buat sebuah obrolan, atau bergabung ke ruangan yang sudah ada, untuk memulai.";
+"all_chats_empty_space_information" = "Space adalah cara baru untuk mengelompokkan ruangan dan orang. Tambahkan ruangan yang sudah ada, atau buat yang baru, dengan tombol di kanan bawah.";
+"all_chats_empty_view_title" = "%@\nterlihat kosong.";
+"spaces_explore_rooms_format" = "Jelajahi %@";
+
+// User sessions management
+"user_sessions_settings" = "Kelola sesi";
+"invite_to" = "Undang ke %@";
