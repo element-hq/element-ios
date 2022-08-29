@@ -419,7 +419,14 @@ final class BuildSettings: NSObject {
     static let syncLocalContacts: Bool = false
     
     // MARK: - New App Layout
-    static let newAppLayoutEnabled = true
+    static let newAppLayoutEnabled = false
+    
+    static var isSideMenuActivated: Bool {
+        enableSideMenu && !RiotSettings.shared.newAppLayoutBetaEnabled
+    }
+    static var isNewAppLayoutActivated: Bool {
+        newAppLayoutEnabled || RiotSettings.shared.newAppLayoutBetaEnabled
+    }
     
     // MARK: - Device manager
     
