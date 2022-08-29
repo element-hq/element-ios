@@ -291,6 +291,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [self.navigationController setToolbarHidden:YES animated:NO];
     
     // Observe server sync process at room data source level too
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixSessionChange) name:kMXKRoomDataSourceSyncStatusChanged object:nil];

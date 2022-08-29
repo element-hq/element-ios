@@ -57,7 +57,7 @@ class RecentCellContextMenuProvider: NSObject {
                     }
                     roomViewController.isContextPreview = true
                     
-                    RoomPreviewDataSource.load(withRoomId: room.roomId, andMatrixSession: session) { [weak roomViewController] roomDataSource in
+                    RoomPreviewDataSource.load(withRoomId: room.roomId, threadId: nil, andMatrixSession: session) { [weak roomViewController] roomDataSource in
                         guard let dataSource = roomDataSource as? RoomPreviewDataSource else {
                             return
                         }

@@ -227,7 +227,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         }
 
         let existingRoomCoordinatorWithSameRoomId = self.detailModules.first { presentable -> Bool in
-            if let currentRoomCoordinator = presentable as? RoomCoordinatorProtocol {
+            if let currentRoomCoordinator = presentable as? RoomCoordinatorProtocol, currentRoomCoordinator.threadId == nil {
                 return currentRoomCoordinator.roomId == roomCoordinator.roomId
             }
             return false
