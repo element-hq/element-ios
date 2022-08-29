@@ -421,6 +421,9 @@ final class BuildSettings: NSObject {
     // MARK: - New App Layout
     static let newAppLayoutEnabled = false
         
+    static var isSideMenuActivated: Bool = enableSideMenu
+    static var isNewAppLayoutActivated: Bool = newAppLayoutEnabled
+
     // MARK: - Device manager
     
     static let deviceManagerEnabled = false

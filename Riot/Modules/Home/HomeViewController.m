@@ -80,7 +80,7 @@
 {
     [super viewDidLoad];
     
-    if (!RiotSettings.shared.isNewAppLayoutActivated)
+    if (!BuildSettings.isNewAppLayoutActivated)
     {
         [self.tabBarController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
     }

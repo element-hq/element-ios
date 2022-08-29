@@ -46,6 +46,8 @@ final class RiotSettings: NSObject {
     
     private override init() {
         super.init()
+        BuildSettings.isSideMenuActivated = BuildSettings.enableSideMenu && !newAppLayoutBetaEnabled
+        BuildSettings.isNewAppLayoutActivated = BuildSettings.newAppLayoutEnabled || newAppLayoutBetaEnabled
     }
     
     /// Indicate if UserDefaults suite has been migrated once.
@@ -386,16 +388,12 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "newAppLayoutBetaEnabled", defaultValue: false, storage: defaults)
     var newAppLayoutBetaEnabled {
         didSet {
+            BuildSettings.isSideMenuActivated = BuildSettings.enableSideMenu && !newAppLayoutBetaEnabled
+            BuildSettings.isNewAppLayoutActivated = BuildSettings.newAppLayoutEnabled || newAppLayoutBetaEnabled
             NotificationCenter.default.post(name: RiotSettings.newAppLayoutBetaToggleDidChange, object: self)
         }
     }
     
-    var isSideMenuActivated: Bool {
-        BuildSettings.enableSideMenu && !newAppLayoutBetaEnabled
-    }
-    var isNewAppLayoutActivated: Bool {
-        BuildSettings.newAppLayoutEnabled || newAppLayoutBetaEnabled
-    }
 }
 
 // MARK: - RiotSettings notification constants

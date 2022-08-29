@@ -27,7 +27,7 @@ class DefaultTheme: NSObject, Theme {
     var backgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
     var baseColor: UIColor {
-        RiotSettings.shared.isNewAppLayoutActivated ? UIColor(rgb: 0xFFFFFF) : UIColor(rgb: 0xF5F7FA)
+        BuildSettings.isNewAppLayoutActivated ? UIColor(rgb: 0xFFFFFF) : UIColor(rgb: 0xF5F7FA)
     }
     var baseIconPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
@@ -38,7 +38,7 @@ class DefaultTheme: NSObject, Theme {
     var searchResultHighlightColor: UIColor = UIColor(rgb: 0xFCC639).withAlphaComponent(0.2)
 
     var headerBackgroundColor: UIColor {
-        RiotSettings.shared.isNewAppLayoutActivated ? UIColor(rgb: 0xFFFFFF) : UIColor(rgb: 0xF5F7FA)
+        BuildSettings.isNewAppLayoutActivated ? UIColor(rgb: 0xFFFFFF) : UIColor(rgb: 0xF5F7FA)
     }
     var headerBorderColor: UIColor  = UIColor(rgb: 0xE9EDF1)
     var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x17191C)
@@ -173,7 +173,7 @@ class DefaultTheme: NSObject, Theme {
         searchBar.backgroundImage = UIImage() // Remove top and bottom shadow
         searchBar.tintColor = self.tintColor
         
-        guard !RiotSettings.shared.isNewAppLayoutActivated else {
+        guard !BuildSettings.isNewAppLayoutActivated else {
             return
         }
         
