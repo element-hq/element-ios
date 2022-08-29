@@ -1,3 +1,22 @@
+## Changes in 1.9.1 (2022-08-29)
+
+🙌 Improvements
+
+- Added Labs flag for the new App Layout. ([#6649](https://github.com/vector-im/element-ios/issues/6649))
+
+🐛 Bugfixes
+
+- Render the PIN entry screen correctly on landscape ([#6629](https://github.com/vector-im/element-ios/pull/6629))
+- Ensure rest client async responses are processed on the main queue ([#6642](https://github.com/vector-im/element-ios/pull/6642))
+- Stop waiting for biometric unlock if disabled system wide ([#5279](https://github.com/vector-im/element-ios/issues/5279))
+- App Layout: added support for transparent avatar icons in the all chats screen ([#6556](https://github.com/vector-im/element-ios/issues/6556))
+- App Layout: fixed reactions background in timeline ([#6557](https://github.com/vector-im/element-ios/issues/6557))
+- App Layout: Removed Low Priority Rooms from Filters ([#6577](https://github.com/vector-im/element-ios/issues/6577))
+- App Layout: Updated missing image for Onboarding screen page 2 ([#6624](https://github.com/vector-im/element-ios/issues/6624))
+- App Layout: fixed limited number of invites in the All Chats screen ([#6625](https://github.com/vector-im/element-ios/issues/6625))
+- Fix notification issues for threads. ([#6628](https://github.com/vector-im/element-ios/issues/6628))
+
+
 ## Changes in 1.9.0 (2022-08-24)
 
 🙌 Improvements

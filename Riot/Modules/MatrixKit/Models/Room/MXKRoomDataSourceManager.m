@@ -191,6 +191,11 @@ static Class _roomDataSourceClass;
     }
 }
 
+- (BOOL)hasRoomDataSourceForRoom:(NSString *)roomId
+{
+    return roomDataSources[roomId] != nil;
+}
+
 - (void)roomDataSourceForRoom:(NSString *)roomId create:(BOOL)create onComplete:(void (^)(MXKRoomDataSource *roomDataSource))onComplete
 {
     NSParameterAssert(roomId);
@@ -200,7 +205,7 @@ static Class _roomDataSourceClass;
 
     if (!roomDataSource && create && roomId)
     {
-        [_roomDataSourceClass loadRoomDataSourceWithRoomId:roomId andMatrixSession:mxSession onComplete:^(id roomDataSource) {
+        [_roomDataSourceClass loadRoomDataSourceWithRoomId:roomId threadId:nil andMatrixSession:mxSession onComplete:^(id roomDataSource) {
             [self addRoomDataSource:roomDataSource];
             onComplete(roomDataSource);
         }];

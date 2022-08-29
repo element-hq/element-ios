@@ -73,8 +73,8 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.reactionsBackgroundView.backgroundColor = theme.headerBackgroundColor
-        self.moreReactionsBackgroundView.backgroundColor = theme.headerBackgroundColor
+        self.reactionsBackgroundView.backgroundColor = theme.colors.system
+        self.moreReactionsBackgroundView.backgroundColor = theme.colors.system
         self.moreReactionsButton.tintColor = theme.tintColor
     }
     

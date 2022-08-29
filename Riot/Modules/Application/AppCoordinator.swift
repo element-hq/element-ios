@@ -91,7 +91,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         // Setup user location services
         _ = UserLocationServiceProvider.shared
         
-        if BuildSettings.enableSideMenu {
+        if BuildSettings.isSideMenuActivated {
             self.addSideMenu()
         }
         
@@ -104,6 +104,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
                 self.splitViewCoordinator?.hideAppStateIndicator()
             }
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.newAppLayoutToggleDidChange(notification:)), name: RiotSettings.newAppLayoutBetaToggleDidChange, object: nil)
         
         // NOTE: When split view is shown there can be no Matrix sessions ready. Keep this behavior or use a loading screen before showing the split view.
         self.showSplitView()
@@ -158,6 +160,12 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             .eraseToAnyPublisher()
 
         ThemePublisher.shared.republish(themeIdPublisher: themeIdPublisher)
+    }
+    
+    @objc private func newAppLayoutToggleDidChange(notification: Notification) {
+        if BuildSettings.isSideMenuActivated {
+            self.addSideMenu()
+        }
     }
     
     private func excludeAllItemsFromBackup() {

@@ -1114,21 +1114,66 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                        threadId:(NSString *)threadId
                          sender:(NSString *)userId
 {
-    if (roomId)
-    {
-        MXRoom *room = [self.mxSessions.firstObject roomWithRoomId:roomId];
-        if (room.summary.membership != MXMembershipJoin)
+    void(^sessionReadyBlock)(MXSession*) = ^(MXSession *session){
+        if (roomId)
         {
-            Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerNotification;
+            MXRoom *room = [session roomWithRoomId:roomId];
+            if (room.summary.membership != MXMembershipJoin)
+            {
+                Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerNotification;
+            }
+            else
+            {
+                Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerNotification;
+            }
+        }
+
+        self.lastNavigatedRoomIdFromPush = roomId;
+
+        if (threadId)
+        {
+            if(![[MXKRoomDataSourceManager sharedManagerForMatrixSession:session] hasRoomDataSourceForRoom:roomId])
+            {
+                //  the room having this thread probably was not opened before, paginate room messages to build threads
+                MXRoom *room = [session roomWithRoomId:roomId];
+                [room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                    [liveTimeline resetPagination];
+                    [liveTimeline paginate:NSUIntegerMax direction:MXTimelineDirectionBackwards onlyFromStore:YES complete:^{
+                        [liveTimeline resetPagination];
+                        [self navigateToRoomById:roomId threadId:threadId sender:userId];
+                    } failure:^(NSError * _Nonnull error) {
+                        [self navigateToRoomById:roomId threadId:threadId sender:userId];
+                    }];
+                }];
+            }
+            else
+            {
+                //  the room has been opened before, we should be ok to continue
+                [self navigateToRoomById:roomId threadId:threadId sender:userId];
+            }
         }
         else
         {
-            Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerNotification;
+            [self navigateToRoomById:roomId threadId:threadId sender:userId];
         }
-    }
+    };
 
-    _lastNavigatedRoomIdFromPush = roomId;
-    [self navigateToRoomById:roomId threadId:threadId sender:userId];
+    MXSession *mxSession = self.mxSessions.firstObject;
+    if (mxSession.state >= MXSessionStateSyncInProgress)
+    {
+        sessionReadyBlock(mxSession);
+    }
+    else
+    {
+        //  wait for session state to be sync in progress
+        __block id sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:mxSession queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+            if (mxSession.state >= MXSessionStateSyncInProgress)
+            {
+                [[NSNotificationCenter defaultCenter] removeObserver:sessionStateObserver];
+                sessionReadyBlock(mxSession);
+            }
+        }];
+    }
 }
 
 #pragma mark - Badge Count
@@ -4212,7 +4257,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     // Need to set `showAllRoomsInHomeSpace` to `true` for the new App Layout
-    if (BuildSettings.newAppLayoutEnabled)
+    if (BuildSettings.isNewAppLayoutActivated)
     {
         RiotSettings.shared.showAllRoomsInHomeSpace = YES;
     }

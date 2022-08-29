@@ -67,7 +67,10 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     var canReleaseRoomDataSource: Bool {
         // If the displayed data is not a preview, let the manager release the room data source
         // (except if the view controller has the room data source ownership).
-        return self.parameters.previewData == nil && self.roomViewController.roomDataSource != nil && self.roomViewController.hasRoomDataSourceOwnership == false
+        return self.parameters.previewData == nil
+            && self.roomViewController.roomDataSource != nil
+            && self.roomViewController.roomDataSource.threadId == nil
+            && self.roomViewController.hasRoomDataSourceOwnership == false
     }
     
     // MARK: - Setup
@@ -238,7 +241,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             self.roomViewController.displayRoom(threadDataSource)
             
             // Give the data source ownership to the room view controller.
-            self.roomViewController.hasRoomDataSourceOwnership = true
+            self.roomViewController.hasRoomDataSourceOwnership = false
             
             self.mxSession?.updateBreadcrumbsWithRoom(withId: roomId, success: nil, failure: nil)
 

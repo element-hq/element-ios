@@ -158,6 +158,7 @@ extension MXRestClient {
     
     // MARK: - Private
     
+    @MainActor
     private func getResponse<T>(_ callback: (@escaping (MXResponse<T>) -> Void) -> MXHTTPOperation) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
             _ = callback { response in
@@ -171,6 +172,7 @@ extension MXRestClient {
         }
     }
     
+    @MainActor
     private func getResponse<T>(_ callback: (@escaping (T?) -> Void, @escaping (Error?) -> Void) -> MXHTTPOperation) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
             _ = callback { response in
@@ -186,6 +188,7 @@ extension MXRestClient {
         }
     }
     
+    @MainActor
     private func getResponse<T, U, V>(_ callback: (@escaping (T?, U?, V?) -> Void, @escaping (Error?) -> Void) -> MXHTTPOperation) async throws -> (T?, U?, V?) {
         try await withCheckedThrowingContinuation { continuation in
             _ = callback { arg1, arg2, arg3  in

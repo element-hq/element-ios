@@ -84,7 +84,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         _crossSigningBannerDisplay = CrossSigningBannerDisplayNone;
         _secureBackupBannerDisplay = SecureBackupBannerDisplayNone;
         
-        _areSectionsShrinkable = !BuildSettings.newAppLayoutEnabled;
+        _areSectionsShrinkable = !BuildSettings.isNewAppLayoutActivated;
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
@@ -758,7 +758,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
 
     
-    if (count && !(sectionType == RecentsDataSourceSectionTypeInvites) && !BuildSettings.newAppLayoutEnabled)
+    if (count && !(sectionType == RecentsDataSourceSectionTypeInvites) && !BuildSettings.isNewAppLayoutActivated)
     {
         NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
 
@@ -987,7 +987,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         sectionHeader.bottomView = nil;
     }
     
-    if (!BuildSettings.newAppLayoutEnabled || !sectionHeader.bottomView)
+    if (!BuildSettings.isNewAppLayoutActivated || !sectionHeader.bottomView)
     {
         // Add label
         frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
@@ -1101,7 +1101,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         RecentsInvitesTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[RecentsInvitesTableViewCell defaultReuseIdentifier]];
         
-        tableViewCell.invitesCount = self.recentsListService.invitedRoomListData.counts.numberOfRooms;
+        tableViewCell.invitesCount = self.recentsListService.invitedRoomListData.counts.total.numberOfRooms;
 
         return tableViewCell;
     }

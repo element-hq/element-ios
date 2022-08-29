@@ -80,6 +80,11 @@
 {
     [super viewDidLoad];
     
+    if (!BuildSettings.isNewAppLayoutActivated)
+    {
+        [self.tabBarController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
+    }
+    
     self.roomListDataReady = NO;
     
     self.view.accessibilityIdentifier = @"HomeVCView";
