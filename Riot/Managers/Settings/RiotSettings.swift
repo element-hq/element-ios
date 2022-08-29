@@ -46,6 +46,8 @@ final class RiotSettings: NSObject {
     
     private override init() {
         super.init()
+        BuildSettings.isSideMenuActivated = BuildSettings.enableSideMenu && !newAppLayoutBetaEnabled
+        BuildSettings.isNewAppLayoutActivated = BuildSettings.newAppLayoutEnabled || newAppLayoutBetaEnabled
     }
     
     /// Indicate if UserDefaults suite has been migrated once.
@@ -381,9 +383,21 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "allChatsOnboardingHasBeenDisplayed", defaultValue: false, storage: defaults)
     var allChatsOnboardingHasBeenDisplayed
+    
+    // MARK: - New App Layout
+    @UserDefault(key: "newAppLayoutBetaEnabled", defaultValue: false, storage: defaults)
+    var newAppLayoutBetaEnabled {
+        didSet {
+            BuildSettings.isSideMenuActivated = BuildSettings.enableSideMenu && !newAppLayoutBetaEnabled
+            BuildSettings.isNewAppLayoutActivated = BuildSettings.newAppLayoutEnabled || newAppLayoutBetaEnabled
+            NotificationCenter.default.post(name: RiotSettings.newAppLayoutBetaToggleDidChange, object: self)
+        }
+    }
+    
 }
 
 // MARK: - RiotSettings notification constants
 extension RiotSettings {
     public static let didUpdateLiveLocationSharingActivation = Notification.Name("RiotSettingsDidUpdateLiveLocationSharingActivation")
+    public static let newAppLayoutBetaToggleDidChange = Notification.Name("RiotSettingsNewAppLayoutBetaToggleDidChange")
 }

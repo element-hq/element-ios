@@ -68,9 +68,9 @@ const CGFloat kTypingCellHeight = 24;
 
 @implementation RoomDataSource
 
-- (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession
+- (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession threadId:(NSString *)threadId
 {
-    self = [super initWithRoomId:roomId andMatrixSession:matrixSession];
+    self = [super initWithRoomId:roomId andMatrixSession:matrixSession threadId:threadId];
     if (self)
     {
         // Replace default Cell data class

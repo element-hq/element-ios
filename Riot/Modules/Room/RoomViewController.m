@@ -5687,6 +5687,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             if (self.isContextPreview)
             {
                 [RoomPreviewDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                                           threadId:nil
                                                    andMatrixSession:self.mainSession
                                                          onComplete:^(RoomPreviewDataSource *roomDataSource)
                  {
