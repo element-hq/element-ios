@@ -27,7 +27,7 @@ class DarkTheme: NSObject, Theme {
     var backgroundColor: UIColor = UIColor(rgb: 0x15191E)
 
     var baseColor: UIColor {
-        BuildSettings.isNewAppLayoutActivated ? UIColor(rgb: 0x15191E) : UIColor(rgb: 0x21262C)
+        RiotSettings.shared.isNewAppLayoutActivated ? UIColor(rgb: 0x15191E) : UIColor(rgb: 0x21262C)
     }
     var baseIconPrimaryColor: UIColor = UIColor(rgb: 0xEDF3FF)
     var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
@@ -38,7 +38,7 @@ class DarkTheme: NSObject, Theme {
     var searchResultHighlightColor: UIColor = UIColor(rgb: 0xFCC639).withAlphaComponent(0.3)
 
     var headerBackgroundColor: UIColor {
-        BuildSettings.isNewAppLayoutActivated ? UIColor(rgb: 0x15191E) : UIColor(rgb: 0x21262C)
+        RiotSettings.shared.isNewAppLayoutActivated ? UIColor(rgb: 0x15191E) : UIColor(rgb: 0x21262C)
     }
     var headerBorderColor: UIColor  = UIColor(rgb: 0x15191E)
     var headerTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)

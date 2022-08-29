@@ -3994,6 +3994,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 - (void)toggleEnableNewAppLayout:(UISwitch *)sender
 {
+    if (sender.isOn)
+    {
+        RiotSettings.shared.showAllRoomsInHomeSpace = YES;
+    }
     RiotSettings.shared.newAppLayoutBetaEnabled = sender.isOn;
 }
 

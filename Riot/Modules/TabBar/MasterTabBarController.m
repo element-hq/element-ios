@@ -156,7 +156,7 @@
         [self userInterfaceThemeDidChange];
     }
     
-    self.tabBar.hidden = BuildSettings.isNewAppLayoutActivated;
+    self.tabBar.hidden = RiotSettings.shared.isNewAppLayoutActivated;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -214,7 +214,7 @@
         
         [[AppDelegate theDelegate] checkAppVersion];
 
-        if (BuildSettings.isNewAppLayoutActivated && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed)
+        if (RiotSettings.shared.isNewAppLayoutActivated && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed)
         {
             [self showAllChatsOnboardingScreen];
         }
@@ -633,7 +633,7 @@
 {
     if (roomParentId) {
         NSString *parentName = [mxSession roomSummaryWithRoomId:roomParentId].displayname;
-        if (!BuildSettings.isNewAppLayoutActivated)
+        if (!RiotSettings.shared.isNewAppLayoutActivated)
         {
             NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
 
@@ -649,7 +649,7 @@
     }
     else
     {
-        if (!BuildSettings.isNewAppLayoutActivated)
+        if (!RiotSettings.shared.isNewAppLayoutActivated)
         {
             titleView.breadcrumbView.breadcrumbs = @[];
         }
@@ -661,7 +661,7 @@
 
 - (void)updateSideMenuNotifcationIcon
 {
-    if (BuildSettings.isNewAppLayoutActivated) { return; }
+    if (RiotSettings.shared.isNewAppLayoutActivated) { return; }
     
     BOOL displayNotification = NO;
     
@@ -693,7 +693,7 @@
 
 -(void)setupTitleView
 {
-    if (!BuildSettings.isNewAppLayoutActivated)
+    if (!RiotSettings.shared.isNewAppLayoutActivated)
     {
         titleView = [MainTitleView new];
         self.navigationItem.titleView = titleView;

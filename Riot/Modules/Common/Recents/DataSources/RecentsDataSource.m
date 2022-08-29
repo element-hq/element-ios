@@ -84,7 +84,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         _crossSigningBannerDisplay = CrossSigningBannerDisplayNone;
         _secureBackupBannerDisplay = SecureBackupBannerDisplayNone;
         
-        _areSectionsShrinkable = !BuildSettings.isNewAppLayoutActivated;
+        _areSectionsShrinkable = !RiotSettings.shared.isNewAppLayoutActivated;
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
@@ -758,7 +758,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
 
     
-    if (count && !(sectionType == RecentsDataSourceSectionTypeInvites) && !BuildSettings.isNewAppLayoutActivated)
+    if (count && !(sectionType == RecentsDataSourceSectionTypeInvites) && !RiotSettings.shared.isNewAppLayoutActivated)
     {
         NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
 
@@ -987,7 +987,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         sectionHeader.bottomView = nil;
     }
     
-    if (!BuildSettings.isNewAppLayoutActivated || !sectionHeader.bottomView)
+    if (!RiotSettings.shared.isNewAppLayoutActivated || !sectionHeader.bottomView)
     {
         // Add label
         frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;

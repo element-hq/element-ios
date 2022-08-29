@@ -341,7 +341,7 @@
         _bubblesTableView.hidden = NO;
     }
 
-    if (BuildSettings.isNewAppLayoutActivated)
+    if (RiotSettings.shared.isNewAppLayoutActivated)
     {
         [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeNever];
     }

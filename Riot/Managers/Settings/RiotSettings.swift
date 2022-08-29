@@ -389,6 +389,13 @@ final class RiotSettings: NSObject {
             NotificationCenter.default.post(name: RiotSettings.newAppLayoutBetaToggleDidChange, object: self)
         }
     }
+    
+    var isSideMenuActivated: Bool {
+        BuildSettings.enableSideMenu && !newAppLayoutBetaEnabled
+    }
+    var isNewAppLayoutActivated: Bool {
+        BuildSettings.newAppLayoutEnabled || newAppLayoutBetaEnabled
+    }
 }
 
 // MARK: - RiotSettings notification constants
