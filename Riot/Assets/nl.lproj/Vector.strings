@@ -2532,7 +2532,7 @@
 "authentication_recaptcha_title" = "Bent u een mens?";
 "authentication_terms_policy_url_error" = "Kan het geselecteerde beleid niet vinden. Probeer het later opnieuw.";
 "authentication_terms_message" = "Lees de voorwaarden en het beleid van %@ a.u.b.";
-"authentication_terms_title" = "Serverbeleid";
+"authentication_terms_title" = "Privacy beleid";
 "authentication_verify_msisdn_invalid_phone_number" = "Ongeldig telefoonnummer";
 "authentication_verify_msisdn_waiting_button" = "Code nogmaals versturen";
 /* The placeholder will show the phone number that was entered. */
@@ -2586,3 +2586,69 @@
 "location_sharing_invalid_power_level_title" = "U heeft geen toestemming om de live locatie te delen";
 "authentication_choose_password_not_verified_message" = "Controleer uw inbox";
 "authentication_choose_password_not_verified_title" = "E-mailadres niet geverifieerd";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Sessies";
+"location_sharing_map_loading_error" = "Kan kaart niet laden\nDeze server is niet geconfigureerd om kaarten weer te geven";
+"space_invite_nav_title" = "Space uitnodingen";
+"space_detail_nav_title" = "Space details";
+"space_selector_create_space" = "Space aanmaken";
+"space_selector_empty_view_information" = "Spaces zijn een manier om kamers en mensen te groeperen. Creëer een space om te beginnen.";
+"space_selector_empty_view_title" = "Nog geen spaces.";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Mijn spaces";
+"room_invites_empty_view_information" = "Hier verschijnen uw uitnodigingen.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Niets nieuws.";
+"all_chats_onboarding_try_it" = "Probeer het uit";
+"all_chats_onboarding_title" = "Wat is nieuw";
+"all_chats_onboarding_page_message3" = "Tik op uw profiel om ons te laten weten wat u ervan vindt.";
+"all_chats_onboarding_page_title3" = "Geef feedback";
+"all_chats_onboarding_page_message2" = "Krijg sneller en gemakkelijker toegang tot uw Spaces (linksonder) dan ooit tevoren.";
+"all_chats_onboarding_page_title2" = "Toegang tot spaces";
+"all_chats_onboarding_page_message1" = "Om uw Element te vereenvoudigen, zijn tabbladen nu optioneel. Beheer ze met behulp van het menu rechtsboven.";
+"all_chats_onboarding_page_title1" = "Welkom bij de nieuwe weergave!";
+"all_chats_edit_menu_space_settings" = "Space instellingen";
+"all_chats_edit_menu_leave_space" = "Verlaat %@";
+"all_chats_user_menu_settings" = "Gebruikersinstellingen";
+"room_recents_recently_viewed_section" = "Recent bekeken";
+"all_chats_nothing_found_placeholder_message" = "Probeer uw zoekopdracht aan te passen.";
+"all_chats_nothing_found_placeholder_title" = "Niets gevonden.";
+"all_chats_empty_unreads_placeholder_message" = "Dit is waar uw ongelezen berichten zullen verschijnen, als u er een aantal hebt.";
+"all_chats_empty_list_placeholder_title" = "U bent helemaal bij.";
+"all_chats_empty_view_information" = "De alles-in-één beveiligde chat-app voor teams, vrienden en organisaties. Maak een chat of sluit u aan bij een bestaande chatruimte om aan de slag te gaan.";
+"all_chats_empty_space_information" = "Spaces zijn een nieuwe manier om kamers en mensen te groeperen. Voeg een bestaande kamer toe of maak een nieuwe aan met de knop rechtsonder.";
+"all_chats_empty_view_title" = "%@\nziet er een beetje leeg uit.";
+"all_chats_all_filter" = "Alles";
+"all_chats_edit_layout_alphabetical_order" = "Sorteer A-Z";
+"all_chats_edit_layout_activity_order" = "Sorteren op activiteit";
+"all_chats_edit_layout_show_filters" = "Filters tonen";
+"all_chats_edit_layout_show_recents" = "Recente tonen";
+"all_chats_edit_layout_sorting_options_title" = "Berichten sorteren op";
+"all_chats_edit_layout_pin_spaces_title" = "Zet uw spaces vast";
+"all_chats_edit_layout_add_filters_message" = "Filter uw berichten automatisch in de categorieën van uw keuze";
+"all_chats_edit_layout_add_filters_title" = "Filter uw berichten";
+"all_chats_edit_layout_add_section_message" = "Secties vastprikken op Thuis voor gemakkelijke toegang";
+"all_chats_edit_layout_add_section_title" = "Sectie toevoegen aan thuis";
+"all_chats_edit_layout_unreads" = "Ongelezen";
+"all_chats_edit_layout_recents" = "Recente";
+"all_chats_edit_layout" = "Lay-outvoorkeuren";
+"all_chats_section_title" = "Gesprekken";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Alle gesprekken";
+"spaces_subspace_creation_visibility_message" = "De gecreëerde space wordt toegevoegd aan %@.";
+"spaces_subspace_creation_visibility_title" = "Welk type subspace wilt u maken?";
+"spaces_explore_rooms_format" = "Ontdek %@";
+"spaces_create_subspace_title" = "Maak een subspace";
+"spaces_add_subspace_title" = "Maak space binnen %@";
+
+// User sessions management
+"user_sessions_settings" = "Beheer sessies";
+"invite_to" = "Uitnodigen %@";
