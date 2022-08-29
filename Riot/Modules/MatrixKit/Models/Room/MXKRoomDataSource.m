@@ -208,9 +208,9 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 @implementation MXKRoomDataSource
 
-+ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete
++ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId threadId:(NSString*)threadId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete
 {
-    MXKRoomDataSource *roomDataSource = [[self alloc] initWithRoomId:roomId andMatrixSession:mxSession];
+    MXKRoomDataSource *roomDataSource = [[self alloc] initWithRoomId:roomId andMatrixSession:mxSession threadId:threadId];
     [self ensureSessionStateForDataSource:roomDataSource initialEventId:nil andMatrixSession:mxSession onComplete:onComplete];
 }
 
@@ -284,7 +284,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
-- (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession
+- (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession threadId:(NSString *)threadId
 {
     self = [super initWithMatrixSession:matrixSession];
     if (self)
@@ -292,6 +292,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         MXLogVerbose(@"[MXKRoomDataSource][%p] initWithRoomId: %@", self, roomId);
         
         _roomId = roomId;
+        _threadId = threadId;
         _secondaryRoomEventTypes = @[
             kMXEventTypeStringCallInvite,
             kMXEventTypeStringCallCandidates,
@@ -368,7 +369,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (instancetype)initWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId2 threadId:(NSString*)threadId andMatrixSession:(MXSession*)mxSession
 {
-    self = [self initWithRoomId:roomId andMatrixSession:mxSession];
+    self = [self initWithRoomId:roomId andMatrixSession:mxSession threadId:threadId];
     if (self)
     {
         if (initialEventId2)
@@ -376,7 +377,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             initialEventId = initialEventId2;
             _isLive = NO;
         }
-        _threadId = threadId;
     }
 
     return self;
@@ -553,6 +553,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         }
         
         self.room = nil;
+        self.thread = nil;
         self.secondaryRoom = nil;
     }
     
@@ -584,7 +585,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)destroy
 {
-    MXLogDebug(@"[MXKRoomDataSource][%p] Destroy - room id: %@", self, _roomId);
+    MXLogDebug(@"[MXKRoomDataSource][%p] Destroy - room id: %@ - thread id: %@", self, _roomId, _threadId);
     
     [self unregisterScanManagerNotifications];
     [self unregisterReactionsChangeListener];
@@ -2848,11 +2849,14 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)setState:(MXKDataSourceState)newState
 {
-    self->state = newState;
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(dataSource:didStateChange:)])
+    if (self->state != newState)
     {
-        [self.delegate dataSource:self didStateChange:self->state];
+        self->state = newState;
+
+        if (self.delegate && [self.delegate respondsToSelector:@selector(dataSource:didStateChange:)])
+        {
+            [self.delegate dataSource:self didStateChange:self->state];
+        }
     }
 }
 

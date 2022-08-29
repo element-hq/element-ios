@@ -87,6 +87,6 @@ final class RoomReactionActionViewCell: UICollectionViewCell, NibReusable, Thema
         self.actionLabel.textColor = self.theme?.textSecondaryColor
         
         self.reactionBackgroundView.layer.borderWidth = 0.0
-        self.reactionBackgroundView.backgroundColor = self.theme?.headerBackgroundColor
+        self.reactionBackgroundView.backgroundColor = self.theme?.colors.system
     }
 }

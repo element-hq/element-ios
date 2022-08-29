@@ -419,8 +419,11 @@ final class BuildSettings: NSObject {
     static let syncLocalContacts: Bool = false
     
     // MARK: - New App Layout
-    static let newAppLayoutEnabled = true
-    
+    static let newAppLayoutEnabled = false
+        
+    static var isSideMenuActivated: Bool = enableSideMenu
+    static var isNewAppLayoutActivated: Bool = newAppLayoutEnabled
+
     // MARK: - Device manager
     
     static let deviceManagerEnabled = false

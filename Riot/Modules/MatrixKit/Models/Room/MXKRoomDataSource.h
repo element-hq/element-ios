@@ -261,10 +261,11 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  the room data source is created.
 
  @param roomId the id of the room to get data from.
+ @param threadId the id of the thread to load. If provided, thread data source will be loaded from the room specified with `roomId`.
  @param mxSession the Matrix session to get data from.
  @param onComplete a block providing the newly created instance.
  */
-+ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete;
++ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId threadId:(NSString*)threadId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete;
 
 /**
  Asynchronously create adata source to serve data corresponding to an event in the
@@ -306,10 +307,11 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  Initialise the data source to serve data corresponding to the passed room.
  
  @param roomId the id of the room to get data from.
+ @param threadId the id of the thread to initialize. If provided, thread data source will be initialized from the room specified with `roomId`.
  @param mxSession the Matrix session to get data from.
  @return the newly created instance.
  */
-- (instancetype)initWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)mxSession;
+- (instancetype)initWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)mxSession threadId:(NSString*)threadId;
 
 /**
  Initialise the data source to serve data corresponding to an event in the

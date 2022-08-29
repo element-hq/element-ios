@@ -127,6 +127,10 @@ final class PinCodePreferences: NSObject {
     
     var canUseBiometricsToUnlock: Bool? {
         get {
+            guard isBiometricsAvailable == true else {
+                return false
+            }
+            
             do {
                 return try store.bool(forKey: StoreKeys.canUseBiometricsToUnlock)
             } catch let error {

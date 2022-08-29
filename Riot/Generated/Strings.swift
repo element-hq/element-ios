@@ -7351,6 +7351,10 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableLiveLocationSharing: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_live_location_sharing") 
   }
+  /// New Application Layout
+  public static var settingsLabsEnableNewAppLayout: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_new_app_layout") 
+  }
   /// Ring for group calls
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
