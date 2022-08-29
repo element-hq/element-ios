@@ -93,7 +93,7 @@ private final class StubMXKRoomDataSource: MXKRoomDataSource {
 private final class FakeMXKRoomDataSource: MXKRoomDataSource {
 
     class func make() throws -> FakeMXKRoomDataSource {
-        let dataSource = try XCTUnwrap(FakeMXKRoomDataSource(roomId: "!foofoofoofoofoofoo:matrix.org", andMatrixSession: nil))
+        let dataSource = try XCTUnwrap(FakeMXKRoomDataSource(roomId: "!foofoofoofoofoofoo:matrix.org", andMatrixSession: nil, threadId: nil))
         dataSource.registerCellDataClass(CollapsibleBubbleCellData.self, forCellIdentifier: kMXKRoomBubbleCellDataIdentifier)
         dataSource.eventFormatter = CountingEventFormatter(matrixSession: nil)
         return dataSource
