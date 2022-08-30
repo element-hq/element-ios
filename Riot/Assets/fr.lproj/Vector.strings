@@ -2237,7 +2237,7 @@
 "authentication_terms_policy_url_error" = "Impossible de trouver la politique sélectionnée. Veuillez réessayer plus tard.";
 /* The placeholder will show the homeserver's domain */
 "authentication_terms_message" = "Veuillez lire les conditions d’utilisation de %@";
-"authentication_terms_title" = "Politiques du serveur";
+"authentication_terms_title" = "Politiques de confidentialité";
 "authentication_verify_msisdn_invalid_phone_number" = "Numéro de téléphone invalide";
 "authentication_verify_msisdn_waiting_button" = "Renvoyer le code";
 /* The placeholder will show the phone number that was entered. */
@@ -2440,3 +2440,69 @@
 "room_access_space_chooser_other_spaces_section_info" = "Ce sont probablement des choses auxquelles les autres admins de %@ participent.";
 "authentication_choose_password_not_verified_message" = "Vérifiez votre boîte de réception";
 "authentication_choose_password_not_verified_title" = "Email non vérifié";
+"all_chats_onboarding_page_title3" = "Donner mon avis";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Sessions";
+"location_sharing_map_loading_error" = "Impossible de charger la carte\nCe serveur d’accueil n’est pas configuré pour afficher des cartes";
+"space_invite_nav_title" = "Invitations à l’espace";
+"space_detail_nav_title" = "Détails de l’espace";
+"space_selector_create_space" = "Créer un espace";
+"space_selector_empty_view_information" = "Les espaces sont un moyen de regrouper les salons et les gens. Créez un espace pour commencer.";
+"space_selector_empty_view_title" = "Pas d’espace pour l’instant.";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Mes espaces";
+"room_invites_empty_view_information" = "C’est ici que vos invitations apparaîtront.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Rien de neuf.";
+"all_chats_onboarding_try_it" = "Essayez";
+"all_chats_onboarding_title" = "Quoi de neuf";
+"all_chats_onboarding_page_message3" = "Appuyez sur votre profil pour nous faire vos retours.";
+"all_chats_onboarding_page_message2" = "Accédez à vos espaces (en bas à gauche) plus rapidement et facilement qu’avant.";
+"all_chats_onboarding_page_title2" = "Accéder aux espaces";
+"all_chats_onboarding_page_message1" = "Pour simplifier Element, les onglets sont désormais facultatifs. Gérez les depuis le menu en haut à droite.";
+"all_chats_onboarding_page_title1" = "Bienvenu dans une nouvelle vue !";
+"all_chats_edit_menu_space_settings" = "Paramètres de l’espace";
+"all_chats_edit_menu_leave_space" = "Quitter %@";
+"all_chats_user_menu_settings" = "Paramètres utilisateur";
+"room_recents_recently_viewed_section" = "Récemment vus";
+"all_chats_nothing_found_placeholder_message" = "Essayez d’affiner votre recherche.";
+"all_chats_nothing_found_placeholder_title" = "Aucun résultat.";
+"all_chats_empty_unreads_placeholder_message" = "C'est ici que vos messages non-lus s’afficheront lorsque vous en aurez.";
+"all_chats_empty_list_placeholder_title" = "Plus rien à voir.";
+"all_chats_empty_view_information" = "La messagerie sécurisée tout en un pour les équipes, les amis, et les organisations. Créez une discussion ou rejoignez un salon pour démarrer.";
+"all_chats_empty_space_information" = "Les espaces sont un nouveau moyen de grouper les salons et les gens. Ajoutez un salon, ou créez en un nouveau à l’aide du bouton en bas à droite.";
+"all_chats_empty_view_title" = "%@\na l’air un peu vide.";
+"all_chats_all_filter" = "Tous";
+"all_chats_edit_layout_alphabetical_order" = "Ordonner de A à Z";
+"all_chats_edit_layout_activity_order" = "Ordonner par activité";
+"all_chats_edit_layout_sorting_options_title" = "Ordonner les messages par";
+"all_chats_edit_layout_show_filters" = "Afficher les filtres";
+"all_chats_edit_layout_show_recents" = "Afficher les plus récents";
+"all_chats_edit_layout_pin_spaces_title" = "Épinglez vos espaces";
+"all_chats_edit_layout_add_filters_message" = "Filtrez vos messages dans les catégories de votre choix";
+"all_chats_edit_layout_add_filters_title" = "Filtrez vos messages";
+"all_chats_edit_layout_add_section_message" = "Épinglez des sections à l’accueil pour y accéder plus rapidement";
+"all_chats_edit_layout_add_section_title" = "Ajouter une section à l’accueil";
+"all_chats_edit_layout_unreads" = "Non-lus";
+"all_chats_edit_layout_recents" = "Récents";
+"all_chats_edit_layout" = "Préférences d’agencement";
+"all_chats_section_title" = "Discussions";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Toutes les discussions";
+"spaces_subspace_creation_visibility_message" = "L’espace créé sera ajouté à %@.";
+"spaces_subspace_creation_visibility_title" = "Quel type de sous-espace voulez-vous créer ?";
+"spaces_explore_rooms_format" = "Parcourir %@";
+"spaces_create_subspace_title" = "Créer un sous-espace";
+"spaces_add_subspace_title" = "Créer un espace dans %@";
+
+// User sessions management
+"user_sessions_settings" = "Gérer les sessions";
+"invite_to" = "Inviter dans %@";
