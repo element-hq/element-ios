@@ -1,3 +1,10 @@
+## Changes in 1.9.2 (2022-08-31)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.17](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.17)).
+
+
 ## Changes in 1.9.1 (2022-08-29)
 
 🙌 Improvements
