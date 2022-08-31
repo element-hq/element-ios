@@ -1438,6 +1438,12 @@
             cmdUsage = @"Usage: /topic <topic>";
         }
     }
+    else if ([string hasPrefix:kMXKSlashCmdDiscardSession])
+    {
+        [roomDataSource.mxSession.crypto discardOutboundGroupSessionForRoomWithRoomId:roomDataSource.roomId onComplete:^{
+            MXLogDebug(@"[MXKRoomVC] Manually discarded outbound group session");
+        }];
+    }
     else
     {
         // Retrieve userId
