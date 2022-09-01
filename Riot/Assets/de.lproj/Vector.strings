@@ -2470,3 +2470,6 @@
 "all_chats_empty_list_placeholder_title" = "Keine ungelesenen Nachrichten vorhanden.";
 "spaces_explore_rooms_format" = "%@ erkunden";
 "room_access_settings_screen_upgrade_alert_message_no_param" = "Jeder in einem übergeordneten Space kann diesen Raum finden und ihm beitreten - jeden manuell einzuladen ist nicht nötig. Du kannst diese Einstellung jederzeit ändern.";
+"room_access_settings_screen_public_message" = "Sichtbar und zugänglich für jeden.";
+"room_access_settings_screen_restricted_message" = "Sichtbar und betretbar für jeden Nutzer in einem Space.\nDu wählst, für welche Spaces dies gilt.";
+"room_access_settings_screen_private_message" = "Nur sichtbar und betretbar für eingeladene Personen.";
