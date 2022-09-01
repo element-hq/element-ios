@@ -70,3 +70,4 @@
 #import "UIAlertController+MatrixKit.h"
 #import "MXKMessageTextView.h"
 #import "AllChatsLayoutModels.h"
+#import "SecurityViewController.h"

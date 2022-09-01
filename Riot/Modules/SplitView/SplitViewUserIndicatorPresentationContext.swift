@@ -19,12 +19,12 @@ import CommonKit
 
 class SplitViewUserIndicatorPresentationContext: UserIndicatorPresentationContext {
     private weak var splitViewController: UISplitViewController?
-    private weak var tabBarCoordinator: TabBarCoordinator?
+    private weak var tabBarCoordinator: TabBarCoordinatorType?
     private weak var detailNavigationController: UINavigationController?
     
     init(
         splitViewController: UISplitViewController,
-        tabBarCoordinator: TabBarCoordinator,
+        tabBarCoordinator: TabBarCoordinatorType,
         detailNavigationController: UINavigationController
     ) {
         self.splitViewController = splitViewController

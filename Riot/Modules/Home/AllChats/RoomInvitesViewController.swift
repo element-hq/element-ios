@@ -95,15 +95,17 @@ class RoomInvitesViewController: RecentsViewController {
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         super.tableView(tableView, willDisplay: cell, forRowAt: indexPath)
         
+        guard tableView.numberOfSections > indexPath.section else {
+            return
+        }
+
+        let numberOfRowsInSection = tableView.numberOfRows(inSection: indexPath.section)
+        guard indexPath.row == numberOfRowsInSection - 1 else {
+            return
+        }
+        
         tableViewPaginationThrottler .throttle { [weak self] in
-            guard let self = self, tableView.numberOfSections > indexPath.section else {
-                return
-            }
-            
-            let numberOfRowsInSection = tableView.numberOfRows(inSection: indexPath.section)
-            if indexPath.row == numberOfRowsInSection - 1 {
-                self.recentsDataSource?.paginate(inSection: indexPath.section)
-            }
+            self?.recentsDataSource?.paginate(inSection: indexPath.section)
         }
     }
     

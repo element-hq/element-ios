@@ -93,8 +93,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             self.splitViewController.delegate = self
             
             // Create primary controller
-            let tabBarCoordinator = self.createTabBarCoordinator()
-            tabBarCoordinator.delegate = self
+            let tabBarCoordinator: TabBarCoordinatorType = BuildSettings.isNewAppLayoutActivated ? self.createAllChatsCoordinator() : self.createTabBarCoordinator()
             tabBarCoordinator.splitViewMasterPresentableDelegate = self
             tabBarCoordinator.start(with: spaceId)
             
@@ -172,6 +171,14 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     
     private func createPlaceholderDetailsViewController() -> UIViewController {
         return PlaceholderDetailViewController.instantiate()
+    }
+    
+    private func createAllChatsCoordinator() -> AllChatsCoordinator {
+        let coordinatorParameters = AllChatsCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, appNavigator: self.parameters.appNavigator)
+        
+        let coordinator = AllChatsCoordinator(parameters: coordinatorParameters)
+        coordinator.delegate = self
+        return coordinator
     }
     
     private func createTabBarCoordinator() -> TabBarCoordinator {
