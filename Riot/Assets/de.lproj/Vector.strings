@@ -235,9 +235,9 @@
 "settings_privacy_policy" = "Datenschutzerklärung";
 "settings_send_crash_report" = "Sende anonyme Absturz- und Nutzungsdaten";
 "settings_change_password" = "Passwort ändern";
-"settings_old_password" = "altes Passwort";
-"settings_new_password" = "neues Passwort";
-"settings_confirm_password" = "bestätige Passwort";
+"settings_old_password" = "Altes Passwort";
+"settings_new_password" = "Neues Passwort";
+"settings_confirm_password" = "Bestätige Passwort";
 "settings_password_updated" = "Das Passwort deines Matrix-Kontos wurde aktualisiert";
 "settings_crypto_device_name" = "Öffentlicher Sitzungs-Name: ";
 "settings_crypto_device_key" = "\nSitzungs-Schlüssel:\n";
@@ -508,7 +508,7 @@
 "room_action_send_photo_or_video" = "Foto oder Video senden";
 "room_action_send_sticker" = "Aufkleber senden";
 "settings_deactivate_account" = "DEAKTIVIERTES KONTO";
-"settings_deactivate_my_account" = "Mein Konto deaktivieren";
+"settings_deactivate_my_account" = "Konto für immer deaktivieren";
 "widget_sticker_picker_no_stickerpacks_alert" = "Du hast aktuell keine Aufkleberpakete aktiviert.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Welche hinzufügen?";
 // GDPR
@@ -1186,8 +1186,8 @@
 "create_room_enable_encryption" = "Verschlüsselung aktivieren";
 "create_room_section_footer_encryption" = "Verschlüsselung kann im Nachhinein nicht deaktiviert werden.";
 "create_room_section_header_type" = "Raumtyp";
-"create_room_type_private" = "Privater Raum";
-"create_room_type_public" = "Öffentlicher Raum";
+"create_room_type_private" = "Privater Raum (nur Eingeladene)";
+"create_room_type_public" = "Öffentlicher Raum (jeder hat Zugriff)";
 "create_room_section_footer_type" = "Personen können einen privaten Raum nur mit Einladung betreten.";
 "create_room_show_in_directory" = "Zeige den Raum im Raumverzeichnis";
 "create_room_section_header_address" = "Raum-Adresse";
@@ -2460,3 +2460,8 @@
 "all_chats_onboarding_page_title3" = "Feedback geben";
 "room_invites_empty_view_information" = "Hier erscheinen deine Einladungen.";
 "all_chats_onboarding_try_it" = "Probiere es aus";
+"threads_discourage_information_1" = "Dein Heimserver unterstützt aktuell keine Threads, weshalb diese Funktion unzuverlässig sein könnte. Manche Thread-Nachrichten könnten nicht zuverlässig verfügbar sein. ";
+"all_chats_nothing_found_placeholder_title" = "Nichts gefunden.";
+"spaces_create_subspace_title" = "Sub-Space erstellen";
+"room_access_settings_screen_upgrade_alert_note" = "Bitte beachte, dass das Upgrade eine neue Version dieses Raums erstellt. Alle aktuellen Nachrichten bleiben in diesem archivierten Raum.";
+"invite_to" = "Zu %@ einladen";
