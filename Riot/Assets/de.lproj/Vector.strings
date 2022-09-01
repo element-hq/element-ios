@@ -2483,3 +2483,11 @@
 "all_chats_empty_view_information" = "Die alles-in-einem sichere Chat-App für Teams, Freunde und Organisationen. Erstelle einen Chat oder trete einem existierenden Raum bei, um zu starten.";
 "all_chats_empty_space_information" = "Spaces sind ein neuer Weg um Räume und Personen zu gruppieren. Füge einen existierenden Raum hinzu oder erstelle einen neuen, indem du den Knopf unten-rechts verwendest.";
 "all_chats_edit_layout_sorting_options_title" = "Sortiere deine Nachrichten nach";
+"space_detail_nav_title" = "Space-Details";
+"all_chats_onboarding_page_title1" = "Willkommen zum neuen Layout!";
+"all_chats_edit_menu_space_settings" = "Space-Einstellungen";
+"all_chats_user_menu_settings" = "Benutzer-Einstellungen";
+"room_recents_recently_viewed_section" = "Kürzlich angesehen";
+"all_chats_nothing_found_placeholder_message" = "Versuche, deine Suche anzupassen.";
+"all_chats_edit_layout_recents" = "Historie";
+"all_chats_edit_layout" = "Layout-Einstellungen";
