@@ -173,6 +173,13 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     }
 
     self.textView.attributedText = attributedTextMessage;
+
+    if (@available(iOS 15.0, *)) {
+        // Fixes an iOS 16 issue where attachment are not drawn properly by
+        // forcing the layoutManager to redraw the glyphs at all NSAttachment positions.
+        [self.textView vc_invalidateTextAttachmentsDisplay];
+    }
+
     [self updateUIWithAttributedTextMessage:attributedTextMessage animated:YES];
     [self textViewDidChange:self.textView];
 }
