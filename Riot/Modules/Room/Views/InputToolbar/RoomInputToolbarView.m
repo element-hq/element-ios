@@ -152,6 +152,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     self.inputContextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.inputContextButton.tintColor = ThemeService.shared.theme.textSecondaryColor;
     [self.actionsBar updateWithTheme:ThemeService.shared.theme];
+    self.backgroundColor = ThemeService.shared.theme.backgroundColor;
 }
 
 #pragma mark -
