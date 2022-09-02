@@ -29,7 +29,7 @@ class AllChatsCoordinatorParameters {
     }
 }
 
-class AllChatsCoordinator: NSObject, TabBarCoordinatorType {
+class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     
     // MARK: Properties
     
@@ -81,7 +81,7 @@ class AllChatsCoordinator: NSObject, TabBarCoordinatorType {
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     
-    weak var delegate: TabBarCoordinatorDelegate?
+    weak var delegate: SplitViewMasterCoordinatorDelegate?
     
     weak var splitViewMasterPresentableDelegate: SplitViewMasterPresentableDelegate?
     
@@ -759,7 +759,7 @@ extension AllChatsCoordinator: SecureBackupSetupCoordinatorBridgePresenterDelega
 // MARK: - AllChatsViewControllerDelegate
 extension AllChatsCoordinator: AllChatsViewControllerDelegate {
     func allChatsViewControllerDidCompleteAuthentication(_ allChatsViewController: AllChatsViewController) {
-        self.delegate?.tabBarCoordinatorDidCompleteAuthentication(self)
+        self.delegate?.splitViewMasterCoordinatorDidCompleteAuthentication(self)
     }
     
     func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectRoomWithParameters roomNavigationParameters: RoomNavigationParameters, completion: @escaping () -> Void) {

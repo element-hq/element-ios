@@ -56,7 +56,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         return self.masterPresentable?.selectedNavigationRouter
     }
     
-    private weak var tabBarCoordinator: TabBarCoordinatorType?
+    private weak var masterCoordinator: SplitViewMasterCoordinatorProtocol?
     
     // Indicate if coordinator has been started once
     private var hasStartedOnce: Bool = false
@@ -93,29 +93,29 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             self.splitViewController.delegate = self
             
             // Create primary controller
-            let tabBarCoordinator: TabBarCoordinatorType = BuildSettings.isNewAppLayoutActivated ? self.createAllChatsCoordinator() : self.createTabBarCoordinator()
-            tabBarCoordinator.splitViewMasterPresentableDelegate = self
-            tabBarCoordinator.start(with: spaceId)
+            let masterCoordinator: SplitViewMasterCoordinatorProtocol = BuildSettings.isNewAppLayoutActivated ? self.createAllChatsCoordinator() : self.createTabBarCoordinator()
+            masterCoordinator.splitViewMasterPresentableDelegate = self
+            masterCoordinator.start(with: spaceId)
             
             // Create secondary controller
             let placeholderDetailViewController = self.createPlaceholderDetailsViewController()
             let detailNavigationController = RiotNavigationController(rootViewController: placeholderDetailViewController)
             
             // Setup split view controller
-            self.splitViewController.viewControllers = [tabBarCoordinator.toPresentable(), detailNavigationController]
+            self.splitViewController.viewControllers = [masterCoordinator.toPresentable(), detailNavigationController]
             
             // Setup detail user indicator presenter
             let context = SplitViewUserIndicatorPresentationContext(
                 splitViewController: splitViewController,
-                tabBarCoordinator: tabBarCoordinator,
+                masterCoordinator: masterCoordinator,
                 detailNavigationController: detailNavigationController
             )
             detailUserIndicatorPresenter = UserIndicatorTypePresenter(presentationContext: context)
                     
-            self.add(childCoordinator: tabBarCoordinator)
+            self.add(childCoordinator: masterCoordinator)
             
-            self.tabBarCoordinator = tabBarCoordinator
-            self.masterPresentable = tabBarCoordinator
+            self.masterCoordinator = masterCoordinator
+            self.masterPresentable = masterCoordinator
             self.detailNavigationController = detailNavigationController
             self.detailNavigationRouter = NavigationRouter(navigationController: detailNavigationController)
             
@@ -126,7 +126,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             // Pop to home screen when selecting a new space
             self.popToHome(animated: true) {
                 // Update tabBarCoordinator selected space
-                self.tabBarCoordinator?.start(with: spaceId)
+                self.masterCoordinator?.start(with: spaceId)
             }
         }
     }
@@ -145,26 +145,26 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         self.resetDetailNavigationController(animated: animated)
 
         // Release the current selected item (room/contact/group...).
-        self.tabBarCoordinator?.releaseSelectedItems()
+        self.masterCoordinator?.releaseSelectedItems()
     }
     
     func popToHome(animated: Bool, completion: (() -> Void)?) {
         self.resetDetails(animated: animated)
 
         // Force back to the main screen if this is not the one that is displayed
-        self.tabBarCoordinator?.popToHome(animated: animated, completion: completion)
+        self.masterCoordinator?.popToHome(animated: animated, completion: completion)
     }
     
     func showErroIndicator(with error: Error) {
-        tabBarCoordinator?.showErroIndicator(with: error)
+        masterCoordinator?.showErroIndicator(with: error)
     }
     
     func hideAppStateIndicator() {
-        tabBarCoordinator?.hideAppStateIndicator()
+        masterCoordinator?.hideAppStateIndicator()
     }
     
     func showAppStateIndicator(with text: String, icon: UIImage?) {
-        tabBarCoordinator?.showAppStateIndicator(with: text, icon: icon)
+        masterCoordinator?.showAppStateIndicator(with: text, icon: icon)
     }
 
     // MARK: - Private methods
@@ -347,8 +347,8 @@ extension SplitViewCoordinator: UISplitViewControllerDelegate {
 }
 
 // MARK: - TabBarCoordinatorDelegate
-extension SplitViewCoordinator: TabBarCoordinatorDelegate {
-    func tabBarCoordinatorDidCompleteAuthentication(_ coordinator: TabBarCoordinatorType) {
+extension SplitViewCoordinator: SplitViewMasterCoordinatorDelegate {
+    func splitViewMasterCoordinatorDidCompleteAuthentication(_ coordinator: SplitViewMasterCoordinatorProtocol) {
         self.delegate?.splitViewCoordinatorDidCompleteAuthentication(self)
     }
 }
