@@ -351,7 +351,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     [self setupRemoveJitsiWidgetRemoveView];
     
-    [self updateRoomInputToolbarViewClassIfNeeded];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Replace the default input toolbar view.
+        // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
+        [self updateRoomInputToolbarViewClassIfNeeded];
+    });
     
     // set extra area
     [self setRoomActivitiesViewClass:RoomActivitiesView.class];

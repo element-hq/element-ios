@@ -48,6 +48,12 @@ class RecentsInvitesTableViewCell: UITableViewCell, NibReusable, Themable {
         update(theme: ThemeService.shared().theme)
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        update(theme: ThemeService.shared().theme)
+    }
+    
     // MARK: - Themable
     
     func update(theme: Theme) {
