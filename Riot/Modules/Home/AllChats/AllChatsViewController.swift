@@ -75,22 +75,22 @@ class AllChatsViewController: HomeViewController {
     
     private var currentAlert: UIAlertController?
     
-    // MARK: - MasterTabBarController
+    // MARK: - SplitViewMasterViewControllerProtocol
     
     // References on the currently selected room
-    @objc private(set) var selectedRoomId: String?
-    @objc private(set) var selectedEventId: String?
-    @objc private(set) var selectedRoomSession: MXSession?
-    @objc private(set) var selectedRoomPreviewData: RoomPreviewData?
+    private(set) var selectedRoomId: String?
+    private(set) var selectedEventId: String?
+    private(set) var selectedRoomSession: MXSession?
+    private(set) var selectedRoomPreviewData: RoomPreviewData?
     
     // References on the currently selected contact
-    @objc private(set) var selectedContact: MXKContact?
+    private(set) var selectedContact: MXKContact?
     
     // Reference to the current onboarding flow. It is always nil unless the flow is being presented.
-    @objc private(set)  var onboardingCoordinatorBridgePresenter: OnboardingCoordinatorBridgePresenter?
+    private(set) var onboardingCoordinatorBridgePresenter: OnboardingCoordinatorBridgePresenter?
     
     // Tell whether the onboarding screen is preparing.
-    @objc private(set) var isOnboardingInProgress: Bool = false
+    private(set) var isOnboardingInProgress: Bool = false
 
     // MARK: - Lifecycle
     
@@ -144,7 +144,7 @@ class AllChatsViewController: HomeViewController {
             // Display a login screen if the account is soft logout
             // Note: We support only one account
             if let account = MXKAccountManager.shared().accounts.first, account.isSoftLogout {
-                showSoftLogoutOnboardingFlow(credentials: account.mxCredentials)
+                showSoftLogoutOnboardingFlow(with: account.mxCredentials)
                 authIsShown = true
             } else {
                 authIsShown = false
@@ -732,11 +732,11 @@ extension AllChatsViewController: BannerPresentationProtocol {
 }
 
 // TODO: The `MasterTabBarViewController` is called from the entire app through the `LegacyAppDelegate`. this part of the code should be moved into `AppCoordinator`
-// MARK: - MasterTabBarViewController
-extension AllChatsViewController {
+// MARK: - SplitViewMasterViewControllerProtocol
+extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
 
     /// Release the current selected item (if any).
-    @objc func releaseSelectedItem() {
+    func releaseSelectedItem() {
         selectedRoomId = nil
         selectedEventId = nil
         selectedRoomSession = nil
@@ -745,7 +745,7 @@ extension AllChatsViewController {
     }
     
     /// Refresh the missed conversations badges on tab bar icon
-    @objc func refreshTabBarBadges() {
+    func refreshTabBarBadges() {
         // Nothing to do here as we don't have tab bar
     }
     
@@ -753,7 +753,7 @@ extension AllChatsViewController {
     ///
     /// - Parameters:
     ///   - session: the matrix session.
-    @objc func presentVerifyCurrentSessionAlertIfNeeded(session: MXSession) {
+    func presentVerifyCurrentSessionAlertIfNeeded(with session: MXSession) {
         guard !RiotSettings.shared.hideVerifyThisSessionAlert, !reviewSessionAlertHasBeenDisplayed, !isOnboardingInProgress else {
             return
         }
@@ -774,7 +774,7 @@ extension AllChatsViewController {
     ///
     /// - Parameters:
     ///   - session: the matrix session.
-    @objc func presentReviewUnverifiedSessionsAlertIfNeeded(session: MXSession) {
+    func presentReviewUnverifiedSessionsAlertIfNeeded(with session: MXSession) {
         guard !RiotSettings.shared.hideReviewSessionsAlert, !reviewSessionAlertHasBeenDisplayed else {
             return
         }
@@ -794,7 +794,7 @@ extension AllChatsViewController {
         }
     }
     
-    @objc func showOnboardingFlow() {
+    func showOnboardingFlow() {
         MXLog.debug("[AllChatsViewController] showOnboardingFlow")
         self.showOnboardingFlowAndResetSessionFlags(true)
     }
@@ -803,7 +803,7 @@ extension AllChatsViewController {
     ///
     /// - Parameters:
     ///   - credentials: the credentials of the soft logout session.
-    @objc func showSoftLogoutOnboardingFlow(credentials: MXCredentials?) {
+    func showSoftLogoutOnboardingFlow(with credentials: MXCredentials?) {
         // This method can be called after the user chooses to clear their data as the MXSession
         // is opened to call logout from. So we only set the credentials when authentication isn't
         // in progress to prevent a second soft logout screen being shown.
@@ -821,7 +821,7 @@ extension AllChatsViewController {
     /// - Parameters:
     ///   - parameters: the presentation parameters that contains room information plus display information.
     ///   - completion: the block to execute at the end of the operation.
-    @objc func selectRoom(parameters: RoomNavigationParameters, completion: @escaping () -> Void) {
+    func selectRoom(with parameters: RoomNavigationParameters, completion: @escaping () -> Void) {
         releaseSelectedItem()
         
         selectedRoomId = parameters.roomId
@@ -838,7 +838,7 @@ extension AllChatsViewController {
     /// - Parameters:
     ///   - parameters: the presentation parameters that contains room preview information plus display information.
     ///   - completion: the block to execute at the end of the operation.
-    @objc func selectRoomPreview(parameters: RoomPreviewNavigationParameters, completion: @escaping () -> Void) {
+    func selectRoomPreview(with parameters: RoomPreviewNavigationParameters, completion: @escaping () -> Void) {
         releaseSelectedItem()
         
         let roomPreviewData = parameters.previewData
@@ -853,13 +853,13 @@ extension AllChatsViewController {
     }
 
     /// Open a ContactDetailsViewController to display the information of the provided contact.
-    @objc func selectContact(_ contact: MXKContact) {
+    func select(_ contact: MXKContact) {
         let presentationParameters = ScreenPresentationParameters(restoreInitialDisplay: true, stackAboveVisibleViews: false)
-        selectContact(contact, withPresentationParameters: presentationParameters)
+        select(contact, with: presentationParameters)
     }
     
     /// Open a ContactDetailsViewController to display the information of the provided contact.
-    @objc func selectContact(_ contact: MXKContact, withPresentationParameters presentationParameters: ScreenPresentationParameters) {
+    func select(_ contact: MXKContact, with presentationParameters: ScreenPresentationParameters) {
         releaseSelectedItem()
         
         selectedContact = contact
@@ -870,7 +870,7 @@ extension AllChatsViewController {
     }
 
     /// The current number of rooms with missed notifications, including the invites.
-    @objc func missedDiscussionsCount() -> UInt {
+    func missedDiscussionsCount() -> UInt {
         guard let session = mxSessions as? [MXSession] else {
             return 0
         }
@@ -879,7 +879,7 @@ extension AllChatsViewController {
     }
 
     /// The current number of rooms with unread highlighted messages.
-    @objc func missedHighlightDiscussionsCount() -> UInt {
+    func missedHighlightDiscussionsCount() -> UInt {
         guard let session = mxSessions as? [MXSession] else {
             return 0
         }
@@ -888,8 +888,12 @@ extension AllChatsViewController {
     }
     
     /// Emulated `UItabBarViewController.selectedViewController` member
-    @objc var selectedViewController: UIViewController? {
+    var selectedViewController: UIViewController? {
         return self
+    }
+    
+    var tabBar: UITabBar? {
+        return nil
     }
     
     // MARK: - Private

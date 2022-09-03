@@ -28,6 +28,7 @@
 
 @protocol Configurable;
 @protocol LegacyAppDelegateDelegate;
+@protocol SplitViewMasterViewControllerProtocol;
 @class CallBar;
 @class CallPresenter;
 @class RoomNavigationParameters;
@@ -69,7 +70,7 @@ UINavigationControllerDelegate
 /**
  Application main view controller
  */
-@property (nonatomic, readonly) MasterTabBarController *masterTabBarController;
+@property (nonatomic, readonly) UIViewController<SplitViewMasterViewControllerProtocol>* masterTabBarController;
 
 @property (strong, nonatomic) UIWindow *window;
 

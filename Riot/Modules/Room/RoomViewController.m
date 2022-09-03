@@ -452,7 +452,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                                               radius:6
                                              opacity:0.2];
 
-//    self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.backgroundColor colorWithAlphaComponent:0.98];
+    self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.backgroundColor colorWithAlphaComponent:0.98];
     
     if (ThemeService.shared.isCurrentThemeDark)
     {
