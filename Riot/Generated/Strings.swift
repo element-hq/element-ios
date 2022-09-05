@@ -8487,6 +8487,14 @@ public class VectorL10n: NSObject {
   public static var userSessionVerifiedShort: String { 
     return VectorL10n.tr("Vector", "user_session_verified_short") 
   }
+  /// For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.
+  public static var userSessionsOverviewOtherSessionsSectionInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_other_sessions_section_info") 
+  }
+  /// OTHER SESSIONS
+  public static var userSessionsOverviewOtherSessionsSectionTitle: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_other_sessions_section_title") 
+  }
   /// Sessions
   public static var userSessionsOverviewTitle: String { 
     return VectorL10n.tr("Vector", "user_sessions_overview_title") 

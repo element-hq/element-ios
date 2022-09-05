@@ -2357,6 +2357,9 @@ To enable access, tap Settings> Location and select Always";
 
 "user_sessions_overview_title" = "Sessions";
 
+"user_sessions_overview_other_sessions_section_title" = "OTHER SESSIONS";
+"user_sessions_overview_other_sessions_section_info" = "For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.";
+
 "user_session_verified" = "Verified session";
 "user_session_unverified" = "Unverified session";
 "user_session_verified_short" = "Verified";
