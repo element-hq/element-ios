@@ -2523,7 +2523,7 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
             [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
                 if (readyToSend)
                 {
-                    [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
+                    [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
                 }
                 // Errors are handled at the request level. This should be improved in case of code rewriting.
             }];
@@ -2542,7 +2542,7 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
         [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
             if (readyToSend)
             {
-                [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
+                [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
             }
             // Errors are handled at the request level. This should be improved in case of code rewriting.
         }];
@@ -7638,23 +7638,19 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
     [cameraPresenter dismissWithAnimated:YES completion:nil];
     self.cameraPresenter = nil;
     
-    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
-    if (roomInputToolbarView)
-    {
-        NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-        
-        // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-        [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
-            if (readyToSend)
-            {
-                [roomInputToolbarView sendSelectedImage:imageData
-                                           withMimeType:MXKUTI.jpeg.mimeType
-                                     andCompressionMode:MediaCompressionHelper.defaultCompressionMode
-                                    isPhotoLibraryAsset:NO];
-            }
-            // Errors are handled at the request level. This should be improved in case of code rewriting.
-        }];
-    }
+    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+    
+    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+        if (readyToSend)
+        {
+            [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedImage:imageData
+                                       withMimeType:MXKUTI.jpeg.mimeType
+                                 andCompressionMode:MediaCompressionHelper.defaultCompressionMode
+                                isPhotoLibraryAsset:NO];
+        }
+        // Errors are handled at the request level. This should be improved in case of code rewriting.
+    }];
 }
 
 - (void)cameraPresenter:(CameraPresenter *)cameraPresenter didSelectVideoAt:(NSURL *)url
@@ -7679,21 +7675,17 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.mediaPickerPresenter = nil;
     
-    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
-    if (roomInputToolbarView)
-    {
-        // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-        [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
-            if (readyToSend)
-            {
-                [roomInputToolbarView sendSelectedImage:imageData
-                                           withMimeType:uti.mimeType
-                                     andCompressionMode:MediaCompressionHelper.defaultCompressionMode
-                                    isPhotoLibraryAsset:YES];
-            }
-            // Errors are handled at the request level. This should be improved in case of code rewriting.
-        }];
-    }
+    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+        if (readyToSend)
+        {
+            [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedImage:imageData
+                                       withMimeType:uti.mimeType
+                                 andCompressionMode:MediaCompressionHelper.defaultCompressionMode
+                                isPhotoLibraryAsset:YES];
+        }
+        // Errors are handled at the request level. This should be improved in case of code rewriting.
+    }];
 }
 
 - (void)mediaPickerCoordinatorBridgePresenter:(MediaPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectVideo:(AVAsset *)videoAsset
@@ -7709,21 +7701,17 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.mediaPickerPresenter = nil;
     
-    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
-    if (roomInputToolbarView)
-    {
-        // Set a 1080p video conversion preset as compression mode only has an effect on the images.
-        [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
-        
-        // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-        [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
-            if (readyToSend)
-            {
-                [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:MediaCompressionHelper.defaultCompressionMode];
-            }
-            // Errors are handled at the request level. This should be improved in case of code rewriting.
-        }];
-    }
+    // Set a 1080p video conversion preset as compression mode only has an effect on the images.
+    [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
+    
+    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+        if (readyToSend)
+        {
+            [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedAssets:assets withCompressionMode:MediaCompressionHelper.defaultCompressionMode];
+        }
+        // Errors are handled at the request level. This should be improved in case of code rewriting.
+    }];
 }
 
 #pragma mark - RoomCreationModalCoordinatorBridgePresenter
