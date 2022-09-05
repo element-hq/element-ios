@@ -113,6 +113,7 @@ class AllChatsViewController: HomeViewController {
 
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
+        searchController.delegate = self
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.setupEditOptions), name: AllChatsLayoutSettingsManager.didUpdateSettings, object: nil)
     }
@@ -197,7 +198,7 @@ class AllChatsViewController: HomeViewController {
         self.dataSource.currentSpace = space
         updateUI()
         
-        self.recentsTableView.setContentOffset(.zero, animated: true)
+        self.recentsTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
 
     override var recentsDataSourceMode: RecentsDataSourceMode {
@@ -327,16 +328,22 @@ class AllChatsViewController: HomeViewController {
 
     // MARK: - Toolbar animation
     
-    private var lastScrollPosition: Double = 0
+    private var initialScrollPosition: Double = 0
+    
+    private func scrollPosition(of scrollView: UIScrollView) -> Double {
+        return scrollView.contentOffset.y + scrollView.adjustedContentInset.top + scrollView.adjustedContentInset.bottom
+    }
 
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        lastScrollPosition = self.recentsTableView.contentOffset.y
+        initialScrollPosition = scrollPosition(of: scrollView)
     }
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         super.scrollViewDidScroll(scrollView)
+
+        let scrollPosition = scrollPosition(of: scrollView)
         
-        if self.recentsTableView.contentOffset.y == 0 {
+        if !self.recentsTableView.isDragging && scrollPosition == 0 && self.navigationController?.isToolbarHidden == true {
             self.navigationController?.setToolbarHidden(false, animated: true)
         }
 
@@ -344,13 +351,14 @@ class AllChatsViewController: HomeViewController {
             return
         }
 
-        let scrollPosition = max(self.recentsTableView.contentOffset.y, 0)
-        guard scrollPosition < self.recentsTableView.contentSize.height - self.recentsTableView.bounds.height else {
+        guard scrollPosition > 0 && scrollPosition < self.recentsTableView.contentSize.height - self.recentsTableView.bounds.height else {
             return
         }
 
-        self.navigationController?.setToolbarHidden(scrollPosition - lastScrollPosition > 0, animated: true)
-        lastScrollPosition = scrollPosition
+        let isToolBarHidden: Bool = scrollPosition - initialScrollPosition > 0
+        if isToolBarHidden != self.navigationController?.isToolbarHidden {
+            self.navigationController?.setToolbarHidden(isToolBarHidden, animated: true)
+        }
     }
     
     // MARK: - Empty view management
@@ -646,6 +654,14 @@ extension AllChatsViewController: UISearchResultsUpdating {
         self.dataSource.search(withPatterns: [searchText])
     }
 
+}
+
+// MARK: - UISearchResultsUpdating
+extension AllChatsViewController: UISearchControllerDelegate {
+    func willPresentSearchController(_ searchController: UISearchController) {
+        // Fix for https://github.com/vector-im/element-ios/issues/6680
+        self.recentsTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+    }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
