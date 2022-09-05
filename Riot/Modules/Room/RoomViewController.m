@@ -5669,7 +5669,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             if (self.saveProgressTextInput)
             {
                 // Restore the potential message partially typed before jump to last unread messages.
-                self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
+                self.inputToolbarView.attributedTextMessage = roomDataSource.partialAttributedTextMessage;
             }
         };
 

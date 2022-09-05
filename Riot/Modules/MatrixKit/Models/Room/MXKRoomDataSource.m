@@ -919,16 +919,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     return attachments;
 }
 
-- (NSString *)partialTextMessage
-{
-    return _room.partialTextMessage;
-}
-
-- (void)setPartialTextMessage:(NSString *)partialTextMessage
-{
-    _room.partialTextMessage = partialTextMessage;
-}
-
 - (NSAttributedString *)partialAttributedTextMessage
 {
     return _room.partialAttributedTextMessage;

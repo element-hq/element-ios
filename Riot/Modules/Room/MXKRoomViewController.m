@@ -358,7 +358,7 @@
     {
         // Retrieve the potential message partially typed during last room display.
         // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-        inputToolbarView.textMessage = roomDataSource.partialTextMessage;
+        inputToolbarView.attributedTextMessage = roomDataSource.partialAttributedTextMessage;
     }
     
     if (!hasAppearedOnce)
@@ -3351,7 +3351,7 @@
     if (_saveProgressTextInput && roomDataSource)
     {
         // Store the potential message partially typed in text input
-        roomDataSource.partialTextMessage = inputToolbarView.textMessage;
+        roomDataSource.partialAttributedTextMessage = inputToolbarView.attributedTextMessage;
     }
     
     [self handleTypingState:typing];
