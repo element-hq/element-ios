@@ -13,8 +13,6 @@
                 <outlet property="recentsTableView" destination="orV-HH-88x" id="lgA-2k-pXJ"/>
                 <outlet property="stickyHeadersBottomContainer" destination="EXH-mK-0eB" id="95Y-KP-bwF"/>
                 <outlet property="stickyHeadersBottomContainerHeightConstraint" destination="SNq-Js-N7s" id="vom-iM-s6W"/>
-                <outlet property="stickyHeadersTopContainer" destination="JJC-Bw-6sa" id="JIy-sf-4Ya"/>
-                <outlet property="stickyHeadersTopContainerHeightConstraint" destination="xT1-rL-nCC" id="VaK-0W-2Mi"/>
                 <outlet property="view" destination="iN0-l3-epB" id="NUQ-LI-M61"/>
             </connections>
         </placeholder>
@@ -27,14 +25,6 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JJC-Bw-6sa">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <accessibility key="accessibilityConfiguration" identifier="RecentsVCStickyHeadersTopContainer"/>
-                    <constraints>
-                        <constraint firstAttribute="height" id="xT1-rL-nCC"/>
-                    </constraints>
-                </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EXH-mK-0eB">
                     <rect key="frame" x="0.0" y="667" width="375" height="0.0"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -49,14 +39,11 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="orV-HH-88x" secondAttribute="trailing" id="3Np-64-AUe"/>
                 <constraint firstItem="4qf-KS-Fc9" firstAttribute="bottom" secondItem="orV-HH-88x" secondAttribute="bottom" id="Bka-Zz-CEr"/>
-                <constraint firstItem="orV-HH-88x" firstAttribute="top" secondItem="JJC-Bw-6sa" secondAttribute="bottom" id="IMR-dV-gUS"/>
                 <constraint firstItem="EXH-mK-0eB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="bottom" id="Kmg-aC-GOO"/>
-                <constraint firstItem="JJC-Bw-6sa" firstAttribute="top" secondItem="4qf-KS-Fc9" secondAttribute="top" id="OBu-sH-mqE"/>
                 <constraint firstItem="EXH-mK-0eB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="S3i-DW-PUB"/>
                 <constraint firstAttribute="trailing" secondItem="EXH-mK-0eB" secondAttribute="trailing" id="bPP-yu-FTa"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="dTn-zC-Axs"/>
-                <constraint firstItem="JJC-Bw-6sa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="l5C-zt-Env"/>
-                <constraint firstAttribute="trailing" secondItem="JJC-Bw-6sa" secondAttribute="trailing" id="trw-3x-yjO"/>
+                <constraint firstItem="orV-HH-88x" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="xMc-15-1wS"/>
             </constraints>
             <point key="canvasLocation" x="140" y="137.18140929535232"/>
         </view>

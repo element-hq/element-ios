@@ -546,6 +546,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     
     [self updateTopBanners];
+    
+    self.bubblesTableView.clipsToBounds = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated

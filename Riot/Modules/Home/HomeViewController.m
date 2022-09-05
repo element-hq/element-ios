@@ -50,7 +50,6 @@
 @property (nonatomic, strong) MXThrottler *collectionViewPaginationThrottler;
 
 @property(nonatomic) SpaceMembersCoordinatorBridgePresenter *spaceMembersCoordinatorBridgePresenter;
-@property (nonatomic, strong) MXThrottler *tableViewPaginationThrottler;
 
 @end
 
@@ -73,7 +72,6 @@
     
     self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenHome];
     self.collectionViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
-    self.tableViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
 }
 
 - (void)viewDidLoad
@@ -109,9 +107,12 @@
 {
     [super viewWillAppear:animated];
 
-    [ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
+    if (!BuildSettings.isNewAppLayoutActivated)
+    {
+        [ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
+        [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
+    }
     
     if (recentsDataSource.recentsDataSourceMode != self.recentsDataSourceMode)
     {
@@ -585,34 +586,6 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
-    if (sectionType != RecentsDataSourceSectionTypeAllChats)
-    {
-        return;
-    }
-    
-    if ([super respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)])
-    {
-        [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
-    }
-    
-    [self.tableViewPaginationThrottler throttle:^{
-        NSInteger section = indexPath.section;
-        if (tableView.numberOfSections <= section)
-        {
-            return;
-        }
-
-        NSInteger numberOfRowsInSection = [tableView numberOfRowsInSection:section];
-        if (indexPath.row == numberOfRowsInSection - 1)
-        {
-            [self->recentsDataSource paginateInSection:section];
-        }
-    }];
-}
-
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -691,19 +664,21 @@
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger collectionViewSection = indexPath.section;
+    if (collectionView.numberOfSections <= collectionViewSection)
+    {
+        return;
+    }
+
+    NSInteger numberOfItemsInSection = [collectionView numberOfItemsInSection:collectionViewSection];
+    if (indexPath.item != numberOfItemsInSection - 1)
+    {
+        return;
+    }
+    
     [self.collectionViewPaginationThrottler throttle:^{
-        NSInteger collectionViewSection = indexPath.section;
-        if (collectionView.numberOfSections <= collectionViewSection)
-        {
-            return;
-        }
-        
-        NSInteger numberOfItemsInSection = [collectionView numberOfItemsInSection:collectionViewSection];
-        if (indexPath.item == numberOfItemsInSection - 1)
-        {
-            NSInteger tableViewSection = collectionView.tag;
-            [self->recentsDataSource paginateInSection:tableViewSection];
-        }
+        NSInteger tableViewSection = collectionView.tag;
+        [self->recentsDataSource paginateInSection:tableViewSection];
     }];
 }
 

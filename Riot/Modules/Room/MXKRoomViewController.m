@@ -221,6 +221,11 @@
 {
     [super viewDidLoad];
     
+    if (BuildSettings.isNewAppLayoutActivated)
+    {
+        [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeNever];
+    }
+    
     // Check whether the view controller has been pushed via storyboard
     if (!_bubblesTableView)
     {
@@ -339,11 +344,6 @@
     else
     {
         _bubblesTableView.hidden = NO;
-    }
-
-    if (BuildSettings.isNewAppLayoutActivated)
-    {
-        [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeNever];
     }
 }
 

@@ -373,8 +373,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)refreshRecentsTable
 {
-    MXLogDebug(@"[RecentsViewController]: Refreshing recents table view")
-
     if (!self.recentsUpdateEnabled)
     {
         isRefreshNeeded = YES;
@@ -384,7 +382,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     isRefreshNeeded = NO;
     
     // Refresh the tabBar icon badges
-    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    if (!BuildSettings.isNewAppLayoutActivated)
+    {
+        // Refresh the tabBar icon badges
+        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    }
     
     // do not refresh if there is a pending recent drag and drop
     if (movingCellPath)
@@ -1103,9 +1105,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [self refreshRecentsTable];
     }
     
-    // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
-    // Refresh tab bar badges separately.
-    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    if (!BuildSettings.isNewAppLayoutActivated)
+    {
+        // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
+        // Refresh tab bar badges separately.
+        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    }
     
     [self showEmptyViewIfNeeded];
 
@@ -1513,6 +1518,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (!self.recentsSearchBar)
+    {
+        [super scrollViewDidScroll:scrollView];
+        return;
+    }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [self refreshStickyHeadersContainersHeight];
