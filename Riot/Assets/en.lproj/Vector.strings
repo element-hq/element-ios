@@ -2357,6 +2357,19 @@ To enable access, tap Settings> Location and select Always";
 
 "user_sessions_overview_title" = "Sessions";
 
+"user_session_verified" = "Verified session";
+"user_session_unverified" = "Unverified session";
+"user_session_verified_short" = "Verified";
+"user_session_unverified_short" = "Unverified";
+
+"user_session_name" = "%@: %@";
+"user_session_item_details" = "%@ · Last activity %@";
+
+"device_name_desktop" = "%@ Desktop";
+"device_name_web" = "%@ Web";
+"device_name_mobile" = "%@ Mobile";
+"device_name_unknown" = "Unknown client";
+
 // MARK: - MatrixKit
 
 
