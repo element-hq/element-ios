@@ -29,11 +29,38 @@ struct UserSessionsOverview: View {
     @ObservedObject var viewModel: UserSessionsOverviewViewModel.Context
     
     var body: some View {
-        VStack {
+        ScrollView {
+            
+            // Security recommendations section
+            if viewModel.viewState.unverifiedSessionsViewData.isEmpty == false || viewModel.viewState.inactiveSessionsViewData.isEmpty == false {
+                
+                // TODO:
+            }
+            
+            // Current session section
+            if let currentSessionViewData = viewModel.viewState.currentSessionViewData {
+                // TODO:
+            }
+            
+            // Other sessions section
+            if viewModel.viewState.otherSessionsViewData.isEmpty == false {
+                
+                VStack(spacing: 15) {
+                    ForEach(viewModel.viewState.otherSessionsViewData) { viewData in
+                        UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
+                            viewModel.send(viewAction: .tapUserSession(sessionId))
+                        })
+                    }
+                }
+            }
         }
         .background(theme.colors.background)
         .frame(maxHeight: .infinity)
         .navigationTitle(VectorL10n.userSessionsOverviewTitle)
+        .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
+        .onAppear() {
+            viewModel.send(viewAction: .viewAppeared)
+        }
     }
 }
 

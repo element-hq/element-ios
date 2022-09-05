@@ -37,25 +37,80 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
     init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol) {
         self.userSessionsOverviewService = userSessionsOverviewService
         
-        let viewState = UserSessionsOverviewViewState()
+        let viewState = UserSessionsOverviewViewState(unverifiedSessionsViewData: [], inactiveSessionsViewData: [], currentSessionViewData: nil, otherSessionsViewData: [])
         
         super.init(initialViewState: viewState)
+        
+        self.updateViewState(with: userSessionsOverviewService.lastOverviewData)
     }
     
     // MARK: - Public
 
     override func process(viewAction: UserSessionsOverviewViewAction) {
         switch viewAction {
+        case .viewAppeared:
+            self.loadData()
         case .verifyCurrentSession:
-            break
+            self.completion?(.verifyCurrentSession)
         case .viewCurrentSessionDetails:
-            break
+            self.completion?(.showCurrentSessionDetails)
         case .viewAllUnverifiedSessions:
-            break
+            self.completion?(.showAllUnverifiedSessions)
         case .viewAllInactiveSessions:
-            break
+            self.completion?(.showAllInactiveSessions)
         case .viewAllOtherSessions:
-            break
+            self.completion?(.showAllOtherSessions)
+        case .tapUserSession(let sessionId):
+            self.completion?(.showUserSessionDetails(sessionId))
+        }
+    }
+    
+    // MARK: - Private
+    
+    private func updateViewState(with userSessionsViewData: UserSessionsOverviewData) {
+        
+        let unverifiedSessionsViewData = self.userSessionListItemViewDataList(from: userSessionsViewData.unverifiedSessionsInfo)
+        let inactiveSessionsViewData = self.userSessionListItemViewDataList(from: userSessionsViewData.inactiveSessionsInfo)
+        
+        var currentSessionViewData:  UserSessionListItemViewData?
+        
+        let otherSessionsViewData = self.userSessionListItemViewDataList(from: userSessionsViewData.otherSessionsInfo)
+         
+        
+        if let currentSessionInfo = userSessionsViewData.currentSessionInfo {
+            currentSessionViewData = UserSessionListItemViewData(userSessionInfo: currentSessionInfo)
+        }
+     
+        self.state.unverifiedSessionsViewData = unverifiedSessionsViewData
+        self.state.inactiveSessionsViewData = inactiveSessionsViewData
+        self.state.currentSessionViewData = currentSessionViewData
+        self.state.otherSessionsViewData = otherSessionsViewData
+    }
+
+    private func userSessionListItemViewDataList(from userSessionInfoList: [UserSessionInfo]) -> [UserSessionListItemViewData] {
+        return userSessionInfoList.map {
+            return UserSessionListItemViewData(userSessionInfo: $0)
+        }
+    }
+    
+    private func loadData() {
+        
+        self.state.showLoadingIndicator = true
+        
+        self.userSessionsOverviewService.fetchUserSessionsOverviewData { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            
+            self.state.showLoadingIndicator = false
+            
+            switch result {
+            case .success(let overViewData):
+                self.updateViewState(with: overViewData)
+            case .failure(let error):
+                // TODO
+                break
+            }
         }
     }
 }

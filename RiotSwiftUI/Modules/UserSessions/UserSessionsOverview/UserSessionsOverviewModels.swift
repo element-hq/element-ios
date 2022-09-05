@@ -21,18 +21,37 @@ import Foundation
 // MARK: View model
 
 enum UserSessionsOverviewViewModelResult {
-    case done
+    case cancel
+    case loadData
+    case showAllUnverifiedSessions
+    case showAllInactiveSessions
+    case verifyCurrentSession
+    case showCurrentSessionDetails
+    case showAllOtherSessions
+    case showUserSessionDetails(_ sessionId: String)
 }
 
 // MARK: View
 
 struct UserSessionsOverviewViewState: BindableState {
+    
+    var unverifiedSessionsViewData: [UserSessionListItemViewData]
+    
+    var inactiveSessionsViewData: [UserSessionListItemViewData]
+    
+    var currentSessionViewData: UserSessionListItemViewData?
+    
+    var otherSessionsViewData: [UserSessionListItemViewData]
+    
+    var showLoadingIndicator: Bool = false
 }
 
 enum UserSessionsOverviewViewAction {
+    case viewAppeared
     case verifyCurrentSession
     case viewCurrentSessionDetails
     case viewAllUnverifiedSessions
     case viewAllInactiveSessions
     case viewAllOtherSessions
+    case tapUserSession(_ sessionId: String)
 }

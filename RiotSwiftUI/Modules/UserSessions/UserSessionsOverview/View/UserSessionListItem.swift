@@ -51,7 +51,7 @@ struct UserSessionListItem: View {
             lastActivityDateString = self.lastActivityDateString(from: lastActivityDate)
         }
 
-        if let lastActivityDateString = lastActivityDateString {
+        if let lastActivityDateString = lastActivityDateString, lastActivityDateString.isEmpty == false {
             sessionDetailsString = VectorL10n.userSessionItemDetails(sessionStatusText, lastActivityDateString)
         } else {
             sessionDetailsString = sessionStatusText
