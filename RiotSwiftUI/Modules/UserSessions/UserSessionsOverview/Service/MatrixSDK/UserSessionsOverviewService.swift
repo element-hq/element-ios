@@ -75,7 +75,12 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         let deviceInfo = self.getDeviceInfo(for: device.deviceId)
         
         let isSessionVerified = deviceInfo?.trustLevel.isVerified ?? false
-        let lastSeenTs = TimeInterval(device.lastSeenTs * 1000)
+        
+        var lastSeenTs: TimeInterval?
+        
+        if device.lastSeenTs > 0 {
+            lastSeenTs = TimeInterval(device.lastSeenTs / 1000)
+        }
         
         return UserSessionInfo(sessionId: device.deviceId,
                                sessionName: device.displayName,
