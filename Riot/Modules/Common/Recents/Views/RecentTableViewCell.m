@@ -44,6 +44,7 @@
 {
     [super customizeTableViewCellRendering];
     
+    self.contentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.roomTitle.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.lastEventDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.lastEventDate.textColor = ThemeService.shared.theme.textSecondaryColor;

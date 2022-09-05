@@ -95,6 +95,20 @@ class RoundedToastView: UIView, Themable {
         layer.cornerRadius = layer.frame.height / 2
     }
     
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        
+        if newSuperview != nil {
+            NotificationCenter.default.addObserver(self, selector: #selector(self.themeDidChange(notification:)), name: NSNotification.Name.themeServiceDidChangeTheme, object: nil)
+        } else {
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.themeServiceDidChangeTheme, object: nil)
+        }
+    }
+    
+    @objc private func themeDidChange(notification: Notification) {
+        update(theme: ThemeService.shared().theme)
+    }
+    
     func update(theme: Theme) {
         backgroundColor = theme.colors.system
         stackView.arrangedSubviews.first?.tintColor = theme.colors.primaryContent

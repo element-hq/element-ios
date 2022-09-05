@@ -315,7 +315,8 @@ class AllChatsViewController: HomeViewController {
         }
         
         let sectionType = recentsDataSource.sections.sectionType(forSectionIndex: indexPath.section)
-        guard sectionType == .allChats, let numberOfRowsInSection = recentsDataSource.recentsListService.allChatsRoomListData?.counts.numberOfRooms, indexPath.row == numberOfRowsInSection - 1 else {
+        // We need to trottle a bit earlier so the next section is not visible even if the tableview scrolls faster
+        guard sectionType == .allChats, let numberOfRowsInSection = recentsDataSource.recentsListService.allChatsRoomListData?.counts.numberOfRooms, indexPath.row == numberOfRowsInSection - 4 else {
             return
         }
         
