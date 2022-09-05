@@ -101,9 +101,7 @@ struct UserSessionListItem: View {
         dateFormatter.timeStyle = .short
         dateFormatter.doesRelativeDateFormatting = true
         
-        let dateString = dateFormatter.string(from: date)
-        
-        return dateString
+        return dateFormatter.string(from: date)
     }
 }
 

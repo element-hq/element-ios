@@ -45,16 +45,36 @@ struct UserSessionsOverview: View {
             // Other sessions section
             if viewModel.viewState.otherSessionsViewData.isEmpty == false {
                 
-                VStack(spacing: 15) {
-                    ForEach(viewModel.viewState.otherSessionsViewData) { viewData in
-                        UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
-                            viewModel.send(viewAction: .tapUserSession(sessionId))
-                        })
+                VStack() {
+                    
+                    // Section header
+                    VStack(alignment: .leading) {
+                        Text(VectorL10n.userSessionsOverviewOtherSessionsSectionTitle)
+                            .font(theme.fonts.footnote)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .padding(.bottom, 10)
+                        
+                        Text(VectorL10n.userSessionsOverviewOtherSessionsSectionInfo)
+                            .font(theme.fonts.footnote)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .padding(.bottom, 11)
                     }
+                    .padding(.horizontal, 16)
+                    
+                    // Device list
+                    VStack(spacing: 16) {
+                        ForEach(viewModel.viewState.otherSessionsViewData) { viewData in
+                            UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
+                                viewModel.send(viewAction: .tapUserSession(sessionId))
+                            })
+                        }
+                    }
+                    .padding(.vertical, 16)
+                    .background(theme.colors.background)
                 }
             }
         }
-        .background(theme.colors.background)
+        .background(theme.colors.system)
         .frame(maxHeight: .infinity)
         .navigationTitle(VectorL10n.userSessionsOverviewTitle)
         .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
