@@ -668,7 +668,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         sectionType == RecentsDataSourceSectionTypeCrossSigningBanner ||
         sectionType == RecentsDataSourceSectionTypeBreadcrumbs ||
         (sectionType == RecentsDataSourceSectionTypeInvites && self.recentsDataSourceMode == RecentsDataSourceModeAllChats) ||
-        (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsFilterOptions.optionsCount))
+        (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsFilterOptions.optionsCount) ||
+        (sectionType == RecentsDataSourceSectionTypeAllChats && self.currentSpace != nil && self.currentSpace.childRoomIds.count == 0))
     {
         return 0.0;
     }
@@ -1091,9 +1092,28 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     else if (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsRoomCellDataArray.count) {
         RecentEmptySectionTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[RecentEmptySectionTableViewCell defaultReuseIdentifier]];
         
-        tableViewCell.iconView.image = self.searchPatternsList ? [UIImage systemImageNamed:@"magnifyingglass"] : AssetImages.allChatsEmptyListPlaceholderIcon.image;
-        tableViewCell.titleLabel.text = self.searchPatternsList ? VectorL10n.allChatsNothingFoundPlaceholderTitle : VectorL10n.allChatsEmptyListPlaceholderTitle;
-        tableViewCell.messageLabel.text = self.searchPatternsList ? VectorL10n.allChatsNothingFoundPlaceholderMessage : VectorL10n.allChatsEmptyUnreadsPlaceholderMessage;
+        if (self.searchPatternsList)
+        {
+            tableViewCell.iconView.image = [UIImage systemImageNamed:@"magnifyingglass"];
+            tableViewCell.titleLabel.text = VectorL10n.allChatsNothingFoundPlaceholderTitle;
+            tableViewCell.messageLabel.text = VectorL10n.allChatsNothingFoundPlaceholderMessage;
+        }
+        else if (self.currentSpace && !self.currentSpace.childRoomIds.count)
+        {
+            RecentEmptySectionTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[RecentEmptySpaceSectionTableViewCell defaultReuseIdentifier]];
+
+            tableViewCell.iconView.image = [ThemeService.shared isCurrentThemeDark] ? AssetImages.allChatsEmptySpaceArtworkDark.image : AssetImages.allChatsEmptySpaceArtwork.image;
+            tableViewCell.titleLabel.text = [VectorL10n allChatsEmptyViewTitle: self.currentSpace.summary.displayname];
+            tableViewCell.messageLabel.text = VectorL10n.allChatsEmptySpaceInformation;
+            
+            return tableViewCell;
+        }
+        else
+        {
+            tableViewCell.iconView.image = AssetImages.allChatsEmptyListPlaceholderIcon.image;
+            tableViewCell.titleLabel.text = VectorL10n.allChatsEmptyListPlaceholderTitle;
+            tableViewCell.messageLabel.text = VectorL10n.allChatsEmptyUnreadsPlaceholderMessage;
+        }
 
         return tableViewCell;
     }
@@ -1214,7 +1234,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return 50.0;
     }
     if (sectionType == RecentsDataSourceSectionTypeAllChats && !self.allChatsRoomCellDataArray.count) {
-        return 300.0;
+        return 320.0;
     }
     if (sectionType == RecentsDataSourceSectionTypeInvites && self.recentsDataSourceMode == RecentsDataSourceModeAllChats)
     {
