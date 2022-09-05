@@ -656,7 +656,7 @@ extension AllChatsViewController: UISearchResultsUpdating {
 
 }
 
-// MARK: - UISearchResultsUpdating
+// MARK: - UISearchControllerDelegate
 extension AllChatsViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
         // Fix for https://github.com/vector-im/element-ios/issues/6680
