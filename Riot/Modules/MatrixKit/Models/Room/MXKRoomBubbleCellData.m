@@ -518,46 +518,27 @@
 
 - (CGSize)textContentSize:(NSAttributedString*)attributedText removeVerticalInset:(BOOL)removeVerticalInset
 {
+    // Grab the default textContainer insets and lineFragmentPadding from a dummy text view.
+    // This has no business being here but the refactoring effort would be too great (sceriu 05.09.2022)
     static UITextView* measurementTextView = nil;
-    static UITextView* measurementTextViewWithoutInset = nil;
-    
-    if (attributedText.length)
+    if (!measurementTextView)
     {
-        if (!measurementTextView)
-        {
-            measurementTextView = [[UITextView alloc] init];
-            
-            measurementTextViewWithoutInset = [[UITextView alloc] init];
-            // Remove the container inset: this operation impacts only the vertical margin.
-            // Note: consider textContainer.lineFragmentPadding to remove horizontal margin
-            measurementTextViewWithoutInset.textContainerInset = UIEdgeInsetsZero;
-        }
-        
-        // Select the right text view for measurement
-        UITextView *selectedTextView = (removeVerticalInset ? measurementTextViewWithoutInset : measurementTextView);
-        
-        selectedTextView.frame = CGRectMake(0, 0, _maxTextViewWidth, 0);
-        selectedTextView.attributedText = attributedText;
-            
-        CGSize size = [selectedTextView sizeThatFits:selectedTextView.frame.size];
-
-        // Manage the case where a string attribute has a single paragraph with a left indent
-        // In this case, [UITextView sizeThatFits] ignores the indent and return the width
-        // of the text only.
-        // So, add this indent afterwards
-        NSRange textRange = NSMakeRange(0, attributedText.length);
-        NSRange longestEffectiveRange;
-        NSParagraphStyle *paragraphStyle = [attributedText attribute:NSParagraphStyleAttributeName atIndex:0 longestEffectiveRange:&longestEffectiveRange inRange:textRange];
-
-        if (NSEqualRanges(textRange, longestEffectiveRange))
-        {
-            size.width = size.width + paragraphStyle.headIndent;
-        }
-
-        return size;
+        measurementTextView = [[UITextView alloc] init];
     }
     
-    return CGSizeZero;
+    CGFloat maxWidth = _maxTextViewWidth - measurementTextView.textContainer.lineFragmentPadding * 2;
+    
+    CGSize size = [attributedText boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+                                               options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                               context:nil].size;
+    
+    if (removeVerticalInset == YES) {
+        return size;
+    }
+
+    size.height += measurementTextView.textContainerInset.top + measurementTextView.textContainerInset.bottom;
+    
+    return CGSizeMake(_maxTextViewWidth, size.height);
 }
 
 #pragma mark - Properties
