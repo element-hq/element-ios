@@ -27,3 +27,4 @@ NSString *const kMXKSlashCmdUnbanUser = @"/unban";
 NSString *const kMXKSlashCmdSetUserPowerLevel = @"/op";
 NSString *const kMXKSlashCmdResetUserPowerLevel = @"/deop";
 NSString *const kMXKSlashCmdChangeRoomTopic = @"/topic";
+NSString *const kMXKSlashCmdDiscardSession = @"/discardsession";
