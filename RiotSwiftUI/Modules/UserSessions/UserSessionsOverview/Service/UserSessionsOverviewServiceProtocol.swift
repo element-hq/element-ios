@@ -16,5 +16,17 @@
 
 import Foundation
 
+struct UserSessionsOverviewData {
+    
+    let currentSessionInfo: UserSessionInfo?
+    let unverifiedSessionsInfo: [UserSessionInfo]
+    let inactiveSessionsInfo: [UserSessionInfo]
+    let otherSessionsInfo: [UserSessionInfo]
+}
+
 protocol UserSessionsOverviewServiceProtocol {
+    
+    var lastOverviewData: UserSessionsOverviewData { get }
+        
+    func fetchUserSessionsOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) -> Void
 }
