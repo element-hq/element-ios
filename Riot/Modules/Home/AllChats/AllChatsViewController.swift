@@ -157,7 +157,7 @@ class AllChatsViewController: HomeViewController {
 
         AppDelegate.theDelegate().checkAppVersion()
 
-        if BuildSettings.isNewAppLayoutActivated && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed {
+        if BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed {
             self.showAllChatsOnboardingScreen()
         }
     }

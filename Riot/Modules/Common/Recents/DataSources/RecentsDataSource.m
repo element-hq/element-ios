@@ -84,7 +84,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         _crossSigningBannerDisplay = CrossSigningBannerDisplayNone;
         _secureBackupBannerDisplay = SecureBackupBannerDisplayNone;
         
-        _areSectionsShrinkable = !BuildSettings.isNewAppLayoutActivated;
+        _areSectionsShrinkable = !BuildSettings.newAppLayoutEnabled;
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
@@ -758,7 +758,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
 
     
-    if (count && !(sectionType == RecentsDataSourceSectionTypeInvites) && !BuildSettings.isNewAppLayoutActivated)
+    if (count && !(sectionType == RecentsDataSourceSectionTypeInvites) && !BuildSettings.newAppLayoutEnabled)
     {
         NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
 
@@ -987,7 +987,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         sectionHeader.bottomView = nil;
     }
     
-    if (!BuildSettings.isNewAppLayoutActivated || !sectionHeader.bottomView)
+    if (!BuildSettings.newAppLayoutEnabled || !sectionHeader.bottomView)
     {
         // Add label
         frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
@@ -1714,7 +1714,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (void)recentsListServiceDidChangeData:(id<RecentsListServiceProtocol>)service
                      totalCountsChanged:(BOOL)totalCountsChanged
 {
-    if (!BuildSettings.isNewAppLayoutActivated)
+    if (!BuildSettings.newAppLayoutEnabled)
     {
         [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
     }

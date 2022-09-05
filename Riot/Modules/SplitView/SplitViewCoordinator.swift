@@ -93,7 +93,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             self.splitViewController.delegate = self
             
             // Create primary controller
-            let masterCoordinator: SplitViewMasterCoordinatorProtocol = BuildSettings.isNewAppLayoutActivated ? self.createAllChatsCoordinator() : self.createTabBarCoordinator()
+            let masterCoordinator: SplitViewMasterCoordinatorProtocol = BuildSettings.newAppLayoutEnabled ? self.createAllChatsCoordinator() : self.createTabBarCoordinator()
             masterCoordinator.splitViewMasterPresentableDelegate = self
             masterCoordinator.start(with: spaceId)
             

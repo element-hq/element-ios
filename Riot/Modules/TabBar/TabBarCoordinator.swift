@@ -116,7 +116,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                 self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
             }
             
-            if BuildSettings.isSideMenuActivated {
+            if BuildSettings.enableSideMenu {
                 self.setupSideMenuGestures()
             }
             
@@ -370,7 +370,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         let homeViewController = self.createHomeViewController()
         viewControllers.append(homeViewController)
         
-        if !BuildSettings.isNewAppLayoutActivated {
+        if !BuildSettings.newAppLayoutEnabled {
             if RiotSettings.shared.homeScreenShowFavouritesTab {
                 let favouritesViewController = self.createFavouritesViewController()
                 viewControllers.append(favouritesViewController)
@@ -706,12 +706,12 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     private weak var rightMenuButton: UIButton?
     
     private func createLeftButtonItem(for viewController: UIViewController) {
-        guard !BuildSettings.isNewAppLayoutActivated else {
+        guard !BuildSettings.newAppLayoutEnabled else {
             createAvatarButtonItem(for: viewController)
             return
         }
         
-        guard BuildSettings.isSideMenuActivated else {
+        guard BuildSettings.enableSideMenu else {
             let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
                 self?.showSettings()
             }
@@ -730,7 +730,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
 
     private func createRightButtonItem(for viewController: UIViewController) {
-        guard !BuildSettings.isNewAppLayoutActivated else {
+        guard !BuildSettings.newAppLayoutEnabled else {
             return
         }
         
@@ -894,7 +894,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     private var windowOverlay: WindowOverlayPresenter?
 
     func showCoachMessageIfNeeded(with session: MXSession) {
-        guard !BuildSettings.isNewAppLayoutActivated else {
+        guard !BuildSettings.newAppLayoutEnabled else {
             // Showing coach message makes no sense with the new App Layout
             return
         }
@@ -941,7 +941,7 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
     }
     
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, needsSideMenuIconWithNotification displayNotification: Bool) {
-        guard BuildSettings.isSideMenuActivated else {
+        guard BuildSettings.enableSideMenu else {
             return
         }
         

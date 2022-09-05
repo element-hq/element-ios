@@ -78,7 +78,7 @@
 {
     [super viewDidLoad];
     
-    if (!BuildSettings.isNewAppLayoutActivated)
+    if (!BuildSettings.newAppLayoutEnabled)
     {
         [self.tabBarController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
     }
@@ -107,7 +107,7 @@
 {
     [super viewWillAppear:animated];
 
-    if (!BuildSettings.isNewAppLayoutActivated)
+    if (!BuildSettings.newAppLayoutEnabled)
     {
         [ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 

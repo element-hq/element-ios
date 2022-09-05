@@ -91,7 +91,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         // Setup user location services
         _ = UserLocationServiceProvider.shared
         
-        if BuildSettings.isSideMenuActivated {
+        if BuildSettings.enableSideMenu {
             self.addSideMenu()
         }
         
@@ -163,7 +163,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     }
     
     @objc private func newAppLayoutToggleDidChange(notification: Notification) {
-        if BuildSettings.isSideMenuActivated {
+        if BuildSettings.enableSideMenu {
             self.addSideMenu()
         }
     }

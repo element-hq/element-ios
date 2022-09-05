@@ -221,7 +221,7 @@
 {
     [super viewDidLoad];
     
-    if (BuildSettings.isNewAppLayoutActivated)
+    if (BuildSettings.newAppLayoutEnabled)
     {
         [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeNever];
     }
