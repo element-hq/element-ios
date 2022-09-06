@@ -57,3 +57,7 @@ jobs:
       # Main step
       - name: UI tests
         run: bundle exec fastlane uitest
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        
