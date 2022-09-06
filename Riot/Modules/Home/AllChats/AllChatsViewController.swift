@@ -103,6 +103,7 @@ class AllChatsViewController: HomeViewController {
         recentsTableView.tag = RecentsDataSourceMode.allChats.rawValue
         recentsTableView.clipsToBounds = false
         recentsTableView.register(RecentEmptySectionTableViewCell.nib, forCellReuseIdentifier: RecentEmptySectionTableViewCell.reuseIdentifier)
+        recentsTableView.register(RecentEmptySpaceSectionTableViewCell.nib, forCellReuseIdentifier: RecentEmptySpaceSectionTableViewCell.reuseIdentifier)
         recentsTableView.register(RecentsInvitesTableViewCell.nib, forCellReuseIdentifier: RecentsInvitesTableViewCell.reuseIdentifier)
         recentsTableView.contentInsetAdjustmentBehavior = .automatic
         
@@ -383,15 +384,14 @@ class AllChatsViewController: HomeViewController {
         
         self.emptyView?.fill(with: emptyViewArtwork,
                              title: title,
-                             informationText: informationText,
-                             displayMode: self.dataSource?.currentSpace == nil ? .default : .icon)
+                             informationText: informationText)
     }
     
     private var emptyViewArtwork: UIImage {
         if self.dataSource?.currentSpace == nil {
-            return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.peopleEmptyScreenArtworkDark.image : Asset.Images.peopleEmptyScreenArtwork.image
+            return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.allChatsEmptyScreenArtworkDark.image : Asset.Images.allChatsEmptyScreenArtwork.image
         } else {
-            return Asset.Images.allChatsEditIcon.image
+            return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.allChatsEmptySpaceArtworkDark.image : Asset.Images.allChatsEmptySpaceArtwork.image
         }
     }
     
