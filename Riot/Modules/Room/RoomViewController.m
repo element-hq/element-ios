@@ -270,13 +270,6 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
     return controller;
 }
 
-+ (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration session:(nonnull MXSession*)session
-{
-    RoomViewController *roomViewController = [self instantiateWithConfiguration:configuration];
-    [roomViewController addMatrixSession:session];
-    return roomViewController;
-}
-
 + (NSString *)className
 {
     NSString *result = NSStringFromClass(self.class);

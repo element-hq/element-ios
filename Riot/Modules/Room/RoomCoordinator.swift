@@ -83,9 +83,6 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         if let threadId = parameters.threadId {
             self.roomViewController = ThreadViewController.instantiate(withThreadId: threadId,
                                                                        configuration: parameters.displayConfiguration)
-        } else if parameters.userId != nil {
-            // Use target user information to populate RoomViewController view
-            self.roomViewController = RoomViewController.instantiate(with: parameters.displayConfiguration, session: parameters.session)
         } else {
             self.roomViewController = RoomViewController.instantiate(with: parameters.displayConfiguration)
         }

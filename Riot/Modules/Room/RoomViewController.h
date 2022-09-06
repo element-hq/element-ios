@@ -169,16 +169,6 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  */
 + (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration;
 
-/**
- Creates and returns a new `RoomViewController` object.
- 
- @param configuration display configuration for the room view controller.
- @param session The Matrix session.
- 
- @return An initialized `RoomViewController` object.
- */
-+ (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration session:(nonnull MXSession*)session;
-
 @end
 
 /**
