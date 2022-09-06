@@ -518,6 +518,10 @@
 
 - (CGSize)textContentSize:(NSAttributedString*)attributedText removeVerticalInset:(BOOL)removeVerticalInset
 {
+    if (attributedText.length == 0) {
+        return CGSizeZero;
+    }
+    
     // Grab the default textContainer insets and lineFragmentPadding from a dummy text view.
     // This has no business being here but the refactoring effort would be too great (sceriu 05.09.2022)
     static UITextView* measurementTextView = nil;
@@ -526,19 +530,27 @@
         measurementTextView = [[UITextView alloc] init];
     }
     
-    CGFloat maxWidth = _maxTextViewWidth - measurementTextView.textContainer.lineFragmentPadding * 2;
+    CGFloat verticalInset = measurementTextView.textContainerInset.top + measurementTextView.textContainerInset.bottom;
+    CGFloat horizontalInset = measurementTextView.textContainer.lineFragmentPadding * 2;
     
-    CGSize size = [attributedText boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+    CGSize size = [attributedText boundingRectWithSize:CGSizeMake(_maxTextViewWidth - horizontalInset, CGFLOAT_MAX)
                                                options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                                context:nil].size;
     
-    if (removeVerticalInset == YES) {
-        return size;
-    }
+    //In iOS 7 and later, this method returns fractional sizes (in the size component of the returned rectangle);
+    // to use a returned size to size views, you must use raise its value to the nearest higher integer using the
+    // [ceil](https://developer.apple.com/documentation/kernel/1557272-ceil?changes=latest_major) function.
+    size.width = ceil(size.width);
+    size.height = ceil(size.height);
 
-    size.height += measurementTextView.textContainerInset.top + measurementTextView.textContainerInset.bottom;
+    // The result is expected to contain the textView textContainer's paddings. Add them back if necessary
+    if (removeVerticalInset == NO) {
+        size.height += verticalInset;
+    }
     
-    return CGSizeMake(_maxTextViewWidth, size.height);
+    size.width += horizontalInset;
+    
+    return size;
 }
 
 #pragma mark - Properties
