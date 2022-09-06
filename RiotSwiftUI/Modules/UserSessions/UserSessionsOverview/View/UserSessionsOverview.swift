@@ -74,7 +74,7 @@ struct UserSessionsOverview: View {
                 }
             }
         }
-        .background(theme.colors.system)
+        .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
         .navigationTitle(VectorL10n.userSessionsOverviewTitle)
         .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
