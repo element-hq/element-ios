@@ -427,6 +427,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
                                                                       threadId: threadId,
+                                                                      userId: roomNavigationParameters.userId,
                                                                       showSettingsInitially: roomNavigationParameters.showSettingsInitially,
                                                                       displayConfiguration: displayConfig,
                                                                       autoJoinInvitedRoom: roomNavigationParameters.autoJoinInvitedRoom)
