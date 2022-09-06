@@ -24,6 +24,7 @@ protocol RoomCoordinatorDelegate: AnyObject {
     func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?)
     func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didReplaceRoomWithReplacementId roomId: String)
     func roomCoordinatorDidDismissInteractively(_ coordinator: RoomCoordinatorProtocol)
+    func roomCoordinatorDidCancelNewDirectChat(_ coordinator: RoomCoordinatorProtocol)
 }
 
 /// `RoomCoordinatorProtocol` is a protocol describing a Coordinator that handle room navigation flow.

@@ -427,6 +427,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
                                                                       threadId: threadId,
+                                                                      userId: roomNavigationParameters.userId,
                                                                       showSettingsInitially: roomNavigationParameters.showSettingsInitially,
                                                                       displayConfiguration: displayConfig,
                                                                       autoJoinInvitedRoom: roomNavigationParameters.autoJoinInvitedRoom)
@@ -777,7 +778,6 @@ extension AllChatsCoordinator: AllChatsViewControllerDelegate {
 
 // MARK: - RoomCoordinatorDelegate
 extension AllChatsCoordinator: RoomCoordinatorDelegate {
-    
     func roomCoordinatorDidDismissInteractively(_ coordinator: RoomCoordinatorProtocol) {
         self.remove(childCoordinator: coordinator)
     }
@@ -813,5 +813,9 @@ extension AllChatsCoordinator: RoomCoordinatorDelegate {
         
         self.showRoom(with: roomCoordinatorParameters,
                       stackOnSplitViewDetail: false)
+    }
+    
+    func roomCoordinatorDidCancelNewDirectChat(_ coordinator: RoomCoordinatorProtocol) {
+        self.navigationRouter.popModule(animated: true)
     }
 }

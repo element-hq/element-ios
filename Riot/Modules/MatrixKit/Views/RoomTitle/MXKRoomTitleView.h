@@ -71,6 +71,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameTextFieldTopConstraint;
 
 @property (strong, nonatomic) MXRoom *mxRoom;
+@property (strong, nonatomic) MXUser *mxUser;
 @property (nonatomic) BOOL editable;
 @property (nonatomic) BOOL isEditing;
 

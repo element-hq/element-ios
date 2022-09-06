@@ -87,14 +87,21 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
 {
-    _voiceMessageToolbarView = voiceMessageToolbarView;
-    self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:self.voiceMessageToolbarView];
+    if (voiceMessageToolbarView) {
+        _voiceMessageToolbarView = voiceMessageToolbarView;
+        self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:self.voiceMessageToolbarView];
 
-    [NSLayoutConstraint activateConstraints:@[[self.mainToolbarView.topAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.topAnchor],
-                                              [self.mainToolbarView.leftAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.leftAnchor],
-                                              [self.mainToolbarView.bottomAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.bottomAnchor],
-                                              [self.mainToolbarView.rightAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.rightAnchor]]];
+        [NSLayoutConstraint activateConstraints:@[[self.mainToolbarView.topAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.topAnchor],
+                                                  [self.mainToolbarView.leftAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.leftAnchor],
+                                                  [self.mainToolbarView.bottomAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.bottomAnchor],
+                                                  [self.mainToolbarView.rightAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.rightAnchor]]];
+    }
+    else
+    {
+        [self.voiceMessageToolbarView removeFromSuperview];
+        _voiceMessageToolbarView = nil;
+    }
 }
 
 #pragma mark - Override MXKView
@@ -305,6 +312,10 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
             case RoomInputToolbarViewSendModeReply:
                 placeholder = [VectorL10n roomMessageReplyToShortPlaceholder];
                 break;
+                
+            case RoomInputToolbarViewSendModeCreateDM:
+                placeholder = [VectorL10n roomFirstMessagePlaceholder];
+                break;
 
             default:
                 placeholder = [VectorL10n roomMessageShortPlaceholder];
@@ -334,6 +345,10 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
                     placeholder = [VectorL10n roomMessageReplyToPlaceholder];
                     break;
 
+                case RoomInputToolbarViewSendModeCreateDM:
+                    placeholder = [VectorL10n roomFirstMessagePlaceholder];
+                    break;
+                    
                 default:
                     placeholder = [VectorL10n roomMessagePlaceholder];
                     break;

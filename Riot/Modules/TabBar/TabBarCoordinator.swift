@@ -468,6 +468,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
                                                                       threadId: threadId,
+                                                                      userId: roomNavigationParameters.userId,
                                                                       showSettingsInitially: roomNavigationParameters.showSettingsInitially,
                                                                       displayConfiguration: displayConfig,
                                                                       autoJoinInvitedRoom: roomNavigationParameters.autoJoinInvitedRoom)
@@ -993,6 +994,10 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
         
         self.showRoom(with: roomCoordinatorParameters,
                       stackOnSplitViewDetail: false)
+    }
+    
+    func roomCoordinatorDidCancelNewDirectChat(_ coordinator: RoomCoordinatorProtocol) {
+        self.navigationRouter.popModule(animated: true)
     }
 }
 

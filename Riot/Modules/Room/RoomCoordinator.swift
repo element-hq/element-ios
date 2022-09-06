@@ -117,15 +117,20 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         
         if let previewData = self.parameters.previewData {
             self.loadRoomPreview(withData: previewData, completion: completion)
-        } else if let threadId = self.parameters.threadId {
-            self.loadRoom(withId: self.parameters.roomId,
-                          andThreadId: threadId,
-                          eventId: self.parameters.eventId,
-                          completion: completion)
-        } else if let eventId = self.selectedEventId {
-            self.loadRoom(withId: self.parameters.roomId, andEventId: eventId, completion: completion)
-        } else {
-            self.loadRoom(withId: self.parameters.roomId, completion: completion)
+        } else if let roomId = self.parameters.roomId {
+            if let threadId = self.parameters.threadId {
+                self.loadRoom(withId: roomId,
+                              andThreadId: threadId,
+                              eventId: self.parameters.eventId,
+                              completion: completion)
+            } else if let eventId = self.selectedEventId {
+                self.loadRoom(withId: roomId, andEventId: eventId, completion: completion)
+            } else {
+                self.loadRoom(withId: roomId, completion: completion)
+            }
+        } else if let userId = self.parameters.userId {
+            // Start flow for a direct chat, try to find an existing room with target user
+            self.loadRoom(withUserId: userId)
         }
 
         // Add `roomViewController` to the NavigationRouter, only if it has been explicitly set as parameter
@@ -246,6 +251,49 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             self.mxSession?.updateBreadcrumbsWithRoom(withId: roomId, success: nil, failure: nil)
 
             completion?()
+        }
+    }
+    
+    private func loadRoom(withUserId userId: String) {
+        // Start a new discussion
+            
+        // Present activity indicator when retrieving roomDataSource for given room ID
+        startLoading()
+        
+        // Try to search target user if not exist in local session
+        if let user = self.parameters.session.getOrCreateUser(userId) {
+            if user.displayname != nil {
+                // User has already been found from local session no update needed
+                self.stopLoading()
+                
+                // Update RoomViewController with found target user
+                self.roomViewController.displayNewDirectChat(withTargetUser: user, session: self.parameters.session)
+            } else {
+                // update user from homeserver
+                user.update(fromHomeserverOfMatrixSession: self.parameters.session) {
+                    self.stopLoading()
+                    
+                    self.parameters.session.store.store(user)
+                    
+                    // Update RoomViewController with found target user
+                    self.roomViewController.displayNewDirectChat(withTargetUser: user, session: self.parameters.session)
+                } failure: { [weak self] error in
+                    guard let self = self else { return }
+                    self.stopLoading()
+                    
+                    MXLog.error("[RoomCoordinator] User does not exist")
+                    
+                    // Alert user
+                    self.displayError(message: VectorL10n.roomCreationDmError) { [weak self] in
+                        guard let self = self else { return }
+                        self.delegate?.roomCoordinatorDidCancelNewDirectChat(self)
+                    }
+                }
+            }
+        } else {
+            self.stopLoading()
+            
+            self.displayError(message: VectorL10n.roomCreationDmError)
         }
     }
     
@@ -466,6 +514,15 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         locationSharingIndicatorCancel?()
         locationSharingIndicatorCancel = nil
     }
+    
+    private func displayError(message: String, completion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: VectorL10n.error, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: VectorL10n.ok, style: .default) { _ in
+            completion?()
+        }
+        alert.addAction(action)
+        toPresentable().present(alert, animated: true)
+    }
 }
 
 // MARK: - RoomIdentifiable
@@ -521,7 +578,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewController(_ roomViewController: RoomViewController, startChatWithUserId userId: String, completion: @escaping () -> Void) {
-        AppDelegate.theDelegate().createDirectChat(withUserId: userId, completion: completion)
+        AppDelegate.theDelegate().showNewDirectChat(userId, withMatrixSession: self.mxSession, completion: completion)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, showCompleteSecurityFor session: MXSession) {
