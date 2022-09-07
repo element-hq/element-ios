@@ -382,7 +382,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     isRefreshNeeded = NO;
     
     // Refresh the tabBar icon badges
-    if (!BuildSettings.isNewAppLayoutActivated)
+    if (!BuildSettings.newAppLayoutEnabled)
     {
         // Refresh the tabBar icon badges
         [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
@@ -1105,7 +1105,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [self refreshRecentsTable];
     }
     
-    if (!BuildSettings.isNewAppLayoutActivated)
+    if (!BuildSettings.newAppLayoutEnabled)
     {
         // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
         // Refresh tab bar badges separately.
