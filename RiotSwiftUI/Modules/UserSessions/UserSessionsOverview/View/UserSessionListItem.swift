@@ -23,43 +23,7 @@ struct UserSessionListItem: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    private var sessionTitle: String {
-        
-        let sessionTitle: String
-        
-        let clientName = viewData.deviceType.name
-        
-        if let sessionName = viewData.sessionName {
-            sessionTitle = VectorL10n.userSessionName(clientName, sessionName)
-        } else {
-            sessionTitle = clientName
-        }
-        
-        return sessionTitle
-    }
-    
-    private var sessionDetailsText: String {
-        
-        let sessionDetailsString: String
-        
-        let sessionStatusText = viewData.isVerified ? VectorL10n.userSessionVerifiedShort : VectorL10n.userSessionUnverifiedShort
-        
-        var lastActivityDateString: String?
-        
-        if let lastActivityDate = viewData.lastActivityDate {
-            lastActivityDateString = self.lastActivityDateString(from: lastActivityDate)
-        }
 
-        if let lastActivityDateString = lastActivityDateString, lastActivityDateString.isEmpty == false {
-            sessionDetailsString = VectorL10n.userSessionItemDetails(sessionStatusText, lastActivityDateString)
-        } else {
-            sessionDetailsString = sessionStatusText
-        }
-        
-        return sessionDetailsString
-    }
-    
     // MARK: Public
     
     let viewData: UserSessionListItemViewData
@@ -74,12 +38,12 @@ struct UserSessionListItem: View {
             HStack(spacing: 18) {
                 DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(sessionTitle)
+                    Text(viewData.sessionName)
                         .font(theme.fonts.bodySB)
                         .foregroundColor(theme.colors.primaryContent)
                         .multilineTextAlignment(.leading)
                     
-                    Text(sessionDetailsText)
+                    Text(viewData.sessionDetails)
                         .font(theme.fonts.caption1)
                         .foregroundColor(theme.colors.secondaryContent)
                         .multilineTextAlignment(.leading)
@@ -88,22 +52,6 @@ struct UserSessionListItem: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 15)
-    }
-    
-    // MARK: - Private
-        
-    private func lastActivityDateString(from timestamp: TimeInterval) -> String? {
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale.current
-        
-        let date = Date(timeIntervalSince1970: timestamp)
-        
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .short
-        dateFormatter.doesRelativeDateFormatting = true
-        
-        return dateFormatter.string(from: date)
     }
 }
 
