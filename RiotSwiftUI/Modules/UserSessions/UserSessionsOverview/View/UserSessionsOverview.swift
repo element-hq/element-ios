@@ -44,34 +44,7 @@ struct UserSessionsOverview: View {
             
             // Other sessions section
             if viewModel.viewState.otherSessionsViewData.isEmpty == false {
-                
-                VStack() {
-                    
-                    // Section header
-                    VStack(alignment: .leading) {
-                        Text(VectorL10n.userSessionsOverviewOtherSessionsSectionTitle)
-                            .font(theme.fonts.footnote)
-                            .foregroundColor(theme.colors.secondaryContent)
-                            .padding(.bottom, 10)
-                        
-                        Text(VectorL10n.userSessionsOverviewOtherSessionsSectionInfo)
-                            .font(theme.fonts.footnote)
-                            .foregroundColor(theme.colors.secondaryContent)
-                            .padding(.bottom, 11)
-                    }
-                    .padding(.horizontal, 16)
-                    
-                    // Device list
-                    VStack(spacing: 16) {
-                        ForEach(viewModel.viewState.otherSessionsViewData) { viewData in
-                            UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
-                                viewModel.send(viewAction: .tapUserSession(sessionId))
-                            })
-                        }
-                    }
-                    .padding(.vertical, 16)
-                    .background(theme.colors.background)
-                }
+                self.otherSessionsSection
             }
         }
         .background(theme.colors.system.ignoresSafeArea())
@@ -80,6 +53,34 @@ struct UserSessionsOverview: View {
         .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
         .onAppear() {
             viewModel.send(viewAction: .viewAppeared)
+        }
+    }
+    
+    var otherSessionsSection: some View {
+        
+        SwiftUI.Section {
+            // Device list
+            LazyVStack() {
+                ForEach(viewModel.viewState.otherSessionsViewData) { viewData in
+                    UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
+                        viewModel.send(viewAction: .tapUserSession(sessionId))
+                    })
+                }
+            }
+            .background(theme.colors.background)
+        } header: {
+            VStack(alignment: .leading) {
+                Text(VectorL10n.userSessionsOverviewOtherSessionsSectionTitle)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .padding(.bottom, 10)
+                
+                Text(VectorL10n.userSessionsOverviewOtherSessionsSectionInfo)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .padding(.bottom, 11)
+            }
+            .padding(.horizontal, 16)
         }
     }
 }
