@@ -72,7 +72,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         let unverifiedSessionsViewData = self.userSessionListItemViewDataList(from: userSessionsViewData.unverifiedSessionsInfo)
         let inactiveSessionsViewData = self.userSessionListItemViewDataList(from: userSessionsViewData.inactiveSessionsInfo)
         
-        var currentSessionViewData:  UserSessionListItemViewData?
+        var currentSessionViewData: UserSessionListItemViewData?
         
         let otherSessionsViewData = self.userSessionListItemViewDataList(from: userSessionsViewData.otherSessionsInfo)
          
