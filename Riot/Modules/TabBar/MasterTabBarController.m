@@ -65,6 +65,7 @@
 @end
 
 @implementation MasterTabBarController
+@synthesize onboardingCoordinatorBridgePresenter, selectedRoomId, selectedEventId, selectedRoomSession, selectedRoomPreviewData, selectedContact, isOnboardingInProgress;
 
 #pragma mark - Properties override
 
@@ -156,7 +157,7 @@
         [self userInterfaceThemeDidChange];
     }
     
-    self.tabBar.hidden = BuildSettings.isNewAppLayoutActivated;
+    self.tabBar.hidden = BuildSettings.newAppLayoutEnabled;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -214,7 +215,7 @@
         
         [[AppDelegate theDelegate] checkAppVersion];
 
-        if (BuildSettings.isNewAppLayoutActivated && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed)
+        if (BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed)
         {
             [self showAllChatsOnboardingScreen];
         }
@@ -530,9 +531,9 @@
 {
     [self releaseSelectedItem];
     
-    _selectedRoomId = paramaters.roomId;
-    _selectedEventId = paramaters.eventId;
-    _selectedRoomSession = paramaters.mxSession;
+    selectedRoomId = paramaters.roomId;
+    selectedEventId = paramaters.eventId;
+    selectedRoomSession = paramaters.mxSession;
     
     [self.masterTabBarDelegate masterTabBarController:self didSelectRoomWithParameters:paramaters completion:completion];
     
@@ -545,9 +546,9 @@
     
     RoomPreviewData *roomPreviewData = parameters.previewData;
     
-    _selectedRoomPreviewData = roomPreviewData;
-    _selectedRoomId = roomPreviewData.roomId;
-    _selectedRoomSession = roomPreviewData.mxSession;
+    selectedRoomPreviewData = roomPreviewData;
+    selectedRoomId = roomPreviewData.roomId;
+    selectedRoomSession = roomPreviewData.mxSession;
     
     [self.masterTabBarDelegate masterTabBarController:self didSelectRoomPreviewWithParameters:parameters completion:completion];
     
@@ -565,7 +566,7 @@
 {
     [self releaseSelectedItem];
     
-    _selectedContact = contact;
+    selectedContact = contact;
     
     [self.masterTabBarDelegate masterTabBarController:self didSelectContact:contact withPresentationParameters:presentationParameters];
     
@@ -574,12 +575,12 @@
 
 - (void)releaseSelectedItem
 {
-    _selectedRoomId = nil;
-    _selectedEventId = nil;
-    _selectedRoomSession = nil;
-    _selectedRoomPreviewData = nil;
+    selectedRoomId = nil;
+    selectedEventId = nil;
+    selectedRoomSession = nil;
+    selectedRoomPreviewData = nil;
     
-    _selectedContact = nil;
+    selectedContact = nil;
 }
 
 - (NSUInteger)missedDiscussionsCount
@@ -633,7 +634,7 @@
 {
     if (roomParentId) {
         NSString *parentName = [mxSession roomSummaryWithRoomId:roomParentId].displayname;
-        if (!BuildSettings.isNewAppLayoutActivated)
+        if (!BuildSettings.newAppLayoutEnabled)
         {
             NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
 
@@ -649,7 +650,7 @@
     }
     else
     {
-        if (!BuildSettings.isNewAppLayoutActivated)
+        if (!BuildSettings.newAppLayoutEnabled)
         {
             titleView.breadcrumbView.breadcrumbs = @[];
         }
@@ -661,7 +662,7 @@
 
 - (void)updateSideMenuNotifcationIcon
 {
-    if (BuildSettings.isNewAppLayoutActivated) { return; }
+    if (BuildSettings.newAppLayoutEnabled) { return; }
     
     BOOL displayNotification = NO;
     
@@ -693,7 +694,7 @@
 
 -(void)setupTitleView
 {
-    if (!BuildSettings.isNewAppLayoutActivated)
+    if (!BuildSettings.newAppLayoutEnabled)
     {
         titleView = [MainTitleView new];
         self.navigationItem.titleView = titleView;

@@ -172,8 +172,7 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
     LABS_ENABLE_THREADS_INDEX,
     LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS,
-    LABS_ENABLE_LIVE_LOCATION_SHARING,
-    LABS_ENABLE_NEW_APP_LAYOUT
+    LABS_ENABLE_LIVE_LOCATION_SHARING
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -596,7 +595,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
         }
-        [sectionLabs addRowWithTag:LABS_ENABLE_NEW_APP_LAYOUT];
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
@@ -1495,21 +1493,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
     labelAndSwitchCell.mxkSwitch.enabled = YES;
     [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableLiveLocationSharing:) forControlEvents:UIControlEventTouchUpInside];
-    
-    return labelAndSwitchCell;
-}
-
-- (UITableViewCell *)buildNewAppLayoutCellForTableView:(UITableView*)tableView
-                                           atIndexPath:(NSIndexPath*)indexPath
-{
-    MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-    
-    labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnableNewAppLayout];
-    
-    labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.newAppLayoutBetaEnabled;
-    labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-    labelAndSwitchCell.mxkSwitch.enabled = YES;
-    [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableNewAppLayout:) forControlEvents:UIControlEventTouchUpInside];
     
     return labelAndSwitchCell;
 }
@@ -2548,10 +2531,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING)
         {
             cell = [self buildLiveLocationSharingCellForTableView:tableView atIndexPath:indexPath];
-        }
-        else if (row == LABS_ENABLE_NEW_APP_LAYOUT)
-        {
-            cell = [self buildNewAppLayoutCellForTableView:tableView atIndexPath:indexPath];
         }
     }
     else if (section == SECTION_TAG_SECURITY)
@@ -3990,15 +3969,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 - (void)toggleEnableLiveLocationSharing:(UISwitch *)sender
 {
     RiotSettings.shared.enableLiveLocationSharing = sender.isOn;
-}
-
-- (void)toggleEnableNewAppLayout:(UISwitch *)sender
-{
-    if (sender.isOn)
-    {
-        RiotSettings.shared.showAllRoomsInHomeSpace = YES;
-    }
-    RiotSettings.shared.newAppLayoutBetaEnabled = sender.isOn;
 }
 
 #pragma mark - TextField listener

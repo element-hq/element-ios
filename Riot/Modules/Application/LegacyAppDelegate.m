@@ -2196,6 +2196,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Logout all matrix account
     [[MXKAccountManager sharedManager] logoutWithCompletion:^{
         
+        // We reset allChatsOnboardingHasBeenDisplayed flag on logout
+        RiotSettings.shared.allChatsOnboardingHasBeenDisplayed = NO;
+        
         if (completion)
         {
             completion (YES);
@@ -2828,6 +2831,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self showRoomWithParameters:parameters];
 }
 
+- (void)showNewDirectChat:(NSString*)userId withMatrixSession:(MXSession*)mxSession completion:(void (^)(void))completion
+{
+    // Ask to restore initial display
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
+    
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithUserId:userId
+                                                                                  mxSession:mxSession
+                                                                     presentationParameters:presentationParameters];
+    
+    [self showRoomWithParameters:parameters completion:completion];
+}
+
 - (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters completion:(void (^)(void))completion
 {
     void (^showRoomPreview)(void) = ^() {
@@ -2953,7 +2968,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     _visibleRoomId = roomId;
 }
 
-- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion
+- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(NSString *roomId))completion
 {
     // Handle here potential multiple accounts
     [self selectMatrixAccount:^(MXKAccount *selectedAccount) {
@@ -2972,7 +2987,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
                 if (completion)
                 {
-                    completion();
+                    completion(nil);
                 }
             };
 
@@ -2993,13 +3008,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
                 [mxSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
 
-                    // Open created room
+                    // Room is created
                     Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
-                    [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
 
                     if (completion)
                     {
-                        completion();
+                        completion(room.roomId);
                     }
 
                 } failure:onFailure];
@@ -3008,7 +3022,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         else if (completion)
         {
-            completion();
+            completion(nil);
         }
         
     }];
@@ -3039,7 +3053,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
             else
             {
-                [self createDirectChatWithUserId:userId completion:completion];
+                [self showNewDirectChat:userId withMatrixSession:mxSession completion:completion];
             }
         }
         else if (completion)
@@ -3808,17 +3822,16 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }];
         }
     }
-    else if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByToDeviceRequest.class])
+    else if (keyVerificationRequest.transport == MXKeyVerificationTransportToDevice)
     {
-        MXKeyVerificationByToDeviceRequest *keyVerificationByToDeviceRequest = (MXKeyVerificationByToDeviceRequest*)keyVerificationRequest;
         
-        if (!keyVerificationByToDeviceRequest.isFromMyDevice
-            && keyVerificationByToDeviceRequest.state == MXKeyVerificationRequestStatePending)
+        if (!keyVerificationRequest.isFromMyDevice
+            && keyVerificationRequest.state == MXKeyVerificationRequestStatePending)
         {
-            if (keyVerificationByToDeviceRequest.isFromMyUser)
+            if (keyVerificationRequest.isFromMyUser)
             {
                 // Self verification
-                MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification from %@", keyVerificationByToDeviceRequest.otherDevice);
+                MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification from %@", keyVerificationRequest.otherDevice);
                 
                 if (!self.handleSelfVerificationRequest)
                 {
@@ -3826,7 +3839,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                     return;
                 }
                       
-                NSString *myUserId = keyVerificationByToDeviceRequest.otherUser;
+                NSString *myUserId = keyVerificationRequest.otherUser;
                 MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
                 if (account)
                 {
@@ -3840,10 +3853,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             {
                 // Device verification from other user
                 // This happens when they or our user do not have cross-signing enabled
-                MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Device verification from other user %@:%@", keyVerificationByToDeviceRequest.otherUser, keyVerificationByToDeviceRequest.otherDevice);
+                MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Device verification from other user %@:%@", keyVerificationRequest.otherUser, keyVerificationRequest.otherDevice);
                 
-                NSString *myUserId = keyVerificationByToDeviceRequest.to;
-                NSString *userId = keyVerificationByToDeviceRequest.otherUser;
+                NSString *myUserId = ((MXKeyVerificationByToDeviceRequest*)keyVerificationRequest).to;
+                NSString *userId = keyVerificationRequest.otherUser;
                 MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
                 if (account)
                 {
@@ -3852,11 +3865,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                     
                     [self presentNewKeyVerificationRequestAlertForSession:session senderName:user.displayname senderId:user.userId request:keyVerificationRequest];
                 }
+                else
+                {
+                    NSDictionary *details = @{
+                        @"request_id": keyVerificationRequest.requestId ?: @"unknown"
+                    };
+                    MXLogErrorDetails(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: No account available", details);
+                }
             }
         }
         else
         {
-            MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification. Bad request state: %@", keyVerificationByToDeviceRequest);
+            MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification. Bad request state: %@", keyVerificationRequest);
         }
     }
 }
@@ -4257,7 +4277,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     // Need to set `showAllRoomsInHomeSpace` to `true` for the new App Layout
-    if (BuildSettings.isNewAppLayoutActivated)
+    if (BuildSettings.newAppLayoutEnabled)
     {
         RiotSettings.shared.showAllRoomsInHomeSpace = YES;
     }

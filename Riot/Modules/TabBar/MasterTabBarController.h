@@ -22,6 +22,7 @@
 #import "FavouritesViewController.h"
 #import "PeopleViewController.h"
 #import "RoomsViewController.h"
+#import "SplitViewMasterViewControllerProtocol.h"
 
 #define TABBAR_HOME_INDEX         0
 #define TABBAR_FAVOURITES_INDEX   1
@@ -42,7 +43,7 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 @class ScreenPresentationParameters;
 @class OnboardingCoordinatorBridgePresenter;
 
-@interface MasterTabBarController : UITabBarController
+@interface MasterTabBarController : UITabBarController<SplitViewMasterViewControllerProtocol>
 
 // UITabBarController already have a `delegate` property
 @property (weak, nonatomic) id<MasterTabBarControllerDelegate> masterTabBarDelegate;
@@ -55,71 +56,6 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 // Remove a matrix session.
 - (void)removeMatrixSession:(MXSession*)mxSession;
 
-/**
- Display the default onboarding flow.
- */
-- (void)showOnboardingFlow;
-
-/**
- Display the onboarding flow configured to log back into a soft logout session.
-
- @param softLogoutCredentials the credentials of the soft logout session.
- */
-- (void)showSoftLogoutOnboardingFlowWithCredentials:(MXCredentials*)softLogoutCredentials;
-
-/// Open the room with the provided identifier in a specific matrix session.
-/// @param parameters the presentation parameters that contains room information plus display information.
-/// @param completion the block to execute at the end of the operation.
-- (void)selectRoomWithParameters:(RoomNavigationParameters*)parameters completion:(void (^)(void))completion;
-
-/// Open the RoomViewController to display the preview of a room that is unknown for the user.
-/// This room can come from an email invitation link or a simple link to a room.
-/// @param parameters the presentation parameters that contains room preview information plus display information.
-/// @param completion the block to execute at the end of the operation.
-- (void)selectRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters completion:(void (^)(void))completion;
-
-/**
- Open a ContactDetailsViewController to display the information of the provided contact.
- */
-- (void)selectContact:(MXKContact*)contact;
-
-- (void)selectContact:(MXKContact*)contact withPresentationParameters:(ScreenPresentationParameters*)presentationParameters;
-
-/**
- Release the current selected item (if any).
- */
-- (void)releaseSelectedItem;
-
-/**
- The current number of rooms with missed notifications, including the invites.
- */
-- (NSUInteger)missedDiscussionsCount;
-
-/**
- The current number of rooms with unread highlighted messages.
- */
-- (NSUInteger)missedHighlightDiscussionsCount;
-
-/**
- Refresh the missed conversations badges on tab bar icon
- */
-- (void)refreshTabBarBadges;
-
-/**
- Verify the current device if needed.
- 
-  @param session the matrix session.
- */
-- (void)presentVerifyCurrentSessionAlertIfNeededWithSession:(MXSession*)session;
-
-/**
- Verify others device if needed.
- 
- @param session the matrix session.
- */
-- (void)presentReviewUnverifiedSessionsAlertIfNeededWithSession:(MXSession*)session;
-
-
 /// Filter rooms for each tab data source with the given room parent id.
 /// It should keep rooms having an ancestor with `roomParentId` as parent id.
 /// @param roomParentId The room parent id used to filter rooms.
@@ -127,26 +63,10 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)filterRoomsWithParentId:(NSString*)roomParentId
                 inMatrixSession:(MXSession*)mxSession;
 
-// Reference to the current onboarding flow. It is always nil unless the flow is being presented.
-@property (nonatomic, readonly) OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter;
-
 @property (nonatomic, readonly) HomeViewController *homeViewController;
 @property (nonatomic, readonly) FavouritesViewController *favouritesViewController;
 @property (nonatomic, readonly) PeopleViewController *peopleViewController;
 @property (nonatomic, readonly) RoomsViewController *roomsViewController;
-
-
-// References on the currently selected room
-@property (nonatomic, readonly) NSString  *selectedRoomId;
-@property (nonatomic, readonly) NSString  *selectedEventId;
-@property (nonatomic, readonly) MXSession *selectedRoomSession;
-@property (nonatomic, readonly) RoomPreviewData *selectedRoomPreviewData;
-
-// References on the currently selected contact
-@property (nonatomic, readonly) MXKContact *selectedContact;
-
-// YES while the onboarding flow is displayed
-@property (nonatomic, readonly) BOOL isOnboardingInProgress;
 
 // Set tab bar item controllers
 - (void)updateViewControllers:(NSArray<UIViewController*>*)viewControllers;

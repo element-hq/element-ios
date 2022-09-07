@@ -18,15 +18,15 @@
 
 import Foundation
 
-protocol TabBarCoordinatorDelegate: AnyObject {
-    // TODO: Remove this method, authentication should not be handled by TabBarCoordinator
-    func tabBarCoordinatorDidCompleteAuthentication(_ coordinator: TabBarCoordinatorType)
+protocol SplitViewMasterCoordinatorDelegate: AnyObject {
+    // TODO: Remove this method, authentication should not be handled by SplitViewMasterCoordinator
+    func splitViewMasterCoordinatorDidCompleteAuthentication(_ coordinator: SplitViewMasterCoordinatorProtocol)
 }
 
-/// `TabBarCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
-protocol TabBarCoordinatorType: Coordinator, SplitViewMasterPresentable {
+/// `SplitViewMasterCoordinatorProtocol` is a protocol describing a Coordinator that handle the master view controller of the `UISplitViewController`
+protocol SplitViewMasterCoordinatorProtocol: Coordinator, SplitViewMasterPresentable {
     
-    var delegate: TabBarCoordinatorDelegate? { get }
+    var delegate: SplitViewMasterCoordinatorDelegate? { get }
         
     /// Start coordinator by selecting a Space.
     /// - Parameter spaceId: The id of the Space to use.

@@ -2337,7 +2337,7 @@
 "authentication_terms_policy_url_error" = "Serveri reeglite või kasutustingimuste aadressi ei õnnestu avada. Palun proovi hiljem uuesti.";
 /* The placeholder will show the homeserver's domain */
 "authentication_terms_message" = "Palun loe %@ serveri reegleid ja kasutustingimusi";
-"authentication_terms_title" = "Serveri reeglid";
+"authentication_terms_title" = "Privaatsuspoliitika";
 "authentication_verify_msisdn_invalid_phone_number" = "Vigane telefoninumber";
 "authentication_verify_msisdn_waiting_button" = "Saada kinnituskood uuesti";
 /* The placeholder will show the phone number that was entered. */
@@ -2403,3 +2403,37 @@
 "spaces_subspace_creation_visibility_title" = "Missugust alamkogukonda sooviksid sa luua?";
 "spaces_create_subspace_title" = "Loo alamkogukond";
 "spaces_add_subspace_title" = "Loo uus alamkogukond olemasolevas kogukonnas %@";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Sessioonid";
+"space_invite_nav_title" = "Kutse kogukonda";
+"space_detail_nav_title" = "Kogukonna teave";
+"space_selector_create_space" = "Loo kogukond";
+"space_selector_empty_view_information" = "Kogukonnad on viis jututubade ja inimeste ühendamiseks. Alustamiseks võid luua uue kogukonna.";
+"space_selector_empty_view_title" = "Ühtegi kogukonda veel pole.";
+"room_invites_empty_view_information" = "Siit leiad oma kutsed.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Uut teavet ei leidu.";
+"all_chats_onboarding_try_it" = "Proovi nüüd";
+"all_chats_onboarding_title" = "Mida on meil uut";
+"all_chats_onboarding_page_message3" = "Kui soovid meile teada anda oma arvamustest, siis klõpsi oma profiili ikooni.";
+"all_chats_onboarding_page_title3" = "Jaga tagasisidet";
+"all_chats_onboarding_page_message2" = "Kogukonnad leiad alt vasakult kiiremini ja lihtsamini, kui varem.";
+"all_chats_onboarding_page_title2" = "Ligipääs kogukondadele";
+"all_chats_onboarding_page_message1" = "Et Element'i kasutamine oleks lihtsam, siis kaardid on nüüd valikulised. Neid saad hallata ülal paremal avanevast menüüst.";
+"all_chats_onboarding_page_title1" = "Meie liidesel on nüüd uus vaade!";
+"all_chats_nothing_found_placeholder_message" = "Proovi muuta oma otsingut.";
+"all_chats_nothing_found_placeholder_title" = "Mitte midagi ei leidu.";
+"all_chats_empty_unreads_placeholder_message" = "Kui sul on lugemata sõnumeid, siis nad on siit leitavad.";
+"all_chats_empty_list_placeholder_title" = "Ei tea... kõik vist on nüüd tehtud.";
+"all_chats_empty_view_information" = "Paljude võimalustega turvaline suhtlusrakendus sõprade, kogukondade ja tiimide jaoks. Alustamiseks loo mõni uus vestlus või liitu olemasoleva jututoaga.";
+"all_chats_empty_space_information" = "Kogukonnad on võimalus jututubade ja inimeste ühendamiseks. Kasutades all vasakul olevat nuppu lisa mõni olemasolev jututuba või loo uus.";
+"all_chats_empty_view_title" = "%@\ntundub olema tühjavõitu.";
+"spaces_explore_rooms_format" = "Uuri kogukonda: %@";
+
+// User sessions management
+"user_sessions_settings" = "Halda sessioone";
+"invite_to" = "Saada kutse siia: %@";

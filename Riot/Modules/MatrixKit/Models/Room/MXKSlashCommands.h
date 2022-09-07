@@ -31,3 +31,4 @@ FOUNDATION_EXPORT NSString *const kMXKSlashCmdUnbanUser;
 FOUNDATION_EXPORT NSString *const kMXKSlashCmdSetUserPowerLevel;
 FOUNDATION_EXPORT NSString *const kMXKSlashCmdResetUserPowerLevel;
 FOUNDATION_EXPORT NSString *const kMXKSlashCmdChangeRoomTopic;
+FOUNDATION_EXPORT NSString *const kMXKSlashCmdDiscardSession;

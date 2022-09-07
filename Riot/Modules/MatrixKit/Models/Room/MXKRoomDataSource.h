@@ -161,11 +161,6 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
 @property (nonatomic, readonly) NSInteger serverSyncEventCount;
 
 /**
- The current text message partially typed in text input (use nil to reset it).
- */
-@property (nonatomic) NSString *partialTextMessage;
-
-/**
  The current attributed text message partially typed in text input (use nil to reset it).
  */
 @property (nonatomic) NSAttributedString *partialAttributedTextMessage;

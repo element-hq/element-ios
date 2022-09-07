@@ -23,7 +23,7 @@ import CommonKit
 import MatrixSDK
 
 @objcMembers
-final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
+final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     
     // MARK: - Properties
     
@@ -77,7 +77,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     
-    weak var delegate: TabBarCoordinatorDelegate?
+    weak var delegate: SplitViewMasterCoordinatorDelegate?
     
     weak var splitViewMasterPresentableDelegate: SplitViewMasterPresentableDelegate?
     
@@ -116,7 +116,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
             }
             
-            if BuildSettings.isSideMenuActivated {
+            if BuildSettings.enableSideMenu {
                 self.setupSideMenuGestures()
             }
             
@@ -297,17 +297,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return versionCheckCoordinator
     }
     
-    private func createAllChatsViewController() -> AllChatsViewControllerWithBannerWrapperViewController {
-        let allChatsViewController = AllChatsViewController.instantiate()
-        allChatsViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
-        allChatsViewController.tabBarItem.image = allChatsViewController.tabBarItem.image
-        allChatsViewController.accessibilityLabel = VectorL10n.allChatsTitle
-        allChatsViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
-        
-        let wrapperViewController = AllChatsViewControllerWithBannerWrapperViewController(viewController: allChatsViewController)
-        return wrapperViewController
-    }
-    
     private func createHomeViewController() -> HomeViewControllerWithBannerWrapperViewController {
         let homeViewController: HomeViewController = HomeViewController.instantiate()
         homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
@@ -378,10 +367,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
         var viewControllers: [UIViewController] = []
 
-        let homeViewController = BuildSettings.isNewAppLayoutActivated ? self.createAllChatsViewController() : self.createHomeViewController()
+        let homeViewController = self.createHomeViewController()
         viewControllers.append(homeViewController)
         
-        if !BuildSettings.isNewAppLayoutActivated {
+        if !BuildSettings.newAppLayoutEnabled {
             if RiotSettings.shared.homeScreenShowFavouritesTab {
                 let favouritesViewController = self.createFavouritesViewController()
                 viewControllers.append(favouritesViewController)
@@ -479,6 +468,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
                                                                       threadId: threadId,
+                                                                      userId: roomNavigationParameters.userId,
                                                                       showSettingsInitially: roomNavigationParameters.showSettingsInitially,
                                                                       displayConfiguration: displayConfig,
                                                                       autoJoinInvitedRoom: roomNavigationParameters.autoJoinInvitedRoom)
@@ -717,12 +707,12 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private weak var rightMenuButton: UIButton?
     
     private func createLeftButtonItem(for viewController: UIViewController) {
-        guard !BuildSettings.isNewAppLayoutActivated else {
+        guard !BuildSettings.newAppLayoutEnabled else {
             createAvatarButtonItem(for: viewController)
             return
         }
         
-        guard BuildSettings.isSideMenuActivated else {
+        guard BuildSettings.enableSideMenu else {
             let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
                 self?.showSettings()
             }
@@ -741,7 +731,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
 
     private func createRightButtonItem(for viewController: UIViewController) {
-        guard !BuildSettings.isNewAppLayoutActivated else {
+        guard !BuildSettings.newAppLayoutEnabled else {
             return
         }
         
@@ -905,7 +895,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private var windowOverlay: WindowOverlayPresenter?
 
     func showCoachMessageIfNeeded(with session: MXSession) {
-        guard !BuildSettings.isNewAppLayoutActivated else {
+        guard !BuildSettings.newAppLayoutEnabled else {
             // Showing coach message makes no sense with the new App Layout
             return
         }
@@ -944,7 +934,7 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
     }
         
     func masterTabBarControllerDidCompleteAuthentication(_ masterTabBarController: MasterTabBarController!) {
-        self.delegate?.tabBarCoordinatorDidCompleteAuthentication(self)
+        self.delegate?.splitViewMasterCoordinatorDidCompleteAuthentication(self)
     }
     
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelectRoomWithId roomId: String!, andEventId eventId: String!, inMatrixSession matrixSession: MXSession!, completion: (() -> Void)!) {
@@ -952,7 +942,7 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
     }
     
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, needsSideMenuIconWithNotification displayNotification: Bool) {
-        guard BuildSettings.isSideMenuActivated else {
+        guard BuildSettings.enableSideMenu else {
             return
         }
         
@@ -1004,6 +994,10 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
         
         self.showRoom(with: roomCoordinatorParameters,
                       stackOnSplitViewDetail: false)
+    }
+    
+    func roomCoordinatorDidCancelNewDirectChat(_ coordinator: RoomCoordinatorProtocol) {
+        self.navigationRouter.popModule(animated: true)
     }
 }
 
