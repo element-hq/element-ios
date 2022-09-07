@@ -2568,7 +2568,7 @@
 "authentication_recaptcha_title" = "Ste človek?";
 "authentication_terms_policy_url_error" = "Vybranú zásadu sa nepodarilo nájsť. Skúste to prosím neskôr.";
 "authentication_terms_message" = "Prečítajte si prosím podmienky a zásady %@";
-"authentication_terms_title" = "Zásady používania servera";
+"authentication_terms_title" = "Zásady ochrany osobných údajov";
 "authentication_verify_msisdn_invalid_phone_number" = "Neplatné telefónne číslo";
 "authentication_verify_msisdn_waiting_button" = "Znovu odoslať kód";
 /* The placeholder will show the phone number that was entered. */
@@ -2654,3 +2654,37 @@
 "spaces_subspace_creation_visibility_title" = "Aký typ podpriestoru chcete vytvoriť?";
 "spaces_create_subspace_title" = "Vytvoriť podpriestor";
 "spaces_add_subspace_title" = "Vytvoriť priestor v rámci %@";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Relácie";
+"space_invite_nav_title" = "Pozvánka do priestoru";
+"space_detail_nav_title" = "Podrobnosti o priestore";
+"space_selector_create_space" = "Vytvoriť priestor";
+"space_selector_empty_view_information" = "Priestory slúžia na zoskupovanie miestností a osôb. Vytvorte si priestor a začnite.";
+"space_selector_empty_view_title" = "Zatiaľ žiadne priestory.";
+"room_invites_empty_view_information" = "Tu sa zobrazia vaše pozvánky.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Nič nové.";
+"all_chats_onboarding_try_it" = "Vyskúšajte si to";
+"all_chats_onboarding_title" = "Čo je nové";
+"all_chats_onboarding_page_message3" = "Ťuknite na svoj profil a dajte nám vedieť, čo si myslíte.";
+"all_chats_onboarding_page_title3" = "Poskytnite spätnú väzbu";
+"all_chats_onboarding_page_title2" = "Prístup k priestorom";
+"all_chats_onboarding_page_message2" = "Získajte prístup k svojim priestorom (vľavo dole) rýchlejšie a jednoduchšie ako kedykoľvek predtým.";
+"all_chats_onboarding_page_message1" = "Pre zjednodušenie vašej aplikácie Element, sú teraz karty voliteľné. Spravujte ich pomocou ponuky vpravo hore.";
+"all_chats_onboarding_page_title1" = "Vitajte v novom zobrazení!";
+"all_chats_nothing_found_placeholder_message" = "Skúste upraviť svoje hľadanie.";
+"all_chats_nothing_found_placeholder_title" = "Nič sa nenašlo.";
+"all_chats_empty_unreads_placeholder_message" = "Tu sa zobrazia neprečítané správy, ak nejaké máte.";
+"all_chats_empty_list_placeholder_title" = "Všetko ste už stihli.";
+"all_chats_empty_view_information" = "Kompletná zabezpečená aplikácia na komunikáciu pre tímy, priateľov a organizácie. Začnite konverzáciu alebo sa pridajte k existujúcej miestnosti.";
+"all_chats_empty_space_information" = "Priestory sú novým spôsobom zoskupovania miestností a ľudí. Pomocou tlačidla vpravo dole môžete pridať existujúcu miestnosť alebo vytvoriť novú.";
+"all_chats_empty_view_title" = "%@\nvyzerá trochu prázdne.";
+"spaces_explore_rooms_format" = "Preskúmať %@";
+
+// User sessions management
+"user_sessions_settings" = "Spravovať relácie";
+"invite_to" = "Pozvať do %@";

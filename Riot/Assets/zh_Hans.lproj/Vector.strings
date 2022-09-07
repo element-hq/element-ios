@@ -46,7 +46,7 @@
 "auth_optional_phone_placeholder" = "手机号码（可选）";
 "auth_phone_placeholder" = "手机号码";
 "auth_repeat_password_placeholder" = "重复密码";
-"auth_repeat_new_password_placeholder" = "确认您的新密码";
+"auth_repeat_new_password_placeholder" = "确认您的新Matrix账户密码";
 "auth_invalid_login_param" = "用户名和/或密码无效";
 "auth_invalid_user_name" = "用户名只能包含字母、数字、短横（-）与下划线（_）";
 "auth_invalid_password" = "密码太短（至少 6 个字符）";
@@ -62,21 +62,21 @@
 "auth_missing_email_or_phone" = "缺少电子邮箱地址或电话号码";
 "auth_password_dont_match" = "密码不匹配";
 "auth_username_in_use" = "用户名被占用";
-"auth_forgot_password" = "忘记密码？";
+"auth_forgot_password" = "忘记了Matrix账户密码？";
 "auth_use_server_options" = "使用自定义服务器选项（高级）";
 "auth_email_validation_message" = "请检查我们发给您的电子邮件以继续注册";
 "auth_msisdn_validation_title" = "等待验证中";
 "auth_msisdn_validation_message" = "我们通过短信向您发送了一条验证码，请在下方输入它。";
 "auth_msisdn_validation_error" = "无法验证此手机号。";
 "auth_recaptcha_message" = "此主服务器想确定您不是机器人";
-"auth_reset_password_message" = "为了重置您的密码，请输入与您账户关联的邮箱地址：";
+"auth_reset_password_message" = "为了重置您的Matrix账户密码，请输入与您账户关联的邮箱地址：";
 "auth_reset_password_missing_email" = "必须输入与您的账户关联的邮箱地址。";
 "auth_reset_password_missing_password" = "必须输入新的密码。";
 "auth_reset_password_email_validation_message" = "一封邮件已经发送到 %@。当您已经按照其中的链接操作以后，请点下面。";
 "auth_reset_password_next_step_button" = "我已经验证了我的邮箱地址";
 "auth_reset_password_error_unauthorized" = "验证邮箱地址失败：请确认您已经点击了邮件里的链接";
 "auth_reset_password_error_not_found" = "您的邮箱地址可能没有与此主服务器上的 Matrix ID 绑定。";
-"auth_reset_password_success_message" = "您的密码已重置。\n\n您的所有会话都会被登出并且不会收到推送通知。要想重新收到通知，请在每个设备上重新登录。";
+"auth_reset_password_success_message" = "您的Matrix账户密码已重置。\n\n您的所有会话都会被登出并且不会收到推送通知。要想重新收到通知，请在每个设备上重新登录。";
 "auth_add_email_and_phone_warning" = "在 API 出现之前，还不支持使用邮箱地址或手机号码直接注册。只有手机号码会和此账户绑定。您可以在设置中添加邮箱地址。";
 // Chat creation
 "room_creation_title" = "新的聊天";
@@ -125,7 +125,7 @@
 "directory_cell_title" = "浏览目录";
 "directory_cell_description" = "%tu 个房间";
 "directory_search_results_title" = "浏览目录结果";
-"directory_search_results_more_than" = ">找到了%tu个 %@的搜索结果";
+"directory_search_results_more_than" = ">找到了%1$tu个%2$@的搜索结果";
 "directory_searching_title" = "正在搜索目录…";
 "directory_search_fail" = "获取数据失败";
 // Contacts
@@ -198,7 +198,7 @@
 "room_event_action_redact" = "移除";
 "room_event_action_more" = "移动";
 "room_event_action_share" = "分享";
-"room_event_action_permalink" = "永久链接";
+"room_event_action_permalink" = "复制消息的链接";
 "room_event_action_view_source" = "查看源数据";
 "room_event_action_report" = "报告内容";
 "room_event_action_report_prompt_reason" = "报告内容的原因";
@@ -661,10 +661,10 @@
 "auth_add_email_message_2" = "设置邮箱以便恢复账户，并且之后可选让认识的人找到你。";
 "auth_add_phone_message_2" = "设置电话号码，并且之后可选让认识的人找到你。";
 "auth_add_email_phone_message_2" = "设置邮箱以便恢复账户。之后可选用邮箱或者电话号码让认识的人找到你。";
-"auth_email_is_required" = "未设置身份认证服务器，所以你不能添加邮箱地址来重设你的密码。";
-"auth_phone_is_required" = "未设置身份认证服务器，所以你不能添加电话号码来重设你的密码。";
-"auth_forgot_password_error_no_configured_identity_server" = "未设置身份认证服务器：添加服务器以重设你的密码。";
-"auth_reset_password_error_is_required" = "未设置身份认证服务器：在服务器选项中添加以便重设你的密码。";
+"auth_email_is_required" = "未配置身份服务器，所以你无法添加电子邮件地址以在以后重设你的Matrix账户密码。";
+"auth_phone_is_required" = "未配置身份服务器，所以你无法添加电话号码以在以后重设你的Matrix账户密码。";
+"auth_forgot_password_error_no_configured_identity_server" = "未配置身份服务器：添加一个以重设你的Matrix账户密码。";
+"auth_reset_password_error_is_required" = "未配置身份服务器：在服务器选项中添加以便重设你的Matrix账户密码。";
 "auth_softlogout_signed_out" = "你已登出";
 "auth_softlogout_sign_in" = "登录";
 "auth_softlogout_reason" = "你的主服务器（%1$@）管理员已将你的账户%2$@（%3$@）登出。";
@@ -2166,3 +2166,52 @@
 "onboarding_display_name_title" = "选择显示名称";
 "onboarding_personalization_skip" = "跳过此步";
 "onboarding_personalization_save" = "保存并继续";
+"room_invites_empty_view_information" = "这是你的邀请出现的地方。";
+"space_selector_empty_view_title" = "尚无空间。";
+"space_selector_empty_view_information" = "空间是把房间和人分组的新方式。创建一个空间来开始。";
+"space_selector_create_space" = "创建空间";
+"space_detail_nav_title" = "空间详情";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "会话";
+"password_validation_error_contain_symbol" = "包含一个符号。";
+"password_validation_error_contain_number" = "包含一个数字。";
+"password_validation_error_contain_uppercase_letter" = "包含一个大写字母。";
+"password_validation_error_contain_lowercase_letter" = "包含一个小写字母。";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "不超过%d个字符。";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "至少%d个字符。";
+"password_validation_error_header" = "指定的密码不满足以下标准：";
+
+// MARK: Password Validation
+"password_validation_info_header" = "你的密码应该满足以下标准：";
+"authentication_recaptcha_title" = "你是人吗？";
+"authentication_terms_policy_url_error" = "无法找到选择的政策。请稍后再试。";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "请阅读%@的条款和政策";
+"authentication_terms_title" = "隐私政策";
+"authentication_verify_msisdn_invalid_phone_number" = "无效的电话号码";
+"authentication_verify_msisdn_waiting_button" = "重发代码";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "代码已发送到%@";
+"authentication_verify_msisdn_waiting_title" = "验证你的电话号码";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "确认代码";
+"authentication_verify_msisdn_text_field_placeholder" = "电话号码";
+"authentication_verify_msisdn_input_title" = "输入你的电话号码";
+"authentication_choose_password_not_verified_message" = "检查你的收件箱";
+"authentication_choose_password_not_verified_title" = "电子邮件未验证";
+"authentication_choose_password_submit_button" = "重置密码";
+"authentication_choose_password_text_field_placeholder" = "新密码";
+"authentication_choose_password_input_message" = "确保它是8个字符或更多";
+"authentication_choose_password_input_title" = "选择新密码";
+"authentication_forgot_password_waiting_button" = "重发电子邮件";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "按照发送到%@的说明操作";
+"authentication_forgot_password_waiting_title" = "检查你的电子邮件。";
+"authentication_forgot_password_text_field_placeholder" = "电子邮件";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@将给你发一条验证链接";
+"authentication_forgot_password_input_title" = "输入你的电子邮件";
+"authentication_verify_email_waiting_button" = "重发电子邮件";

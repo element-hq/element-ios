@@ -98,7 +98,7 @@
 
 // Accessibility
 "accessibility_checkbox_label" = "centang";
-"callbar_only_single_active_group" = "Ketuk untuk Bergabung panggilan grup (%@)";
+"callbar_only_single_active_group" = "Ketuk untuk bergabung panggilan grup (%@)";
 "joined" = "Bergabung";
 "collapse" = "tutup";
 "store_promotional_text" = "Aplikasi perpesanan dan kolaborasi yang menjaga privasi, pada jaringan terbuka. Terdesentralisasi untuk Anda kendali. Tidak ada penambangan data, tidak ada pintu belakang dan tidak ada akses pihak ketiga.";
@@ -486,7 +486,7 @@
 "media_type_accessibility_video" = "Video";
 "media_type_accessibility_audio" = "Audio";
 "media_type_accessibility_image" = "Gambar";
-"room_join_group_call" = "Gabung";
+"room_join_group_call" = "Bergabung";
 "room_accessibility_call" = "Panggilan";
 "room_accessibility_upload" = "Unggah";
 "room_accessibility_integrations" = "Integrasi";
@@ -677,7 +677,7 @@
 // Crash report
 "no_voip" = "%@ sedang memanggil Anda tetapi %@ belum mendukung panggilan.\nAnda dapat mengabaikan notifikasi ini dan jawab panggilannya di perangkat yang lain atau menolak panggilannya.";
 "call_no_stun_server_error_message_1" = "Mohon hubungi administrator homeserver %@ Anda untuk mengatur sebuah server TURN supaya panggilan dapat bekerja dengan handal.";
-"rage_shake_prompt" = "Anda tampaknya menggoyangkan telepon dengan frustrasi. Apakah Anda ingin mengirimkan laporan bug?";
+"rage_shake_prompt" = "Sepertinya Anda mengguncang ponsel akibat emosi. Apakah Anda ingin mengirim sebuah laporan kutu?";
 "bug_report_prompt" = "Aplikasi telah crash terakhir kali. Apakah Anda ingin mengirimkan laporan crash?";
 "room_notifs_settings_encrypted_room_notice" = "Harap dicatat bahwa notifikasi sebutan & kata kunci tidak tersedia di ruang terenkripsi di ponsel.";
 "room_details_addresses_disable_main_address_prompt_msg" = "Anda tidak akan memiliki alamat utama yang ditentukan. Alamat utama default untuk ruangan ini akan dipilih secara acak";
@@ -1458,7 +1458,7 @@
 "room_event_action_delete_confirmation_message" = "Apakah Anda yakin untuk menghapus pesan yang tidak terkirim ini?";
 "room_event_action_report_prompt_ignore_user" = "Apakah Anda ingin menyembunyikan semua pesan dari pengguna ini?";
 "room_conference_call_no_power" = "Anda membutuhkan izin untuk mengelola panggilan konferensi di ruangan ini";
-"room_ongoing_conference_call_with_close" = "Panggilan konferensi berjalan. Bergabung sebagai %@ atau %@. %@ dia.";
+"room_ongoing_conference_call_with_close" = "Panggilan konferensi berjalan. Bergabung sebagai %@ atau %@. %@.";
 "room_ongoing_conference_call" = "Panggilan konferensi berjalan. Bergabung sebagai %@ atau %@.";
 "room_unsent_messages_cancel_message" = "Apakah Anda yakin untuk menghapus semua pesan yang tidak terkirim di ruangan ini?";
 "room_unsent_messages_unknown_devices_notification" = "Pesan gagal dikirim karena sesi yang tidak dikenal yang ada.";
@@ -1548,8 +1548,8 @@
 "security_settings_crosssigning_info_trusted" = "Penandatanganan silang diaktifkan. Anda dapat mempercayai pengguna lain dan sesi lain Anda berbasis penandatanganan silang tetapi Anda tidak dapat menandatangani sesi ini karena tidak memiliki kunci privat penandatanganan silang. Keamanan lengkap sesi ini.";
 "settings_discovery_three_pids_management_information_part1" = "Kelola alamat email atau nomor telepon apa saja yang pengguna lain dapat menggunakan untuk menemukan Anda dan menggunakannya untuk mengundang Anda ke ruangan. Tambahkan atau hapus alamat email atau nomor telepon dari daftar ini di ";
 "room_preview_unlinked_email_warning" = "Undangan ini telah dikirim ke %@, yang tidak diasosiasikan dengan akun ini. Anda mungkin ingin masuk ke akun yang lain, atau tambahkan email ini ke akun Anda.";
-"unknown_devices_alert" = "Ruangan ini berisi sesi tidak dikenal yang belum diverifikasi.\nIni berarti tidak ada jaminan bahwa sesi tersebut adalah milik pengguna yang mereka klaim.\nKami menyarankan Anda memverifikasinya untuk setiap sesi sebelum melanjutkan, tetapi Anda dapat mengirim ulang pesan tanpa memverifikasi jika Anda mau.";
-"room_warning_about_encryption" = "Enkripsi ujung-ke-ujung masih dalam beta dan mungkin tidak dapat dihandalkan.\n\nAnda seharusnya tidak mempercayainya dulu untuk mengamankan data.\n\nPerangkat masih belum dapat mendekripsi riwayat sebelum mereka bergabung ke ruangannya.\n\nPesan terenkripsi masih belum terlihat di client yang belum mengimplementasikan enkripsi.";
+"unknown_devices_alert" = "Ruangan ini berisi sesi tidak dikenal yang belum diverifikasi.\nIni berarti tidak ada jaminan bahwa sesi tersebut adalah milik pengguna yang mereka klaim.\nKami menyarankan Anda memverifikasinya untuk setiap sesi sebelum melanjutkan, tetapi Anda dapat mengirim ulang pesan tanpa memverifikasi jika Anda ingin.";
+"room_warning_about_encryption" = "Enkripsi ujung-ke-ujung masih dalam beta dan mungkin tidak dapat diandalkan.\n\nAnda seharusnya tidak mempercayainya dulu untuk mengamankan data.\n\nPerangkat masih belum dapat mendekripsi riwayat sebelum mereka bergabung ke ruangannya.\n\nPesan terenkripsi masih belum terlihat di klen yang belum mengimplementasikan enkripsi.";
 "auth_add_email_and_phone_warning" = "Pendaftaran dengan email dan nomor telepon sekaligus belum didukung sampai API-nya sudah ada. Hanya nomor telepon yang akan diperhitungkan. Anda dapat menambahkan email Anda di profil Anda di pengaturan.";
 "auth_reset_password_success_message" = "Kata sandi akun Matrix Anda telah diatur ulang.\n\nAnda telah dikeluarkan dari semua sesi dan tidak akan menerima lagi notifikasi push. Untuk mengaktifkan ulang notifikasi, masuk ulang di setiap perangkat.";
 "spaces_add_rooms_coming_soon_title" = "Penambahan ruangan akan segera datang";
@@ -2572,7 +2572,7 @@
 "authentication_recaptcha_title" = "Apakah Anda seorang manusia?";
 "authentication_terms_policy_url_error" = "Tidak dapat menemukan kebijakan yang dipilih. Mohon coba lagi nanti.";
 "authentication_terms_message" = "Mohon baca ketentuan dan kebijakan %@";
-"authentication_terms_title" = "Kebijakan server";
+"authentication_terms_title" = "Kebijakan privasi";
 "authentication_verify_msisdn_invalid_phone_number" = "Nomor telepon tidak valid";
 "authentication_verify_msisdn_waiting_button" = "Kirim ulang kode";
 /* The placeholder will show the phone number that was entered. */
@@ -2658,3 +2658,37 @@
 "spaces_subspace_creation_visibility_title" = "Tipe subspace apa yang Anda ingin buat?";
 "spaces_create_subspace_title" = "Buat sebuah subspace";
 "spaces_add_subspace_title" = "Buat space dalam %@";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Sesi";
+"space_invite_nav_title" = "Undangan space";
+"space_detail_nav_title" = "Rincian space";
+"space_selector_create_space" = "Buat Space";
+"space_selector_empty_view_information" = "Space adalah cara untuk mengelompokkan ruangan dan orang. Buat sebuah space untuk memulai.";
+"space_selector_empty_view_title" = "Belum ada space.";
+"room_invites_empty_view_information" = "Ini di mana undangan Anda muncul.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Belum ada yang baru.";
+"all_chats_onboarding_try_it" = "Coba";
+"all_chats_onboarding_title" = "Apa yang baru";
+"all_chats_onboarding_page_message3" = "Ketuk profil Anda untuk memberitahukan kami bagaimana menurut Anda.";
+"all_chats_onboarding_page_title3" = "Berikan Masukan";
+"all_chats_onboarding_page_message2" = "Akses Space Anda (di kiri bawah) dengan lebih cepat dan lebih mudah dari sebelumnya.";
+"all_chats_onboarding_page_title2" = "Akses Space";
+"all_chats_onboarding_page_message1" = "Untuk membuat Element Anda lebih sederhana, fitur tab sekarang opsional. Kelola menggunakan menu kanan atas.";
+"all_chats_onboarding_page_title1" = "Selamat datang di tampilan yang baru!";
+"all_chats_nothing_found_placeholder_message" = "Coba atur pencarian Anda.";
+"all_chats_nothing_found_placeholder_title" = "Tidak ada yang ditemukan.";
+"all_chats_empty_unreads_placeholder_message" = "Ini di mana pesan Anda yang belum dibaca akan ditampilkan, ketika Anda menerimanya.";
+"all_chats_empty_list_placeholder_title" = "Anda telah melihat semuanya.";
+"all_chats_empty_view_information" = "Aplikasi obrolan aman untuk tim, teman, dan organisasi. Buat sebuah obrolan, atau bergabung ke ruangan yang sudah ada, untuk memulai.";
+"all_chats_empty_space_information" = "Space adalah cara baru untuk mengelompokkan ruangan dan orang. Tambahkan ruangan yang sudah ada, atau buat yang baru, dengan tombol di kanan bawah.";
+"all_chats_empty_view_title" = "%@\nterlihat kosong.";
+"spaces_explore_rooms_format" = "Jelajahi %@";
+
+// User sessions management
+"user_sessions_settings" = "Kelola sesi";
+"invite_to" = "Undang ke %@";

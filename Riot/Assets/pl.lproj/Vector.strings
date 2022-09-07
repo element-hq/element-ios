@@ -2414,7 +2414,7 @@
 "authentication_recaptcha_title" = "Jesteś człowiekiem?";
 "authentication_terms_policy_url_error" = "Nie można znaleźć wybranych reguł lub zasad. Spróbuj ponownie później.";
 "authentication_terms_message" = "Przeczytaj warunki i zasady %@";
-"authentication_terms_title" = "Zasady serwera";
+"authentication_terms_title" = "Polityki prywatności";
 "authentication_verify_msisdn_invalid_phone_number" = "Nieprawidłowy numer telefonu";
 "authentication_verify_msisdn_waiting_button" = "Ponownie wyślij kod";
 /* The placeholder will show the phone number that was entered. */
@@ -2515,3 +2515,67 @@
 "authentication_choose_password_not_verified_message" = "Sprawdź swoją skrzynkę odbiorczą";
 "authentication_choose_password_not_verified_title" = "E-mail niezweryfikowany";
 "authentication_server_info_title_login" = "Miejsce twoich konwersacji";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Sesje";
+"location_sharing_map_loading_error" = "Nie udało się załadować mapy\nTen serwer domowy nie jest skonfigurowany do wyświetlania map";
+"space_detail_nav_title" = "Szczegóły przestrzeni";
+"space_selector_create_space" = "Utwórz przestrzeń";
+"space_selector_empty_view_information" = "Przestrzenie to sposób na grupowanie pokojów i osób. Utwórz przestrzeń, aby rozpocząć.";
+"space_selector_empty_view_title" = "Nie masz jeszcze żadnych przestrzeni.";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Moje przestrzenie";
+"room_invites_empty_view_information" = "Tutaj pojawią się twoje zaproszenia.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Nic nowego.";
+"all_chats_onboarding_try_it" = "Wypróbuj";
+"all_chats_onboarding_title" = "Co nowego";
+"all_chats_onboarding_page_message3" = "Dotknij swojego profilu by poinformować nas, co o tym sądzisz.";
+"all_chats_onboarding_page_title3" = "Prześlij opinię";
+"all_chats_onboarding_page_message2" = "Uzyskaj dostęp do twoich przestrzeni (lewy dolny róg) szybciej i prościej niż kiedykolwiek.";
+"all_chats_onboarding_page_message1" = "Aby uprościć korzystanie z Element, karty są teraz opcjonalne. Możesz nimi zarządzać w menu w prawym górnym rogu.";
+"all_chats_onboarding_page_title1" = "Witaj w nowym widoku!";
+"all_chats_edit_menu_space_settings" = "Ustawienia przestrzeni";
+"all_chats_edit_menu_leave_space" = "Opuść %@";
+"all_chats_user_menu_settings" = "Ustawienia użytkownika";
+"room_recents_recently_viewed_section" = "Ostatnio wyświetlane";
+"all_chats_nothing_found_placeholder_message" = "Spróbuj poprawić swoje wyszukiwanie.";
+"all_chats_nothing_found_placeholder_title" = "Nic nie znaleziono.";
+"all_chats_empty_unreads_placeholder_message" = "W tym miejscu pojawią się nieprzeczytane wiadomości, gdy będziesz takie mieć.";
+"all_chats_empty_list_placeholder_title" = "Jesteś na bieżąco.";
+"all_chats_empty_view_information" = "Bezpieczny, wielofunkcyjny komunikator dla zespołów, znajomych i organizacji. Utwórz rozmowę, lub dołącz do istniejącego pokoju, aby rozpocząć.";
+"all_chats_empty_space_information" = "Przestrzenie to nowy sposób na grupowanie pokojów i osób. Dodaj istniejący pokój, lub utwórz nowy, korzystając z przycisku w prawym dolnym rogu.";
+"all_chats_empty_view_title" = "%@\nwygląda pusto.";
+"all_chats_all_filter" = "Wszystkie";
+"all_chats_edit_layout_alphabetical_order" = "Sortuj alfabetycznie";
+"all_chats_edit_layout_activity_order" = "Sortuj według aktywności";
+"all_chats_edit_layout_show_filters" = "Pokaż filtry";
+"all_chats_edit_layout_show_recents" = "Pokaż ostatnie";
+"all_chats_edit_layout_sorting_options_title" = "Sortuj wiadomości według";
+"all_chats_edit_layout_pin_spaces_title" = "Przypnij swoje przestrzenie";
+"all_chats_edit_layout_add_filters_message" = "Automatyczne filtrowanie wiadomości do kategorii jakie wybierzesz";
+"all_chats_edit_layout_add_filters_title" = "Przefiltruj swoje wiadomości";
+"all_chats_edit_layout_add_section_message" = "Przypnij sekcje na ekranie głównym dla szybkiego dostępu";
+"all_chats_edit_layout_add_section_title" = "Dodaj sekcję do ekranu głównego";
+"all_chats_edit_layout_unreads" = "Nieprzeczytane";
+"all_chats_edit_layout_recents" = "Ostatnie";
+"all_chats_edit_layout" = "Ustawienia wyglądu";
+"all_chats_section_title" = "Rozmowy";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Wszystkie rozmowy";
+"spaces_subspace_creation_visibility_message" = "Utworzona przestrzeń zostanie dodana do %@.";
+"spaces_subspace_creation_visibility_title" = "Jakiego rodzaju podprzestrzeń chcesz utworzyć?";
+"spaces_explore_rooms_format" = "Przeglądaj %@";
+"spaces_create_subspace_title" = "Utwórz podprzestrzeń";
+"spaces_add_subspace_title" = "Utwórz przestrzeń w %@";
+
+// User sessions management
+"user_sessions_settings" = "Zarządzaj sesjami";
+"invite_to" = "Zaproś do %@";

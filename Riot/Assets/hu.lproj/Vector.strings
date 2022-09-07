@@ -2365,7 +2365,7 @@
 "authentication_recaptcha_title" = "Ember vagy?";
 "authentication_terms_policy_url_error" = "A kiválasztott szabály nem található. Kérjük próbálja később.";
 "authentication_terms_message" = "Olvasd el %@ felhasználói feltételeit";
-"authentication_terms_title" = "Szerver szabályok";
+"authentication_terms_title" = "Adatvédelmi irányelvek";
 "authentication_verify_msisdn_invalid_phone_number" = "Érvénytelen telefonszám";
 "authentication_verify_msisdn_waiting_button" = "Kód újraküldése";
 /* The placeholder will show the phone number that was entered. */
@@ -2451,3 +2451,37 @@
 "spaces_add_subspace_title" = "Tér készítés itt: %@";
 "authentication_choose_password_not_verified_message" = "Nézd meg a bejövő e-mailjeidet";
 "authentication_choose_password_not_verified_title" = "E-mail nincs ellenőrizve";
+"all_chats_empty_view_information" = "A minden-egyben biztonságos csevegő alkalmazás csapatoknak, barátoknak és szervezeteknek. Kezd egy csevegést vagy lépj be egy meglévő szobába kezdésnek.";
+"all_chats_empty_space_information" = "Szobák és emberek csoportokba rendezésének új mondja a terek használata. Létező szoba hozzáadása vagy új készítése a jobb alsó gombbal.";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Munkamenetek";
+"space_invite_nav_title" = "Tér meghívó";
+"space_detail_nav_title" = "Tér részletek";
+"space_selector_create_space" = "Tér készítése";
+"space_selector_empty_view_information" = "Terekkel lehet szobákat és személyeket csoportokba rendezni. Készíts egyet indulásnak.";
+"space_selector_empty_view_title" = "Nincsenek terek egyenlőre.";
+"room_invites_empty_view_information" = "Itt jelennek meg a meghívóid.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Semmi új.";
+"all_chats_onboarding_try_it" = "Próbáld ki";
+"all_chats_onboarding_title" = "Újdonságok";
+"all_chats_onboarding_page_message3" = "Koppints a profilodra és mond el mit gondolsz.";
+"all_chats_onboarding_page_title3" = "Visszajelzés adása";
+"all_chats_onboarding_page_message2" = "A terekhez való hozzáférés (balra lent) gyorsabb és egyszerűbb mint valaha.";
+"all_chats_onboarding_page_title2" = "Hozzáférés a terekhez";
+"all_chats_onboarding_page_message1" = "Element egyszerűsítéséhez a lapok mostantól választhatók. Beállítani a jobb felső menüből lehet.";
+"all_chats_onboarding_page_title1" = "Üdv az új kinézetben!";
+"all_chats_nothing_found_placeholder_message" = "Próbáld meg a keresést módosítani.";
+"all_chats_nothing_found_placeholder_title" = "Nincs találat.";
+"all_chats_empty_unreads_placeholder_message" = "Ez az a hely ahol az olvasatlan üzeneteid megjelennek, ha lesznek.";
+"all_chats_empty_list_placeholder_title" = "Mindent elolvastál.";
+"all_chats_empty_view_title" = "%@\nkicsit üresnek tűnik.";
+"spaces_explore_rooms_format" = "Felfedezés itt: %@";
+
+// User sessions management
+"user_sessions_settings" = "Munkamenetek kezelése";
+"invite_to" = "Meghívó ide: %@";
