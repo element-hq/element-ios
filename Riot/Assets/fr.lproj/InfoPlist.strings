@@ -1,8 +1,8 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "L’appareil photo est utilisé pour prendre des photos, des vidéos et pour passer des appels vidéo.";
-"NSPhotoLibraryUsageDescription" = "La photothèque est utilisée pour envoyer des photos et des vidéos.";
+"NSCameraUsageDescription" = "L’appareil photo est utilisé les appels vidéo ainsi que prendre et envoyer des photos et vidéos.";
+"NSPhotoLibraryUsageDescription" = "Autorisez l’accès à la photothèque pour envoyer des photos et des vidéos.";
 "NSMicrophoneUsageDescription" = "Element doit avoir accès au microphone pour passer des appels, capturer des vidéos et enregistrer des messages vocaux.";
-"NSContactsUsageDescription" = "Element affichera vos contacts pour que vous puissiez les inviter à parler.";
+"NSContactsUsageDescription" = "Ils seront partagés avec votre serveur d’identité pour que vous puissiez inviter vos contacts à utiliser Matrix.";
 "NSCalendarsUsageDescription" = "Voir vos rendez-vous dans l’application.";
 "NSFaceIDUsageDescription" = "Face ID est utilisé pour accéder à votre application.";
 "NSLocationWhenInUseUsageDescription" = "Element doit accéder à votre emplacement pour vous permettre de la partager aux autres utilisateurs sur une carte.";
