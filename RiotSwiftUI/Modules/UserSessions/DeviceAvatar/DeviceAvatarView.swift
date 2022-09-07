@@ -24,10 +24,8 @@ struct DeviceAvatarView: View {
     
     var viewData: DeviceAvatarViewData
         
-    var avatarSize: Float = 40.0
-    var badgeSize: Float {
-        return 24
-    }
+    var avatarSize: CGFloat = 40
+    var badgeSize: CGFloat = 24
     
     var body: some View {
         ZStack {
