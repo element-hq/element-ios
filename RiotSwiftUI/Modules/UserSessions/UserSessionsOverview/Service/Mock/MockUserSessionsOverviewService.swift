@@ -37,6 +37,6 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
             UserSessionInfo(sessionId: "3", sessionName: "Android", deviceType: .mobile, isVerified: false, lastSeenIP: "3.0.0.3", lastSeenTimestamp: (Date().timeIntervalSince1970 - 10))
         ]
         
-        self.lastOverviewData = UserSessionsOverviewData.init(currentSessionInfo: currentSessionInfo, unverifiedSessionsInfo: unverifiedSessionsInfo, inactiveSessionsInfo: inactiveSessionsInfo, otherSessionsInfo: otherSessionsInfo)
+        self.lastOverviewData = UserSessionsOverviewData(currentSessionInfo: currentSessionInfo, unverifiedSessionsInfo: unverifiedSessionsInfo, inactiveSessionsInfo: inactiveSessionsInfo, otherSessionsInfo: otherSessionsInfo)
     }
 }
