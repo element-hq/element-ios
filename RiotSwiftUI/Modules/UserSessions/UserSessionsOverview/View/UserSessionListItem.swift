@@ -69,24 +69,25 @@ struct UserSessionListItem: View {
     // MARK: - Body
     
     var body: some View {
-        HStack {
+        Button(action: { onBackgroundTap?(self.viewData.sessionId)
+        }) {
             HStack(spacing: 18) {
                 DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(sessionTitle)
                         .font(theme.fonts.bodySB)
                         .foregroundColor(theme.colors.primaryContent)
+                        .multilineTextAlignment(.leading)
+                    
                     Text(sessionDetailsText)
                         .font(theme.fonts.caption1)
                         .foregroundColor(theme.colors.secondaryContent)
+                        .multilineTextAlignment(.leading)
                 }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 15)
-        .onTapGesture {
-            onBackgroundTap?(self.viewData.sessionId)
-        }
     }
     
     // MARK: - Private
