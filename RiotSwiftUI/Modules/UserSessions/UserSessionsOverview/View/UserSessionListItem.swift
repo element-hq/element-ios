@@ -18,6 +18,15 @@ import SwiftUI
 
 struct UserSessionListItem: View {
     
+    // MARK: - Constants
+    
+    private enum LayoutConstants {
+        static let horizontalPadding: CGFloat = 15
+        static let verticalPadding: CGFloat = 16
+        static let avatarWidth: CGFloat = 40
+        static let avatarRightMargin: CGFloat = 18
+    }
+    
     // MARK: - Properties
     
     // MARK: Private
@@ -35,23 +44,34 @@ struct UserSessionListItem: View {
     var body: some View {
         Button(action: { onBackgroundTap?(self.viewData.sessionId)
         }) {
-            HStack(spacing: 18) {
-                DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(viewData.sessionName)
-                        .font(theme.fonts.bodySB)
-                        .foregroundColor(theme.colors.primaryContent)
-                        .multilineTextAlignment(.leading)
-                    
-                    Text(viewData.sessionDetails)
-                        .font(theme.fonts.caption1)
-                        .foregroundColor(theme.colors.secondaryContent)
-                        .multilineTextAlignment(.leading)
+            VStack(alignment: .leading, spacing: LayoutConstants.verticalPadding) {
+                HStack(spacing: LayoutConstants.avatarRightMargin) {
+                    DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(viewData.sessionName)
+                            .font(theme.fonts.bodySB)
+                            .foregroundColor(theme.colors.primaryContent)
+                            .multilineTextAlignment(.leading)
+                        
+                        Text(viewData.sessionDetails)
+                            .font(theme.fonts.caption1)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .multilineTextAlignment(.leading)
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, LayoutConstants.horizontalPadding)
+                
+                // Separator
+                // Note: Separator leading is matching the text leading, we could use alignment guide in the future
+                Rectangle()
+                    .fill(theme.colors.quinaryContent)
+                    .frame(maxWidth: .infinity, maxHeight: 1, alignment: .trailing)
+                    .padding(.leading, LayoutConstants.horizontalPadding + LayoutConstants.avatarRightMargin + LayoutConstants.avatarWidth)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 15)
+        .padding(.top, LayoutConstants.verticalPadding)
     }
 }
 
@@ -60,7 +80,7 @@ struct UserSessionListPreview: View {
     let userSessionsOverviewService: UserSessionsOverviewServiceProtocol = MockUserSessionsOverviewService()
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading) {
             ForEach(userSessionsOverviewService.lastOverviewData.otherSessionsInfo) { userSessionInfo in
                 let viewData = UserSessionListItemViewData(userSessionInfo: userSessionInfo)
 
@@ -68,9 +88,7 @@ struct UserSessionListPreview: View {
 
                 })
             }
-            Spacer()
         }
-        .padding()
     }
 }
 
