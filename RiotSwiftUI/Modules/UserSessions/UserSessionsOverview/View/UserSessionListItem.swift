@@ -72,7 +72,8 @@ struct UserSessionListItem: View {
         HStack {
             HStack(spacing: 18) {
                 DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
-                VStack(alignment: .leading, spacing: 2) {                    Text(sessionTitle)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(sessionTitle)
                         .font(theme.fonts.bodySB)
                         .foregroundColor(theme.colors.primaryContent)
                     Text(sessionDetailsText)
