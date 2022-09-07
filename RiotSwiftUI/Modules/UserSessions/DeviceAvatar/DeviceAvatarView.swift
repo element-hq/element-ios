@@ -28,33 +28,26 @@ struct DeviceAvatarView: View {
     var badgeSize: CGFloat = 24
     
     var body: some View {
-        ZStack {
-            VStack {
-                VStack(alignment: .center) {
-                    viewData.deviceType.image
-                }
-                .padding()
+        ZStack(alignment: .bottomTrailing) {
+            
+            // Device image
+            VStack(alignment: .center) {
+                viewData.deviceType.image
             }
+            .padding()
             .frame(maxWidth: CGFloat(avatarSize), maxHeight: CGFloat(avatarSize))
             .background(theme.colors.system)
             .clipShape(Circle())
             
+            // Verification badge
             if let isVerified = viewData.isVerified {
                 
-                VStack(alignment: .trailing) {
-                    Spacer()
-                    HStack(alignment: .bottom) {
-                        Spacer()
-                        VStack() {
-                            Image(isVerified ? Asset.Images.userSessionVerified.name : Asset.Images.userSessionUnverified.name)
-                        }
-                        .frame(maxWidth: CGFloat(badgeSize), maxHeight: CGFloat(badgeSize))
-                        .shapedBorder(color: theme.colors.system, borderWidth: 1, shape: Circle())
-                        .background(theme.colors.background)
-                        .clipShape(Circle())
-                    }
-                    .offset(x: 10, y: 8)
-                }
+                Image(isVerified ? Asset.Images.userSessionVerified.name : Asset.Images.userSessionUnverified.name)
+                .frame(maxWidth: CGFloat(badgeSize), maxHeight: CGFloat(badgeSize))
+                .shapedBorder(color: theme.colors.system, borderWidth: 1, shape: Circle())
+                .background(theme.colors.background)
+                .clipShape(Circle())
+                .offset(x: 10, y: 8)
             }
         }
         .frame(maxWidth: CGFloat(avatarSize), maxHeight: CGFloat(avatarSize))
