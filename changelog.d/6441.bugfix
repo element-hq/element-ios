@@ -1,1 +1,0 @@
-Fixed incorrect iOS 16 timeline item text height calculations leading to empty gaps.
