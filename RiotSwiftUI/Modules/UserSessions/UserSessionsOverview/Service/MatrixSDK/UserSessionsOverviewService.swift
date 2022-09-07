@@ -60,7 +60,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     private func setupInitialOverviewData() {
         let currentSessionInfo = self.getCurrentUserSessionInfoFromCache()
         
-        self.lastOverviewData =  UserSessionsOverviewData(currentSessionInfo: currentSessionInfo, unverifiedSessionsInfo: [], inactiveSessionsInfo: [], otherSessionsInfo: [])
+        self.lastOverviewData = UserSessionsOverviewData(currentSessionInfo: currentSessionInfo, unverifiedSessionsInfo: [], inactiveSessionsInfo: [], otherSessionsInfo: [])
     }
     
     private func getCurrentUserSessionInfoFromCache() -> UserSessionInfo? {
