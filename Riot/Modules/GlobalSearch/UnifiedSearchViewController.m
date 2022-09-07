@@ -146,7 +146,7 @@
     
     [self updateSearch];
     
-    if (BuildSettings.isNewAppLayoutActivated)
+    if (BuildSettings.newAppLayoutEnabled)
     {
         [self.searchBar vc_searchTextField].backgroundColor = nil;
         [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeAutomatic];

@@ -14,13 +14,16 @@
 // limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-class AllChatsViewControllerWithBannerWrapperViewController: HomeViewControllerWithBannerWrapperViewController {
-    
-    // MARK: - MasterTabBarItemDisplayProtocol
-    
-    override var masterTabBarItemTitle: String {
-        return VectorL10n.allChatsTitle
+extension UITextView {
+    /// Invalidates display for all text attachment inside the text view.
+    @objc func vc_invalidateTextAttachmentsDisplay() {
+        self.attributedText.enumerateAttribute(
+            .attachment,
+            in: NSRange(location: 0, length: self.attributedText.length),
+            options: []) { _, range, _ in
+                self.layoutManager.invalidateDisplay(forCharacterRange: range)
+            }
     }
 }

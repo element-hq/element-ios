@@ -204,6 +204,15 @@ platform :ios do
       output_files: "riot.swiftui.ui.test.html,riot.swiftui.ui.test.report.junit.xml",
       open_report: !is_ci?
     )
+
+    slather(
+      cobertura_xml: true,
+      output_directory: "./build/test",
+      workspace: "Riot.xcworkspace",
+      proj: "Riot.xcodeproj",
+      scheme: "RiotSwiftUITests",
+      binary_basename: "RiotSwiftUI",
+    )
   end
 
 

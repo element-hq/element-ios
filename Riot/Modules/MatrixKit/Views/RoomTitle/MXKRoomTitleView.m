@@ -84,6 +84,10 @@
         // Replace empty string by nil : avoid having the placeholder 'Room name" when there is no displayname
         self.displayNameTextField.text = (_mxRoom.summary.displayname.length) ? _mxRoom.summary.displayname : nil;
     }
+    else if (_mxUser)
+    {
+        self.displayNameTextField.text = (_mxUser.displayname.length) ? _mxUser.displayname : nil;
+    }
     else
     {
         self.displayNameTextField.text = [VectorL10n roomPleaseSelect];
@@ -145,6 +149,16 @@
     }
     // Force refresh
     [self refreshDisplay];
+}
+
+- (void)setMxUser:(MXUser *)mxUser
+{
+    _mxUser = mxUser;
+    
+    if (mxUser) {
+        // Force refresh
+        [self refreshDisplay];
+    }
 }
 
 - (void)setEditable:(BOOL)editable

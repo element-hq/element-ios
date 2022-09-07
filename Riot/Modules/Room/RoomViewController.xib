@@ -150,7 +150,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QHs-rM-UU8" userLabel="scroll badge" customClass="BadgeLabel" customModule="Element" customModuleProvider="target">
-                    <rect key="frame" x="331.5" y="556" width="17.5" height="16.5"/>
+                    <rect key="frame" x="336.5" y="557.5" width="7.5" height="13.5"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -233,7 +233,7 @@
     </objects>
     <designables>
         <designable name="QHs-rM-UU8">
-            <size key="intrinsicContentSize" width="17.5" height="16.5"/>
+            <size key="intrinsicContentSize" width="7.5" height="13.5"/>
         </designable>
     </designables>
     <resources>

@@ -338,6 +338,10 @@ extension Analytics: MXAnalyticsDelegate {
         capture(event: event)
     }
     
+    func startDurationTracking(forName name: String, operation: String) -> StopDurationTracking {
+        return monitoringClient.startPerformanceTracking(name: name, operation: operation)
+    }
+    
     func trackCallStarted(withVideo isVideo: Bool, numberOfParticipants: Int, incoming isIncoming: Bool) {
         let event = AnalyticsEvent.CallStarted(isVideo: isVideo, numParticipants: numberOfParticipants, placed: !isIncoming)
         capture(event: event)

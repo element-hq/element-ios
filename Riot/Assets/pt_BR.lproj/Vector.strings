@@ -2344,7 +2344,7 @@
 "authentication_terms_policy_url_error" = "Incapaz de encontrar a política selecionada. Por favor tente de novo mais tarde.";
 /* The placeholder will show the homeserver's domain */
 "authentication_terms_message" = "Por favor leia os termos e políticas de %@";
-"authentication_terms_title" = "Políticas de servidor";
+"authentication_terms_title" = "Políticas de privacidade";
 "authentication_verify_msisdn_invalid_phone_number" = "Número de telefone inválido";
 "authentication_verify_msisdn_waiting_button" = "Reenviar código";
 /* The placeholder will show the phone number that was entered. */
@@ -2432,3 +2432,37 @@
 "spaces_subspace_creation_visibility_title" = "Que tipo de subespaço você quer criar?";
 "spaces_create_subspace_title" = "Criar um subespaço";
 "spaces_add_subspace_title" = "Criar espaço dentro de %@";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Sessões";
+"space_invite_nav_title" = "Convite de espaço";
+"space_detail_nav_title" = "Detalhe de espaço";
+"space_selector_create_space" = "Criar Espaço";
+"space_selector_empty_view_information" = "Espaços são uma nova forma de agrupar salas e pessoas. Crie um espaço para começar.";
+"space_selector_empty_view_title" = "Nenhum espaço ainda.";
+"room_invites_empty_view_information" = "Isto é onde seus convites aparecem.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Nada novo.";
+"all_chats_onboarding_try_it" = "Testa aí";
+"all_chats_onboarding_title" = "O que tem de novo";
+"all_chats_onboarding_page_message3" = "Toque em seu perfil para nos deixar sabendo do que você acha.";
+"all_chats_onboarding_page_title3" = "Dar Feedback";
+"all_chats_onboarding_page_message2" = "Acesse seus Espaços (esquerdo fundo) mais rápido e fácil que jamais antes.";
+"all_chats_onboarding_page_title2" = "Acessar Espaços";
+"all_chats_onboarding_page_message1" = "Para simplificar seu Element, abas são agora opcionais. Gerencie-as usando o menu direito topo.";
+"all_chats_onboarding_page_title1" = "Boas vindas a uma nova visão!";
+"all_chats_nothing_found_placeholder_message" = "Tente ajustar sua pesquisa.";
+"all_chats_nothing_found_placeholder_title" = "Nada encontrado.";
+"all_chats_empty_unreads_placeholder_message" = "Isto é onde suas mensagens não-lidas vão aparecer, quando você tiver algumas.";
+"all_chats_empty_list_placeholder_title" = "Você está em dia.";
+"all_chats_empty_view_information" = "O app de chat seguro tudo-em-um para times, amigos, e organizações. Crie um chat, ou junte-se a uma sala existente, para começar.";
+"all_chats_empty_space_information" = "Espaços são uma nova forma de agrupar salas e pessoas. Adicione uma sala existente, ou crie uma nova, usando o botão direito fundo.";
+"all_chats_empty_view_title" = "%@\nestá parecendo um pouco vazio.";
+"spaces_explore_rooms_format" = "Explorar %@";
+
+// User sessions management
+"user_sessions_settings" = "Gerenciar sessões";
+"invite_to" = "Convidar para %@";

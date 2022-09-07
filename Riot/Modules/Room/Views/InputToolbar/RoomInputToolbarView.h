@@ -28,7 +28,8 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
 {
     RoomInputToolbarViewSendModeSend,
     RoomInputToolbarViewSendModeReply,
-    RoomInputToolbarViewSendModeEdit
+    RoomInputToolbarViewSendModeEdit,
+    RoomInputToolbarViewSendModeCreateDM
 };
 
 

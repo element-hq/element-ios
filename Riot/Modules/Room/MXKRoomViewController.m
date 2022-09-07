@@ -221,6 +221,11 @@
 {
     [super viewDidLoad];
     
+    if (BuildSettings.newAppLayoutEnabled)
+    {
+        [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeNever];
+    }
+    
     // Check whether the view controller has been pushed via storyboard
     if (!_bubblesTableView)
     {
@@ -340,11 +345,6 @@
     {
         _bubblesTableView.hidden = NO;
     }
-
-    if (BuildSettings.isNewAppLayoutActivated)
-    {
-        [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeNever];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -358,7 +358,7 @@
     {
         // Retrieve the potential message partially typed during last room display.
         // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-        inputToolbarView.textMessage = roomDataSource.partialTextMessage;
+        inputToolbarView.attributedTextMessage = roomDataSource.partialAttributedTextMessage;
     }
     
     if (!hasAppearedOnce)
@@ -1437,6 +1437,12 @@
             // Display cmd usage in text input as placeholder
             cmdUsage = @"Usage: /topic <topic>";
         }
+    }
+    else if ([string hasPrefix:kMXKSlashCmdDiscardSession])
+    {
+        [roomDataSource.mxSession.crypto discardOutboundGroupSessionForRoomWithRoomId:roomDataSource.roomId onComplete:^{
+            MXLogDebug(@"[MXKRoomVC] Manually discarded outbound group session");
+        }];
     }
     else
     {
@@ -3345,7 +3351,7 @@
     if (_saveProgressTextInput && roomDataSource)
     {
         // Store the potential message partially typed in text input
-        roomDataSource.partialTextMessage = inputToolbarView.textMessage;
+        roomDataSource.partialAttributedTextMessage = inputToolbarView.attributedTextMessage;
     }
     
     [self handleTypingState:typing];

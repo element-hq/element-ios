@@ -67,4 +67,11 @@ struct SentryMonitoringClient {
         event.extra = details
         SentrySDK.capture(event: event)
     }
+    
+    func startPerformanceTracking(name: String, operation: String) -> StopDurationTracking {
+        let transaction = SentrySDK.startTransaction(name: name, operation: operation)
+        return {
+            transaction.finish()
+        }
+    }
 }

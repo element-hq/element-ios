@@ -1,7 +1,7 @@
 "back" = "Zurück";
 "continue" = "Fortsetzen";
 "retry" = "Wiederholen";
-"cancel" = "Abbruch";
+"cancel" = "Abbrechen";
 "save" = "Speichern";
 "leave" = "Verlassen";
 // Actions
@@ -235,9 +235,9 @@
 "settings_privacy_policy" = "Datenschutzerklärung";
 "settings_send_crash_report" = "Sende anonyme Absturz- und Nutzungsdaten";
 "settings_change_password" = "Passwort ändern";
-"settings_old_password" = "altes Passwort";
-"settings_new_password" = "neues Passwort";
-"settings_confirm_password" = "bestätige Passwort";
+"settings_old_password" = "Altes Passwort";
+"settings_new_password" = "Neues Passwort";
+"settings_confirm_password" = "Bestätige Passwort";
 "settings_password_updated" = "Das Passwort deines Matrix-Kontos wurde aktualisiert";
 "settings_crypto_device_name" = "Öffentlicher Sitzungs-Name: ";
 "settings_crypto_device_key" = "\nSitzungs-Schlüssel:\n";
@@ -508,7 +508,7 @@
 "room_action_send_photo_or_video" = "Foto oder Video senden";
 "room_action_send_sticker" = "Aufkleber senden";
 "settings_deactivate_account" = "DEAKTIVIERTES KONTO";
-"settings_deactivate_my_account" = "Mein Konto deaktivieren";
+"settings_deactivate_my_account" = "Konto für immer deaktivieren";
 "widget_sticker_picker_no_stickerpacks_alert" = "Du hast aktuell keine Aufkleberpakete aktiviert.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Welche hinzufügen?";
 // GDPR
@@ -1180,16 +1180,16 @@
 "create_room_title" = "Neuer Raum";
 "create_room_section_header_name" = "Raumname";
 "create_room_placeholder_name" = "Name";
-"create_room_section_header_topic" = "Raumthema (optional)";
+"create_room_section_header_topic" = "THEMA (OPTIONAL)";
 "create_room_placeholder_topic" = "Um was geht es in diesem Raum?";
 "create_room_section_header_encryption" = "Raumverschlüsselung";
 "create_room_enable_encryption" = "Verschlüsselung aktivieren";
 "create_room_section_footer_encryption" = "Verschlüsselung kann im Nachhinein nicht deaktiviert werden.";
 "create_room_section_header_type" = "Raumtyp";
-"create_room_type_private" = "Privater Raum";
-"create_room_type_public" = "Öffentlicher Raum";
+"create_room_type_private" = "Privater Raum (nur Eingeladene)";
+"create_room_type_public" = "Öffentlicher Raum (jeder hat Zugriff)";
 "create_room_section_footer_type" = "Personen können einen privaten Raum nur mit Einladung betreten.";
-"create_room_show_in_directory" = "Zeige den Raum im Raumverzeichnis";
+"create_room_show_in_directory" = "Im Raumverzeichnis zeigen";
 "create_room_section_header_address" = "Raum-Adresse";
 "create_room_placeholder_address" = "#testraum:matrix.org";
 "room_info_list_room_encrypted" = "Nachrichten in diesem Raum sind Ende-zu-Ende verschlüsselt";
@@ -2189,7 +2189,7 @@
 "authentication_terms_policy_url_error" = "Richtlinie konnte nicht gefunden werden. Versuche es später noch einmal.";
 /* The placeholder will show the homeserver's domain */
 "authentication_terms_message" = "Bitte lies %@s Nutzungsbedingungen";
-"authentication_terms_title" = "Serverrichtlinien";
+"authentication_terms_title" = "Datenschutzrichtlinien";
 "authentication_verify_msisdn_invalid_phone_number" = "Ungültige Telefonnummer";
 "authentication_verify_msisdn_waiting_button" = "Code erneut senden";
 /* The placeholder will show the phone number that was entered. */
@@ -2303,7 +2303,7 @@
 // MARK: Live location sharing
 
 "location_sharing_live_share_title" = "Teile Live-Standort";
-"side_menu_coach_message" = "Wische nach rechts oder tippe, um alle Räume zu sehen.";
+"side_menu_coach_message" = "Wische nach rechts oder tippe, um alle Räume zu sehen";
 "spaces_add_room_missing_permission_message" = "Du hast keine Berechtigung, Räume zu diesem Space hinzuzufügen.";
 "spaces_creation_in_one_space" = "in 1 Space";
 "spaces_creation_in_many_spaces" = "in %@ Spaces";
@@ -2374,8 +2374,8 @@
 // Mark: - Room invite
 
 "room_invite_to_space_option_title" = "Zu %@";
-"share_invite_link_space_text" = "Hey, tritt diesem Raum auf %@ bei.";
-"share_invite_link_room_text" = "Hey, tritt diesem Raum auf %@ bei.";
+"share_invite_link_space_text" = "Hey, tritt diesem Raum auf %@ bei";
+"share_invite_link_room_text" = "Hey, tritt diesem Raum auf %@ bei";
 
 // MARK: - Share invite link
 
@@ -2421,3 +2421,73 @@
 "room_displayname_more_than_two_members" = "%@ und %@ andere";
 "settings_key_backup_info_algorithm" = "Algorithmus: %@";
 "joining" = "Trete bei";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Sitzungen";
+"location_sharing_map_loading_error" = "Laden der Karte nicht möglich\nDieser Heimserver ist nicht so konfiguriert, dass er Karten darstellen kann";
+"location_sharing_map_credits_title" = "© Copyright";
+"spaces_subspace_creation_visibility_message" = "Der erstellte Space wird zu %@ hinzugefügt.";
+"spaces_add_subspace_title" = "Space in %@ erstellen";
+"room_access_space_chooser_known_spaces_section" = "Spaces, die du kennst, welche %@ enthalten";
+
+// User sessions management
+"user_sessions_settings" = "Sitzungen verwalten";
+"all_chats_edit_layout_alphabetical_order" = "Alphabetisch sortieren";
+"all_chats_edit_layout_activity_order" = "Nach Aktivität sortieren";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Meine Spaces";
+"space_selector_empty_view_title" = "Noch keine Spaces.";
+"space_invite_nav_title" = "Zum Space einladen";
+"space_selector_create_space" = "Space erstellen";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Nichts neues.";
+"all_chats_edit_layout_add_filters_title" = "Filtere deine Nachrichten";
+"all_chats_edit_layout_unreads" = "Ungelesene";
+"all_chats_section_title" = "Chats";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Alle Chats";
+"all_chats_empty_view_title" = "%@\nsieht ein bisschen leer aus.";
+"all_chats_all_filter" = "Alle";
+"all_chats_edit_layout_show_filters" = "Filter anzeigen";
+"all_chats_edit_menu_leave_space" = "%@ verlassen";
+"all_chats_onboarding_page_title3" = "Feedback geben";
+"room_invites_empty_view_information" = "Hier erscheinen deine Einladungen.";
+"all_chats_onboarding_try_it" = "Probiere es aus";
+"threads_discourage_information_1" = "Dein Heimserver unterstützt aktuell keine Threads, weshalb diese Funktion unzuverlässig sein könnte. Manche Thread-Nachrichten könnten nicht zuverlässig verfügbar sein. ";
+"all_chats_nothing_found_placeholder_title" = "Nichts gefunden.";
+"spaces_create_subspace_title" = "Sub-Space erstellen";
+"room_access_settings_screen_upgrade_alert_note" = "Bitte beachte, dass das Upgrade eine neue Version dieses Raums erstellt. Alle aktuellen Nachrichten bleiben in diesem archivierten Raum.";
+"invite_to" = "Zu %@ einladen";
+"all_chats_empty_unreads_placeholder_message" = "Hier werden ungelesene Nachrichten angezeigt, wenn welche vorhanden sind.";
+"all_chats_edit_layout_show_recents" = "Historie anzeigen";
+"all_chats_empty_list_placeholder_title" = "Keine ungelesenen Nachrichten vorhanden.";
+"spaces_explore_rooms_format" = "%@ erkunden";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Jeder in einem übergeordneten Space kann diesen Raum finden und ihm beitreten - jeden manuell einzuladen ist nicht nötig. Du kannst diese Einstellung jederzeit ändern.";
+"room_access_settings_screen_public_message" = "Sichtbar und zugänglich für jeden.";
+"room_access_settings_screen_restricted_message" = "Sichtbar und betretbar für jeden Nutzer in einem Space.\nDu wählst, für welche Spaces dies gilt.";
+"room_access_settings_screen_private_message" = "Nur sichtbar und betretbar für eingeladene Personen.";
+"location_sharing_allow_background_location_message" = "Wenn du deinen Live-Standort teilen möchtest, benötigt Element den Standortzugriff auch im Hintergrund. Um den Zugriff zu ermöglichen, tippe auf Einstellungen > Standort und wähle ‘Immer‘ aus";
+"space_selector_empty_view_information" = "Spaces sind ein Weg um Räume und Personen zu gruppieren. Erstelle einen Space um loszulegen.";
+"all_chats_onboarding_title" = "Was ist neu?";
+"all_chats_onboarding_page_message3" = "Drücke auf dein Profil um uns Wissen zu lassen, was du denkst.";
+"all_chats_onboarding_page_message2" = "Greife auf deine Spaces (unten-links) schneller und einfacher denn je zu.";
+"all_chats_onboarding_page_title2" = "Auf Spaces zugreifen";
+"all_chats_onboarding_page_message1" = "Um Element zu vereinfachen, sind Tabs nun optional. Verwalte diese mit dem Menü oben-rechts.";
+"all_chats_empty_view_information" = "Die alles-in-einem sichere Chat-App für Teams, Freunde und Organisationen. Erstelle einen Chat oder trete einem existierenden Raum bei, um zu starten.";
+"all_chats_empty_space_information" = "Spaces sind ein neuer Weg um Räume und Personen zu gruppieren. Füge einen existierenden Raum hinzu oder erstelle einen neuen, indem du den Knopf unten-rechts verwendest.";
+"all_chats_edit_layout_sorting_options_title" = "Sortiere deine Nachrichten nach";
+"space_detail_nav_title" = "Space-Details";
+"all_chats_onboarding_page_title1" = "Willkommen zum neuen Layout!";
+"all_chats_edit_menu_space_settings" = "Space-Einstellungen";
+"all_chats_user_menu_settings" = "Benutzer-Einstellungen";
+"room_recents_recently_viewed_section" = "Kürzlich angesehen";
+"all_chats_nothing_found_placeholder_message" = "Versuche, deine Suche anzupassen.";
+"all_chats_edit_layout_recents" = "Historie";
+"all_chats_edit_layout" = "Layout-Einstellungen";
