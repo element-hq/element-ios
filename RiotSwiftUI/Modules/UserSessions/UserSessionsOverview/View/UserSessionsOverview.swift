@@ -60,7 +60,7 @@ struct UserSessionsOverview: View {
         
         SwiftUI.Section {
             // Device list
-            LazyVStack() {
+            LazyVStack(spacing: 0) {
                 ForEach(viewModel.viewState.otherSessionsViewData) { viewData in
                     UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
                         viewModel.send(viewAction: .tapUserSession(sessionId))

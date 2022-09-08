@@ -66,12 +66,12 @@ struct UserSessionListItem: View {
                 // Note: Separator leading is matching the text leading, we could use alignment guide in the future
                 Rectangle()
                     .fill(theme.colors.quinaryContent)
-                    .frame(maxWidth: .infinity, maxHeight: 1, alignment: .trailing)
+                    .frame(width: .infinity, height: 1.0, alignment: .trailing)
                     .padding(.leading, LayoutConstants.horizontalPadding + LayoutConstants.avatarRightMargin + LayoutConstants.avatarWidth)
             }
+            .padding(.top, LayoutConstants.verticalPadding)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.top, LayoutConstants.verticalPadding)
     }
 }
 
@@ -80,7 +80,7 @@ struct UserSessionListPreview: View {
     let userSessionsOverviewService: UserSessionsOverviewServiceProtocol = MockUserSessionsOverviewService()
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 0) {
             ForEach(userSessionsOverviewService.lastOverviewData.otherSessionsInfo) { userSessionInfo in
                 let viewData = UserSessionListItemViewData(userSessionInfo: userSessionInfo)
 
