@@ -66,7 +66,8 @@ struct UserSessionListItem: View {
                 // Note: Separator leading is matching the text leading, we could use alignment guide in the future
                 Rectangle()
                     .fill(theme.colors.quinaryContent)
-                    .frame(width: .infinity, height: 1.0, alignment: .trailing)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .frame(height: 1.0)
                     .padding(.leading, LayoutConstants.horizontalPadding + LayoutConstants.avatarRightMargin + LayoutConstants.avatarWidth)
             }
             .padding(.top, LayoutConstants.verticalPadding)
