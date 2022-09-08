@@ -22,7 +22,6 @@ import Foundation
 
 enum UserSessionsOverviewViewModelResult {
     case cancel
-    case loadData
     case showAllUnverifiedSessions
     case showAllInactiveSessions
     case verifyCurrentSession

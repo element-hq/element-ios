@@ -65,8 +65,6 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
             switch result {
             case .cancel:
                 self.completion?()
-            case .loadData:
-                self.loadData()
             case .showAllUnverifiedSessions:
                 self.showAllUnverifiedSessions()
             case .showAllInactiveSessions:
@@ -100,10 +98,6 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     /// Hide the currently displayed activity indicator.
     private func stopLoading() {
         loadingIndicator = nil
-    }
-    
-    private func loadData() {
-        // TODO
     }
     
     private func showAllUnverifiedSessions() {
