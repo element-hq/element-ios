@@ -24,6 +24,9 @@ targets:
     type: framework
     platform: iOS
     
+    dependencies:
+    - package: Compound
+    
     configFiles:
       Debug: Debug.xcconfig
       Release: Release.xcconfig

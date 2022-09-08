@@ -40,6 +40,9 @@ include:
   - path: CommonKit/targetUnitTests.yml
 
 packages:
+  Compound:
+    url: https://github.com/vector-im/compound-ios
+    branch: main
   Mapbox:
     url: https://github.com/maplibre/maplibre-gl-native-distribution
     minVersion: 5.12.2

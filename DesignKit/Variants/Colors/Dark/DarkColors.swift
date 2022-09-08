@@ -15,13 +15,13 @@
 //
 
 import Foundation
-import UIKit
 import SwiftUI
+import CompoundTokens
 
 /// Dark theme colors.
 public class DarkColors {
     private static let values = ColorValues(
-        accent: UIColor(rgb:0x0DBD8B),
+        accent: CompoundUIColors.coreAccent,
         alert: UIColor(rgb:0xFF4B55),
         primaryContent: UIColor(rgb:0xFFFFFF),
         secondaryContent: UIColor(rgb:0xA9B2BC),

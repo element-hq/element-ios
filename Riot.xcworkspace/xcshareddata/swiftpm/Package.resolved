@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "compound-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vector-im/compound-ios",
+      "state" : {
+        "branch" : "main",
+        "revision" : "6262e315754cf74d7b20e250fdd1f557e7eb3ec7"
+      }
+    },
+    {
       "identity" : "maplibre-gl-native-distribution",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/maplibre/maplibre-gl-native-distribution",
