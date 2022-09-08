@@ -39,7 +39,7 @@ struct UserSessionsOverview: View {
             
             // Current session section
             if let currentSessionViewData = viewModel.viewState.currentSessionViewData {
-                // TODO:
+                self.currentSessionsSection(currentSessionViewData: currentSessionViewData)
             }
             
             // Other sessions section
@@ -56,7 +56,26 @@ struct UserSessionsOverview: View {
         }
     }
     
-    var otherSessionsSection: some View {
+    private func currentSessionsSection(currentSessionViewData: UserSessionCardViewData) -> some View {
+        SwiftUI.Section {
+            UserSessionCardView(viewData: currentSessionViewData, onVerifyAction: { _ in
+                viewModel.send(viewAction: .verifyCurrentSession)
+            }, onViewDetailsAction: { _ in
+                viewModel.send(viewAction: .viewCurrentSessionDetails)
+            })
+                .padding(.horizontal, 16)
+        } header: {
+            Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
+                .font(theme.fonts.footnote)
+                .foregroundColor(theme.colors.secondaryContent)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 16)
+                .padding(.top, 24)
+                .padding(.bottom, 11)
+        }
+    }
+    
+    private var otherSessionsSection: some View {
         
         SwiftUI.Section {
             // Device list
@@ -81,6 +100,7 @@ struct UserSessionsOverview: View {
                     .padding(.bottom, 11)
             }
             .padding(.horizontal, 16)
+            .padding(.top, 24)
         }
     }
 }

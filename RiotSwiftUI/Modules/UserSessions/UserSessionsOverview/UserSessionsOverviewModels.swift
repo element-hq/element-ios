@@ -38,7 +38,7 @@ struct UserSessionsOverviewViewState: BindableState {
     
     var inactiveSessionsViewData: [UserSessionListItemViewData]
     
-    var currentSessionViewData: UserSessionListItemViewData?
+    var currentSessionViewData: UserSessionCardViewData?
     
     var otherSessionsViewData: [UserSessionListItemViewData]
     
