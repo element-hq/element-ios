@@ -14,3 +14,6 @@ coverage:
         # to codecov so that PR reviewers can see uncovered lines
         target: auto
         threshold: 1%
+
+ignore:
+  - "Riot/Generated"  # ignore the folder and all its contents
