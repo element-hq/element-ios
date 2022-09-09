@@ -1,8 +1,8 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "Kamera wykorzystywana jest do robienia zdjęć, nagrywania filmów i prowadzenia rozmów wideo.";
-"NSPhotoLibraryUsageDescription" = "Biblioteka zdjęć wykorzystywana jest do wysyłania zdjęć i filmów.";
+"NSCameraUsageDescription" = "Aparat wykorzystywany jest do prowadzenia rozmów wideo, robienia zdjęć i nagrywania filmów.";
+"NSPhotoLibraryUsageDescription" = "Zezwól na dostęp do zdjęć, aby wysyłać zdjęcia i filmy z twojej biblioteki.";
 "NSMicrophoneUsageDescription" = "Element musi mieć dostęp do mikrofonu, aby wykonywać i odbierać połączenia, nagrywać filmy i nagrywać wiadomości głosowe.";
-"NSContactsUsageDescription" = "Element pokaże Twoje kontakty, dzięki czemu możesz je zaprosić do czatu.";
+"NSContactsUsageDescription" = "Zostaną one udostępnione twojemu serwerowi tożsamości, aby ułatwić ci znalezienie kontaktów w sieci Matrix.";
 "NSCalendarsUsageDescription" = "Zobacz swoje zaplanowane spotkania w aplikacji.";
 "NSFaceIDUsageDescription" = "Face ID wykorzystywane jest do odblokowywania aplikacji.";
 "NSLocationWhenInUseUsageDescription" = "Gdy udostępniasz innym swoją lokalizację, Element potrzebuje dostępu, aby pokazać im mapę.";
