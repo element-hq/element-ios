@@ -1,3 +1,15 @@
+## Changes in 1.9.4 (2022-09-09)
+
+✨ Features
+
+- Create DM room only on first message - Create the DM and navigate to the new room after sending an event ([#5864](https://github.com/vector-im/element-ios/issues/5864))
+
+🐛 Bugfixes
+
+- Fix composer expansion on Start DM as you enter the message in deferred mode. ([#6689](https://github.com/vector-im/element-ios/issues/6689))
+- [Group DM] send a new message in an existing DM invite again one of left member. ([#6691](https://github.com/vector-im/element-ios/issues/6691))
+
+
 ## Changes in 1.9.3 (2022-09-07)
 
 ✨ Features
