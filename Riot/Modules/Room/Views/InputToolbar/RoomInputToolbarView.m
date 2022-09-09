@@ -256,6 +256,10 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
             updatedHeight += kContextBarHeight;
             self.textView.maxHeight -= kContextBarHeight;
             break;
+        case RoomInputToolbarViewSendModeCreateDM:
+            buttonImage = AssetImages.sendIcon.image;
+            self.inputContextViewHeightConstraint.constant = 0;
+            break;
         default:
             buttonImage = AssetImages.sendIcon.image;
 
