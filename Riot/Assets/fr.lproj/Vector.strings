@@ -2496,7 +2496,7 @@
 
 // Mark: - All Chats
 
-"all_chats_title" = "Toutes les discussions";
+"all_chats_title" = "Tous mes chats";
 "spaces_subspace_creation_visibility_message" = "L’espace créé sera ajouté à %@.";
 "spaces_subspace_creation_visibility_title" = "Quel type de sous-espace voulez-vous créer ?";
 "spaces_explore_rooms_format" = "Parcourir %@";
