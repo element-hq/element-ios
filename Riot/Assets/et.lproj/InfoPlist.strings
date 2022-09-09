@@ -1,9 +1,9 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "Kaameraga salvestatakse pilte ning videosid ja tehakse videokõnesid.";
-"NSPhotoLibraryUsageDescription" = "Fotogaleriid kasutatakse fotode ja videote saatmiseks teistele kasutajatele.";
+"NSCameraUsageDescription" = "Kaameraga tehakse videokõnesid, salvestatakse ja laaditakse võrku pilte ning videosid.";
+"NSPhotoLibraryUsageDescription" = "Luba ligipääs oma meediapangale fotode ja videote laadimiseks võrku.";
 "NSMicrophoneUsageDescription" = "Kõnede tegemiseks, videote ja häälsõnumite salvestamiseks vajab Element ligipääsu sinu seadme mikrofonile.";
 "NSCalendarsUsageDescription" = "Vaata päevakavasse lisatud koosolekuid vastvast rakendusest.";
-"NSContactsUsageDescription" = "Element näitab sulle tuttavaid, kellega saad alustada vestlust.";
+"NSContactsUsageDescription" = "Tuttavate leidmiseks Matrix'i võrgust jagatakse seda teavet sinu seadistatud isikutuvastusserveriga.";
 "NSFaceIDUsageDescription" = "Ligipääsuks sinu rakendusele on kasutusel Face ID.";
 "NSLocationWhenInUseUsageDescription" = "Kui sa jagad teiste kasutajatega oma asukohta, siis Element vajab õigusi asukoha kuvamiseks kaardil.";
 "NSLocationAlwaysAndWhenInUseUsageDescription" = "Kui sa jagad teiste kasutajatega oma asukohta, siis Element vajab õigusi asukoha kuvamiseks kaardil.";
