@@ -93,7 +93,6 @@ static const int kThreadListBarButtonItemTag = 99;
 static UIEdgeInsets kThreadListBarButtonItemContentInsetsNoDot;
 static UIEdgeInsets kThreadListBarButtonItemContentInsetsDot;
 static CGSize kThreadListBarButtonItemImageSize;
-NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain";
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
@@ -1333,9 +1332,9 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
 
 - (void)sendTextMessage:(NSString*)msgTxt
 {
-    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
+    // Create before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
         MXStrongifyAndReturnIfNil(self);
         if (readyToSend)
         {
@@ -1514,93 +1513,6 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
 #pragma mark - Start DM
 
 /**
- Check whether the current room is a direct chat left by the other member.
- */
-- (void)isDirectChatLeftByTheOther:(void (^)(BOOL isEmptyDirect, NSError *error))onComplete
-{
-    // In the case of a direct chat, we check if the other member has left the room.
-    if (self.roomDataSource)
-    {
-        NSString *directUserId = self.roomDataSource.room.directUserId;
-        if (directUserId)
-        {
-            [self.roomDataSource.room members:^(MXRoomMembers *roomMembers) {
-                MXRoomMember *directUserMember = [roomMembers memberWithUserId:directUserId];
-                if (directUserMember)
-                {
-                    MXMembership directUserMembership = directUserMember.membership;
-                    if (directUserMembership != MXMembershipJoin && directUserMembership != MXMembershipInvite)
-                    {
-                        onComplete(YES, nil);
-                    }
-                    else
-                    {
-                        onComplete(NO, nil);
-                    }
-                }
-                else
-                {
-                    MXLogDebug(@"[RoomViewController] isEmptyDirectChat: the direct user has disappeared");
-                    onComplete(YES, nil);
-                }
-            } failure:^(NSError *error) {
-                MXLogDebug(@"[RoomViewController] isEmptyDirectChat: cannot get all room members");
-                onComplete(NO, error);
-            }];
-            return;
-        }
-        
-        // This is not a direct chat
-        onComplete(NO, nil);
-    } else {
-        NSError* error = [NSError errorWithDomain:RoomViewControllerErrorDomain
-                                             code:0
-                                         userInfo:@{ NSLocalizedDescriptionKey: [VectorL10n errorCommonMessage] }];
-        // Stop the current process
-        onComplete(NO, error);
-    }
-}
-
-/**
- Check whether the current room is a direct chat left by the other member.
- In this case, this method will invite again the left member.
- */
-- (void)restoreDiscussionIfNeeded:(void (^)(BOOL readyToSend))onComplete
-{
-    [self isDirectChatLeftByTheOther:^(BOOL isEmptyDirect, NSError *error) {
-        if (error != nil) {
-            MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeeded: isDirectChatLeftByTheOther finished with error : %@ ", error.localizedDescription);
-            [self showError:error];
-            onComplete(NO);
-        } else if (isEmptyDirect) {
-            NSString *directUserId = self.roomDataSource.room.directUserId;
-            
-            MXWeakify(self);
-            MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeeded: check left member %@", directUserId);
-            // Invite again the direct user
-            MXStrongifyAndReturnIfNil(self);
-            MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeeded: invite again %@", directUserId);
-            [self.roomDataSource.room inviteUser:directUserId success:^{
-                // Delay the completion in order to display the invite before the local echo of the new message.
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    onComplete(YES);
-                });
-            } failure:^(NSError *error) {
-                MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeeded: invite failed");
-                // Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-                onComplete(NO);
-            }];
-        }
-        else
-        {
-            // Nothing to do
-            onComplete(YES);
-        }
-    }];
-}
-
-/**
  Create a direct chat with given user.
  */
 - (void)createDiscussionWithUser:(MXUser*)user completion:(void (^)(BOOL success))onComplete
@@ -1628,10 +1540,9 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
 }
 
 /**
- Check whether the current room is a direct chat left by the other member.
- In this case, this method will invite again the left member.
+ Create the discussion if needed
  */
-- (void)createOrRestoreDiscussionIfNeeded:(void (^)(BOOL readyToSend))onComplete
+- (void)createDiscussionIfNeeded:(void (^)(BOOL readyToSend))onComplete
 {
     // Disable the input tool bar during this operation. This prevents us from creating several discussions, or
     // trying to send several invites.
@@ -1650,7 +1561,7 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
     }
     else
     {
-        [self restoreDiscussionIfNeeded:completion];
+        completion(YES);
     }
 }
 
@@ -2512,8 +2423,8 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
             // Set the chosen preset and send the video (conversion takes place in the SDK).
             [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
             
-            // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-            [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+            // Create before sending the message in case of a discussion (direct chat)
+            [self createDiscussionIfNeeded:^(BOOL readyToSend) {
                 if (readyToSend)
                 {
                     [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
@@ -2531,8 +2442,8 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
         // Otherwise default to 1080p and send the video.
         [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
         
-        // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-        [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+        // Create before sending the message in case of a discussion (direct chat)
+        [self createDiscussionIfNeeded:^(BOOL readyToSend) {
             if (readyToSend)
             {
                 [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
@@ -5039,9 +4950,9 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
 
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage
 {
-    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
+    // Create before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
         MXStrongifyAndReturnIfNil(self);
         
         if (readyToSend) {
@@ -7518,9 +7429,9 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
 }
 
 - (void)sendImage:(NSData *)imageData mimeType:(NSString *)mimeType {
-    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
+    // Create before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
         MXStrongifyAndReturnIfNil(self);
         if (readyToSend)
         {
@@ -7535,9 +7446,9 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
 }
 
 - (void)sendVideo:(NSURL * _Nonnull)url {
-    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
+    // Create before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
         MXStrongifyAndReturnIfNil(self);
         if (readyToSend)
         {
@@ -7552,9 +7463,9 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
 }
 
 - (void)sendFile:(NSURL * _Nonnull)url mimeType:(NSString *)mimeType {
-    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
+    // Create before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
         MXStrongifyAndReturnIfNil(self);
         if (readyToSend)
         {
@@ -7633,8 +7544,8 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
     
     NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
     
-    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+    // Create before sending the message in case of a discussion (direct chat)
+    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
         if (readyToSend)
         {
             [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedImage:imageData
@@ -7668,8 +7579,8 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.mediaPickerPresenter = nil;
     
-    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+    // Create before sending the message in case of a discussion (direct chat)
+    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
         if (readyToSend)
         {
             [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedImage:imageData
@@ -7697,8 +7608,8 @@ NSString *const RoomViewControllerErrorDomain = @"RoomViewControllerErrorDomain"
     // Set a 1080p video conversion preset as compression mode only has an effect on the images.
     [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
     
-    // Create or invite again the left member before sending the message in case of a discussion (direct chat)
-    [self createOrRestoreDiscussionIfNeeded:^(BOOL readyToSend) {
+    // Create before sending the message in case of a discussion (direct chat)
+    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
         if (readyToSend)
         {
             [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedAssets:assets withCompressionMode:MediaCompressionHelper.defaultCompressionMode];
