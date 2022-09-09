@@ -1,1 +1,1 @@
-Create DM room only on first message - Create the DM and navigate to the new room after sending an event
+Fix composer expansion on Start DM as you enter the message in deferred mode.
