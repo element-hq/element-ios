@@ -1,8 +1,8 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "A kamera fényképek, videók készítéséhez és videóhívásokhoz lesz használva.";
-"NSPhotoLibraryUsageDescription" = "A fénykép galéria fényképek és videók küldéséhez lesz használva.";
+"NSCameraUsageDescription" = "A kamera videóhívásokhoz vagy fényképek, videók feltöltéséhez szükséges.";
+"NSPhotoLibraryUsageDescription" = "Hozzáférés a fényképekhez a galériából fényképek és videók küldése miatt szükséges.";
 "NSMicrophoneUsageDescription" = "A hívás indításához és fogadásához, videó és hangüzenet felvételéhez az Elementnek hozzáférési engedélyre van szüksége a mikrofonhoz.";
-"NSContactsUsageDescription" = "Element megmutatja a névjegyzéket, hogy beszélgetésbe meghívhasd őket.";
+"NSContactsUsageDescription" = "Megosztásra kerül az azonosítási szerverrel barátok Matrixon való megtalálásához.";
 "NSCalendarsUsageDescription" = "Nézd meg a találkozóidat az alkalmazásban.";
 "NSFaceIDUsageDescription" = "Arc felismerés használata az alkalmazás eléréséhez.";
 "NSLocationWhenInUseUsageDescription" = "Ha megosztod másokkal a földrajzi helyzetedet, akkor az Elementnek hozzáférésre van szüksége a térképen való megjelenítéshez.";

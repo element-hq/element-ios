@@ -1,8 +1,8 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "La fotocamera viene utilizzata per scattare fotografie, registrare video ed eseguire videochiamate.";
-"NSPhotoLibraryUsageDescription" = "La libreria fotografica viene utilizzata per inviare foto e video.";
+"NSCameraUsageDescription" = "La fotocamera viene usata per fare videochiamate, o scattare/registrare e inviare foto e video.";
+"NSPhotoLibraryUsageDescription" = "Consenti l'accesso alle foto per inviare foto e video dalla tua libreria.";
 "NSMicrophoneUsageDescription" = "Element ha bisogno di accedere al microfono per effettuare e ricevere chiamate, registrare video e messaggi vocali.";
-"NSContactsUsageDescription" = "Element mostrerà i tuoi contatti così da poterli invitare in chat.";
+"NSContactsUsageDescription" = "Verranno condivisi con il tuo server d'identità per aiutarti a trovare i tuoi contatti su Matrix.";
 "NSCalendarsUsageDescription" = "Vedi le tue riunioni programmate nell'app.";
 "NSFaceIDUsageDescription" = "Face ID viene usato per accedere all'app.";
 "NSLocationWhenInUseUsageDescription" = "Quando condividi la tua posizione con altre persone, Element richiede l'accesso per mostrare loro una mappa.";
