@@ -1,8 +1,8 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "摄像头权限用于拍摄照片、录制视频或进行视频聊天。";
-"NSPhotoLibraryUsageDescription" = "照片库访问权限用于发送图片与视频。";
+"NSCameraUsageDescription" = "摄像头用于视频通话，或者拍摄和上传照片和视频。";
+"NSPhotoLibraryUsageDescription" = "授予照片访问权以上传你库里的照片和视频。";
 "NSMicrophoneUsageDescription" = "Element 需要访问您的麦克风才能拨打和接听电话、拍摄视频和录制语音消息。";
-"NSContactsUsageDescription" = "Element 将显示您的联系人，以便您可以邀请他们聊天。";
+"NSContactsUsageDescription" = "将与你的身份服务器共享他们以帮助发现你Matrix上的联系人。";
 "NSCalendarsUsageDescription" = "在此应用中查看你计划的会议。";
 "NSFaceIDUsageDescription" = "Face ID 权限用于访问您的应用。";
 "NSLocationAlwaysAndWhenInUseUsageDescription" = "当你分享你的位置给人们的时候，Element需要权限以显示地图。";
