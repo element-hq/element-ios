@@ -16,17 +16,22 @@
 
 import Foundation
 
-struct UserSessionsOverviewData {
+/// Enables to build user session name
+class UserSessionNameFormatter {
     
-    let currentSessionInfo: UserSessionInfo?
-    let unverifiedSessionsInfo: [UserSessionInfo]
-    let inactiveSessionsInfo: [UserSessionInfo]
-    let otherSessionsInfo: [UserSessionInfo]
-}
-
-protocol UserSessionsOverviewServiceProtocol {
-    
-    var lastOverviewData: UserSessionsOverviewData { get }
+    /// Session name with client name and session display name
+    func sessionName(deviceType: DeviceType, sessionDisplayName: String?) -> String {
         
-    func fetchUserSessionsOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) -> Void
+        let sessionName: String
+        
+        let clientName = deviceType.name
+        
+        if let sessionDisplayName = sessionDisplayName {
+            sessionName = VectorL10n.userSessionName(clientName, sessionDisplayName)
+        } else {
+            sessionName = clientName
+        }
+        
+        return sessionName
+    }
 }
