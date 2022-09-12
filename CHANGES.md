@@ -1,3 +1,14 @@
+## Changes in 1.9.5 (2022-09-12)
+
+🐛 Bugfixes
+
+- Fix timeline items text height calculation ([#6702](https://github.com/vector-im/element-ios/pull/6702))
+
+🚧 In development 🚧
+
+- Device manager: Add other sessions section read only in user sessions overview screen. ([#6672](https://github.com/vector-im/element-ios/issues/6672))
+
+
 ## Changes in 1.9.4 (2022-09-09)
 
 ✨ Features
