@@ -1451,6 +1451,22 @@ public class VectorL10n: NSObject {
   public static var deviceDetailsTitle: String { 
     return VectorL10n.tr("Vector", "device_details_title") 
   }
+  /// %@ Desktop
+  public static func deviceNameDesktop(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "device_name_desktop", p1)
+  }
+  /// %@ Mobile
+  public static func deviceNameMobile(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "device_name_mobile", p1)
+  }
+  /// Unknown client
+  public static var deviceNameUnknown: String { 
+    return VectorL10n.tr("Vector", "device_name_unknown") 
+  }
+  /// %@ Web
+  public static func deviceNameWeb(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "device_name_web", p1)
+  }
   /// The other party cancelled the verification.
   public static var deviceVerificationCancelled: String { 
     return VectorL10n.tr("Vector", "device_verification_cancelled") 
@@ -8450,6 +8466,38 @@ public class VectorL10n: NSObject {
   /// User ID:
   public static var userIdTitle: String { 
     return VectorL10n.tr("Vector", "user_id_title") 
+  }
+  /// %@ · Last activity %@
+  public static func userSessionItemDetails(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "user_session_item_details", p1, p2)
+  }
+  /// %@: %@
+  public static func userSessionName(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "user_session_name", p1, p2)
+  }
+  /// Unverified session
+  public static var userSessionUnverified: String { 
+    return VectorL10n.tr("Vector", "user_session_unverified") 
+  }
+  /// Unverified
+  public static var userSessionUnverifiedShort: String { 
+    return VectorL10n.tr("Vector", "user_session_unverified_short") 
+  }
+  /// Verified session
+  public static var userSessionVerified: String { 
+    return VectorL10n.tr("Vector", "user_session_verified") 
+  }
+  /// Verified
+  public static var userSessionVerifiedShort: String { 
+    return VectorL10n.tr("Vector", "user_session_verified_short") 
+  }
+  /// For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.
+  public static var userSessionsOverviewOtherSessionsSectionInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_other_sessions_section_info") 
+  }
+  /// OTHER SESSIONS
+  public static var userSessionsOverviewOtherSessionsSectionTitle: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_other_sessions_section_title") 
   }
   /// Sessions
   public static var userSessionsOverviewTitle: String { 
