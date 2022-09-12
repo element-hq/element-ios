@@ -43,11 +43,11 @@ struct DeviceAvatarView: View {
             if let isVerified = viewData.isVerified {
                 
                 Image(isVerified ? Asset.Images.userSessionVerified.name : Asset.Images.userSessionUnverified.name)
-                .frame(maxWidth: CGFloat(badgeSize), maxHeight: CGFloat(badgeSize))
-                .shapedBorder(color: theme.colors.system, borderWidth: 1, shape: Circle())
-                .background(theme.colors.background)
-                .clipShape(Circle())
-                .offset(x: 10, y: 8)
+                    .frame(maxWidth: CGFloat(badgeSize), maxHeight: CGFloat(badgeSize))
+                    .shapedBorder(color: theme.colors.system, borderWidth: 1, shape: Circle())
+                    .background(theme.colors.background)
+                    .clipShape(Circle())
+                    .offset(x: 10, y: 8)
             }
         }
         .frame(maxWidth: CGFloat(avatarSize), maxHeight: CGFloat(avatarSize))
