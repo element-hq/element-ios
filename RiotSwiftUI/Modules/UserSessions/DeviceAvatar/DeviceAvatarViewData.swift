@@ -1,4 +1,4 @@
-//
+// 
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +14,13 @@
 // limitations under the License.
 //
 
-import XCTest
-import RiotSwiftUI
+import Foundation
+import SwiftUI
 
-class UserSessionsOverviewUITests: MockScreenTestCase {
-    // TODO:
+/// View data for DeviceAvatarView
+struct DeviceAvatarViewData {
+        
+    let deviceType: DeviceType
+    
+    let isVerified: Bool?
 }

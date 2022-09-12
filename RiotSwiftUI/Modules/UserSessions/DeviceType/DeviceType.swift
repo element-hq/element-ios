@@ -1,4 +1,4 @@
-//
+// 
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +14,13 @@
 // limitations under the License.
 //
 
-import XCTest
-import RiotSwiftUI
+import Foundation
+import SwiftUI
 
-class UserSessionsOverviewUITests: MockScreenTestCase {
-    // TODO:
+/// Client type
+enum DeviceType {
+    case desktop
+    case web
+    case mobile
+    case unknown
 }
