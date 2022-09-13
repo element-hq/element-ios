@@ -22,7 +22,7 @@ import Reusable
 protocol AllChatsViewControllerDelegate: AnyObject {
     func allChatsViewControllerDidCompleteAuthentication(_ allChatsViewController: AllChatsViewController)
     func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectRoomWithParameters roomNavigationParameters: RoomNavigationParameters, completion: @escaping () -> Void)
-    func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectRoomPreviewWithParameters roomPreviewNavigationParameters: RoomPreviewNavigationParameters, completion: @escaping () -> Void)
+    func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectRoomPreviewWithParameters roomPreviewNavigationParameters: RoomPreviewNavigationParameters, completion: (() -> Void)?)
     func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectContact contact: MXKContact, with presentationParameters: ScreenPresentationParameters)
 }
 
@@ -854,7 +854,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
     /// - Parameters:
     ///   - parameters: the presentation parameters that contains room preview information plus display information.
     ///   - completion: the block to execute at the end of the operation.
-    func selectRoomPreview(with parameters: RoomPreviewNavigationParameters, completion: @escaping () -> Void) {
+    func selectRoomPreview(with parameters: RoomPreviewNavigationParameters, completion: (() -> Void)?) {
         releaseSelectedItem()
         
         let roomPreviewData = parameters.previewData
