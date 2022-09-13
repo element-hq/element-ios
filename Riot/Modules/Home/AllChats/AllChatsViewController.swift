@@ -208,7 +208,22 @@ class AllChatsViewController: HomeViewController {
     
     override func addMatrixSession(_ mxSession: MXSession!) {
         super.addMatrixSession(mxSession)
-        initDataSource()
+        
+        if let dataSource = dataSource, !dataSource.mxSessions.contains(where: { $0 as? MXSession == mxSession }) {
+            dataSource.addMatrixSession(mxSession)
+            // Setting the delegate is required to send a RecentsViewControllerDataReadyNotification.
+            // Without this, when clearing the cache we end up with an infinite green spinner.
+            (dataSource as? RecentsDataSource)?.setDelegate(self, andRecentsDataSourceMode: recentsDataSourceMode)
+        } else {
+            initDataSource()
+        }
+    }
+    
+    override func removeMatrixSession(_ mxSession: MXSession!) {
+        super.removeMatrixSession(mxSession)
+        
+        guard let dataSource = dataSource else { return }
+        dataSource.removeMatrixSession(mxSession)
     }
     
     private func initDataSource() {
