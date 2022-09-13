@@ -767,7 +767,7 @@ extension AllChatsCoordinator: AllChatsViewControllerDelegate {
         self.showRoom(withNavigationParameters: roomNavigationParameters, completion: completion)
     }
     
-    func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectRoomPreviewWithParameters roomPreviewNavigationParameters: RoomPreviewNavigationParameters, completion: @escaping () -> Void) {
+    func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectRoomPreviewWithParameters roomPreviewNavigationParameters: RoomPreviewNavigationParameters, completion: (() -> Void)?) {
         self.showRoomPreview(withNavigationParameters: roomPreviewNavigationParameters, completion: completion)
     }
     
