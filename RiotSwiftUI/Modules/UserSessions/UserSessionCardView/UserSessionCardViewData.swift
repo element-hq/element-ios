@@ -51,7 +51,7 @@ struct UserSessionCardViewData {
          sessionDisplayName: String?,
          deviceType: DeviceType,
          isVerified: Bool,
-         lastActivityDate: TimeInterval?,
+         lastActivityTimestamp: TimeInterval?,
          lastSeenIP: String?,
          isCurrentSessionDisplayMode: Bool = false) {
         self.sessionId = sessionId
@@ -60,8 +60,8 @@ struct UserSessionCardViewData {
         
         var lastActivityDateString: String?
         
-        if let lastActivityDate = lastActivityDate {
-            lastActivityDateString = Self.lastActivityDateFormatter.lastActivityDateString(from: lastActivityDate)
+        if let lastActivityTimestamp = lastActivityTimestamp {
+            lastActivityDateString = Self.lastActivityDateFormatter.lastActivityDateString(from: lastActivityTimestamp)
         }
         
         self.lastActivityDateString = lastActivityDateString
@@ -75,6 +75,6 @@ struct UserSessionCardViewData {
 extension UserSessionCardViewData {
         
     init(userSessionInfo: UserSessionInfo, isCurrentSessionDisplayMode: Bool = false) {
-        self.init(sessionId: userSessionInfo.sessionId, sessionDisplayName: userSessionInfo.sessionName, deviceType: userSessionInfo.deviceType, isVerified: userSessionInfo.isVerified, lastActivityDate: userSessionInfo.lastSeenTimestamp, lastSeenIP: userSessionInfo.lastSeenIP, isCurrentSessionDisplayMode: isCurrentSessionDisplayMode)
+        self.init(sessionId: userSessionInfo.sessionId, sessionDisplayName: userSessionInfo.sessionName, deviceType: userSessionInfo.deviceType, isVerified: userSessionInfo.isVerified, lastActivityTimestamp: userSessionInfo.lastSeenTimestamp, lastSeenIP: userSessionInfo.lastSeenIP, isCurrentSessionDisplayMode: isCurrentSessionDisplayMode)
     }
 }

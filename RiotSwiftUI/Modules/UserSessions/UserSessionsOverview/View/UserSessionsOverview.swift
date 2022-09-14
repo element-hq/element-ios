@@ -24,6 +24,28 @@ struct UserSessionsOverview: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    @ViewBuilder
+    private var currentSessionsSection: some View {
+        if let currentSessionViewData = viewModel.viewState.currentSessionViewData {
+            SwiftUI.Section {
+                UserSessionCardView(viewData: currentSessionViewData, onVerifyAction: { _ in
+                    viewModel.send(viewAction: .verifyCurrentSession)
+                }, onViewDetailsAction: { _ in
+                    viewModel.send(viewAction: .viewCurrentSessionDetails)
+                })
+                .padding(.horizontal, 16)
+            } header: {
+                Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 24)
+                    .padding(.bottom, 11)
+            }
+        }
+    }
+    
     // MARK: Public
     
     @ObservedObject var viewModel: UserSessionsOverviewViewModel.Context
@@ -38,9 +60,7 @@ struct UserSessionsOverview: View {
             }
             
             // Current session section
-            if let currentSessionViewData = viewModel.viewState.currentSessionViewData {
-                self.currentSessionsSection(currentSessionViewData: currentSessionViewData)
-            }
+            currentSessionsSection
             
             // Other sessions section
             if viewModel.viewState.otherSessionsViewData.isEmpty == false {
@@ -53,25 +73,6 @@ struct UserSessionsOverview: View {
         .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
         .onAppear() {
             viewModel.send(viewAction: .viewAppeared)
-        }
-    }
-    
-    private func currentSessionsSection(currentSessionViewData: UserSessionCardViewData) -> some View {
-        SwiftUI.Section {
-            UserSessionCardView(viewData: currentSessionViewData, onVerifyAction: { _ in
-                viewModel.send(viewAction: .verifyCurrentSession)
-            }, onViewDetailsAction: { _ in
-                viewModel.send(viewAction: .viewCurrentSessionDetails)
-            })
-                .padding(.horizontal, 16)
-        } header: {
-            Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
-                .font(theme.fonts.footnote)
-                .foregroundColor(theme.colors.secondaryContent)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 16)
-                .padding(.top, 24)
-                .padding(.bottom, 11)
         }
     }
     

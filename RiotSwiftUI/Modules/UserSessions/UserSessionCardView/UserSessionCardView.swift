@@ -52,80 +52,78 @@ struct UserSessionCardView: View {
     }
     
     var body: some View {
-        VStack() {
-            VStack(alignment: .center, spacing: 12) {
-                DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
-                
-                Text(viewData.sessionName)
-                    .font(theme.fonts.headline)
-                    .foregroundColor(theme.colors.primaryContent)
+        VStack(alignment: .center, spacing: 12) {
+            DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
+            
+            Text(viewData.sessionName)
+                .font(theme.fonts.headline)
+                .foregroundColor(theme.colors.primaryContent)
+                .multilineTextAlignment(.center)
+            
+            HStack {
+                Image(verificationStatusImageName)
+                Text(verificationStatusText)
+                    .font(theme.fonts.subheadline)
+                    .foregroundColor(verificationStatusColor)
                     .multilineTextAlignment(.center)
-                
-                HStack {
-                    Image(verificationStatusImageName)
-                    Text(verificationStatusText)
-                        .font(theme.fonts.subheadline)
-                        .foregroundColor(verificationStatusColor)
-                        .multilineTextAlignment(.center)
-                }
-                
-                if viewData.isCurrentSessionDisplayMode {
-                    Text(verificationStatusAdditionalInfoText)
-                        .font(theme.fonts.footnote)
-                        .foregroundColor(theme.colors.secondaryContent)
-                        .multilineTextAlignment(.center)
-                } else {
-                    InlineTextButton(verificationStatusAdditionalInfoText + " %@", tappableText: VectorL10n.userSessionLearnMore) {
-                        onLearnMoreAction?()
-                    }
+            }
+            
+            if viewData.isCurrentSessionDisplayMode {
+                Text(verificationStatusAdditionalInfoText)
                     .font(theme.fonts.footnote)
                     .foregroundColor(theme.colors.secondaryContent)
                     .multilineTextAlignment(.center)
+            } else {
+                InlineTextButton(verificationStatusAdditionalInfoText + " %@", tappableText: VectorL10n.userSessionLearnMore) {
+                    onLearnMoreAction?()
                 }
-                
-                if self.showExtraInformations {
-                    VStack(spacing: 2) {
-                        if let lastActivityDateString = viewData.lastActivityDateString, lastActivityDateString.isEmpty == false {
-                            Text(lastActivityDateString)
-                                .font(theme.fonts.footnote)
-                                .foregroundColor(theme.colors.secondaryContent)
-                                .multilineTextAlignment(.center)
-                        }
-                        
-                        if let lastSeenIPInfo = viewData.lastSeenIPInfo, lastSeenIPInfo.isEmpty == false  {
-                            Text(lastSeenIPInfo)
-                                .font(theme.fonts.footnote)
-                                .foregroundColor(theme.colors.secondaryContent)
-                                .multilineTextAlignment(.center)
-                        }
+                .font(theme.fonts.footnote)
+                .foregroundColor(theme.colors.secondaryContent)
+                .multilineTextAlignment(.center)
+            }
+            
+            if self.showExtraInformations {
+                VStack(spacing: 2) {
+                    if let lastActivityDateString = viewData.lastActivityDateString, lastActivityDateString.isEmpty == false {
+                        Text(lastActivityDateString)
+                            .font(theme.fonts.footnote)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .multilineTextAlignment(.center)
                     }
-                }
-
-                if viewData.isVerified == false {
-                    Button {
-                        onVerifyAction?(viewData.sessionId)
-                    } label: {
-                        Text(VectorL10n.userSessionVerifyAction)
-                            .font(theme.fonts.body)
+                    
+                    if let lastSeenIPInfo = viewData.lastSeenIPInfo, lastSeenIPInfo.isEmpty == false  {
+                        Text(lastSeenIPInfo)
+                            .font(theme.fonts.footnote)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .multilineTextAlignment(.center)
                     }
-                    .buttonStyle(PrimaryActionButtonStyle())
-                    .padding(.top, 4)
-                    .padding(.bottom, 3)
-                }
-                
-                if viewData.isCurrentSessionDisplayMode {
-                    Button {
-                        onViewDetailsAction?(viewData.sessionId)
-                    } label: {
-                        Text(VectorL10n.userSessionViewDetails)
-                            .font(theme.fonts.body)
-                            .foregroundColor(theme.colors.accent)
-                    }
-                    .padding(.top, 4)
                 }
             }
-            .padding(24)
+            
+            if viewData.isVerified == false {
+                Button {
+                    onVerifyAction?(viewData.sessionId)
+                } label: {
+                    Text(VectorL10n.userSessionVerifyAction)
+                        .font(theme.fonts.body)
+                }
+                .buttonStyle(PrimaryActionButtonStyle())
+                .padding(.top, 4)
+                .padding(.bottom, 3)
+            }
+            
+            if viewData.isCurrentSessionDisplayMode {
+                Button {
+                    onViewDetailsAction?(viewData.sessionId)
+                } label: {
+                    Text(VectorL10n.userSessionViewDetails)
+                        .font(theme.fonts.body)
+                        .foregroundColor(theme.colors.accent)
+                }
+                .padding(.top, 4)
+            }
         }
+        .padding(24)
         .frame(maxWidth: .infinity)
         .background(theme.colors.background)
         .clipShape(self.backgroundShape)
