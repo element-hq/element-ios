@@ -51,7 +51,7 @@ class LoginWizard {
     ///   - deviceID: The device ID, optional. If not provided or nil, the server will generate one.
     ///   - removeOtherAccounts: If set to true, existing accounts with different user identifiers will be removed.
     /// - Returns: An `MXSession` if the login is successful.
-    func login(login: String,
+    @MainActor func login(login: String,
                password: String,
                initialDeviceName: String,
                deviceID: String? = nil,
