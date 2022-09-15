@@ -638,6 +638,14 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         guard let session = session else {
             return
         }
+        guard session.state != .closed else {
+            MXLog.debug("[RecentsListService] createFetchers cancelled on closed session")
+            return
+        }
+        guard session.roomListDataManager != nil else {
+            MXLog.debug("[RecentsListService] createFetchers cancelled on race condition (session closing in progress)")
+            return
+        }
         guard session.isEventStreamInitialised else {
             return
         }
