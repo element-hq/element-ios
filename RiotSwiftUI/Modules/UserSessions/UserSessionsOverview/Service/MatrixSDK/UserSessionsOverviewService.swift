@@ -47,12 +47,16 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         self.mxSession.matrixRestClient.devices { response in
             switch response {
             case .success(let devices):
-                let overviewData = self.userSessionsOverviewData(from: devices)
-                completion(.success(overviewData))
+                self.lastOverviewData = self.userSessionsOverviewData(from: devices)
+                completion(.success(self.lastOverviewData))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
+    }
+    
+    func getOtherSession(sessionId: String) -> UserSessionInfo? {
+        lastOverviewData.otherSessionsInfo.first(where: {$0.sessionId == sessionId})
     }
     
     // MARK: - Private

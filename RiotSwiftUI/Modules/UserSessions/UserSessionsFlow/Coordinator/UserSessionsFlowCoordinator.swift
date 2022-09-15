@@ -52,6 +52,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         let rootCoordinatorParameters = UserSessionsOverviewCoordinatorParameters(session: self.parameters.session)
         
         let rootCoordinator = UserSessionsOverviewCoordinator(parameters: rootCoordinatorParameters)
+        rootCoordinator.delegate = self
         
         rootCoordinator.start()
 
@@ -72,5 +73,16 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     
     func toPresentable() -> UIViewController {
         return self.navigationRouter.toPresentable()
+    }
+}
+
+extension UserSessionsFlowCoordinator: UserSessionsOverviewCoordinatorDelegate {
+    func showUserSessionOverview(session: UserSessionInfo) {
+        let parameters = UserSessionFlowCoordinatorParameters(session: parameters.session,
+                                                              navigationRouter: navigationRouter,
+                                                              userSessionInfo: session)
+        let coordinator = UserSessionFlowCoordinator(parameters: parameters)
+        coordinator.start()
+        self.add(childCoordinator: coordinator)
     }
 }

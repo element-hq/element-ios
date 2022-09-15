@@ -75,7 +75,7 @@ struct UserSessionsOverview: View {
             viewModel.send(viewAction: .viewAppeared)
         }
     }
-    
+
     private var otherSessionsSection: some View {
         
         SwiftUI.Section {

@@ -21,6 +21,10 @@ struct UserSessionsOverviewCoordinatorParameters {
     let session: MXSession
 }
 
+protocol UserSessionsOverviewCoordinatorDelegate: AnyObject {
+    func showUserSessionOverview(session: UserSessionInfo)
+}
+
 final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
@@ -30,7 +34,8 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     private let parameters: UserSessionsOverviewCoordinatorParameters
     private let userSessionsOverviewHostingController: UIViewController
     private var userSessionsOverviewViewModel: UserSessionsOverviewViewModelProtocol
-    
+    private let service: UserSessionsOverviewService
+
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
     
@@ -40,11 +45,15 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     var childCoordinators: [Coordinator] = []
     var completion: (() -> Void)?
     
+    weak var delegate: UserSessionsOverviewCoordinatorDelegate?
+    
     // MARK: - Setup
     
     init(parameters: UserSessionsOverviewCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: UserSessionsOverviewService(mxSession: parameters.session))
+        let service = UserSessionsOverviewService(mxSession: parameters.session)
+        self.service = service
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
         let view = UserSessionsOverview(viewModel: viewModel.context)
         userSessionsOverviewViewModel = viewModel
         
@@ -117,7 +126,10 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     }
     
     private func showUserSessionDetails(sessionId: String) {
-        // TODO
+        guard let sessionInfo = service.getOtherSession(sessionId: sessionId) else {
+            return
+        }
+        delegate?.showUserSessionOverview(session: sessionInfo)
     }
     
     private func showAllOtherSessions() {
