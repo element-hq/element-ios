@@ -255,7 +255,7 @@ class RegistrationWizard {
         do {
             let response = try await client.register(parameters: parameters)
             let credentials = MXCredentials(loginResponse: response, andDefaultCredentials: client.credentials)
-            return .success(sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false))
+            return await .success(sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false))
         } catch {
             let nsError = error as NSError
             

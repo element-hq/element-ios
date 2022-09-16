@@ -23,6 +23,7 @@ protocol SessionCreatorProtocol {
     ///   - client: The client that completed the authentication.
     ///   - removeOtherAccounts: Flag to remove other accounts than the account specified with the `credentials.userId`.
     /// - Returns: A new `MXSession` for the account.
+    @MainActor
     func createSession(credentials: MXCredentials, client: AuthenticationRestClient, removeOtherAccounts: Bool) -> MXSession
 }
 
@@ -35,6 +36,7 @@ struct SessionCreator: SessionCreatorProtocol {
         self.accountManager = accountManager
     }
 
+    @MainActor
     func createSession(credentials: MXCredentials, client: AuthenticationRestClient, removeOtherAccounts: Bool) -> MXSession {
         // Use identity server provided in the client
         if credentials.identityServer == nil {

@@ -51,7 +51,7 @@ class LoginWizard {
     ///   - deviceID: The device ID, optional. If not provided or nil, the server will generate one.
     ///   - removeOtherAccounts: If set to true, existing accounts with different user identifiers will be removed.
     /// - Returns: An `MXSession` if the login is successful.
-    @MainActor func login(login: String,
+    func login(login: String,
                password: String,
                initialDeviceName: String,
                deviceID: String? = nil,
@@ -78,9 +78,9 @@ class LoginWizard {
         }
         
         let credentials = try await client.login(parameters: parameters)
-        return sessionCreator.createSession(credentials: credentials,
-                                            client: client,
-                                            removeOtherAccounts: removeOtherAccounts)
+        return await sessionCreator.createSession(credentials: credentials,
+                                                  client: client,
+                                                  removeOtherAccounts: removeOtherAccounts)
     }
 
     /// Exchange a login token to an access token.
@@ -91,9 +91,9 @@ class LoginWizard {
     func login(with token: String, removeOtherAccounts: Bool = false) async throws -> MXSession {
         let parameters = LoginTokenParameters(token: token)
         let credentials = try await client.login(parameters: parameters)
-        return sessionCreator.createSession(credentials: credentials,
-                                            client: client,
-                                            removeOtherAccounts: removeOtherAccounts)
+        return await sessionCreator.createSession(credentials: credentials,
+                                                  client: client,
+                                                  removeOtherAccounts: removeOtherAccounts)
     }
 
     /// Ask the homeserver to reset the user password. The password will not be
