@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,6 +22,11 @@ struct UserSessionDetailsView: View {
     
     // MARK: Private
     
+    private enum LayoutConstants {
+        static let listItemHorizontalPadding: CGFloat = 20
+        static let sectionVerticalPadding: CGFloat = 8
+    }
+    
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     // MARK: Public
@@ -33,30 +38,30 @@ struct UserSessionDetailsView: View {
             ForEach(viewModel.viewState.sections) { section in
                 SwiftUI.Section {
                     ForEach(section.items) { item in
-                        UserSessionDetailsItemView(viewData: item)
+                        UserSessionDetailsItemView(viewData: item, horizontalPadding: LayoutConstants.listItemHorizontalPadding)
                             .listRowInsets(EdgeInsets())
                     }
                 } header: {
                     Text(section.header)
                         .foregroundColor(theme.colors.secondaryContent)
                         .font(theme.fonts.footnote)
-                        .padding([.leading, .trailing], 20)
-                        .padding([.top, .bottom], 8)
+                        .padding([.leading, .trailing], LayoutConstants.listItemHorizontalPadding)
+                        .padding(.top, 32)
+                        .padding(.bottom, LayoutConstants.sectionVerticalPadding)
                 } footer: {
                     if let footer = section.footer {
                         Text(footer)
                             .foregroundColor(theme.colors.secondaryContent)
                             .font(theme.fonts.footnote)
-                            .padding([.leading, .trailing], 20)
-                            .padding(.top, 8)
-                            .padding(.bottom, 32)
+                            .padding([.leading, .trailing], LayoutConstants.listItemHorizontalPadding)
+                            .padding(.top, LayoutConstants.sectionVerticalPadding)
                     }
                 }
                 .listRowInsets(EdgeInsets())
             }
         }
         .listStyle(.grouped)
-        .navigationBarTitle("Session details", displayMode: .inline)
+        .navigationBarTitle("Session details")
     }
 }
 

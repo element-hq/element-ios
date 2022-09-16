@@ -27,6 +27,12 @@ struct UserSessionDetailsItemView: View {
     // MARK: Public
     
     let viewData: UserSessionDetailsSectionItemViewData
+    let horizontalPadding: CGFloat
+    
+    init(viewData: UserSessionDetailsSectionItemViewData, horizontalPadding: CGFloat = 20) {
+        self.viewData = viewData
+        self.horizontalPadding = horizontalPadding
+    }
     
     var body: some View {
         HStack() {
@@ -47,7 +53,7 @@ struct UserSessionDetailsItemView: View {
                 Label("Copy", systemImage: "doc.on.doc")
             }
         }
-        .padding([.leading, .trailing], 20)
+        .padding([.leading, .trailing], horizontalPadding)
         .padding([.top, .bottom], 12)
     }
 }
@@ -58,18 +64,26 @@ struct UserSessionDetailsItemView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             List {
-                UserSessionDetailsItemView(viewData: UserSessionDetailsSectionItemViewData(title: "Session name", value: "123"))
-                    .theme(.light)
-                    .preferredColorScheme(.light)
-                    .listRowInsets(EdgeInsets())
+                UserSessionDetailsItemView(viewData: UserSessionDetailsSectionItemViewData(title: "Session name",
+                                                                                           value: "Element Web: Firefox on macOS"))
+                .listRowInsets(EdgeInsets())
+                UserSessionDetailsItemView(viewData: UserSessionDetailsSectionItemViewData(title: "Session ID",
+                                                                                           value: "76c95352559d-react-7c57680b93db-js-b64dbdce74b0"))
+                .listRowInsets(EdgeInsets())
             }
+            .preferredColorScheme(.light)
+            
             .listStyle(.grouped)
             List {
-                UserSessionDetailsItemView(viewData: UserSessionDetailsSectionItemViewData(title: "Session name", value: "123"))
-                    .theme(.dark)
-                    .preferredColorScheme(.dark)
-                    .listRowInsets(EdgeInsets())
+                UserSessionDetailsItemView(viewData: UserSessionDetailsSectionItemViewData(title: "Session name",
+                                                                                           value: "Element Web: Firefox on macOS"))
+                .listRowInsets(EdgeInsets())
+                UserSessionDetailsItemView(viewData: UserSessionDetailsSectionItemViewData(title: "Session ID",
+                                                                                           value: "76c95352559d-react-7c57680b93db-js-b64dbdce74b0"))
+                .listRowInsets(EdgeInsets())
             }
+            .preferredColorScheme(.dark)
+            .theme(.dark)
             .listStyle(.grouped)
         }
     }
