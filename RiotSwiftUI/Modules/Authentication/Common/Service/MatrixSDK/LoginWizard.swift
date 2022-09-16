@@ -78,9 +78,9 @@ class LoginWizard {
         }
         
         let credentials = try await client.login(parameters: parameters)
-        return sessionCreator.createSession(credentials: credentials,
-                                            client: client,
-                                            removeOtherAccounts: removeOtherAccounts)
+        return await sessionCreator.createSession(credentials: credentials,
+                                                  client: client,
+                                                  removeOtherAccounts: removeOtherAccounts)
     }
 
     /// Exchange a login token to an access token.
@@ -91,9 +91,9 @@ class LoginWizard {
     func login(with token: String, removeOtherAccounts: Bool = false) async throws -> MXSession {
         let parameters = LoginTokenParameters(token: token)
         let credentials = try await client.login(parameters: parameters)
-        return sessionCreator.createSession(credentials: credentials,
-                                            client: client,
-                                            removeOtherAccounts: removeOtherAccounts)
+        return await sessionCreator.createSession(credentials: credentials,
+                                                  client: client,
+                                                  removeOtherAccounts: removeOtherAccounts)
     }
 
     /// Ask the homeserver to reset the user password. The password will not be
