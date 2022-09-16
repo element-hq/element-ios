@@ -187,7 +187,7 @@ public class VectorL10n: NSObject {
   public static var allChatsEmptySpaceInformation: String { 
     return VectorL10n.tr("Vector", "all_chats_empty_space_information") 
   }
-  /// This is where you're unread messages will show up, when you have some.
+  /// This is where your unread messages will show up, when you have some.
   public static var allChatsEmptyUnreadsPlaceholderMessage: String { 
     return VectorL10n.tr("Vector", "all_chats_empty_unreads_placeholder_message") 
   }
