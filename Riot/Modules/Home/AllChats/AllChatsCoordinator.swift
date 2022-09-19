@@ -344,7 +344,8 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         var subMenuActions: [UIAction] = []
         if BuildSettings.sideMenuShowInviteFriends {
             subMenuActions.append(UIAction(title: VectorL10n.sideMenuActionInviteFriends, image: UIImage(systemName: "square.and.arrow.up.fill")) { [weak self] action in
-                        self?.showInviteFriends(from: nil)
+                guard let self = self else { return }
+                self.showInviteFriends(from: self.avatarMenuButton)
             })
         }
 
@@ -585,7 +586,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         signOutAlertPresenter.present(for: keyBackup.state,
                                       areThereKeysToBackup: keyBackup.hasKeysToBackup,
                                       from: self.allChatsViewController,
-                                      sourceView: nil,
+                                      sourceView: avatarMenuButton,
                                       animated: true)
     }
     
