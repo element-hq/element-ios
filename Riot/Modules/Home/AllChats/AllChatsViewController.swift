@@ -224,6 +224,11 @@ class AllChatsViewController: HomeViewController {
         
         guard let dataSource = dataSource else { return }
         dataSource.removeMatrixSession(mxSession)
+        
+        if dataSource.mxSessions.isEmpty {
+            // The user logged out -> we need to reset the data source
+            displayList(nil)
+        }
     }
     
     private func initDataSource() {
