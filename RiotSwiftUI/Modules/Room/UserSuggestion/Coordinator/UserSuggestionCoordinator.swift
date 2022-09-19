@@ -118,6 +118,7 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
         toPresentable().view.addSubview(view)
         controller.didMove(toParent: toPresentable())
 
+        view.setNeedsLayout()
         view.layoutIfNeeded()
 
         let result = view.intrinsicContentSize.height
