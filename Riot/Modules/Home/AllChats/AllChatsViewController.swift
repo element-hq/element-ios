@@ -351,12 +351,20 @@ class AllChatsViewController: HomeViewController {
     }
 
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        guard scrollView == recentsTableView else {
+            return
+        }
+        
         initialScrollPosition = scrollPosition(of: scrollView)
     }
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         super.scrollViewDidScroll(scrollView)
 
+        guard scrollView == recentsTableView else {
+            return
+        }
+        
         let scrollPosition = scrollPosition(of: scrollView)
         
         if !self.recentsTableView.isDragging && scrollPosition == 0 && self.navigationController?.isToolbarHidden == true {
