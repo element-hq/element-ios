@@ -19,13 +19,6 @@
 import CommonKit
 import UIKit
 
-protocol UserSessionFlowCoordinatorDelegate: AnyObject {
-//    func userSessionFlowCoordinatorDidComplete(_ coordinator: UserSessionFlowCoordinatorProtocol)
-//
-//    /// Called when the view has been dismissed by gesture when presented modally (not in full screen).
-//    func userSessionFlowCoordinatorDidDismissInteractively(_ coordinator: UserSessionFlowCoordinatorProtocol)
-}
-
 struct UserSessionFlowCoordinatorParameters {
     let session: MXSession
     let navigationRouter: NavigationRouterType
@@ -37,40 +30,37 @@ final class UserSessionFlowCoordinator: Coordinator, Presentable {
     // MARK: - Properties
     
     // MARK: Private
-        
+    
     private let parameters: UserSessionFlowCoordinatorParameters
     private let userSessionDetailsViewHostingController: UIViewController
     private var userSessionDetailsViewModel: UserSessionDetailsViewModel
-   
+    
     private var navigationRouter: NavigationRouterType {
         return self.parameters.navigationRouter
     }
     
     // MARK: Public
-
+    
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    
-    weak var delegate: UserSessionFlowCoordinatorDelegate?
     
     // MARK: - Setup
     
     init(parameters: UserSessionFlowCoordinatorParameters) {
         self.parameters = parameters
         
-        // todo: builder
         let viewModel = UserSessionDetailsViewModel(userSessionInfo: parameters.userSessionInfo)
         let view = UserSessionDetailsView(viewModel: viewModel.context)
         userSessionDetailsViewModel = viewModel
         userSessionDetailsViewHostingController = VectorHostingController(rootView: view)
-    }    
+    }
     
     // MARK: - Public
     
     func start() {
         // TODO: change to showUserSessionOverview()
         showUserSessionDetails()
-      }
+    }
     
     private func showUserSessionOverview() {
         // TODO: PSG-690
@@ -85,5 +75,4 @@ final class UserSessionFlowCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Private
-
 }

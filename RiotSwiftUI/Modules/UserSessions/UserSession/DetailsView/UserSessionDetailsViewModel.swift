@@ -27,9 +27,7 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType {
     // MARK: Private
     
     // MARK: Public
-    
-    var completion: ((UserSessionDetailsViewModelResult) -> Void)?
-    
+
     // MARK: - Setup
     
     init(userSessionInfo: UserSessionInfo) {
