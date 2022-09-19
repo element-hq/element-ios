@@ -37,26 +37,26 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType {
         
         var sessionItems = [UserSessionDetailsSectionItemViewData]()
         if let sessionName = userSessionInfo.sessionName {
-            sessionItems.append(UserSessionDetailsSectionItemViewData(title: "Session name",
+            sessionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.userSessionDetailsSessionName,
                                                                       value: sessionName))
         }
-        sessionItems.append(UserSessionDetailsSectionItemViewData(title: "Session ID",
+        sessionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
                                                                   value: userSessionInfo.sessionId))
-        sections.append(UserSessionDetailsSectionViewData(header: "SESSION",
-                                                          footer: "Copy any data by tapping on it and holding it down.",
+        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
+                                                          footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                                                           items: sessionItems))
         
         var deviceSectionItems = [UserSessionDetailsSectionItemViewData]()
         if let lastSeenIP = userSessionInfo.lastSeenIP {
-            deviceSectionItems.append(UserSessionDetailsSectionItemViewData(title: "IP address",
+            deviceSectionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.userSessionDetailsDeviceIpAddress,
                                                                             value: lastSeenIP))
         }
         if deviceSectionItems.count > 0 {
-            sections.append(UserSessionDetailsSectionViewData(header: "DEVICE",
+            sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsDeviceSectionHeader,
                                                               footer: nil,
                                                               items: deviceSectionItems))
         }
-     
+        
         let initialViewState = UserSessionDetailsViewState(sections: sections)
         super.init(initialViewState: initialViewState)
     }

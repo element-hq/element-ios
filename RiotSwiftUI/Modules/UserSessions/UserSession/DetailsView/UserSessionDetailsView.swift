@@ -61,7 +61,7 @@ struct UserSessionDetailsView: View {
             }
         }
         .listStyle(.grouped)
-        .navigationBarTitle("Session details")
+        .navigationBarTitle(VectorL10n.userSessionDetailsTitle)
     }
 }
 

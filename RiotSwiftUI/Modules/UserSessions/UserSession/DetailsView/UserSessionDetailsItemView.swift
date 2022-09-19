@@ -50,7 +50,7 @@ struct UserSessionDetailsItemView: View {
             Button {
                 UIPasteboard.general.string = viewData.value
             } label: {
-                Label("Copy", systemImage: "doc.on.doc")
+                Label(VectorL10n.copyButtonName, systemImage: "doc.on.doc")
             }
         }
         .padding([.leading, .trailing], horizontalPadding)

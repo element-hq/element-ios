@@ -2384,6 +2384,13 @@ To enable access, tap Settings> Location and select Always";
 "device_name_mobile" = "%@ Mobile";
 "device_name_unknown" = "Unknown client";
 
+"user_session_details_title" = "Session details";
+"user_session_details_session_section_header" = "SESSION";
+"user_session_details_device_section_header" = "DEVICE";
+"user_session_details_session_name" = "Session name";
+"user_session_details_session_id" = "Session ID";
+"user_session_details_session_section_footer" = "Copy any data by tapping on it and holding it down.";
+"user_session_details_device_ip_address" = "IP address";
 // MARK: - MatrixKit
 
 
