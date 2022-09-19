@@ -7757,6 +7757,16 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self mention:member];
 }
 
+- (void)userSuggestionCoordinatorBridge:(UserSuggestionCoordinatorBridge *)coordinator didUpdateViewHeight:(CGFloat)height
+{
+    if (self.userSuggestionContainerHeightConstraint.constant != height)
+    {
+        self.userSuggestionContainerHeightConstraint.constant = height;
+
+        [self.view layoutIfNeeded];
+    }
+}
+
 #pragma mark - ThreadsCoordinatorBridgePresenterDelegate
 
 - (void)threadsCoordinatorBridgePresenterDelegateDidComplete:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
