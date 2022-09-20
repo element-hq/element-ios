@@ -20,7 +20,7 @@ import XCTest
 class UserSessionDetailsViewModelTests: XCTestCase {
     
     
-    func test_viewState_withSessionNameAndLastSeenIPNil_shouldReturnCorrectModel() {
+    func test_whenSessionNameAndLastSeenIPNil_viewStateCorrect() {
         let userSessionInfo = createUserSessionInfo(sessionId: "session",
                                                     sessionName: nil,
                                                     lastSeenIP: nil)
@@ -38,7 +38,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(sut.state, expectedModel)
     }
     
-    func test_viewState_withSessionNameNotNilLastSeenIPNil_shouldReturnCorrectModel() {
+    func test_whenSessionNameNotNilLastSeenIPNil_viewStateCorrect() {
         let userSessionInfo = createUserSessionInfo(sessionId: "session",
                                                     sessionName: "session name",
                                                     lastSeenIP: nil)
@@ -58,7 +58,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(sut.state, expectedModel)
     }
     
-    func test_viewState_withAllValues_shouldReturnCorrectModel() {
+    func test_whenUserSessionInfoContainsAllValues_viewStateCorrect() {
         let userSessionInfo = createUserSessionInfo(sessionId: "session",
                                                     sessionName: "session name",
                                                     lastSeenIP: "0.0.0.0")
