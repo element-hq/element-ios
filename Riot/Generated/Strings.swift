@@ -187,7 +187,7 @@ public class VectorL10n: NSObject {
   public static var allChatsEmptySpaceInformation: String { 
     return VectorL10n.tr("Vector", "all_chats_empty_space_information") 
   }
-  /// This is where you're unread messages will show up, when you have some.
+  /// This is where your unread messages will show up, when you have some.
   public static var allChatsEmptyUnreadsPlaceholderMessage: String { 
     return VectorL10n.tr("Vector", "all_chats_empty_unreads_placeholder_message") 
   }
@@ -8471,6 +8471,10 @@ public class VectorL10n: NSObject {
   public static func userSessionItemDetails(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "user_session_item_details", p1, p2)
   }
+  /// Learn more
+  public static var userSessionLearnMore: String { 
+    return VectorL10n.tr("Vector", "user_session_learn_more") 
+  }
   /// %@: %@
   public static func userSessionName(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "user_session_name", p1, p2)
@@ -8478,6 +8482,10 @@ public class VectorL10n: NSObject {
   /// Unverified session
   public static var userSessionUnverified: String { 
     return VectorL10n.tr("Vector", "user_session_unverified") 
+  }
+  /// Verify your current session for enhanced secure messaging.
+  public static var userSessionUnverifiedAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_session_unverified_additional_info") 
   }
   /// Unverified
   public static var userSessionUnverifiedShort: String { 
@@ -8487,9 +8495,25 @@ public class VectorL10n: NSObject {
   public static var userSessionVerified: String { 
     return VectorL10n.tr("Vector", "user_session_verified") 
   }
+  /// Your current session is ready for secure messaging.
+  public static var userSessionVerifiedAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_session_verified_additional_info") 
+  }
   /// Verified
   public static var userSessionVerifiedShort: String { 
     return VectorL10n.tr("Vector", "user_session_verified_short") 
+  }
+  /// Verify session
+  public static var userSessionVerifyAction: String { 
+    return VectorL10n.tr("Vector", "user_session_verify_action") 
+  }
+  /// View details
+  public static var userSessionViewDetails: String { 
+    return VectorL10n.tr("Vector", "user_session_view_details") 
+  }
+  /// CURRENT SESSION
+  public static var userSessionsOverviewCurrentSessionSectionTitle: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_current_session_section_title") 
   }
   /// For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.
   public static var userSessionsOverviewOtherSessionsSectionInfo: String { 

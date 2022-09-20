@@ -22,7 +22,7 @@ import Reusable
 protocol AllChatsViewControllerDelegate: AnyObject {
     func allChatsViewControllerDidCompleteAuthentication(_ allChatsViewController: AllChatsViewController)
     func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectRoomWithParameters roomNavigationParameters: RoomNavigationParameters, completion: @escaping () -> Void)
-    func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectRoomPreviewWithParameters roomPreviewNavigationParameters: RoomPreviewNavigationParameters, completion: @escaping () -> Void)
+    func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectRoomPreviewWithParameters roomPreviewNavigationParameters: RoomPreviewNavigationParameters, completion: (() -> Void)?)
     func allChatsViewController(_ allChatsViewController: AllChatsViewController, didSelectContact contact: MXKContact, with presentationParameters: ScreenPresentationParameters)
 }
 
@@ -208,7 +208,27 @@ class AllChatsViewController: HomeViewController {
     
     override func addMatrixSession(_ mxSession: MXSession!) {
         super.addMatrixSession(mxSession)
-        initDataSource()
+        
+        if let dataSource = dataSource, !dataSource.mxSessions.contains(where: { $0 as? MXSession == mxSession }) {
+            dataSource.addMatrixSession(mxSession)
+            // Setting the delegate is required to send a RecentsViewControllerDataReadyNotification.
+            // Without this, when clearing the cache we end up with an infinite green spinner.
+            (dataSource as? RecentsDataSource)?.setDelegate(self, andRecentsDataSourceMode: recentsDataSourceMode)
+        } else {
+            initDataSource()
+        }
+    }
+    
+    override func removeMatrixSession(_ mxSession: MXSession!) {
+        super.removeMatrixSession(mxSession)
+        
+        guard let dataSource = dataSource else { return }
+        dataSource.removeMatrixSession(mxSession)
+        
+        if dataSource.mxSessions.isEmpty {
+            // The user logged out -> we need to reset the data source
+            displayList(nil)
+        }
     }
     
     private func initDataSource() {
@@ -336,12 +356,20 @@ class AllChatsViewController: HomeViewController {
     }
 
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        guard scrollView == recentsTableView else {
+            return
+        }
+        
         initialScrollPosition = scrollPosition(of: scrollView)
     }
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         super.scrollViewDidScroll(scrollView)
 
+        guard scrollView == recentsTableView else {
+            return
+        }
+        
         let scrollPosition = scrollPosition(of: scrollView)
         
         if !self.recentsTableView.isDragging && scrollPosition == 0 && self.navigationController?.isToolbarHidden == true {
@@ -854,7 +882,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
     /// - Parameters:
     ///   - parameters: the presentation parameters that contains room preview information plus display information.
     ///   - completion: the block to execute at the end of the operation.
-    func selectRoomPreview(with parameters: RoomPreviewNavigationParameters, completion: @escaping () -> Void) {
+    func selectRoomPreview(with parameters: RoomPreviewNavigationParameters, completion: (() -> Void)?) {
         releaseSelectedItem()
         
         let roomPreviewData = parameters.previewData

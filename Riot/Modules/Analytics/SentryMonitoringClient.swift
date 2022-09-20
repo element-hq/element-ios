@@ -37,6 +37,10 @@ struct SentryMonitoringClient {
             options.sampleRate = 0.1
             options.tracesSampleRate = 0.1
             
+            // Disable unnecessary network tracking
+            options.enableNetworkBreadcrumbs = false
+            options.enableNetworkTracking = false
+            
             options.beforeSend = { event in
                 MXLog.debug("[SentryMonitoringClient] Issue detected: \(event)")
                 return event

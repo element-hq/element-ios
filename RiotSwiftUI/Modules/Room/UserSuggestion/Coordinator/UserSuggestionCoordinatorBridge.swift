@@ -19,6 +19,7 @@ import Foundation
 @objc
 protocol UserSuggestionCoordinatorBridgeDelegate: AnyObject {
     func userSuggestionCoordinatorBridge(_ coordinator: UserSuggestionCoordinatorBridge, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
+    func userSuggestionCoordinatorBridge(_ coordinator: UserSuggestionCoordinatorBridge, didUpdateViewHeight height: CGFloat)
 }
 
 @objcMembers
@@ -53,5 +54,9 @@ final class UserSuggestionCoordinatorBridge: NSObject {
 extension UserSuggestionCoordinatorBridge: UserSuggestionCoordinatorDelegate {
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?) {
         delegate?.userSuggestionCoordinatorBridge(self, didRequestMentionForMember: member, textTrigger: textTrigger)
+    }
+
+    func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didUpdateViewHeight height: CGFloat) {
+        delegate?.userSuggestionCoordinatorBridge(self, didUpdateViewHeight: height)
     }
 }

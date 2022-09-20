@@ -37,9 +37,9 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
     init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol) {
         self.userSessionsOverviewService = userSessionsOverviewService
         
-        let viewState = UserSessionsOverviewViewState(unverifiedSessionsViewData: [], inactiveSessionsViewData: [], currentSessionViewData: nil, otherSessionsViewData: [])
+        let initialViewState = UserSessionsOverviewViewState(unverifiedSessionsViewData: [], inactiveSessionsViewData: [], currentSessionViewData: nil, otherSessionsViewData: [])
         
-        super.init(initialViewState: viewState)
+        super.init(initialViewState: initialViewState)
         
         self.updateViewState(with: userSessionsOverviewService.lastOverviewData)
     }
@@ -72,13 +72,13 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         let unverifiedSessionsViewData = self.userSessionListItemViewDataList(from: userSessionsViewData.unverifiedSessionsInfo)
         let inactiveSessionsViewData = self.userSessionListItemViewDataList(from: userSessionsViewData.inactiveSessionsInfo)
         
-        var currentSessionViewData: UserSessionListItemViewData?
+        var currentSessionViewData: UserSessionCardViewData?
         
         let otherSessionsViewData = self.userSessionListItemViewDataList(from: userSessionsViewData.otherSessionsInfo)
          
         
         if let currentSessionInfo = userSessionsViewData.currentSessionInfo {
-            currentSessionViewData = UserSessionListItemViewData(userSessionInfo: currentSessionInfo)
+            currentSessionViewData = UserSessionCardViewData(userSessionInfo: currentSessionInfo, isCurrentSessionDisplayMode: true)
         }
      
         self.state.unverifiedSessionsViewData = unverifiedSessionsViewData

@@ -1544,10 +1544,6 @@ static CGSize kThreadListBarButtonItemImageSize;
  */
 - (void)createDiscussionIfNeeded:(void (^)(BOOL readyToSend))onComplete
 {
-    // Disable the input tool bar during this operation. This prevents us from creating several discussions, or
-    // trying to send several invites.
-    self.inputToolbarView.userInteractionEnabled = false;
-    
     void(^completion)(BOOL) = ^(BOOL readyToSend) {
         self.inputToolbarView.userInteractionEnabled = true;
         if (onComplete) {
@@ -1557,6 +1553,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     if (self.directChatTargetUser)
     {
+        // Disable the input tool bar during this operation. This prevents us from creating several discussions, or
+        // trying to send several invites.
+        self.inputToolbarView.userInteractionEnabled = false;
+        
         [self createDiscussionWithUser:self.directChatTargetUser completion:completion];
     }
     else
@@ -7755,6 +7755,16 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     
     [self mention:member];
+}
+
+- (void)userSuggestionCoordinatorBridge:(UserSuggestionCoordinatorBridge *)coordinator didUpdateViewHeight:(CGFloat)height
+{
+    if (self.userSuggestionContainerHeightConstraint.constant != height)
+    {
+        self.userSuggestionContainerHeightConstraint.constant = height;
+
+        [self.view layoutIfNeeded];
+    }
 }
 
 #pragma mark - ThreadsCoordinatorBridgePresenterDelegate
