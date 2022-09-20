@@ -17,9 +17,11 @@
 import Foundation
 import UIKit
 import SwiftUI
+import Combine
 
 protocol UserSuggestionCoordinatorDelegate: AnyObject {
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
+    func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didUpdateViewHeight height: CGFloat)
 }
 
 struct UserSuggestionCoordinatorParameters {
@@ -35,10 +37,12 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     
     private let parameters: UserSuggestionCoordinatorParameters
     
-    private var userSuggestionHostingController: UIViewController
+    private var userSuggestionHostingController: UIHostingController<AnyView>
     private var userSuggestionService: UserSuggestionServiceProtocol
     private var userSuggestionViewModel: UserSuggestionViewModelProtocol
     private var roomMemberProvider: UserSuggestionCoordinatorRoomMemberProvider
+
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
 
@@ -77,12 +81,18 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
                 self.delegate?.userSuggestionCoordinator(self, didRequestMentionForMember: member, textTrigger: self.userSuggestionService.currentTextTrigger)
             }
         }
+
+        userSuggestionService.items.sink { [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.userSuggestionCoordinator(self,
+                                                     didUpdateViewHeight: self.calculateViewHeight())
+        }.store(in: &cancellables)
     }
     
     func processTextMessage(_ textMessage: String) {
         userSuggestionService.processTextMessage(textMessage)
     }
-    
+
     // MARK: - Public
     func start() {
         
@@ -90,6 +100,33 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     
     func toPresentable() -> UIViewController {
         return self.userSuggestionHostingController
+    }
+
+    // MARK: - Private
+
+    private func calculateViewHeight() -> CGFloat {
+        let viewModel = UserSuggestionViewModel(userSuggestionService: userSuggestionService)
+        let view = UserSuggestionList(viewModel: viewModel.context)
+            .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
+
+        let controller = VectorHostingController(rootView: view)
+        guard let view = controller.view else {
+            return 0
+        }
+        view.isHidden = true
+
+        toPresentable().view.addSubview(view)
+        controller.didMove(toParent: toPresentable())
+
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+
+        let result = view.intrinsicContentSize.height
+
+        controller.didMove(toParent: nil)
+        view.removeFromSuperview()
+
+        return result
     }
 }
 

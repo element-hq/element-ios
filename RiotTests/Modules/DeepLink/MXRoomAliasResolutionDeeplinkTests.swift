@@ -28,7 +28,7 @@ class MXRoomAliasResolutionDeeplinkTests: XCTestCase {
         let resolution = MXRoomAliasResolution()
         resolution.roomId = "!abc:matrix.org"
         
-        XCTAssertEqual(resolution.deeplinkFragment, "!abc%3Amatrix.org")
+        XCTAssertEqual(resolution.deeplinkFragment, "!abc:matrix.org")
     }
     
     func test_fragmentContainsSingleServer() {
@@ -38,7 +38,7 @@ class MXRoomAliasResolutionDeeplinkTests: XCTestCase {
             "matrix.org"
         ]
         
-        XCTAssertEqual(resolution.deeplinkFragment, "xyz%3Aelement.io%3Fvia%3Dmatrix.org")
+        XCTAssertEqual(resolution.deeplinkFragment, "xyz:element.io?via=matrix.org")
     }
     
     func test_fragmentContainsMultipleSerivers() {
@@ -51,6 +51,6 @@ class MXRoomAliasResolutionDeeplinkTests: XCTestCase {
             "matrix.org"
         ]
         
-        XCTAssertEqual(resolution.deeplinkFragment, "mno%3Aserver.com%3Fvia%3Dserver.com%26via%3Delement.io%26via%3Dwikipedia.org%26via%3Dmatrix.org")
+        XCTAssertEqual(resolution.deeplinkFragment, "mno:server.com?via=server.com&via=element.io&via=wikipedia.org&via=matrix.org")
     }
 }
