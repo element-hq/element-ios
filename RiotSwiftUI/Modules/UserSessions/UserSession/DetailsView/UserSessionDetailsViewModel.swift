@@ -60,11 +60,7 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType {
     }
     
     // MARK: - Public
-    
-    override func process(viewAction: UserSessionDetailsViewAction) {
-        
-    }
-    
+
     // MARK: - Private
 }
 

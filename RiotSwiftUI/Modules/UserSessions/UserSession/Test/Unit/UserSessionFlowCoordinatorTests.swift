@@ -20,7 +20,12 @@ import XCTest
 class UserSessionFlowCoordinatorTests: XCTestCase {
     
     func test_start_shouldPushView() throws {
-        let userSessionInfo = UserSessionInfo(sessionId: "session", sessionName: "iOS", deviceType: .mobile, isVerified: false, lastSeenIP: "10.0.0.10", lastSeenTimestamp: Date().timeIntervalSince1970)
+        let userSessionInfo = UserSessionInfo(sessionId: "session",
+                                              sessionName: "iOS",
+                                              deviceType: .mobile,
+                                              isVerified: false,
+                                              lastSeenIP: "10.0.0.10",
+                                              lastSeenTimestamp: Date().timeIntervalSince1970)
         let navigationRouterSpy = NavigationRouterSpy()
         let params = UserSessionFlowCoordinatorParameters(session:  MXSession(),
                                                           navigationRouter: navigationRouterSpy,

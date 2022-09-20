@@ -19,7 +19,7 @@ import RiotSwiftUI
 
 class UserSessionDetailsViewUITests: MockScreenTestCase {
     
-    func test_longPressOnDetailsCell_CopyValueToClipboard() throws {
+    func test_longPressDetailsCell_CopiesValueToClipboard() throws {
         app.goToScreenWithIdentifier(MockUserSessionDetailsScreenState.allSections.title)
         
         UIPasteboard.general.string = ""
