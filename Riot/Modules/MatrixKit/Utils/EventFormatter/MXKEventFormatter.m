@@ -1846,7 +1846,17 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
         }
         else
         {
-            MXJSONModelSetString(repliedEventContent, repliedEvent.content[@"formatted_body"]);
+            MXReplyEventParser *parser = [[MXReplyEventParser alloc] init];
+            MXReplyEventParts *parts = [parser parse:repliedEvent];
+            MXJSONModelSetString(repliedEventContent, parts.formattedBodyParts.replyText)
+            if (!repliedEventContent)
+            {
+                MXJSONModelSetString(repliedEventContent, parts.bodyParts.replyText)
+            }
+            if (!repliedEventContent)
+            {
+                MXJSONModelSetString(repliedEventContent, repliedEvent.content[@"formatted_body"]);
+            }
             if (!repliedEventContent)
             {
                 MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageBodyKey]);
