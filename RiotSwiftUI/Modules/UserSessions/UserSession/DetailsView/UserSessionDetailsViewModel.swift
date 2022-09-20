@@ -27,40 +27,58 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType {
     // MARK: Private
     
     // MARK: Public
-
+    
     // MARK: - Setup
     
     init(userSessionInfo: UserSessionInfo) {
+        super.init(initialViewState: UserSessionDetailsViewState(sections: []))
+        updateViewState(userSessionInfo: userSessionInfo)
+    }
+    
+    // MARK: - Public
+    
+    // MARK: - Private
+    
+    private func updateViewState(userSessionInfo: UserSessionInfo) {
         var sections = [UserSessionDetailsSectionViewData]()
         
+        sections.append(sessionSection(userSessionInfo: userSessionInfo))
+        
+        if let deviceSection = deviceSection(userSessionInfo: userSessionInfo) {
+            sections.append(deviceSection)
+        }
+        
+        state = UserSessionDetailsViewState(sections: sections)
+    }
+    
+    private func sessionSection(userSessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData {
         var sessionItems = [UserSessionDetailsSectionItemViewData]()
+        
         if let sessionName = userSessionInfo.sessionName {
             sessionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.userSessionDetailsSessionName,
                                                                       value: sessionName))
         }
+        
         sessionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
                                                                   value: userSessionInfo.sessionId))
-        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
-                                                          footer: VectorL10n.userSessionDetailsSessionSectionFooter,
-                                                          items: sessionItems))
         
+        return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
+                                                 footer: VectorL10n.userSessionDetailsSessionSectionFooter,
+                                                 items: sessionItems)
+    }
+    
+    private func deviceSection(userSessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
         var deviceSectionItems = [UserSessionDetailsSectionItemViewData]()
         if let lastSeenIP = userSessionInfo.lastSeenIP {
             deviceSectionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.userSessionDetailsDeviceIpAddress,
                                                                             value: lastSeenIP))
         }
         if deviceSectionItems.count > 0 {
-            sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsDeviceSectionHeader,
-                                                              footer: nil,
-                                                              items: deviceSectionItems))
+            return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsDeviceSectionHeader,
+                                                     footer: nil,
+                                                     items: deviceSectionItems)
         }
-        
-        let initialViewState = UserSessionDetailsViewState(sections: sections)
-        super.init(initialViewState: initialViewState)
+        return nil
     }
-    
-    // MARK: - Public
-
-    // MARK: - Private
 }
 
