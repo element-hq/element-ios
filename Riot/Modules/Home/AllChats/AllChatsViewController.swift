@@ -352,7 +352,7 @@ class AllChatsViewController: HomeViewController {
     private var initialScrollPosition: Double = 0
     
     private func scrollPosition(of scrollView: UIScrollView) -> Double {
-        return scrollView.contentOffset.y + scrollView.adjustedContentInset.top + scrollView.adjustedContentInset.bottom
+        return scrollView.contentOffset.y + scrollView.adjustedContentInset.top
     }
 
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
