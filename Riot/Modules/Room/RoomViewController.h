@@ -55,6 +55,7 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 // The preview header
 @property (weak, nonatomic, nullable) IBOutlet UIView *previewHeaderContainer;
 @property (weak, nonatomic, nullable) IBOutlet NSLayoutConstraint *previewHeaderContainerHeightConstraint;
+@property (weak, nonatomic, nullable) IBOutlet NSLayoutConstraint *userSuggestionContainerHeightConstraint;
 
 // The jump to last unread banner
 @property (weak, nonatomic, nullable) IBOutlet UIView *jumpToLastUnreadBannerContainer;
