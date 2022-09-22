@@ -1,5 +1,5 @@
-// 
-// Copyright 2022 New Vector Ltd
+//
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,13 +20,15 @@ typealias UserSessionDetailsViewModelType = StateStoreViewModel<UserSessionDetai
                                                                 Never,
                                                                 UserSessionDetailsViewAction>
 
-class UserSessionDetailsViewModel: UserSessionDetailsViewModelType {
+class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionDetailsViewModelProtocol {
     
     // MARK: - Properties
     
     // MARK: Private
     
     // MARK: Public
+    
+    var completion: ((UserSessionDetailsViewModelResult) -> Void)?
     
     // MARK: - Setup
     
@@ -81,4 +83,3 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType {
         return nil
     }
 }
-

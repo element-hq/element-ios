@@ -21,10 +21,6 @@ struct UserSessionsOverviewCoordinatorParameters {
     let session: MXSession
 }
 
-protocol UserSessionsOverviewCoordinatorDelegate: AnyObject {
-    func showUserSessionOverview(session: UserSessionInfo)
-}
-
 final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
@@ -43,10 +39,8 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: (() -> Void)?
-    
-    weak var delegate: UserSessionsOverviewCoordinatorDelegate?
-    
+    var completion: ((UserSessionsOverviewCoordinatorResult) -> Void)?
+
     // MARK: - Setup
     
     init(parameters: UserSessionsOverviewCoordinatorParameters) {
@@ -72,8 +66,6 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
             guard let self = self else { return }
             MXLog.debug("[UserSessionsOverviewCoordinator] UserSessionsOverviewViewModel did complete with result: \(result).")
             switch result {
-            case .cancel:
-                self.completion?()
             case .showAllUnverifiedSessions:
                 self.showAllUnverifiedSessions()
             case .showAllInactiveSessions:
@@ -129,7 +121,7 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         guard let sessionInfo = service.getOtherSession(sessionId: sessionId) else {
             return
         }
-        delegate?.showUserSessionOverview(session: sessionInfo)
+        completion?(.openSessionDetails(session: sessionInfo))
     }
     
     private func showAllOtherSessions() {

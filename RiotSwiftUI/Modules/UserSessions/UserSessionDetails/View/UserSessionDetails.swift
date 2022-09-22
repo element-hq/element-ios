@@ -1,5 +1,5 @@
-//
-// Copyright 2022 New Vector Ltd
+// 
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct UserSessionDetailsView: View {
+struct UserSessionDetails: View {
     
     // MARK: - Properties
     
@@ -38,7 +38,7 @@ struct UserSessionDetailsView: View {
             ForEach(viewModel.viewState.sections) { section in
                 SwiftUI.Section {
                     ForEach(section.items) { item in
-                        UserSessionDetailsItemView(viewData: item, horizontalPadding: LayoutConstants.listItemHorizontalPadding)
+                        UserSessionDetailsItem(viewData: item, horizontalPadding: LayoutConstants.listItemHorizontalPadding)
                             .listRowInsets(EdgeInsets())
                     }
                 } header: {

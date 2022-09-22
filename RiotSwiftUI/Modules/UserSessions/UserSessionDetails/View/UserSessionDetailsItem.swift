@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct UserSessionDetailsItemView: View {
+struct UserSessionDetailsItem: View {
     
     // MARK: - Properties
     
@@ -60,26 +60,26 @@ struct UserSessionDetailsItemView: View {
 
 // MARK: - Previews
 
-struct UserSessionDetailsItemView_Previews: PreviewProvider {
+struct UserSessionDetailsItem_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             List {
-                UserSessionDetailsItemView(viewData: UserSessionDetailsSectionItemViewData(title: "Session name",
-                                                                                           value: "Element Web: Firefox on macOS"))
+                UserSessionDetailsItem(viewData: UserSessionDetailsSectionItemViewData(title: "Session name",
+                                                                                       value: "Element Web: Firefox on macOS"))
                 .listRowInsets(EdgeInsets())
-                UserSessionDetailsItemView(viewData: UserSessionDetailsSectionItemViewData(title: "Session ID",
-                                                                                           value: "76c95352559d-react-7c57680b93db-js-b64dbdce74b0"))
+                UserSessionDetailsItem(viewData: UserSessionDetailsSectionItemViewData(title: "Session ID",
+                                                                                       value: "76c95352559d-react-7c57680b93db-js-b64dbdce74b0"))
                 .listRowInsets(EdgeInsets())
             }
             .preferredColorScheme(.light)
             
             .listStyle(.grouped)
             List {
-                UserSessionDetailsItemView(viewData: UserSessionDetailsSectionItemViewData(title: "Session name",
-                                                                                           value: "Element Web: Firefox on macOS"))
+                UserSessionDetailsItem(viewData: UserSessionDetailsSectionItemViewData(title: "Session name",
+                                                                                       value: "Element Web: Firefox on macOS"))
                 .listRowInsets(EdgeInsets())
-                UserSessionDetailsItemView(viewData: UserSessionDetailsSectionItemViewData(title: "Session ID",
-                                                                                           value: "76c95352559d-react-7c57680b93db-js-b64dbdce74b0"))
+                UserSessionDetailsItem(viewData: UserSessionDetailsSectionItemViewData(title: "Session ID",
+                                                                                       value: "76c95352559d-react-7c57680b93db-js-b64dbdce74b0"))
                 .listRowInsets(EdgeInsets())
             }
             .preferredColorScheme(.dark)

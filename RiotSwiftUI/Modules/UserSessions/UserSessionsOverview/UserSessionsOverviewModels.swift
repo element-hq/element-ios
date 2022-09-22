@@ -18,10 +18,13 @@ import Foundation
 
 // MARK: - Coordinator
 
+enum UserSessionsOverviewCoordinatorResult {
+    case openSessionDetails(session: UserSessionInfo)
+}
+
 // MARK: View model
 
 enum UserSessionsOverviewViewModelResult {
-    case cancel
     case showAllUnverifiedSessions
     case showAllInactiveSessions
     case verifyCurrentSession

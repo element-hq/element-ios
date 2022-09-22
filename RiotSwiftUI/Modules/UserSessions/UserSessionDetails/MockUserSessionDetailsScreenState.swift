@@ -1,5 +1,5 @@
 // 
-// Copyright 2022 New Vector Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
     
     /// The associated screen
     var screenType: Any.Type {
-        UserSessionDetailsView.self
+        UserSessionDetails.self
     }
     
     /// A list of screen state definitions
@@ -61,7 +61,7 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
         
         return (
             [currentSessionInfo],
-            AnyView(UserSessionDetailsView(viewModel: viewModel.context))
+            AnyView(UserSessionDetails(viewModel: viewModel.context))
         )
     }
 }
