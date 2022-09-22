@@ -30,7 +30,8 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     private let parameters: UserSessionsOverviewCoordinatorParameters
     private let userSessionsOverviewHostingController: UIViewController
     private var userSessionsOverviewViewModel: UserSessionsOverviewViewModelProtocol
-    
+    private let service: UserSessionsOverviewService
+
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
     
@@ -38,13 +39,15 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: (() -> Void)?
-    
+    var completion: ((UserSessionsOverviewCoordinatorResult) -> Void)?
+
     // MARK: - Setup
     
     init(parameters: UserSessionsOverviewCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: UserSessionsOverviewService(mxSession: parameters.session))
+        let service = UserSessionsOverviewService(mxSession: parameters.session)
+        self.service = service
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
         let view = UserSessionsOverview(viewModel: viewModel.context)
         userSessionsOverviewViewModel = viewModel
         
@@ -63,8 +66,6 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
             guard let self = self else { return }
             MXLog.debug("[UserSessionsOverviewCoordinator] UserSessionsOverviewViewModel did complete with result: \(result).")
             switch result {
-            case .cancel:
-                self.completion?()
             case .showAllUnverifiedSessions:
                 self.showAllUnverifiedSessions()
             case .showAllInactiveSessions:
@@ -117,7 +118,10 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     }
     
     private func showUserSessionDetails(sessionId: String) {
-        // TODO
+        guard let sessionInfo = service.getOtherSession(sessionId: sessionId) else {
+            return
+        }
+        completion?(.openSessionDetails(session: sessionInfo))
     }
     
     private func showAllOtherSessions() {

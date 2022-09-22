@@ -31,7 +31,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     private let navigationRouter: NavigationRouterType
     
     // MARK: Public
-
+    
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     var completion: (() -> Void)?
@@ -44,19 +44,54 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         self.navigationRouter = parameters.router ?? NavigationRouter(navigationController: RiotNavigationController())
     }
     
+    // MARK: - Private
+    
+    private func pushScreen(with coordinator: Coordinator & Presentable) {
+        add(childCoordinator: coordinator)
+        
+        self.navigationRouter.push(coordinator, animated: true, popCompletion: { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        })
+        
+        coordinator.start()
+    }
+    
+    private func createUserSessionsOverviewCoordinator() -> UserSessionsOverviewCoordinator {
+        let parameters = UserSessionsOverviewCoordinatorParameters(session: self.parameters.session)
+        
+        let coordinator = UserSessionsOverviewCoordinator(parameters: parameters)
+        coordinator.completion = { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .openSessionDetails(session: session):
+                self.openSessionDetails(session: session)
+            }
+        }
+        return coordinator
+    }
+    
+    private func openSessionDetails(session: UserSessionInfo) {
+        let coordinator = createUserSessionDetailsCoordinator(session: session)
+        pushScreen(with: coordinator)
+    }
+    
+    private func createUserSessionDetailsCoordinator(session: UserSessionInfo) -> UserSessionDetailsCoordinator {
+        let parameters = UserSessionDetailsCoordinatorParameters(
+            session: parameters.session,
+            userSessionInfo: session)
+        return UserSessionDetailsCoordinator(parameters: parameters)
+    }
+    
     // MARK: - Public
     
     func start() {
         MXLog.debug("[UserSessionsFlowCoordinator] did start.")
         
-        let rootCoordinatorParameters = UserSessionsOverviewCoordinatorParameters(session: self.parameters.session)
-        
-        let rootCoordinator = UserSessionsOverviewCoordinator(parameters: rootCoordinatorParameters)
-        
+        let rootCoordinator = createUserSessionsOverviewCoordinator()
         rootCoordinator.start()
-
+        
         self.add(childCoordinator: rootCoordinator)
-
+        
         if self.navigationRouter.modules.isEmpty == false {
             self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)

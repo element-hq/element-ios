@@ -8467,6 +8467,34 @@ public class VectorL10n: NSObject {
   public static var userIdTitle: String { 
     return VectorL10n.tr("Vector", "user_id_title") 
   }
+  /// IP address
+  public static var userSessionDetailsDeviceIpAddress: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_ip_address") 
+  }
+  /// DEVICE
+  public static var userSessionDetailsDeviceSectionHeader: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_section_header") 
+  }
+  /// Session ID
+  public static var userSessionDetailsSessionId: String { 
+    return VectorL10n.tr("Vector", "user_session_details_session_id") 
+  }
+  /// Session name
+  public static var userSessionDetailsSessionName: String { 
+    return VectorL10n.tr("Vector", "user_session_details_session_name") 
+  }
+  /// Copy any data by tapping on it and holding it down.
+  public static var userSessionDetailsSessionSectionFooter: String { 
+    return VectorL10n.tr("Vector", "user_session_details_session_section_footer") 
+  }
+  /// SESSION
+  public static var userSessionDetailsSessionSectionHeader: String { 
+    return VectorL10n.tr("Vector", "user_session_details_session_section_header") 
+  }
+  /// Session details
+  public static var userSessionDetailsTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_details_title") 
+  }
   /// %@ · Last activity %@
   public static func userSessionItemDetails(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "user_session_item_details", p1, p2)
