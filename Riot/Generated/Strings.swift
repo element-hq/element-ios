@@ -247,6 +247,10 @@ public class VectorL10n: NSObject {
   public static var allChatsTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_title") 
   }
+  /// User menu
+  public static var allChatsUserMenuAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "all_chats_user_menu_accessibility_label") 
+  }
   /// User settings
   public static var allChatsUserMenuSettings: String { 
     return VectorL10n.tr("Vector", "all_chats_user_menu_settings") 
