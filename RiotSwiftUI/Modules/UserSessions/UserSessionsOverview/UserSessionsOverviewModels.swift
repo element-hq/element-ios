@@ -19,7 +19,7 @@ import Foundation
 // MARK: - Coordinator
 
 enum UserSessionsOverviewCoordinatorResult {
-    case openSessionDetails(session: UserSessionInfo)
+    case openSessionOverview(session: UserSessionInfo, isCurrentSession: Bool)
 }
 
 // MARK: View model
@@ -28,9 +28,9 @@ enum UserSessionsOverviewViewModelResult {
     case showAllUnverifiedSessions
     case showAllInactiveSessions
     case verifyCurrentSession
-    case showCurrentSessionDetails
+    case showCurrentSessionOverview(sessionInfo: UserSessionInfo)
     case showAllOtherSessions
-    case showUserSessionDetails(_ sessionId: String)
+    case showUserSessionOverview(sessionInfo: UserSessionInfo)
 }
 
 // MARK: View

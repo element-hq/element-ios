@@ -17,11 +17,15 @@
 import Foundation
 
 class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
-    
+
     var lastOverviewData: UserSessionsOverviewData
     
     func fetchUserSessionsOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
         completion(.success(self.lastOverviewData))
+    }
+    
+    func getOtherSession(sessionId: String) -> UserSessionInfo? {
+        nil
     }
     
     init() {

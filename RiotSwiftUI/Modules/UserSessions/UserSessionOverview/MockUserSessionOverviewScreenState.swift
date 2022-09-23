@@ -14,54 +14,56 @@
 // limitations under the License.
 //
 
+import Foundation
 import SwiftUI
 
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
-enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
+enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-    case allSections
-    case sessionSectionOnly
+    case currentSession
+    case otherSession
     
     /// The associated screen
     var screenType: Any.Type {
-        UserSessionDetails.self
+        UserSessionOverview.self
     }
-    
+
     /// A list of screen state definitions
-    static var allCases: [MockUserSessionDetailsScreenState] {
+    static var allCases: [MockUserSessionOverviewScreenState] {
         // Each of the presence statuses
-        return [.allSections, .sessionSectionOnly]
+        return [.currentSession, .otherSession]
     }
-    
+
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView)  {
-        let currentSessionInfo: UserSessionInfo
+        let viewModel: UserSessionOverviewViewModel
         switch self {
-        case .allSections:
-            currentSessionInfo = UserSessionInfo(sessionId: "session",
+        case .currentSession:
+            let currentSessionInfo = UserSessionInfo(sessionId: "session",
                                                  sessionName: "iOS",
                                                  deviceType: .mobile,
                                                  isVerified: false,
                                                  lastSeenIP: "10.0.0.10",
                                                  lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
-        case .sessionSectionOnly:
-            currentSessionInfo = UserSessionInfo(sessionId: "session",
-                                                 sessionName: "iOS",
-                                                 deviceType: .mobile,
-                                                 isVerified: false,
-                                                 lastSeenIP: nil,
+            viewModel = UserSessionOverviewViewModel(userSessionInfo: currentSessionInfo, isCurrentSession: true)
+        case .otherSession:
+            let currentSessionInfo = UserSessionInfo(sessionId: "session",
+                                                 sessionName: "Mac",
+                                                 deviceType: .desktop,
+                                                 isVerified: true,
+                                                 lastSeenIP: "10.0.0.10",
                                                  lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+            viewModel = UserSessionOverviewViewModel(userSessionInfo: currentSessionInfo, isCurrentSession: false)
         }
-        let viewModel = UserSessionDetailsViewModel(userSessionInfo: currentSessionInfo)
-        
+
         // can simulate service and viewModel actions here if needs be.
         
         return (
-            [currentSessionInfo],
-            AnyView(UserSessionDetails(viewModel: viewModel.context))
+            [viewModel],
+            AnyView(UserSessionOverview(viewModel: viewModel.context))
         )
     }
 }

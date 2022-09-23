@@ -72,12 +72,12 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
                 self.showAllInactiveSessions()
             case .verifyCurrentSession:
                 self.startVerifyCurrentSession()
-            case .showCurrentSessionDetails:
-                self.showCurrentSessionDetails()
+            case let .showCurrentSessionOverview(sessionInfo):
+                self.showCurrentSessionOverview(sessionInfo: sessionInfo)
             case .showAllOtherSessions:
                 self.showAllOtherSessions()
-            case .showUserSessionDetails(let sessionId):
-                self.showUserSessionDetails(sessionId: sessionId)
+            case let .showUserSessionOverview(sessionInfo):
+                self.showUserSessionOverview(sessionInfo: sessionInfo)
             }
         }
     }
@@ -113,15 +113,12 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         // TODO
     }
     
-    private func showCurrentSessionDetails() {
-        // TODO
+    private func showCurrentSessionOverview(sessionInfo: UserSessionInfo) {
+        completion?(.openSessionOverview(session: sessionInfo, isCurrentSession: true))
     }
     
-    private func showUserSessionDetails(sessionId: String) {
-        guard let sessionInfo = service.getOtherSession(sessionId: sessionId) else {
-            return
-        }
-        completion?(.openSessionDetails(session: sessionInfo))
+    private func showUserSessionOverview(sessionInfo: UserSessionInfo) {
+        completion?(.openSessionOverview(session: sessionInfo, isCurrentSession: false))
     }
     
     private func showAllOtherSessions() {

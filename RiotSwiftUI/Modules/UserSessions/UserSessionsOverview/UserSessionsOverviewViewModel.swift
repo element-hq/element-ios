@@ -53,7 +53,11 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         case .verifyCurrentSession:
             self.completion?(.verifyCurrentSession)
         case .viewCurrentSessionDetails:
-            self.completion?(.showCurrentSessionDetails)
+            guard let currentSessionInfo = userSessionsOverviewService.lastOverviewData.currentSessionInfo else {
+                assertionFailure("currentSessionInfo should be present")
+               return
+            }
+            self.completion?(.showCurrentSessionOverview(sessionInfo: currentSessionInfo))
         case .viewAllUnverifiedSessions:
             self.completion?(.showAllUnverifiedSessions)
         case .viewAllInactiveSessions:
@@ -61,7 +65,11 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         case .viewAllOtherSessions:
             self.completion?(.showAllOtherSessions)
         case .tapUserSession(let sessionId):
-            self.completion?(.showUserSessionDetails(sessionId))
+            guard let sessionInfo = userSessionsOverviewService.getOtherSession(sessionId: sessionId) else {
+                assertionFailure("missing session info")
+                return
+            }
+            self.completion?(.showUserSessionOverview(sessionInfo: sessionInfo))
         }
     }
     

@@ -1,5 +1,5 @@
 // 
-// Copyright 2022 New Vector Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,19 +16,27 @@
 
 import Foundation
 
-struct UserSessionsOverviewData {
-    
-    let currentSessionInfo: UserSessionInfo?
-    let unverifiedSessionsInfo: [UserSessionInfo]
-    let inactiveSessionsInfo: [UserSessionInfo]
-    let otherSessionsInfo: [UserSessionInfo]
+// MARK: - Coordinator
+
+enum UserSessionOverviewCoordinatorResult {
+    case openSessionDetails(session: UserSessionInfo)
 }
 
-protocol UserSessionsOverviewServiceProtocol {
-    
-    var lastOverviewData: UserSessionsOverviewData { get }
-        
-    func fetchUserSessionsOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) -> Void
-    
-    func getOtherSession(sessionId: String) -> UserSessionInfo?
+// MARK: View model
+
+enum UserSessionOverviewViewModelResult {
+    case showCurrentSessionDetails(sessionInfo: UserSessionInfo)
+    case verifyCurrentSession
+}
+
+// MARK: View
+
+struct UserSessionOverviewViewState: BindableState {
+    let cardViewData: UserSessionCardViewData
+    let isCurrentSession: Bool
+}
+
+enum UserSessionOverviewViewAction {
+    case verifyCurrentSession
+    case viewSessionDetails
 }

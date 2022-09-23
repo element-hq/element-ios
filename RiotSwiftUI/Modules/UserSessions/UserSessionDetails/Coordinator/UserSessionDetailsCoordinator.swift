@@ -18,7 +18,6 @@ import SwiftUI
 import CommonKit
 
 struct UserSessionDetailsCoordinatorParameters {
-    let session: MXSession
     let userSessionInfo: UserSessionInfo
 }
 
