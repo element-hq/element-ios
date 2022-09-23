@@ -112,6 +112,20 @@ final class MarkdownToHTMLRendererTests: XCTestCase {
         testRenderHTML(input: input, expectedOutput: expectedOutput)
     }
 
+    func testRenderRepairedLinksWithCharactersRequiringPercentEncoding() {
+        let input = "Some link with special characters: "
+        + "https://matrix.to/#/#_oftc_#matrix-dev:matrix.org"
+        + " "
+        + "https://matrix.to/#/#?=+-_#_"
+        + "\n"
+        let expectedOutput = "<p>Some link with special characters: "
+        + "https://matrix.to/#/#_oftc_#matrix-dev:matrix.org"
+        + " "
+        + "https://matrix.to/#/#?=+-_#_</p>"
+        + "\n"
+        testRenderHTML(input: input, expectedOutput: expectedOutput)
+    }
+
     /// Test links inside codeblocks.
     func testRenderLinksInCodeblock() {
         let input = "```"
