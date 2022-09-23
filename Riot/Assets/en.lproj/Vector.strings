@@ -2195,6 +2195,7 @@ Tap the + to start adding people.";
 
 "room_recents_recently_viewed_section" = "Recently viewed";
 
+"all_chats_user_menu_accessibility_label" = "User menu";
 "all_chats_user_menu_settings" = "User settings";
 
 "all_chats_edit_menu_leave_space" = "Leave %@";
