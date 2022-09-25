@@ -541,7 +541,7 @@
 "deactivate_account_forget_messages_information_part3" = "：これは将来のユーザーに会話の不完全なビューが表示される)";
 "deactivate_account_validate_action" = "無効なアカウント";
 "deactivate_account_password_alert_title" = "無効なアカウント";
-"deactivate_account_password_alert_message" = "続行するには、パスワードを入力してください";
+"deactivate_account_password_alert_message" = "続行するには、Matrix アカウントのパスワードを入力してください";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "要求が送信されました";
 "rerequest_keys_alert_message" = "鍵をこのセッションに送信できるように、メッセージを復号化できる他の端末で%@を起動してください。";
@@ -707,7 +707,7 @@
 "settings_key_backup_info_version" = "鍵のバックアップのバージョン：%@";
 "settings_key_backup_info_none" = "あなたの鍵は、このセッションからバックアップされていません。";
 "settings_key_backup_info_checking" = "確認しています…";
-"settings_add_3pid_password_message" = "続行するには、パスワードを入力してください";
+"settings_add_3pid_password_message" = "続行するには、Matrix アカウントのパスワードを入力してください";
 "settings_add_3pid_invalid_password_message" = "無効な認証情報";
 "settings_add_3pid_password_title_email" = "メールアドレスを追加";
 "settings_integrations_allow_description" = "インテグレーションマネージャー（%@）を使用して、ボット、ブリッジ、ウィジェット、ステッカーパックを管理します。\n\n設定データを受け取り、お客様に代わってウィジェットの変更、ルーム招待の送信、権限の設定を行うことができます。";
@@ -1756,8 +1756,8 @@
 "room_notifs_settings_notify_me_for" = "以下の場合に通知";
 "room_details_access_row_title" = "アクセス";
 "room_details_notifs" = "通知";
-"location_sharing_invalid_power_level_title" = "現在地の共有に必要な権限がありません";
-"settings_labs_enable_live_location_sharing" = "現在地の共有 - 現在地を共有します (開発中の機能、位置情報が一時的にルームの履歴に残ります)";
+"location_sharing_invalid_power_level_title" = "ライブ現在地共有に必要な権限がありません";
+"settings_labs_enable_live_location_sharing" = "ライブ現在地共有 - 現在地を共有します (開発中の機能、位置情報が一時的にルームの履歴に残ります)";
 "event_formatter_message_deleted" = "削除済みのメッセージ";
 "home_context_menu_unfavourite" = "お気に入りから削除";
 "home_context_menu_favourite" = "お気に入り";
@@ -1776,3 +1776,20 @@
 // Mark: - All Chats
 
 "all_chats_title" = "全てのチャット";
+"location_sharing_live_loading" = "ライブ現在地共有を読み込み中...";
+"location_sharing_live_list_item_stop_sharing_action" = "停止";
+"location_sharing_live_list_item_current_user_display_name" = "あなた";
+"live_location_sharing_banner_stop" = "停止";
+"live_location_sharing_ended" = "ライブ現在地共有が終了";
+"live_location_sharing_banner_title" = "ライブ現在地共有が有効";
+"location_sharing_invalid_authorization_settings" = "設定";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "ライブ現在地共有";
+"service_terms_modal_decline_button" = "拒否する";
+"service_terms_modal_accept_button" = "同意する";
+"service_terms_modal_description_identity_server" = "この操作により、端末の連絡先にあなたの電話番号や電子メールを保存している人があなたを検索できるようになります。";
+
+// Service terms
+"service_terms_modal_title_message" = "続行するには、以下の利用規約に同意してください";
