@@ -707,7 +707,7 @@
 "settings_key_backup_info_version" = "鍵のバックアップのバージョン：%@";
 "settings_key_backup_info_none" = "あなたの鍵は、このセッションからバックアップされていません。";
 "settings_key_backup_info_checking" = "確認しています…";
-"settings_add_3pid_password_message" = "続けるにはパスワードを入力してください";
+"settings_add_3pid_password_message" = "続行するには、パスワードを入力してください";
 "settings_add_3pid_invalid_password_message" = "無効な認証情報";
 "settings_add_3pid_password_title_email" = "メールアドレスを追加";
 "settings_integrations_allow_description" = "インテグレーションマネージャー（%@）を使用して、ボット、ブリッジ、ウィジェット、ステッカーパックを管理します。\n\n設定データを受け取り、お客様に代わってウィジェットの変更、ルーム招待の送信、権限の設定を行うことができます。";
