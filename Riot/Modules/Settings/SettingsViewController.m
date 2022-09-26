@@ -3702,11 +3702,13 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         msisdn = [NSString stringWithFormat:@"+%@", [e164 substringFromIndex:2]];
     }
     
+    NSString *countryCode = newPhoneNumberCell.isoCountryCode;
+
     [self showAuthenticationIfNeededForAdding:kMX3PIDMediumMSISDN withSession:session completion:^(NSDictionary *authParams) {
         [self startActivityIndicator];
 
         __block MX3PidAddSession *new3Pid;
-        new3Pid = [session.threePidAddManager startAddPhoneNumberSessionWithPhoneNumber:msisdn countryCode:nil success:^{
+        new3Pid = [session.threePidAddManager startAddPhoneNumberSessionWithPhoneNumber:msisdn countryCode:countryCode success:^{
 
             [self showValidationMsisdnDialogWithMessage:[VectorL10n accountMsisdnValidationMessage] for3PidAddSession:new3Pid threePidAddManager:session.threePidAddManager authenticationParameters:authParams];
 
