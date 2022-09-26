@@ -30,7 +30,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         
         super.init(initialViewState: .init())
         
-        updateViewState(with: userSessionsOverviewService.lastOverviewData)
+        updateViewState(with: userSessionsOverviewService.overviewData)
     }
     
     // MARK: - Public
@@ -42,8 +42,8 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         case .verifyCurrentSession:
             completion?(.verifyCurrentSession)
         case .viewCurrentSessionDetails:
-            guard let currentSessionInfo = userSessionsOverviewService.lastOverviewData.currentSessionInfo else {
-                assertionFailure("currentSessionInfo should be present")
+            guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
+                assertionFailure("Missing current session")
                 return
             }
             completion?(.showCurrentSessionOverview(sessionInfo: currentSessionInfo))
@@ -54,8 +54,8 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         case .viewAllOtherSessions:
             completion?(.showAllOtherSessions)
         case .tapUserSession(let sessionId):
-            guard let sessionInfo = userSessionsOverviewService.getOtherSession(sessionId: sessionId) else {
-                assertionFailure("missing session info")
+            guard let sessionInfo = userSessionsOverviewService.sessionForIdentifier(sessionId) else {
+                assertionFailure("Missing session info")
                 return
             }
             completion?(.showUserSessionOverview(sessionInfo: sessionInfo))
@@ -65,11 +65,11 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
     // MARK: - Private
     
     private func updateViewState(with userSessionsViewData: UserSessionsOverviewData) {
-        state.unverifiedSessionsViewData = userSessionsViewData.unverifiedSessionsInfo.asViewData()
-        state.inactiveSessionsViewData = userSessionsViewData.inactiveSessionsInfo.asViewData()
-        state.otherSessionsViewData = userSessionsViewData.otherSessionsInfo.asViewData()
+        state.unverifiedSessionsViewData = userSessionsViewData.unverifiedSessions.asViewData()
+        state.inactiveSessionsViewData = userSessionsViewData.inactiveSessions.asViewData()
+        state.otherSessionsViewData = userSessionsViewData.otherSessions.asViewData()
         
-        if let currentSessionInfo = userSessionsViewData.currentSessionInfo {
+        if let currentSessionInfo = userSessionsViewData.currentSession {
             state.currentSessionViewData = UserSessionCardViewData(userSessionInfo: currentSessionInfo, isCurrentSessionDisplayMode: true)
         }
     }
@@ -77,7 +77,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
     private func loadData() {
         state.showLoadingIndicator = true
         
-        userSessionsOverviewService.fetchUserSessionsOverviewData { [weak self] result in
+        userSessionsOverviewService.updateOverviewData { [weak self] result in
             guard let self = self else {
                 return
             }

@@ -20,59 +20,97 @@ import MatrixSDK
 class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     private let mxSession: MXSession
     
-    private(set) var lastOverviewData: UserSessionsOverviewData
+    private(set) var overviewData: UserSessionsOverviewData
     
     init(mxSession: MXSession) {
         self.mxSession = mxSession
         
-        lastOverviewData =  UserSessionsOverviewData(currentSessionInfo: nil,
-                                                          unverifiedSessionsInfo: [],
-                                                          inactiveSessionsInfo: [],
-                                                          otherSessionsInfo: [])
+        overviewData =  UserSessionsOverviewData(currentSession: nil,
+                                                 unverifiedSessions: [],
+                                                 inactiveSessions: [],
+                                                 otherSessions: [])
         
         setupInitialOverviewData()
     }
     
     // MARK: - Public
     
-    func fetchUserSessionsOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
+    func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
         mxSession.matrixRestClient.devices { response in
             switch response {
             case .success(let devices):
-                self.lastOverviewData = self.userSessionsOverviewData(from: devices)
-                completion(.success(self.lastOverviewData))
+                self.overviewData = self.sessionsOverviewData(from: devices)
+                completion(.success(self.overviewData))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    func getOtherSession(sessionId: String) -> UserSessionInfo? {
-        lastOverviewData.otherSessionsInfo.first(where: {$0.sessionId == sessionId})
+    func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo? {
+        if overviewData.currentSession?.id == sessionId {
+            return overviewData.currentSession
+        }
+        
+        return overviewData.otherSessions.first(where: { $0.sessionId == sessionId })
     }
     
     // MARK: - Private
     
     private func setupInitialOverviewData() {
-        let currentSessionInfo = getCurrentUserSessionInfoFromCache()
+        let currentSessionInfo = currentSessionInfo()
         
-        lastOverviewData = UserSessionsOverviewData(currentSessionInfo: currentSessionInfo, unverifiedSessionsInfo: [], inactiveSessionsInfo: [], otherSessionsInfo: [])
+        overviewData = UserSessionsOverviewData(currentSession: currentSessionInfo,
+                                                unverifiedSessions: [],
+                                                inactiveSessions: [],
+                                                otherSessions: [])
     }
     
-    private func getCurrentUserSessionInfoFromCache() -> UserSessionInfo? {
-        guard let mainAccount = MXKAccountManager.shared().activeAccounts.first, let device = mainAccount.device else {
+    private func currentSessionInfo() -> UserSessionInfo? {
+        guard let mainAccount = MXKAccountManager.shared().activeAccounts.first,
+              let device = mainAccount.device else {
             return nil
         }
-        return userSessionInfo(from: device)
+        return sessionInfo(from: device)
     }
     
-    private func userSessionInfo(from device: MXDevice) -> UserSessionInfo {
-        let deviceInfo = getDeviceInfo(for: device.deviceId)
+    private func sessionsOverviewData(from devices: [MXDevice]) -> UserSessionsOverviewData {
+        let allSessions = devices
+            .sorted { $0.lastSeenTs > $1.lastSeenTs }
+            .map { sessionInfo(from: $0) }
         
-        let isSessionVerified = deviceInfo?.trustLevel.isVerified ?? false
+        var currentSession: UserSessionInfo?
+        var unverifiedSessions: [UserSessionInfo] = []
+        var inactiveSessions: [UserSessionInfo] = []
+        var otherSessions: [UserSessionInfo] = []
+        
+        for session in allSessions {
+            guard session.sessionId != mxSession.myDeviceId else {
+                currentSession = session
+                continue
+            }
+            
+            otherSessions.append(session)
+            
+            if session.isVerified == false {
+                unverifiedSessions.append(session)
+            }
+            
+            if session.isSessionActive == false {
+                inactiveSessions.append(session)
+            }
+        }
+        
+        return UserSessionsOverviewData(currentSession: currentSession,
+                                        unverifiedSessions: unverifiedSessions,
+                                        inactiveSessions: inactiveSessions,
+                                        otherSessions: otherSessions)
+    }
+    
+    private func sessionInfo(from device: MXDevice) -> UserSessionInfo {
+        let isSessionVerified = deviceInfo(for: device.deviceId)?.trustLevel.isVerified ?? false
         
         var lastSeenTs: TimeInterval?
-        
         if device.lastSeenTs > 0 {
             lastSeenTs = TimeInterval(device.lastSeenTs / 1000)
         }
@@ -85,48 +123,11 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                                lastSeenTimestamp: lastSeenTs)
     }
     
-    private func getDeviceInfo(for deviceId: String) -> MXDeviceInfo? {
+    private func deviceInfo(for deviceId: String) -> MXDeviceInfo? {
         guard let userId = mxSession.myUserId else {
             return nil
         }
         
         return mxSession.crypto.device(withDeviceId: deviceId, ofUser: userId)
-    }
-    
-    private func userSessionsOverviewData(from devices: [MXDevice]) -> UserSessionsOverviewData {
-        let sortedDevices = devices.sorted { device1, device2 in
-            device1.lastSeenTs > device2.lastSeenTs
-        }
-        
-        let allUserSessionInfo = sortedDevices.map { device in
-            return userSessionInfo(from: device)
-        }
-        
-        var currentSessionInfo: UserSessionInfo?
-        
-        var unverifiedSessionsInfo: [UserSessionInfo] = []
-        var inactiveSessionsInfo: [UserSessionInfo] = []
-        var otherSessionsInfo: [UserSessionInfo] = []
-        
-        for userSessionInfo in allUserSessionInfo {
-            if userSessionInfo.sessionId == mxSession.myDeviceId {
-                currentSessionInfo = userSessionInfo
-            } else {
-                otherSessionsInfo.append(userSessionInfo)
-                
-                if userSessionInfo.isVerified == false {
-                    unverifiedSessionsInfo.append(userSessionInfo)
-                }
-                
-                if userSessionInfo.isSessionActive == false {
-                    inactiveSessionsInfo.append(userSessionInfo)
-                }
-            }
-        }
-        
-        return UserSessionsOverviewData(currentSessionInfo: currentSessionInfo,
-                                        unverifiedSessionsInfo: unverifiedSessionsInfo,
-                                        inactiveSessionsInfo: inactiveSessionsInfo,
-                                        otherSessionsInfo: otherSessionsInfo)
     }
 }

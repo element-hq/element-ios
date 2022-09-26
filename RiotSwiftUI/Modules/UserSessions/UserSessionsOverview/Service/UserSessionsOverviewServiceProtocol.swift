@@ -17,16 +17,16 @@
 import Foundation
 
 struct UserSessionsOverviewData {
-    let currentSessionInfo: UserSessionInfo?
-    let unverifiedSessionsInfo: [UserSessionInfo]
-    let inactiveSessionsInfo: [UserSessionInfo]
-    let otherSessionsInfo: [UserSessionInfo]
+    let currentSession: UserSessionInfo?
+    let unverifiedSessions: [UserSessionInfo]
+    let inactiveSessions: [UserSessionInfo]
+    let otherSessions: [UserSessionInfo]
 }
 
 protocol UserSessionsOverviewServiceProtocol {
-    var lastOverviewData: UserSessionsOverviewData { get }
-        
-    func fetchUserSessionsOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) -> Void
+    var overviewData: UserSessionsOverviewData { get }
     
-    func getOtherSession(sessionId: String) -> UserSessionInfo?
+    func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) -> Void
+    
+    func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo?
 }

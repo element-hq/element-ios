@@ -17,13 +17,13 @@
 import Foundation
 
 class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
-    var lastOverviewData: UserSessionsOverviewData
+    var overviewData: UserSessionsOverviewData
     
-    func fetchUserSessionsOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
-        completion(.success(lastOverviewData))
+    func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
+        completion(.success(overviewData))
     }
     
-    func getOtherSession(sessionId: String) -> UserSessionInfo? {
+    func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo? {
         nil
     }
     
@@ -40,9 +40,9 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
             UserSessionInfo(sessionId: "3", sessionName: "Android", deviceType: .mobile, isVerified: false, lastSeenIP: "3.0.0.3", lastSeenTimestamp: (Date().timeIntervalSince1970 - 10))
         ]
         
-        lastOverviewData = UserSessionsOverviewData(currentSessionInfo: currentSessionInfo,
-                                                    unverifiedSessionsInfo: unverifiedSessionsInfo,
-                                                    inactiveSessionsInfo: inactiveSessionsInfo,
-                                                    otherSessionsInfo: otherSessionsInfo)
+        overviewData = UserSessionsOverviewData(currentSession: currentSessionInfo,
+                                                    unverifiedSessions: unverifiedSessionsInfo,
+                                                    inactiveSessions: inactiveSessionsInfo,
+                                                    otherSessions: otherSessionsInfo)
     }
 }
