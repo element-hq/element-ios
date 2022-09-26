@@ -33,6 +33,7 @@ targets:
 
     dependencies:
     - sdk: Intents.framework
+    - package: DeviceKit
 
     configFiles:
       Debug: Debug.xcconfig
