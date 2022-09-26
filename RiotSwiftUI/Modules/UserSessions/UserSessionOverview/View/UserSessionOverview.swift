@@ -39,14 +39,16 @@ struct UserSessionOverview: View {
             })
             .padding(16)
             SwiftUI.Section {
-                UserSessionOverviewDisclosureCell(title: "Session details", onBackgroundTap: {
+                UserSessionOverviewDisclosureCell(title: VectorL10n.userSessionOverviewSessionDetailsButtonTitle, onBackgroundTap: {
                     viewModel.send(viewAction: .viewSessionDetails)
                 })
             }
         }
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
-        .navigationTitle(viewModel.viewState.isCurrentSession ? "Current session" : "Session")
+        .navigationTitle(viewModel.viewState.isCurrentSession ?
+                         VectorL10n.userSessionOverviewCurrentSessionTitle :
+                            VectorL10n.userSessionOverviewSessionTitle)
     }
 }
 
