@@ -18,14 +18,9 @@ import Foundation
 
 /// View data for UserSessionListItem
 struct UserSessionListItemViewData: Identifiable {
-    
-    // MARK: - Constants
-    
     private static let userSessionNameFormatter = UserSessionNameFormatter()
     private static let lastActivityDateFormatter = UserSessionLastActivityFormatter()
-    
-    // MARK: - Properties
-    
+
     var id: String {
         return sessionId
     }
@@ -38,8 +33,6 @@ struct UserSessionListItemViewData: Identifiable {
     
     let deviceAvatarViewData: DeviceAvatarViewData
     
-    // MARK: - Setup
-    
     init(sessionId: String,
          sessionDisplayName: String?,
          deviceType: DeviceType,
@@ -47,15 +40,14 @@ struct UserSessionListItemViewData: Identifiable {
          lastActivityDate: TimeInterval?) {
                 
         self.sessionId = sessionId
-        self.sessionName = Self.userSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
-        self.sessionDetails = Self.buildSessionDetails(isVerified: isVerified, lastActivityDate: lastActivityDate)
-        self.deviceAvatarViewData = DeviceAvatarViewData(deviceType: deviceType, isVerified: isVerified)
+        sessionName = Self.userSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
+        sessionDetails = Self.buildSessionDetails(isVerified: isVerified, lastActivityDate: lastActivityDate)
+        deviceAvatarViewData = DeviceAvatarViewData(deviceType: deviceType, isVerified: isVerified)
     }
     
     // MARK: - Private
     
     private static func buildSessionDetails(isVerified: Bool, lastActivityDate: TimeInterval?) -> String {
-        
         let sessionDetailsString: String
         
         let sessionStatusText = isVerified ? VectorL10n.userSessionVerifiedShort : VectorL10n.userSessionUnverifiedShort
@@ -77,7 +69,6 @@ struct UserSessionListItemViewData: Identifiable {
 }
 
 extension UserSessionListItemViewData {
-        
     init(userSessionInfo: UserSessionInfo) {
         self.init(sessionId: userSessionInfo.sessionId, sessionDisplayName: userSessionInfo.sessionName, deviceType: userSessionInfo.deviceType, isVerified: userSessionInfo.isVerified, lastActivityDate: userSessionInfo.lastSeenTimestamp)
     }

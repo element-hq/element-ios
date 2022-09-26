@@ -17,7 +17,6 @@
 import Foundation
 
 protocol UserSessionDetailsViewModelProtocol {
-    
     var completion: ((UserSessionDetailsViewModelResult) -> Void)? { get set }
     var context: UserSessionDetailsViewModelType.Context { get }
 }

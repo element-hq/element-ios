@@ -17,11 +17,9 @@
 import Foundation
 
 /// Enables to build user session name
-class UserSessionNameFormatter {
-    
+class UserSessionNameFormatter {    
     /// Session name with client name and session display name
     func sessionName(deviceType: DeviceType, sessionDisplayName: String?) -> String {
-        
         let sessionName: String
         
         let clientName = deviceType.name

@@ -21,16 +21,9 @@ typealias UserSessionOverviewViewModelType = StateStoreViewModel<UserSessionOver
                                                                  UserSessionOverviewViewAction>
 
 class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessionOverviewViewModelProtocol {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
     private let userSessionInfo: UserSessionInfo
-    // MARK: Public
     
     var completion: ((UserSessionOverviewViewModelResult) -> Void)?
-    
-    // MARK: - Setup
     
     init(userSessionInfo: UserSessionInfo, isCurrentSession: Bool) {
         self.userSessionInfo = userSessionInfo

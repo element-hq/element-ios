@@ -20,7 +20,6 @@ import Combine
 @testable import RiotSwiftUI
 
 class UserSessionsOverviewViewModelTests: XCTestCase {
-    
     var service: MockUserSessionsOverviewService!
     var viewModel: UserSessionsOverviewViewModelProtocol!
     var context: UserSessionsOverviewViewModelType.Context!

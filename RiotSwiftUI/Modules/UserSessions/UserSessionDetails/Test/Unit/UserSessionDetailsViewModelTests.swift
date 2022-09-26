@@ -19,7 +19,6 @@ import XCTest
 @testable import RiotSwiftUI
 
 class UserSessionDetailsViewModelTests: XCTestCase {
-    
     func test_whenSessionNameAndLastSeenIPNil_viewStateCorrect() {
         let userSessionInfo = createUserSessionInfo(sessionId: "session",
                                                     sessionName: nil,

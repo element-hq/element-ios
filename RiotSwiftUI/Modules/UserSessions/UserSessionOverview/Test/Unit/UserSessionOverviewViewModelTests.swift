@@ -20,7 +20,6 @@ import Combine
 @testable import RiotSwiftUI
 
 class UserSessionOverviewViewModelTests: XCTestCase {
-
     var sut: UserSessionOverviewViewModel!
 
     func test_whenVerifyCurrentSessionProcessed_completionWithVerifyCurrentSessionCalled() {

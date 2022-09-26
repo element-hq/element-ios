@@ -22,11 +22,6 @@ struct UserSessionDetailsCoordinatorParameters {
 }
 
 final class UserSessionDetailsCoordinator: Coordinator, Presentable {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let parameters: UserSessionDetailsCoordinatorParameters
     private let userSessionDetailsHostingController: UIViewController
     private var userSessionDetailsViewModel: UserSessionDetailsViewModelProtocol
@@ -58,13 +53,16 @@ final class UserSessionDetailsCoordinator: Coordinator, Presentable {
     func start() {
         MXLog.debug("[UserSessionDetailsCoordinator] did start.")
         userSessionDetailsViewModel.completion = { [weak self] result in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
+            
             MXLog.debug("[UserSessionDetailsCoordinator] UserSessionDetailsViewModel did complete with result: \(result).")
             self.completion?(result)
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.userSessionDetailsHostingController
+        return userSessionDetailsHostingController
     }
 }

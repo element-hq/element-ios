@@ -17,7 +17,6 @@
 import Foundation
 
 protocol UserSessionOverviewViewModelProtocol {
-    
     var completion: ((UserSessionOverviewViewModelResult) -> Void)? { get set }
     var context: UserSessionOverviewViewModelType.Context { get }
 }

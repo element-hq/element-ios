@@ -18,13 +18,8 @@ import Foundation
 
 /// View data for UserSessionCardView
 struct UserSessionCardViewData {
-    
-    // MARK: - Constants
-    
     private static let userSessionNameFormatter = UserSessionNameFormatter()
     private static let lastActivityDateFormatter = UserSessionLastActivityFormatter()
-        
-    // MARK: - Properties
     
     var id: String {
         return sessionId
@@ -45,8 +40,6 @@ struct UserSessionCardViewData {
     /// Indicate if the current user session is shown and to adpat the layout
     let isCurrentSessionDisplayMode: Bool
     
-    // MARK: - Setup
-    
     init(sessionId: String,
          sessionDisplayName: String?,
          deviceType: DeviceType,
@@ -55,7 +48,7 @@ struct UserSessionCardViewData {
          lastSeenIP: String?,
          isCurrentSessionDisplayMode: Bool = false) {
         self.sessionId = sessionId
-        self.sessionName = Self.userSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
+        sessionName = Self.userSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
         self.isVerified = isVerified
         
         var lastActivityDateString: String?
@@ -65,16 +58,21 @@ struct UserSessionCardViewData {
         }
         
         self.lastActivityDateString = lastActivityDateString
-        self.lastSeenIPInfo = lastSeenIP
-        self.deviceAvatarViewData = DeviceAvatarViewData(deviceType: deviceType, isVerified: nil)
+        lastSeenIPInfo = lastSeenIP
+        deviceAvatarViewData = DeviceAvatarViewData(deviceType: deviceType, isVerified: nil)
         
         self.isCurrentSessionDisplayMode = isCurrentSessionDisplayMode
     }
 }
 
 extension UserSessionCardViewData {
-        
     init(userSessionInfo: UserSessionInfo, isCurrentSessionDisplayMode: Bool = false) {
-        self.init(sessionId: userSessionInfo.sessionId, sessionDisplayName: userSessionInfo.sessionName, deviceType: userSessionInfo.deviceType, isVerified: userSessionInfo.isVerified, lastActivityTimestamp: userSessionInfo.lastSeenTimestamp, lastSeenIP: userSessionInfo.lastSeenIP, isCurrentSessionDisplayMode: isCurrentSessionDisplayMode)
+        self.init(sessionId: userSessionInfo.sessionId,
+                  sessionDisplayName: userSessionInfo.sessionName,
+                  deviceType: userSessionInfo.deviceType,
+                  isVerified: userSessionInfo.isVerified,
+                  lastActivityTimestamp: userSessionInfo.lastSeenTimestamp,
+                  lastSeenIP: userSessionInfo.lastSeenIP,
+                  isCurrentSessionDisplayMode: isCurrentSessionDisplayMode)
     }
 }

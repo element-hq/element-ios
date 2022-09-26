@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct SeparatorLine: View {
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     var body: some View {

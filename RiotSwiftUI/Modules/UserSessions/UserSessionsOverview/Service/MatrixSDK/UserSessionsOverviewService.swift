@@ -18,33 +18,25 @@ import Foundation
 import MatrixSDK
 
 class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
-    
-    // MARK: - Constants
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let mxSession: MXSession
     
-    // MARK: Public
-        
     private(set) var lastOverviewData: UserSessionsOverviewData
-    
-    // MARK: - Setup
     
     init(mxSession: MXSession) {
         self.mxSession = mxSession
         
-        self.lastOverviewData =  UserSessionsOverviewData(currentSessionInfo: nil, unverifiedSessionsInfo: [], inactiveSessionsInfo: [], otherSessionsInfo: [])
+        lastOverviewData =  UserSessionsOverviewData(currentSessionInfo: nil,
+                                                          unverifiedSessionsInfo: [],
+                                                          inactiveSessionsInfo: [],
+                                                          otherSessionsInfo: [])
         
-        self.setupInitialOverviewData()
+        setupInitialOverviewData()
     }
     
     // MARK: - Public
     
     func fetchUserSessionsOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
-        self.mxSession.matrixRestClient.devices { response in
+        mxSession.matrixRestClient.devices { response in
             switch response {
             case .success(let devices):
                 self.lastOverviewData = self.userSessionsOverviewData(from: devices)
@@ -62,21 +54,20 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     // MARK: - Private
     
     private func setupInitialOverviewData() {
-        let currentSessionInfo = self.getCurrentUserSessionInfoFromCache()
+        let currentSessionInfo = getCurrentUserSessionInfoFromCache()
         
-        self.lastOverviewData = UserSessionsOverviewData(currentSessionInfo: currentSessionInfo, unverifiedSessionsInfo: [], inactiveSessionsInfo: [], otherSessionsInfo: [])
+        lastOverviewData = UserSessionsOverviewData(currentSessionInfo: currentSessionInfo, unverifiedSessionsInfo: [], inactiveSessionsInfo: [], otherSessionsInfo: [])
     }
     
     private func getCurrentUserSessionInfoFromCache() -> UserSessionInfo? {
         guard let mainAccount = MXKAccountManager.shared().activeAccounts.first, let device = mainAccount.device else {
             return nil
         }
-        return self.userSessionInfo(from: device)
+        return userSessionInfo(from: device)
     }
     
     private func userSessionInfo(from device: MXDevice) -> UserSessionInfo {
-        
-        let deviceInfo = self.getDeviceInfo(for: device.deviceId)
+        let deviceInfo = getDeviceInfo(for: device.deviceId)
         
         let isSessionVerified = deviceInfo?.trustLevel.isVerified ?? false
         
@@ -95,20 +86,20 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     }
     
     private func getDeviceInfo(for deviceId: String) -> MXDeviceInfo? {
-        guard let userId = self.mxSession.myUserId else {
+        guard let userId = mxSession.myUserId else {
             return nil
         }
-        return self.mxSession.crypto.device(withDeviceId: deviceId, ofUser: userId)
+        
+        return mxSession.crypto.device(withDeviceId: deviceId, ofUser: userId)
     }
     
     private func userSessionsOverviewData(from devices: [MXDevice]) -> UserSessionsOverviewData {
-        
         let sortedDevices = devices.sorted { device1, device2 in
             device1.lastSeenTs > device2.lastSeenTs
         }
         
         let allUserSessionInfo = sortedDevices.map { device in
-            return self.userSessionInfo(from: device)
+            return userSessionInfo(from: device)
         }
         
         var currentSessionInfo: UserSessionInfo?
@@ -118,7 +109,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         var otherSessionsInfo: [UserSessionInfo] = []
         
         for userSessionInfo in allUserSessionInfo {
-            if userSessionInfo.sessionId == self.mxSession.myDeviceId {
+            if userSessionInfo.sessionId == mxSession.myDeviceId {
                 currentSessionInfo = userSessionInfo
             } else {
                 otherSessionsInfo.append(userSessionInfo)

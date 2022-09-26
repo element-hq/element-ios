@@ -23,4 +23,32 @@ enum DeviceType {
     case web
     case mobile
     case unknown
+    
+    var image: Image {
+        switch self {
+        case .desktop:
+            return Image(Asset.Images.deviceTypeDesktop.name)
+        case .web:
+            return Image(Asset.Images.deviceTypeWeb.name)
+        case .mobile:
+            return Image(Asset.Images.deviceTypeMobile.name)
+        case .unknown:
+            return Image(Asset.Images.deviceTypeUnknown.name)
+        }
+    }
+    
+    var name: String {
+        let appName = AppInfo.current.displayName
+        
+        switch self {
+        case .desktop:
+            return VectorL10n.deviceNameDesktop(appName)
+        case .web:
+            return VectorL10n.deviceNameWeb(appName)
+        case .mobile:
+            return VectorL10n.deviceNameMobile(appName)
+        case .unknown:
+            return VectorL10n.deviceNameUnknown
+        }
+    }
 }
