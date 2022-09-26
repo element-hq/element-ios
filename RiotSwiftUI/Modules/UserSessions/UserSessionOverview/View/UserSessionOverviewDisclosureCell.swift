@@ -24,22 +24,21 @@ struct UserSessionOverviewDisclosureCell: View {
     var onBackgroundTap: (() -> (Void))? = nil
     
     var body: some View {
-        VStack(spacing: 0) {
-            SeparatorLine()
-            HStack() {
-                Text(title)
-                    .font(theme.fonts.body)
-                    .foregroundColor(theme.colors.primaryContent)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Image(Asset.Images.chevron.name)
+        Button(action: { onBackgroundTap?()}) {
+            VStack(spacing: 0) {
+                SeparatorLine()
+                HStack() {
+                    Text(title)
+                        .font(theme.fonts.body)
+                        .foregroundColor(theme.colors.primaryContent)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Image(Asset.Images.chevron.name)
+                }
+                .padding(.vertical, 12)
+                .padding(.horizontal, 16)
+                SeparatorLine()
             }
-            .padding(.vertical, 12)
-            .padding(.horizontal, 16)
-            SeparatorLine()
-        }
-        .background(theme.colors.background)
-        .onTapGesture {
-            onBackgroundTap?()
+            .background(theme.colors.background)
         }
     }
 }

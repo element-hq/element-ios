@@ -63,7 +63,7 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
             switch result {
             case .verifyCurrentSession:
                 break // TODO
-            case let .showCurrentSessionDetails(sessionInfo: sessionInfo):
+            case let .showSessionDetails(sessionInfo: sessionInfo):
                 self.completion?(.openSessionDetails(session: sessionInfo))
             }
         }

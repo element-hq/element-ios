@@ -18,40 +18,19 @@ import XCTest
 import RiotSwiftUI
 
 class UserSessionOverviewUITests: MockScreenTestCase {
-    func testUserSessionOverviewPresenceIdle() {
-        let presence = UserSessionOverviewPresence.idle
-        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.presence(presence).title)
-        
-        let presenceText = app.staticTexts["presenceText"]
-        XCTAssert(presenceText.exists)
-        XCTAssertEqual(presenceText.label, presence.title)
+    
+    func test_whenCurrentSessionSelected_correctNavTittleDisplayed() {
+                                        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.currentSession.title)
+        XCTAssertTrue(app.navigationBars[VectorL10n.userSessionOverviewCurrentSessionTitle].staticTexts[VectorL10n.userSessionOverviewCurrentSessionTitle].exists)
     }
     
-    func testUserSessionOverviewPresenceOffline() {
-        let presence = UserSessionOverviewPresence.offline
-        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.presence(presence).title)
-        
-        let presenceText = app.staticTexts["presenceText"]
-        XCTAssert(presenceText.exists)
-        XCTAssertEqual(presenceText.label, presence.title)
+    func test_whenOtherSessionSelected_correctNavTittleDisplayed() {
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.otherSession.title)
+        XCTAssertTrue(app.navigationBars[VectorL10n.userSessionOverviewSessionTitle].staticTexts[VectorL10n.userSessionOverviewSessionTitle].exists)
     }
     
-    func testUserSessionOverviewPresenceOnline() {
-        let presence = UserSessionOverviewPresence.online
-        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.presence(presence).title)
-        
-        let presenceText = app.staticTexts["presenceText"]
-        XCTAssert(presenceText.exists)
-        XCTAssertEqual(presenceText.label, presence.title)
+    func test_whenSessionOverviewPresented_sessionDetailsButtonExists() {
+                                        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.currentSession.title)
+        XCTAssertTrue(app.buttons[VectorL10n.userSessionOverviewSessionDetailsButtonTitle].exists)
     }
-
-    func testUserSessionOverviewLongName() {
-        let name = "Somebody with a super long name we would like to test"
-        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.longDisplayName(name).title)
-        
-        let displayNameText = app.staticTexts["displayNameText"]
-        XCTAssert(displayNameText.exists)
-        XCTAssertEqual(displayNameText.label, name)
-    }
-
 }

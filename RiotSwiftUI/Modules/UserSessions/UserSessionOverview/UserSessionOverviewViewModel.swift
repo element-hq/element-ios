@@ -47,7 +47,7 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
         case .verifyCurrentSession:
             completion?(.verifyCurrentSession)
         case .viewSessionDetails:
-            completion?(.showCurrentSessionDetails(sessionInfo: userSessionInfo))
+            completion?(.showSessionDetails(sessionInfo: userSessionInfo))
         }
     }
 }

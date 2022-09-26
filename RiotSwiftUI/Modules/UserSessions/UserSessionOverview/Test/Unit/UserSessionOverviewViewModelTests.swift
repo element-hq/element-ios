@@ -20,37 +20,38 @@ import Combine
 @testable import RiotSwiftUI
 
 class UserSessionOverviewViewModelTests: XCTestCase {
-    private enum Constants {
-        static let presenceInitialValue: UserSessionOverviewPresence = .offline
-        static let displayName = "Alice"
-    }
-    var service: MockUserSessionOverviewService!
-    var viewModel: UserSessionOverviewViewModelProtocol!
-    var context: UserSessionOverviewViewModelType.Context!
-    var cancellables = Set<AnyCancellable>()
-    override func setUpWithError() throws {
-        service = MockUserSessionOverviewService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
-        viewModel = UserSessionOverviewViewModel.makeUserSessionOverviewViewModel(userSessionOverviewService: service)
-        context = viewModel.context
-    }
 
-    func testInitialState() {
-        XCTAssertEqual(context.viewState.displayName, Constants.displayName)
-        XCTAssertEqual(context.viewState.presence, Constants.presenceInitialValue)
-    }
+    var sut: UserSessionOverviewViewModel!
 
-    func testFirstPresenceReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(1).first()
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
+    func test_whenVerifyCurrentSessionProcessed_completionWithVerifyCurrentSessionCalled() {
+        sut = UserSessionOverviewViewModel(userSessionInfo: createUserSessionInfo(), isCurrentSession: true)
+        
+        var modelResult: UserSessionOverviewViewModelResult?
+        sut.completion = { result in
+            modelResult = result
+        }
+        sut.process(viewAction: .verifyCurrentSession)
+        XCTAssertEqual(modelResult, .verifyCurrentSession)
     }
+    
+    func test_whenViewSessionDetailsProcessed_completionWithShowSessionDetailsCalled() {
+        let session = createUserSessionInfo()
+        sut = UserSessionOverviewViewModel(userSessionInfo: session, isCurrentSession: true)
 
-    func testPresenceUpdatesReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(3).first()
-        let awaitDeferred = xcAwaitDeferred(presencePublisher)
-        let newPresenceValue1: UserSessionOverviewPresence = .online
-        let newPresenceValue2: UserSessionOverviewPresence = .idle
-        service.simulateUpdate(presence: newPresenceValue1)
-        service.simulateUpdate(presence: newPresenceValue2)
-        XCTAssertEqual(try awaitDeferred(), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
+        var modelResult: UserSessionOverviewViewModelResult?
+        sut.completion = { result in
+            modelResult = result
+        }
+        sut.process(viewAction: .viewSessionDetails)
+        XCTAssertEqual(modelResult, .showSessionDetails(sessionInfo: session))
+    }
+    
+    private func createUserSessionInfo() -> UserSessionInfo {
+        UserSessionInfo(sessionId: "session",
+                               sessionName: "iOS",
+                               deviceType: .mobile,
+                               isVerified: false,
+                               lastSeenIP: "10.0.0.10",
+                               lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
     }
 }
