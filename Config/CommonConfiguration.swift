@@ -106,7 +106,7 @@ class CommonConfiguration: NSObject, Configurable {
     
     private func makeUserAgent() -> String? {
         let clientName = Bundle.main.object(forInfoDictionaryKey: kCFBundleExecutableKey as String) as? String ?? Bundle.main.object(forInfoDictionaryKey: kCFBundleIdentifierKey as String) as? String ?? "unknown"
-        let clientVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String ?? "unknown"
+        let clientVersion = AppInfo.current.appVersion?.bundleShortVersion ?? "unknown"
 
     #if os(iOS)
         return String(
