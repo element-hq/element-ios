@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,6 +40,19 @@ struct UserSessionOverviewDisclosureCell: View {
         .background(theme.colors.background)
         .onTapGesture {
             onBackgroundTap?()
+        }
+    }
+}
+
+struct UserSessionOverviewDisclosureCell_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            UserSessionOverviewDisclosureCell(title: "Title")
+                .theme(.light)
+                .preferredColorScheme(.light)
+            UserSessionOverviewDisclosureCell(title: "Title")
+                .theme(.dark)
+                .preferredColorScheme(.dark)
         }
     }
 }
