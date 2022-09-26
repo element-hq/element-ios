@@ -116,8 +116,7 @@ class CommonConfiguration: NSObject, Configurable {
                 Device.current.safeDescription,
                 UIDevice.current.systemVersion,
                 UIScreen.main.scale)
-    #else
-    #if os(tvOS)
+    #elseif os(tvOS)
         return String(
             format: "%@/%@ (%@; tvOS %@; Scale/%0.2f)",
                 clientName,
@@ -125,8 +124,7 @@ class CommonConfiguration: NSObject, Configurable {
                 Device.current.safeDescription,
                 UIDevice.current.systemVersion,
                 UIScreen.main.scale)
-    #else
-    #if os(watchOS)
+    #elseif os(watchOS)
         return String(
             format: "%@/%@ (%@; watchOS %@; Scale/%0.2f)",
                 clientName,
@@ -134,8 +132,7 @@ class CommonConfiguration: NSObject, Configurable {
                 Device.current.safeDescription,
                 WKInterfaceDevice.current.systemVersion,
                 WKInterfaceDevice.currentDevice.screenScale)
-    #else
-    #if os(OSX)
+    #elseif os(OSX)
         return String(
             format: "%@/%@ (Mac; Mac OS X %@)",
                 clientName,
@@ -143,9 +140,6 @@ class CommonConfiguration: NSObject, Configurable {
                 NSProcessInfo.processInfo.operatingSystemVersionString)
     #else
         return nil
-    #endif
-    #endif
-    #endif
     #endif
     }
     
