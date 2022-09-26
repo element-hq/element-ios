@@ -52,17 +52,7 @@ struct UserSessionOverview: View {
     }
 }
 
-struct SeparatorLine: View {
-    
-    @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    var body: some View {
-        Rectangle()
-            .fill(theme.colors.quinaryContent)
-            .frame(maxWidth: .infinity, alignment: .trailing)
-            .frame(height: 1.0)
-    }
-}
+
 
 // MARK: - Previews
 
