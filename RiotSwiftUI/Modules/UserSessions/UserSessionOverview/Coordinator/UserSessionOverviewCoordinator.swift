@@ -45,7 +45,8 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
     
     init(parameters: UserSessionOverviewCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = UserSessionOverviewViewModel(userSessionInfo: parameters.userSessionInfo, isCurrentSession: parameters.isCurrentSession)
+        let viewModel = UserSessionOverviewViewModel(userSessionInfo: parameters.userSessionInfo,
+                                                     isCurrentSession: parameters.isCurrentSession)
         let view = UserSessionOverview(viewModel: viewModel.context)
         userSessionOverviewViewModel = viewModel
         userSessionOverviewHostingController = VectorHostingController(rootView: view)

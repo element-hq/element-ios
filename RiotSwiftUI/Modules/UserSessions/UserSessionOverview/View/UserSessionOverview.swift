@@ -52,8 +52,6 @@ struct UserSessionOverview: View {
     }
 }
 
-
-
 // MARK: - Previews
 
 struct UserSessionOverview_Previews: PreviewProvider {
