@@ -24,21 +24,10 @@ import UIKit
 /// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class UserSessionsFlowCoordinatorBridgePresenter: NSObject {
-    
-    // MARK: - Constants
-
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let mxSession: MXSession
     private var coordinator: UserSessionsFlowCoordinator?
-    
-    // MARK: Public
-    
+        
     var completion: (() -> Void)?
-    
-    // MARK: - Setup
     
     init(mxSession: MXSession) {
         self.mxSession = mxSession
@@ -48,26 +37,22 @@ final class UserSessionsFlowCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
 
     func push(from navigationController: UINavigationController, animated: Bool) {
-        
-        self.startUserSessionsFlow(mxSession: self.mxSession, navigationController: navigationController)
+        startUserSessionsFlow(mxSession: mxSession, navigationController: navigationController)
     }
     
     // MARK: - Private
     
     private func startUserSessionsFlow(mxSession: MXSession, navigationController: UINavigationController?) {
-        
         var navigationRouter: NavigationRouterType?
         
         if let navigationController = navigationController {
             navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         }
         
-        let coordinatorParameters = UserSessionsFlowCoordinatorParameters(session: mxSession, router: navigationRouter)
+        let parameters = UserSessionsFlowCoordinatorParameters(session: mxSession, router: navigationRouter)
+        let coordinator = UserSessionsFlowCoordinator(parameters: parameters)
         
-        let userSessionsFlowCoordinator = UserSessionsFlowCoordinator(parameters: coordinatorParameters)        
-        
-        userSessionsFlowCoordinator.completion = { [weak self] in
-            
+        coordinator.completion = { [weak self] in
             guard let self = self else {
                 return
             }
@@ -76,8 +61,8 @@ final class UserSessionsFlowCoordinatorBridgePresenter: NSObject {
             self.coordinator = nil
         }
         
-        userSessionsFlowCoordinator.start()
+        coordinator.start()
         
-        self.coordinator = userSessionsFlowCoordinator
+        self.coordinator = coordinator
     }
 }

@@ -18,9 +18,6 @@ import Foundation
 
 /// Enables to build last activity date string
 class UserSessionLastActivityFormatter {
-    
-    // MARK: - Constants
-    
     private static var lastActivityDateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
@@ -29,8 +26,6 @@ class UserSessionLastActivityFormatter {
         dateFormatter.doesRelativeDateFormatting = true
         return dateFormatter
     }()
-    
-    // MARK: - Public
     
     /// Session last activity string
     func lastActivityDateString(from lastActivityTimestamp: TimeInterval) -> String {

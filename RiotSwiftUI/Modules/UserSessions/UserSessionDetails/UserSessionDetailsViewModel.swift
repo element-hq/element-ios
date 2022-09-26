@@ -21,16 +21,7 @@ typealias UserSessionDetailsViewModelType = StateStoreViewModel<UserSessionDetai
                                                                 UserSessionDetailsViewAction>
 
 class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionDetailsViewModelProtocol {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
-    // MARK: Public
-    
     var completion: ((UserSessionDetailsViewModelResult) -> Void)?
-    
-    // MARK: - Setup
     
     init(userSessionInfo: UserSessionInfo) {
         super.init(initialViewState: UserSessionDetailsViewState(sections: []))

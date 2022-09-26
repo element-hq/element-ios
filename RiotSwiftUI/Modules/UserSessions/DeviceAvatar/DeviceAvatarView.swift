@@ -19,7 +19,6 @@ import DesignKit
 
 /// Avatar view for device
 struct DeviceAvatarView: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     var viewData: DeviceAvatarViewData
@@ -55,7 +54,6 @@ struct DeviceAvatarView: View {
 }
 
 struct DeviceAvatarViewListPreview: View {
-    
     var viewDataList: [DeviceAvatarViewData] {
         return [
             DeviceAvatarViewData(deviceType: .desktop, isVerified: true),
@@ -78,7 +76,6 @@ struct DeviceAvatarViewListPreview: View {
 }
 
 struct DeviceAvatarView_Previews: PreviewProvider {
-    
     static var previews: some View {
         Group {
             DeviceAvatarViewListPreview().theme(.light).preferredColorScheme(.light)

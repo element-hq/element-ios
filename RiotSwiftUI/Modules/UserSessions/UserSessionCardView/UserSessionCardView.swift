@@ -18,7 +18,6 @@ import SwiftUI
 import DesignKit
 
 struct UserSessionCardView: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     var viewData: UserSessionCardViewData
@@ -82,7 +81,7 @@ struct UserSessionCardView: View {
                 .multilineTextAlignment(.center)
             }
             
-            if self.showExtraInformations {
+            if showExtraInformations {
                 VStack(spacing: 2) {
                     if let lastActivityDateString = viewData.lastActivityDateString, lastActivityDateString.isEmpty == false {
                         Text(lastActivityDateString)
@@ -126,13 +125,12 @@ struct UserSessionCardView: View {
         .padding(24)
         .frame(maxWidth: .infinity)
         .background(theme.colors.background)
-        .clipShape(self.backgroundShape)
-        .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1.0, shape: self.backgroundShape)
+        .clipShape(backgroundShape)
+        .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1.0, shape: backgroundShape)
     }
 }
 
 struct UserSessionCardViewPreview: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     let viewData: UserSessionCardViewData
@@ -145,7 +143,7 @@ struct UserSessionCardViewPreview: View {
     
     var body: some View {
         VStack {
-            UserSessionCardView(viewData: self.viewData)
+            UserSessionCardView(viewData: viewData)
         }
         .frame(maxWidth: .infinity)
         .background(theme.colors.system)
@@ -154,7 +152,6 @@ struct UserSessionCardViewPreview: View {
 }
 
 struct UserSessionCardView_Previews: PreviewProvider {
-    
     static var previews: some View {
         Group {
             UserSessionCardViewPreview(isCurrentSessionInfo: true).theme(.light).preferredColorScheme(.light)

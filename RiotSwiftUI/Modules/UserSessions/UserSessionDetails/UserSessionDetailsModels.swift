@@ -29,7 +29,6 @@ enum UserSessionDetailsViewAction {
 }
 
 struct UserSessionDetailsViewState: BindableState, Equatable {
-
     let sections: [UserSessionDetailsSectionViewData]
 }
 
@@ -47,7 +46,6 @@ struct UserSessionDetailsSectionItemViewData: Identifiable {
 }
 
 extension UserSessionDetailsSectionViewData: Equatable {
-
     static func == (lhs: UserSessionDetailsSectionViewData, rhs: UserSessionDetailsSectionViewData) -> Bool {
         lhs.header == rhs.header &&
         lhs.footer == rhs.footer &&
@@ -56,7 +54,6 @@ extension UserSessionDetailsSectionViewData: Equatable {
 }
 
 extension UserSessionDetailsSectionItemViewData: Equatable {
-
     static func == (lhs: UserSessionDetailsSectionItemViewData, rhs: UserSessionDetailsSectionItemViewData) -> Bool {
         lhs.title == rhs.title &&
         lhs.value == rhs.value

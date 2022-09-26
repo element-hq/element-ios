@@ -18,7 +18,6 @@ import XCTest
 import RiotSwiftUI
 
 class UserSessionOverviewUITests: MockScreenTestCase {
-    
     func test_whenCurrentSessionSelected_correctNavTittleDisplayed() {
         app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.currentSession.title)
         let navTitle = VectorL10n.userSessionOverviewCurrentSessionTitle

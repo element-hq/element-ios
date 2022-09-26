@@ -17,14 +17,7 @@
 import SwiftUI
 
 struct UserSessionDetailsItem: View {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    // MARK: Public
     
     let viewData: UserSessionDetailsSectionItemViewData
     let horizontalPadding: CGFloat

@@ -22,39 +22,24 @@ struct UserSessionsOverviewCoordinatorParameters {
 }
 
 final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let parameters: UserSessionsOverviewCoordinatorParameters
-    private let userSessionsOverviewHostingController: UIViewController
-    private var userSessionsOverviewViewModel: UserSessionsOverviewViewModelProtocol
+    private let hostingViewController: UIViewController
+    private var viewModel: UserSessionsOverviewViewModelProtocol
     private let service: UserSessionsOverviewService
 
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
     
-    // MARK: Public
-
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     var completion: ((UserSessionsOverviewCoordinatorResult) -> Void)?
 
-    // MARK: - Setup
-    
     init(parameters: UserSessionsOverviewCoordinatorParameters) {
         self.parameters = parameters
-        let service = UserSessionsOverviewService(mxSession: parameters.session)
-        self.service = service
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
-        let view = UserSessionsOverview(viewModel: viewModel.context)
-        userSessionsOverviewViewModel = viewModel
         
-        let hostingViewController = VectorHostingController(rootView: view)
-        
-        userSessionsOverviewHostingController = hostingViewController
-        
+        service = UserSessionsOverviewService(mxSession: parameters.session)
+        viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
+        hostingViewController = VectorHostingController(rootView: UserSessionsOverview(viewModel: viewModel.context))
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: hostingViewController)
     }
     
@@ -62,9 +47,10 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     
     func start() {
         MXLog.debug("[UserSessionsOverviewCoordinator] did start.")
-        userSessionsOverviewViewModel.completion = { [weak self] result in
+        viewModel.completion = { [weak self] result in
             guard let self = self else { return }
             MXLog.debug("[UserSessionsOverviewCoordinator] UserSessionsOverviewViewModel did complete with result: \(result).")
+            
             switch result {
             case .showAllUnverifiedSessions:
                 self.showAllUnverifiedSessions()
@@ -83,7 +69,7 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.userSessionsOverviewHostingController
+        return hostingViewController
     }
     
     // MARK: - Private

@@ -36,14 +36,13 @@ enum UserSessionsOverviewViewModelResult {
 // MARK: View
 
 struct UserSessionsOverviewViewState: BindableState {
-    
-    var unverifiedSessionsViewData: [UserSessionListItemViewData]
-    
-    var inactiveSessionsViewData: [UserSessionListItemViewData]
-    
     var currentSessionViewData: UserSessionCardViewData?
     
-    var otherSessionsViewData: [UserSessionListItemViewData]
+    var unverifiedSessionsViewData = [UserSessionListItemViewData]()
+    
+    var inactiveSessionsViewData = [UserSessionListItemViewData]()
+    
+    var otherSessionsViewData = [UserSessionListItemViewData]()
     
     var showLoadingIndicator: Bool = false
 }

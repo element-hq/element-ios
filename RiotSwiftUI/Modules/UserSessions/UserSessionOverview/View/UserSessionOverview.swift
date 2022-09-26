@@ -17,14 +17,7 @@
 import SwiftUI
 
 struct UserSessionOverview: View {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    // MARK: Public
     
     @ObservedObject var viewModel: UserSessionOverviewViewModel.Context
     

@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct UserSessionOverviewDisclosureCell: View {
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     let title: String

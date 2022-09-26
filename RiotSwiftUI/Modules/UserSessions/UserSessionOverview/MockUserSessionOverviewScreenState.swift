@@ -60,10 +60,6 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
         }
 
         // can simulate service and viewModel actions here if needs be.
-        
-        return (
-            [viewModel],
-            AnyView(UserSessionOverview(viewModel: viewModel.context))
-        )
+        return ([viewModel], AnyView(UserSessionOverview(viewModel: viewModel.context)))
     }
 }

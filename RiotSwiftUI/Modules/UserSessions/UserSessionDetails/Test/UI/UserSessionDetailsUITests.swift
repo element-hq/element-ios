@@ -18,7 +18,6 @@ import XCTest
 import RiotSwiftUI
 
 class UserSessionDetailsUITests: MockScreenTestCase {
-    
     func test_longPressDetailsCell_CopiesValueToClipboard() throws {
         app.goToScreenWithIdentifier(MockUserSessionDetailsScreenState.allSections.title)
         

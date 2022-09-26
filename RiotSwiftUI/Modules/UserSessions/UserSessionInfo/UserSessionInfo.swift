@@ -18,7 +18,6 @@ import Foundation
 
 /// Represents a user session information
 struct UserSessionInfo: Identifiable {
-        
     /// Delay after which session is considered inactive, 90 days
     static let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
     
@@ -67,12 +66,9 @@ struct UserSessionInfo: Identifiable {
         
         if let lastSeenTimestamp = lastSeenTimestamp {
             let elapsedTime = Date().timeIntervalSince1970 - lastSeenTimestamp
-            
-            let isSessionInactive = elapsedTime >= Self.inactiveSessionDurationTreshold
-
-            self.isSessionActive = !isSessionInactive
+            isSessionActive = elapsedTime < Self.inactiveSessionDurationTreshold
         } else {
-            self.isSessionActive = true
+            isSessionActive = true
         }
     }
 }
