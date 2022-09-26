@@ -53,5 +53,4 @@ packages:
     branch: main
   DeviceKit:
     url: https://github.com/devicekit/DeviceKit
-    minVersion: 4.7.0
-    maxVersion: 4.7.0
+    majorVersion: 4.7.0
