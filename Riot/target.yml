@@ -39,6 +39,7 @@ targets:
     - package: Mapbox
     - package: OrderedCollections
     - package: SwiftOGG
+    - package: DeviceKit
 
     configFiles:
       Debug: Debug.xcconfig

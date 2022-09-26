@@ -31,6 +31,9 @@ targets:
     platform: iOS
     type: app-extension
 
+    dependencies:
+    - package: DeviceKit
+
     configFiles:
       Debug: Debug.xcconfig
       Release: Release.xcconfig
