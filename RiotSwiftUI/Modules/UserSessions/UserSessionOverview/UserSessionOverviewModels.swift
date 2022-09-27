@@ -29,19 +29,6 @@ enum UserSessionOverviewViewModelResult: Equatable {
     case verifyCurrentSession
 }
 
-extension UserSessionOverviewViewModelResult {
-    static func == (lhs: UserSessionOverviewViewModelResult, rhs: UserSessionOverviewViewModelResult) -> Bool {
-        switch (lhs, rhs) {
-        case (.verifyCurrentSession, .verifyCurrentSession):
-            return true
-        case (let .showSessionDetails(session), let .showSessionDetails(session2)):
-            return session.id == session2.id
-        default:
-            return false
-        }
-    }
-}
-
 // MARK: View
 
 struct UserSessionOverviewViewState: BindableState {

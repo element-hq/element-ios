@@ -71,3 +71,9 @@ struct UserSessionInfo: Identifiable {
         }
     }
 }
+
+extension UserSessionInfo: Equatable {
+    static func == (lhs: UserSessionInfo, rhs: UserSessionInfo) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
