@@ -80,18 +80,23 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         
         let isSessionVerified = deviceInfo?.trustLevel.isVerified ?? false
         
-        var lastSeenTs: TimeInterval?
-        
-        if device.lastSeenTs > 0 {
-            lastSeenTs = TimeInterval(device.lastSeenTs / 1000)
-        }
+        let lastSeenTs = device.lastSeenTs > 0 ? TimeInterval(device.lastSeenTs / 1000) : nil
+
+        let eventType = kMXAccountDataTypeClientInformation + "." + device.deviceId
+        let appData = mxSession.accountData.accountData(forEventType: eventType)
+        let appName = appData?["name"] as? String
+        let appVersion = appData?["version"] as? String
+        let appURL = appData?["url"] as? String
         
         return UserSessionInfo(sessionId: device.deviceId,
                                sessionName: device.displayName,
                                deviceType: .unknown,
                                isVerified: isSessionVerified,
                                lastSeenIP: device.lastSeenIp,
-                               lastSeenTimestamp: lastSeenTs)
+                               lastSeenTimestamp: lastSeenTs,
+                               applicationName: appName,
+                               applicationVersion: appVersion,
+                               applicationURL: appURL)
     }
     
     private func getDeviceInfo(for deviceId: String) -> MXDeviceInfo? {
