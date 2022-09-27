@@ -45,7 +45,11 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
         var sections = [UserSessionDetailsSectionViewData]()
         
         sections.append(sessionSection(userSessionInfo: userSessionInfo))
-        
+
+        if let applicationSection = applicationSection(userSessionInfo: userSessionInfo) {
+            sections.append(applicationSection)
+        }
+
         if let deviceSection = deviceSection(userSessionInfo: userSessionInfo) {
             sections.append(deviceSection)
         }
@@ -67,6 +71,30 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
         return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
                                                  footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                                                  items: sessionItems)
+    }
+
+    private func applicationSection(userSessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
+        var sessionItems: [UserSessionDetailsSectionItemViewData] = []
+
+        if let name = userSessionInfo.applicationName {
+            sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationName,
+                                      value: name))
+        }
+        if let version = userSessionInfo.applicationVersion {
+            sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationVersion,
+                                      value: version))
+        }
+        if let url = userSessionInfo.applicationURL {
+            sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationUrl,
+                                      value: url))
+        }
+
+        guard !sessionItems.isEmpty else {
+            return nil
+        }
+        return .init(header: VectorL10n.userSessionDetailsApplicationSectionHeader,
+                     footer: nil,
+                     items: sessionItems)
     }
     
     private func deviceSection(userSessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
