@@ -114,7 +114,10 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     }
     
     private func showCurrentSessionDetails() {
-        // TODO
+        guard let sessionInfo = service.lastOverviewData.currentSessionInfo else {
+            return
+        }
+        completion?(.openSessionDetails(session: sessionInfo))
     }
     
     private func showUserSessionDetails(sessionId: String) {
