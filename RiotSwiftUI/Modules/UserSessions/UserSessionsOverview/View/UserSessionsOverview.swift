@@ -19,43 +19,14 @@ import SwiftUI
 struct UserSessionsOverview: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    @ViewBuilder
-    private var currentSessionsSection: some View {
-        if let currentSessionViewData = viewModel.viewState.currentSessionViewData {
-            SwiftUI.Section {
-                UserSessionCardView(viewData: currentSessionViewData, onVerifyAction: { _ in
-                    viewModel.send(viewAction: .verifyCurrentSession)
-                }, onViewDetailsAction: { _ in
-                    viewModel.send(viewAction: .viewCurrentSessionDetails)
-                })
-                .padding(.horizontal, 16)
-            } header: {
-                Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
-                    .font(theme.fonts.footnote)
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 16)
-                    .padding(.top, 24)
-                    .padding(.bottom, 11)
-            }
-        }
-    }
-    
-    // MARK: Public
-    
     @ObservedObject var viewModel: UserSessionsOverviewViewModel.Context
     
     var body: some View {
         ScrollView {
-            // Security recommendations section
-            if viewModel.viewState.unverifiedSessionsViewData.isEmpty == false || viewModel.viewState.inactiveSessionsViewData.isEmpty == false {
-                // TODO:
-            }
+            securityRecommendationsSection
             
-            // Current session section
             currentSessionsSection
             
-            // Other sessions section
             if viewModel.viewState.otherSessionsViewData.isEmpty == false {
                 otherSessionsSection
             }
@@ -66,6 +37,69 @@ struct UserSessionsOverview: View {
         .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
         .onAppear {
             viewModel.send(viewAction: .viewAppeared)
+        }
+    }
+    
+    @ViewBuilder
+    private var securityRecommendationsSection: some View {
+        if hasSecurityRecommendations {
+            SwiftUI.Section {
+                if !viewModel.viewState.unverifiedSessionsViewData.isEmpty {
+                    SecurityRecommendationCard(style: .unverified,
+                                               sessionCount: viewModel.viewState.unverifiedSessionsViewData.count) {
+                        viewModel.send(viewAction: .viewAllUnverifiedSessions)
+                    }
+                }
+                
+                if !viewModel.viewState.inactiveSessionsViewData.isEmpty {
+                    SecurityRecommendationCard(style: .inactive,
+                                               sessionCount: viewModel.viewState.inactiveSessionsViewData.count) {
+                        viewModel.send(viewAction: .viewAllInactiveSessions)
+                    }
+                }
+            } header: {
+                VStack(alignment: .leading) {
+                    Text(VectorL10n.userSessionsOverviewSecurityRecommendationsSectionTitle)
+                        .textCase(.uppercase)
+                        .font(theme.fonts.footnote)
+                        .foregroundColor(theme.colors.secondaryContent)
+                        .padding(.bottom, 8.0)
+                    
+                    Text(VectorL10n.userSessionsOverviewSecurityRecommendationsSectionInfo)
+                        .font(theme.fonts.footnote)
+                        .foregroundColor(theme.colors.secondaryContent)
+                        .padding(.bottom, 12.0)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 24)
+            }
+            .padding(.horizontal, 16)
+        }
+    }
+    
+    var hasSecurityRecommendations: Bool {
+        !viewModel.viewState.unverifiedSessionsViewData.isEmpty || !viewModel.viewState.inactiveSessionsViewData.isEmpty
+    }
+    
+    @ViewBuilder
+    private var currentSessionsSection: some View {
+        if let currentSessionViewData = viewModel.viewState.currentSessionViewData {
+            SwiftUI.Section {
+                UserSessionCardView(viewData: currentSessionViewData, onVerifyAction: { _ in
+                    viewModel.send(viewAction: .verifyCurrentSession)
+                }, onViewDetailsAction: { _ in
+                    viewModel.send(viewAction: .viewCurrentSessionDetails)
+                })
+            } header: {
+                Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
+                    .textCase(.uppercase)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom, 12.0)
+                    .padding(.top, 24.0)
+            }
+            .padding(.horizontal, 16)
         }
     }
 
@@ -83,17 +117,19 @@ struct UserSessionsOverview: View {
         } header: {
             VStack(alignment: .leading) {
                 Text(VectorL10n.userSessionsOverviewOtherSessionsSectionTitle)
+                    .textCase(.uppercase)
                     .font(theme.fonts.footnote)
                     .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 8.0)
                 
                 Text(VectorL10n.userSessionsOverviewOtherSessionsSectionInfo)
                     .font(theme.fonts.footnote)
                     .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.bottom, 11)
+                    .padding(.bottom, 12.0)
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 24)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 16.0)
+            .padding(.top, 24.0)
         }
     }
 }

@@ -107,6 +107,8 @@ internal class Asset: NSObject {
     internal static let deviceTypeWeb = ImageAsset(name: "device_type_web")
     internal static let userSessionUnverified = ImageAsset(name: "user_session_unverified")
     internal static let userSessionVerified = ImageAsset(name: "user_session_verified")
+    internal static let userSessionsInactive = ImageAsset(name: "user_sessions_inactive")
+    internal static let userSessionsUnverified = ImageAsset(name: "user_sessions_unverified")
     internal static let e2eBlocked = ImageAsset(name: "e2e_blocked")
     internal static let e2eUnencrypted = ImageAsset(name: "e2e_unencrypted")
     internal static let e2eWarning = ImageAsset(name: "e2e_warning")

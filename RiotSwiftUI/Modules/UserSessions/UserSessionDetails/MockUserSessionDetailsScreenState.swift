@@ -41,21 +41,23 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
         let session: UserSessionInfo
         switch self {
         case .allSections:
-            session = UserSessionInfo(sessionId: "session",
-                                      sessionName: "iOS",
+            session = UserSessionInfo(id: "session",
+                                      name: "iOS",
                                       deviceType: .mobile,
                                       isVerified: false,
                                       lastSeenIP: "10.0.0.10",
                                       lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
-                                      isCurrentSession: true)
+                                      isActive: true,
+                                      isCurrent: true)
         case .sessionSectionOnly:
-            session = UserSessionInfo(sessionId: "session",
-                                      sessionName: "iOS",
+            session = UserSessionInfo(id: "session",
+                                      name: "iOS",
                                       deviceType: .mobile,
                                       isVerified: false,
                                       lastSeenIP: nil,
                                       lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
-                                      isCurrentSession: false)
+                                      isActive: true,
+                                      isCurrent: false)
         }
         let viewModel = UserSessionDetailsViewModel(session: session)
         

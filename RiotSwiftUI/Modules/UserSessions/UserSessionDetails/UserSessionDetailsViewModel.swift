@@ -45,15 +45,15 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
     private func sessionSection(session: UserSessionInfo) -> UserSessionDetailsSectionViewData {
         var sessionItems = [UserSessionDetailsSectionItemViewData]()
         
-        if let sessionName = session.sessionName {
+        if let sessionName = session.name {
             sessionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.userSessionDetailsSessionName,
                                                                       value: sessionName))
         }
         
         sessionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
-                                                                  value: session.sessionId))
+                                                                  value: session.id))
         
-        return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
+        return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
                                                  footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                                                  items: sessionItems)
     }
@@ -65,7 +65,7 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
                                                                             value: lastSeenIP))
         }
         if deviceSectionItems.count > 0 {
-            return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsDeviceSectionHeader,
+            return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsDeviceSectionHeader.uppercased(),
                                                      footer: nil,
                                                      items: deviceSectionItems)
         }

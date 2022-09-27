@@ -28,7 +28,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         sessionItems.append(sessionIdItem(sessionId: userSessionInfo.sessionId))
         
         var sections = [UserSessionDetailsSectionViewData]()
-        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
+        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
                                                           footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                                                           items: sessionItems))
         let expectedModel = UserSessionDetailsViewState(sections: sections)
@@ -47,7 +47,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         sessionItems.append(sessionIdItem(sessionId: userSessionInfo.sessionId))
         
         var sections = [UserSessionDetailsSectionViewData]()
-        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
+        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
                                                           footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                                                           items: sessionItems))
         
@@ -67,14 +67,14 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         sessionItems.append(sessionIdItem(sessionId: userSessionInfo.sessionId))
         
         var sections = [UserSessionDetailsSectionViewData]()
-        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
+        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
                                                           footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                                                           items: sessionItems))
         
         var deviceSectionItems = [UserSessionDetailsSectionItemViewData]()
         deviceSectionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.userSessionDetailsDeviceIpAddress,
                                                                         value: "0.0.0.0"))
-        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsDeviceSectionHeader,
+        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsDeviceSectionHeader.uppercased(),
                                                           footer: nil,
                                                           items: deviceSectionItems))
         
