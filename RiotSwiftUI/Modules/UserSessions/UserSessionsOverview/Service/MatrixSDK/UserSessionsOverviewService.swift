@@ -82,31 +82,10 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
             .sorted { $0.lastSeenTs > $1.lastSeenTs }
             .map { sessionInfo(from: $0, isCurrentSession: $0.deviceId == mxSession.myDeviceId) }
         
-        var currentSession: UserSessionInfo?
-        var unverifiedSessions: [UserSessionInfo] = []
-        var inactiveSessions: [UserSessionInfo] = []
-        var otherSessions: [UserSessionInfo] = []
-        
-        for session in allSessions {
-            if session.isCurrent {
-                currentSession = session
-            } else {
-                otherSessions.append(session)
-                
-                if session.isVerified == false {
-                    unverifiedSessions.append(session)
-                }
-                
-                if session.isActive == false {
-                    inactiveSessions.append(session)
-                }
-            }
-        }
-        
-        return UserSessionsOverviewData(currentSession: currentSession,
-                                        unverifiedSessions: unverifiedSessions,
-                                        inactiveSessions: inactiveSessions,
-                                        otherSessions: otherSessions)
+        return UserSessionsOverviewData(currentSession: allSessions.filter(\.isCurrent).first,
+                                        unverifiedSessions: allSessions.filter { !$0.isVerified },
+                                        inactiveSessions: allSessions.filter { !$0.isActive },
+                                        otherSessions: allSessions.filter { !$0.isCurrent })
     }
     
     private func sessionInfo(from device: MXDevice, isCurrentSession: Bool) -> UserSessionInfo {
