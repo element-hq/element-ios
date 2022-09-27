@@ -90,13 +90,19 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                                        deviceType: DeviceType = .mobile,
                                        isVerified: Bool = false,
                                        lastSeenIP: String?,
-                                       lastSeenTimestamp: TimeInterval = Date().timeIntervalSince1970) -> UserSessionInfo {
+                                       lastSeenTimestamp: TimeInterval = Date().timeIntervalSince1970,
+                                       applicationName: String? = "Element iOS",
+                                       applicationVersion: String? = "1.0.0",
+                                       applicationURL: String? = nil) -> UserSessionInfo {
         UserSessionInfo(sessionId: sessionId,
                         sessionName: sessionName,
                         deviceType: deviceType,
                         isVerified: isVerified,
                         lastSeenIP: lastSeenIP,
-                        lastSeenTimestamp: lastSeenTimestamp)
+                        lastSeenTimestamp: lastSeenTimestamp,
+                        applicationName: applicationName,
+                        applicationVersion: applicationVersion,
+                        applicationURL: applicationURL)
         
     }
     
