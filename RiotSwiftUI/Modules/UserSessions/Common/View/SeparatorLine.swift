@@ -22,7 +22,7 @@ struct SeparatorLine: View {
     var body: some View {
         Rectangle()
             .fill(theme.colors.quinaryContent)
-            .frame(maxWidth: .infinity, alignment: .trailing)
+            .frame(maxWidth: .infinity)
             .frame(height: 1.0)
     }
 }
