@@ -33,7 +33,6 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
 
     /// A list of screen state definitions
     static var allCases: [MockUserSessionOverviewScreenState] {
-        // Each of the presence statuses
         [.currentSession, .otherSession]
     }
 
