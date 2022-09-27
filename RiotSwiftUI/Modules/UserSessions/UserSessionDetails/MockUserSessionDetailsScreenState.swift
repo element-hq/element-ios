@@ -41,25 +41,9 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
         let currentSessionInfo: UserSessionInfo
         switch self {
         case .allSections:
-            currentSessionInfo = UserSessionInfo(sessionId: "session",
-                                                 sessionName: "iOS",
-                                                 deviceType: .mobile,
-                                                 isVerified: false,
-                                                 lastSeenIP: "10.0.0.10",
-                                                 lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
-                                                 applicationName: "Element iOS",
-                                                 applicationVersion: "1.0.0",
-                                                 applicationURL: nil)
+            currentSessionInfo = .mockCurrentFull
         case .sessionSectionOnly:
-            currentSessionInfo = UserSessionInfo(sessionId: "session",
-                                                 sessionName: "iOS",
-                                                 deviceType: .mobile,
-                                                 isVerified: false,
-                                                 lastSeenIP: nil,
-                                                 lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
-                                                 applicationName: nil,
-                                                 applicationVersion: nil,
-                                                 applicationURL: nil)
+            currentSessionInfo = .mockCurrentSessionOnly
         }
         let viewModel = UserSessionDetailsViewModel(userSessionInfo: currentSessionInfo)
         

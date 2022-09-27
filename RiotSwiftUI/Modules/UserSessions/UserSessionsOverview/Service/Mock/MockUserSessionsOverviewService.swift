@@ -25,50 +25,19 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     }
     
     init() {
-        let currentSessionInfo = UserSessionInfo(sessionId: "alice",
-                                                 sessionName: "iOS",
-                                                 deviceType: .mobile,
-                                                 isVerified: false,
-                                                 lastSeenIP: "10.0.0.10",
-                                                 lastSeenTimestamp: nil,
-                                                 applicationName: "Element iOS",
-                                                 applicationVersion: "1.0.0",
-                                                 applicationURL: nil)
-        
         let unverifiedSessionsInfo: [UserSessionInfo] = []
         
         let inactiveSessionsInfo: [UserSessionInfo] = []
         
         let otherSessionsInfo: [UserSessionInfo] = [
-            UserSessionInfo(sessionId: "1",
-                            sessionName: "macOS",
-                            deviceType: .desktop,
-                            isVerified: true,
-                            lastSeenIP: "1.0.0.1",
-                            lastSeenTimestamp: Date().timeIntervalSince1970 - 130000,
-                            applicationName: "Element MacOS",
-                            applicationVersion: "1.0.0",
-                            applicationURL: nil),
-            UserSessionInfo(sessionId: "2",
-                            sessionName: "Firefox on Windows",
-                            deviceType: .web,
-                            isVerified: true,
-                            lastSeenIP: "2.0.0.2",
-                            lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
-                            applicationName: "Element Web",
-                            applicationVersion: "1.0.0",
-                            applicationURL: nil),
-            UserSessionInfo(sessionId: "3",
-                            sessionName: "Android",
-                            deviceType: .mobile,
-                            isVerified: false,
-                            lastSeenIP: "3.0.0.3",
-                            lastSeenTimestamp: Date().timeIntervalSince1970 - 10,
-                            applicationName: "Element Android",
-                            applicationVersion: "1.0.0",
-                            applicationURL: nil)
+            .mockDesktop,
+            .mockWeb,
+            .mockAndroid
         ]
         
-        self.lastOverviewData = UserSessionsOverviewData(currentSessionInfo: currentSessionInfo, unverifiedSessionsInfo: unverifiedSessionsInfo, inactiveSessionsInfo: inactiveSessionsInfo, otherSessionsInfo: otherSessionsInfo)
+        self.lastOverviewData = UserSessionsOverviewData(currentSessionInfo: .mockCurrentFull,
+                                                         unverifiedSessionsInfo: unverifiedSessionsInfo,
+                                                         inactiveSessionsInfo: inactiveSessionsInfo,
+                                                         otherSessionsInfo: otherSessionsInfo)
     }
 }
