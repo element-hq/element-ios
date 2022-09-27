@@ -17,13 +17,7 @@
 import SwiftUI
 
 struct TemplateUserProfileHeader: View {
-    // MARK: - Properties
-    
-    // MARK: Private
-
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    // MARK: Public
 
     let avatar: AvatarInputProtocol?
     let displayName: String?

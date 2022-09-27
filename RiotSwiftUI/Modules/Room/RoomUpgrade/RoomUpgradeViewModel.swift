@@ -17,9 +17,8 @@
 import Combine
 import SwiftUI
 
-typealias RoomUpgradeViewModelType = StateStoreViewModel<RoomUpgradeViewState,
-    Never,
-    RoomUpgradeViewAction>
+typealias RoomUpgradeViewModelType = StateStoreViewModel<RoomUpgradeViewState, Never, RoomUpgradeViewAction>
+
 class RoomUpgradeViewModel: RoomUpgradeViewModelType, RoomUpgradeViewModelProtocol {
     // MARK: - Properties
 

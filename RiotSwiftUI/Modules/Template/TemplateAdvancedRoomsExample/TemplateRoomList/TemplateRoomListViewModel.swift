@@ -17,22 +17,12 @@
 import Combine
 import SwiftUI
 
-typealias TemplateRoomListViewModelType = StateStoreViewModel<TemplateRoomListViewState,
-    Never,
-    TemplateRoomListViewAction>
+typealias TemplateRoomListViewModelType = StateStoreViewModel<TemplateRoomListViewState, Never, TemplateRoomListViewAction>
 
 class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomListViewModelProtocol {
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let templateRoomListService: TemplateRoomListServiceProtocol
     
-    // MARK: Public
-    
     var callback: ((TemplateRoomListViewModelAction) -> Void)?
-    
-    // MARK: - Setup
     
     init(templateRoomListService: TemplateRoomListServiceProtocol) {
         self.templateRoomListService = templateRoomListService

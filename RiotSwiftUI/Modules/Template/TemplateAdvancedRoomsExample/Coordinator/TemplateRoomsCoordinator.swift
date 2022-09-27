@@ -18,24 +18,16 @@ import UIKit
 
 @objcMembers
 final class TemplateRoomsCoordinator: Coordinator, Presentable {
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let parameters: TemplateRoomsCoordinatorParameters
     
     private var navigationRouter: NavigationRouterType {
         parameters.navigationRouter
     }
     
-    // MARK: Public
-    
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     
     var callback: (() -> Void)?
-    
-    // MARK: - Setup
     
     init(parameters: TemplateRoomsCoordinatorParameters) {
         self.parameters = parameters

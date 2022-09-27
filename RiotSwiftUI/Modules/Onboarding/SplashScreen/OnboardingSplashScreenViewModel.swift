@@ -17,9 +17,7 @@
 import Combine
 import SwiftUI
 
-typealias OnboardingSplashScreenViewModelType = StateStoreViewModel<OnboardingSplashScreenViewState,
-    Never,
-    OnboardingSplashScreenViewAction>
+typealias OnboardingSplashScreenViewModelType = StateStoreViewModel<OnboardingSplashScreenViewState, Never, OnboardingSplashScreenViewAction>
 
 protocol OnboardingSplashScreenViewModelProtocol {
     var completion: ((OnboardingSplashScreenViewModelResult) -> Void)? { get set }

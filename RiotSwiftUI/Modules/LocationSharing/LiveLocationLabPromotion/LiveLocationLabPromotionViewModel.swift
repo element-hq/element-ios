@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-typealias LiveLocationLabPromotionViewModelType = StateStoreViewModel<LiveLocationLabPromotionViewState,
-    Never,
-    LiveLocationLabPromotionViewAction>
+typealias LiveLocationLabPromotionViewModelType = StateStoreViewModel<LiveLocationLabPromotionViewState, Never, LiveLocationLabPromotionViewAction>
 
 class LiveLocationLabPromotionViewModel: LiveLocationLabPromotionViewModelType, LiveLocationLabPromotionViewModelProtocol {
     // MARK: - Properties

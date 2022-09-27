@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-typealias OnboardingUseCaseViewModelType = StateStoreViewModel<OnboardingUseCaseViewState,
-    OnboardingUseCaseStateAction,
-    OnboardingUseCaseViewAction>
+typealias OnboardingUseCaseViewModelType = StateStoreViewModel<OnboardingUseCaseViewState, OnboardingUseCaseStateAction, OnboardingUseCaseViewAction>
 
 class OnboardingUseCaseViewModel: OnboardingUseCaseViewModelType, OnboardingUseCaseViewModelProtocol {
     // MARK: - Properties

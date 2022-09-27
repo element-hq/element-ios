@@ -19,9 +19,8 @@
 import Combine
 import SwiftUI
 
-typealias SpaceCreationPostProcessViewModelType = StateStoreViewModel<SpaceCreationPostProcessViewState,
-    SpaceCreationPostProcessStateAction,
-    SpaceCreationPostProcessViewAction>
+typealias SpaceCreationPostProcessViewModelType = StateStoreViewModel<SpaceCreationPostProcessViewState, SpaceCreationPostProcessStateAction, SpaceCreationPostProcessViewAction>
+
 class SpaceCreationPostProcessViewModel: SpaceCreationPostProcessViewModelType, SpaceCreationPostProcessViewModelProtocol {
     // MARK: - Properties
 

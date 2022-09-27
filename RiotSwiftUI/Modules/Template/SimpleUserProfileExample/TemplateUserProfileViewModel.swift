@@ -17,22 +17,12 @@
 import Combine
 import SwiftUI
 
-typealias TemplateUserProfileViewModelType = StateStoreViewModel<TemplateUserProfileViewState,
-    Never,
-    TemplateUserProfileViewAction>
+typealias TemplateUserProfileViewModelType = StateStoreViewModel<TemplateUserProfileViewState, Never, TemplateUserProfileViewAction>
 
 class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUserProfileViewModelProtocol {
-    // MARK: - Properties
-
-    // MARK: Private
-
     private let templateUserProfileService: TemplateUserProfileServiceProtocol
 
-    // MARK: Public
-
     var completion: ((TemplateUserProfileViewModelResult) -> Void)?
-
-    // MARK: - Setup
 
     static func makeTemplateUserProfileViewModel(templateUserProfileService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewModelProtocol {
         TemplateUserProfileViewModel(templateUserProfileService: templateUserProfileService)

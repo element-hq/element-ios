@@ -17,9 +17,7 @@
 import Combine
 import SwiftUI
 
-typealias OnboardingAvatarViewModelType = StateStoreViewModel<OnboardingAvatarViewState,
-    Never,
-    OnboardingAvatarViewAction>
+typealias OnboardingAvatarViewModelType = StateStoreViewModel<OnboardingAvatarViewState, Never, OnboardingAvatarViewAction>
 
 class OnboardingAvatarViewModel: OnboardingAvatarViewModelType, OnboardingAvatarViewModelProtocol {
     // MARK: - Properties

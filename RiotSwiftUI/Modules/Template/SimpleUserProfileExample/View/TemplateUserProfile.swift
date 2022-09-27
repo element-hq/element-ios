@@ -17,13 +17,7 @@
 import SwiftUI
 
 struct TemplateUserProfile: View {
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    // MARK: Public
     
     @ObservedObject var viewModel: TemplateUserProfileViewModel.Context
     
