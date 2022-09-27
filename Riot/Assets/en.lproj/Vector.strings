@@ -2386,11 +2386,15 @@ To enable access, tap Settings> Location and select Always";
 
 "user_session_details_title" = "Session details";
 "user_session_details_session_section_header" = "SESSION";
+"user_session_details_application_section_header" = "APPLICATION";
 "user_session_details_device_section_header" = "DEVICE";
 "user_session_details_session_name" = "Session name";
 "user_session_details_session_id" = "Session ID";
 "user_session_details_session_section_footer" = "Copy any data by tapping on it and holding it down.";
 "user_session_details_device_ip_address" = "IP address";
+"user_session_details_application_name" = "Name";
+"user_session_details_application_version" = "Version";
+"user_session_details_application_url" = "URL";
 // MARK: - MatrixKit
 
 
