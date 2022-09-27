@@ -17,7 +17,7 @@
 import Combine
 import SwiftUI
 
-typealias TemplateRoomListViewModelType = StateStoreViewModel<TemplateRoomListViewState, Never, TemplateRoomListViewAction>
+typealias TemplateRoomListViewModelType = StateStoreViewModel<TemplateRoomListViewState, TemplateRoomListViewAction>
 
 class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomListViewModelProtocol {
     private let templateRoomListService: TemplateRoomListServiceProtocol

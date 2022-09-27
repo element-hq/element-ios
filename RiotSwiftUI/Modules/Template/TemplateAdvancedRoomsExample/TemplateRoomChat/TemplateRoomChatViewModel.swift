@@ -17,7 +17,7 @@
 import Combine
 import SwiftUI
 
-typealias TemplateRoomChatViewModelType = StateStoreViewModel<TemplateRoomChatViewState, Never, TemplateRoomChatViewAction>
+typealias TemplateRoomChatViewModelType = StateStoreViewModel<TemplateRoomChatViewState, TemplateRoomChatViewAction>
 
 class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChatViewModelProtocol {
     enum Constants {

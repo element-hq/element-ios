@@ -17,7 +17,7 @@
 import Combine
 import SwiftUI
 
-typealias TemplateUserProfileViewModelType = StateStoreViewModel<TemplateUserProfileViewState, Never, TemplateUserProfileViewAction>
+typealias TemplateUserProfileViewModelType = StateStoreViewModel<TemplateUserProfileViewState, TemplateUserProfileViewAction>
 
 class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUserProfileViewModelProtocol {
     private let templateUserProfileService: TemplateUserProfileServiceProtocol

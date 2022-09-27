@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-typealias AuthenticationReCaptchaViewModelType = StateStoreViewModel<AuthenticationReCaptchaViewState, Never, AuthenticationReCaptchaViewAction>
+typealias AuthenticationReCaptchaViewModelType = StateStoreViewModel<AuthenticationReCaptchaViewState, AuthenticationReCaptchaViewAction>
 
 class AuthenticationReCaptchaViewModel: AuthenticationReCaptchaViewModelType, AuthenticationReCaptchaViewModelProtocol {
     // MARK: - Properties

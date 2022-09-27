@@ -20,10 +20,6 @@ import Foundation
 
 // MARK: View model
 
-enum OnboardingUseCaseStateAction {
-    case viewAction(OnboardingUseCaseViewAction)
-}
-
 enum OnboardingUseCaseViewModelResult {
     case personalMessaging
     case workMessaging

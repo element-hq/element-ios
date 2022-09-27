@@ -19,7 +19,7 @@
 import Combine
 import SwiftUI
 
-typealias SpaceCreationEmailInvitesViewModelType = StateStoreViewModel<SpaceCreationEmailInvitesViewState, SpaceCreationEmailInvitesStateAction, SpaceCreationEmailInvitesViewAction>
+typealias SpaceCreationEmailInvitesViewModelType = StateStoreViewModel<SpaceCreationEmailInvitesViewState, SpaceCreationEmailInvitesViewAction>
 
 class SpaceCreationEmailInvitesViewModel: SpaceCreationEmailInvitesViewModelType, SpaceCreationEmailInvitesViewModelProtocol {
     // MARK: - Properties
@@ -40,12 +40,14 @@ class SpaceCreationEmailInvitesViewModel: SpaceCreationEmailInvitesViewModelType
         self.service = service
         super.init(initialViewState: SpaceCreationEmailInvitesViewModel.defaultState(creationParameters: creationParameters, service: service))
     }
-
+    
     private func setupServiceObserving() {
-        let publisher = service.isLoadingSubject
-            .map(SpaceCreationEmailInvitesStateAction.updateLoading)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: publisher)
+        service
+            .isLoadingSubject
+            .sink(receiveValue: { [weak self] isLoading in
+                self?.state.loading = isLoading
+            })
+            .store(in: &cancellables)
     }
 
     private static func defaultState(creationParameters: SpaceCreationParameters, service: SpaceCreationEmailInvitesServiceProtocol) -> SpaceCreationEmailInvitesViewState {
@@ -74,21 +76,13 @@ class SpaceCreationEmailInvitesViewModel: SpaceCreationEmailInvitesViewModelType
         }
     }
 
-    override class func reducer(state: inout SpaceCreationEmailInvitesViewState, action: SpaceCreationEmailInvitesStateAction) {
-        switch action {
-        case .updateEmailValidity(let emailValidity):
-            state.emailAddressesValid = emailValidity
-        case .updateLoading(let isLoading):
-            state.loading = isLoading
-        }
-    }
-
     private func done() {
         creationParameters.emailInvites = context.emailInvites
         creationParameters.inviteType = .email
-        let emailAddressesValidity = service.validate(context.emailInvites)
         
-        dispatch(action: .updateEmailValidity(emailAddressesValidity))
+        let emailAddressesValidity = service.validate(context.emailInvites)
+        state.emailAddressesValid = emailAddressesValidity
+        
         if context.emailInvites.reduce(true, { $0 && $1.isEmpty }) {
             completion?(.done)
         } else if emailAddressesValidity.reduce(true, { $0 && $1 }) {

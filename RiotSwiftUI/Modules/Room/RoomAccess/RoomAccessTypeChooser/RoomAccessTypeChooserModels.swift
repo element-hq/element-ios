@@ -42,13 +42,6 @@ enum RoomAccessTypeChooserCoordinatorAction {
 
 // MARK: - View model
 
-/// Actions to be performed on the `ViewModel` State
-enum RoomAccessTypeChooserStateAction {
-    case updateAccessItems([RoomAccessTypeChooserAccessItem])
-    case updateShowUpgradeRoomAlert(Bool)
-    case updateWaitingMessage(String?)
-}
-
 /// Actions sent by the`ViewModel` to the `Coordinator`.
 enum RoomAccessTypeChooserViewModelAction {
     case spaceSelection(String, RoomAccessTypeChooserAccessType)

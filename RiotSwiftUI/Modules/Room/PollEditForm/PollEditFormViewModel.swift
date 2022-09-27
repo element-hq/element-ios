@@ -22,7 +22,7 @@ struct PollEditFormViewModelParameters {
     let pollDetails: EditFormPollDetails
 }
 
-typealias PollEditFormViewModelType = StateStoreViewModel<PollEditFormViewState, Never, PollEditFormViewAction>
+typealias PollEditFormViewModelType = StateStoreViewModel<PollEditFormViewState, PollEditFormViewAction>
 
 class PollEditFormViewModel: PollEditFormViewModelType, PollEditFormViewModelProtocol {
     private enum Constants {

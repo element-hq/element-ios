@@ -19,7 +19,7 @@
 import Combine
 import SwiftUI
 
-typealias SpaceCreationRoomsViewModelType = StateStoreViewModel<SpaceCreationRoomsViewState, SpaceCreationRoomsStateAction, SpaceCreationRoomsViewAction>
+typealias SpaceCreationRoomsViewModelType = StateStoreViewModel<SpaceCreationRoomsViewState, SpaceCreationRoomsViewAction>
 
 class SpaceCreationRoomsViewModel: SpaceCreationRoomsViewModelType, SpaceCreationRoomsViewModelProtocol {
     // MARK: - Setup
@@ -59,8 +59,6 @@ class SpaceCreationRoomsViewModel: SpaceCreationRoomsViewModelType, SpaceCreatio
             done()
         }
     }
-
-    override class func reducer(state: inout SpaceCreationRoomsViewState, action: SpaceCreationRoomsStateAction) { }
     
     // MARK: - Private
 
