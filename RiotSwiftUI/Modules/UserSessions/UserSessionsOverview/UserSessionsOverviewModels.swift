@@ -28,9 +28,9 @@ enum UserSessionsOverviewViewModelResult {
     case showAllUnverifiedSessions
     case showAllInactiveSessions
     case verifyCurrentSession
-    case showCurrentSessionOverview(sessionInfo: UserSessionInfo)
+    case showCurrentSessionOverview(session: UserSessionInfo)
     case showAllOtherSessions
-    case showUserSessionOverview(sessionInfo: UserSessionInfo)
+    case showUserSessionOverview(session: UserSessionInfo)
 }
 
 // MARK: View

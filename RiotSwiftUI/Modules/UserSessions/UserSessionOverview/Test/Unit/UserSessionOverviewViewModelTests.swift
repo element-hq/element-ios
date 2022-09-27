@@ -23,7 +23,7 @@ class UserSessionOverviewViewModelTests: XCTestCase {
     var sut: UserSessionOverviewViewModel!
 
     func test_whenVerifyCurrentSessionProcessed_completionWithVerifyCurrentSessionCalled() {
-        sut = UserSessionOverviewViewModel(userSessionInfo: createUserSessionInfo(), isCurrentSession: true)
+        sut = UserSessionOverviewViewModel(session: createUserSessionInfo(), isCurrentSession: true)
         
         var modelResult: UserSessionOverviewViewModelResult?
         sut.completion = { result in
@@ -35,14 +35,14 @@ class UserSessionOverviewViewModelTests: XCTestCase {
     
     func test_whenViewSessionDetailsProcessed_completionWithShowSessionDetailsCalled() {
         let session = createUserSessionInfo()
-        sut = UserSessionOverviewViewModel(userSessionInfo: session, isCurrentSession: true)
+        sut = UserSessionOverviewViewModel(session: session, isCurrentSession: true)
 
         var modelResult: UserSessionOverviewViewModelResult?
         sut.completion = { result in
             modelResult = result
         }
         sut.process(viewAction: .viewSessionDetails)
-        XCTAssertEqual(modelResult, .showSessionDetails(sessionInfo: session))
+        XCTAssertEqual(modelResult, .showSessionDetails(session: session))
     }
     
     private func createUserSessionInfo() -> UserSessionInfo {

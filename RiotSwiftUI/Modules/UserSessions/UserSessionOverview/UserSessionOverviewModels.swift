@@ -25,7 +25,7 @@ enum UserSessionOverviewCoordinatorResult {
 // MARK: View model
 
 enum UserSessionOverviewViewModelResult: Equatable {
-    case showSessionDetails(sessionInfo: UserSessionInfo)
+    case showSessionDetails(session: UserSessionInfo)
     case verifyCurrentSession
 }
 

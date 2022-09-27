@@ -18,7 +18,7 @@ import CommonKit
 import SwiftUI
 
 struct UserSessionOverviewCoordinatorParameters {
-    let userSessionInfo: UserSessionInfo
+    let session: UserSessionInfo
     let isCurrentSession: Bool
 }
 
@@ -41,7 +41,7 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
     init(parameters: UserSessionOverviewCoordinatorParameters) {
         self.parameters = parameters
 
-        viewModel = UserSessionOverviewViewModel(userSessionInfo: parameters.userSessionInfo,
+        viewModel = UserSessionOverviewViewModel(session: parameters.session,
                                                  isCurrentSession: parameters.isCurrentSession)
         
         hostingController = VectorHostingController(rootView: UserSessionOverview(viewModel: viewModel.context))
@@ -59,8 +59,8 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
             switch result {
             case .verifyCurrentSession:
                 break // TODO:
-            case let .showSessionDetails(sessionInfo: sessionInfo):
-                self.completion?(.openSessionDetails(session: sessionInfo))
+            case let .showSessionDetails(session: session):
+                self.completion?(.openSessionDetails(session: session))
             }
         }
     }

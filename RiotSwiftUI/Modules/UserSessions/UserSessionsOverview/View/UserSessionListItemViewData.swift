@@ -68,7 +68,7 @@ struct UserSessionListItemViewData: Identifiable {
 }
 
 extension UserSessionListItemViewData {
-    init(userSessionInfo: UserSessionInfo) {
-        self.init(sessionId: userSessionInfo.sessionId, sessionDisplayName: userSessionInfo.sessionName, deviceType: userSessionInfo.deviceType, isVerified: userSessionInfo.isVerified, lastActivityDate: userSessionInfo.lastSeenTimestamp)
+    init(session: UserSessionInfo) {
+        self.init(sessionId: session.sessionId, sessionDisplayName: session.sessionName, deviceType: session.deviceType, isVerified: session.isVerified, lastActivityDate: session.lastSeenTimestamp)
     }
 }

@@ -44,7 +44,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
                 assertionFailure("Missing current session")
                 return
             }
-            completion?(.showCurrentSessionOverview(sessionInfo: currentSessionInfo))
+            completion?(.showCurrentSessionOverview(session: currentSessionInfo))
         case .viewAllUnverifiedSessions:
             completion?(.showAllUnverifiedSessions)
         case .viewAllInactiveSessions:
@@ -52,11 +52,11 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         case .viewAllOtherSessions:
             completion?(.showAllOtherSessions)
         case .tapUserSession(let sessionId):
-            guard let sessionInfo = userSessionsOverviewService.sessionForIdentifier(sessionId) else {
+            guard let session = userSessionsOverviewService.sessionForIdentifier(sessionId) else {
                 assertionFailure("Missing session info")
                 return
             }
-            completion?(.showUserSessionOverview(sessionInfo: sessionInfo))
+            completion?(.showUserSessionOverview(session: session))
         }
     }
     
@@ -68,7 +68,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         state.otherSessionsViewData = userSessionsViewData.otherSessions.asViewData()
         
         if let currentSessionInfo = userSessionsViewData.currentSession {
-            state.currentSessionViewData = UserSessionCardViewData(userSessionInfo: currentSessionInfo, isCurrentSessionDisplayMode: true)
+            state.currentSessionViewData = UserSessionCardViewData(session: currentSessionInfo, isCurrentSessionDisplayMode: true)
         }
     }
     
@@ -95,6 +95,6 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
 
 private extension Collection where Element == UserSessionInfo {
     func asViewData() -> [UserSessionListItemViewData] {
-        map { UserSessionListItemViewData(userSessionInfo: $0) }
+        map { UserSessionListItemViewData(session: $0) }
     }
 }

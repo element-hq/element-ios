@@ -69,7 +69,7 @@ struct UserSessionListPreview: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(userSessionsOverviewService.overviewData.otherSessions) { userSessionInfo in
-                let viewData = UserSessionListItemViewData(userSessionInfo: userSessionInfo)
+                let viewData = UserSessionListItemViewData(session: userSessionInfo)
 
                 UserSessionListItem(viewData: viewData, onBackgroundTap: { _ in
 

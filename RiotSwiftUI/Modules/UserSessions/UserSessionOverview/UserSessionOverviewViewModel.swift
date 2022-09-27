@@ -19,14 +19,14 @@ import SwiftUI
 typealias UserSessionOverviewViewModelType = StateStoreViewModel<UserSessionOverviewViewState, UserSessionOverviewViewAction>
 
 class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessionOverviewViewModelProtocol {
-    private let userSessionInfo: UserSessionInfo
+    private let session: UserSessionInfo
     
     var completion: ((UserSessionOverviewViewModelResult) -> Void)?
     
-    init(userSessionInfo: UserSessionInfo, isCurrentSession: Bool) {
-        self.userSessionInfo = userSessionInfo
+    init(session: UserSessionInfo, isCurrentSession: Bool) {
+        self.session = session
         
-        let cardViewData = UserSessionCardViewData(userSessionInfo: userSessionInfo, isCurrentSessionDisplayMode: isCurrentSession)
+        let cardViewData = UserSessionCardViewData(session: session, isCurrentSessionDisplayMode: isCurrentSession)
         let state = UserSessionOverviewViewState(cardViewData: cardViewData, isCurrentSession: isCurrentSession)
         super.init(initialViewState: state)
     }
@@ -38,7 +38,7 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
         case .verifyCurrentSession:
             completion?(.verifyCurrentSession)
         case .viewSessionDetails:
-            completion?(.showSessionDetails(sessionInfo: userSessionInfo))
+            completion?(.showSessionDetails(session: session))
         }
     }
 }

@@ -26,7 +26,7 @@ struct UserSessionCardViewData {
     }
     
     let sessionId: String
-
+    
     let sessionName: String
     
     let isVerified: Bool
@@ -66,13 +66,13 @@ struct UserSessionCardViewData {
 }
 
 extension UserSessionCardViewData {
-    init(userSessionInfo: UserSessionInfo, isCurrentSessionDisplayMode: Bool = false) {
-        self.init(sessionId: userSessionInfo.sessionId,
-                  sessionDisplayName: userSessionInfo.sessionName,
-                  deviceType: userSessionInfo.deviceType,
-                  isVerified: userSessionInfo.isVerified,
-                  lastActivityTimestamp: userSessionInfo.lastSeenTimestamp,
-                  lastSeenIP: userSessionInfo.lastSeenIP,
+    init(session: UserSessionInfo, isCurrentSessionDisplayMode: Bool = false) {
+        self.init(sessionId: session.sessionId,
+                  sessionDisplayName: session.sessionName,
+                  deviceType: session.deviceType,
+                  isVerified: session.isVerified,
+                  lastActivityTimestamp: session.lastSeenTimestamp,
+                  lastSeenIP: session.lastSeenIP,
                   isCurrentSessionDisplayMode: isCurrentSessionDisplayMode)
     }
 }

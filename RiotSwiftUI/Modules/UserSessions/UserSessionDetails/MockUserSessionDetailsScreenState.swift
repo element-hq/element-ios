@@ -38,29 +38,29 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        let currentSessionInfo: UserSessionInfo
+        let session: UserSessionInfo
         switch self {
         case .allSections:
-            currentSessionInfo = UserSessionInfo(sessionId: "session",
-                                                 sessionName: "iOS",
-                                                 deviceType: .mobile,
-                                                 isVerified: false,
-                                                 lastSeenIP: "10.0.0.10",
-                                                 lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+            session = UserSessionInfo(sessionId: "session",
+                                      sessionName: "iOS",
+                                      deviceType: .mobile,
+                                      isVerified: false,
+                                      lastSeenIP: "10.0.0.10",
+                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
         case .sessionSectionOnly:
-            currentSessionInfo = UserSessionInfo(sessionId: "session",
-                                                 sessionName: "iOS",
-                                                 deviceType: .mobile,
-                                                 isVerified: false,
-                                                 lastSeenIP: nil,
-                                                 lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+            session = UserSessionInfo(sessionId: "session",
+                                      sessionName: "iOS",
+                                      deviceType: .mobile,
+                                      isVerified: false,
+                                      lastSeenIP: nil,
+                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
         }
-        let viewModel = UserSessionDetailsViewModel(userSessionInfo: currentSessionInfo)
+        let viewModel = UserSessionDetailsViewModel(session: session)
         
         // can simulate service and viewModel actions here if needs be.
         
         return (
-            [currentSessionInfo],
+            [session],
             AnyView(UserSessionDetails(viewModel: viewModel.context))
         )
     }

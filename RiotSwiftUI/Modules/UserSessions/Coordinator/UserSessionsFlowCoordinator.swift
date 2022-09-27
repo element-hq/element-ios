@@ -66,7 +66,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     private func createUserSessionDetailsCoordinator(session: UserSessionInfo) -> UserSessionDetailsCoordinator {
-        let parameters = UserSessionDetailsCoordinatorParameters(userSessionInfo: session)
+        let parameters = UserSessionDetailsCoordinatorParameters(session: session)
         return UserSessionDetailsCoordinator(parameters: parameters)
     }
     
@@ -83,7 +83,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     private func createUserSessionOverviewCoordinator(session: UserSessionInfo, isCurrentSession: Bool) -> UserSessionOverviewCoordinator {
-        let parameters = UserSessionOverviewCoordinatorParameters(userSessionInfo: session, isCurrentSession: isCurrentSession)
+        let parameters = UserSessionOverviewCoordinatorParameters(session: session, isCurrentSession: isCurrentSession)
         return UserSessionOverviewCoordinator(parameters: parameters)
     }
     
