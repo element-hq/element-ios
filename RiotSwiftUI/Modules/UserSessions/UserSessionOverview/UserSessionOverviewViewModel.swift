@@ -27,7 +27,7 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
         self.session = session
         
         let cardViewData = UserSessionCardViewData(session: session)
-        let state = UserSessionOverviewViewState(cardViewData: cardViewData, isCurrentSession: session.isCurrentSession)
+        let state = UserSessionOverviewViewState(cardViewData: cardViewData, isCurrentSession: session.isCurrent)
         super.init(initialViewState: state)
     }
     

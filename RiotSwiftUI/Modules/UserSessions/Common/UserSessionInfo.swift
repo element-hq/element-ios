@@ -18,20 +18,11 @@ import Foundation
 
 /// Represents a user session information
 struct UserSessionInfo: Identifiable {
-    /// Delay after which session is considered inactive, 90 days
-    static let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
-    
-    // MARK: - Properties
-    
-    var id: String {
-        sessionId
-    }
-    
     /// The session identifier
-    let sessionId: String
+    let id: String
 
     /// The session display name
-    let sessionName: String?
+    let name: String?
     
     /// The device type used by the session
     let deviceType: DeviceType
@@ -46,35 +37,10 @@ struct UserSessionInfo: Identifiable {
     let lastSeenTimestamp: TimeInterval?
         
     /// True to indicate that session has been used under `inactiveSessionDurationTreshold` value
-    let isSessionActive: Bool
+    let isActive: Bool
     
     /// True to indicate that this is current user session
-    let isCurrentSession: Bool
-    
-    // MARK: - Setup
-    
-    init(sessionId: String,
-         sessionName: String?,
-         deviceType: DeviceType,
-         isVerified: Bool,
-         lastSeenIP: String?,
-         lastSeenTimestamp: TimeInterval?,
-         isCurrentSession: Bool) {
-        self.sessionId = sessionId
-        self.sessionName = sessionName
-        self.deviceType = deviceType
-        self.isVerified = isVerified
-        self.lastSeenIP = lastSeenIP
-        self.lastSeenTimestamp = lastSeenTimestamp
-
-        if let lastSeenTimestamp = lastSeenTimestamp {
-            let elapsedTime = Date().timeIntervalSince1970 - lastSeenTimestamp
-            isSessionActive = elapsedTime < Self.inactiveSessionDurationTreshold
-        } else {
-            isSessionActive = true
-        }
-        self.isCurrentSession = isCurrentSession
-    }
+    let isCurrent: Bool
 }
 
 extension UserSessionInfo: Equatable {

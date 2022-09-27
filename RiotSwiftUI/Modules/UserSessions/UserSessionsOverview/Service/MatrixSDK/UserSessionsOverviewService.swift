@@ -18,6 +18,9 @@ import Foundation
 import MatrixSDK
 
 class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
+    /// Delay after which session is considered inactive, 90 days
+    static private let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
+    
     private let mxSession: MXSession
     
     private(set) var overviewData: UserSessionsOverviewData
@@ -52,7 +55,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
             return overviewData.currentSession
         }
         
-        return overviewData.otherSessions.first(where: { $0.sessionId == sessionId })
+        return overviewData.otherSessions.first(where: { $0.id == sessionId })
     }
     
     // MARK: - Private
@@ -85,7 +88,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         var otherSessions: [UserSessionInfo] = []
         
         for session in allSessions {
-            if session.isCurrentSession {
+            if session.isCurrent {
                 currentSession = session
             } else {
                 otherSessions.append(session)
@@ -94,7 +97,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                     unverifiedSessions.append(session)
                 }
                 
-                if session.isSessionActive == false {
+                if session.isActive == false {
                     inactiveSessions.append(session)
                 }
             }
@@ -114,13 +117,20 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
             lastSeenTs = TimeInterval(device.lastSeenTs / 1000)
         }
         
-        return UserSessionInfo(sessionId: device.deviceId,
-                               sessionName: device.displayName,
+        var isSessionActive = true
+        if let lastSeenTimestamp = lastSeenTs {
+            let elapsedTime = Date().timeIntervalSince1970 - lastSeenTimestamp
+            isSessionActive = elapsedTime < Self.inactiveSessionDurationTreshold
+        }
+        
+        return UserSessionInfo(id: device.deviceId,
+                               name: device.displayName,
                                deviceType: .unknown,
                                isVerified: isSessionVerified,
                                lastSeenIP: device.lastSeenIp,
                                lastSeenTimestamp: lastSeenTs,
-                               isCurrentSession: isCurrentSession)
+                               isActive: isSessionActive,
+                               isCurrent: isCurrentSession)
     }
     
     private func deviceInfo(for deviceId: String) -> MXDeviceInfo? {

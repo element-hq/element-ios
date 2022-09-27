@@ -136,13 +136,14 @@ struct UserSessionCardViewPreview: View {
     let viewData: UserSessionCardViewData
     
     init(isCurrentSessionInfo: Bool = false) {
-        let session = UserSessionInfo(sessionId: "alice",
-                                      sessionName: "iOS",
+        let session = UserSessionInfo(id: "alice",
+                                      name: "iOS",
                                       deviceType: .mobile,
                                       isVerified: false,
                                       lastSeenIP: "10.0.0.10",
                                       lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
-                                      isCurrentSession: isCurrentSessionInfo)
+                                      isActive: true,
+                                      isCurrent: isCurrentSessionInfo)
         
         viewData = UserSessionCardViewData(session: session)
     }
