@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
+import CoreLocation
 import Foundation
 import SwiftUI
-import CoreLocation
 
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
@@ -34,11 +34,11 @@ enum MockStaticLocationViewingScreenState: MockScreenState, CaseIterable {
     
     /// A list of screen state definitions
     static var allCases: [MockStaticLocationViewingScreenState] {
-        return [.showUserLocation, .showPinLocation]
+        [.showUserLocation, .showPinLocation]
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let location = CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096)
         let coordinateType: LocationSharingCoordinateType = self == .showUserLocation ? .user : .pin
         
@@ -50,7 +50,6 @@ enum MockStaticLocationViewingScreenState: MockScreenState, CaseIterable {
         
         return ([viewModel],
                 AnyView(StaticLocationView(viewModel: viewModel.context)
-                            .addDependency(MockAvatarService.example))
-        )
+                    .addDependency(MockAvatarService.example)))
     }
 }

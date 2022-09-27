@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import DesignKit
+import SwiftUI
 
 struct AvatarImage: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     @Environment(\.dependencies) var dependencies: DependencyContainer
     @StateObject var viewModel = AvatarViewModel()
@@ -75,7 +74,7 @@ extension AvatarImage {
     /// Use display name color as border color by default
     func border() -> some View {
         let borderColor = theme.userColor(for: matrixItemId)
-        return self.border(color: borderColor)
+        return border(color: borderColor)
     }
 }
 

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +14,15 @@
 // limitations under the License.
 //
 
-import Foundation
 import SwiftUI
 
-/// Client type
-enum DeviceType {
-    case desktop
-    case web
-    case mobile
-    case unknown
+struct SeparatorLine: View {
+    @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    var body: some View {
+        Rectangle()
+            .fill(theme.colors.quinaryContent)
+            .frame(maxWidth: .infinity)
+            .frame(height: 1.0)
+    }
 }

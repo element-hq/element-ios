@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,26 +22,16 @@ struct UserSessionsFlowCoordinatorParameters {
 }
 
 final class UserSessionsFlowCoordinator: Coordinator, Presentable {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let parameters: UserSessionsFlowCoordinatorParameters
     private let navigationRouter: NavigationRouterType
-    
-    // MARK: Public
     
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     var completion: (() -> Void)?
     
-    // MARK: - Setup
-    
     init(parameters: UserSessionsFlowCoordinatorParameters) {
         self.parameters = parameters
-        
-        self.navigationRouter = parameters.router ?? NavigationRouter(navigationController: RiotNavigationController())
+        navigationRouter = parameters.router ?? NavigationRouter(navigationController: RiotNavigationController())
     }
     
     // MARK: - Private
@@ -49,7 +39,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     private func pushScreen(with coordinator: Coordinator & Presentable) {
         add(childCoordinator: coordinator)
         
-        self.navigationRouter.push(coordinator, animated: true, popCompletion: { [weak self] in
+        navigationRouter.push(coordinator, animated: true, popCompletion: { [weak self] in
             self?.remove(childCoordinator: coordinator)
         })
         
@@ -57,14 +47,14 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     private func createUserSessionsOverviewCoordinator() -> UserSessionsOverviewCoordinator {
-        let parameters = UserSessionsOverviewCoordinatorParameters(session: self.parameters.session)
+        let parameters = UserSessionsOverviewCoordinatorParameters(session: parameters.session)
         
         let coordinator = UserSessionsOverviewCoordinator(parameters: parameters)
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .openSessionDetails(session: session):
-                self.openSessionDetails(session: session)
+            case let .openSessionOverview(session: session):
+                self.openSessionOverview(session: session)
             }
         }
         return coordinator
@@ -76,10 +66,25 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     private func createUserSessionDetailsCoordinator(session: UserSessionInfo) -> UserSessionDetailsCoordinator {
-        let parameters = UserSessionDetailsCoordinatorParameters(
-            session: parameters.session,
-            userSessionInfo: session)
+        let parameters = UserSessionDetailsCoordinatorParameters(session: session)
         return UserSessionDetailsCoordinator(parameters: parameters)
+    }
+    
+    private func openSessionOverview(session: UserSessionInfo) {
+        let coordinator = createUserSessionOverviewCoordinator(session: session)
+        coordinator.completion = { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .openSessionDetails(session: session):
+                self.openSessionDetails(session: session)
+            }
+        }
+        pushScreen(with: coordinator)
+    }
+    
+    private func createUserSessionOverviewCoordinator(session: UserSessionInfo) -> UserSessionOverviewCoordinator {
+        let parameters = UserSessionOverviewCoordinatorParameters(session: session)
+        return UserSessionOverviewCoordinator(parameters: parameters)
     }
     
     // MARK: - Public
@@ -90,15 +95,15 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         let rootCoordinator = createUserSessionsOverviewCoordinator()
         rootCoordinator.start()
         
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
         
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+        if navigationRouter.modules.isEmpty == false {
+            navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
                 self?.completion?()
             })
         } else {
-            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+            navigationRouter.setRootModule(rootCoordinator) { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
                 self?.completion?()
             }
@@ -106,6 +111,6 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
 }

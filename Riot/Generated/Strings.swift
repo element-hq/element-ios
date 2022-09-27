@@ -8535,6 +8535,18 @@ public class VectorL10n: NSObject {
   public static func userSessionName(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "user_session_name", p1, p2)
   }
+  /// Current session
+  public static var userSessionOverviewCurrentSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_overview_current_session_title") 
+  }
+  /// Session details
+  public static var userSessionOverviewSessionDetailsButtonTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_overview_session_details_button_title") 
+  }
+  /// Session
+  public static var userSessionOverviewSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_overview_session_title") 
+  }
   /// Unverified session
   public static var userSessionUnverified: String { 
     return VectorL10n.tr("Vector", "user_session_unverified") 

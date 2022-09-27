@@ -17,9 +17,6 @@
 import SwiftUI
 
 struct UserSessionListItem: View {
-    
-    // MARK: - Constants
-    
     private enum LayoutConstants {
         static let horizontalPadding: CGFloat = 15
         static let verticalPadding: CGFloat = 16
@@ -27,23 +24,16 @@ struct UserSessionListItem: View {
         static let avatarRightMargin: CGFloat = 18
     }
     
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
 
-    // MARK: Public
-    
     let viewData: UserSessionListItemViewData
     
-    var onBackgroundTap: ((String) -> (Void))? = nil
-    
-    // MARK: - Body
+    var onBackgroundTap: ((String) -> Void)?
     
     var body: some View {
-        Button(action: { onBackgroundTap?(self.viewData.sessionId)
-        }) {
+        Button {
+            onBackgroundTap?(viewData.sessionId)
+        } label: {
             VStack(alignment: .leading, spacing: LayoutConstants.verticalPadding) {
                 HStack(spacing: LayoutConstants.avatarRightMargin) {
                     DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
@@ -64,10 +54,7 @@ struct UserSessionListItem: View {
                 
                 // Separator
                 // Note: Separator leading is matching the text leading, we could use alignment guide in the future
-                Rectangle()
-                    .fill(theme.colors.quinaryContent)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .frame(height: 1.0)
+                SeparatorLine()
                     .padding(.leading, LayoutConstants.horizontalPadding + LayoutConstants.avatarRightMargin + LayoutConstants.avatarWidth)
             }
             .padding(.top, LayoutConstants.verticalPadding)
@@ -77,15 +64,14 @@ struct UserSessionListItem: View {
 }
 
 struct UserSessionListPreview: View {
-    
     let userSessionsOverviewService: UserSessionsOverviewServiceProtocol = MockUserSessionsOverviewService()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(userSessionsOverviewService.lastOverviewData.otherSessionsInfo) { userSessionInfo in
-                let viewData = UserSessionListItemViewData(userSessionInfo: userSessionInfo)
+            ForEach(userSessionsOverviewService.overviewData.otherSessions) { userSessionInfo in
+                let viewData = UserSessionListItemViewData(session: userSessionInfo)
 
-                UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
+                UserSessionListItem(viewData: viewData, onBackgroundTap: { _ in
 
                 })
             }

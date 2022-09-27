@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import Combine
+import XCTest
 
 extension XCTestCase {
     /// XCTest utility to wait for results from publishers, so that the output can be used for assertions.
@@ -29,11 +29,9 @@ extension XCTestCase {
     ///   - timeout: A timeout after which we give up.
     /// - Throws: If it can't get the unwrapped result.
     /// - Returns: The unwrapped result.
-    func xcAwait<T: Publisher>(
-        _ publisher: T,
-        timeout: TimeInterval = 10
-    ) throws -> T.Output {
-        return try xcAwaitDeferred(publisher, timeout: timeout)()
+    func xcAwait<T: Publisher>(_ publisher: T,
+                               timeout: TimeInterval = 10) throws -> T.Output {
+        try xcAwaitDeferred(publisher, timeout: timeout)()
     }
     
     /// XCTest utility that allows for a deferred wait of results from publishers, so that the output can be used for assertions.
@@ -48,12 +46,10 @@ extension XCTestCase {
     ///   - publisher: The publisher to wait on.
     ///   - timeout: A timeout after which we give up.
     /// - Returns: A closure that starts the waiting of results when called. The closure will return the unwrapped result.
-    func xcAwaitDeferred<T: Publisher>(
-        _ publisher: T,
-        timeout: TimeInterval = 10
-    ) -> (() throws -> (T.Output)) {
+    func xcAwaitDeferred<T: Publisher>(_ publisher: T,
+                                       timeout: TimeInterval = 10) -> (() throws -> (T.Output)) {
         var result: Result<T.Output, Error>?
-        let expectation = self.expectation(description: "Awaiting publisher")
+        let expectation = expectation(description: "Awaiting publisher")
 
         let cancellable = publisher.sink(
             receiveCompletion: { completion in

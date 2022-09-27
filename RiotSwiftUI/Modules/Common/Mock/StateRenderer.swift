@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ class StateRenderer {
         addNavigation: Bool = false
     ) -> some View {
         Group {
-            ForEach(0..<states.count) { i in
+            ForEach(0..<states.count, id: \.self) { i in
                 let state = self.states[i]
                 Self.wrapWithNavigation(addNavigation, view: state.view)
                     .previewDisplayName(state.screenTitle)
@@ -46,7 +46,7 @@ class StateRenderer {
     @ViewBuilder
     static func wrapWithNavigation<V: View>(_ wrap: Bool, view: V) -> some View {
         if wrap {
-            NavigationView{
+            NavigationView {
                 view
                     .navigationBarTitleDisplayMode(.inline)
             }

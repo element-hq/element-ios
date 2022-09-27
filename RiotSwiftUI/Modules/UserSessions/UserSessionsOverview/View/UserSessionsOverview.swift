@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +17,6 @@
 import SwiftUI
 
 struct UserSessionsOverview: View {
-
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @ViewBuilder
@@ -52,10 +47,8 @@ struct UserSessionsOverview: View {
     
     var body: some View {
         ScrollView {
-            
             // Security recommendations section
             if viewModel.viewState.unverifiedSessionsViewData.isEmpty == false || viewModel.viewState.inactiveSessionsViewData.isEmpty == false {
-                
                 // TODO:
             }
             
@@ -64,20 +57,19 @@ struct UserSessionsOverview: View {
             
             // Other sessions section
             if viewModel.viewState.otherSessionsViewData.isEmpty == false {
-                self.otherSessionsSection
+                otherSessionsSection
             }
         }
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
         .navigationTitle(VectorL10n.userSessionsOverviewTitle)
         .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
-        .onAppear() {
+        .onAppear {
             viewModel.send(viewAction: .viewAppeared)
         }
     }
 
     private var otherSessionsSection: some View {
-        
         SwiftUI.Section {
             // Device list
             LazyVStack(spacing: 0) {

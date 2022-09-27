@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +14,11 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 import MatrixSDK
 
 class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
-    
     // MARK: - Properties
 
     // MARK: Private
@@ -40,6 +39,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
             accessItemsSubject.send(accessItems)
         }
     }
+
     private(set) var selectedType: RoomAccessTypeChooserAccessType = .private {
         didSet {
             for (index, item) in accessItems.enumerated() {
@@ -48,6 +48,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
             accessItemsSubject.send(accessItems)
         }
     }
+
     private var roomJoinRule: MXRoomJoinRule = .private
     private var currentOperation: MXHTTPOperation?
     
@@ -67,8 +68,8 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         self.roomId = roomId
         self.allowsRoomUpgrade = allowsRoomUpgrade
         self.session = session
-        self.currentRoomId = roomId
-        self.versionOverride = session.homeserverCapabilitiesService.versionOverrideForFeature(.restricted)
+        currentRoomId = roomId
+        versionOverride = session.homeserverCapabilitiesService.versionOverrideForFeature(.restricted)
         
         roomUpgradeRequiredSubject = CurrentValueSubject(false)
         waitingMessageSubject = CurrentValueSubject(nil)
@@ -92,7 +93,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         self.selectedType = selectedType
         
         if selectedType == .restricted {
-            if roomUpgradeRequired && roomUpgradeRequiredSubject.value == false {
+            if roomUpgradeRequired, roomUpgradeRequiredSubject.value == false {
                 roomUpgradeRequiredSubject.send(true)
             }
         }
@@ -108,14 +109,14 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         
         let _joinRule: MXRoomJoinRule?
         
-        switch self.selectedType {
+        switch selectedType {
         case .private:
             _joinRule = .invite
         case .public:
             _joinRule = .public
         case .restricted:
             _joinRule = nil
-            if roomUpgradeRequired && roomUpgradeRequiredSubject.value == false {
+            if roomUpgradeRequired, roomUpgradeRequiredSubject.value == false {
                 roomUpgradeRequiredSubject.send(true)
             } else {
                 completion()
@@ -123,7 +124,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
         }
         
         if let joinRule = _joinRule {
-            self.waitingMessageSubject.send(VectorL10n.roomAccessSettingsScreenSettingRoomAccess)
+            waitingMessageSubject.send(VectorL10n.roomAccessSettingsScreenSettingRoomAccess)
             
             room.setJoinRule(joinRule) { [weak self] response in
                 guard let self = self else { return }
@@ -140,7 +141,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     }
     
     func updateRoomId(with roomId: String) {
-        self.currentRoomId = roomId
+        currentRoomId = roomId
         readRoomState()
     }
     
@@ -148,17 +149,17 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     
     private func setupAccessItems() {
         guard let spaceService = session.spaceService, let ancestors = spaceService.ancestorsPerRoomId[currentRoomId], !ancestors.isEmpty, allowsRoomUpgrade || !roomUpgradeRequired else {
-            self.accessItems = [
+            accessItems = [
                 RoomAccessTypeChooserAccessItem(id: .private, isSelected: false, title: VectorL10n.private, detail: VectorL10n.roomAccessSettingsScreenPrivateMessage, badgeText: nil),
-                RoomAccessTypeChooserAccessItem(id: .public, isSelected: false, title: VectorL10n.public, detail: VectorL10n.roomAccessSettingsScreenPublicMessage, badgeText: nil),
+                RoomAccessTypeChooserAccessItem(id: .public, isSelected: false, title: VectorL10n.public, detail: VectorL10n.roomAccessSettingsScreenPublicMessage, badgeText: nil)
             ]
             return
         }
 
-        self.accessItems = [
+        accessItems = [
             RoomAccessTypeChooserAccessItem(id: .private, isSelected: false, title: VectorL10n.private, detail: VectorL10n.roomAccessSettingsScreenPrivateMessage, badgeText: nil),
             RoomAccessTypeChooserAccessItem(id: .restricted, isSelected: false, title: VectorL10n.createRoomTypeRestricted, detail: VectorL10n.roomAccessSettingsScreenRestrictedMessage, badgeText: roomUpgradeRequired ? VectorL10n.roomAccessSettingsScreenUpgradeRequired : VectorL10n.roomAccessSettingsScreenEditSpaces),
-            RoomAccessTypeChooserAccessItem(id: .public, isSelected: false, title: VectorL10n.public, detail: VectorL10n.roomAccessSettingsScreenPublicMessage, badgeText: nil),
+            RoomAccessTypeChooserAccessItem(id: .public, isSelected: false, title: VectorL10n.public, detail: VectorL10n.roomAccessSettingsScreenPublicMessage, badgeText: nil)
         ]
         
         accessItemsSubject.send(accessItems)

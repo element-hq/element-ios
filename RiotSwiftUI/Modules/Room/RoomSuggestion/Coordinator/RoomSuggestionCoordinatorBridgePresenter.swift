@@ -26,7 +26,6 @@ import UIKit
 /// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class RoomSuggestionCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -70,7 +69,7 @@ final class RoomSuggestionCoordinatorBridgePresenter: NSObject {
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -86,9 +85,7 @@ final class RoomSuggestionCoordinatorBridgePresenter: NSObject {
 // MARK: - UIAdaptivePresentationControllerDelegate
 
 extension RoomSuggestionCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
-    
     func roomNotificationSettingsCoordinatorDidComplete(_ presentationController: UIPresentationController) {
-        self.delegate?.roomSuggestionCoordinatorBridgePresenterDelegateDidCancel(self)
+        delegate?.roomSuggestionCoordinatorBridgePresenterDelegateDidCancel(self)
     }
-    
 }

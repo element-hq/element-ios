@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct OnboardingAvatarCoordinatorParameters {
     let userSession: UserSession
@@ -32,7 +32,6 @@ enum OnboardingAvatarCoordinatorResult {
 }
 
 final class OnboardingAvatarCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -84,7 +83,6 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: onboardingAvatarHostingController)
     }
     
-    
     // MARK: - Public
     
     func start() {
@@ -106,7 +104,7 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.onboardingAvatarHostingController
+        onboardingAvatarHostingController
     }
     
     // MARK: - Private
@@ -144,8 +142,8 @@ final class OnboardingAvatarCoordinator: Coordinator, Presentable {
         
         guard let avatarData = MXKTools.forceImageOrientationUp(image)?.jpegData(compressionQuality: 0.5) else {
             MXLog.error("[OnboardingAvatarCoordinator] Failed to create jpeg data.")
-            self.stopWaiting()
-            self.onboardingAvatarViewModel.processError(nil)
+            stopWaiting()
+            onboardingAvatarViewModel.processError(nil)
             return
         }
         

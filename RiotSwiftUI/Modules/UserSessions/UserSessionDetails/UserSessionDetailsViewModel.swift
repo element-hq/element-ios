@@ -16,75 +16,64 @@
 
 import Foundation
 
-typealias UserSessionDetailsViewModelType = StateStoreViewModel<UserSessionDetailsViewState,
-                                                                Never,
-                                                                UserSessionDetailsViewAction>
+typealias UserSessionDetailsViewModelType = StateStoreViewModel<UserSessionDetailsViewState, UserSessionDetailsViewAction>
 
 class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionDetailsViewModelProtocol {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
-    // MARK: Public
-    
     var completion: ((UserSessionDetailsViewModelResult) -> Void)?
     
-    // MARK: - Setup
-    
-    init(userSessionInfo: UserSessionInfo) {
+    init(session: UserSessionInfo) {
         super.init(initialViewState: UserSessionDetailsViewState(sections: []))
-        updateViewState(userSessionInfo: userSessionInfo)
+        updateViewState(session: session)
     }
     
     // MARK: - Public
     
     // MARK: - Private
     
-    private func updateViewState(userSessionInfo: UserSessionInfo) {
+    private func updateViewState(session: UserSessionInfo) {
         var sections = [UserSessionDetailsSectionViewData]()
-        
-        sections.append(sessionSection(userSessionInfo: userSessionInfo))
 
-        if let applicationSection = applicationSection(userSessionInfo: userSessionInfo) {
+        sections.append(sessionSection(session: session))
+
+        if let applicationSection = applicationSection(session: session) {
             sections.append(applicationSection)
         }
-
-        if let deviceSection = deviceSection(userSessionInfo: userSessionInfo) {
+        
+        if let deviceSection = deviceSection(session: session) {
             sections.append(deviceSection)
         }
         
         state = UserSessionDetailsViewState(sections: sections)
     }
     
-    private func sessionSection(userSessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData {
+    private func sessionSection(session: UserSessionInfo) -> UserSessionDetailsSectionViewData {
         var sessionItems = [UserSessionDetailsSectionItemViewData]()
         
-        if let sessionName = userSessionInfo.sessionName {
-            sessionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.userSessionDetailsSessionName,
-                                                                      value: sessionName))
+        if let sessionName = session.sessionName {
+            sessionItems.append(.init(title: VectorL10n.userSessionDetailsSessionName,
+                                      value: sessionName))
         }
         
-        sessionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
-                                                                  value: userSessionInfo.sessionId))
+        sessionItems.append(.init(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
+                                  value: session.sessionId))
         
         return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
                                                  footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                                                  items: sessionItems)
     }
 
-    private func applicationSection(userSessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
+    private func applicationSection(session: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
         var sessionItems: [UserSessionDetailsSectionItemViewData] = []
 
-        if let name = userSessionInfo.applicationName {
+        if let name = session.applicationName {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationName,
                                       value: name))
         }
-        if let version = userSessionInfo.applicationVersion {
+        if let version = session.applicationVersion {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationVersion,
                                       value: version))
         }
-        if let url = userSessionInfo.applicationURL {
+        if let url = session.applicationURL {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationUrl,
                                       value: url))
         }
@@ -97,21 +86,22 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
                      items: sessionItems)
     }
     
-    private func deviceSection(userSessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
+    private func deviceSection(session: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
         var deviceSectionItems = [UserSessionDetailsSectionItemViewData]()
-        if let brand = userSessionInfo.deviceBrand {
+
+        if let brand = session.deviceBrand {
             deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceBrand,
                                             value: brand))
         }
-        if let deviceOSFullName = userSessionInfo.deviceOSFullName {
+        if let deviceOSFullName = session.deviceOSFullName {
             deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceOs,
                                             value: deviceOSFullName))
         }
-        if let lastSeenIP = userSessionInfo.lastSeenIP {
+        if let lastSeenIP = session.lastSeenIP {
             deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceIpAddress,
                                             value: lastSeenIP))
         }
-        if let lastSeenIPLocation = userSessionInfo.lastSeenIPLocation {
+        if let lastSeenIPLocation = session.lastSeenIPLocation {
             deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceIpLocation,
                                             value: lastSeenIPLocation))
         }

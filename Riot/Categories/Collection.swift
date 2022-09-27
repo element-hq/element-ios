@@ -15,12 +15,3 @@
 //
 
 import Foundation
-import SwiftUI
-
-/// View data for DeviceAvatarView
-struct DeviceAvatarViewData {
-        
-    let deviceType: DeviceType
-    
-    let isVerified: Bool?
-}

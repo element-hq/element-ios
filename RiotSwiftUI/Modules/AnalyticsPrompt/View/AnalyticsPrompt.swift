@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import SwiftUI
 
 /// A prompt that asks the user whether they would like to enable Analytics or not.
 struct AnalyticsPrompt: View {
-
     // MARK: - Properties
     
     // MARK: Private

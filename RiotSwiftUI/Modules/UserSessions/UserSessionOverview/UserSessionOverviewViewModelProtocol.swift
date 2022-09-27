@@ -1,6 +1,4 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Spaces/SpaceCreation/SpaceCreationRooms SpaceCreationRooms
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,5 +16,7 @@
 
 import Foundation
 
-enum SpaceCreationRoomsStateAction {
+protocol UserSessionOverviewViewModelProtocol {
+    var completion: ((UserSessionOverviewViewModelResult) -> Void)? { get set }
+    var context: UserSessionOverviewViewModelType.Context { get }
 }

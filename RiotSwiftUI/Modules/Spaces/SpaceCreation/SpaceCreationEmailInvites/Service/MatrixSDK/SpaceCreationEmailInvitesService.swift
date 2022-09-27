@@ -1,6 +1,6 @@
 // File created from SimpleUserProfileExample
 // $ createScreen.sh Spaces/SpaceCreation/SpaceCreationEmailInvites SpaceCreationEmailInvites
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,10 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class SpaceCreationEmailInvitesService: SpaceCreationEmailInvitesServiceProtocol {
-    
     private let session: MXSession
     private(set) var isLoadingSubject: CurrentValueSubject<Bool, Never>
     
@@ -37,12 +36,12 @@ class SpaceCreationEmailInvitesService: SpaceCreationEmailInvitesServiceProtocol
     }
     
     func validate(_ emailAddresses: [String]) -> [Bool] {
-        return emailAddresses.map { $0.isEmpty || MXTools.isEmailAddress($0) }
+        emailAddresses.map { $0.isEmpty || MXTools.isEmailAddress($0) }
     }
 
     func prepareIdentityService(prepared: ((String?, String?) -> Void)?, failure: ((Error?) -> Void)?) {
         isLoadingSubject.send(true)
-        session.prepareIdentityServiceForTerms(withDefault: RiotSettings.shared.identityServerUrlString) { [weak self] session, baseURL, accessToken in
+        session.prepareIdentityServiceForTerms(withDefault: RiotSettings.shared.identityServerUrlString) { [weak self] _, baseURL, accessToken in
             self?.isLoadingSubject.send(false)
             prepared?(baseURL, accessToken)
         } failure: { [weak self] error in

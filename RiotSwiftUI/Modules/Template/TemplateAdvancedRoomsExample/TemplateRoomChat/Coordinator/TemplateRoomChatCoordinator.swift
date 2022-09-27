@@ -21,22 +21,13 @@ struct TemplateRoomChatCoordinatorParameters {
 }
 
 final class TemplateRoomChatCoordinator: Coordinator, Presentable {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let parameters: TemplateRoomChatCoordinatorParameters
     private let templateRoomChatHostingController: UIViewController
     private var templateRoomChatViewModel: TemplateRoomChatViewModelProtocol
-    
-    // MARK: Public
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     var callback: (() -> Void)?
-    
-    // MARK: - Setup
     
     init(parameters: TemplateRoomChatCoordinatorParameters) {
         self.parameters = parameters
@@ -48,6 +39,7 @@ final class TemplateRoomChatCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[TemplateRoomChatCoordinator] did start.")
         templateRoomChatViewModel.callback = { [weak self] result in
@@ -56,12 +48,11 @@ final class TemplateRoomChatCoordinator: Coordinator, Presentable {
             switch result {
             case .done:
                 self.callback?()
-            break
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.templateRoomChatHostingController
+        templateRoomChatHostingController
     }
 }

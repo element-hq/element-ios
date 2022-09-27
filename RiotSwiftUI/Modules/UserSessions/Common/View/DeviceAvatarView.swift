@@ -14,12 +14,11 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import DesignKit
+import SwiftUI
 
 /// Avatar view for device
 struct DeviceAvatarView: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     var viewData: DeviceAvatarViewData
@@ -29,7 +28,6 @@ struct DeviceAvatarView: View {
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            
             // Device image
             VStack(alignment: .center) {
                 viewData.deviceType.image
@@ -41,7 +39,6 @@ struct DeviceAvatarView: View {
             
             // Verification badge
             if let isVerified = viewData.isVerified {
-                
                 Image(isVerified ? Asset.Images.userSessionVerified.name : Asset.Images.userSessionUnverified.name)
                     .frame(maxWidth: CGFloat(badgeSize), maxHeight: CGFloat(badgeSize))
                     .shapedBorder(color: theme.colors.system, borderWidth: 1, shape: Circle())
@@ -55,9 +52,8 @@ struct DeviceAvatarView: View {
 }
 
 struct DeviceAvatarViewListPreview: View {
-    
     var viewDataList: [DeviceAvatarViewData] {
-        return [
+        [
             DeviceAvatarViewData(deviceType: .desktop, isVerified: true),
             DeviceAvatarViewData(deviceType: .web, isVerified: true),
             DeviceAvatarViewData(deviceType: .mobile, isVerified: true),
@@ -68,7 +64,7 @@ struct DeviceAvatarViewListPreview: View {
     var body: some View {
         HStack {
             VStack(alignment: .center, spacing: 20) {
-                DeviceAvatarView(viewData: DeviceAvatarViewData.init(deviceType: .web, isVerified: true))
+                DeviceAvatarView(viewData: DeviceAvatarViewData(deviceType: .web, isVerified: true))
                 DeviceAvatarView(viewData: DeviceAvatarViewData(deviceType: .desktop, isVerified: false))
                 DeviceAvatarView(viewData: DeviceAvatarViewData(deviceType: .mobile, isVerified: true))
                 DeviceAvatarView(viewData: DeviceAvatarViewData(deviceType: .unknown, isVerified: false))
@@ -78,7 +74,6 @@ struct DeviceAvatarViewListPreview: View {
 }
 
 struct DeviceAvatarView_Previews: PreviewProvider {
-    
     static var previews: some View {
         Group {
             DeviceAvatarViewListPreview().theme(.light).preferredColorScheme(.light)

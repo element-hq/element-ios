@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,42 +17,38 @@
 import Foundation
 import SwiftUI
 
-extension DeviceType {
+/// Client type
+enum DeviceType {
+    case desktop
+    case web
+    case mobile
+    case unknown
     
     var image: Image {
-        
-        let image: Image
-        
         switch self {
         case .desktop:
-            image = Image(Asset.Images.deviceTypeDesktop.name)
+            return Image(Asset.Images.deviceTypeDesktop.name)
         case .web:
-            image = Image(Asset.Images.deviceTypeWeb.name)
+            return Image(Asset.Images.deviceTypeWeb.name)
         case .mobile:
-            image = Image(Asset.Images.deviceTypeMobile.name)
+            return Image(Asset.Images.deviceTypeMobile.name)
         case .unknown:
-            image = Image(Asset.Images.deviceTypeUnknown.name)
+            return Image(Asset.Images.deviceTypeUnknown.name)
         }
-        
-        return image
     }
     
     var name: String {
-        let name: String
-        
         let appName = AppInfo.current.displayName
         
         switch self {
         case .desktop:
-            name = VectorL10n.deviceNameDesktop(appName)
+            return VectorL10n.deviceNameDesktop(appName)
         case .web:
-            name = VectorL10n.deviceNameWeb(appName)
+            return VectorL10n.deviceNameWeb(appName)
         case .mobile:
-            name = VectorL10n.deviceNameMobile(appName)
+            return VectorL10n.deviceNameMobile(appName)
         case .unknown:
-            name = VectorL10n.deviceNameUnknown
+            return VectorL10n.deviceNameUnknown
         }
-        
-        return name
     }
 }

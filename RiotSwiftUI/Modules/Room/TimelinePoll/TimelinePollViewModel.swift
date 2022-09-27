@@ -14,14 +14,12 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
-typealias TimelinePollViewModelType = StateStoreViewModel<TimelinePollViewState,
-                                                          Never,
-                                                          TimelinePollViewAction>
+typealias TimelinePollViewModelType = StateStoreViewModel<TimelinePollViewState, TimelinePollViewAction>
+
 class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelProtocol {
-    
     // MARK: - Properties
 
     // MARK: Private
@@ -40,14 +38,13 @@ class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelPro
     
     override func process(viewAction: TimelinePollViewAction) {
         switch viewAction {
-        
         // Update local state. An update will be pushed from the coordinator once sent.
         case .selectAnswerOptionWithIdentifier(let identifier):
             guard !state.poll.closed else {
                 return
             }
             
-            if (state.poll.maxAllowedSelections == 1) {
+            if state.poll.maxAllowedSelections == 1 {
                 updateSingleSelectPollLocalState(selectedAnswerIdentifier: identifier, callback: completion)
             } else {
                 updateMultiSelectPollLocalState(&state, selectedAnswerIdentifier: identifier, callback: completion)
@@ -98,12 +95,12 @@ class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelPro
         
         let isDeselecting = selectedAnswerOptions.filter { $0.id == selectedAnswerIdentifier }.count > 0
         
-        if !isDeselecting && selectedAnswerOptions.count >= state.poll.maxAllowedSelections {
+        if !isDeselecting, selectedAnswerOptions.count >= state.poll.maxAllowedSelections {
             return
         }
         
         state.poll.answerOptions.updateEach { answerOption in
-            if (answerOption.id != selectedAnswerIdentifier) {
+            if answerOption.id != selectedAnswerIdentifier {
                 return
             }
             

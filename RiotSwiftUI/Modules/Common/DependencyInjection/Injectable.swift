@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,9 +21,7 @@ protocol Injectable: AnyObject {
     var dependencies: DependencyContainer! { get set }
 }
 
-
 extension Injectable {
-    
     /// Used to inject the dependency container into an Injectable.
     /// - Parameter dependencies: The `DependencyContainer` to inject.
     func inject(dependencies: DependencyContainer) {

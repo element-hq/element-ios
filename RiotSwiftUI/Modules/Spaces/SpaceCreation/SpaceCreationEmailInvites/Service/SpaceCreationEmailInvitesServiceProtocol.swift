@@ -1,6 +1,6 @@
 // File created from SimpleUserProfileExample
 // $ createScreen.sh Spaces/SpaceCreation/SpaceCreationEmailInvites SpaceCreationEmailInvites
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +16,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 protocol SpaceCreationEmailInvitesServiceProtocol {
     var isIdentityServiceReady: Bool { get }

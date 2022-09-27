@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,13 +41,6 @@ enum RoomAccessTypeChooserCoordinatorAction {
 }
 
 // MARK: - View model
-
-/// Actions to be performed on the `ViewModel` State
-enum RoomAccessTypeChooserStateAction {
-    case updateAccessItems([RoomAccessTypeChooserAccessItem])
-    case updateShowUpgradeRoomAlert(Bool)
-    case updateWaitingMessage(String?)
-}
 
 /// Actions sent by the`ViewModel` to the `Coordinator`.
 enum RoomAccessTypeChooserViewModelAction {

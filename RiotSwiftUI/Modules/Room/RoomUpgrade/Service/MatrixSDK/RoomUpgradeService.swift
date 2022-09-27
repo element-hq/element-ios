@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +14,11 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 import MatrixSDK
 
 class RoomUpgradeService: RoomUpgradeServiceProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -37,7 +36,7 @@ class RoomUpgradeService: RoomUpgradeServiceProtocol {
     private(set) var currentRoomId: String
 
     var parentSpaceName: String? {
-        guard let parentId = self.parentSpaceId else {
+        guard let parentId = parentSpaceId else {
             return nil
         }
         
@@ -53,11 +52,11 @@ class RoomUpgradeService: RoomUpgradeServiceProtocol {
     
     init(session: MXSession, roomId: String, parentSpaceId: String?, versionOverride: String) {
         self.session = session
-        self.currentRoomId = roomId
+        currentRoomId = roomId
         self.parentSpaceId = parentSpaceId
         self.versionOverride = versionOverride
-        self.upgradingSubject = CurrentValueSubject(false)
-        self.errorSubject = CurrentValueSubject(nil)
+        upgradingSubject = CurrentValueSubject(false)
+        errorSubject = CurrentValueSubject(nil)
     }
 
     deinit {
@@ -70,18 +69,18 @@ class RoomUpgradeService: RoomUpgradeServiceProtocol {
     func upgradeRoom(autoInviteUsers: Bool, completion: @escaping (Bool, String) -> Void) {
         upgradingSubject.send(true)
         
-        if autoInviteUsers, let room = session.room(withRoomId: self.currentRoomId) {
-            self.currentOperation = room.members { [weak self] response in
+        if autoInviteUsers, let room = session.room(withRoomId: currentRoomId) {
+            currentOperation = room.members { [weak self] response in
                 guard let self = self else { return }
                 switch response {
                 case .success(let members):
-                    let memberIds: [String] = members?.members.compactMap({ member in
+                    let memberIds: [String] = members?.members.compactMap { member in
                         guard member.membership == .join, member.userId != self.session.myUserId else {
                             return nil
                         }
 
                         return member.userId
-                    }) ?? []
+                    } ?? []
                     self.upgradeRoom(to: self.versionOverride, inviteUsers: memberIds, completion: completion)
                 case .failure(let error):
                     self.upgradingSubject.send(false)
@@ -89,7 +88,7 @@ class RoomUpgradeService: RoomUpgradeServiceProtocol {
                 }
             }
         } else {
-            self.upgradeRoom(to: versionOverride, inviteUsers: [], completion: completion)
+            upgradeRoom(to: versionOverride, inviteUsers: [], completion: completion)
         }
     }
     
@@ -98,7 +97,7 @@ class RoomUpgradeService: RoomUpgradeServiceProtocol {
     private func upgradeRoom(to versionOverride: String, inviteUsers userIds: [String], completion: @escaping (Bool, String) -> Void) {
         // Need to disable graph update during this process as a lot of syncs will occure
         session.spaceService.graphUpdateEnabled = false
-        currentOperation = session.matrixRestClient.upgradeRoom(withId: self.currentRoomId, to: versionOverride) { [weak self] response in
+        currentOperation = session.matrixRestClient.upgradeRoom(withId: currentRoomId, to: versionOverride) { [weak self] response in
             guard let self = self else { return }
             
             switch response {
@@ -108,7 +107,7 @@ class RoomUpgradeService: RoomUpgradeServiceProtocol {
                 let parentSpaces = self.session.spaceService.directParentIds(ofRoomWithId: oldRoomId)
                 self.moveRoom(from: oldRoomId, to: replacementRoomId, within: Array(parentSpaces), at: 0) {
                     self.session.spaceService.graphUpdateEnabled = true
-                    self.didBuildSpaceGraphObserver = NotificationCenter.default.addObserver(forName: MXSpaceService.didBuildSpaceGraph, object: nil, queue: OperationQueue.main) { [weak self] notification in
+                    self.didBuildSpaceGraphObserver = NotificationCenter.default.addObserver(forName: MXSpaceService.didBuildSpaceGraph, object: nil, queue: OperationQueue.main) { [weak self] _ in
                         guard let self = self else { return }
                         
                         if let observer = self.didBuildSpaceGraphObserver {
@@ -144,7 +143,7 @@ class RoomUpgradeService: RoomUpgradeServiceProtocol {
         }
         
         space.moveChild(withRoomId: roomId, to: newRoomId) { [weak self] response in
-            guard let self = self else  { return }
+            guard let self = self else { return }
             
             if let error = response.error {
                 MXLog.warning("[RoomUpgradeService] moveRoom \(roomId) to \(newRoomId) within \(space.spaceId): failed due to error: \(error)")
@@ -158,13 +157,13 @@ class RoomUpgradeService: RoomUpgradeServiceProtocol {
     /// Recurse to the next index once done.
     private func inviteUser(from userIds: [String], at index: Int, completion: @escaping (Bool, String) -> Void) {
         guard index < userIds.count else {
-            self.upgradingSubject.send(false)
+            upgradingSubject.send(false)
             completion(true, currentRoomId)
             return
         }
         
         currentOperation = session.matrixRestClient.invite(.userId(userIds[index]), toRoom: currentRoomId) { [weak self] response in
-            guard let self = self else  { return }
+            guard let self = self else { return }
             
             self.currentOperation = nil
             if let error = response.error {

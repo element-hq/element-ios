@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +18,6 @@ import SwiftUI
 
 class AddRoomSelectorViewProvider: MatrixItemChooserCoordinatorViewProvider {
     func view(with viewModel: MatrixItemChooserViewModelType.Context) -> AnyView {
-        return AnyView(AddRoomSelector(viewModel: viewModel))
+        AnyView(AddRoomSelector(viewModel: viewModel))
     }
 }

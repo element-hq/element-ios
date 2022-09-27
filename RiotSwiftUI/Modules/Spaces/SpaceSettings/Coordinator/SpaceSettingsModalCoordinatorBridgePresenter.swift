@@ -27,7 +27,6 @@ import UIKit
 /// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class SpaceSettingsModalCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -75,7 +74,7 @@ final class SpaceSettingsModalCoordinatorBridgePresenter: NSObject {
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -91,9 +90,7 @@ final class SpaceSettingsModalCoordinatorBridgePresenter: NSObject {
 // MARK: - UIAdaptivePresentationControllerDelegate
 
 extension SpaceSettingsModalCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
-    
     func roomNotificationSettingsCoordinatorDidComplete(_ presentationController: UIPresentationController) {
-        self.delegate?.spaceSettingsModalCoordinatorBridgePresenterDelegateDidCancel(self)
+        delegate?.spaceSettingsModalCoordinatorBridgePresenterDelegateDidCancel(self)
     }
-    
 }

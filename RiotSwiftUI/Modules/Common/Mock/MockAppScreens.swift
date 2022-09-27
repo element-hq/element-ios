@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +21,7 @@ enum MockAppScreens {
     static let appScreens: [MockScreenState.Type] = [
         MockUserSessionsOverviewScreenState.self,
         MockUserSessionDetailsScreenState.self,
+        MockUserSessionOverviewScreenState.self,
         MockLiveLocationLabPromotionScreenState.self,
         MockLiveLocationSharingViewerScreenState.self,
         MockAuthenticationLoginScreenState.self,
@@ -62,4 +63,3 @@ enum MockAppScreens {
         MockSpaceSelectorScreenState.self
     ]
 }
-

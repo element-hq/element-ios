@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +17,14 @@
 import Foundation
 
 class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
+    let overviewData: UserSessionsOverviewData
     
-    var lastOverviewData: UserSessionsOverviewData
+    func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
+        completion(.success(overviewData))
+    }
     
-    func fetchUserSessionsOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
-        completion(.success(self.lastOverviewData))
+    func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo? {
+        nil
     }
     
     init() {
@@ -34,10 +37,10 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
             .mockWeb,
             .mockAndroid
         ]
-        
-        self.lastOverviewData = UserSessionsOverviewData(currentSessionInfo: .mockCurrentFull,
-                                                         unverifiedSessionsInfo: unverifiedSessionsInfo,
-                                                         inactiveSessionsInfo: inactiveSessionsInfo,
-                                                         otherSessionsInfo: otherSessionsInfo)
+
+        overviewData = UserSessionsOverviewData(currentSession: .mockCurrentFull,
+                                                unverifiedSessions: unverifiedSessionsInfo,
+                                                inactiveSessions: inactiveSessionsInfo,
+                                                otherSessions: otherSessionsInfo)
     }
 }

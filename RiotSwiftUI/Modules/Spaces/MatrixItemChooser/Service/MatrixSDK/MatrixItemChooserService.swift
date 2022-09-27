@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 protocol MatrixItemChooserDataSource {
     func sections(with session: MXSession, completion: @escaping (Result<[MatrixListItemSectionData], Error>) -> Void)
@@ -25,12 +25,11 @@ protocol MatrixItemChooserDataSource {
 protocol MatrixItemChooserProcessorProtocol {
     var loadingText: String? { get }
     var dataSource: MatrixItemChooserDataSource { get }
-    func computeSelection(withIds itemsIds:[String], completion: @escaping (Result<Void, Error>) -> Void)
-    func isItemIncluded(_ item: (MatrixListItemData)) -> Bool
+    func computeSelection(withIds itemsIds: [String], completion: @escaping (Result<Void, Error>) -> Void)
+    func isItemIncluded(_ item: MatrixListItemData) -> Bool
 }
 
 class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -45,6 +44,7 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
             sectionsSubject.send(filteredSections)
         }
     }
+
     private var selectedItemIds: Set<String>
     private let itemsProcessor: MatrixItemChooserProcessorProtocol
     
@@ -52,14 +52,16 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
     
     private(set) var sectionsSubject: CurrentValueSubject<[MatrixListItemSectionData], Never>
     private(set) var selectedItemIdsSubject: CurrentValueSubject<Set<String>, Never>
-    var searchText: String = "" {
+    var searchText = "" {
         didSet {
             refresh()
         }
     }
+
     var loadingText: String? {
         itemsProcessor.loadingText
     }
+
     var itemCount: Int {
         var itemCount = 0
         for section in sections {
@@ -72,10 +74,10 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
     
     init(session: MXSession, selectedItemIds: [String], itemsProcessor: MatrixItemChooserProcessorProtocol) {
         self.session = session
-        self.sectionsSubject = CurrentValueSubject(self.sections)
+        sectionsSubject = CurrentValueSubject(sections)
         
         self.selectedItemIds = Set(selectedItemIds)
-        self.selectedItemIdsSubject = CurrentValueSubject(self.selectedItemIds)
+        selectedItemIdsSubject = CurrentValueSubject(self.selectedItemIds)
         self.itemsProcessor = itemsProcessor
         
         itemsProcessor.dataSource.sections(with: session) { [weak self] result in
@@ -115,7 +117,7 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
     }
     
     func refresh() {
-        self.processingQueue.async { [weak self] in
+        processingQueue.async { [weak self] in
             guard let self = self else { return }
             let filteredSections = self.filter(sections: self.sections)
             
@@ -132,12 +134,12 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
                 newSelection.insert(item.id)
             }
         }
-        self.selectedItemIds = newSelection
+        selectedItemIds = newSelection
         selectedItemIdsSubject.send(selectedItemIds)
     }
     
     func deselectAllItems() {
-        self.selectedItemIds = Set()
+        selectedItemIds = Set()
         selectedItemIdsSubject.send(selectedItemIds)
     }
 
@@ -153,7 +155,7 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
                     itemsProcessor.isItemIncluded($0)
                 }
             } else {
-                let lowercasedSearchText = self.searchText.lowercased()
+                let lowercasedSearchText = searchText.lowercased()
                 items = section.items.filter {
                     itemsProcessor.isItemIncluded($0) && ($0.id.lowercased().contains(lowercasedSearchText) || ($0.displayName ?? "").lowercased().contains(lowercasedSearchText))
                 }

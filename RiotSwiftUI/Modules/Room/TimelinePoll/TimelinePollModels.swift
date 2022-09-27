@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
 import Foundation
 import SwiftUI
 
-typealias TimelinePollViewModelCallback = ((TimelinePollViewModelResult) -> Void)
+typealias TimelinePollViewModelCallback = (TimelinePollViewModelResult) -> Void
 
 enum TimelinePollViewAction {
     case selectAnswerOptionWithIdentifier(String)
@@ -63,7 +63,7 @@ struct TimelinePollDetails {
     var totalAnswerCount: UInt
     var type: TimelinePollType
     var maxAllowedSelections: UInt
-    var hasBeenEdited: Bool = true
+    var hasBeenEdited = true
     
     init(question: String, answerOptions: [TimelinePollAnswerOption],
          closed: Bool,
@@ -81,7 +81,7 @@ struct TimelinePollDetails {
     }
     
     var hasCurrentUserVoted: Bool {
-        answerOptions.filter { $0.selected == true}.count > 0
+        answerOptions.filter { $0.selected == true }.count > 0
     }
     
     var shouldDiscloseResults: Bool {

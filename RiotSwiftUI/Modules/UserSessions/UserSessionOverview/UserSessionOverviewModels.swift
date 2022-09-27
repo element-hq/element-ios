@@ -1,6 +1,4 @@
-// File created from TemplateAdvancedRoomsExample
-// $ createSwiftUITwoScreen.sh Spaces/SpaceCreation SpaceCreation SpaceCreationMenu SpaceCreationSettings
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,13 +15,28 @@
 //
 
 import Foundation
-import UIKit
 
-/// Actions to be performed on the `ViewModel` State
-enum SpaceCreationSettingsStateAction {
-    case updateRoomNameError(String?)
-    case updateRoomDefaultAddress(String)
-    case updateAddressValidationStatus(SpaceCreationSettingsAddressValidationStatus)
-    case updateAvatar(AvatarInputProtocol)
-    case updateAvatarImage(UIImage?)
+// MARK: - Coordinator
+
+enum UserSessionOverviewCoordinatorResult {
+    case openSessionDetails(session: UserSessionInfo)
+}
+
+// MARK: View model
+
+enum UserSessionOverviewViewModelResult: Equatable {
+    case showSessionDetails(session: UserSessionInfo)
+    case verifyCurrentSession
+}
+
+// MARK: View
+
+struct UserSessionOverviewViewState: BindableState {
+    let cardViewData: UserSessionCardViewData
+    let isCurrentSession: Bool
+}
+
+enum UserSessionOverviewViewAction {
+    case verifyCurrentSession
+    case viewSessionDetails
 }

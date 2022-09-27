@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ enum MockSpaceSettingsScreenState: MockScreenState, CaseIterable {
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let service: MockSpaceSettingsService
         switch self {
         case .visibility(let visibility):
@@ -53,7 +53,8 @@ enum MockSpaceSettingsScreenState: MockScreenState, CaseIterable {
                 isNameEditable: true,
                 isTopicEditable: true,
                 isAddressEditable: true,
-                isAccessEditable: true)
+                isAccessEditable: true
+            )
             service = MockSpaceSettingsService(roomProperties: roomProperties)
         case .notEditable:
             let roomProperties = SpaceSettingsRoomProperties(
@@ -67,7 +68,8 @@ enum MockSpaceSettingsScreenState: MockScreenState, CaseIterable {
                 isNameEditable: false,
                 isTopicEditable: false,
                 isAddressEditable: false,
-                isAccessEditable: false)
+                isAccessEditable: false
+            )
             service = MockSpaceSettingsService(roomProperties: roomProperties)
         }
         let viewModel = SpaceSettingsViewModel.makeSpaceSettingsViewModel(service: service)

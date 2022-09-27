@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,11 +23,11 @@ extension XCUIApplication {
         textFields["searchQueryTextField"].tap()
         typeText(identifier)
         
-        let button = self.buttons[identifier]
+        let button = buttons[identifier]
         let footer = staticTexts["footerText"]
         
-        while !button.isHittable && !footer.isHittable {
-            self.tables.firstMatch.swipeUp()
+        while !button.isHittable, !footer.isHittable {
+            tables.firstMatch.swipeUp()
         }
         
         button.tap()

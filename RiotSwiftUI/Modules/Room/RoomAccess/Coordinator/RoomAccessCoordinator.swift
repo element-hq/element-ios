@@ -26,7 +26,6 @@ enum RoomAccessCoordinatorCoordinatorAction {
 
 @objcMembers
 final class RoomAccessCoordinator: Coordinator {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -35,7 +34,7 @@ final class RoomAccessCoordinator: Coordinator {
     private var upgradedRoomId: String?
     
     private var navigationRouter: NavigationRouterType {
-        return self.parameters.navigationRouter
+        parameters.navigationRouter
     }
     
     // MARK: Public
@@ -58,32 +57,31 @@ final class RoomAccessCoordinator: Coordinator {
     
     init(parameters: RoomAccessCoordinatorParameters) {
         self.parameters = parameters
-    }    
+    }
     
     // MARK: - Public
     
-    
     func start() {
         MXLog.debug("[RoomAccessCoordinator] did start.")
-        let rootCoordinator = self.createRoomAccessTypeCoordinator()
+        let rootCoordinator = createRoomAccessTypeCoordinator()
         rootCoordinator.start()
         
-        self.add(childCoordinator: rootCoordinator)
-        self.accessCoordinator = rootCoordinator
+        add(childCoordinator: rootCoordinator)
+        accessCoordinator = rootCoordinator
         
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+        if navigationRouter.modules.isEmpty == false {
+            navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             })
         } else {
-            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+            navigationRouter.setRootModule(rootCoordinator) { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private
@@ -91,7 +89,7 @@ final class RoomAccessCoordinator: Coordinator {
     func pushScreen(with coordinator: Coordinator & Presentable) {
         add(childCoordinator: coordinator)
         
-        self.navigationRouter.push(coordinator, animated: true, popCompletion: { [weak self] in
+        navigationRouter.push(coordinator, animated: true, popCompletion: { [weak self] in
             self?.remove(childCoordinator: coordinator)
         })
         
@@ -103,13 +101,13 @@ final class RoomAccessCoordinator: Coordinator {
         
         coordinator.toPresentable().modalPresentationStyle = .overFullScreen
         coordinator.toPresentable().modalTransitionStyle = .crossDissolve
-        self.navigationRouter.present(coordinator, animated: true)
+        navigationRouter.present(coordinator, animated: true)
         
         coordinator.start()
     }
 
     private func createRoomAccessTypeCoordinator() -> RoomAccessTypeChooserCoordinator {
-        let coordinator: RoomAccessTypeChooserCoordinator = RoomAccessTypeChooserCoordinator(parameters: RoomAccessTypeChooserCoordinatorParameters(roomId: parameters.room.roomId, allowsRoomUpgrade: parameters.allowsRoomUpgrade, session: parameters.room.mxSession))
+        let coordinator = RoomAccessTypeChooserCoordinator(parameters: RoomAccessTypeChooserCoordinatorParameters(roomId: parameters.room.roomId, allowsRoomUpgrade: parameters.allowsRoomUpgrade, session: parameters.room.mxSession))
         coordinator.callback = { [weak self] result in
             guard let self = self else { return }
             
@@ -132,7 +130,8 @@ final class RoomAccessCoordinator: Coordinator {
         let paramaters = MatrixItemChooserCoordinatorParameters(
             session: parameters.room.mxSession,
             viewProvider: RoomRestrictedAccessSpaceChooserViewProvider(navTitle: VectorL10n.roomAccessSettingsScreenNavTitle),
-            itemsProcessor: RoomRestrictedAccessSpaceChooserItemsProcessor(roomId: roomId, session: parameters.room.mxSession))
+            itemsProcessor: RoomRestrictedAccessSpaceChooserItemsProcessor(roomId: roomId, session: parameters.room.mxSession)
+        )
         let coordinator = MatrixItemChooserCoordinator(parameters: paramaters)
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
@@ -154,7 +153,8 @@ final class RoomAccessCoordinator: Coordinator {
             session: parameters.room.mxSession,
             roomId: roomId,
             parentSpaceId: parameters.parentSpaceId,
-            versionOverride: versionOverride)
+            versionOverride: versionOverride
+        )
         let coordinator = RoomUpgradeCoordinator(parameters: paramaters)
         
         coordinator.completion = { [weak self] result in

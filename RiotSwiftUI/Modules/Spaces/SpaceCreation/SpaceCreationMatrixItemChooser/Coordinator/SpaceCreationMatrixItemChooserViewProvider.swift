@@ -18,6 +18,6 @@ import SwiftUI
 
 class SpaceCreationMatrixItemChooserViewProvider: MatrixItemChooserCoordinatorViewProvider {
     func view(with viewModel: MatrixItemChooserViewModelType.Context) -> AnyView {
-        return AnyView(SpaceCreationMatrixItemChooser(viewModel: viewModel))
+        AnyView(SpaceCreationMatrixItemChooser(viewModel: viewModel))
     }
 }

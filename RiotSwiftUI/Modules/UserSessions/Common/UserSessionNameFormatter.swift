@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,10 +18,8 @@ import Foundation
 
 /// Enables to build user session name
 class UserSessionNameFormatter {
-    
     /// Session name with client name and session display name
     func sessionName(deviceType: DeviceType, sessionDisplayName: String?) -> String {
-        
         let sessionName: String
         
         let clientName = deviceType.name

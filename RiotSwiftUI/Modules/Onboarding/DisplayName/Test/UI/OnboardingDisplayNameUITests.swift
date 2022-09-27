@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class OnboardingDisplayNameUITests: MockScreenTestCase {
     func testEmptyTextField() {
@@ -55,8 +55,8 @@ class OnboardingDisplayNameUITests: MockScreenTestCase {
     
     func testLongDisplayName() {
         let displayName = """
-            Bacon ipsum dolor amet filet mignon chicken kevin andouille. Doner shoulder beef, brisket bresaola turkey jowl venison. Ham hock cow turducken, chislic venison doner short loin strip steak tri-tip jowl. Sirloin pork belly hamburger ribeye. Tail capicola alcatra short ribs turkey doner.
-            """
+        Bacon ipsum dolor amet filet mignon chicken kevin andouille. Doner shoulder beef, brisket bresaola turkey jowl venison. Ham hock cow turducken, chislic venison doner short loin strip steak tri-tip jowl. Sirloin pork belly hamburger ribeye. Tail capicola alcatra short ribs turkey doner.
+        """
         app.goToScreenWithIdentifier(MockOnboardingDisplayNameScreenState.longDisplayName(displayName: displayName).title)
         
         let textField = app.textFields.element

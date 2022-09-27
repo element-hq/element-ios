@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,9 @@
 
 import SwiftUI
 
-typealias LiveLocationLabPromotionViewModelType = StateStoreViewModel<LiveLocationLabPromotionViewState,
-                                                                   Never,
-                                                                      LiveLocationLabPromotionViewAction>
+typealias LiveLocationLabPromotionViewModelType = StateStoreViewModel<LiveLocationLabPromotionViewState, LiveLocationLabPromotionViewAction>
 
 class LiveLocationLabPromotionViewModel: LiveLocationLabPromotionViewModelType, LiveLocationLabPromotionViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private
@@ -42,7 +39,7 @@ class LiveLocationLabPromotionViewModel: LiveLocationLabPromotionViewModelType, 
     override func process(viewAction: LiveLocationLabPromotionViewAction) {
         switch viewAction {
         case .complete:
-            completion?(self.state.bindings.enableLabFlag)
+            completion?(state.bindings.enableLabFlag)
         }
     }
 }

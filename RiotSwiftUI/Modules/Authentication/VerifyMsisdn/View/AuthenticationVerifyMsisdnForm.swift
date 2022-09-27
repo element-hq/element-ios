@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import SwiftUI
 
 /// The form shown to enter an email address.
 struct AuthenticationVerifyMsisdnForm: View {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -65,7 +64,7 @@ struct AuthenticationVerifyMsisdnForm: View {
     
     /// The text field and submit button where the user enters a phone number.
     var mainContent: some View {
-        return VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 12) {
             if #available(iOS 15.0, *) {
                 textField
                     .onSubmit(sendSMS)

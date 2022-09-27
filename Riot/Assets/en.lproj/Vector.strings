@@ -2398,6 +2398,9 @@ To enable access, tap Settings> Location and select Always";
 "user_session_details_application_name" = "Name";
 "user_session_details_application_version" = "Version";
 "user_session_details_application_url" = "URL";
+"user_session_overview_current_session_title" = "Current session";
+"user_session_overview_session_title" = "Session";
+"user_session_overview_session_details_button_title" = "Session details";
 // MARK: - MatrixKit
 
 

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct LiveLocationLabPromotionView: View {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -49,7 +48,6 @@ struct LiveLocationLabPromotionView: View {
                     .padding(.top, 1)
                 
                 Toggle(isOn: $viewModel.enableLabFlag) {
-                    
                     Text(VectorL10n.locationSharingLiveLabPromotionActivation)
                         .font(theme.fonts.body)
                         .foregroundColor(theme.colors.primaryContent)

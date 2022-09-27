@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@ import Foundation
 
 /// Represents a user session information
 struct UserSessionInfo {
-        
+
     /// Delay after which session is considered inactive, 90 days
     static let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
     
@@ -69,6 +69,9 @@ struct UserSessionInfo {
 
     /// Device name
     let deviceName: String?
+
+    /// True to indicate that this is current user session
+    let isCurrentSession: Bool
 }
 
 extension UserSessionInfo: Identifiable {
@@ -98,11 +101,18 @@ extension UserSessionInfo {
     }
 }
 
+extension UserSessionInfo: Equatable {
+    static func == (lhs: UserSessionInfo, rhs: UserSessionInfo) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
 extension UserSessionInfo {
     init(withDevice device: MXDevice,
          applicationData: [String: String]?,
          userAgent: UserAgent?,
-         isSessionVerified: Bool) {
+         isSessionVerified: Bool,
+         isCurrentSession: Bool) {
         self.init(sessionId: device.deviceId,
                   sessionName: device.displayName,
                   deviceType: .unknown,
@@ -116,7 +126,8 @@ extension UserSessionInfo {
                   deviceOS: userAgent?.deviceOS,
                   deviceOSVersion: userAgent?.deviceOSVersion,
                   lastSeenIPLocation: nil,
-                  deviceName: userAgent?.clientName)
+                  deviceName: userAgent?.clientName,
+                  isCurrentSession: isCurrentSession)
     }
 }
 
@@ -124,19 +135,20 @@ extension UserSessionInfo {
 
 extension UserSessionInfo {
     static let mockCurrentFull = UserSessionInfo(sessionId: "alice",
-                                             sessionName: "iOS",
-                                             deviceType: .mobile,
-                                             isVerified: false,
-                                             lastSeenIP: "10.0.0.10",
-                                             lastSeenTimestamp: nil,
-                                             applicationName: "Element iOS",
-                                             applicationVersion: "1.0.0",
-                                             applicationURL: nil,
-                                             deviceBrand: nil,
-                                             deviceOS: "iOS",
-                                             deviceOSVersion: "15.5",
-                                             lastSeenIPLocation: nil,
-                                             deviceName: "My iPhone")
+                                                 sessionName: "iOS",
+                                                 deviceType: .mobile,
+                                                 isVerified: false,
+                                                 lastSeenIP: "10.0.0.10",
+                                                 lastSeenTimestamp: nil,
+                                                 applicationName: "Element iOS",
+                                                 applicationVersion: "1.0.0",
+                                                 applicationURL: nil,
+                                                 deviceBrand: nil,
+                                                 deviceOS: "iOS",
+                                                 deviceOSVersion: "15.5",
+                                                 lastSeenIPLocation: nil,
+                                                 deviceName: "My iPhone",
+                                                 isCurrentSession: true)
 
     static let mockCurrentSessionOnly = UserSessionInfo(sessionId: "alice",
                                                         sessionName: "iOS",
@@ -151,7 +163,8 @@ extension UserSessionInfo {
                                                         deviceOS: nil,
                                                         deviceOSVersion: nil,
                                                         lastSeenIPLocation: nil,
-                                                        deviceName: nil)
+                                                        deviceName: nil,
+                                                        isCurrentSession: true)
 
     static let mockWeb = UserSessionInfo(sessionId: "2",
                                          sessionName: "Firefox on Windows",
@@ -166,8 +179,9 @@ extension UserSessionInfo {
                                          deviceOS: "Windows",
                                          deviceOSVersion: "10",
                                          lastSeenIPLocation: nil,
-                                         deviceName: "My Windows")
-
+                                         deviceName: "My Windows",
+                                         isCurrentSession: false)
+    
     static let mockAndroid = UserSessionInfo(sessionId: "3",
                                              sessionName: "Android",
                                              deviceType: .mobile,
@@ -181,7 +195,8 @@ extension UserSessionInfo {
                                              deviceOS: "Android",
                                              deviceOSVersion: "4.0",
                                              lastSeenIPLocation: nil,
-                                             deviceName: "My Phone")
+                                             deviceName: "My Phone",
+                                             isCurrentSession: false)
 
     static let mockDesktop = UserSessionInfo(sessionId: "1",
                                              sessionName: "macOS",
@@ -196,5 +211,6 @@ extension UserSessionInfo {
                                              deviceOS: "macOS",
                                              deviceOSVersion: "12.5.1",
                                              lastSeenIPLocation: nil,
-                                             deviceName: "My Mac")
+                                             deviceName: "My Mac",
+                                             isCurrentSession: false)
 }
