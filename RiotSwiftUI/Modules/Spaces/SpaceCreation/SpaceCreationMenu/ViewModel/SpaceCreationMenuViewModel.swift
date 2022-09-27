@@ -19,7 +19,7 @@
 import Combine
 import SwiftUI
     
-typealias SpaceCreationMenuViewModelType = StateStoreViewModel<SpaceCreationMenuViewState, SpaceCreationMenuStateAction, SpaceCreationMenuViewAction>
+typealias SpaceCreationMenuViewModelType = StateStoreViewModel<SpaceCreationMenuViewState, SpaceCreationMenuViewAction>
 
 class SpaceCreationMenuViewModel: SpaceCreationMenuViewModelType, SpaceCreationMenuViewModelProtocol {
     // MARK: - Properties

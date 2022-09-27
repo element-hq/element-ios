@@ -1,6 +1,6 @@
 --swiftversion 5.6
 
---exclude CommonKit, Config, DesignKit, Riot, RiotNSE, RiotShareExtension, RiotTests, SiriIntents, Tools, Variants, vendor
+--exclude build, CommonKit, Config, DesignKit, fastlane, Pods, Riot, RiotNSE, RiotShareExtension, RiotTests, SiriIntents, Tools, Variants, vendor
 
 --disable wrapMultiLineStatementBraces
 --disable hoistPatternLet

@@ -16,7 +16,7 @@
 
 import Foundation
 
-typealias UserSessionDetailsViewModelType = StateStoreViewModel<UserSessionDetailsViewState, Never, UserSessionDetailsViewAction>
+typealias UserSessionDetailsViewModelType = StateStoreViewModel<UserSessionDetailsViewState, UserSessionDetailsViewAction>
 
 class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionDetailsViewModelProtocol {
     var completion: ((UserSessionDetailsViewModelResult) -> Void)?

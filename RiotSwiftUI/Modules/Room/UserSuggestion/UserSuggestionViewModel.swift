@@ -17,7 +17,7 @@
 import Combine
 import SwiftUI
 
-typealias UserSuggestionViewModelType = StateStoreViewModel<UserSuggestionViewState, Never, UserSuggestionViewAction>
+typealias UserSuggestionViewModelType = StateStoreViewModel<UserSuggestionViewState, UserSuggestionViewAction>
 
 class UserSuggestionViewModel: UserSuggestionViewModelType, UserSuggestionViewModelProtocol {
     // MARK: - Properties

@@ -17,7 +17,7 @@
 import Combine
 import SwiftUI
 
-typealias TimelinePollViewModelType = StateStoreViewModel<TimelinePollViewState, Never, TimelinePollViewAction>
+typealias TimelinePollViewModelType = StateStoreViewModel<TimelinePollViewState, TimelinePollViewAction>
 
 class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelProtocol {
     // MARK: - Properties

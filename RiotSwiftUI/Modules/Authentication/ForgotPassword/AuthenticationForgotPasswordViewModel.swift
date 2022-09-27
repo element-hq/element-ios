@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-typealias AuthenticationForgotPasswordViewModelType = StateStoreViewModel<AuthenticationForgotPasswordViewState, Never, AuthenticationForgotPasswordViewAction>
+typealias AuthenticationForgotPasswordViewModelType = StateStoreViewModel<AuthenticationForgotPasswordViewState, AuthenticationForgotPasswordViewAction>
 
 class AuthenticationForgotPasswordViewModel: AuthenticationForgotPasswordViewModelType, AuthenticationForgotPasswordViewModelProtocol {
     // MARK: - Properties

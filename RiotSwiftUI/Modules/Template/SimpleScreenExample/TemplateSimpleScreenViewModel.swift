@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-typealias TemplateSimpleScreenViewModelType = StateStoreViewModel<TemplateSimpleScreenViewState, Never, TemplateSimpleScreenViewAction>
+typealias TemplateSimpleScreenViewModelType = StateStoreViewModel<TemplateSimpleScreenViewState, TemplateSimpleScreenViewAction>
 
 class TemplateSimpleScreenViewModel: TemplateSimpleScreenViewModelType, TemplateSimpleScreenViewModelProtocol {
     var completion: ((TemplateSimpleScreenViewModelResult) -> Void)?
