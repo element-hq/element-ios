@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct AuthenticationChoosePasswordCoordinatorParameters {
     let loginWizard: LoginWizard
@@ -29,7 +29,6 @@ enum AuthenticationChoosePasswordCoordinatorResult {
 }
 
 final class AuthenticationChoosePasswordCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -79,7 +78,7 @@ final class AuthenticationChoosePasswordCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationChoosePasswordHostingController
+        authenticationChoosePasswordHostingController
     }
     
     // MARK: - Private

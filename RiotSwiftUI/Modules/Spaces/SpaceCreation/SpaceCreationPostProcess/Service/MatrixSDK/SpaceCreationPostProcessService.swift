@@ -1,6 +1,6 @@
 // File created from SimpleUserProfileExample
 // $ createScreen.sh Spaces/SpaceCreation/SpaceCreationPostProcess SpaceCreationPostProcess
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,11 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 import MatrixSDK
 
 class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -39,19 +38,16 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
             createdSpaceId = createdSpace?.spaceId
         }
     }
+
     private var createdRoomsByName: [String: MXRoom] = [:]
     
     private var currentSubTaskIndex = 0
 
     private var processingQueue = DispatchQueue(label: "io.element.MXSpace.processingQueue", attributes: .concurrent)
 
-    private lazy var stateEventBuilder: MXRoomInitialStateEventBuilder = {
-        return MXRoomInitialStateEventBuilder()
-    }()
+    private lazy var stateEventBuilder = MXRoomInitialStateEventBuilder()
 
-    private lazy var mediaUploader: MXMediaLoader = {
-        return MXMediaManager.prepareUploader(withMatrixSession: session, initialRange: 0, andRange: 1.0)
-    }()
+    private lazy var mediaUploader: MXMediaLoader = MXMediaManager.prepareUploader(withMatrixSession: session, initialRange: 0, andRange: 1.0)
     
     // MARK: Public
     
@@ -61,8 +57,9 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
         let alias = creationParams.userDefinedAddress.isEmptyOrNil ? creationParams.address : creationParams.userDefinedAddress
         return AvatarInput(mxContentUri: alias, matrixItemId: "", displayName: creationParams.name)
     }
+
     var avatarImage: UIImage? {
-        return creationParams.userSelectedAvatar
+        creationParams.userSelectedAvatar
     }
 
     // MARK: - Setup
@@ -71,18 +68,17 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
         self.session = session
         self.parentSpaceId = parentSpaceId
         self.creationParams = creationParams
-        self.tasks = Self.tasks(with: creationParams)
-        self.tasksSubject = CurrentValueSubject(tasks)
+        tasks = Self.tasks(with: creationParams)
+        tasksSubject = CurrentValueSubject(tasks)
     }
 
-    deinit {
-    }
+    deinit { }
     
     // MARK: - Public
     
     func run() {
-        self.isRetry = self.currentTaskIndex > 0
-        self.currentTaskIndex = -1
+        isRetry = currentTaskIndex > 0
+        currentTaskIndex = -1
         runNextTask()
     }
     
@@ -106,13 +102,13 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
                 tasks.append(SpaceCreationPostProcessTask(type: .addRooms, title: VectorL10n.spacesCreationPostProcessAddingRooms("\(addedRoomIds.count)"), state: .none, subTasks: subTasks))
             }
         } else {
-            tasks.append(contentsOf: creationParams.newRooms.compactMap({ room in
+            tasks.append(contentsOf: creationParams.newRooms.compactMap { room in
                 guard !room.name.isEmpty else {
                     return nil
                 }
                 
                 return SpaceCreationPostProcessTask(type: .createRoom(room.name), title: VectorL10n.spacesCreationPostProcessCreatingRoom(room.name), state: .none)
-            }))
+            })
         }
         
         if creationParams.inviteType == .email {
@@ -183,7 +179,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
                     return
                 }
                 
-                parentSpace.addChild(roomId: createdSpaceId) { [weak self] response in
+                parentSpace.addChild(roomId: createdSpaceId) { [weak self] _ in
                     guard let self = self else { return }
                     
                     self.updateCurrentTask(with: .success)
@@ -194,45 +190,45 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     }
     
     private func uploadAvatar(andUpdate task: SpaceCreationPostProcessTask) {
-        self.updateCurrentTask(with: .started)
+        updateCurrentTask(with: .started)
 
-        guard let avatar = creationParams.userSelectedAvatar, let spaceRoom = self.createdSpace?.room else {
-            self.updateCurrentTask(with: .success)
-            self.runNextTask()
+        guard let avatar = creationParams.userSelectedAvatar, let spaceRoom = createdSpace?.room else {
+            updateCurrentTask(with: .success)
+            runNextTask()
             return
         }
         
         let avatarUp = MXKTools.forceImageOrientationUp(avatar)
         
         mediaUploader.uploadData(avatarUp?.jpegData(compressionQuality: 0.5), filename: nil, mimeType: "image/jpeg",
-                                 success: { [weak self] (urlString) in
-                                    guard let self = self else { return }
-                                    guard let urlString = urlString else { return }
-                                    guard let url = URL(string: urlString) else { return }
+                                 success: { [weak self] urlString in
+                                     guard let self = self else { return }
+                                     guard let urlString = urlString else { return }
+                                     guard let url = URL(string: urlString) else { return }
                                     
-                                    self.setAvatar(ofRoom: spaceRoom, withURL: url, andUpdate: task)
+                                     self.setAvatar(ofRoom: spaceRoom, withURL: url, andUpdate: task)
                                  },
-                                 failure: { [weak self] (error) in
-                                    guard let self = self else { return }
+                                 failure: { [weak self] _ in
+                                     guard let self = self else { return }
                                     
-                                    self.updateCurrentTask(with: .failure)
-                                    self.runNextTask()
+                                     self.updateCurrentTask(with: .failure)
+                                     self.runNextTask()
                                  })
     }
     
     private func setAvatar(ofRoom room: MXRoom, withURL url: URL, andUpdate task: SpaceCreationPostProcessTask) {
         updateCurrentTask(with: .started)
         
-        room.setAvatar(url: url) { [weak self] (response) in
+        room.setAvatar(url: url) { [weak self] response in
             guard let self = self else { return }
 
-            self.updateCurrentTask(with: response.isSuccess ? .success: .failure)
+            self.updateCurrentTask(with: response.isSuccess ? .success : .failure)
             self.runNextTask()
         }
     }
 
     private func createRoom(withName roomName: String, andUpdate task: SpaceCreationPostProcessTask) {
-        guard let createdSpace = self.createdSpace else {
+        guard let createdSpace = createdSpace else {
             updateCurrentTask(with: .failure)
             runNextTask()
             return
@@ -257,7 +253,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     }
     
     private func addToSpace(room: MXRoom) {
-        guard let createdSpace = self.createdSpace else {
+        guard let createdSpace = createdSpace else {
             updateCurrentTask(with: .failure)
             runNextTask()
             return
@@ -282,7 +278,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     }
     
     private func inviteNextUserByEmail() {
-        guard let createdSpace = self.createdSpace, let room = createdSpace.room else {
+        guard let createdSpace = createdSpace, let room = createdSpace.room else {
             updateCurrentTask(with: .failure)
             runNextTask()
             return
@@ -291,7 +287,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
         currentSubTaskIndex += 1
         
         guard currentSubTaskIndex < tasks[currentTaskIndex].subTasks.count else {
-            let isSuccess = tasks[currentTaskIndex].subTasks.reduce(true, { $0 && $1.state == .success })
+            let isSuccess = tasks[currentTaskIndex].subTasks.reduce(true) { $0 && $1.state == .success }
             updateCurrentTask(with: isSuccess ? .success : .failure)
             runNextTask()
             return
@@ -306,7 +302,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     }
     
     private func addNextExistingRoom() {
-        guard let createdSpace = self.createdSpace else {
+        guard let createdSpace = createdSpace else {
             updateCurrentTask(with: .failure)
             runNextTask()
             return
@@ -315,7 +311,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
         currentSubTaskIndex += 1
         
         guard currentSubTaskIndex < tasks[currentTaskIndex].subTasks.count else {
-            let isSuccess = tasks[currentTaskIndex].subTasks.reduce(true, { $0 && $1.state == .success })
+            let isSuccess = tasks[currentTaskIndex].subTasks.reduce(true) { $0 && $1.state == .success }
             updateCurrentTask(with: isSuccess ? .success : .failure)
             runNextTask()
             return
@@ -351,6 +347,6 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
         }
         
         tasks[currentTaskIndex].state = state
-        self.tasksSubject.send(tasks)
+        tasksSubject.send(tasks)
     }
 }

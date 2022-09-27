@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 protocol OnboardingSplashScreenCoordinatorProtocol: Coordinator, Presentable {
     var completion: ((OnboardingSplashScreenViewModelResult) -> Void)? { get set }
 }
 
 final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinatorProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -52,6 +51,7 @@ final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinator
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[OnboardingSplashScreenCoordinator] did start.")
         onboardingSplashScreenViewModel.completion = { [weak self] result in
@@ -68,7 +68,7 @@ final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinator
     }
     
     func toPresentable() -> UIViewController {
-        return onboardingSplashScreenHostingController
+        onboardingSplashScreenHostingController
     }
     
     /// Stops any ongoing activities in the coordinator.

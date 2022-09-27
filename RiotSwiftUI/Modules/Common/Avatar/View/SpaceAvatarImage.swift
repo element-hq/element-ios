@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import DesignKit
+import SwiftUI
 
 struct SpaceAvatarImage: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     @Environment(\.dependencies) var dependencies: DependencyContainer
     @StateObject var viewModel = AvatarViewModel()

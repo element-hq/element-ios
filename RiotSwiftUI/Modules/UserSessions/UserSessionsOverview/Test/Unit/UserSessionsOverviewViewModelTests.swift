@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +14,12 @@
 // limitations under the License.
 //
 
-import XCTest
 import Combine
+import XCTest
 
 @testable import RiotSwiftUI
 
 class UserSessionsOverviewViewModelTests: XCTestCase {
-    
     var service: MockUserSessionsOverviewService!
     var viewModel: UserSessionsOverviewViewModelProtocol!
     var context: UserSessionsOverviewViewModelType.Context!

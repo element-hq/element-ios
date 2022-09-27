@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,6 +37,6 @@ struct ActivityIndicatorModifier: ViewModifier {
 
 extension View {
     func activityIndicator(show: Bool) -> some View {
-        self.modifier(ActivityIndicatorModifier(show: show))
+        modifier(ActivityIndicatorModifier(show: show))
     }
 }

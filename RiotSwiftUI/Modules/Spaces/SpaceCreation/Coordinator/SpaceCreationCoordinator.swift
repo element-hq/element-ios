@@ -22,7 +22,6 @@ import UIKit
 
 @objcMembers
 final class SpaceCreationCoordinator: Coordinator {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -30,7 +29,7 @@ final class SpaceCreationCoordinator: Coordinator {
     private let parameters: SpaceCreationCoordinatorParameters
     
     private var navigationRouter: NavigationRouterType {
-        return self.parameters.navigationRouter
+        parameters.navigationRouter
     }
     
     private let spaceVisibilityMenuParameters: SpaceCreationMenuCoordinatorParameters
@@ -57,7 +56,7 @@ final class SpaceCreationCoordinator: Coordinator {
         }
 
         self.parameters = parameters
-        self.spaceVisibilityMenuParameters = SpaceCreationMenuCoordinatorParameters(
+        spaceVisibilityMenuParameters = SpaceCreationMenuCoordinatorParameters(
             session: parameters.session,
             creationParams: parameters.creationParameters,
             navTitle: VectorL10n.spacesCreateSpaceTitle,
@@ -70,7 +69,7 @@ final class SpaceCreationCoordinator: Coordinator {
             ]
         )
         
-        self.spaceSharingTypeMenuParameters = SpaceCreationMenuCoordinatorParameters(
+        spaceSharingTypeMenuParameters = SpaceCreationMenuCoordinatorParameters(
             session: parameters.session,
             creationParams: parameters.creationParameters,
             navTitle: nil,
@@ -91,26 +90,26 @@ final class SpaceCreationCoordinator: Coordinator {
         
         Analytics.shared.trackScreen(.createSpace)
         
-        let rootCoordinator = self.createMenuCoordinator(with: spaceVisibilityMenuParameters)
+        let rootCoordinator = createMenuCoordinator(with: spaceVisibilityMenuParameters)
         rootCoordinator.start()
         
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
         
-        self.toPresentable().isModalInPresentation = true
+        toPresentable().isModalInPresentation = true
         
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+        if navigationRouter.modules.isEmpty == false {
+            navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             })
         } else {
-            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+            navigationRouter.setRootModule(rootCoordinator) { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private
@@ -118,7 +117,7 @@ final class SpaceCreationCoordinator: Coordinator {
     func pushScreen(with coordinator: Coordinator & Presentable) {
         add(childCoordinator: coordinator)
         
-        self.navigationRouter.push(coordinator, animated: true, popCompletion: { [weak self] in
+        navigationRouter.push(coordinator, animated: true, popCompletion: { [weak self] in
             self?.remove(childCoordinator: coordinator)
         })
         
@@ -126,7 +125,7 @@ final class SpaceCreationCoordinator: Coordinator {
     }
 
     private func createMenuCoordinator(with parameters: SpaceCreationMenuCoordinatorParameters) -> SpaceCreationMenuCoordinator {
-        let coordinator: SpaceCreationMenuCoordinator = SpaceCreationMenuCoordinator(parameters: parameters)
+        let coordinator = SpaceCreationMenuCoordinator(parameters: parameters)
         
         coordinator.callback = { [weak self] result in
             MXLog.debug("[SpaceCreationCoordinator] SpaceCreationMenuCoordinator did complete with result \(result).")
@@ -217,7 +216,8 @@ final class SpaceCreationCoordinator: Coordinator {
             detail: VectorL10n.spacesCreationInviteByUsernameMessage,
             selectedItemsIds: parameters.creationParameters.userIdInvites,
             viewProvider: SpaceCreationMatrixItemChooserViewProvider(),
-            itemsProcessor: SpaceCreationInviteUsersItemsProcessor(creationParams: parameters.creationParameters))
+            itemsProcessor: SpaceCreationInviteUsersItemsProcessor(creationParams: parameters.creationParameters)
+        )
         let coordinator = MatrixItemChooserCoordinator(parameters: parameters)
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
@@ -240,7 +240,8 @@ final class SpaceCreationCoordinator: Coordinator {
             detail: VectorL10n.spacesCreationAddRoomsMessage,
             selectedItemsIds: parameters.creationParameters.addedRoomIds ?? [],
             viewProvider: SpaceCreationMatrixItemChooserViewProvider(),
-            itemsProcessor: SpaceCreationAddRoomsItemsProcessor(creationParams: parameters.creationParameters))
+            itemsProcessor: SpaceCreationAddRoomsItemsProcessor(creationParams: parameters.creationParameters)
+        )
         let coordinator = MatrixItemChooserCoordinator(parameters: parameters)
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
@@ -275,13 +276,13 @@ final class SpaceCreationCoordinator: Coordinator {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             
             let alert = UIAlertController(title: VectorL10n.spacesCreationCancelTitle, message: VectorL10n.spacesCreationCancelMessage, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: VectorL10n.stop, style: .destructive, handler: { action in
+            alert.addAction(UIAlertAction(title: VectorL10n.stop, style: .destructive, handler: { _ in
                 self.callback?(.cancel)
             }))
             alert.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: nil))
             navigationRouter.present(alert, animated: true)
         } else {
-            self.callback?(.cancel)
+            callback?(.cancel)
         }
     }
     

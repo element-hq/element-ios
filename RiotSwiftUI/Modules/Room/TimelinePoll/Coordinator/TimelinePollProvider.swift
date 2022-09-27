@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,9 +22,7 @@ class TimelinePollProvider {
     var session: MXSession?
     var coordinatorsForEventIdentifiers = [String: TimelinePollCoordinator]()
     
-    private init() {
-        
-    }
+    private init() { }
     
     /// Create or retrieve the poll timeline coordinator for this event and return
     /// a view to be displayed in the timeline
@@ -49,6 +47,6 @@ class TimelinePollProvider {
     
     /// Retrieve the poll timeline coordinator for the given event or nil if it hasn't been created yet
     func timelinePollCoordinatorForEventIdentifier(_ eventIdentifier: String) -> TimelinePollCoordinator? {
-        return coordinatorsForEventIdentifiers[eventIdentifier]
+        coordinatorsForEventIdentifiers[eventIdentifier]
     }
 }

@@ -1,6 +1,4 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Spaces/SpaceCreation/SpaceCreationRooms SpaceCreationRooms
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,5 +16,27 @@
 
 import Foundation
 
-enum SpaceCreationRoomsStateAction {
+// MARK: - Coordinator
+
+enum UserSessionOverviewCoordinatorResult {
+    case openSessionDetails(session: UserSessionInfo)
+}
+
+// MARK: View model
+
+enum UserSessionOverviewViewModelResult: Equatable {
+    case showSessionDetails(session: UserSessionInfo)
+    case verifyCurrentSession
+}
+
+// MARK: View
+
+struct UserSessionOverviewViewState: BindableState {
+    let cardViewData: UserSessionCardViewData
+    let isCurrentSession: Bool
+}
+
+enum UserSessionOverviewViewAction {
+    case verifyCurrentSession
+    case viewSessionDetails
 }

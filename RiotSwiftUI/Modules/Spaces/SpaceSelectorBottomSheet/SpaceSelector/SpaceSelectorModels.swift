@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,7 +76,7 @@ struct SpaceSelectorListItemData {
     }
 }
 
-extension SpaceSelectorListItemData: Identifiable, Equatable {}
+extension SpaceSelectorListItemData: Identifiable, Equatable { }
 
 enum SpaceSelectorViewModelResult {
     /// Cancel button has been presed

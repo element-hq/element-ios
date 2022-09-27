@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,8 @@
 import Foundation
 import SwiftUI
 
-/// Client type
-enum DeviceType {
-    case desktop
-    case web
-    case mobile
-    case unknown
+/// View data for DeviceAvatarView
+struct DeviceAvatarViewData {
+    let deviceType: DeviceType
+    let isVerified: Bool?
 }

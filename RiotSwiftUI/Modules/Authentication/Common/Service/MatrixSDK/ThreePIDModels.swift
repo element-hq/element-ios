@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,13 +53,13 @@ struct RegistrationThreePIDTokenResponse {
     ///
     /// If this field is not present, the client can assume that verification will happen without the client's involvement provided
     /// the homeserver advertises this specification version in the /versions response (ie: r0.5.0).
-    var submitURL: String? = nil
+    var submitURL: String?
     
     // MARK: - Additional data that may be needed
     
-    var msisdn: String? = nil
-    var formattedMSISDN: String? = nil
-    var success: Bool? = nil
+    var msisdn: String?
+    var formattedMSISDN: String?
+    var success: Bool?
     
     enum CodingKeys: String, CodingKey {
         case sessionID = "sid"

@@ -16,8 +16,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class SpaceCreationRoomsUITests: MockScreenTestCase {
     func testDefaultValues() {

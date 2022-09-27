@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,14 +18,13 @@ import Foundation
 
 /// Represents a user session information
 struct UserSessionInfo: Identifiable {
-        
     /// Delay after which session is considered inactive, 90 days
     static let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
     
     // MARK: - Properties
     
     var id: String {
-        return sessionId
+        sessionId
     }
     
     /// The session identifier
@@ -49,6 +48,9 @@ struct UserSessionInfo: Identifiable {
     /// True to indicate that session has been used under `inactiveSessionDurationTreshold` value
     let isSessionActive: Bool
     
+    /// True to indicate that this is current user session
+    let isCurrentSession: Bool
+    
     // MARK: - Setup
     
     init(sessionId: String,
@@ -56,23 +58,27 @@ struct UserSessionInfo: Identifiable {
          deviceType: DeviceType,
          isVerified: Bool,
          lastSeenIP: String?,
-         lastSeenTimestamp: TimeInterval?) {
-        
+         lastSeenTimestamp: TimeInterval?,
+         isCurrentSession: Bool) {
         self.sessionId = sessionId
         self.sessionName = sessionName
         self.deviceType = deviceType
         self.isVerified = isVerified
         self.lastSeenIP = lastSeenIP
         self.lastSeenTimestamp = lastSeenTimestamp
-        
+
         if let lastSeenTimestamp = lastSeenTimestamp {
             let elapsedTime = Date().timeIntervalSince1970 - lastSeenTimestamp
-            
-            let isSessionInactive = elapsedTime >= Self.inactiveSessionDurationTreshold
-
-            self.isSessionActive = !isSessionInactive
+            isSessionActive = elapsedTime < Self.inactiveSessionDurationTreshold
         } else {
-            self.isSessionActive = true
+            isSessionActive = true
         }
+        self.isCurrentSession = isCurrentSession
+    }
+}
+
+extension UserSessionInfo: Equatable {
+    static func == (lhs: UserSessionInfo, rhs: UserSessionInfo) -> Bool {
+        return lhs.id == rhs.id
     }
 }

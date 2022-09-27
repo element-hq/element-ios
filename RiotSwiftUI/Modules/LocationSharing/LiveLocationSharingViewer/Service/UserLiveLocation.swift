@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +14,17 @@
 // limitations under the License.
 //
 
-import Foundation
 import CoreLocation
+import Foundation
 
 /// Represents user live location
 struct UserLiveLocation {
-    
     var userId: String {
-        return avatarData.matrixItemId
+        avatarData.matrixItemId
     }
     
     var displayName: String {
-        return avatarData.displayName ?? self.userId
+        avatarData.displayName ?? userId
     }
     
     let avatarData: AvatarInputProtocol

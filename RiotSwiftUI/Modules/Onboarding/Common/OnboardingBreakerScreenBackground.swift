@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct OnboardingBreakerScreenBackground: View {
-
     @Environment(\.theme) private var theme
 
     /// Flag indicating whether the gradient enabled on light theme
@@ -43,21 +42,20 @@ struct OnboardingBreakerScreenBackground: View {
             ZStack(alignment: .top) {
                 theme.colors.background
 
-                if isGradientEnabled && !theme.isDark {
+                if isGradientEnabled, !theme.isDark {
                     LinearGradient(gradient: gradient,
                                    startPoint: .leading,
                                    endPoint: .trailing)
-                    .opacity(0.3)
-                    .mask(LinearGradient(colors: [.white, .clear],
-                                         startPoint: .top,
-                                         endPoint: .bottom))
-                    .frame(height: geometry.size.height * 0.65)
+                        .opacity(0.3)
+                        .mask(LinearGradient(colors: [.white, .clear],
+                                             startPoint: .top,
+                                             endPoint: .bottom))
+                        .frame(height: geometry.size.height * 0.65)
                 }
             }
         }
         .ignoresSafeArea()
     }
-
 }
 
 // MARK: - Previews

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import SwiftUI
 
 /// A button used for the Use Case selection.
 struct OnboardingUseCaseButton: View {
-    
     // MARK: Private
     
     @Environment(\.theme) private var theme

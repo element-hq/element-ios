@@ -1,6 +1,6 @@
 // File created from SimpleUserProfileExample
 // $ createScreen.sh Spaces/SpaceCreation/SpaceCreationPostProcess SpaceCreationPostProcess
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,11 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 import UIKit
 
 class MockSpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
-    
     static let defaultTasks: [SpaceCreationPostProcessTask] = [
         SpaceCreationPostProcessTask(type: .createSpace, title: "Space creation", state: .success),
         SpaceCreationPostProcessTask(type: .createRoom("Room#1"), title: "Room#1 creation", state: .failure),
@@ -53,22 +52,22 @@ class MockSpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtoc
     var tasksSubject: CurrentValueSubject<[SpaceCreationPostProcessTask], Never>
     private(set) var createdSpaceId: String?
     var avatar: AvatarInput {
-        return AvatarInput(mxContentUri: nil, matrixItemId: "", displayName: "Some space")
+        AvatarInput(mxContentUri: nil, matrixItemId: "", displayName: "Some space")
     }
+
     var avatarImage: UIImage? {
-        return nil
+        nil
     }
 
     init(
         tasks: [SpaceCreationPostProcessTask] = defaultTasks
     ) {
-        self.tasksSubject = CurrentValueSubject<[SpaceCreationPostProcessTask], Never>(tasks)
+        tasksSubject = CurrentValueSubject<[SpaceCreationPostProcessTask], Never>(tasks)
     }
     
     func simulateUpdate(tasks: [SpaceCreationPostProcessTask]) {
-        self.tasksSubject.send(tasks)
+        tasksSubject.send(tasks)
     }
     
-    func run() {
-    }
+    func run() { }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,13 +17,14 @@
 import SwiftUI
 
 struct OnboardingSplashScreenPageIndicator: View {
-    
     // MARK: - Properties
     
     // MARK: Private
+
     @Environment(\.theme) private var theme
     
     // MARK: Public
+
     /// The number of pages that are shown.
     let pageCount: Int
     /// The index of the current page
@@ -44,7 +45,7 @@ struct OnboardingSplashScreenPageIndicator: View {
     
     var body: some View {
         HStack {
-            ForEach(0..<pageCount) { index in
+            ForEach(0..<pageCount, id: \.self) { index in
                 Circle()
                     .frame(width: 8, height: 8)
                     .foregroundColor(index == pageIndex ? .accentColor : theme.colors.quarterlyContent)

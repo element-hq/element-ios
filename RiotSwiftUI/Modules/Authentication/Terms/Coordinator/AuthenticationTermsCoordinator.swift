@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
 import SafariServices
+import SwiftUI
 
 struct AuthenticationTermsCoordinatorParameters {
     let registrationWizard: RegistrationWizard
@@ -27,7 +27,6 @@ struct AuthenticationTermsCoordinatorParameters {
 }
 
 final class AuthenticationTermsCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -80,7 +79,7 @@ final class AuthenticationTermsCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationTermsHostingController
+        authenticationTermsHostingController
     }
     
     // MARK: - Private

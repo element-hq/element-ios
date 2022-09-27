@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import XCTest
 @testable import RiotSwiftUI
 
 class UserSessionDetailsViewModelTests: XCTestCase {
-    
     func test_whenSessionNameAndLastSeenIPNil_viewStateCorrect() {
         let userSessionInfo = createUserSessionInfo(sessionId: "session",
                                                     sessionName: nil,
@@ -33,7 +32,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                                                           footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                                                           items: sessionItems))
         let expectedModel = UserSessionDetailsViewState(sections: sections)
-        let sut = UserSessionDetailsViewModel(userSessionInfo: userSessionInfo)
+        let sut = UserSessionDetailsViewModel(session: userSessionInfo)
         
         XCTAssertEqual(sut.state, expectedModel)
     }
@@ -53,7 +52,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                                                           items: sessionItems))
         
         let expectedModel = UserSessionDetailsViewState(sections: sections)
-        let sut = UserSessionDetailsViewModel(userSessionInfo: userSessionInfo)
+        let sut = UserSessionDetailsViewModel(session: userSessionInfo)
         
         XCTAssertEqual(sut.state, expectedModel)
     }
@@ -80,7 +79,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                                                           items: deviceSectionItems))
         
         let expectedModel = UserSessionDetailsViewState(sections: sections)
-        let sut = UserSessionDetailsViewModel(userSessionInfo: userSessionInfo)
+        let sut = UserSessionDetailsViewModel(session: userSessionInfo)
         
         XCTAssertEqual(sut.state, expectedModel)
     }
@@ -90,14 +89,15 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                                        deviceType: DeviceType = .mobile,
                                        isVerified: Bool = false,
                                        lastSeenIP: String?,
-                                       lastSeenTimestamp: TimeInterval = Date().timeIntervalSince1970) -> UserSessionInfo {
+                                       lastSeenTimestamp: TimeInterval = Date().timeIntervalSince1970,
+                                       isCurrentSession: Bool = true) -> UserSessionInfo {
         UserSessionInfo(sessionId: sessionId,
                         sessionName: sessionName,
                         deviceType: deviceType,
                         isVerified: isVerified,
                         lastSeenIP: lastSeenIP,
-                        lastSeenTimestamp: lastSeenTimestamp)
-        
+                        lastSeenTimestamp: lastSeenTimestamp,
+                        isCurrentSession: isCurrentSession)
     }
     
     private func sessionNameItem(sessionName: String) -> UserSessionDetailsSectionItemViewData {

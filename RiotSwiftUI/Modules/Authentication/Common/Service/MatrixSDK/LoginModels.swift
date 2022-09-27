@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -93,4 +93,3 @@ enum LoginMode {
 struct ResetPasswordData {
     let addThreePIDSessionID: String
 }
-

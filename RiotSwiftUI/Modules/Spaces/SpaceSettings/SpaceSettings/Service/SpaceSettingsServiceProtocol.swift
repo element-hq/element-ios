@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 enum SpaceSettingsServiceCompletionResult {
     case success
@@ -42,6 +42,7 @@ extension SpaceSettingsServiceProtocol {
     var mxContentUri: String? {
         roomProperties?.avatarUrl
     }
+
     var matrixItemId: String {
         spaceId
     }

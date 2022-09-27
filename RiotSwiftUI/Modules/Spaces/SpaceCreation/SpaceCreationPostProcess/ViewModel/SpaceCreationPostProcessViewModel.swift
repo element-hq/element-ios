@@ -16,16 +16,12 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
+typealias SpaceCreationPostProcessViewModelType = StateStoreViewModel<SpaceCreationPostProcessViewState, SpaceCreationPostProcessViewAction>
 
-
-typealias SpaceCreationPostProcessViewModelType = StateStoreViewModel<SpaceCreationPostProcessViewState,
-                                                                 SpaceCreationPostProcessStateAction,
-                                                                 SpaceCreationPostProcessViewAction>
 class SpaceCreationPostProcessViewModel: SpaceCreationPostProcessViewModelType, SpaceCreationPostProcessViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private
@@ -40,7 +36,7 @@ class SpaceCreationPostProcessViewModel: SpaceCreationPostProcessViewModelType, 
     // MARK: - Setup
 
     static func makeSpaceCreationPostProcessViewModel(spaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol) -> SpaceCreationPostProcessViewModelProtocol {
-        return SpaceCreationPostProcessViewModel(spaceCreationPostProcessService: spaceCreationPostProcessService)
+        SpaceCreationPostProcessViewModel(spaceCreationPostProcessService: spaceCreationPostProcessService)
     }
 
     private init(spaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol) {
@@ -55,16 +51,27 @@ class SpaceCreationPostProcessViewModel: SpaceCreationPostProcessViewModelType, 
             avatar: spaceCreationPostProcessService.avatar,
             avatarImage: spaceCreationPostProcessService.avatarImage,
             tasks: tasks,
-            isFinished: tasks.first?.state == .failure || tasks.reduce(true, { result, task in result && task.isFinished }),
-            errorCount: tasks.reduce(0, { result, task in result + (task.state == .failure ? 1 : 0) })
+            isFinished: tasks.first?.state == .failure || tasks.reduce(true) { result, task in result && task.isFinished },
+            errorCount: tasks.reduce(0) { result, task in result + (task.state == .failure ? 1 : 0) }
         )
     }
     
     private func setupTasksObserving() {
-        let tasksUpdatePublisher = spaceCreationPostProcessService.tasksSubject
-            .map(SpaceCreationPostProcessStateAction.updateTasks)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: tasksUpdatePublisher)
+        spaceCreationPostProcessService
+            .tasksSubject
+            .sink(receiveValue: { [weak self] tasks in
+                guard let self = self else { return }
+                
+                self.state.tasks = tasks
+                self.state.isFinished = tasks.first?.state == .failure || tasks.reduce(true) { result, task in result && task.isFinished }
+                self.state.errorCount = tasks.reduce(0) { result, task in result + (task.state == .failure ? 1 : 0) }
+                
+                NotificationCenter.default.post(name: SpaceCreationPostProcessViewModel.didUpdate,
+                                                object: nil,
+                                                userInfo: [SpaceCreationPostProcessViewModel.newStateKey: self.state])
+            })
+            .store(in: &cancellables)
+        
         updateNotificationObserver = NotificationCenter.default.addObserver(forName: SpaceCreationPostProcessViewModel.didUpdate, object: nil, queue: OperationQueue.main) { [weak self] notification in
             guard let self = self else {
                 return
@@ -74,7 +81,7 @@ class SpaceCreationPostProcessViewModel: SpaceCreationPostProcessViewModelType, 
                 return
             }
             
-            if state.isFinished && state.errorCount == 0 {
+            if state.isFinished, state.errorCount == 0 {
                 guard let spaceId = self.spaceCreationPostProcessService.createdSpaceId else {
                     self.cancel()
                     return
@@ -104,19 +111,6 @@ class SpaceCreationPostProcessViewModel: SpaceCreationPostProcessViewModelType, 
         }
     }
 
-    override class func reducer(state: inout SpaceCreationPostProcessViewState, action: SpaceCreationPostProcessStateAction) {
-        switch action {
-        case .updateTasks(let tasks):
-            state.tasks = tasks
-            state.isFinished = tasks.first?.state == .failure || tasks.reduce(true, { result, task in result && task.isFinished })
-            state.errorCount = tasks.reduce(0, { result, task in result + (task.state == .failure ? 1 : 0) })
-        }
-        
-        NotificationCenter.default.post(name: SpaceCreationPostProcessViewModel.didUpdate, object: nil, userInfo: [SpaceCreationPostProcessViewModel.newStateKey : state])
-        
-        UILog.debug("[SpaceCreationPostProcessViewModel] reducer with action \(action) produced state: \(state)")
-    }
-
     private func done(spaceId: String) {
         completion?(.done(spaceId))
     }
@@ -131,6 +125,7 @@ class SpaceCreationPostProcessViewModel: SpaceCreationPostProcessViewModelType, 
 }
 
 // MARK: - MXSpaceService notification constants
+
 extension SpaceCreationPostProcessViewModel {
     /// Posted once the process is finished
     public static let didUpdate = Notification.Name("SpaceCreationPostProcessViewModelDidUpdate")

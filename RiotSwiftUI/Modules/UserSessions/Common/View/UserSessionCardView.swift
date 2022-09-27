@@ -14,41 +14,40 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import DesignKit
+import SwiftUI
 
 struct UserSessionCardView: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     var viewData: UserSessionCardViewData
     
-    var onVerifyAction: ((String) -> (Void))? = nil
-    var onViewDetailsAction: ((String) -> (Void))? = nil
-    var onLearnMoreAction: (() -> (Void))? = nil
+    var onVerifyAction: ((String) -> Void)?
+    var onViewDetailsAction: ((String) -> Void)?
+    var onLearnMoreAction: (() -> Void)?
     
     private var verificationStatusImageName: String {
-        return viewData.isVerified ? Asset.Images.userSessionVerified.name : Asset.Images.userSessionUnverified.name
+        viewData.isVerified ? Asset.Images.userSessionVerified.name : Asset.Images.userSessionUnverified.name
     }
     
     private var verificationStatusText: String {
-        return viewData.isVerified ? VectorL10n.userSessionVerified : VectorL10n.userSessionUnverified
+        viewData.isVerified ? VectorL10n.userSessionVerified : VectorL10n.userSessionUnverified
     }
     
     private var verificationStatusColor: Color {
-        return viewData.isVerified ? theme.colors.accent : theme.colors.alert
+        viewData.isVerified ? theme.colors.accent : theme.colors.alert
     }
     
     private var verificationStatusAdditionalInfoText: String {
-        return viewData.isVerified ? VectorL10n.userSessionVerifiedAdditionalInfo : VectorL10n.userSessionUnverifiedAdditionalInfo
+        viewData.isVerified ? VectorL10n.userSessionVerifiedAdditionalInfo : VectorL10n.userSessionUnverifiedAdditionalInfo
     }
     
     private var backgroundShape: RoundedRectangle {
-        return RoundedRectangle(cornerRadius: 8)
+        RoundedRectangle(cornerRadius: 8)
     }
     
     private var showExtraInformations: Bool {
-        return viewData.isCurrentSessionDisplayMode == false && (viewData.lastActivityDateString.isEmptyOrNil == false || viewData.lastSeenIPInfo.isEmptyOrNil == false)
+        viewData.isCurrentSessionDisplayMode == false && (viewData.lastActivityDateString.isEmptyOrNil == false || viewData.lastSeenIPInfo.isEmptyOrNil == false)
     }
     
     var body: some View {
@@ -82,7 +81,7 @@ struct UserSessionCardView: View {
                 .multilineTextAlignment(.center)
             }
             
-            if self.showExtraInformations {
+            if showExtraInformations {
                 VStack(spacing: 2) {
                     if let lastActivityDateString = viewData.lastActivityDateString, lastActivityDateString.isEmpty == false {
                         Text(lastActivityDateString)
@@ -91,7 +90,7 @@ struct UserSessionCardView: View {
                             .multilineTextAlignment(.center)
                     }
                     
-                    if let lastSeenIPInfo = viewData.lastSeenIPInfo, lastSeenIPInfo.isEmpty == false  {
+                    if let lastSeenIPInfo = viewData.lastSeenIPInfo, lastSeenIPInfo.isEmpty == false {
                         Text(lastSeenIPInfo)
                             .font(theme.fonts.footnote)
                             .foregroundColor(theme.colors.secondaryContent)
@@ -126,26 +125,31 @@ struct UserSessionCardView: View {
         .padding(24)
         .frame(maxWidth: .infinity)
         .background(theme.colors.background)
-        .clipShape(self.backgroundShape)
-        .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1.0, shape: self.backgroundShape)
+        .clipShape(backgroundShape)
+        .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1.0, shape: backgroundShape)
     }
 }
 
 struct UserSessionCardViewPreview: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     let viewData: UserSessionCardViewData
     
     init(isCurrentSessionInfo: Bool = false) {
-        let currentSessionInfo = UserSessionInfo(sessionId: "alice", sessionName: "iOS", deviceType: .mobile, isVerified: false, lastSeenIP: "10.0.0.10", lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+        let session = UserSessionInfo(sessionId: "alice",
+                                      sessionName: "iOS",
+                                      deviceType: .mobile,
+                                      isVerified: false,
+                                      lastSeenIP: "10.0.0.10",
+                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                                      isCurrentSession: isCurrentSessionInfo)
         
-        viewData = UserSessionCardViewData(userSessionInfo: currentSessionInfo, isCurrentSessionDisplayMode: isCurrentSessionInfo)
+        viewData = UserSessionCardViewData(session: session)
     }
     
     var body: some View {
         VStack {
-            UserSessionCardView(viewData: self.viewData)
+            UserSessionCardView(viewData: viewData)
         }
         .frame(maxWidth: .infinity)
         .background(theme.colors.system)
@@ -154,7 +158,6 @@ struct UserSessionCardViewPreview: View {
 }
 
 struct UserSessionCardView_Previews: PreviewProvider {
-    
     static var previews: some View {
         Group {
             UserSessionCardViewPreview(isCurrentSessionInfo: true).theme(.light).preferredColorScheme(.light)

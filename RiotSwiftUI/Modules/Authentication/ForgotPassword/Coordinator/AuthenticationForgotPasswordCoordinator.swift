@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct AuthenticationForgotPasswordCoordinatorParameters {
     let navigationRouter: NavigationRouterType
@@ -32,7 +32,6 @@ enum AuthenticationForgotPasswordCoordinatorResult {
 }
 
 final class AuthenticationForgotPasswordCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -83,7 +82,7 @@ final class AuthenticationForgotPasswordCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationForgotPasswordHostingController
+        authenticationForgotPasswordHostingController
     }
     
     // MARK: - Private

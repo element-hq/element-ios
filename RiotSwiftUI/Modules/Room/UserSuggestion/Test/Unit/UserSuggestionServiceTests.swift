@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +14,12 @@
 // limitations under the License.
 //
 
-import XCTest
 import Combine
+import XCTest
 
 @testable import RiotSwiftUI
 
 class UserSuggestionServiceTests: XCTestCase {
-    
     var service: UserSuggestionService?
     
     override func setUp() {
@@ -107,12 +106,11 @@ class UserSuggestionServiceTests: XCTestCase {
 
 extension UserSuggestionServiceTests: RoomMembersProviderProtocol {
     func fetchMembers(_ members: @escaping ([RoomMembersProviderMember]) -> Void) {
-        
         let users = [("Alice", "@alice:matrix.org"),
                      ("Bob", "@bob:matrix.org")]
         
-        members(users.map({ user in
+        members(users.map { user in
             RoomMembersProviderMember(userId: user.1, displayName: user.0, avatarUrl: "")
-        }))
+        })
     }
 }

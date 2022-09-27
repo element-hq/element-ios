@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ enum MockPollEditFormScreenState: MockScreenState, CaseIterable {
         PollEditForm.self
     }
     
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .creation, pollDetails: .default))
         return ([viewModel], AnyView(PollEditForm(viewModel: viewModel.context)))
     }

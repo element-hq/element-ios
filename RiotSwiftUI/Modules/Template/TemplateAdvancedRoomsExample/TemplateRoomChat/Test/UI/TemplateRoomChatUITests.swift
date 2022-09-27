@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class TemplateRoomChatUITests: MockScreenTestCase {
     func testInitializingRoom() {
@@ -44,12 +44,11 @@ class TemplateRoomChatUITests: MockScreenTestCase {
         
         // Verify bubble grouping with:
         // 3 bubbles
-        let bubbleCount = app.images.matching(identifier:"bubbleImage").count
+        let bubbleCount = app.images.matching(identifier: "bubbleImage").count
         XCTAssertEqual(bubbleCount, 3)
         
         // and 4 text items
-        let bubbleTextItemCount = app.staticTexts.matching(identifier:"bubbleTextContent").count
+        let bubbleTextItemCount = app.staticTexts.matching(identifier: "bubbleTextContent").count
         XCTAssertEqual(bubbleTextItemCount, 4)
     }
-
 }
