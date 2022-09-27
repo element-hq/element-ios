@@ -48,6 +48,9 @@ struct UserSessionInfo: Identifiable {
     /// True to indicate that session has been used under `inactiveSessionDurationTreshold` value
     let isSessionActive: Bool
     
+    /// True to indicate that this is current user session
+    let isCurrentSession: Bool
+    
     // MARK: - Setup
     
     init(sessionId: String,
@@ -55,20 +58,22 @@ struct UserSessionInfo: Identifiable {
          deviceType: DeviceType,
          isVerified: Bool,
          lastSeenIP: String?,
-         lastSeenTimestamp: TimeInterval?) {
+         lastSeenTimestamp: TimeInterval?,
+         isCurrentSession: Bool) {
         self.sessionId = sessionId
         self.sessionName = sessionName
         self.deviceType = deviceType
         self.isVerified = isVerified
         self.lastSeenIP = lastSeenIP
         self.lastSeenTimestamp = lastSeenTimestamp
-        
+
         if let lastSeenTimestamp = lastSeenTimestamp {
             let elapsedTime = Date().timeIntervalSince1970 - lastSeenTimestamp
             isSessionActive = elapsedTime < Self.inactiveSessionDurationTreshold
         } else {
             isSessionActive = true
         }
+        self.isCurrentSession = isCurrentSession
     }
 }
 

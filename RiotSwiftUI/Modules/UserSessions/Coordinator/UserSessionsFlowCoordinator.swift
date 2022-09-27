@@ -53,8 +53,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .openSessionOverview(session: session, isCurrentSession: isCurrentSession):
-                self.openSessionOverview(session: session, isCurrentSession: isCurrentSession)
+            case let .openSessionOverview(session: session):
+                self.openSessionOverview(session: session)
             }
         }
         return coordinator
@@ -70,8 +70,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         return UserSessionDetailsCoordinator(parameters: parameters)
     }
     
-    private func openSessionOverview(session: UserSessionInfo, isCurrentSession: Bool) {
-        let coordinator = createUserSessionOverviewCoordinator(session: session, isCurrentSession: isCurrentSession)
+    private func openSessionOverview(session: UserSessionInfo) {
+        let coordinator = createUserSessionOverviewCoordinator(session: session)
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -82,8 +82,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         pushScreen(with: coordinator)
     }
     
-    private func createUserSessionOverviewCoordinator(session: UserSessionInfo, isCurrentSession: Bool) -> UserSessionOverviewCoordinator {
-        let parameters = UserSessionOverviewCoordinatorParameters(session: session, isCurrentSession: isCurrentSession)
+    private func createUserSessionOverviewCoordinator(session: UserSessionInfo) -> UserSessionOverviewCoordinator {
+        let parameters = UserSessionOverviewCoordinatorParameters(session: session)
         return UserSessionOverviewCoordinator(parameters: parameters)
     }
     

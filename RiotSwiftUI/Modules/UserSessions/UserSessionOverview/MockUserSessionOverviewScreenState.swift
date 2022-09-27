@@ -30,34 +30,36 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
     var screenType: Any.Type {
         UserSessionOverview.self
     }
-
+    
     /// A list of screen state definitions
     static var allCases: [MockUserSessionOverviewScreenState] {
         [.currentSession, .otherSession]
     }
-
+    
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
         let viewModel: UserSessionOverviewViewModel
         switch self {
         case .currentSession:
             let session = UserSessionInfo(sessionId: "session",
-                                                     sessionName: "iOS",
-                                                     deviceType: .mobile,
-                                                     isVerified: false,
-                                                     lastSeenIP: "10.0.0.10",
-                                                     lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
-            viewModel = UserSessionOverviewViewModel(session: session, isCurrentSession: true)
+                                          sessionName: "iOS",
+                                          deviceType: .mobile,
+                                          isVerified: false,
+                                          lastSeenIP: "10.0.0.10",
+                                          lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                                          isCurrentSession: true)
+            viewModel = UserSessionOverviewViewModel(session: session)
         case .otherSession:
             let session = UserSessionInfo(sessionId: "session",
-                                                     sessionName: "Mac",
-                                                     deviceType: .desktop,
-                                                     isVerified: true,
-                                                     lastSeenIP: "10.0.0.10",
-                                                     lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
-            viewModel = UserSessionOverviewViewModel(session: session, isCurrentSession: false)
+                                          sessionName: "Mac",
+                                          deviceType: .desktop,
+                                          isVerified: true,
+                                          lastSeenIP: "10.0.0.10",
+                                          lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                                          isCurrentSession: false)
+            viewModel = UserSessionOverviewViewModel(session: session)
         }
-
+        
         // can simulate service and viewModel actions here if needs be.
         return ([viewModel], AnyView(UserSessionOverview(viewModel: viewModel.context)))
     }

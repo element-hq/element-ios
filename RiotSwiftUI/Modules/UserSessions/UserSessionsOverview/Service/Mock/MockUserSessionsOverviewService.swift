@@ -28,16 +28,16 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     }
     
     init() {
-        let currentSessionInfo = UserSessionInfo(sessionId: "alice", sessionName: "iOS", deviceType: .mobile, isVerified: false, lastSeenIP: "10.0.0.10", lastSeenTimestamp: nil)
+        let currentSessionInfo = UserSessionInfo(sessionId: "alice", sessionName: "iOS", deviceType: .mobile, isVerified: false, lastSeenIP: "10.0.0.10", lastSeenTimestamp: nil, isCurrentSession: true)
         
         let unverifiedSessionsInfo: [UserSessionInfo] = []
         
         let inactiveSessionsInfo: [UserSessionInfo] = []
         
         let otherSessionsInfo: [UserSessionInfo] = [
-            UserSessionInfo(sessionId: "1", sessionName: "macOS", deviceType: .desktop, isVerified: true, lastSeenIP: "1.0.0.1", lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000),
-            UserSessionInfo(sessionId: "2", sessionName: "Firefox on Windows", deviceType: .web, isVerified: true, lastSeenIP: "2.0.0.2", lastSeenTimestamp: Date().timeIntervalSince1970 - 100),
-            UserSessionInfo(sessionId: "3", sessionName: "Android", deviceType: .mobile, isVerified: false, lastSeenIP: "3.0.0.3", lastSeenTimestamp: Date().timeIntervalSince1970 - 10)
+            UserSessionInfo(sessionId: "1", sessionName: "macOS", deviceType: .desktop, isVerified: true, lastSeenIP: "1.0.0.1", lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000, isCurrentSession: false),
+            UserSessionInfo(sessionId: "2", sessionName: "Firefox on Windows", deviceType: .web, isVerified: true, lastSeenIP: "2.0.0.2", lastSeenTimestamp: Date().timeIntervalSince1970 - 100, isCurrentSession: false),
+            UserSessionInfo(sessionId: "3", sessionName: "Android", deviceType: .mobile, isVerified: false, lastSeenIP: "3.0.0.3", lastSeenTimestamp: Date().timeIntervalSince1970 - 10, isCurrentSession: false)
         ]
         
         overviewData = UserSessionsOverviewData(currentSession: currentSessionInfo,

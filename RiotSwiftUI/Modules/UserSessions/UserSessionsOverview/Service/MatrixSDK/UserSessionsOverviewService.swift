@@ -71,13 +71,13 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
               let device = mainAccount.device else {
             return nil
         }
-        return sessionInfo(from: device)
+        return sessionInfo(from: device, isCurrentSession: true)
     }
     
     private func sessionsOverviewData(from devices: [MXDevice]) -> UserSessionsOverviewData {
         let allSessions = devices
             .sorted { $0.lastSeenTs > $1.lastSeenTs }
-            .map { sessionInfo(from: $0) }
+            .map { sessionInfo(from: $0, isCurrentSession: $0.deviceId == mxSession.myDeviceId) }
         
         var currentSession: UserSessionInfo?
         var unverifiedSessions: [UserSessionInfo] = []
@@ -85,19 +85,18 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         var otherSessions: [UserSessionInfo] = []
         
         for session in allSessions {
-            guard session.sessionId != mxSession.myDeviceId else {
+            if session.isCurrentSession {
                 currentSession = session
-                continue
-            }
-            
-            otherSessions.append(session)
-            
-            if session.isVerified == false {
-                unverifiedSessions.append(session)
-            }
-            
-            if session.isSessionActive == false {
-                inactiveSessions.append(session)
+            } else {
+                otherSessions.append(session)
+                
+                if session.isVerified == false {
+                    unverifiedSessions.append(session)
+                }
+                
+                if session.isSessionActive == false {
+                    inactiveSessions.append(session)
+                }
             }
         }
         
@@ -107,7 +106,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                                         otherSessions: otherSessions)
     }
     
-    private func sessionInfo(from device: MXDevice) -> UserSessionInfo {
+    private func sessionInfo(from device: MXDevice, isCurrentSession: Bool) -> UserSessionInfo {
         let isSessionVerified = deviceInfo(for: device.deviceId)?.trustLevel.isVerified ?? false
         
         var lastSeenTs: TimeInterval?
@@ -120,7 +119,8 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                                deviceType: .unknown,
                                isVerified: isSessionVerified,
                                lastSeenIP: device.lastSeenIp,
-                               lastSeenTimestamp: lastSeenTs)
+                               lastSeenTimestamp: lastSeenTs,
+                               isCurrentSession: isCurrentSession)
     }
     
     private func deviceInfo(for deviceId: String) -> MXDeviceInfo? {

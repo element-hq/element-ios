@@ -19,7 +19,6 @@ import SwiftUI
 
 struct UserSessionOverviewCoordinatorParameters {
     let session: UserSessionInfo
-    let isCurrentSession: Bool
 }
 
 final class UserSessionOverviewCoordinator: Coordinator, Presentable {
@@ -41,8 +40,7 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
     init(parameters: UserSessionOverviewCoordinatorParameters) {
         self.parameters = parameters
 
-        viewModel = UserSessionOverviewViewModel(session: parameters.session,
-                                                 isCurrentSession: parameters.isCurrentSession)
+        viewModel = UserSessionOverviewViewModel(session: parameters.session)
         
         hostingController = VectorHostingController(rootView: UserSessionOverview(viewModel: viewModel.context))
         

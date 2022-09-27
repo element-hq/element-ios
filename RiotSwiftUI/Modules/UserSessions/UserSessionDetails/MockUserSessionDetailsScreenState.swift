@@ -46,14 +46,16 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
                                       deviceType: .mobile,
                                       isVerified: false,
                                       lastSeenIP: "10.0.0.10",
-                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                                      isCurrentSession: true)
         case .sessionSectionOnly:
             session = UserSessionInfo(sessionId: "session",
                                       sessionName: "iOS",
                                       deviceType: .mobile,
                                       isVerified: false,
                                       lastSeenIP: nil,
-                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                                      isCurrentSession: false)
         }
         let viewModel = UserSessionDetailsViewModel(session: session)
         

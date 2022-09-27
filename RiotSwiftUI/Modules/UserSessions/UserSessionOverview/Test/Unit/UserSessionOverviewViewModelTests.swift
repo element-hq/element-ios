@@ -23,7 +23,7 @@ class UserSessionOverviewViewModelTests: XCTestCase {
     var sut: UserSessionOverviewViewModel!
 
     func test_whenVerifyCurrentSessionProcessed_completionWithVerifyCurrentSessionCalled() {
-        sut = UserSessionOverviewViewModel(session: createUserSessionInfo(), isCurrentSession: true)
+        sut = UserSessionOverviewViewModel(session: createUserSessionInfo())
         
         var modelResult: UserSessionOverviewViewModelResult?
         sut.completion = { result in
@@ -35,7 +35,7 @@ class UserSessionOverviewViewModelTests: XCTestCase {
     
     func test_whenViewSessionDetailsProcessed_completionWithShowSessionDetailsCalled() {
         let session = createUserSessionInfo()
-        sut = UserSessionOverviewViewModel(session: session, isCurrentSession: true)
+        sut = UserSessionOverviewViewModel(session: session)
 
         var modelResult: UserSessionOverviewViewModelResult?
         sut.completion = { result in
@@ -51,6 +51,7 @@ class UserSessionOverviewViewModelTests: XCTestCase {
                         deviceType: .mobile,
                         isVerified: false,
                         lastSeenIP: "10.0.0.10",
-                        lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+                        lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                        isCurrentSession: true)
     }
 }

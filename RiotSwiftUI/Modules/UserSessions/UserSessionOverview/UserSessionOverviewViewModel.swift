@@ -23,11 +23,11 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
     
     var completion: ((UserSessionOverviewViewModelResult) -> Void)?
     
-    init(session: UserSessionInfo, isCurrentSession: Bool) {
+    init(session: UserSessionInfo) {
         self.session = session
         
-        let cardViewData = UserSessionCardViewData(session: session, isCurrentSessionDisplayMode: isCurrentSession)
-        let state = UserSessionOverviewViewState(cardViewData: cardViewData, isCurrentSession: isCurrentSession)
+        let cardViewData = UserSessionCardViewData(session: session)
+        let state = UserSessionOverviewViewState(cardViewData: cardViewData, isCurrentSession: session.isCurrentSession)
         super.init(initialViewState: state)
     }
     

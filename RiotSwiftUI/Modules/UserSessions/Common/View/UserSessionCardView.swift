@@ -141,9 +141,10 @@ struct UserSessionCardViewPreview: View {
                                       deviceType: .mobile,
                                       isVerified: false,
                                       lastSeenIP: "10.0.0.10",
-                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                                      isCurrentSession: isCurrentSessionInfo)
         
-        viewData = UserSessionCardViewData(session: session, isCurrentSessionDisplayMode: isCurrentSessionInfo)
+        viewData = UserSessionCardViewData(session: session)
     }
     
     var body: some View {

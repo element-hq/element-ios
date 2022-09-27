@@ -89,13 +89,15 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                                        deviceType: DeviceType = .mobile,
                                        isVerified: Bool = false,
                                        lastSeenIP: String?,
-                                       lastSeenTimestamp: TimeInterval = Date().timeIntervalSince1970) -> UserSessionInfo {
+                                       lastSeenTimestamp: TimeInterval = Date().timeIntervalSince1970,
+                                       isCurrentSession: Bool = true) -> UserSessionInfo {
         UserSessionInfo(sessionId: sessionId,
                         sessionName: sessionName,
                         deviceType: deviceType,
                         isVerified: isVerified,
                         lastSeenIP: lastSeenIP,
-                        lastSeenTimestamp: lastSeenTimestamp)
+                        lastSeenTimestamp: lastSeenTimestamp,
+                        isCurrentSession: isCurrentSession)
     }
     
     private func sessionNameItem(sessionName: String) -> UserSessionDetailsSectionItemViewData {
