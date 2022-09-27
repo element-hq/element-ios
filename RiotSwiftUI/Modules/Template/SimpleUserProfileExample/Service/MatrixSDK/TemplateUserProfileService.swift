@@ -18,14 +18,8 @@ import Combine
 import Foundation
 
 class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let session: MXSession
     private var listenerReference: Any?
-    
-    // MARK: Public
     
     var userId: String {
         session.myUser.userId
@@ -40,8 +34,6 @@ class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
     }
     
     private(set) var presenceSubject: CurrentValueSubject<TemplateUserProfilePresence, Never>
-    
-    // MARK: - Setup
     
     init(session: MXSession) {
         self.session = session

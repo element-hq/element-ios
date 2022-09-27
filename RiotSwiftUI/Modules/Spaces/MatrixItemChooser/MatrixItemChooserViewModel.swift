@@ -17,9 +17,8 @@
 import Combine
 import SwiftUI
 
-typealias MatrixItemChooserViewModelType = StateStoreViewModel<MatrixItemChooserViewState,
-    Never,
-    MatrixItemChooserViewAction>
+typealias MatrixItemChooserViewModelType = StateStoreViewModel<MatrixItemChooserViewState, Never, MatrixItemChooserViewAction>
+
 class MatrixItemChooserViewModel: MatrixItemChooserViewModelType, MatrixItemChooserViewModelProtocol {
     // MARK: - Properties
 

@@ -18,18 +18,10 @@ import Combine
 import Foundation
 
 class TemplateRoomListService: TemplateRoomListServiceProtocol {
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let session: MXSession
     private var listenerReference: Any?
-    
-    // MARK: Public
 
     private(set) var roomsSubject: CurrentValueSubject<[TemplateRoomListRoom], Never>
-    
-    // MARK: - Setup
     
     init(session: MXSession) {
         self.session = session

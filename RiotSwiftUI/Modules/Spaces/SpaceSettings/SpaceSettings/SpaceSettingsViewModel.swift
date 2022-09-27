@@ -17,9 +17,8 @@
 import Combine
 import SwiftUI
 
-typealias SpaceSettingsViewModelType = StateStoreViewModel<SpaceSettingsViewState,
-    Never,
-    SpaceSettingsViewAction>
+typealias SpaceSettingsViewModelType = StateStoreViewModel<SpaceSettingsViewState, Never, SpaceSettingsViewAction>
+
 class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModelProtocol {
     // MARK: - Properties
     

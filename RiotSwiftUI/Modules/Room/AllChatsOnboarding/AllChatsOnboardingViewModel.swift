@@ -17,9 +17,7 @@
 import Combine
 import SwiftUI
 
-typealias AllChatsOnboardingViewModelType = StateStoreViewModel<AllChatsOnboardingViewState,
-    Never,
-    AllChatsOnboardingViewAction>
+typealias AllChatsOnboardingViewModelType = StateStoreViewModel<AllChatsOnboardingViewState, Never, AllChatsOnboardingViewAction>
 
 class AllChatsOnboardingViewModel: AllChatsOnboardingViewModelType, AllChatsOnboardingViewModelProtocol {
     // MARK: - Properties

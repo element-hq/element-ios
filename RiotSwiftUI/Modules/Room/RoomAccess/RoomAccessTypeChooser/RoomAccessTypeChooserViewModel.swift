@@ -17,9 +17,8 @@
 import Combine
 import SwiftUI
     
-typealias RoomAccessTypeChooserViewModelType = StateStoreViewModel<RoomAccessTypeChooserViewState,
-    RoomAccessTypeChooserStateAction,
-    RoomAccessTypeChooserViewAction>
+typealias RoomAccessTypeChooserViewModelType = StateStoreViewModel<RoomAccessTypeChooserViewState, RoomAccessTypeChooserStateAction, RoomAccessTypeChooserViewAction>
+
 class RoomAccessTypeChooserViewModel: RoomAccessTypeChooserViewModelType, RoomAccessTypeChooserViewModelProtocol {
     // MARK: - Properties
     

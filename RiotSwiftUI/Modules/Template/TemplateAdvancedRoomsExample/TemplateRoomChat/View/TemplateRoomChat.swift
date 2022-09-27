@@ -18,13 +18,7 @@ import Combine
 import SwiftUI
 
 struct TemplateRoomChat: View {
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    // MARK: Public
     
     @ObservedObject var viewModel: TemplateRoomChatViewModel.Context
     var presentedModally = false

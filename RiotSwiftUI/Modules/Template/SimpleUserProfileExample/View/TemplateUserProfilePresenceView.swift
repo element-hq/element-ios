@@ -17,10 +17,6 @@
 import SwiftUI
 
 struct TemplateUserProfilePresenceView: View {
-    // MARK: - Properties
-    
-    // MARK: Public
-
     let presence: TemplateUserProfilePresence
     
     var body: some View {

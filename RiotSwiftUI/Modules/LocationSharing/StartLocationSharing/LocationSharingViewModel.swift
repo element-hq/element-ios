@@ -18,9 +18,8 @@ import Combine
 import CoreLocation
 import SwiftUI
 
-typealias LocationSharingViewModelType = StateStoreViewModel<LocationSharingViewState,
-    Never,
-    LocationSharingViewAction>
+typealias LocationSharingViewModelType = StateStoreViewModel<LocationSharingViewState, Never, LocationSharingViewAction>
+
 class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingViewModelProtocol {
     // MARK: - Properties
     

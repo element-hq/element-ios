@@ -17,26 +17,16 @@
 import Combine
 import SwiftUI
 
-typealias TemplateRoomChatViewModelType = StateStoreViewModel<TemplateRoomChatViewState,
-    Never,
-    TemplateRoomChatViewAction>
+typealias TemplateRoomChatViewModelType = StateStoreViewModel<TemplateRoomChatViewState, Never, TemplateRoomChatViewAction>
 
 class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChatViewModelProtocol {
     enum Constants {
         static let maxTimeBeforeNewBubble: TimeInterval = 5 * 60
     }
-
-    // MARK: - Properties
-    
-    // MARK: Private
     
     private let templateRoomChatService: TemplateRoomChatServiceProtocol
     
-    // MARK: Public
-    
     var callback: ((TemplateRoomChatViewModelAction) -> Void)?
-    
-    // MARK: - Setup
     
     init(templateRoomChatService: TemplateRoomChatServiceProtocol) {
         self.templateRoomChatService = templateRoomChatService

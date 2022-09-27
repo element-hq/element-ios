@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-typealias OnboardingCelebrationViewModelType = StateStoreViewModel<OnboardingCelebrationViewState,
-    Never,
-    OnboardingCelebrationViewAction>
+typealias OnboardingCelebrationViewModelType = StateStoreViewModel<OnboardingCelebrationViewState, Never, OnboardingCelebrationViewAction>
 
 class OnboardingCelebrationViewModel: OnboardingCelebrationViewModelType, OnboardingCelebrationViewModelProtocol {
     // MARK: - Properties

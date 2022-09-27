@@ -21,21 +21,13 @@ struct TemplateRoomChatCoordinatorParameters {
 }
 
 final class TemplateRoomChatCoordinator: Coordinator, Presentable {
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let parameters: TemplateRoomChatCoordinatorParameters
     private let templateRoomChatHostingController: UIViewController
     private var templateRoomChatViewModel: TemplateRoomChatViewModelProtocol
-    
-    // MARK: Public
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     var callback: (() -> Void)?
-    
-    // MARK: - Setup
     
     init(parameters: TemplateRoomChatCoordinatorParameters) {
         self.parameters = parameters

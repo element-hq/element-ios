@@ -17,9 +17,7 @@
 import Combine
 import SwiftUI
 
-typealias AuthenticationRegistrationViewModelType = StateStoreViewModel<AuthenticationRegistrationViewState,
-    Never,
-    AuthenticationRegistrationViewAction>
+typealias AuthenticationRegistrationViewModelType = StateStoreViewModel<AuthenticationRegistrationViewState, Never, AuthenticationRegistrationViewAction>
 
 class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelType, AuthenticationRegistrationViewModelProtocol {
     // MARK: - Properties

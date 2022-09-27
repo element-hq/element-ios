@@ -22,24 +22,16 @@ struct TemplateUserProfileCoordinatorParameters {
 }
 
 final class TemplateUserProfileCoordinator: Coordinator, Presentable {
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let parameters: TemplateUserProfileCoordinatorParameters
     private let templateUserProfileHostingController: UIViewController
     private var templateUserProfileViewModel: TemplateUserProfileViewModelProtocol
     
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
-    
-    // MARK: Public
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     var completion: (() -> Void)?
-    
-    // MARK: - Setup
     
     init(parameters: TemplateUserProfileCoordinatorParameters) {
         self.parameters = parameters

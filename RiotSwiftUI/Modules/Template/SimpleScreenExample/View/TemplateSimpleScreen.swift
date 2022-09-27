@@ -17,10 +17,6 @@
 import SwiftUI
 
 struct TemplateSimpleScreen: View {
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
@@ -28,11 +24,7 @@ struct TemplateSimpleScreen: View {
         horizontalSizeClass == .regular ? 50 : 16
     }
     
-    // MARK: Public
-    
     @ObservedObject var viewModel: TemplateSimpleScreenViewModel.Context
-    
-    // MARK: Views
     
     var body: some View {
         GeometryReader { geometry in

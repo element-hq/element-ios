@@ -18,17 +18,11 @@ import Combine
 import Foundation
 
 class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let room: MXRoom
     private let eventFormatter: EventFormatter
     private var timeline: MXEventTimeline?
     private var eventBatch: [MXEvent]
     private var roomListenerReference: Any?
-    
-    // MARK: Public
 
     private(set) var chatMessagesSubject: CurrentValueSubject<[TemplateRoomChatMessage], Never>
     private(set) var roomInitializationStatus: CurrentValueSubject<TemplateRoomChatRoomInitializationStatus, Never>
@@ -36,8 +30,6 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     var roomName: String? {
         room.summary.displayname
     }
-
-    // MARK: - Setup
     
     init(room: MXRoom) {
         self.room = room

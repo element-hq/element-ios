@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-typealias AuthenticationLoginViewModelType = StateStoreViewModel<AuthenticationLoginViewState,
-    Never,
-    AuthenticationLoginViewAction>
+typealias AuthenticationLoginViewModelType = StateStoreViewModel<AuthenticationLoginViewState, Never, AuthenticationLoginViewAction>
 
 class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, AuthenticationLoginViewModelProtocol {
     // MARK: - Properties
