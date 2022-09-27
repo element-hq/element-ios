@@ -99,9 +99,21 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
     
     private func deviceSection(userSessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
         var deviceSectionItems = [UserSessionDetailsSectionItemViewData]()
+        if let brand = userSessionInfo.deviceBrand {
+            deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceBrand,
+                                            value: brand))
+        }
+        if let deviceOSFullName = userSessionInfo.deviceOSFullName {
+            deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceOs,
+                                            value: deviceOSFullName))
+        }
         if let lastSeenIP = userSessionInfo.lastSeenIP {
-            deviceSectionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.userSessionDetailsDeviceIpAddress,
-                                                                            value: lastSeenIP))
+            deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceIpAddress,
+                                            value: lastSeenIP))
+        }
+        if let lastSeenIPLocation = userSessionInfo.lastSeenIPLocation {
+            deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceIpLocation,
+                                            value: lastSeenIPLocation))
         }
         if deviceSectionItems.count > 0 {
             return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsDeviceSectionHeader,

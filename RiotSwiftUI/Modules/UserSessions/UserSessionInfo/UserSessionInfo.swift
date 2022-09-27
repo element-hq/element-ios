@@ -77,6 +77,8 @@ extension UserSessionInfo: Identifiable {
     }
 }
 
+// MARK: - Derived
+
 extension UserSessionInfo {
     /// True to indicate that session has been used under `inactiveSessionDurationTreshold` value
     var isSessionActive: Bool {
@@ -86,6 +88,13 @@ extension UserSessionInfo {
 
         let elapsedTime = Date().timeIntervalSince1970 - lastSeenTimestamp
         return elapsedTime < Self.inactiveSessionDurationTreshold
+    }
+
+    var deviceOSFullName: String? {
+        guard let deviceOS = deviceOS, let deviceOSVersion = deviceOSVersion else {
+            return nil
+        }
+        return [deviceOS, deviceOSVersion].joined(separator: " ")
     }
 }
 
