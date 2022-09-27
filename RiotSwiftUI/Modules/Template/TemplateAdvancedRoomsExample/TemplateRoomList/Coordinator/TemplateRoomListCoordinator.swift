@@ -21,7 +21,6 @@ struct TemplateRoomListCoordinatorParameters {
 }
 
 final class TemplateRoomListCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -59,12 +58,11 @@ final class TemplateRoomListCoordinator: Coordinator, Presentable {
                 self.callback?(.didSelectRoom(roomId))
             case .done:
                 self.callback?(.done)
-            break
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.templateRoomListHostingController
+        templateRoomListHostingController
     }
 }

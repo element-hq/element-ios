@@ -16,13 +16,11 @@
 
 import SwiftUI
 
-
 typealias AuthenticationTermsViewModelType = StateStoreViewModel<AuthenticationTermsViewState,
-                                                                 Never,
-                                                                 AuthenticationTermsViewAction>
+    Never,
+    AuthenticationTermsViewAction>
 
 class AuthenticationTermsViewModel: AuthenticationTermsViewModelType, AuthenticationTermsViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private

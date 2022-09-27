@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct TemplateSimpleScreenCoordinatorParameters {
     let promptType: TemplateSimpleScreenPromptType
 }
 
 final class TemplateSimpleScreenCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -65,7 +64,7 @@ final class TemplateSimpleScreenCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.templateSimpleScreenHostingController
+        templateSimpleScreenHostingController
     }
     
     // MARK: - Private

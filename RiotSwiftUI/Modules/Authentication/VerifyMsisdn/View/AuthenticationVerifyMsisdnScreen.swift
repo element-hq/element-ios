@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationVerifyMsisdnScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -31,7 +30,7 @@ struct AuthenticationVerifyMsisdnScreen: View {
     // MARK: Views
     
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { _ in
             VStack {
                 ScrollView {
                     if viewModel.viewState.hasSentSMS {

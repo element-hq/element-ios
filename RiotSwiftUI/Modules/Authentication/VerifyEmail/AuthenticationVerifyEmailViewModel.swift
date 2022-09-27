@@ -17,10 +17,9 @@
 import SwiftUI
 
 typealias AuthenticationVerifyEmailViewModelType = StateStoreViewModel<AuthenticationVerifyEmailViewState,
-                                                                       Never,
-                                                                       AuthenticationVerifyEmailViewAction>
+    Never,
+    AuthenticationVerifyEmailViewAction>
 class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType, AuthenticationVerifyEmailViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private

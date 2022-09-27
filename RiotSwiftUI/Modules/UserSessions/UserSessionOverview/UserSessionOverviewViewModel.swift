@@ -17,8 +17,8 @@
 import SwiftUI
 
 typealias UserSessionOverviewViewModelType = StateStoreViewModel<UserSessionOverviewViewState,
-                                                                 Never,
-                                                                 UserSessionOverviewViewAction>
+    Never,
+    UserSessionOverviewViewAction>
 
 class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessionOverviewViewModelProtocol {
     private let userSessionInfo: UserSessionInfo

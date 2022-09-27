@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import Combine
+import XCTest
 
 @testable import RiotSwiftUI
 
@@ -47,10 +47,10 @@ class UserSessionOverviewViewModelTests: XCTestCase {
     
     private func createUserSessionInfo() -> UserSessionInfo {
         UserSessionInfo(sessionId: "session",
-                               sessionName: "iOS",
-                               deviceType: .mobile,
-                               isVerified: false,
-                               lastSeenIP: "10.0.0.10",
-                               lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+                        sessionName: "iOS",
+                        deviceType: .mobile,
+                        isVerified: false,
+                        lastSeenIP: "10.0.0.10",
+                        lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
     }
 }

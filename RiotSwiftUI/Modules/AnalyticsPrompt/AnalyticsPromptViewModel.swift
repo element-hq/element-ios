@@ -14,14 +14,13 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 typealias AnalyticsPromptViewModelType = StateStoreViewModel<AnalyticsPromptViewState,
-                                                             Never,
-                                                             AnalyticsPromptViewAction>
+    Never,
+    AnalyticsPromptViewAction>
 class AnalyticsPromptViewModel: AnalyticsPromptViewModelType {
-
     // MARK: - Properties
 
     // MARK: Private

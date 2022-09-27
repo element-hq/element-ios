@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 typealias OnboardingAvatarViewModelType = StateStoreViewModel<OnboardingAvatarViewState,
-                                                              Never,
-                                                              OnboardingAvatarViewAction>
+    Never,
+    OnboardingAvatarViewAction>
 
 class OnboardingAvatarViewModel: OnboardingAvatarViewModelType, OnboardingAvatarViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private

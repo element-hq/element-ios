@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,14 +17,13 @@
 import SwiftUI
 
 struct MultilineTextField: View {
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
 
     @Binding private var text: String
     @State private var dynamicHeight: CGFloat = 100
     @State private var isEditing = false
     
-    private var placeholder: String = ""
+    private var placeholder = ""
     
     private var showingPlaceholder: Bool {
         text.isEmpty
@@ -32,11 +31,11 @@ struct MultilineTextField: View {
 
     init(_ placeholder: String, text: Binding<String>) {
         self.placeholder = placeholder
-        self._text = text
+        _text = text
     }
     
     private var textColor: Color {
-        if (theme.identifier == ThemeIdentifier.dark) {
+        if theme.identifier == ThemeIdentifier.dark {
             return theme.colors.primaryContent
         } else {
             return theme.colors.primaryContent
@@ -44,11 +43,11 @@ struct MultilineTextField: View {
     }
     
     private var backgroundColor: Color {
-        return theme.colors.background
+        theme.colors.background
     }
     
     private var placeholderColor: Color {
-        return theme.colors.tertiaryContent
+        theme.colors.tertiaryContent
     }
     
     private var borderColor: Color {
@@ -60,7 +59,7 @@ struct MultilineTextField: View {
     }
     
     private var borderWidth: CGFloat {
-        return isEditing ? 2.0 : 1.5
+        isEditing ? 2.0 : 1.5
     }
     
     var body: some View {
@@ -91,7 +90,7 @@ struct MultilineTextField: View {
     }
 }
 
-fileprivate struct UITextViewWrapper: UIViewRepresentable {
+private struct UITextViewWrapper: UIViewRepresentable {
     typealias UIViewType = UITextView
 
     @Binding var text: String
@@ -115,8 +114,8 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UITextView, context: UIViewRepresentableContext<UITextViewWrapper>) {
-        if uiView.text != self.text {
-            uiView.text = self.text
+        if uiView.text != text {
+            uiView.text = text
         }
 
         UITextViewWrapper.recalculateHeight(view: uiView, result: $calculatedHeight)
@@ -132,7 +131,7 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(text: $text, height: $calculatedHeight, isEditing: $isEditing)
+        Coordinator(text: $text, height: $calculatedHeight, isEditing: $isEditing)
     }
 
     final class Coordinator: NSObject, UITextViewDelegate {
@@ -142,7 +141,7 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
 
         init(text: Binding<String>, height: Binding<CGFloat>, isEditing: Binding<Bool>) {
             self.text = text
-            self.calculatedHeight = height
+            calculatedHeight = height
             self.isEditing = isEditing
         }
 
@@ -171,9 +170,8 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
 }
 
 struct MultilineTextField_Previews: PreviewProvider {
-    
     static var previews: some View {
-        return Group {
+        Group {
             VStack {
                 PreviewWrapper()
                 PlaceholderPreviewWrapper()

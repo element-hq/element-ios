@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,12 +33,12 @@ enum MockUserSessionsOverviewScreenState: MockScreenState, CaseIterable {
     /// A list of screen state definitions
     static var allCases: [MockUserSessionsOverviewScreenState] {
         // Each of the presence statuses
-        return [.verifiedSession]
+        [.verifiedSession]
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
-        let service: MockUserSessionsOverviewService = MockUserSessionsOverviewService()
+    var screenView: ([Any], AnyView) {
+        let service = MockUserSessionsOverviewService()
         switch self {
         case .verifiedSession:
             break

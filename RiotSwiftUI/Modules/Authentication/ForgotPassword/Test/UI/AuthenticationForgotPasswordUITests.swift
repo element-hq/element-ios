@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class AuthenticationForgotPasswordUITests: MockScreenTestCase {
     func testEmptyAddress() {
@@ -98,5 +98,4 @@ class AuthenticationForgotPasswordUITests: MockScreenTestCase {
         XCTAssertTrue(backButton.exists, "Back button should be shown.")
         XCTAssertEqual(backButton.label, "Back")
     }
-
 }

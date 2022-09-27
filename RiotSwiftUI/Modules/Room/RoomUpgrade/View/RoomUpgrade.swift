@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,9 @@
 import SwiftUI
 
 struct RoomUpgrade: View {
-
     // MARK: - Properties
     
-    @State var autoInviteUsers: Bool = true
+    @State var autoInviteUsers = true
     
     // MARK: Private
     
@@ -86,13 +85,13 @@ struct RoomUpgrade: View {
             .padding(.horizontal, 24)
             .padding(.vertical, 16)
         }
-        .background(RoundedRectangle.init(cornerRadius: 8).foregroundColor(theme.colors.background))
+        .background(RoundedRectangle(cornerRadius: 8).foregroundColor(theme.colors.background))
         .padding(.horizontal, 20)
         .frame(minWidth: 0, maxWidth: 500)
     }
     
     private func noteText(_ message: String) -> some View {
-        return Text(message)
+        Text(message)
             .multilineTextAlignment(.center)
             .font(theme.fonts.subheadline)
             .foregroundColor(theme.colors.secondaryContent)

@@ -1,6 +1,6 @@
 // File created from SimpleUserProfileExample
 // $ createScreen.sh Spaces/SpaceCreation/SpaceCreationPostProcess SpaceCreationPostProcess
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@
 import Foundation
 
 protocol SpaceCreationPostProcessViewModelProtocol {
-    
     var completion: ((SpaceCreationPostProcessViewModelResult) -> Void)? { get set }
     static func makeSpaceCreationPostProcessViewModel(spaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol) -> SpaceCreationPostProcessViewModelProtocol
     var context: SpaceCreationPostProcessViewModelType.Context { get }

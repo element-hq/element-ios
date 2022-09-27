@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct RoomNotificationSettings: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     @ObservedObject var viewModel: RoomNotificationSettingsSwiftUIViewModel
@@ -42,7 +41,7 @@ struct RoomNotificationSettings: View {
     
     var body: some View {
         VectorForm {
-            if  let avatarData = viewModel.viewState.avatarData as? AvatarInputProtocol {
+            if let avatarData = viewModel.viewState.avatarData as? AvatarInputProtocol {
                 RoomNotificationSettingsHeader(
                     avatarData: avatarData,
                     displayName: viewModel.viewState.displayName
@@ -74,7 +73,6 @@ struct RoomNotificationSettings: View {
 }
 
 struct RoomNotificationSettings_Previews: PreviewProvider {
-    
     static let mockViewModel = RoomNotificationSettingsSwiftUIViewModel(
         roomNotificationService: MockRoomNotificationSettingsService.example,
         avatarData: MockAvatarInput.example,

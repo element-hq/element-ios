@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +14,20 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 /// Provides the theme and theme updates to SwiftUI.
 ///
 /// Replaces the old ThemeObserver. Riot app can push updates to this class
 /// removing the dependency of this class on the `ThemeService`.
 class ThemePublisher: ObservableObject {
-    
-    private static var _shared: ThemePublisher? = nil
+    private static var _shared: ThemePublisher?
     static var shared: ThemePublisher {
-            if _shared == nil {
-                configure(themeId: .light)
-            }
-            return _shared!
+        if _shared == nil {
+            configure(themeId: .light)
+        }
+        return _shared!
     }
     
     @Published private(set) var theme: ThemeSwiftUI
@@ -38,7 +37,7 @@ class ThemePublisher: ObservableObject {
     }
     
     init(themeId: ThemeIdentifier) {
-        _theme = Published.init(initialValue: themeId.themeSwiftUI)
+        _theme = Published(initialValue: themeId.themeSwiftUI)
     }
 
     func republish(themeIdPublisher: AnyPublisher<ThemeIdentifier, Never>) {

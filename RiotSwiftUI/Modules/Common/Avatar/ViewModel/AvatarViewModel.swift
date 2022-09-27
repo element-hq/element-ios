@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +14,12 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
 import DesignKit
+import Foundation
 
 /// Simple ViewModel that supports loading an avatar image
 class AvatarViewModel: InjectableObject, ObservableObject {
-    
     @Inject var avatarService: AvatarServiceProtocol
     
     @Published private(set) var viewState = AvatarViewState.empty
@@ -34,24 +33,22 @@ class AvatarViewModel: InjectableObject, ObservableObject {
     ///   - displayName: Display name of the avatar.
     ///   - colorCount: The count of total avatar colors used to generate the stable color index.
     ///   - avatarSize: The size of the avatar to fetch (as defined within DesignKit).
-    func loadAvatar(
-        mxContentUri: String?,
-        matrixItemId: String,
-        displayName: String?,
-        colorCount: Int,
-        avatarSize: AvatarSize) {
-        
+    func loadAvatar(mxContentUri: String?,
+                    matrixItemId: String,
+                    displayName: String?,
+                    colorCount: Int,
+                    avatarSize: AvatarSize) {
         let placeholderViewModel = PlaceholderAvatarViewModel(displayName: displayName,
                                                               matrixItemId: matrixItemId,
                                                               colorCount: colorCount)
         
-        self.viewState = .placeholder(placeholderViewModel.firstCharacterCapitalized, placeholderViewModel.stableColorIndex)
+        viewState = .placeholder(placeholderViewModel.firstCharacterCapitalized, placeholderViewModel.stableColorIndex)
         
         guard let mxContentUri = mxContentUri, mxContentUri.count > 0 else {
             return
         }
         
-            avatarService.avatarImage(mxContentUri: mxContentUri, avatarSize: avatarSize)
+        avatarService.avatarImage(mxContentUri: mxContentUri, avatarSize: avatarSize)
             .sink { completion in
                 guard case let .failure(error) = completion else { return }
                 UILog.error("[AvatarService] Failed to retrieve avatar", context: error)

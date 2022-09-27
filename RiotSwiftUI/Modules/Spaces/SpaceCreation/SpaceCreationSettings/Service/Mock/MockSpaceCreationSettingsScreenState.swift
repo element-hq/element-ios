@@ -1,6 +1,6 @@
 // File created from TemplateAdvancedRoomsExample
 // $ createSwiftUITwoScreen.sh Spaces/SpaceCreation SpaceCreation SpaceCreationMenu SpaceCreationSettings
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@
 
 import Foundation
 import SwiftUI
-
 
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
@@ -40,7 +39,7 @@ enum MockSpaceCreationSettingsScreenState: MockScreenState, CaseIterable {
         let creationParameters = SpaceCreationParameters()
         creationParameters.name = "Fake"
 
-        let service: MockSpaceCreationSettingsService = MockSpaceCreationSettingsService()
+        let service = MockSpaceCreationSettingsService()
         switch self {
         case .privateSpace:
             creationParameters.isPublic = false
@@ -60,7 +59,7 @@ enum MockSpaceCreationSettingsScreenState: MockScreenState, CaseIterable {
         return (
             [service, viewModel],
             AnyView(SpaceCreationSettings(viewModel: viewModel.context)
-                        .addDependency(MockAvatarService.example))
+                .addDependency(MockAvatarService.example))
         )
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -81,15 +81,19 @@ struct SpaceSettingsViewState: BindableState {
     var isModified: Bool {
         userSelectedAvatar != nil || isRoomNameModified || isTopicModified || isAddressModified
     }
+
     var isRoomNameModified: Bool {
         (roomProperties?.name ?? "") != bindings.name
     }
+
     var isTopicModified: Bool {
         (roomProperties?.topic ?? "") != bindings.topic
     }
+
     var isAddressModified: Bool {
         (roomProperties?.address ?? "") != bindings.address
     }
+
     var bindings: SpaceSettingsViewModelBindings
 }
 

@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class TimelinePollUITests: MockScreenTestCase {
     func testOpenDisclosedPoll() {

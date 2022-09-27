@@ -17,11 +17,10 @@
 import SwiftUI
 
 typealias OnboardingUseCaseViewModelType = StateStoreViewModel<OnboardingUseCaseViewState,
-                                                               OnboardingUseCaseStateAction,
-                                                               OnboardingUseCaseViewAction>
+    OnboardingUseCaseStateAction,
+    OnboardingUseCaseViewAction>
 
 class OnboardingUseCaseViewModel: OnboardingUseCaseViewModelType, OnboardingUseCaseViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,7 +49,6 @@ struct UserSessionsOverview: View {
         ScrollView {
             // Security recommendations section
             if viewModel.viewState.unverifiedSessionsViewData.isEmpty == false || viewModel.viewState.inactiveSessionsViewData.isEmpty == false {
-                
                 // TODO:
             }
             
@@ -65,7 +64,7 @@ struct UserSessionsOverview: View {
         .frame(maxHeight: .infinity)
         .navigationTitle(VectorL10n.userSessionsOverviewTitle)
         .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
-        .onAppear() {
+        .onAppear {
             viewModel.send(viewAction: .viewAppeared)
         }
     }

@@ -17,11 +17,10 @@
 import SwiftUI
 
 typealias TemplateSimpleScreenViewModelType = StateStoreViewModel<TemplateSimpleScreenViewState,
-                                                                  Never,
-                                                                  TemplateSimpleScreenViewAction>
+    Never,
+    TemplateSimpleScreenViewAction>
 
 class TemplateSimpleScreenViewModel: TemplateSimpleScreenViewModelType, TemplateSimpleScreenViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private

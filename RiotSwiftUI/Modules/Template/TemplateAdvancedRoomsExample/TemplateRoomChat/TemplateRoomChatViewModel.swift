@@ -14,18 +14,18 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 typealias TemplateRoomChatViewModelType = StateStoreViewModel<TemplateRoomChatViewState,
-                                                              Never,
-                                                              TemplateRoomChatViewAction>
+    Never,
+    TemplateRoomChatViewAction>
 
 class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChatViewModelProtocol {
-    
     enum Constants {
-        static let maxTimeBeforeNewBubble: TimeInterval = 5*60
+        static let maxTimeBeforeNewBubble: TimeInterval = 5 * 60
     }
+
     // MARK: - Properties
     
     // MARK: Private
@@ -70,9 +70,8 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     }
     
     private static func makeBubbles(messages: [TemplateRoomChatMessage]) -> [TemplateRoomChatBubble] {
-        
         var bubbleOrder = [String]()
-        var bubbleMap = [String:TemplateRoomChatBubble]()
+        var bubbleMap = [String: TemplateRoomChatBubble]()
         
         messages.enumerated().forEach { i, message in
             // New message content
@@ -85,9 +84,8 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
                let lastBubbleId = bubbleOrder.last,
                var lastBubble = bubbleMap[lastBubbleId],
                lastBubble.sender.id == message.sender.id,
-               let interveningTime =  lastBubble.items.last?.timestamp.timeIntervalSince(message.timestamp),
-               abs(interveningTime) < Constants.maxTimeBeforeNewBubble
-            {
+               let interveningTime = lastBubble.items.last?.timestamp.timeIntervalSince(message.timestamp),
+               abs(interveningTime) < Constants.maxTimeBeforeNewBubble {
                 // if the last bubble's last message was within
                 // the last 5 minutes append
                 let item = TemplateRoomChatBubbleItem(
@@ -108,7 +106,7 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
                 bubbleMap[bubble.id] = bubble
             }
         }
-        return bubbleOrder.compactMap({ bubbleMap[$0] })
+        return bubbleOrder.compactMap { bubbleMap[$0] }
     }
     
     // MARK: - Public

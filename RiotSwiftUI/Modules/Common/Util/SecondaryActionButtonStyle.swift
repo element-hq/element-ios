@@ -20,7 +20,7 @@ struct SecondaryActionButtonStyle: ButtonStyle {
     @Environment(\.theme) private var theme
     @Environment(\.isEnabled) private var isEnabled
     
-    var customColor: Color? = nil
+    var customColor: Color?
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
@@ -29,8 +29,8 @@ struct SecondaryActionButtonStyle: ButtonStyle {
             .foregroundColor(customColor ?? theme.colors.accent)
             .font(theme.fonts.body)
             .background(RoundedRectangle(cornerRadius: 8)
-                            .strokeBorder()
-                            .foregroundColor(customColor ?? theme.colors.accent))
+                .strokeBorder()
+                .foregroundColor(customColor ?? theme.colors.accent))
             .opacity(opacity(when: configuration.isPressed))
     }
     
@@ -62,7 +62,7 @@ struct SecondaryActionButtonStyle_Previews: PreviewProvider {
                 .disabled(true)
             
             Button("Red BG") { }
-            .buttonStyle(SecondaryActionButtonStyle(customColor: .red))
+                .buttonStyle(SecondaryActionButtonStyle(customColor: .red))
             
             Button { } label: {
                 Text("Custom")

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -46,8 +45,8 @@ class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
     
     init(session: MXSession) {
         self.session = session
-        self.presenceSubject = CurrentValueSubject(TemplateUserProfilePresence(mxPresence: session.myUser.presence))
-        self.listenerReference = setupPresenceListener()
+        presenceSubject = CurrentValueSubject(TemplateUserProfilePresence(mxPresence: session.myUser.presence))
+        listenerReference = setupPresenceListener()
     }
 
     deinit {
@@ -70,8 +69,7 @@ class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
     }
 }
 
-fileprivate extension TemplateUserProfilePresence {
-    
+private extension TemplateUserProfilePresence {
     init(mxPresence: MXPresence) {
         switch mxPresence {
         case .online:

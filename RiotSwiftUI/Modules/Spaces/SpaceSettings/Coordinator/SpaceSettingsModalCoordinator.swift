@@ -24,7 +24,6 @@ enum SpaceSettingsModalCoordinatorAction {
 
 @objcMembers
 final class SpaceSettingsModalCoordinator: Coordinator {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -36,7 +35,7 @@ final class SpaceSettingsModalCoordinator: Coordinator {
     }
     
     private var navigationRouter: NavigationRouterType {
-        return self.parameters.navigationRouter
+        parameters.navigationRouter
     }
     
     // MARK: Public
@@ -50,31 +49,30 @@ final class SpaceSettingsModalCoordinator: Coordinator {
     
     init(parameters: SpaceSettingsModalCoordinatorParameters) {
         self.parameters = parameters
-    }    
+    }
     
     // MARK: - Public
     
-    
     func start() {
         MXLog.debug("[SpaceSettingsModalCoordinator] did start.")
-        let rootCoordinator = self.createSpaceSettingsCoordinator()
+        let rootCoordinator = createSpaceSettingsCoordinator()
         rootCoordinator.start()
         
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
         
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+        if navigationRouter.modules.isEmpty == false {
+            navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             })
         } else {
-            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+            navigationRouter.setRootModule(rootCoordinator) { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private
@@ -82,7 +80,7 @@ final class SpaceSettingsModalCoordinator: Coordinator {
     func pushScreen(with coordinator: Coordinator & Presentable) {
         add(childCoordinator: coordinator)
         
-        self.navigationRouter.push(coordinator, animated: true, popCompletion: { [weak self] in
+        navigationRouter.push(coordinator, animated: true, popCompletion: { [weak self] in
             self?.remove(childCoordinator: coordinator)
         })
         
@@ -110,12 +108,12 @@ final class SpaceSettingsModalCoordinator: Coordinator {
         switch optionType {
         case .rooms:
             Analytics.shared.viewRoomTrigger = .spaceSettings
-            exploreRooms(ofSpaceWithId: self.parameters.spaceId)
+            exploreRooms(ofSpaceWithId: parameters.spaceId)
         case .members:
             Analytics.shared.viewRoomTrigger = .spaceSettings
-            showMembers(ofSpaceWithId: self.parameters.spaceId)
+            showMembers(ofSpaceWithId: parameters.spaceId)
         case .visibility:
-            showAccess(ofSpaceWithId: self.parameters.spaceId)
+            showAccess(ofSpaceWithId: parameters.spaceId)
         }
     }
     
@@ -124,7 +122,7 @@ final class SpaceSettingsModalCoordinator: Coordinator {
         coordinator.delegate = self
         add(childCoordinator: coordinator)
         coordinator.start()
-        self.navigationRouter.present(coordinator.toPresentable(), animated: true)
+        navigationRouter.present(coordinator.toPresentable(), animated: true)
     }
     
     private func showMembers(ofSpaceWithId spaceId: String) {
@@ -132,7 +130,7 @@ final class SpaceSettingsModalCoordinator: Coordinator {
         coordinator.delegate = self
         add(childCoordinator: coordinator)
         coordinator.start()
-        self.navigationRouter.present(coordinator.toPresentable(), animated: true)
+        navigationRouter.present(coordinator.toPresentable(), animated: true)
     }
     
     private func showAccess(ofSpaceWithId spaceId: String) {
@@ -158,23 +156,25 @@ final class SpaceSettingsModalCoordinator: Coordinator {
         }
         add(childCoordinator: coordinator)
         coordinator.start()
-        self.navigationRouter.present(coordinator.toPresentable(), animated: true)
+        navigationRouter.present(coordinator.toPresentable(), animated: true)
     }
 }
 
 // MARK: - ExploreRoomCoordinatorDelegate
+
 extension SpaceSettingsModalCoordinator: ExploreRoomCoordinatorDelegate {
     func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType) {
-        self.navigationRouter.dismissModule(animated: true, completion: {
+        navigationRouter.dismissModule(animated: true, completion: {
             self.remove(childCoordinator: coordinator)
         })
     }
 }
 
 // MARK: - SpaceMembersCoordinatorDelegate
+
 extension SpaceSettingsModalCoordinator: SpaceMembersCoordinatorDelegate {
     func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
-        self.navigationRouter.dismissModule(animated: true, completion: {
+        navigationRouter.dismissModule(animated: true, completion: {
             self.remove(childCoordinator: coordinator)
         })
     }

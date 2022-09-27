@@ -17,8 +17,8 @@
 import SwiftUI
 
 typealias UserSessionsOverviewViewModelType = StateStoreViewModel<UserSessionsOverviewViewState,
-                                                                 Never,
-                                                                 UserSessionsOverviewViewAction>
+    Never,
+    UserSessionsOverviewViewAction>
 
 class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSessionsOverviewViewModelProtocol {
     private let userSessionsOverviewService: UserSessionsOverviewServiceProtocol
@@ -88,7 +88,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             case .success(let overViewData):
                 self.updateViewState(with: overViewData)
             case .failure(let error):
-                // TODO
+                // TODO:
                 break
             }
         }

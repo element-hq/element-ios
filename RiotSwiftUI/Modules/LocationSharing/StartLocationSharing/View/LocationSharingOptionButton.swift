@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct LocationSharingOptionButton<Content: View>: View {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -25,7 +24,7 @@ struct LocationSharingOptionButton<Content: View>: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     let text: String
-    let action: () -> (Void)
+    let action: () -> Void
     @ViewBuilder var buttonIcon: Content
     
     var body: some View {
@@ -44,21 +43,15 @@ struct LocationSharingOptionButton<Content: View>: View {
 struct LocationSharingOptionButton_Previews: PreviewProvider {
     static var previews: some View {
         VStack(alignment: .leading) {
-            LocationSharingOptionButton(text: VectorL10n.locationSharingStaticShareTitle) {
-                
-            } buttonIcon: {
+            LocationSharingOptionButton(text: VectorL10n.locationSharingStaticShareTitle) { } buttonIcon: {
                 AvatarImage(avatarData: AvatarInput(mxContentUri: nil, matrixItemId: "Alice", displayName: "Alice"), size: .medium)
                     .border()
             }
-            LocationSharingOptionButton(text: VectorL10n.locationSharingLiveShareTitle) {
-                
-            } buttonIcon: {
+            LocationSharingOptionButton(text: VectorL10n.locationSharingLiveShareTitle) { } buttonIcon: {
                 Image(uiImage: Asset.Images.locationLiveIcon.image)
                     .resizable()
             }
-            LocationSharingOptionButton(text: VectorL10n.locationSharingPinDropShareTitle) {
-                
-            } buttonIcon: {
+            LocationSharingOptionButton(text: VectorL10n.locationSharingPinDropShareTitle) { } buttonIcon: {
                 Image(uiImage: Asset.Images.locationPinIcon.image)
                     .resizable()
             }

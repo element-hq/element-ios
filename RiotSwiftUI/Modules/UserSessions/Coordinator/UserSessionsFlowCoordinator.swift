@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,6 +111,6 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
 }

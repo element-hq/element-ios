@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class UserSessionDetailsUITests: MockScreenTestCase {
     func test_longPressDetailsCell_CopiesValueToClipboard() throws {
@@ -30,6 +30,6 @@ class UserSessionDetailsUITests: MockScreenTestCase {
         app.buttons["Copy"].tap()
         
         let clipboard = try XCTUnwrap(UIPasteboard.general.string)
-        XCTAssertEqual(clipboard,"iOS")
+        XCTAssertEqual(clipboard, "iOS")
     }
 }

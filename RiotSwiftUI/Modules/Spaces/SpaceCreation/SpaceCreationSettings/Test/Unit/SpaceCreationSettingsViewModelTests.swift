@@ -1,6 +1,6 @@
 // File created from TemplateAdvancedRoomsExample
 // $ createSwiftUITwoScreen.sh Spaces/SpaceCreation SpaceCreation SpaceCreationMenu SpaceCreationSettings
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,20 +16,18 @@
 // limitations under the License.
 //
 
-import XCTest
 import Combine
+import XCTest
 
 @testable import RiotSwiftUI
 
 class SpaceCreationSettingsViewModelTests: XCTestCase {
-
     let creationParameters = SpaceCreationParameters()
     var service: MockSpaceCreationSettingsService!
     var viewModel: SpaceCreationSettingsViewModel!
     var context: SpaceCreationSettingsViewModel.Context!
     var cancellables = Set<AnyCancellable>()
     
-
     override func setUpWithError() throws {
         creationParameters.name = "Fake"
         creationParameters.isPublic = true

@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct AuthenticationServerSelectionCoordinatorParameters {
     let authenticationService: AuthenticationService
@@ -31,7 +31,6 @@ enum AuthenticationServerSelectionCoordinatorResult {
 }
 
 final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -78,7 +77,7 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationServerSelectionHostingController
+        authenticationServerSelectionHostingController
     }
     
     // MARK: - Private

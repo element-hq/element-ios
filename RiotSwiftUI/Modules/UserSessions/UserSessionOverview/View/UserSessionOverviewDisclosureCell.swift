@@ -20,13 +20,13 @@ struct UserSessionOverviewDisclosureCell: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     let title: String
-    var onBackgroundTap: (() -> (Void))? = nil
+    var onBackgroundTap: (() -> Void)?
     
     var body: some View {
-        Button(action: { onBackgroundTap?()}) {
+        Button(action: { onBackgroundTap?() }) {
             VStack(spacing: 0) {
                 SeparatorLine()
-                HStack() {
+                HStack {
                     Text(title)
                         .font(theme.fonts.body)
                         .foregroundColor(theme.colors.primaryContent)

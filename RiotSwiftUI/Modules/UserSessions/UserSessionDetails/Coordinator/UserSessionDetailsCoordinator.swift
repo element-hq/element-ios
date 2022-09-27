@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct UserSessionDetailsCoordinatorParameters {
     let userSessionInfo: UserSessionInfo
@@ -63,6 +63,6 @@ final class UserSessionDetailsCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return userSessionDetailsHostingController
+        userSessionDetailsHostingController
     }
 }

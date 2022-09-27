@@ -17,10 +17,9 @@
 import SwiftUI
 
 typealias ChangePasswordViewModelType = StateStoreViewModel<ChangePasswordViewState,
-                                                                       Never,
-                                                                       ChangePasswordViewAction>
+    Never,
+    ChangePasswordViewAction>
 class ChangePasswordViewModel: ChangePasswordViewModelType, ChangePasswordViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private
