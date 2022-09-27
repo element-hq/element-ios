@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ struct UserSessionInfo: Identifiable {
     // MARK: - Properties
     
     var id: String {
-        return sessionId
+        sessionId
     }
     
     /// The session identifier
@@ -56,7 +56,6 @@ struct UserSessionInfo: Identifiable {
          isVerified: Bool,
          lastSeenIP: String?,
          lastSeenTimestamp: TimeInterval?) {
-        
         self.sessionId = sessionId
         self.sessionName = sessionName
         self.deviceType = deviceType

@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct TemplateUserProfileCoordinatorParameters {
     let session: MXSession
 }
 
 final class TemplateUserProfileCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -68,7 +67,7 @@ final class TemplateUserProfileCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.templateUserProfileHostingController
+        templateUserProfileHostingController
     }
     
     // MARK: - Private

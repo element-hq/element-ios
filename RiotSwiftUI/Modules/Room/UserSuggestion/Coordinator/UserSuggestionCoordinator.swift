@@ -14,10 +14,10 @@
 // limitations under the License.
 //
 
-import Foundation
-import UIKit
-import SwiftUI
 import Combine
+import Foundation
+import SwiftUI
+import UIKit
 
 protocol UserSuggestionCoordinatorDelegate: AnyObject {
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
@@ -30,7 +30,6 @@ struct UserSuggestionCoordinatorParameters {
 }
 
 final class UserSuggestionCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -94,12 +93,11 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     }
 
     // MARK: - Public
-    func start() {
-        
-    }
+
+    func start() { }
     
     func toPresentable() -> UIViewController {
-        return self.userSuggestionHostingController
+        userSuggestionHostingController
     }
 
     // MARK: - Private
@@ -131,13 +129,12 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
 }
 
 private class UserSuggestionCoordinatorRoomMemberProvider: RoomMembersProviderProtocol {
-    
     private let room: MXRoom
     
     var roomMembers: [MXRoomMember] = []
     
     init(room: MXRoom) {
-        self.room = room;
+        self.room = room
     }
     
     func fetchMembers(_ members: @escaping ([RoomMembersProviderMember]) -> Void) {

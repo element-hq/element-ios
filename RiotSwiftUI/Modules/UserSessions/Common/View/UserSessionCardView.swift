@@ -14,40 +14,40 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import DesignKit
+import SwiftUI
 
 struct UserSessionCardView: View {
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     var viewData: UserSessionCardViewData
     
-    var onVerifyAction: ((String) -> (Void))? = nil
-    var onViewDetailsAction: ((String) -> (Void))? = nil
-    var onLearnMoreAction: (() -> (Void))? = nil
+    var onVerifyAction: ((String) -> Void)?
+    var onViewDetailsAction: ((String) -> Void)?
+    var onLearnMoreAction: (() -> Void)?
     
     private var verificationStatusImageName: String {
-        return viewData.isVerified ? Asset.Images.userSessionVerified.name : Asset.Images.userSessionUnverified.name
+        viewData.isVerified ? Asset.Images.userSessionVerified.name : Asset.Images.userSessionUnverified.name
     }
     
     private var verificationStatusText: String {
-        return viewData.isVerified ? VectorL10n.userSessionVerified : VectorL10n.userSessionUnverified
+        viewData.isVerified ? VectorL10n.userSessionVerified : VectorL10n.userSessionUnverified
     }
     
     private var verificationStatusColor: Color {
-        return viewData.isVerified ? theme.colors.accent : theme.colors.alert
+        viewData.isVerified ? theme.colors.accent : theme.colors.alert
     }
     
     private var verificationStatusAdditionalInfoText: String {
-        return viewData.isVerified ? VectorL10n.userSessionVerifiedAdditionalInfo : VectorL10n.userSessionUnverifiedAdditionalInfo
+        viewData.isVerified ? VectorL10n.userSessionVerifiedAdditionalInfo : VectorL10n.userSessionUnverifiedAdditionalInfo
     }
     
     private var backgroundShape: RoundedRectangle {
-        return RoundedRectangle(cornerRadius: 8)
+        RoundedRectangle(cornerRadius: 8)
     }
     
     private var showExtraInformations: Bool {
-        return viewData.isCurrentSessionDisplayMode == false && (viewData.lastActivityDateString.isEmptyOrNil == false || viewData.lastSeenIPInfo.isEmptyOrNil == false)
+        viewData.isCurrentSessionDisplayMode == false && (viewData.lastActivityDateString.isEmptyOrNil == false || viewData.lastSeenIPInfo.isEmptyOrNil == false)
     }
     
     var body: some View {
@@ -90,7 +90,7 @@ struct UserSessionCardView: View {
                             .multilineTextAlignment(.center)
                     }
                     
-                    if let lastSeenIPInfo = viewData.lastSeenIPInfo, lastSeenIPInfo.isEmpty == false  {
+                    if let lastSeenIPInfo = viewData.lastSeenIPInfo, lastSeenIPInfo.isEmpty == false {
                         Text(lastSeenIPInfo)
                             .font(theme.fonts.footnote)
                             .foregroundColor(theme.colors.secondaryContent)

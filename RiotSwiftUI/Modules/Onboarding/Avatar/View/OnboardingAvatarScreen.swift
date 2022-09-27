@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import DesignKit
+import SwiftUI
 
 struct OnboardingAvatarScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -52,7 +51,6 @@ struct OnboardingAvatarScreen: View {
         .alert(item: $viewModel.alertInfo) { $0.alert }
         .accentColor(theme.colors.accent)
     }
-    
     
     /// The user's avatar along with a picker button
     var avatar: some View {

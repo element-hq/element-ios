@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,7 @@ import SwiftUI
 extension View {
     @ViewBuilder func isHidden(_ isHidden: Bool) -> some View {
         if isHidden {
-            self.hidden()
+            hidden()
         } else {
             self
         }

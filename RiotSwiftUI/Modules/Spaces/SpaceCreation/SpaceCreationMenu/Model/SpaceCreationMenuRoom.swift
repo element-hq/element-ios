@@ -1,6 +1,6 @@
 // File created from TemplateAdvancedRoomsExample
 // $ createSwiftUITwoScreen.sh Spaces/SpaceCreation SpaceCreation SpaceCreationMenu SpaceCreationSettings
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,4 +38,4 @@ struct SpaceCreationMenuRoomOption {
     let detail: String
 }
 
-extension SpaceCreationMenuRoomOption: Identifiable, Equatable {}
+extension SpaceCreationMenuRoomOption: Identifiable, Equatable { }

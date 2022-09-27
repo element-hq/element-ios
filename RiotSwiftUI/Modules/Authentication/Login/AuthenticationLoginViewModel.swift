@@ -17,11 +17,10 @@
 import SwiftUI
 
 typealias AuthenticationLoginViewModelType = StateStoreViewModel<AuthenticationLoginViewState,
-                                                                 Never,
-                                                                 AuthenticationLoginViewAction>
+    Never,
+    AuthenticationLoginViewAction>
 
 class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, AuthenticationLoginViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Public
@@ -52,7 +51,7 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
         case .fallback:
             Task { await callback?(.fallback) }
         case .continueWithSSO(let provider):
-            Task { await callback?(.continueWithSSO(provider))}
+            Task { await callback?(.continueWithSSO(provider)) }
         }
     }
     

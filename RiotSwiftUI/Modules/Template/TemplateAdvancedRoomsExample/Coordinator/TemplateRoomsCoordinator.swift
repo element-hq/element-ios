@@ -18,7 +18,6 @@ import UIKit
 
 @objcMembers
 final class TemplateRoomsCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -26,7 +25,7 @@ final class TemplateRoomsCoordinator: Coordinator, Presentable {
     private let parameters: TemplateRoomsCoordinatorParameters
     
     private var navigationRouter: NavigationRouterType {
-        return self.parameters.navigationRouter
+        parameters.navigationRouter
     }
     
     // MARK: Public
@@ -40,37 +39,36 @@ final class TemplateRoomsCoordinator: Coordinator, Presentable {
     
     init(parameters: TemplateRoomsCoordinatorParameters) {
         self.parameters = parameters
-    }    
+    }
     
     // MARK: - Public
     
-    
     func start() {
         MXLog.debug("[TemplateRoomsCoordinator] did start.")
-        let rootCoordinator = self.createTemplateRoomListCoordinator()
+        let rootCoordinator = createTemplateRoomListCoordinator()
         rootCoordinator.start()
         
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
         
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+        if navigationRouter.modules.isEmpty == false {
+            navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             })
         } else {
-            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+            navigationRouter.setRootModule(rootCoordinator) { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private
     
     private func createTemplateRoomListCoordinator() -> TemplateRoomListCoordinator {
-        let coordinator: TemplateRoomListCoordinator = TemplateRoomListCoordinator(parameters: TemplateRoomListCoordinatorParameters(session: parameters.session))
+        let coordinator = TemplateRoomListCoordinator(parameters: TemplateRoomListCoordinatorParameters(session: parameters.session))
         
         coordinator.callback = { [weak self] result in
             MXLog.debug("[TemplateRoomsCoordinator] TemplateRoomListCoordinator did complete with result \(result).")
@@ -86,7 +84,7 @@ final class TemplateRoomsCoordinator: Coordinator, Presentable {
     }
     
     private func createTemplateRoomChatCoordinator(room: MXRoom) -> TemplateRoomChatCoordinator {
-        let coordinator: TemplateRoomChatCoordinator = TemplateRoomChatCoordinator(parameters: TemplateRoomChatCoordinatorParameters(room: room))
+        let coordinator = TemplateRoomChatCoordinator(parameters: TemplateRoomChatCoordinatorParameters(room: room))
         return coordinator
     }
     
@@ -99,7 +97,7 @@ final class TemplateRoomsCoordinator: Coordinator, Presentable {
         
         add(childCoordinator: templateRoomChatCoordinator)
         
-        self.navigationRouter.push(templateRoomChatCoordinator, animated: true, popCompletion: { [weak self] in
+        navigationRouter.push(templateRoomChatCoordinator, animated: true, popCompletion: { [weak self] in
             self?.remove(childCoordinator: templateRoomChatCoordinator)
         })
         

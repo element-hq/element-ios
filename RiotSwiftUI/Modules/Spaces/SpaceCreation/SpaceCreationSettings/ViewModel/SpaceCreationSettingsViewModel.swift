@@ -16,15 +16,14 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 typealias SpaceCreationSettingsViewModelType = StateStoreViewModel<SpaceCreationSettingsViewState,
-                                                              SpaceCreationSettingsStateAction,
-                                                              SpaceCreationSettingsViewAction>
+    SpaceCreationSettingsStateAction,
+    SpaceCreationSettingsViewAction>
 
 class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceCreationSettingsViewModelProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -67,7 +66,8 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
         let bindings = SpaceCreationSettingsViewModelBindings(
             roomName: creationParameters.name ?? "",
             topic: creationParameters.topic ?? "",
-            address: creationParameters.userDefinedAddress ?? "")
+            address: creationParameters.userDefinedAddress ?? ""
+        )
         
         return SpaceCreationSettingsViewState(
             title: creationParameters.isPublic ? VectorL10n.spacesCreationPublicSpaceTitle : VectorL10n.spacesCreationPrivateSpaceTitle,
@@ -78,7 +78,8 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
             isAddressValid: validationStatus.isValid,
             avatar: AvatarInput(mxContentUri: nil, matrixItemId: "", displayName: nil),
             avatarImage: creationParameters.userSelectedAvatar,
-            bindings: bindings)
+            bindings: bindings
+        )
     }
     
     // MARK: - Public

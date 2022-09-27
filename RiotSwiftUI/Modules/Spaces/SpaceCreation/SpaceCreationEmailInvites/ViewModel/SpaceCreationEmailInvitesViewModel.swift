@@ -16,14 +16,13 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 typealias SpaceCreationEmailInvitesViewModelType = StateStoreViewModel<SpaceCreationEmailInvitesViewState,
-                                                                 SpaceCreationEmailInvitesStateAction,
-                                                                 SpaceCreationEmailInvitesViewAction>
+    SpaceCreationEmailInvitesStateAction,
+    SpaceCreationEmailInvitesViewAction>
 class SpaceCreationEmailInvitesViewModel: SpaceCreationEmailInvitesViewModelType, SpaceCreationEmailInvitesViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private
@@ -86,14 +85,14 @@ class SpaceCreationEmailInvitesViewModel: SpaceCreationEmailInvitesViewModelType
     }
 
     private func done() {
-        self.creationParameters.emailInvites = self.context.emailInvites
-        self.creationParameters.inviteType = .email
-        let emailAddressesValidity = service.validate(self.context.emailInvites)
+        creationParameters.emailInvites = context.emailInvites
+        creationParameters.inviteType = .email
+        let emailAddressesValidity = service.validate(context.emailInvites)
         
         dispatch(action: .updateEmailValidity(emailAddressesValidity))
-        if self.context.emailInvites.reduce(true, { $0 && $1.isEmpty }) {
+        if context.emailInvites.reduce(true, { $0 && $1.isEmpty }) {
             completion?(.done)
-        } else if emailAddressesValidity.reduce(true, { $0 && $1}) {
+        } else if emailAddressesValidity.reduce(true, { $0 && $1 }) {
             if service.isIdentityServiceReady {
                 completion?(.done)
             } else {

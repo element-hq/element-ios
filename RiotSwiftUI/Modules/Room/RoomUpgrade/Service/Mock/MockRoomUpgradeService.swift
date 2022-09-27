@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +14,22 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class MockRoomUpgradeService: RoomUpgradeServiceProtocol {
-    var currentRoomId: String = "!sfdlksjdflkfjds:matrix.org"
+    var currentRoomId = "!sfdlksjdflkfjds:matrix.org"
     
     var errorSubject: CurrentValueSubject<Error?, Never>
     var upgradingSubject: CurrentValueSubject<Bool, Never>
     var parentSpaceName: String? {
-        return "Parent space name"
+        "Parent space name"
     }
     
     init() {
-        self.errorSubject = CurrentValueSubject(nil)
-        self.upgradingSubject = CurrentValueSubject(false)
+        errorSubject = CurrentValueSubject(nil)
+        upgradingSubject = CurrentValueSubject(false)
     }
     
-    func upgradeRoom(autoInviteUsers: Bool, completion: @escaping (Bool, String) -> Void) {
-        
-    }
+    func upgradeRoom(autoInviteUsers: Bool, completion: @escaping (Bool, String) -> Void) { }
 }

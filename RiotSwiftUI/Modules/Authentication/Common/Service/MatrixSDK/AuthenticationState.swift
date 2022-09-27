@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,7 @@ struct AuthenticationState {
     
     init(flow: AuthenticationFlow, homeserverAddress: String, identityServer: String? = nil) {
         self.flow = flow
-        self.homeserver = Homeserver(address: homeserverAddress)
+        homeserver = Homeserver(address: homeserverAddress)
         self.identityServer = identityServer
     }
     
@@ -72,7 +72,7 @@ struct AuthenticationState {
 
         /// Needs authentication fallback for login
         var needsLoginFallback: Bool {
-            return preferredLoginMode.isUnsupported
+            preferredLoginMode.isUnsupported
         }
 
         /// Needs authentication fallback for registration

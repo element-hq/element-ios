@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct AuthenticationReCaptchaCoordinatorParameters {
     let registrationWizard: RegistrationWizard
@@ -26,7 +26,6 @@ struct AuthenticationReCaptchaCoordinatorParameters {
 }
 
 final class AuthenticationReCaptchaCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -76,7 +75,7 @@ final class AuthenticationReCaptchaCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationReCaptchaHostingController
+        authenticationReCaptchaHostingController
     }
     
     // MARK: - Private

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@ struct UserSessionCardViewData {
     private static let lastActivityDateFormatter = UserSessionLastActivityFormatter()
     
     var id: String {
-        return sessionId
+        sessionId
     }
     
     let sessionId: String

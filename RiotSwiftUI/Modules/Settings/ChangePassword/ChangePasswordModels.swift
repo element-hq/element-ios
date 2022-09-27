@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,8 +42,8 @@ struct ChangePasswordViewState: BindableState {
     /// Whether the user can submit the form: old password and new passwords should be entered
     var canSubmit: Bool {
         !bindings.oldPassword.isEmpty
-        && !bindings.newPassword1.isEmpty
-        && !bindings.newPassword2.isEmpty
+            && !bindings.newPassword1.isEmpty
+            && !bindings.newPassword2.isEmpty
     }
 }
 

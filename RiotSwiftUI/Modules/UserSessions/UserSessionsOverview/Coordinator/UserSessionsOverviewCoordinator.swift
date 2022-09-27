@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct UserSessionsOverviewCoordinatorParameters {
     let session: MXSession
@@ -69,7 +69,7 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return hostingViewController
+        hostingViewController
     }
     
     // MARK: - Private
@@ -88,15 +88,15 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     }
     
     private func showAllUnverifiedSessions() {
-        // TODO
+        // TODO:
     }
     
     private func showAllInactiveSessions() {
-        // TODO
+        // TODO:
     }
     
     private func startVerifyCurrentSession() {
-        // TODO
+        // TODO:
     }
     
     private func showCurrentSessionOverview(sessionInfo: UserSessionInfo) {
@@ -108,6 +108,6 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     }
     
     private func showAllOtherSessions() {
-        // TODO
+        // TODO:
     }
 }

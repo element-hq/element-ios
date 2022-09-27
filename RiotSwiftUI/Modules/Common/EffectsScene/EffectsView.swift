@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +14,12 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import SceneKit
+import SwiftUI
 
 /// A SwiftUI wrapper around `SCNView`, that unlike `SceneView` allows the
 /// scene to have a transparent background and be rendered on top of other views.
 struct EffectsView: UIViewRepresentable {
-    
     // MARK: - Private
     
     @Environment(\.theme) private var theme

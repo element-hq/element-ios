@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,7 @@ struct AuthenticationTermsPolicy: Identifiable, Equatable {
     /// The policy's subtitle.
     let subtitle: String
     /// Whether or not the policy has been accepted.
-    var accepted: Bool = false
+    var accepted = false
 }
 
 // MARK: View model

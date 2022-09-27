@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import SwiftUI
 /// A view that shows information about the chosen homeserver,
 /// along with an edit button to pick a different one.
 struct AuthenticationServerInfoSection: View {
-    
     // MARK: - Private
     
     @Environment(\.theme) private var theme

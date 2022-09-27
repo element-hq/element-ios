@@ -14,14 +14,13 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CoreLocation
+import SwiftUI
 
 typealias StaticLocationViewingViewModelType = StateStoreViewModel<StaticLocationViewingViewState,
-                                                                  Never,
-                                                                   StaticLocationViewingViewAction>
+    Never,
+    StaticLocationViewingViewAction>
 class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, StaticLocationViewingViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private
@@ -79,7 +78,7 @@ class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, Static
             
             switch error {
             case .invalidLocationAuthorization:
-                if let applicationSettingsURL = URL(string:UIApplication.openSettingsURLString) {
+                if let applicationSettingsURL = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(applicationSettingsURL)
                 } else {
                     self?.completion?(.close)

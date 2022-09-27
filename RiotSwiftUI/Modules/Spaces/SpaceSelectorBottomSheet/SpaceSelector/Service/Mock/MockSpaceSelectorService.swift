@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +14,11 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 import UIKit
 
 class MockSpaceSelectorService: SpaceSelectorServiceProtocol {
-    
     static let homeItem = SpaceSelectorListItemData(id: SpaceSelectorConstants.homeSpaceId, avatar: nil, icon: UIImage(systemName: "house"), displayName: "All Chats", notificationCount: 0, highlightedNotificationCount: 0, hasSubItems: false)
     static let defaultSpaceList = [
         homeItem,
@@ -35,8 +34,8 @@ class MockSpaceSelectorService: SpaceSelectorServiceProtocol {
     var selectedSpaceId: String?
 
     init(spaceList: [SpaceSelectorListItemData] = defaultSpaceList, parentSpaceName: String? = nil, selectedSpaceId: String = SpaceSelectorConstants.homeSpaceId) {
-        self.spaceListSubject = CurrentValueSubject(spaceList)
-        self.parentSpaceNameSubject = CurrentValueSubject(parentSpaceName)
+        spaceListSubject = CurrentValueSubject(spaceList)
+        parentSpaceNameSubject = CurrentValueSubject(parentSpaceName)
         self.selectedSpaceId = selectedSpaceId
     }
 }

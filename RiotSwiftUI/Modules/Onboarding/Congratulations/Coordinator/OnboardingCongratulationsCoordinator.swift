@@ -32,7 +32,6 @@ enum OnboardingCongratulationsCoordinatorResult {
 }
 
 final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -62,6 +61,7 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[OnboardingCongratulationsCoordinator] did start.")
         onboardingCongratulationsViewModel.completion = { [weak self] result in
@@ -78,6 +78,6 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.onboardingCongratulationsHostingController
+        onboardingCongratulationsHostingController
     }
 }

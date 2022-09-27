@@ -17,10 +17,9 @@
 import SwiftUI
 
 typealias AuthenticationChoosePasswordViewModelType = StateStoreViewModel<AuthenticationChoosePasswordViewState,
-                                                                       Never,
-                                                                       AuthenticationChoosePasswordViewAction>
+    Never,
+    AuthenticationChoosePasswordViewAction>
 class AuthenticationChoosePasswordViewModel: AuthenticationChoosePasswordViewModelType, AuthenticationChoosePasswordViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private

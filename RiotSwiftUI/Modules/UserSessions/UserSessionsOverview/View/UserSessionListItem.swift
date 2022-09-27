@@ -28,7 +28,7 @@ struct UserSessionListItem: View {
 
     let viewData: UserSessionListItemViewData
     
-    var onBackgroundTap: ((String) -> (Void))? = nil
+    var onBackgroundTap: ((String) -> Void)?
     
     var body: some View {
         Button {
@@ -71,7 +71,7 @@ struct UserSessionListPreview: View {
             ForEach(userSessionsOverviewService.overviewData.otherSessions) { userSessionInfo in
                 let viewData = UserSessionListItemViewData(userSessionInfo: userSessionInfo)
 
-                UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
+                UserSessionListItem(viewData: viewData, onBackgroundTap: { _ in
 
                 })
             }

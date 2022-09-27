@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,11 +33,11 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
     /// A list of screen state definitions
     static var allCases: [MockUserSessionDetailsScreenState] {
         // Each of the presence statuses
-        return [.allSections, .sessionSectionOnly]
+        [.allSections, .sessionSectionOnly]
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let currentSessionInfo: UserSessionInfo
         switch self {
         case .allSections:

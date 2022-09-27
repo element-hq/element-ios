@@ -14,10 +14,10 @@
 // limitations under the License.
 //
 
-import Foundation
-import SwiftUI
 import Combine
 import CoreLocation
+import Foundation
+import SwiftUI
 
 // This is the equivalent of MXEventAssetType in the MatrixSDK
 enum LocationSharingCoordinateType {
@@ -27,9 +27,9 @@ enum LocationSharingCoordinateType {
 
 enum LiveLocationSharingTimeout: TimeInterval {
     // Timer are in milliseconde because timestamp are in millisecond in Matrix SDK
-    case short = 900000 // 15 minutes
-    case medium = 3600000 // 1 hour
-    case long = 28800000 // 8 hours
+    case short = 900_000 // 15 minutes
+    case medium = 3_600_000 // 1 hour
+    case long = 28_800_000 // 8 hours
 }
 
 enum LocationSharingViewAction {
@@ -47,7 +47,7 @@ enum LocationSharingViewModelResult {
     case cancel
     case share(latitude: Double, longitude: Double, coordinateType: LocationSharingCoordinateType)
     case shareLiveLocation(timeout: TimeInterval)
-    case checkLiveLocationCanBeStarted(_ completion: ((Result<Void, Error>) -> Void))
+    case checkLiveLocationCanBeStarted(_ completion: (Result<Void, Error>) -> Void)
 }
 
 enum LiveLocationStartError: Error {
@@ -63,7 +63,6 @@ enum LocationSharingViewError {
 }
 
 struct LocationSharingViewState: BindableState {
-    
     /// Map style URL
     let mapStyleURL: URL
     
@@ -77,21 +76,21 @@ struct LocationSharingViewState: BindableState {
     var highlightedAnnotation: LocationAnnotation?
 
     /// Indicates whether the user has moved around the map to drop a pin somewhere other than their current location
-    var isPinDropSharing: Bool = false
+    var isPinDropSharing = false
     
-    var showLoadingIndicator: Bool = false
+    var showLoadingIndicator = false
     
     /// True to indicate to show and follow current user location
-    var showsUserLocation: Bool = false
+    var showsUserLocation = false
     
     /// Used to hide live location sharing features
-    var isLiveLocationSharingEnabled: Bool = false
+    var isLiveLocationSharingEnabled = false
     
     var shareButtonEnabled: Bool {
         !showLoadingIndicator
     }
     
-    var showMapLoadingError: Bool = false
+    var showMapLoadingError = false
 
     let errorSubject = PassthroughSubject<LocationSharingViewError, Never>()
     

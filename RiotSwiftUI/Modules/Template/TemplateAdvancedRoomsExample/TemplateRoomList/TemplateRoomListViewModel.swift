@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 typealias TemplateRoomListViewModelType = StateStoreViewModel<TemplateRoomListViewState,
-                                                              Never,
-                                                              TemplateRoomListViewAction>
+    Never,
+    TemplateRoomListViewAction>
 
 class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomListViewModelProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -42,7 +41,7 @@ class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomList
     }
     
     private static func defaultState(templateRoomListService: TemplateRoomListServiceProtocol) -> TemplateRoomListViewState {
-        return TemplateRoomListViewState(rooms: templateRoomListService.roomsSubject.value)
+        TemplateRoomListViewState(rooms: templateRoomListService.roomsSubject.value)
     }
     
     private func startObservingRooms() {

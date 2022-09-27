@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct AuthenticationSoftLogoutCoordinatorParameters {
     let navigationRouter: NavigationRouterType
@@ -50,7 +50,6 @@ enum AuthenticationSoftLogoutCoordinatorResult: CustomStringConvertible {
 }
 
 final class AuthenticationSoftLogoutCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -107,7 +106,7 @@ final class AuthenticationSoftLogoutCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationSoftLogoutHostingController
+        authenticationSoftLogoutHostingController
     }
     
     // MARK: - Private

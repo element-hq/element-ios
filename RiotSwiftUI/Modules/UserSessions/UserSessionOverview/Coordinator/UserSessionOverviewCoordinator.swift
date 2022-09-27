@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct UserSessionOverviewCoordinatorParameters {
     let userSessionInfo: UserSessionInfo
@@ -58,7 +58,7 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
             MXLog.debug("[UserSessionOverviewCoordinator] UserSessionOverviewViewModel did complete with result: \(result).")
             switch result {
             case .verifyCurrentSession:
-                break // TODO
+                break // TODO:
             case let .showSessionDetails(sessionInfo: sessionInfo):
                 self.completion?(.openSessionDetails(session: sessionInfo))
             }
@@ -66,7 +66,7 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return hostingController
+        hostingController
     }
     
     // MARK: - Private

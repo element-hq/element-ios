@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 class AddRoomItemsProcessor: MatrixItemChooserProcessorProtocol {
-    
     // MARK: Private
     
     private let parentSpace: MXSpace
@@ -40,14 +39,14 @@ class AddRoomItemsProcessor: MatrixItemChooserProcessorProtocol {
         addChild(from: itemsIds, at: 0, completion: completion)
     }
     
-    func isItemIncluded(_ item: (MatrixListItemData)) -> Bool {
-        return !parentSpace.isRoomAChild(roomId: item.id)
+    func isItemIncluded(_ item: MatrixListItemData) -> Bool {
+        !parentSpace.isRoomAChild(roomId: item.id)
     }
     
     // MARK: Private
     
     /// Add room with roomId from list of room IDs at index to the parentSpace.
-    /// Recurse to the next index once done.    
+    /// Recurse to the next index once done.
     func addChild(from roomIds: [String], at index: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         guard index < roomIds.count else {
             // last item has been processed or list is empty --> the recursion has finished

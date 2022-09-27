@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,28 +34,28 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
     /// A list of screen state definitions
     static var allCases: [MockUserSessionOverviewScreenState] {
         // Each of the presence statuses
-        return [.currentSession, .otherSession]
+        [.currentSession, .otherSession]
     }
 
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let viewModel: UserSessionOverviewViewModel
         switch self {
         case .currentSession:
             let currentSessionInfo = UserSessionInfo(sessionId: "session",
-                                                 sessionName: "iOS",
-                                                 deviceType: .mobile,
-                                                 isVerified: false,
-                                                 lastSeenIP: "10.0.0.10",
-                                                 lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+                                                     sessionName: "iOS",
+                                                     deviceType: .mobile,
+                                                     isVerified: false,
+                                                     lastSeenIP: "10.0.0.10",
+                                                     lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
             viewModel = UserSessionOverviewViewModel(userSessionInfo: currentSessionInfo, isCurrentSession: true)
         case .otherSession:
             let currentSessionInfo = UserSessionInfo(sessionId: "session",
-                                                 sessionName: "Mac",
-                                                 deviceType: .desktop,
-                                                 isVerified: true,
-                                                 lastSeenIP: "10.0.0.10",
-                                                 lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+                                                     sessionName: "Mac",
+                                                     deviceType: .desktop,
+                                                     isVerified: true,
+                                                     lastSeenIP: "10.0.0.10",
+                                                     lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
             viewModel = UserSessionOverviewViewModel(userSessionInfo: currentSessionInfo, isCurrentSession: false)
         }
 

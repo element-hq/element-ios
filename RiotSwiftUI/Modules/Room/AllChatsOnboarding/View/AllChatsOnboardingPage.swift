@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AllChatsOnboardingPage: View {
-
     // MARK: - Properties
     
     let image: UIImage
@@ -55,7 +54,7 @@ struct AllChatsOnboardingPage_Previews: PreviewProvider {
         preview.theme(.dark).preferredColorScheme(.dark)
     }
     
-    static private var preview: some View {
+    private static var preview: some View {
         AllChatsOnboardingPage(image: Asset.Images.allChatsOnboarding1.image,
                                title: VectorL10n.allChatsOnboardingPageTitle1,
                                message: VectorL10n.allChatsOnboardingPageMessage1)

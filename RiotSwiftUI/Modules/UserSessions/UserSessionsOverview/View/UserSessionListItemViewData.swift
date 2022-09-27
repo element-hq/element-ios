@@ -22,7 +22,7 @@ struct UserSessionListItemViewData: Identifiable {
     private static let lastActivityDateFormatter = UserSessionLastActivityFormatter()
 
     var id: String {
-        return sessionId
+        sessionId
     }
     
     let sessionId: String
@@ -38,7 +38,6 @@ struct UserSessionListItemViewData: Identifiable {
          deviceType: DeviceType,
          isVerified: Bool,
          lastActivityDate: TimeInterval?) {
-                
         self.sessionId = sessionId
         sessionName = Self.userSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
         sessionDetails = Self.buildSessionDetails(isVerified: isVerified, lastActivityDate: lastActivityDate)

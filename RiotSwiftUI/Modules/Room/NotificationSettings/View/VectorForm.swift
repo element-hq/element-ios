@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct VectorForm<Content: View>: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     var content: () -> Content
     
@@ -38,12 +37,10 @@ struct VectorForm<Content: View>: View {
         )
         .background(theme.colors.system)
         .edgesIgnoringSafeArea(.bottom)
-        
     }
 }
 
 struct VectorForm_Previews: PreviewProvider {
-    
     static var previews: some View {
         Group {
             VectorForm {

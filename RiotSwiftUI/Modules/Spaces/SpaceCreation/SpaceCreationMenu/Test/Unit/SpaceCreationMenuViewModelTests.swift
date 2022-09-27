@@ -1,6 +1,6 @@
 // File created from TemplateAdvancedRoomsExample
 // $ createSwiftUITwoScreen.sh Spaces/SpaceCreation SpaceCreation SpaceCreationMenu SpaceCreationSettings
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,14 +16,13 @@
 // limitations under the License.
 //
 
-import XCTest
 import Combine
+import XCTest
 
 @testable import RiotSwiftUI
 
 class SpaceCreationMenuViewModelTests: XCTestCase {
-    private enum Constants {
-    }
+    private enum Constants { }
 
     let navTitle = VectorL10n.spacesCreateSpaceTitle
     var creationParams = SpaceCreationParameters()

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import SwiftUI
 @available(iOS, introduced: 14.0, deprecated: 15.0, message: "Use Text with an AttributedString instead that includes a link and handle the tap by adding an OpenURLAction to the environment.")
 /// A `Button`, that fakes having a tappable string inside of a regular string.
 struct InlineTextButton: View {
-    
     private struct StringComponent {
         let string: Substring
         let isTinted: Bool
@@ -33,7 +32,6 @@ struct InlineTextButton: View {
     private let components: [StringComponent]
     private let action: () -> Void
 
-    
     // MARK: - Setup
     
     /// Creates a new `InlineTextButton`.
@@ -43,7 +41,7 @@ struct InlineTextButton: View {
     ///   - action: The action to perform when tapping the button.
     internal init(_ mainText: String, tappableText: String, action: @escaping () -> Void) {
         guard let range = mainText.range(of: "%@") else {
-            self.components = [StringComponent(string: Substring(mainText), isTinted: false)]
+            components = [StringComponent(string: Substring(mainText), isTinted: false)]
             self.action = action
             return
         }
@@ -52,7 +50,7 @@ struct InlineTextButton: View {
         let middleComponent = StringComponent(string: Substring(tappableText), isTinted: true)
         let lastComponent = StringComponent(string: mainText[range.upperBound...], isTinted: false)
         
-        self.components = [firstComponent, middleComponent, lastComponent]
+        components = [firstComponent, middleComponent, lastComponent]
         self.action = action
     }
     
@@ -63,7 +61,7 @@ struct InlineTextButton: View {
             EmptyView()
         }
         .buttonStyle(Style(components: components))
-        .accessibilityLabel(components.map { $0.string }.joined())
+        .accessibilityLabel(components.map(\.string).joined())
     }
     
     private struct Style: ButtonStyle {

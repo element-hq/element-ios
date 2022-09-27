@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class MockMatrixItemChooserService: MatrixItemChooserServiceProtocol {
-    
     static let mockSections = [
         MatrixListItemSectionData(title: "Section 1", infoText: "This is the first section with a very long description in order to check multi line description", items: [
             MatrixListItemData(id: "!aaabaa:matrix.org", type: .room, avatar: MockAvatarInput.example, displayName: "Item #1 section #1", detailText: "Descripton of this room"),
@@ -33,11 +32,12 @@ class MockMatrixItemChooserService: MatrixItemChooserServiceProtocol {
     ]
     var sectionsSubject: CurrentValueSubject<[MatrixListItemSectionData], Never>
     var selectedItemIdsSubject: CurrentValueSubject<Set<String>, Never>
-    var searchText: String = ""
+    var searchText = ""
     var selectedItemIds: Set<String> = Set()
     var loadingText: String? {
         nil
     }
+
     var itemCount: Int {
         var itemCount = 0
         for section in sectionsSubject.value {
@@ -82,9 +82,7 @@ class MockMatrixItemChooserService: MatrixItemChooserServiceProtocol {
         completion(Result.success(()))
     }
     
-    func refresh() {
-        
-    }
+    func refresh() { }
     
     func selectAllItems() {
         var newSelection: Set<String> = Set()
@@ -93,12 +91,12 @@ class MockMatrixItemChooserService: MatrixItemChooserServiceProtocol {
                 newSelection.insert(item.id)
             }
         }
-        self.selectedItemIds = newSelection
+        selectedItemIds = newSelection
         selectedItemIdsSubject.send(selectedItemIds)
     }
     
     func deselectAllItems() {
-        self.selectedItemIds = Set()
+        selectedItemIds = Set()
         selectedItemIdsSubject.send(selectedItemIds)
     }
 }

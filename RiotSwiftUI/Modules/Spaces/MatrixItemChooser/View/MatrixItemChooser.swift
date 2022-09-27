@@ -19,12 +19,11 @@
 import SwiftUI
 
 struct MatrixItemChooser: View {
-    
     // MARK: Properties
     
     @ObservedObject var viewModel: MatrixItemChooserViewModel.Context
     let listBottomPadding: CGFloat?
-    @State var searchText: String = ""
+    @State var searchText = ""
     
     // MARK: Private
     
@@ -113,7 +112,7 @@ struct MatrixItemChooser: View {
             }
             Spacer().frame(height: spacerHeight)
             SearchBar(placeholder: VectorL10n.searchDefaultPlaceholder, text: $searchText)
-                .onChange(of: searchText) { value in
+                .onChange(of: searchText) { _ in
                     viewModel.send(viewAction: .searchTextChanged(searchText))
                 }
             if let selectionHeader = viewModel.viewState.selectionHeader, searchText.isEmpty {
@@ -124,7 +123,7 @@ struct MatrixItemChooser: View {
     }
     
     private func itemSelectionHeader(with selectionHeader: MatrixItemChooserSelectionHeader) -> some View {
-        VStack(alignment:.leading) {
+        VStack(alignment: .leading) {
             HStack {
                 Text(selectionHeader.title)
                     .font(theme.fonts.calloutSB)
@@ -151,7 +150,6 @@ struct MatrixItemChooser: View {
 // MARK: - Previews
 
 struct MatrixItemChooser_Previews: PreviewProvider {
-    
     static let stateRenderer = MockMatrixItemChooserScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup(addNavigation: false)

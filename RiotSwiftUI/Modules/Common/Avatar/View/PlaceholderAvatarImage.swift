@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,6 @@ import SwiftUI
 /// This view has a forced 1:1 aspect ratio but will appear very large until a `.frame`
 /// modifier is applied.
 struct PlaceholderAvatarImage: View {
-    
     // MARK: - Private
     
     @Environment(\.theme) private var theme
