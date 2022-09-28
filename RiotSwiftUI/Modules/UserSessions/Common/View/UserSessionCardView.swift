@@ -122,10 +122,10 @@ struct UserSessionCardView: View {
         .background(theme.colors.background)
         .clipShape(backgroundShape)
         .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1.0, shape: backgroundShape)
-        .if(viewData.isCurrentSessionDisplayMode) { view in
-            view.onTapGesture {
+        .onTapGesture {
+            if viewData.isCurrentSessionDisplayMode {
                 onViewDetailsAction?(viewData.sessionId)
-             }
+            }
         }
     }
 }
