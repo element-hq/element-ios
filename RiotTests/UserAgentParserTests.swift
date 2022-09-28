@@ -114,16 +114,22 @@ class UserAgentParserTests: XCTestCase {
 
     func testDesktopUserAgents() {
         let uaStrings = [
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) ElementNightly/2022091301 Chrome/104.0.5112.102 Electron/20.1.1 Safari/537.36"
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) ElementNightly/2022091301 Chrome/104.0.5112.102 Electron/20.1.1 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) ElementNightly/2022091301 Chrome/104.0.5112.102 Electron/20.1.1 Safari/537.36"
         ]
         let userAgents = uaStrings.map { UserAgentParser.parse($0) }
 
         let expected = [
             UserAgent(deviceType: .desktop,
-                      deviceModel: "Macintosh",
-                      deviceOS: "Intel Mac OS X 10_15_7",
-                      clientName: "Mozilla",
-                      clientVersion: "5.0")
+                      deviceModel: "Electron",
+                      deviceOS: "Macintosh",
+                      clientName: nil,
+                      clientVersion: nil),
+            UserAgent(deviceType: .desktop,
+                      deviceModel: "Electron",
+                      deviceOS: "Windows NT 10.0",
+                      clientName: nil,
+                      clientVersion: nil)
         ]
 
         XCTAssertEqual(userAgents, expected)
@@ -131,16 +137,63 @@ class UserAgentParserTests: XCTestCase {
 
     func testWebUserAgents() throws {
         let uaStrings = [
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/600.3.18 (KHTML, like Gecko) Version/8.0.3 Safari/600.3.18",
+            "Mozilla/5.0 (Linux; Android 9; SM-G973U Build/PPR1.180610.011) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Mobile Safari/537.36"
         ]
         let userAgents = uaStrings.map { UserAgentParser.parse($0) }
 
         let expected = [
             UserAgent(deviceType: .web,
-                      deviceModel: "Macintosh",
-                      deviceOS: "Intel Mac OS X 10_15_7",
-                      clientName: "Mozilla",
-                      clientVersion: "5.0")
+                      deviceModel: "Chrome",
+                      deviceOS: "Macintosh",
+                      clientName: nil,
+                      clientVersion: nil),
+            UserAgent(deviceType: .web,
+                      deviceModel: "Chrome",
+                      deviceOS: "Windows NT 10.0",
+                      clientName: nil,
+                      clientVersion: nil),
+            UserAgent(deviceType: .web,
+                      deviceModel: "Firefox",
+                      deviceOS: "Macintosh",
+                      clientName: nil,
+                      clientVersion: nil),
+            UserAgent(deviceType: .web,
+                      deviceModel: "Safari",
+                      deviceOS: "Macintosh",
+                      clientName: nil,
+                      clientVersion: nil),
+            UserAgent(deviceType: .web,
+                      deviceModel: "Chrome",
+                      deviceOS: "Android 9",
+                      clientName: nil,
+                      clientVersion: nil)
+        ]
+
+        XCTAssertEqual(userAgents, expected)
+    }
+
+    func testInvalidUserAgents() throws {
+        let uaStrings = [
+            "Element (iPhone X; OS 15.2; 3.00)",
+            "Element/1.9.9; iOS",
+            "Element/1.9.7 Android",
+            "Element/1.9.9; iOS "
+        ]
+        let userAgents = uaStrings.map { UserAgentParser.parse($0) }
+
+        let expected = [
+            .unknown,
+            .unknown,
+            .unknown,
+            UserAgent(deviceType: .mobile,
+                      deviceModel: nil,
+                      deviceOS: nil,
+                      clientName: "Element",
+                      clientVersion: "1.9.9;")
         ]
 
         XCTAssertEqual(userAgents, expected)

@@ -124,74 +124,60 @@ enum UserAgentParser {
 
     // Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) ElementNightly/2022091301 Chrome/104.0.5112.102 Electron/20.1.1 Safari/537.36
     private static func parseDesktop(_ userAgent: String) -> UserAgent {
-        var deviceModel: String?
         var deviceOS: String?
-        var clientName: String?
-        var clientVersion: String?
+        let browserName = browserName(for: userAgent)
 
-        let (beforeSlash, afterSlash) = userAgent.splitByFirst("/")
-        clientName = beforeSlash
-        if let afterSlash = afterSlash {
-            let (beforeSpace, afterSpace) = afterSlash.splitByFirst(" ")
-            clientVersion = beforeSpace
-            if let afterSpace = afterSpace {
-                if let deviceInfo = findFirstDeviceInfo(in: afterSpace) {
-                    let deviceInfoComponents = deviceInfo.components(separatedBy: "; ")
-                    deviceModel = deviceInfoComponents[safe: 0]
-                    deviceOS = deviceInfoComponents[safe: 1]
-                }
-            }
+        if let deviceInfo = findFirstDeviceInfo(in: userAgent) {
+            let deviceInfoComponents = deviceInfo.components(separatedBy: "; ")
+            deviceOS = deviceInfoComponents[safe: 1]?.hasPrefix("Android") == true ? deviceInfoComponents[safe: 1] : deviceInfoComponents.first
         }
 
         return UserAgent(deviceType: .desktop,
-                         deviceModel: deviceModel,
+                         deviceModel: browserName,
                          deviceOS: deviceOS,
-                         clientName: clientName,
-                         clientVersion: clientVersion)
+                         clientName: nil,
+                         clientVersion: nil)
     }
 
     // Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36
     private static func parseWeb(_ userAgent: String) -> UserAgent {
-        var deviceModel: String?
-        var deviceOS: String?
-        var clientName: String?
-        var clientVersion: String?
-
-        let (beforeSlash, afterSlash) = userAgent.splitByFirst("/")
-        clientName = beforeSlash
-        if let afterSlash = afterSlash {
-            let (beforeSpace, afterSpace) = afterSlash.splitByFirst(" ")
-            clientVersion = beforeSpace
-            if let afterSpace = afterSpace {
-                if let deviceInfo = findFirstDeviceInfo(in: afterSpace) {
-                    let deviceInfoComponents = deviceInfo.components(separatedBy: "; ")
-                    deviceModel = deviceInfoComponents[safe: 0]
-                    deviceOS = deviceInfoComponents[safe: 1]
-                }
-            }
-        }
+        let desktopUserAgent = parseDesktop(userAgent)
 
         return UserAgent(deviceType: .web,
-                         deviceModel: deviceModel,
-                         deviceOS: deviceOS,
-                         clientName: clientName,
-                         clientVersion: clientVersion)
+                         deviceModel: desktopUserAgent.deviceModel,
+                         deviceOS: desktopUserAgent.deviceOS,
+                         clientName: desktopUserAgent.clientName,
+                         clientVersion: desktopUserAgent.clientVersion)
     }
 
     private static func findFirstDeviceInfo(in string: String) -> String? {
-        do {
-            let regex = try NSRegularExpression(pattern: Constants.deviceInfoRegexPattern,
-                                                options: .caseInsensitive)
-            var range = regex.rangeOfFirstMatch(in: string, range: NSRange(string.startIndex..., in: string))
-            if range.location != NSNotFound {
-                range.location += 1
-                range.length -= 2
-                return string[range]
-            }
+        guard let regex = try? NSRegularExpression(pattern: Constants.deviceInfoRegexPattern,
+                                                   options: .caseInsensitive) else {
             return nil
-        } catch {
-            MXLog.debug("[UserAgentParser] Couldn't create regex: \(error)")
-            return nil
+        }
+        var range = regex.rangeOfFirstMatch(in: string, range: NSRange(string.startIndex..., in: string))
+        if range.location != NSNotFound {
+            range.location += 1
+            range.length -= 2
+            return string[range]
+        }
+        return nil
+    }
+
+    private static func browserName(for userAgent: String) -> String? {
+        let components = userAgent.components(separatedBy: " ")
+        if components.last?.hasPrefix("Firefox") == true {
+            return "Firefox"
+        } else if components.last?.hasPrefix("Safari") == true
+                    && components[safe:components.count - 2]?.hasPrefix("Mobile") == true {
+            // mobile browser
+            let possibleBrowserName = components[safe:components.count - 3]?.components(separatedBy: "/").first
+            return possibleBrowserName == "Version" ? "Safari" : possibleBrowserName
+        } else if components.last?.hasPrefix("Safari") == true && components[safe:components.count - 2]?.hasPrefix("Version") == true {
+            return "Safari"
+        } else {
+            // regular browser
+            return components[safe:components.count - 2]?.components(separatedBy: "/").first
         }
     }
 }
@@ -211,9 +197,5 @@ private extension String {
         let before = String(prefix(upTo: delimiterIndex))
         let after = String(suffix(from: index(after: delimiterIndex)))
         return (before, after)
-    }
-
-    func trimmingWhitespaces() -> String {
-        trimmingCharacters(in: .whitespaces)
     }
 }
