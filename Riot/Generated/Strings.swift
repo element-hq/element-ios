@@ -8483,10 +8483,6 @@ public class VectorL10n: NSObject {
   public static var userSessionDetailsApplicationVersion: String { 
     return VectorL10n.tr("Vector", "user_session_details_application_version") 
   }
-  /// Brand
-  public static var userSessionDetailsDeviceBrand: String { 
-    return VectorL10n.tr("Vector", "user_session_details_device_brand") 
-  }
   /// IP address
   public static var userSessionDetailsDeviceIpAddress: String { 
     return VectorL10n.tr("Vector", "user_session_details_device_ip_address") 
@@ -8494,6 +8490,10 @@ public class VectorL10n: NSObject {
   /// IP location
   public static var userSessionDetailsDeviceIpLocation: String { 
     return VectorL10n.tr("Vector", "user_session_details_device_ip_location") 
+  }
+  /// Model
+  public static var userSessionDetailsDeviceModel: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_model") 
   }
   /// Operating System
   public static var userSessionDetailsDeviceOs: String { 

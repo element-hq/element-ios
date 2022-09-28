@@ -55,14 +55,11 @@ struct UserSessionInfo {
 
     // MARK: - Device Properties
 
-    /// Device brand
-    let deviceBrand: String?
+    /// Device model
+    let deviceModel: String?
 
     /// Device OS
     let deviceOS: String?
-
-    /// Device OS version
-    let deviceOSVersion: String?
 
     /// Last seen IP location
     let lastSeenIPLocation: String?
@@ -92,42 +89,11 @@ extension UserSessionInfo {
         let elapsedTime = Date().timeIntervalSince1970 - lastSeenTimestamp
         return elapsedTime < Self.inactiveSessionDurationTreshold
     }
-
-    var deviceOSFullName: String? {
-        guard let deviceOS = deviceOS, let deviceOSVersion = deviceOSVersion else {
-            return nil
-        }
-        return [deviceOS, deviceOSVersion].joined(separator: " ")
-    }
 }
 
 extension UserSessionInfo: Equatable {
     static func == (lhs: UserSessionInfo, rhs: UserSessionInfo) -> Bool {
         return lhs.id == rhs.id
-    }
-}
-
-extension UserSessionInfo {
-    init(withDevice device: MXDevice,
-         applicationData: [String: String]?,
-         userAgent: UserAgent?,
-         isSessionVerified: Bool,
-         isCurrentSession: Bool) {
-        self.init(sessionId: device.deviceId,
-                  sessionName: device.displayName,
-                  deviceType: .unknown,
-                  isVerified: isSessionVerified,
-                  lastSeenIP: device.lastSeenIp,
-                  lastSeenTimestamp: device.lastSeenTs > 0 ? TimeInterval(device.lastSeenTs / 1000) : nil,
-                  applicationName: applicationData?["name"],
-                  applicationVersion: applicationData?["version"],
-                  applicationURL: applicationData?["url"],
-                  deviceBrand: nil,
-                  deviceOS: userAgent?.deviceOS,
-                  deviceOSVersion: userAgent?.deviceOSVersion,
-                  lastSeenIPLocation: nil,
-                  deviceName: userAgent?.clientName,
-                  isCurrentSession: isCurrentSession)
     }
 }
 
@@ -143,9 +109,8 @@ extension UserSessionInfo {
                                                  applicationName: "Element iOS",
                                                  applicationVersion: "1.0.0",
                                                  applicationURL: nil,
-                                                 deviceBrand: nil,
-                                                 deviceOS: "iOS",
-                                                 deviceOSVersion: "15.5",
+                                                 deviceModel: nil,
+                                                 deviceOS: "iOS 15.5",
                                                  lastSeenIPLocation: nil,
                                                  deviceName: "My iPhone",
                                                  isCurrentSession: true)
@@ -159,9 +124,8 @@ extension UserSessionInfo {
                                                         applicationName: nil,
                                                         applicationVersion: nil,
                                                         applicationURL: nil,
-                                                        deviceBrand: nil,
+                                                        deviceModel: nil,
                                                         deviceOS: nil,
-                                                        deviceOSVersion: nil,
                                                         lastSeenIPLocation: nil,
                                                         deviceName: nil,
                                                         isCurrentSession: true)
@@ -175,13 +139,12 @@ extension UserSessionInfo {
                                          applicationName: "Element Web",
                                          applicationVersion: "1.0.0",
                                          applicationURL: nil,
-                                         deviceBrand: nil,
-                                         deviceOS: "Windows",
-                                         deviceOSVersion: "10",
+                                         deviceModel: nil,
+                                         deviceOS: "Windows 10",
                                          lastSeenIPLocation: nil,
                                          deviceName: "My Windows",
                                          isCurrentSession: false)
-    
+
     static let mockAndroid = UserSessionInfo(sessionId: "3",
                                              sessionName: "Android",
                                              deviceType: .mobile,
@@ -191,9 +154,8 @@ extension UserSessionInfo {
                                              applicationName: "Element Android",
                                              applicationVersion: "1.0.0",
                                              applicationURL: nil,
-                                             deviceBrand: nil,
-                                             deviceOS: "Android",
-                                             deviceOSVersion: "4.0",
+                                             deviceModel: nil,
+                                             deviceOS: "Android 4.0",
                                              lastSeenIPLocation: nil,
                                              deviceName: "My Phone",
                                              isCurrentSession: false)
@@ -207,9 +169,8 @@ extension UserSessionInfo {
                                              applicationName: "Element MacOS",
                                              applicationVersion: "1.0.0",
                                              applicationURL: nil,
-                                             deviceBrand: nil,
-                                             deviceOS: "macOS",
-                                             deviceOSVersion: "12.5.1",
+                                             deviceModel: nil,
+                                             deviceOS: "macOS 12.5.1",
                                              lastSeenIPLocation: nil,
                                              deviceName: "My Mac",
                                              isCurrentSession: false)

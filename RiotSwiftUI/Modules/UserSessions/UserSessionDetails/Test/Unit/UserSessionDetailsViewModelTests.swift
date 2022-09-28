@@ -93,9 +93,8 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                                        applicationName: String? = "Element iOS",
                                        applicationVersion: String? = "1.0.0",
                                        applicationURL: String? = nil,
-                                       deviceBrand: String? = nil,
+                                       deviceModel: String? = nil,
                                        deviceOS: String? = nil,
-                                       deviceOSVersion: String? = nil,
                                        lastSeenIPLocation: String? = nil,
                                        deviceName: String? = nil,
                                        isCurrentSession: Bool = true) -> UserSessionInfo {
@@ -108,9 +107,8 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                         applicationName: applicationName,
                         applicationVersion: applicationVersion,
                         applicationURL: applicationURL,
-                        deviceBrand: deviceBrand,
+                        deviceModel: deviceModel,
                         deviceOS: deviceOS,
-                        deviceOSVersion: deviceOSVersion,
                         lastSeenIPLocation: lastSeenIPLocation,
                         deviceName: deviceName,
                         isCurrentSession: isCurrentSession)

@@ -132,3 +132,26 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         return mxSession.crypto.device(withDeviceId: deviceId, ofUser: userId)
     }
 }
+
+extension UserSessionInfo {
+    init(withDevice device: MXDevice,
+         applicationData: [String: String]?,
+         userAgent: UserAgent?,
+         isSessionVerified: Bool,
+         isCurrentSession: Bool) {
+        self.init(sessionId: device.deviceId,
+                  sessionName: device.displayName,
+                  deviceType: .unknown,
+                  isVerified: isSessionVerified,
+                  lastSeenIP: device.lastSeenIp,
+                  lastSeenTimestamp: device.lastSeenTs > 0 ? TimeInterval(device.lastSeenTs / 1000) : nil,
+                  applicationName: applicationData?["name"],
+                  applicationVersion: applicationData?["version"],
+                  applicationURL: applicationData?["url"],
+                  deviceModel: nil,
+                  deviceOS: userAgent?.deviceOS,
+                  lastSeenIPLocation: nil,
+                  deviceName: userAgent?.clientName,
+                  isCurrentSession: isCurrentSession)
+    }
+}
