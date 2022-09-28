@@ -17,28 +17,70 @@
 import Foundation
 
 class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
-    let overviewData: UserSessionsOverviewData
+    enum Mode {
+        case currentSessionUnverified
+        case currentSessionVerified
+        case onlyUnverifiedSessions
+        case onlyInactiveSessions
+        case noOtherSessions
+    }
+    
+    private let mode: Mode
+    
+    var overviewData: UserSessionsOverviewData
+    
+    init(mode: Mode = .currentSessionUnverified) {
+        self.mode = mode
+        
+        overviewData = UserSessionsOverviewData(currentSession: nil,
+                                                unverifiedSessions: [],
+                                                inactiveSessions: [],
+                                                otherSessions: [])
+    }
     
     func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
+        let unverifiedSessions = buildSessions(verified: false, active: true)
+        let inactiveSessions = buildSessions(verified: true, active: false)
+        
+        switch mode {
+        case .noOtherSessions:
+            overviewData = UserSessionsOverviewData(currentSession: currentSession,
+                                                    unverifiedSessions: [],
+                                                    inactiveSessions: [],
+                                                    otherSessions: [])
+        case .onlyUnverifiedSessions:
+            overviewData = UserSessionsOverviewData(currentSession: currentSession,
+                                                    unverifiedSessions: unverifiedSessions + [currentSession],
+                                                    inactiveSessions: [],
+                                                    otherSessions: unverifiedSessions)
+        case .onlyInactiveSessions:
+            overviewData = UserSessionsOverviewData(currentSession: currentSession,
+                                                    unverifiedSessions: [],
+                                                    inactiveSessions: inactiveSessions,
+                                                    otherSessions: inactiveSessions)
+        default:
+            let otherSessions = unverifiedSessions + inactiveSessions + buildSessions(verified: true, active: true)
+            
+            overviewData = UserSessionsOverviewData(currentSession: currentSession,
+                                                    unverifiedSessions: unverifiedSessions,
+                                                    inactiveSessions: inactiveSessions,
+                                                    otherSessions: otherSessions)
+        }
+        
         completion(.success(overviewData))
     }
     
     func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo? {
-        nil
+        overviewData.otherSessions.first { $0.id == sessionId }
     }
+
+    // MARK: - Private
     
-    init() {
-        overviewData = UserSessionsOverviewData(currentSession: Self.allSessions.filter(\.isCurrent).first,
-                                                unverifiedSessions: Self.allSessions.filter { !$0.isVerified },
-                                                inactiveSessions: Self.allSessions.filter { !$0.isActive },
-                                                otherSessions: Self.allSessions.filter { !$0.isCurrent })
-    }
-    
-    static let allSessions = [
+    private var currentSession: UserSessionInfo {
         UserSessionInfo(id: "alice",
                         name: "iOS",
                         deviceType: .mobile,
-                        isVerified: false,
+                        isVerified: mode == .currentSessionVerified,
                         lastSeenIP: "10.0.0.10",
                         lastSeenTimestamp: nil,
                         applicationName: "Element iOS",
@@ -49,51 +91,54 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                         lastSeenIPLocation: nil,
                         deviceName: "My iPhone",
                         isActive: true,
-                        isCurrent: true),
-        UserSessionInfo(id: "1",
-                        name: "macOS",
-                        deviceType: .desktop,
-                        isVerified: true,
-                        lastSeenIP: "1.0.0.1",
-                        lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
-                        applicationName: "Element MacOS",
-                        applicationVersion: "1.0.0",
-                        applicationURL: nil,
-                        deviceModel: nil,
-                        deviceOS: "macOS 12.5.1",
-                        lastSeenIPLocation: nil,
-                        deviceName: "My Mac",
-                        isActive: false,
-                        isCurrent: false),
-        UserSessionInfo(id: "2",
-                        name: "Firefox on Windows",
-                        deviceType: .web,
-                        isVerified: true,
-                        lastSeenIP: "2.0.0.2",
-                        lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
-                        applicationName: "Element Web",
-                        applicationVersion: "1.0.0",
-                        applicationURL: nil,
-                        deviceModel: nil,
-                        deviceOS: "Windows 10",
-                        lastSeenIPLocation: nil,
-                        deviceName: "My Windows",
-                        isActive: true,
-                        isCurrent: false),
-        UserSessionInfo(id: "3",
-                        name: "Android",
-                        deviceType: .mobile,
-                        isVerified: false,
-                        lastSeenIP: "3.0.0.3",
-                        lastSeenTimestamp: Date().timeIntervalSince1970 - 10,
-                        applicationName: "Element Android",
-                        applicationVersion: "1.0.0",
-                        applicationURL: nil,
-                        deviceModel: nil,
-                        deviceOS: "Android 4.0",
-                        lastSeenIPLocation: nil,
-                        deviceName: "My Phone",
-                        isActive: true,
-                        isCurrent: false)
-    ]
+                        isCurrent: true)
+    }
+    
+    private func buildSessions(verified: Bool, active: Bool) -> [UserSessionInfo] {
+        [UserSessionInfo(id: "1 verified: \(verified) active: \(active)",
+                         name: "macOS verified: \(verified) active: \(active)",
+                         deviceType: .desktop,
+                         isVerified: verified,
+                         lastSeenIP: "1.0.0.1",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
+                         applicationName: "Element MacOS",
+                         applicationVersion: "1.0.0",
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: "macOS 12.5.1",
+                         lastSeenIPLocation: nil,
+                         deviceName: "My Mac",
+                         isActive: active,
+                         isCurrent: false),
+         UserSessionInfo(id: "2 verified: \(verified) active: \(active)",
+                         name: "Firefox on Windows verified: \(verified) active: \(active)",
+                         deviceType: .web,
+                         isVerified: verified,
+                         lastSeenIP: "2.0.0.2",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                         applicationName: "Element Web",
+                         applicationVersion: "1.0.0",
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: "Windows 10",
+                         lastSeenIPLocation: nil,
+                         deviceName: "My Windows",
+                         isActive: active,
+                         isCurrent: false),
+         UserSessionInfo(id: "3 verified: \(verified) active: \(active)",
+                         name: "Android verified: \(verified) active: \(active)",
+                         deviceType: .mobile,
+                         isVerified: verified,
+                         lastSeenIP: "3.0.0.3",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 10,
+                         applicationName: "Element Android",
+                         applicationVersion: "1.0.0",
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: "Android 4.0",
+                         lastSeenIPLocation: nil,
+                         deviceName: "My Phone",
+                         isActive: active,
+                         isCurrent: false)]
+    }
 }

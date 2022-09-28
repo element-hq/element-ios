@@ -23,11 +23,13 @@ struct UserSessionsOverview: View {
     
     var body: some View {
         ScrollView {
-            securityRecommendationsSection
+            if hasSecurityRecommendations {
+                securityRecommendationsSection
+            }
             
             currentSessionsSection
             
-            if viewModel.viewState.otherSessionsViewData.isEmpty == false {
+            if !viewModel.viewState.otherSessionsViewData.isEmpty {
                 otherSessionsSection
             }
         }
@@ -40,41 +42,39 @@ struct UserSessionsOverview: View {
         }
     }
     
-    @ViewBuilder
     private var securityRecommendationsSection: some View {
-        if hasSecurityRecommendations {
-            SwiftUI.Section {
-                if !viewModel.viewState.unverifiedSessionsViewData.isEmpty {
-                    SecurityRecommendationCard(style: .unverified,
-                                               sessionCount: viewModel.viewState.unverifiedSessionsViewData.count) {
-                        viewModel.send(viewAction: .viewAllUnverifiedSessions)
-                    }
+        SwiftUI.Section {
+            if !viewModel.viewState.unverifiedSessionsViewData.isEmpty {
+                SecurityRecommendationCard(style: .unverified,
+                                           sessionCount: viewModel.viewState.unverifiedSessionsViewData.count) {
+                    viewModel.send(viewAction: .viewAllUnverifiedSessions)
                 }
-                
-                if !viewModel.viewState.inactiveSessionsViewData.isEmpty {
-                    SecurityRecommendationCard(style: .inactive,
-                                               sessionCount: viewModel.viewState.inactiveSessionsViewData.count) {
-                        viewModel.send(viewAction: .viewAllInactiveSessions)
-                    }
-                }
-            } header: {
-                VStack(alignment: .leading) {
-                    Text(VectorL10n.userSessionsOverviewSecurityRecommendationsSectionTitle)
-                        .textCase(.uppercase)
-                        .font(theme.fonts.footnote)
-                        .foregroundColor(theme.colors.secondaryContent)
-                        .padding(.bottom, 8.0)
-                    
-                    Text(VectorL10n.userSessionsOverviewSecurityRecommendationsSectionInfo)
-                        .font(theme.fonts.footnote)
-                        .foregroundColor(theme.colors.secondaryContent)
-                        .padding(.bottom, 12.0)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 24)
             }
-            .padding(.horizontal, 16)
+            
+            if !viewModel.viewState.inactiveSessionsViewData.isEmpty {
+                SecurityRecommendationCard(style: .inactive,
+                                           sessionCount: viewModel.viewState.inactiveSessionsViewData.count) {
+                    viewModel.send(viewAction: .viewAllInactiveSessions)
+                }
+            }
+        } header: {
+            VStack(alignment: .leading) {
+                Text(VectorL10n.userSessionsOverviewSecurityRecommendationsSectionTitle)
+                    .textCase(.uppercase)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .padding(.bottom, 8.0)
+                
+                Text(VectorL10n.userSessionsOverviewSecurityRecommendationsSectionInfo)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .padding(.bottom, 12.0)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 24)
         }
+        .padding(.horizontal, 16)
+        .accessibilityIdentifier("userSessionsOverviewSecurityRecommendationsSection")
     }
     
     var hasSecurityRecommendations: Bool {
@@ -102,10 +102,9 @@ struct UserSessionsOverview: View {
             .padding(.horizontal, 16)
         }
     }
-
+    
     private var otherSessionsSection: some View {
         SwiftUI.Section {
-            // Device list
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.viewState.otherSessionsViewData) { viewData in
                     UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
@@ -131,6 +130,7 @@ struct UserSessionsOverview: View {
             .padding(.horizontal, 16.0)
             .padding(.top, 24.0)
         }
+        .accessibilityIdentifier("userSessionsOverviewOtherSection")
     }
 }
 

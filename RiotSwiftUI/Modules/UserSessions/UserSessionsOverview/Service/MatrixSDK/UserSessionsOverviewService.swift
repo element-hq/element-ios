@@ -21,12 +21,12 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     /// Delay after which session is considered inactive, 90 days
     private static let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
     
-    private let mxSession: MXSession
+    private let dataProvider: UserSessionsDataProviderProtocol
     
     private(set) var overviewData: UserSessionsOverviewData
     
-    init(mxSession: MXSession) {
-        self.mxSession = mxSession
+    init(dataProvider: UserSessionsDataProviderProtocol) {
+        self.dataProvider = dataProvider
         
         overviewData = UserSessionsOverviewData(currentSession: nil,
                                                 unverifiedSessions: [],
@@ -39,7 +39,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     // MARK: - Public
     
     func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
-        mxSession.matrixRestClient.devices { response in
+        dataProvider.devices { response in
             switch response {
             case .success(let devices):
                 self.overviewData = self.sessionsOverviewData(from: devices)
@@ -61,16 +61,18 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     // MARK: - Private
     
     private func setupInitialOverviewData() {
-        let currentSessionInfo = currentSessionInfo()
+        guard let currentSessionInfo = getCurrentSessionInfo() else {
+            return
+        }
         
         overviewData = UserSessionsOverviewData(currentSession: currentSessionInfo,
-                                                unverifiedSessions: [],
-                                                inactiveSessions: [],
+                                                unverifiedSessions: currentSessionInfo.isVerified ? [] : [currentSessionInfo],
+                                                inactiveSessions: currentSessionInfo.isActive ? [] : [currentSessionInfo],
                                                 otherSessions: [])
     }
     
-    private func currentSessionInfo() -> UserSessionInfo? {
-        guard let mainAccount = MXKAccountManager.shared().activeAccounts.first,
+    private func getCurrentSessionInfo() -> UserSessionInfo? {
+        guard let mainAccount = dataProvider.activeAccounts.first,
               let device = mainAccount.device else {
             return nil
         }
@@ -80,7 +82,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     private func sessionsOverviewData(from devices: [MXDevice]) -> UserSessionsOverviewData {
         let allSessions = devices
             .sorted { $0.lastSeenTs > $1.lastSeenTs }
-            .map { sessionInfo(from: $0, isCurrentSession: $0.deviceId == mxSession.myDeviceId) }
+            .map { sessionInfo(from: $0, isCurrentSession: $0.deviceId == dataProvider.myDeviceId) }
         
         return UserSessionsOverviewData(currentSession: allSessions.filter(\.isCurrent).first,
                                         unverifiedSessions: allSessions.filter { !$0.isVerified },
@@ -92,7 +94,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         let isSessionVerified = deviceInfo(for: device.deviceId)?.trustLevel.isVerified ?? false
 
         let eventType = kMXAccountDataTypeClientInformation + "." + device.deviceId
-        let appData = mxSession.accountData.accountData(forEventType: eventType)
+        let appData = dataProvider.accountData(forEventType: eventType)
         var userAgent: UserAgent?
         var isSessionActive = true
 
@@ -114,11 +116,11 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     }
     
     private func deviceInfo(for deviceId: String) -> MXDeviceInfo? {
-        guard let userId = mxSession.myUserId else {
+        guard let userId = dataProvider.myUserId else {
             return nil
         }
         
-        return mxSession.crypto.device(withDeviceId: deviceId, ofUser: userId)
+        return dataProvider.device(withDeviceId: deviceId, ofUser: userId)
     }
 }
 

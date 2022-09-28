@@ -24,7 +24,7 @@ enum UserSessionsOverviewCoordinatorResult {
 
 // MARK: View model
 
-enum UserSessionsOverviewViewModelResult {
+enum UserSessionsOverviewViewModelResult: Equatable {
     case showAllUnverifiedSessions
     case showAllInactiveSessions
     case verifyCurrentSession

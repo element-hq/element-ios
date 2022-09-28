@@ -18,9 +18,6 @@ import Foundation
 
 /// View data for UserSessionListItem
 struct UserSessionListItemViewData: Identifiable {
-    private static let userSessionNameFormatter = UserSessionNameFormatter()
-    private static let lastActivityDateFormatter = UserSessionLastActivityFormatter()
-
     var id: String {
         sessionId
     }
@@ -39,7 +36,7 @@ struct UserSessionListItemViewData: Identifiable {
          isVerified: Bool,
          lastActivityDate: TimeInterval?) {
         self.sessionId = sessionId
-        sessionName = Self.userSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
+        sessionName = UserSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
         sessionDetails = Self.buildSessionDetails(isVerified: isVerified, lastActivityDate: lastActivityDate)
         deviceAvatarViewData = DeviceAvatarViewData(deviceType: deviceType, isVerified: isVerified)
     }
@@ -54,7 +51,7 @@ struct UserSessionListItemViewData: Identifiable {
         var lastActivityDateString: String?
         
         if let lastActivityDate = lastActivityDate {
-            lastActivityDateString = Self.lastActivityDateFormatter.lastActivityDateString(from: lastActivityDate)
+            lastActivityDateString = UserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityDate)
         }
 
         if let lastActivityDateString = lastActivityDateString, lastActivityDateString.isEmpty == false {

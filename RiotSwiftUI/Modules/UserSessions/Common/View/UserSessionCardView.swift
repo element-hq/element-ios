@@ -109,12 +109,14 @@ struct UserSessionCardView: View {
                 .buttonStyle(PrimaryActionButtonStyle())
                 .padding(.top, 4)
                 .padding(.bottom, 3)
+                .accessibilityIdentifier("userSessionCardVerifyButton")
             }
             
             if viewData.isCurrentSessionDisplayMode {
                 Text(VectorL10n.userSessionViewDetails)
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.accent)
+                    .accessibilityIdentifier("userSessionCardViewDetails")
             }
         }
         .padding(24)
