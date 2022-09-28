@@ -172,8 +172,9 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
             
                 // Remove pending QR code transaction, as we are going to use SAS verification
                 self.removePendingQRCodeTransaction()
-            
-                if keyVerificationTransaction is MXSASTransaction == false || keyVerificationTransaction.isIncoming {
+
+                // Check due to legacy implementation of key verification which could pass incorrect type of transaction
+                if keyVerificationTransaction is MXIncomingSASTransaction {
                     MXLog.debug("[KeyVerificationVerifyByScanningViewModel] SAS transaction should be outgoing")
                     self.unregisterTransactionDidStateChangeNotification()
                     self.update(viewState: .error(KeyVerificationVerifyByScanningViewModelError.unknown))
