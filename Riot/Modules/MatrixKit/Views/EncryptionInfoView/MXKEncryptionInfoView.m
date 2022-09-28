@@ -192,7 +192,7 @@ static NSAttributedString *verticalWhitespace = nil;
         NSString *claimedKey = _mxEvent.keysClaimed[@"ed25519"];
         NSString *algorithm = _mxEvent.wireContent[@"algorithm"];
         NSString *sessionId = _mxEvent.wireContent[@"session_id"];
-        NSString *untrusted = _mxEvent.isUntrusted ? [VectorL10n userVerificationSessionsListSessionUntrusted] : [VectorL10n userVerificationSessionsListSessionTrusted];
+        NSString *untrusted = _mxEvent.isUntrusted ? [VectorL10n roomEventEncryptionInfoKeyAuthenticityNotGuaranteed] : [VectorL10n userVerificationSessionsListSessionTrusted];
         
         NSString *decryptionError;
         if (_mxEvent.decryptionError)
