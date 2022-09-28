@@ -112,14 +112,9 @@ struct UserSessionCardView: View {
             }
             
             if viewData.isCurrentSessionDisplayMode {
-                Button {
-                    onViewDetailsAction?(viewData.sessionId)
-                } label: {
-                    Text(VectorL10n.userSessionViewDetails)
-                        .font(theme.fonts.body)
-                        .foregroundColor(theme.colors.accent)
-                }
-                .padding(.top, 4)
+                Text(VectorL10n.userSessionViewDetails)
+                    .font(theme.fonts.body)
+                    .foregroundColor(theme.colors.accent)
             }
         }
         .padding(24)
@@ -127,6 +122,11 @@ struct UserSessionCardView: View {
         .background(theme.colors.background)
         .clipShape(backgroundShape)
         .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1.0, shape: backgroundShape)
+        .onTapGesture {
+            if viewData.isCurrentSessionDisplayMode {
+                onViewDetailsAction?(viewData.sessionId)
+            }
+        }
     }
 }
 
