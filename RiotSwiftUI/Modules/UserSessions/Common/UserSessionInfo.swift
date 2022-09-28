@@ -18,7 +18,6 @@ import Foundation
 
 /// Represents a user session information
 struct UserSessionInfo {
-
     /// Delay after which session is considered inactive, 90 days
     static let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
     
@@ -73,7 +72,7 @@ struct UserSessionInfo {
 
 extension UserSessionInfo: Identifiable {
     var id: String {
-        return sessionId
+        sessionId
     }
 }
 
@@ -93,7 +92,7 @@ extension UserSessionInfo {
 
 extension UserSessionInfo: Equatable {
     static func == (lhs: UserSessionInfo, rhs: UserSessionInfo) -> Bool {
-        return lhs.id == rhs.id
+        lhs.id == rhs.id
     }
 }
 
@@ -165,7 +164,7 @@ extension UserSessionInfo {
                                              deviceType: .desktop,
                                              isVerified: true,
                                              lastSeenIP: "1.0.0.1",
-                                             lastSeenTimestamp: Date().timeIntervalSince1970 - 130000,
+                                             lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
                                              applicationName: "Element MacOS",
                                              applicationVersion: "1.0.0",
                                              applicationURL: nil,

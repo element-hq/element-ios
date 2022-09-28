@@ -26,7 +26,7 @@ struct UserSessionOverview: View {
             UserSessionCardView(viewData: viewModel.viewState.cardViewData, onVerifyAction: { _ in
                 viewModel.send(viewAction: .verifyCurrentSession)
             },
-                                onViewDetailsAction: { _ in
+            onViewDetailsAction: { _ in
                 viewModel.send(viewAction: .viewSessionDetails)
             })
             .padding(16)
@@ -39,8 +39,8 @@ struct UserSessionOverview: View {
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
         .navigationTitle(viewModel.viewState.isCurrentSession ?
-                         VectorL10n.userSessionOverviewCurrentSessionTitle :
-                            VectorL10n.userSessionOverviewSessionTitle)
+            VectorL10n.userSessionOverviewCurrentSessionTitle :
+            VectorL10n.userSessionOverviewSessionTitle)
     }
 }
 

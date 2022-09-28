@@ -111,7 +111,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
 
         let eventType = kMXAccountDataTypeClientInformation + "." + device.deviceId
         let appData = mxSession.accountData.accountData(forEventType: eventType)
-        var userAgent: UserAgent? = nil
+        var userAgent: UserAgent?
 
         if let lastSeenUserAgent = device.lastSeenUserAgent {
             userAgent = UserAgentParser.parse(lastSeenUserAgent)
