@@ -5623,6 +5623,10 @@ public class VectorL10n: NSObject {
   public static var roomEventEncryptionInfoEventUserId: String { 
     return VectorL10n.tr("Vector", "room_event_encryption_info_event_user_id") 
   }
+  /// The authenticity of this encrypted message can't be guaranteed on this device.
+  public static var roomEventEncryptionInfoKeyAuthenticityNotGuaranteed: String { 
+    return VectorL10n.tr("Vector", "room_event_encryption_info_key_authenticity_not_guaranteed") 
+  }
   /// End-to-end encryption information\n\n
   public static var roomEventEncryptionInfoTitle: String { 
     return VectorL10n.tr("Vector", "room_event_encryption_info_title") 
