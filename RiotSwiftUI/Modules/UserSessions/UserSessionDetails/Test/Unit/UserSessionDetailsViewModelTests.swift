@@ -25,7 +25,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                                                     lastSeenIP: nil)
         
         var sessionItems = [UserSessionDetailsSectionItemViewData]()
-        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.sessionId))
+        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.id))
         
         var sections = [UserSessionDetailsSectionViewData]()
         sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
@@ -44,7 +44,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         
         var sessionItems = [UserSessionDetailsSectionItemViewData]()
         sessionItems.append(sessionNameItem(sessionName: "session name"))
-        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.sessionId))
+        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.id))
         
         var sections = [UserSessionDetailsSectionViewData]()
         sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
@@ -64,7 +64,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         
         var sessionItems = [UserSessionDetailsSectionItemViewData]()
         sessionItems.append(sessionNameItem(sessionName: "session name"))
-        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.sessionId))
+        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.id))
         
         var sections = [UserSessionDetailsSectionViewData]()
         sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
@@ -91,13 +91,14 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                                        lastSeenIP: String?,
                                        lastSeenTimestamp: TimeInterval = Date().timeIntervalSince1970,
                                        isCurrentSession: Bool = true) -> UserSessionInfo {
-        UserSessionInfo(sessionId: sessionId,
-                        sessionName: sessionName,
+        UserSessionInfo(id: sessionId,
+                        name: sessionName,
                         deviceType: deviceType,
                         isVerified: isVerified,
                         lastSeenIP: lastSeenIP,
                         lastSeenTimestamp: lastSeenTimestamp,
-                        isCurrentSession: isCurrentSession)
+                        isActive: true,
+                        isCurrent: isCurrentSession)
     }
     
     private func sessionNameItem(sessionName: String) -> UserSessionDetailsSectionItemViewData {

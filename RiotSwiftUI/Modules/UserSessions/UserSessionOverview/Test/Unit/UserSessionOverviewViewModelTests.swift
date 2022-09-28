@@ -46,12 +46,13 @@ class UserSessionOverviewViewModelTests: XCTestCase {
     }
     
     private func createUserSessionInfo() -> UserSessionInfo {
-        UserSessionInfo(sessionId: "session",
-                        sessionName: "iOS",
+        UserSessionInfo(id: "session",
+                        name: "iOS",
                         deviceType: .mobile,
                         isVerified: false,
                         lastSeenIP: "10.0.0.10",
                         lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
-                        isCurrentSession: true)
+                        isActive: true,
+                        isCurrent: true)
     }
 }
