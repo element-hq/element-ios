@@ -148,7 +148,7 @@ extension UserSessionInfo {
                   applicationName: applicationData?["name"],
                   applicationVersion: applicationData?["version"],
                   applicationURL: applicationData?["url"],
-                  deviceModel: nil,
+                  deviceModel: userAgent?.deviceModel,
                   deviceOS: userAgent?.deviceOS,
                   lastSeenIPLocation: nil,
                   deviceName: userAgent?.clientName,

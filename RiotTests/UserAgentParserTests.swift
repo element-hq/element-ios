@@ -67,9 +67,12 @@ class UserAgentParserTests: XCTestCase {
             // New User Agent Implementation
             "Element/1.9.8 (iPhone X; iOS 15.2; Scale/3.00)",
             "Element/1.9.9 (iPhone XS; iOS 15.5; Scale/3.00)",
+            "Element/1.9.7 (iPad Pro (12.9-inch) (3rd generation); iOS 15.5; Scale/3.00)",
             // Legacy User Agent Implementation
             "Element/1.8.21 (iPhone; iOS 15.0; Scale/2.00)",
-            "Element/1.8.19 (iPhone; iOS 15.2; Scale/3.00)"
+            "Element/1.8.19 (iPhone; iOS 15.2; Scale/3.00)",
+            // Simulator User Agent
+            "Element/1.9.7 (Simulator (iPhone 13 Pro Max); iOS 15.5; Scale/3.00)"
         ]
         let userAgents = uaStrings.map { UserAgentParser.parse($0) }
 
@@ -85,6 +88,11 @@ class UserAgentParserTests: XCTestCase {
                       clientName: "Element",
                       clientVersion: "1.9.9"),
             UserAgent(deviceType: .mobile,
+                      deviceModel: "iPad Pro (12.9-inch) (3rd generation)",
+                      deviceOS: "iOS 15.5",
+                      clientName: "Element",
+                      clientVersion: "1.9.7"),
+            UserAgent(deviceType: .mobile,
                       deviceModel: "iPhone",
                       deviceOS: "iOS 15.0",
                       clientName: "Element",
@@ -93,7 +101,12 @@ class UserAgentParserTests: XCTestCase {
                       deviceModel: "iPhone",
                       deviceOS: "iOS 15.2",
                       clientName: "Element",
-                      clientVersion: "1.8.19")
+                      clientVersion: "1.8.19"),
+            UserAgent(deviceType: .mobile,
+                      deviceModel: "Simulator (iPhone 13 Pro Max)",
+                      deviceOS: "iOS 15.5",
+                      clientName: "Element",
+                      clientVersion: "1.9.7")
         ]
 
         XCTAssertEqual(userAgents, expected)

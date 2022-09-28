@@ -34,7 +34,7 @@ extension UserAgent: Equatable { }
 
 enum UserAgentParser {
     private enum Constants {
-        static let deviceInfoRegexPattern = "(([^)]+))"
+        static let deviceInfoRegexPattern = "\\((?:[^)(]+|\\((?:[^)(]+|\\([^)(]*\\))*\\))*\\)"
 
         static let androidKeyword = "; MatrixAndroidSdk2"
         static let iosKeyword = "; iOS "
@@ -185,11 +185,12 @@ enum UserAgentParser {
             var range = regex.rangeOfFirstMatch(in: string, range: NSRange(string.startIndex..., in: string))
             if range.location != NSNotFound {
                 range.location += 1
-                range.length -= 1
+                range.length -= 2
                 return string[range]
             }
             return nil
         } catch {
+            MXLog.debug("[UserAgentParser] Couldn't create regex: \(error)")
             return nil
         }
     }
