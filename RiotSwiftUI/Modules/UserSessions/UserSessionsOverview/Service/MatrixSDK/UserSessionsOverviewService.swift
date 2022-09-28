@@ -19,7 +19,7 @@ import MatrixSDK
 
 class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     /// Delay after which session is considered inactive, 90 days
-    static private let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
+    private static let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
     
     private let mxSession: MXSession
     
