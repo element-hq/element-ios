@@ -114,6 +114,7 @@ internal class Asset: NSObject {
     internal static let e2eWarning = ImageAsset(name: "e2e_warning")
     internal static let encryptionNormal = ImageAsset(name: "encryption_normal")
     internal static let encryptionTrusted = ImageAsset(name: "encryption_trusted")
+    internal static let encryptionUntrusted = ImageAsset(name: "encryption_untrusted")
     internal static let encryptionWarning = ImageAsset(name: "encryption_warning")
     internal static let favouritesEmptyScreenArtwork = ImageAsset(name: "favourites_empty_screen_artwork")
     internal static let favouritesEmptyScreenArtworkDark = ImageAsset(name: "favourites_empty_screen_artwork_dark")

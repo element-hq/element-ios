@@ -2596,6 +2596,7 @@ To enable access, tap Settings> Location and select Always";
 "room_event_encryption_info_unverify" = "Unverify";
 "room_event_encryption_info_block" = "Blacklist";
 "room_event_encryption_info_unblock" = "Unblacklist";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "The authenticity of this encrypted message can't be guaranteed on this device.";
 "room_event_encryption_verify_title" = "Verify session\n\n";
 "room_event_encryption_verify_message" = "To verify that this session can be trusted, please contact its owner using some other means (e.g. in person or a phone call) and ask them whether the key they see in their User Settings for this session matches the key below:\n\n\tSession name: %@\n\tSession ID: %@\n\tSession key: %@\n\nIf it matches, press the verify button below. If it doesnt, then someone else is intercepting this session and you probably want to press the blacklist button instead.\n\nIn future this verification process will be more sophisticated.";
 "room_event_encryption_verify_ok" = "Verify";
