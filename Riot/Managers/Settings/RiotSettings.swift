@@ -168,6 +168,10 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "enableNewSessionManager", defaultValue: false, storage: defaults)
     var enableNewSessionManager
 
+    /// Flag indicating if the new client information feature is enabled
+    @UserDefault(key: "enableClientInformationFeature", defaultValue: false, storage: defaults)
+    var enableClientInformationFeature
+
     // MARK: Calls
     
     /// Indicate if `allowStunServerFallback` settings has been set once.
