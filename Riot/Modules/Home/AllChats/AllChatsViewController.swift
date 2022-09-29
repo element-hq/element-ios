@@ -75,6 +75,23 @@ class AllChatsViewController: HomeViewController {
     
     private var currentAlert: UIAlertController?
     
+    @IBOutlet private var toolbar: UIToolbar!
+    private var isToolbarHidden: Bool = false {
+        didSet {
+            if isViewLoaded {
+                toolbar.transform = isToolbarHidden ? CGAffineTransform(translationX: 0, y: 2 * toolbarHeight) : .identity
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    private func setToolbarHidden(_ isHidden: Bool, animated: Bool) {
+        UIView.animate(withDuration: animated ? 0.3 : 0) {
+            self.isToolbarHidden = isHidden
+        }
+
+    }
+    
     // MARK: - SplitViewMasterViewControllerProtocol
     
     // References on the currently selected room
@@ -91,6 +108,8 @@ class AllChatsViewController: HomeViewController {
     
     // Tell whether the onboarding screen is preparing.
     private(set) var isOnboardingInProgress: Bool = false
+    
+    private var toolbarHeight: CGFloat = 0
 
     // MARK: - Lifecycle
     
@@ -107,6 +126,8 @@ class AllChatsViewController: HomeViewController {
         recentsTableView.register(RecentsInvitesTableViewCell.nib, forCellReuseIdentifier: RecentsInvitesTableViewCell.reuseIdentifier)
         recentsTableView.contentInsetAdjustmentBehavior = .automatic
         
+        toolbarHeight = toolbar.frame.height
+
         updateUI()
         
         navigationItem.largeTitleDisplayMode = .automatic
@@ -122,8 +143,7 @@ class AllChatsViewController: HomeViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.isToolbarHidden = false
-        self.navigationController?.toolbar.tintColor = ThemeService.shared().theme.colors.accent
+        self.toolbar.tintColor = ThemeService.shared().theme.colors.accent
         if self.navigationItem.searchController == nil {
             self.navigationItem.searchController = searchController
         }
@@ -164,12 +184,6 @@ class AllChatsViewController: HomeViewController {
         }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        self.navigationController?.isToolbarHidden = true
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
@@ -372,8 +386,8 @@ class AllChatsViewController: HomeViewController {
         
         let scrollPosition = scrollPosition(of: scrollView)
         
-        if !self.recentsTableView.isDragging && scrollPosition == 0 && self.navigationController?.isToolbarHidden == true {
-            self.navigationController?.setToolbarHidden(false, animated: true)
+        if !self.recentsTableView.isDragging && scrollPosition == 0 && self.isToolbarHidden == true {
+            self.setToolbarHidden(false, animated: true)
         }
 
         guard self.recentsTableView.isDragging else {
@@ -385,8 +399,8 @@ class AllChatsViewController: HomeViewController {
         }
 
         let isToolBarHidden: Bool = scrollPosition - initialScrollPosition > 0
-        if isToolBarHidden != self.navigationController?.isToolbarHidden {
-            self.navigationController?.setToolbarHidden(isToolBarHidden, animated: true)
+        if isToolBarHidden != self.isToolbarHidden {
+            self.setToolbarHidden(isToolBarHidden, animated: true)
         }
     }
     
@@ -494,13 +508,17 @@ class AllChatsViewController: HomeViewController {
     }
     
     private func updateToolbar(with menu: UIMenu) {
-        self.navigationController?.isToolbarHidden = false
+        guard isViewLoaded else {
+            return
+        }
+        
+        self.isToolbarHidden = false
         self.update(with: ThemeService.shared().theme)
-        self.setToolbarItems([
+        self.toolbar.items = [
             UIBarButtonItem(image: Asset.Images.allChatsSpacesIcon.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: ))),
             UIBarButtonItem.flexibleSpace(),
             UIBarButtonItem(image: Asset.Images.allChatsEditIcon.image, menu: menu)
-        ], animated: true)
+        ]
     }
     
     private func showCreateSpace(parentSpaceId: String?) {
