@@ -131,7 +131,7 @@ extension UserSessionInfo {
          isCurrent: Bool) {
         self.init(id: device.deviceId,
                   name: device.displayName,
-                  deviceType: .unknown,
+                  deviceType: userAgent?.deviceType ?? .unknown,
                   isVerified: isSessionVerified,
                   lastSeenIP: device.lastSeenIp,
                   lastSeenTimestamp: device.lastSeenTs > 0 ? TimeInterval(device.lastSeenTs / 1000) : nil,
