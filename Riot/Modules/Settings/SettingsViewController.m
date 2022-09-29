@@ -172,7 +172,8 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
     LABS_ENABLE_THREADS_INDEX,
     LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS,
-    LABS_ENABLE_LIVE_LOCATION_SHARING
+    LABS_ENABLE_LIVE_LOCATION_SHARING,
+    LABS_ENABLE_NEW_SESSION_MANAGER
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -403,7 +404,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     Section *sectionSecurity = [Section sectionWithTag:SECTION_TAG_SECURITY];
     [sectionSecurity addRowWithTag:SECURITY_BUTTON_INDEX];
         
-    if (BuildSettings.deviceManagerEnabled)
+    if (RiotSettings.shared.enableNewSessionManager)
     {
         // NOTE: Add device manager entry point in the security section atm for debug purpose
         [sectionSecurity addRowWithTag:DEVICE_MANAGER_INDEX];
@@ -595,6 +596,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
         }
+        [sectionLabs addRowWithTag:LABS_ENABLE_NEW_SESSION_MANAGER];
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
@@ -2532,6 +2534,18 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             cell = [self buildLiveLocationSharingCellForTableView:tableView atIndexPath:indexPath];
         }
+        else if (row == LABS_ENABLE_NEW_SESSION_MANAGER)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnableNewSessionManager];
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableNewSessionManager;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableNewSessionManager:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SECTION_TAG_SECURITY)
     {
@@ -3275,6 +3289,12 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     MXSDKOptions.sharedInstance.enableThreads = enable;
     [[MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession] reset];
     [[AppDelegate theDelegate] restoreEmptyDetailsViewController];
+}
+
+- (void)toggleEnableNewSessionManager:(UISwitch *)sender
+{
+    RiotSettings.shared.enableNewSessionManager = sender.isOn;
+    [self updateSections];
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender

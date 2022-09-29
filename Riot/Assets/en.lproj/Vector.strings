@@ -762,6 +762,7 @@ Tap the + to start adding people.";
 "settings_labs_enable_auto_report_decryption_errors" = "Auto Report Decryption Errors";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Show latest avatar and name for users in message history";
 "settings_labs_enable_live_location_sharing" = "Live location sharing - share current location (active development, and temporarily, locations persist in room history)";
+"settings_labs_enable_new_session_manager" = "New session manager";
 "settings_labs_enable_new_app_layout" = "New Application Layout";
 
 "settings_version" = "Version %@";
