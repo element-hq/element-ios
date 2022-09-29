@@ -2358,10 +2358,21 @@ To enable access, tap Settings> Location and select Always";
 
 "user_sessions_overview_title" = "Sessions";
 
-"user_sessions_overview_other_sessions_section_title" = "OTHER SESSIONS";
+"user_sessions_overview_security_recommendations_section_title" = "Security recommendations";
+"user_sessions_overview_security_recommendations_section_info" = "Improve your account security by following these recommendations.";
+
+"user_sessions_overview_security_recommendations_unverified_title" = "Unverified sessions";
+"user_sessions_overview_security_recommendations_unverified_info" = "Verify or sign out from unverified sessions.";
+
+"user_sessions_overview_security_recommendations_inactive_title" = "Inactive sessions";
+"user_sessions_overview_security_recommendations_inactive_info" = "Consider signing out from old sessions (90 days or older) you don’t use anymore.";
+
+"user_sessions_overview_other_sessions_section_title" = "Other sessions";
 "user_sessions_overview_other_sessions_section_info" = "For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.";
 
-"user_sessions_overview_current_session_section_title" = "CURRENT SESSION";
+"user_sessions_overview_current_session_section_title" = "Current session";
+
+"user_sessions_view_all_action" = "View all (%d)";
 
 "user_session_verified" = "Verified session";
 "user_session_unverified" = "Unverified session";
@@ -2374,6 +2385,7 @@ To enable access, tap Settings> Location and select Always";
 "user_session_verified_additional_info" = "Your current session is ready for secure messaging.";
 "user_session_unverified_additional_info" = "Verify your current session for enhanced secure messaging.";
 
+
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
 
@@ -2385,9 +2397,9 @@ To enable access, tap Settings> Location and select Always";
 "device_name_unknown" = "Unknown client";
 
 "user_session_details_title" = "Session details";
-"user_session_details_session_section_header" = "SESSION";
-"user_session_details_application_section_header" = "APPLICATION";
-"user_session_details_device_section_header" = "DEVICE";
+"user_session_details_session_section_header" = "Session";
+"user_session_details_application_section_header" = "Application";
+"user_session_details_device_section_header" = "Device";
 "user_session_details_session_name" = "Session name";
 "user_session_details_session_id" = "Session ID";
 "user_session_details_session_section_footer" = "Copy any data by tapping on it and holding it down.";
@@ -2590,6 +2602,7 @@ To enable access, tap Settings> Location and select Always";
 "room_event_encryption_info_unverify" = "Unverify";
 "room_event_encryption_info_block" = "Blacklist";
 "room_event_encryption_info_unblock" = "Unblacklist";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "The authenticity of this encrypted message can't be guaranteed on this device.";
 "room_event_encryption_verify_title" = "Verify session\n\n";
 "room_event_encryption_verify_message" = "To verify that this session can be trusted, please contact its owner using some other means (e.g. in person or a phone call) and ask them whether the key they see in their User Settings for this session matches the key below:\n\n\tSession name: %@\n\tSession ID: %@\n\tSession key: %@\n\nIf it matches, press the verify button below. If it doesnt, then someone else is intercepting this session and you probably want to press the blacklist button instead.\n\nIn future this verification process will be more sophisticated.";
 "room_event_encryption_verify_ok" = "Verify";

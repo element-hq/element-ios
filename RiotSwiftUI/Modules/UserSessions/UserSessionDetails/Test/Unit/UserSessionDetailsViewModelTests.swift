@@ -20,15 +20,15 @@ import XCTest
 
 class UserSessionDetailsViewModelTests: XCTestCase {
     func test_whenSessionNameAndLastSeenIPNil_viewStateCorrect() {
-        let userSessionInfo = createUserSessionInfo(sessionId: "session",
-                                                    sessionName: nil,
+        let userSessionInfo = createUserSessionInfo(id: "session",
+                                                    name: nil,
                                                     lastSeenIP: nil)
-        
+
         var sessionItems: [UserSessionDetailsSectionItemViewData] = []
-        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.sessionId))
+        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.id))
         
         var sections: [UserSessionDetailsSectionViewData] = []
-        sections.append(.init(header: VectorL10n.userSessionDetailsSessionSectionHeader,
+        sections.append(.init(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
                               footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                               items: sessionItems))
         let expectedModel = UserSessionDetailsViewState(sections: sections)
@@ -38,16 +38,16 @@ class UserSessionDetailsViewModelTests: XCTestCase {
     }
     
     func test_whenSessionNameNotNilLastSeenIPNil_viewStateCorrect() {
-        let userSessionInfo = createUserSessionInfo(sessionId: "session",
-                                                    sessionName: "session name",
+        let userSessionInfo = createUserSessionInfo(id: "session",
+                                                    name: "session name",
                                                     lastSeenIP: nil)
         
         var sessionItems = [UserSessionDetailsSectionItemViewData]()
         sessionItems.append(sessionNameItem(sessionName: "session name"))
-        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.sessionId))
-        
+        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.id))
+
         var sections: [UserSessionDetailsSectionViewData] = []
-        sections.append(.init(header: VectorL10n.userSessionDetailsSessionSectionHeader,
+        sections.append(.init(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
                               footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                               items: sessionItems))
         
@@ -58,23 +58,23 @@ class UserSessionDetailsViewModelTests: XCTestCase {
     }
     
     func test_whenUserSessionInfoContainsAllValues_viewStateCorrect() {
-        let userSessionInfo = createUserSessionInfo(sessionId: "session",
-                                                    sessionName: "session name",
+        let userSessionInfo = createUserSessionInfo(id: "session",
+                                                    name: "session name",
                                                     lastSeenIP: "0.0.0.0")
         
         var sessionItems: [UserSessionDetailsSectionItemViewData] = []
         sessionItems.append(sessionNameItem(sessionName: "session name"))
-        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.sessionId))
-        
+        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.id))
+
         var sections: [UserSessionDetailsSectionViewData] = []
-        sections.append(.init(header: VectorL10n.userSessionDetailsSessionSectionHeader,
+        sections.append(.init(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
                               footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                               items: sessionItems))
         
         var deviceSectionItems: [UserSessionDetailsSectionItemViewData] = []
         deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceIpAddress,
                                         value: "0.0.0.0"))
-        sections.append(.init(header: VectorL10n.userSessionDetailsDeviceSectionHeader,
+        sections.append(.init(header: VectorL10n.userSessionDetailsDeviceSectionHeader.uppercased(),
                               footer: nil,
                               items: deviceSectionItems))
         
@@ -84,8 +84,8 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(sut.state, expectedModel)
     }
     
-    private func createUserSessionInfo(sessionId: String,
-                                       sessionName: String?,
+    private func createUserSessionInfo(id: String,
+                                       name: String?,
                                        deviceType: DeviceType = .mobile,
                                        isVerified: Bool = false,
                                        lastSeenIP: String?,
@@ -97,9 +97,10 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                                        deviceOS: String? = nil,
                                        lastSeenIPLocation: String? = nil,
                                        deviceName: String? = nil,
-                                       isCurrentSession: Bool = true) -> UserSessionInfo {
-        UserSessionInfo(sessionId: sessionId,
-                        sessionName: sessionName,
+                                       isActive: Bool = true,
+                                       isCurrent: Bool = true) -> UserSessionInfo {
+        UserSessionInfo(id: id,
+                        name: name,
                         deviceType: deviceType,
                         isVerified: isVerified,
                         lastSeenIP: lastSeenIP,
@@ -111,7 +112,8 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                         deviceOS: deviceOS,
                         lastSeenIPLocation: lastSeenIPLocation,
                         deviceName: deviceName,
-                        isCurrentSession: isCurrentSession)
+                        isActive: isActive,
+                        isCurrent: isCurrent)
     }
     
     private func sessionNameItem(sessionName: String) -> UserSessionDetailsSectionItemViewData {

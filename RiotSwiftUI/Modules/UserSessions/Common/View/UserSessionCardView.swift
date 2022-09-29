@@ -112,14 +112,9 @@ struct UserSessionCardView: View {
             }
             
             if viewData.isCurrentSessionDisplayMode {
-                Button {
-                    onViewDetailsAction?(viewData.sessionId)
-                } label: {
-                    Text(VectorL10n.userSessionViewDetails)
-                        .font(theme.fonts.body)
-                        .foregroundColor(theme.colors.accent)
-                }
-                .padding(.top, 4)
+                Text(VectorL10n.userSessionViewDetails)
+                    .font(theme.fonts.body)
+                    .foregroundColor(theme.colors.accent)
             }
         }
         .padding(24)
@@ -127,6 +122,11 @@ struct UserSessionCardView: View {
         .background(theme.colors.background)
         .clipShape(backgroundShape)
         .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1.0, shape: backgroundShape)
+        .onTapGesture {
+            if viewData.isCurrentSessionDisplayMode {
+                onViewDetailsAction?(viewData.sessionId)
+            }
+        }
     }
 }
 
@@ -134,8 +134,23 @@ struct UserSessionCardViewPreview: View {
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     let viewData: UserSessionCardViewData
-    
-    init(session: UserSessionInfo) {
+
+    init(isCurrent: Bool = false) {
+        let session = UserSessionInfo(id: "alice",
+                                      name: "iOS",
+                                      deviceType: .mobile,
+                                      isVerified: false,
+                                      lastSeenIP: "10.0.0.10",
+                                      lastSeenTimestamp: nil,
+                                      applicationName: "Element iOS",
+                                      applicationVersion: "1.0.0",
+                                      applicationURL: nil,
+                                      deviceModel: nil,
+                                      deviceOS: "iOS 15.5",
+                                      lastSeenIPLocation: nil,
+                                      deviceName: "My iPhone",
+                                      isActive: true,
+                                      isCurrent: isCurrent)
         viewData = UserSessionCardViewData(session: session)
     }
     
@@ -152,10 +167,10 @@ struct UserSessionCardViewPreview: View {
 struct UserSessionCardView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            UserSessionCardViewPreview(session: .mockCurrentFull).theme(.light).preferredColorScheme(.light)
-            UserSessionCardViewPreview(session: .mockCurrentFull).theme(.dark).preferredColorScheme(.dark)
-            UserSessionCardViewPreview(session: .mockAndroid).theme(.light).preferredColorScheme(.light)
-            UserSessionCardViewPreview(session: .mockWeb).theme(.dark).preferredColorScheme(.dark)
+            UserSessionCardViewPreview(isCurrent: true).theme(.light).preferredColorScheme(.light)
+            UserSessionCardViewPreview(isCurrent: true).theme(.dark).preferredColorScheme(.dark)
+            UserSessionCardViewPreview().theme(.light).preferredColorScheme(.light)
+            UserSessionCardViewPreview().theme(.dark).preferredColorScheme(.dark)
         }
     }
 }

@@ -18,6 +18,9 @@ import Foundation
 import MatrixSDK
 
 class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
+    /// Delay after which session is considered inactive, 90 days
+    private static let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
+    
     private let mxSession: MXSession
     
     private(set) var overviewData: UserSessionsOverviewData
@@ -52,7 +55,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
             return overviewData.currentSession
         }
         
-        return overviewData.otherSessions.first(where: { $0.sessionId == sessionId })
+        return overviewData.otherSessions.first(where: { $0.id == sessionId })
     }
     
     // MARK: - Private
@@ -79,31 +82,10 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
             .sorted { $0.lastSeenTs > $1.lastSeenTs }
             .map { sessionInfo(from: $0, isCurrentSession: $0.deviceId == mxSession.myDeviceId) }
         
-        var currentSession: UserSessionInfo?
-        var unverifiedSessions: [UserSessionInfo] = []
-        var inactiveSessions: [UserSessionInfo] = []
-        var otherSessions: [UserSessionInfo] = []
-        
-        for session in allSessions {
-            if session.isCurrentSession {
-                currentSession = session
-            } else {
-                otherSessions.append(session)
-                
-                if session.isVerified == false {
-                    unverifiedSessions.append(session)
-                }
-                
-                if session.isSessionActive == false {
-                    inactiveSessions.append(session)
-                }
-            }
-        }
-        
-        return UserSessionsOverviewData(currentSession: currentSession,
-                                        unverifiedSessions: unverifiedSessions,
-                                        inactiveSessions: inactiveSessions,
-                                        otherSessions: otherSessions)
+        return UserSessionsOverviewData(currentSession: allSessions.filter(\.isCurrent).first,
+                                        unverifiedSessions: allSessions.filter { !$0.isVerified },
+                                        inactiveSessions: allSessions.filter { !$0.isActive },
+                                        otherSessions: allSessions.filter { !$0.isCurrent })
     }
     
     private func sessionInfo(from device: MXDevice, isCurrentSession: Bool) -> UserSessionInfo {
@@ -112,16 +94,23 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         let eventType = kMXAccountDataTypeClientInformation + "." + device.deviceId
         let appData = mxSession.accountData.accountData(forEventType: eventType)
         var userAgent: UserAgent?
+        var isSessionActive = true
 
         if let lastSeenUserAgent = device.lastSeenUserAgent {
             userAgent = UserAgentParser.parse(lastSeenUserAgent)
+        }
+
+        if device.lastSeenTs > 0 {
+            let elapsedTime = Date().timeIntervalSince1970 - TimeInterval(device.lastSeenTs / 1000)
+            isSessionActive = elapsedTime < Self.inactiveSessionDurationTreshold
         }
 
         return UserSessionInfo(withDevice: device,
                                applicationData: appData as? [String: String],
                                userAgent: userAgent,
                                isSessionVerified: isSessionVerified,
-                               isCurrentSession: isCurrentSession)
+                               isActive: isSessionActive,
+                               isCurrent: isCurrentSession)
     }
     
     private func deviceInfo(for deviceId: String) -> MXDeviceInfo? {
@@ -138,9 +127,10 @@ extension UserSessionInfo {
          applicationData: [String: String]?,
          userAgent: UserAgent?,
          isSessionVerified: Bool,
-         isCurrentSession: Bool) {
-        self.init(sessionId: device.deviceId,
-                  sessionName: device.displayName,
+         isActive: Bool,
+         isCurrent: Bool) {
+        self.init(id: device.deviceId,
+                  name: device.displayName,
                   deviceType: .unknown,
                   isVerified: isSessionVerified,
                   lastSeenIP: device.lastSeenIp,
@@ -152,6 +142,7 @@ extension UserSessionInfo {
                   deviceOS: userAgent?.deviceOS,
                   lastSeenIPLocation: nil,
                   deviceName: userAgent?.clientName,
-                  isCurrentSession: isCurrentSession)
+                  isActive: isActive,
+                  isCurrent: isCurrent)
     }
 }

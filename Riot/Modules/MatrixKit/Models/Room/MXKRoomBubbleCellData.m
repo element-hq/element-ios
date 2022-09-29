@@ -920,7 +920,7 @@
     {
         for (MXKRoomBubbleComponent *component in bubbleComponents)
         {
-            if (component.showEncryptionBadge)
+            if (component.encryptionDecoration != EventEncryptionDecorationNone)
             {
                 containsBubbleComponentWithEncryptionBadge = YES;
                 break;

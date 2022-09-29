@@ -1,5 +1,5 @@
 // 
-// Copyright 2021 Vector Creations Ltd
+// Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,17 @@
 // limitations under the License.
 //
 
-// Version
-MARKETING_VERSION = 1.9.8
-CURRENT_PROJECT_VERSION = 1.9.8
+#ifndef EventEncryptionDecoration_h
+#define EventEncryptionDecoration_h
+
+typedef NS_ENUM(NSUInteger, EventEncryptionDecoration)
+{
+    EventEncryptionDecorationNone,
+    EventEncryptionDecorationUnsafeKey,
+    EventEncryptionDecorationDecryptionError,
+    EventEncryptionDecorationNotEncrypted,
+    EventEncryptionDecorationUntrustedDevice
+};
+
+
+#endif /* EventEncryptionDecoration_h */

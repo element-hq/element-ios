@@ -47,19 +47,19 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
     }
     
     private func sessionSection(session: UserSessionInfo) -> UserSessionDetailsSectionViewData {
-        var sessionItems = [UserSessionDetailsSectionItemViewData]()
-        
-        if let sessionName = session.sessionName {
+        var sessionItems: [UserSessionDetailsSectionItemViewData] = []
+
+        if let sessionName = session.name {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsSessionName,
                                       value: sessionName))
         }
         
         sessionItems.append(.init(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
-                                  value: session.sessionId))
+                                  value: session.id))
         
-        return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
-                                                 footer: VectorL10n.userSessionDetailsSessionSectionFooter,
-                                                 items: sessionItems)
+        return .init(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
+                     footer: VectorL10n.userSessionDetailsSessionSectionFooter,
+                     items: sessionItems)
     }
 
     private func applicationSection(session: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
@@ -81,7 +81,7 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
         guard !sessionItems.isEmpty else {
             return nil
         }
-        return .init(header: VectorL10n.userSessionDetailsApplicationSectionHeader,
+        return .init(header: VectorL10n.userSessionDetailsApplicationSectionHeader.uppercased(),
                      footer: nil,
                      items: sessionItems)
     }
@@ -106,9 +106,9 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
                                             value: lastSeenIPLocation))
         }
         if deviceSectionItems.count > 0 {
-            return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsDeviceSectionHeader,
-                                                     footer: nil,
-                                                     items: deviceSectionItems)
+            return .init(header: VectorL10n.userSessionDetailsDeviceSectionHeader.uppercased(),
+                         footer: nil,
+                         items: deviceSectionItems)
         }
         return nil
     }
