@@ -76,7 +76,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         }
         return sessionInfo(from: device, isCurrentSession: true)
     }
-    
+
     private func sessionsOverviewData(from devices: [MXDevice]) -> UserSessionsOverviewData {
         let allSessions = devices
             .sorted { $0.lastSeenTs > $1.lastSeenTs }
@@ -90,24 +90,25 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     
     private func sessionInfo(from device: MXDevice, isCurrentSession: Bool) -> UserSessionInfo {
         let isSessionVerified = deviceInfo(for: device.deviceId)?.trustLevel.isVerified ?? false
-        
-        var lastSeenTs: TimeInterval?
-        if device.lastSeenTs > 0 {
-            lastSeenTs = TimeInterval(device.lastSeenTs / 1000)
-        }
-        
+
+        let eventType = kMXAccountDataTypeClientInformation + "." + device.deviceId
+        let appData = mxSession.accountData.accountData(forEventType: eventType)
+        var userAgent: UserAgent?
         var isSessionActive = true
-        if let lastSeenTimestamp = lastSeenTs {
-            let elapsedTime = Date().timeIntervalSince1970 - lastSeenTimestamp
+
+        if let lastSeenUserAgent = device.lastSeenUserAgent {
+            userAgent = UserAgentParser.parse(lastSeenUserAgent)
+        }
+
+        if device.lastSeenTs > 0 {
+            let elapsedTime = Date().timeIntervalSince1970 - TimeInterval(device.lastSeenTs / 1000)
             isSessionActive = elapsedTime < Self.inactiveSessionDurationTreshold
         }
-        
-        return UserSessionInfo(id: device.deviceId,
-                               name: device.displayName,
-                               deviceType: .unknown,
-                               isVerified: isSessionVerified,
-                               lastSeenIP: device.lastSeenIp,
-                               lastSeenTimestamp: lastSeenTs,
+
+        return UserSessionInfo(withDevice: device,
+                               applicationData: appData as? [String: String],
+                               userAgent: userAgent,
+                               isSessionVerified: isSessionVerified,
                                isActive: isSessionActive,
                                isCurrent: isCurrentSession)
     }
@@ -118,5 +119,30 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         }
         
         return mxSession.crypto.device(withDeviceId: deviceId, ofUser: userId)
+    }
+}
+
+extension UserSessionInfo {
+    init(withDevice device: MXDevice,
+         applicationData: [String: String]?,
+         userAgent: UserAgent?,
+         isSessionVerified: Bool,
+         isActive: Bool,
+         isCurrent: Bool) {
+        self.init(id: device.deviceId,
+                  name: device.displayName,
+                  deviceType: userAgent?.deviceType ?? .unknown,
+                  isVerified: isSessionVerified,
+                  lastSeenIP: device.lastSeenIp,
+                  lastSeenTimestamp: device.lastSeenTs > 0 ? TimeInterval(device.lastSeenTs / 1000) : nil,
+                  applicationName: applicationData?["name"],
+                  applicationVersion: applicationData?["version"],
+                  applicationURL: applicationData?["url"],
+                  deviceModel: userAgent?.deviceModel,
+                  deviceOS: userAgent?.deviceOS,
+                  lastSeenIPLocation: nil,
+                  deviceName: userAgent?.clientName,
+                  isActive: isActive,
+                  isCurrent: isCurrent)
     }
 }

@@ -52,6 +52,13 @@ class UserSessionOverviewViewModelTests: XCTestCase {
                         isVerified: false,
                         lastSeenIP: "10.0.0.10",
                         lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                        applicationName: "Element",
+                        applicationVersion: "1.9.7",
+                        applicationURL: nil,
+                        deviceModel: "iPhone XS",
+                        deviceOS: "iOS 15.5",
+                        lastSeenIPLocation: nil,
+                        deviceName: "Mobile",
                         isActive: true,
                         isCurrent: true)
     }

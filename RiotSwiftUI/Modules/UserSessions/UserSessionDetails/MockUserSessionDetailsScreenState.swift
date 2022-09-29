@@ -41,21 +41,35 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
         let session: UserSessionInfo
         switch self {
         case .allSections:
-            session = UserSessionInfo(id: "session",
+            session = UserSessionInfo(id: "alice",
                                       name: "iOS",
                                       deviceType: .mobile,
                                       isVerified: false,
                                       lastSeenIP: "10.0.0.10",
-                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                                      lastSeenTimestamp: nil,
+                                      applicationName: "Element iOS",
+                                      applicationVersion: "1.0.0",
+                                      applicationURL: nil,
+                                      deviceModel: nil,
+                                      deviceOS: "iOS 15.5",
+                                      lastSeenIPLocation: nil,
+                                      deviceName: "My iPhone",
                                       isActive: true,
                                       isCurrent: true)
         case .sessionSectionOnly:
-            session = UserSessionInfo(id: "session",
-                                      name: "iOS",
+            session = UserSessionInfo(id: "3",
+                                      name: "Android",
                                       deviceType: .mobile,
                                       isVerified: false,
-                                      lastSeenIP: nil,
-                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                                      lastSeenIP: "3.0.0.3",
+                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 10,
+                                      applicationName: "Element Android",
+                                      applicationVersion: "1.0.0",
+                                      applicationURL: nil,
+                                      deviceModel: nil,
+                                      deviceOS: "Android 4.0",
+                                      lastSeenIPLocation: nil,
+                                      deviceName: "My Phone",
                                       isActive: true,
                                       isCurrent: false)
         }

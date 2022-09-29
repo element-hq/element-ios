@@ -102,7 +102,7 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     private func showCurrentSessionOverview(session: UserSessionInfo) {
         completion?(.openSessionOverview(session: session))
     }
-    
+
     private func showUserSessionOverview(session: UserSessionInfo) {
         completion?(.openSessionOverview(session: session))
     }

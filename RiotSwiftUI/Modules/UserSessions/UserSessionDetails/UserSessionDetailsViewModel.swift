@@ -32,8 +32,12 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
     
     private func updateViewState(session: UserSessionInfo) {
         var sections = [UserSessionDetailsSectionViewData]()
-        
+
         sections.append(sessionSection(session: session))
+
+        if let applicationSection = applicationSection(session: session) {
+            sections.append(applicationSection)
+        }
         
         if let deviceSection = deviceSection(session: session) {
             sections.append(deviceSection)
@@ -43,31 +47,68 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
     }
     
     private func sessionSection(session: UserSessionInfo) -> UserSessionDetailsSectionViewData {
-        var sessionItems = [UserSessionDetailsSectionItemViewData]()
-        
+        var sessionItems: [UserSessionDetailsSectionItemViewData] = []
+
         if let sessionName = session.name {
-            sessionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.userSessionDetailsSessionName,
-                                                                      value: sessionName))
+            sessionItems.append(.init(title: VectorL10n.userSessionDetailsSessionName,
+                                      value: sessionName))
         }
         
-        sessionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
-                                                                  value: session.id))
+        sessionItems.append(.init(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
+                                  value: session.id))
         
-        return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
-                                                 footer: VectorL10n.userSessionDetailsSessionSectionFooter,
-                                                 items: sessionItems)
+        return .init(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
+                     footer: VectorL10n.userSessionDetailsSessionSectionFooter,
+                     items: sessionItems)
+    }
+
+    private func applicationSection(session: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
+        var sessionItems: [UserSessionDetailsSectionItemViewData] = []
+
+        if let name = session.applicationName {
+            sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationName,
+                                      value: name))
+        }
+        if let version = session.applicationVersion {
+            sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationVersion,
+                                      value: version))
+        }
+        if let url = session.applicationURL {
+            sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationUrl,
+                                      value: url))
+        }
+
+        guard !sessionItems.isEmpty else {
+            return nil
+        }
+        return .init(header: VectorL10n.userSessionDetailsApplicationSectionHeader.uppercased(),
+                     footer: nil,
+                     items: sessionItems)
     }
     
     private func deviceSection(session: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
         var deviceSectionItems = [UserSessionDetailsSectionItemViewData]()
+
+        if let model = session.deviceModel {
+            deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceModel,
+                                            value: model))
+        }
+        if let deviceOS = session.deviceOS {
+            deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceOs,
+                                            value: deviceOS))
+        }
         if let lastSeenIP = session.lastSeenIP {
-            deviceSectionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.userSessionDetailsDeviceIpAddress,
-                                                                            value: lastSeenIP))
+            deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceIpAddress,
+                                            value: lastSeenIP))
+        }
+        if let lastSeenIPLocation = session.lastSeenIPLocation {
+            deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceIpLocation,
+                                            value: lastSeenIPLocation))
         }
         if deviceSectionItems.count > 0 {
-            return UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsDeviceSectionHeader.uppercased(),
-                                                     footer: nil,
-                                                     items: deviceSectionItems)
+            return .init(header: VectorL10n.userSessionDetailsDeviceSectionHeader.uppercased(),
+                         footer: nil,
+                         items: deviceSectionItems)
         }
         return nil
     }

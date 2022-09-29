@@ -38,30 +38,43 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        let viewModel: UserSessionOverviewViewModel
+        let session: UserSessionInfo
         switch self {
         case .currentSession:
-            let session = UserSessionInfo(id: "session",
-                                          name: "iOS",
-                                          deviceType: .mobile,
-                                          isVerified: false,
-                                          lastSeenIP: "10.0.0.10",
-                                          lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
-                                          isActive: true,
-                                          isCurrent: true)
-            viewModel = UserSessionOverviewViewModel(session: session)
+            session = UserSessionInfo(id: "alice",
+                                      name: "iOS",
+                                      deviceType: .mobile,
+                                      isVerified: false,
+                                      lastSeenIP: "10.0.0.10",
+                                      lastSeenTimestamp: nil,
+                                      applicationName: "Element iOS",
+                                      applicationVersion: "1.0.0",
+                                      applicationURL: nil,
+                                      deviceModel: nil,
+                                      deviceOS: "iOS 15.5",
+                                      lastSeenIPLocation: nil,
+                                      deviceName: "My iPhone",
+                                      isActive: true,
+                                      isCurrent: true)
         case .otherSession:
-            let session = UserSessionInfo(id: "session",
-                                          name: "Mac",
-                                          deviceType: .desktop,
-                                          isVerified: true,
-                                          lastSeenIP: "10.0.0.10",
-                                          lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
-                                          isActive: true,
-                                          isCurrent: false)
-            viewModel = UserSessionOverviewViewModel(session: session)
+            session = UserSessionInfo(id: "1",
+                                      name: "macOS",
+                                      deviceType: .desktop,
+                                      isVerified: true,
+                                      lastSeenIP: "1.0.0.1",
+                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
+                                      applicationName: "Element MacOS",
+                                      applicationVersion: "1.0.0",
+                                      applicationURL: nil,
+                                      deviceModel: nil,
+                                      deviceOS: "macOS 12.5.1",
+                                      lastSeenIPLocation: nil,
+                                      deviceName: "My Mac",
+                                      isActive: false,
+                                      isCurrent: false)
         }
-        
+
+        let viewModel = UserSessionOverviewViewModel(session: session)
         // can simulate service and viewModel actions here if needs be.
         return ([viewModel], AnyView(UserSessionOverview(viewModel: viewModel.context)))
     }

@@ -8471,9 +8471,37 @@ public class VectorL10n: NSObject {
   public static var userIdTitle: String { 
     return VectorL10n.tr("Vector", "user_id_title") 
   }
+  /// Name
+  public static var userSessionDetailsApplicationName: String { 
+    return VectorL10n.tr("Vector", "user_session_details_application_name") 
+  }
+  /// Application
+  public static var userSessionDetailsApplicationSectionHeader: String { 
+    return VectorL10n.tr("Vector", "user_session_details_application_section_header") 
+  }
+  /// URL
+  public static var userSessionDetailsApplicationUrl: String { 
+    return VectorL10n.tr("Vector", "user_session_details_application_url") 
+  }
+  /// Version
+  public static var userSessionDetailsApplicationVersion: String { 
+    return VectorL10n.tr("Vector", "user_session_details_application_version") 
+  }
   /// IP address
   public static var userSessionDetailsDeviceIpAddress: String { 
     return VectorL10n.tr("Vector", "user_session_details_device_ip_address") 
+  }
+  /// IP location
+  public static var userSessionDetailsDeviceIpLocation: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_ip_location") 
+  }
+  /// Model
+  public static var userSessionDetailsDeviceModel: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_model") 
+  }
+  /// Operating System
+  public static var userSessionDetailsDeviceOs: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_os") 
   }
   /// Device
   public static var userSessionDetailsDeviceSectionHeader: String { 
