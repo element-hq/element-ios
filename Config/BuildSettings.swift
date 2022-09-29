@@ -404,6 +404,9 @@ final class BuildSettings: NSObject {
     static let defaultTileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
     
     static let locationSharingEnabled = true
+    
+    // MARK: - Voice Broadcast
+    static let voiceBroadcastEnabled = true
 
     // MARK: - MXKAppSettings
     static let enableBotCreation: Bool = false

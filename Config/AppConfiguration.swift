@@ -32,7 +32,8 @@ class AppConfiguration: CommonConfiguration {
         
         // Get modular widget events in rooms histories
         MXKAppSettings.standard()?.addSupportedEventTypes([kWidgetMatrixEventTypeString,
-                                                           kWidgetModularEventTypeString])
+                                                           kWidgetModularEventTypeString,
+                                                           VoiceBroadcastSettings.eventType])
         
         // Hide undecryptable messages that were sent while the user was not in the room
         MXKAppSettings.standard()?.hidePreJoinedUndecryptableEvents = true

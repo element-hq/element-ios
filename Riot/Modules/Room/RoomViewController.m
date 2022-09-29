@@ -2308,6 +2308,24 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self showCameraControllerAnimated:YES];
         }]];
     }
+    if (BuildSettings.voiceBroadcastEnabled && !self.isNewDirectChat)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLive.image andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            
+            VoiceBroadcastService * vb = [[VoiceBroadcastService alloc]initWithSession:self.mainSession];
+            
+            [vb startVoiceBroadcastWithRoomId:self.roomDataSource.roomId success:^(NSString * success) {
+                
+            } failure:^(NSError * error) {
+                
+            }];
+
+        }]];
+    }
     roomInputView.actionsBar.actionItems = actionItems;
 }
 

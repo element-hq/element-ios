@@ -182,6 +182,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                         // Show timestamps always on right
                         self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
                     }
+                } else if ([event.type isEqualToString:VoiceBroadcastSettings.eventType]) {
+                    MXLogDebug(@"VB incoming initWithEvent")
                 }
                 
                 break;
@@ -1118,6 +1120,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                     {
                         shouldAddEvent = NO;
                     }
+                } else if ([event.type isEqualToString:VoiceBroadcastSettings.eventType]) {
+                    MXLogDebug(@"VB incoming addEvent")
                 }
                 break;
             }

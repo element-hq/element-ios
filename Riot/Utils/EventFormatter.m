@@ -181,95 +181,99 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     }
     BOOL isEventSenderMyUser = [event.sender isEqualToString:mxSession.myUserId];
     
-    // Build strings for widget events
-    if (event.eventType == MXEventTypeCustom
-        && ([event.type isEqualToString:kWidgetMatrixEventTypeString]
-            || [event.type isEqualToString:kWidgetModularEventTypeString]))
-    {
-        NSString *displayText;
-
-        Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:mxSession];
-        if (widget)
+    if (event.eventType == MXEventTypeCustom) {
+        
+        // Build strings for widget events
+        if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
+                || [event.type isEqualToString:kWidgetModularEventTypeString])
         {
-            // Prepare the display name of the sender
-            NSString *senderDisplayName = roomState ? [self senderDisplayNameForEvent:event withRoomState:roomState] : event.sender;
-
-            if (widget.isActive)
+            NSString *displayText;
+            
+            Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:mxSession];
+            if (widget)
             {
-                if ([widget.type isEqualToString:kWidgetTypeJitsiV1]
-                    || [widget.type isEqualToString:kWidgetTypeJitsiV2])
+                // Prepare the display name of the sender
+                NSString *senderDisplayName = roomState ? [self senderDisplayNameForEvent:event withRoomState:roomState] : event.sender;
+                
+                if (widget.isActive)
                 {
-                    // This is an alive jitsi widget
-                    if (isEventSenderMyUser)
+                    if ([widget.type isEqualToString:kWidgetTypeJitsiV1]
+                        || [widget.type isEqualToString:kWidgetTypeJitsiV2])
                     {
-                        displayText = [VectorL10n eventFormatterJitsiWidgetAddedByYou];
+                        // This is an alive jitsi widget
+                        if (isEventSenderMyUser)
+                        {
+                            displayText = [VectorL10n eventFormatterJitsiWidgetAddedByYou];
+                        }
+                        else
+                        {
+                            displayText = [VectorL10n eventFormatterJitsiWidgetAdded:senderDisplayName];
+                        }
                     }
                     else
                     {
-                        displayText = [VectorL10n eventFormatterJitsiWidgetAdded:senderDisplayName];
+                        if (isEventSenderMyUser)
+                        {
+                            displayText = [VectorL10n eventFormatterWidgetAddedByYou:(widget.name ? widget.name : widget.type)];
+                        }
+                        else
+                        {
+                            displayText = [VectorL10n eventFormatterWidgetAdded:(widget.name ? widget.name : widget.type) :senderDisplayName];
+                        }
                     }
                 }
                 else
                 {
-                    if (isEventSenderMyUser)
+                    // This is a closed widget
+                    // Check if it corresponds to a jitsi widget by looking at other state events for
+                    // this jitsi widget (widget id = event.stateKey).
+                    // Get all widgets state events in the room
+                    NSMutableArray<MXEvent*> *widgetStateEvents = [NSMutableArray arrayWithArray:[roomState stateEventsWithType:kWidgetMatrixEventTypeString]];
+                    [widgetStateEvents addObjectsFromArray:[roomState stateEventsWithType:kWidgetModularEventTypeString]];
+                    
+                    for (MXEvent *widgetStateEvent in widgetStateEvents)
                     {
-                        displayText = [VectorL10n eventFormatterWidgetAddedByYou:(widget.name ? widget.name : widget.type)];
-                    }
-                    else
-                    {
-                        displayText = [VectorL10n eventFormatterWidgetAdded:(widget.name ? widget.name : widget.type) :senderDisplayName];
-                    }
-                }
-            }
-            else
-            {
-                // This is a closed widget
-                // Check if it corresponds to a jitsi widget by looking at other state events for
-                // this jitsi widget (widget id = event.stateKey).
-                // Get all widgets state events in the room
-                NSMutableArray<MXEvent*> *widgetStateEvents = [NSMutableArray arrayWithArray:[roomState stateEventsWithType:kWidgetMatrixEventTypeString]];
-                [widgetStateEvents addObjectsFromArray:[roomState stateEventsWithType:kWidgetModularEventTypeString]];
-
-                for (MXEvent *widgetStateEvent in widgetStateEvents)
-                {
-                    if ([widgetStateEvent.stateKey isEqualToString:widget.widgetId])
-                    {
-                        Widget *activeWidget = [[Widget alloc] initWithWidgetEvent:widgetStateEvent inMatrixSession:mxSession];
-                        if (activeWidget.isActive)
+                        if ([widgetStateEvent.stateKey isEqualToString:widget.widgetId])
                         {
-                            if ([activeWidget.type isEqualToString:kWidgetTypeJitsiV1]
-                                || [activeWidget.type isEqualToString:kWidgetTypeJitsiV2])
+                            Widget *activeWidget = [[Widget alloc] initWithWidgetEvent:widgetStateEvent inMatrixSession:mxSession];
+                            if (activeWidget.isActive)
                             {
-                                // This was a jitsi widget
-                                return nil;
-                            }
-                            else
-                            {
-                                if (isEventSenderMyUser)
+                                if ([activeWidget.type isEqualToString:kWidgetTypeJitsiV1]
+                                    || [activeWidget.type isEqualToString:kWidgetTypeJitsiV2])
                                 {
-                                    displayText = [VectorL10n eventFormatterWidgetRemovedByYou:(activeWidget.name ? activeWidget.name : activeWidget.type)];
+                                    // This was a jitsi widget
+                                    return nil;
                                 }
                                 else
                                 {
-                                    displayText = [VectorL10n eventFormatterWidgetRemoved:(activeWidget.name ? activeWidget.name : activeWidget.type) :senderDisplayName];
+                                    if (isEventSenderMyUser)
+                                    {
+                                        displayText = [VectorL10n eventFormatterWidgetRemovedByYou:(activeWidget.name ? activeWidget.name : activeWidget.type)];
+                                    }
+                                    else
+                                    {
+                                        displayText = [VectorL10n eventFormatterWidgetRemoved:(activeWidget.name ? activeWidget.name : activeWidget.type) :senderDisplayName];
+                                    }
                                 }
+                                break;
                             }
-                            break;
                         }
                     }
                 }
             }
-        }
-
-        if (displayText)
-        {
-            if (error)
+        
+            if (displayText)
             {
-                *error = MXKEventFormatterErrorNone;
-            }
+                if (error)
+                {
+                    *error = MXKEventFormatterErrorNone;
+                }
 
-            // Build the attributed string with the right font and color for the events
-            return [self renderString:displayText forEvent:event];
+                // Build the attributed string with the right font and color for the events
+                return [self renderString:displayText forEvent:event];
+            }
+        } else if ([event.type isEqualToString:VoiceBroadcastSettings.eventType]) {
+            MXLogDebug(@"VB incoming shouldDisplayEvent")
         }
     }
     
