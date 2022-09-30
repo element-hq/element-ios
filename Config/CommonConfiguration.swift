@@ -89,6 +89,8 @@ class CommonConfiguration: NSObject, Configurable {
         sdkOptions.authEnableRefreshTokens = BuildSettings.authEnableRefreshTokens
         // Configure key provider delegate
         MXKeyProvider.sharedInstance().delegate = EncryptionKeyManager.shared
+
+        sdkOptions.enableNewClientInformationFeature = RiotSettings.shared.enableClientInformationFeature
     }
     
     private func makeASCIIUserAgent() -> String? {
