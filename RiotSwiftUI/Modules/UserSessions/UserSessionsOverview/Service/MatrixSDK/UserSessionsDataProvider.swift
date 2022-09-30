@@ -44,7 +44,7 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
         session.crypto.device(withDeviceId: deviceId, ofUser: userId)
     }
     
-    func accountData(forEventType: String) -> [AnyHashable : Any]? {
-        session.accountData.accountData(forEventType: forEventType)
+    func accountData(for eventType: String) -> [AnyHashable : Any]? {
+        session.accountData.accountData(forEventType: eventType)
     }
 }
