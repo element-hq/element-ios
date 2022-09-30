@@ -168,7 +168,7 @@ private class MockUserSessionsDataProvider: UserSessionsDataProviderProtocol {
         }
     }
     
-    func accountData(forEventType: String) -> [AnyHashable : Any]? {
+    func accountData(for eventType: String) -> [AnyHashable : Any]? {
         [:]
     }
     

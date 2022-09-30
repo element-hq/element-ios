@@ -94,7 +94,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         let isSessionVerified = deviceInfo(for: device.deviceId)?.trustLevel.isVerified ?? false
 
         let eventType = kMXAccountDataTypeClientInformation + "." + device.deviceId
-        let appData = dataProvider.accountData(forEventType: eventType)
+        let appData = dataProvider.accountData(for: eventType)
         var userAgent: UserAgent?
         var isSessionActive = true
 
