@@ -21,11 +21,13 @@
 
 - (instancetype)initWithState:(NSString *)state
                   chunkLength:(NSInteger)chunkLength
+                      eventId:(NSString *)eventId
 {
     if (self = [super init])
     {
         _state = state;
         _chunkLength = chunkLength;
+        _eventId = eventId;
     }
     
     return self;
@@ -42,9 +44,19 @@
         MXJSONModelSetInteger(chunkLength, JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLength]);
     }
     
-    
+    NSString *eventId;
+    if (JSONDictionary[kMXEventRelationRelatesToKey]) {
+        MXEventContentRelatesTo *relatesTo;
+        
+        MXJSONModelSetMXJSONModel(relatesTo, MXEventContentRelatesTo, JSONDictionary[kMXEventRelationRelatesToKey]);
+        
+        if (relatesTo && [relatesTo.relationType isEqualToString:MXEventRelationTypeReference])
+        {
+            eventId = relatesTo.eventId;
+        }
+    }
 
-    return [[VoiceBroadcastEventContent alloc] initWithState:state chunkLength:chunkLength];
+    return [[VoiceBroadcastEventContent alloc] initWithState:state chunkLength:chunkLength eventId:eventId];
 }
 
 - (NSDictionary *)JSONDictionary
@@ -52,7 +64,14 @@
     NSMutableDictionary *JSONDictionary = [NSMutableDictionary dictionary];
     
     JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyState] = self.state;
-    JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLength] = @(self.chunkLength);
+    
+    if (_eventId) {
+        MXEventContentRelatesTo *relatesTo = [[MXEventContentRelatesTo alloc] initWithRelationType:MXEventRelationTypeReference eventId:_eventId];
+
+        JSONDictionary[kMXEventRelationRelatesToKey] = relatesTo.JSONDictionary;
+    } else {
+        JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLength] = @(self.chunkLength);
+    }
     
     return JSONDictionary;
 }

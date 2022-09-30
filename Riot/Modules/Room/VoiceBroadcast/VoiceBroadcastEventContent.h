@@ -26,8 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) NSInteger chunkLength;
 
+@property (nonatomic, strong, nullable) NSString* eventId;
+
 - (instancetype)initWithState:(NSString *)state
-                  chunkLength:(NSInteger)chunkLength;
+                  chunkLength:(NSInteger)chunkLength
+                      eventId:(NSString *)eventId;
 
 @end
 

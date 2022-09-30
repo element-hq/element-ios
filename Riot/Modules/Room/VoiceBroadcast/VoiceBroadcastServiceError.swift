@@ -20,6 +20,7 @@ import Foundation
 public enum VoiceBroadcastServiceError: Int, Error {
     case missingUserId
     case roomNotFound
+    case notStarted
     case unknown
 }
 

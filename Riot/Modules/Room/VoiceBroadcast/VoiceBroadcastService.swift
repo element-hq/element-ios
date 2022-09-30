@@ -35,6 +35,7 @@ public class VoiceBroadcastService: NSObject {
     // MARK: - Properties
     
     private unowned let session: MXSession
+    private var eventId: String?
     
     // MARK: - Setup
     
@@ -53,10 +54,19 @@ public class VoiceBroadcastService: NSObject {
     /// Start a voice broadcast.
     /// - Parameters:
     ///   - roomId: The room where the voice broadcast should be started.
+    ///   - chunkLength: The length of the voice chunks in seconds.
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     /// - Returns: a `MXHTTPOperation` instance.
-    func startVoiceBroadcast(withRoomId roomId: String, chunkLength:Int? = nil, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation? {
-        return sendVoiceBroadcast(state: State.started, chunkLength: chunkLength, inRoomWithId: roomId, completion: completion)
+    func startVoiceBroadcast(withRoomId roomId: String, chunkLength: Int? = nil, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation? {
+        return sendVoiceBroadcast(state: State.started, chunkLength: chunkLength, inRoomWithId: roomId) { (response) in
+            switch response {
+            case .success((let eventIdResponse)):
+                self.eventId = eventIdResponse
+                completion(.success(eventIdResponse))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     /// Pause a voice broadcast.
@@ -86,7 +96,7 @@ public class VoiceBroadcastService: NSObject {
         return sendVoiceBroadcast(state: State.stopped, inRoomWithId: roomId, completion: completion)
     }
     
-    private func sendVoiceBroadcast(state: String, chunkLength:Int? = nil, inRoomWithId roomId: String, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation? {
+    private func sendVoiceBroadcast(state: String, chunkLength: Int? = nil, inRoomWithId roomId: String, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation? {
         guard let userId = self.session.myUserId else {
             completion(.failure(VoiceBroadcastServiceError.missingUserId))
             return nil
@@ -96,7 +106,17 @@ public class VoiceBroadcastService: NSObject {
         
         let voiceBroadcastContent = VoiceBroadcastEventContent()
         voiceBroadcastContent.state = state
-        voiceBroadcastContent.chunkLength = chunkLength ?? VoiceBroadcastSettings.defaultChunkLength
+        
+        if state != State.started {
+            guard let eventId = self.eventId else {
+                completion(.failure(VoiceBroadcastServiceError.notStarted))
+                return nil
+            }
+            
+            voiceBroadcastContent.eventId = eventId
+        } else {
+            voiceBroadcastContent.chunkLength = chunkLength ?? VoiceBroadcastSettings.defaultChunkLength
+        }
         
         
         guard let stateEventContent = voiceBroadcastContent.jsonDictionary() as? [String: Any] else {
