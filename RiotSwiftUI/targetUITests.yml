@@ -24,6 +24,9 @@ schemes:
       disableMainThreadChecker: true
       targets:
       - RiotSwiftUITests
+      gatherCoverageData: true
+      coverageTargets:
+        - RiotSwiftUI
 
 targets:
   RiotSwiftUITests:

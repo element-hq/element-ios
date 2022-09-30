@@ -37,7 +37,8 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     init(parameters: UserSessionsOverviewCoordinatorParameters) {
         self.parameters = parameters
         
-        service = UserSessionsOverviewService(mxSession: parameters.session)
+        let dataProvider = UserSessionsDataProvider(session: parameters.session)
+        service = UserSessionsOverviewService(dataProvider: dataProvider)
         viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
         hostingViewController = VectorHostingController(rootView: UserSessionsOverview(viewModel: viewModel.context))
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: hostingViewController)

@@ -1,4 +1,4 @@
-//
+// 
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,21 +15,18 @@
 //
 
 import Foundation
+import MatrixSDK
 
-/// Enables to build user session name
-enum UserSessionNameFormatter {
-    /// Session name with client name and session display name
-    static func sessionName(deviceType: DeviceType, sessionDisplayName: String?) -> String {
-        let sessionName: String
-        
-        let clientName = deviceType.name
-        
-        if let sessionDisplayName = sessionDisplayName {
-            sessionName = VectorL10n.userSessionName(clientName, sessionDisplayName)
-        } else {
-            sessionName = clientName
-        }
-        
-        return sessionName
-    }
+protocol UserSessionsDataProviderProtocol {
+    var myDeviceId: String { get }
+    
+    var myUserId: String? { get }
+    
+    var activeAccounts: [MXKAccount] { get }
+    
+    func devices(completion: @escaping (MXResponse<[MXDevice]>) -> Void)
+    
+    func device(withDeviceId deviceId: String, ofUser userId: String) -> MXDeviceInfo
+    
+    func accountData(for eventType: String) -> [AnyHashable: Any]?
 }
