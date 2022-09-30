@@ -52,16 +52,12 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
             MXLog.debug("[UserSessionsOverviewCoordinator] UserSessionsOverviewViewModel did complete with result: \(result).")
             
             switch result {
-            case .showAllUnverifiedSessions:
-                self.showAllUnverifiedSessions()
-            case .showAllInactiveSessions:
-                self.showAllInactiveSessions()
+            case let .showOtherSessions(sessions: sessions, filter: filter):
+                self.showOtherSessions(sessions: sessions, filterBy: filter)
             case .verifyCurrentSession:
                 self.startVerifyCurrentSession()
             case let .showCurrentSessionOverview(session):
                 self.showCurrentSessionOverview(session: session)
-            case .showAllOtherSessions:
-                self.showAllOtherSessions()
             case let .showUserSessionOverview(session):
                 self.showUserSessionOverview(session: session)
             }
@@ -87,16 +83,12 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         loadingIndicator = nil
     }
     
-    private func showAllUnverifiedSessions() {
-        // TODO:
-    }
-    
-    private func showAllInactiveSessions() {
-        // TODO:
+    private func showOtherSessions(sessions: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter) {
+        completion?(.openOtherSessions(sessions: sessions, filter: filter))
     }
     
     private func startVerifyCurrentSession() {
-        // TODO:
+        // TODO:openSessionOverview
     }
     
     private func showCurrentSessionOverview(session: UserSessionInfo) {
@@ -106,8 +98,5 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     private func showUserSessionOverview(session: UserSessionInfo) {
         completion?(.openSessionOverview(session: session))
     }
-    
-    private func showAllOtherSessions() {
-        // TODO:
-    }
+
 }

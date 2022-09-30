@@ -17,7 +17,7 @@
 import Foundation
 
 /// View data for UserSessionListItem
-struct UserSessionListItemViewData: Identifiable {
+struct UserSessionListItemViewData: Identifiable, Hashable {
     private static let userSessionNameFormatter = UserSessionNameFormatter()
     private static let lastActivityDateFormatter = UserSessionLastActivityFormatter()
 

@@ -46,11 +46,11 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             }
             completion?(.showCurrentSessionOverview(session: currentSessionInfo))
         case .viewAllUnverifiedSessions:
-            completion?(.showAllUnverifiedSessions)
+            showSessions(filteredBy: .unverified)
         case .viewAllInactiveSessions:
-            completion?(.showAllInactiveSessions)
+            showSessions(filteredBy: .inactive)
         case .viewAllOtherSessions:
-            completion?(.showAllOtherSessions)
+            showSessions(filteredBy: .all)
         case .tapUserSession(let sessionId):
             guard let session = userSessionsOverviewService.sessionForIdentifier(sessionId) else {
                 assertionFailure("Missing session info")
@@ -91,9 +91,14 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             }
         }
     }
+    
+    private func showSessions(filteredBy filter: OtherUserSessionsFilter) {
+        completion?(.showOtherSessions(sessions: userSessionsOverviewService.overviewData.otherSessions,
+                                       filter: filter))
+    }
 }
 
-private extension Collection where Element == UserSessionInfo {
+extension Collection where Element == UserSessionInfo {
     func asViewData() -> [UserSessionListItemViewData] {
         map { UserSessionListItemViewData(session: $0) }
     }

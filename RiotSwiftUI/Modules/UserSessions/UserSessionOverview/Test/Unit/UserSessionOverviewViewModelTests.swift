@@ -44,7 +44,7 @@ class UserSessionOverviewViewModelTests: XCTestCase {
         sut.process(viewAction: .viewSessionDetails)
         XCTAssertEqual(modelResult, .showSessionDetails(session: session))
     }
-    
+
     private func createUserSessionInfo() -> UserSessionInfo {
         UserSessionInfo(id: "session",
                         name: "iOS",

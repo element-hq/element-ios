@@ -55,6 +55,9 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             switch result {
             case let .openSessionOverview(session: session):
                 self.openSessionOverview(session: session)
+            case let .openOtherSessions(sessions: sessions, filter: filter):
+                let title = filter == .all ? "Other sessions" : "Security recommendation"
+                self.openOtherSessions(sessions: sessions, filterBy: filter, title: title)
             }
         }
         return coordinator
@@ -85,6 +88,27 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     private func createUserSessionOverviewCoordinator(session: UserSessionInfo) -> UserSessionOverviewCoordinator {
         let parameters = UserSessionOverviewCoordinatorParameters(session: session)
         return UserSessionOverviewCoordinator(parameters: parameters)
+    }
+    
+    private func openOtherSessions(sessions: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter, title: String) {
+        let coordinator = createOtherSessionsCoordinator(sessions: sessions,
+                                                         filterBy: filter,
+                                                         title: title)
+        coordinator.completion = { [weak self] _ in
+//            guard let self = self else { return }
+//            switch result {
+//            case let .openSessionDetails(session: session):
+//                self.openSessionDetails(session: session)
+//            }
+        }
+        pushScreen(with: coordinator)
+    }
+    
+    private func createOtherSessionsCoordinator(sessions: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter, title: String) -> UserOtherSessionsCoordinator {
+        let parameters = UserOtherSessionsCoordinatorParameters(sessions: sessions,
+                                                                filter: filter,
+                                                                title: title)
+        return UserOtherSessionsCoordinator(parameters: parameters)
     }
     
     // MARK: - Public
