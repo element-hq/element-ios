@@ -28,5 +28,5 @@ protocol UserSessionsDataProviderProtocol {
     
     func device(withDeviceId deviceId: String, ofUser userId: String) -> MXDeviceInfo
     
-    func accountData(forEventType: String) -> [AnyHashable: Any]?
+    func accountData(for eventType: String) -> [AnyHashable: Any]?
 }
