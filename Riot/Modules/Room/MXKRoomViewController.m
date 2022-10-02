@@ -1116,7 +1116,7 @@
         
         MXLogDebug(@"[MXKRoomVC] setRoomInputToolbarViewClass: Set inputToolbarView to class %@", roomInputToolbarViewClass);
         
-        id inputToolbarView = [roomInputToolbarViewClass roomInputToolbarView];
+        id inputToolbarView = [roomInputToolbarViewClass instantiateRoomInputToolbarView];
         self->inputToolbarView = inputToolbarView;
         self->inputToolbarView.delegate = self;
         
@@ -3359,8 +3359,10 @@
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView heightDidChanged:(CGFloat)height completion:(void (^)(BOOL finished))completion
 {
+    NSLog(@"%@", [NSThread currentThread]);
     _roomInputToolbarContainerHeightConstraint.constant = height;
     
+    dispatch_async(dispatch_get_main_queue(), ^{
     // Update layout with animation
     [UIView animateWithDuration:self.resizeComposerAnimationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                      animations:^{
@@ -3385,6 +3387,7 @@
                              completion(finished);
                          }
                      }];
+    });
 }
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView sendTextMessage:(NSString*)textMessage

@@ -32,6 +32,7 @@ targets:
     dependencies:
     - target: DesignKit
     - package: Mapbox
+    - package: WysiwygComposer
     sources:
     - path: .
       excludes:

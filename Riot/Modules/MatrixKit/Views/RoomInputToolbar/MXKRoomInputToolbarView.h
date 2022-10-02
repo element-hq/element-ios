@@ -222,7 +222,7 @@ typedef enum : NSUInteger
  @discussion This is the designated initializer for programmatic instantiation.
  @return An initialized `MXKRoomInputToolbarView-inherited` object if successful, `nil` otherwise.
  */
-+ (instancetype)roomInputToolbarView;
++ (MXKRoomInputToolbarView *)instantiateRoomInputToolbarView;
 
 /**
  The delegate notified when inputs are ready.

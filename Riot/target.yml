@@ -39,6 +39,7 @@ targets:
     - package: Mapbox
     - package: OrderedCollections
     - package: SwiftOGG
+    - package: WysiwygComposer
 
     configFiles:
       Debug: Debug.xcconfig

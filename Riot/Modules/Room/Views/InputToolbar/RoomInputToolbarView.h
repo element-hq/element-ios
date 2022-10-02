@@ -33,6 +33,13 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
 };
 
 
+@protocol RoomInputToolbarViewProtocol
+
+- (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView;
+- (CGFloat)toolbarHeight;
+
+@end
+
 @protocol RoomInputToolbarViewDelegate <MXKRoomInputToolbarViewDelegate>
 
 /**

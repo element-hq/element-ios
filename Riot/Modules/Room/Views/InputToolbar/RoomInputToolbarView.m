@@ -30,7 +30,7 @@ static const NSTimeInterval kActionMenuAttachButtonAnimationDuration = .4;
 static const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
 static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
-@interface RoomInputToolbarView() <UITextViewDelegate, RoomInputToolbarTextViewDelegate>
+@interface RoomInputToolbarView() <UITextViewDelegate, RoomInputToolbarTextViewDelegate, RoomInputToolbarViewProtocol>
 
 @property (nonatomic, weak) IBOutlet UIView *mainToolbarView;
 
@@ -59,7 +59,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 @implementation RoomInputToolbarView
 @dynamic delegate;
 
-+ (instancetype)roomInputToolbarView
++ (MXKRoomInputToolbarView *)instantiateRoomInputToolbarView
 {
     UINib *nib = [UINib nibWithNibName:NSStringFromClass([RoomInputToolbarView class]) bundle:nil];
     return [nib instantiateWithOwner:nil options:nil].firstObject;
@@ -83,25 +83,6 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
     inputAccessoryViewForKeyboard = [[UIView alloc] initWithFrame:CGRectZero];
     self.textView.inputAccessoryView = inputAccessoryViewForKeyboard;
-}
-
-- (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
-{
-    if (voiceMessageToolbarView) {
-        _voiceMessageToolbarView = voiceMessageToolbarView;
-        self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:self.voiceMessageToolbarView];
-
-        [NSLayoutConstraint activateConstraints:@[[self.mainToolbarView.topAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.topAnchor],
-                                                  [self.mainToolbarView.leftAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.leftAnchor],
-                                                  [self.mainToolbarView.bottomAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.bottomAnchor],
-                                                  [self.mainToolbarView.rightAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.rightAnchor]]];
-    }
-    else
-    {
-        [self.voiceMessageToolbarView removeFromSuperview];
-        _voiceMessageToolbarView = nil;
-    }
 }
 
 #pragma mark - Override MXKView
@@ -543,4 +524,28 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     }];
 }
 
+#pragma mark - RoomInputToolbarViewProtocol
+
+- (CGFloat)toolbarHeight {
+    return self.mainToolbarHeightConstraint.constant;
+}
+
+- (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
+{
+    if (voiceMessageToolbarView) {
+        _voiceMessageToolbarView = voiceMessageToolbarView;
+        self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:self.voiceMessageToolbarView];
+
+        [NSLayoutConstraint activateConstraints:@[[self.mainToolbarView.topAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.topAnchor],
+                                                  [self.mainToolbarView.leftAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.leftAnchor],
+                                                  [self.mainToolbarView.bottomAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.bottomAnchor],
+                                                  [self.mainToolbarView.rightAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.rightAnchor]]];
+    }
+    else
+    {
+        [self.voiceMessageToolbarView removeFromSuperview];
+        _voiceMessageToolbarView = nil;
+    }
+}
 @end

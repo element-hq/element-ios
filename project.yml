@@ -51,3 +51,6 @@ packages:
   SwiftOGG:
     url: https://github.com/vector-im/swift-ogg
     branch: main
+  WysiwygComposer:
+    url: https://github.com/matrix-org/matrix-wysiwyg-composer-swift
+    branch: langleyd/add_maximise
