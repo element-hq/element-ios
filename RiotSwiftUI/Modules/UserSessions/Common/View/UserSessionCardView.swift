@@ -150,7 +150,8 @@ struct UserSessionCardViewPreview: View {
                                       deviceModel: nil,
                                       deviceOS: "iOS 15.5",
                                       lastSeenIPLocation: nil,
-                                      deviceName: "My iPhone",
+                                      clientName: "Element",
+                                      clientVersion: "1.0.0",
                                       isActive: true,
                                       isCurrent: isCurrent)
         viewData = UserSessionCardViewData(session: session)

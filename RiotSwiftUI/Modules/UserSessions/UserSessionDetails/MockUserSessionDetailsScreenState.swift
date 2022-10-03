@@ -53,7 +53,8 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
                                       deviceModel: nil,
                                       deviceOS: "iOS 15.5",
                                       lastSeenIPLocation: nil,
-                                      deviceName: "My iPhone",
+                                      clientName: "Element",
+                                      clientVersion: "1.0.0",
                                       isActive: true,
                                       isCurrent: true)
         case .sessionSectionOnly:
@@ -69,7 +70,8 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
                                       deviceModel: nil,
                                       deviceOS: "Android 4.0",
                                       lastSeenIPLocation: nil,
-                                      deviceName: "My Phone",
+                                      clientName: "Element",
+                                      clientVersion: "1.0.0",
                                       isActive: true,
                                       isCurrent: false)
         }

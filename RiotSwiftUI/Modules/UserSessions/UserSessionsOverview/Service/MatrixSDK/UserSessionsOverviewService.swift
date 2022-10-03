@@ -143,7 +143,8 @@ extension UserSessionInfo {
                   deviceModel: userAgent?.deviceModel,
                   deviceOS: userAgent?.deviceOS,
                   lastSeenIPLocation: nil,
-                  deviceName: userAgent?.clientName,
+                  clientName: userAgent?.clientName,
+                  clientVersion: userAgent?.clientVersion,
                   isActive: isActive,
                   isCurrent: isCurrent)
     }
