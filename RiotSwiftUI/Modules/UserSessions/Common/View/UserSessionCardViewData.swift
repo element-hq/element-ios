@@ -63,13 +63,13 @@ struct UserSessionCardViewData {
 }
 
 extension UserSessionCardViewData {
-    init(session: UserSessionInfo) {
-        self.init(sessionId: session.id,
-                  sessionDisplayName: session.name,
-                  deviceType: session.deviceType,
-                  isVerified: session.isVerified,
-                  lastActivityTimestamp: session.lastSeenTimestamp,
-                  lastSeenIP: session.lastSeenIP,
-                  isCurrentSessionDisplayMode: session.isCurrent)
+    init(sessionInfo: UserSessionInfo) {
+        self.init(sessionId: sessionInfo.id,
+                  sessionDisplayName: sessionInfo.name,
+                  deviceType: sessionInfo.deviceType,
+                  isVerified: sessionInfo.isVerified,
+                  lastActivityTimestamp: sessionInfo.lastSeenTimestamp,
+                  lastSeenIP: sessionInfo.lastSeenIP,
+                  isCurrentSessionDisplayMode: sessionInfo.isCurrent)
     }
 }

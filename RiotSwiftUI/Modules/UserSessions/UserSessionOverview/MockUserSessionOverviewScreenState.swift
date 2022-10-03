@@ -25,7 +25,9 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
     // mock that screen.
     case currentSession
     case otherSession
-    
+    case sessionWithPushNotifications(enabled: Bool)
+    case remotelyTogglingPushersNotAvailable
+
     /// The associated screen
     var screenType: Any.Type {
         UserSessionOverview.self
@@ -33,12 +35,17 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
     
     /// A list of screen state definitions
     static var allCases: [MockUserSessionOverviewScreenState] {
-        [.currentSession, .otherSession]
+        [.currentSession,
+         .otherSession,
+         .sessionWithPushNotifications(enabled: true),
+         .sessionWithPushNotifications(enabled: false),
+         .remotelyTogglingPushersNotAvailable]
     }
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
         let session: UserSessionInfo
+        let service: UserSessionOverviewServiceProtocol
         switch self {
         case .currentSession:
             session = UserSessionInfo(id: "alice",
@@ -56,6 +63,7 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
                                       deviceName: "My iPhone",
                                       isActive: true,
                                       isCurrent: true)
+            service = MockUserSessionOverviewService()
         case .otherSession:
             session = UserSessionInfo(id: "1",
                                       name: "macOS",
@@ -72,9 +80,44 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
                                       deviceName: "My Mac",
                                       isActive: false,
                                       isCurrent: false)
+            service = MockUserSessionOverviewService()
+        case .sessionWithPushNotifications(let enabled):
+            session = UserSessionInfo(id: "1",
+                                      name: "macOS",
+                                      deviceType: .desktop,
+                                      isVerified: true,
+                                      lastSeenIP: "1.0.0.1",
+                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
+                                      applicationName: "Element MacOS",
+                                      applicationVersion: "1.0.0",
+                                      applicationURL: nil,
+                                      deviceModel: nil,
+                                      deviceOS: "macOS 12.5.1",
+                                      lastSeenIPLocation: nil,
+                                      deviceName: "My Mac",
+                                      isActive: false,
+                                      isCurrent: false)
+            service = MockUserSessionOverviewService(pusherEnabled: enabled)
+        case .remotelyTogglingPushersNotAvailable:
+            session = UserSessionInfo(id: "1",
+                                      name: "macOS",
+                                      deviceType: .desktop,
+                                      isVerified: true,
+                                      lastSeenIP: "1.0.0.1",
+                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
+                                      applicationName: "Element MacOS",
+                                      applicationVersion: "1.0.0",
+                                      applicationURL: nil,
+                                      deviceModel: nil,
+                                      deviceOS: "macOS 12.5.1",
+                                      lastSeenIPLocation: nil,
+                                      deviceName: "My Mac",
+                                      isActive: false,
+                                      isCurrent: false)
+            service = MockUserSessionOverviewService(pusherEnabled: true, remotelyTogglingPushersAvailable: false)
         }
 
-        let viewModel = UserSessionOverviewViewModel(session: session)
+        let viewModel = UserSessionOverviewViewModel(sessionInfo: session, service: service)
         // can simulate service and viewModel actions here if needs be.
         return ([viewModel], AnyView(UserSessionOverview(viewModel: viewModel.context)))
     }

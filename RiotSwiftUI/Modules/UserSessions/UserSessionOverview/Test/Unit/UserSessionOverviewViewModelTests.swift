@@ -23,8 +23,9 @@ class UserSessionOverviewViewModelTests: XCTestCase {
     var sut: UserSessionOverviewViewModel!
 
     func test_whenVerifyCurrentSessionProcessed_completionWithVerifyCurrentSessionCalled() {
-        sut = UserSessionOverviewViewModel(session: createUserSessionInfo())
+        sut = UserSessionOverviewViewModel(sessionInfo: createUserSessionInfo(), service: MockUserSessionOverviewService())
         
+        XCTAssertEqual(sut.state.isPusherEnabled, nil)
         var modelResult: UserSessionOverviewViewModelResult?
         sut.completion = { result in
             modelResult = result
@@ -34,17 +35,57 @@ class UserSessionOverviewViewModelTests: XCTestCase {
     }
     
     func test_whenViewSessionDetailsProcessed_completionWithShowSessionDetailsCalled() {
-        let session = createUserSessionInfo()
-        sut = UserSessionOverviewViewModel(session: session)
+        let sessionInfo = createUserSessionInfo()
+        sut = UserSessionOverviewViewModel(sessionInfo: sessionInfo, service: MockUserSessionOverviewService())
 
+        XCTAssertEqual(sut.state.isPusherEnabled, nil)
         var modelResult: UserSessionOverviewViewModelResult?
         sut.completion = { result in
             modelResult = result
         }
         sut.process(viewAction: .viewSessionDetails)
-        XCTAssertEqual(modelResult, .showSessionDetails(session: session))
+        XCTAssertEqual(modelResult, .showSessionDetails(sessionInfo: sessionInfo))
     }
     
+    func test_whenViewSessionDetailsProcessed_toggleAvailablePusher() {
+        let sessionInfo = createUserSessionInfo()
+        let service = MockUserSessionOverviewService(pusherEnabled: true)
+        sut = UserSessionOverviewViewModel(sessionInfo: sessionInfo, service: service)
+
+        XCTAssertTrue(sut.state.remotelyTogglingPushersAvailable)
+        XCTAssertEqual(sut.state.isPusherEnabled, true)
+        sut.process(viewAction: .togglePushNotifications)
+        XCTAssertEqual(sut.state.isPusherEnabled, false)
+        sut.process(viewAction: .togglePushNotifications)
+        XCTAssertEqual(sut.state.isPusherEnabled, true)
+    }
+    
+    func test_whenViewSessionDetailsProcessed_toggleNoPusher() {
+        let sessionInfo = createUserSessionInfo()
+        let service = MockUserSessionOverviewService(pusherEnabled: nil)
+        sut = UserSessionOverviewViewModel(sessionInfo: sessionInfo, service: service)
+
+        XCTAssertTrue(sut.state.remotelyTogglingPushersAvailable)
+        XCTAssertEqual(sut.state.isPusherEnabled, nil)
+        sut.process(viewAction: .togglePushNotifications)
+        XCTAssertEqual(sut.state.isPusherEnabled, nil)
+        sut.process(viewAction: .togglePushNotifications)
+        XCTAssertEqual(sut.state.isPusherEnabled, nil)
+    }
+    
+    func test_whenViewSessionDetailsProcessed_remotelyTogglingPushersNotAvailable() {
+        let sessionInfo = createUserSessionInfo()
+        let service = MockUserSessionOverviewService(pusherEnabled: true, remotelyTogglingPushersAvailable: false)
+        sut = UserSessionOverviewViewModel(sessionInfo: sessionInfo, service: service)
+
+        XCTAssertFalse(sut.state.remotelyTogglingPushersAvailable)
+        XCTAssertEqual(sut.state.isPusherEnabled, true)
+        sut.process(viewAction: .togglePushNotifications)
+        XCTAssertEqual(sut.state.isPusherEnabled, true)
+        sut.process(viewAction: .togglePushNotifications)
+        XCTAssertEqual(sut.state.isPusherEnabled, true)
+    }
+
     private func createUserSessionInfo() -> UserSessionInfo {
         UserSessionInfo(id: "session",
                         name: "iOS",

@@ -53,8 +53,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .openSessionOverview(session: session):
-                self.openSessionOverview(session: session)
+            case let .openSessionOverview(sessionInfo: sessionInfo):
+                self.openSessionOverview(session: sessionInfo)
             }
         }
         return coordinator
@@ -75,7 +75,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .openSessionDetails(session: session):
+            case let .openSessionDetails(sessionInfo: session):
                 self.openSessionDetails(session: session)
             }
         }
@@ -83,7 +83,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     private func createUserSessionOverviewCoordinator(session: UserSessionInfo) -> UserSessionOverviewCoordinator {
-        let parameters = UserSessionOverviewCoordinatorParameters(session: session)
+        let parameters = UserSessionOverviewCoordinatorParameters(session: self.parameters.session, sessionInfo: session)
         return UserSessionOverviewCoordinator(parameters: parameters)
     }
     

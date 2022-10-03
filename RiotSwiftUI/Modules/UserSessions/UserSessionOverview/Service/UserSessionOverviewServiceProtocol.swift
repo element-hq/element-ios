@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,19 +14,12 @@
 // limitations under the License.
 //
 
+import Combine
 import Foundation
-import MatrixSDK
 
-protocol UserSessionsDataProviderProtocol {
-    var myDeviceId: String { get }
-    
-    var myUserId: String? { get }
-    
-    var activeAccounts: [MXKAccount] { get }
-    
-    func devices(completion: @escaping (MXResponse<[MXDevice]>) -> Void)
-    
-    func device(withDeviceId deviceId: String, ofUser userId: String) -> MXDeviceInfo?
-    
-    func accountData(for eventType: String) -> [AnyHashable: Any]?
+protocol UserSessionOverviewServiceProtocol {
+    var pusherEnabledSubject: CurrentValueSubject<Bool?, Never> { get }
+    var remotelyTogglingPushersAvailableSubject: CurrentValueSubject<Bool, Never> { get }
+
+    func togglePushNotifications()
 }

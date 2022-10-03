@@ -138,7 +138,7 @@ struct UserSessionCardViewPreview: View {
     let viewData: UserSessionCardViewData
 
     init(isCurrent: Bool = false) {
-        let session = UserSessionInfo(id: "alice",
+        let sessionInfo = UserSessionInfo(id: "alice",
                                       name: "iOS",
                                       deviceType: .mobile,
                                       isVerified: false,
@@ -153,7 +153,7 @@ struct UserSessionCardViewPreview: View {
                                       deviceName: "My iPhone",
                                       isActive: true,
                                       isCurrent: isCurrent)
-        viewData = UserSessionCardViewData(session: session)
+        viewData = UserSessionCardViewData(sessionInfo: sessionInfo)
     }
     
     var body: some View {

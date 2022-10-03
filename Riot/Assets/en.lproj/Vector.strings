@@ -2385,6 +2385,8 @@ To enable access, tap Settings> Location and select Always";
 "user_session_verified_additional_info" = "Your current session is ready for secure messaging.";
 "user_session_unverified_additional_info" = "Verify your current session for enhanced secure messaging.";
 
+"user_session_push_notifications" = "Push notifications";
+"user_session_push_notifications_message" = "When turned on, this session will receive push notifications.";
 
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
