@@ -16,13 +16,17 @@
 
 import SwiftUI
 
-struct UserOtherSessionsHeaderViewData {
+struct UserOtherSessionsHeaderViewData: Hashable {
     var title: String?
     var subtitle: String
     var iconName: String?
 }
 
 struct UserOtherSessionsHeaderView: View {
+    
+    private var backgroundShape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: 8)
+    }
     
     @Environment(\.theme) private var theme
     
@@ -33,13 +37,15 @@ struct UserOtherSessionsHeaderView: View {
             if let iconName = viewData.iconName {
                 Image(iconName)
                     .foregroundColor(.red)
+                    .frame(width: 40, height: 40)
+                    .background(theme.colors.background)
+                    .clipShape(backgroundShape)
+                    .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1.0, shape: backgroundShape)
             }
             VStack(alignment: .leading, spacing: 0, content: {
                 if let title = viewData.title {
                     Text(title)
-                        .font(.callout)
-                        .textCase(.uppercase)
-                        .font(theme.fonts.footnote)
+                        .font(theme.fonts.calloutSB)
                         .foregroundColor(theme.colors.primaryContent)
                         .padding(.bottom, 9.0)
                 }

@@ -40,7 +40,6 @@ struct UserOtherSessions: View {
                     } header: {
                         UserOtherSessionsHeaderView(viewData: header)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, 16.0)
                             .padding(.top, 24.0)
                     }
                 case .clearFilter:

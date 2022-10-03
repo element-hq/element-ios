@@ -48,7 +48,7 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                          deviceType: .desktop,
                          isVerified: true,
                          lastSeenIP: "1.0.0.1",
-                         lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 8000000,
                          isActive: false,
                          isCurrent: false),
          UserSessionInfo(id: "2",
