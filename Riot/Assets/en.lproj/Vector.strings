@@ -762,6 +762,8 @@ Tap the + to start adding people.";
 "settings_labs_enable_auto_report_decryption_errors" = "Auto Report Decryption Errors";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Show latest avatar and name for users in message history";
 "settings_labs_enable_live_location_sharing" = "Live location sharing - share current location (active development, and temporarily, locations persist in room history)";
+"settings_labs_enable_new_session_manager" = "New session manager";
+"settings_labs_enable_new_client_info_feature" = "Record the client name, version, and url to recognise sessions more easily in session manager";
 "settings_labs_enable_new_app_layout" = "New Application Layout";
 
 "settings_version" = "Version %@";
@@ -2193,6 +2195,7 @@ Tap the + to start adding people.";
 
 "room_recents_recently_viewed_section" = "Recently viewed";
 
+"all_chats_user_menu_accessibility_label" = "User menu";
 "all_chats_user_menu_settings" = "User settings";
 
 "all_chats_edit_menu_leave_space" = "Leave %@";

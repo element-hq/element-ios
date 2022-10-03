@@ -247,6 +247,10 @@ public class VectorL10n: NSObject {
   public static var allChatsTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_title") 
   }
+  /// User menu
+  public static var allChatsUserMenuAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "all_chats_user_menu_accessibility_label") 
+  }
   /// User settings
   public static var allChatsUserMenuSettings: String { 
     return VectorL10n.tr("Vector", "all_chats_user_menu_settings") 
@@ -7378,6 +7382,14 @@ public class VectorL10n: NSObject {
   /// New Application Layout
   public static var settingsLabsEnableNewAppLayout: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_new_app_layout") 
+  }
+  /// Record the client name, version, and url to recognise sessions more easily in session manager
+  public static var settingsLabsEnableNewClientInfoFeature: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_new_client_info_feature") 
+  }
+  /// New session manager
+  public static var settingsLabsEnableNewSessionManager: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_new_session_manager") 
   }
   /// Ring for group calls
   public static var settingsLabsEnableRingingForGroupCalls: String { 
