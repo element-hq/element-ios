@@ -113,7 +113,8 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                                        deviceModel: String? = nil,
                                        deviceOS: String? = nil,
                                        lastSeenIPLocation: String? = nil,
-                                       deviceName: String? = nil,
+                                       clientName: String? = nil,
+                                       clientVersion: String? = nil,
                                        isActive: Bool = true,
                                        isCurrent: Bool = true) -> UserSessionInfo {
         UserSessionInfo(id: id,
@@ -128,7 +129,8 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                         deviceModel: deviceModel,
                         deviceOS: deviceOS,
                         lastSeenIPLocation: lastSeenIPLocation,
-                        deviceName: deviceName,
+                        clientName: clientName,
+                        clientVersion: clientVersion,
                         isActive: isActive,
                         isCurrent: isCurrent)
     }
