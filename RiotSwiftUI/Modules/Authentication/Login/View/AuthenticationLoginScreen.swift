@@ -191,7 +191,7 @@ struct AuthenticationLoginScreen: View {
 
     /// Sends the `qrLogin` view action.
     func qrLogin() {
-        // TODO: Implement
+        viewModel.send(viewAction: .qrLogin)
     }
 }
 

@@ -88,13 +88,9 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     
     // MARK: - Private
 
-    private func showScanQRScreen() {
+    private func showScanQRScreen() { }
 
-    }
-
-    private func showDisplayQRScreen() {
-
-    }
+    private func showDisplayQRScreen() { }
     
     /// Show an activity indicator whilst loading.
     private func startLoading() {
