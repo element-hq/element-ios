@@ -2230,7 +2230,7 @@
 "settings_labs_enable_auto_report_decryption_errors" = "Auto Reportar Erros de Decriptação";
 "room_preview_decline_invitation_options" = "Você quer declinar o convite ou ignorar esta(e) usuária(o)?";
 "threads_beta_cancel" = "Não agora";
-"threads_beta_enable" = "Teste aí";
+"threads_beta_enable" = "Experimentar";
 "threads_beta_information_link" = "Saber mais";
 "threads_beta_information" = "Mantenha discussões organizadas com threads.\n\nThreads ajudam manter suas conversas em-tópico e fáceis de rastrear. ";
 "threads_beta_title" = "Threads";
@@ -2446,12 +2446,12 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Nada novo.";
-"all_chats_onboarding_try_it" = "Testa aí";
+"all_chats_onboarding_try_it" = "Experimentar";
 "all_chats_onboarding_title" = "O que tem de novo";
 "all_chats_onboarding_page_message3" = "Toque em seu perfil para nos deixar sabendo do que você acha.";
-"all_chats_onboarding_page_title3" = "Dar Feedback";
-"all_chats_onboarding_page_message2" = "Acesse seus Espaços (esquerdo fundo) mais rápido e fácil que jamais antes.";
-"all_chats_onboarding_page_title2" = "Acessar Espaços";
+"all_chats_onboarding_page_title3" = "Dê Feedback";
+"all_chats_onboarding_page_message2" = "Acesse seus Espaços (esquerda fundo) mais rápido e fácil que jamais antes.";
+"all_chats_onboarding_page_title2" = "Acesse Espaços";
 "all_chats_onboarding_page_message1" = "Para simplificar seu Element, abas são agora opcionais. Gerencie-as usando o menu direito topo.";
 "all_chats_onboarding_page_title1" = "Boas vindas a uma nova visão!";
 "all_chats_nothing_found_placeholder_message" = "Tente ajustar sua pesquisa.";
