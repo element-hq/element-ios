@@ -212,6 +212,15 @@
 
 "authentication_recaptcha_title" = "Are you a human?";
 
+"authentication_qr_login_start_title" = "Scan QR code";
+"authentication_qr_login_start_subtitle" = "Use the camera on this device to scan the QR code shown on your other device:";
+"authentication_qr_login_start_step1" = "Open Element on your other device";
+"authentication_qr_login_start_step2" = "Go to Settings -> Security & Privacy";
+"authentication_qr_login_start_step3" = "Select ‘Link a device’";
+"authentication_qr_login_start_step4" = "Select ‘Show QR code on this device’";
+"authentication_qr_login_start_need_alternative" = "Need an alternative method?";
+"authentication_qr_login_start_display_qr" = "Show QR code on this device";
+
 // MARK: Password Validation
 "password_validation_info_header" = "Your password should meet the criteria below:";
 "password_validation_error_header" = "Given password does not meet the criteria below:";
