@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
         session.crypto.device(withDeviceId: deviceId, ofUser: userId)
     }
     
-    func accountData(for eventType: String) -> [AnyHashable : Any]? {
+    func accountData(for eventType: String) -> [AnyHashable: Any]? {
         session.accountData.accountData(forEventType: eventType)
     }
 }

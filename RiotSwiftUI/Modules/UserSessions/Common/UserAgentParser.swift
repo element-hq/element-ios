@@ -179,10 +179,10 @@ enum UserAgentParser {
         if components.last?.hasPrefix("Firefox") == true {
             let version = components.last?.components(separatedBy: "/").last
             return ("Firefox", version)
-        } else if components.last?.hasPrefix("Safari") == true
-                    && components[safe:components.count - 2]?.hasPrefix("Mobile") == true {
+        } else if components.last?.hasPrefix("Safari") == true,
+                  components[safe: components.count - 2]?.hasPrefix("Mobile") == true {
             // mobile browser
-            let possibleBrowserComponents = components[safe:components.count - 3]
+            let possibleBrowserComponents = components[safe: components.count - 3]
             if possibleBrowserComponents?.hasPrefix("Version") == true {
                 let version = possibleBrowserComponents?.components(separatedBy: "/").last
                 return ("Safari", version)
@@ -190,12 +190,12 @@ enum UserAgentParser {
                 let components = possibleBrowserComponents?.components(separatedBy: "/")
                 return (components?.first, components?.last)
             }
-        } else if components.last?.hasPrefix("Safari") == true && components[safe:components.count - 2]?.hasPrefix("Version") == true {
-            let version = components[safe:components.count - 2]?.components(separatedBy: "/").last
+        } else if components.last?.hasPrefix("Safari") == true, components[safe: components.count - 2]?.hasPrefix("Version") == true {
+            let version = components[safe: components.count - 2]?.components(separatedBy: "/").last
             return ("Safari", version)
         } else {
             // regular browser
-            let browserComponent = components[safe:components.count - 2]
+            let browserComponent = components[safe: components.count - 2]
             let components = browserComponent?.components(separatedBy: "/")
             return (components?.first, components?[safe: 1])
         }
