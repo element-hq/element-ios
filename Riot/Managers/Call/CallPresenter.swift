@@ -455,11 +455,11 @@ class CallPresenter: NSObject {
         #if canImport(JitsiMeetSDK)
         JMCallKitProxy.addListener(self)
         
-        guard let sessionInfo = sessions.first else {
+        guard let session = sessions.first else {
             return
         }
         
-        widgetEventsListener = sessionInfo.listenToEvents([
+        widgetEventsListener = session.listenToEvents([
             MXEventType(identifier: kWidgetMatrixEventTypeString),
             MXEventType(identifier: kWidgetModularEventTypeString)
         ]) { (event, direction, _) in
@@ -468,7 +468,7 @@ class CallPresenter: NSObject {
                 return
             }
             
-            self.processWidgetEvent(event, inSession: sessionInfo)
+            self.processWidgetEvent(event, inSession: session)
         }
         #endif
     }

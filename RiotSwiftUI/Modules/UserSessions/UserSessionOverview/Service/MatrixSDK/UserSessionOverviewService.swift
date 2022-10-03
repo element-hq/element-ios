@@ -52,7 +52,16 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
         
         let data = pusher.data.jsonDictionary() as? [String: Any] ?? [:]
         
-        self.session.matrixRestClient .setPusher(pushKey: pusher.pushkey, kind: MXPusherKind.from(value: pusher.kind), appId: pusher.appId, appDisplayName:pusher.appDisplayName, deviceDisplayName: pusher.deviceDisplayName, profileTag: pusher.profileTag ?? "", lang: pusher.lang, data: data, append: false, enabled: !enabled) { [weak self] response in
+        self.session.matrixRestClient.setPusher(pushKey: pusher.pushkey,
+                                                kind: MXPusherKind(value: pusher.kind),
+                                                appId: pusher.appId,
+                                                appDisplayName:pusher.appDisplayName,
+                                                deviceDisplayName: pusher.deviceDisplayName,
+                                                profileTag: pusher.profileTag ?? "",
+                                                lang: pusher.lang,
+                                                data: data,
+                                                append: false,
+                                                enabled: !enabled) { [weak self] response in
             guard let self = self else { return }
             
             switch response {
