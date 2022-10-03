@@ -8495,6 +8495,10 @@ public class VectorL10n: NSObject {
   public static var userSessionDetailsApplicationVersion: String { 
     return VectorL10n.tr("Vector", "user_session_details_application_version") 
   }
+  /// Browser
+  public static var userSessionDetailsDeviceBrowser: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_browser") 
+  }
   /// IP address
   public static var userSessionDetailsDeviceIpAddress: String { 
     return VectorL10n.tr("Vector", "user_session_details_device_ip_address") 
