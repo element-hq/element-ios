@@ -739,6 +739,10 @@ public class VectorL10n: NSObject {
   public static var authenticationLoginUsername: String { 
     return VectorL10n.tr("Vector", "authentication_login_username") 
   }
+  /// Sign in with QR code
+  public static var authenticationLoginWithQr: String { 
+    return VectorL10n.tr("Vector", "authentication_login_with_qr") 
+  }
   /// Are you a human?
   public static var authenticationRecaptchaTitle: String { 
     return VectorL10n.tr("Vector", "authentication_recaptcha_title") 

@@ -21,13 +21,14 @@ struct SecondaryActionButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
     
     var customColor: Color?
+    var font: Font?
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .padding(12.0)
             .frame(maxWidth: .infinity)
             .foregroundColor(customColor ?? theme.colors.accent)
-            .font(theme.fonts.body)
+            .font(font ?? theme.fonts.body)
             .background(RoundedRectangle(cornerRadius: 8)
                 .strokeBorder()
                 .foregroundColor(customColor ?? theme.colors.accent))
