@@ -46,6 +46,7 @@ final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinator
         onboardingSplashScreenViewModel = viewModel
         onboardingSplashScreenHostingController = VectorHostingController(rootView: view)
         onboardingSplashScreenHostingController.vc_removeBackTitle()
+        onboardingSplashScreenHostingController.isNavigationBarHidden = true
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: onboardingSplashScreenHostingController)
     }
