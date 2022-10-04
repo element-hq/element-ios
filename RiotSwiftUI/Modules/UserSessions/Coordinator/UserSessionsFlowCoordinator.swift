@@ -56,8 +56,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             case let .openSessionOverview(session: session):
                 self.openSessionOverview(session: session)
             case let .openOtherSessions(sessions: sessions, filter: filter):
-                let title = filter == .all ? "Other sessions" : "Security recommendation"
-                self.openOtherSessions(sessions: sessions, filterBy: filter, title: title)
+                self.openOtherSessions(sessions: sessions, filterBy: filter, title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
             }
         }
         return coordinator

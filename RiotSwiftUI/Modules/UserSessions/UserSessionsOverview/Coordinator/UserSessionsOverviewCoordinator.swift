@@ -88,7 +88,7 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     }
     
     private func startVerifyCurrentSession() {
-        // TODO:openSessionOverview
+        // TODO:
     }
     
     private func showCurrentSessionOverview(session: UserSessionInfo) {

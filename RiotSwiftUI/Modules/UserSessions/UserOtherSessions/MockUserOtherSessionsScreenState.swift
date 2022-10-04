@@ -40,7 +40,9 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
         
-        let viewModel = UserOtherSessionsViewModel(sessions: inactiveSessions(), filter: .inactive, title: "Security recommendation")
+        let viewModel = UserOtherSessionsViewModel(sessions: inactiveSessions(),
+                                                   filter: .inactive,
+                                                   title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
 
         // can simulate service and viewModel actions here if needs be.
         

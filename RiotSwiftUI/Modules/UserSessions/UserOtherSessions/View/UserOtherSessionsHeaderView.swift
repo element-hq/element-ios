@@ -61,11 +61,12 @@ struct UserOtherSessionsHeaderView: View {
     }
 }
 
+// MARK: - Previews
 
 struct UserOtherSessionsHeaderView_Previews: PreviewProvider {
     
-    private static let inactiveSessionViewData = UserOtherSessionsHeaderViewData(title: "Inactive sessions",
-                                                                                 subtitle: "Consider signing out from old sessions (90 days or older) you don’t use anymore.",
+    private static let inactiveSessionViewData = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
+                                                                                 subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
                                                                                  iconName: Asset.Images.userOtherSessionsInactive.name)
     
     

@@ -48,9 +48,9 @@ struct UserSessionListItemViewDataFactory {
     private func inactiveSessionDetails(lastActivityDate: TimeInterval?) -> String {
         if let lastActivityDate = lastActivityDate {
             let lastActivityDateString = Self.inactiveSessionDateFormatter.lastActivityDateString(from: lastActivityDate)
-            return "Inactive for 90+ days (\(lastActivityDateString))"
+            return VectorL10n.userInactiveSessionItemWithDate(lastActivityDateString)
         }
-        return "Inactive for 90+ days"
+        return VectorL10n.userInactiveSessionItem
     }
     
     private func activeSessionDetails(isVerified: Bool, lastActivityDate: TimeInterval?) -> String {
@@ -76,5 +76,4 @@ struct UserSessionListItemViewDataFactory {
     private func getSessionDetailsIcon(isActive: Bool) -> String? {
         isActive ? nil : Asset.Images.userSessionListItemInactiveSession.name
     }
-    
 }

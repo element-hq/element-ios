@@ -30,7 +30,6 @@ struct UserOtherSessions: View {
                     createSessionItemsSection(header: header, items: items)
                 }
             }
-            
         }
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)

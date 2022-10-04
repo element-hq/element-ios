@@ -36,7 +36,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         switch viewAction {
         case let .userOtherSessionSelected(sessionId: sessionId):
             guard let session = sessions.first(where: {$0.id == sessionId}) else {
-                assertionFailure("Shouldn't happen, session should be present in the array.")
+                assertionFailure("Session should exist in the array.")
                 return
             }
             completion?(.showUserSessionOverview(session: session))
@@ -70,15 +70,14 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                                                    subtitle: "",
                                                    iconName: nil)
         case .inactive:
-            return UserOtherSessionsHeaderViewData(title: "Inactive sessions",
-                                                   subtitle: "Consider signing out from old sessions (90 days or older) you don’t use anymore.",
+            return UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
+                                                   subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
                                                    iconName: Asset.Images.userOtherSessionsInactive.name)
         case .unverified:
             // TODO:
             return UserOtherSessionsHeaderViewData(title: nil,
                                                    subtitle: "",
                                                    iconName: nil)
-            
         }
     }
 }
