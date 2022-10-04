@@ -127,6 +127,7 @@ class AllChatsViewController: HomeViewController {
         recentsTableView.contentInsetAdjustmentBehavior = .automatic
         
         toolbarHeight = toolbar.frame.height
+        emptyViewBottomAnchor = toolbar.topAnchor
 
         updateUI()
         
