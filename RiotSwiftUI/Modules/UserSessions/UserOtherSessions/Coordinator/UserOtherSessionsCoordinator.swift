@@ -33,7 +33,7 @@ final class UserOtherSessionsCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: ((UserOtherSessionsViewModelResult) -> Void)?
+    var completion: ((UserOtherSessionsCoordinatorResult) -> Void)?
     
     init(parameters: UserOtherSessionsCoordinatorParameters) {
         self.parameters = parameters
@@ -54,8 +54,11 @@ final class UserOtherSessionsCoordinator: Coordinator, Presentable {
         MXLog.debug("[UserOtherSessionsCoordinator] did start.")
         userOtherSessionsViewModel.completion = { [weak self] result in
             guard let self = self else { return }
+            switch result {
+            case let .showUserSessionOverview(session: session):
+                self.completion?(.openSessionDetails(session: session))
+            }
             MXLog.debug("[UserOtherSessionsCoordinator] UserOtherSessionsViewModel did complete with result: \(result).")
-            self.completion?(result)
         }
     }
     

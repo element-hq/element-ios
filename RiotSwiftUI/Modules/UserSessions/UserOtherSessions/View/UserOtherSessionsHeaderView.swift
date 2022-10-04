@@ -47,12 +47,12 @@ struct UserOtherSessionsHeaderView: View {
                     Text(title)
                         .font(theme.fonts.calloutSB)
                         .foregroundColor(theme.colors.primaryContent)
-                        .padding(.bottom, 9.0)
+                        .padding(.vertical, 9.0)
                 }
                 Text(viewData.subtitle)
                     .font(theme.fonts.footnote)
                     .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.bottom, 12.0)
+                    .padding(.bottom, 20.0)
             })
             .padding(.leading, 16)
         }
@@ -65,7 +65,7 @@ struct UserOtherSessionsHeaderView: View {
 struct UserOtherSessionsHeaderView_Previews: PreviewProvider {
     
     private static let inactiveSessionViewData = UserOtherSessionsHeaderViewData(title: "Inactive sessions",
-                                                                                 subtitle: "Consider signing out from old sessions (90 days or older) you don’t use anymore. Learn more",
+                                                                                 subtitle: "Consider signing out from old sessions (90 days or older) you don’t use anymore.",
                                                                                  iconName: Asset.Images.userOtherSessionsInactive.name)
     
     

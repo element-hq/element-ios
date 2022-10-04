@@ -25,26 +25,9 @@ struct UserOtherSessions: View {
     var body: some View {
         ScrollView {
             ForEach(viewModel.viewState.sections) { section in
-                
                 switch section {
                 case let .sessionItems(header: header, items: items):
-                    SwiftUI.Section {
-                        LazyVStack(spacing: 0) {
-                            ForEach(items) { viewData in
-                                UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
-                                    // viewModel.send(viewAction: .tapUserSession(sessionId))
-                                })
-                            }
-                        }
-                        .background(theme.colors.background)
-                    } header: {
-                        UserOtherSessionsHeaderView(viewData: header)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.top, 24.0)
-                    }
-                case .clearFilter:
-                    //TODO
-                    EmptyView()
+                    createSessionItemsSection(header: header, items: items)
                 }
             }
             
@@ -53,13 +36,33 @@ struct UserOtherSessions: View {
         .frame(maxHeight: .infinity)
         .navigationTitle(viewModel.viewState.title)
     }
+    
+    private func createSessionItemsSection(header: UserOtherSessionsHeaderViewData, items: [UserSessionListItemViewData]) -> some View {
+        SwiftUI.Section {
+            LazyVStack(spacing: 0) {
+                ForEach(items) { viewData in
+                    UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
+                        viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId))
+                    })
+                }
+            }
+            .background(theme.colors.background)
+        } header: {
+            UserOtherSessionsHeaderView(viewData: header)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 24.0)
+        }
+    }
 }
 
 // MARK: - Previews
 
 struct UserOtherSessions_Previews: PreviewProvider {
+    
     static let stateRenderer = MockUserOtherSessionsScreenState.stateRenderer
+    
     static var previews: some View {
-        stateRenderer.screenGroup()
+        stateRenderer.screenGroup(addNavigation: true).theme(.light).preferredColorScheme(.light)
+        stateRenderer.screenGroup(addNavigation: true).theme(.dark).preferredColorScheme(.dark)
     }
 }

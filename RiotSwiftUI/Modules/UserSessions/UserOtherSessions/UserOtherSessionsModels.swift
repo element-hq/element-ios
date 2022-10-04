@@ -17,11 +17,14 @@
 import Foundation
 
 // MARK: - Coordinator
-
+enum UserOtherSessionsCoordinatorResult {
+    case openSessionDetails(session: UserSessionInfo)
+}
 
 // MARK: View model
 
 enum UserOtherSessionsViewModelResult {
+    case showUserSessionOverview(session: UserSessionInfo)
 }
 
 // MARK: View
@@ -36,12 +39,11 @@ enum UserOtherSessionsSection: Hashable, Identifiable {
         self
     }
     case sessionItems(header: UserOtherSessionsHeaderViewData, items: [UserSessionListItemViewData])
-    case clearFilter
 }
 
 enum UserOtherSessionsViewAction {
+    case userOtherSessionSelected(sessionId: String)
 }
-
 
 enum OtherUserSessionsFilter {
     case all

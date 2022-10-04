@@ -20,11 +20,12 @@ typealias UserOtherSessionsViewModelType = StateStoreViewModel<UserOtherSessions
 
 class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessionsViewModelProtocol {
     var completion: ((UserOtherSessionsViewModelResult) -> Void)?
+    private let sessions: [UserSessionInfo]
     
     init(sessions: [UserSessionInfo],
          filter: OtherUserSessionsFilter,
          title: String) {
-        
+        self.sessions = sessions
         super.init(initialViewState: UserOtherSessionsViewState(title: title, sections: []))
         updateViewState(sessions: sessions, filter: filter)
     }
@@ -32,16 +33,14 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     // MARK: - Public
     
     override func process(viewAction: UserOtherSessionsViewAction) {
-        //        switch viewAction {
-        //        case .accept:
-        //            completion?(.accept)
-        //        case .cancel:
-        //            completion?(.cancel)
-        //        case .incrementCount:
-        //            state.count += 1
-        //        case .decrementCount:
-        //            state.count -= 1
-        //        }
+        switch viewAction {
+        case let .userOtherSessionSelected(sessionId: sessionId):
+            guard let session = sessions.first(where: {$0.id == sessionId}) else {
+                assertionFailure("Shouldn't happen, session should be present in the array.")
+                return
+            }
+            completion?(.showUserSessionOverview(session: session))
+        }
     }
     
     // MARK: - Private
@@ -72,7 +71,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                                                    iconName: nil)
         case .inactive:
             return UserOtherSessionsHeaderViewData(title: "Inactive sessions",
-                                                   subtitle: "Consider signing out from old sessions (90 days or older) you don’t use anymore. Learn more",
+                                                   subtitle: "Consider signing out from old sessions (90 days or older) you don’t use anymore.",
                                                    iconName: Asset.Images.userOtherSessionsInactive.name)
         case .unverified:
             // TODO:

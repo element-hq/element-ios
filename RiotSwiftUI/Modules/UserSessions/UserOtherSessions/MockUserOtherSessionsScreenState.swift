@@ -24,7 +24,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
     // with specific, minimal associated data that will allow you
     // mock that screen.
 
-    case allSessionsEmpty
+    case inactiveSessions
     
     /// The associated screen
     var screenType: Any.Type {
@@ -34,18 +34,54 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
     /// A list of screen state definitions
     static var allCases: [MockUserOtherSessionsScreenState] {
         // Each of the presence statuses
-        [.allSessionsEmpty]
+        [.inactiveSessions]
     }
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        let viewModel = UserOtherSessionsViewModel(sessions: [], filter: .all, title: "Other sessions")
         
+        let viewModel = UserOtherSessionsViewModel(sessions: inactiveSessions(), filter: .inactive, title: "Security recommendation")
+
         // can simulate service and viewModel actions here if needs be.
         
         return (
             [viewModel],
             AnyView(UserOtherSessions(viewModel: viewModel.context))
         )
+    }
+    
+    private func inactiveSessions() -> [UserSessionInfo] {
+        [UserSessionInfo(id: "alice",
+                         name: "iOS",
+                         deviceType: .mobile,
+                         isVerified: false,
+                         lastSeenIP: "10.0.0.10",
+                         lastSeenTimestamp: nil,
+                         isActive: false,
+                         isCurrent: true),
+         UserSessionInfo(id: "1",
+                         name: "macOS",
+                         deviceType: .desktop,
+                         isVerified: true,
+                         lastSeenIP: "1.0.0.1",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 8000000,
+                         isActive: false,
+                         isCurrent: false),
+         UserSessionInfo(id: "2",
+                         name: "Firefox on Windows",
+                         deviceType: .web,
+                         isVerified: true,
+                         lastSeenIP: "2.0.0.2",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 9000000,
+                         isActive: false,
+                         isCurrent: false),
+         UserSessionInfo(id: "3",
+                         name: "Android",
+                         deviceType: .mobile,
+                         isVerified: false,
+                         lastSeenIP: "3.0.0.3",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 10000000,
+                         isActive: false,
+                         isCurrent: false)]
     }
 }

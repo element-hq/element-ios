@@ -94,12 +94,12 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         let coordinator = createOtherSessionsCoordinator(sessions: sessions,
                                                          filterBy: filter,
                                                          title: title)
-        coordinator.completion = { [weak self] _ in
-//            guard let self = self else { return }
-//            switch result {
-//            case let .openSessionDetails(session: session):
-//                self.openSessionDetails(session: session)
-//            }
+        coordinator.completion = { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .openSessionDetails(session: session):
+                self.openSessionDetails(session: session)
+            }
         }
         pushScreen(with: coordinator)
     }
