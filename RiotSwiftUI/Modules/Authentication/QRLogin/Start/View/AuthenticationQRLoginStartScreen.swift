@@ -88,9 +88,7 @@ struct AuthenticationQRLoginStartScreen: View {
             .padding(.vertical)
             .accessibilityIdentifier("scanQRButton")
 
-            LabelledDivider(label: VectorL10n.authenticationQrLoginStartNeedAlternative,
-                            labelColor: theme.colors.primaryContent,
-                            lineColor: theme.colors.quinaryContent)
+            LabelledDivider(label: VectorL10n.authenticationQrLoginStartNeedAlternative)
 
             Button(action: displayQR) {
                 Text(VectorL10n.authenticationQrLoginStartDisplayQr)
@@ -135,35 +133,6 @@ struct AuthenticationQRLoginStartScreen: View {
     /// Sends the `displayQR` view action.
     func displayQR() {
         viewModel.send(viewAction: .displayQR)
-    }
-}
-
-struct LabelledDivider: View {
-    @Environment(\.theme) private var theme
-
-    let label: String
-    let labelColor: Color
-    let lineColor: Color
-
-    init(label: String, labelColor: Color, lineColor: Color) {
-        self.label = label
-        self.labelColor = labelColor
-        self.lineColor = lineColor
-    }
-
-    var body: some View {
-        HStack {
-            line
-            Text(label)
-                .foregroundColor(labelColor)
-                .font(theme.fonts.subheadline)
-                .fixedSize()
-            line
-        }
-    }
-
-    var line: some View {
-        VStack { Divider().background(lineColor) }
     }
 }
 
