@@ -19,7 +19,7 @@ import SwiftUI
 
 struct AuthenticationQRLoginDisplayCoordinatorParameters {
     let navigationRouter: NavigationRouterType
-    let authenticationService: AuthenticationService
+    let qrLoginService: QRLoginServiceProtocol
 }
 
 enum AuthenticationQRLoginDisplayCoordinatorResult {
@@ -50,7 +50,7 @@ final class AuthenticationQRLoginDisplayCoordinator: Coordinator, Presentable {
     
     init(parameters: AuthenticationQRLoginDisplayCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = AuthenticationQRLoginDisplayViewModel()
+        let viewModel = AuthenticationQRLoginDisplayViewModel(qrLoginService: parameters.qrLoginService)
         let view = AuthenticationQRLoginDisplayScreen(context: viewModel.context)
         onboardingQRLoginDisplayViewModel = viewModel
         

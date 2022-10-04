@@ -38,7 +38,7 @@ enum MockAuthenticationQRLoginDisplayScreenState: MockScreenState, CaseIterable 
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        let viewModel = AuthenticationQRLoginDisplayViewModel()
+        let viewModel = AuthenticationQRLoginDisplayViewModel(qrLoginService: MockQRLoginService())
         
         // can simulate service and viewModel actions here if needs be.
         

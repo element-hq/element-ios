@@ -23,31 +23,33 @@ class AuthenticationQRLoginDisplayViewModel: AuthenticationQRLoginDisplayViewMod
 
     // MARK: Private
 
+    private let qrLoginService: QRLoginServiceProtocol
+
     // MARK: Public
 
     var callback: ((AuthenticationQRLoginDisplayViewModelResult) -> Void)?
 
     // MARK: - Setup
 
-    init() {
+    init(qrLoginService: QRLoginServiceProtocol) {
+        self.qrLoginService = qrLoginService
         super.init(initialViewState: AuthenticationQRLoginDisplayViewState())
 
-        let generator = QRCodeGenerator()
-        let qrData = [
-            "key_1": "value_1",
-            "key_2": "value_2",
-        ]
-        guard let jsonString = qrData.jsonString,
-              let data = jsonString.data(using: .isoLatin1) else {
-            return
-        }
+        Task { @MainActor in
+            let generator = QRCodeGenerator()
+            let qrData = try await qrLoginService.generateQRCode()
+            guard let jsonString = qrData.jsonString,
+                  let data = jsonString.data(using: .isoLatin1) else {
+                return
+            }
 
-        do {
-            self.state.qrImage = try generator.generateCode(from: data,
-                                                            with: CGSize(width: 240, height: 240),
-                                                            offColor: .clear)
-        } catch {
-            //MXLog.error("[AuthenticationQRLoginDisplayViewModel] failed to generate QR", context: error)
+            do {
+                state.qrImage = try generator.generateCode(from: data,
+                                                           with: CGSize(width: 240, height: 240),
+                                                           offColor: .clear)
+            } catch {
+                // MXLog.error("[AuthenticationQRLoginDisplayViewModel] failed to generate QR", context: error)
+            }
         }
     }
 

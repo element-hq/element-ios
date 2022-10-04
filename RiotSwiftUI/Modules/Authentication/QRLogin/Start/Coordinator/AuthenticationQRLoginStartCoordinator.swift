@@ -19,7 +19,7 @@ import SwiftUI
 
 struct AuthenticationQRLoginStartCoordinatorParameters {
     let navigationRouter: NavigationRouterType
-    let authenticationService: AuthenticationService
+    let qrLoginService: QRLoginServiceProtocol
 }
 
 enum AuthenticationQRLoginStartCoordinatorResult {
@@ -95,10 +95,11 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     private func showScanQRScreen() { }
 
     /// Shows the display QR screen.
-    @MainActor private func showDisplayQRScreen() { MXLog.debug("[AuthenticationLoginCoordinator] showDisplayQRScreen")
+    @MainActor private func showDisplayQRScreen() {
+        MXLog.debug("[AuthenticationLoginCoordinator] showDisplayQRScreen")
 
         let parameters = AuthenticationQRLoginDisplayCoordinatorParameters(navigationRouter: navigationRouter,
-                                                                         authenticationService: parameters.authenticationService)
+                                                                           qrLoginService: parameters.qrLoginService)
         let coordinator = AuthenticationQRLoginDisplayCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] _ in
             guard let self = self, let coordinator = coordinator else { return }

@@ -23,7 +23,7 @@ class AuthenticationQRLoginDisplayViewModelTests: XCTestCase {
     var context: AuthenticationQRLoginDisplayViewModelType.Context!
 
     override func setUpWithError() throws {
-        viewModel = AuthenticationQRLoginDisplayViewModel()
+        viewModel = AuthenticationQRLoginDisplayViewModel(qrLoginService: MockQRLoginService())
         context = viewModel.context
     }
 
