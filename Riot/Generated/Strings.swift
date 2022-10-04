@@ -759,6 +759,14 @@ public class VectorL10n: NSObject {
   public static var authenticationQrLoginDisplayTitle: String { 
     return VectorL10n.tr("Vector", "authentication_qr_login_display_title") 
   }
+  /// Position the QR code in the square below
+  public static var authenticationQrLoginScanSubtitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_scan_subtitle") 
+  }
+  /// Scan QR code
+  public static var authenticationQrLoginScanTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_scan_title") 
+  }
   /// Show QR code on this device
   public static var authenticationQrLoginStartDisplayQr: String { 
     return VectorL10n.tr("Vector", "authentication_qr_login_start_display_qr") 

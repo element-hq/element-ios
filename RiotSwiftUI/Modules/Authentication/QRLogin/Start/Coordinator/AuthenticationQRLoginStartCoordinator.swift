@@ -92,7 +92,25 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     
     // MARK: - Private
 
-    private func showScanQRScreen() { }
+    /// Shows the scan QR screen.
+    private func showScanQRScreen() {
+        MXLog.debug("[AuthenticationLoginCoordinator] showScanQRScreen")
+
+        let parameters = AuthenticationQRLoginScanCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                        qrLoginService: parameters.qrLoginService)
+        let coordinator = AuthenticationQRLoginScanCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] _ in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.remove(childCoordinator: coordinator)
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+
+        navigationRouter.push(coordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
 
     /// Shows the display QR screen.
     @MainActor private func showDisplayQRScreen() {

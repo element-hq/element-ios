@@ -226,6 +226,9 @@
 "authentication_qr_login_display_step1" = "Open Element on your other device";
 "authentication_qr_login_display_step2" = "Select ‘Sign in with QR code’";
 
+"authentication_qr_login_scan_title" = "Scan QR code";
+"authentication_qr_login_scan_subtitle" = "Position the QR code in the square below";
+
 // MARK: Password Validation
 "password_validation_info_header" = "Your password should meet the criteria below:";
 "password_validation_error_header" = "Given password does not meet the criteria below:";
