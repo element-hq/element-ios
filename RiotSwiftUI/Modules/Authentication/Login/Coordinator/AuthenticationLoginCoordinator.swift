@@ -289,8 +289,9 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     @MainActor private func showQRLoginScreen() {
         MXLog.debug("[AuthenticationLoginCoordinator] showQRLoginScreen")
 
+        let service = QRLoginService(client: parameters.authenticationService.client)
         let parameters = AuthenticationQRLoginStartCoordinatorParameters(navigationRouter: navigationRouter,
-                                                                         authenticationService: parameters.authenticationService)
+                                                                         qrLoginService: service)
         let coordinator = AuthenticationQRLoginStartCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] _ in
             guard let self = self, let coordinator = coordinator else { return }

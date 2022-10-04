@@ -260,9 +260,7 @@ class AuthenticationService: NSObject {
         
         let loginFlow = try await getLoginFlowResult(client: client)
 
-        let supportsQRLogin = BuildSettings.enableQRLogin
-            ? try await client.supportedMatrixVersions().supportsQRLogin
-            : false
+        let supportsQRLogin = try await QRLoginService(client: client).isServiceAvailable()
         
         let homeserver = AuthenticationState.Homeserver(address: loginFlow.homeserverAddress,
                                                         addressFromUser: homeserverAddress,
