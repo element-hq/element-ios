@@ -38,6 +38,8 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
+
+    private var navigationRouter: NavigationRouterType { parameters.navigationRouter }
     
     // MARK: Public
 
@@ -63,16 +65,18 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     // MARK: - Public
 
     func start() {
-        MXLog.debug("[AuthenticationQRLoginStartCoordinator] did start.")
-        onboardingQRLoginStartViewModel.callback = { [weak self] result in
-            guard let self = self else { return }
-            MXLog.debug("[AuthenticationQRLoginStartCoordinator] AuthenticationQRLoginStartViewModel did complete with result: \(result).")
+        Task { @MainActor in
+            MXLog.debug("[AuthenticationQRLoginStartCoordinator] did start.")
+            onboardingQRLoginStartViewModel.callback = { [weak self] result in
+                guard let self = self else { return }
+                MXLog.debug("[AuthenticationQRLoginStartCoordinator] AuthenticationQRLoginStartViewModel did complete with result: \(result).")
 
-            switch result {
-            case .scanQR:
-                self.showScanQRScreen()
-            case .displayQR:
-                self.showDisplayQRScreen()
+                switch result {
+                case .scanQR:
+                    self.showScanQRScreen()
+                case .displayQR:
+                    self.showDisplayQRScreen()
+                }
             }
         }
     }
@@ -90,7 +94,24 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
 
     private func showScanQRScreen() { }
 
-    private func showDisplayQRScreen() { }
+    /// Shows the display QR screen.
+    @MainActor private func showDisplayQRScreen() { MXLog.debug("[AuthenticationLoginCoordinator] showDisplayQRScreen")
+
+        let parameters = AuthenticationQRLoginDisplayCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                         authenticationService: parameters.authenticationService)
+        let coordinator = AuthenticationQRLoginDisplayCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] _ in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.remove(childCoordinator: coordinator)
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+
+        navigationRouter.push(coordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
     
     /// Show an activity indicator whilst loading.
     private func startLoading() {

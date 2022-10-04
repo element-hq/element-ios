@@ -28,7 +28,7 @@ class AuthenticationQRLoginStartViewModelTests: XCTestCase {
     }
 
     func testScanQR() {
-        var result: AuthenticationQRLoginStartViewModelResult = .displayQR
+        var result: AuthenticationQRLoginStartViewModelResult?
 
         viewModel.callback = { callbackResult in
             result = callbackResult
@@ -40,7 +40,7 @@ class AuthenticationQRLoginStartViewModelTests: XCTestCase {
     }
 
     func testDisplayQR() {
-        var result: AuthenticationQRLoginStartViewModelResult = .scanQR
+        var result: AuthenticationQRLoginStartViewModelResult?
 
         viewModel.callback = { callbackResult in
             result = callbackResult
