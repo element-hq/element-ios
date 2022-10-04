@@ -68,7 +68,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         state.otherSessionsViewData = userSessionsViewData.otherSessions.asViewData()
         
         if let currentSessionInfo = userSessionsViewData.currentSession {
-            state.currentSessionViewData = UserSessionCardViewData(session: currentSessionInfo)
+            state.currentSessionViewData = UserSessionCardViewData(sessionInfo: currentSessionInfo)
         }
     }
     

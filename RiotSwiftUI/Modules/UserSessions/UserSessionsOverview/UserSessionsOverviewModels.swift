@@ -19,7 +19,7 @@ import Foundation
 // MARK: - Coordinator
 
 enum UserSessionsOverviewCoordinatorResult {
-    case openSessionOverview(session: UserSessionInfo)
+    case openSessionOverview(sessionInfo: UserSessionInfo)
 }
 
 // MARK: View model

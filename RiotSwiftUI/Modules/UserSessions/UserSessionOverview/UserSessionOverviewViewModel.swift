@@ -19,18 +19,45 @@ import SwiftUI
 typealias UserSessionOverviewViewModelType = StateStoreViewModel<UserSessionOverviewViewState, UserSessionOverviewViewAction>
 
 class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessionOverviewViewModelProtocol {
-    private let session: UserSessionInfo
+    private let sessionInfo: UserSessionInfo
+    private let service: UserSessionOverviewServiceProtocol
     
     var completion: ((UserSessionOverviewViewModelResult) -> Void)?
     
-    init(session: UserSessionInfo) {
-        self.session = session
+    // MARK: - Setup
+    
+    init(sessionInfo: UserSessionInfo, service: UserSessionOverviewServiceProtocol) {
+        self.sessionInfo = sessionInfo
+        self.service = service
         
-        let cardViewData = UserSessionCardViewData(session: session)
-        let state = UserSessionOverviewViewState(cardViewData: cardViewData, isCurrentSession: session.isCurrent)
+        let cardViewData = UserSessionCardViewData(sessionInfo: sessionInfo)
+        let state = UserSessionOverviewViewState(cardViewData: cardViewData,
+                                                 isCurrentSession: sessionInfo.isCurrent,
+                                                 isPusherEnabled: service.pusherEnabledSubject.value,
+                                                 remotelyTogglingPushersAvailable: service.remotelyTogglingPushersAvailableSubject.value,
+                                                 showLoadingIndicator: false)
         super.init(initialViewState: state)
+        
+        startObservingService()
     }
     
+    private func startObservingService() {
+        service
+            .pusherEnabledSubject
+            .sink(receiveValue: { [weak self] pushEnabled in
+                self?.state.showLoadingIndicator = false
+                self?.state.isPusherEnabled = pushEnabled
+            })
+            .store(in: &cancellables)
+        
+        service
+            .remotelyTogglingPushersAvailableSubject
+            .sink(receiveValue: { [weak self] remotelyTogglingPushersAvailable in
+                self?.state.remotelyTogglingPushersAvailable = remotelyTogglingPushersAvailable
+            })
+            .store(in: &cancellables)
+    }
+
     // MARK: - Public
     
     override func process(viewAction: UserSessionOverviewViewAction) {
@@ -38,7 +65,10 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
         case .verifyCurrentSession:
             completion?(.verifyCurrentSession)
         case .viewSessionDetails:
-            completion?(.showSessionDetails(session: session))
+            completion?(.showSessionDetails(sessionInfo: sessionInfo))
+        case .togglePushNotifications:
+            self.state.showLoadingIndicator = true
+            service.togglePushNotifications()
         }
     }
 }

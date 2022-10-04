@@ -33,7 +33,7 @@ struct UserSessionOverviewDisclosureCell: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Image(Asset.Images.chevron.name)
                 }
-                .padding(.vertical, 12)
+                .padding(.vertical, 15)
                 .padding(.horizontal, 16)
                 SeparatorLine()
             }

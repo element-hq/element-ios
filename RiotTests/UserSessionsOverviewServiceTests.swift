@@ -155,7 +155,7 @@ private class MockUserSessionsDataProvider: UserSessionsDataProviderProtocol {
         }
     }
     
-    func device(withDeviceId deviceId: String, ofUser userId: String) -> MXDeviceInfo {
+    func device(withDeviceId deviceId: String, ofUser userId: String) -> MXDeviceInfo? {
         guard deviceId == currentDeviceId else {
             return MockDeviceInfo(verified: deviceId != unverifiedDeviceId)
         }

@@ -34,4 +34,31 @@ class UserSessionOverviewUITests: MockScreenTestCase {
         app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.currentSession.title)
         XCTAssertTrue(app.buttons[VectorL10n.userSessionOverviewSessionDetailsButtonTitle].exists)
     }
+    
+    func test_whenSessionOverviewPresented_pusherEnabledToggleExists() {
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.sessionWithPushNotifications(enabled: true).title)
+        XCTAssertTrue(app.switches["UserSessionOverviewToggleCell"].exists)
+        XCTAssertTrue(app.switches["UserSessionOverviewToggleCell"].isOn)
+        XCTAssertTrue(app.switches["UserSessionOverviewToggleCell"].isEnabled)
+        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionPushNotifications].exists)
+        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionPushNotificationsMessage].exists)
+    }
+    
+    func test_whenSessionOverviewPresented_pusherDisabledToggleExists() {
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.sessionWithPushNotifications(enabled: false).title)
+        XCTAssertTrue(app.switches["UserSessionOverviewToggleCell"].exists)
+        XCTAssertFalse(app.switches["UserSessionOverviewToggleCell"].isOn)
+        XCTAssertTrue(app.switches["UserSessionOverviewToggleCell"].isEnabled)
+        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionPushNotifications].exists)
+        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionPushNotificationsMessage].exists)
+    }
+    
+    func test_whenSessionOverviewPresented_pusherEnabledToggleExists_remotelyTogglingPushersAvailable() {
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.remotelyTogglingPushersNotAvailable.title)
+        XCTAssertTrue(app.switches["UserSessionOverviewToggleCell"].exists)
+        XCTAssertTrue(app.switches["UserSessionOverviewToggleCell"].isOn)
+        XCTAssertFalse(app.switches["UserSessionOverviewToggleCell"].isEnabled)
+        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionPushNotifications].exists)
+        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionPushNotificationsMessage].exists)
+    }
 }

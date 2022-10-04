@@ -40,7 +40,7 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
         session.matrixRestClient.devices(completion: completion)
     }
     
-    func device(withDeviceId deviceId: String, ofUser userId: String) -> MXDeviceInfo {
+    func device(withDeviceId deviceId: String, ofUser userId: String) -> MXDeviceInfo? {
         session.crypto.device(withDeviceId: deviceId, ofUser: userId)
     }
     

@@ -19,13 +19,13 @@ import Foundation
 // MARK: - Coordinator
 
 enum UserSessionOverviewCoordinatorResult {
-    case openSessionDetails(session: UserSessionInfo)
+    case openSessionDetails(sessionInfo: UserSessionInfo)
 }
 
 // MARK: View model
 
 enum UserSessionOverviewViewModelResult: Equatable {
-    case showSessionDetails(session: UserSessionInfo)
+    case showSessionDetails(sessionInfo: UserSessionInfo)
     case verifyCurrentSession
 }
 
@@ -34,9 +34,13 @@ enum UserSessionOverviewViewModelResult: Equatable {
 struct UserSessionOverviewViewState: BindableState {
     let cardViewData: UserSessionCardViewData
     let isCurrentSession: Bool
+    var isPusherEnabled: Bool?
+    var remotelyTogglingPushersAvailable: Bool
+    var showLoadingIndicator: Bool
 }
 
 enum UserSessionOverviewViewAction {
     case verifyCurrentSession
     case viewSessionDetails
+    case togglePushNotifications
 }
