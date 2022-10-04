@@ -2105,10 +2105,7 @@ Tap the + to start adding people.";
 "spaces_creation_in_many_spaces" = "in %@ spaces";
 "spaces_creation_in_one_space" = "in 1 space";
 
-"spaces_invite_people" = "Invite people";
-"spaces_add_room" = "Add room";
 "spaces_add_room_missing_permission_message" = "You do not have permissions to add rooms to this space.";
-"spaces_add_space" = "Add space";
 
 // Mark: Leave space
 
@@ -2728,12 +2725,9 @@ To enable access, tap Settings> Location and select Always";
 "user_id_title" = "User ID:";
 "offline" = "offline";
 "unsent" = "Unsent";
-"error" = "Error";
 "error_common_message" = "An error occured. Please try again later.";
 "not_supported_yet" = "Not supported yet";
 "default" = "default";
-"private" = "Private";
-"public" = "Public";
 "power_level" = "Power Level";
 "network_error_not_reachable" = "Please check your network connectivity";
 "user_id_placeholder" = "ex: @bob:homeserver";
