@@ -29,6 +29,7 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
     private let session: MXSession
     private let sessionInfo: UserSessionInfo
     private var pusher: MXPusher?
+    private var localNotificationSettings: [String: Any]?
     
     // MARK: - Setup
     
@@ -37,19 +38,43 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
         self.sessionInfo = sessionInfo
         self.pusherEnabledSubject = CurrentValueSubject(nil)
         self.remotelyTogglingPushersAvailableSubject = CurrentValueSubject(false)
-
-        checkServerVersions { [weak self] in
-            self?.checkPusher()
+        
+        self.localNotificationSettings = session.accountData.localNotificationSettingsForDevice(withId: sessionInfo.id)
+        
+        if let localNotificationSettings = localNotificationSettings, let isSilenced = localNotificationSettings[kMXAccountDataIsSilencedKey] as? Bool {
+            remotelyTogglingPushersAvailableSubject.send(true)
+            pusherEnabledSubject.send(!isSilenced)
+        }
+        
+        checkPusher { [weak self] in
+            guard self?.pusher != nil else {
+                return
+            }
+            
+            self?.checkServerVersions()
         }
     }
     
     // MARK: - UserSessionOverviewServiceProtocol
     
     func togglePushNotifications() {
-        guard let pusher = pusher, let enabled = pusher.enabled?.boolValue, self.remotelyTogglingPushersAvailableSubject.value else {
+        guard let pusher = pusher, let enabled = pusher.enabled?.boolValue else {
+            updateLocalNotification()
             return
         }
-        
+
+        toggle(pusher, enabled: !enabled)
+    }
+
+    // MARK: - Private
+    
+    private func toggle(_ pusher: MXPusher, enabled: Bool) {
+        guard self.remotelyTogglingPushersAvailableSubject.value else {
+            MXLog.warning("[UserSessionOverviewService] toggle pusher canceled: remotely toggling pushers not available")
+            return
+        }
+
+        MXLog.debug("[UserSessionOverviewService] remotely toggling pusher")
         let data = pusher.data.jsonDictionary() as? [String: Any] ?? [:]
         
         self.session.matrixRestClient.setPusher(pushKey: pusher.pushkey,
@@ -61,22 +86,36 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
                                                 lang: pusher.lang,
                                                 data: data,
                                                 append: false,
-                                                enabled: !enabled) { [weak self] response in
+                                                enabled: enabled) { [weak self] response in
             guard let self = self else { return }
             
             switch response {
             case .success:
                 self.checkPusher()
             case .failure(let error):
-                MXLog.warning("[UserSessionOverviewService] togglePushNotifications failed due to error: \(error)")
-                self.pusherEnabledSubject.send(enabled)
+                MXLog.warning("[UserSessionOverviewService] togglePusher failed due to error: \(error)")
+                self.pusherEnabledSubject.send(!enabled)
             }
         }
     }
-
-    // MARK: - Private
     
-    private func checkServerVersions(_ completion: @escaping () -> Void) {
+    private func updateLocalNotification() {
+        guard var localNotificationSettings = localNotificationSettings, let isSilenced = localNotificationSettings[kMXAccountDataIsSilencedKey] as? Bool else {
+            MXLog.warning("[UserSessionOverviewService] updateLocalNotification canceled: \"\(kMXAccountDataIsSilencedKey)\" notification property not found")
+            return
+        }
+        
+        localNotificationSettings[kMXAccountDataIsSilencedKey] = !isSilenced
+        session.setAccountData(localNotificationSettings, forType: MXAccountData.localNotificationSettingsKeyForDevice(withId: sessionInfo.id)) { [weak self] in
+            self?.localNotificationSettings = localNotificationSettings
+            self?.pusherEnabledSubject.send(isSilenced)
+        } failure: { [weak self] error in
+            MXLog.warning("[UserSessionOverviewService] updateLocalNotification failed due to error: \(String(describing: error))")
+            self?.pusherEnabledSubject.send(!isSilenced)
+        }
+    }
+
+    private func checkServerVersions() {
         session.supportedMatrixVersions { [weak self] response in
             switch response {
             case .success(let versions):
@@ -84,11 +123,10 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
             case .failure(let error):
                 MXLog.warning("[UserSessionOverviewService] checkServerVersions failed due to error: \(error)")
             }
-            completion()
         }
     }
     
-    private func checkPusher() {
+    private func checkPusher(_ completion: (() -> Void)? = nil) {
         session.matrixRestClient.pushers { [weak self] response in
             switch response {
             case .success(let pushers):
@@ -96,6 +134,7 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
             case .failure(let error):
                 MXLog.warning("[UserSessionOverviewService] checkPusher failed due to error: \(error)")
             }
+            completion?()
         }
     }
     
