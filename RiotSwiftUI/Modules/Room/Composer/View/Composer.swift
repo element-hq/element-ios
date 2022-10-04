@@ -18,40 +18,23 @@ import SwiftUI
 import WysiwygComposer
 import DSBottomSheet
 
-
-class ComposerViewModel: ObservableObject {
-    
-    @Published var totalHeight: CGFloat = .zero
-    
-    init() {
-        
-    }
-}
-@available(iOS 15.0, *)
+@available(iOS 16.0, *)
 struct Composer: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @ObservedObject var viewModel: WysiwygComposerViewModel
-//    @ObservedObject var composerViewModel: ComposerViewModel
+    let sendMessageAction: (WysiwygComposerContent) -> Void
+    let startModuleAction: (ComposerModule) -> Void
+    
     @State private var isBottomSheetExpanded = false
     @State private var showSendButton = false
-    @State private var maximised = false
     
-    private let minTextViewHeight: CGFloat = 20
-    private let maxTextViewHeight: CGFloat = 360
     private let borderHeight: CGFloat = 44
+    private let minTextViewHeight: CGFloat = 20
     
     private var verticalPadding: CGFloat {
         (borderHeight - minTextViewHeight) / 2
-    }
-    
-    private var idealHeight: CGFloat {
-        if maximised {
-            return maxTextViewHeight
-        } else {
-            return min(maxTextViewHeight, max(minTextViewHeight, viewModel.idealHeight))
-        }
     }
     
     private var formatItems: [FormatItem] {
@@ -65,7 +48,6 @@ struct Composer: View {
     }
     
     var body: some View {
-//        GeometryReader { geometry in
             VStack(alignment: .leading, spacing: 8) {
                 let rect = RoundedRectangle(cornerRadius: borderHeight / 2)
                 WysiwygComposerView(
@@ -74,25 +56,24 @@ struct Composer: View {
                     select: viewModel.select,
                     didUpdateText: viewModel.didUpdateText
                 )
-//                .fixedSize(horizontal: false, vertical: true)
-                .frame(height: idealHeight)
+                .frame(height: viewModel.idealHeight)
                 .padding(.horizontal, 12)
                 .onAppear {
                     viewModel.setup()
                 }
-                .overlay(alignment: .topTrailing) {
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.25)) {
-                            maximised.toggle()
-                            viewModel.idealHeight = maxTextViewHeight
-                        }
-                    } label: {
-                        Image(maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
-                            .foregroundColor(theme.colors.tertiaryContent)
-                    }
-                    .padding(.top, 4)
-                    .padding(.trailing, 12)
-                }
+// TODO Fix maximise in integrated composer.
+//                .overlay(alignment: .topTrailing) {
+//                    Button {
+//                        withAnimation(.easeInOut(duration: 0.25)) {
+//                            viewModel.maximised.toggle()
+//                        }
+//                    } label: {
+//                        Image(viewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
+//                            .foregroundColor(theme.colors.tertiaryContent)
+//                    }
+//                    .padding(.top, 4)
+//                    .padding(.trailing, 12)
+//                }
                 .padding(.vertical, verticalPadding)
                 .clipShape(rect)
                 .overlay(rect.stroke(theme.colors.quinaryContent, lineWidth: 2))
@@ -115,9 +96,12 @@ struct Composer: View {
                             Image(Asset.Images.voiceMessageRecordButtonDefault.name)
                                 .foregroundColor(theme.colors.tertiaryContent)
                         }
-                        .isHidden(showSendButton)
+// TODO Add support for voice messages
+//                        .isHidden(showSendButton)
+                        .isHidden(true)
                         Button {
-                            
+                            sendMessageAction(viewModel.content)
+                            viewModel.clearContent()
                         } label: {
                             Image(Asset.Images.sendIcon.name)
                                 .foregroundColor(theme.colors.tertiaryContent)
@@ -131,20 +115,21 @@ struct Composer: View {
                 }
                 .padding(.horizontal, 16)
             }
-//            .onAppear {
-//                composerViewModel.totalHeight = geometry.size.height
-//            }.onChange(of: geometry.size) { newSize in
-//                composerViewModel.totalHeight = geometry.size.height
-//            }
-            .sheetWithDetents(
-                isPresented: $isBottomSheetExpanded,
-                detents: [.medium()]
-            ) {
-                print("The sheet has been dismissed")
-            } content: {
+            .sheet(isPresented: $isBottomSheetExpanded) {
                 moduleSelectionList
+                    .presentationDetents([.medium])
             }
-//        }
+//            .sheetWithDetents(
+//                isPresented: $isBottomSheetExpanded,
+//                detents: [.medium()]
+//            ) {
+//                guard let module = selectedModule else { return }
+//                self.startModuleAction(module)
+//                self.selectedModule = nil
+//                print("The sheet has been dismissed")
+//            } content: {
+//
+//            }
     }
     
     var moduleSelectionList: some View {
@@ -161,7 +146,8 @@ struct Composer: View {
                         Spacer()
                     }
                     .onTapGesture {
-                        // << action here !!
+                        isBottomSheetExpanded = false
+                        self.startModuleAction(module)
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
@@ -174,19 +160,10 @@ struct Composer: View {
     }
 }
 
-
-@available(iOS 15.0, *)
+@available(iOS 16.0, *)
 struct Composer_Previews: PreviewProvider {
     static let stateRenderer = MockComposerScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
     }
 }
-
-//struct Composer_Previews: PreviewProvider {
-//    static let stateRenderer = MockComposerScreenState.stateRenderer
-//    static var previews: some View {
-//        stateRenderer.screenGroup()
-//    }
-//}
-

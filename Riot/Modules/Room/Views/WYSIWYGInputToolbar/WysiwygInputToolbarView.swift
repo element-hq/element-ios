@@ -22,13 +22,14 @@ import Combine
 import UIKit
 import CoreGraphics
 
-@available(iOS 15.0, *)
+@available(iOS 16.0, *)
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputToolbarViewProtocol {
     
     override class func instantiate() -> MXKRoomInputToolbarView! {
         return loadFromNib()
     }
     
+    @objc var startModuleAction: ((ComposerModule) -> Void)?
     private weak var toolbarViewDelegate: RoomInputToolbarViewDelegate? {
         return (delegate as? RoomInputToolbarViewDelegate) ?? nil
     }
@@ -42,21 +43,18 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
         super.awakeFromNib()
         
         let viewModel = WysiwygComposerViewModel()
-//        let composerViewModel = ComposerViewModel()
-        let composer = Composer(viewModel: viewModel)
+        let composer = Composer(viewModel: viewModel, sendMessageAction: { [weak self] content in
+            guard let self = self else { return }
+            self.sendWysiwygMessage(content: content)
+        }, startModuleAction: { [weak self] module in
+            guard let self = self else { return }
+            self.startModuleAction?(module)
+        })
         
         
         hostingViewController = UIHostingController(rootView: composer)
-        //            hostingViewController.view.sizeToFit()
-        //            let h = hostingViewController.view.frame.size.height
-        
         let h = hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: 800)).height
-        //            hostingViewController.view.invalidateIntrinsicContentSize()
-        
         let subView: UIView = hostingViewController.view
-        
-        //            vc_addSubViewMatchingParent(subView)
-        
         self.addSubview(subView)
         
         hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -69,22 +67,18 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
             subView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             subView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
-        //            self.setNeedsLayout()
-        //            self.layoutIfNeeded()
-        
-        //            composerViewModel.$totalHeight
-        //                .removeDuplicates()
-        //                .sink { [weak self] height in
-        //                    guard let self = self else { return }
-        //                    hostingViewController.view.sizeToFit()
-        //                    let h = hostingViewController.view.frame.height
-        //                    self.updateToolbarHeight(wysiwygHeight: height)
-        //                }.store(in: &cancellables)
-        //        // Subscribe to relevant events and map them to UIKit-style delegate.
         cancellables = [
 //            viewModel.$isContentEmpty
 //                .removeDuplicates()
 //                .sink(receiveValue: { [weak self] isContentEmpty in
+//                    //                    guard let self = self else { return }
+//                    //                    self.delegate?.isContentEmptyDidChange(isContentEmpty)
+//                }),
+//            viewModel.$content
+//                .map { $0.attributed }
+//                .removeDuplicates()
+//                .sink(receiveValue: { [weak self] attributed in
+//                    print(attributed)
 //                    //                    guard let self = self else { return }
 //                    //                    self.delegate?.isContentEmptyDidChange(isContentEmpty)
 //                }),
@@ -94,26 +88,27 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
                     guard let self = self else { return }
                     let h = self.hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: 800)).height
                     self.updateToolbarHeight(wysiwygHeight: h)
-                    //                    self.delegate?.idealHeightDidChange(idealHeight)
                 })
         ]
-        
-        
     }
     
     func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {
-        
+        //TODO embed the voice messages UI
     }
     
     func toolbarHeight() -> CGFloat {
         return heightConstraint.constant
     }
     
-    
-    func updateToolbarHeight(wysiwygHeight: CGFloat) {
+   private func updateToolbarHeight(wysiwygHeight: CGFloat) {
         heightConstraint.constant = wysiwygHeight
         toolbarViewDelegate?.roomInputToolbarView?(self, heightDidChanged: wysiwygHeight, completion: { _ in
             
         })
     }
+    
+    private func sendWysiwygMessage(content: WysiwygComposerContent) {
+        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
+    }
+    
 }

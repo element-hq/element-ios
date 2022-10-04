@@ -81,7 +81,7 @@ struct SheetPresentationForSwiftUI<Content>: UIViewRepresentable where Content: 
             uiView.window?.rootViewController?.present(viewController, animated: true)
         } else {
             // Dismiss the viewController
-            uiView.window?.rootViewController?.dismiss(animated: true)
+            uiView.window?.rootViewController?.dismiss(animated: true, completion: onDismiss)
         }
         
     }

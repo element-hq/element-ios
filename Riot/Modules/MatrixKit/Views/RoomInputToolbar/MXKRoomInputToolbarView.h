@@ -93,6 +93,15 @@ typedef enum : NSUInteger
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView sendTextMessage:(NSString*)textMessage;
 
 /**
+ Tells the delegate that the user wants to send a formatted  text message.
+
+ @param toolbarView the room input toolbar view.
+ @param formattedTextMessage the formatted message to send.
+ @param rawText the raw message to send.
+ */
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView *)toolbarView sendFormattedTextMessage:(NSString *)formattedTextMessage withRawText:(NSString *)rawText;
+
+/**
  Tells the delegate that the user wants to send an image.
  
  @param toolbarView the room input toolbar view.

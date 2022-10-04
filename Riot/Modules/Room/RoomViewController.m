@@ -1984,6 +1984,13 @@ static CGSize kThreadListBarButtonItemImageSize;
     // Show or hide input tool bar
     [self updateInputToolBarVisibility];
     
+    if (@available(iOS 15.0, *)) {
+        if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:WysiwygInputToolbarView.class]) {
+            // Update actions when the input toolbar refreshed
+            [self setupActions];
+        }
+    }
+        
     // Check whether the input toolbar is ready before updating it.
     if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
     {
@@ -2244,6 +2251,36 @@ static CGSize kThreadListBarButtonItemImageSize;
 }
 
 - (void)setupActions {
+    
+    if (@available(iOS 16.0, *)) {
+        if ([self.inputToolbarView isKindOfClass:WysiwygInputToolbarView.class]) {
+            //TODO actions should respect the build settings/preferences as with the legacy view just below
+            ((WysiwygInputToolbarView *) self.inputToolbarView).startModuleAction = ^(enum ComposerModule module) {
+                switch (module) {
+                    case ComposerModulePhotoLibrary:
+                        [self showMediaPickerAnimated:YES];
+                        break;
+                    case ComposerModuleStickers:
+                        [self roomInputToolbarViewPresentStickerPicker];
+                        break;
+                    case ComposerModuleAttachments:
+                        [self roomInputToolbarViewDidTapFileUpload];
+                        break;
+                    case ComposerModulePolls:
+                        [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
+                        break;
+                    case ComposerModuleLocation:
+                        [self.delegate roomViewControllerDidRequestLocationSharingFormPresentation:self];
+                        break;
+                    case ComposerModuleCamera:
+                        [self showCameraControllerAnimated:YES];
+                        break;
+                }
+            };
+        }
+    }
+    
+    
     if (![self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
         return;
     }
@@ -4950,6 +4987,20 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         [self shareEncryptionKeys];
     }
+}
+
+- (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendFormattedTextMessage:(NSString *)formattedTextMessage withRawText:(NSString *)rawText
+{
+    // Create before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        if (readyToSend) {
+            [self sendFormattedTextMessage:rawText htmlMsg:formattedTextMessage];
+        }
+        // Errors are handled at the request level. This should be improved in case of code rewriting.
+    }];
 }
 
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage

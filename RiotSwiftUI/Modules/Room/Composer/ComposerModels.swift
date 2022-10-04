@@ -31,7 +31,7 @@ enum FormatType {
     case underline
 }
 
-enum ComposerModule {
+@objc enum ComposerModule: Int {
     case photoLibrary
     case stickers
     case attachments

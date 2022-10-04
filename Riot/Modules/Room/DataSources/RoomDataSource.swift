@@ -63,6 +63,31 @@ extension RoomDataSource {
             self.processQueuedEvents(nil)
         }
     }
+    
+    // MARK: - NSAttributedString Sending
+    /// Send a text message to the room.
+    /// While sending, a fake event will be echoed in the messages list.
+    /// Once complete, this local echo will be replaced by the event saved by the homeserver.
+    ///
+    /// - Parameters:
+    ///   - rawText: the raw text to send
+    ///   - html: the formatted html to send
+    ///   - completion: http operation completion block
+    func sendFormattedTextMessage(_ rawText: String,
+                                  html: String,
+                                  completion: @escaping (MXResponse<String?>) -> Void) {
+        var localEcho: MXEvent?
+        room.sendTextMessage(rawText,
+                             formattedText: html,
+                             threadId: self.threadId,
+                             localEcho: &localEcho,
+                             completion: completion)
+        
+        if localEcho != nil {
+            self.queueEvent(forProcessing: localEcho, with: self.roomState, direction: .forwards)
+            self.processQueuedEvents(nil)
+        }
+    }
 
     /// Send a reply to an event with text message to the room.
     ///
