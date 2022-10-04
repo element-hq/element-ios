@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -70,7 +70,7 @@ struct SpaceSelectorListRow: View {
                             .renderingMode(.template)
                             .foregroundColor(theme.colors.secondaryContent)
                     }
-                    if hasSubItems && isJoined {
+                    if hasSubItems, isJoined {
                         Button {
                             disclosureAction?()
                         } label: {
@@ -91,7 +91,7 @@ struct SpaceSelectorListRow: View {
     }
 
     private func badge(with text: String, color: Color) -> some View {
-        return Text(text)
+        Text(text)
             .multilineTextAlignment(.center)
             .foregroundColor(theme.colors.background)
             .font(theme.fonts.footnote)
@@ -106,7 +106,6 @@ struct SpaceSelectorListRow: View {
 // MARK: - Previews
 
 struct SpaceSelectorListRow_Previews: PreviewProvider {
-    
     static var previews: some View {
         sampleView.theme(.light).preferredColorScheme(.light)
         sampleView.theme(.dark).preferredColorScheme(.dark)
@@ -121,5 +120,4 @@ struct SpaceSelectorListRow_Previews: PreviewProvider {
             SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: true, isJoined: true, isSelected: true, notificationCount: 99, highlightedNotificationCount: 1, disclosureAction: nil)
         }
     }
-    
 }

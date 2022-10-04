@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
 import MatrixSDK
+import SwiftUI
 
 struct AuthenticationLoginCoordinatorParameters {
     let navigationRouter: NavigationRouterType
@@ -47,7 +47,6 @@ enum AuthenticationLoginCoordinatorResult: CustomStringConvertible {
 }
 
 final class AuthenticationLoginCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -96,6 +95,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[AuthenticationLoginCoordinator] did start.")
         Task { await setupViewModel() }

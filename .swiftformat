@@ -1,0 +1,15 @@
+--swiftversion 5.6
+
+--exclude build, CommonKit, Config, DesignKit, fastlane, Pods, Riot, RiotNSE, RiotShareExtension, RiotTests, SiriIntents, Tools, Variants, vendor
+
+--disable wrapMultiLineStatementBraces
+--disable hoistPatternLet
+
+--commas inline
+--ifdef no-indent
+--nospaceoperators ...,..<
+--stripunusedargs closure-only
+--trimwhitespace nonblank-lines
+--wrapparameters after-first
+--redundanttype inferred
+--emptybraces spaced

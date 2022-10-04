@@ -14,14 +14,13 @@
 // limitations under the License.
 //
 
-import XCTest
 import Combine
 import CoreLocation
+import XCTest
 
 @testable import RiotSwiftUI
 
 class LocationSharingViewModelTests: XCTestCase {
-    
     var cancellables = Set<AnyCancellable>()
     
     func testInitialState() {
@@ -40,7 +39,7 @@ class LocationSharingViewModelTests: XCTestCase {
     func testCancellation() {
         let viewModel = buildViewModel()
         
-        let expectation = self.expectation(description: "Cancellation completion should be invoked")
+        let expectation = expectation(description: "Cancellation completion should be invoked")
         
         viewModel.completion = { result in
             switch result {
@@ -95,10 +94,9 @@ class LocationSharingViewModelTests: XCTestCase {
     }
     
     private func buildViewModel() -> LocationSharingViewModel {
-        
         let service = MockLocationSharingService()
         
         return LocationSharingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
-                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""), service: service)
+                                        avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""), service: service)
     }
 }

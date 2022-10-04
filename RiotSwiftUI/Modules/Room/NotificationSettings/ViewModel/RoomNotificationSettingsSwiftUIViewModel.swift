@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,17 +14,16 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class RoomNotificationSettingsSwiftUIViewModel: RoomNotificationSettingsViewModel, ObservableObject {
-
     @Published var viewState: RoomNotificationSettingsViewState
     
     lazy var cancellables = Set<AnyCancellable>()
     
     override init(roomNotificationService: RoomNotificationSettingsServiceType, initialState: RoomNotificationSettingsViewState) {
-        self.viewState = initialState
+        viewState = initialState
         super.init(roomNotificationService: roomNotificationService, initialState: initialState)
     }
     

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AddRoomSelector: View {
-    
     // MARK: Properties
     
     @ObservedObject var viewModel: MatrixItemChooserViewModel.Context
@@ -26,7 +25,7 @@ struct AddRoomSelector: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     private var isDoneEnabled: Bool {
-        return !viewModel.viewState.selectedItemIds.isEmpty && !viewModel.viewState.loading
+        !viewModel.viewState.selectedItemIds.isEmpty && !viewModel.viewState.loading
     }
 
     // MARK: Setup

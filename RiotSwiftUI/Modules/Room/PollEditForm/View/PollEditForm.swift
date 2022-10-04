@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct PollEditForm: View {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -33,7 +32,6 @@ struct PollEditForm: View {
             GeometryReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 32.0) {
-                        
                         PollEditFormTypePicker(selectedType: $viewModel.type)
                         
                         VStack(alignment: .leading, spacing: 16.0) {

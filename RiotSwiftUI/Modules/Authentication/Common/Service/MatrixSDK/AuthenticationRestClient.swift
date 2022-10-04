@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +18,7 @@ import Foundation
 
 protocol AuthenticationRestClient: AnyObject {
     // MARK: Configuration
+
     var homeserver: String! { get }
     var identityServer: String! { get set }
     var credentials: MXCredentials! { get }
@@ -26,24 +27,27 @@ protocol AuthenticationRestClient: AnyObject {
     init(homeServer: URL, unrecognizedCertificateHandler handler: MXHTTPClientOnUnrecognizedCertificate?)
     
     // MARK: Login
+
     var loginFallbackURL: URL { get }
     func wellKnown() async throws -> MXWellKnown
     func getLoginSession() async throws -> MXAuthenticationSession
     func login(parameters: LoginParameters) async throws -> MXCredentials
-    func login(parameters: [String : Any]) async throws -> MXCredentials
+    func login(parameters: [String: Any]) async throws -> MXCredentials
     
     // MARK: Registration
+
     var registerFallbackURL: URL { get }
     func getRegisterSession() async throws -> MXAuthenticationSession
     func isUsernameAvailable(_ username: String) async throws -> Bool
     func register(parameters: RegistrationParameters) async throws -> MXLoginResponse
-    func register(parameters: [String : Any]) async throws -> MXLoginResponse
+    func register(parameters: [String: Any]) async throws -> MXLoginResponse
     func requestTokenDuringRegistration(for threePID: RegisterThreePID, clientSecret: String, sendAttempt: UInt) async throws -> RegistrationThreePIDTokenResponse
     
     // MARK: Forgot Password
+
     func forgetPassword(for email: String, clientSecret: String, sendAttempt: UInt) async throws -> String
     func resetPassword(parameters: CheckResetPasswordParameters) async throws
-    func resetPassword(parameters: [String : Any]) async throws
+    func resetPassword(parameters: [String: Any]) async throws
 }
 
 extension MXRestClient: AuthenticationRestClient { }

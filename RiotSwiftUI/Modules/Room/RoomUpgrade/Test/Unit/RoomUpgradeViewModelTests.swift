@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import Combine
+import XCTest
 
 @testable import RiotSwiftUI
 
@@ -24,7 +24,5 @@ class RoomUpgradeViewModelTests: XCTestCase {
     var viewModel: RoomUpgradeViewModelProtocol!
     var context: RoomUpgradeViewModelType.Context!
 
-    override func setUpWithError() throws {
-    }
-
+    override func setUpWithError() throws { }
 }

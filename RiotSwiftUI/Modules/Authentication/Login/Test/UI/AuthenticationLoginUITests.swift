@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class AuthenticationLoginUITests: MockScreenTestCase {
     func testMatrixDotOrg() {
@@ -120,5 +120,4 @@ class AuthenticationLoginUITests: MockScreenTestCase {
         XCTAssertTrue(fallbackButton.exists, "The fallback button should be shown for \(state).")
         XCTAssertTrue(fallbackButton.isEnabled, "The fallback button should be enabled for \(state).")
     }
-    
 }

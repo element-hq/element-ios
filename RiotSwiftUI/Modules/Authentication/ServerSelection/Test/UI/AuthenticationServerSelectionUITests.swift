@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class AuthenticationServerSelectionUITests: MockScreenTestCase {
     func testRegisterState() {
@@ -40,7 +40,6 @@ class AuthenticationServerSelectionUITests: MockScreenTestCase {
         let dismissButton = app.buttons["dismissButton"]
         XCTAssertTrue(dismissButton.exists, "The dismiss button should be shown during modal presentation.")
     }
-    
     
     func testLoginState() {
         app.goToScreenWithIdentifier(MockAuthenticationServerSelectionScreenState.login.title)

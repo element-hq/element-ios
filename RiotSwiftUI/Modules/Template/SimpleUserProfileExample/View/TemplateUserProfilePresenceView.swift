@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,6 @@
 import SwiftUI
 
 struct TemplateUserProfilePresenceView: View {
-    
-    // MARK: - Properties
-    
-    // MARK: Public
     let presence: TemplateUserProfilePresence
     
     var body: some View {
@@ -54,7 +50,7 @@ struct TemplateUserProfilePresenceView: View {
 
 struct TemplateUserProfilePresenceView_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(alignment:.leading){
+        VStack(alignment: .leading) {
             Text("Presence")
             ForEach(TemplateUserProfilePresence.allCases) { presence in
                 TemplateUserProfilePresenceView(presence: presence)

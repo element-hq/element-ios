@@ -370,6 +370,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         button.menu = menu
         button.showsMenuAsPrimaryAction = true
         button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        button.accessibilityLabel = VectorL10n.allChatsUserMenuAccessibilityLabel
         view.addSubview(button)
         self.avatarMenuButton = button
 

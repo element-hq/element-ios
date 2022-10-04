@@ -32,7 +32,7 @@
 #define TABLEVIEW_ROW_CELL_HEIGHT         46
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
 
-@interface RoomMemberDetailsViewController () <UIGestureRecognizerDelegate, DeviceTableViewCellDelegate, RoomMemberTitleViewDelegate, KeyVerificationCoordinatorBridgePresenterDelegate>
+@interface RoomMemberDetailsViewController () <UIGestureRecognizerDelegate, DeviceTableViewCellDelegate, RoomMemberTitleViewDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, UserVerificationCoordinatorBridgePresenterDelegate>
 {
     RoomMemberTitleView* memberTitleView;
     
@@ -449,6 +449,7 @@
                                                                                                                                                            session:self.mxRoom.mxSession
                                                                                                                                                             userId:self.mxRoomMember.userId
                                                                                                                                                    userDisplayName:self.mxRoomMember.displayname];
+    userVerificationCoordinatorBridgePresenter.delegate = self;
     [userVerificationCoordinatorBridgePresenter start];
     self.userVerificationCoordinatorBridgePresenter = userVerificationCoordinatorBridgePresenter;
 }
@@ -1343,6 +1344,13 @@
 {
     [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     keyVerificationCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - UserVerificationCoordinatorBridgePresenterDelegate
+
+- (void)userVerificationCoordinatorBridgePresenterDelegateDidComplete:(UserVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self refreshUserEncryptionTrustLevel];
 }
 
 @end

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,14 +17,7 @@
 import SwiftUI
 
 struct TemplateUserProfile: View {
-
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    // MARK: Public
     
     @ObservedObject var viewModel: TemplateUserProfileViewModel.Context
     
@@ -36,7 +29,7 @@ struct TemplateUserProfile: View {
                 presence: viewModel.viewState.presence
             )
             Divider()
-            HStack{
+            HStack {
                 Text("Counter: \(viewModel.viewState.count)")
                     .font(theme.fonts.title2)
                     .foregroundColor(theme.colors.secondaryContent)

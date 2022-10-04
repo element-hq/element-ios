@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +14,15 @@
 // limitations under the License.
 //
 
-import Foundation
 import CoreLocation
+import Foundation
 
 /// Build a UIActivityViewController to share a location
 class ShareLocationActivityControllerBuilder {
-    
     func build(with location: CLLocationCoordinate2D) -> UIActivityViewController {
-        return UIActivityViewController(activityItems: [ShareToMapsAppActivity.urlForMapsAppType(.apple, location: location)],
-                                        applicationActivities: [ShareToMapsAppActivity(type: .apple, location: location),
-                                                                ShareToMapsAppActivity(type: .google, location: location),
-                                                                ShareToMapsAppActivity(type: .osm, location: location)])
+        UIActivityViewController(activityItems: [ShareToMapsAppActivity.urlForMapsAppType(.apple, location: location)],
+                                 applicationActivities: [ShareToMapsAppActivity(type: .apple, location: location),
+                                                         ShareToMapsAppActivity(type: .google, location: location),
+                                                         ShareToMapsAppActivity(type: .osm, location: location)])
     }
 }

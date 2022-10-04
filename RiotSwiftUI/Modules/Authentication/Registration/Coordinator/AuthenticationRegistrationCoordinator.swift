@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
 import MatrixSDK
+import SwiftUI
 
 struct AuthenticationRegistrationCoordinatorParameters {
     let navigationRouter: NavigationRouterType
@@ -49,7 +49,6 @@ enum AuthenticationRegistrationCoordinatorResult: CustomStringConvertible {
 }
 
 final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -97,13 +96,14 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[AuthenticationRegistrationCoordinator] did start.")
         Task { await setupViewModel() }
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationRegistrationHostingController
+        authenticationRegistrationHostingController
     }
     
     // MARK: - Private
@@ -117,7 +117,7 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
             switch result {
             case .selectServer:
                 self.presentServerSelectionScreen()
-            case.validateUsername(let username):
+            case .validateUsername(let username):
                 self.validateUsername(username)
             case .createAccount(let username, let password):
                 self.createAccount(username: username, password: password)

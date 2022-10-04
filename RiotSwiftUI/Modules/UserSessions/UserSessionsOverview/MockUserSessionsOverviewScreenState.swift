@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,33 +20,38 @@ import SwiftUI
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
 enum MockUserSessionsOverviewScreenState: MockScreenState, CaseIterable {
-    // A case for each state you want to represent
-    // with specific, minimal associated data that will allow you
-    // mock that screen.
-    case verifiedSession
+    case currentSessionUnverified
+    case currentSessionVerified
+    case onlyUnverifiedSessions
+    case onlyInactiveSessions
+    case noOtherSessions
     
     /// The associated screen
     var screenType: Any.Type {
         UserSessionsOverview.self
     }
     
-    /// A list of screen state definitions
-    static var allCases: [MockUserSessionsOverviewScreenState] {
-        // Each of the presence statuses
-        return [.verifiedSession]
-    }
-    
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
-        let service: MockUserSessionsOverviewService = MockUserSessionsOverviewService()
+    var screenView: ([Any], AnyView) {
+        var service: UserSessionsOverviewServiceProtocol?
         switch self {
-        case .verifiedSession:
-            break
+        case .currentSessionUnverified:
+            service = MockUserSessionsOverviewService(mode: .currentSessionUnverified)
+        case .currentSessionVerified:
+            service = MockUserSessionsOverviewService(mode: .currentSessionVerified)
+        case .onlyUnverifiedSessions:
+            service = MockUserSessionsOverviewService(mode: .onlyUnverifiedSessions)
+        case .onlyInactiveSessions:
+            service = MockUserSessionsOverviewService(mode: .onlyInactiveSessions)
+        case .noOtherSessions:
+            service = MockUserSessionsOverviewService(mode: .noOtherSessions)
+        }
+        
+        guard let service = service else {
+            fatalError()
         }
         
         let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
-        
-        // can simulate service and viewModel actions here if needs be.
         
         return (
             [service, viewModel],

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
 import SwiftUI
 
 struct UserSuggestionList: View {
-    private struct Constants {
+    private enum Constants {
         static let topPadding: CGFloat = 8.0
         static let listItemPadding: CGFloat = 4.0
         static let lineSpacing: CGFloat = 10.0
@@ -57,7 +57,7 @@ struct UserSuggestionList: View {
                                 userId: item.id
                             )
                             .padding(.bottom, Constants.listItemPadding)
-                            .padding(.top, (viewModel.viewState.items.first?.id == item.id ? Constants.listItemPadding + Constants.topPadding : Constants.listItemPadding))
+                            .padding(.top, viewModel.viewState.items.first?.id == item.id ? Constants.listItemPadding + Constants.topPadding : Constants.listItemPadding)
                         }
                     }
                     .listStyle(PlainListStyle())
@@ -76,7 +76,6 @@ struct UserSuggestionList: View {
 }
 
 private struct BackgroundView<Content: View>: View {
-    
     var content: () -> Content
     
     @Environment(\.theme) private var theme: ThemeSwiftUI

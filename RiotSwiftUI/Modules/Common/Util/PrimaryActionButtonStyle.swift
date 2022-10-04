@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,7 @@ struct PrimaryActionButtonStyle: ButtonStyle {
     @Environment(\.theme) private var theme
     @Environment(\.isEnabled) private var isEnabled
     
-    var customColor: Color? = nil
+    var customColor: Color?
     
     private var fontColor: Color {
         // Always white unless disabled with a dark theme.
@@ -65,7 +65,7 @@ struct PrimaryActionButtonStyle_Previews: PreviewProvider {
                 .buttonStyle(PrimaryActionButtonStyle(customColor: .clear))
                 
                 Button("Red BG") { }
-                .buttonStyle(PrimaryActionButtonStyle(customColor: .red))
+                    .buttonStyle(PrimaryActionButtonStyle(customColor: .red))
             }
             .padding()
         }

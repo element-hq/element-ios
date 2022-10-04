@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 import MatrixSDK
 
 class LeaveSpaceItemsProcessor: MatrixItemChooserProcessorProtocol {
-    
     // MARK: Private
     
     private let spaceId: String
@@ -29,7 +28,7 @@ class LeaveSpaceItemsProcessor: MatrixItemChooserProcessorProtocol {
     init(spaceId: String, session: MXSession) {
         self.spaceId = spaceId
         self.session = session
-        self.dataSource = MatrixItemChooserDirectChildrenDataSource(parentId: spaceId)
+        dataSource = MatrixItemChooserDirectChildrenDataSource(parentId: spaceId)
     }
     
     // MARK: MatrixItemChooserSelectionProcessorProtocol
@@ -41,11 +40,11 @@ class LeaveSpaceItemsProcessor: MatrixItemChooserProcessorProtocol {
     }
     
     func computeSelection(withIds itemsIds: [String], completion: @escaping (Result<Void, Error>) -> Void) {
-        guard let space = self.session.spaceService.getSpace(withId: self.spaceId) else {
+        guard let space = session.spaceService.getSpace(withId: spaceId) else {
             return
         }
 
-        self.leaveAllRooms(from: itemsIds, at: 0) { [weak self] result in
+        leaveAllRooms(from: itemsIds, at: 0) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -57,8 +56,8 @@ class LeaveSpaceItemsProcessor: MatrixItemChooserProcessorProtocol {
         }
     }
     
-    func isItemIncluded(_ item: (MatrixListItemData)) -> Bool {
-        return true
+    func isItemIncluded(_ item: MatrixListItemData) -> Bool {
+        true
     }
     
     // MARK: Private
@@ -71,8 +70,8 @@ class LeaveSpaceItemsProcessor: MatrixItemChooserProcessorProtocol {
             return
         }
         
-        guard let room = self.session.room(withRoomId: roomIds[index]), !room.isDirect else {
-            self.leaveAllRooms(from: roomIds, at: index+1, completion: completion)
+        guard let room = session.room(withRoomId: roomIds[index]), !room.isDirect else {
+            leaveAllRooms(from: roomIds, at: index + 1, completion: completion)
             return
         }
 
@@ -82,7 +81,7 @@ class LeaveSpaceItemsProcessor: MatrixItemChooserProcessorProtocol {
 
             switch response {
             case .success:
-                self.leaveAllRooms(from: roomIds, at: index+1, completion: completion)
+                self.leaveAllRooms(from: roomIds, at: index + 1, completion: completion)
             case .failure(let error):
                 MXLog.error("[LeaveSpaceItemsProcessor] failed to leave room", context: error)
                 completion(.failure(error))

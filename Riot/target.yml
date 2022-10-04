@@ -24,6 +24,9 @@ schemes:
       disableMainThreadChecker: true
       targets:
       - RiotTests
+      gatherCoverageData: true
+      coverageTargets:
+        - Riot
 
 targets:
   Riot:
@@ -39,6 +42,7 @@ targets:
     - package: Mapbox
     - package: OrderedCollections
     - package: SwiftOGG
+    - package: DeviceKit
 
     configFiles:
       Debug: Debug.xcconfig

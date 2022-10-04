@@ -45,7 +45,7 @@ enum {
 };
 
 
-@interface ManageSessionViewController ()
+@interface ManageSessionViewController () <UserVerificationCoordinatorBridgePresenterDelegate>
 {
     // The device to display
     MXDevice *device;
@@ -649,6 +649,7 @@ enum {
                                                                                                                                                             userId:self.mainSession.myUser.userId
                                                                                                                                                    userDisplayName:nil
                                                                                                                                                           deviceId:device.deviceId];
+    userVerificationCoordinatorBridgePresenter.delegate = self;
     [userVerificationCoordinatorBridgePresenter start];
     self.userVerificationCoordinatorBridgePresenter = userVerificationCoordinatorBridgePresenter;
 }
@@ -699,6 +700,13 @@ enum {
     }];
     
     self.reauthenticationCoordinatorBridgePresenter = reauthenticationPresenter;
+}
+
+#pragma mark - UserVerificationCoordinatorBridgePresenterDelegate
+
+- (void)userVerificationCoordinatorBridgePresenterDelegateDidComplete:(UserVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self reloadDeviceWithCompletion:^{}];
 }
 
 @end
