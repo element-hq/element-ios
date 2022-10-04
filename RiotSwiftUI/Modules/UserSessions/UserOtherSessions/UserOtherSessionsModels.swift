@@ -23,13 +23,13 @@ enum UserOtherSessionsCoordinatorResult {
 
 // MARK: View model
 
-enum UserOtherSessionsViewModelResult {
+enum UserOtherSessionsViewModelResult: Equatable {
     case showUserSessionOverview(sessionInfo: UserSessionInfo)
 }
 
 // MARK: View
 
-struct UserOtherSessionsViewState: BindableState {
+struct UserOtherSessionsViewState: BindableState, Equatable {
     let title: String
     var sections: [UserOtherSessionsSection]
 }

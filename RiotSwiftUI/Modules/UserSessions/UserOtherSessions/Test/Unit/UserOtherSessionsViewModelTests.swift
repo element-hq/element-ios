@@ -19,5 +19,55 @@ import XCTest
 @testable import RiotSwiftUI
 
 class UserOtherSessionsViewModelTests: XCTestCase {
-   
+    
+    var sut: UserOtherSessionsViewModel!
+    
+    func test_whenUserOtherSessionSelectedProcessed_completionWithShowUserSessionOverviewCalled() {
+        let expectedUserSessionInfo = createUserSessionInfo(sessionId: "session 2")
+        sut = UserOtherSessionsViewModel(sessionsInfo: [createUserSessionInfo(sessionId: "session 1"),
+                                                        expectedUserSessionInfo],
+                                         filter: .inactive,
+                                         title: "Title")
+        
+        var modelResult: UserOtherSessionsViewModelResult?
+        sut.completion = { result in
+            modelResult = result
+        }
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: expectedUserSessionInfo.id))
+        XCTAssertEqual(modelResult, .showUserSessionOverview(sessionInfo: expectedUserSessionInfo))
+    }
+    
+    func test_whenModelCreated_withInactiveFilter_viewStateIsCorrect() {
+        let sessionsInfo = [createUserSessionInfo(sessionId: "session 1"), createUserSessionInfo(sessionId: "session 2")]
+        sut = UserOtherSessionsViewModel(sessionsInfo: sessionsInfo,
+                                         filter: .inactive,
+                                         title: "Title")
+        
+        let expectedHeader = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
+                                                             subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
+                                                             iconName: Asset.Images.userOtherSessionsInactive.name)
+        let expectedItems = sessionsInfo.filter { !$0.isActive }.asViewData()
+        let expectedState = UserOtherSessionsViewState(title: "Title",
+                                                       sections: [.sessionItems(header: expectedHeader, items: expectedItems)])
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    
+    private func createUserSessionInfo(sessionId: String) -> UserSessionInfo {
+        UserSessionInfo(id: sessionId,
+                        name: "iOS",
+                        deviceType: .mobile,
+                        isVerified: false,
+                        lastSeenIP: "10.0.0.10",
+                        lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                        applicationName: nil,
+                        applicationVersion: nil,
+                        applicationURL: nil,
+                        deviceModel: "iPhone XS",
+                        deviceOS: "iOS 15.5",
+                        lastSeenIPLocation: nil,
+                        deviceName: "Mobile",
+                        isActive: true,
+                        isCurrent: true)
+    }
 }
