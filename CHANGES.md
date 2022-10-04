@@ -18,6 +18,7 @@
 - Fix render of links with both characters requiring percent encoding and markdown-like syntax ([#6748](https://github.com/vector-im/element-ios/issues/6748))
 - Fix crash when scrolling chat list ([#6749](https://github.com/vector-im/element-ios/issues/6749))
 - App Layout: Unable to send message after filtering for room ([#6755](https://github.com/vector-im/element-ios/issues/6755))
+- App Layout: Fix missing toolbar for users with no rooms. ([#6796](https://github.com/vector-im/element-ios/pull/6796))
 - Fix code block background colour ([#6778](https://github.com/vector-im/element-ios/issues/6778))
 
 🧱 Build
