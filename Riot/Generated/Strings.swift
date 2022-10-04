@@ -743,6 +743,22 @@ public class VectorL10n: NSObject {
   public static var authenticationLoginWithQr: String { 
     return VectorL10n.tr("Vector", "authentication_login_with_qr") 
   }
+  /// Open Element on your other device
+  public static var authenticationQrLoginDisplayStep1: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_display_step1") 
+  }
+  /// Select ‘Sign in with QR code’
+  public static var authenticationQrLoginDisplayStep2: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_display_step2") 
+  }
+  /// Scan the QR code below with your device that’s signed out.
+  public static var authenticationQrLoginDisplaySubtitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_display_subtitle") 
+  }
+  /// Link a device
+  public static var authenticationQrLoginDisplayTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_display_title") 
+  }
   /// Show QR code on this device
   public static var authenticationQrLoginStartDisplayQr: String { 
     return VectorL10n.tr("Vector", "authentication_qr_login_start_display_qr") 

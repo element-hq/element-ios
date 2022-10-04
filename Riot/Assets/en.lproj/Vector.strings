@@ -221,6 +221,11 @@
 "authentication_qr_login_start_need_alternative" = "Need an alternative method?";
 "authentication_qr_login_start_display_qr" = "Show QR code on this device";
 
+"authentication_qr_login_display_title" = "Link a device";
+"authentication_qr_login_display_subtitle" = "Scan the QR code below with your device that’s signed out.";
+"authentication_qr_login_display_step1" = "Open Element on your other device";
+"authentication_qr_login_display_step2" = "Select ‘Sign in with QR code’";
+
 // MARK: Password Validation
 "password_validation_info_header" = "Your password should meet the criteria below:";
 "password_validation_error_header" = "Given password does not meet the criteria below:";

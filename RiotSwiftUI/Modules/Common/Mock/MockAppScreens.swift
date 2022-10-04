@@ -35,6 +35,7 @@ enum MockAppScreens {
         MockAuthenticationChoosePasswordScreenState.self,
         MockAuthenticationSoftLogoutScreenState.self,
         MockAuthenticationQRLoginStartScreenState.self,
+        MockAuthenticationQRLoginDisplayScreenState.self,
         MockOnboardingCelebrationScreenState.self,
         MockOnboardingAvatarScreenState.self,
         MockOnboardingDisplayNameScreenState.self,
