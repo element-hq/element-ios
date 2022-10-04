@@ -419,5 +419,5 @@ final class BuildSettings: NSObject {
     static let syncLocalContacts: Bool = false
     
     // MARK: - New App Layout
-    static let newAppLayoutEnabled = true 
+    static let newAppLayoutEnabled = true
 }
