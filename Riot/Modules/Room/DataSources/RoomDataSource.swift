@@ -198,7 +198,29 @@ extension RoomDataSource {
         return editableTextMessage
     }
 
-    
+    /// Send a voice broadcast to the room.
+    ///
+    /// While sending, a fake event will be echoed in the messages list.
+    /// Once complete, this local echo will be replaced by the event saved by the homeserver.
+    ///
+    /// - Parameters:
+    ///   - audioFileLocalURL: the local filesystem path of the audio file to send.
+    ///   - mimeType: (optional) the mime type of the file. Defaults to `audio/ogg`
+    ///   - duration: the length of the voice message in milliseconds
+    ///   - samples: an array of floating point values normalized to [0, 1], boxed within NSNumbers
+    ///   - success: A block object called when the operation succeeds. It returns the event id of the event generated on the homeserver
+    ///   - failure: A block object called when the operation fails.
+    @objc func sendVoiceBroadcast(audioFileLocalURL: URL, voiceBroadcastInfoEventId: String, mimeType: String?, duration: UInt, samples: [Float]?, success:@escaping ((String?) -> Void), failure:@escaping ((Error?) -> Void)) {
+        var localEcho: MXEvent?
+        
+        self.room.sendVoiceBroadcast(localURL: audioFileLocalURL, voiceBroadcastInfoEventId: voiceBroadcastInfoEventId, mimeType: mimeType, duration: duration, samples: samples, localEcho: &localEcho, success: success, failure: failure)
+        
+        if localEcho != nil {
+            // Make the data source digest this fake local echo message
+            self.queueEvent(forProcessing: localEcho, with: self.roomState, direction: .forwards)
+            self.processQueuedEvents(nil)
+        }
+    }
 }
 
 // MARK: - Private Helpers
