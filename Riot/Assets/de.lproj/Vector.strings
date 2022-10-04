@@ -2220,7 +2220,7 @@
 "authentication_forgot_password_waiting_button" = "E-Mail erneut senden";
 "authentication_verify_email_input_title" = "Gib deine E-Mail-Adresse ein";
 /* The placeholder will show the full Matrix ID that has been entered. */
-"authentication_registration_username_footer_available" = "Andere können dich als %s finden";
+"authentication_registration_username_footer_available" = "Andere können dich als %@ finden";
 "authentication_registration_username" = "Nutzername";
 "onboarding_celebration_message" = "Dein kannst dein Profil jederzeit in den Einstellungen ändern";
 "authentication_registration_password_footer" = "8 Zeichen oder mehr";
