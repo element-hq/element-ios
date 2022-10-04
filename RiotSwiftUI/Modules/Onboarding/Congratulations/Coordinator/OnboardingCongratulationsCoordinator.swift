@@ -58,6 +58,7 @@ final class OnboardingCongratulationsCoordinator: Coordinator, Presentable {
         onboardingCongratulationsViewModel = viewModel
         onboardingCongratulationsHostingController = VectorHostingController(rootView: view)
         onboardingCongratulationsHostingController.statusBarStyle = .lightContent
+        onboardingCongratulationsHostingController.isNavigationBarHidden = true
     }
     
     // MARK: - Public

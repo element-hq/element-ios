@@ -19,6 +19,7 @@
 - Fix crash when scrolling chat list ([#6749](https://github.com/vector-im/element-ios/issues/6749))
 - App Layout: Unable to send message after filtering for room ([#6755](https://github.com/vector-im/element-ios/issues/6755))
 - Fix code block background colour ([#6778](https://github.com/vector-im/element-ios/issues/6778))
+- Fix navigation bars visibility on iOS 16. ([#6799](https://github.com/vector-im/element-ios/pull/6799))
 
 🧱 Build
 

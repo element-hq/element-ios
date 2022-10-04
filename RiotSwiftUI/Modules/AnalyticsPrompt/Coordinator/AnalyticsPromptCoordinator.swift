@@ -27,7 +27,7 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
     // MARK: Private
     
     private let parameters: AnalyticsPromptCoordinatorParameters
-    private let analyticsPromptHostingController: UIViewController
+    private let analyticsPromptHostingController: VectorHostingController
     private var _analyticsPromptViewModel: Any?
     
     fileprivate var analyticsPromptViewModel: AnalyticsPromptViewModel {
@@ -59,6 +59,7 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
         let view = AnalyticsPrompt(viewModel: viewModel.context)
         _analyticsPromptViewModel = viewModel
         analyticsPromptHostingController = VectorHostingController(rootView: view)
+        analyticsPromptHostingController.isNavigationBarHidden = true
     }
     
     // MARK: - Public
