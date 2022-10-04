@@ -48,7 +48,6 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
     let callbacks = PassthroughSubject<QRLoginServiceCallback, Never>()
 
     func isServiceAvailable() async throws -> Bool {
-        return true
         guard BuildSettings.enableQRLogin else {
             return false
         }
