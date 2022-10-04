@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import XCTest
 @testable import RiotSwiftUI
 
 class AuthenticationSoftLogoutViewModelTests: XCTestCase {
-
     @MainActor func testInitialStateForMatrixOrg() async {
         let credentials = SoftLogoutCredentials(userId: "mock_user_id",
                                                 homeserverName: "https://matrix.org",
@@ -55,5 +54,4 @@ class AuthenticationSoftLogoutViewModelTests: XCTestCase {
         XCTAssert(context.viewState.showLoginForm, "The view model should show login form for the given homeserver.")
         XCTAssertFalse(context.viewState.showRecoverEncryptionKeysMessage, "The view model should not show recover encryption keys message.")
     }
-
 }

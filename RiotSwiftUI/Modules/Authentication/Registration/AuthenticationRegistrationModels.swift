@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,7 +62,7 @@ struct AuthenticationRegistrationViewState: BindableState {
     /// Data about the selected homeserver.
     var homeserver: AuthenticationHomeserverViewData
     /// Whether a new homeserver is currently being loaded.
-    var isLoading: Bool = false
+    var isLoading = false
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationRegistrationBindings
     /// Whether or not the username field has been edited yet.

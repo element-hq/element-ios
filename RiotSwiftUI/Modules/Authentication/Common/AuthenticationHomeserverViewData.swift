@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,11 +37,11 @@ extension AuthenticationHomeserverViewData {
                                          showLoginForm: true,
                                          showRegistrationForm: true,
                                          ssoIdentityProviders: [
-                                            SSOIdentityProvider(id: "1", name: "Apple", brand: "apple", iconURL: nil),
-                                            SSOIdentityProvider(id: "2", name: "Facebook", brand: "facebook", iconURL: nil),
-                                            SSOIdentityProvider(id: "3", name: "GitHub", brand: "github", iconURL: nil),
-                                            SSOIdentityProvider(id: "4", name: "GitLab", brand: "gitlab", iconURL: nil),
-                                            SSOIdentityProvider(id: "5", name: "Google", brand: "google", iconURL: nil)
+                                             SSOIdentityProvider(id: "1", name: "Apple", brand: "apple", iconURL: nil),
+                                             SSOIdentityProvider(id: "2", name: "Facebook", brand: "facebook", iconURL: nil),
+                                             SSOIdentityProvider(id: "3", name: "GitHub", brand: "github", iconURL: nil),
+                                             SSOIdentityProvider(id: "4", name: "GitLab", brand: "gitlab", iconURL: nil),
+                                             SSOIdentityProvider(id: "5", name: "Google", brand: "google", iconURL: nil)
                                          ])
     }
     
@@ -68,5 +68,4 @@ extension AuthenticationHomeserverViewData {
                                          showRegistrationForm: false,
                                          ssoIdentityProviders: [])
     }
-
 }

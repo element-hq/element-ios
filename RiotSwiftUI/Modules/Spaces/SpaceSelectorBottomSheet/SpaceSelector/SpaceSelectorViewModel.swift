@@ -14,15 +14,12 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
-typealias SpaceSelectorViewModelType = StateStoreViewModel<SpaceSelectorViewState,
-                                                                 Never,
-                                                                 SpaceSelectorViewAction>
+typealias SpaceSelectorViewModelType = StateStoreViewModel<SpaceSelectorViewState, SpaceSelectorViewAction>
 
 class SpaceSelectorViewModel: SpaceSelectorViewModelType, SpaceSelectorViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private
@@ -36,7 +33,7 @@ class SpaceSelectorViewModel: SpaceSelectorViewModelType, SpaceSelectorViewModel
     // MARK: - Setup
 
     static func makeViewModel(service: SpaceSelectorServiceProtocol, showCancel: Bool) -> SpaceSelectorViewModelProtocol {
-        return SpaceSelectorViewModel(service: service, showCancel: showCancel)
+        SpaceSelectorViewModel(service: service, showCancel: showCancel)
     }
 
     private init(service: SpaceSelectorServiceProtocol, showCancel: Bool) {
@@ -55,7 +52,7 @@ class SpaceSelectorViewModel: SpaceSelectorViewModelType, SpaceSelectorViewModel
     
     private func setupObservers() {
         service.spaceListSubject.sink { [weak self] spaceList in
-                self?.state.items = spaceList
+            self?.state.items = spaceList
         }
         .store(in: &cancellables)
     }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,6 @@ protocol SessionCreatorProtocol {
 
 /// A struct that provides common functionality to create a new session.
 struct SessionCreator: SessionCreatorProtocol {
-
     private let accountManager: MXKAccountManager
 
     init(withAccountManager accountManager: MXKAccountManager = .shared()) {
@@ -44,7 +43,7 @@ struct SessionCreator: SessionCreatorProtocol {
         }
 
         if removeOtherAccounts {
-            let otherAccounts = accountManager.accounts.filter({ $0.mxCredentials.userId != credentials.userId })
+            let otherAccounts = accountManager.accounts.filter { $0.mxCredentials.userId != credentials.userId }
             for account in otherAccounts {
                 accountManager.removeAccount(account, completion: nil)
             }

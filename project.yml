@@ -51,3 +51,6 @@ packages:
   SwiftOGG:
     url: https://github.com/vector-im/swift-ogg
     branch: main
+  DeviceKit:
+    url: https://github.com/devicekit/DeviceKit
+    majorVersion: 4.7.0

@@ -22,7 +22,6 @@ enum MatrixItemChooserRoomDirectParentsDataSourcePreselectionMode {
 }
 
 class MatrixItemChooserRoomDirectParentsDataSource: MatrixItemChooserDataSource {
-
     private let roomId: String
     private let preselectionMode: MatrixItemChooserRoomDirectParentsDataSourcePreselectionMode
     
@@ -44,7 +43,7 @@ class MatrixItemChooserRoomDirectParentsDataSource: MatrixItemChooserDataSource 
         }
         
         completion(Result(catching: {
-            return [
+            [
                 MatrixListItemSectionData(title: VectorL10n.roomAccessSpaceChooserKnownSpacesSection(session.room(withRoomId: roomId)?.displayName ?? ""), items: ancestorsIds.compactMap { spaceId in
                     guard let space = session.spaceService.getSpace(withId: spaceId) else {
                         return nil

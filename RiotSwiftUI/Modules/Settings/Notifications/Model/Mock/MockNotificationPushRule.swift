@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,6 @@ struct MockNotificationPushRule: NotificationPushRuleType {
     var ruleId: String!
     var enabled: Bool
     func matches(standardActions: NotificationStandardActions?) -> Bool {
-        return false
+        false
     }
 }

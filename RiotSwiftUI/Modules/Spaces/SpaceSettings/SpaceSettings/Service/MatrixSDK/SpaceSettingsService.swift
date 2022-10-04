@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +14,11 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 import MatrixSDK
 
 class SpaceSettingsService: SpaceSettingsServiceProtocol {
-
     // MARK: - Properties
     
     var userDefinedAddress: String? {
@@ -36,6 +35,7 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
             updateRoomProperties()
         }
     }
+
     private let room: MXRoom?
     private var roomEventListener: Any?
     
@@ -88,12 +88,12 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     init(session: MXSession, spaceId: String) {
         self.session = session
         self.spaceId = spaceId
-        self.room = session.room(withRoomId: spaceId)
-        self.isLoadingSubject = CurrentValueSubject(false)
-        self.showPostProcessAlert = CurrentValueSubject(false)
-        self.roomPropertiesSubject = CurrentValueSubject(self.roomProperties)
-        self.addressValidationSubject = CurrentValueSubject(.none("#"))
-        self.defaultAddress = ""
+        room = session.room(withRoomId: spaceId)
+        isLoadingSubject = CurrentValueSubject(false)
+        showPostProcessAlert = CurrentValueSubject(false)
+        roomPropertiesSubject = CurrentValueSubject(roomProperties)
+        addressValidationSubject = CurrentValueSubject(.none("#"))
+        defaultAddress = ""
         
         readRoomState()
     }
@@ -121,15 +121,15 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     
     private func readRoomState() {
         isLoadingSubject.send(true)
-        self.room?.state { [weak self] roomState in
+        room?.state { [weak self] roomState in
             self?.roomState = roomState
             self?.isLoadingSubject.send(false)
         }
         
-        roomEventListener = self.room?.listen(toEvents: { [weak self] event, direction, state in
-            self?.room?.state({ [weak self] roomState in
+        roomEventListener = room?.listen(toEvents: { [weak self] _, _, _ in
+            self?.room?.state { [weak self] roomState in
                 self?.roomState = roomState
-            })
+            }
         })
     }
     
@@ -164,7 +164,7 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
             return false
         }
         
-        let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: self.session.myUserId)
+        let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: session.myUserId)
         return userPowerLevel >= powerLevels.minimumPowerLevel(forNotifications: notification, defaultPower: powerLevels.stateDefault)
     }
     
@@ -172,10 +172,10 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
         addressValidationOperation?.cancel()
         addressValidationOperation = nil
 
-        guard let userDefinedAddress = self.userDefinedAddress, !userDefinedAddress.isEmpty else {
+        guard let userDefinedAddress = userDefinedAddress, !userDefinedAddress.isEmpty else {
             let fullAddress = MXTools.fullLocalAlias(from: defaultAddress, with: session)
 
-            if let publicAddress = self.publicAddress, !publicAddress.isEmpty {
+            if let publicAddress = publicAddress, !publicAddress.isEmpty {
                 addressValidationSubject.send(.current(fullAddress))
             } else if defaultAddress.isEmpty {
                 addressValidationSubject.send(.none(fullAddress))
@@ -191,8 +191,8 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     private func validate(_ aliasLocalPart: String) {
         let fullAddress = MXTools.fullLocalAlias(from: aliasLocalPart, with: session)
 
-        if let publicAddress = self.publicAddress, publicAddress == aliasLocalPart {
-            self.addressValidationSubject.send(.current(fullAddress))
+        if let publicAddress = publicAddress, publicAddress == aliasLocalPart {
+            addressValidationSubject.send(.current(fullAddress))
             return
         }
         
@@ -221,17 +221,17 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
         
         if let canonicalAlias = roomState.canonicalAlias {
             let localAliasPart = MXTools.extractLocalAliasPart(from: canonicalAlias)
-            self.publicAddress = localAliasPart
-            self.defaultAddress = localAliasPart
+            publicAddress = localAliasPart
+            defaultAddress = localAliasPart
         } else {
-            self.publicAddress = nil
-            self.defaultAddress = MXTools.validAliasLocalPart(from: roomState.name)
+            publicAddress = nil
+            defaultAddress = MXTools.validAliasLocalPart(from: roomState.name)
         }
         
-        self.roomProperties = SpaceSettingsRoomProperties(
+        roomProperties = SpaceSettingsRoomProperties(
             name: roomState.name,
             topic: roomState.topic,
-            address: self.defaultAddress,
+            address: defaultAddress,
             avatarUrl: roomState.avatar,
             visibility: visibility(with: roomState),
             allowedParentIds: allowedParentIds(with: roomState),
@@ -239,12 +239,13 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
             isNameEditable: isField(ofType: kMXEventTypeStringRoomName, editableWith: roomState.powerLevels),
             isTopicEditable: isField(ofType: kMXEventTypeStringRoomTopic, editableWith: roomState.powerLevels),
             isAddressEditable: isField(ofType: kMXEventTypeStringRoomAliases, editableWith: roomState.powerLevels),
-            isAccessEditable: isField(ofType: kMXEventTypeStringRoomJoinRules, editableWith: roomState.powerLevels))
+            isAccessEditable: isField(ofType: kMXEventTypeStringRoomJoinRules, editableWith: roomState.powerLevels)
+        )
     }
     
     // MARK: - Post process
     
-    private var currentTaskIndex: Int = 0
+    private var currentTaskIndex = 0
     private var tasks: [PostProcessTask] = []
     private var lastError: Error?
     private var completion: ((_ result: SpaceSettingsServiceCompletionResult) -> Void)?
@@ -267,18 +268,18 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
         let type: PostProcessTaskType
         var state: PostProcessTaskState = .none
         var isFinished: Bool {
-            return state == .failure || state == .success
+            state == .failure || state == .success
         }
         
         static func == (lhs: PostProcessTask, rhs: PostProcessTask) -> Bool {
-            return lhs.type == rhs.type && lhs.state == rhs.state
+            lhs.type == rhs.type && lhs.state == rhs.state
         }
     }
 
     func update(roomName: String, topic: String, address: String, avatar: UIImage?,
                 completion: ((_ result: SpaceSettingsServiceCompletionResult) -> Void)?) {
         // First attempt
-        if self.tasks.isEmpty {
+        if tasks.isEmpty {
             var tasks: [PostProcessTask] = []
             if roomProperties?.name ?? "" != roomName {
                 tasks.append(PostProcessTask(type: .updateName(roomName)))
@@ -295,17 +296,17 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
             self.tasks = tasks
         } else {
             // Retry -> restart failed tasks
-            self.tasks = tasks.map({ task in
+            tasks = tasks.map { task in
                 if task.state == .failure {
                     return PostProcessTask(type: task.type, state: .none)
                 }
                 return task
-            })
+            }
         }
         
-        self.isLoadingSubject.send(true)
+        isLoadingSubject.send(true)
         self.completion = completion
-        self.lastError = nil
+        lastError = nil
         currentTaskIndex = -1
         runNextTask()
     }
@@ -313,7 +314,7 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
     private func runNextTask() {
         currentTaskIndex += 1
         guard currentTaskIndex < tasks.count else {
-            self.isLoadingSubject.send(false)
+            isLoadingSubject.send(false)
             if let error = lastError {
                 showPostProcessAlert.send(true)
                 completion?(.failure(error))
@@ -395,7 +396,7 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
             switch response {
             case .success:
                 if let publicAddress = self.publicAddress {
-                    self.currentOperation = self.room?.removeAlias(MXTools.fullLocalAlias(from: publicAddress, with: self.session), completion: { [weak self] response in
+                    self.currentOperation = self.room?.removeAlias(MXTools.fullLocalAlias(from: publicAddress, with: self.session), completion: { [weak self] _ in
                         guard let self = self else { return }
 
                         self.setup(canonicalAlias: canonicalAlias)
@@ -433,33 +434,33 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
         let avatarUp = MXKTools.forceImageOrientationUp(avatar)
         
         mediaUploader.uploadData(avatarUp?.jpegData(compressionQuality: 0.5), filename: nil, mimeType: "image/jpeg",
-                                 success: { [weak self] (urlString) in
-                                    guard let self = self else { return }
+                                 success: { [weak self] urlString in
+                                     guard let self = self else { return }
                                     
-                                    guard let urlString = urlString else {
-                                        self.updateCurrentTaskState(with: .failure)
-                                        self.runNextTask()
-                                        return
-                                    }
-                                    guard let url = URL(string: urlString) else {
-                                        self.updateCurrentTaskState(with: .failure)
-                                        self.runNextTask()
-                                        return
-                                    }
+                                     guard let urlString = urlString else {
+                                         self.updateCurrentTaskState(with: .failure)
+                                         self.runNextTask()
+                                         return
+                                     }
+                                     guard let url = URL(string: urlString) else {
+                                         self.updateCurrentTaskState(with: .failure)
+                                         self.runNextTask()
+                                         return
+                                     }
                                     
-                                    self.setAvatar(withURL: url)
+                                     self.setAvatar(withURL: url)
                                  },
-                                 failure: { [weak self] (error) in
-                                    guard let self = self else { return }
+                                 failure: { [weak self] error in
+                                     guard let self = self else { return }
                                     
-                                    self.lastError = error
-                                    self.updateCurrentTaskState(with: .failure)
-                                    self.runNextTask()
+                                     self.lastError = error
+                                     self.updateCurrentTaskState(with: .failure)
+                                     self.runNextTask()
                                  })
     }
     
     private func setAvatar(withURL url: URL) {
-        currentOperation = room?.setAvatar(url: url) { [weak self] (response) in
+        currentOperation = room?.setAvatar(url: url) { [weak self] response in
             guard let self = self else { return }
 
             switch response {
@@ -473,5 +474,4 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
             self.runNextTask()
         }
     }
-
 }

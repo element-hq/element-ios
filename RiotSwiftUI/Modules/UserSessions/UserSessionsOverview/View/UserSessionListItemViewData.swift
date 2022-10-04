@@ -18,16 +18,8 @@ import Foundation
 
 /// View data for UserSessionListItem
 struct UserSessionListItemViewData: Identifiable {
-    
-    // MARK: - Constants
-    
-    private static let userSessionNameFormatter = UserSessionNameFormatter()
-    private static let lastActivityDateFormatter = UserSessionLastActivityFormatter()
-    
-    // MARK: - Properties
-    
     var id: String {
-        return sessionId
+        sessionId
     }
     
     let sessionId: String
@@ -38,24 +30,20 @@ struct UserSessionListItemViewData: Identifiable {
     
     let deviceAvatarViewData: DeviceAvatarViewData
     
-    // MARK: - Setup
-    
     init(sessionId: String,
          sessionDisplayName: String?,
          deviceType: DeviceType,
          isVerified: Bool,
          lastActivityDate: TimeInterval?) {
-                
         self.sessionId = sessionId
-        self.sessionName = Self.userSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
-        self.sessionDetails = Self.buildSessionDetails(isVerified: isVerified, lastActivityDate: lastActivityDate)
-        self.deviceAvatarViewData = DeviceAvatarViewData(deviceType: deviceType, isVerified: isVerified)
+        sessionName = UserSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
+        sessionDetails = Self.buildSessionDetails(isVerified: isVerified, lastActivityDate: lastActivityDate)
+        deviceAvatarViewData = DeviceAvatarViewData(deviceType: deviceType, isVerified: isVerified)
     }
     
     // MARK: - Private
     
     private static func buildSessionDetails(isVerified: Bool, lastActivityDate: TimeInterval?) -> String {
-        
         let sessionDetailsString: String
         
         let sessionStatusText = isVerified ? VectorL10n.userSessionVerifiedShort : VectorL10n.userSessionUnverifiedShort
@@ -63,7 +51,7 @@ struct UserSessionListItemViewData: Identifiable {
         var lastActivityDateString: String?
         
         if let lastActivityDate = lastActivityDate {
-            lastActivityDateString = Self.lastActivityDateFormatter.lastActivityDateString(from: lastActivityDate)
+            lastActivityDateString = UserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityDate)
         }
 
         if let lastActivityDateString = lastActivityDateString, lastActivityDateString.isEmpty == false {
@@ -77,8 +65,11 @@ struct UserSessionListItemViewData: Identifiable {
 }
 
 extension UserSessionListItemViewData {
-        
-    init(userSessionInfo: UserSessionInfo) {
-        self.init(sessionId: userSessionInfo.sessionId, sessionDisplayName: userSessionInfo.sessionName, deviceType: userSessionInfo.deviceType, isVerified: userSessionInfo.isVerified, lastActivityDate: userSessionInfo.lastSeenTimestamp)
+    init(session: UserSessionInfo) {
+        self.init(sessionId: session.id,
+                  sessionDisplayName: session.name,
+                  deviceType: session.deviceType,
+                  isVerified: session.isVerified,
+                  lastActivityDate: session.lastSeenTimestamp)
     }
 }

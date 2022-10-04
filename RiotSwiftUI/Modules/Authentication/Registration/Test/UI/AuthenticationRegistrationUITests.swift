@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class AuthenticationRegistrationUITests: MockScreenTestCase {
     func testMatrixDotOrg() {
@@ -87,7 +87,6 @@ class AuthenticationRegistrationUITests: MockScreenTestCase {
         validateSSOButtonsAreHidden(for: state)
         validateFallbackButtonIsShown(for: state)
     }
-    
     
     /// Checks that the username and password text fields are shown along with the next button.
     func validateRegistrationFormIsVisible(for state: String) {

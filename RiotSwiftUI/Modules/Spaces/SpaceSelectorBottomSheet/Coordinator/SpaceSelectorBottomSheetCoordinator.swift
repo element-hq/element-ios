@@ -39,7 +39,6 @@ struct SpaceSelectorBottomSheetCoordinatorParameters {
 }
 
 final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presentable {
-    
     // MARK: - Properties
     
     private let parameters: SpaceSelectorBottomSheetCoordinatorParameters
@@ -61,11 +60,11 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
          navigationRouter: NavigationRouterType = NavigationRouter(navigationController: RiotNavigationController())) {
         self.parameters = parameters
         self.navigationRouter = navigationRouter
-        self.spaceIdStack = []
+        spaceIdStack = []
         
         super.init()
         
-        self.setupNavigationRouter()
+        setupNavigationRouter()
     }
     
     // MARK: - Public
@@ -76,7 +75,7 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private
@@ -84,7 +83,7 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
     private func setupNavigationRouter() {
         guard #available(iOS 15.0, *) else { return }
         
-        guard let sheetController = self.navigationRouter.toPresentable().sheetPresentationController else {
+        guard let sheetController = navigationRouter.toPresentable().sheetPresentationController else {
             MXLog.debug("[SpaceSelectorBottomSheetCoordinator] setup: no sheetPresentationController found")
             return
         }
@@ -94,14 +93,14 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
         sheetController.selectedDetentIdentifier = .medium
         sheetController.prefersScrollingExpandsWhenScrolledToEdge = true
         
-        self.navigationRouter.toPresentable().presentationController?.delegate = self
+        navigationRouter.toPresentable().presentationController?.delegate = self
     }
 
     private func push(_ coordinator: Coordinator & Presentable) {
-        if self.navigationRouter.modules.isEmpty {
-            self.navigationRouter.setRootModule(coordinator)
+        if navigationRouter.modules.isEmpty {
+            navigationRouter.setRootModule(coordinator)
         } else {
-            self.navigationRouter.push(coordinator.toPresentable(), animated: true) { [weak self] in
+            navigationRouter.push(coordinator.toPresentable(), animated: true) { [weak self] in
                 guard let self = self else { return }
                 
                 self.remove(childCoordinator: coordinator)
@@ -145,10 +144,10 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
         
         coordinator.start()
         
-        self.add(childCoordinator: coordinator)
+        add(childCoordinator: coordinator)
 
         if let spaceId = parentSpaceId {
-            self.spaceIdStack.append(spaceId)
+            spaceIdStack.append(spaceId)
         }
         
         return coordinator
@@ -166,13 +165,12 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
                 self.completion?(.spaceJoined(spaceId))
             case .open, .cancel, .dismiss:
                 self.navigationRouter.popModule(animated: true)
-                break
             }
         }
         
         coordinator.start()
         
-        self.add(childCoordinator: coordinator)
+        add(childCoordinator: coordinator)
 
         return coordinator
     }
@@ -194,9 +192,7 @@ final class SpaceSelectorBottomSheetCoordinator: NSObject, Coordinator, Presenta
 // MARK: - UIAdaptivePresentationControllerDelegate
 
 extension SpaceSelectorBottomSheetCoordinator: UIAdaptivePresentationControllerDelegate {
-    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         completion?(.cancel)
     }
-    
 }

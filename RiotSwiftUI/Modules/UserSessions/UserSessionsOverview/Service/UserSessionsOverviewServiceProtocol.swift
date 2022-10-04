@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,16 +17,16 @@
 import Foundation
 
 struct UserSessionsOverviewData {
-    
-    let currentSessionInfo: UserSessionInfo?
-    let unverifiedSessionsInfo: [UserSessionInfo]
-    let inactiveSessionsInfo: [UserSessionInfo]
-    let otherSessionsInfo: [UserSessionInfo]
+    let currentSession: UserSessionInfo?
+    let unverifiedSessions: [UserSessionInfo]
+    let inactiveSessions: [UserSessionInfo]
+    let otherSessions: [UserSessionInfo]
 }
 
 protocol UserSessionsOverviewServiceProtocol {
+    var overviewData: UserSessionsOverviewData { get }
     
-    var lastOverviewData: UserSessionsOverviewData { get }
-        
-    func fetchUserSessionsOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) -> Void
+    func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) -> Void
+    
+    func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo?
 }

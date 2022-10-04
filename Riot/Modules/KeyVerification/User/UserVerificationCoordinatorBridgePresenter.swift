@@ -77,8 +77,14 @@ final class UserVerificationCoordinatorBridgePresenter: NSObject {
         } else {
             userVerificationCoordinator = UserVerificationCoordinator(presenter: self.presenter, session: self.session, userId: self.userId, userDisplayName: self.userDisplayName)
         }
-        
+        userVerificationCoordinator.delegate = self
         userVerificationCoordinator.start()
         self.coordinator = userVerificationCoordinator
+    }
+}
+
+extension UserVerificationCoordinatorBridgePresenter: UserVerificationCoordinatorDelegate {
+    func userVerificationCoordinatorDidComplete(_ coordinator: UserVerificationCoordinatorType) {
+        delegate?.userVerificationCoordinatorBridgePresenterDelegateDidComplete(self)
     }
 }

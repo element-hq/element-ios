@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,7 +43,6 @@ private struct PollEditFormTypeButton: View {
             selectedType = type
         } label: {
             HStack(alignment: .top, spacing: 8.0) {
-                
                 Image(uiImage: selectionImage)
                 
                 VStack(alignment: .leading, spacing: 2) {

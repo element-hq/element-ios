@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class TemplateUserProfileUITests: MockScreenTestCase {
     func testTemplateUserProfilePresenceIdle() {
@@ -53,5 +53,4 @@ class TemplateUserProfileUITests: MockScreenTestCase {
         XCTAssert(displayNameText.exists)
         XCTAssertEqual(displayNameText.label, name)
     }
-
 }

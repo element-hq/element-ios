@@ -24,7 +24,6 @@ enum RoomSuggestionCoordinatorCoordinatorAction {
 
 @objcMembers
 final class RoomSuggestionCoordinator: Coordinator {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -32,7 +31,7 @@ final class RoomSuggestionCoordinator: Coordinator {
     private let parameters: RoomSuggestionCoordinatorParameters
     
     private var navigationRouter: NavigationRouterType {
-        return self.parameters.navigationRouter
+        parameters.navigationRouter
     }
     
     // MARK: Public
@@ -46,31 +45,30 @@ final class RoomSuggestionCoordinator: Coordinator {
     
     init(parameters: RoomSuggestionCoordinatorParameters) {
         self.parameters = parameters
-    }    
+    }
     
     // MARK: - Public
     
-    
     func start() {
         MXLog.debug("[RoomSuggestionCoordinator] did start.")
-        let rootCoordinator = self.createRoomSuggestionSpaceChooser()
+        let rootCoordinator = createRoomSuggestionSpaceChooser()
         rootCoordinator.start()
         
-        self.add(childCoordinator: rootCoordinator)
+        add(childCoordinator: rootCoordinator)
         
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+        if navigationRouter.modules.isEmpty == false {
+            navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             })
         } else {
-            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+            navigationRouter.setRootModule(rootCoordinator) { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        navigationRouter.toPresentable()
     }
     
     // MARK: - Private
@@ -78,7 +76,7 @@ final class RoomSuggestionCoordinator: Coordinator {
     func pushScreen(with coordinator: Coordinator & Presentable) {
         add(childCoordinator: coordinator)
         
-        self.navigationRouter.push(coordinator, animated: true, popCompletion: { [weak self] in
+        navigationRouter.push(coordinator, animated: true, popCompletion: { [weak self] in
             self?.remove(childCoordinator: coordinator)
         })
         
@@ -91,7 +89,8 @@ final class RoomSuggestionCoordinator: Coordinator {
             title: VectorL10n.roomSuggestionSettingsScreenTitle,
             detail: VectorL10n.roomSuggestionSettingsScreenMessage,
             viewProvider: RoomSuggestionSpaceChooserViewProvider(navTitle: VectorL10n.roomAccessSettingsScreenNavTitle),
-            itemsProcessor: RoomSuggestionSpaceChooserItemsProcessor(roomId: parameters.room.roomId, session: parameters.room.mxSession))
+            itemsProcessor: RoomSuggestionSpaceChooserItemsProcessor(roomId: parameters.room.roomId, session: parameters.room.mxSession)
+        )
         let coordinator = MatrixItemChooserCoordinator(parameters: paramaters)
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
@@ -107,5 +106,4 @@ final class RoomSuggestionCoordinator: Coordinator {
         }
         return coordinator
     }
-
 }

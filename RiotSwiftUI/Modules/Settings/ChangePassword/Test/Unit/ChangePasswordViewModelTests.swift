@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import XCTest
 @testable import RiotSwiftUI
 
 class ChangePasswordViewModelTests: XCTestCase {
-
     @MainActor func testEmptyState() async {
         let viewModel = ChangePasswordViewModel()
         let context = viewModel.context
@@ -46,5 +45,4 @@ class ChangePasswordViewModelTests: XCTestCase {
         XCTAssertTrue(context.viewState.canSubmit, "The view model should be able to submit.")
         XCTAssertTrue(context.signoutAllDevices, "Sign out of all devices should be checked.")
     }
-
 }

@@ -16,88 +16,66 @@
 
 import SwiftUI
 
-typealias UserSessionsOverviewViewModelType = StateStoreViewModel<UserSessionsOverviewViewState,
-                                                                 Never,
-                                                                 UserSessionsOverviewViewAction>
+typealias UserSessionsOverviewViewModelType = StateStoreViewModel<UserSessionsOverviewViewState, UserSessionsOverviewViewAction>
 
 class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSessionsOverviewViewModelProtocol {
-
-    // MARK: - Properties
-
-    // MARK: Private
-
     private let userSessionsOverviewService: UserSessionsOverviewServiceProtocol
 
-    // MARK: Public
-
     var completion: ((UserSessionsOverviewViewModelResult) -> Void)?
-
-    // MARK: - Setup
 
     init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol) {
         self.userSessionsOverviewService = userSessionsOverviewService
         
-        let initialViewState = UserSessionsOverviewViewState(unverifiedSessionsViewData: [], inactiveSessionsViewData: [], currentSessionViewData: nil, otherSessionsViewData: [])
+        super.init(initialViewState: .init())
         
-        super.init(initialViewState: initialViewState)
-        
-        self.updateViewState(with: userSessionsOverviewService.lastOverviewData)
+        updateViewState(with: userSessionsOverviewService.overviewData)
     }
     
     // MARK: - Public
-
+    
     override func process(viewAction: UserSessionsOverviewViewAction) {
         switch viewAction {
         case .viewAppeared:
-            self.loadData()
+            loadData()
         case .verifyCurrentSession:
-            self.completion?(.verifyCurrentSession)
+            completion?(.verifyCurrentSession)
         case .viewCurrentSessionDetails:
-            self.completion?(.showCurrentSessionDetails)
+            guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
+                assertionFailure("Missing current session")
+                return
+            }
+            completion?(.showCurrentSessionOverview(session: currentSessionInfo))
         case .viewAllUnverifiedSessions:
-            self.completion?(.showAllUnverifiedSessions)
+            completion?(.showAllUnverifiedSessions)
         case .viewAllInactiveSessions:
-            self.completion?(.showAllInactiveSessions)
+            completion?(.showAllInactiveSessions)
         case .viewAllOtherSessions:
-            self.completion?(.showAllOtherSessions)
+            completion?(.showAllOtherSessions)
         case .tapUserSession(let sessionId):
-            self.completion?(.showUserSessionDetails(sessionId))
+            guard let session = userSessionsOverviewService.sessionForIdentifier(sessionId) else {
+                assertionFailure("Missing session info")
+                return
+            }
+            completion?(.showUserSessionOverview(session: session))
         }
     }
     
     // MARK: - Private
     
     private func updateViewState(with userSessionsViewData: UserSessionsOverviewData) {
+        state.unverifiedSessionsViewData = userSessionsViewData.unverifiedSessions.asViewData()
+        state.inactiveSessionsViewData = userSessionsViewData.inactiveSessions.asViewData()
+        state.otherSessionsViewData = userSessionsViewData.otherSessions.asViewData()
         
-        let unverifiedSessionsViewData = self.userSessionListItemViewDataList(from: userSessionsViewData.unverifiedSessionsInfo)
-        let inactiveSessionsViewData = self.userSessionListItemViewDataList(from: userSessionsViewData.inactiveSessionsInfo)
-        
-        var currentSessionViewData: UserSessionCardViewData?
-        
-        let otherSessionsViewData = self.userSessionListItemViewDataList(from: userSessionsViewData.otherSessionsInfo)
-         
-        
-        if let currentSessionInfo = userSessionsViewData.currentSessionInfo {
-            currentSessionViewData = UserSessionCardViewData(userSessionInfo: currentSessionInfo, isCurrentSessionDisplayMode: true)
-        }
-     
-        self.state.unverifiedSessionsViewData = unverifiedSessionsViewData
-        self.state.inactiveSessionsViewData = inactiveSessionsViewData
-        self.state.currentSessionViewData = currentSessionViewData
-        self.state.otherSessionsViewData = otherSessionsViewData
-    }
-
-    private func userSessionListItemViewDataList(from userSessionInfoList: [UserSessionInfo]) -> [UserSessionListItemViewData] {
-        return userSessionInfoList.map {
-            return UserSessionListItemViewData(userSessionInfo: $0)
+        if let currentSessionInfo = userSessionsViewData.currentSession {
+            state.currentSessionViewData = UserSessionCardViewData(sessionInfo: currentSessionInfo)
         }
     }
     
     private func loadData() {
+        state.showLoadingIndicator = true
         
-        self.state.showLoadingIndicator = true
-        
-        self.userSessionsOverviewService.fetchUserSessionsOverviewData { [weak self] result in
+        userSessionsOverviewService.updateOverviewData { [weak self] result in
             guard let self = self else {
                 return
             }
@@ -108,9 +86,15 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             case .success(let overViewData):
                 self.updateViewState(with: overViewData)
             case .failure(let error):
-                // TODO
+                // TODO:
                 break
             }
         }
+    }
+}
+
+private extension Collection where Element == UserSessionInfo {
+    func asViewData() -> [UserSessionListItemViewData] {
+        map { UserSessionListItemViewData(session: $0) }
     }
 }

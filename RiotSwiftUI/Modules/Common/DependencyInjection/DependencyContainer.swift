@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 /// Used for storing and resolving dependencies at runtime.
 struct DependencyContainer {
-    
     // Stores the dependencies with type information removed.
     private var dependencyStore: [String: Any] = [:]
     
@@ -26,7 +25,7 @@ struct DependencyContainer {
     ///
     /// Given a particular `Type` (Inferred from return type),
     /// generate a key and retrieve from storage.
-    /// 
+    ///
     /// - Returns: The resolved dependency.
     func resolve<T>() -> T {
         let key = String(describing: T.self)

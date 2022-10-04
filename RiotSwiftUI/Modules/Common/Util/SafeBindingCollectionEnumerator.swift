@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,6 @@ import SwiftUI
  Replace with Swift 5.5 bindings enumerator later.
  */
 struct SafeBindingCollectionEnumerator<T: RandomAccessCollection & MutableCollection, C: View>: View {
-    
     typealias BoundElement = Binding<T.Element>
     private let binding: BoundElement
     private let content: (BoundElement) -> C

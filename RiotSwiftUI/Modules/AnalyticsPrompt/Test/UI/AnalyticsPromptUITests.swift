@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class AnalyticsPromptUITests: MockScreenTestCase {
     /// Verify that the prompt is displayed correctly for new users.

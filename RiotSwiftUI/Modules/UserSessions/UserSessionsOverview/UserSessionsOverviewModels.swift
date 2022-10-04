@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,31 +18,33 @@ import Foundation
 
 // MARK: - Coordinator
 
+enum UserSessionsOverviewCoordinatorResult {
+    case openSessionOverview(sessionInfo: UserSessionInfo)
+}
+
 // MARK: View model
 
-enum UserSessionsOverviewViewModelResult {
-    case cancel
+enum UserSessionsOverviewViewModelResult: Equatable {
     case showAllUnverifiedSessions
     case showAllInactiveSessions
     case verifyCurrentSession
-    case showCurrentSessionDetails
+    case showCurrentSessionOverview(session: UserSessionInfo)
     case showAllOtherSessions
-    case showUserSessionDetails(_ sessionId: String)
+    case showUserSessionOverview(session: UserSessionInfo)
 }
 
 // MARK: View
 
 struct UserSessionsOverviewViewState: BindableState {
-    
-    var unverifiedSessionsViewData: [UserSessionListItemViewData]
-    
-    var inactiveSessionsViewData: [UserSessionListItemViewData]
-    
     var currentSessionViewData: UserSessionCardViewData?
     
-    var otherSessionsViewData: [UserSessionListItemViewData]
+    var unverifiedSessionsViewData = [UserSessionListItemViewData]()
     
-    var showLoadingIndicator: Bool = false
+    var inactiveSessionsViewData = [UserSessionListItemViewData]()
+    
+    var otherSessionsViewData = [UserSessionListItemViewData]()
+    
+    var showLoadingIndicator = false
 }
 
 enum UserSessionsOverviewViewAction {

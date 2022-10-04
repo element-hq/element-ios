@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class MockTemplateRoomListService: TemplateRoomListServiceProtocol {
-    
     static let mockRooms = [
         TemplateRoomListRoom(id: "!aaabaa:matrix.org", avatar: MockAvatarInput.example, displayName: "Matrix Discussion"),
         TemplateRoomListRoom(id: "!zzasds:matrix.org", avatar: MockAvatarInput.example, displayName: "Element Mobile"),
@@ -31,6 +30,6 @@ class MockTemplateRoomListService: TemplateRoomListServiceProtocol {
     }
     
     func simulateUpdate(rooms: [TemplateRoomListRoom]) {
-        self.roomsSubject.send(rooms)
+        roomsSubject.send(rooms)
     }
 }

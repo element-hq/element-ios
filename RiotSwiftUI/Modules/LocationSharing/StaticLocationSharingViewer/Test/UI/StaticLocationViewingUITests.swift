@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class StaticLocationViewingUITests: MockScreenTestCase {
     // This test has issues running consistently on CI. Removed for now until the issue has been fixed.
