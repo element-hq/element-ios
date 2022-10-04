@@ -44,9 +44,3 @@ enum UserOtherSessionsSection: Hashable, Identifiable {
 enum UserOtherSessionsViewAction {
     case userOtherSessionSelected(sessionId: String)
 }
-
-enum OtherUserSessionsFilter {
-    case all
-    case inactive
-    case unverified
-}

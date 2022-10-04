@@ -54,7 +54,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             guard let self = self else { return }
             switch result {
             case let .openSessionOverview(sessionInfo: sessionInfo):
-                self.openSessionOverview(sessionsInfo: sessionInfo)
+                self.openSessionOverview(sessionInfo: sessionInfo)
             case let .openOtherSessions(sessionsInfo: sessionsInfo, filter: filter):
                 self.openOtherSessions(sessionsInfo: sessionsInfo, filterBy: filter, title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
             }
@@ -72,20 +72,21 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         return UserSessionDetailsCoordinator(parameters: parameters)
     }
     
-    private func openSessionOverview(sessionsInfo: UserSessionInfo) {
-        let coordinator = createUserSessionOverviewCoordinator(sessionsInfo: sessionsInfo)
+    private func openSessionOverview(sessionInfo: UserSessionInfo) {
+        let coordinator = createUserSessionOverviewCoordinator(sessionInfo: sessionInfo)
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .openSessionDetails(sessionInfo: session):
-                self.openSessionDetails(sessionInfo: session)
+            case let .openSessionDetails(sessionInfo: sessionInfo):
+                self.openSessionDetails(sessionInfo: sessionInfo)
             }
         }
         pushScreen(with: coordinator)
     }
     
-    private func createUserSessionOverviewCoordinator(sessionsInfo: UserSessionInfo) -> UserSessionOverviewCoordinator {
-        let parameters = UserSessionOverviewCoordinatorParameters(session: parameters.session, sessionInfo: sessionsInfo)
+    private func createUserSessionOverviewCoordinator(sessionInfo: UserSessionInfo) -> UserSessionOverviewCoordinator {
+        let parameters = UserSessionOverviewCoordinatorParameters(session: parameters.session,
+                                                                  sessionInfo: sessionInfo)
         return UserSessionOverviewCoordinator(parameters: parameters)
     }
     

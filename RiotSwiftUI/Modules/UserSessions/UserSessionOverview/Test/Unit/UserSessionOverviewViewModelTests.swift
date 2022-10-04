@@ -85,7 +85,7 @@ class UserSessionOverviewViewModelTests: XCTestCase {
         sut.process(viewAction: .togglePushNotifications)
         XCTAssertEqual(sut.state.isPusherEnabled, true)
     }
-    
+
     private func createUserSessionInfo() -> UserSessionInfo {
         UserSessionInfo(id: "session",
                         name: "iOS",

@@ -18,6 +18,12 @@ import SwiftUI
 
 typealias UserOtherSessionsViewModelType = StateStoreViewModel<UserOtherSessionsViewState, UserOtherSessionsViewAction>
 
+enum OtherUserSessionsFilter {
+    case all
+    case inactive
+    case unverified
+}
+
 class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessionsViewModelProtocol {
     var completion: ((UserOtherSessionsViewModelResult) -> Void)?
     private let sessionsInfo: [UserSessionInfo]

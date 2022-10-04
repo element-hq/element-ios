@@ -40,7 +40,7 @@ final class UserSessionDetailsCoordinator: Coordinator, Presentable {
     init(parameters: UserSessionDetailsCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = UserSessionDetailsViewModel(session: parameters.sessionInfo)
+        let viewModel = UserSessionDetailsViewModel(sessionInfo: parameters.sessionInfo)
         let view = UserSessionDetails(viewModel: viewModel.context)
         userSessionDetailsViewModel = viewModel
         userSessionDetailsHostingController = VectorHostingController(rootView: view)
