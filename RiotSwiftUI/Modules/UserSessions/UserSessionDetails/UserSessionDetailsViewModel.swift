@@ -93,6 +93,12 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
             deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceModel,
                                             value: model))
         }
+        if session.deviceType == .web,
+           let clientName = session.clientName,
+           let clientVersion = session.clientVersion {
+            deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceBrowser,
+                                            value: "\(clientName) \(clientVersion)"))
+        }
         if let deviceOS = session.deviceOS {
             deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceOs,
                                             value: deviceOS))

@@ -2411,6 +2411,7 @@ To enable access, tap Settings> Location and select Always";
 "user_session_details_device_ip_address" = "IP address";
 "user_session_details_device_ip_location" = "IP location";
 "user_session_details_device_model" = "Model";
+"user_session_details_device_browser" = "Browser";
 "user_session_details_device_os" = "Operating System";
 "user_session_details_application_name" = "Name";
 "user_session_details_application_version" = "Version";

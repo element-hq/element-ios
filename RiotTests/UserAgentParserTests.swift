@@ -121,15 +121,15 @@ class UserAgentParserTests: XCTestCase {
 
         let expected = [
             UserAgent(deviceType: .desktop,
-                      deviceModel: "Electron",
-                      deviceOS: "Macintosh",
-                      clientName: nil,
-                      clientVersion: nil),
+                      deviceModel: nil,
+                      deviceOS: "macOS 10.15.7",
+                      clientName: "Electron",
+                      clientVersion: "20.1.1"),
             UserAgent(deviceType: .desktop,
-                      deviceModel: "Electron",
+                      deviceModel: nil,
                       deviceOS: "Windows NT 10.0",
-                      clientName: nil,
-                      clientVersion: nil)
+                      clientName: "Electron",
+                      clientVersion: "20.1.1")
         ]
 
         XCTAssertEqual(userAgents, expected)
@@ -147,30 +147,30 @@ class UserAgentParserTests: XCTestCase {
 
         let expected = [
             UserAgent(deviceType: .web,
-                      deviceModel: "Chrome",
-                      deviceOS: "Macintosh",
-                      clientName: nil,
-                      clientVersion: nil),
+                      deviceModel: nil,
+                      deviceOS: "macOS 10.15.7",
+                      clientName: "Chrome",
+                      clientVersion: "104.0.5112.102"),
             UserAgent(deviceType: .web,
-                      deviceModel: "Chrome",
+                      deviceModel: nil,
                       deviceOS: "Windows NT 10.0",
-                      clientName: nil,
-                      clientVersion: nil),
+                      clientName: "Chrome",
+                      clientVersion: "104.0.5112.102"),
             UserAgent(deviceType: .web,
-                      deviceModel: "Firefox",
-                      deviceOS: "Macintosh",
-                      clientName: nil,
-                      clientVersion: nil),
+                      deviceModel: nil,
+                      deviceOS: "macOS 10.10",
+                      clientName: "Firefox",
+                      clientVersion: "39.0"),
             UserAgent(deviceType: .web,
-                      deviceModel: "Safari",
-                      deviceOS: "Macintosh",
-                      clientName: nil,
-                      clientVersion: nil),
+                      deviceModel: nil,
+                      deviceOS: "macOS 10.10.2",
+                      clientName: "Safari",
+                      clientVersion: "8.0.3"),
             UserAgent(deviceType: .web,
-                      deviceModel: "Chrome",
+                      deviceModel: nil,
                       deviceOS: "Android 9",
-                      clientName: nil,
-                      clientVersion: nil)
+                      clientName: "Chrome",
+                      clientVersion: "69.0.3497.100")
         ]
 
         XCTAssertEqual(userAgents, expected)
@@ -181,11 +181,13 @@ class UserAgentParserTests: XCTestCase {
             "Element (iPhone X; OS 15.2; 3.00)",
             "Element/1.9.9; iOS",
             "Element/1.9.7 Android",
-            "Element/1.9.9; iOS "
+            "some random string",
+            "Element/1.9.9; iOS ",
         ]
         let userAgents = uaStrings.map { UserAgentParser.parse($0) }
 
         let expected = [
+            .unknown,
             .unknown,
             .unknown,
             .unknown,
