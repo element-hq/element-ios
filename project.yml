@@ -53,4 +53,4 @@ packages:
     branch: main
   WysiwygComposer:
     url: https://github.com/matrix-org/matrix-wysiwyg-composer-swift
-    branch: langleyd/add_maximise
+    branch: main
