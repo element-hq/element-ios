@@ -2485,3 +2485,25 @@
 // User sessions management
 "user_sessions_settings" = "Munkamenetek kezelése";
 "invite_to" = "Meghívó ide: %@";
+"device_name_unknown" = "Ismeretlen kliens";
+"device_name_mobile" = "%@ Mobil";
+"device_name_desktop" = "%@ Alkalmazás";
+"device_name_web" = "%@ Web";
+"user_session_item_details" = "%@ · Utolsó aktivitás %@";
+
+// First item is client name and second item is session display name
+"user_session_name" = "%@: %@";
+"user_session_unverified_additional_info" = "Az aktuális munkamenet készen áll a biztonságos üzenetküldésre.";
+"user_session_verified_additional_info" = "Az aktuális munkamenet készen áll a biztonságos üzenetküldésre.";
+"user_session_learn_more" = "Tudj meg többet";
+"user_session_view_details" = "Részletek megtekintése";
+"user_session_verify_action" = "Munkamenet hitelesítése";
+"user_session_unverified_short" = "Ellenőrizetlen";
+"user_session_verified_short" = "Hitelesített";
+"user_session_unverified" = "Ellenőrizetlen munkamenet";
+"user_session_verified" = "Ellenőrzött munkamenet";
+"user_sessions_overview_current_session_section_title" = "JELENLEGI MUNKAMENET";
+"user_sessions_overview_other_sessions_section_info" = "A legjobb biztonság érdekében ellenőrizd a munkameneteket, és jelentkezz ki minden olyan munkamenetből, melyet már nem ismersz fel vagy nem használsz.";
+"user_sessions_overview_other_sessions_section_title" = "TOVÁBBI MUNKAMENETEK";
+"settings_labs_enable_new_app_layout" = "Új alkalmazás kinézet";
+"room_first_message_placeholder" = "Küld el az első üzenetedet…";
