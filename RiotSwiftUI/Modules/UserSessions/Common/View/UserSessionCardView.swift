@@ -109,12 +109,14 @@ struct UserSessionCardView: View {
                 .buttonStyle(PrimaryActionButtonStyle())
                 .padding(.top, 4)
                 .padding(.bottom, 3)
+                .accessibilityIdentifier("userSessionCardVerifyButton")
             }
             
             if viewData.isCurrentSessionDisplayMode {
                 Text(VectorL10n.userSessionViewDetails)
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.accent)
+                    .accessibilityIdentifier("userSessionCardViewDetails")
             }
         }
         .padding(24)
@@ -134,18 +136,24 @@ struct UserSessionCardViewPreview: View {
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     let viewData: UserSessionCardViewData
-    
-    init(isCurrentSessionInfo: Bool = false) {
-        let session = UserSessionInfo(id: "alice",
+
+    init(isCurrent: Bool = false) {
+        let sessionInfo = UserSessionInfo(id: "alice",
                                       name: "iOS",
                                       deviceType: .mobile,
                                       isVerified: false,
                                       lastSeenIP: "10.0.0.10",
-                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
+                                      lastSeenTimestamp: nil,
+                                      applicationName: "Element iOS",
+                                      applicationVersion: "1.0.0",
+                                      applicationURL: nil,
+                                      deviceModel: nil,
+                                      deviceOS: "iOS 15.5",
+                                      lastSeenIPLocation: nil,
+                                      deviceName: "My iPhone",
                                       isActive: true,
-                                      isCurrent: isCurrentSessionInfo)
-        
-        viewData = UserSessionCardViewData(session: session)
+                                      isCurrent: isCurrent)
+        viewData = UserSessionCardViewData(sessionInfo: sessionInfo)
     }
     
     var body: some View {
@@ -161,8 +169,8 @@ struct UserSessionCardViewPreview: View {
 struct UserSessionCardView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            UserSessionCardViewPreview(isCurrentSessionInfo: true).theme(.light).preferredColorScheme(.light)
-            UserSessionCardViewPreview(isCurrentSessionInfo: true).theme(.dark).preferredColorScheme(.dark)
+            UserSessionCardViewPreview(isCurrent: true).theme(.light).preferredColorScheme(.light)
+            UserSessionCardViewPreview(isCurrent: true).theme(.dark).preferredColorScheme(.dark)
             UserSessionCardViewPreview().theme(.light).preferredColorScheme(.light)
             UserSessionCardViewPreview().theme(.dark).preferredColorScheme(.dark)
         }

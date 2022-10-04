@@ -21,12 +21,12 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     /// Delay after which session is considered inactive, 90 days
     private static let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
     
-    private let mxSession: MXSession
+    private let dataProvider: UserSessionsDataProviderProtocol
     
     private(set) var overviewData: UserSessionsOverviewData
     
-    init(mxSession: MXSession) {
-        self.mxSession = mxSession
+    init(dataProvider: UserSessionsDataProviderProtocol) {
+        self.dataProvider = dataProvider
         
         overviewData = UserSessionsOverviewData(currentSession: nil,
                                                 unverifiedSessions: [],
@@ -39,7 +39,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     // MARK: - Public
     
     func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
-        mxSession.matrixRestClient.devices { response in
+        dataProvider.devices { response in
             switch response {
             case .success(let devices):
                 self.overviewData = self.sessionsOverviewData(from: devices)
@@ -61,26 +61,28 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     // MARK: - Private
     
     private func setupInitialOverviewData() {
-        let currentSessionInfo = currentSessionInfo()
+        guard let currentSessionInfo = getCurrentSessionInfo() else {
+            return
+        }
         
         overviewData = UserSessionsOverviewData(currentSession: currentSessionInfo,
-                                                unverifiedSessions: [],
-                                                inactiveSessions: [],
+                                                unverifiedSessions: currentSessionInfo.isVerified ? [] : [currentSessionInfo],
+                                                inactiveSessions: currentSessionInfo.isActive ? [] : [currentSessionInfo],
                                                 otherSessions: [])
     }
     
-    private func currentSessionInfo() -> UserSessionInfo? {
-        guard let mainAccount = MXKAccountManager.shared().activeAccounts.first,
+    private func getCurrentSessionInfo() -> UserSessionInfo? {
+        guard let mainAccount = dataProvider.activeAccounts.first,
               let device = mainAccount.device else {
             return nil
         }
         return sessionInfo(from: device, isCurrentSession: true)
     }
-    
+
     private func sessionsOverviewData(from devices: [MXDevice]) -> UserSessionsOverviewData {
         let allSessions = devices
             .sorted { $0.lastSeenTs > $1.lastSeenTs }
-            .map { sessionInfo(from: $0, isCurrentSession: $0.deviceId == mxSession.myDeviceId) }
+            .map { sessionInfo(from: $0, isCurrentSession: $0.deviceId == dataProvider.myDeviceId) }
         
         return UserSessionsOverviewData(currentSession: allSessions.filter(\.isCurrent).first,
                                         unverifiedSessions: allSessions.filter { !$0.isVerified },
@@ -90,33 +92,59 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     
     private func sessionInfo(from device: MXDevice, isCurrentSession: Bool) -> UserSessionInfo {
         let isSessionVerified = deviceInfo(for: device.deviceId)?.trustLevel.isVerified ?? false
-        
-        var lastSeenTs: TimeInterval?
-        if device.lastSeenTs > 0 {
-            lastSeenTs = TimeInterval(device.lastSeenTs / 1000)
-        }
-        
+
+        let eventType = kMXAccountDataTypeClientInformation + "." + device.deviceId
+        let appData = dataProvider.accountData(for: eventType)
+        var userAgent: UserAgent?
         var isSessionActive = true
-        if let lastSeenTimestamp = lastSeenTs {
-            let elapsedTime = Date().timeIntervalSince1970 - lastSeenTimestamp
+
+        if let lastSeenUserAgent = device.lastSeenUserAgent {
+            userAgent = UserAgentParser.parse(lastSeenUserAgent)
+        }
+
+        if device.lastSeenTs > 0 {
+            let elapsedTime = Date().timeIntervalSince1970 - TimeInterval(device.lastSeenTs / 1000)
             isSessionActive = elapsedTime < Self.inactiveSessionDurationTreshold
         }
-        
-        return UserSessionInfo(id: device.deviceId,
-                               name: device.displayName,
-                               deviceType: .unknown,
-                               isVerified: isSessionVerified,
-                               lastSeenIP: device.lastSeenIp,
-                               lastSeenTimestamp: lastSeenTs,
+
+        return UserSessionInfo(withDevice: device,
+                               applicationData: appData as? [String: String],
+                               userAgent: userAgent,
+                               isSessionVerified: isSessionVerified,
                                isActive: isSessionActive,
                                isCurrent: isCurrentSession)
     }
     
     private func deviceInfo(for deviceId: String) -> MXDeviceInfo? {
-        guard let userId = mxSession.myUserId else {
+        guard let userId = dataProvider.myUserId else {
             return nil
         }
         
-        return mxSession.crypto.device(withDeviceId: deviceId, ofUser: userId)
+        return dataProvider.device(withDeviceId: deviceId, ofUser: userId)
+    }
+}
+
+extension UserSessionInfo {
+    init(withDevice device: MXDevice,
+         applicationData: [String: String]?,
+         userAgent: UserAgent?,
+         isSessionVerified: Bool,
+         isActive: Bool,
+         isCurrent: Bool) {
+        self.init(id: device.deviceId,
+                  name: device.displayName,
+                  deviceType: userAgent?.deviceType ?? .unknown,
+                  isVerified: isSessionVerified,
+                  lastSeenIP: device.lastSeenIp,
+                  lastSeenTimestamp: device.lastSeenTs > 0 ? TimeInterval(device.lastSeenTs / 1000) : nil,
+                  applicationName: applicationData?["name"],
+                  applicationVersion: applicationData?["version"],
+                  applicationURL: applicationData?["url"],
+                  deviceModel: userAgent?.deviceModel,
+                  deviceOS: userAgent?.deviceOS,
+                  lastSeenIPLocation: nil,
+                  deviceName: userAgent?.clientName,
+                  isActive: isActive,
+                  isCurrent: isCurrent)
     }
 }

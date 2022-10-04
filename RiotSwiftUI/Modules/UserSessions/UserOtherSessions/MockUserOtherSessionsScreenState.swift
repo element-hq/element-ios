@@ -40,7 +40,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
         
-        let viewModel = UserOtherSessionsViewModel(sessions: inactiveSessions(),
+        let viewModel = UserOtherSessionsViewModel(sessionsInfo: inactiveSessions(),
                                                    filter: .inactive,
                                                    title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
 
@@ -53,12 +53,19 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
     }
     
     private func inactiveSessions() -> [UserSessionInfo] {
-        [UserSessionInfo(id: "alice",
+        [UserSessionInfo(id: "0",
                          name: "iOS",
                          deviceType: .mobile,
                          isVerified: false,
                          lastSeenIP: "10.0.0.10",
                          lastSeenTimestamp: nil,
+                         applicationName: nil,
+                         applicationVersion: nil,
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: nil,
+                         lastSeenIPLocation: nil,
+                         deviceName: "",
                          isActive: false,
                          isCurrent: true),
          UserSessionInfo(id: "1",
@@ -67,6 +74,13 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          isVerified: true,
                          lastSeenIP: "1.0.0.1",
                          lastSeenTimestamp: Date().timeIntervalSince1970 - 8000000,
+                         applicationName: nil,
+                         applicationVersion: nil,
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: nil,
+                         lastSeenIPLocation: nil,
+                         deviceName: "",
                          isActive: false,
                          isCurrent: false),
          UserSessionInfo(id: "2",
@@ -75,6 +89,13 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          isVerified: true,
                          lastSeenIP: "2.0.0.2",
                          lastSeenTimestamp: Date().timeIntervalSince1970 - 9000000,
+                         applicationName: nil,
+                         applicationVersion: nil,
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: nil,
+                         lastSeenIPLocation: nil,
+                         deviceName: "",
                          isActive: false,
                          isCurrent: false),
          UserSessionInfo(id: "3",
@@ -83,6 +104,13 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          isVerified: false,
                          lastSeenIP: "3.0.0.3",
                          lastSeenTimestamp: Date().timeIntervalSince1970 - 10000000,
+                         applicationName: nil,
+                         applicationVersion: nil,
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: nil,
+                         lastSeenIPLocation: nil,
+                         deviceName: "",
                          isActive: false,
                          isCurrent: false)]
     }

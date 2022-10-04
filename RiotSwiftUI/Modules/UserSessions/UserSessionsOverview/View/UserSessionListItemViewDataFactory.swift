@@ -18,13 +18,9 @@ import Foundation
 
 struct UserSessionListItemViewDataFactory {
     
-    private static let userSessionNameFormatter = UserSessionNameFormatter()
-    private static let lastActivityDateFormatter = UserSessionLastActivityFormatter()
-    private static let inactiveSessionDateFormatter = InactiveUserSessionLastActivityFormatter()
-    
     func create(from session: UserSessionInfo) -> UserSessionListItemViewData {
-        let sessionName = UserSessionListItemViewDataFactory.userSessionNameFormatter.sessionName(deviceType: session.deviceType,
-                                                                                                  sessionDisplayName: session.name)
+        let sessionName = UserSessionNameFormatter.sessionName(deviceType: session.deviceType,
+                                                               sessionDisplayName: session.name)
         let sessionDetails = buildSessionDetails(isVerified: session.isVerified,
                                                  lastActivityDate: session.lastSeenTimestamp,
                                                  isActive: session.isActive)
@@ -47,7 +43,7 @@ struct UserSessionListItemViewDataFactory {
     
     private func inactiveSessionDetails(lastActivityDate: TimeInterval?) -> String {
         if let lastActivityDate = lastActivityDate {
-            let lastActivityDateString = Self.inactiveSessionDateFormatter.lastActivityDateString(from: lastActivityDate)
+            let lastActivityDateString = InactiveUserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityDate)
             return VectorL10n.userInactiveSessionItemWithDate(lastActivityDateString)
         }
         return VectorL10n.userInactiveSessionItem
@@ -61,7 +57,7 @@ struct UserSessionListItemViewDataFactory {
         var lastActivityDateString: String?
         
         if let lastActivityDate = lastActivityDate {
-            lastActivityDateString = Self.lastActivityDateFormatter.lastActivityDateString(from: lastActivityDate)
+            lastActivityDateString = UserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityDate)
         }
         
         if let lastActivityDateString = lastActivityDateString, lastActivityDateString.isEmpty == false {

@@ -25,7 +25,7 @@ class InactiveUserSessionLastActivityFormatter {
         return dateFormatter
     }()
     
-    func lastActivityDateString(from lastActivityTimestamp: TimeInterval) -> String {
+    static func lastActivityDateString(from lastActivityTimestamp: TimeInterval) -> String {
         let date = Date(timeIntervalSince1970: lastActivityTimestamp)
         
         return InactiveUserSessionLastActivityFormatter.dateFormatter.string(from: date)

@@ -18,6 +18,7 @@ import Foundation
 
 /// View data for UserSessionListItem
 struct UserSessionListItemViewData: Identifiable, Hashable {
+
     var id: String {
         sessionId
     }
@@ -29,6 +30,6 @@ struct UserSessionListItemViewData: Identifiable, Hashable {
     let sessionDetails: String
     
     let deviceAvatarViewData: DeviceAvatarViewData
-    
+
     let sessionDetailsIcon: String?
 }

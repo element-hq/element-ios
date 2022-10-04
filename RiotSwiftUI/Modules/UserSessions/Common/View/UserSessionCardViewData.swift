@@ -18,9 +18,6 @@ import Foundation
 
 /// View data for UserSessionCardView
 struct UserSessionCardViewData {
-    private static let userSessionNameFormatter = UserSessionNameFormatter()
-    private static let lastActivityDateFormatter = UserSessionLastActivityFormatter()
-    
     var id: String {
         sessionId
     }
@@ -48,13 +45,13 @@ struct UserSessionCardViewData {
          lastSeenIP: String?,
          isCurrentSessionDisplayMode: Bool = false) {
         self.sessionId = sessionId
-        sessionName = Self.userSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
+        sessionName = UserSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
         self.isVerified = isVerified
         
         var lastActivityDateString: String?
         
         if let lastActivityTimestamp = lastActivityTimestamp {
-            lastActivityDateString = Self.lastActivityDateFormatter.lastActivityDateString(from: lastActivityTimestamp)
+            lastActivityDateString = UserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityTimestamp)
         }
         
         self.lastActivityDateString = lastActivityDateString
@@ -66,13 +63,13 @@ struct UserSessionCardViewData {
 }
 
 extension UserSessionCardViewData {
-    init(session: UserSessionInfo) {
-        self.init(sessionId: session.id,
-                  sessionDisplayName: session.name,
-                  deviceType: session.deviceType,
-                  isVerified: session.isVerified,
-                  lastActivityTimestamp: session.lastSeenTimestamp,
-                  lastSeenIP: session.lastSeenIP,
-                  isCurrentSessionDisplayMode: session.isCurrent)
+    init(sessionInfo: UserSessionInfo) {
+        self.init(sessionId: sessionInfo.id,
+                  sessionDisplayName: sessionInfo.name,
+                  deviceType: sessionInfo.deviceType,
+                  isVerified: sessionInfo.isVerified,
+                  lastActivityTimestamp: sessionInfo.lastSeenTimestamp,
+                  lastSeenIP: sessionInfo.lastSeenIP,
+                  isCurrentSessionDisplayMode: sessionInfo.isCurrent)
     }
 }

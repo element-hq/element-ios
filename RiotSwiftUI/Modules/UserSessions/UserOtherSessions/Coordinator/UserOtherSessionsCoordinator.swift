@@ -18,7 +18,7 @@ import CommonKit
 import SwiftUI
 
 struct UserOtherSessionsCoordinatorParameters {
-    let sessions: [UserSessionInfo]
+    let sessionsInfo: [UserSessionInfo]
     let filter: OtherUserSessionsFilter
     let title: String
 }
@@ -38,7 +38,7 @@ final class UserOtherSessionsCoordinator: Coordinator, Presentable {
     init(parameters: UserOtherSessionsCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = UserOtherSessionsViewModel(sessions: parameters.sessions,
+        let viewModel = UserOtherSessionsViewModel(sessionsInfo: parameters.sessionsInfo,
                                                    filter: parameters.filter,
                                                    title: parameters.title)
         let view = UserOtherSessions(viewModel: viewModel.context)
@@ -55,8 +55,8 @@ final class UserOtherSessionsCoordinator: Coordinator, Presentable {
         userOtherSessionsViewModel.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .showUserSessionOverview(session: session):
-                self.completion?(.openSessionDetails(session: session))
+            case let .showUserSessionOverview(sessionInfo: session):
+                self.completion?(.openSessionDetails(sessionInfo: session))
             }
             MXLog.debug("[UserOtherSessionsCoordinator] UserOtherSessionsViewModel did complete with result: \(result).")
         }

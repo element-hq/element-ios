@@ -20,14 +20,14 @@ typealias UserOtherSessionsViewModelType = StateStoreViewModel<UserOtherSessions
 
 class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessionsViewModelProtocol {
     var completion: ((UserOtherSessionsViewModelResult) -> Void)?
-    private let sessions: [UserSessionInfo]
+    private let sessionsInfo: [UserSessionInfo]
     
-    init(sessions: [UserSessionInfo],
+    init(sessionsInfo: [UserSessionInfo],
          filter: OtherUserSessionsFilter,
          title: String) {
-        self.sessions = sessions
+        self.sessionsInfo = sessionsInfo
         super.init(initialViewState: UserOtherSessionsViewState(title: title, sections: []))
-        updateViewState(sessions: sessions, filter: filter)
+        updateViewState(sessionsInfo: sessionsInfo, filter: filter)
     }
     
     // MARK: - Public
@@ -35,30 +35,30 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     override func process(viewAction: UserOtherSessionsViewAction) {
         switch viewAction {
         case let .userOtherSessionSelected(sessionId: sessionId):
-            guard let session = sessions.first(where: {$0.id == sessionId}) else {
+            guard let session = sessionsInfo.first(where: {$0.id == sessionId}) else {
                 assertionFailure("Session should exist in the array.")
                 return
             }
-            completion?(.showUserSessionOverview(session: session))
+            completion?(.showUserSessionOverview(sessionInfo: session))
         }
     }
     
     // MARK: - Private
     
-    private func updateViewState(sessions: [UserSessionInfo], filter: OtherUserSessionsFilter) {
-        let sectionItems = filterSessions(sessions: sessions, by: filter).asViewData()
+    private func updateViewState(sessionsInfo: [UserSessionInfo], filter: OtherUserSessionsFilter) {
+        let sectionItems = filterSessions(sessionsInfo: sessionsInfo, by: filter).asViewData()
         let sectionHeader = createHeaderData(filter: filter)
         state.sections = [.sessionItems(header: sectionHeader, items: sectionItems)]
     }
     
-    private func filterSessions(sessions: [UserSessionInfo], by filter: OtherUserSessionsFilter) -> [UserSessionInfo] {
+    private func filterSessions(sessionsInfo: [UserSessionInfo], by filter: OtherUserSessionsFilter) -> [UserSessionInfo] {
         switch filter {
         case .all:
-            return sessions.filter { !$0.isCurrent }
+            return sessionsInfo.filter { !$0.isCurrent }
         case .inactive:
-            return sessions.filter { !$0.isActive }
+            return sessionsInfo.filter { !$0.isActive }
         case .unverified:
-            return sessions.filter { !$0.isVerified }
+            return sessionsInfo.filter { !$0.isVerified }
         }
     }
     

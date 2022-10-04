@@ -247,6 +247,10 @@ public class VectorL10n: NSObject {
   public static var allChatsTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_title") 
   }
+  /// User menu
+  public static var allChatsUserMenuAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "all_chats_user_menu_accessibility_label") 
+  }
   /// User settings
   public static var allChatsUserMenuSettings: String { 
     return VectorL10n.tr("Vector", "all_chats_user_menu_settings") 
@@ -5623,6 +5627,10 @@ public class VectorL10n: NSObject {
   public static var roomEventEncryptionInfoEventUserId: String { 
     return VectorL10n.tr("Vector", "room_event_encryption_info_event_user_id") 
   }
+  /// The authenticity of this encrypted message can't be guaranteed on this device.
+  public static var roomEventEncryptionInfoKeyAuthenticityNotGuaranteed: String { 
+    return VectorL10n.tr("Vector", "room_event_encryption_info_key_authenticity_not_guaranteed") 
+  }
   /// End-to-end encryption information\n\n
   public static var roomEventEncryptionInfoTitle: String { 
     return VectorL10n.tr("Vector", "room_event_encryption_info_title") 
@@ -7375,6 +7383,14 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableNewAppLayout: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_new_app_layout") 
   }
+  /// Record the client name, version, and url to recognise sessions more easily in session manager
+  public static var settingsLabsEnableNewClientInfoFeature: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_new_client_info_feature") 
+  }
+  /// New session manager
+  public static var settingsLabsEnableNewSessionManager: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_new_session_manager") 
+  }
   /// Ring for group calls
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
@@ -8479,9 +8495,37 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionSecurityRecommendationTitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_security_recommendation_title") 
   }
+  /// Name
+  public static var userSessionDetailsApplicationName: String { 
+    return VectorL10n.tr("Vector", "user_session_details_application_name") 
+  }
+  /// Application
+  public static var userSessionDetailsApplicationSectionHeader: String { 
+    return VectorL10n.tr("Vector", "user_session_details_application_section_header") 
+  }
+  /// URL
+  public static var userSessionDetailsApplicationUrl: String { 
+    return VectorL10n.tr("Vector", "user_session_details_application_url") 
+  }
+  /// Version
+  public static var userSessionDetailsApplicationVersion: String { 
+    return VectorL10n.tr("Vector", "user_session_details_application_version") 
+  }
   /// IP address
   public static var userSessionDetailsDeviceIpAddress: String { 
     return VectorL10n.tr("Vector", "user_session_details_device_ip_address") 
+  }
+  /// IP location
+  public static var userSessionDetailsDeviceIpLocation: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_ip_location") 
+  }
+  /// Model
+  public static var userSessionDetailsDeviceModel: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_model") 
+  }
+  /// Operating System
+  public static var userSessionDetailsDeviceOs: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_os") 
   }
   /// Device
   public static var userSessionDetailsDeviceSectionHeader: String { 
@@ -8530,6 +8574,14 @@ public class VectorL10n: NSObject {
   /// Session
   public static var userSessionOverviewSessionTitle: String { 
     return VectorL10n.tr("Vector", "user_session_overview_session_title") 
+  }
+  /// Push notifications
+  public static var userSessionPushNotifications: String { 
+    return VectorL10n.tr("Vector", "user_session_push_notifications") 
+  }
+  /// When turned on, this session will receive push notifications.
+  public static var userSessionPushNotificationsMessage: String { 
+    return VectorL10n.tr("Vector", "user_session_push_notifications_message") 
   }
   /// Unverified session
   public static var userSessionUnverified: String { 

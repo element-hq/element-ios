@@ -53,58 +53,58 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .openSessionOverview(session: session):
-                self.openSessionOverview(session: session)
-            case let .openOtherSessions(sessions: sessions, filter: filter):
-                self.openOtherSessions(sessions: sessions, filterBy: filter, title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
+            case let .openSessionOverview(sessionInfo: sessionInfo):
+                self.openSessionOverview(sessionsInfo: sessionInfo)
+            case let .openOtherSessions(sessionsInfo: sessionsInfo, filter: filter):
+                self.openOtherSessions(sessionsInfo: sessionsInfo, filterBy: filter, title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
             }
         }
         return coordinator
     }
     
-    private func openSessionDetails(session: UserSessionInfo) {
-        let coordinator = createUserSessionDetailsCoordinator(session: session)
+    private func openSessionDetails(sessionInfo: UserSessionInfo) {
+        let coordinator = createUserSessionDetailsCoordinator(sessionInfo: sessionInfo)
         pushScreen(with: coordinator)
     }
     
-    private func createUserSessionDetailsCoordinator(session: UserSessionInfo) -> UserSessionDetailsCoordinator {
-        let parameters = UserSessionDetailsCoordinatorParameters(session: session)
+    private func createUserSessionDetailsCoordinator(sessionInfo: UserSessionInfo) -> UserSessionDetailsCoordinator {
+        let parameters = UserSessionDetailsCoordinatorParameters(sessionInfo: sessionInfo)
         return UserSessionDetailsCoordinator(parameters: parameters)
     }
     
-    private func openSessionOverview(session: UserSessionInfo) {
-        let coordinator = createUserSessionOverviewCoordinator(session: session)
+    private func openSessionOverview(sessionsInfo: UserSessionInfo) {
+        let coordinator = createUserSessionOverviewCoordinator(sessionsInfo: sessionsInfo)
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .openSessionDetails(session: session):
-                self.openSessionDetails(session: session)
+            case let .openSessionDetails(sessionInfo: session):
+                self.openSessionDetails(sessionInfo: session)
             }
         }
         pushScreen(with: coordinator)
     }
     
-    private func createUserSessionOverviewCoordinator(session: UserSessionInfo) -> UserSessionOverviewCoordinator {
-        let parameters = UserSessionOverviewCoordinatorParameters(session: session)
+    private func createUserSessionOverviewCoordinator(sessionsInfo: UserSessionInfo) -> UserSessionOverviewCoordinator {
+        let parameters = UserSessionOverviewCoordinatorParameters(session: parameters.session, sessionInfo: sessionsInfo)
         return UserSessionOverviewCoordinator(parameters: parameters)
     }
     
-    private func openOtherSessions(sessions: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter, title: String) {
-        let coordinator = createOtherSessionsCoordinator(sessions: sessions,
+    private func openOtherSessions(sessionsInfo: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter, title: String) {
+        let coordinator = createOtherSessionsCoordinator(sessionsInfo: sessionsInfo,
                                                          filterBy: filter,
                                                          title: title)
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .openSessionDetails(session: session):
-                self.openSessionDetails(session: session)
+            case let .openSessionDetails(sessionInfo: session):
+                self.openSessionDetails(sessionInfo: session)
             }
         }
         pushScreen(with: coordinator)
     }
     
-    private func createOtherSessionsCoordinator(sessions: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter, title: String) -> UserOtherSessionsCoordinator {
-        let parameters = UserOtherSessionsCoordinatorParameters(sessions: sessions,
+    private func createOtherSessionsCoordinator(sessionsInfo: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter, title: String) -> UserOtherSessionsCoordinator {
+        let parameters = UserOtherSessionsCoordinatorParameters(sessionsInfo: sessionsInfo,
                                                                 filter: filter,
                                                                 title: title)
         return UserOtherSessionsCoordinator(parameters: parameters)

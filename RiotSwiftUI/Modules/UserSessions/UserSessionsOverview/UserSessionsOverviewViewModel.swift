@@ -44,19 +44,21 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
                 assertionFailure("Missing current session")
                 return
             }
-            completion?(.showCurrentSessionOverview(session: currentSessionInfo))
+            completion?(.showCurrentSessionOverview(sessionInfo: currentSessionInfo))
         case .viewAllUnverifiedSessions:
-            showSessions(filteredBy: .unverified)
+            // TODO: showSessions(filteredBy: .unverified)
+            break
         case .viewAllInactiveSessions:
             showSessions(filteredBy: .inactive)
         case .viewAllOtherSessions:
-            showSessions(filteredBy: .all)
+            // TODO: showSessions(filteredBy: .all)
+            break
         case .tapUserSession(let sessionId):
             guard let session = userSessionsOverviewService.sessionForIdentifier(sessionId) else {
                 assertionFailure("Missing session info")
                 return
             }
-            completion?(.showUserSessionOverview(session: session))
+            completion?(.showUserSessionOverview(sessionInfo: session))
         }
     }
     
@@ -68,7 +70,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         state.otherSessionsViewData = userSessionsViewData.otherSessions.asViewData()
         
         if let currentSessionInfo = userSessionsViewData.currentSession {
-            state.currentSessionViewData = UserSessionCardViewData(session: currentSessionInfo)
+            state.currentSessionViewData = UserSessionCardViewData(sessionInfo: currentSessionInfo)
         }
     }
     
@@ -93,7 +95,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
     }
     
     private func showSessions(filteredBy filter: OtherUserSessionsFilter) {
-        completion?(.showOtherSessions(sessions: userSessionsOverviewService.overviewData.otherSessions,
+        completion?(.showOtherSessions(sessionsInfo: userSessionsOverviewService.overviewData.otherSessions,
                                        filter: filter))
     }
 }

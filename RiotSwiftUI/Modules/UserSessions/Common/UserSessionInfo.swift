@@ -35,16 +35,41 @@ struct UserSessionInfo: Identifiable {
     
     /// Last time the session was active
     let lastSeenTimestamp: TimeInterval?
-        
+
+    // MARK: - Application Properties
+
+    /// Application name used by the session
+    let applicationName: String?
+
+    /// Application version used by the session
+    let applicationVersion: String?
+
+    /// Application URL used by the session. Only applicable for web sessions.
+    let applicationURL: String?
+
+    // MARK: - Device Properties
+
+    /// Device model
+    let deviceModel: String?
+
+    /// Device OS
+    let deviceOS: String?
+
+    /// Last seen IP location
+    let lastSeenIPLocation: String?
+
+    /// Device name
+    let deviceName: String?
+
     /// True to indicate that session has been used under `inactiveSessionDurationTreshold` value
     let isActive: Bool
-    
+
     /// True to indicate that this is current user session
     let isCurrent: Bool
 }
 
 extension UserSessionInfo: Equatable {
     static func == (lhs: UserSessionInfo, rhs: UserSessionInfo) -> Bool {
-        return lhs.id == rhs.id
+        lhs.id == rhs.id
     }
 }

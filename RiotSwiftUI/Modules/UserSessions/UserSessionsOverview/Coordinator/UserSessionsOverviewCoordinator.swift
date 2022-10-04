@@ -37,7 +37,8 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     init(parameters: UserSessionsOverviewCoordinatorParameters) {
         self.parameters = parameters
         
-        service = UserSessionsOverviewService(mxSession: parameters.session)
+        let dataProvider = UserSessionsDataProvider(session: parameters.session)
+        service = UserSessionsOverviewService(dataProvider: dataProvider)
         viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
         hostingViewController = VectorHostingController(rootView: UserSessionsOverview(viewModel: viewModel.context))
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: hostingViewController)
@@ -52,14 +53,14 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
             MXLog.debug("[UserSessionsOverviewCoordinator] UserSessionsOverviewViewModel did complete with result: \(result).")
             
             switch result {
-            case let .showOtherSessions(sessions: sessions, filter: filter):
-                self.showOtherSessions(sessions: sessions, filterBy: filter)
+            case let .showOtherSessions(sessionsInfo: sessionsInfo, filter: filter):
+                self.showOtherSessions(sessionsInfo: sessionsInfo, filterBy: filter)
             case .verifyCurrentSession:
                 self.startVerifyCurrentSession()
-            case let .showCurrentSessionOverview(session):
-                self.showCurrentSessionOverview(session: session)
-            case let .showUserSessionOverview(session):
-                self.showUserSessionOverview(session: session)
+            case let .showCurrentSessionOverview(sessionInfo):
+                self.showCurrentSessionOverview(sessionInfo: sessionInfo)
+            case let .showUserSessionOverview(sessionInfo):
+                self.showUserSessionOverview(sessionInfo: sessionInfo)
             }
         }
     }
@@ -83,20 +84,20 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         loadingIndicator = nil
     }
     
-    private func showOtherSessions(sessions: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter) {
-        completion?(.openOtherSessions(sessions: sessions, filter: filter))
+    private func showOtherSessions(sessionsInfo: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter) {
+        completion?(.openOtherSessions(sessionsInfo: sessionsInfo, filter: filter))
     }
     
     private func startVerifyCurrentSession() {
         // TODO:
     }
     
-    private func showCurrentSessionOverview(session: UserSessionInfo) {
-        completion?(.openSessionOverview(session: session))
+    private func showCurrentSessionOverview(sessionInfo: UserSessionInfo) {
+        completion?(.openSessionOverview(sessionInfo: sessionInfo))
     }
     
-    private func showUserSessionOverview(session: UserSessionInfo) {
-        completion?(.openSessionOverview(session: session))
+    private func showUserSessionOverview(sessionInfo: UserSessionInfo) {
+        completion?(.openSessionOverview(sessionInfo: sessionInfo))
     }
 
 }

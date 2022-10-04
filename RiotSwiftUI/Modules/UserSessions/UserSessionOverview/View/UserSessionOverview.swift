@@ -26,7 +26,7 @@ struct UserSessionOverview: View {
             UserSessionCardView(viewData: viewModel.viewState.cardViewData, onVerifyAction: { _ in
                 viewModel.send(viewAction: .verifyCurrentSession)
             },
-                                onViewDetailsAction: { _ in
+            onViewDetailsAction: { _ in
                 viewModel.send(viewAction: .viewSessionDetails)
             })
             .padding(16)
@@ -34,13 +34,21 @@ struct UserSessionOverview: View {
                 UserSessionOverviewDisclosureCell(title: VectorL10n.userSessionOverviewSessionDetailsButtonTitle, onBackgroundTap: {
                     viewModel.send(viewAction: .viewSessionDetails)
                 })
+                if let enabled = viewModel.viewState.isPusherEnabled {
+                    UserSessionOverviewToggleCell(title: VectorL10n.userSessionPushNotifications,
+                                                  message: VectorL10n.userSessionPushNotificationsMessage,
+                                                  isOn: enabled, isEnabled: viewModel.viewState.remotelyTogglingPushersAvailable) {
+                        viewModel.send(viewAction: .togglePushNotifications)
+                    }
+                }
             }
         }
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
+        .waitOverlay(show: viewModel.viewState.showLoadingIndicator, allowUserInteraction: false)
         .navigationTitle(viewModel.viewState.isCurrentSession ?
-                         VectorL10n.userSessionOverviewCurrentSessionTitle :
-                            VectorL10n.userSessionOverviewSessionTitle)
+            VectorL10n.userSessionOverviewCurrentSessionTitle :
+            VectorL10n.userSessionOverviewSessionTitle)
     }
 }
 

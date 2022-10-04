@@ -18,7 +18,8 @@ import CommonKit
 import SwiftUI
 
 struct UserSessionOverviewCoordinatorParameters {
-    let session: UserSessionInfo
+    let session: MXSession
+    let sessionInfo: UserSessionInfo
 }
 
 final class UserSessionOverviewCoordinator: Coordinator, Presentable {
@@ -40,7 +41,8 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
     init(parameters: UserSessionOverviewCoordinatorParameters) {
         self.parameters = parameters
 
-        viewModel = UserSessionOverviewViewModel(session: parameters.session)
+        let service = UserSessionOverviewService(session: parameters.session, sessionInfo: parameters.sessionInfo)
+        viewModel = UserSessionOverviewViewModel(sessionInfo: parameters.sessionInfo, service: service)
         
         hostingController = VectorHostingController(rootView: UserSessionOverview(viewModel: viewModel.context))
         
@@ -57,8 +59,8 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
             switch result {
             case .verifyCurrentSession:
                 break // TODO:
-            case let .showSessionDetails(session: session):
-                self.completion?(.openSessionDetails(session: session))
+            case let .showSessionDetails(sessionInfo: sessionInfo):
+                self.completion?(.openSessionDetails(sessionInfo: sessionInfo))
             }
         }
     }
