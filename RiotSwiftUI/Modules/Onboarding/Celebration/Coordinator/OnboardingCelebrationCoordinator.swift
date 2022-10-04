@@ -45,6 +45,7 @@ final class OnboardingCelebrationCoordinator: Coordinator, Presentable {
         onboardingCelebrationViewModel = viewModel
         onboardingCelebrationHostingController = VectorHostingController(rootView: view)
         onboardingCelebrationHostingController.enableNavigationBarScrollEdgeAppearance = true
+        onboardingCelebrationHostingController.isNavigationBarHidden = true
     }
     
     // MARK: - Public
