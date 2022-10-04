@@ -24,10 +24,10 @@ struct UserOtherSessionsCoordinatorParameters {
 }
 
 final class UserOtherSessionsCoordinator: Coordinator, Presentable {
+    
     private let parameters: UserOtherSessionsCoordinatorParameters
     private let userOtherSessionsHostingController: UIViewController
     private var userOtherSessionsViewModel: UserOtherSessionsViewModelProtocol
-    
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
 

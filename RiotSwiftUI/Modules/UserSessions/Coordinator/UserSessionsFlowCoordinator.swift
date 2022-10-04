@@ -56,7 +56,9 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             case let .openSessionOverview(sessionInfo: sessionInfo):
                 self.openSessionOverview(sessionInfo: sessionInfo)
             case let .openOtherSessions(sessionsInfo: sessionsInfo, filter: filter):
-                self.openOtherSessions(sessionsInfo: sessionsInfo, filterBy: filter, title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
+                self.openOtherSessions(sessionsInfo: sessionsInfo,
+                                       filterBy: filter,
+                                       title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
             }
         }
         return coordinator
@@ -104,7 +106,9 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         pushScreen(with: coordinator)
     }
     
-    private func createOtherSessionsCoordinator(sessionsInfo: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter, title: String) -> UserOtherSessionsCoordinator {
+    private func createOtherSessionsCoordinator(sessionsInfo: [UserSessionInfo],
+                                                filterBy filter: OtherUserSessionsFilter,
+                                                title: String) -> UserOtherSessionsCoordinator {
         let parameters = UserOtherSessionsCoordinatorParameters(sessionsInfo: sessionsInfo,
                                                                 filter: filter,
                                                                 title: title)

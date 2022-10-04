@@ -25,6 +25,7 @@ enum OtherUserSessionsFilter {
 }
 
 class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessionsViewModelProtocol {
+    
     var completion: ((UserOtherSessionsViewModelResult) -> Void)?
     private let sessionsInfo: [UserSessionInfo]
     
