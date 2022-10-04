@@ -15,7 +15,6 @@
 //
 
 import SwiftUI
-import ZXingObjC
 
 /// The screen shown to a new user to select their use case for the app.
 struct AuthenticationQRLoginScanScreen: View {
