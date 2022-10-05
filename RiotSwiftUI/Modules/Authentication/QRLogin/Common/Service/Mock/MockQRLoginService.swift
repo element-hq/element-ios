@@ -51,12 +51,10 @@ class MockQRLoginService: QRLoginServiceProtocol {
     }
 
     func scannerView() -> AnyView {
-        AnyView(Color.blue)
+        AnyView(Color.red)
     }
 
-    func startScanning() {
-        state = .scanningQR
-    }
+    func startScanning() { }
 
     func stopScanning(destroy: Bool) { }
 

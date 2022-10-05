@@ -56,6 +56,8 @@ class AuthenticationQRLoginScanViewModel: AuthenticationQRLoginScanViewModelType
         switch viewAction {
         case .goToSettings:
             callback?(.goToSettings)
+        case .displayQR:
+            callback?(.displayQR)
         }
     }
 

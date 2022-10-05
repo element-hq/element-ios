@@ -65,19 +65,16 @@ final class AuthenticationQRLoginConfirmCoordinator: Coordinator, Presentable {
     // MARK: - Public
 
     func start() {
-        Task { @MainActor in
-            MXLog.debug("[AuthenticationQRLoginConfirmCoordinator] did start.")
-            onboardingQRLoginConfirmViewModel.callback = { [weak self] result in
-                guard let self = self else { return }
-                MXLog.debug("[AuthenticationQRLoginConfirmCoordinator] AuthenticationQRLoginConfirmViewModel did complete with result: \(result).")
-
-                switch result {
-                case .confirm:
-                    self.parameters.qrLoginService.confirmCode()
-                case .cancel:
-                    self.parameters.qrLoginService.reset()
-                    self.navigationRouter.popToRootModule(animated: true)
-                }
+        MXLog.debug("[AuthenticationQRLoginConfirmCoordinator] did start.")
+        onboardingQRLoginConfirmViewModel.callback = { [weak self] result in
+            guard let self = self else { return }
+            MXLog.debug("[AuthenticationQRLoginConfirmCoordinator] AuthenticationQRLoginConfirmViewModel did complete with result: \(result).")
+            
+            switch result {
+            case .confirm:
+                self.parameters.qrLoginService.confirmCode()
+            case .cancel:
+                self.parameters.qrLoginService.reset()
             }
         }
     }

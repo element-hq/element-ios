@@ -40,6 +40,7 @@ final class AuthenticationQRLoginLoadingCoordinator: Coordinator, Presentable {
     private var loadingIndicator: UserIndicator?
 
     private var navigationRouter: NavigationRouterType { parameters.navigationRouter }
+    private var qrLoginService: QRLoginServiceProtocol { parameters.qrLoginService }
     
     // MARK: Public
 
@@ -65,17 +66,14 @@ final class AuthenticationQRLoginLoadingCoordinator: Coordinator, Presentable {
     // MARK: - Public
 
     func start() {
-        Task { @MainActor in
-            MXLog.debug("[AuthenticationQRLoginLoadingCoordinator] did start.")
-            onboardingQRLoginLoadingViewModel.callback = { [weak self] result in
-                guard let self = self else { return }
-                MXLog.debug("[AuthenticationQRLoginLoadingCoordinator] AuthenticationQRLoginLoadingViewModel did complete with result: \(result).")
-
-                switch result {
-                case .cancel:
-                    self.parameters.qrLoginService.reset()
-                    self.navigationRouter.popToRootModule(animated: true)
-                }
+        MXLog.debug("[AuthenticationQRLoginLoadingCoordinator] did start.")
+        onboardingQRLoginLoadingViewModel.callback = { [weak self] result in
+            guard let self = self else { return }
+            MXLog.debug("[AuthenticationQRLoginLoadingCoordinator] AuthenticationQRLoginLoadingViewModel did complete with result: \(result).")
+            
+            switch result {
+            case .cancel:
+                self.qrLoginService.reset()
             }
         }
     }

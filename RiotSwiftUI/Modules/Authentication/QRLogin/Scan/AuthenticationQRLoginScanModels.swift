@@ -23,11 +23,14 @@ import SwiftUI
 
 enum AuthenticationQRLoginScanViewModelResult: Equatable {
     case goToSettings
+    case displayQR
     case qrScanned(Data)
 
     static func == (lhs: AuthenticationQRLoginScanViewModelResult, rhs: AuthenticationQRLoginScanViewModelResult) -> Bool {
         switch (lhs, rhs) {
         case (.goToSettings, .goToSettings):
+            return true
+        case (.displayQR, .displayQR):
             return true
         case (let .qrScanned(data1), let .qrScanned(data2)):
             return data1 == data2
@@ -46,4 +49,5 @@ struct AuthenticationQRLoginScanViewState: BindableState {
 
 enum AuthenticationQRLoginScanViewAction {
     case goToSettings
+    case displayQR
 }

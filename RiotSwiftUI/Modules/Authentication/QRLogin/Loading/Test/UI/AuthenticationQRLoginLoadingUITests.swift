@@ -18,8 +18,8 @@ import RiotSwiftUI
 import XCTest
 
 class AuthenticationQRLoginLoadingUITests: MockScreenTestCase {
-    func testDefault() {
-        app.goToScreenWithIdentifier(MockAuthenticationQRLoginLoadingScreenState.default.title)
+    func testCommon() {
+        app.goToScreenWithIdentifier(MockAuthenticationQRLoginLoadingScreenState.connectingToDevice.title)
 
         XCTAssertTrue(app.staticTexts["loadingLabel"].exists)
 

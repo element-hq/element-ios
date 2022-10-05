@@ -68,7 +68,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
     }
 
     func scannerView() -> AnyView {
-        let frame = CGRect(x: 0, y: 0, width: 300, height: 300)
+        let frame = UIScreen.main.bounds
         let view = UIView(frame: frame)
         zxCapture.layer.frame = frame
         view.layer.addSublayer(zxCapture.layer)

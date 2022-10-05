@@ -38,4 +38,16 @@ class AuthenticationQRLoginScanViewModelTests: XCTestCase {
 
         XCTAssertEqual(result, .goToSettings)
     }
+
+    func testDisplayQR() {
+        var result: AuthenticationQRLoginScanViewModelResult?
+
+        viewModel.callback = { callbackResult in
+            result = callbackResult
+        }
+
+        context.send(viewAction: .displayQR)
+
+        XCTAssertEqual(result, .displayQR)
+    }
 }

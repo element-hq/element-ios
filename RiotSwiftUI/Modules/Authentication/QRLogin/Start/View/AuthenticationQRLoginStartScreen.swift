@@ -42,7 +42,7 @@ struct AuthenticationQRLoginStartScreen: View {
                 footerContent
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 16)
         }
         .background(theme.colors.background.ignoresSafeArea())
     }
@@ -80,12 +80,12 @@ struct AuthenticationQRLoginStartScreen: View {
 
     /// The screen's footer.
     var footerContent: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 12) {
             Button(action: scanQR) {
                 Text(VectorL10n.authenticationQrLoginStartTitle)
             }
             .buttonStyle(PrimaryActionButtonStyle(font: theme.fonts.bodySB))
-            .padding(.vertical)
+            .padding(.bottom, 8)
             .accessibilityIdentifier("scanQRButton")
 
             LabelledDivider(label: VectorL10n.authenticationQrLoginStartNeedAlternative)

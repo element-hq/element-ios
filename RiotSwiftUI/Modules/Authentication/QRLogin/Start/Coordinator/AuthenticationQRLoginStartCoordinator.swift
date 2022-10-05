@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+import Combine
 import CommonKit
 import SwiftUI
 
@@ -38,8 +39,10 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
+    private var cancellables = Set<AnyCancellable>()
 
     private var navigationRouter: NavigationRouterType { parameters.navigationRouter }
+    private var qrLoginService: QRLoginServiceProtocol { parameters.qrLoginService }
     
     // MARK: Public
 
@@ -65,20 +68,29 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     // MARK: - Public
 
     func start() {
-        Task { @MainActor in
-            MXLog.debug("[AuthenticationQRLoginStartCoordinator] did start.")
-            onboardingQRLoginStartViewModel.callback = { [weak self] result in
-                guard let self = self else { return }
-                MXLog.debug("[AuthenticationQRLoginStartCoordinator] AuthenticationQRLoginStartViewModel did complete with result: \(result).")
+        MXLog.debug("[AuthenticationQRLoginStartCoordinator] did start.")
+        onboardingQRLoginStartViewModel.callback = { [weak self] result in
+            guard let self = self else { return }
+            MXLog.debug("[AuthenticationQRLoginStartCoordinator] AuthenticationQRLoginStartViewModel did complete with result: \(result).")
 
-                switch result {
-                case .scanQR:
-                    self.showScanQRScreen()
-                case .displayQR:
-                    self.showDisplayQRScreen()
-                }
+            switch result {
+            case .scanQR:
+                self.showScanQRScreen()
+            case .displayQR:
+                self.showDisplayQRScreen()
             }
         }
+
+        qrLoginService.callbacks.sink { [weak self] callback in
+            guard let self = self else { return }
+            switch callback {
+            case .didUpdateState:
+                self.processServiceState(self.qrLoginService.state)
+            default:
+                break
+            }
+        }
+        .store(in: &cancellables)
     }
     
     func toPresentable() -> UIViewController {
@@ -92,12 +104,47 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     
     // MARK: - Private
 
+    private func processServiceState(_ state: QRLoginServiceState) {
+        switch state {
+        case .initial:
+            removeAllChildren()
+        case .connectingToDevice, .waitingForRemoteSignIn, .completed:
+            showLoadingScreenIfNeeded()
+        case .waitingForConfirmation:
+            showConfirmationScreenIfNeeded()
+        case .failed(let error):
+            switch error {
+            case .noCameraAccess, .noCameraAvailable:
+                // handled in scanning screen
+                break
+            default:
+                showFailureScreenIfNeeded()
+            }
+        default:
+            break
+        }
+    }
+
+    private func removeAllChildren(animated: Bool = true) {
+        MXLog.debug("[AuthenticationQRLoginStartCoordinator] removeAllChildren")
+
+        guard !childCoordinators.isEmpty else {
+            return
+        }
+
+        for coordinator in childCoordinators.reversed() {
+            remove(childCoordinator: coordinator)
+        }
+
+        navigationRouter.popToModule(self, animated: animated)
+    }
+
     /// Shows the scan QR screen.
     private func showScanQRScreen() {
-        MXLog.debug("[AuthenticationLoginCoordinator] showScanQRScreen")
+        MXLog.debug("[AuthenticationQRLoginStartCoordinator] showScanQRScreen")
 
         let parameters = AuthenticationQRLoginScanCoordinatorParameters(navigationRouter: navigationRouter,
-                                                                        qrLoginService: parameters.qrLoginService)
+                                                                        qrLoginService: qrLoginService)
         let coordinator = AuthenticationQRLoginScanCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] _ in
             guard let self = self, let coordinator = coordinator else { return }
@@ -113,12 +160,90 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     }
 
     /// Shows the display QR screen.
-    @MainActor private func showDisplayQRScreen() {
-        MXLog.debug("[AuthenticationLoginCoordinator] showDisplayQRScreen")
+    private func showDisplayQRScreen() {
+        MXLog.debug("[AuthenticationQRLoginStartCoordinator] showDisplayQRScreen")
 
         let parameters = AuthenticationQRLoginDisplayCoordinatorParameters(navigationRouter: navigationRouter,
-                                                                           qrLoginService: parameters.qrLoginService)
+                                                                           qrLoginService: qrLoginService)
         let coordinator = AuthenticationQRLoginDisplayCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] _ in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.remove(childCoordinator: coordinator)
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+
+        navigationRouter.push(coordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+
+    /// Shows the loading screen.
+    private func showLoadingScreenIfNeeded() {
+        MXLog.debug("[AuthenticationQRLoginStartCoordinator] showLoadingScreenIfNeeded")
+
+        if let lastCoordinator = childCoordinators.last,
+           lastCoordinator is AuthenticationQRLoginLoadingCoordinator {
+            // if the last screen is loading, do nothing. It'll be updated by the service state.
+            return
+        }
+
+        let parameters = AuthenticationQRLoginLoadingCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                           qrLoginService: qrLoginService)
+        let coordinator = AuthenticationQRLoginLoadingCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] _ in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.remove(childCoordinator: coordinator)
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+
+        navigationRouter.push(coordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+
+    /// Shows the confirmation screen.
+    private func showConfirmationScreenIfNeeded() {
+        MXLog.debug("[AuthenticationQRLoginStartCoordinator] showConfirmationScreenIfNeeded")
+
+        if let lastCoordinator = childCoordinators.last,
+           lastCoordinator is AuthenticationQRLoginConfirmCoordinator {
+            // if the last screen is confirmation, do nothing. It'll be updated by the service state.
+            return
+        }
+
+        let parameters = AuthenticationQRLoginConfirmCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                           qrLoginService: qrLoginService)
+        let coordinator = AuthenticationQRLoginConfirmCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] _ in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.remove(childCoordinator: coordinator)
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+
+        navigationRouter.push(coordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+
+    /// Shows the failure screen.
+    private func showFailureScreenIfNeeded() {
+        MXLog.debug("[AuthenticationQRLoginStartCoordinator] showFailureScreenIfNeeded")
+
+        if let lastCoordinator = childCoordinators.last,
+           lastCoordinator is AuthenticationQRLoginFailureCoordinator {
+            // if the last screen is failure, do nothing. It'll be updated by the service state.
+            return
+        }
+
+        let parameters = AuthenticationQRLoginFailureCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                           qrLoginService: qrLoginService)
+        let coordinator = AuthenticationQRLoginFailureCoordinator(parameters: parameters)
         coordinator.callback = { [weak self, weak coordinator] _ in
             guard let self = self, let coordinator = coordinator else { return }
             self.remove(childCoordinator: coordinator)

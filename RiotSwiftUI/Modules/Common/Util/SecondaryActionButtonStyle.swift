@@ -19,8 +19,10 @@ import SwiftUI
 struct SecondaryActionButtonStyle: ButtonStyle {
     @Environment(\.theme) private var theme
     @Environment(\.isEnabled) private var isEnabled
-    
+
+    /// `theme.colors.accent` by default
     var customColor: Color?
+    /// `theme.fonts.body` by default
     var font: Font?
     
     func makeBody(configuration: Self.Configuration) -> some View {

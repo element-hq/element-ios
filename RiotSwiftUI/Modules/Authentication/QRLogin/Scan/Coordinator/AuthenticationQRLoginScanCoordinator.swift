@@ -38,6 +38,9 @@ final class AuthenticationQRLoginScanCoordinator: Coordinator, Presentable {
     
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
+
+    private var navigationRouter: NavigationRouterType { parameters.navigationRouter }
+    private var qrLoginService: QRLoginServiceProtocol { parameters.qrLoginService }
     
     // MARK: Public
 
@@ -71,9 +74,11 @@ final class AuthenticationQRLoginScanCoordinator: Coordinator, Presentable {
             switch result {
             case .goToSettings:
                 self.goToSettings()
+            case .displayQR:
+                self.showDisplayQRScreen()
             case .qrScanned(let data):
-                self.parameters.qrLoginService.stopScanning(destroy: false)
-                self.parameters.qrLoginService.processScannedQR(data)
+                self.qrLoginService.stopScanning(destroy: false)
+                self.qrLoginService.processScannedQR(data)
             }
         }
     }
@@ -91,6 +96,26 @@ final class AuthenticationQRLoginScanCoordinator: Coordinator, Presentable {
 
     private func goToSettings() {
         UIApplication.shared.vc_openSettings()
+    }
+
+    /// Shows the display QR screen.
+    private func showDisplayQRScreen() {
+        MXLog.debug("[AuthenticationQRLoginScanCoordinator] showDisplayQRScreen")
+
+        let parameters = AuthenticationQRLoginDisplayCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                           qrLoginService: qrLoginService)
+        let coordinator = AuthenticationQRLoginDisplayCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] _ in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.remove(childCoordinator: coordinator)
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+
+        navigationRouter.push(coordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
     }
     
     /// Show an activity indicator whilst loading.

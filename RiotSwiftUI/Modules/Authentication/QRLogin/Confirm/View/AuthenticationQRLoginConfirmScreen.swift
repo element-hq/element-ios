@@ -42,7 +42,7 @@ struct AuthenticationQRLoginConfirmScreen: View {
                 footerContent
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 16)
         }
         .background(theme.colors.background.ignoresSafeArea())
     }
@@ -83,7 +83,7 @@ struct AuthenticationQRLoginConfirmScreen: View {
 
     /// The screen's footer.
     var footerContent: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 16) {
             Text(VectorL10n.authenticationQrLoginConfirmAlert)
                 .padding(10)
                 .multilineTextAlignment(.center)
@@ -98,7 +98,6 @@ struct AuthenticationQRLoginConfirmScreen: View {
                 Text(VectorL10n.confirm)
             }
             .buttonStyle(PrimaryActionButtonStyle(font: theme.fonts.bodySB))
-            .padding(.vertical)
             .accessibilityIdentifier("confirmButton")
 
             Button(action: cancel) {

@@ -41,7 +41,7 @@ struct AuthenticationQRLoginFailureScreen: View {
                 footerContent
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 16)
         }
         .background(theme.colors.background.ignoresSafeArea())
     }
