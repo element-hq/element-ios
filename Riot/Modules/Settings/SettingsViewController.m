@@ -2840,6 +2840,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
                 
                 webViewViewController.title = [VectorL10n settingsCopyright];
+                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
                 
                 [self pushViewController:webViewViewController];
             }
@@ -2848,6 +2849,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationTermsConditionsUrlString];
                 
                 webViewViewController.title = [VectorL10n settingsTermConditions];
+                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
                 
                 [self pushViewController:webViewViewController];
             }
@@ -2856,6 +2858,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationPrivacyPolicyUrlString];
                 
                 webViewViewController.title = [VectorL10n settingsPrivacyPolicy];
+                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
                 
                 [self pushViewController:webViewViewController];
             }
@@ -2866,6 +2869,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
                 
                 webViewViewController.title = [VectorL10n settingsThirdPartyNotices];
+                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
                 
                 [self pushViewController:webViewViewController];
             }

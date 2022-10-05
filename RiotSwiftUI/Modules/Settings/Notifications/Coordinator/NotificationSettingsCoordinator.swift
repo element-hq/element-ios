@@ -50,6 +50,7 @@ final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType
         }
         notificationSettingsViewModel = viewModel
         notificationSettingsViewController = viewController
+        notificationSettingsViewController.vc_setLargeTitleDisplayMode(.never)
     }
     
     // MARK: - Public methods
