@@ -2316,30 +2316,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
             }
             
-            VoiceBroadcastService * vb = [[VoiceBroadcastService alloc]initWithSession:self.mainSession];
-            NSString * roomId = self.roomDataSource.roomId;
-            
-            [vb startVoiceBroadcastWithRoomId:roomId success:^(NSString * success) {
-                MXLogDebug(@"VB started")
-                [vb pauseVoiceBroadcastWithRoomId:roomId success:^(NSString * success) {
-                    MXLogDebug(@"VB paused")
-                    [vb resumeVoiceBroadcastWithRoomId:roomId success:^(NSString * success) {
-                        MXLogDebug(@"VB resumed")
-                        [vb stopVoiceBroadcastWithRoomId:roomId success:^(NSString * success) {
-                            MXLogDebug(@"VB stopped")
-                        } failure:^(NSError * error) {
-                            MXLogDebug(@"VB error")
-                        }];
-                    } failure:^(NSError * error) {
-                        MXLogDebug(@"VB error")
-                    }];
-                } failure:^(NSError * error) {
-                    MXLogDebug(@"VB error")
-                }];
-            } failure:^(NSError * error) {
-                MXLogDebug(@"VB error")
-            }];
-
+            // TODO: init voice broadcast service and start recording
         }]];
     }
     roomInputView.actionsBar.actionItems = actionItems;

@@ -205,6 +205,7 @@ extension RoomDataSource {
     ///
     /// - Parameters:
     ///   - audioFileLocalURL: the local filesystem path of the audio file to send.
+    ///   - voiceBroadcastInfoEventId: The id of the voice broadcast info event.
     ///   - mimeType: (optional) the mime type of the file. Defaults to `audio/ogg`
     ///   - duration: the length of the voice message in milliseconds
     ///   - samples: an array of floating point values normalized to [0, 1], boxed within NSNumbers

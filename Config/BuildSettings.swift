@@ -406,7 +406,7 @@ final class BuildSettings: NSObject {
     static let locationSharingEnabled = true
     
     // MARK: - Voice Broadcast
-    static let voiceBroadcastEnabled = true
+    static let voiceBroadcastEnabled = false
 
     // MARK: - MXKAppSettings
     static let enableBotCreation: Bool = false

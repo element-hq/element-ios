@@ -30,7 +30,7 @@ class AppConfiguration: CommonConfiguration {
         // Enable CallKit for app
         MXKAppSettings.standard()?.isCallKitEnabled = true
         
-        // Get modular widget events in rooms histories
+        // Get additional events (modular widget, voice broadcast...)
         MXKAppSettings.standard()?.addSupportedEventTypes([kWidgetMatrixEventTypeString,
                                                            kWidgetModularEventTypeString,
                                                            VoiceBroadcastSettings.eventType])
