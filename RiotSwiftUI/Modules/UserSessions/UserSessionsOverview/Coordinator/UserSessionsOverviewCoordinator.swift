@@ -40,7 +40,11 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         let dataProvider = UserSessionsDataProvider(session: parameters.session)
         service = UserSessionsOverviewService(dataProvider: dataProvider)
         viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
+        
         hostingViewController = VectorHostingController(rootView: UserSessionsOverview(viewModel: viewModel.context))
+        hostingViewController.vc_setLargeTitleDisplayMode(.never)
+        hostingViewController.vc_removeBackTitle()
+        
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: hostingViewController)
     }
     
@@ -57,6 +61,10 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
                 self.showOtherSessions(sessionsInfo: sessionsInfo, filterBy: filter)
             case .verifyCurrentSession:
                 self.startVerifyCurrentSession()
+            case .renameSession(let sessionInfo):
+                self.completion?(.renameSession(sessionInfo))
+            case .logoutOfSession(let sessionInfo):
+                self.completion?(.logoutOfSession(sessionInfo))
             case let .showCurrentSessionOverview(sessionInfo):
                 self.showCurrentSessionOverview(sessionInfo: sessionInfo)
             case let .showUserSessionOverview(sessionInfo):

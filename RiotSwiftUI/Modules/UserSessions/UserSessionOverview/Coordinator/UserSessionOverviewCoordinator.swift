@@ -45,6 +45,8 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
         viewModel = UserSessionOverviewViewModel(sessionInfo: parameters.sessionInfo, service: service)
         
         hostingController = VectorHostingController(rootView: UserSessionOverview(viewModel: viewModel.context))
+        hostingController.vc_setLargeTitleDisplayMode(.never)
+        hostingController.vc_removeBackTitle()
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: hostingController)
     }
@@ -55,12 +57,17 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
         MXLog.debug("[UserSessionOverviewCoordinator] did start.")
         viewModel.completion = { [weak self] result in
             guard let self = self else { return }
+            
             MXLog.debug("[UserSessionOverviewCoordinator] UserSessionOverviewViewModel did complete with result: \(result).")
             switch result {
             case .verifyCurrentSession:
                 break // TODO:
             case let .showSessionDetails(sessionInfo: sessionInfo):
                 self.completion?(.openSessionDetails(sessionInfo: sessionInfo))
+            case let .renameSession(sessionInfo):
+                self.completion?(.renameSession(sessionInfo))
+            case let .logoutOfSession(sessionInfo):
+                self.completion?(.logoutOfSession(sessionInfo))
             }
         }
     }
