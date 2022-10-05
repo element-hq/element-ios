@@ -987,7 +987,7 @@
 "device_verification_self_verify_start_verify_action" = "Überprüfung starten";
 "device_verification_self_verify_start_information" = "Benutze diese Sitzung um deine Neue zu verifizieren. Erlaube Zugriff auf die verschlüsselten Nachrichten.";
 "device_verification_self_verify_start_waiting" = "Warten …";
-"device_verification_self_verify_wait_title" = "vervollständige Sicherheit";
+"device_verification_self_verify_wait_title" = "Sicherheit vervollständigen";
 "device_verification_self_verify_wait_information" = "Überprüfe diese Sitzung von einer anderen aus, um Zugriff auf die verschlüsselten Nachrichten zu erhalten.\n\nBenutze die neuest %@-Sitzung auf deinem anderen Gerät:";
 "device_verification_self_verify_wait_waiting" = "warte…";
 "skip" = "Überspringen";
