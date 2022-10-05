@@ -62,7 +62,7 @@ struct AuthenticationQRLoginFailureScreen: View {
             .frame(width: iconSize, height: iconSize)
             .padding(.bottom, 16)
 
-            Text("Linking failed")
+            Text(VectorL10n.authenticationQrLoginFailureTitle)
                 .font(theme.fonts.title3SB)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
@@ -83,7 +83,7 @@ struct AuthenticationQRLoginFailureScreen: View {
         VStack(spacing: 16) {
             if context.viewState.retryButtonVisible {
                 Button(action: retry) {
-                    Text(VectorL10n.retry)
+                    Text(VectorL10n.authenticationQrLoginFailureRetry)
                 }
                 .buttonStyle(PrimaryActionButtonStyle(font: theme.fonts.bodySB))
                 .accessibilityIdentifier("retryButton")

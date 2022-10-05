@@ -56,10 +56,10 @@ class AuthenticationQRLoginFailureViewModel: AuthenticationQRLoginFailureViewMod
                 self.state.failureText = VectorL10n.loginInvalidParam
                 self.state.retryButtonVisible = true
             case .requestDenied:
-                self.state.failureText = "The request was denied on the other device."
+                self.state.failureText = VectorL10n.authenticationQrLoginFailureRequestDenied
                 self.state.retryButtonVisible = false
             case .requestTimedOut:
-                self.state.failureText = "The linking wasn’t completed in the required time."
+                self.state.failureText = VectorL10n.authenticationQrLoginFailureRequestTimedOut
                 self.state.retryButtonVisible = true
             default:
                 break

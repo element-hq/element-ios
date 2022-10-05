@@ -233,6 +233,15 @@
 "authentication_qr_login_confirm_subtitle" = "Confirm that the code below matches with your other device:";
 "authentication_qr_login_confirm_alert" = "Please ensure that you know the origin of this code. By linking devices, you will provide someone with full access to your account.";
 
+"authentication_qr_login_loading_connecting_device" = "Connecting to device";
+"authentication_qr_login_loading_waiting_signin" = "Waiting for device to sign in.";
+"authentication_qr_login_loading_signed_in" = "You are now signed in on your other device.";
+
+"authentication_qr_login_failure_title" = "Linking failed";
+"authentication_qr_login_failure_request_denied" = "The request was denied on the other device.";
+"authentication_qr_login_failure_request_timed_out" = "The linking wasn’t completed in the required time.";
+"authentication_qr_login_failure_retry" = "Try again";
+
 // MARK: Password Validation
 "password_validation_info_header" = "Your password should meet the criteria below:";
 "password_validation_error_header" = "Given password does not meet the criteria below:";

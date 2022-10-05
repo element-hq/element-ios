@@ -51,11 +51,11 @@ class AuthenticationQRLoginLoadingViewModel: AuthenticationQRLoginLoadingViewMod
     private func updateLoadingText(for state: QRLoginServiceState) {
         switch state {
         case .connectingToDevice:
-            self.state.loadingText = "Connecting to device"
+            self.state.loadingText = VectorL10n.authenticationQrLoginLoadingConnectingDevice
         case .waitingForRemoteSignIn:
-            self.state.loadingText = "Waiting for device to sign in."
+            self.state.loadingText = VectorL10n.authenticationQrLoginLoadingWaitingSignin
         case .completed:
-            self.state.loadingText = "You are now signed in on your other device."
+            self.state.loadingText = VectorL10n.authenticationQrLoginLoadingSignedIn
         default:
             break
         }
