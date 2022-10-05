@@ -30,14 +30,16 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
 
     private let cameraAccessManager = CameraAccessManager()
 
-    init(client: AuthenticationRestClient) {
+    init(client: AuthenticationRestClient,
+         state: QRLoginServiceState = .initial) {
         self.client = client
+        self.state = state
         super.init()
     }
 
     // MARK: QRLoginServiceProtocol
 
-    var state: QRLoginServiceState = .initial {
+    var state: QRLoginServiceState {
         didSet {
             if state != oldValue {
                 callbacks.send(.didUpdateState)
@@ -104,7 +106,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
     }
 
     func processScannedQR(_ data: Data) {
-        state = .processingQR
+        state = .connectingToDevice
         do {
             let code = try JSONDecoder().decode(QRLoginCode.self, from: data)
             MXLog.debug("[QRLoginService] processScannedQR: \(code)")
@@ -112,6 +114,21 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         } catch {
             state = .failed(error: .invalidQR)
         }
+    }
+
+    func confirmCode() {
+        switch state {
+        case .waitingForConfirmation(let code):
+            // TODO: implement
+            break
+        default:
+            return
+        }
+    }
+
+    func reset() {
+        stopScanning(destroy: false)
+        state = .initial
     }
 
     deinit {
@@ -129,11 +146,9 @@ extension QRLoginService: ZXCaptureDelegate {
     }
 
     func captureResult(_ capture: ZXCapture!, result: ZXResult!) {
-        guard let zxResult = result, isCameraReady == true else {
-            return
-        }
-
-        guard zxResult.barcodeFormat == kBarcodeFormatQRCode else {
+        guard isCameraReady,
+              let result = result,
+              result.barcodeFormat == kBarcodeFormatQRCode else {
             return
         }
 

@@ -743,6 +743,18 @@ public class VectorL10n: NSObject {
   public static var authenticationLoginWithQr: String { 
     return VectorL10n.tr("Vector", "authentication_login_with_qr") 
   }
+  /// Please ensure that you know the origin of this code. By linking devices, you will provide someone with full access to your account.
+  public static var authenticationQrLoginConfirmAlert: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_confirm_alert") 
+  }
+  /// Confirm that the code below matches with your other device:
+  public static var authenticationQrLoginConfirmSubtitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_confirm_subtitle") 
+  }
+  /// Secure connection established
+  public static var authenticationQrLoginConfirmTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_confirm_title") 
+  }
   /// Open Element on your other device
   public static var authenticationQrLoginDisplayStep1: String { 
     return VectorL10n.tr("Vector", "authentication_qr_login_display_step1") 

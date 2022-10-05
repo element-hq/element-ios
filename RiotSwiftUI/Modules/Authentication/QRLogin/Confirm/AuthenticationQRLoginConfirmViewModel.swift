@@ -16,33 +16,41 @@
 
 import SwiftUI
 
-typealias AuthenticationQRLoginStartViewModelType = StateStoreViewModel<AuthenticationQRLoginStartViewState, AuthenticationQRLoginStartViewAction>
+typealias AuthenticationQRLoginConfirmViewModelType = StateStoreViewModel<AuthenticationQRLoginConfirmViewState, AuthenticationQRLoginConfirmViewAction>
 
-class AuthenticationQRLoginStartViewModel: AuthenticationQRLoginStartViewModelType, AuthenticationQRLoginStartViewModelProtocol {
+class AuthenticationQRLoginConfirmViewModel: AuthenticationQRLoginConfirmViewModelType, AuthenticationQRLoginConfirmViewModelProtocol {
     // MARK: - Properties
 
     // MARK: Private
+
     private let qrLoginService: QRLoginServiceProtocol
 
     // MARK: Public
 
-    var callback: ((AuthenticationQRLoginStartViewModelResult) -> Void)?
+    var callback: ((AuthenticationQRLoginConfirmViewModelResult) -> Void)?
 
     // MARK: - Setup
 
     init(qrLoginService: QRLoginServiceProtocol) {
         self.qrLoginService = qrLoginService
-        super.init(initialViewState: AuthenticationQRLoginStartViewState())
+        super.init(initialViewState: AuthenticationQRLoginConfirmViewState())
+
+        switch qrLoginService.state {
+        case .waitingForConfirmation(let code):
+            state.confirmationCode = code
+        default:
+            break
+        }
     }
 
     // MARK: - Public
 
-    override func process(viewAction: AuthenticationQRLoginStartViewAction) {
+    override func process(viewAction: AuthenticationQRLoginConfirmViewAction) {
         switch viewAction {
-        case .scanQR:
-            callback?(.scanQR)
-        case .displayQR:
-            callback?(.displayQR)
+        case .confirm:
+            callback?(.confirm)
+        case .cancel:
+            callback?(.cancel)
         }
     }
 }

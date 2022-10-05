@@ -27,7 +27,7 @@ struct AuthenticationQRLoginStartScreen: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: AuthenticationQRLoginStartViewModel.Context
+    @ObservedObject var context: AuthenticationQRLoginStartViewModel.Context
     
     var body: some View {
         GeometryReader { geometry in
@@ -49,7 +49,7 @@ struct AuthenticationQRLoginStartScreen: View {
     
     /// The screen's title and instructions.
     var titleContent: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 16) {
             ZStack {
                 Circle()
                     .fill(theme.colors.accent)
@@ -61,7 +61,7 @@ struct AuthenticationQRLoginStartScreen: View {
                     .padding(14)
             }
             .frame(width: iconSize, height: iconSize)
-            .padding(.bottom, 32)
+            .padding(.bottom, 24)
             
             Text(VectorL10n.authenticationQrLoginStartTitle)
                 .font(theme.fonts.title2B)
@@ -127,12 +127,12 @@ struct AuthenticationQRLoginStartScreen: View {
 
     /// Sends the `scanQR` view action.
     func scanQR() {
-        viewModel.send(viewAction: .scanQR)
+        context.send(viewAction: .scanQR)
     }
 
     /// Sends the `displayQR` view action.
     func displayQR() {
-        viewModel.send(viewAction: .displayQR)
+        context.send(viewAction: .displayQR)
     }
 }
 

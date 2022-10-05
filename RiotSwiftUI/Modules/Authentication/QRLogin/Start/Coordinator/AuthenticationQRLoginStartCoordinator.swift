@@ -51,8 +51,8 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     
     init(parameters: AuthenticationQRLoginStartCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = AuthenticationQRLoginStartViewModel()
-        let view = AuthenticationQRLoginStartScreen(viewModel: viewModel.context)
+        let viewModel = AuthenticationQRLoginStartViewModel(qrLoginService: parameters.qrLoginService)
+        let view = AuthenticationQRLoginStartScreen(context: viewModel.context)
         onboardingQRLoginStartViewModel = viewModel
         
         onboardingQRLoginStartHostingController = VectorHostingController(rootView: view)

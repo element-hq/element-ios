@@ -31,7 +31,8 @@ enum QRLoginServiceError: Error, Equatable {
 enum QRLoginServiceState: Equatable {
     case initial
     case scanningQR
-    case processingQR
+    case connectingToDevice
+    case waitingForConfirmation(_ code: String)
     case waitingForRemoteSignIn
     case failed(error: QRLoginServiceError)
     case completed
@@ -42,8 +43,10 @@ enum QRLoginServiceState: Equatable {
             return true
         case (.scanningQR, .scanningQR):
             return true
-        case (.processingQR, .processingQR):
+        case (.connectingToDevice, .connectingToDevice):
             return true
+        case (let .waitingForConfirmation(code1), let .waitingForConfirmation(code2)):
+            return code1 == code2
         case (.waitingForRemoteSignIn, .waitingForRemoteSignIn):
             return true
         case (let .failed(error1), let .failed(error2)):
@@ -77,4 +80,7 @@ protocol QRLoginServiceProtocol {
     func startScanning()
     func stopScanning(destroy: Bool)
     func processScannedQR(_ data: Data)
+
+    func confirmCode()
+    func reset()
 }

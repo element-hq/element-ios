@@ -229,6 +229,10 @@
 "authentication_qr_login_scan_title" = "Scan QR code";
 "authentication_qr_login_scan_subtitle" = "Position the QR code in the square below";
 
+"authentication_qr_login_confirm_title" = "Secure connection established";
+"authentication_qr_login_confirm_subtitle" = "Confirm that the code below matches with your other device:";
+"authentication_qr_login_confirm_alert" = "Please ensure that you know the origin of this code. By linking devices, you will provide someone with full access to your account.";
+
 // MARK: Password Validation
 "password_validation_info_header" = "Your password should meet the criteria below:";
 "password_validation_error_header" = "Given password does not meet the criteria below:";

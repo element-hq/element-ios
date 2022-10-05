@@ -36,6 +36,7 @@ internal class Asset: NSObject {
     internal static let authenticationEmailIcon = ImageAsset(name: "authentication_email_icon")
     internal static let authenticationMsisdnIcon = ImageAsset(name: "authentication_msisdn_icon")
     internal static let authenticationPasswordIcon = ImageAsset(name: "authentication_password_icon")
+    internal static let authenticationQrloginConfirmIcon = ImageAsset(name: "authentication_qrlogin_confirm_icon")
     internal static let authenticationRecaptchaIcon = ImageAsset(name: "authentication_recaptcha_icon")
     internal static let authenticationRevealPassword = ImageAsset(name: "authentication_reveal_password")
     internal static let authenticationServerSelectionIcon = ImageAsset(name: "authentication_server_selection_icon")

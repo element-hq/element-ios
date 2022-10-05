@@ -19,7 +19,14 @@ import Foundation
 import SwiftUI
 
 class MockQRLoginService: QRLoginServiceProtocol {
-    var state: QRLoginServiceState = .initial {
+
+    init(withState state: QRLoginServiceState = .initial) {
+        self.state = state
+    }
+
+    // MARK: - QRLoginServiceProtocol
+
+    var state: QRLoginServiceState {
         didSet {
             if state != oldValue {
                 callbacks.send(.didUpdateState)
@@ -55,7 +62,15 @@ class MockQRLoginService: QRLoginServiceProtocol {
     func stopScanning(destroy: Bool) { }
 
     func processScannedQR(_ data: Data) {
-        state = .processingQR
+        state = .connectingToDevice
+        state = .waitingForConfirmation("28E-1B9-D0F-896")
+    }
+
+    func confirmCode() {
         state = .waitingForRemoteSignIn
+    }
+
+    func reset() {
+        state = .initial
     }
 }

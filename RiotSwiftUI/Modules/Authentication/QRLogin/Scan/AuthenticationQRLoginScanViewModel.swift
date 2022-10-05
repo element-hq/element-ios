@@ -46,6 +46,7 @@ class AuthenticationQRLoginScanViewModel: AuthenticationQRLoginScanViewModelType
         }
         .store(in: &cancellables)
 
+        processServiceState(qrLoginService.state)
         qrLoginService.startScanning()
     }
 
