@@ -65,7 +65,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                         deviceModel: "iPhone XS",
                         deviceOS: "iOS 15.5",
                         lastSeenIPLocation: nil,
-                        deviceName: "Mobile",
+                        clientName: nil,
+                        clientVersion: nil,
                         isActive: true,
                         isCurrent: true)
     }
