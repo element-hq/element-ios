@@ -81,11 +81,9 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                                                    subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
                                                    iconName: Asset.Images.userOtherSessionsInactive.name)
         case .unverified:
-            // TODO:
-            return UserOtherSessionsHeaderViewData(title: nil,
-                                                   subtitle: "",
-                                                   iconName: nil)
+            return UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsUnverifiedTitle,
+                                                   subtitle: VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle,
+                                                   iconName: Asset.Images.userOtherSessionsUnverified.name)
         }
     }
 }
-

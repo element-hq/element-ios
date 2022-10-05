@@ -8495,6 +8495,14 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionSecurityRecommendationTitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_security_recommendation_title") 
   }
+  /// %@ · Your current session
+  public static func userOtherSessionUnverifiedCurrentSessionDetails(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_other_session_unverified_current_session_details", p1)
+  }
+  /// Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.
+  public static var userOtherSessionUnverifiedSessionsHeaderSubtitle: String { 
+    return VectorL10n.tr("Vector", "user_other_session_unverified_sessions_header_subtitle") 
+  }
   /// Name
   public static var userSessionDetailsApplicationName: String { 
     return VectorL10n.tr("Vector", "user_session_details_application_name") 

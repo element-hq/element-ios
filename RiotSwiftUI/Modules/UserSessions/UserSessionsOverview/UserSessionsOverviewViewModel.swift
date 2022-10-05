@@ -46,8 +46,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             }
             completion?(.showCurrentSessionOverview(sessionInfo: currentSessionInfo))
         case .viewAllUnverifiedSessions:
-            // TODO: showSessions(filteredBy: .unverified)
-            break
+            showSessions(filteredBy: .unverified)
         case .viewAllInactiveSessions:
             showSessions(filteredBy: .inactive)
         case .viewAllOtherSessions:
@@ -95,7 +94,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
     }
     
     private func showSessions(filteredBy filter: OtherUserSessionsFilter) {
-        completion?(.showOtherSessions(sessionsInfo: userSessionsOverviewService.overviewData.otherSessions,
+        completion?(.showOtherSessions(sessionsInfo: userSessionsOverviewService.sessionInfos,
                                        filter: filter))
     }
 }

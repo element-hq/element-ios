@@ -49,7 +49,7 @@ struct UserSessionListItem: View {
                             }
                             Text(viewData.sessionDetails)
                                 .font(theme.fonts.caption1)
-                                .foregroundColor(theme.colors.secondaryContent)
+                                .foregroundColor(viewData.highlightSessionDetails ? theme.colors.alert : theme.colors.secondaryContent)
                                 .multilineTextAlignment(.leading)
                         }
                     }
