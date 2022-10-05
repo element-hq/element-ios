@@ -90,6 +90,7 @@ struct AuthenticationQRLoginConfirmScreen: View {
                 .font(theme.fonts.body)
                 .foregroundColor(theme.colors.alert)
                 .shapedBorder(color: theme.colors.alert, borderWidth: 1, shape: RoundedRectangle(cornerRadius: 8))
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 12)
                 .accessibilityIdentifier("alertText")
 

@@ -19,7 +19,6 @@ import Foundation
 import SwiftUI
 
 class MockQRLoginService: QRLoginServiceProtocol {
-
     init(withState state: QRLoginServiceState = .initial) {
         self.state = state
     }

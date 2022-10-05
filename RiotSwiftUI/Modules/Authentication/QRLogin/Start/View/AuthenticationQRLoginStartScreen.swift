@@ -61,7 +61,7 @@ struct AuthenticationQRLoginStartScreen: View {
                     .padding(14)
             }
             .frame(width: iconSize, height: iconSize)
-            .padding(.bottom, 24)
+            .padding(.bottom, 16)
             
             Text(VectorL10n.authenticationQrLoginStartTitle)
                 .font(theme.fonts.title2B)

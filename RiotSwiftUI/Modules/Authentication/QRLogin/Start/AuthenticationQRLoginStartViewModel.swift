@@ -22,6 +22,7 @@ class AuthenticationQRLoginStartViewModel: AuthenticationQRLoginStartViewModelTy
     // MARK: - Properties
 
     // MARK: Private
+
     private let qrLoginService: QRLoginServiceProtocol
 
     // MARK: Public
