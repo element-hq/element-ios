@@ -48,7 +48,7 @@ struct Composer: View {
     }
     
     var body: some View {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack {
                 let rect = RoundedRectangle(cornerRadius: borderHeight / 2)
                 WysiwygComposerView(
                     content: viewModel.content,
@@ -61,23 +61,24 @@ struct Composer: View {
                 .onAppear {
                     viewModel.setup()
                 }
-// TODO Fix maximise in integrated composer.
-//                .overlay(alignment: .topTrailing) {
-//                    Button {
-//                        withAnimation(.easeInOut(duration: 0.25)) {
-//                            viewModel.maximised.toggle()
-//                        }
-//                    } label: {
-//                        Image(viewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
-//                            .foregroundColor(theme.colors.tertiaryContent)
-//                    }
-//                    .padding(.top, 4)
-//                    .padding(.trailing, 12)
-//                }
+                .overlay(alignment: .topTrailing) {
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            viewModel.maximised.toggle()
+                        }
+                    } label: {
+                        Image(viewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
+                            .foregroundColor(theme.colors.tertiaryContent)
+                    }
+                    .padding(.top, 4)
+                    .padding(.trailing, 12)
+                }
                 .padding(.vertical, verticalPadding)
                 .clipShape(rect)
                 .overlay(rect.stroke(theme.colors.quinaryContent, lineWidth: 2))
                 .padding(.horizontal, 12)
+                .padding(.top, 8)
+                .padding(.bottom, 4)
                 HStack{
                     Button {
                         isBottomSheetExpanded = true
@@ -114,22 +115,12 @@ struct Composer: View {
                     }
                 }
                 .padding(.horizontal, 16)
+                .padding(.bottom, 4)
             }
             .sheet(isPresented: $isBottomSheetExpanded) {
                 moduleSelectionList
                     .presentationDetents([.medium])
             }
-//            .sheetWithDetents(
-//                isPresented: $isBottomSheetExpanded,
-//                detents: [.medium()]
-//            ) {
-//                guard let module = selectedModule else { return }
-//                self.startModuleAction(module)
-//                self.selectedModule = nil
-//                print("The sheet has been dismissed")
-//            } content: {
-//
-//            }
     }
     
     var moduleSelectionList: some View {

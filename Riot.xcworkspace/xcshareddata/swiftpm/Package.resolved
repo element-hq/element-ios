@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/matrix-org/matrix-wysiwyg-composer-swift",
       "state" : {
-        "branch" : "langleyd/add_maximise",
-        "revision" : "3b7f7c8a651fa78fb36c525bc798ddfcf62f0c7f"
+        "branch" : "main",
+        "revision" : "37251f58e863b4aa35698dd7cd22b222893667ce"
       }
     },
     {

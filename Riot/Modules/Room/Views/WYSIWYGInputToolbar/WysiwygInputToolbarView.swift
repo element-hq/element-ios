@@ -22,6 +22,17 @@ import Combine
 import UIKit
 import CoreGraphics
 
+class SelfSizingHostingController<Content>: UIHostingController<Content> where Content: View {
+
+    var heightSubject = CurrentValueSubject<CGFloat, Never>(0)
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let height = sizeThatFits(in: CGSize(width: self.view.frame.width, height: 800)).height
+        heightSubject.send(height)
+    }
+}
+
 @available(iOS 16.0, *)
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputToolbarViewProtocol {
     
@@ -36,7 +47,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
     
     private var cancellables = Set<AnyCancellable>()
     private var heightConstraint: NSLayoutConstraint!
-    private var hostingViewController: UIHostingController<Composer>!
+    private var hostingViewController: SelfSizingHostingController<Composer>!
     private static let minToolbarHeight: CGFloat = 100
     
     override func awakeFromNib() {
@@ -51,38 +62,22 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
             self.startModuleAction?(module)
         })
         
-        
-        hostingViewController = UIHostingController(rootView: composer)
-        let h = hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: 800)).height
+        hostingViewController = SelfSizingHostingController(rootView: composer)
+        let height = hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: 800)).height
         let subView: UIView = hostingViewController.view
         self.addSubview(subView)
         
         hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
         subView.translatesAutoresizingMaskIntoConstraints = false
-        heightConstraint = subView.heightAnchor.constraint(equalToConstant: h)
+        heightConstraint = subView.heightAnchor.constraint(equalToConstant: height)
         NSLayoutConstraint.activate([
             heightConstraint,
             subView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            //                subView.topAnchor.constraint(equalTo: self.topAnchor),
             subView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             subView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
         cancellables = [
-//            viewModel.$isContentEmpty
-//                .removeDuplicates()
-//                .sink(receiveValue: { [weak self] isContentEmpty in
-//                    //                    guard let self = self else { return }
-//                    //                    self.delegate?.isContentEmptyDidChange(isContentEmpty)
-//                }),
-//            viewModel.$content
-//                .map { $0.attributed }
-//                .removeDuplicates()
-//                .sink(receiveValue: { [weak self] attributed in
-//                    print(attributed)
-//                    //                    guard let self = self else { return }
-//                    //                    self.delegate?.isContentEmptyDidChange(isContentEmpty)
-//                }),
-            viewModel.$idealHeight
+            hostingViewController.heightSubject
                 .removeDuplicates()
                 .sink(receiveValue: { [weak self] idealHeight in
                     guard let self = self else { return }
@@ -90,6 +85,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
                     self.updateToolbarHeight(wysiwygHeight: h)
                 })
         ]
+        
     }
     
     func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {
@@ -101,10 +97,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
     }
     
    private func updateToolbarHeight(wysiwygHeight: CGFloat) {
-        heightConstraint.constant = wysiwygHeight
-        toolbarViewDelegate?.roomInputToolbarView?(self, heightDidChanged: wysiwygHeight, completion: { _ in
-            
-        })
+       heightConstraint.constant = wysiwygHeight
+       toolbarViewDelegate?.roomInputToolbarView?(self, heightDidChanged: wysiwygHeight, completion: nil)
     }
     
     private func sendWysiwygMessage(content: WysiwygComposerContent) {
