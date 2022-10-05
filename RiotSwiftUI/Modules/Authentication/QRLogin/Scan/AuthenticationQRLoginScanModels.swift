@@ -21,9 +21,20 @@ import SwiftUI
 
 // MARK: View model
 
-enum AuthenticationQRLoginScanViewModelResult {
+enum AuthenticationQRLoginScanViewModelResult: Equatable {
     case goToSettings
     case qrScanned(Data)
+
+    static func == (lhs: AuthenticationQRLoginScanViewModelResult, rhs: AuthenticationQRLoginScanViewModelResult) -> Bool {
+        switch (lhs, rhs) {
+        case (.goToSettings, .goToSettings):
+            return true
+        case (let .qrScanned(data1), let .qrScanned(data2)):
+            return data1 == data2
+        default:
+            return false
+        }
+    }
 }
 
 // MARK: View

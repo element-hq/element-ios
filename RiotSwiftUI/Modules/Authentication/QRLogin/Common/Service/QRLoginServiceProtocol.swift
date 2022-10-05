@@ -24,6 +24,8 @@ enum QRLoginServiceError: Error, Equatable {
     case noCameraAccess
     case noCameraAvailable
     case invalidQR
+    case requestDenied
+    case requestTimedOut
 }
 
 // MARK: - QRLoginServiceState
@@ -82,5 +84,6 @@ protocol QRLoginServiceProtocol {
     func processScannedQR(_ data: Data)
 
     func confirmCode()
+    func restart()
     func reset()
 }

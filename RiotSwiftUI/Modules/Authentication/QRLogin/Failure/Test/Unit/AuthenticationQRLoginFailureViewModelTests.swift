@@ -18,36 +18,36 @@ import XCTest
 
 @testable import RiotSwiftUI
 
-class AuthenticationQRLoginStartViewModelTests: XCTestCase {
-    var viewModel: AuthenticationQRLoginStartViewModelProtocol!
-    var context: AuthenticationQRLoginStartViewModelType.Context!
+class AuthenticationQRLoginFailureViewModelTests: XCTestCase {
+    var viewModel: AuthenticationQRLoginFailureViewModelProtocol!
+    var context: AuthenticationQRLoginFailureViewModelType.Context!
 
     override func setUpWithError() throws {
-        viewModel = AuthenticationQRLoginStartViewModel(qrLoginService: MockQRLoginService())
+        viewModel = AuthenticationQRLoginFailureViewModel(qrLoginService: MockQRLoginService(withState: .failed(error: .requestTimedOut)))
         context = viewModel.context
     }
 
-    func testScanQR() {
-        var result: AuthenticationQRLoginStartViewModelResult?
+    func testRetry() {
+        var result: AuthenticationQRLoginFailureViewModelResult?
 
         viewModel.callback = { callbackResult in
             result = callbackResult
         }
 
-        context.send(viewAction: .scanQR)
+        context.send(viewAction: .retry)
 
-        XCTAssertEqual(result, .scanQR)
+        XCTAssertEqual(result, .retry)
     }
 
-    func testDisplayQR() {
-        var result: AuthenticationQRLoginStartViewModelResult?
+    func testCancel() {
+        var result: AuthenticationQRLoginFailureViewModelResult?
 
         viewModel.callback = { callbackResult in
             result = callbackResult
         }
 
-        context.send(viewAction: .displayQR)
+        context.send(viewAction: .cancel)
 
-        XCTAssertEqual(result, .displayQR)
+        XCTAssertEqual(result, .cancel)
     }
 }

@@ -69,6 +69,10 @@ class MockQRLoginService: QRLoginServiceProtocol {
         state = .waitingForRemoteSignIn
     }
 
+    func restart() {
+        state = .initial
+    }
+
     func reset() {
         state = .initial
     }

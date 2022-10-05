@@ -126,6 +126,10 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         }
     }
 
+    func restart() {
+        state = .initial
+    }
+
     func reset() {
         stopScanning(destroy: false)
         state = .initial

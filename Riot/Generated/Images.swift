@@ -80,6 +80,7 @@ internal class Asset: NSObject {
     internal static let coachMark = ImageAsset(name: "coach_mark")
     internal static let disclosureIcon = ImageAsset(name: "disclosure_icon")
     internal static let errorIcon = ImageAsset(name: "error_icon")
+    internal static let exclamationCircle = ImageAsset(name: "exclamation_circle")
     internal static let faceidIcon = ImageAsset(name: "faceid_icon")
     internal static let filterOff = ImageAsset(name: "filter_off")
     internal static let filterOn = ImageAsset(name: "filter_on")
