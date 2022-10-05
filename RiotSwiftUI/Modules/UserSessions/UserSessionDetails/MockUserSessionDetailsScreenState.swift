@@ -38,10 +38,10 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        let session: UserSessionInfo
+        let sessionInfo: UserSessionInfo
         switch self {
         case .allSections:
-            session = UserSessionInfo(id: "alice",
+            sessionInfo = UserSessionInfo(id: "alice",
                                       name: "iOS",
                                       deviceType: .mobile,
                                       isVerified: false,
@@ -58,7 +58,7 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
                                       isActive: true,
                                       isCurrent: true)
         case .sessionSectionOnly:
-            session = UserSessionInfo(id: "3",
+            sessionInfo = UserSessionInfo(id: "3",
                                       name: "Android",
                                       deviceType: .mobile,
                                       isVerified: false,
@@ -75,12 +75,12 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
                                       isActive: true,
                                       isCurrent: false)
         }
-        let viewModel = UserSessionDetailsViewModel(session: session)
+        let viewModel = UserSessionDetailsViewModel(sessionInfo: sessionInfo)
         
         // can simulate service and viewModel actions here if needs be.
         
         return (
-            [session],
+            [sessionInfo],
             AnyView(UserSessionDetails(viewModel: viewModel.context))
         )
     }

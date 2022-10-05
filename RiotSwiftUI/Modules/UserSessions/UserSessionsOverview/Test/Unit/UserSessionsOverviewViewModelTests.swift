@@ -49,15 +49,9 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
         
         viewModel.process(viewAction: .verifyCurrentSession)
         XCTAssertEqual(result, .verifyCurrentSession)
-            
-        viewModel.process(viewAction: .viewAllUnverifiedSessions)
-        XCTAssertEqual(result, .showAllUnverifiedSessions)
         
         viewModel.process(viewAction: .viewAllInactiveSessions)
-        XCTAssertEqual(result, .showAllInactiveSessions)
-        
-        viewModel.process(viewAction: .viewAllOtherSessions)
-        XCTAssertEqual(result, .showAllOtherSessions)
+        XCTAssertEqual(result, .showOtherSessions(sessionsInfo: [], filter: .inactive))
     }
     
     func testShowSessionDetails() {
@@ -77,7 +71,7 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
         }
         
         viewModel.process(viewAction: .viewCurrentSessionDetails)
-        XCTAssertEqual(result, .showCurrentSessionOverview(session: currentSession))
+        XCTAssertEqual(result, .showCurrentSessionOverview(sessionInfo: currentSession))
         
         guard let randomSession = service.overviewData.otherSessions.randomElement() else {
             XCTFail("There should be other sessions")
@@ -85,6 +79,6 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
         }
         
         viewModel.process(viewAction: .tapUserSession(randomSession.id))
-        XCTAssertEqual(result, .showUserSessionOverview(session: randomSession))
+        XCTAssertEqual(result, .showUserSessionOverview(sessionInfo: randomSession))
     }
 }

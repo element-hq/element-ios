@@ -53,16 +53,12 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
             MXLog.debug("[UserSessionsOverviewCoordinator] UserSessionsOverviewViewModel did complete with result: \(result).")
             
             switch result {
-            case .showAllUnverifiedSessions:
-                self.showAllUnverifiedSessions()
-            case .showAllInactiveSessions:
-                self.showAllInactiveSessions()
+            case let .showOtherSessions(sessionsInfo: sessionsInfo, filter: filter):
+                self.showOtherSessions(sessionsInfo: sessionsInfo, filterBy: filter)
             case .verifyCurrentSession:
                 self.startVerifyCurrentSession()
             case let .showCurrentSessionOverview(sessionInfo):
                 self.showCurrentSessionOverview(sessionInfo: sessionInfo)
-            case .showAllOtherSessions:
-                self.showAllOtherSessions()
             case let .showUserSessionOverview(sessionInfo):
                 self.showUserSessionOverview(sessionInfo: sessionInfo)
             }
@@ -88,12 +84,8 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         loadingIndicator = nil
     }
     
-    private func showAllUnverifiedSessions() {
-        // TODO:
-    }
-    
-    private func showAllInactiveSessions() {
-        // TODO:
+    private func showOtherSessions(sessionsInfo: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter) {
+        completion?(.openOtherSessions(sessionsInfo: sessionsInfo, filter: filter))
     }
     
     private func startVerifyCurrentSession() {
@@ -103,12 +95,9 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     private func showCurrentSessionOverview(sessionInfo: UserSessionInfo) {
         completion?(.openSessionOverview(sessionInfo: sessionInfo))
     }
-
+    
     private func showUserSessionOverview(sessionInfo: UserSessionInfo) {
         completion?(.openSessionOverview(sessionInfo: sessionInfo))
     }
-    
-    private func showAllOtherSessions() {
-        // TODO:
-    }
+
 }

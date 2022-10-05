@@ -35,7 +35,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         ]
 
         let expectedModel = UserSessionDetailsViewState(sections: sections)
-        let sut = UserSessionDetailsViewModel(session: userSessionInfo)
+        let sut = UserSessionDetailsViewModel(sessionInfo: userSessionInfo)
         
         XCTAssertEqual(sut.state, expectedModel)
     }
@@ -57,7 +57,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         ]
         
         let expectedModel = UserSessionDetailsViewState(sections: sections)
-        let sut = UserSessionDetailsViewModel(session: userSessionInfo)
+        let sut = UserSessionDetailsViewModel(sessionInfo: userSessionInfo)
         
         XCTAssertEqual(sut.state, expectedModel)
     }
@@ -94,7 +94,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         ]
         
         let expectedModel = UserSessionDetailsViewState(sections: sections)
-        let sut = UserSessionDetailsViewModel(session: userSessionInfo)
+        let sut = UserSessionDetailsViewModel(sessionInfo: userSessionInfo)
         
         XCTAssertEqual(sut.state, expectedModel)
     }

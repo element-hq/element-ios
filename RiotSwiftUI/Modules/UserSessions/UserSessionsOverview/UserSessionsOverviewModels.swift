@@ -20,17 +20,16 @@ import Foundation
 
 enum UserSessionsOverviewCoordinatorResult {
     case openSessionOverview(sessionInfo: UserSessionInfo)
+    case openOtherSessions(sessionsInfo: [UserSessionInfo], filter: OtherUserSessionsFilter)
 }
 
 // MARK: View model
 
 enum UserSessionsOverviewViewModelResult: Equatable {
-    case showAllUnverifiedSessions
-    case showAllInactiveSessions
+    case showOtherSessions(sessionsInfo: [UserSessionInfo], filter: OtherUserSessionsFilter)
     case verifyCurrentSession
-    case showCurrentSessionOverview(session: UserSessionInfo)
-    case showAllOtherSessions
-    case showUserSessionOverview(session: UserSessionInfo)
+    case showCurrentSessionOverview(sessionInfo: UserSessionInfo)
+    case showUserSessionOverview(sessionInfo: UserSessionInfo)
 }
 
 // MARK: View

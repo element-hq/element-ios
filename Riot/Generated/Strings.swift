@@ -8483,6 +8483,18 @@ public class VectorL10n: NSObject {
   public static var userIdTitle: String { 
     return VectorL10n.tr("Vector", "user_id_title") 
   }
+  /// Inactive for 90+ days
+  public static var userInactiveSessionItem: String { 
+    return VectorL10n.tr("Vector", "user_inactive_session_item") 
+  }
+  /// Inactive for 90+ days (%@)
+  public static func userInactiveSessionItemWithDate(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_inactive_session_item_with_date", p1)
+  }
+  /// Security recommendation
+  public static var userOtherSessionSecurityRecommendationTitle: String { 
+    return VectorL10n.tr("Vector", "user_other_session_security_recommendation_title") 
+  }
   /// Name
   public static var userSessionDetailsApplicationName: String { 
     return VectorL10n.tr("Vector", "user_session_details_application_name") 
