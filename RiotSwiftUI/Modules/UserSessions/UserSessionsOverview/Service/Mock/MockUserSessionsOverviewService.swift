@@ -89,7 +89,8 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                         deviceModel: nil,
                         deviceOS: "iOS 15.5",
                         lastSeenIPLocation: nil,
-                        deviceName: "My iPhone",
+                        clientName: "Element",
+                        clientVersion: "1.0.0",
                         isActive: true,
                         isCurrent: true)
     }
@@ -107,7 +108,8 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                          deviceModel: nil,
                          deviceOS: "macOS 12.5.1",
                          lastSeenIPLocation: nil,
-                         deviceName: "My Mac",
+                         clientName: "Electron",
+                         clientVersion: "20.0.0",
                          isActive: active,
                          isCurrent: false),
          UserSessionInfo(id: "2 verified: \(verified) active: \(active)",
@@ -122,7 +124,8 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                          deviceModel: nil,
                          deviceOS: "Windows 10",
                          lastSeenIPLocation: nil,
-                         deviceName: "My Windows",
+                         clientName: "Firefox",
+                         clientVersion: "39.0",
                          isActive: active,
                          isCurrent: false),
          UserSessionInfo(id: "3 verified: \(verified) active: \(active)",
@@ -137,7 +140,8 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                          deviceModel: nil,
                          deviceOS: "Android 4.0",
                          lastSeenIPLocation: nil,
-                         deviceName: "My Phone",
+                         clientName: "Element",
+                         clientVersion: "1.0.0",
                          isActive: active,
                          isCurrent: false)]
     }

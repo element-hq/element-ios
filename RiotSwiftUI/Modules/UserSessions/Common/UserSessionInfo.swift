@@ -58,8 +58,11 @@ struct UserSessionInfo: Identifiable {
     /// Last seen IP location
     let lastSeenIPLocation: String?
 
-    /// Device name
-    let deviceName: String?
+    /// Client name
+    let clientName: String?
+
+    /// Client version
+    let clientVersion: String?
 
     /// True to indicate that session has been used under `inactiveSessionDurationTreshold` value
     let isActive: Bool

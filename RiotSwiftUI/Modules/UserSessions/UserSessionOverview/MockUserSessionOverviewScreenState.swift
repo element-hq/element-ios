@@ -60,7 +60,8 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
                                       deviceModel: nil,
                                       deviceOS: "iOS 15.5",
                                       lastSeenIPLocation: nil,
-                                      deviceName: "My iPhone",
+                                      clientName: "Element",
+                                      clientVersion: "1.0.0",
                                       isActive: true,
                                       isCurrent: true)
             service = MockUserSessionOverviewService()
@@ -77,7 +78,8 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
                                       deviceModel: nil,
                                       deviceOS: "macOS 12.5.1",
                                       lastSeenIPLocation: nil,
-                                      deviceName: "My Mac",
+                                      clientName: "Electron",
+                                      clientVersion: "20.1.1",
                                       isActive: false,
                                       isCurrent: false)
             service = MockUserSessionOverviewService()
@@ -94,7 +96,8 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
                                       deviceModel: nil,
                                       deviceOS: "macOS 12.5.1",
                                       lastSeenIPLocation: nil,
-                                      deviceName: "My Mac",
+                                      clientName: "My Mac",
+                                      clientVersion: "1.0.0",
                                       isActive: false,
                                       isCurrent: false)
             service = MockUserSessionOverviewService(pusherEnabled: enabled)
@@ -111,7 +114,8 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
                                       deviceModel: nil,
                                       deviceOS: "macOS 12.5.1",
                                       lastSeenIPLocation: nil,
-                                      deviceName: "My Mac",
+                                      clientName: "My Mac",
+                                      clientVersion: "1.0.0",
                                       isActive: false,
                                       isCurrent: false)
             service = MockUserSessionOverviewService(pusherEnabled: true, remotelyTogglingPushersAvailable: false)
