@@ -39,24 +39,38 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             loadData()
         case .verifyCurrentSession:
             completion?(.verifyCurrentSession)
+        case .renameCurrentSession:
+            guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
+                assertionFailure("Missing current session")
+                return
+            }
+            completion?(.renameSession(currentSessionInfo))
+        case .logoutOfCurrentSession:
+            guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
+                assertionFailure("Missing current session")
+                return
+            }
+            completion?(.logoutOfSession(currentSessionInfo))
         case .viewCurrentSessionDetails:
             guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
                 assertionFailure("Missing current session")
                 return
             }
-            completion?(.showCurrentSessionOverview(session: currentSessionInfo))
+            completion?(.showCurrentSessionOverview(sessionInfo: currentSessionInfo))
         case .viewAllUnverifiedSessions:
-            completion?(.showAllUnverifiedSessions)
+            // TODO: showSessions(filteredBy: .unverified)
+            break
         case .viewAllInactiveSessions:
-            completion?(.showAllInactiveSessions)
+            showSessions(filteredBy: .inactive)
         case .viewAllOtherSessions:
-            completion?(.showAllOtherSessions)
+            // TODO: showSessions(filteredBy: .all)
+            break
         case .tapUserSession(let sessionId):
             guard let session = userSessionsOverviewService.sessionForIdentifier(sessionId) else {
                 assertionFailure("Missing session info")
                 return
             }
-            completion?(.showUserSessionOverview(session: session))
+            completion?(.showUserSessionOverview(sessionInfo: session))
         }
     }
     
@@ -91,10 +105,15 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             }
         }
     }
+    
+    private func showSessions(filteredBy filter: OtherUserSessionsFilter) {
+        completion?(.showOtherSessions(sessionsInfo: userSessionsOverviewService.overviewData.otherSessions,
+                                       filter: filter))
+    }
 }
 
-private extension Collection where Element == UserSessionInfo {
+extension Collection where Element == UserSessionInfo {
     func asViewData() -> [UserSessionListItemViewData] {
-        map { UserSessionListItemViewData(session: $0) }
+        map { UserSessionListItemViewDataFactory().create(from: $0)}
     }
 }

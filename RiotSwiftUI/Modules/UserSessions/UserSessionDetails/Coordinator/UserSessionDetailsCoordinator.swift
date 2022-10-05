@@ -18,7 +18,7 @@ import CommonKit
 import SwiftUI
 
 struct UserSessionDetailsCoordinatorParameters {
-    let session: UserSessionInfo
+    let sessionInfo: UserSessionInfo
 }
 
 final class UserSessionDetailsCoordinator: Coordinator, Presentable {
@@ -40,7 +40,7 @@ final class UserSessionDetailsCoordinator: Coordinator, Presentable {
     init(parameters: UserSessionDetailsCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = UserSessionDetailsViewModel(session: parameters.session)
+        let viewModel = UserSessionDetailsViewModel(sessionInfo: parameters.sessionInfo)
         let view = UserSessionDetails(viewModel: viewModel.context)
         userSessionDetailsViewModel = viewModel
         userSessionDetailsHostingController = VectorHostingController(rootView: view)

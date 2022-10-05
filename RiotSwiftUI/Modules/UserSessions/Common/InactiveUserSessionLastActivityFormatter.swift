@@ -1,4 +1,4 @@
-//
+// 
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,20 +16,17 @@
 
 import Foundation
 
-/// View data for UserSessionListItem
-struct UserSessionListItemViewData: Identifiable, Hashable {
-
-    var id: String {
-        sessionId
+class InactiveUserSessionLastActivityFormatter {
+    private static var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.dateStyle = .medium
+        dateFormatter.doesRelativeDateFormatting = true
+        return dateFormatter
+    }()
+    
+    static func lastActivityDateString(from lastActivityTimestamp: TimeInterval) -> String {
+        let date = Date(timeIntervalSince1970: lastActivityTimestamp)
+        return InactiveUserSessionLastActivityFormatter.dateFormatter.string(from: date)
     }
-    
-    let sessionId: String
-    
-    let sessionName: String
-    
-    let sessionDetails: String
-    
-    let deviceAvatarViewData: DeviceAvatarViewData
-
-    let sessionDetailsIcon: String?
 }

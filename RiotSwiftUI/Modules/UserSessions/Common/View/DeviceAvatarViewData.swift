@@ -18,7 +18,7 @@ import Foundation
 import SwiftUI
 
 /// View data for DeviceAvatarView
-struct DeviceAvatarViewData {
+struct DeviceAvatarViewData: Hashable {
     let deviceType: DeviceType
     let isVerified: Bool?
 }

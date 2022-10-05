@@ -40,7 +40,11 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         let dataProvider = UserSessionsDataProvider(session: parameters.session)
         service = UserSessionsOverviewService(dataProvider: dataProvider)
         viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
+        
         hostingViewController = VectorHostingController(rootView: UserSessionsOverview(viewModel: viewModel.context))
+        hostingViewController.vc_setLargeTitleDisplayMode(.never)
+        hostingViewController.vc_removeBackTitle()
+        
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: hostingViewController)
     }
     
@@ -53,16 +57,16 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
             MXLog.debug("[UserSessionsOverviewCoordinator] UserSessionsOverviewViewModel did complete with result: \(result).")
             
             switch result {
-            case .showAllUnverifiedSessions:
-                self.showAllUnverifiedSessions()
-            case .showAllInactiveSessions:
-                self.showAllInactiveSessions()
+            case let .showOtherSessions(sessionsInfo: sessionsInfo, filter: filter):
+                self.showOtherSessions(sessionsInfo: sessionsInfo, filterBy: filter)
             case .verifyCurrentSession:
                 self.startVerifyCurrentSession()
+            case .renameSession(let sessionInfo):
+                self.completion?(.renameSession(sessionInfo))
+            case .logoutOfSession(let sessionInfo):
+                self.completion?(.logoutOfSession(sessionInfo))
             case let .showCurrentSessionOverview(sessionInfo):
                 self.showCurrentSessionOverview(sessionInfo: sessionInfo)
-            case .showAllOtherSessions:
-                self.showAllOtherSessions()
             case let .showUserSessionOverview(sessionInfo):
                 self.showUserSessionOverview(sessionInfo: sessionInfo)
             }
@@ -88,12 +92,8 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         loadingIndicator = nil
     }
     
-    private func showAllUnverifiedSessions() {
-        // TODO:
-    }
-    
-    private func showAllInactiveSessions() {
-        // TODO:
+    private func showOtherSessions(sessionsInfo: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter) {
+        completion?(.openOtherSessions(sessionsInfo: sessionsInfo, filter: filter))
     }
     
     private func startVerifyCurrentSession() {
@@ -103,12 +103,9 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     private func showCurrentSessionOverview(sessionInfo: UserSessionInfo) {
         completion?(.openSessionOverview(sessionInfo: sessionInfo))
     }
-
+    
     private func showUserSessionOverview(sessionInfo: UserSessionInfo) {
         completion?(.openSessionOverview(sessionInfo: sessionInfo))
     }
-    
-    private func showAllOtherSessions() {
-        // TODO:
-    }
+
 }

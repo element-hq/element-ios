@@ -3603,6 +3603,10 @@ public class VectorL10n: NSObject {
   public static var manageSessionNotTrusted: String { 
     return VectorL10n.tr("Vector", "manage_session_not_trusted") 
   }
+  /// Rename session
+  public static var manageSessionRename: String { 
+    return VectorL10n.tr("Vector", "manage_session_rename") 
+  }
   /// Sign out of this session
   public static var manageSessionSignOut: String { 
     return VectorL10n.tr("Vector", "manage_session_sign_out") 
@@ -7856,6 +7860,14 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "side_menu_reveal_action_accessibility_label") 
   }
   /// Sign out
+  public static var signOut: String { 
+    return VectorL10n.tr("Vector", "sign_out") 
+  }
+  /// Are you sure you want to sign out?
+  public static var signOutConfirmationMessage: String { 
+    return VectorL10n.tr("Vector", "sign_out_confirmation_message") 
+  }
+  /// Sign out
   public static var signOutExistingKeyBackupAlertSignOutAction: String { 
     return VectorL10n.tr("Vector", "sign_out_existing_key_backup_alert_sign_out_action") 
   }
@@ -8582,6 +8594,18 @@ public class VectorL10n: NSObject {
   /// User ID:
   public static var userIdTitle: String { 
     return VectorL10n.tr("Vector", "user_id_title") 
+  }
+  /// Inactive for 90+ days
+  public static var userInactiveSessionItem: String { 
+    return VectorL10n.tr("Vector", "user_inactive_session_item") 
+  }
+  /// Inactive for 90+ days (%@)
+  public static func userInactiveSessionItemWithDate(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_inactive_session_item_with_date", p1)
+  }
+  /// Security recommendation
+  public static var userOtherSessionSecurityRecommendationTitle: String { 
+    return VectorL10n.tr("Vector", "user_other_session_security_recommendation_title") 
   }
   /// Name
   public static var userSessionDetailsApplicationName: String { 

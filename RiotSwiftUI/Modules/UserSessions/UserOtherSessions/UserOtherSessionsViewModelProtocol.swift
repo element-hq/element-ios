@@ -1,5 +1,5 @@
 //
-// Copyright 2022 New Vector Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,20 +16,7 @@
 
 import Foundation
 
-/// View data for UserSessionListItem
-struct UserSessionListItemViewData: Identifiable, Hashable {
-
-    var id: String {
-        sessionId
-    }
-    
-    let sessionId: String
-    
-    let sessionName: String
-    
-    let sessionDetails: String
-    
-    let deviceAvatarViewData: DeviceAvatarViewData
-
-    let sessionDetailsIcon: String?
+protocol UserOtherSessionsViewModelProtocol {
+    var completion: ((UserOtherSessionsViewModelResult) -> Void)? { get set }
+    var context: UserOtherSessionsViewModelType.Context { get }
 }
