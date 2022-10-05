@@ -51,7 +51,7 @@ struct UserSessionOverviewItem: View {
     }
 }
 
-struct UserSessionOverviewButtonCell_Previews: PreviewProvider {
+struct UserSessionOverviewItem_Previews: PreviewProvider {
     static var buttons: some View {
         NavigationView {
             ScrollView {
