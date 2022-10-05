@@ -55,8 +55,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             switch result {
             case let .openSessionOverview(sessionInfo: sessionInfo):
                 self.openSessionOverview(sessionInfo: sessionInfo)
-            case let .openOtherSessions(sessionsInfo: sessionsInfo, filter: filter):
-                self.openOtherSessions(sessionsInfo: sessionsInfo,
+            case let .openOtherSessions(sessionInfos: sessionInfos, filter: filter):
+                self.openOtherSessions(sessionInfos: sessionInfos,
                                        filterBy: filter,
                                        title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
             }
@@ -92,8 +92,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         return UserSessionOverviewCoordinator(parameters: parameters)
     }
     
-    private func openOtherSessions(sessionsInfo: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter, title: String) {
-        let coordinator = createOtherSessionsCoordinator(sessionsInfo: sessionsInfo,
+    private func openOtherSessions(sessionInfos: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter, title: String) {
+        let coordinator = createOtherSessionsCoordinator(sessionInfos: sessionInfos,
                                                          filterBy: filter,
                                                          title: title)
         coordinator.completion = { [weak self] result in
@@ -106,10 +106,10 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         pushScreen(with: coordinator)
     }
     
-    private func createOtherSessionsCoordinator(sessionsInfo: [UserSessionInfo],
+    private func createOtherSessionsCoordinator(sessionInfos: [UserSessionInfo],
                                                 filterBy filter: OtherUserSessionsFilter,
                                                 title: String) -> UserOtherSessionsCoordinator {
-        let parameters = UserOtherSessionsCoordinatorParameters(sessionsInfo: sessionsInfo,
+        let parameters = UserOtherSessionsCoordinatorParameters(sessionInfos: sessionInfos,
                                                                 filter: filter,
                                                                 title: title)
         return UserOtherSessionsCoordinator(parameters: parameters)

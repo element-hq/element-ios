@@ -94,7 +94,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
     }
     
     private func showSessions(filteredBy filter: OtherUserSessionsFilter) {
-        completion?(.showOtherSessions(sessionsInfo: userSessionsOverviewService.sessionInfos,
+        completion?(.showOtherSessions(sessionInfos: userSessionsOverviewService.sessionInfos,
                                        filter: filter))
     }
 }
