@@ -3503,6 +3503,10 @@ public class VectorL10n: NSObject {
   public static var manageSessionNotTrusted: String { 
     return VectorL10n.tr("Vector", "manage_session_not_trusted") 
   }
+  /// Rename session
+  public static var manageSessionRename: String { 
+    return VectorL10n.tr("Vector", "manage_session_rename") 
+  }
   /// Sign out of this session
   public static var manageSessionSignOut: String { 
     return VectorL10n.tr("Vector", "manage_session_sign_out") 
@@ -7754,6 +7758,14 @@ public class VectorL10n: NSObject {
   /// Left panel
   public static var sideMenuRevealActionAccessibilityLabel: String { 
     return VectorL10n.tr("Vector", "side_menu_reveal_action_accessibility_label") 
+  }
+  /// Sign out
+  public static var signOut: String { 
+    return VectorL10n.tr("Vector", "sign_out") 
+  }
+  /// Are you sure you want to sign out?
+  public static var signOutConfirmationMessage: String { 
+    return VectorL10n.tr("Vector", "sign_out_confirmation_message") 
   }
   /// Sign out
   public static var signOutExistingKeyBackupAlertSignOutAction: String { 

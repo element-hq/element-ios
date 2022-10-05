@@ -31,15 +31,24 @@ struct UserSessionOverview: View {
             })
             .padding(16)
             SwiftUI.Section {
-                UserSessionOverviewDisclosureCell(title: VectorL10n.userSessionOverviewSessionDetailsButtonTitle, onBackgroundTap: {
+                UserSessionOverviewItem(title: VectorL10n.userSessionOverviewSessionDetailsButtonTitle,
+                                        showsChevron: true) {
                     viewModel.send(viewAction: .viewSessionDetails)
-                })
+                }
+                
                 if let enabled = viewModel.viewState.isPusherEnabled {
                     UserSessionOverviewToggleCell(title: VectorL10n.userSessionPushNotifications,
                                                   message: VectorL10n.userSessionPushNotificationsMessage,
                                                   isOn: enabled, isEnabled: viewModel.viewState.remotelyTogglingPushersAvailable) {
                         viewModel.send(viewAction: .togglePushNotifications)
                     }
+                }
+            }
+            
+            SwiftUI.Section {
+                UserSessionOverviewItem(title: VectorL10n.manageSessionSignOut,
+                                        isDestructive: true) {
+                    viewModel.send(viewAction: .logoutOfSession)
                 }
             }
         }
@@ -49,6 +58,19 @@ struct UserSessionOverview: View {
         .navigationTitle(viewModel.viewState.isCurrentSession ?
             VectorL10n.userSessionOverviewCurrentSessionTitle :
             VectorL10n.userSessionOverviewSessionTitle)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button { viewModel.send(viewAction: .renameSession) } label: {
+                        Label(VectorL10n.manageSessionRename, systemImage: "pencil")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
+            }
+        }
+        .accentColor(theme.colors.accent)
     }
 }
 

@@ -897,6 +897,7 @@ Tap the + to start adding people.";
 "manage_session_trusted" = "Trusted by you";
 "manage_session_not_trusted" = "Not trusted";
 "manage_session_sign_out" = "Sign out of this session";
+"manage_session_rename" = "Rename session";
 
 // User sessions management
 "user_sessions_settings" = "Manage sessions";
@@ -1448,6 +1449,9 @@ Tap the + to start adding people.";
 "key_backup_recover_done_action" = "Done";
 
 // MARK: Sign out warning
+
+"sign_out" = "Sign out";
+"sign_out_confirmation_message" = "Are you sure you want to sign out?";
 
 "sign_out_existing_key_backup_alert_title" = "Are you sure you want to sign out?";
 "sign_out_existing_key_backup_alert_sign_out_action" = "Sign out";

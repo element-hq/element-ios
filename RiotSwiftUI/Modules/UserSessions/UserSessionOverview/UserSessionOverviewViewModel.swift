@@ -69,6 +69,10 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
         case .togglePushNotifications:
             self.state.showLoadingIndicator = true
             service.togglePushNotifications()
+        case .renameSession:
+            completion?(.renameSession(sessionInfo))
+        case .logoutOfSession:
+            completion?(.logoutOfSession(sessionInfo))
         }
     }
 }
