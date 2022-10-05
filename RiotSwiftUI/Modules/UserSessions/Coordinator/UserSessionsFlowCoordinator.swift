@@ -19,7 +19,7 @@ import Foundation
 
 struct UserSessionsFlowCoordinatorParameters {
     let session: MXSession
-    let router: NavigationRouterType?
+    let router: NavigationRouterType
 }
 
 final class UserSessionsFlowCoordinator: Coordinator, Presentable {
@@ -41,11 +41,9 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     init(parameters: UserSessionsFlowCoordinatorParameters) {
         self.parameters = parameters
         
-        let navigationRouter = parameters.router ?? NavigationRouter(navigationController: RiotNavigationController())
-        self.navigationRouter = navigationRouter
-        
+        self.navigationRouter = parameters.router
         errorPresenter = MXKErrorAlertPresentation()
-        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: navigationRouter.toPresentable())
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: parameters.router.toPresentable())
     }
     
     // MARK: - Private
@@ -146,6 +144,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             self?.showLogoutAuthentication(for: sessionInfo)
         })
         alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel))
+        alert.popoverPresentationController?.sourceView = toPresentable().view
         
         navigationRouter.present(alert, animated: true)
     }
@@ -154,9 +153,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     private func showLogoutAuthentication(for sessionInfo: UserSessionInfo) {
         startLoading()
         
-        let path = String(format: "%@/devices/%@", kMXAPIPrefixPathR0, MXTools.encodeURIComponent(sessionInfo.id))
-        let deleteDeviceRequest = AuthenticatedEndpointRequest(path: path, httpMethod: "DELETE")
-
+        let deleteDeviceRequest = AuthenticatedEndpointRequest.deleteDevice(sessionInfo.id)
         let coordinatorParameters = ReauthenticationCoordinatorParameters(session: parameters.session,
                                                                           presenter: navigationRouter.toPresentable(),
                                                                           title: VectorL10n.deviceDetailsDeletePromptTitle,
