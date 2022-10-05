@@ -123,8 +123,8 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - libPhoneNumber-iOS (~> 0.9.13)
-  - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
-  - MatrixSDK/JingleCallStack (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
+  - MatrixSDK (= 0.23.18)
+  - MatrixSDK/JingleCallStack (= 0.23.18)
   - OLMKit
   - PostHog (~> 1.4.4)
   - ReadMoreTextView (~> 3.0.1)
@@ -166,6 +166,7 @@ SPEC REPOS:
     - libPhoneNumber-iOS
     - LoggerAPI
     - Logging
+    - MatrixSDK
     - MatrixSDKCrypto
     - OLMKit
     - PostHog
@@ -189,17 +190,11 @@ EXTERNAL SOURCES:
   AnalyticsEvents:
     :branch: release/swift
     :git: https://github.com/matrix-org/matrix-analytics-events.git
-  MatrixSDK:
-    :branch: develop
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 CHECKOUT OPTIONS:
   AnalyticsEvents:
     :commit: 53ad46ba1ea1ee8f21139dda3c351890846a202f
     :git: https://github.com/matrix-org/matrix-analytics-events.git
-  MatrixSDK:
-    :commit: 14cb2f36f0fbbf54ccfeb8aaf3fc6e3165fc6418
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
@@ -226,7 +221,7 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: f1318a7a08acec99743083c07af0a6650d8b330f
+  MatrixSDK: 26da2e3a9f3b02fc6ea67f5bc311d30f06f9ffba
   MatrixSDKCrypto: 4b9146d5ef484550341be056a164c6930038028e
   OLMKit: da115f16582e47626616874e20f7bb92222c7a51
   PostHog: 4b6321b521569092d4ef3a02238d9435dbaeb99f
@@ -246,6 +241,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 567ddee57478c6ab1f081a69bee5b2d0c6ca3f57
+PODFILE CHECKSUM: 45176df406c18b0c23321a308f58535fbe425a93
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.11.2
