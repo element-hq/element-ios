@@ -20,11 +20,10 @@ import XCTest
 
 class UserOtherSessionsViewModelTests: XCTestCase {
     
-    var sut: UserOtherSessionsViewModel!
     
     func test_whenUserOtherSessionSelectedProcessed_completionWithShowUserSessionOverviewCalled() {
         let expectedUserSessionInfo = createUserSessionInfo(sessionId: "session 2")
-        sut = UserOtherSessionsViewModel(sessionsInfo: [createUserSessionInfo(sessionId: "session 1"),
+        let sut = UserOtherSessionsViewModel(sessionsInfo: [createUserSessionInfo(sessionId: "session 1"),
                                                         expectedUserSessionInfo],
                                          filter: .inactive,
                                          title: "Title")
@@ -39,7 +38,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
     
     func test_whenModelCreated_withInactiveFilter_viewStateIsCorrect() {
         let sessionsInfo = [createUserSessionInfo(sessionId: "session 1"), createUserSessionInfo(sessionId: "session 2")]
-        sut = UserOtherSessionsViewModel(sessionsInfo: sessionsInfo,
+        let sut = UserOtherSessionsViewModel(sessionsInfo: sessionsInfo,
                                          filter: .inactive,
                                          title: "Title")
         
