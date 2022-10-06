@@ -53,9 +53,17 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     // MARK: - Private
     
     private func updateViewState(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter) {
-        let sectionItems = filterSessions(sessionInfos: sessionInfos, by: filter).asViewData()
+        let sectionItems = createSectionItems(sessionInfos: sessionInfos, filter: filter)
         let sectionHeader = createHeaderData(filter: filter)
         state.sections = [.sessionItems(header: sectionHeader, items: sectionItems)]
+    }
+    
+    private func createSectionItems(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter) -> [UserSessionListItemViewData] {
+        filterSessions(sessionInfos: sessionInfos, by: filter)
+            .map {
+                UserSessionListItemViewDataFactory().create(from: $0,
+                                                            highlightSessionDetails: filter == .unverified && $0.isCurrent)
+            }
     }
     
     private func filterSessions(sessionInfos: [UserSessionInfo], by filter: OtherUserSessionsFilter) -> [UserSessionInfo] {
