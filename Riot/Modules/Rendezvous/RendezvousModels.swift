@@ -33,5 +33,6 @@ struct RendezvousTransportDetails: Codable {
 }
 
 struct RendezvousMessage: Codable {
-    var combined: String
+    var iv: String
+    var ciphertext: String
 }
