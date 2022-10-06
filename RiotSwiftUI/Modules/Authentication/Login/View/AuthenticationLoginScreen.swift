@@ -50,6 +50,10 @@ struct AuthenticationLoginScreen: View {
                 if viewModel.viewState.homeserver.showLoginForm {
                     loginForm
                 }
+
+                if viewModel.viewState.homeserver.showQRLogin {
+                    qrLoginButton
+                }
                 
                 if viewModel.viewState.homeserver.showLoginForm, viewModel.viewState.showSSOButtons {
                     Text(VectorL10n.or)
@@ -129,6 +133,16 @@ struct AuthenticationLoginScreen: View {
             .accessibilityIdentifier("nextButton")
         }
     }
+
+    /// A QR login button that can be used for login.
+    var qrLoginButton: some View {
+        Button(action: qrLogin) {
+            Text(VectorL10n.authenticationLoginWithQr)
+        }
+        .buttonStyle(SecondaryActionButtonStyle(font: theme.fonts.bodySB))
+        .padding(.vertical)
+        .accessibilityIdentifier("qrLoginButton")
+    }
     
     /// A list of SSO buttons that can be used for login.
     var ssoButtons: some View {
@@ -173,6 +187,11 @@ struct AuthenticationLoginScreen: View {
     /// Sends the `fallback` view action.
     func fallback() {
         viewModel.send(viewAction: .fallback)
+    }
+
+    /// Sends the `qrLogin` view action.
+    func qrLogin() {
+        viewModel.send(viewAction: .qrLogin)
     }
 }
 

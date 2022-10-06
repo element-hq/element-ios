@@ -155,6 +155,15 @@ extension MXRestClient {
             changePassword(from: oldPassword, to: newPassword, logoutDevices: logoutDevices, completion: completion)
         }
     }
+
+    // MARK: - Versions
+
+    /// An async version of `supportedMatrixVersions(completion:)`.
+    func supportedMatrixVersions() async throws -> MXMatrixVersions {
+        try await getResponse({ completion in
+            supportedMatrixVersions(completion: completion)
+        })
+    }
     
     // MARK: - Private
     
