@@ -39,6 +39,18 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             loadData()
         case .verifyCurrentSession:
             completion?(.verifyCurrentSession)
+        case .renameCurrentSession:
+            guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
+                assertionFailure("Missing current session")
+                return
+            }
+            completion?(.renameSession(currentSessionInfo))
+        case .logoutOfCurrentSession:
+            guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
+                assertionFailure("Missing current session")
+                return
+            }
+            completion?(.logoutOfSession(currentSessionInfo))
         case .viewCurrentSessionDetails:
             guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
                 assertionFailure("Missing current session")

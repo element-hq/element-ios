@@ -20,6 +20,8 @@ import Foundation
 
 enum UserSessionOverviewCoordinatorResult {
     case openSessionDetails(sessionInfo: UserSessionInfo)
+    case renameSession(UserSessionInfo)
+    case logoutOfSession(UserSessionInfo)
 }
 
 // MARK: View model
@@ -27,6 +29,8 @@ enum UserSessionOverviewCoordinatorResult {
 enum UserSessionOverviewViewModelResult: Equatable {
     case showSessionDetails(sessionInfo: UserSessionInfo)
     case verifyCurrentSession
+    case renameSession(UserSessionInfo)
+    case logoutOfSession(UserSessionInfo)
 }
 
 // MARK: View
@@ -43,4 +47,6 @@ enum UserSessionOverviewViewAction {
     case verifyCurrentSession
     case viewSessionDetails
     case togglePushNotifications
+    case renameSession
+    case logoutOfSession
 }

@@ -29,3 +29,14 @@ class AuthenticatedEndpointRequest: NSObject {
         super.init()
     }
 }
+
+// MARK: - Helper methods
+
+extension AuthenticatedEndpointRequest {
+    /// Create an authenticated request on `_matrix/client/r0/devices/{deviceID}`.
+    /// - Parameter deviceID: The device ID that is to be deleted.
+    static func deleteDevice(_ deviceID: String) -> AuthenticatedEndpointRequest {
+        let path = String(format: "%@/devices/%@", kMXAPIPrefixPathR0, MXTools.encodeURIComponent(deviceID))
+        return AuthenticatedEndpointRequest(path: path, httpMethod: "DELETE")
+    }
+}

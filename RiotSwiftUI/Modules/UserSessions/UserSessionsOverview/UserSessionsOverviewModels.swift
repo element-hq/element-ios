@@ -19,6 +19,8 @@ import Foundation
 // MARK: - Coordinator
 
 enum UserSessionsOverviewCoordinatorResult {
+    case renameSession(UserSessionInfo)
+    case logoutOfSession(UserSessionInfo)
     case openSessionOverview(sessionInfo: UserSessionInfo)
     case openOtherSessions(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter)
 }
@@ -28,6 +30,8 @@ enum UserSessionsOverviewCoordinatorResult {
 enum UserSessionsOverviewViewModelResult: Equatable {
     case showOtherSessions(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter)
     case verifyCurrentSession
+    case renameSession(UserSessionInfo)
+    case logoutOfSession(UserSessionInfo)
     case showCurrentSessionOverview(sessionInfo: UserSessionInfo)
     case showUserSessionOverview(sessionInfo: UserSessionInfo)
 }
@@ -49,6 +53,8 @@ struct UserSessionsOverviewViewState: BindableState {
 enum UserSessionsOverviewViewAction {
     case viewAppeared
     case verifyCurrentSession
+    case renameCurrentSession
+    case logoutOfCurrentSession
     case viewCurrentSessionDetails
     case viewAllUnverifiedSessions
     case viewAllInactiveSessions
