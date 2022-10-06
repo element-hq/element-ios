@@ -19,11 +19,15 @@ import Foundation
 import SwiftUI
 
 class MockQRLoginService: QRLoginServiceProtocol {
-    init(withState state: QRLoginServiceState = .initial) {
+    init(withState state: QRLoginServiceState = .initial,
+         mode: QRLoginServiceMode = .notAuthenticated) {
         self.state = state
+        self.mode = mode
     }
 
     // MARK: - QRLoginServiceProtocol
+
+    let mode: QRLoginServiceMode
 
     var state: QRLoginServiceState {
         didSet {

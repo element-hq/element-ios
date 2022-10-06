@@ -18,6 +18,13 @@ import Combine
 import Foundation
 import SwiftUI
 
+// MARK: - QRLoginServiceMode
+
+enum QRLoginServiceMode {
+    case authenticated
+    case notAuthenticated
+}
+
 // MARK: - QRLoginServiceError
 
 enum QRLoginServiceError: Error, Equatable {
@@ -71,6 +78,7 @@ enum QRLoginServiceCallback {
 // MARK: - QRLoginServiceProtocol
 
 protocol QRLoginServiceProtocol {
+    var mode: QRLoginServiceMode { get }
     var state: QRLoginServiceState { get }
     var callbacks: PassthroughSubject<QRLoginServiceCallback, Never> { get }
     func isServiceAvailable() async throws -> Bool

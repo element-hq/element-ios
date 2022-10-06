@@ -31,13 +31,17 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
     private let cameraAccessManager = CameraAccessManager()
 
     init(client: AuthenticationRestClient,
+         mode: QRLoginServiceMode,
          state: QRLoginServiceState = .initial) {
         self.client = client
+        self.mode = mode
         self.state = state
         super.init()
     }
 
     // MARK: QRLoginServiceProtocol
+
+    let mode: QRLoginServiceMode
 
     var state: QRLoginServiceState {
         didSet {
