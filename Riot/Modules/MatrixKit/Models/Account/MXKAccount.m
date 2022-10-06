@@ -677,6 +677,11 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 {
     if (!self.mxSession.myDeviceId)
     {
+        MXLogWarning(@"[MXKAccount] loadPusher: device ID not found");
+        if (failure)
+        {
+            failure([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:nil]);
+        }
         return;
     }
     
