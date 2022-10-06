@@ -39,7 +39,7 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle].exists)
     }
     
-        func test_whenOtherSessionsWithUnverifiedSessionFilterPresented_correctItemsDisplayed() {
+    func test_whenOtherSessionsWithUnverifiedSessionFilterPresented_correctItemsDisplayed() {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.unverifiedSessions.title)
  
         XCTAssertTrue(app.buttons["RiotSwiftUI Mobile: iOS, Unverified · Your current session"].exists)
