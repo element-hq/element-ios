@@ -63,15 +63,12 @@ class RendezvousTransport: RendezvousTransportProtocol {
                     } else if httpURLResponse.statusCode == 304 {
                         continuation.resume(returning: .success(nil))
                     } else if httpURLResponse.statusCode == 200 {
-                        if httpURLResponse.allHeaderFields["Content-Type"] as? String != "application/json" {
-                            continuation.resume(returning: .success(nil))
-                        } else {
-                            if let etag = httpURLResponse.allHeaderFields["Etag"] as? String {
-                                self.currentEtag = etag
-                            }
-                            
-                            continuation.resume(returning: .success(data))
+                        // The resouce changed, update the etag
+                        if let etag = httpURLResponse.allHeaderFields["Etag"] as? String {
+                            self.currentEtag = etag
                         }
+                        
+                        continuation.resume(returning: .success(data))
                     }
                 }.resume()
             }

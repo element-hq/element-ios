@@ -23,11 +23,21 @@ enum RendezvousTransportError: Error {
     case rendezvousCancelled
 }
 
+/// HTTP based MSC3886 channel implementation
 @MainActor
 protocol RendezvousTransportProtocol {
+    /// The current rendezvous endpoint.
+    /// Automatically assigned after a successful creation
     var rendezvousURL: URL? { get }
     
+    /// Creates a new rendezvous point containing the body
+    /// - Parameter body: arbitrary data to publish on the rendevous
+    /// - Returns:a transport error in case of failure
     func create<T: Encodable>(body: T) async -> Result<(), RendezvousTransportError>
+    
+    /// Waits for and returns newly availalbe rendezvous data
     func get() async -> Result<Data, RendezvousTransportError>
+        
+    /// Publishes new rendezvous data
     func send<T: Encodable>(body: T) async -> Result<(), RendezvousTransportError>
 }
