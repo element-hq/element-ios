@@ -17,6 +17,7 @@
 import Foundation
 
 class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
+    
     enum Mode {
         case currentSessionUnverified
         case currentSessionVerified
@@ -28,6 +29,7 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     private let mode: Mode
     
     var overviewData: UserSessionsOverviewData
+    var sessionInfos = [UserSessionInfo]()
     
     init(mode: Mode = .currentSessionUnverified) {
         self.mode = mode

@@ -18,7 +18,7 @@ import SwiftUI
 
 struct UserOtherSessionsHeaderViewData: Hashable {
     var title: String?
-    var subtitle: String
+    let subtitle: String
     var iconName: String?
 }
 
@@ -36,7 +36,6 @@ struct UserOtherSessionsHeaderView: View {
         HStack (alignment: .top, spacing: 0) {
             if let iconName = viewData.iconName {
                 Image(iconName)
-                    .foregroundColor(.red)
                     .frame(width: 40, height: 40)
                     .background(theme.colors.background)
                     .clipShape(backgroundShape)

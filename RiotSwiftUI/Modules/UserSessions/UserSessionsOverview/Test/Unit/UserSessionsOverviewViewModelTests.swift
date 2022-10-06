@@ -51,7 +51,7 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
         XCTAssertEqual(result, .verifyCurrentSession)
         
         viewModel.process(viewAction: .viewAllInactiveSessions)
-        XCTAssertEqual(result, .showOtherSessions(sessionsInfo: [], filter: .inactive))
+        XCTAssertEqual(result, .showOtherSessions(sessionInfos: [], filter: .inactive))
     }
     
     func testShowSessionDetails() {

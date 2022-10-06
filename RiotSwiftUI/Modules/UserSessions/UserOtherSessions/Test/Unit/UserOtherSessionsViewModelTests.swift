@@ -23,7 +23,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
     
     func test_whenUserOtherSessionSelectedProcessed_completionWithShowUserSessionOverviewCalled() {
         let expectedUserSessionInfo = createUserSessionInfo(sessionId: "session 2")
-        let sut = UserOtherSessionsViewModel(sessionsInfo: [createUserSessionInfo(sessionId: "session 1"),
+        let sut = UserOtherSessionsViewModel(sessionInfos: [createUserSessionInfo(sessionId: "session 1"),
                                                         expectedUserSessionInfo],
                                          filter: .inactive,
                                          title: "Title")
@@ -37,15 +37,15 @@ class UserOtherSessionsViewModelTests: XCTestCase {
     }
     
     func test_whenModelCreated_withInactiveFilter_viewStateIsCorrect() {
-        let sessionsInfo = [createUserSessionInfo(sessionId: "session 1"), createUserSessionInfo(sessionId: "session 2")]
-        let sut = UserOtherSessionsViewModel(sessionsInfo: sessionsInfo,
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"), createUserSessionInfo(sessionId: "session 2")]
+        let sut = UserOtherSessionsViewModel(sessionInfos: sessionInfos,
                                          filter: .inactive,
                                          title: "Title")
         
         let expectedHeader = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
                                                              subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
                                                              iconName: Asset.Images.userOtherSessionsInactive.name)
-        let expectedItems = sessionsInfo.filter { !$0.isActive }.asViewData()
+        let expectedItems = sessionInfos.filter { !$0.isActive }.asViewData()
         let expectedState = UserOtherSessionsViewState(title: "Title",
                                                        sections: [.sessionItems(header: expectedHeader, items: expectedItems)])
         XCTAssertEqual(sut.state, expectedState)

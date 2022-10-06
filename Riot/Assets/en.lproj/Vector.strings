@@ -2393,6 +2393,8 @@ To enable access, tap Settings> Location and select Always";
 "user_session_push_notifications_message" = "When turned on, this session will receive push notifications.";
 
 "user_other_session_security_recommendation_title" = "Security recommendation";
+"user_other_session_unverified_sessions_header_subtitle" = "Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.";
+"user_other_session_unverified_current_session_details" =  "%@ · Your current session";
 
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";

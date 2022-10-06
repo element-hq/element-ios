@@ -57,6 +57,8 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertTrue(service.overviewData.unverifiedSessions.isEmpty)
         XCTAssertTrue(service.overviewData.inactiveSessions.isEmpty)
         XCTAssertFalse(service.overviewData.otherSessions.isEmpty)
+        
+        XCTAssertEqual(service.sessionInfos.count, 2)
     }
     
     func testWithSomeUnverifiedSessions() {
@@ -69,6 +71,8 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertFalse(service.overviewData.unverifiedSessions.isEmpty)
         XCTAssertTrue(service.overviewData.inactiveSessions.isEmpty)
         XCTAssertFalse(service.overviewData.otherSessions.isEmpty)
+        
+        XCTAssertEqual(service.sessionInfos.count, 3)
     }
     
     func testWithSomeInactiveSessions() {
@@ -81,6 +85,8 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertTrue(service.overviewData.unverifiedSessions.isEmpty)
         XCTAssertFalse(service.overviewData.inactiveSessions.isEmpty)
         XCTAssertFalse(service.overviewData.otherSessions.isEmpty)
+        
+        XCTAssertEqual(service.sessionInfos.count, 3)
     }
     
     func testWithSomeUnverifiedAndInactiveSessions() {
@@ -93,6 +99,8 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertFalse(service.overviewData.unverifiedSessions.isEmpty)
         XCTAssertFalse(service.overviewData.inactiveSessions.isEmpty)
         XCTAssertFalse(service.overviewData.otherSessions.isEmpty)
+        
+        XCTAssertEqual(service.sessionInfos.count, 4)
     }
     
     // MARK: - Private

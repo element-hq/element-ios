@@ -18,7 +18,7 @@ import CommonKit
 import SwiftUI
 
 struct UserOtherSessionsCoordinatorParameters {
-    let sessionsInfo: [UserSessionInfo]
+    let sessionInfos: [UserSessionInfo]
     let filter: OtherUserSessionsFilter
     let title: String
 }
@@ -38,7 +38,7 @@ final class UserOtherSessionsCoordinator: Coordinator, Presentable {
     init(parameters: UserOtherSessionsCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = UserOtherSessionsViewModel(sessionsInfo: parameters.sessionsInfo,
+        let viewModel = UserOtherSessionsViewModel(sessionInfos: parameters.sessionInfos,
                                                    filter: parameters.filter,
                                                    title: parameters.title)
         let view = UserOtherSessions(viewModel: viewModel.context)
