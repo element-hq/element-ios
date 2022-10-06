@@ -35,6 +35,7 @@ class SelfSizingHostingController<Content>: UIHostingController<Content> where C
 
 @available(iOS 16.0, *)
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputToolbarViewProtocol {
+    @Environment(\.theme) var theme: ThemeSwiftUI
     
     override class func instantiate() -> MXKRoomInputToolbarView! {
         return loadFromNib()
@@ -63,6 +64,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
         })
         
         hostingViewController = SelfSizingHostingController(rootView: composer)
+        hostingViewController.view.backgroundColor = UIColor(theme.colors.background)
         let height = hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: 800)).height
         let subView: UIView = hostingViewController.view
         self.addSubview(subView)
@@ -85,7 +87,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
                     self.updateToolbarHeight(wysiwygHeight: h)
                 })
         ]
-        
     }
     
     func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {
