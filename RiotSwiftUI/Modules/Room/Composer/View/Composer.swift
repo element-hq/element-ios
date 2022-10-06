@@ -56,6 +56,7 @@ struct Composer: View {
                     select: viewModel.select,
                     didUpdateText: viewModel.didUpdateText
                 )
+                .textColor(theme.colors.primaryContent)
                 .frame(height: viewModel.idealHeight)
                 .padding(.horizontal, 12)
                 .onAppear {
