@@ -43,7 +43,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         dataProvider.devices { response in
             switch response {
             case .success(let devices):
-                self.sessionInfos = self.sortAndConvertDevices(devices: devices)
+                self.sessionInfos = self.sortedSessionInfos(from: devices)
                 self.overviewData = self.sessionsOverviewData(from: self.sessionInfos)
                 completion(.success(self.overviewData))
             case .failure(let error):
@@ -81,7 +81,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         return sessionInfo(from: device, isCurrentSession: true)
     }
     
-    private func sortAndConvertDevices(devices: [MXDevice]) -> [UserSessionInfo] {
+    private func sortedSessionInfos(from devices: [MXDevice]) -> [UserSessionInfo] {
         devices
             .sorted { $0.lastSeenTs > $1.lastSeenTs }
             .map { sessionInfo(from: $0, isCurrentSession: $0.deviceId == dataProvider.myDeviceId) }
