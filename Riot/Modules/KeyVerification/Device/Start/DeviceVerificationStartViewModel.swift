@@ -72,7 +72,7 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
             guard let sself = self else {
                 return
             }
-            guard let sasTransaction: MXOutgoingSASTransaction = transaction as? MXOutgoingSASTransaction  else {
+            guard let sasTransaction = transaction as? MXSASTransaction, !sasTransaction.isIncoming  else {
                 return
             }
 
@@ -100,7 +100,7 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
 
     // MARK: - MXKeyVerificationTransactionDidChange
 
-    private func registerTransactionDidStateChangeNotification(transaction: MXOutgoingSASTransaction) {
+    private func registerTransactionDidStateChangeNotification(transaction: MXSASTransaction) {
         NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: NSNotification.Name.MXKeyVerificationTransactionDidChange, object: transaction)
     }
     
@@ -109,7 +109,7 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     }
 
     @objc private func transactionDidStateChange(notification: Notification) {
-        guard let transaction = notification.object as? MXOutgoingSASTransaction else {
+        guard let transaction = notification.object as? MXSASTransaction, !transaction.isIncoming else {
             return
         }
 

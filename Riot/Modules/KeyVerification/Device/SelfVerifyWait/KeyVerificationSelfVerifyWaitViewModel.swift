@@ -181,7 +181,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     
     @objc private func keyVerificationManagerNewRequestNotification(notification: Notification) {
         
-        guard let userInfo = notification.userInfo, let keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey] as? MXKeyVerificationByToDeviceRequest else {
+        guard let userInfo = notification.userInfo, let keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey] as? MXKeyVerificationRequest, keyVerificationRequest.transport == .toDevice else {
             return
         }
         
@@ -242,14 +242,14 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     }
 
     @objc private func transactionDidStateChange(notification: Notification) {
-        guard let sasTransaction = notification.object as? MXIncomingSASTransaction,
-            sasTransaction.otherUserId == self.session.myUserId else {
+        guard let sasTransaction = notification.object as? MXSASTransaction,
+            sasTransaction.isIncoming, sasTransaction.otherUserId == self.session.myUserId else {
             return
         }
         self.sasTransactionDidStateChange(sasTransaction)
     }
 
-    private func sasTransactionDidStateChange(_ transaction: MXIncomingSASTransaction) {
+    private func sasTransactionDidStateChange(_ transaction: MXSASTransaction) {
         switch transaction.state {
         case MXSASTransactionStateIncomingShowAccept:
             transaction.accept()
