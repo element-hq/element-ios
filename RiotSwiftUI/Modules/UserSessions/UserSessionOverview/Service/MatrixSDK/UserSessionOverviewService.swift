@@ -18,7 +18,6 @@ import Combine
 import MatrixSDK
 
 class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
-
     // MARK: - Members
     
     private(set) var pusherEnabledSubject: CurrentValueSubject<Bool?, Never>
@@ -36,10 +35,10 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
     init(session: MXSession, sessionInfo: UserSessionInfo) {
         self.session = session
         self.sessionInfo = sessionInfo
-        self.pusherEnabledSubject = CurrentValueSubject(nil)
-        self.remotelyTogglingPushersAvailableSubject = CurrentValueSubject(false)
+        pusherEnabledSubject = CurrentValueSubject(nil)
+        remotelyTogglingPushersAvailableSubject = CurrentValueSubject(false)
         
-        self.localNotificationSettings = session.accountData.localNotificationSettingsForDevice(withId: sessionInfo.id)
+        localNotificationSettings = session.accountData.localNotificationSettingsForDevice(withId: sessionInfo.id)
         
         if let localNotificationSettings = localNotificationSettings, let isSilenced = localNotificationSettings[kMXAccountDataIsSilencedKey] as? Bool {
             remotelyTogglingPushersAvailableSubject.send(true)
@@ -69,7 +68,7 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
     // MARK: - Private
     
     private func toggle(_ pusher: MXPusher, enabled: Bool) {
-        guard self.remotelyTogglingPushersAvailableSubject.value else {
+        guard remotelyTogglingPushersAvailableSubject.value else {
             MXLog.warning("[UserSessionOverviewService] toggle pusher canceled: remotely toggling pushers not available")
             return
         }
@@ -77,16 +76,16 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
         MXLog.debug("[UserSessionOverviewService] remotely toggling pusher")
         let data = pusher.data.jsonDictionary() as? [String: Any] ?? [:]
         
-        self.session.matrixRestClient.setPusher(pushKey: pusher.pushkey,
-                                                kind: MXPusherKind(value: pusher.kind),
-                                                appId: pusher.appId,
-                                                appDisplayName:pusher.appDisplayName,
-                                                deviceDisplayName: pusher.deviceDisplayName,
-                                                profileTag: pusher.profileTag ?? "",
-                                                lang: pusher.lang,
-                                                data: data,
-                                                append: false,
-                                                enabled: enabled) { [weak self] response in
+        session.matrixRestClient.setPusher(pushKey: pusher.pushkey,
+                                           kind: MXPusherKind(value: pusher.kind),
+                                           appId: pusher.appId,
+                                           appDisplayName: pusher.appDisplayName,
+                                           deviceDisplayName: pusher.deviceDisplayName,
+                                           profileTag: pusher.profileTag ?? "",
+                                           lang: pusher.lang,
+                                           data: data,
+                                           append: false,
+                                           enabled: enabled) { [weak self] response in
             guard let self = self else { return }
             
             switch response {

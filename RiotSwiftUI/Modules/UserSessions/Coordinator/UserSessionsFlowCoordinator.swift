@@ -41,7 +41,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     init(parameters: UserSessionsFlowCoordinatorParameters) {
         self.parameters = parameters
         
-        self.navigationRouter = parameters.router
+        navigationRouter = parameters.router
         errorPresenter = MXKErrorAlertPresentation()
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: parameters.router.toPresentable())
     }
@@ -151,7 +151,6 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
                                                                 title: title)
         return UserOtherSessionsCoordinator(parameters: parameters)
     }
-    
     
     /// Shows a confirmation dialog to the user to sign out of a session.
     private func showLogoutConfirmation(for sessionInfo: UserSessionInfo) {

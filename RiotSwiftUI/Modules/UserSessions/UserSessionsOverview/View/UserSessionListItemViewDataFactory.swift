@@ -17,7 +17,6 @@
 import Foundation
 
 struct UserSessionListItemViewDataFactory {
-    
     func create(from sessionInfo: UserSessionInfo, highlightSessionDetails: Bool = false) -> UserSessionListItemViewData {
         let sessionName = UserSessionNameFormatter.sessionName(deviceType: sessionInfo.deviceType,
                                                                sessionDisplayName: sessionInfo.name)
@@ -41,7 +40,7 @@ struct UserSessionListItemViewDataFactory {
     }
     
     private func inactiveSessionDetails(sessionInfo: UserSessionInfo) -> String {
-        if let lastActivityDate = sessionInfo.lastSeenTimestamp  {
+        if let lastActivityDate = sessionInfo.lastSeenTimestamp {
             let lastActivityDateString = InactiveUserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityDate)
             return VectorL10n.userInactiveSessionItemWithDate(lastActivityDateString)
         }

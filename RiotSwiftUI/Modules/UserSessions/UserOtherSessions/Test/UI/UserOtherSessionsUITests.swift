@@ -18,12 +18,11 @@ import RiotSwiftUI
 import XCTest
 
 class UserOtherSessionsUITests: MockScreenTestCase {
-    
     func test_whenOtherSessionsWithInactiveSessionFilterPresented_correctHeaderDisplayed() {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.inactiveSessions.title)
 
         XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle].exists)
-        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo].exists) 
+        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo].exists)
     }
     
     func test_whenOtherSessionsWithInactiveSessionFilterPresented_correctItemsDisplayed() {

@@ -25,7 +25,6 @@ enum OtherUserSessionsFilter {
 }
 
 class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessionsViewModelProtocol {
-    
     var completion: ((UserOtherSessionsViewModelResult) -> Void)?
     private let sessionInfos: [UserSessionInfo]
     
@@ -42,7 +41,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     override func process(viewAction: UserOtherSessionsViewAction) {
         switch viewAction {
         case let .userOtherSessionSelected(sessionId: sessionId):
-            guard let session = sessionInfos.first(where: {$0.id == sessionId}) else {
+            guard let session = sessionInfos.first(where: { $0.id == sessionId }) else {
                 assertionFailure("Session should exist in the array.")
                 return
             }

@@ -17,7 +17,6 @@
 import Foundation
 
 class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
-    
     enum Mode {
         case currentSessionUnverified
         case currentSessionVerified
@@ -108,7 +107,7 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                          deviceType: .desktop,
                          isVerified: verified,
                          lastSeenIP: "1.0.0.1",
-                         lastSeenTimestamp: Date().timeIntervalSince1970 - 8000000,
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 8_000_000,
                          applicationName: "Element MacOS",
                          applicationVersion: "1.0.0",
                          applicationURL: nil,

@@ -116,6 +116,6 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
 
 extension Collection where Element == UserSessionInfo {
     func asViewData() -> [UserSessionListItemViewData] {
-        map { UserSessionListItemViewDataFactory().create(from: $0)}
+        map { UserSessionListItemViewDataFactory().create(from: $0) }
     }
 }
