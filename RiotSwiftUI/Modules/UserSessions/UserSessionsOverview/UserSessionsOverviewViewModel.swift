@@ -70,6 +70,8 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
                 return
             }
             completion?(.showUserSessionOverview(sessionInfo: session))
+        case .linkDevice:
+            completion?(.linkDevice)
         }
     }
     
@@ -83,6 +85,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         if let currentSessionInfo = userSessionsViewData.currentSession {
             state.currentSessionViewData = UserSessionCardViewData(sessionInfo: currentSessionInfo)
         }
+        state.linkDeviceButtonVisible = userSessionsViewData.linkDeviceEnabled
     }
     
     private func loadData() {

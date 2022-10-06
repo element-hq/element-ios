@@ -75,6 +75,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
                 self.openOtherSessions(sessionInfos: sessionInfos,
                                        filterBy: filter,
                                        title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
+            case .linkDevice:
+                self.openQRLoginScreen()
             }
         }
         return coordinator
@@ -103,6 +105,21 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
                 self.showLogoutConfirmation(for: sessionInfo)
             }
         }
+        pushScreen(with: coordinator)
+    }
+
+    /// Shows the QR login screen.
+    private func openQRLoginScreen() {
+        let service = QRLoginService(client: parameters.session.matrixRestClient,
+                                     mode: .authenticated)
+        let parameters = AuthenticationQRLoginStartCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                         qrLoginService: service)
+        let coordinator = AuthenticationQRLoginStartCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] _ in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.remove(childCoordinator: coordinator)
+        }
+
         pushScreen(with: coordinator)
     }
     

@@ -37,7 +37,8 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         overviewData = UserSessionsOverviewData(currentSession: nil,
                                                 unverifiedSessions: [],
                                                 inactiveSessions: [],
-                                                otherSessions: [])
+                                                otherSessions: [],
+                                                linkDeviceEnabled: false)
     }
     
     func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
@@ -49,24 +50,28 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
             overviewData = UserSessionsOverviewData(currentSession: currentSession,
                                                     unverifiedSessions: [],
                                                     inactiveSessions: [],
-                                                    otherSessions: [])
+                                                    otherSessions: [],
+                                                    linkDeviceEnabled: false)
         case .onlyUnverifiedSessions:
             overviewData = UserSessionsOverviewData(currentSession: currentSession,
                                                     unverifiedSessions: unverifiedSessions + [currentSession],
                                                     inactiveSessions: [],
-                                                    otherSessions: unverifiedSessions)
+                                                    otherSessions: unverifiedSessions,
+                                                    linkDeviceEnabled: false)
         case .onlyInactiveSessions:
             overviewData = UserSessionsOverviewData(currentSession: currentSession,
                                                     unverifiedSessions: [],
                                                     inactiveSessions: inactiveSessions,
-                                                    otherSessions: inactiveSessions)
+                                                    otherSessions: inactiveSessions,
+                                                    linkDeviceEnabled: false)
         default:
             let otherSessions = unverifiedSessions + inactiveSessions + buildSessions(verified: true, active: true)
             
             overviewData = UserSessionsOverviewData(currentSession: currentSession,
                                                     unverifiedSessions: unverifiedSessions,
                                                     inactiveSessions: inactiveSessions,
-                                                    otherSessions: otherSessions)
+                                                    otherSessions: otherSessions,
+                                                    linkDeviceEnabled: true)
         }
         
         completion(.success(overviewData))
@@ -75,7 +80,7 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo? {
         overviewData.otherSessions.first { $0.id == sessionId }
     }
-
+    
     // MARK: - Private
     
     private var currentSession: UserSessionInfo {
