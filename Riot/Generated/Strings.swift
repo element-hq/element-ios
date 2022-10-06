@@ -771,6 +771,10 @@ public class VectorL10n: NSObject {
   public static var authenticationQrLoginDisplayTitle: String { 
     return VectorL10n.tr("Vector", "authentication_qr_login_display_title") 
   }
+  /// QR code is invalid.
+  public static var authenticationQrLoginFailureInvalidQr: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_failure_invalid_qr") 
+  }
   /// The request was denied on the other device.
   public static var authenticationQrLoginFailureRequestDenied: String { 
     return VectorL10n.tr("Vector", "authentication_qr_login_failure_request_denied") 

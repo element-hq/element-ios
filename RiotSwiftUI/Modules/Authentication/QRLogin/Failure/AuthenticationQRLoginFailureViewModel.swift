@@ -53,7 +53,7 @@ class AuthenticationQRLoginFailureViewModel: AuthenticationQRLoginFailureViewMod
         case .failed(let error):
             switch error {
             case .invalidQR:
-                self.state.failureText = VectorL10n.loginInvalidParam
+                self.state.failureText = VectorL10n.authenticationQrLoginFailureInvalidQr
                 self.state.retryButtonVisible = true
             case .requestDenied:
                 self.state.failureText = VectorL10n.authenticationQrLoginFailureRequestDenied
