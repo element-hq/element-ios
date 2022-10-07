@@ -8687,6 +8687,10 @@ public class VectorL10n: NSObject {
   public static var userSessionLearnMore: String { 
     return VectorL10n.tr("Vector", "user_session_learn_more") 
   }
+  /// %@: %@
+  public static func userSessionName(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "user_session_name", p1, p2)
+  }
   /// Current session
   public static var userSessionOverviewCurrentSessionTitle: String { 
     return VectorL10n.tr("Vector", "user_session_overview_current_session_title") 
