@@ -17,6 +17,7 @@
 import Foundation
 
 // MARK: - Coordinator
+
 enum UserOtherSessionsCoordinatorResult {
     case openSessionDetails(sessionInfo: UserSessionInfo)
 }
@@ -38,6 +39,7 @@ enum UserOtherSessionsSection: Hashable, Identifiable {
     var id: Self {
         self
     }
+
     case sessionItems(header: UserOtherSessionsHeaderViewData, items: [UserSessionListItemViewData])
 }
 

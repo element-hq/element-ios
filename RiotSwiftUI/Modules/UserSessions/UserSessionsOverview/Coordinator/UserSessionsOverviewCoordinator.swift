@@ -69,6 +69,8 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
                 self.showCurrentSessionOverview(sessionInfo: sessionInfo)
             case let .showUserSessionOverview(sessionInfo):
                 self.showUserSessionOverview(sessionInfo: sessionInfo)
+            case .linkDevice:
+                self.completion?(.linkDevice)
             }
         }
     }
@@ -107,5 +109,4 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     private func showUserSessionOverview(sessionInfo: UserSessionInfo) {
         completion?(.openSessionOverview(sessionInfo: sessionInfo))
     }
-
 }

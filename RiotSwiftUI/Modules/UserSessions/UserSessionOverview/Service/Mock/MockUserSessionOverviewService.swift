@@ -18,18 +18,16 @@ import Combine
 import Foundation
 
 class MockUserSessionOverviewService: UserSessionOverviewServiceProtocol {
-    
-    
     var pusherEnabledSubject: CurrentValueSubject<Bool?, Never>
     var remotelyTogglingPushersAvailableSubject: CurrentValueSubject<Bool, Never>
 
     init(pusherEnabled: Bool? = nil, remotelyTogglingPushersAvailable: Bool = true) {
-        self.pusherEnabledSubject = CurrentValueSubject(pusherEnabled)
-        self.remotelyTogglingPushersAvailableSubject = CurrentValueSubject(remotelyTogglingPushersAvailable)
+        pusherEnabledSubject = CurrentValueSubject(pusherEnabled)
+        remotelyTogglingPushersAvailableSubject = CurrentValueSubject(remotelyTogglingPushersAvailable)
     }
     
     func togglePushNotifications() {
-        guard let enabled = pusherEnabledSubject.value, self.remotelyTogglingPushersAvailableSubject.value else {
+        guard let enabled = pusherEnabledSubject.value, remotelyTogglingPushersAvailableSubject.value else {
             return
         }
         

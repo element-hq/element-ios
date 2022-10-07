@@ -32,6 +32,7 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertTrue(service.overviewData.currentSession?.isActive ?? false)
         XCTAssertFalse(service.overviewData.unverifiedSessions.isEmpty)
         XCTAssertTrue(service.overviewData.inactiveSessions.isEmpty)
+        XCTAssertFalse(service.overviewData.linkDeviceEnabled)
         
         XCTAssertEqual(service.sessionForIdentifier(currentDeviceId), service.overviewData.currentSession)
     }
@@ -45,6 +46,7 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertTrue(service.overviewData.currentSession?.isActive ?? false)
         XCTAssertTrue(service.overviewData.unverifiedSessions.isEmpty)
         XCTAssertTrue(service.overviewData.inactiveSessions.isEmpty)
+        XCTAssertFalse(service.overviewData.linkDeviceEnabled)
     }
     
     func testWithAllSessionsVerified() {
@@ -57,6 +59,7 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertTrue(service.overviewData.unverifiedSessions.isEmpty)
         XCTAssertTrue(service.overviewData.inactiveSessions.isEmpty)
         XCTAssertFalse(service.overviewData.otherSessions.isEmpty)
+        XCTAssertTrue(service.overviewData.linkDeviceEnabled)
         
         XCTAssertEqual(service.sessionInfos.count, 2)
     }
@@ -71,6 +74,7 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertFalse(service.overviewData.unverifiedSessions.isEmpty)
         XCTAssertTrue(service.overviewData.inactiveSessions.isEmpty)
         XCTAssertFalse(service.overviewData.otherSessions.isEmpty)
+        XCTAssertTrue(service.overviewData.linkDeviceEnabled)
         
         XCTAssertEqual(service.sessionInfos.count, 3)
     }
@@ -85,6 +89,7 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertTrue(service.overviewData.unverifiedSessions.isEmpty)
         XCTAssertFalse(service.overviewData.inactiveSessions.isEmpty)
         XCTAssertFalse(service.overviewData.otherSessions.isEmpty)
+        XCTAssertTrue(service.overviewData.linkDeviceEnabled)
         
         XCTAssertEqual(service.sessionInfos.count, 3)
     }
@@ -99,6 +104,7 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertFalse(service.overviewData.unverifiedSessions.isEmpty)
         XCTAssertFalse(service.overviewData.inactiveSessions.isEmpty)
         XCTAssertFalse(service.overviewData.otherSessions.isEmpty)
+        XCTAssertTrue(service.overviewData.linkDeviceEnabled)
         
         XCTAssertEqual(service.sessionInfos.count, 4)
     }
@@ -178,6 +184,10 @@ private class MockUserSessionsDataProvider: UserSessionsDataProviderProtocol {
     
     func accountData(for eventType: String) -> [AnyHashable : Any]? {
         [:]
+    }
+
+    func qrLoginAvailable() async throws -> Bool {
+        true
     }
     
     // MARK: - Private

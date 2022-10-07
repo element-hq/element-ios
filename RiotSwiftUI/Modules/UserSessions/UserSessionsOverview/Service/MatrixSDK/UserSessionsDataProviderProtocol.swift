@@ -29,4 +29,6 @@ protocol UserSessionsDataProviderProtocol {
     func device(withDeviceId deviceId: String, ofUser userId: String) -> MXDeviceInfo?
     
     func accountData(for eventType: String) -> [AnyHashable: Any]?
+
+    func qrLoginAvailable() async throws -> Bool
 }

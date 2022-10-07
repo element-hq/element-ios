@@ -40,7 +40,6 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        
         let viewModel: UserOtherSessionsViewModel
         switch self {
         case .inactiveSessions:
@@ -83,7 +82,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          deviceType: .desktop,
                          isVerified: true,
                          lastSeenIP: "1.0.0.1",
-                         lastSeenTimestamp: Date().timeIntervalSince1970 - 8000000,
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 8_000_000,
                          applicationName: nil,
                          applicationVersion: nil,
                          applicationURL: nil,
@@ -99,7 +98,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          deviceType: .web,
                          isVerified: true,
                          lastSeenIP: "2.0.0.2",
-                         lastSeenTimestamp: Date().timeIntervalSince1970 - 9000000,
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 9_000_000,
                          applicationName: nil,
                          applicationVersion: nil,
                          applicationURL: nil,
@@ -115,7 +114,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          deviceType: .mobile,
                          isVerified: false,
                          lastSeenIP: "3.0.0.3",
-                         lastSeenTimestamp: Date().timeIntervalSince1970 - 10000000,
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 10_000_000,
                          applicationName: nil,
                          applicationVersion: nil,
                          applicationURL: nil,
@@ -150,7 +149,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          deviceType: .desktop,
                          isVerified: false,
                          lastSeenIP: "1.0.0.1",
-                         lastSeenTimestamp: Date().timeIntervalSince1970 - 8000000,
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 8_000_000,
                          applicationName: nil,
                          applicationVersion: nil,
                          applicationURL: nil,
@@ -160,7 +159,6 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          clientName: nil,
                          clientVersion: nil,
                          isActive: true,
-                         isCurrent: false)
-         ]
+                         isCurrent: false)]
     }
 }

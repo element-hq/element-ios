@@ -19,14 +19,12 @@ import XCTest
 @testable import RiotSwiftUI
 
 class UserOtherSessionsViewModelTests: XCTestCase {
-    
-    
     func test_whenUserOtherSessionSelectedProcessed_completionWithShowUserSessionOverviewCalled() {
         let expectedUserSessionInfo = createUserSessionInfo(sessionId: "session 2")
         let sut = UserOtherSessionsViewModel(sessionInfos: [createUserSessionInfo(sessionId: "session 1"),
-                                                        expectedUserSessionInfo],
-                                         filter: .inactive,
-                                         title: "Title")
+                                                            expectedUserSessionInfo],
+                                             filter: .inactive,
+                                             title: "Title")
         
         var modelResult: UserOtherSessionsViewModelResult?
         sut.completion = { result in
@@ -39,8 +37,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
     func test_whenModelCreated_withInactiveFilter_viewStateIsCorrect() {
         let sessionInfos = [createUserSessionInfo(sessionId: "session 1"), createUserSessionInfo(sessionId: "session 2")]
         let sut = UserOtherSessionsViewModel(sessionInfos: sessionInfos,
-                                         filter: .inactive,
-                                         title: "Title")
+                                             filter: .inactive,
+                                             title: "Title")
         
         let expectedHeader = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
                                                              subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
@@ -50,7 +48,6 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sections: [.sessionItems(header: expectedHeader, items: expectedItems)])
         XCTAssertEqual(sut.state, expectedState)
     }
-    
     
     private func createUserSessionInfo(sessionId: String) -> UserSessionInfo {
         UserSessionInfo(id: sessionId,
