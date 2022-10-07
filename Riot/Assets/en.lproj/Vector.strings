@@ -2392,6 +2392,9 @@ To enable access, tap Settings> Location and select Always";
 
 // MARK: User sessions management
 
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+
 "user_sessions_overview_title" = "Sessions";
 
 "user_sessions_overview_security_recommendations_section_title" = "Security recommendations";
