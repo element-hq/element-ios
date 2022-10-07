@@ -4630,7 +4630,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
     
-    if ([self inputToolbarConformsToToolbarViewProtocol])
+    if ([self inputToolbarConformsToHtmlToolbarViewProtocol]) {
+        self.textMessageBeforeEditing = self.inputToolbarView.attributedTextMessage;
+        [self.inputToolbarView setHtmlWithContent: [self.customizedRoomDataSource editableHtmlTextMessageFor:event]];
+    }
+    else if ([self inputToolbarConformsToToolbarViewProtocol])
     {
         self.textMessageBeforeEditing = self.inputToolbarView.attributedTextMessage;
         self.inputToolbarView.attributedTextMessage = [self.customizedRoomDataSource editableAttributedTextMessageFor:event];
@@ -4648,6 +4652,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     
     self.textMessageBeforeEditing = nil;
+}
+
+- (BOOL)inputToolbarConformsToHtmlToolbarViewProtocol
+{
+    return [self.inputToolbarView conformsToProtocol:@protocol(HtmlRoomInputToolbarViewProtocol)];
 }
 
 - (BOOL)inputToolbarConformsToToolbarViewProtocol

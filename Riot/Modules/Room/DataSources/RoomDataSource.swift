@@ -222,8 +222,11 @@ extension RoomDataSource {
 
         return editableTextMessage
     }
-
     
+    @objc func editableHtmlTextMessage(for event: MXEvent) -> String? {
+        let body: String = event.content["formatted_body"] as? String ?? event.content["body"] as? String ?? ""
+        return body
+    }
 }
 
 // MARK: - Private Helpers
