@@ -27,7 +27,9 @@ enum AuthenticationQRLoginStartViewModelResult {
 
 // MARK: View
 
-struct AuthenticationQRLoginStartViewState: BindableState { }
+struct AuthenticationQRLoginStartViewState: BindableState {
+    var canShowDisplayQRButton: Bool
+}
 
 enum AuthenticationQRLoginStartViewAction {
     case scanQR

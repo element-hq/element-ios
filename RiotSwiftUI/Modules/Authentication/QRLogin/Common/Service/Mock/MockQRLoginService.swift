@@ -19,10 +19,14 @@ import Foundation
 import SwiftUI
 
 class MockQRLoginService: QRLoginServiceProtocol {
+    private let mockCanDisplayQR: Bool
+
     init(withState state: QRLoginServiceState = .initial,
-         mode: QRLoginServiceMode = .notAuthenticated) {
+         mode: QRLoginServiceMode = .notAuthenticated,
+         canDisplayQR: Bool = true) {
         self.state = state
         self.mode = mode
+        self.mockCanDisplayQR = canDisplayQR
     }
 
     // MARK: - QRLoginServiceProtocol
@@ -41,6 +45,10 @@ class MockQRLoginService: QRLoginServiceProtocol {
     
     func isServiceAvailable() async throws -> Bool {
         true
+    }
+
+    func canDisplayQR() -> Bool {
+        mockCanDisplayQR
     }
 
     func generateQRCode() async throws -> QRLoginCode {

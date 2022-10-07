@@ -50,4 +50,28 @@ class AuthenticationQRLoginScanUITests: MockScreenTestCase {
         XCTAssertTrue(displayQRButton.exists)
         XCTAssertTrue(displayQRButton.isEnabled)
     }
+
+    func testNoCameraAvailableNoDisplayQR() {
+        app.goToScreenWithIdentifier(MockAuthenticationQRLoginScanScreenState.noCameraAvailableNoDisplayQR.title)
+
+        XCTAssertTrue(app.staticTexts["titleLabel"].exists)
+        XCTAssertTrue(app.staticTexts["subtitleLabel"].exists)
+
+        let displayQRButton = app.buttons["displayQRButton"]
+        XCTAssertFalse(displayQRButton.exists)
+    }
+
+    func testNoCameraAccessNoDisplayQR() {
+        app.goToScreenWithIdentifier(MockAuthenticationQRLoginScanScreenState.noCameraAccessNoDisplayQR.title)
+
+        XCTAssertTrue(app.staticTexts["titleLabel"].exists)
+        XCTAssertTrue(app.staticTexts["subtitleLabel"].exists)
+
+        let openSettingsButton = app.buttons["openSettingsButton"]
+        XCTAssertTrue(openSettingsButton.exists)
+        XCTAssertTrue(openSettingsButton.isEnabled)
+
+        let displayQRButton = app.buttons["displayQRButton"]
+        XCTAssertFalse(displayQRButton.exists)
+    }
 }

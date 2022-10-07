@@ -18,8 +18,8 @@ import RiotSwiftUI
 import XCTest
 
 class AuthenticationQRLoginStartUITests: MockScreenTestCase {
-    func testDefault() {
-        app.goToScreenWithIdentifier(MockAuthenticationQRLoginStartScreenState.default.title)
+    func testDisplayQREnabled() {
+        app.goToScreenWithIdentifier(MockAuthenticationQRLoginStartScreenState.displayQREnabled.title)
 
         XCTAssertTrue(app.staticTexts["titleLabel"].exists)
         XCTAssertTrue(app.staticTexts["subtitleLabel"].exists)
@@ -31,5 +31,19 @@ class AuthenticationQRLoginStartUITests: MockScreenTestCase {
         let displayQRButton = app.buttons["displayQRButton"]
         XCTAssertTrue(displayQRButton.exists)
         XCTAssertTrue(displayQRButton.isEnabled)
+    }
+
+    func testDisplayQRDisabled() {
+        app.goToScreenWithIdentifier(MockAuthenticationQRLoginStartScreenState.displayQRDisabled.title)
+
+        XCTAssertTrue(app.staticTexts["titleLabel"].exists)
+        XCTAssertTrue(app.staticTexts["subtitleLabel"].exists)
+
+        let scanQRButton = app.buttons["scanQRButton"]
+        XCTAssertTrue(scanQRButton.exists)
+        XCTAssertTrue(scanQRButton.isEnabled)
+
+        let displayQRButton = app.buttons["displayQRButton"]
+        XCTAssertFalse(displayQRButton.exists)
     }
 }

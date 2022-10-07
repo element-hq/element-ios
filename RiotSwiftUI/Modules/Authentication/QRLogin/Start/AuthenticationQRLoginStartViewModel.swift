@@ -33,7 +33,7 @@ class AuthenticationQRLoginStartViewModel: AuthenticationQRLoginStartViewModelTy
 
     init(qrLoginService: QRLoginServiceProtocol) {
         self.qrLoginService = qrLoginService
-        super.init(initialViewState: AuthenticationQRLoginStartViewState())
+        super.init(initialViewState: AuthenticationQRLoginStartViewState(canShowDisplayQRButton: qrLoginService.canDisplayQR()))
     }
 
     // MARK: - Public

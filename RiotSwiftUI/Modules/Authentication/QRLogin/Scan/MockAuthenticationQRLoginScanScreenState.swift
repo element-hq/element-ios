@@ -26,6 +26,8 @@ enum MockAuthenticationQRLoginScanScreenState: MockScreenState, CaseIterable {
     case scanning
     case noCameraAvailable
     case noCameraAccess
+    case noCameraAvailableNoDisplayQR
+    case noCameraAccessNoDisplayQR
     
     /// The associated screen
     var screenType: Any.Type {
@@ -35,21 +37,27 @@ enum MockAuthenticationQRLoginScanScreenState: MockScreenState, CaseIterable {
     /// A list of screen state definitions
     static var allCases: [MockAuthenticationQRLoginScanScreenState] {
         // Each of the presence statuses
-        [.scanning, .noCameraAvailable, .noCameraAccess]
+        [.scanning, .noCameraAvailable, .noCameraAccess, .noCameraAvailableNoDisplayQR, .noCameraAccessNoDisplayQR]
     }
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        let viewModel: AuthenticationQRLoginScanViewModel
+        let service: QRLoginServiceProtocol
 
         switch self {
         case .scanning:
-            viewModel = .init(qrLoginService: MockQRLoginService(withState: .scanningQR))
+            service = MockQRLoginService(withState: .scanningQR)
         case .noCameraAvailable:
-            viewModel = .init(qrLoginService: MockQRLoginService(withState: .failed(error: .noCameraAvailable)))
+            service = MockQRLoginService(withState: .failed(error: .noCameraAvailable))
         case .noCameraAccess:
-            viewModel = .init(qrLoginService: MockQRLoginService(withState: .failed(error: .noCameraAccess)))
+            service = MockQRLoginService(withState: .failed(error: .noCameraAccess))
+        case .noCameraAvailableNoDisplayQR:
+            service = MockQRLoginService(withState: .failed(error: .noCameraAvailable), canDisplayQR: false)
+        case .noCameraAccessNoDisplayQR:
+            service = MockQRLoginService(withState: .failed(error: .noCameraAccess), canDisplayQR: false)
         }
+
+        let viewModel = AuthenticationQRLoginScanViewModel(qrLoginService: service)
         
         // can simulate service and viewModel actions here if needs be.
         
