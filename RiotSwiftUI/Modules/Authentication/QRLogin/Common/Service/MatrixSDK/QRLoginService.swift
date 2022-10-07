@@ -56,11 +56,11 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
     func isServiceAvailable() async throws -> Bool {
         switch mode {
         case .authenticated:
-            guard BuildSettings.qrLoginEnableFromAuthenticated else {
+            guard BuildSettings.qrLoginEnabledFromAuthenticated else {
                 return false
             }
         case .notAuthenticated:
-            guard BuildSettings.qrLoginEnableFromNotAuthenticated else {
+            guard BuildSettings.qrLoginEnabledFromNotAuthenticated else {
                 return false
             }
         }
