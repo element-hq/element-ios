@@ -407,6 +407,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Voice Broadcast
     static let voiceBroadcastEnabled = false
+    static let voiceBroadcastChunkLength: Int = 600
 
     // MARK: - MXKAppSettings
     static let enableBotCreation: Bool = false

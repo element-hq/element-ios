@@ -38,7 +38,7 @@
     NSString *state;
     MXJSONModelSetString(state, JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyState]);
     
-    NSInteger chunkLength = VoiceBroadcastSettings.defaultChunkLength;
+    NSInteger chunkLength = BuildSettings.voiceBroadcastChunkLength;
     if (JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLength])
     {
         MXJSONModelSetInteger(chunkLength, JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLength]);

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,8 +21,6 @@ import Foundation
 final class VoiceBroadcastSettings: NSObject {
     static let eventType = "io.element.voice_broadcast_info"
     
-    static let defaultChunkLength = 600
-    
     static let voiceBroadcastContentKeyState = "state"
     static let voiceBroadcastContentKeyChunkLength = "chunk_length"
 }
@@ -34,13 +32,13 @@ public class VoiceBroadcastService: NSObject {
     
     // MARK: - Properties
     
-    public var eventId: String?
-    private unowned let session: MXSession
+    private var voiceBroadcastInfoEventId: String?
+    private unowned let room: MXRoom
     
     // MARK: - Setup
     
-    public init(session: MXSession) {
-        self.session = session
+    public init(room: MXRoom) {
+        self.room = room
     }
 
     // MARK: - Constants
@@ -53,15 +51,13 @@ public class VoiceBroadcastService: NSObject {
     
     /// Start a voice broadcast.
     /// - Parameters:
-    ///   - roomId: The room where the voice broadcast should be started.
-    ///   - chunkLength: The length of the voice chunks in seconds.
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     /// - Returns: a `MXHTTPOperation` instance.
-    func startVoiceBroadcast(withRoomId roomId: String, chunkLength: Int? = nil, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation? {
-        return sendVoiceBroadcastInfo(state: State.started, chunkLength: chunkLength, inRoomWithId: roomId) { (response) in
+    func startVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
+        return sendVoiceBroadcastInfo(state: State.started) { (response) in
             switch response {
             case .success((let eventIdResponse)):
-                self.eventId = eventIdResponse
+                self.voiceBroadcastInfoEventId = eventIdResponse
                 completion(.success(eventIdResponse))
             case .failure(let error):
                 completion(.failure(error))
@@ -71,33 +67,30 @@ public class VoiceBroadcastService: NSObject {
     
     /// Pause a voice broadcast.
     /// - Parameters:
-    ///   - roomId: The room where the voice broadcast should be paused.
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     /// - Returns: a `MXHTTPOperation` instance.
-    func pauseVoiceBroadcast(withRoomId roomId: String, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation? {
-        return sendVoiceBroadcastInfo(state: State.paused, inRoomWithId: roomId, completion: completion)
+    func pauseVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
+        return sendVoiceBroadcastInfo(state: State.paused, completion: completion)
     }
     
     /// resume a voice broadcast.
     /// - Parameters:
-    ///   - roomId: The room where the voice broadcast should be resumed.
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     /// - Returns: a `MXHTTPOperation` instance.
-    func resumeVoiceBroadcast(withRoomId roomId: String, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation? {
-        return sendVoiceBroadcastInfo(state: State.resumed, inRoomWithId: roomId, completion: completion)
+    func resumeVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
+        return sendVoiceBroadcastInfo(state: State.resumed, completion: completion)
     }
     
     /// stop a voice broadcast info.
     /// - Parameters:
-    ///   - roomId: The room where the voice broadcast should be stopped.
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     /// - Returns: a `MXHTTPOperation` instance.
-    func stopVoiceBroadcast(withRoomId roomId: String, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation? {
-        return sendVoiceBroadcastInfo(state: State.stopped, inRoomWithId: roomId, completion: completion)
+    func stopVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
+        return sendVoiceBroadcastInfo(state: State.stopped, completion: completion)
     }
     
-    private func sendVoiceBroadcastInfo(state: String, chunkLength: Int? = nil, inRoomWithId roomId: String, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation? {
-        guard let userId = self.session.myUserId else {
+    private func sendVoiceBroadcastInfo(state: String, completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
+        guard let userId = self.room.mxSession.myUserId else {
             completion(.failure(VoiceBroadcastServiceError.missingUserId))
             return nil
         }
@@ -108,14 +101,14 @@ public class VoiceBroadcastService: NSObject {
         voiceBroadcastContent.state = state
         
         if state != State.started {
-            guard let eventId = self.eventId else {
+            guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
                 completion(.failure(VoiceBroadcastServiceError.notStarted))
                 return nil
             }
             
-            voiceBroadcastContent.eventId = eventId
+            voiceBroadcastContent.eventId = voiceBroadcastInfoEventId
         } else {
-            voiceBroadcastContent.chunkLength = chunkLength ?? VoiceBroadcastSettings.defaultChunkLength
+            voiceBroadcastContent.chunkLength = BuildSettings.voiceBroadcastChunkLength
         }
         
         
@@ -124,11 +117,28 @@ public class VoiceBroadcastService: NSObject {
             return nil
         }
         
-        return self.session.matrixRestClient.sendStateEvent(toRoom: roomId,
-                                                            eventType: .custom(VoiceBroadcastSettings.eventType),
-                                                            content: stateEventContent,
-                                                            stateKey: stateKey,
-                                                            completion: completion)
+        
+        return self.room.sendStateEvent(.custom(VoiceBroadcastSettings.eventType), content: stateEventContent, stateKey: stateKey, completion: completion)
+    }
+    
+    /// Send a bunch of a voice broadcast.
+    ///
+    /// While sending, a fake event will be echoed in the messages list.
+    /// Once complete, this local echo will be replaced by the event saved by the homeserver.
+    ///
+    /// - Parameters:
+    ///   - audioFileLocalURL: the local filesystem path of the audio file to send.
+    ///   - mimeType: (optional) the mime type of the file. Defaults to `audio/ogg`
+    ///   - duration: the length of the voice message in milliseconds
+    ///   - samples: an array of floating point values normalized to [0, 1], boxed within NSNumbers
+    ///   - success: A block object called when the operation succeeds. It returns the event id of the event generated on the homeserver
+    ///   - failure: A block object called when the operation fails.
+    func sendChunkOfVoiceBroadcast(audioFileLocalURL: URL, mimeType: String?, duration: UInt, samples: [Float]?, success:@escaping ((String?) -> Void), failure:@escaping ((Error?) -> Void)) {
+        guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
+            return failure(VoiceBroadcastServiceError.notStarted)
+        }
+        
+        self.room.sendChunkOfVoiceBroadcast(localURL: audioFileLocalURL, voiceBroadcastInfoEventId: voiceBroadcastInfoEventId, mimeType: mimeType, duration: duration, samples: samples, success: success, failure: failure)
     }
 }
 
@@ -137,13 +147,12 @@ extension VoiceBroadcastService {
     
     /// Start a voice broadcast.
     /// - Parameters:
-    ///   - roomId: The room where the voice broadcast should be started.
     ///   - success: A closure called when the operation is complete.
     ///   - failure: A closure called  when the operation fails.
     /// - Returns: a `MXHTTPOperation` instance.
     @discardableResult
-    @objc public func startVoiceBroadcast(withRoomId roomId: String, success: @escaping (String) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
-        return self.startVoiceBroadcast(withRoomId: roomId) { (response) in
+    @objc public func startVoiceBroadcast(success: @escaping (String?) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
+        return self.startVoiceBroadcast() { (response) in
             switch response {
             case .success(let object):
                 success(object)
@@ -155,13 +164,12 @@ extension VoiceBroadcastService {
     
     /// Pause a voice broadcast.
     /// - Parameters:
-    ///   - roomId: The room where the voice broadcast should be paused.
     ///   - success: A closure called when the operation is complete.
     ///   - failure: A closure called  when the operation fails.
     /// - Returns: a `MXHTTPOperation` instance.
     @discardableResult
-    @objc public func pauseVoiceBroadcast(withRoomId roomId: String, success: @escaping (String) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
-        return self.pauseVoiceBroadcast(withRoomId: roomId) { (response) in
+    @objc public func pauseVoiceBroadcast(success: @escaping (String?) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
+        return self.pauseVoiceBroadcast() { (response) in
             switch response {
             case .success(let object):
                 success(object)
@@ -173,13 +181,12 @@ extension VoiceBroadcastService {
     
     /// Resume a voice broadcast.
     /// - Parameters:
-    ///   - roomId: The room where the voice broadcast should be resumed.
     ///   - success: A closure called when the operation is complete.
     ///   - failure: A closure called  when the operation fails.
     /// - Returns: a `MXHTTPOperation` instance.
     @discardableResult
-    @objc public func resumeVoiceBroadcast(withRoomId roomId: String, success: @escaping (String) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
-        return self.resumeVoiceBroadcast(withRoomId: roomId) { (response) in
+    @objc public func resumeVoiceBroadcast(success: @escaping (String?) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
+        return self.resumeVoiceBroadcast() { (response) in
             switch response {
             case .success(let object):
                 success(object)
@@ -191,13 +198,12 @@ extension VoiceBroadcastService {
     
     /// Stop a voice broadcast.
     /// - Parameters:
-    ///   - roomId: The room where the voice broadcast should be stopped.
     ///   - success: A closure called when the operation is complete.
     ///   - failure: A closure called  when the operation fails.
     /// - Returns: a `MXHTTPOperation` instance.
     @discardableResult
-    @objc public func stopVoiceBroadcast(withRoomId roomId: String, success: @escaping (String) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
-        return self.stopVoiceBroadcast(withRoomId: roomId) { (response) in
+    @objc public func stopVoiceBroadcast(success: @escaping (String?) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
+        return self.stopVoiceBroadcast() { (response) in
             switch response {
             case .success(let object):
                 success(object)
@@ -220,7 +226,6 @@ extension MXRoom {
          - duration: the length of the voice message in milliseconds
          - samples: an array of floating point values normalized to [0, 1]
          - threadId: the id of the thread to send the message. nil by default.
-         - localEcho: a pointer to a MXEvent object.
      
      This pointer is set to an actual MXEvent object
      containing the local created event which should be used to echo the message in
@@ -237,13 +242,12 @@ extension MXRoom {
      
      - returns: a `MXHTTPOperation` instance.
      */
-    @nonobjc @discardableResult func sendVoiceBroadcast(localURL: URL,
+    @nonobjc @discardableResult func sendChunkOfVoiceBroadcast(localURL: URL,
                                                         voiceBroadcastInfoEventId: String,
                                                         mimeType: String?,
                                                         duration: UInt,
                                                         samples: [Float]?,
                                                         threadId: String? = nil,
-                                                        localEcho: inout MXEvent?,
                                                         success: @escaping ((String?) -> Void),
                                                         failure: @escaping ((Error?) -> Void)) -> MXHTTPOperation? {
         let boxedSamples = samples?.compactMap { NSNumber(value: $0) }
@@ -260,7 +264,7 @@ extension MXRoom {
                                   duration: duration,
                                   samples: boxedSamples,
                                   threadId: threadId,
-                                  localEcho: &localEcho,
+                                  localEcho: nil,
                                   success: success,
                                   failure: failure,
                                   keepActualFilename: false)
