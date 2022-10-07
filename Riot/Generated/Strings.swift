@@ -8743,6 +8743,10 @@ public class VectorL10n: NSObject {
   public static var userSessionViewDetails: String { 
     return VectorL10n.tr("Vector", "user_session_view_details") 
   }
+  /// %@ iOS
+  public static func userSessionsDefaultSessionDisplayName(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_sessions_default_session_display_name", p1)
+  }
   /// Current session
   public static var userSessionsOverviewCurrentSessionSectionTitle: String { 
     return VectorL10n.tr("Vector", "user_sessions_overview_current_session_section_title") 
