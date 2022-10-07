@@ -52,6 +52,9 @@ struct AuthenticationState {
         
         /// The preferred login mode for the server
         var preferredLoginMode: LoginMode = .unknown
+
+        /// Flag indicating whether the homeserver supports logging in via a QR code.
+        var supportsQRLogin = false
         
         /// The response returned when querying the homeserver for registration flows.
         var registrationFlow: RegistrationResult?
@@ -67,6 +70,7 @@ struct AuthenticationState {
             AuthenticationHomeserverViewData(address: displayableAddress,
                                              showLoginForm: preferredLoginMode.supportsPasswordFlow,
                                              showRegistrationForm: registrationFlow != nil && !needsRegistrationFallback,
+                                             showQRLogin: supportsQRLogin,
                                              ssoIdentityProviders: preferredLoginMode.ssoIdentityProviders ?? [])
         }
 

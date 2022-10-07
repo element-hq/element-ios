@@ -48,6 +48,22 @@ final class CameraAccessManager {
             break
         }
     }
+
+    /// Checks and requests the camera access if needed. Returns `true` if granted, otherwise `false`.
+    func requestCameraAccessIfNeeded() async -> Bool {
+        let authStatus = AVCaptureDevice.authorizationStatus(for: .video)
+
+        switch authStatus {
+        case .authorized:
+            return true
+        case .notDetermined:
+            return await AVCaptureDevice.requestAccess(for: .video)
+        case .denied, .restricted:
+            return false
+        @unknown default:
+            return false
+        }
+    }
     
     // MARK: - Private
     

@@ -208,4 +208,10 @@ class MockAuthenticationRestClient: AuthenticationRestClient {
     func resetPassword(parameters: [String : Any]) async throws {
         throw MockError.unhandled
     }
+
+    // MARK: Versions
+
+    func supportedMatrixVersions() async throws -> MXMatrixVersions {
+        throw MockError.unhandled
+    }
 }

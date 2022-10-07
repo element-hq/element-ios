@@ -86,6 +86,8 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
     // Observe NSCurrentLocaleDidChangeNotification to refresh MXRoomSummaries on time formatting change.
     id NSCurrentLocaleDidChangeNotificationObserver;
+    
+    MXPusher *currentPusher;
 }
 
 /// Will be true if the session is not in a pauseable state or we requested for the session to pause but not finished yet. Will be reverted to false again after `resume` called.
@@ -149,6 +151,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         
         // Refresh device information
         [self loadDeviceInformation:nil failure:nil];
+        [self loadCurrentPusher:nil failure:nil];
 
         [self registerAccountDataDidChangeIdentityServerNotification];
         [self registerIdentityServiceDidChangeAccessTokenNotification];
@@ -184,6 +187,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         
         // Refresh device information
         [self loadDeviceInformation:nil failure:nil];
+        [self loadCurrentPusher:nil failure:nil];
     }
     
     return self;
@@ -303,6 +307,12 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 - (BOOL)pushNotificationServiceIsActive
 {
+    if (currentPusher && currentPusher.enabled)
+    {
+        MXLogDebug(@"[MXKAccount][Push] pushNotificationServiceIsActive: currentPusher.enabled %@", currentPusher.enabled);
+        return currentPusher.enabled.boolValue;
+    }
+    
     BOOL pushNotificationServiceIsActive = ([[MXKAccountManager sharedManager] isAPNSAvailable] && self.hasPusherForPushNotifications && mxSession);
     MXLogDebug(@"[MXKAccount][Push] pushNotificationServiceIsActive: %@", @(pushNotificationServiceIsActive));
 
@@ -317,7 +327,44 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
     if (enable)
     {
-        if ([[MXKAccountManager sharedManager] isAPNSAvailable])
+        if (currentPusher && currentPusher.enabled && !currentPusher.enabled.boolValue)
+        {
+            [self.mxSession.matrixRestClient setPusherWithPushkey:currentPusher.pushkey
+                                                             kind:currentPusher.kind
+                                                            appId:currentPusher.appId
+                                                   appDisplayName:currentPusher.appDisplayName
+                                                deviceDisplayName:currentPusher.deviceDisplayName
+                                                       profileTag:currentPusher.profileTag
+                                                             lang:currentPusher.lang
+                                                             data:currentPusher.data.JSONDictionary
+                                                           append:NO
+                                                          enabled:enable
+                                                          success:^{
+                
+                MXLogDebug(@"[MXKAccount][Push] enablePushNotifications: remotely enabled Push: Success");
+                [self loadCurrentPusher:^{
+                    if (success)
+                    {
+                        success();
+                    }
+                } failure:^(NSError *error) {
+                    
+                    MXLogWarning(@"[MXKAccount][Push] enablePushNotifications: load current pusher failed with error: %@", error);
+                    if (failure)
+                    {
+                        failure(error);
+                    }
+                }];
+            } failure:^(NSError *error) {
+
+                MXLogWarning(@"[MXKAccount][Push] enablePushNotifications: remotely enable push failed with error: %@", error);
+                if (failure)
+                {
+                    failure(error);
+                }
+            }];
+        }
+        else if ([[MXKAccountManager sharedManager] isAPNSAvailable])
         {
             MXLogDebug(@"[MXKAccount][Push] enablePushNotifications: Enable Push for %@ account", self.mxCredentials.userId);
 
@@ -354,7 +401,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             }
         }
     }
-    else if (self.hasPusherForPushNotifications)
+    else if (self.hasPusherForPushNotifications || currentPusher)
     {
         MXLogDebug(@"[MXKAccount][Push] enablePushNotifications: Disable APNS for %@ account", self.mxCredentials.userId);
         
@@ -626,6 +673,65 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }];
 }
 
+- (void)loadCurrentPusher:(void (^)(void))success failure:(void (^)(NSError *error))failure
+{
+    if (!self.mxSession.myDeviceId)
+    {
+        MXLogWarning(@"[MXKAccount] loadPusher: device ID not found");
+        if (failure)
+        {
+            failure([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:nil]);
+        }
+        return;
+    }
+    
+    [self.mxSession supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
+        if (!matrixVersions.supportsRemotelyTogglingPushNotifications)
+        {
+            MXLogDebug(@"[MXKAccount] loadPusher: remotely toggling push notifications not supported");
+            
+            if (success)
+            {
+                success();
+            }
+            
+            return;
+        }
+        
+        [self.mxSession.matrixRestClient pushers:^(NSArray<MXPusher *> *pushers) {
+            MXPusher *ownPusher;
+            for (MXPusher *pusher in pushers)
+            {
+                if ([pusher.deviceId isEqualToString:self.mxSession.myDeviceId])
+                {
+                    ownPusher = pusher;
+                }
+            }
+            
+            self->currentPusher = ownPusher;
+            
+            if (success)
+            {
+                success();
+            }
+        } failure:^(NSError *error) {
+            MXLogWarning(@"[MXKAccount] loadPusher: get pushers failed due to error %@", error);
+            
+            if (failure)
+            {
+                failure(error);
+            }
+        }];
+    } failure:^(NSError *error) {
+        MXLogWarning(@"[MXKAccount] loadPusher: supportedMatrixVersions failed due to error %@", error);
+        
+        if (failure)
+        {
+            failure(error);
+        }
+   }];
+}
+
 - (void)loadDeviceInformation:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     if (self.mxCredentials.deviceId)
@@ -773,7 +879,9 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         [MXKContactManager.sharedManager validateSyncLocalContactsStateForSession:self.mxSession];
         
         // Refresh pusher state
-        [self refreshAPNSPusher];
+        [self loadCurrentPusher:^{
+            [self refreshAPNSPusher];
+        } failure:nil];
         [self refreshPushKitPusher];
         
         // Launch server sync
@@ -1106,6 +1214,12 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 - (void)refreshAPNSPusher
 {
     MXLogDebug(@"[MXKAccount][Push] refreshAPNSPusher");
+    
+    if (currentPusher)
+    {
+        MXLogDebug(@"[MXKAccount][Push] refreshAPNSPusher aborted as a pusher has been found");
+        return;
+    }
 
     // Check the conditions required to run the pusher
     if (self.pushNotificationServiceIsActive)
@@ -1165,12 +1279,35 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         self->_hasPusherForPushNotifications = enabled;
         [[MXKAccountManager sharedManager] saveAccounts];
         
-        if (success)
+        if (enabled)
         {
-            success();
+            [self loadCurrentPusher:^{
+                if (success)
+                {
+                    success();
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+            } failure:^(NSError *error) {
+                if (success)
+                {
+                    success();
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+            }];
         }
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+        else
+        {
+            self->currentPusher = nil;
+            
+            if (success)
+            {
+                success();
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKAccountAPNSActivityDidChangeNotification object:self.mxCredentials.userId];
+        }
         
     } failure:^(NSError *error) {
         
@@ -1415,7 +1552,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     
     MXRestClient *restCli = self.mxRestClient;
     
-    [restCli setPusherWithPushkey:b64Token kind:kind appId:appId appDisplayName:appDisplayName deviceDisplayName:[[UIDevice currentDevice] name] profileTag:profileTag lang:deviceLang data:pushData append:append success:success failure:failure];
+    [restCli setPusherWithPushkey:b64Token kind:kind appId:appId appDisplayName:appDisplayName deviceDisplayName:[[UIDevice currentDevice] name] profileTag:profileTag lang:deviceLang data:pushData append:append enabled:enabled success:success failure:failure];
 }
 
 #pragma mark - InApp notifications

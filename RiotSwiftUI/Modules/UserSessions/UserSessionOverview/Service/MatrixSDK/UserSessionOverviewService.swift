@@ -91,6 +91,10 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
             
             switch response {
             case .success:
+                if let account = MXKAccountManager.shared().activeAccounts.first, account.device?.deviceId == pusher.deviceId {
+                    account.loadCurrentPusher(nil)
+                }
+                
                 self.checkPusher()
             case .failure(let error):
                 MXLog.warning("[UserSessionOverviewService] togglePusher failed due to error: \(error)")

@@ -725,13 +725,13 @@ const CGFloat kTypingCellHeight = 24;
                                                                 {
                                                                     id notificationObject = notification.object;
                                                                     
-                                                                    if ([notificationObject isKindOfClass:MXKeyVerificationByDMRequest.class])
+                                                                    if ([notificationObject conformsToProtocol:@protocol(MXKeyVerificationRequest)])
                                                                     {
-                                                                        MXKeyVerificationByDMRequest *keyVerificationByDMRequest = (MXKeyVerificationByDMRequest*)notificationObject;
+                                                                        id<MXKeyVerificationRequest> keyVerificationRequest = (id<MXKeyVerificationRequest>)notificationObject;
                                                                         
-                                                                        if ([keyVerificationByDMRequest.roomId isEqualToString:self.roomId])
+                                                                        if (keyVerificationRequest.transport == MXKeyVerificationTransportDirectMessage && [keyVerificationRequest.roomId isEqualToString:self.roomId])
                                                                         {
-                                                                            RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:keyVerificationByDMRequest.eventId];
+                                                                            RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:keyVerificationRequest.requestId];
                                                                             
                                                                             roomBubbleCellData.isKeyVerificationOperationPending = NO;
                                                                             roomBubbleCellData.keyVerification = nil;
@@ -866,6 +866,7 @@ const CGFloat kTypingCellHeight = 24;
     }
     
     __block MXHTTPOperation *operation = [self.mxSession.crypto.keyVerificationManager keyVerificationFromKeyVerificationEvent:event
+                                                                                                                        roomId:self.roomId
                                                                                                                           success:^(MXKeyVerification * _Nonnull keyVerification)
                                           {
                                               BOOL shouldRefreshCells = bubbleCellData.isKeyVerificationOperationPending || bubbleCellData.keyVerification == nil;

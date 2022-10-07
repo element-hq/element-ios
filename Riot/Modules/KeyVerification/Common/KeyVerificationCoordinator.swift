@@ -240,7 +240,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         }
     }
 
-    private func showIncoming(otherUser: MXUser, transaction: MXIncomingSASTransaction) {
+    private func showIncoming(otherUser: MXUser, transaction: MXSASTransaction) {
         let coordinator = DeviceVerificationIncomingCoordinator(session: self.session, otherUser: otherUser, transaction: transaction)
         coordinator.delegate = self
         coordinator.start()
@@ -429,7 +429,7 @@ extension KeyVerificationCoordinator: KeyVerificationSelfVerifyWaitCoordinatorDe
         self.showVerifyByScanning(keyVerificationRequest: keyVerificationRequest, animated: true)
     }
     
-    func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, didAcceptIncomingSASTransaction incomingSASTransaction: MXIncomingSASTransaction) {
+    func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, didAcceptIncomingSASTransaction incomingSASTransaction: MXSASTransaction) {
         self.showVerifyBySAS(transaction: incomingSASTransaction, animated: true)                
     }
     

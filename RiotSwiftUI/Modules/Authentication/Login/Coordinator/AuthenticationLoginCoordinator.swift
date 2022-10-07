@@ -126,6 +126,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                 self.callback?(.continueWithSSO(identityProvider))
             case .fallback:
                 self.callback?(.fallback)
+            case .qrLogin:
+                self.showQRLoginScreen()
             }
         }
     }
@@ -281,6 +283,28 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         modalRouter.setRootModule(coordinator)
 
         navigationRouter.present(modalRouter, animated: true)
+    }
+
+    /// Shows the QR login screen.
+    @MainActor private func showQRLoginScreen() {
+        MXLog.debug("[AuthenticationLoginCoordinator] showQRLoginScreen")
+
+        let service = QRLoginService(client: parameters.authenticationService.client,
+                                     mode: .notAuthenticated)
+        let parameters = AuthenticationQRLoginStartCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                         qrLoginService: service)
+        let coordinator = AuthenticationQRLoginStartCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] _ in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.remove(childCoordinator: coordinator)
+        }
+
+        coordinator.start()
+        add(childCoordinator: coordinator)
+
+        navigationRouter.push(coordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
     }
     
     /// Updates the view model to reflect any changes made to the homeserver.
