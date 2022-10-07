@@ -26,9 +26,15 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
     init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol) {
         self.userSessionsOverviewService = userSessionsOverviewService
         
+        
         super.init(initialViewState: .init())
         
-        updateViewState(with: userSessionsOverviewService.overviewData)
+        userSessionsOverviewService.overviewDataPublisher.sink { [weak self] overviewData in
+            self?.updateViewState(with: overviewData)
+        }
+        .store(in: &cancellables)
+        
+        updateViewState(with: userSessionsOverviewService.overviewDataPublisher.value)
     }
     
     // MARK: - Public
@@ -40,19 +46,19 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         case .verifyCurrentSession:
             completion?(.verifyCurrentSession)
         case .renameCurrentSession:
-            guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
+            guard let currentSessionInfo = userSessionsOverviewService.currentSession else {
                 assertionFailure("Missing current session")
                 return
             }
             completion?(.renameSession(currentSessionInfo))
         case .logoutOfCurrentSession:
-            guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
+            guard let currentSessionInfo = userSessionsOverviewService.currentSession else {
                 assertionFailure("Missing current session")
                 return
             }
             completion?(.logoutOfSession(currentSessionInfo))
         case .viewCurrentSessionDetails:
-            guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
+            guard let currentSessionInfo = userSessionsOverviewService.currentSession else {
                 assertionFailure("Missing current session")
                 return
             }

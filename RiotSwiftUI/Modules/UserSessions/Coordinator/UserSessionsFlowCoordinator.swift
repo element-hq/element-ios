@@ -24,6 +24,7 @@ struct UserSessionsFlowCoordinatorParameters {
 
 final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     private let parameters: UserSessionsFlowCoordinatorParameters
+    private let allSessionsService: UserSessionsOverviewService
     
     private let navigationRouter: NavigationRouterType
     private var reauthenticationPresenter: ReauthenticationCoordinatorBridgePresenter?
@@ -40,6 +41,9 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     
     init(parameters: UserSessionsFlowCoordinatorParameters) {
         self.parameters = parameters
+        
+        let dataProvider = UserSessionsDataProvider(session: parameters.session)
+        allSessionsService = UserSessionsOverviewService(dataProvider: dataProvider)
         
         navigationRouter = parameters.router
         errorPresenter = MXKErrorAlertPresentation()
@@ -59,7 +63,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     private func createUserSessionsOverviewCoordinator() -> UserSessionsOverviewCoordinator {
-        let parameters = UserSessionsOverviewCoordinatorParameters(session: parameters.session)
+        let parameters = UserSessionsOverviewCoordinatorParameters(session: parameters.session,
+                                                                   service: allSessionsService)
         
         let coordinator = UserSessionsOverviewCoordinator(parameters: parameters)
         coordinator.completion = { [weak self] result in
@@ -125,7 +130,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     
     private func createUserSessionOverviewCoordinator(sessionInfo: UserSessionInfo) -> UserSessionOverviewCoordinator {
         let parameters = UserSessionOverviewCoordinatorParameters(session: parameters.session,
-                                                                  sessionInfo: sessionInfo)
+                                                                  sessionInfo: sessionInfo,
+                                                                  sessionsOverviewDataSubject: allSessionsService.overviewDataPublisher)
         return UserSessionOverviewCoordinator(parameters: parameters)
     }
     
@@ -204,7 +210,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             self.stopLoading()
 
             guard response.isSuccess else {
-                MXLog.debug("[LogoutDeviceService] Delete device (\(sessionInfo.id) failed")
+                MXLog.debug("[UserSessionsFlowCoordinator] Delete device (\(sessionInfo.id)) failed")
                 if let error = response.error {
                     self.errorPresenter.presentError(from: self.toPresentable(), forError: error, animated: true, handler: { })
                 } else {

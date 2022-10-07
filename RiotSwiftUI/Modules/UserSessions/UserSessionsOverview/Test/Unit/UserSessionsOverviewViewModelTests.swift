@@ -70,7 +70,7 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
             result = action
         }
         
-        guard let currentSession = service.overviewData.currentSession else {
+        guard let currentSession = service.currentSession else {
             XCTFail("The current session should be valid at this point")
             return
         }
@@ -78,7 +78,7 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
         viewModel.process(viewAction: .viewCurrentSessionDetails)
         XCTAssertEqual(result, .showCurrentSessionOverview(sessionInfo: currentSession))
         
-        guard let randomSession = service.overviewData.otherSessions.randomElement() else {
+        guard let randomSession = service.otherSessions.randomElement() else {
             XCTFail("There should be other sessions")
             return
         }

@@ -21,7 +21,12 @@ import XCTest
 
 class UserSessionOverviewViewModelTests: XCTestCase {
     func test_whenVerifyCurrentSessionProcessed_completionWithVerifyCurrentSessionCalled() {
-        let sut = UserSessionOverviewViewModel(sessionInfo: createUserSessionInfo(), service: MockUserSessionOverviewService())
+        let sut = UserSessionOverviewViewModel(sessionInfo: createUserSessionInfo(),
+                                               service: MockUserSessionOverviewService(),
+                                               sessionsOverviewDataSubject: .init(.init(currentSession: nil,
+                                                                                        unverifiedSessions: [],
+                                                                                        inactiveSessions: [],
+                                                                                        otherSessions: [])))
         
         XCTAssertEqual(sut.state.isPusherEnabled, nil)
         var modelResult: UserSessionOverviewViewModelResult?
@@ -34,7 +39,12 @@ class UserSessionOverviewViewModelTests: XCTestCase {
     
     func test_whenViewSessionDetailsProcessed_completionWithShowSessionDetailsCalled() {
         let sessionInfo = createUserSessionInfo()
-        let sut = UserSessionOverviewViewModel(sessionInfo: sessionInfo, service: MockUserSessionOverviewService())
+        let sut = UserSessionOverviewViewModel(sessionInfo: sessionInfo,
+                                               service: MockUserSessionOverviewService(),
+                                               sessionsOverviewDataSubject: .init(.init(currentSession: nil,
+                                                                                        unverifiedSessions: [],
+                                                                                        inactiveSessions: [],
+                                                                                        otherSessions: [])))
 
         XCTAssertEqual(sut.state.isPusherEnabled, nil)
         var modelResult: UserSessionOverviewViewModelResult?
@@ -48,7 +58,12 @@ class UserSessionOverviewViewModelTests: XCTestCase {
     func test_whenViewSessionDetailsProcessed_toggleAvailablePusher() {
         let sessionInfo = createUserSessionInfo()
         let service = MockUserSessionOverviewService(pusherEnabled: true)
-        let sut = UserSessionOverviewViewModel(sessionInfo: sessionInfo, service: service)
+        let sut = UserSessionOverviewViewModel(sessionInfo: sessionInfo,
+                                               service: service,
+                                               sessionsOverviewDataSubject: .init(.init(currentSession: nil,
+                                                                                        unverifiedSessions: [],
+                                                                                        inactiveSessions: [],
+                                                                                        otherSessions: [])))
 
         XCTAssertTrue(sut.state.remotelyTogglingPushersAvailable)
         XCTAssertEqual(sut.state.isPusherEnabled, true)
@@ -61,7 +76,12 @@ class UserSessionOverviewViewModelTests: XCTestCase {
     func test_whenViewSessionDetailsProcessed_toggleNoPusher() {
         let sessionInfo = createUserSessionInfo()
         let service = MockUserSessionOverviewService(pusherEnabled: nil)
-        let sut = UserSessionOverviewViewModel(sessionInfo: sessionInfo, service: service)
+        let sut = UserSessionOverviewViewModel(sessionInfo: sessionInfo,
+                                               service: service,
+                                               sessionsOverviewDataSubject: .init(.init(currentSession: nil,
+                                                                                        unverifiedSessions: [],
+                                                                                        inactiveSessions: [],
+                                                                                        otherSessions: [])))
 
         XCTAssertTrue(sut.state.remotelyTogglingPushersAvailable)
         XCTAssertEqual(sut.state.isPusherEnabled, nil)
@@ -74,7 +94,12 @@ class UserSessionOverviewViewModelTests: XCTestCase {
     func test_whenViewSessionDetailsProcessed_remotelyTogglingPushersNotAvailable() {
         let sessionInfo = createUserSessionInfo()
         let service = MockUserSessionOverviewService(pusherEnabled: true, remotelyTogglingPushersAvailable: false)
-        let sut = UserSessionOverviewViewModel(sessionInfo: sessionInfo, service: service)
+        let sut = UserSessionOverviewViewModel(sessionInfo: sessionInfo,
+                                               service: service,
+                                               sessionsOverviewDataSubject: .init(.init(currentSession: nil,
+                                                                                        unverifiedSessions: [],
+                                                                                        inactiveSessions: [],
+                                                                                        otherSessions: [])))
 
         XCTAssertFalse(sut.state.remotelyTogglingPushersAvailable)
         XCTAssertEqual(sut.state.isPusherEnabled, true)

@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-import Foundation
+import Combine
 
 class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     enum Mode {
@@ -27,17 +27,17 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     
     private let mode: Mode
     
-    var overviewData: UserSessionsOverviewData
+    var overviewDataPublisher: CurrentValueSubject<UserSessionsOverviewData, Never>
     var sessionInfos = [UserSessionInfo]()
     
     init(mode: Mode = .currentSessionUnverified) {
         self.mode = mode
         
-        overviewData = UserSessionsOverviewData(currentSession: nil,
-                                                unverifiedSessions: [],
-                                                inactiveSessions: [],
-                                                otherSessions: [],
-                                                linkDeviceEnabled: false)
+        overviewDataPublisher = .init(UserSessionsOverviewData(currentSession: nil,
+                                                               unverifiedSessions: [],
+                                                               inactiveSessions: [],
+                                                               otherSessions: [],
+                                                               linkDeviceEnabled: false))
     }
     
     func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
@@ -46,38 +46,38 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         
         switch mode {
         case .noOtherSessions:
-            overviewData = UserSessionsOverviewData(currentSession: currentSession,
-                                                    unverifiedSessions: [],
-                                                    inactiveSessions: [],
-                                                    otherSessions: [],
-                                                    linkDeviceEnabled: false)
+            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: currentSession,
+                                                                unverifiedSessions: [],
+                                                                inactiveSessions: [],
+                                                                otherSessions: [],
+                                                                linkDeviceEnabled: false))
         case .onlyUnverifiedSessions:
-            overviewData = UserSessionsOverviewData(currentSession: currentSession,
-                                                    unverifiedSessions: unverifiedSessions + [currentSession],
-                                                    inactiveSessions: [],
-                                                    otherSessions: unverifiedSessions,
-                                                    linkDeviceEnabled: false)
+            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: currentSession,
+                                                                unverifiedSessions: unverifiedSessions + [currentSession],
+                                                                inactiveSessions: [],
+                                                                otherSessions: unverifiedSessions,
+                                                                linkDeviceEnabled: false))
         case .onlyInactiveSessions:
-            overviewData = UserSessionsOverviewData(currentSession: currentSession,
-                                                    unverifiedSessions: [],
-                                                    inactiveSessions: inactiveSessions,
-                                                    otherSessions: inactiveSessions,
-                                                    linkDeviceEnabled: false)
+            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: currentSession,
+                                                                unverifiedSessions: [],
+                                                                inactiveSessions: inactiveSessions,
+                                                                otherSessions: inactiveSessions,
+                                                                linkDeviceEnabled: false))
         default:
             let otherSessions = unverifiedSessions + inactiveSessions + buildSessions(verified: true, active: true)
             
-            overviewData = UserSessionsOverviewData(currentSession: currentSession,
-                                                    unverifiedSessions: unverifiedSessions,
-                                                    inactiveSessions: inactiveSessions,
-                                                    otherSessions: otherSessions,
-                                                    linkDeviceEnabled: true)
+            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: currentSession,
+                                                                unverifiedSessions: unverifiedSessions,
+                                                                inactiveSessions: inactiveSessions,
+                                                                otherSessions: otherSessions,
+                                                                linkDeviceEnabled: false))
         }
         
-        completion(.success(overviewData))
+        completion(.success(overviewDataPublisher.value))
     }
     
     func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo? {
-        overviewData.otherSessions.first { $0.id == sessionId }
+        otherSessions.first { $0.id == sessionId }
     }
     
     // MARK: - Private

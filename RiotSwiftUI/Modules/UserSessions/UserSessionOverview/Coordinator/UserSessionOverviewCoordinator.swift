@@ -14,12 +14,14 @@
 // limitations under the License.
 //
 
+import Combine
 import CommonKit
 import SwiftUI
 
 struct UserSessionOverviewCoordinatorParameters {
     let session: MXSession
     let sessionInfo: UserSessionInfo
+    let sessionsOverviewDataSubject: CurrentValueSubject<UserSessionsOverviewData, Never>
 }
 
 final class UserSessionOverviewCoordinator: Coordinator, Presentable {
@@ -42,7 +44,9 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
         self.parameters = parameters
 
         let service = UserSessionOverviewService(session: parameters.session, sessionInfo: parameters.sessionInfo)
-        viewModel = UserSessionOverviewViewModel(sessionInfo: parameters.sessionInfo, service: service)
+        viewModel = UserSessionOverviewViewModel(sessionInfo: parameters.sessionInfo,
+                                                 service: service,
+                                                 sessionsOverviewDataSubject: parameters.sessionsOverviewDataSubject)
         
         hostingController = VectorHostingController(rootView: UserSessionOverview(viewModel: viewModel.context))
         hostingController.vc_setLargeTitleDisplayMode(.never)
