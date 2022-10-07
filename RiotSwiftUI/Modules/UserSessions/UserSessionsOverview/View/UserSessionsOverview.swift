@@ -21,6 +21,8 @@ struct UserSessionsOverview: View {
     
     @ObservedObject var viewModel: UserSessionsOverviewViewModel.Context
     
+    private let maxOtherSessionsToDisplay = 5
+    
     var body: some View {
         ScrollView {
             if hasSecurityRecommendations {
@@ -132,10 +134,15 @@ struct UserSessionsOverview: View {
     private var otherSessionsSection: some View {
         SwiftUI.Section {
             LazyVStack(spacing: 0) {
-                ForEach(viewModel.viewState.otherSessionsViewData) { viewData in
+                ForEach(viewModel.viewState.otherSessionsViewData.prefix(maxOtherSessionsToDisplay)) { viewData in
                     UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
                         viewModel.send(viewAction: .tapUserSession(sessionId))
                     })
+                }
+                if viewModel.viewState.otherSessionsViewData.count > maxOtherSessionsToDisplay {
+                    UserSessionsListViewAllView(count: viewModel.viewState.otherSessionsViewData.count) {
+                        viewModel.send(viewAction: .viewAllOtherSessions)
+                    }
                 }
             }
             .background(theme.colors.background)

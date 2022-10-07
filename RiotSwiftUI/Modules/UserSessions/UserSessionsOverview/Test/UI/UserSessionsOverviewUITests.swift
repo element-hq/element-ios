@@ -52,4 +52,16 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         XCTAssertFalse(app.staticTexts["userSessionsOverviewSecurityRecommendationsSection"].exists)
         XCTAssertFalse(app.staticTexts["userSessionsOverviewOtherSection"].exists)
     }
+    
+    func testWhenMoreThan5OtherSessionsThenViewAllButtonVisible() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.currentSessionUnverified.title)
+        app.swipeUp()
+        XCTAssertTrue(app.buttons["ViewAllButton"].exists)
+    }
+    
+    func testWhenLessThan5OtherSessionsThenViewAllButtonHidden() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.onlyUnverifiedSessions.title)
+        app.swipeUp()
+        XCTAssertFalse(app.buttons["ViewAllButton"].exists)
+    }
 }

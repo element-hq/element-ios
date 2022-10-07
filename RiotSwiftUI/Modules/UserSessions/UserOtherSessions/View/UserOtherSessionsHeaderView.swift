@@ -40,6 +40,7 @@ struct UserOtherSessionsHeaderView: View {
                     .background(theme.colors.background)
                     .clipShape(backgroundShape)
                     .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1.0, shape: backgroundShape)
+                    .padding(.trailing, 16)
             }
             VStack(alignment: .leading, spacing: 0, content: {
                 if let title = viewData.title {
@@ -53,7 +54,6 @@ struct UserOtherSessionsHeaderView: View {
                     .foregroundColor(theme.colors.secondaryContent)
                     .padding(.bottom, 20.0)
             })
-            .padding(.leading, 16)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 16)
@@ -64,19 +64,36 @@ struct UserOtherSessionsHeaderView: View {
 
 struct UserOtherSessionsHeaderView_Previews: PreviewProvider {
     
-    private static let inactiveSessionViewData = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
-                                                                                 subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
-                                                                                 iconName: Asset.Images.userOtherSessionsInactive.name)
+    private static let headerWithTitleSubtitleIcon = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
+                                                                                     subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
+                                                                                     iconName: Asset.Images.userOtherSessionsInactive.name)
+    
+    private static  let headerWithSubtitle = UserOtherSessionsHeaderViewData(title: nil,
+                                                                             subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
+                                                                             iconName: nil)
     
     
     static var previews: some View {
         Group {
-            UserOtherSessionsHeaderView(viewData: self.inactiveSessionViewData)
-                .theme(.light)
-                .preferredColorScheme(.light)
-            UserOtherSessionsHeaderView(viewData: self.inactiveSessionViewData)
-                .theme(.dark)
-                .preferredColorScheme(.dark)
+            VStack {
+                Divider()
+                UserOtherSessionsHeaderView(viewData: self.headerWithTitleSubtitleIcon)
+                Divider()
+                UserOtherSessionsHeaderView(viewData: self.headerWithSubtitle)
+                Divider()
+            }
+            .theme(.light)
+            .preferredColorScheme(.light)
+            VStack {
+                Divider()
+                UserOtherSessionsHeaderView(viewData: self.headerWithTitleSubtitleIcon)
+                Divider()
+                UserOtherSessionsHeaderView(viewData: self.headerWithSubtitle)
+                Divider()
+            }
+            .theme(.dark)
+            .preferredColorScheme(.dark)
+            
         }
     }
 }

@@ -80,9 +80,8 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     private func createHeaderData(filter: OtherUserSessionsFilter) -> UserOtherSessionsHeaderViewData {
         switch filter {
         case .all:
-            // TODO:
             return UserOtherSessionsHeaderViewData(title: nil,
-                                                   subtitle: "",
+                                                   subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
                                                    iconName: nil)
         case .inactive:
             return UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
