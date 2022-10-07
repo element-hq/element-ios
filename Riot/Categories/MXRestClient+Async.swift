@@ -57,6 +57,11 @@ extension MXRestClient {
         return MXCredentials(loginResponse: loginResponse, andDefaultCredentials: credentials)
     }
     
+    /// An async version of generateLoginToken(completion:)
+    func generateLoginToken() async throws -> MXLoginToken {
+        try await getResponse(generateLoginToken)
+    }
+    
     // MARK: - Registration
     
     /// An async version of `getRegisterSession(completion:)`.
