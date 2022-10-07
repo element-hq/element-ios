@@ -172,7 +172,9 @@ struct UserSessionsOverview: View {
     /// The footer view containing link device button.
     var linkDeviceView: some View {
         VStack {
-            Button(action: linkDevice) {
+            Button {
+                viewModel.send(viewAction: .linkDevice)
+            } label: {
                 Text(VectorL10n.userSessionsOverviewLinkDevice)
             }
             .buttonStyle(PrimaryActionButtonStyle(font: theme.fonts.bodySB))
@@ -182,11 +184,6 @@ struct UserSessionsOverview: View {
             .accessibilityIdentifier("linkDeviceButton")
         }
         .background(theme.colors.system.ignoresSafeArea())
-    }
-
-    /// Sends the `linkDevice` view action.
-    func linkDevice() {
-        viewModel.send(viewAction: .linkDevice)
     }
 }
 
