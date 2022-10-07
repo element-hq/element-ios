@@ -2441,6 +2441,11 @@ To enable access, tap Settings> Location and select Always";
 "device_name_mobile" = "%@ Mobile";
 "device_name_unknown" = "Unknown client";
 
+"device_type_name_desktop" = "Desktop";
+"device_type_name_web" = "Web";
+"device_type_name_mobile" = "Mobile";
+"device_type_name_unknown" = "Unknown";
+
 "user_session_details_title" = "Session details";
 "user_session_details_session_section_header" = "Session";
 "user_session_details_application_section_header" = "Application";

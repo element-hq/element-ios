@@ -1575,6 +1575,22 @@ public class VectorL10n: NSObject {
   public static func deviceNameWeb(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "device_name_web", p1)
   }
+  /// Desktop
+  public static var deviceTypeNameDesktop: String { 
+    return VectorL10n.tr("Vector", "device_type_name_desktop") 
+  }
+  /// Mobile
+  public static var deviceTypeNameMobile: String { 
+    return VectorL10n.tr("Vector", "device_type_name_mobile") 
+  }
+  /// Unknown
+  public static var deviceTypeNameUnknown: String { 
+    return VectorL10n.tr("Vector", "device_type_name_unknown") 
+  }
+  /// Web
+  public static var deviceTypeNameWeb: String { 
+    return VectorL10n.tr("Vector", "device_type_name_web") 
+  }
   /// The other party cancelled the verification.
   public static var deviceVerificationCancelled: String { 
     return VectorL10n.tr("Vector", "device_verification_cancelled") 
