@@ -9,8 +9,12 @@ struct UserSessionName: View {
         List {
             SwiftUI.Section {
                 TextField(VectorL10n.manageSessionName, text: $viewModel.sessionName)
-                    .introspectTextField { $0.clearButtonMode = .whileEditing }
+                    .autocapitalization(.words)
                     .listRowBackground(theme.colors.background)
+                    .introspectTextField {
+                        $0.becomeFirstResponder()
+                        $0.clearButtonMode = .whileEditing
+                    }
             } header: {
                 Text(VectorL10n.manageSessionName)
                     .foregroundColor(theme.colors.secondaryContent)

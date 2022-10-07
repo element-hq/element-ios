@@ -47,6 +47,7 @@ struct UserSessionOverview: View {
             
             SwiftUI.Section {
                 UserSessionOverviewItem(title: VectorL10n.manageSessionSignOut,
+                                        alignment: .center,
                                         isDestructive: true) {
                     viewModel.send(viewAction: .logoutOfSession)
                 }
@@ -66,7 +67,7 @@ struct UserSessionOverview: View {
                         Label(VectorL10n.manageSessionRename, systemImage: "pencil")
                     }
                 } label: {
-                    Image(systemName: "ellipsis.circle")
+                    Image(systemName: "ellipsis")
                 }
             }
         }
