@@ -422,5 +422,11 @@ final class BuildSettings: NSObject {
     static let newAppLayoutEnabled = true
 
     // MARK: - QR Login
-    static let enableQRLogin = false
+
+    /// Flag indicating whether the QR login enabled from login screen
+    static let qrLoginEnableFromNotAuthenticated = false
+    /// Flag indicating whether the QR login enabled from Device Manager screen
+    static let qrLoginEnableFromAuthenticated = false
+    /// Flag indicating whether displaying QRs enabled for the QR login screens
+    static let qrLoginEnableDisplayingQRs = false
 }

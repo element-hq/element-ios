@@ -82,6 +82,7 @@ protocol QRLoginServiceProtocol {
     var state: QRLoginServiceState { get }
     var callbacks: PassthroughSubject<QRLoginServiceCallback, Never> { get }
     func isServiceAvailable() async throws -> Bool
+    func canDisplayQR() -> Bool
     func generateQRCode() async throws -> QRLoginCode
 
     // MARK: QR Scanner

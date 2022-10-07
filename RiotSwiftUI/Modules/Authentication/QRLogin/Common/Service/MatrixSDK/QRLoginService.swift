@@ -54,10 +54,21 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
     let callbacks = PassthroughSubject<QRLoginServiceCallback, Never>()
 
     func isServiceAvailable() async throws -> Bool {
-        guard BuildSettings.enableQRLogin else {
-            return false
+        switch mode {
+        case .authenticated:
+            guard BuildSettings.qrLoginEnableFromAuthenticated else {
+                return false
+            }
+        case .notAuthenticated:
+            guard BuildSettings.qrLoginEnableFromNotAuthenticated else {
+                return false
+            }
         }
         return try await client.supportedMatrixVersions().supportsQRLogin
+    }
+
+    func canDisplayQR() -> Bool {
+        BuildSettings.qrLoginEnableDisplayingQRs
     }
 
     func generateQRCode() async throws -> QRLoginCode {
