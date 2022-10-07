@@ -62,15 +62,14 @@ struct UserOtherSessionsHeaderView: View {
 // MARK: - Previews
 
 struct UserOtherSessionsHeaderView_Previews: PreviewProvider {
-
     private static let headerWithTitleSubtitleIcon = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
                                                                                      subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
                                                                                      iconName: Asset.Images.userOtherSessionsInactive.name)
     
-    private static  let headerWithSubtitle = UserOtherSessionsHeaderViewData(title: nil,
-                                                                             subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
-                                                                             iconName: nil)
-
+    private static let headerWithSubtitle = UserOtherSessionsHeaderViewData(title: nil,
+                                                                            subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
+                                                                            iconName: nil)
+    
     private static let inactiveSessionViewData = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
                                                                                  subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
                                                                                  iconName: Asset.Images.userOtherSessionsInactive.name)
@@ -94,7 +93,6 @@ struct UserOtherSessionsHeaderView_Previews: PreviewProvider {
             }
             .theme(.dark)
             .preferredColorScheme(.dark)
-            
         }
     }
 }

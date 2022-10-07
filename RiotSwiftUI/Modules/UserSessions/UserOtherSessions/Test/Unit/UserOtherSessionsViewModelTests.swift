@@ -52,9 +52,9 @@ class UserOtherSessionsViewModelTests: XCTestCase {
     func test_whenModelCreated_withAllFilter_viewStateIsCorrect() {
         let sessionInfos = [createUserSessionInfo(sessionId: "session 1"), createUserSessionInfo(sessionId: "session 2")]
         let sut = UserOtherSessionsViewModel(sessionInfos: sessionInfos,
-                                         filter: .all,
-                                         title: "Title")
-
+                                             filter: .all,
+                                             title: "Title")
+        
         let expectedHeader = UserOtherSessionsHeaderViewData(title: nil,
                                                              subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
                                                              iconName: nil)

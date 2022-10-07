@@ -128,8 +128,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     private func openOtherSessions(sessionInfos: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter) {
-        let title = filter == .all ? VectorL10n.userSessionsOverviewOtherSessionsSectionTitle :
-        VectorL10n.userOtherSessionSecurityRecommendationTitle
+        let title = filter == .all ? VectorL10n.userSessionsOverviewOtherSessionsSectionTitle : VectorL10n.userOtherSessionSecurityRecommendationTitle
         let coordinator = createOtherSessionsCoordinator(sessionInfos: sessionInfos,
                                                          filterBy: filter,
                                                          title: title)

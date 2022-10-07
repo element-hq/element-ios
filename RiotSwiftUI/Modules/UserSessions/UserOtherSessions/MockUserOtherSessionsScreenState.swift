@@ -23,7 +23,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-
+    
     case all
     case inactiveSessions
     case unverifiedSessions
@@ -56,7 +56,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                                                    filter: .unverified,
                                                    title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
         }
-
+        
         // can simulate service and viewModel actions here if needs be.
         
         return (
@@ -173,7 +173,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          deviceType: .mobile,
                          isVerified: false,
                          lastSeenIP: "10.0.0.10",
-                         lastSeenTimestamp: Date().timeIntervalSince1970 - 500000,
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 500_000,
                          applicationName: nil,
                          applicationVersion: nil,
                          applicationURL: nil,
@@ -189,7 +189,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          deviceType: .desktop,
                          isVerified: true,
                          lastSeenIP: "1.0.0.1",
-                         lastSeenTimestamp: Date().timeIntervalSince1970 - 8000000,
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 8_000_000,
                          applicationName: nil,
                          applicationVersion: nil,
                          applicationURL: nil,
@@ -205,7 +205,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          deviceType: .web,
                          isVerified: true,
                          lastSeenIP: "2.0.0.2",
-                         lastSeenTimestamp: Date().timeIntervalSince1970 - 9000000,
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 9_000_000,
                          applicationName: nil,
                          applicationVersion: nil,
                          applicationURL: nil,
@@ -221,7 +221,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          deviceType: .mobile,
                          isVerified: false,
                          lastSeenIP: "3.0.0.3",
-                         lastSeenTimestamp: Date().timeIntervalSince1970 - 10000000,
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 10_000_000,
                          applicationName: nil,
                          applicationVersion: nil,
                          applicationURL: nil,
@@ -233,36 +233,36 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          isActive: false,
                          isCurrent: false),
          UserSessionInfo(id: "4",
-                          name: "iOS",
-                          deviceType: .mobile,
-                          isVerified: false,
-                          lastSeenIP: "10.0.0.10",
-                          lastSeenTimestamp: Date().timeIntervalSince1970 - 11000000,
-                          applicationName: nil,
-                          applicationVersion: nil,
-                          applicationURL: nil,
-                          deviceModel: nil,
-                          deviceOS: nil,
-                          lastSeenIPLocation: nil,
-                          clientName: nil,
-                          clientVersion: nil,
-                          isActive: false,
-                          isCurrent: false),
-          UserSessionInfo(id: "5",
-                          name: "macOS",
-                          deviceType: .desktop,
-                          isVerified: true,
-                          lastSeenIP: "1.0.0.1",
-                          lastSeenTimestamp: Date().timeIntervalSince1970 - 20000000,
-                          applicationName: nil,
-                          applicationVersion: nil,
-                          applicationURL: nil,
-                          deviceModel: nil,
-                          deviceOS: nil,
-                          lastSeenIPLocation: nil,
-                          clientName: nil,
-                          clientVersion: nil,
-                          isActive: false,
-                          isCurrent: false)]
+                         name: "iOS",
+                         deviceType: .mobile,
+                         isVerified: false,
+                         lastSeenIP: "10.0.0.10",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 11_000_000,
+                         applicationName: nil,
+                         applicationVersion: nil,
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: nil,
+                         lastSeenIPLocation: nil,
+                         clientName: nil,
+                         clientVersion: nil,
+                         isActive: false,
+                         isCurrent: false),
+         UserSessionInfo(id: "5",
+                         name: "macOS",
+                         deviceType: .desktop,
+                         isVerified: true,
+                         lastSeenIP: "1.0.0.1",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 20_000_000,
+                         applicationName: nil,
+                         applicationVersion: nil,
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: nil,
+                         lastSeenIPLocation: nil,
+                         clientName: nil,
+                         clientVersion: nil,
+                         isActive: false,
+                         isCurrent: false)]
     }
 }
