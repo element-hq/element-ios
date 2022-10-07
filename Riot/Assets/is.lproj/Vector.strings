@@ -2118,6 +2118,8 @@
 "store_short_description" = "Öruggt dreifvinnsluspjall/VoIP";
 "device_name_unknown" = "Óþekkt forrit (biðlari)";
 
+// First item is client name and second item is session display name
+"user_session_name" = "%@: %@";
 "user_session_learn_more" = "Kanna nánar";
 "user_session_view_details" = "Skoða nánar";
 "user_session_verify_action" = "Sannprófa setu";
