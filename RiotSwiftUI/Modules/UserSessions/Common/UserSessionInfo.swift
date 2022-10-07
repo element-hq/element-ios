@@ -71,8 +71,33 @@ struct UserSessionInfo: Identifiable {
     let isCurrent: Bool
 }
 
+// MARK: - Equatable
+
 extension UserSessionInfo: Equatable {
     static func == (lhs: UserSessionInfo, rhs: UserSessionInfo) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+// MARK: - Mocks
+
+extension UserSessionInfo {
+    static var mockPhone: UserSessionInfo {
+        UserSessionInfo(id: "1",
+                        name: "Element Mobile: iOS",
+                        deviceType: .mobile,
+                        isVerified: true,
+                        lastSeenIP: "1.0.0.1",
+                        lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
+                        applicationName: "Element iOS",
+                        applicationVersion: "1.9.8",
+                        applicationURL: nil,
+                        deviceModel: nil,
+                        deviceOS: "iOS 16.0.2",
+                        lastSeenIPLocation: nil,
+                        clientName: nil,
+                        clientVersion: nil,
+                        isActive: false,
+                        isCurrent: false)
     }
 }

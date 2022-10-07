@@ -29,7 +29,10 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
     
     init(sessionInfo: UserSessionInfo,
          service: UserSessionOverviewServiceProtocol,
-         sessionsOverviewDataSubject: CurrentValueSubject<UserSessionsOverviewData, Never>) {
+         sessionsOverviewDataPublisher: CurrentValueSubject<UserSessionsOverviewData, Never> = .init(.init(currentSession: nil,
+                                                                                                         unverifiedSessions: [],
+                                                                                                         inactiveSessions: [],
+                                                                                                         otherSessions: []))) {
         self.sessionInfo = sessionInfo
         self.service = service
         
@@ -43,7 +46,7 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
         
         startObservingService()
         
-        sessionsOverviewDataSubject.sink { overviewData in
+        sessionsOverviewDataPublisher.sink { overviewData in
             var updatedInfo: UserSessionInfo?
             if let currentSession = overviewData.currentSession, currentSession.id == sessionInfo.id {
                 updatedInfo = currentSession

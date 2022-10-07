@@ -71,7 +71,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             guard let self = self else { return }
             switch result {
             case let .renameSession(sessionInfo):
-                break
+                self.showRenameSessionScreen(for: sessionInfo)
             case let .logoutOfSession(sessionInfo):
                 self.showLogoutConfirmation(for: sessionInfo)
             case let .openSessionOverview(sessionInfo: sessionInfo):
@@ -105,7 +105,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             case let .openSessionDetails(sessionInfo: sessionInfo):
                 self.openSessionDetails(sessionInfo: sessionInfo)
             case let .renameSession(sessionInfo):
-                break
+                self.showRenameSessionScreen(for: sessionInfo)
             case let .logoutOfSession(sessionInfo):
                 self.showLogoutConfirmation(for: sessionInfo)
             }
@@ -131,7 +131,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     private func createUserSessionOverviewCoordinator(sessionInfo: UserSessionInfo) -> UserSessionOverviewCoordinator {
         let parameters = UserSessionOverviewCoordinatorParameters(session: parameters.session,
                                                                   sessionInfo: sessionInfo,
-                                                                  sessionsOverviewDataSubject: allSessionsService.overviewDataPublisher)
+                                                                  sessionsOverviewDataPublisher: allSessionsService.overviewDataPublisher)
         return UserSessionOverviewCoordinator(parameters: parameters)
     }
     
@@ -222,6 +222,32 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
 
             self.popToSessionsOverview()
         }
+    }
+    
+    private func showRenameSessionScreen(for sessionInfo: UserSessionInfo) {
+        let parameters = UserSessionNameCoordinatorParameters(session: parameters.session, sessionInfo: sessionInfo)
+        let coordinator = UserSessionNameCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            switch result {
+            case .sessionNameUpdated:
+                self.allSessionsService.updateOverviewData { [weak self] _ in
+                    self?.navigationRouter.dismissModule(animated: true, completion: nil)
+                    self?.remove(childCoordinator: coordinator)
+                }
+            case .cancel:
+                self.navigationRouter.dismissModule(animated: true, completion: nil)
+                self.remove(childCoordinator: coordinator)
+            }
+        }
+        
+        add(childCoordinator: coordinator)
+        let modalRouter = NavigationRouter(navigationController: RiotNavigationController())
+        modalRouter.setRootModule(coordinator)
+        coordinator.start()
+        
+        navigationRouter.present(modalRouter, animated: true)
     }
     
     /// Pops back to the root coordinator in the session management flow.

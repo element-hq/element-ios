@@ -21,7 +21,7 @@ import SwiftUI
 struct UserSessionOverviewCoordinatorParameters {
     let session: MXSession
     let sessionInfo: UserSessionInfo
-    let sessionsOverviewDataSubject: CurrentValueSubject<UserSessionsOverviewData, Never>
+    let sessionsOverviewDataPublisher: CurrentValueSubject<UserSessionsOverviewData, Never>
 }
 
 final class UserSessionOverviewCoordinator: Coordinator, Presentable {
@@ -46,7 +46,7 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
         let service = UserSessionOverviewService(session: parameters.session, sessionInfo: parameters.sessionInfo)
         viewModel = UserSessionOverviewViewModel(sessionInfo: parameters.sessionInfo,
                                                  service: service,
-                                                 sessionsOverviewDataSubject: parameters.sessionsOverviewDataSubject)
+                                                 sessionsOverviewDataPublisher: parameters.sessionsOverviewDataPublisher)
         
         hostingController = VectorHostingController(rootView: UserSessionOverview(viewModel: viewModel.context))
         hostingController.vc_setLargeTitleDisplayMode(.never)
