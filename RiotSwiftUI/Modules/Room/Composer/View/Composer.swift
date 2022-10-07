@@ -116,6 +116,7 @@ struct Composer: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 4)
+                .animation(.none)
             }
             .sheet(isPresented: $isBottomSheetExpanded) {
                 moduleSelectionList

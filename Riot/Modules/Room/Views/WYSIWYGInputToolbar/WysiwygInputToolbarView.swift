@@ -87,6 +87,11 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
         ]
         
     }
+
+    override func customizeRendering() {
+        super.customizeRendering()
+        self.backgroundColor = .clear
+    }
     
     func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {
         //TODO embed the voice messages UI
@@ -97,7 +102,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
     }
     
    private func updateToolbarHeight(wysiwygHeight: CGFloat) {
-       heightConstraint.constant = wysiwygHeight
+       self.heightConstraint.constant = wysiwygHeight
        toolbarViewDelegate?.roomInputToolbarView?(self, heightDidChanged: wysiwygHeight, completion: nil)
     }
     
