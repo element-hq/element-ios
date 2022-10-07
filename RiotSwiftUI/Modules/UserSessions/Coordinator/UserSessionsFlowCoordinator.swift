@@ -41,7 +41,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     init(parameters: UserSessionsFlowCoordinatorParameters) {
         self.parameters = parameters
         
-        self.navigationRouter = parameters.router
+        navigationRouter = parameters.router
         errorPresenter = MXKErrorAlertPresentation()
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: parameters.router.toPresentable())
     }
@@ -73,6 +73,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
                 self.openSessionOverview(sessionInfo: sessionInfo)
             case let .openOtherSessions(sessionInfos: sessionInfos, filter: filter):
                 self.openOtherSessions(sessionInfos: sessionInfos, filterBy: filter)
+            case .linkDevice:
+                self.openQRLoginScreen()
             }
         }
         return coordinator
@@ -101,6 +103,21 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
                 self.showLogoutConfirmation(for: sessionInfo)
             }
         }
+        pushScreen(with: coordinator)
+    }
+
+    /// Shows the QR login screen.
+    private func openQRLoginScreen() {
+        let service = QRLoginService(client: parameters.session.matrixRestClient,
+                                     mode: .authenticated)
+        let parameters = AuthenticationQRLoginStartCoordinatorParameters(navigationRouter: navigationRouter,
+                                                                         qrLoginService: service)
+        let coordinator = AuthenticationQRLoginStartCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self, weak coordinator] _ in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.remove(childCoordinator: coordinator)
+        }
+
         pushScreen(with: coordinator)
     }
     
@@ -134,7 +151,6 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
                                                                 title: title)
         return UserOtherSessionsCoordinator(parameters: parameters)
     }
-    
     
     /// Shows a confirmation dialog to the user to sign out of a session.
     private func showLogoutConfirmation(for sessionInfo: UserSessionInfo) {

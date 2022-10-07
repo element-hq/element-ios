@@ -8747,6 +8747,10 @@ public class VectorL10n: NSObject {
   public static var userSessionsOverviewCurrentSessionSectionTitle: String { 
     return VectorL10n.tr("Vector", "user_sessions_overview_current_session_section_title") 
   }
+  /// Link a device
+  public static var userSessionsOverviewLinkDevice: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_link_device") 
+  }
   /// For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.
   public static var userSessionsOverviewOtherSessionsSectionInfo: String { 
     return VectorL10n.tr("Vector", "user_sessions_overview_other_sessions_section_info") 

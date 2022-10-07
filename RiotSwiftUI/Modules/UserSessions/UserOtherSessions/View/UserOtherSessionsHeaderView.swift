@@ -23,7 +23,6 @@ struct UserOtherSessionsHeaderViewData: Hashable {
 }
 
 struct UserOtherSessionsHeaderView: View {
-    
     private var backgroundShape: RoundedRectangle {
         RoundedRectangle(cornerRadius: 8)
     }
@@ -33,7 +32,7 @@ struct UserOtherSessionsHeaderView: View {
     let viewData: UserOtherSessionsHeaderViewData
     
     var body: some View {
-        HStack (alignment: .top, spacing: 0) {
+        HStack(alignment: .top, spacing: 0) {
             if let iconName = viewData.iconName {
                 Image(iconName)
                     .frame(width: 40, height: 40)
@@ -63,7 +62,7 @@ struct UserOtherSessionsHeaderView: View {
 // MARK: - Previews
 
 struct UserOtherSessionsHeaderView_Previews: PreviewProvider {
-    
+
     private static let headerWithTitleSubtitleIcon = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
                                                                                      subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
                                                                                      iconName: Asset.Images.userOtherSessionsInactive.name)
@@ -71,8 +70,10 @@ struct UserOtherSessionsHeaderView_Previews: PreviewProvider {
     private static  let headerWithSubtitle = UserOtherSessionsHeaderViewData(title: nil,
                                                                              subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
                                                                              iconName: nil)
-    
-    
+
+    private static let inactiveSessionViewData = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
+                                                                                 subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
+                                                                                 iconName: Asset.Images.userOtherSessionsInactive.name)
     static var previews: some View {
         Group {
             VStack {

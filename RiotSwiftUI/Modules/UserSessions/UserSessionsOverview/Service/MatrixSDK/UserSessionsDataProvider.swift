@@ -47,4 +47,10 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
     func accountData(for eventType: String) -> [AnyHashable: Any]? {
         session.accountData.accountData(forEventType: eventType)
     }
+
+    func qrLoginAvailable() async throws -> Bool {
+        let service = QRLoginService(client: session.matrixRestClient,
+                                     mode: .authenticated)
+        return try await service.isServiceAvailable()
+    }
 }

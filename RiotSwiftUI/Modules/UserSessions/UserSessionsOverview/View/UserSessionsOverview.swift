@@ -24,15 +24,25 @@ struct UserSessionsOverview: View {
     private let maxOtherSessionsToDisplay = 5
     
     var body: some View {
-        ScrollView {
-            if hasSecurityRecommendations {
-                securityRecommendationsSection
-            }
-            
-            currentSessionsSection
-            
-            if !viewModel.viewState.otherSessionsViewData.isEmpty {
-                otherSessionsSection
+        GeometryReader { geometry in
+            VStack(alignment: .leading, spacing: 0) {
+                ScrollView {
+                    if hasSecurityRecommendations {
+                        securityRecommendationsSection
+                    }
+
+                    currentSessionsSection
+
+                    if !viewModel.viewState.otherSessionsViewData.isEmpty {
+                        otherSessionsSection
+                    }
+                }
+                .readableFrame()
+
+                if viewModel.viewState.linkDeviceButtonVisible {
+                    linkDeviceView
+                        .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
+                }
             }
         }
         .background(theme.colors.system.ignoresSafeArea())
@@ -164,6 +174,23 @@ struct UserSessionsOverview: View {
             .padding(.top, 24.0)
         }
         .accessibilityIdentifier("userSessionsOverviewOtherSection")
+    }
+
+    /// The footer view containing link device button.
+    var linkDeviceView: some View {
+        VStack {
+            Button {
+                viewModel.send(viewAction: .linkDevice)
+            } label: {
+                Text(VectorL10n.userSessionsOverviewLinkDevice)
+            }
+            .buttonStyle(PrimaryActionButtonStyle(font: theme.fonts.bodySB))
+            .padding(.top, 28)
+            .padding(.bottom, 12)
+            .padding(.horizontal, 16)
+            .accessibilityIdentifier("linkDeviceButton")
+        }
+        .background(theme.colors.system.ignoresSafeArea())
     }
 }
 

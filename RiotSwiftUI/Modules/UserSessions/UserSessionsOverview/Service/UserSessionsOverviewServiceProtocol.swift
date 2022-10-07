@@ -21,6 +21,7 @@ struct UserSessionsOverviewData {
     let unverifiedSessions: [UserSessionInfo]
     let inactiveSessions: [UserSessionInfo]
     let otherSessions: [UserSessionInfo]
+    let linkDeviceEnabled: Bool
 }
 
 protocol UserSessionsOverviewServiceProtocol {

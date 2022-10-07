@@ -27,6 +27,7 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.state.unverifiedSessionsViewData.isEmpty)
         XCTAssertTrue(viewModel.state.inactiveSessionsViewData.isEmpty)
         XCTAssertTrue(viewModel.state.otherSessionsViewData.isEmpty)
+        XCTAssertFalse(viewModel.state.linkDeviceButtonVisible)
     }
     
     func testLoadOnDidAppear() {
@@ -37,6 +38,7 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.state.unverifiedSessionsViewData.isEmpty)
         XCTAssertFalse(viewModel.state.inactiveSessionsViewData.isEmpty)
         XCTAssertFalse(viewModel.state.otherSessionsViewData.isEmpty)
+        XCTAssertTrue(viewModel.state.linkDeviceButtonVisible)
     }
     
     func testSimpleActionProcessing() {
@@ -53,10 +55,14 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
         result = nil
         viewModel.process(viewAction: .viewAllInactiveSessions)
         XCTAssertEqual(result, .showOtherSessions(sessionInfos: [], filter: .inactive))
-        
+
         result = nil
         viewModel.process(viewAction: .viewAllOtherSessions)
         XCTAssertEqual(result, .showOtherSessions(sessionInfos: [], filter: .all))
+        
+        result = nil
+        viewModel.process(viewAction: .linkDevice)
+        XCTAssertEqual(result, .linkDevice)
     }
     
     func testShowSessionDetails() {
