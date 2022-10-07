@@ -27,6 +27,10 @@ class AuthenticationQRLoginScanViewModelTests: XCTestCase {
         context = viewModel.context
     }
 
+    func testDisplayQRButtonVisibility() {
+        XCTAssertTrue(viewModel.context.viewState.canShowDisplayQRButton)
+    }
+
     func testGoToSettings() {
         var result: AuthenticationQRLoginScanViewModelResult?
 

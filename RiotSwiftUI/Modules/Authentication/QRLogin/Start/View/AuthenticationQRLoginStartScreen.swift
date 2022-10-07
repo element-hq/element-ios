@@ -88,13 +88,15 @@ struct AuthenticationQRLoginStartScreen: View {
             .padding(.bottom, 8)
             .accessibilityIdentifier("scanQRButton")
 
-            LabelledDivider(label: VectorL10n.authenticationQrLoginStartNeedAlternative)
+            if context.viewState.canShowDisplayQRButton {
+                LabelledDivider(label: VectorL10n.authenticationQrLoginStartNeedAlternative)
 
-            Button(action: displayQR) {
-                Text(VectorL10n.authenticationQrLoginStartDisplayQr)
+                Button(action: displayQR) {
+                    Text(VectorL10n.authenticationQrLoginStartDisplayQr)
+                }
+                .buttonStyle(SecondaryActionButtonStyle(font: theme.fonts.bodySB))
+                .accessibilityIdentifier("displayQRButton")
             }
-            .buttonStyle(SecondaryActionButtonStyle(font: theme.fonts.bodySB))
-            .accessibilityIdentifier("displayQRButton")
         }
     }
     

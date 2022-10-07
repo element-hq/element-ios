@@ -34,7 +34,8 @@ class AuthenticationQRLoginScanViewModel: AuthenticationQRLoginScanViewModelType
 
     init(qrLoginService: QRLoginServiceProtocol) {
         self.qrLoginService = qrLoginService
-        super.init(initialViewState: AuthenticationQRLoginScanViewState(serviceState: .initial))
+        super.init(initialViewState: .init(canShowDisplayQRButton: qrLoginService.canDisplayQR(),
+                                           serviceState: .initial))
 
         qrLoginService.callbacks.sink { callback in
             switch callback {

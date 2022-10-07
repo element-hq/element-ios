@@ -23,7 +23,8 @@ enum MockAuthenticationQRLoginStartScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-    case `default`
+    case displayQREnabled
+    case displayQRDisabled
     
     /// The associated screen
     var screenType: Any.Type {
@@ -33,12 +34,21 @@ enum MockAuthenticationQRLoginStartScreenState: MockScreenState, CaseIterable {
     /// A list of screen state definitions
     static var allCases: [MockAuthenticationQRLoginStartScreenState] {
         // Each of the presence statuses
-        [.default]
+        [.displayQREnabled, .displayQRDisabled]
     }
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        let viewModel = AuthenticationQRLoginStartViewModel(qrLoginService: MockQRLoginService())
+        let service: QRLoginServiceProtocol
+
+        switch self {
+        case .displayQREnabled:
+            service = MockQRLoginService(canDisplayQR: true)
+        case .displayQRDisabled:
+            service = MockQRLoginService(canDisplayQR: false)
+        }
+
+        let viewModel = AuthenticationQRLoginStartViewModel(qrLoginService: service)
         
         // can simulate service and viewModel actions here if needs be.
         

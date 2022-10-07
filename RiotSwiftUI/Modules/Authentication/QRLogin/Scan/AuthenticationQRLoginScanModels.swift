@@ -43,6 +43,7 @@ enum AuthenticationQRLoginScanViewModelResult: Equatable {
 // MARK: View
 
 struct AuthenticationQRLoginScanViewState: BindableState {
+    var canShowDisplayQRButton: Bool
     var serviceState: QRLoginServiceState
     var scannerView: AnyView?
 }
