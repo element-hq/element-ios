@@ -35,7 +35,6 @@ class SelfSizingHostingController<Content>: UIHostingController<Content> where C
 
 @available(iOS 16.0, *)
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputToolbarViewProtocol {
-    @Environment(\.theme) var theme: ThemeSwiftUI
     
     override class func instantiate() -> MXKRoomInputToolbarView! {
         return loadFromNib()
@@ -64,7 +63,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
         })
         
         hostingViewController = SelfSizingHostingController(rootView: composer)
-        hostingViewController.view.backgroundColor = UIColor(theme.colors.background)
         let height = hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: 800)).height
         let subView: UIView = hostingViewController.view
         self.addSubview(subView)
@@ -87,6 +85,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
                     self.updateToolbarHeight(wysiwygHeight: h)
                 })
         ]
+        
+        update(theme: ThemeService.shared().theme)
+        registerThemeServiceDidChangeThemeNotification()
     }
     
     func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {
@@ -106,4 +107,15 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
         delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
     }
     
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
+    }
+    
+    private func update(theme: Theme) {
+        hostingViewController.view.backgroundColor = theme.colors.background
+    }
 }
