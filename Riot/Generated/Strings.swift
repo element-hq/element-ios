@@ -739,6 +739,110 @@ public class VectorL10n: NSObject {
   public static var authenticationLoginUsername: String { 
     return VectorL10n.tr("Vector", "authentication_login_username") 
   }
+  /// Sign in with QR code
+  public static var authenticationLoginWithQr: String { 
+    return VectorL10n.tr("Vector", "authentication_login_with_qr") 
+  }
+  /// Please ensure that you know the origin of this code. By linking devices, you will provide someone with full access to your account.
+  public static var authenticationQrLoginConfirmAlert: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_confirm_alert") 
+  }
+  /// Confirm that the code below matches with your other device:
+  public static var authenticationQrLoginConfirmSubtitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_confirm_subtitle") 
+  }
+  /// Secure connection established
+  public static var authenticationQrLoginConfirmTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_confirm_title") 
+  }
+  /// Open Element on your other device
+  public static var authenticationQrLoginDisplayStep1: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_display_step1") 
+  }
+  /// Select ‘Sign in with QR code’
+  public static var authenticationQrLoginDisplayStep2: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_display_step2") 
+  }
+  /// Scan the QR code below with your device that’s signed out.
+  public static var authenticationQrLoginDisplaySubtitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_display_subtitle") 
+  }
+  /// Link a device
+  public static var authenticationQrLoginDisplayTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_display_title") 
+  }
+  /// QR code is invalid.
+  public static var authenticationQrLoginFailureInvalidQr: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_failure_invalid_qr") 
+  }
+  /// The request was denied on the other device.
+  public static var authenticationQrLoginFailureRequestDenied: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_failure_request_denied") 
+  }
+  /// The linking wasn’t completed in the required time.
+  public static var authenticationQrLoginFailureRequestTimedOut: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_failure_request_timed_out") 
+  }
+  /// Try again
+  public static var authenticationQrLoginFailureRetry: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_failure_retry") 
+  }
+  /// Linking failed
+  public static var authenticationQrLoginFailureTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_failure_title") 
+  }
+  /// Connecting to device
+  public static var authenticationQrLoginLoadingConnectingDevice: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_loading_connecting_device") 
+  }
+  /// You are now signed in on your other device.
+  public static var authenticationQrLoginLoadingSignedIn: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_loading_signed_in") 
+  }
+  /// Waiting for device to sign in.
+  public static var authenticationQrLoginLoadingWaitingSignin: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_loading_waiting_signin") 
+  }
+  /// Position the QR code in the square below
+  public static var authenticationQrLoginScanSubtitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_scan_subtitle") 
+  }
+  /// Scan QR code
+  public static var authenticationQrLoginScanTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_scan_title") 
+  }
+  /// Show QR code on this device
+  public static var authenticationQrLoginStartDisplayQr: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_display_qr") 
+  }
+  /// Need an alternative method?
+  public static var authenticationQrLoginStartNeedAlternative: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_need_alternative") 
+  }
+  /// Open Element on your other device
+  public static var authenticationQrLoginStartStep1: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_step1") 
+  }
+  /// Go to Settings -> Security & Privacy
+  public static var authenticationQrLoginStartStep2: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_step2") 
+  }
+  /// Select ‘Link a device’
+  public static var authenticationQrLoginStartStep3: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_step3") 
+  }
+  /// Select ‘Show QR code on this device’
+  public static var authenticationQrLoginStartStep4: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_step4") 
+  }
+  /// Use the camera on this device to scan the QR code shown on your other device:
+  public static var authenticationQrLoginStartSubtitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_subtitle") 
+  }
+  /// Scan QR code
+  public static var authenticationQrLoginStartTitle: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_start_title") 
+  }
   /// Are you a human?
   public static var authenticationRecaptchaTitle: String { 
     return VectorL10n.tr("Vector", "authentication_recaptcha_title") 
@@ -8507,6 +8611,14 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionSecurityRecommendationTitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_security_recommendation_title") 
   }
+  /// %@ · Your current session
+  public static func userOtherSessionUnverifiedCurrentSessionDetails(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_other_session_unverified_current_session_details", p1)
+  }
+  /// Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.
+  public static var userOtherSessionUnverifiedSessionsHeaderSubtitle: String { 
+    return VectorL10n.tr("Vector", "user_other_session_unverified_sessions_header_subtitle") 
+  }
   /// Name
   public static var userSessionDetailsApplicationName: String { 
     return VectorL10n.tr("Vector", "user_session_details_application_name") 
@@ -8630,6 +8742,10 @@ public class VectorL10n: NSObject {
   /// Current session
   public static var userSessionsOverviewCurrentSessionSectionTitle: String { 
     return VectorL10n.tr("Vector", "user_sessions_overview_current_session_section_title") 
+  }
+  /// Link a device
+  public static var userSessionsOverviewLinkDevice: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_link_device") 
   }
   /// For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.
   public static var userSessionsOverviewOtherSessionsSectionInfo: String { 

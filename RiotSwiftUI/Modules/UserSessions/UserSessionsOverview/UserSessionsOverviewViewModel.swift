@@ -58,8 +58,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             }
             completion?(.showCurrentSessionOverview(sessionInfo: currentSessionInfo))
         case .viewAllUnverifiedSessions:
-            // TODO: showSessions(filteredBy: .unverified)
-            break
+            showSessions(filteredBy: .unverified)
         case .viewAllInactiveSessions:
             showSessions(filteredBy: .inactive)
         case .viewAllOtherSessions:
@@ -71,6 +70,8 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
                 return
             }
             completion?(.showUserSessionOverview(sessionInfo: session))
+        case .linkDevice:
+            completion?(.linkDevice)
         }
     }
     
@@ -84,6 +85,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         if let currentSessionInfo = userSessionsViewData.currentSession {
             state.currentSessionViewData = UserSessionCardViewData(sessionInfo: currentSessionInfo)
         }
+        state.linkDeviceButtonVisible = userSessionsViewData.linkDeviceEnabled
     }
     
     private func loadData() {
@@ -107,13 +109,13 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
     }
     
     private func showSessions(filteredBy filter: OtherUserSessionsFilter) {
-        completion?(.showOtherSessions(sessionsInfo: userSessionsOverviewService.overviewData.otherSessions,
+        completion?(.showOtherSessions(sessionInfos: userSessionsOverviewService.sessionInfos,
                                        filter: filter))
     }
 }
 
 extension Collection where Element == UserSessionInfo {
     func asViewData() -> [UserSessionListItemViewData] {
-        map { UserSessionListItemViewDataFactory().create(from: $0)}
+        map { UserSessionListItemViewDataFactory().create(from: $0) }
     }
 }

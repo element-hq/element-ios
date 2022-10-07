@@ -21,10 +21,12 @@ struct UserSessionsOverviewData {
     let unverifiedSessions: [UserSessionInfo]
     let inactiveSessions: [UserSessionInfo]
     let otherSessions: [UserSessionInfo]
+    let linkDeviceEnabled: Bool
 }
 
 protocol UserSessionsOverviewServiceProtocol {
     var overviewData: UserSessionsOverviewData { get }
+    var sessionInfos: [UserSessionInfo] { get }
     
     func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) -> Void
     

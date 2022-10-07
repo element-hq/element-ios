@@ -139,21 +139,21 @@ struct UserSessionCardViewPreview: View {
 
     init(isCurrent: Bool = false) {
         let sessionInfo = UserSessionInfo(id: "alice",
-                                      name: "iOS",
-                                      deviceType: .mobile,
-                                      isVerified: false,
-                                      lastSeenIP: "10.0.0.10",
-                                      lastSeenTimestamp: nil,
-                                      applicationName: "Element iOS",
-                                      applicationVersion: "1.0.0",
-                                      applicationURL: nil,
-                                      deviceModel: nil,
-                                      deviceOS: "iOS 15.5",
-                                      lastSeenIPLocation: nil,
-                                      clientName: "Element",
-                                      clientVersion: "1.0.0",
-                                      isActive: true,
-                                      isCurrent: isCurrent)
+                                          name: "iOS",
+                                          deviceType: .mobile,
+                                          isVerified: false,
+                                          lastSeenIP: "10.0.0.10",
+                                          lastSeenTimestamp: nil,
+                                          applicationName: "Element iOS",
+                                          applicationVersion: "1.0.0",
+                                          applicationURL: nil,
+                                          deviceModel: nil,
+                                          deviceOS: "iOS 15.5",
+                                          lastSeenIPLocation: nil,
+                                          clientName: "Element",
+                                          clientVersion: "1.0.0",
+                                          isActive: true,
+                                          isCurrent: isCurrent)
         viewData = UserSessionCardViewData(sessionInfo: sessionInfo)
     }
     

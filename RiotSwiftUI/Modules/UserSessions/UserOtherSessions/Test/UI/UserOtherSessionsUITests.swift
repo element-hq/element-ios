@@ -18,17 +18,29 @@ import RiotSwiftUI
 import XCTest
 
 class UserOtherSessionsUITests: MockScreenTestCase {
-    
     func test_whenOtherSessionsWithInactiveSessionFilterPresented_correctHeaderDisplayed() {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.inactiveSessions.title)
 
         XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle].exists)
-        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo].exists) 
+        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo].exists)
     }
     
     func test_whenOtherSessionsWithInactiveSessionFilterPresented_correctItemsDisplayed() {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.inactiveSessions.title)
 
         XCTAssertTrue(app.buttons["RiotSwiftUI Mobile: iOS, Inactive for 90+ days"].exists)
+    }
+    
+    func test_whenOtherSessionsWithUnverifiedSessionFilterPresented_correctHeaderDisplayed() {
+        app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.unverifiedSessions.title)
+ 
+        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewSecurityRecommendationsUnverifiedTitle].exists)
+        XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle].exists)
+    }
+    
+    func test_whenOtherSessionsWithUnverifiedSessionFilterPresented_correctItemsDisplayed() {
+        app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.unverifiedSessions.title)
+ 
+        XCTAssertTrue(app.buttons["RiotSwiftUI Mobile: iOS, Unverified · Your current session"].exists)
     }
 }

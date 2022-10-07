@@ -20,7 +20,6 @@ import XCTest
 @testable import RiotSwiftUI
 
 class UserSessionOverviewViewModelTests: XCTestCase {
-
     func test_whenVerifyCurrentSessionProcessed_completionWithVerifyCurrentSessionCalled() {
         let sut = UserSessionOverviewViewModel(sessionInfo: createUserSessionInfo(), service: MockUserSessionOverviewService())
         

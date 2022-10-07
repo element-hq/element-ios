@@ -24,6 +24,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     private let dataProvider: UserSessionsDataProviderProtocol
     
     private(set) var overviewData: UserSessionsOverviewData
+    private(set) var sessionInfos: [UserSessionInfo]
     
     init(dataProvider: UserSessionsDataProviderProtocol) {
         self.dataProvider = dataProvider
@@ -31,8 +32,9 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         overviewData = UserSessionsOverviewData(currentSession: nil,
                                                 unverifiedSessions: [],
                                                 inactiveSessions: [],
-                                                otherSessions: [])
-        
+                                                otherSessions: [],
+                                                linkDeviceEnabled: false)
+        sessionInfos = []
         setupInitialOverviewData()
     }
     
@@ -42,8 +44,13 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         dataProvider.devices { response in
             switch response {
             case .success(let devices):
-                self.overviewData = self.sessionsOverviewData(from: devices)
-                completion(.success(self.overviewData))
+                self.sessionInfos = self.sortedSessionInfos(from: devices)
+                Task { @MainActor in
+                    let linkDeviceEnabled = try? await self.dataProvider.qrLoginAvailable()
+                    self.overviewData = self.sessionsOverviewData(from: self.sessionInfos,
+                                                                  linkDeviceEnabled: linkDeviceEnabled ?? false)
+                    completion(.success(self.overviewData))
+                }
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -57,7 +64,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         
         return overviewData.otherSessions.first(where: { $0.id == sessionId })
     }
-    
+
     // MARK: - Private
     
     private func setupInitialOverviewData() {
@@ -68,7 +75,8 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         overviewData = UserSessionsOverviewData(currentSession: currentSessionInfo,
                                                 unverifiedSessions: currentSessionInfo.isVerified ? [] : [currentSessionInfo],
                                                 inactiveSessions: currentSessionInfo.isActive ? [] : [currentSessionInfo],
-                                                otherSessions: [])
+                                                otherSessions: [],
+                                                linkDeviceEnabled: false)
     }
     
     private func getCurrentSessionInfo() -> UserSessionInfo? {
@@ -78,16 +86,20 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         }
         return sessionInfo(from: device, isCurrentSession: true)
     }
-
-    private func sessionsOverviewData(from devices: [MXDevice]) -> UserSessionsOverviewData {
-        let allSessions = devices
+    
+    private func sortedSessionInfos(from devices: [MXDevice]) -> [UserSessionInfo] {
+        devices
             .sorted { $0.lastSeenTs > $1.lastSeenTs }
             .map { sessionInfo(from: $0, isCurrentSession: $0.deviceId == dataProvider.myDeviceId) }
-        
-        return UserSessionsOverviewData(currentSession: allSessions.filter(\.isCurrent).first,
-                                        unverifiedSessions: allSessions.filter { !$0.isVerified },
-                                        inactiveSessions: allSessions.filter { !$0.isActive },
-                                        otherSessions: allSessions.filter { !$0.isCurrent })
+    }
+    
+    private func sessionsOverviewData(from allSessions: [UserSessionInfo],
+                                      linkDeviceEnabled: Bool) -> UserSessionsOverviewData {
+        UserSessionsOverviewData(currentSession: allSessions.filter(\.isCurrent).first,
+                                 unverifiedSessions: allSessions.filter { !$0.isVerified },
+                                 inactiveSessions: allSessions.filter { !$0.isActive },
+                                 otherSessions: allSessions.filter { !$0.isCurrent },
+                                 linkDeviceEnabled: linkDeviceEnabled)
     }
     
     private func sessionInfo(from device: MXDevice, isCurrentSession: Bool) -> UserSessionInfo {

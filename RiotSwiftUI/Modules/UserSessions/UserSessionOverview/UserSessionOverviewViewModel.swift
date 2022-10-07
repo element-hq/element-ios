@@ -67,7 +67,7 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
         case .viewSessionDetails:
             completion?(.showSessionDetails(sessionInfo: sessionInfo))
         case .togglePushNotifications:
-            self.state.showLoadingIndicator = true
+            state.showLoadingIndicator = true
             service.togglePushNotifications()
         case .renameSession:
             completion?(.renameSession(sessionInfo))

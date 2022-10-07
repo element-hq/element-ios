@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct UserOtherSessions: View {
-    
     @Environment(\.theme) private var theme
     
     @ObservedObject var viewModel: UserOtherSessionsViewModel.Context
@@ -57,7 +56,6 @@ struct UserOtherSessions: View {
 // MARK: - Previews
 
 struct UserOtherSessions_Previews: PreviewProvider {
-    
     static let stateRenderer = MockUserOtherSessionsScreenState.stateRenderer
     
     static var previews: some View {

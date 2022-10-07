@@ -25,16 +25,15 @@ enum OtherUserSessionsFilter {
 }
 
 class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessionsViewModelProtocol {
-    
     var completion: ((UserOtherSessionsViewModelResult) -> Void)?
-    private let sessionsInfo: [UserSessionInfo]
+    private let sessionInfos: [UserSessionInfo]
     
-    init(sessionsInfo: [UserSessionInfo],
+    init(sessionInfos: [UserSessionInfo],
          filter: OtherUserSessionsFilter,
          title: String) {
-        self.sessionsInfo = sessionsInfo
+        self.sessionInfos = sessionInfos
         super.init(initialViewState: UserOtherSessionsViewState(title: title, sections: []))
-        updateViewState(sessionsInfo: sessionsInfo, filter: filter)
+        updateViewState(sessionInfos: sessionInfos, filter: filter)
     }
     
     // MARK: - Public
@@ -42,7 +41,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     override func process(viewAction: UserOtherSessionsViewAction) {
         switch viewAction {
         case let .userOtherSessionSelected(sessionId: sessionId):
-            guard let session = sessionsInfo.first(where: {$0.id == sessionId}) else {
+            guard let session = sessionInfos.first(where: { $0.id == sessionId }) else {
                 assertionFailure("Session should exist in the array.")
                 return
             }
@@ -52,20 +51,28 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     
     // MARK: - Private
     
-    private func updateViewState(sessionsInfo: [UserSessionInfo], filter: OtherUserSessionsFilter) {
-        let sectionItems = filterSessions(sessionsInfo: sessionsInfo, by: filter).asViewData()
+    private func updateViewState(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter) {
+        let sectionItems = createSectionItems(sessionInfos: sessionInfos, filter: filter)
         let sectionHeader = createHeaderData(filter: filter)
         state.sections = [.sessionItems(header: sectionHeader, items: sectionItems)]
     }
     
-    private func filterSessions(sessionsInfo: [UserSessionInfo], by filter: OtherUserSessionsFilter) -> [UserSessionInfo] {
+    private func createSectionItems(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter) -> [UserSessionListItemViewData] {
+        filterSessions(sessionInfos: sessionInfos, by: filter)
+            .map {
+                UserSessionListItemViewDataFactory().create(from: $0,
+                                                            highlightSessionDetails: filter == .unverified && $0.isCurrent)
+            }
+    }
+    
+    private func filterSessions(sessionInfos: [UserSessionInfo], by filter: OtherUserSessionsFilter) -> [UserSessionInfo] {
         switch filter {
         case .all:
-            return sessionsInfo.filter { !$0.isCurrent }
+            return sessionInfos.filter { !$0.isCurrent }
         case .inactive:
-            return sessionsInfo.filter { !$0.isActive }
+            return sessionInfos.filter { !$0.isActive }
         case .unverified:
-            return sessionsInfo.filter { !$0.isVerified }
+            return sessionInfos.filter { !$0.isVerified }
         }
     }
     
@@ -81,11 +88,9 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                                                    subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
                                                    iconName: Asset.Images.userOtherSessionsInactive.name)
         case .unverified:
-            // TODO:
-            return UserOtherSessionsHeaderViewData(title: nil,
-                                                   subtitle: "",
-                                                   iconName: nil)
+            return UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsUnverifiedTitle,
+                                                   subtitle: VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle,
+                                                   iconName: Asset.Images.userOtherSessionsUnverified.name)
         }
     }
 }
-

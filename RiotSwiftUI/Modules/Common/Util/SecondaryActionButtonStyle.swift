@@ -19,15 +19,18 @@ import SwiftUI
 struct SecondaryActionButtonStyle: ButtonStyle {
     @Environment(\.theme) private var theme
     @Environment(\.isEnabled) private var isEnabled
-    
+
+    /// `theme.colors.accent` by default
     var customColor: Color?
+    /// `theme.fonts.body` by default
+    var font: Font?
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .padding(12.0)
             .frame(maxWidth: .infinity)
             .foregroundColor(customColor ?? theme.colors.accent)
-            .font(theme.fonts.body)
+            .font(font ?? theme.fonts.body)
             .background(RoundedRectangle(cornerRadius: 8)
                 .strokeBorder()
                 .foregroundColor(customColor ?? theme.colors.accent))

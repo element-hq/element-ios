@@ -156,6 +156,7 @@
 "authentication_login_username" = "Username / Email / Phone";
 "authentication_login_forgot_password" = "Forgot password";
 "authentication_server_info_title_login" = "Where your conversations live";
+"authentication_login_with_qr" = "Sign in with QR code";
 
 "authentication_server_selection_login_title" = "Connect to homeserver";
 "authentication_server_selection_login_message" = "What is the address of your server?";
@@ -210,6 +211,37 @@
 "authentication_terms_policy_url_error" = "Unable to find the selected policy. Please try again later.";
 
 "authentication_recaptcha_title" = "Are you a human?";
+
+"authentication_qr_login_start_title" = "Scan QR code";
+"authentication_qr_login_start_subtitle" = "Use the camera on this device to scan the QR code shown on your other device:";
+"authentication_qr_login_start_step1" = "Open Element on your other device";
+"authentication_qr_login_start_step2" = "Go to Settings -> Security & Privacy";
+"authentication_qr_login_start_step3" = "Select ‘Link a device’";
+"authentication_qr_login_start_step4" = "Select ‘Show QR code on this device’";
+"authentication_qr_login_start_need_alternative" = "Need an alternative method?";
+"authentication_qr_login_start_display_qr" = "Show QR code on this device";
+
+"authentication_qr_login_display_title" = "Link a device";
+"authentication_qr_login_display_subtitle" = "Scan the QR code below with your device that’s signed out.";
+"authentication_qr_login_display_step1" = "Open Element on your other device";
+"authentication_qr_login_display_step2" = "Select ‘Sign in with QR code’";
+
+"authentication_qr_login_scan_title" = "Scan QR code";
+"authentication_qr_login_scan_subtitle" = "Position the QR code in the square below";
+
+"authentication_qr_login_confirm_title" = "Secure connection established";
+"authentication_qr_login_confirm_subtitle" = "Confirm that the code below matches with your other device:";
+"authentication_qr_login_confirm_alert" = "Please ensure that you know the origin of this code. By linking devices, you will provide someone with full access to your account.";
+
+"authentication_qr_login_loading_connecting_device" = "Connecting to device";
+"authentication_qr_login_loading_waiting_signin" = "Waiting for device to sign in.";
+"authentication_qr_login_loading_signed_in" = "You are now signed in on your other device.";
+
+"authentication_qr_login_failure_title" = "Linking failed";
+"authentication_qr_login_failure_invalid_qr" = "QR code is invalid.";
+"authentication_qr_login_failure_request_denied" = "The request was denied on the other device.";
+"authentication_qr_login_failure_request_timed_out" = "The linking wasn’t completed in the required time.";
+"authentication_qr_login_failure_retry" = "Try again";
 
 // MARK: Password Validation
 "password_validation_info_header" = "Your password should meet the criteria below:";
@@ -2375,6 +2407,7 @@ To enable access, tap Settings> Location and select Always";
 "user_sessions_overview_other_sessions_section_info" = "For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.";
 
 "user_sessions_overview_current_session_section_title" = "Current session";
+"user_sessions_overview_link_device" = "Link a device";
 
 "user_sessions_view_all_action" = "View all (%d)";
 
@@ -2393,6 +2426,8 @@ To enable access, tap Settings> Location and select Always";
 "user_session_push_notifications_message" = "When turned on, this session will receive push notifications.";
 
 "user_other_session_security_recommendation_title" = "Security recommendation";
+"user_other_session_unverified_sessions_header_subtitle" = "Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.";
+"user_other_session_unverified_current_session_details" =  "%@ · Your current session";
 
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";

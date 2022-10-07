@@ -48,6 +48,10 @@ protocol AuthenticationRestClient: AnyObject {
     func forgetPassword(for email: String, clientSecret: String, sendAttempt: UInt) async throws -> String
     func resetPassword(parameters: CheckResetPasswordParameters) async throws
     func resetPassword(parameters: [String: Any]) async throws
+
+    // MARK: Versions
+
+    func supportedMatrixVersions() async throws -> MXMatrixVersions
 }
 
 extension MXRestClient: AuthenticationRestClient { }
