@@ -2494,8 +2494,6 @@
 "spaces_creation_new_rooms_message" = "Wir werden für jedes Thema einen Raum erstellen.";
 "create_room_section_footer_type_public" = "Sichtbar und betretbar für alle eingeladenen Personen, nicht nur jene, die sich im Space befinden.";
 
-// First item is client name and second item is session display name
-"user_session_name" = "%@: %@";
 "existing" = "Bestehend";
 "device_name_web" = "%@ Web";
 "spaces_subspace_creation_visibility_title" = "Welche Art von Subspace möchtest du erstellen?";

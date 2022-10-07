@@ -2394,9 +2394,6 @@ To enable access, tap Settings> Location and select Always";
 
 "user_other_session_security_recommendation_title" = "Security recommendation";
 
-// First item is client name and second item is session display name
-"user_session_name" = "%@: %@";
-
 "user_session_item_details" = "%@ · Last activity %@";
 "user_inactive_session_item" = "Inactive for 90+ days";
 "user_inactive_session_item_with_date" = "Inactive for 90+ days (%@)";
