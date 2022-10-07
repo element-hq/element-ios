@@ -19,15 +19,7 @@ struct UserSessionName: View {
                 Text(VectorL10n.manageSessionName)
                     .foregroundColor(theme.colors.secondaryContent)
             } footer: {
-                VStack(alignment: .leading, spacing: 16) {
-                    Text(VectorL10n.manageSessionNameHint)
-                        .foregroundColor(theme.colors.secondaryContent)
-                    
-                    InlineTextButton(VectorL10n.manageSessionNameInfo("%@"), tappableText: VectorL10n.manageSessionNameInfoLink) {
-                        viewModel.send(viewAction: .learnMore)
-                    }
-                    .foregroundColor(theme.colors.secondaryContent)
-                }
+                textFieldFooter
             }
         }
         .background(theme.colors.system.ignoresSafeArea())
@@ -36,21 +28,37 @@ struct UserSessionName: View {
         .listBackgroundColor(theme.colors.system)
         .navigationTitle(VectorL10n.manageSessionRename)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button(VectorL10n.cancel) {
-                    viewModel.send(viewAction: .cancel)
-                }
-            }
+        .toolbar { toolbar }
+        .accentColor(theme.colors.accent)
+    }
+    
+    private var textFieldFooter: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text(VectorL10n.manageSessionNameHint)
+                .foregroundColor(theme.colors.secondaryContent)
             
-            ToolbarItem(placement: .confirmationAction) {
-                Button(VectorL10n.done) {
-                    viewModel.send(viewAction: .save)
-                }
-                .disabled(!viewModel.viewState.canUpdateName)
+            InlineTextButton(VectorL10n.manageSessionNameInfo("%@"),
+                             tappableText: VectorL10n.manageSessionNameInfoLink) {
+                viewModel.send(viewAction: .learnMore)
+            }
+            .foregroundColor(theme.colors.secondaryContent)
+        }
+    }
+    
+    @ToolbarContentBuilder
+    private var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .cancellationAction) {
+            Button(VectorL10n.cancel) {
+                viewModel.send(viewAction: .cancel)
             }
         }
-        .accentColor(theme.colors.accent)
+        
+        ToolbarItem(placement: .confirmationAction) {
+            Button(VectorL10n.done) {
+                viewModel.send(viewAction: .done)
+            }
+            .disabled(!viewModel.viewState.canUpdateName)
+        }
     }
 }
 

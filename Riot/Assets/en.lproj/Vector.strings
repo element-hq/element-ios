@@ -927,6 +927,7 @@ Tap the + to start adding people.";
 "manage_session_info" = "SESSION INFO";
 "manage_session_name" = "Session name";
 "manage_session_name_hint" = "Custom session names can help you recognize your devices more easily.";
+/* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Please be aware that session names are also visible to people you communicate with. %@";
 "manage_session_name_info_link" = "Learn more";
 "manage_session_trusted" = "Trusted by you";

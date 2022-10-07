@@ -139,7 +139,10 @@ struct UserSessionsOverview: View {
         } label: {
             Image(systemName: "ellipsis")
                 .foregroundColor(theme.colors.secondaryContent)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 12)
         }
+        .offset(x: 8) // Re-align the symbol after applying padding.
     }
     
     private var otherSessionsSection: some View {

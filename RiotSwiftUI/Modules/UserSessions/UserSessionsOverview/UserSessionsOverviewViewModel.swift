@@ -26,7 +26,6 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
     init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol) {
         self.userSessionsOverviewService = userSessionsOverviewService
         
-        
         super.init(initialViewState: .init())
         
         userSessionsOverviewService.overviewDataPublisher.sink { [weak self] overviewData in
@@ -98,19 +97,15 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         state.showLoadingIndicator = true
         
         userSessionsOverviewService.updateOverviewData { [weak self] result in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
             
             self.state.showLoadingIndicator = false
             
-            switch result {
-            case .success(let overViewData):
-                self.updateViewState(with: overViewData)
-            case .failure(let error):
+            if case let .failure(error) = result {
                 // TODO:
-                break
             }
+            
+            // No need to consume .success as there's a subscription on the data.
         }
     }
     

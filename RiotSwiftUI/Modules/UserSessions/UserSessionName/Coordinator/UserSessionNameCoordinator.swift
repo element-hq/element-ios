@@ -66,6 +66,7 @@ final class UserSessionNameCoordinator: Coordinator, Presentable {
     
     // MARK: - Private
     
+    /// Updates the name of the device, completing the screen's presentation if successful.
     private func updateName(_ newName: String) {
         startLoading()
         parameters.session.matrixRestClient.setDeviceName(newName, forDevice: parameters.sessionInfo.id) { [weak self] response in
@@ -79,7 +80,6 @@ final class UserSessionNameCoordinator: Coordinator, Presentable {
             
             self.stopLoading()
             self.completion?(.sessionNameUpdated)
-            #warning("What happens to the name on the presenting screen?")
         }
     }
     

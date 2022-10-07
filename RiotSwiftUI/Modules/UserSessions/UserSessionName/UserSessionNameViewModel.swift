@@ -30,7 +30,7 @@ class UserSessionNameViewModel: UserSessionNameViewModelType, UserSessionNameVie
 
     override func process(viewAction: UserSessionNameViewAction) {
         switch viewAction {
-        case .save:
+        case .done:
             completion?(.updateName(state.bindings.sessionName))
         case .cancel:
             completion?(.cancel)

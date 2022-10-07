@@ -42,4 +42,6 @@ extension UserSessionsOverviewServiceProtocol {
     var inactiveSessions: [UserSessionInfo] { overviewDataPublisher.value.inactiveSessions }
     /// Any sessions that are verified and have been seen recently.
     var otherSessions: [UserSessionInfo] { overviewDataPublisher.value.otherSessions }
+    /// Whether it is possible to link a new device via a QR code.
+    var linkDeviceEnabled: Bool { overviewDataPublisher.value.linkDeviceEnabled }
 }

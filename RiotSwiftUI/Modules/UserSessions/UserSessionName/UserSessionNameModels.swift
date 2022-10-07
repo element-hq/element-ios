@@ -19,25 +19,29 @@ import Foundation
 // MARK: - Coordinator
 
 enum UserSessionNameCoordinatorResult {
+    /// The user cancelled the rename operation.
     case cancel
+    /// The user successfully updated the name of the session.
     case sessionNameUpdated
 }
 
 // MARK: View model
 
 enum UserSessionNameViewModelResult {
-    case updateName(String)
+    /// The user cancelled the rename operation.
     case cancel
+    /// Update the session name to the supplied string.
+    case updateName(String)
 }
 
 // MARK: View
 
 struct UserSessionNameViewState: BindableState {
     var bindings: UserSessionNameBindings
-    /// The current name of the session.
+    /// The current name of the session before any updates are made.
     let currentName: String
     
-    /// Whether or not it is possible to update the session with the entered name.
+    /// Whether or not to allow the user to update the session name.
     var canUpdateName: Bool {
         !bindings.sessionName.isEmpty && bindings.sessionName != currentName
     }
@@ -51,7 +55,10 @@ struct UserSessionNameBindings {
 }
 
 enum UserSessionNameViewAction {
-    case save
+    /// The user tapped the done button to update the session name.
+    case done
+    /// The user tapped the cancel button.
     case cancel
+    /// The user tapped the Learn More link.
     case learnMore
 }

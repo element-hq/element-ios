@@ -46,19 +46,19 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         
         switch mode {
         case .noOtherSessions:
-            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: currentSession,
+            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: mockCurrentSession,
                                                                 unverifiedSessions: [],
                                                                 inactiveSessions: [],
                                                                 otherSessions: [],
                                                                 linkDeviceEnabled: false))
         case .onlyUnverifiedSessions:
-            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: currentSession,
-                                                                unverifiedSessions: unverifiedSessions + [currentSession],
+            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: mockCurrentSession,
+                                                                unverifiedSessions: unverifiedSessions + [mockCurrentSession],
                                                                 inactiveSessions: [],
                                                                 otherSessions: unverifiedSessions,
                                                                 linkDeviceEnabled: false))
         case .onlyInactiveSessions:
-            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: currentSession,
+            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: mockCurrentSession,
                                                                 unverifiedSessions: [],
                                                                 inactiveSessions: inactiveSessions,
                                                                 otherSessions: inactiveSessions,
@@ -66,11 +66,11 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         default:
             let otherSessions = unverifiedSessions + inactiveSessions + buildSessions(verified: true, active: true)
             
-            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: currentSession,
+            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: mockCurrentSession,
                                                                 unverifiedSessions: unverifiedSessions,
                                                                 inactiveSessions: inactiveSessions,
                                                                 otherSessions: otherSessions,
-                                                                linkDeviceEnabled: false))
+                                                                linkDeviceEnabled: true))
         }
         
         completion(.success(overviewDataPublisher.value))
@@ -80,9 +80,9 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         otherSessions.first { $0.id == sessionId }
     }
     
-    // MARK: - Private
+    // MARK: - Private∂
     
-    private var currentSession: UserSessionInfo {
+    private var mockCurrentSession: UserSessionInfo {
         UserSessionInfo(id: "alice",
                         name: "iOS",
                         deviceType: .mobile,
