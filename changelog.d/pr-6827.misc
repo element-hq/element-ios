@@ -1,0 +1,1 @@
+Expose AuthenticationRestClient async login token generation method

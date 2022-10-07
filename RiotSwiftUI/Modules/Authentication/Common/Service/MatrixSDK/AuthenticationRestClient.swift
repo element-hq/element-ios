@@ -34,6 +34,8 @@ protocol AuthenticationRestClient: AnyObject {
     func login(parameters: LoginParameters) async throws -> MXCredentials
     func login(parameters: [String: Any]) async throws -> MXCredentials
     
+    func generateLoginToken() async throws -> MXLoginToken
+    
     // MARK: Registration
 
     var registerFallbackURL: URL { get }
