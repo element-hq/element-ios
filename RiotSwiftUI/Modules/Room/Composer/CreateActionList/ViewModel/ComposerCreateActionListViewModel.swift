@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-typealias ComposerCreateActionListViewModelType = StateStoreViewModel<ComposerCreateActionListViewState,
-                                                                  Never,
-                                                                  ComposerCreateActionListViewAction>
+typealias ComposerCreateActionListViewModelType = StateStoreViewModel<ComposerCreateActionListViewState, ComposerCreateActionListViewAction>
 
 class ComposerCreateActionListViewModel: ComposerCreateActionListViewModelType, ComposerCreateActionListViewModelProtocol {
 

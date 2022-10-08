@@ -1154,8 +1154,20 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 + (Class) mainToolbarClass
 {
-    return WysiwygInputToolbarView.class;
-//    return RoomInputToolbarView.class;
+    if (@available(iOS 15.0, *)) {
+        if (RiotSettings.shared.enableWysiwygComposer)
+        {
+            return WysiwygInputToolbarView.class;
+        }
+        else
+        {
+            return RoomInputToolbarView.class;
+        }
+    }
+    else
+    {
+        return RoomInputToolbarView.class;
+    }
 }
 
 // Set the input toolbar according to the current display

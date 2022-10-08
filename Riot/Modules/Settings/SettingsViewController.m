@@ -174,7 +174,8 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS,
     LABS_ENABLE_LIVE_LOCATION_SHARING,
     LABS_ENABLE_NEW_SESSION_MANAGER,
-    LABS_ENABLE_NEW_CLIENT_INFO_FEATURE
+    LABS_ENABLE_NEW_CLIENT_INFO_FEATURE,
+    LABS_ENABLE_WYSIWYG_COMPOSER
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -599,6 +600,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
         [sectionLabs addRowWithTag:LABS_ENABLE_NEW_SESSION_MANAGER];
         [sectionLabs addRowWithTag:LABS_ENABLE_NEW_CLIENT_INFO_FEATURE];
+        [sectionLabs addRowWithTag:LABS_ENABLE_WYSIWYG_COMPOSER];
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
@@ -2560,6 +2562,18 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
+        else if (row == LABS_ENABLE_WYSIWYG_COMPOSER)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnableWysiwygComposer];
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableWysiwygComposer;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableWysiwygComposerFeature:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SECTION_TAG_SECURITY)
     {
@@ -3320,6 +3334,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     BOOL isEnabled = sender.isOn;
     RiotSettings.shared.enableClientInformationFeature = isEnabled;
     MXSDKOptions.sharedInstance.enableNewClientInformationFeature = isEnabled;
+}
+
+- (void)toggleEnableWysiwygComposerFeature:(UISwitch *)sender
+{
+    RiotSettings.shared.enableWysiwygComposer = sender.isOn;
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender

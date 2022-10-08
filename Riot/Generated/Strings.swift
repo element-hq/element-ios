@@ -7523,6 +7523,10 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableThreads: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
   }
+  /// Use a rich text editor to send formatted messages
+  public static var settingsLabsEnableWysiwygComposer: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_wysiwyg_composer") 
+  }
   /// Polls
   public static var settingsLabsEnabledPolls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enabled_polls") 
@@ -9074,6 +9078,34 @@ public class VectorL10n: NSObject {
   /// Add some now?
   public static var widgetStickerPickerNoStickerpacksAlertAddNow: String { 
     return VectorL10n.tr("Vector", "widget_sticker_picker_no_stickerpacks_alert_add_now") 
+  }
+  /// Attachments
+  public static var wysiwygComposerStartActionAttachments: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_attachments") 
+  }
+  /// Camera
+  public static var wysiwygComposerStartActionCamera: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_camera") 
+  }
+  /// Location
+  public static var wysiwygComposerStartActionLocation: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_location") 
+  }
+  /// Photo Library
+  public static var wysiwygComposerStartActionMediaPicker: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_media_picker") 
+  }
+  /// Polls
+  public static var wysiwygComposerStartActionPolls: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_polls") 
+  }
+  /// Stickers
+  public static var wysiwygComposerStartActionStickers: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_stickers") 
+  }
+  /// Text Formatting
+  public static var wysiwygComposerStartActionTextFormatting: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_text_formatting") 
   }
   /// Yes
   public static var yes: String { 

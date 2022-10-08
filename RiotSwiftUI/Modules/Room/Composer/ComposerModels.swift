@@ -113,17 +113,17 @@ extension ComposerCreateAction {
     var title: String {
         switch self {
         case .photoLibrary:
-            return "Photo Library"
+            return VectorL10n.wysiwygComposerStartActionMediaPicker
         case .stickers:
-            return "Stickers"
+            return VectorL10n.wysiwygComposerStartActionStickers
         case .attachments:
-            return "Attachments"
+            return VectorL10n.wysiwygComposerStartActionAttachments
         case .polls:
-            return "Polls"
+            return VectorL10n.wysiwygComposerStartActionPolls
         case .location:
-            return "Location"
+            return VectorL10n.wysiwygComposerStartActionLocation
         case .camera:
-            return "Camera"
+            return VectorL10n.wysiwygComposerStartActionCamera
         }
     }
     

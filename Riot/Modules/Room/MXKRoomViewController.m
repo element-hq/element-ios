@@ -3361,7 +3361,7 @@
 {
     NSLog(@"%@", [NSThread currentThread]);
 
-    
+    // This dispatch fixes a simultaneous accesses crash if this gets called twice quickly in succession
     dispatch_async(dispatch_get_main_queue(), ^{
         // Update layout with animation
         [UIView animateWithDuration:self.resizeComposerAnimationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn

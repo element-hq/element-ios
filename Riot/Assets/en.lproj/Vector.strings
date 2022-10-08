@@ -797,6 +797,7 @@ Tap the + to start adding people.";
 "settings_labs_enable_new_session_manager" = "New session manager";
 "settings_labs_enable_new_client_info_feature" = "Record the client name, version, and url to recognise sessions more easily in session manager";
 "settings_labs_enable_new_app_layout" = "New Application Layout";
+"settings_labs_enable_wysiwyg_composer" = "Use a rich text editor to send formatted messages";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -2467,6 +2468,19 @@ To enable access, tap Settings> Location and select Always";
 "user_session_overview_current_session_title" = "Current session";
 "user_session_overview_session_title" = "Session";
 "user_session_overview_session_details_button_title" = "Session details";
+
+
+// Mark: - WYSIWYG Composer
+
+//Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Photo Library";
+"wysiwyg_composer_start_action_stickers" = "Stickers";
+"wysiwyg_composer_start_action_attachments" = "Attachments";
+"wysiwyg_composer_start_action_polls" = "Polls";
+"wysiwyg_composer_start_action_location" = "Location";
+"wysiwyg_composer_start_action_camera" = "Camera";
+"wysiwyg_composer_start_action_text_formatting" = "Text Formatting";
+
 // MARK: - MatrixKit
 
 

@@ -172,6 +172,10 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "enableClientInformationFeature", defaultValue: false, storage: defaults)
     var enableClientInformationFeature
 
+    /// Flag indicating if the wysiwyg composer feature is enabled
+    @UserDefault(key: "enableWysiwygComposer", defaultValue: false, storage: defaults)
+    var enableWysiwygComposer
+
     // MARK: Calls
     
     /// Indicate if `allowStunServerFallback` settings has been set once.
