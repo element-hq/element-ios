@@ -56,6 +56,7 @@ struct Composer: View {
                     select: viewModel.select,
                     didUpdateText: viewModel.didUpdateText
                 )
+                .textColor(theme.colors.primaryContent)
                 .frame(height: viewModel.idealHeight)
                 .padding(.horizontal, 12)
                 .onAppear {
@@ -85,6 +86,8 @@ struct Composer: View {
                     } label: {
                         Image(Asset.Images.startComposeModule.name)
                             .foregroundColor(theme.colors.tertiaryContent)
+                            .padding(11)
+                            .background(Circle().fill(theme.colors.system))
                     }
                     FormattingToolbar(formatItems: formatItems) { type in
                         viewModel.apply(type.action)
@@ -116,6 +119,7 @@ struct Composer: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 4)
+                .animation(.none)
             }
     }
     

@@ -85,6 +85,13 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
                 })
         ]
         
+        update(theme: ThemeService.shared().theme)
+        registerThemeServiceDidChangeThemeNotification()
+    }
+
+    override func customizeRendering() {
+        super.customizeRendering()
+        self.backgroundColor = .clear
     }
     
     func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {
@@ -96,7 +103,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
     }
     
    private func updateToolbarHeight(wysiwygHeight: CGFloat) {
-       heightConstraint.constant = wysiwygHeight
+       self.heightConstraint.constant = wysiwygHeight
        toolbarViewDelegate?.roomInputToolbarView?(self, heightDidChanged: wysiwygHeight, completion: nil)
     }
     
@@ -104,9 +111,20 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
         delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
     }
     
-    
+
     private func showSendMediaActions() {
         delegate?.roomInputToolbarViewShowSendMediaActions?(self)
     }
     
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
+    }
+    
+    private func update(theme: Theme) {
+        hostingViewController.view.backgroundColor = theme.colors.background
+    }
 }

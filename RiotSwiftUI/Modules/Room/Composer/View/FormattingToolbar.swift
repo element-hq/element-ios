@@ -36,7 +36,7 @@ struct FormattingToolbar: View {
                        .foregroundColor(item.active ? theme.colors.accent : theme.colors.tertiaryContent)
                }
                .disabled(item.disabled)
-               .background(item.active ? theme.colors.accent.opacity(0.1) : Color.white) // TODO get correct color for light accent
+               .background(item.active ? theme.colors.accent.opacity(0.1) : theme.colors.background)
                    .cornerRadius(8)
                .accessibilityIdentifier(item.accessibilityIdentifier)
            }
