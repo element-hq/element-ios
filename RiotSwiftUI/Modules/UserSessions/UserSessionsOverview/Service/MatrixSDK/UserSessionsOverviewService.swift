@@ -104,7 +104,8 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     }
     
     private func sessionInfo(from device: MXDevice, isCurrentSession: Bool) -> UserSessionInfo {
-        let isSessionVerified = deviceInfo(for: device.deviceId)?.trustLevel.isVerified ?? false
+        let deviceInfo = deviceInfo(for: device.deviceId)
+        let isSessionVerified = dataProvider.isDeviceVerified(deviceInfo: deviceInfo)
 
         let eventType = kMXAccountDataTypeClientInformation + "." + device.deviceId
         let appData = dataProvider.accountData(for: eventType)

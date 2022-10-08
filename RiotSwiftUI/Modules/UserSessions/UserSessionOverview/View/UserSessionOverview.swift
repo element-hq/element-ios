@@ -24,7 +24,7 @@ struct UserSessionOverview: View {
     var body: some View {
         ScrollView {
             UserSessionCardView(viewData: viewModel.viewState.cardViewData, onVerifyAction: { _ in
-                viewModel.send(viewAction: .verifyCurrentSession)
+                viewModel.send(viewAction: .verifySession)
             },
             onViewDetailsAction: { _ in
                 viewModel.send(viewAction: .viewSessionDetails)

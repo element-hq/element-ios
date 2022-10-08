@@ -70,6 +70,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
+            case .verifyCurrentSession:
+                self.showCompleteSecurity()
             case let .renameSession(sessionInfo):
                 self.showRenameSessionScreen(for: sessionInfo)
             case let .logoutOfSession(sessionInfo):
@@ -102,6 +104,12 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             switch result {
             case let .openSessionDetails(sessionInfo: sessionInfo):
                 self.openSessionDetails(sessionInfo: sessionInfo)
+            case let .verifySession(sessionInfo):
+                if sessionInfo.isCurrent {
+                    self.showCompleteSecurity()
+                } else {
+                    self.showVerification(for: sessionInfo)
+                }
             case let .renameSession(sessionInfo):
                 self.showRenameSessionScreen(for: sessionInfo)
             case let .logoutOfSession(sessionInfo):
@@ -249,6 +257,28 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         navigationRouter.present(modalRouter, animated: true)
     }
     
+    private func showCompleteSecurity() {
+        AppDelegate.theDelegate().presentCompleteSecurity(for: self.parameters.session)
+        #warning("Need a way to listen for success!")
+    }
+            
+    private func showVerification(for sessionInfo: UserSessionInfo) {
+        guard parameters.session.crypto?.crossSigning?.canCrossSign == true else {
+            #warning("Show a prompt here instead.")
+            showCompleteSecurity()
+            return
+        }
+        let coordinator = UserVerificationCoordinator(presenter: toPresentable(),
+                                                      session: parameters.session,
+                                                      userId: parameters.session.myUserId,
+                                                      userDisplayName: nil,
+                                                      deviceId: sessionInfo.id)
+        coordinator.delegate = self
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+    }
+    
     /// Pops back to the root coordinator in the session management flow.
     private func popToSessionsOverview() {
         guard let sessionsOverviewCoordinator = sessionsOverviewCoordinator else { return }
@@ -292,5 +322,29 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     
     func toPresentable() -> UIViewController {
         navigationRouter.toPresentable()
+    }
+}
+
+extension UserSessionsFlowCoordinator: CrossSigningSetupCoordinatorDelegate {
+    func crossSigningSetupCoordinatorDidComplete(_ coordinator: CrossSigningSetupCoordinatorType) {
+        allSessionsService.updateOverviewData { _ in }
+        remove(childCoordinator: coordinator)
+    }
+    
+    func crossSigningSetupCoordinatorDidCancel(_ coordinator: CrossSigningSetupCoordinatorType) {
+        remove(childCoordinator: coordinator)
+    }
+    
+    func crossSigningSetupCoordinator(_ coordinator: CrossSigningSetupCoordinatorType, didFailWithError error: Error) {
+        remove(childCoordinator: coordinator)
+        errorPresenter.presentError(from: toPresentable(), forError: error, animated: true, handler: { })
+    }
+}
+
+// MARK: UserVerificationCoordinatorDelegate
+extension UserSessionsFlowCoordinator: UserVerificationCoordinatorDelegate {
+    func userVerificationCoordinatorDidComplete(_ coordinator: UserVerificationCoordinatorType) {
+        allSessionsService.updateOverviewData { _ in }
+        remove(childCoordinator: coordinator)
     }
 }
