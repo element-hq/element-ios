@@ -31,7 +31,7 @@ enum MockLiveLocationLabPromotionScreenState: MockScreenState, CaseIterable {
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let viewModel = LiveLocationLabPromotionViewModel()
         
         // can simulate service and viewModel actions here if needs be.
@@ -39,6 +39,7 @@ enum MockLiveLocationLabPromotionScreenState: MockScreenState, CaseIterable {
         return (
             [self, viewModel],
             AnyView(LiveLocationLabPromotionView(viewModel: viewModel.context)
-        ))
+            )
+        )
     }
 }

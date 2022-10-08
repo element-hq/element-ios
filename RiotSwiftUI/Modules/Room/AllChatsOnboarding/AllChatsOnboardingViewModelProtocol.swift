@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 protocol AllChatsOnboardingViewModelProtocol {
-    
     var completion: ((AllChatsOnboardingViewModelResult) -> Void)? { get set }
     static func makeAllChatsOnboardingViewModel() -> AllChatsOnboardingViewModelProtocol
     var context: AllChatsOnboardingViewModelType.Context { get }

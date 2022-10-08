@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationLoginScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -51,8 +50,12 @@ struct AuthenticationLoginScreen: View {
                 if viewModel.viewState.homeserver.showLoginForm {
                     loginForm
                 }
+
+                if viewModel.viewState.homeserver.showQRLogin {
+                    qrLoginButton
+                }
                 
-                if viewModel.viewState.homeserver.showLoginForm && viewModel.viewState.showSSOButtons {
+                if viewModel.viewState.homeserver.showLoginForm, viewModel.viewState.showSSOButtons {
                     Text(VectorL10n.or)
                         .foregroundColor(theme.colors.secondaryContent)
                         .padding(.top, 16)
@@ -63,10 +66,9 @@ struct AuthenticationLoginScreen: View {
                         .padding(.top, 16)
                 }
 
-                if !viewModel.viewState.homeserver.showLoginForm && !viewModel.viewState.showSSOButtons {
+                if !viewModel.viewState.homeserver.showLoginForm, !viewModel.viewState.showSSOButtons {
                     fallbackButton
                 }
-                
             }
             .readableFrame()
             .padding(.horizontal, 16)
@@ -104,8 +106,8 @@ struct AuthenticationLoginScreen: View {
                                                                               autocorrectionType: .no),
                                    onEditingChanged: usernameEditingChanged,
                                    onCommit: { isPasswordFocused = true })
-            .accessibilityIdentifier("usernameTextField")
-            .padding(.bottom, 7)
+                .accessibilityIdentifier("usernameTextField")
+                .padding(.bottom, 7)
             
             RoundedBorderTextField(placeHolder: VectorL10n.authPasswordPlaceholder,
                                    text: $viewModel.password,
@@ -114,7 +116,7 @@ struct AuthenticationLoginScreen: View {
                                                                               isSecureTextEntry: true),
                                    onEditingChanged: passwordEditingChanged,
                                    onCommit: submit)
-            .accessibilityIdentifier("passwordTextField")
+                .accessibilityIdentifier("passwordTextField")
             
             Button { viewModel.send(viewAction: .forgotPassword) } label: {
                 Text(VectorL10n.authenticationLoginForgotPassword)
@@ -130,6 +132,16 @@ struct AuthenticationLoginScreen: View {
             .disabled(!viewModel.viewState.canSubmit)
             .accessibilityIdentifier("nextButton")
         }
+    }
+
+    /// A QR login button that can be used for login.
+    var qrLoginButton: some View {
+        Button(action: qrLogin) {
+            Text(VectorL10n.authenticationLoginWithQr)
+        }
+        .buttonStyle(SecondaryActionButtonStyle(font: theme.fonts.bodySB))
+        .padding(.vertical)
+        .accessibilityIdentifier("qrLoginButton")
     }
     
     /// A list of SSO buttons that can be used for login.
@@ -175,6 +187,11 @@ struct AuthenticationLoginScreen: View {
     /// Sends the `fallback` view action.
     func fallback() {
         viewModel.send(viewAction: .fallback)
+    }
+
+    /// Sends the `qrLogin` view action.
+    func qrLogin() {
+        viewModel.send(viewAction: .qrLogin)
     }
 }
 

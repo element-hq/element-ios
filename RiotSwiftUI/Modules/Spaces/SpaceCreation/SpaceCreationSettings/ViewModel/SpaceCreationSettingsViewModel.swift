@@ -16,15 +16,12 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
-typealias SpaceCreationSettingsViewModelType = StateStoreViewModel<SpaceCreationSettingsViewState,
-                                                              SpaceCreationSettingsStateAction,
-                                                              SpaceCreationSettingsViewAction>
+typealias SpaceCreationSettingsViewModelType = StateStoreViewModel<SpaceCreationSettingsViewState, SpaceCreationSettingsViewAction>
 
 class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceCreationSettingsViewModelProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -47,27 +44,35 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
     }
     
     private func setupServiceObserving() {
-        let defaultAddressUpdatePublisher = spaceCreationSettingsService.defaultAddressSubject
-            .map(SpaceCreationSettingsStateAction.updateRoomDefaultAddress)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: defaultAddressUpdatePublisher)
+        spaceCreationSettingsService
+            .defaultAddressSubject
+            .sink(receiveValue: { [weak self] address in
+                self?.state.defaultAddress = address
+            })
+            .store(in: &cancellables)
         
-        let addressValidationUpdatePublisher = spaceCreationSettingsService.addressValidationSubject
-            .map(SpaceCreationSettingsStateAction.updateAddressValidationStatus)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: addressValidationUpdatePublisher)
+        spaceCreationSettingsService
+            .addressValidationSubject
+            .sink(receiveValue: { [weak self] status in
+                self?.state.addressMessage = status.message
+                self?.state.isAddressValid = status.isValid
+            })
+            .store(in: &cancellables)
         
-        let avatarUpdatePublisher = spaceCreationSettingsService.avatarViewDataSubject
-            .map(SpaceCreationSettingsStateAction.updateAvatar)
-            .eraseToAnyPublisher()
-        dispatch(actionPublisher: avatarUpdatePublisher)
+        spaceCreationSettingsService
+            .avatarViewDataSubject
+            .sink(receiveValue: { [weak self] avatar in
+                self?.state.avatar = avatar
+            })
+            .store(in: &cancellables)
     }
 
     private static func defaultState(creationParameters: SpaceCreationParameters, validationStatus: SpaceCreationSettingsAddressValidationStatus) -> SpaceCreationSettingsViewState {
         let bindings = SpaceCreationSettingsViewModelBindings(
             roomName: creationParameters.name ?? "",
             topic: creationParameters.topic ?? "",
-            address: creationParameters.userDefinedAddress ?? "")
+            address: creationParameters.userDefinedAddress ?? ""
+        )
         
         return SpaceCreationSettingsViewState(
             title: creationParameters.isPublic ? VectorL10n.spacesCreationPublicSpaceTitle : VectorL10n.spacesCreationPrivateSpaceTitle,
@@ -78,14 +83,15 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
             isAddressValid: validationStatus.isValid,
             avatar: AvatarInput(mxContentUri: nil, matrixItemId: "", displayName: nil),
             avatarImage: creationParameters.userSelectedAvatar,
-            bindings: bindings)
+            bindings: bindings
+        )
     }
     
     // MARK: - Public
     
     func updateAvatarImage(with image: UIImage?) {
         creationParameters.userSelectedAvatar = image
-        dispatch(action: .updateAvatarImage(image))
+        state.avatarImage = image
     }
     
     override func process(viewAction: SpaceCreationSettingsViewAction) {
@@ -102,7 +108,7 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
             spaceCreationSettingsService.roomName = newValue
             creationParameters.address = spaceCreationSettingsService.defaultAddressSubject.value
             creationParameters.name = newValue
-            dispatch(action: .updateRoomNameError(newValue.isEmpty ? VectorL10n.spacesCreationEmptyRoomNameError : nil))
+            state.roomNameError = newValue.isEmpty ? VectorL10n.spacesCreationEmptyRoomNameError : nil
         case .addressChanged(let newValue):
             spaceCreationSettingsService.userDefinedAddress = newValue
             creationParameters.userDefinedAddress = newValue
@@ -110,28 +116,12 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
             creationParameters.topic = newValue
         }
     }
-    
-    override class func reducer(state: inout SpaceCreationSettingsViewState, action: SpaceCreationSettingsStateAction) {
-        switch action {
-        case .updateRoomNameError(let error):
-            state.roomNameError = error
-        case .updateRoomDefaultAddress(let defaultAddress):
-            state.defaultAddress = defaultAddress
-        case .updateAddressValidationStatus(let validationStatus):
-            state.addressMessage = validationStatus.message
-            state.isAddressValid = validationStatus.isValid
-        case .updateAvatar(let avatar):
-            state.avatar = avatar
-        case .updateAvatarImage(let image):
-            state.avatarImage = image
-        }
-    }
-    
+        
     // MARK: - Private
     
     private func done() {
         guard !context.roomName.isEmpty else {
-            dispatch(action: .updateRoomNameError(VectorL10n.spacesCreationEmptyRoomNameError))
+            state.roomNameError = VectorL10n.spacesCreationEmptyRoomNameError
             return
         }
         
@@ -144,7 +134,7 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
         creationParameters.userDefinedAddress = context.address
         creationParameters.address = spaceCreationSettingsService.defaultAddressSubject.value
         
-        dispatch(action: .updateRoomNameError(nil))
+        state.roomNameError = nil
         callback?(.done)
     }
     

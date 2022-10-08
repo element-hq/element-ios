@@ -1,6 +1,6 @@
 // File created from SimpleUserProfileExample
 // $ createScreen.sh Spaces/SpaceCreation/SpaceCreationEmailInvites SpaceCreationEmailInvites
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +16,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class MockSpaceCreationEmailInvitesService: SpaceCreationEmailInvitesServiceProtocol {
     var isLoadingSubject: CurrentValueSubject<Bool, Never>
@@ -25,16 +25,16 @@ class MockSpaceCreationEmailInvitesService: SpaceCreationEmailInvitesServiceProt
     private let defaultValidation: Bool
     
     var isIdentityServiceReady: Bool {
-        return true
+        true
     }
     
     init(defaultValidation: Bool, isLoading: Bool) {
         self.defaultValidation = defaultValidation
-        self.isLoadingSubject = CurrentValueSubject(isLoading)
+        isLoadingSubject = CurrentValueSubject(isLoading)
     }
     
     func validate(_ emailAddresses: [String]) -> [Bool] {
-        return emailAddresses.map { _ in defaultValidation }
+        emailAddresses.map { _ in defaultValidation }
     }
     
     func prepareIdentityService(prepared: ((String?, String?) -> Void)?, failure: ((Error?) -> Void)?) {

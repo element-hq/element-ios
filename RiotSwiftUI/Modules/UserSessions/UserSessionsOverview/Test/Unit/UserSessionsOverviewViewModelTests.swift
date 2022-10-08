@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,20 +14,76 @@
 // limitations under the License.
 //
 
-import XCTest
 import Combine
+import XCTest
 
 @testable import RiotSwiftUI
 
 class UserSessionsOverviewViewModelTests: XCTestCase {
+    func testInitialStateEmpty() {
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService())
+        
+        XCTAssertNil(viewModel.state.currentSessionViewData)
+        XCTAssertTrue(viewModel.state.unverifiedSessionsViewData.isEmpty)
+        XCTAssertTrue(viewModel.state.inactiveSessionsViewData.isEmpty)
+        XCTAssertTrue(viewModel.state.otherSessionsViewData.isEmpty)
+        XCTAssertFalse(viewModel.state.linkDeviceButtonVisible)
+    }
     
-    var service: MockUserSessionsOverviewService!
-    var viewModel: UserSessionsOverviewViewModelProtocol!
-    var context: UserSessionsOverviewViewModelType.Context!
+    func testLoadOnDidAppear() {
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService())
+        viewModel.process(viewAction: .viewAppeared)
+        
+        XCTAssertNotNil(viewModel.state.currentSessionViewData)
+        XCTAssertFalse(viewModel.state.unverifiedSessionsViewData.isEmpty)
+        XCTAssertFalse(viewModel.state.inactiveSessionsViewData.isEmpty)
+        XCTAssertFalse(viewModel.state.otherSessionsViewData.isEmpty)
+        XCTAssertTrue(viewModel.state.linkDeviceButtonVisible)
+    }
     
-    override func setUpWithError() throws {
-        service = MockUserSessionsOverviewService()
-        viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
-        context = viewModel.context
+    func testSimpleActionProcessing() {
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService())
+        
+        var result: UserSessionsOverviewViewModelResult?
+        viewModel.completion = { action in
+            result = action
+        }
+        
+        viewModel.process(viewAction: .verifyCurrentSession)
+        XCTAssertEqual(result, .verifyCurrentSession)
+        
+        viewModel.process(viewAction: .viewAllInactiveSessions)
+        XCTAssertEqual(result, .showOtherSessions(sessionInfos: [], filter: .inactive))
+
+        viewModel.process(viewAction: .linkDevice)
+        XCTAssertEqual(result, .linkDevice)
+    }
+    
+    func testShowSessionDetails() {
+        let service = MockUserSessionsOverviewService()
+        service.updateOverviewData { _ in }
+        
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
+        
+        var result: UserSessionsOverviewViewModelResult?
+        viewModel.completion = { action in
+            result = action
+        }
+        
+        guard let currentSession = service.overviewData.currentSession else {
+            XCTFail("The current session should be valid at this point")
+            return
+        }
+        
+        viewModel.process(viewAction: .viewCurrentSessionDetails)
+        XCTAssertEqual(result, .showCurrentSessionOverview(sessionInfo: currentSession))
+        
+        guard let randomSession = service.overviewData.otherSessions.randomElement() else {
+            XCTFail("There should be other sessions")
+            return
+        }
+        
+        viewModel.process(viewAction: .tapUserSession(randomSession.id))
+        XCTAssertEqual(result, .showUserSessionOverview(sessionInfo: randomSession))
     }
 }

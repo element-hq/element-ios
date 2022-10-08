@@ -16,7 +16,7 @@ use_frameworks!
 # - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '= 0.23.18'
+$matrixSDKVersion = '= 0.24.0'
 # $matrixSDKVersion = :local
 # $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
@@ -61,6 +61,7 @@ end
 def import_SwiftUI_pods
     pod 'Introspect', '~> 0.1'
     pod 'DSBottomSheet', '~> 0.3'
+    pod 'ZXingObjC', '~> 3.6.5'
 end
 
 abstract_target 'RiotPods' do
@@ -92,7 +93,6 @@ abstract_target 'RiotPods' do
     pod 'UICollectionViewRightAlignedLayout', '~> 0.0.3'
     pod 'UICollectionViewLeftAlignedLayout', '~> 1.0.2'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
-    pod 'ZXingObjC', '~> 3.6.5'
     pod 'FlowCommoniOS', '~> 1.12.0'
     pod 'ReadMoreTextView', '~> 3.0.1'
     pod 'SwiftBase32', '~> 0.9.0'

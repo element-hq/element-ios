@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,14 +17,7 @@
 import SwiftUI
 
 struct UserSessionDetailsItem: View {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    // MARK: Public
     
     let viewData: UserSessionDetailsSectionItemViewData
     let horizontalPadding: CGFloat
@@ -35,7 +28,7 @@ struct UserSessionDetailsItem: View {
     }
     
     var body: some View {
-        HStack() {
+        HStack {
             Text(viewData.title)
                 .font(theme.fonts.subheadline)
                 .foregroundColor(theme.colors.secondaryContent)
@@ -66,10 +59,10 @@ struct UserSessionDetailsItem_Previews: PreviewProvider {
             List {
                 UserSessionDetailsItem(viewData: UserSessionDetailsSectionItemViewData(title: "Session name",
                                                                                        value: "Element Web: Firefox on macOS"))
-                .listRowInsets(EdgeInsets())
+                    .listRowInsets(EdgeInsets())
                 UserSessionDetailsItem(viewData: UserSessionDetailsSectionItemViewData(title: "Session ID",
                                                                                        value: "76c95352559d-react-7c57680b93db-js-b64dbdce74b0"))
-                .listRowInsets(EdgeInsets())
+                    .listRowInsets(EdgeInsets())
             }
             .preferredColorScheme(.light)
             
@@ -77,10 +70,10 @@ struct UserSessionDetailsItem_Previews: PreviewProvider {
             List {
                 UserSessionDetailsItem(viewData: UserSessionDetailsSectionItemViewData(title: "Session name",
                                                                                        value: "Element Web: Firefox on macOS"))
-                .listRowInsets(EdgeInsets())
+                    .listRowInsets(EdgeInsets())
                 UserSessionDetailsItem(viewData: UserSessionDetailsSectionItemViewData(title: "Session ID",
                                                                                        value: "76c95352559d-react-7c57680b93db-js-b64dbdce74b0"))
-                .listRowInsets(EdgeInsets())
+                    .listRowInsets(EdgeInsets())
             }
             .preferredColorScheme(.dark)
             .theme(.dark)

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -110,7 +110,7 @@ struct CheckResetPasswordParameters: DictionaryEncodable {
     }
     
     init(clientSecret: String, sessionID: String, newPassword: String, signoutAllDevices: Bool) {
-        self.auth = AuthenticationParameters.resetPasswordParameters(clientSecret: clientSecret, sessionID: sessionID)
+        auth = AuthenticationParameters.resetPasswordParameters(clientSecret: clientSecret, sessionID: sessionID)
         self.newPassword = newPassword
         self.signoutAllDevices = signoutAllDevices
     }

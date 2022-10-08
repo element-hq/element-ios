@@ -16,8 +16,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class SpaceCreationPostProcessUITests: MockScreenTestCase {
     // No tests have been implemented

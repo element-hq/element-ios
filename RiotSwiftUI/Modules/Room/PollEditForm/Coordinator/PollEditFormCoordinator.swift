@@ -15,8 +15,8 @@
 //
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 struct PollEditFormCoordinatorParameters {
     let room: MXRoom
@@ -24,7 +24,6 @@ struct PollEditFormCoordinatorParameters {
 }
 
 final class PollEditFormCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -50,7 +49,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
             viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .editing,
                                                                                           pollDetails: EditFormPollDetails(type: Self.pollKindKeyToDetailsType(pollContent.kind),
                                                                                                                            question: pollContent.question,
-                                                                                                                           answerOptions: pollContent.answerOptions.map { $0.text })))
+                                                                                                                           answerOptions: pollContent.answerOptions.map(\.text))))
             
         } else {
             viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .creation, pollDetails: .default))
@@ -63,6 +62,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Public
+
     func start() {
         pollEditFormViewModel.completion = { [weak self] result in
             guard let self = self else { return }
@@ -75,7 +75,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
                 
                 self.pollEditFormViewModel.startLoading()
                 
-                self.parameters.room.sendPollStart(withContent: pollStartContent, threadId: nil, localEcho: nil) { [weak self] result in
+                self.parameters.room.sendPollStart(withContent: pollStartContent, threadId: nil, localEcho: nil) { [weak self] _ in
                     guard let self = self else { return }
                     
                     self.pollEditFormViewModel.stopLoading()
@@ -103,7 +103,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
                 
                 self.parameters.room.sendPollUpdate(for: pollStartEvent,
                                                     oldContent: oldPollContent,
-                                                    newContent: newPollContent, localEcho: nil) { [weak self] result in
+                                                    newContent: newPollContent, localEcho: nil) { [weak self] _ in
                     guard let self = self else { return }
                     
                     self.pollEditFormViewModel.stopLoading()
@@ -113,7 +113,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
                     
                     MXLog.error("Failed updating poll", context: error)
                     self.pollEditFormViewModel.stopLoading(errorAlertType: .failedUpdatingPoll)
-                }   
+                }
             }
         }
     }
@@ -121,7 +121,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
     // MARK: - Presentable
     
     func toPresentable() -> UIViewController {
-        return pollEditFormHostingController
+        pollEditFormHostingController
     }
     
     // MARK: - Private
@@ -136,21 +136,20 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
                                        kind: Self.pollDetailsTypeToKindKey(details.type),
                                        maxSelections: NSNumber(value: details.maxSelections),
                                        answerOptions: options)
-        
     }
     
     private static func pollDetailsTypeToKindKey(_ type: EditFormPollType) -> String {
-        let mapping = [EditFormPollType.disclosed : kMXMessageContentKeyExtensiblePollKindDisclosedMSC3381,
-                       EditFormPollType.undisclosed : kMXMessageContentKeyExtensiblePollKindUndisclosedMSC3381]
+        let mapping = [EditFormPollType.disclosed: kMXMessageContentKeyExtensiblePollKindDisclosedMSC3381,
+                       EditFormPollType.undisclosed: kMXMessageContentKeyExtensiblePollKindUndisclosedMSC3381]
         
         return mapping[type] ?? kMXMessageContentKeyExtensiblePollKindDisclosedMSC3381
     }
     
     private static func pollKindKeyToDetailsType(_ key: String) -> EditFormPollType {
-        let mapping = [kMXMessageContentKeyExtensiblePollKindDisclosed : EditFormPollType.disclosed,
-                       kMXMessageContentKeyExtensiblePollKindDisclosedMSC3381 : EditFormPollType.disclosed,
-                       kMXMessageContentKeyExtensiblePollKindUndisclosed : EditFormPollType.undisclosed,
-                     kMXMessageContentKeyExtensiblePollKindUndisclosedMSC3381 : EditFormPollType.undisclosed]
+        let mapping = [kMXMessageContentKeyExtensiblePollKindDisclosed: EditFormPollType.disclosed,
+                       kMXMessageContentKeyExtensiblePollKindDisclosedMSC3381: EditFormPollType.disclosed,
+                       kMXMessageContentKeyExtensiblePollKindUndisclosed: EditFormPollType.undisclosed,
+                       kMXMessageContentKeyExtensiblePollKindUndisclosedMSC3381: EditFormPollType.undisclosed]
         
         return mapping[key] ?? EditFormPollType.disclosed
     }

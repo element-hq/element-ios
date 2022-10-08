@@ -1,3 +1,50 @@
+## Changes in 1.9.8 (2022-10-04)
+
+🙌 Improvements
+
+- UserSessions: Extended device information (PSG-772). ([#6766](https://github.com/vector-im/element-ios/pull/6766))
+- Settings: Add labs flags for new session manager (PSG-792, PSG-799). ([#6780](https://github.com/vector-im/element-ios/pull/6780))
+- User session details: Include browser version for web sessions (PSG-761). ([#6788](https://github.com/vector-im/element-ios/pull/6788))
+- Upgrade MatrixSDK version ([v0.24.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.24.0)).
+- Include concrete device model in user agent (PSG-754) ([#6742](https://github.com/vector-im/element-ios/issues/6742))
+- CryptoV2: Manual device verification ([#6781](https://github.com/vector-im/element-ios/issues/6781))
+- User sessions: Add support for MSC3881 ([#6787](https://github.com/vector-im/element-ios/issues/6787))
+
+🐛 Bugfixes
+
+- Voiceover: Add labels to User Menu and My Spaces buttons on the All Chats view. ([#6580](https://github.com/vector-im/element-ios/issues/6580))
+- Media: Avoid redundant reloads on media viewer. ([#6717](https://github.com/vector-im/element-ios/issues/6717))
+- Pass country code into MSISDN requests ([#6723](https://github.com/vector-im/element-ios/issues/6723))
+- Fix render of links with both characters requiring percent encoding and markdown-like syntax ([#6748](https://github.com/vector-im/element-ios/issues/6748))
+- Fix crash when scrolling chat list ([#6749](https://github.com/vector-im/element-ios/issues/6749))
+- App Layout: Unable to send message after filtering for room ([#6755](https://github.com/vector-im/element-ios/issues/6755))
+- App Layout: Fix missing toolbar for users with no rooms. ([#6796](https://github.com/vector-im/element-ios/pull/6796))
+- Fix code block background colour ([#6778](https://github.com/vector-im/element-ios/issues/6778))
+- Fix navigation bars visibility on iOS 16. ([#6799](https://github.com/vector-im/element-ios/pull/6799))
+
+🧱 Build
+
+- Fix crash when scrolling chat list ([#6757](https://github.com/vector-im/element-ios/pull/6757))
+
+🚧 In development 🚧
+
+- Device manager: User session details screen. ([#6693](https://github.com/vector-im/element-ios/issues/6693))
+- Device manager: Session overview screen. ([#6753](https://github.com/vector-im/element-ios/issues/6753))
+- Device Manager: Link current session to session overview. ([#6770](https://github.com/vector-im/element-ios/issues/6770))
+
+
+## Changes in 1.9.7 (2022-09-28)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.19](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.19)).
+
+🐛 Bugfixes
+
+- Missing decoration for events decrypted with untrusted Megolm sessions ([Security advisory](https://github.com/vector-im/element-ios/security/advisories/GHSA-fm8m-99j7-323g))
+- Fix crash when scrolling chat list ([#6749](https://github.com/vector-im/element-ios/issues/6749))
+
+
 ## Changes in 1.9.6 (2022-09-20)
 
 🙌 Improvements

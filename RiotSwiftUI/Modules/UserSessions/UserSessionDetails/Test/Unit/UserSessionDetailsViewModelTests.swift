@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,94 +19,144 @@ import XCTest
 @testable import RiotSwiftUI
 
 class UserSessionDetailsViewModelTests: XCTestCase {
-    
     func test_whenSessionNameAndLastSeenIPNil_viewStateCorrect() {
-        let userSessionInfo = createUserSessionInfo(sessionId: "session",
-                                                    sessionName: nil,
+        let userSessionInfo = createUserSessionInfo(id: "session",
+                                                    name: nil,
                                                     lastSeenIP: nil)
+
+        let sessionItems = [
+            sessionIdItem(sessionId: "session")
+        ]
         
-        var sessionItems = [UserSessionDetailsSectionItemViewData]()
-        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.sessionId))
-        
-        var sections = [UserSessionDetailsSectionViewData]()
-        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
-                                                          footer: VectorL10n.userSessionDetailsSessionSectionFooter,
-                                                          items: sessionItems))
+        let sections = [
+            UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
+                                              footer: VectorL10n.userSessionDetailsSessionSectionFooter,
+                                              items: sessionItems)
+        ]
+
         let expectedModel = UserSessionDetailsViewState(sections: sections)
-        let sut = UserSessionDetailsViewModel(userSessionInfo: userSessionInfo)
+        let sut = UserSessionDetailsViewModel(sessionInfo: userSessionInfo)
         
         XCTAssertEqual(sut.state, expectedModel)
     }
     
     func test_whenSessionNameNotNilLastSeenIPNil_viewStateCorrect() {
-        let userSessionInfo = createUserSessionInfo(sessionId: "session",
-                                                    sessionName: "session name",
+        let userSessionInfo = createUserSessionInfo(id: "session",
+                                                    name: "session name",
                                                     lastSeenIP: nil)
-        
-        var sessionItems = [UserSessionDetailsSectionItemViewData]()
-        sessionItems.append(sessionNameItem(sessionName: "session name"))
-        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.sessionId))
-        
-        var sections = [UserSessionDetailsSectionViewData]()
-        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
-                                                          footer: VectorL10n.userSessionDetailsSessionSectionFooter,
-                                                          items: sessionItems))
+
+        let sessionItems = [
+            sessionNameItem(sessionName: "session name"),
+            sessionIdItem(sessionId: "session")
+        ]
+
+        let sections = [
+            UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
+                                              footer: VectorL10n.userSessionDetailsSessionSectionFooter,
+                                              items: sessionItems)
+        ]
         
         let expectedModel = UserSessionDetailsViewState(sections: sections)
-        let sut = UserSessionDetailsViewModel(userSessionInfo: userSessionInfo)
+        let sut = UserSessionDetailsViewModel(sessionInfo: userSessionInfo)
         
         XCTAssertEqual(sut.state, expectedModel)
     }
     
     func test_whenUserSessionInfoContainsAllValues_viewStateCorrect() {
-        let userSessionInfo = createUserSessionInfo(sessionId: "session",
-                                                    sessionName: "session name",
-                                                    lastSeenIP: "0.0.0.0")
+        let userSessionInfo = createUserSessionInfo(id: "session",
+                                                    name: "session name",
+                                                    lastSeenIP: "0.0.0.0",
+                                                    applicationName: "Element iOS",
+                                                    applicationVersion: "1.0.0")
         
-        var sessionItems = [UserSessionDetailsSectionItemViewData]()
-        sessionItems.append(sessionNameItem(sessionName: "session name"))
-        sessionItems.append(sessionIdItem(sessionId: userSessionInfo.sessionId))
-        
-        var sections = [UserSessionDetailsSectionViewData]()
-        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader,
-                                                          footer: VectorL10n.userSessionDetailsSessionSectionFooter,
-                                                          items: sessionItems))
-        
-        var deviceSectionItems = [UserSessionDetailsSectionItemViewData]()
-        deviceSectionItems.append(UserSessionDetailsSectionItemViewData(title: VectorL10n.userSessionDetailsDeviceIpAddress,
-                                                                        value: "0.0.0.0"))
-        sections.append(UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsDeviceSectionHeader,
-                                                          footer: nil,
-                                                          items: deviceSectionItems))
+        let sessionItems = [
+            sessionNameItem(sessionName: "session name"),
+            sessionIdItem(sessionId: "session")
+        ]
+        let appItems = [
+            appNameItem(appName: "Element iOS"),
+            appVersionItem(appVersion: "1.0.0")
+        ]
+        let deviceItems = [
+            ipAddressItem(ipAddress: "0.0.0.0")
+        ]
+
+        let sections = [
+            UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
+                                              footer: VectorL10n.userSessionDetailsSessionSectionFooter,
+                                              items: sessionItems),
+            UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsApplicationSectionHeader.uppercased(),
+                                              footer: nil,
+                                              items: appItems),
+            UserSessionDetailsSectionViewData(header: VectorL10n.userSessionDetailsDeviceSectionHeader.uppercased(),
+                                              footer: nil,
+                                              items: deviceItems)
+        ]
         
         let expectedModel = UserSessionDetailsViewState(sections: sections)
-        let sut = UserSessionDetailsViewModel(userSessionInfo: userSessionInfo)
+        let sut = UserSessionDetailsViewModel(sessionInfo: userSessionInfo)
         
         XCTAssertEqual(sut.state, expectedModel)
     }
+
+    // MARK: - Private
     
-    private func createUserSessionInfo(sessionId: String,
-                                       sessionName: String?,
+    private func createUserSessionInfo(id: String,
+                                       name: String?,
                                        deviceType: DeviceType = .mobile,
                                        isVerified: Bool = false,
                                        lastSeenIP: String?,
-                                       lastSeenTimestamp: TimeInterval = Date().timeIntervalSince1970) -> UserSessionInfo {
-        UserSessionInfo(sessionId: sessionId,
-                        sessionName: sessionName,
+                                       lastSeenTimestamp: TimeInterval = Date().timeIntervalSince1970,
+                                       applicationName: String? = nil,
+                                       applicationVersion: String? = nil,
+                                       applicationURL: String? = nil,
+                                       deviceModel: String? = nil,
+                                       deviceOS: String? = nil,
+                                       lastSeenIPLocation: String? = nil,
+                                       clientName: String? = nil,
+                                       clientVersion: String? = nil,
+                                       isActive: Bool = true,
+                                       isCurrent: Bool = true) -> UserSessionInfo {
+        UserSessionInfo(id: id,
+                        name: name,
                         deviceType: deviceType,
                         isVerified: isVerified,
                         lastSeenIP: lastSeenIP,
-                        lastSeenTimestamp: lastSeenTimestamp)
-        
+                        lastSeenTimestamp: lastSeenTimestamp,
+                        applicationName: applicationName,
+                        applicationVersion: applicationVersion,
+                        applicationURL: applicationURL,
+                        deviceModel: deviceModel,
+                        deviceOS: deviceOS,
+                        lastSeenIPLocation: lastSeenIPLocation,
+                        clientName: clientName,
+                        clientVersion: clientVersion,
+                        isActive: isActive,
+                        isCurrent: isCurrent)
     }
     
     private func sessionNameItem(sessionName: String) -> UserSessionDetailsSectionItemViewData {
-        UserSessionDetailsSectionItemViewData(title: VectorL10n.userSessionDetailsSessionName,
-                                              value: sessionName)
+        .init(title: VectorL10n.userSessionDetailsSessionName,
+              value: sessionName)
     }
     
     private func sessionIdItem(sessionId: String) -> UserSessionDetailsSectionItemViewData {
-        UserSessionDetailsSectionItemViewData(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
-                                              value: sessionId)
+        .init(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
+              value: sessionId)
+    }
+
+    private func appNameItem(appName: String) -> UserSessionDetailsSectionItemViewData {
+        .init(title: VectorL10n.userSessionDetailsApplicationName,
+              value: appName)
+    }
+
+    private func appVersionItem(appVersion: String) -> UserSessionDetailsSectionItemViewData {
+        .init(title: VectorL10n.userSessionDetailsApplicationVersion,
+              value: appVersion)
+    }
+
+    private func ipAddressItem(ipAddress: String) -> UserSessionDetailsSectionItemViewData {
+        .init(title: VectorL10n.userSessionDetailsDeviceIpAddress,
+              value: ipAddress)
     }
 }

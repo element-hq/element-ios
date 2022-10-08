@@ -28,5 +28,5 @@ enum KeyVerificationFlow {
     case verifyDevice(userId: String, deviceId: String)
     case completeSecurity(_ isNewSignIn: Bool)
     case incomingRequest(_ request: MXKeyVerificationRequest)
-    case incomingSASTransaction(_ transaction: MXIncomingSASTransaction)
+    case incomingSASTransaction(_ transaction: MXSASTransaction)
 }

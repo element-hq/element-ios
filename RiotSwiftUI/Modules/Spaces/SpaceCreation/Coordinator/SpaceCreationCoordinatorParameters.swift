@@ -22,7 +22,6 @@ import Foundation
 
 /// SpaceCreationCoordinator input parameters
 struct SpaceCreationCoordinatorParameters {
-    
     /// The Matrix session
     let session: MXSession
     
@@ -30,7 +29,7 @@ struct SpaceCreationCoordinatorParameters {
     let parentSpaceId: String?
     
     /// Parameters needed to create the new space
-    let creationParameters: SpaceCreationParameters = SpaceCreationParameters()
+    let creationParameters = SpaceCreationParameters()
                 
     /// The navigation router that manage physical navigation
     let navigationRouter: NavigationRouterType

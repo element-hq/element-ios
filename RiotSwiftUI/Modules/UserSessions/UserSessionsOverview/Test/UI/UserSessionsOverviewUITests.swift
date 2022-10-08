@@ -14,9 +14,63 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class UserSessionsOverviewUITests: MockScreenTestCase {
-    // TODO:
+    func testCurrentSessionUnverified() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.currentSessionUnverified.title)
+        
+        XCTAssertTrue(app.buttons["userSessionCardVerifyButton"].exists)
+        XCTAssertTrue(app.staticTexts["userSessionCardViewDetails"].exists)
+
+        verifyLinkDeviceButtonStatus(true)
+    }
+    
+    func testCurrentSessionVerified() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.currentSessionVerified.title)
+        
+        XCTAssertFalse(app.buttons["userSessionCardVerifyButton"].exists)
+        XCTAssertTrue(app.staticTexts["userSessionCardViewDetails"].exists)
+
+        verifyLinkDeviceButtonStatus(true)
+    }
+    
+    func testOnlyUnverifiedSessions() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.onlyUnverifiedSessions.title)
+        
+        XCTAssertTrue(app.staticTexts["userSessionsOverviewSecurityRecommendationsSection"].exists)
+        XCTAssertTrue(app.staticTexts["userSessionsOverviewOtherSection"].exists)
+
+        verifyLinkDeviceButtonStatus(false)
+    }
+    
+    func testOnlyInactiveSessions() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.onlyInactiveSessions.title)
+        
+        XCTAssertTrue(app.staticTexts["userSessionsOverviewSecurityRecommendationsSection"].exists)
+        XCTAssertTrue(app.staticTexts["userSessionsOverviewOtherSection"].exists)
+
+        verifyLinkDeviceButtonStatus(false)
+    }
+    
+    func testNoOtherSessions() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.noOtherSessions.title)
+        
+        XCTAssertFalse(app.staticTexts["userSessionsOverviewSecurityRecommendationsSection"].exists)
+        XCTAssertFalse(app.staticTexts["userSessionsOverviewOtherSection"].exists)
+
+        verifyLinkDeviceButtonStatus(false)
+    }
+
+    func verifyLinkDeviceButtonStatus(_ enabled: Bool) {
+        if enabled {
+            let linkDeviceButton = app.buttons["linkDeviceButton"]
+            XCTAssertTrue(linkDeviceButton.exists)
+            XCTAssertTrue(linkDeviceButton.isEnabled)
+        } else {
+            let linkDeviceButton = app.buttons["linkDeviceButton"]
+            XCTAssertFalse(linkDeviceButton.exists)
+        }
+    }
 }

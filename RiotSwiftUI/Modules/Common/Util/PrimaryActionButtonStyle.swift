@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,8 +19,11 @@ import SwiftUI
 struct PrimaryActionButtonStyle: ButtonStyle {
     @Environment(\.theme) private var theme
     @Environment(\.isEnabled) private var isEnabled
-    
-    var customColor: Color? = nil
+
+    /// `theme.colors.accent` by default
+    var customColor: Color?
+    /// `theme.colors.body` by default
+    var font: Font?
     
     private var fontColor: Color {
         // Always white unless disabled with a dark theme.
@@ -36,7 +39,7 @@ struct PrimaryActionButtonStyle: ButtonStyle {
             .padding(12.0)
             .frame(maxWidth: .infinity)
             .foregroundColor(fontColor)
-            .font(theme.fonts.body)
+            .font(font ?? theme.fonts.body)
             .background(backgroundColor.opacity(backgroundOpacity(when: configuration.isPressed)))
             .cornerRadius(8.0)
     }
@@ -65,7 +68,7 @@ struct PrimaryActionButtonStyle_Previews: PreviewProvider {
                 .buttonStyle(PrimaryActionButtonStyle(customColor: .clear))
                 
                 Button("Red BG") { }
-                .buttonStyle(PrimaryActionButtonStyle(customColor: .red))
+                    .buttonStyle(PrimaryActionButtonStyle(customColor: .red))
             }
             .padding()
         }

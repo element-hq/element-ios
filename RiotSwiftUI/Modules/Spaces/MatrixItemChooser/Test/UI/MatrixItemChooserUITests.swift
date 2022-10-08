@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class MatrixItemChooserUITests: MockScreenTestCase {
     func testEmptyScreen() {
@@ -42,5 +42,4 @@ class MatrixItemChooserUITests: MockScreenTestCase {
         XCTAssertEqual(app.staticTexts["messageText"].label, VectorL10n.spacesCreationAddRoomsMessage)
         XCTAssertEqual(app.staticTexts["emptyListMessage"].exists, false)
     }
-
 }

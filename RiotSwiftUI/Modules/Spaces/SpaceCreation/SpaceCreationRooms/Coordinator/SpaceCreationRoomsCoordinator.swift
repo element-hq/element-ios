@@ -17,11 +17,10 @@
  */
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 final class SpaceCreationRoomsCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -68,6 +67,6 @@ final class SpaceCreationRoomsCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.spaceCreationRoomsHostingController
+        spaceCreationRoomsHostingController
     }
 }

@@ -24,6 +24,9 @@ schemes:
       disableMainThreadChecker: true
       targets:
       - RiotTests
+      gatherCoverageData: true
+      coverageTargets:
+        - Riot
 
 targets:
   Riot:
@@ -40,6 +43,7 @@ targets:
     - package: OrderedCollections
     - package: SwiftOGG
     - package: WysiwygComposer
+    - package: DeviceKit
 
     configFiles:
       Debug: Debug.xcconfig

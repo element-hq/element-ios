@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +18,7 @@ import SwiftUI
 
 /// Renders multiple chips in a flow layout.
 struct Chips: View {
-    
-    @State private var frame: CGRect = CGRect.zero
+    @State private var frame = CGRect.zero
     
     let titles: [String]
     let didDeleteChip: (String) -> Void
@@ -56,7 +55,7 @@ struct Chips: View {
                                 }
                                 return result
                             }
-                            .alignmentGuide(.top) { dimension in
+                            .alignmentGuide(.top) { _ in
                                 // Use next y value and reset if its the last.
                                 let result = y
                                 if chip == titles.last {
@@ -82,6 +81,5 @@ struct Chips_Previews: PreviewProvider {
             Chips(titles: chips, didDeleteChip: { _ in })
                 .theme(.dark)
         }
-        
     }
 }

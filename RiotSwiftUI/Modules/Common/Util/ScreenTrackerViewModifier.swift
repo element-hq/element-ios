@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,6 +33,6 @@ struct ScreenTrackerViewModifier: ViewModifier {
 
 extension View {
     func track(screen: AnalyticsScreen) -> some View {
-        return self.modifier(ScreenTrackerViewModifier(screen: screen))
+        modifier(ScreenTrackerViewModifier(screen: screen))
     }
 }

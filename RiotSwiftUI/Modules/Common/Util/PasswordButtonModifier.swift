@@ -19,7 +19,6 @@ import SwiftUI
 /// Adds a reveal password button (e.g. an eye button) on the
 /// right side of the view. For use with `ThemableTextField`.
 struct PasswordButtonModifier: ViewModifier {
-    
     // MARK: - Properties
     
     let text: String

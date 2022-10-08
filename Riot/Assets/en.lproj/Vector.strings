@@ -156,6 +156,7 @@
 "authentication_login_username" = "Username / Email / Phone";
 "authentication_login_forgot_password" = "Forgot password";
 "authentication_server_info_title_login" = "Where your conversations live";
+"authentication_login_with_qr" = "Sign in with QR code";
 
 "authentication_server_selection_login_title" = "Connect to homeserver";
 "authentication_server_selection_login_message" = "What is the address of your server?";
@@ -210,6 +211,37 @@
 "authentication_terms_policy_url_error" = "Unable to find the selected policy. Please try again later.";
 
 "authentication_recaptcha_title" = "Are you a human?";
+
+"authentication_qr_login_start_title" = "Scan QR code";
+"authentication_qr_login_start_subtitle" = "Use the camera on this device to scan the QR code shown on your other device:";
+"authentication_qr_login_start_step1" = "Open Element on your other device";
+"authentication_qr_login_start_step2" = "Go to Settings -> Security & Privacy";
+"authentication_qr_login_start_step3" = "Select ‘Link a device’";
+"authentication_qr_login_start_step4" = "Select ‘Show QR code on this device’";
+"authentication_qr_login_start_need_alternative" = "Need an alternative method?";
+"authentication_qr_login_start_display_qr" = "Show QR code on this device";
+
+"authentication_qr_login_display_title" = "Link a device";
+"authentication_qr_login_display_subtitle" = "Scan the QR code below with your device that’s signed out.";
+"authentication_qr_login_display_step1" = "Open Element on your other device";
+"authentication_qr_login_display_step2" = "Select ‘Sign in with QR code’";
+
+"authentication_qr_login_scan_title" = "Scan QR code";
+"authentication_qr_login_scan_subtitle" = "Position the QR code in the square below";
+
+"authentication_qr_login_confirm_title" = "Secure connection established";
+"authentication_qr_login_confirm_subtitle" = "Confirm that the code below matches with your other device:";
+"authentication_qr_login_confirm_alert" = "Please ensure that you know the origin of this code. By linking devices, you will provide someone with full access to your account.";
+
+"authentication_qr_login_loading_connecting_device" = "Connecting to device";
+"authentication_qr_login_loading_waiting_signin" = "Waiting for device to sign in.";
+"authentication_qr_login_loading_signed_in" = "You are now signed in on your other device.";
+
+"authentication_qr_login_failure_title" = "Linking failed";
+"authentication_qr_login_failure_invalid_qr" = "QR code is invalid.";
+"authentication_qr_login_failure_request_denied" = "The request was denied on the other device.";
+"authentication_qr_login_failure_request_timed_out" = "The linking wasn’t completed in the required time.";
+"authentication_qr_login_failure_retry" = "Try again";
 
 // MARK: Password Validation
 "password_validation_info_header" = "Your password should meet the criteria below:";
@@ -762,6 +794,8 @@ Tap the + to start adding people.";
 "settings_labs_enable_auto_report_decryption_errors" = "Auto Report Decryption Errors";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Show latest avatar and name for users in message history";
 "settings_labs_enable_live_location_sharing" = "Live location sharing - share current location (active development, and temporarily, locations persist in room history)";
+"settings_labs_enable_new_session_manager" = "New session manager";
+"settings_labs_enable_new_client_info_feature" = "Record the client name, version, and url to recognise sessions more easily in session manager";
 "settings_labs_enable_new_app_layout" = "New Application Layout";
 
 "settings_version" = "Version %@";
@@ -895,6 +929,7 @@ Tap the + to start adding people.";
 "manage_session_trusted" = "Trusted by you";
 "manage_session_not_trusted" = "Not trusted";
 "manage_session_sign_out" = "Sign out of this session";
+"manage_session_rename" = "Rename session";
 
 // User sessions management
 "user_sessions_settings" = "Manage sessions";
@@ -1446,6 +1481,9 @@ Tap the + to start adding people.";
 "key_backup_recover_done_action" = "Done";
 
 // MARK: Sign out warning
+
+"sign_out" = "Sign out";
+"sign_out_confirmation_message" = "Are you sure you want to sign out?";
 
 "sign_out_existing_key_backup_alert_title" = "Are you sure you want to sign out?";
 "sign_out_existing_key_backup_alert_sign_out_action" = "Sign out";
@@ -2103,10 +2141,7 @@ Tap the + to start adding people.";
 "spaces_creation_in_many_spaces" = "in %@ spaces";
 "spaces_creation_in_one_space" = "in 1 space";
 
-"spaces_invite_people" = "Invite people";
-"spaces_add_room" = "Add room";
 "spaces_add_room_missing_permission_message" = "You do not have permissions to add rooms to this space.";
-"spaces_add_space" = "Add space";
 
 // Mark: Leave space
 
@@ -2193,6 +2228,7 @@ Tap the + to start adding people.";
 
 "room_recents_recently_viewed_section" = "Recently viewed";
 
+"all_chats_user_menu_accessibility_label" = "User menu";
 "all_chats_user_menu_settings" = "User settings";
 
 "all_chats_edit_menu_leave_space" = "Leave %@";
@@ -2356,12 +2392,27 @@ To enable access, tap Settings> Location and select Always";
 
 // MARK: User sessions management
 
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+
 "user_sessions_overview_title" = "Sessions";
 
-"user_sessions_overview_other_sessions_section_title" = "OTHER SESSIONS";
+"user_sessions_overview_security_recommendations_section_title" = "Security recommendations";
+"user_sessions_overview_security_recommendations_section_info" = "Improve your account security by following these recommendations.";
+
+"user_sessions_overview_security_recommendations_unverified_title" = "Unverified sessions";
+"user_sessions_overview_security_recommendations_unverified_info" = "Verify or sign out from unverified sessions.";
+
+"user_sessions_overview_security_recommendations_inactive_title" = "Inactive sessions";
+"user_sessions_overview_security_recommendations_inactive_info" = "Consider signing out from old sessions (90 days or older) you don’t use anymore.";
+
+"user_sessions_overview_other_sessions_section_title" = "Other sessions";
 "user_sessions_overview_other_sessions_section_info" = "For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.";
 
-"user_sessions_overview_current_session_section_title" = "CURRENT SESSION";
+"user_sessions_overview_current_session_section_title" = "Current session";
+"user_sessions_overview_link_device" = "Link a device";
+
+"user_sessions_view_all_action" = "View all (%d)";
 
 "user_session_verified" = "Verified session";
 "user_session_unverified" = "Unverified session";
@@ -2374,23 +2425,48 @@ To enable access, tap Settings> Location and select Always";
 "user_session_verified_additional_info" = "Your current session is ready for secure messaging.";
 "user_session_unverified_additional_info" = "Verify your current session for enhanced secure messaging.";
 
+"user_session_push_notifications" = "Push notifications";
+"user_session_push_notifications_message" = "When turned on, this session will receive push notifications.";
+
+"user_other_session_security_recommendation_title" = "Security recommendation";
+"user_other_session_unverified_sessions_header_subtitle" = "Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.";
+"user_other_session_unverified_current_session_details" =  "%@ · Your current session";
+
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
 
 "user_session_item_details" = "%@ · Last activity %@";
+"user_inactive_session_item" = "Inactive for 90+ days";
+"user_inactive_session_item_with_date" = "Inactive for 90+ days (%@)";
 
 "device_name_desktop" = "%@ Desktop";
 "device_name_web" = "%@ Web";
 "device_name_mobile" = "%@ Mobile";
 "device_name_unknown" = "Unknown client";
 
+"device_type_name_desktop" = "Desktop";
+"device_type_name_web" = "Web";
+"device_type_name_mobile" = "Mobile";
+"device_type_name_unknown" = "Unknown";
+
 "user_session_details_title" = "Session details";
-"user_session_details_session_section_header" = "SESSION";
-"user_session_details_device_section_header" = "DEVICE";
+"user_session_details_session_section_header" = "Session";
+"user_session_details_application_section_header" = "Application";
+"user_session_details_device_section_header" = "Device";
 "user_session_details_session_name" = "Session name";
 "user_session_details_session_id" = "Session ID";
 "user_session_details_session_section_footer" = "Copy any data by tapping on it and holding it down.";
 "user_session_details_device_ip_address" = "IP address";
+"user_session_details_device_ip_location" = "IP location";
+"user_session_details_device_model" = "Model";
+"user_session_details_device_browser" = "Browser";
+"user_session_details_device_os" = "Operating System";
+"user_session_details_application_name" = "Name";
+"user_session_details_application_version" = "Version";
+"user_session_details_application_url" = "URL";
+"user_session_overview_current_session_title" = "Current session";
+"user_session_overview_session_title" = "Session";
+"user_session_overview_session_details_button_title" = "Session details";
 // MARK: - MatrixKit
 
 
@@ -2580,6 +2656,7 @@ To enable access, tap Settings> Location and select Always";
 "room_event_encryption_info_unverify" = "Unverify";
 "room_event_encryption_info_block" = "Blacklist";
 "room_event_encryption_info_unblock" = "Unblacklist";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "The authenticity of this encrypted message can't be guaranteed on this device.";
 "room_event_encryption_verify_title" = "Verify session\n\n";
 "room_event_encryption_verify_message" = "To verify that this session can be trusted, please contact its owner using some other means (e.g. in person or a phone call) and ask them whether the key they see in their User Settings for this session matches the key below:\n\n\tSession name: %@\n\tSession ID: %@\n\tSession key: %@\n\nIf it matches, press the verify button below. If it doesnt, then someone else is intercepting this session and you probably want to press the blacklist button instead.\n\nIn future this verification process will be more sophisticated.";
 "room_event_encryption_verify_ok" = "Verify";
@@ -2699,12 +2776,9 @@ To enable access, tap Settings> Location and select Always";
 "user_id_title" = "User ID:";
 "offline" = "offline";
 "unsent" = "Unsent";
-"error" = "Error";
 "error_common_message" = "An error occured. Please try again later.";
 "not_supported_yet" = "Not supported yet";
 "default" = "default";
-"private" = "Private";
-"public" = "Public";
 "power_level" = "Power Level";
 "network_error_not_reachable" = "Please check your network connectivity";
 "user_id_placeholder" = "ex: @bob:homeserver";

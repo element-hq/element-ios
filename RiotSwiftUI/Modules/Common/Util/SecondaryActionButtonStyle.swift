@@ -19,18 +19,21 @@ import SwiftUI
 struct SecondaryActionButtonStyle: ButtonStyle {
     @Environment(\.theme) private var theme
     @Environment(\.isEnabled) private var isEnabled
-    
-    var customColor: Color? = nil
+
+    /// `theme.colors.accent` by default
+    var customColor: Color?
+    /// `theme.fonts.body` by default
+    var font: Font?
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .padding(12.0)
             .frame(maxWidth: .infinity)
             .foregroundColor(customColor ?? theme.colors.accent)
-            .font(theme.fonts.body)
+            .font(font ?? theme.fonts.body)
             .background(RoundedRectangle(cornerRadius: 8)
-                            .strokeBorder()
-                            .foregroundColor(customColor ?? theme.colors.accent))
+                .strokeBorder()
+                .foregroundColor(customColor ?? theme.colors.accent))
             .opacity(opacity(when: configuration.isPressed))
     }
     
@@ -62,7 +65,7 @@ struct SecondaryActionButtonStyle_Previews: PreviewProvider {
                 .disabled(true)
             
             Button("Red BG") { }
-            .buttonStyle(SecondaryActionButtonStyle(customColor: .red))
+                .buttonStyle(SecondaryActionButtonStyle(customColor: .red))
             
             Button { } label: {
                 Text("Custom")

@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class AuthenticationChoosePasswordUITests: MockScreenTestCase {
     func testEmptyPassword() {
@@ -93,7 +93,6 @@ class AuthenticationChoosePasswordUITests: MockScreenTestCase {
         XCTAssertTrue(signoutAllDevicesToggle.exists, "Sign out all devices toggle should exist")
         XCTAssertTrue(signoutAllDevicesToggle.isOn, "Sign out all devices should be checked")
     }
-
 }
 
 extension XCUIElement {

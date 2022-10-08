@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,14 +17,7 @@
 import SwiftUI
 
 struct TemplateRoomList: View {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    // MARK: Public
     
     @ObservedObject var viewModel: TemplateRoomListViewModelType.Context
     
@@ -47,7 +40,7 @@ struct TemplateRoomList: View {
                 .foregroundColor(theme.colors.primaryContent)
                 .accessibility(identifier: "errorMessage")
         } else {
-            ScrollView{
+            ScrollView {
                 LazyVStack(spacing: 0) {
                     ForEach(viewModel.viewState.rooms) { room in
                         Button {
@@ -66,7 +59,6 @@ struct TemplateRoomList: View {
 // MARK: - Previews
 
 struct TemplateRoomList_Previews: PreviewProvider {
-    
     static let stateRenderer = MockTemplateRoomListScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup(addNavigation: true)

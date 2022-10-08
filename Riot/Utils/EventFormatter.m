@@ -461,8 +461,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     {
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         
-        // Use the secondary bg color to set the background color in the default CSS.
-        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.headerBackgroundColor];
+        // Use the selected bg color to set the code block background color in the default CSS.
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.selectedBackgroundColor];
         self.defaultCSS = [NSString stringWithFormat:@" \
                            pre,code { \
                            background-color: #%06lX; \

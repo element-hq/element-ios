@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,124 +18,146 @@ import Foundation
 import MatrixSDK
 
 class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
+    /// Delay after which session is considered inactive, 90 days
+    private static let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
     
-    // MARK: - Constants
+    private let dataProvider: UserSessionsDataProviderProtocol
     
-    // MARK: - Properties
+    private(set) var overviewData: UserSessionsOverviewData
+    private(set) var sessionInfos: [UserSessionInfo]
     
-    // MARK: Private
-    
-    private let mxSession: MXSession
-    
-    // MARK: Public
+    init(dataProvider: UserSessionsDataProviderProtocol) {
+        self.dataProvider = dataProvider
         
-    private(set) var lastOverviewData: UserSessionsOverviewData
-    
-    // MARK: - Setup
-    
-    init(mxSession: MXSession) {
-        self.mxSession = mxSession
-        
-        self.lastOverviewData =  UserSessionsOverviewData(currentSessionInfo: nil, unverifiedSessionsInfo: [], inactiveSessionsInfo: [], otherSessionsInfo: [])
-        
-        self.setupInitialOverviewData()
+        overviewData = UserSessionsOverviewData(currentSession: nil,
+                                                unverifiedSessions: [],
+                                                inactiveSessions: [],
+                                                otherSessions: [],
+                                                linkDeviceEnabled: false)
+        sessionInfos = []
+        setupInitialOverviewData()
     }
     
     // MARK: - Public
     
-    func fetchUserSessionsOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
-        self.mxSession.matrixRestClient.devices { response in
+    func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
+        dataProvider.devices { response in
             switch response {
             case .success(let devices):
-                self.lastOverviewData = self.userSessionsOverviewData(from: devices)
-                completion(.success(self.lastOverviewData))
+                self.sessionInfos = self.sortedSessionInfos(from: devices)
+                Task { @MainActor in
+                    let linkDeviceEnabled = try? await self.dataProvider.qrLoginAvailable()
+                    self.overviewData = self.sessionsOverviewData(from: self.sessionInfos,
+                                                                  linkDeviceEnabled: linkDeviceEnabled ?? false)
+                    completion(.success(self.overviewData))
+                }
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    func getOtherSession(sessionId: String) -> UserSessionInfo? {
-        lastOverviewData.otherSessionsInfo.first(where: {$0.sessionId == sessionId})
+    func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo? {
+        if overviewData.currentSession?.id == sessionId {
+            return overviewData.currentSession
+        }
+        
+        return overviewData.otherSessions.first(where: { $0.id == sessionId })
     }
-    
+
     // MARK: - Private
     
     private func setupInitialOverviewData() {
-        let currentSessionInfo = self.getCurrentUserSessionInfoFromCache()
+        guard let currentSessionInfo = getCurrentSessionInfo() else {
+            return
+        }
         
-        self.lastOverviewData = UserSessionsOverviewData(currentSessionInfo: currentSessionInfo, unverifiedSessionsInfo: [], inactiveSessionsInfo: [], otherSessionsInfo: [])
+        overviewData = UserSessionsOverviewData(currentSession: currentSessionInfo,
+                                                unverifiedSessions: currentSessionInfo.isVerified ? [] : [currentSessionInfo],
+                                                inactiveSessions: currentSessionInfo.isActive ? [] : [currentSessionInfo],
+                                                otherSessions: [],
+                                                linkDeviceEnabled: false)
     }
     
-    private func getCurrentUserSessionInfoFromCache() -> UserSessionInfo? {
-        guard let mainAccount = MXKAccountManager.shared().activeAccounts.first, let device = mainAccount.device else {
+    private func getCurrentSessionInfo() -> UserSessionInfo? {
+        guard let mainAccount = dataProvider.activeAccounts.first,
+              let device = mainAccount.device else {
             return nil
         }
-        return self.userSessionInfo(from: device)
+        return sessionInfo(from: device, isCurrentSession: true)
     }
     
-    private func userSessionInfo(from device: MXDevice) -> UserSessionInfo {
-        
-        let deviceInfo = self.getDeviceInfo(for: device.deviceId)
-        
-        let isSessionVerified = deviceInfo?.trustLevel.isVerified ?? false
-        
-        var lastSeenTs: TimeInterval?
-        
+    private func sortedSessionInfos(from devices: [MXDevice]) -> [UserSessionInfo] {
+        devices
+            .sorted { $0.lastSeenTs > $1.lastSeenTs }
+            .map { sessionInfo(from: $0, isCurrentSession: $0.deviceId == dataProvider.myDeviceId) }
+    }
+    
+    private func sessionsOverviewData(from allSessions: [UserSessionInfo],
+                                      linkDeviceEnabled: Bool) -> UserSessionsOverviewData {
+        UserSessionsOverviewData(currentSession: allSessions.filter(\.isCurrent).first,
+                                 unverifiedSessions: allSessions.filter { !$0.isVerified },
+                                 inactiveSessions: allSessions.filter { !$0.isActive },
+                                 otherSessions: allSessions.filter { !$0.isCurrent },
+                                 linkDeviceEnabled: linkDeviceEnabled)
+    }
+    
+    private func sessionInfo(from device: MXDevice, isCurrentSession: Bool) -> UserSessionInfo {
+        let isSessionVerified = deviceInfo(for: device.deviceId)?.trustLevel.isVerified ?? false
+
+        let eventType = kMXAccountDataTypeClientInformation + "." + device.deviceId
+        let appData = dataProvider.accountData(for: eventType)
+        var userAgent: UserAgent?
+        var isSessionActive = true
+
+        if let lastSeenUserAgent = device.lastSeenUserAgent {
+            userAgent = UserAgentParser.parse(lastSeenUserAgent)
+        }
+
         if device.lastSeenTs > 0 {
-            lastSeenTs = TimeInterval(device.lastSeenTs / 1000)
+            let elapsedTime = Date().timeIntervalSince1970 - TimeInterval(device.lastSeenTs / 1000)
+            isSessionActive = elapsedTime < Self.inactiveSessionDurationTreshold
         }
-        
-        return UserSessionInfo(sessionId: device.deviceId,
-                               sessionName: device.displayName,
-                               deviceType: .unknown,
-                               isVerified: isSessionVerified,
-                               lastSeenIP: device.lastSeenIp,
-                               lastSeenTimestamp: lastSeenTs)
+
+        return UserSessionInfo(withDevice: device,
+                               applicationData: appData as? [String: String],
+                               userAgent: userAgent,
+                               isSessionVerified: isSessionVerified,
+                               isActive: isSessionActive,
+                               isCurrent: isCurrentSession)
     }
     
-    private func getDeviceInfo(for deviceId: String) -> MXDeviceInfo? {
-        guard let userId = self.mxSession.myUserId else {
+    private func deviceInfo(for deviceId: String) -> MXDeviceInfo? {
+        guard let userId = dataProvider.myUserId else {
             return nil
         }
-        return self.mxSession.crypto.device(withDeviceId: deviceId, ofUser: userId)
+        
+        return dataProvider.device(withDeviceId: deviceId, ofUser: userId)
     }
-    
-    private func userSessionsOverviewData(from devices: [MXDevice]) -> UserSessionsOverviewData {
-        
-        let sortedDevices = devices.sorted { device1, device2 in
-            device1.lastSeenTs > device2.lastSeenTs
-        }
-        
-        let allUserSessionInfo = sortedDevices.map { device in
-            return self.userSessionInfo(from: device)
-        }
-        
-        var currentSessionInfo: UserSessionInfo?
-        
-        var unverifiedSessionsInfo: [UserSessionInfo] = []
-        var inactiveSessionsInfo: [UserSessionInfo] = []
-        var otherSessionsInfo: [UserSessionInfo] = []
-        
-        for userSessionInfo in allUserSessionInfo {
-            if userSessionInfo.sessionId == self.mxSession.myDeviceId {
-                currentSessionInfo = userSessionInfo
-            } else {
-                otherSessionsInfo.append(userSessionInfo)
-                
-                if userSessionInfo.isVerified == false {
-                    unverifiedSessionsInfo.append(userSessionInfo)
-                }
-                
-                if userSessionInfo.isSessionActive == false {
-                    inactiveSessionsInfo.append(userSessionInfo)
-                }
-            }
-        }
-        
-        return UserSessionsOverviewData(currentSessionInfo: currentSessionInfo,
-                                        unverifiedSessionsInfo: unverifiedSessionsInfo,
-                                        inactiveSessionsInfo: inactiveSessionsInfo,
-                                        otherSessionsInfo: otherSessionsInfo)
+}
+
+extension UserSessionInfo {
+    init(withDevice device: MXDevice,
+         applicationData: [String: String]?,
+         userAgent: UserAgent?,
+         isSessionVerified: Bool,
+         isActive: Bool,
+         isCurrent: Bool) {
+        self.init(id: device.deviceId,
+                  name: device.displayName,
+                  deviceType: userAgent?.deviceType ?? .unknown,
+                  isVerified: isSessionVerified,
+                  lastSeenIP: device.lastSeenIp,
+                  lastSeenTimestamp: device.lastSeenTs > 0 ? TimeInterval(device.lastSeenTs / 1000) : nil,
+                  applicationName: applicationData?["name"],
+                  applicationVersion: applicationData?["version"],
+                  applicationURL: applicationData?["url"],
+                  deviceModel: userAgent?.deviceModel,
+                  deviceOS: userAgent?.deviceOS,
+                  lastSeenIPLocation: nil,
+                  clientName: userAgent?.clientName,
+                  clientVersion: userAgent?.clientVersion,
+                  isActive: isActive,
+                  isCurrent: isCurrent)
     }
 }
