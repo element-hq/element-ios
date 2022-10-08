@@ -18,16 +18,16 @@ import SwiftUI
 import WysiwygComposer
 import DSBottomSheet
 
-@available(iOS 16.0, *)
+@available(iOS 15.0, *)
 struct Composer: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @ObservedObject var viewModel: WysiwygComposerViewModel
     let sendMessageAction: (WysiwygComposerContent) -> Void
-    let startModuleAction: (ComposerModule) -> Void
-    
-    @State private var isBottomSheetExpanded = false
+    let showSendMediaActions: () -> Void
+    var textColor = Color(.label)
+
     @State private var showSendButton = false
     
     private let borderHeight: CGFloat = 44
@@ -81,7 +81,7 @@ struct Composer: View {
                 .padding(.bottom, 4)
                 HStack{
                     Button {
-                        isBottomSheetExpanded = true
+                        showSendMediaActions()
                     } label: {
                         Image(Asset.Images.startComposeModule.name)
                             .foregroundColor(theme.colors.tertiaryContent)
@@ -117,44 +117,19 @@ struct Composer: View {
                 .padding(.horizontal, 16)
                 .padding(.bottom, 4)
             }
-            .sheet(isPresented: $isBottomSheetExpanded) {
-                moduleSelectionList
-                    .presentationDetents([.medium])
-            }
     }
     
-    var moduleSelectionList: some View {
-        VStack {
-            VStack(alignment: .leading) {
-                ForEach(ComposerModule.allCases) { module in
-                    HStack(spacing: 16) {
-                        Image(module.icon)
-                            .renderingMode(.template)
-                            .foregroundColor(theme.colors.accent)
-                        Text(module.title)
-                            .foregroundColor(theme.colors.primaryContent)
-                            .font(theme.fonts.body)
-                        Spacer()
-                    }
-                    .onTapGesture {
-                        isBottomSheetExpanded = false
-                        self.startModuleAction(module)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                }
-            }
-            .padding(.top, 16)
-            .background(theme.colors.background.ignoresSafeArea())
-            Spacer()
-        }
-    }
+
 }
 
-@available(iOS 16.0, *)
+@available(iOS 15.0, *)
 struct Composer_Previews: PreviewProvider {
     static let stateRenderer = MockComposerScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
     }
+}
+
+enum ComposerCreateActionListViewAction {
+    case selectAction(ComposerCreateAction)
 }

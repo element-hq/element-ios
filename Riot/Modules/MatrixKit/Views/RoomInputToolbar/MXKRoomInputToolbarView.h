@@ -100,6 +100,12 @@ typedef enum : NSUInteger
  @param rawText the raw message to send.
  */
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView *)toolbarView sendFormattedTextMessage:(NSString *)formattedTextMessage withRawText:(NSString *)rawText;
+/**
+ Tells the delegate that the user wants to display the send media actions.
+
+ @param toolbarView the room input toolbar view.
+ */
+- (void)roomInputToolbarViewShowSendMediaActions:(MXKRoomInputToolbarView *)toolbarView;
 
 /**
  Tells the delegate that the user wants to send an image.

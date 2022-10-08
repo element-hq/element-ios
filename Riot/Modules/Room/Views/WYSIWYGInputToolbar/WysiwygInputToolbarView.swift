@@ -33,14 +33,13 @@ class SelfSizingHostingController<Content>: UIHostingController<Content> where C
     }
 }
 
-@available(iOS 16.0, *)
+@available(iOS 15.0, *)
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputToolbarViewProtocol {
     
     override class func instantiate() -> MXKRoomInputToolbarView! {
         return loadFromNib()
     }
     
-    @objc var startModuleAction: ((ComposerModule) -> Void)?
     private weak var toolbarViewDelegate: RoomInputToolbarViewDelegate? {
         return (delegate as? RoomInputToolbarViewDelegate) ?? nil
     }
@@ -57,9 +56,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
         let composer = Composer(viewModel: viewModel, sendMessageAction: { [weak self] content in
             guard let self = self else { return }
             self.sendWysiwygMessage(content: content)
-        }, startModuleAction: { [weak self] module in
+        }, showSendMediaActions: { [weak self]  in
             guard let self = self else { return }
-            self.startModuleAction?(module)
+            self.showSendMediaActions()
         })
         
         hostingViewController = SelfSizingHostingController(rootView: composer)
@@ -103,6 +102,11 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
     
     private func sendWysiwygMessage(content: WysiwygComposerContent) {
         delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
+    }
+    
+    
+    private func showSendMediaActions() {
+        delegate?.roomInputToolbarViewShowSendMediaActions?(self)
     }
     
 }

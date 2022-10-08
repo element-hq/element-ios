@@ -31,7 +31,7 @@ enum FormatType {
     case underline
 }
 
-@objc enum ComposerModule: Int {
+@objc enum ComposerCreateAction: Int {
     case photoLibrary
     case stickers
     case attachments
@@ -105,11 +105,11 @@ extension FormatType {
     }
 }
 
-extension ComposerModule: CaseIterable, Identifiable {
+extension ComposerCreateAction: CaseIterable, Identifiable {
     var id: Self { self }
 }
 
-extension ComposerModule {
+extension ComposerCreateAction {
     var title: String {
         switch self {
         case .photoLibrary:
@@ -144,3 +144,12 @@ extension ComposerModule {
         }
     }
 }
+
+struct ComposerCreateActionListViewState: BindableState {
+    let actions: [ComposerCreateAction]
+}
+
+enum ComposerCreateActionListViewModelResult {
+    case done(ComposerCreateAction)
+}
+
