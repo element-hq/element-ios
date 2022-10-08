@@ -257,17 +257,32 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         navigationRouter.present(modalRouter, animated: true)
     }
     
-    private func showCompleteSecurity() {
-        AppDelegate.theDelegate().presentCompleteSecurity(for: self.parameters.session)
-        #warning("Need a way to listen for success!")
+    /// Shows a prompt to the user that it is not possible to verify
+    /// another session until the current session has been verified.
+    private func showCannotVerifyOtherSessionPrompt() {
+        let alert = UIAlertController(title: VectorL10n.securitySettingsCompleteSecurityAlertTitle,
+                                      message: VectorL10n.securitySettingsCompleteSecurityAlertMessage,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: VectorL10n.later, style: .cancel))
+        alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default) { [weak self] _ in
+            self?.showCompleteSecurity()
+        })
+        
+        navigationRouter.present(alert, animated: true)
     }
-            
+    
+    /// Shows the Complete Security modal for the user to verify their current session.
+    private func showCompleteSecurity() {
+        AppDelegate.theDelegate().presentCompleteSecurity(for: parameters.session)
+    }
+    
+    /// Shows the verification screen for the specified session.
     private func showVerification(for sessionInfo: UserSessionInfo) {
-        guard parameters.session.crypto?.crossSigning?.canCrossSign == true else {
-            #warning("Show a prompt here instead.")
-            showCompleteSecurity()
+        if sessionInfo.verificationState == .unknown {
+            showCannotVerifyOtherSessionPrompt()
             return
         }
+        
         let coordinator = UserVerificationCoordinator(presenter: toPresentable(),
                                                       session: parameters.session,
                                                       userId: parameters.session.myUserId,
@@ -325,9 +340,11 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
 }
 
+// MARK: CrossSigningSetupCoordinatorDelegate
+
 extension UserSessionsFlowCoordinator: CrossSigningSetupCoordinatorDelegate {
     func crossSigningSetupCoordinatorDidComplete(_ coordinator: CrossSigningSetupCoordinatorType) {
-        allSessionsService.updateOverviewData { _ in }
+        // The service is listening for changes so there's nothing to do here.
         remove(childCoordinator: coordinator)
     }
     
@@ -342,9 +359,10 @@ extension UserSessionsFlowCoordinator: CrossSigningSetupCoordinatorDelegate {
 }
 
 // MARK: UserVerificationCoordinatorDelegate
+
 extension UserSessionsFlowCoordinator: UserVerificationCoordinatorDelegate {
     func userVerificationCoordinatorDidComplete(_ coordinator: UserVerificationCoordinatorType) {
-        allSessionsService.updateOverviewData { _ in }
+        // The service is listening for changes so there's nothing to do here.
         remove(childCoordinator: coordinator)
     }
 }

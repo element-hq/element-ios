@@ -28,7 +28,7 @@ protocol UserSessionsDataProviderProtocol {
     
     func device(withDeviceId deviceId: String, ofUser userId: String) -> MXDeviceInfo?
     
-    func isDeviceVerified(deviceInfo: MXDeviceInfo?) -> Bool
+    func verificationState(for deviceInfo: MXDeviceInfo?) -> UserSessionInfo.VerificationState
     
     func accountData(for eventType: String) -> [AnyHashable: Any]?
 

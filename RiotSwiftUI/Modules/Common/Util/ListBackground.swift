@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,7 +52,7 @@ extension View {
     
     /// Finds a `UICollectionView` from a `SwiftUI.List`, or `SwiftUI.List` child.
     /// Stop gap until https://github.com/siteline/SwiftUI-Introspect/pull/169
-    func introspectCollectionView(customize: @escaping (UICollectionView) -> ()) -> some View {
+    func introspectCollectionView(customize: @escaping (UICollectionView) -> Void) -> some View {
         introspect(selector: TargetViewSelector.ancestorOrSiblingContaining, customize: customize)
     }
 }

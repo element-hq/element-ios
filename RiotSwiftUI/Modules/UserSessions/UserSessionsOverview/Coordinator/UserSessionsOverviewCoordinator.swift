@@ -37,7 +37,7 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
 
     init(parameters: UserSessionsOverviewCoordinatorParameters) {
         self.parameters = parameters
-        self.service = parameters.service
+        service = parameters.service
         
         viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: parameters.service)
         

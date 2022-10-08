@@ -22,7 +22,7 @@ struct UserSessionListItemViewDataFactory {
                                                                sessionDisplayName: sessionInfo.name)
         let sessionDetails = buildSessionDetails(sessionInfo: sessionInfo)
         let deviceAvatarViewData = DeviceAvatarViewData(deviceType: sessionInfo.deviceType,
-                                                        isVerified: sessionInfo.isVerified)
+                                                        verificationState: sessionInfo.verificationState)
         return UserSessionListItemViewData(sessionId: sessionInfo.id,
                                            sessionName: sessionName,
                                            sessionDetails: sessionDetails,
@@ -50,7 +50,15 @@ struct UserSessionListItemViewDataFactory {
     private func activeSessionDetails(sessionInfo: UserSessionInfo) -> String {
         let sessionDetailsString: String
         
-        let sessionStatusText = sessionInfo.isVerified ? VectorL10n.userSessionVerifiedShort : VectorL10n.userSessionUnverifiedShort
+        let sessionStatusText: String
+        switch sessionInfo.verificationState {
+        case .verified:
+            sessionStatusText = VectorL10n.userSessionVerifiedShort
+        case .unverified:
+            sessionStatusText = VectorL10n.userSessionUnverifiedShort
+        case .unknown:
+            sessionStatusText = VectorL10n.userSessionUnverifiedShort; #warning("Add a string for this.")
+        }
         
         var lastActivityDateString: String?
         

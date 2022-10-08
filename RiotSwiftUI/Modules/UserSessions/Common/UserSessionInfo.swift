@@ -27,8 +27,8 @@ struct UserSessionInfo: Identifiable {
     /// The device type used by the session
     let deviceType: DeviceType
     
-    /// True to indicate that the session is verified
-    let isVerified: Bool
+    /// The current state of verification for the session.
+    let verificationState: VerificationState
     
     /// The IP address where this device was last seen.
     let lastSeenIP: String?
@@ -69,6 +69,17 @@ struct UserSessionInfo: Identifiable {
 
     /// True to indicate that this is current user session
     let isCurrent: Bool
+    
+    /// Represents a verification state.
+    enum VerificationState {
+        /// The state is unknown (likely because the current session
+        /// hasn't been set up for cross-signing yet).
+        case unknown
+        /// The session has not yet been verified.
+        case unverified
+        /// The session has been verified.
+        case verified
+    }
 }
 
 // MARK: - Equatable
@@ -86,7 +97,45 @@ extension UserSessionInfo {
         UserSessionInfo(id: "1",
                         name: "Element Mobile: iOS",
                         deviceType: .mobile,
-                        isVerified: true,
+                        verificationState: .verified,
+                        lastSeenIP: "1.0.0.1",
+                        lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
+                        applicationName: "Element iOS",
+                        applicationVersion: "1.9.8",
+                        applicationURL: nil,
+                        deviceModel: nil,
+                        deviceOS: "iOS 16.0.2",
+                        lastSeenIPLocation: nil,
+                        clientName: nil,
+                        clientVersion: nil,
+                        isActive: false,
+                        isCurrent: false)
+    }
+    
+    static var mockPhoneUnverified: UserSessionInfo {
+        UserSessionInfo(id: "1",
+                        name: "Element Mobile: iOS",
+                        deviceType: .mobile,
+                        verificationState: .unverified,
+                        lastSeenIP: "1.0.0.1",
+                        lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
+                        applicationName: "Element iOS",
+                        applicationVersion: "1.9.8",
+                        applicationURL: nil,
+                        deviceModel: nil,
+                        deviceOS: "iOS 16.0.2",
+                        lastSeenIPLocation: nil,
+                        clientName: nil,
+                        clientVersion: nil,
+                        isActive: false,
+                        isCurrent: false)
+    }
+    
+    static var mockPhoneUnknownVerification: UserSessionInfo {
+        UserSessionInfo(id: "1",
+                        name: "Element Mobile: iOS",
+                        deviceType: .mobile,
+                        verificationState: .unknown,
                         lastSeenIP: "1.0.0.1",
                         lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
                         applicationName: "Element iOS",

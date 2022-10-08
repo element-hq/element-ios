@@ -44,20 +44,14 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
         session.crypto.device(withDeviceId: deviceId, ofUser: userId)
     }
     
-    func isDeviceVerified(deviceInfo: MXDeviceInfo?) -> Bool {
-        guard let deviceInfo = deviceInfo else { return false }
+    func verificationState(for deviceInfo: MXDeviceInfo?) -> UserSessionInfo.VerificationState {
+        guard let deviceInfo = deviceInfo else { return .unknown }
 
         guard session.crypto?.crossSigning?.canCrossSign == true else {
-            if deviceInfo.deviceId == session.myDeviceId {
-                return false
-            } else {
-                #warning("Previously returned encryptionNormal")
-                // return true
-                return false
-            }
+            return deviceInfo.deviceId == session.myDeviceId ? .unverified : .unknown
         }
         
-        return deviceInfo.trustLevel.isVerified
+        return deviceInfo.trustLevel.isVerified ? .verified : .unverified
     }
     
     func accountData(for eventType: String) -> [AnyHashable: Any]? {
