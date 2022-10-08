@@ -86,6 +86,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
                 })
         ]
         
+        update(theme: ThemeService.shared().theme)
+        registerThemeServiceDidChangeThemeNotification()
     }
 
     override func customizeRendering() {
@@ -110,4 +112,15 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
         delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
     }
     
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
+    }
+    
+    private func update(theme: Theme) {
+        hostingViewController.view.backgroundColor = theme.colors.background
+    }
 }
