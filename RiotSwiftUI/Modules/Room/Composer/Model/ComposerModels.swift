@@ -31,15 +31,6 @@ enum FormatType {
     case underline
 }
 
-@objc enum ComposerCreateAction: Int {
-    case photoLibrary
-    case stickers
-    case attachments
-    case polls
-    case location
-    case camera
-}
-
 extension FormatType: CaseIterable, Identifiable {
     var id: Self { self }
 }
@@ -104,52 +95,3 @@ extension FormatType {
         }
     }
 }
-
-extension ComposerCreateAction: CaseIterable, Identifiable {
-    var id: Self { self }
-}
-
-extension ComposerCreateAction {
-    var title: String {
-        switch self {
-        case .photoLibrary:
-            return VectorL10n.wysiwygComposerStartActionMediaPicker
-        case .stickers:
-            return VectorL10n.wysiwygComposerStartActionStickers
-        case .attachments:
-            return VectorL10n.wysiwygComposerStartActionAttachments
-        case .polls:
-            return VectorL10n.wysiwygComposerStartActionPolls
-        case .location:
-            return VectorL10n.wysiwygComposerStartActionLocation
-        case .camera:
-            return VectorL10n.wysiwygComposerStartActionCamera
-        }
-    }
-    
-    var icon: String {
-        switch self {
-        case .photoLibrary:
-            return Asset.Images.actionMediaLibrary.name
-        case .stickers:
-            return Asset.Images.actionSticker.name
-        case .attachments:
-            return Asset.Images.actionFile.name
-        case .polls:
-            return Asset.Images.actionPoll.name
-        case .location:
-            return Asset.Images.actionLocation.name
-        case .camera:
-            return Asset.Images.actionCamera.name
-        }
-    }
-}
-
-struct ComposerCreateActionListViewState: BindableState {
-    let actions: [ComposerCreateAction]
-}
-
-enum ComposerCreateActionListViewModelResult {
-    case done(ComposerCreateAction)
-}
-

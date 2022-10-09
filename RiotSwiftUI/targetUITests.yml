@@ -35,7 +35,8 @@ targets:
 
     dependencies:
     - target: RiotSwiftUI
-
+    - package: WysiwygComposer
+  
     settings:
       base:
         TEST_TARGET_NAME: RiotSwiftUI

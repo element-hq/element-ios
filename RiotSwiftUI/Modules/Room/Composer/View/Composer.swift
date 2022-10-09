@@ -14,32 +14,29 @@
 // limitations under the License.
 //
 
+import DSBottomSheet
 import SwiftUI
 import WysiwygComposer
-import DSBottomSheet
 
-@available(iOS 15.0, *)
 struct Composer: View {
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @ObservedObject var viewModel: WysiwygComposerViewModel
     let sendMessageAction: (WysiwygComposerContent) -> Void
     let showSendMediaActions: () -> Void
     var textColor = Color(.label)
-
+    
     @State private var showSendButton = false
     
     private let borderHeight: CGFloat = 44
     private let minTextViewHeight: CGFloat = 20
-    
     private var verticalPadding: CGFloat {
         (borderHeight - minTextViewHeight) / 2
     }
     
     private var formatItems: [FormatItem] {
         FormatType.allCases.map { type in
-            return FormatItem(
+            FormatItem(
                 type: type,
                 active: viewModel.reversedActions.contains(type.composerAction),
                 disabled: viewModel.disabledActions.contains(type.composerAction)
@@ -48,8 +45,9 @@ struct Composer: View {
     }
     
     var body: some View {
-            VStack {
-                let rect = RoundedRectangle(cornerRadius: borderHeight / 2)
+        VStack {
+            let rect = RoundedRectangle(cornerRadius: borderHeight / 2)
+            ZStack(alignment: .topTrailing) {
                 WysiwygComposerView(
                     content: viewModel.content,
                     replaceText: viewModel.replaceText,
@@ -62,71 +60,68 @@ struct Composer: View {
                 .onAppear {
                     viewModel.setup()
                 }
-                .overlay(alignment: .topTrailing) {
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.25)) {
-                            viewModel.maximised.toggle()
-                        }
-                    } label: {
-                        Image(viewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
-                            .foregroundColor(theme.colors.tertiaryContent)
+                Button {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        viewModel.maximised.toggle()
                     }
-                    .padding(.top, 4)
-                    .padding(.trailing, 12)
+                } label: {
+                    Image(viewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
+                        .foregroundColor(theme.colors.tertiaryContent)
                 }
-                .padding(.vertical, verticalPadding)
-                .clipShape(rect)
-                .overlay(rect.stroke(theme.colors.quinaryContent, lineWidth: 2))
-                .padding(.horizontal, 12)
-                .padding(.top, 8)
-                .padding(.bottom, 4)
-                HStack{
-                    Button {
-                        showSendMediaActions()
-                    } label: {
-                        Image(Asset.Images.startComposeModule.name)
-                            .foregroundColor(theme.colors.tertiaryContent)
-                            .padding(11)
-                            .background(Circle().fill(theme.colors.system))
-                    }
-                    FormattingToolbar(formatItems: formatItems) { type in
-                        viewModel.apply(type.action)
-                    }
-                    Spacer()
-                    ZStack{
-                        Button {
-                            
-                        } label: {
-                            Image(Asset.Images.voiceMessageRecordButtonDefault.name)
-                                .foregroundColor(theme.colors.tertiaryContent)
-                        }
-// TODO Add support for voice messages
-//                        .isHidden(showSendButton)
-                        .isHidden(true)
-                        Button {
-                            sendMessageAction(viewModel.content)
-                            viewModel.clearContent()
-                        } label: {
-                            Image(Asset.Images.sendIcon.name)
-                                .foregroundColor(theme.colors.tertiaryContent)
-                        }
-                        .isHidden(!showSendButton)
-                    }.onChange(of: viewModel.isContentEmpty) { (empty) in
-                        withAnimation(.easeInOut(duration: 0.25)) {
-                            showSendButton = !empty
-                        }
-                    }
-                }
-                .padding(.horizontal, 16)
-                .padding(.bottom, 4)
-                .animation(.none)
+                .padding(.top, 4)
+                .padding(.trailing, 12)
             }
+            .padding(.vertical, verticalPadding)
+            .clipShape(rect)
+            .overlay(rect.stroke(theme.colors.quinaryContent, lineWidth: 2))
+            .padding(.horizontal, 12)
+            .padding(.top, 8)
+            .padding(.bottom, 4)
+            HStack {
+                Button {
+                    showSendMediaActions()
+                } label: {
+                    Image(Asset.Images.startComposeModule.name)
+                        .foregroundColor(theme.colors.tertiaryContent)
+                        .padding(11)
+                        .background(Circle().fill(theme.colors.system))
+                }
+                FormattingToolbar(formatItems: formatItems) { type in
+                    viewModel.apply(type.action)
+                }
+                Spacer()
+                ZStack {
+                    // TODO: Add support for voice messages
+//                    Button {
+//
+//                    } label: {
+//                        Image(Asset.Images.voiceMessageRecordButtonDefault.name)
+//                            .foregroundColor(theme.colors.tertiaryContent)
+//                    }
+                    //                        .isHidden(showSendButton)
+//                    .isHidden(true)
+                    Button {
+                        sendMessageAction(viewModel.content)
+                        viewModel.clearContent()
+                    } label: {
+                        Image(Asset.Images.sendIcon.name)
+                            .foregroundColor(theme.colors.tertiaryContent)
+                    }
+                    .isHidden(!showSendButton)
+                }
+                .onChange(of: viewModel.isContentEmpty) { empty in
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        showSendButton = !empty
+                    }
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 4)
+            .animation(.none)
+        }
     }
-    
-
 }
 
-@available(iOS 15.0, *)
 struct Composer_Previews: PreviewProvider {
     static let stateRenderer = MockComposerScreenState.stateRenderer
     static var previews: some View {

@@ -16,30 +16,28 @@
 
 import Foundation
 import SwiftUI
-import WysiwygComposer
 
-enum MockComposerScreenState: MockScreenState, CaseIterable {
-    case composer
+enum MockComposerCreateActionListScreenState: MockScreenState, CaseIterable {
+    case partialList
+    case fullList
     
     var screenType: Any.Type {
-        Composer.self
+        ComposerCreateActionList.self
     }
     
     var screenView: ([Any], AnyView) {
-        let viewModel = WysiwygComposerViewModel(minHeight: 20, maxHeight: 360)
+        let actions: [ComposerCreateAction]
+        switch self {
+        case .partialList:
+            actions = [.photoLibrary, .polls]
+        case .fullList:
+            actions = ComposerCreateAction.allCases
+        }
+        let viewModel = ComposerCreateActionListViewModel(initialViewState: ComposerCreateActionListViewState(actions: actions))
         
         return (
             [viewModel],
-            AnyView(VStack {
-                Spacer()
-                Composer(viewModel: viewModel, sendMessageAction: { _ in }, showSendMediaActions: { })
-            }.frame(
-                minWidth: 0,
-                maxWidth: .infinity,
-                minHeight: 0,
-                maxHeight: .infinity,
-                alignment: .topLeading
-            ))
+            AnyView(ComposerCreateActionList(viewModel: viewModel.context))
         )
     }
 }

@@ -17,15 +17,12 @@
 import SwiftUI
 
 struct ComposerCreateActionList: View {
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
     
     @ObservedObject var viewModel: ComposerCreateActionListViewModel.Context
     
     var body: some View {
-        
-        VStack{
+        VStack {
             VStack(alignment: .leading) {
                 ForEach(viewModel.viewState.actions) { action in
                     HStack(spacing: 16) {
@@ -51,9 +48,11 @@ struct ComposerCreateActionList: View {
     }
 }
 
+// MARK: - Previews
+
 struct ComposerCreateActionList_Previews: PreviewProvider {
-    static let viewModel = ComposerCreateActionListViewModel(initialViewState: ComposerCreateActionListViewState(actions: ComposerCreateAction.allCases))
+    static let stateRenderer = MockComposerCreateActionListScreenState.stateRenderer
     static var previews: some View {
-        ComposerCreateActionList(viewModel: viewModel.context)
+        stateRenderer.screenGroup()
     }
 }
