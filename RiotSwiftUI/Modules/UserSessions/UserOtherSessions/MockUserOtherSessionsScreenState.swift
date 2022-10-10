@@ -23,7 +23,8 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-
+    
+    case all
     case inactiveSessions
     case unverifiedSessions
     
@@ -35,13 +36,17 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
     /// A list of screen state definitions
     static var allCases: [MockUserOtherSessionsScreenState] {
         // Each of the presence statuses
-        [.inactiveSessions, .unverifiedSessions]
+        [.all, .inactiveSessions, .unverifiedSessions]
     }
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
         let viewModel: UserOtherSessionsViewModel
         switch self {
+        case .all:
+            viewModel = UserOtherSessionsViewModel(sessionInfos: allSessions(),
+                                                   filter: .all,
+                                                   title: VectorL10n.userSessionsOverviewOtherSessionsSectionTitle)
         case .inactiveSessions:
             viewModel = UserOtherSessionsViewModel(sessionInfos: inactiveSessions(),
                                                    filter: .inactive,
@@ -51,7 +56,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                                                    filter: .unverified,
                                                    title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
         }
-
+        
         // can simulate service and viewModel actions here if needs be.
         
         return (
@@ -159,6 +164,105 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          clientName: nil,
                          clientVersion: nil,
                          isActive: true,
+                         isCurrent: false)]
+    }
+    
+    private func allSessions() -> [UserSessionInfo] {
+        [UserSessionInfo(id: "0",
+                         name: "iOS",
+                         deviceType: .mobile,
+                         isVerified: false,
+                         lastSeenIP: "10.0.0.10",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 500_000,
+                         applicationName: nil,
+                         applicationVersion: nil,
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: nil,
+                         lastSeenIPLocation: nil,
+                         clientName: nil,
+                         clientVersion: nil,
+                         isActive: false,
+                         isCurrent: false),
+         UserSessionInfo(id: "1",
+                         name: "macOS",
+                         deviceType: .desktop,
+                         isVerified: true,
+                         lastSeenIP: "1.0.0.1",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 8_000_000,
+                         applicationName: nil,
+                         applicationVersion: nil,
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: nil,
+                         lastSeenIPLocation: nil,
+                         clientName: nil,
+                         clientVersion: nil,
+                         isActive: false,
+                         isCurrent: false),
+         UserSessionInfo(id: "2",
+                         name: "Firefox on Windows",
+                         deviceType: .web,
+                         isVerified: true,
+                         lastSeenIP: "2.0.0.2",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 9_000_000,
+                         applicationName: nil,
+                         applicationVersion: nil,
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: nil,
+                         lastSeenIPLocation: nil,
+                         clientName: nil,
+                         clientVersion: nil,
+                         isActive: false,
+                         isCurrent: false),
+         UserSessionInfo(id: "3",
+                         name: "Android",
+                         deviceType: .mobile,
+                         isVerified: false,
+                         lastSeenIP: "3.0.0.3",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 10_000_000,
+                         applicationName: nil,
+                         applicationVersion: nil,
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: nil,
+                         lastSeenIPLocation: nil,
+                         clientName: nil,
+                         clientVersion: nil,
+                         isActive: false,
+                         isCurrent: false),
+         UserSessionInfo(id: "4",
+                         name: "iOS",
+                         deviceType: .mobile,
+                         isVerified: false,
+                         lastSeenIP: "10.0.0.10",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 11_000_000,
+                         applicationName: nil,
+                         applicationVersion: nil,
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: nil,
+                         lastSeenIPLocation: nil,
+                         clientName: nil,
+                         clientVersion: nil,
+                         isActive: false,
+                         isCurrent: false),
+         UserSessionInfo(id: "5",
+                         name: "macOS",
+                         deviceType: .desktop,
+                         isVerified: true,
+                         lastSeenIP: "1.0.0.1",
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 20_000_000,
+                         applicationName: nil,
+                         applicationVersion: nil,
+                         applicationURL: nil,
+                         deviceModel: nil,
+                         deviceOS: nil,
+                         lastSeenIPLocation: nil,
+                         clientName: nil,
+                         clientVersion: nil,
+                         isActive: false,
                          isCurrent: false)]
     }
 }

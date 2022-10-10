@@ -52,9 +52,15 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
         viewModel.process(viewAction: .verifyCurrentSession)
         XCTAssertEqual(result, .verifyCurrentSession)
         
+        result = nil
         viewModel.process(viewAction: .viewAllInactiveSessions)
         XCTAssertEqual(result, .showOtherSessions(sessionInfos: [], filter: .inactive))
 
+        result = nil
+        viewModel.process(viewAction: .viewAllOtherSessions)
+        XCTAssertEqual(result, .showOtherSessions(sessionInfos: [], filter: .all))
+        
+        result = nil
         viewModel.process(viewAction: .linkDevice)
         XCTAssertEqual(result, .linkDevice)
     }

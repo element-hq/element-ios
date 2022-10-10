@@ -72,9 +72,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             case let .openSessionOverview(sessionInfo: sessionInfo):
                 self.openSessionOverview(sessionInfo: sessionInfo)
             case let .openOtherSessions(sessionInfos: sessionInfos, filter: filter):
-                self.openOtherSessions(sessionInfos: sessionInfos,
-                                       filterBy: filter,
-                                       title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
+                self.openOtherSessions(sessionInfos: sessionInfos, filterBy: filter)
             case .linkDevice:
                 self.openQRLoginScreen()
             }
@@ -129,7 +127,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         return UserSessionOverviewCoordinator(parameters: parameters)
     }
     
-    private func openOtherSessions(sessionInfos: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter, title: String) {
+    private func openOtherSessions(sessionInfos: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter) {
+        let title = filter == .all ? VectorL10n.userSessionsOverviewOtherSessionsSectionTitle : VectorL10n.userOtherSessionSecurityRecommendationTitle
         let coordinator = createOtherSessionsCoordinator(sessionInfos: sessionInfos,
                                                          filterBy: filter,
                                                          title: title)

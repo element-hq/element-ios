@@ -20,7 +20,7 @@ typealias UserSessionsOverviewViewModelType = StateStoreViewModel<UserSessionsOv
 
 class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSessionsOverviewViewModelProtocol {
     private let userSessionsOverviewService: UserSessionsOverviewServiceProtocol
-
+    
     var completion: ((UserSessionsOverviewViewModelResult) -> Void)?
 
     init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol) {
@@ -62,8 +62,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         case .viewAllInactiveSessions:
             showSessions(filteredBy: .inactive)
         case .viewAllOtherSessions:
-            // TODO: showSessions(filteredBy: .all)
-            break
+            showSessions(filteredBy: .all)
         case .tapUserSession(let sessionId):
             guard let session = userSessionsOverviewService.sessionForIdentifier(sessionId) else {
                 assertionFailure("Missing session info")
