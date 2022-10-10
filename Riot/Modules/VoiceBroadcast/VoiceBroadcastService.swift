@@ -34,19 +34,36 @@ public class VoiceBroadcastService: NSObject {
     
     private var voiceBroadcastInfoEventId: String?
     private unowned let room: MXRoom
+    public private(set) var state: State
     
     // MARK: - Setup
     
     public init(room: MXRoom) {
         self.room = room
+        state = State.stopped
     }
 
     // MARK: - Constants
-    private enum State {
-        static let started = "started"
-        static let paused = "paused"
-        static let resumed = "resumed"
-        static let stopped = "stopped"
+    
+    @objc public enum State: Int {
+        case started
+        case paused
+        case resumed
+        case stopped
+        
+        /// A string representation of the result.
+        var description: String {
+            switch self {
+            case .started:
+                return "started"
+            case .paused:
+                return "paused"
+            case .resumed:
+                return "resumed"
+            case .stopped:
+                return "stopped"
+            }
+        }
     }
     
     /// Start a voice broadcast.
@@ -89,7 +106,7 @@ public class VoiceBroadcastService: NSObject {
         return sendVoiceBroadcastInfo(state: State.stopped, completion: completion)
     }
     
-    private func sendVoiceBroadcastInfo(state: String, completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
+    private func sendVoiceBroadcastInfo(state: State, completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
         guard let userId = self.room.mxSession.myUserId else {
             completion(.failure(VoiceBroadcastServiceError.missingUserId))
             return nil
@@ -98,7 +115,7 @@ public class VoiceBroadcastService: NSObject {
         let stateKey = userId
         
         let voiceBroadcastContent = VoiceBroadcastEventContent()
-        voiceBroadcastContent.state = state
+        voiceBroadcastContent.state = state.description
         
         if state != State.started {
             guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
@@ -118,7 +135,15 @@ public class VoiceBroadcastService: NSObject {
         }
         
         
-        return self.room.sendStateEvent(.custom(VoiceBroadcastSettings.eventType), content: stateEventContent, stateKey: stateKey, completion: completion)
+        return self.room.sendStateEvent(.custom(VoiceBroadcastSettings.eventType), content: stateEventContent, stateKey: stateKey) { (response) in
+            switch response {
+            case .success(let object):
+                self.state = state
+                completion(.success(object))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     /// Send a bunch of a voice broadcast.

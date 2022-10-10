@@ -2316,7 +2316,16 @@ static CGSize kThreadListBarButtonItemImageSize;
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
             }
             
-            // TODO: init voice broadcast service and start recording
+            MXSession* session = self.roomDataSource.mxSession;
+            
+            [session setupUserVoiceBroadcastServiceFor:self.roomDataSource.room];
+            NSInteger voiceBroadcastServiceState = session.userVoiceBroadcastService.state;
+            if (voiceBroadcastServiceState == StateStopped) {
+                [session.userVoiceBroadcastService start];
+            } else {
+                [session.userVoiceBroadcastService stop];
+            }
+            
         }]];
     }
     roomInputView.actionsBar.actionItems = actionItems;
