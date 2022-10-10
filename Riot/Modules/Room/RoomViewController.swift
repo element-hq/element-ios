@@ -66,7 +66,7 @@ extension RoomViewController {
                     case .success:
                         break
                     case .failure:
-                        MXLog.error("[RoomViewController] sendAttributedTextMessage failed while updating event", context: [
+                        MXLog.error("[RoomViewController] sendFormattedTextMessage failed while updating event", context: [
                             "event_id": eventModified.eventId
                         ])
                     }
