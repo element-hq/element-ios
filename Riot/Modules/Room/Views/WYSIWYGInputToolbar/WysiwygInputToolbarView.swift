@@ -41,8 +41,10 @@ class SelfSizingHostingController<Content>: UIHostingController<Content> where C
     @objc func setHtml(content: String)
 }
 
-@available(iOS 15.0, *)
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInputToolbarViewProtocol {
+    
+    var eventSenderDisplayName: String!
+    var sendMode: RoomInputToolbarViewSendMode = .send
     
     override class func instantiate() -> MXKRoomInputToolbarView! {
         return loadFromNib()

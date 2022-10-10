@@ -61,7 +61,7 @@ extension RoomViewController {
         self.setupRoomDataSource { roomDataSource in
             guard let roomDataSource = roomDataSource as? RoomDataSource else { return }
             
-            if self.inputToolbar?.sendMode == .edit, let eventModified = eventModified {
+            if self.wysiwygInputToolbar?.sendMode == .edit, let eventModified = eventModified {
                 roomDataSource.replaceFormattedTextMessage(
                     for: eventModified,
                     rawText: rawTextMsg,
@@ -145,5 +145,9 @@ extension RoomViewController {
 private extension RoomViewController {
     var inputToolbar: RoomInputToolbarView? {
         return self.inputToolbarView as? RoomInputToolbarView
+    }
+    
+    var wysiwygInputToolbar: WysiwygInputToolbarView? {
+        return self.inputToolbarView as? WysiwygInputToolbarView
     }
 }
