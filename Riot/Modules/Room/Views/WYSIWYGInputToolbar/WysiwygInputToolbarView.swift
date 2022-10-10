@@ -33,10 +33,6 @@ class SelfSizingHostingController<Content>: UIHostingController<Content> where C
     }
 }
 
-@objc extension MXKRoomInputToolbarView {
-    func setHtml(content: String) {}
-}
-
 @objc protocol HtmlRoomInputToolbarViewProtocol: RoomInputToolbarViewProtocol {
     @objc func setHtml(content: String)
 }
@@ -104,7 +100,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         self.backgroundColor = .clear
     }
     
-    override func setHtml(content: String) {
+    func setHtml(content: String) {
         hostingViewController.rootView.viewModel.setHtmlContent(content)
     }
     

@@ -2054,7 +2054,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)setInputToolBarSendMode:(RoomInputToolbarViewSendMode)sendMode forEventWithId:(NSString *)eventId
 {
-    if ((self.inputToolbarView) && [self.inputToolbarView conformsToProtocol:@protocol(RoomInputToolbarViewProtocol)])
+    if ((self.inputToolbarView) && [self inputToolbarConformsToToolbarViewProtocol])
     {
         MXKRoomInputToolbarView <RoomInputToolbarViewProtocol> *roomInputToolbarView = (MXKRoomInputToolbarView <RoomInputToolbarViewProtocol> *) self.inputToolbarView;
         if (eventId)
@@ -4616,7 +4616,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     if ([self inputToolbarConformsToHtmlToolbarViewProtocol]) {
         self.textMessageBeforeEditing = self.inputToolbarView.attributedTextMessage;
-        [self.inputToolbarView setHtmlWithContent: [self.customizedRoomDataSource editableHtmlTextMessageFor:event]];
+        
+        MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *htmlInputToolBarView = (MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *) self.inputToolbarView;
+        [htmlInputToolBarView setHtmlWithContent: [self.customizedRoomDataSource editableHtmlTextMessageFor:event]];
     }
     else if ([self inputToolbarConformsToToolbarViewProtocol])
     {
