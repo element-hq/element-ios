@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "devicekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/devicekit/DeviceKit",
+      "state" : {
+        "revision" : "20e0991f3975916ab0f6d58db84d8bc64f883537",
+        "version" : "4.7.0"
+      }
+    },
+    {
       "identity" : "maplibre-gl-native-distribution",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/maplibre/maplibre-gl-native-distribution",
