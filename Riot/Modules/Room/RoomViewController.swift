@@ -60,8 +60,18 @@ extension RoomViewController {
         let eventModified = self.roomDataSource.event(withEventId: customizedRoomDataSource?.selectedEventId)
         self.setupRoomDataSource { roomDataSource in
             guard let roomDataSource = roomDataSource as? RoomDataSource else { return }
-            
-            if self.wysiwygInputToolbar?.sendMode == .edit, let eventModified = eventModified {
+            if self.wysiwygInputToolbar?.sendMode == .reply, let eventModified = eventModified {
+                roomDataSource.sendReply(to: eventModified, rawText: rawTextMsg, htmlText: htmlMsg) { response in
+                    switch response {
+                    case .success:
+                        break
+                    case .failure:
+                        MXLog.error("[RoomViewController] sendAttributedTextMessage failed while updating event", context: [
+                            "event_id": eventModified.eventId
+                        ])
+                    }
+                }
+            } else if self.wysiwygInputToolbar?.sendMode == .edit, let eventModified = eventModified {
                 roomDataSource.replaceFormattedTextMessage(
                     for: eventModified,
                     rawText: rawTextMsg,

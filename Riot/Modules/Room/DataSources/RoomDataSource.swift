@@ -101,8 +101,6 @@ extension RoomDataSource {
     func sendReply(to eventToReply: MXEvent,
                    withAttributedTextMessage attributedText: NSAttributedString,
                    completion: @escaping (MXResponse<String?>) -> Void) {
-        var localEcho: MXEvent?
-        
         let sanitized = sanitizedAttributedMessageText(attributedText)
         let rawText: String
         let html: String? = htmlMessageFromSanitizedAttributedText(sanitized)
@@ -111,6 +109,33 @@ extension RoomDataSource {
         } else {
             rawText = sanitized.string
         }
+        
+        handleFormattedSendReply(to: eventToReply, rawText: rawText, html: html, completion: completion)
+    }
+    
+    /// Send a reply to an event with a html formatted  text message to the room.
+    ///
+    /// While sending, a fake event will be echoed in the messages list.
+    /// Once complete, this local echo will be replaced by the event saved by the homeserver.
+    ///
+    /// - Parameters:
+    ///   - eventToReply: the event to reply
+    ///   - rawText: the raw text to send
+    ///   - htmlText: the html text to send
+    ///   - completion: http operation completion block
+    func sendReply(to eventToReply: MXEvent,
+                   rawText: String,
+                   htmlText: String,
+                   completion: @escaping (MXResponse<String?>) -> Void) {
+        
+       handleFormattedSendReply(to: eventToReply, rawText: rawText, html: htmlText, completion: completion)
+    }
+    
+    private func handleFormattedSendReply(to eventToReply: MXEvent,
+                                          rawText: String,
+                                          html: String?,
+                                          completion: @escaping (MXResponse<String?>) -> Void) {
+        var localEcho: MXEvent?
         
         let stringLocalizer: MXSendReplyEventStringLocalizerProtocol = MXKSendReplyEventStringLocalizer()
         
