@@ -88,9 +88,13 @@ class VectorHostingController: UIHostingController<AnyView> {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        if let navigationController = navigationController, navigationController.isNavigationBarHidden != isNavigationBarHidden {
-            navigationController.isNavigationBarHidden = isNavigationBarHidden
-        }
+        guard
+            let navigationController = navigationController,
+            navigationController.topViewController == self,
+            navigationController.isNavigationBarHidden != isNavigationBarHidden
+        else { return }
+        
+        navigationController.isNavigationBarHidden = isNavigationBarHidden
     }
     
     override func viewDidLayoutSubviews() {
