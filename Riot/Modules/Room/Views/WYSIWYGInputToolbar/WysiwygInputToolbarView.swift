@@ -41,14 +41,13 @@ class SelfSizingHostingController<Content>: UIHostingController<Content> where C
     @objc func setHtml(content: String)
 }
 
-@available(iOS 16.0, *)
+@available(iOS 15.0, *)
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInputToolbarViewProtocol {
     
     override class func instantiate() -> MXKRoomInputToolbarView! {
         return loadFromNib()
     }
     
-    @objc var startModuleAction: ((ComposerModule) -> Void)?
     private weak var toolbarViewDelegate: RoomInputToolbarViewDelegate? {
         return (delegate as? RoomInputToolbarViewDelegate) ?? nil
     }
@@ -65,9 +64,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         let composer = Composer(viewModel: viewModel, sendMessageAction: { [weak self] content in
             guard let self = self else { return }
             self.sendWysiwygMessage(content: content)
-        }, startModuleAction: { [weak self] module in
+        }, showSendMediaActions: { [weak self]  in
             guard let self = self else { return }
-            self.startModuleAction?(module)
+            self.showSendMediaActions()
         })
         
         hostingViewController = SelfSizingHostingController(rootView: composer)
@@ -94,6 +93,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                 })
         ]
         
+        update(theme: ThemeService.shared().theme)
+        registerThemeServiceDidChangeThemeNotification()
     }
 
     override func customizeRendering() {
@@ -122,4 +123,20 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
     }
     
+
+    private func showSendMediaActions() {
+        delegate?.roomInputToolbarViewShowSendMediaActions?(self)
+    }
+    
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
+    }
+    
+    private func update(theme: Theme) {
+        hostingViewController.view.backgroundColor = theme.colors.background
+    }
 }

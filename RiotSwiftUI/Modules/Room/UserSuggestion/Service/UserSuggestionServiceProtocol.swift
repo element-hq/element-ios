@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 protocol UserSuggestionItemProtocol: Avatarable {
     var userId: String { get }
@@ -24,7 +24,6 @@ protocol UserSuggestionItemProtocol: Avatarable {
 }
 
 protocol UserSuggestionServiceProtocol {
-    
     var items: CurrentValueSubject<[UserSuggestionItemProtocol], Never> { get }
     
     var currentTextTrigger: String? { get }
@@ -38,6 +37,7 @@ extension UserSuggestionItemProtocol {
     var mxContentUri: String? {
         avatarUrl
     }
+
     var matrixItemId: String {
         userId
     }

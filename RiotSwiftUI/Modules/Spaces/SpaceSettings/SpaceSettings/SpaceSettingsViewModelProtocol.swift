@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 protocol SpaceSettingsViewModelProtocol {
-    
     var completion: ((SpaceSettingsViewModelResult) -> Void)? { get set }
     static func makeSpaceSettingsViewModel(service: SpaceSettingsServiceProtocol) -> SpaceSettingsViewModelProtocol
     var context: SpaceSettingsViewModelType.Context { get }

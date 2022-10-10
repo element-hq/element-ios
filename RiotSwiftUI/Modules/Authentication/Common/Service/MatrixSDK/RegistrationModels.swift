@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -114,7 +114,7 @@ struct FlowResult {
     }
     
     /// Whether fallback registration should be used due to unsupported stages.
-    var needsFallback : Bool {
+    var needsFallback: Bool {
         missingStages.filter(\.isMandatory).contains { stage in
             if case .other = stage { return true } else { return false }
         }

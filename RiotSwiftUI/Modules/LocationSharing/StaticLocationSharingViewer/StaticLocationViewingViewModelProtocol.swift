@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 
 protocol StaticLocationViewingViewModelProtocol {
-    
     var completion: ((StaticLocationViewingViewModelResult) -> Void)? { get set }
     var context: StaticLocationViewingViewModelType.Context { get }
 }

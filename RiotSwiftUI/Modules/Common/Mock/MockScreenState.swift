@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,12 +24,11 @@ protocol MockScreenState {
 }
 
 extension MockScreenState {
-    
     /// Get a list of the screens for every screen state.
     static var stateRenderer: StateRenderer {
-        let depsAndViews  = screenStates.map(\.screenView)
-        let deps = depsAndViews.map({ $0.0 })
-        let views = depsAndViews.map({ $0.1 })
+        let depsAndViews = screenStates.map(\.screenView)
+        let deps = depsAndViews.map(\.0)
+        let views = depsAndViews.map(\.1)
         let titles = screenStates.map(\.title)
         
         var states = [ScreenStateInfo]()
@@ -45,7 +44,7 @@ extension MockScreenState {
     
     /// All available screen state keys
     static var screenNames: [String] {
-        screenStates.map { $0.title }
+        screenStates.map(\.title)
     }
     
     /// A title to represent the screen and it's screen state
@@ -54,12 +53,12 @@ extension MockScreenState {
     }
     
     private func simpleTypeName(_ type: Any) -> String {
-        String(describing: type).components(separatedBy: .punctuationCharacters).filter { $0.count > 0}.last!
+        String(describing: type).components(separatedBy: .punctuationCharacters).filter { $0.count > 0 }.last!
     }
 }
 
 extension MockScreenState where Self: CaseIterable {
     static var screenStates: [MockScreenState] {
-        return Array(self.allCases)
+        Array(allCases)
     }
 }

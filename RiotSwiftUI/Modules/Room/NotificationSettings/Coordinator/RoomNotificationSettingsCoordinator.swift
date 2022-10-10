@@ -15,14 +15,14 @@
 //
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
+
     private var roomNotificationSettingsViewModel: RoomNotificationSettingsViewModelType
     private let roomNotificationSettingsViewController: UIViewController
     
@@ -47,34 +47,35 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
             roomNotificationService: roomNotificationService,
             avatarData: avatarData,
             displayName: room.summary.displayname,
-            roomEncrypted: room.summary.isEncrypted)
+            roomEncrypted: room.summary.isEncrypted
+        )
         let avatarService: AvatarServiceProtocol = AvatarService(mediaManager: room.mxSession.mediaManager)
         let view = RoomNotificationSettings(viewModel: viewModel, presentedModally: presentedModally)
             .addDependency(avatarService)
         let viewController = VectorHostingController(rootView: view)
-        self.roomNotificationSettingsViewModel = viewModel
-        self.roomNotificationSettingsViewController = viewController
+        roomNotificationSettingsViewModel = viewModel
+        roomNotificationSettingsViewController = viewController
     }
 
     // MARK: - Public methods
     
-    func start() {            
-        self.roomNotificationSettingsViewModel.coordinatorDelegate = self
+    func start() {
+        roomNotificationSettingsViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.roomNotificationSettingsViewController
+        roomNotificationSettingsViewController
     }
 }
 
 // MARK: - RoomNotificationSettingsViewModelCoordinatorDelegate
+
 extension RoomNotificationSettingsCoordinator: RoomNotificationSettingsViewModelCoordinatorDelegate {
-    
     func roomNotificationSettingsViewModelDidComplete(_ viewModel: RoomNotificationSettingsViewModelType) {
-        self.delegate?.roomNotificationSettingsCoordinatorDidComplete(self)
+        delegate?.roomNotificationSettingsCoordinatorDidComplete(self)
     }
     
     func roomNotificationSettingsViewModelDidCancel(_ viewModel: RoomNotificationSettingsViewModelType) {
-        self.delegate?.roomNotificationSettingsCoordinatorDidCancel(self)
+        delegate?.roomNotificationSettingsCoordinatorDidCancel(self)
     }
 }

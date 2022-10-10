@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationSoftLogoutScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -153,7 +152,7 @@ struct AuthenticationSoftLogoutScreen: View {
                                configuration: UIKitTextInputConfiguration(returnKeyType: .done,
                                                                           isSecureTextEntry: true),
                                onCommit: login)
-        .accessibilityIdentifier("passwordTextField")
+            .accessibilityIdentifier("passwordTextField")
     }
 
     /// A list of SSO buttons that can be used for login.
@@ -188,7 +187,6 @@ struct AuthenticationSoftLogoutScreen: View {
     func clearData() {
         viewModel.send(viewAction: .clearAllData)
     }
-
 }
 
 // MARK: - Previews

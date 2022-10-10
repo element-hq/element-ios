@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,16 +20,13 @@ import Foundation
 
 // MARK: View model
 
-enum UserSessionDetailsViewModelResult {
-}
+enum UserSessionDetailsViewModelResult { }
 
 // MARK: View
 
-enum UserSessionDetailsViewAction {
-}
+enum UserSessionDetailsViewAction { }
 
 struct UserSessionDetailsViewState: BindableState, Equatable {
-
     let sections: [UserSessionDetailsSectionViewData]
 }
 
@@ -47,18 +44,16 @@ struct UserSessionDetailsSectionItemViewData: Identifiable {
 }
 
 extension UserSessionDetailsSectionViewData: Equatable {
-
     static func == (lhs: UserSessionDetailsSectionViewData, rhs: UserSessionDetailsSectionViewData) -> Bool {
         lhs.header == rhs.header &&
-        lhs.footer == rhs.footer &&
-        lhs.items == rhs.items
+            lhs.footer == rhs.footer &&
+            lhs.items == rhs.items
     }
 }
 
 extension UserSessionDetailsSectionItemViewData: Equatable {
-
     static func == (lhs: UserSessionDetailsSectionItemViewData, rhs: UserSessionDetailsSectionItemViewData) -> Bool {
         lhs.title == rhs.title &&
-        lhs.value == rhs.value
+            lhs.value == rhs.value
     }
 }

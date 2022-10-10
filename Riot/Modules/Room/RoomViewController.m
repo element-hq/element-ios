@@ -97,7 +97,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate, RoomInputToolbarViewDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate, RoomInputToolbarViewDelegate, ComposerCreateActionListBridgePresenterDelegate>
 {
     
     // The preview header
@@ -209,6 +209,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @property (nonatomic, strong) ThreadsCoordinatorBridgePresenter *threadsBridgePresenter;
 @property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
 @property (nonatomic, strong) SlidingModalPresenter *threadsNoticeModalPresenter;
+@property (nonatomic, strong) ComposerCreateActionListBridgePresenter *composerCreateActionListBridgePresenter;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 @property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
@@ -1153,8 +1154,20 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 + (Class) mainToolbarClass
 {
-    return WysiwygInputToolbarView.class;
-//    return RoomInputToolbarView.class;
+    if (@available(iOS 15.0, *)) {
+        if (RiotSettings.shared.enableWysiwygComposer)
+        {
+            return WysiwygInputToolbarView.class;
+        }
+        else
+        {
+            return RoomInputToolbarView.class;
+        }
+    }
+    else
+    {
+        return RoomInputToolbarView.class;
+    }
 }
 
 // Set the input toolbar according to the current display
@@ -2251,35 +2264,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 }
 
 - (void)setupActions {
-    
-    if (@available(iOS 16.0, *)) {
-        if ([self.inputToolbarView isKindOfClass:WysiwygInputToolbarView.class]) {
-            //TODO actions should respect the build settings/preferences as with the legacy view just below
-            ((WysiwygInputToolbarView *) self.inputToolbarView).startModuleAction = ^(enum ComposerModule module) {
-                switch (module) {
-                    case ComposerModulePhotoLibrary:
-                        [self showMediaPickerAnimated:YES];
-                        break;
-                    case ComposerModuleStickers:
-                        [self roomInputToolbarViewPresentStickerPicker];
-                        break;
-                    case ComposerModuleAttachments:
-                        [self roomInputToolbarViewDidTapFileUpload];
-                        break;
-                    case ComposerModulePolls:
-                        [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
-                        break;
-                    case ComposerModuleLocation:
-                        [self.delegate roomViewControllerDidRequestLocationSharingFormPresentation:self];
-                        break;
-                    case ComposerModuleCamera:
-                        [self showCameraControllerAnimated:YES];
-                        break;
-                }
-            };
-        }
-    }
-    
     
     if (![self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
         return;
@@ -5010,6 +4994,39 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         // Errors are handled at the request level. This should be improved in case of code rewriting.
     }];
+}
+
+- (void)roomInputToolbarViewShowSendMediaActions:(MXKRoomInputToolbarView *)toolbarView
+{
+    NSMutableArray *actionItems = [NSMutableArray new];
+    if (RiotSettings.shared.roomScreenAllowMediaLibraryAction)
+    {
+        [actionItems addObject:@(ComposerCreateActionPhotoLibrary)];
+    }
+    if (RiotSettings.shared.roomScreenAllowStickerAction && !self.isNewDirectChat)
+    {
+        [actionItems addObject:@(ComposerCreateActionStickers)];
+    }
+    if (RiotSettings.shared.roomScreenAllowFilesAction)
+    {
+        [actionItems addObject:@(ComposerCreateActionAttachments)];
+    }
+    if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled && !self.isNewDirectChat)
+    {
+        [actionItems addObject:@(ComposerCreateActionPolls)];
+    }
+    if (BuildSettings.locationSharingEnabled && !self.isNewDirectChat)
+    {
+        [actionItems addObject:@(ComposerCreateActionLocation)];
+    }
+    if (RiotSettings.shared.roomScreenAllowCameraAction)
+    {
+        [actionItems addObject:@(ComposerCreateActionCamera)];
+    }
+    
+    self.composerCreateActionListBridgePresenter = [[ComposerCreateActionListBridgePresenter alloc] initWithActions:actionItems];
+    self.composerCreateActionListBridgePresenter.delegate = self;
+    [self.composerCreateActionListBridgePresenter presentFrom:self animated:YES];
 }
 
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage
@@ -7913,6 +7930,41 @@ static CGSize kThreadListBarButtonItemImageSize;
             [NSTextAttachment registerTextAttachmentViewProviderClass:PillAttachmentViewProvider.class forFileType:PillsFormatter.pillUTType];
         }
     }
+}
+
+#pragma mark - ComposerCreateActionListBridgePresenter
+
+- (void)composerCreateActionListBridgePresenterDelegateDidComplete:(ComposerCreateActionListBridgePresenter *)coordinatorBridgePresenter action:(enum ComposerCreateAction)action
+{
+    
+    [coordinatorBridgePresenter dismissWithAnimated:true completion:^{
+        switch (action) {
+            case ComposerCreateActionPhotoLibrary:
+                [self showMediaPickerAnimated:YES];
+                break;
+            case ComposerCreateActionStickers:
+                [self roomInputToolbarViewPresentStickerPicker];
+                break;
+            case ComposerCreateActionAttachments:
+                [self roomInputToolbarViewDidTapFileUpload];
+                break;
+            case ComposerCreateActionPolls:
+                [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
+                break;
+            case ComposerCreateActionLocation:
+                [self.delegate roomViewControllerDidRequestLocationSharingFormPresentation:self];
+                break;
+            case ComposerCreateActionCamera:
+                [self showCameraControllerAnimated:YES];
+                break;
+        }
+        self.composerCreateActionListBridgePresenter = nil;
+    }];
+}
+
+- (void)composerCreateActionListBridgePresenterDidDismissInteractively:(ComposerCreateActionListBridgePresenter *)coordinatorBridgePresenter
+{
+    self.composerCreateActionListBridgePresenter = nil;
 }
 
 @end

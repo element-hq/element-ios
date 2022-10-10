@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct ChangePasswordScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -72,7 +71,7 @@ struct ChangePasswordScreen: View {
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .next,
                                                                               isSecureTextEntry: true),
                                    onCommit: { focusedField = .newPassword1 })
-            .accessibilityIdentifier("oldPasswordTextField")
+                .accessibilityIdentifier("oldPasswordTextField")
 
             RoundedBorderTextField(placeHolder: VectorL10n.settingsNewPassword,
                                    text: $viewModel.newPassword1,
@@ -80,7 +79,7 @@ struct ChangePasswordScreen: View {
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .next,
                                                                               isSecureTextEntry: true),
                                    onCommit: { focusedField = .newPassword2 })
-            .accessibilityIdentifier("newPasswordTextField1")
+                .accessibilityIdentifier("newPasswordTextField1")
 
             RoundedBorderTextField(placeHolder: VectorL10n.settingsConfirmPassword,
                                    text: $viewModel.newPassword2,
@@ -88,7 +87,7 @@ struct ChangePasswordScreen: View {
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .done,
                                                                               isSecureTextEntry: true),
                                    onCommit: submit)
-            .accessibilityIdentifier("newPasswordTextField2")
+                .accessibilityIdentifier("newPasswordTextField2")
 
             HStack(alignment: .center, spacing: 8) {
                 Toggle(VectorL10n.authenticationChoosePasswordSignoutAllDevices, isOn: $viewModel.signoutAllDevices)

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationRegistrationScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -50,7 +49,7 @@ struct AuthenticationRegistrationScreen: View {
                     registrationForm
                 }
                 
-                if viewModel.viewState.homeserver.showRegistrationForm && viewModel.viewState.showSSOButtons {
+                if viewModel.viewState.homeserver.showRegistrationForm, viewModel.viewState.showSSOButtons {
                     Text(VectorL10n.or)
                         .foregroundColor(theme.colors.secondaryContent)
                         .padding(.top, 16)
@@ -61,10 +60,9 @@ struct AuthenticationRegistrationScreen: View {
                         .padding(.top, 16)
                 }
 
-                if !viewModel.viewState.homeserver.showRegistrationForm && !viewModel.viewState.showSSOButtons {
+                if !viewModel.viewState.homeserver.showRegistrationForm, !viewModel.viewState.showSSOButtons {
                     fallbackButton
                 }
-                
             }
             .readableFrame()
             .padding(.horizontal, 16)
@@ -110,8 +108,8 @@ struct AuthenticationRegistrationScreen: View {
                                                                               autocorrectionType: .no),
                                    onEditingChanged: usernameEditingChanged,
                                    onCommit: { isPasswordFocused = true })
-            .onChange(of: viewModel.username) { _ in viewModel.send(viewAction: .resetUsernameAvailability) }
-            .accessibilityIdentifier("usernameTextField")
+                .onChange(of: viewModel.username) { _ in viewModel.send(viewAction: .resetUsernameAvailability) }
+                .accessibilityIdentifier("usernameTextField")
             
             RoundedBorderTextField(title: nil,
                                    placeHolder: VectorL10n.authPasswordPlaceholder,
@@ -123,7 +121,7 @@ struct AuthenticationRegistrationScreen: View {
                                                                               isSecureTextEntry: true),
                                    onEditingChanged: passwordEditingChanged,
                                    onCommit: submit)
-            .accessibilityIdentifier("passwordTextField")
+                .accessibilityIdentifier("passwordTextField")
             
             Button(action: submit) {
                 Text(VectorL10n.next)

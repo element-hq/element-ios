@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,8 +19,10 @@ import Foundation
 /// The static list of mocked screens in RiotSwiftUI
 enum MockAppScreens {
     static let appScreens: [MockScreenState.Type] = [
+        MockUserOtherSessionsScreenState.self,
         MockUserSessionsOverviewScreenState.self,
         MockUserSessionDetailsScreenState.self,
+        MockUserSessionOverviewScreenState.self,
         MockLiveLocationLabPromotionScreenState.self,
         MockLiveLocationSharingViewerScreenState.self,
         MockAuthenticationLoginScreenState.self,
@@ -33,6 +35,12 @@ enum MockAppScreens {
         MockAuthenticationForgotPasswordScreenState.self,
         MockAuthenticationChoosePasswordScreenState.self,
         MockAuthenticationSoftLogoutScreenState.self,
+        MockAuthenticationQRLoginStartScreenState.self,
+        MockAuthenticationQRLoginDisplayScreenState.self,
+        MockAuthenticationQRLoginScanScreenState.self,
+        MockAuthenticationQRLoginConfirmScreenState.self,
+        MockAuthenticationQRLoginLoadingScreenState.self,
+        MockAuthenticationQRLoginFailureScreenState.self,
         MockOnboardingCelebrationScreenState.self,
         MockOnboardingAvatarScreenState.self,
         MockOnboardingDisplayNameScreenState.self,
@@ -60,7 +68,7 @@ enum MockAppScreens {
         MockTemplateRoomListScreenState.self,
         MockTemplateRoomChatScreenState.self,
         MockSpaceSelectorScreenState.self,
-//        MockComposerScreenState.self
+        MockComposerScreenState.self,
+        MockComposerCreateActionListScreenState.self
     ]
 }
-

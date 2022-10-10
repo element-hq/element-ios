@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,81 @@
 import SwiftUI
 
 struct UserSessionsOverview: View {
-
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    @ObservedObject var viewModel: UserSessionsOverviewViewModel.Context
+    
+    var body: some View {
+        GeometryReader { geometry in
+            VStack(alignment: .leading, spacing: 0) {
+                ScrollView {
+                    if hasSecurityRecommendations {
+                        securityRecommendationsSection
+                    }
+
+                    currentSessionsSection
+
+                    if !viewModel.viewState.otherSessionsViewData.isEmpty {
+                        otherSessionsSection
+                    }
+                }
+                .readableFrame()
+
+                if viewModel.viewState.linkDeviceButtonVisible {
+                    linkDeviceView
+                        .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
+                }
+            }
+        }
+        .background(theme.colors.system.ignoresSafeArea())
+        .frame(maxHeight: .infinity)
+        .navigationTitle(VectorL10n.userSessionsOverviewTitle)
+        .navigationBarTitleDisplayMode(.inline)
+        .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
+        .accentColor(theme.colors.accent)
+        .onAppear {
+            viewModel.send(viewAction: .viewAppeared)
+        }
+    }
+    
+    private var securityRecommendationsSection: some View {
+        SwiftUI.Section {
+            if !viewModel.viewState.unverifiedSessionsViewData.isEmpty {
+                SecurityRecommendationCard(style: .unverified,
+                                           sessionCount: viewModel.viewState.unverifiedSessionsViewData.count) {
+                    viewModel.send(viewAction: .viewAllUnverifiedSessions)
+                }
+            }
+            
+            if !viewModel.viewState.inactiveSessionsViewData.isEmpty {
+                SecurityRecommendationCard(style: .inactive,
+                                           sessionCount: viewModel.viewState.inactiveSessionsViewData.count) {
+                    viewModel.send(viewAction: .viewAllInactiveSessions)
+                }
+            }
+        } header: {
+            VStack(alignment: .leading) {
+                Text(VectorL10n.userSessionsOverviewSecurityRecommendationsSectionTitle)
+                    .textCase(.uppercase)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .padding(.bottom, 8.0)
+                
+                Text(VectorL10n.userSessionsOverviewSecurityRecommendationsSectionInfo)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .padding(.bottom, 12.0)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 24)
+        }
+        .padding(.horizontal, 16)
+        .accessibilityIdentifier("userSessionsOverviewSecurityRecommendationsSection")
+    }
+    
+    var hasSecurityRecommendations: Bool {
+        !viewModel.viewState.unverifiedSessionsViewData.isEmpty || !viewModel.viewState.inactiveSessionsViewData.isEmpty
+    }
     
     @ViewBuilder
     private var currentSessionsSection: some View {
@@ -33,53 +102,45 @@ struct UserSessionsOverview: View {
                 }, onViewDetailsAction: { _ in
                     viewModel.send(viewAction: .viewCurrentSessionDetails)
                 })
-                .padding(.horizontal, 16)
             } header: {
-                Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
-                    .font(theme.fonts.footnote)
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 16)
-                    .padding(.top, 24)
-                    .padding(.bottom, 11)
+                HStack(alignment: .firstTextBaseline) {
+                    Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
+                        .textCase(.uppercase)
+                        .font(theme.fonts.footnote)
+                        .foregroundColor(theme.colors.secondaryContent)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.bottom, 12.0)
+                        .padding(.top, 24.0)
+                    
+                    currentSessionMenu
+                }
             }
+            .padding(.horizontal, 16)
         }
     }
     
-    // MARK: Public
-    
-    @ObservedObject var viewModel: UserSessionsOverviewViewModel.Context
-    
-    var body: some View {
-        ScrollView {
-            
-            // Security recommendations section
-            if viewModel.viewState.unverifiedSessionsViewData.isEmpty == false || viewModel.viewState.inactiveSessionsViewData.isEmpty == false {
-                
-                // TODO:
+    private var currentSessionMenu: some View {
+        Menu {
+            Button { viewModel.send(viewAction: .renameCurrentSession) } label: {
+                Label(VectorL10n.manageSessionRename, systemImage: "pencil")
             }
             
-            // Current session section
-            currentSessionsSection
-            
-            // Other sessions section
-            if viewModel.viewState.otherSessionsViewData.isEmpty == false {
-                self.otherSessionsSection
+            if #available(iOS 15, *) {
+                Button(role: .destructive) { viewModel.send(viewAction: .logoutOfCurrentSession) } label: {
+                    Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
+                }
+            } else {
+                Button { viewModel.send(viewAction: .logoutOfCurrentSession) } label: {
+                    Label(VectorL10n.signOut, systemImage: "rectangle.righthalf.inset.fill.arrow.right")
+                }
             }
-        }
-        .background(theme.colors.system.ignoresSafeArea())
-        .frame(maxHeight: .infinity)
-        .navigationTitle(VectorL10n.userSessionsOverviewTitle)
-        .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
-        .onAppear() {
-            viewModel.send(viewAction: .viewAppeared)
+        } label: {
+            Image(systemName: "ellipsis.circle")
         }
     }
-
+    
     private var otherSessionsSection: some View {
-        
         SwiftUI.Section {
-            // Device list
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.viewState.otherSessionsViewData) { viewData in
                     UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
@@ -91,18 +152,38 @@ struct UserSessionsOverview: View {
         } header: {
             VStack(alignment: .leading) {
                 Text(VectorL10n.userSessionsOverviewOtherSessionsSectionTitle)
+                    .textCase(.uppercase)
                     .font(theme.fonts.footnote)
                     .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 8.0)
                 
                 Text(VectorL10n.userSessionsOverviewOtherSessionsSectionInfo)
                     .font(theme.fonts.footnote)
                     .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.bottom, 11)
+                    .padding(.bottom, 12.0)
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 24)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 16.0)
+            .padding(.top, 24.0)
         }
+        .accessibilityIdentifier("userSessionsOverviewOtherSection")
+    }
+
+    /// The footer view containing link device button.
+    var linkDeviceView: some View {
+        VStack {
+            Button {
+                viewModel.send(viewAction: .linkDevice)
+            } label: {
+                Text(VectorL10n.userSessionsOverviewLinkDevice)
+            }
+            .buttonStyle(PrimaryActionButtonStyle(font: theme.fonts.bodySB))
+            .padding(.top, 28)
+            .padding(.bottom, 12)
+            .padding(.horizontal, 16)
+            .accessibilityIdentifier("linkDeviceButton")
+        }
+        .background(theme.colors.system.ignoresSafeArea())
     }
 }
 

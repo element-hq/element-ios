@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +14,11 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
 import CoreLocation
+import Foundation
 
 class MockLiveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol {
-    
     // MARK: Properties
     
     private(set) var usersLiveLocation: [UserLiveLocation] = []
@@ -29,17 +28,15 @@ class MockLiveLocationSharingViewerService: LiveLocationSharingViewerServiceProt
     // MARK: Setup
     
     init(generateRandomUsers: Bool = false) {
+        let firstUserLiveLocation = createFirstUserLiveLocation()
         
-        let firstUserLiveLocation = self.createFirstUserLiveLocation()
-        
-        let secondUserLiveLocation = self.createSecondUserLiveLocation()
+        let secondUserLiveLocation = createSecondUserLiveLocation()
         
         var usersLiveLocation: [UserLiveLocation] = [firstUserLiveLocation, secondUserLiveLocation]
         
-        
         if generateRandomUsers {
             for _ in 1...20 {
-                let randomUser = self.createRandomUserLiveLocation()
+                let randomUser = createRandomUserLiveLocation()
                 usersLiveLocation.append(randomUser)
             }
         }
@@ -50,20 +47,14 @@ class MockLiveLocationSharingViewerService: LiveLocationSharingViewerServiceProt
     // MARK: Public
     
     func isCurrentUserId(_ userId: String) -> Bool {
-        return "@alice:matrix.org" == userId
+        userId == "@alice:matrix.org"
     }
     
-    func startListeningLiveLocationUpdates() {
-        
-    }
+    func startListeningLiveLocationUpdates() { }
     
-    func stopListeningLiveLocationUpdates() {
-        
-    }
+    func stopListeningLiveLocationUpdates() { }
     
-    func stopUserLiveLocationSharing(completion: @escaping (Result<Void, Error>) -> Void) {
-        
-    }
+    func stopUserLiveLocationSharing(completion: @escaping (Result<Void, Error>) -> Void) { }
     
     // MARK: Private
     
@@ -80,7 +71,6 @@ class MockLiveLocationSharingViewerService: LiveLocationSharingViewerServiceProt
     }
     
     private func createSecondUserLiveLocation() -> UserLiveLocation {
-        
         let userAvatarData = AvatarInput(mxContentUri: nil, matrixItemId: "@bob:matrix.org", displayName: "Bob")
         let coordinate = CLLocationCoordinate2D(latitude: 51.4952641, longitude: -0.259096)
         
@@ -93,9 +83,7 @@ class MockLiveLocationSharingViewerService: LiveLocationSharingViewerServiceProt
         return UserLiveLocation(avatarData: userAvatarData, timestamp: timestamp, timeout: timeout, lastUpdate: lastUpdate, coordinate: coordinate)
     }
     
-    
     private func createRandomUserLiveLocation() -> UserLiveLocation {
-        
         let uuidString = UUID().uuidString.suffix(8)
         
         let random = Double.random(in: 0.005...0.010)

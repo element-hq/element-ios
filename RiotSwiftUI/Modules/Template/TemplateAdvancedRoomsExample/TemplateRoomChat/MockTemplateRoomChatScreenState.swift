@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,7 +56,7 @@ enum MockTemplateRoomChatScreenState: MockScreenState, CaseIterable {
         return (
             [service, viewModel],
             AnyView(TemplateRoomChat(viewModel: viewModel.context)
-                        .addDependency(MockAvatarService.example))
+                .addDependency(MockAvatarService.example))
         )
     }
 }

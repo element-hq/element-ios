@@ -1,6 +1,6 @@
 // File created from TemplateAdvancedRoomsExample
 // $ createSwiftUITwoScreen.sh Spaces/SpaceCreation SpaceCreation SpaceCreationMenu SpaceCreationSettings
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,11 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 import MatrixSDK
 
 class SpaceCreationSettingsService: SpaceCreationSettingsServiceProtocol {
-    
     // MARK: - Properties
     
     var roomName: String {
@@ -30,6 +29,7 @@ class SpaceCreationSettingsService: SpaceCreationSettingsServiceProtocol {
             updateAvatar()
         }
     }
+
     var userDefinedAddress: String? {
         didSet {
             validateAddress()
@@ -45,10 +45,12 @@ class SpaceCreationSettingsService: SpaceCreationSettingsServiceProtocol {
             validateAddress()
         }
     }
-    private var lastValidatedAddress: String = ""
+
+    private var lastValidatedAddress = ""
     private var currentAddress: String? {
-        return self.userDefinedAddress?.count ?? 0 > 0 ? self.userDefinedAddress : defaultAddress
+        userDefinedAddress?.count ?? 0 > 0 ? userDefinedAddress : defaultAddress
     }
+
     private var currentOperation: MXHTTPOperation?
     
     // MARK: Public
@@ -69,14 +71,14 @@ class SpaceCreationSettingsService: SpaceCreationSettingsServiceProtocol {
     
     init(roomName: String, userDefinedAddress: String?, session: MXSession) {
         self.session = session
-        self.defaultAddress = ""
-        self.defaultAddressSubject = CurrentValueSubject(defaultAddress)
+        defaultAddress = ""
+        defaultAddressSubject = CurrentValueSubject(defaultAddress)
         self.roomName = roomName
-        self.addressValidationSubject = CurrentValueSubject(.none("#"))
-        self.avatarViewDataSubject = CurrentValueSubject(AvatarInput(mxContentUri: userDefinedAddress, matrixItemId: "", displayName: roomName))
+        addressValidationSubject = CurrentValueSubject(.none("#"))
+        avatarViewDataSubject = CurrentValueSubject(AvatarInput(mxContentUri: userDefinedAddress, matrixItemId: "", displayName: roomName))
         
-        self.updateDefaultAddress()
-        self.validateAddress()
+        updateDefaultAddress()
+        validateAddress()
     }
     
     deinit {
@@ -89,7 +91,7 @@ class SpaceCreationSettingsService: SpaceCreationSettingsServiceProtocol {
     // MARK: Private
     
     private func updateAvatar() {
-        self.avatarViewDataSubject.send(AvatarInput(mxContentUri: currentAddress, matrixItemId: "", displayName: roomName))
+        avatarViewDataSubject.send(AvatarInput(mxContentUri: currentAddress, matrixItemId: "", displayName: roomName))
     }
     
     private func updateDefaultAddress() {
@@ -100,7 +102,7 @@ class SpaceCreationSettingsService: SpaceCreationSettingsServiceProtocol {
         currentOperation?.cancel()
         currentOperation = nil
 
-        guard let userDefinedAddress = self.userDefinedAddress, !userDefinedAddress.isEmpty else {
+        guard let userDefinedAddress = userDefinedAddress, !userDefinedAddress.isEmpty else {
             let fullAddress = MXTools.fullLocalAlias(from: defaultAddress, with: session)
             
             if defaultAddress.isEmpty {

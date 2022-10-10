@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
 import CoreLocation
+import UIKit
 
 extension UIActivity.ActivityType {
     static let shareToMapsApp = UIActivity.ActivityType("Element.ShareToMapsApp")
@@ -31,7 +31,7 @@ class ShareToMapsAppActivity: UIActivity {
     private let type: MapsAppType
     private let location: CLLocationCoordinate2D
     
-    private override init() {
+    override private init() {
         fatalError()
     }
     
@@ -63,15 +63,15 @@ class ShareToMapsAppActivity: UIActivity {
     }
     
     var activityCategory: UIActivity.Category {
-        return .action
+        .action
     }
     
     override var activityType: UIActivity.ActivityType {
-        return .shareToMapsApp
+        .shareToMapsApp
     }
     
     override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
-        return true
+        true
     }
     
     override func prepare(withActivityItems activityItems: [Any]) {

@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
 class TemplateSimpleScreenUITests: MockScreenTestCase {
     func testTemplateSimpleScreenPromptRegular() {

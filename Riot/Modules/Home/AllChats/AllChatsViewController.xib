@@ -11,8 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AllChatsViewController" customModule="Element" customModuleProvider="target">
             <connections>
                 <outlet property="recentsTableView" destination="orV-HH-88x" id="lgA-2k-pXJ"/>
-                <outlet property="stickyHeadersBottomContainer" destination="EXH-mK-0eB" id="95Y-KP-bwF"/>
-                <outlet property="stickyHeadersBottomContainerHeightConstraint" destination="SNq-Js-N7s" id="vom-iM-s6W"/>
+                <outlet property="toolbar" destination="osO-1z-CZg" id="xRm-cJ-bNi"/>
                 <outlet property="view" destination="iN0-l3-epB" id="NUQ-LI-M61"/>
             </connections>
         </placeholder>
@@ -25,25 +24,24 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EXH-mK-0eB">
-                    <rect key="frame" x="0.0" y="667" width="375" height="0.0"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <accessibility key="accessibilityConfiguration" identifier="RecentsVCStickyHeadersBottomContainer"/>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="osO-1z-CZg">
+                    <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                     <constraints>
-                        <constraint firstAttribute="height" id="SNq-Js-N7s"/>
+                        <constraint firstAttribute="height" constant="44" id="7k8-Ot-vpH"/>
                     </constraints>
-                </view>
+                    <items/>
+                </toolbar>
             </subviews>
             <viewLayoutGuide key="safeArea" id="4qf-KS-Fc9"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="orV-HH-88x" secondAttribute="trailing" id="3Np-64-AUe"/>
-                <constraint firstItem="4qf-KS-Fc9" firstAttribute="bottom" secondItem="orV-HH-88x" secondAttribute="bottom" id="Bka-Zz-CEr"/>
-                <constraint firstItem="EXH-mK-0eB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="bottom" id="Kmg-aC-GOO"/>
-                <constraint firstItem="EXH-mK-0eB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="S3i-DW-PUB"/>
-                <constraint firstAttribute="trailing" secondItem="EXH-mK-0eB" secondAttribute="trailing" id="bPP-yu-FTa"/>
+                <constraint firstItem="osO-1z-CZg" firstAttribute="trailing" secondItem="4qf-KS-Fc9" secondAttribute="trailing" id="T2o-XM-BgN"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="dTn-zC-Axs"/>
+                <constraint firstItem="osO-1z-CZg" firstAttribute="leading" secondItem="4qf-KS-Fc9" secondAttribute="leading" id="mq4-BS-JFN"/>
+                <constraint firstItem="osO-1z-CZg" firstAttribute="bottom" secondItem="4qf-KS-Fc9" secondAttribute="bottom" id="ups-Ek-9Zs"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="xMc-15-1wS"/>
+                <constraint firstItem="4qf-KS-Fc9" firstAttribute="bottom" secondItem="orV-HH-88x" secondAttribute="bottom" id="zCp-Ju-dvr"/>
             </constraints>
             <point key="canvasLocation" x="140" y="137.18140929535232"/>
         </view>

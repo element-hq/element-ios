@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct DefaultNotificationSettings: View {
-    
     @ObservedObject var viewModel: NotificationSettingsViewModel
     
     var body: some View {
@@ -38,6 +37,5 @@ struct DefaultNotifications_Previews: PreviewProvider {
             )
             .navigationBarTitleDisplayMode(.inline)
         }
-
     }
 }

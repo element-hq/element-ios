@@ -56,7 +56,6 @@ extension RoomViewController {
     ///
     /// - Parameter attributedTextMsg: the attributed text message
     @objc func sendFormattedTextMessage(_ rawTextMsg: String, htmlMsg: String) {
-        let eventModified = self.roomDataSource.event(withEventId: customizedRoomDataSource?.selectedEventId)
         self.setupRoomDataSource { roomDataSource in
             guard let roomDataSource = roomDataSource as? RoomDataSource else { return }
             roomDataSource.sendFormattedTextMessage(rawTextMsg, html: htmlMsg) { response in

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +15,10 @@
 //
 
 import Foundation
-import SwiftUI
 import Mapbox
+import SwiftUI
 
 class LocationAnnotationView: MGLUserLocationAnnotationView {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -34,31 +33,30 @@ class LocationAnnotationView: MGLUserLocationAnnotationView {
     
     override init(annotation: MGLAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier:
-                    reuseIdentifier)
-        self.frame = Constants.defaultFrame
+            reuseIdentifier)
+        frame = Constants.defaultFrame
     }
     
     convenience init(avatarData: AvatarInputProtocol) {
         self.init(annotation: nil, reuseIdentifier: nil)
-        self.addUserMarkerView(with: avatarData)
+        addUserMarkerView(with: avatarData)
     }
     
     convenience init(userLocationAnnotation: UserLocationAnnotation) {
-        
         // TODO: Use a reuseIdentifier
         self.init(annotation: userLocationAnnotation, reuseIdentifier: nil)
         
-        self.addUserMarkerView(with: userLocationAnnotation.avatarData)
+        addUserMarkerView(with: userLocationAnnotation.avatarData)
     }
     
     convenience init(pinLocationAnnotation: PinLocationAnnotation) {
-        
         // TODO: Use a reuseIdentifier
         self.init(annotation: pinLocationAnnotation, reuseIdentifier: nil)
         
-        self.addPinMarkerView()
+        addPinMarkerView()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError()
     }
@@ -66,7 +64,6 @@ class LocationAnnotationView: MGLUserLocationAnnotationView {
     // MARK: - Private
     
     private func addUserMarkerView(with avatarData: AvatarInputProtocol) {
-        
         guard let avatarMarkerView = UIHostingController(rootView: LocationSharingMarkerView(backgroundColor: theme.userColor(for: avatarData.matrixItemId)) {
             AvatarImage(avatarData: avatarData, size: .medium)
                 .border()
@@ -90,11 +87,10 @@ class LocationAnnotationView: MGLUserLocationAnnotationView {
     }
     
     private func addMarkerView(_ markerView: UIView) {
-        
         markerView.backgroundColor = .clear
         
         addSubview(markerView)
         
-        markerView.frame = self.bounds
+        markerView.frame = bounds
     }
 }

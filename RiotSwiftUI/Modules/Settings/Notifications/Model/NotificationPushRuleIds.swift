@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,6 @@ enum NotificationPushRuleId: String {
     case encrypted = ".m.rule.encrypted"
     case keywords = "_keywords"
 }
-
 
 extension NotificationPushRuleId: Identifiable {
     var id: String {

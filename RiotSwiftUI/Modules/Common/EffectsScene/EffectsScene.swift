@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import SceneKit
 import SwiftUI
 
 class EffectsScene: SCNScene {
-    
     // MARK: - Constants
     
     private enum Constants {
@@ -31,14 +30,14 @@ class EffectsScene: SCNScene {
     static func confetti(with theme: ThemeSwiftUI) -> EffectsScene? {
         guard let scene = EffectsScene(named: Constants.confettiSceneName) else { return nil }
         
-        let colors: [[Float]] = theme.colors.namesAndAvatars.compactMap { $0.floatComponents }
+        let colors: [[Float]] = theme.colors.namesAndAvatars.compactMap(\.floatComponents)
         
         if let particles = scene.rootNode.childNode(withName: Constants.particlesNodeName, recursively: false)?.particleSystems?.first {
             // The particles need a non-zero color variation for the handler to affect the color
             particles.particleColorVariation = SCNVector4(x: 0, y: 0, z: 0, w: 0.1)
             
             // Add a handler to customize the color of the particles.
-            particles.handle(.birth, forProperties: [.color]) { data, dataStride, indices, count in
+            particles.handle(.birth, forProperties: [.color]) { data, dataStride, _, count in
                 for index in 0..<count {
                     // Pick a random color to apply to the particle.
                     guard let color = colors.randomElement() else { continue }
@@ -60,7 +59,7 @@ class EffectsScene: SCNScene {
     }
 }
 
-fileprivate extension Color {
+private extension Color {
     /// The color's components as an array of floats in the extended linear sRGB colorspace.
     ///
     /// SceneKit works in a colorspace with a linear gamma, which is why this conversion is necessary.

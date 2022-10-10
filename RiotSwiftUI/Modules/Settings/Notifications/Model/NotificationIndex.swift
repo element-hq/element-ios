@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,11 +33,11 @@ extension NotificationIndex {
     /// - Parameter enabled: Enabled/Disabled state.
     /// - Returns: The associated NotificationIndex
     static func index(when enabled: Bool) -> NotificationIndex {
-        return enabled ? .noisy : .off
+        enabled ? .noisy : .off
     }
     
     /// Used to map from the checked state back to the index.
     var enabled: Bool {
-        return self != .off
+        self != .off
     }
 }

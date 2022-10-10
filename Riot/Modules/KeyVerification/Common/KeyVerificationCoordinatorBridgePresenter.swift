@@ -74,7 +74,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
     }
 
-    func present(from viewController: UIViewController, incomingTransaction: MXIncomingSASTransaction, animated: Bool) {
+    func present(from viewController: UIViewController, incomingTransaction: MXSASTransaction, animated: Bool) {
         
         MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Present incoming verification from \(viewController)")
         

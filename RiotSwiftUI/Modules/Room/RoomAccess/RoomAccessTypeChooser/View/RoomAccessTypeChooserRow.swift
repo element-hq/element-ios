@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct RoomAccessTypeChooserRow: View {
-
     // MARK: - Properties
     
     // MARK: Private

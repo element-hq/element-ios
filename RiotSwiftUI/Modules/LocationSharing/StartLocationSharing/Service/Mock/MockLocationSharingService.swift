@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
 import CoreLocation
+import Foundation
 
 class MockLocationSharingService: LocationSharingServiceProtocol {
     func requestAuthorization(_ handler: @escaping LocationAuthorizationHandler) {

@@ -3599,7 +3599,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                   usingBlock:^(NSNotification *notif)
      {
          NSObject *object = notif.userInfo[MXKeyVerificationManagerNotificationTransactionKey];
-         if ([object isKindOfClass:MXIncomingSASTransaction.class])
+         if ([object conformsToProtocol:@protocol(MXSASTransaction)] && ((id<MXSASTransaction>)object).isIncoming)
          {
              [self checkPendingIncomingKeyVerificationsInSession:mxSession];
          }
@@ -3630,9 +3630,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
         for (id<MXKeyVerificationTransaction> transaction in transactions)
         {
-            if (transaction.isIncoming)
+            if ([transaction conformsToProtocol:@protocol(MXSASTransaction)] && transaction.isIncoming)
             {
-                MXIncomingSASTransaction *incomingTransaction = (MXIncomingSASTransaction*)transaction;
+                id<MXSASTransaction> incomingTransaction = (id<MXSASTransaction>)transaction;
                 if (incomingTransaction.state == MXSASTransactionStateIncomingShowAccept)
                 {
                     [self presentIncomingKeyVerification:incomingTransaction inSession:mxSession];
@@ -3676,7 +3676,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     return presented;
 }
 
-- (BOOL)presentIncomingKeyVerification:(MXIncomingSASTransaction*)transaction inSession:(MXSession*)mxSession
+- (BOOL)presentIncomingKeyVerification:(id<MXSASTransaction>)transaction inSession:(MXSession*)mxSession
 {
     MXLogDebug(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerification: %@", transaction);
 
@@ -3768,14 +3768,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)registerNewRequestNotificationForSession:(MXSession*)session
 {
-    MXKeyVerificationManager *keyverificationManager = session.crypto.keyVerificationManager;
+    id<MXKeyVerificationManager> keyVerificationManager = session.crypto.keyVerificationManager;
     
-    if (!keyverificationManager)
+    if (!keyVerificationManager)
     {
         return;
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyVerificationNewRequestNotification:) name:MXKeyVerificationManagerNewRequestNotification object:keyverificationManager];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyVerificationNewRequestNotification:) name:MXKeyVerificationManagerNewRequestNotification object:keyVerificationManager];
 }
 
 - (void)keyVerificationNewRequestNotification:(NSNotification *)notification
@@ -3800,28 +3800,26 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     id<MXKeyVerificationRequest> keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey];
     
-    if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByDMRequest.class])
+    if (keyVerificationRequest.transport == MXKeyVerificationTransportDirectMessage)
     {
-        MXKeyVerificationByDMRequest *keyVerificationByDMRequest = (MXKeyVerificationByDMRequest*)keyVerificationRequest;
-        
-        if (!keyVerificationByDMRequest.isFromMyUser && keyVerificationByDMRequest.state == MXKeyVerificationRequestStatePending)
+        if (!keyVerificationRequest.isFromMyUser && keyVerificationRequest.state == MXKeyVerificationRequestStatePending)
         {
             MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
             MXSession *session = currentAccount.mxSession;
-            MXRoom *room = [currentAccount.mxSession roomWithRoomId:keyVerificationByDMRequest.roomId];
+            MXRoom *room = [currentAccount.mxSession roomWithRoomId:keyVerificationRequest.roomId];
             if (!room)
             {
                 MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationRequestDidChangeNotification: Unknown room");
                 return;
             }
             
-            NSString *sender = keyVerificationByDMRequest.otherUser;
+            NSString *sender = keyVerificationRequest.otherUser;
 
             [room state:^(MXRoomState *roomState) {
 
                 NSString *senderName = [roomState.members memberName:sender];
                 
-                [self presentNewKeyVerificationRequestAlertForSession:session senderName:senderName senderId:sender request:keyVerificationByDMRequest];
+                [self presentNewKeyVerificationRequestAlertForSession:session senderName:senderName senderId:sender request:keyVerificationRequest];
             }];
         }
     }
@@ -3858,7 +3856,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 // This happens when they or our user do not have cross-signing enabled
                 MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Device verification from other user %@:%@", keyVerificationRequest.otherUser, keyVerificationRequest.otherDevice);
                 
-                NSString *myUserId = ((MXKeyVerificationByToDeviceRequest*)keyVerificationRequest).to;
+                NSString *myUserId = keyVerificationRequest.myUserId;
                 NSString *userId = keyVerificationRequest.otherUser;
                 MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
                 if (account)

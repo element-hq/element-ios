@@ -15,10 +15,9 @@
 //
 
 import Foundation
-import WysiwygComposer
 import SwiftUI
+import WysiwygComposer
 
-@available(iOS 16.0, *)
 enum MockComposerScreenState: MockScreenState, CaseIterable {
     case composer
     
@@ -26,20 +25,14 @@ enum MockComposerScreenState: MockScreenState, CaseIterable {
         Composer.self
     }
     
-//    var screenContainer: some View {
-//        VStack{
-//            Spacer()
-//            Composer(viewModel: viewModel)
-//        }
-//    }
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let viewModel = WysiwygComposerViewModel(minHeight: 20, maxHeight: 360)
         
         return (
             [viewModel],
-            AnyView(VStack{
+            AnyView(VStack {
                 Spacer()
-                Composer(viewModel: viewModel, sendMessageAction: { _ in }, startModuleAction: { _ in })
+                Composer(viewModel: viewModel, sendMessageAction: { _ in }, showSendMediaActions: { })
             }.frame(
                 minWidth: 0,
                 maxWidth: .infinity,

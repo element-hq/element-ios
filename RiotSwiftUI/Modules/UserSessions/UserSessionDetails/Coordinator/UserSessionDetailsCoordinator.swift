@@ -14,20 +14,14 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct UserSessionDetailsCoordinatorParameters {
-    let session: MXSession
-    let userSessionInfo: UserSessionInfo
+    let sessionInfo: UserSessionInfo
 }
 
 final class UserSessionDetailsCoordinator: Coordinator, Presentable {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let parameters: UserSessionDetailsCoordinatorParameters
     private let userSessionDetailsHostingController: UIViewController
     private var userSessionDetailsViewModel: UserSessionDetailsViewModelProtocol
@@ -46,7 +40,7 @@ final class UserSessionDetailsCoordinator: Coordinator, Presentable {
     init(parameters: UserSessionDetailsCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = UserSessionDetailsViewModel(userSessionInfo: parameters.userSessionInfo)
+        let viewModel = UserSessionDetailsViewModel(sessionInfo: parameters.sessionInfo)
         let view = UserSessionDetails(viewModel: viewModel.context)
         userSessionDetailsViewModel = viewModel
         userSessionDetailsHostingController = VectorHostingController(rootView: view)
@@ -59,13 +53,16 @@ final class UserSessionDetailsCoordinator: Coordinator, Presentable {
     func start() {
         MXLog.debug("[UserSessionDetailsCoordinator] did start.")
         userSessionDetailsViewModel.completion = { [weak self] result in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
+            
             MXLog.debug("[UserSessionDetailsCoordinator] UserSessionDetailsViewModel did complete with result: \(result).")
             self.completion?(result)
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.userSessionDetailsHostingController
+        userSessionDetailsHostingController
     }
 }

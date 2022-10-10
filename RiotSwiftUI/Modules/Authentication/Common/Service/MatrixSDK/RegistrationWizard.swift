@@ -63,7 +63,7 @@ class RegistrationWizard {
         self.client = client
         self.sessionCreator = sessionCreator
         
-        self.state = State()
+        state = State()
     }
     
     /// Call this method to get the possible registration flow of the current homeserver.
@@ -164,7 +164,7 @@ class RegistrationWizard {
     /// Send the code received by SMS to validate a msisdn.
     /// If the code is correct, the registration request will be executed to validate the msisdn.
     func handleValidateThreePID(code: String) async throws -> RegistrationResult {
-        return try await validateThreePid(code: code)
+        try await validateThreePid(code: code)
     }
 
     /// Useful to poll the homeserver when waiting for the email to be validated by the user.
@@ -196,7 +196,6 @@ class RegistrationWizard {
             MXLog.error("[RegistrationWizard] validateThreePid: The third party ID data doesn't contain a submitURL.")
             throw RegistrationError.missingThreePIDURL
         }
-        
         
         let validationBody = ThreePIDValidationCodeBody(clientSecret: state.clientSecret,
                                                         sessionID: threePIDData.registrationResponse.sessionID,
@@ -278,7 +277,7 @@ class RegistrationWizard {
     /// Checks for a dummy stage and handles it automatically when possible.
     private func handleDummyStage(flowResult: FlowResult) async throws -> RegistrationResult {
         // If the dummy stage is mandatory, do the dummy stage now
-        guard flowResult.missingStages.contains(where: { $0.isDummy }) else { return .flowResponse(flowResult) }
+        guard flowResult.missingStages.contains(where: \.isDummy) else { return .flowResponse(flowResult) }
         return try await dummy()
     }
     

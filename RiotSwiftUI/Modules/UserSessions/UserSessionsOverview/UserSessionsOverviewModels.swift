@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,41 +19,50 @@ import Foundation
 // MARK: - Coordinator
 
 enum UserSessionsOverviewCoordinatorResult {
-    case openSessionDetails(session: UserSessionInfo)
+    case renameSession(UserSessionInfo)
+    case logoutOfSession(UserSessionInfo)
+    case openSessionOverview(sessionInfo: UserSessionInfo)
+    case openOtherSessions(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter)
+    case linkDevice
 }
 
 // MARK: View model
 
-enum UserSessionsOverviewViewModelResult {
-    case showAllUnverifiedSessions
-    case showAllInactiveSessions
+enum UserSessionsOverviewViewModelResult: Equatable {
+    case showOtherSessions(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter)
     case verifyCurrentSession
-    case showCurrentSessionDetails
-    case showAllOtherSessions
-    case showUserSessionDetails(_ sessionId: String)
+    case renameSession(UserSessionInfo)
+    case logoutOfSession(UserSessionInfo)
+    case showCurrentSessionOverview(sessionInfo: UserSessionInfo)
+    case showUserSessionOverview(sessionInfo: UserSessionInfo)
+    case linkDevice
 }
 
 // MARK: View
 
 struct UserSessionsOverviewViewState: BindableState {
-    
-    var unverifiedSessionsViewData: [UserSessionListItemViewData]
-    
-    var inactiveSessionsViewData: [UserSessionListItemViewData]
-    
     var currentSessionViewData: UserSessionCardViewData?
     
-    var otherSessionsViewData: [UserSessionListItemViewData]
+    var unverifiedSessionsViewData = [UserSessionListItemViewData]()
     
-    var showLoadingIndicator: Bool = false
+    var inactiveSessionsViewData = [UserSessionListItemViewData]()
+    
+    var otherSessionsViewData = [UserSessionListItemViewData]()
+    
+    var showLoadingIndicator = false
+
+    var linkDeviceButtonVisible = false
 }
 
 enum UserSessionsOverviewViewAction {
     case viewAppeared
     case verifyCurrentSession
+    case renameCurrentSession
+    case logoutOfCurrentSession
     case viewCurrentSessionDetails
     case viewAllUnverifiedSessions
     case viewAllInactiveSessions
     case viewAllOtherSessions
     case tapUserSession(_ sessionId: String)
+    case linkDevice
 }

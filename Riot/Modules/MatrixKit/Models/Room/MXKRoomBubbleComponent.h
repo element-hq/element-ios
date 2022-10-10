@@ -18,6 +18,7 @@
 
 #import "MXKEventFormatter.h"
 #import "MXKURLPreviewDataProtocol.h"
+#import "EventEncryptionDecoration.h"
 
 @protocol MXThreadProtocol;
 
@@ -101,9 +102,9 @@ typedef enum : NSUInteger {
 @property (nonatomic) MXEventScan *eventScan;
 
 /**
- Indicate if an encryption badge should be shown.
+ Type of encryption decoration (if any) for this event
  */
-@property (nonatomic, readonly) BOOL showEncryptionBadge;
+@property (nonatomic, readonly) EventEncryptionDecoration encryptionDecoration;
 
 /**
  Thread for the bubble component. Should only exist for thread root events.

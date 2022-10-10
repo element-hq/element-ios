@@ -14,32 +14,29 @@
 // limitations under the License.
 //
 
+import DSBottomSheet
 import SwiftUI
 import WysiwygComposer
-import DSBottomSheet
 
-@available(iOS 16.0, *)
 struct Composer: View {
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @ObservedObject var viewModel: WysiwygComposerViewModel
     let sendMessageAction: (WysiwygComposerContent) -> Void
-    let startModuleAction: (ComposerModule) -> Void
+    let showSendMediaActions: () -> Void
+    var textColor = Color(.label)
     
-    @State private var isBottomSheetExpanded = false
     @State private var showSendButton = false
     
     private let borderHeight: CGFloat = 44
     private let minTextViewHeight: CGFloat = 20
-    
     private var verticalPadding: CGFloat {
         (borderHeight - minTextViewHeight) / 2
     }
     
     private var formatItems: [FormatItem] {
         FormatType.allCases.map { type in
-            return FormatItem(
+            FormatItem(
                 type: type,
                 active: viewModel.reversedActions.contains(type.composerAction),
                 disabled: viewModel.disabledActions.contains(type.composerAction)
@@ -48,114 +45,90 @@ struct Composer: View {
     }
     
     var body: some View {
-            VStack {
-                let rect = RoundedRectangle(cornerRadius: borderHeight / 2)
+        VStack {
+            let rect = RoundedRectangle(cornerRadius: borderHeight / 2)
+            ZStack(alignment: .topTrailing) {
                 WysiwygComposerView(
                     content: viewModel.content,
                     replaceText: viewModel.replaceText,
                     select: viewModel.select,
                     didUpdateText: viewModel.didUpdateText
                 )
+                .textColor(theme.colors.primaryContent)
                 .frame(height: viewModel.idealHeight)
                 .padding(.horizontal, 12)
                 .onAppear {
                     viewModel.setup()
                 }
-                .overlay(alignment: .topTrailing) {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        viewModel.maximised.toggle()
+                    }
+                } label: {
+                    Image(viewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
+                        .foregroundColor(theme.colors.tertiaryContent)
+                }
+                .padding(.top, 4)
+                .padding(.trailing, 12)
+            }
+            .padding(.vertical, verticalPadding)
+            .clipShape(rect)
+            .overlay(rect.stroke(theme.colors.quinaryContent, lineWidth: 2))
+            .padding(.horizontal, 12)
+            .padding(.top, 8)
+            .padding(.bottom, 4)
+            HStack {
+                Button {
+                    showSendMediaActions()
+                } label: {
+                    Image(Asset.Images.startComposeModule.name)
+                        .foregroundColor(theme.colors.tertiaryContent)
+                        .padding(11)
+                        .background(Circle().fill(theme.colors.system))
+                }
+                FormattingToolbar(formatItems: formatItems) { type in
+                    viewModel.apply(type.action)
+                }
+                Spacer()
+                ZStack {
+                    // TODO: Add support for voice messages
+//                    Button {
+//
+//                    } label: {
+//                        Image(Asset.Images.voiceMessageRecordButtonDefault.name)
+//                            .foregroundColor(theme.colors.tertiaryContent)
+//                    }
+                    //                        .isHidden(showSendButton)
+//                    .isHidden(true)
                     Button {
-                        withAnimation(.easeInOut(duration: 0.25)) {
-                            viewModel.maximised.toggle()
-                        }
+                        sendMessageAction(viewModel.content)
+                        viewModel.clearContent()
                     } label: {
-                        Image(viewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
+                        Image(Asset.Images.sendIcon.name)
                             .foregroundColor(theme.colors.tertiaryContent)
                     }
-                    .padding(.top, 4)
-                    .padding(.trailing, 12)
+                    .isHidden(!showSendButton)
                 }
-                .padding(.vertical, verticalPadding)
-                .clipShape(rect)
-                .overlay(rect.stroke(theme.colors.quinaryContent, lineWidth: 2))
-                .padding(.horizontal, 12)
-                .padding(.top, 8)
-                .padding(.bottom, 4)
-                HStack{
-                    Button {
-                        isBottomSheetExpanded = true
-                    } label: {
-                        Image(Asset.Images.startComposeModule.name)
-                            .foregroundColor(theme.colors.tertiaryContent)
-                    }
-                    FormattingToolbar(formatItems: formatItems) { type in
-                        viewModel.apply(type.action)
-                    }
-                    Spacer()
-                    ZStack{
-                        Button {
-                            
-                        } label: {
-                            Image(Asset.Images.voiceMessageRecordButtonDefault.name)
-                                .foregroundColor(theme.colors.tertiaryContent)
-                        }
-// TODO Add support for voice messages
-//                        .isHidden(showSendButton)
-                        .isHidden(true)
-                        Button {
-                            sendMessageAction(viewModel.content)
-                            viewModel.clearContent()
-                        } label: {
-                            Image(Asset.Images.sendIcon.name)
-                                .foregroundColor(theme.colors.tertiaryContent)
-                        }
-                        .isHidden(!showSendButton)
-                    }.onChange(of: viewModel.isContentEmpty) { (empty) in
-                        withAnimation(.easeInOut(duration: 0.25)) {
-                            showSendButton = !empty
-                        }
+                .onChange(of: viewModel.isContentEmpty) { empty in
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        showSendButton = !empty
                     }
                 }
-                .padding(.horizontal, 16)
-                .padding(.bottom, 4)
-                .animation(.none)
             }
-            .sheet(isPresented: $isBottomSheetExpanded) {
-                moduleSelectionList
-                    .presentationDetents([.medium])
-            }
-    }
-    
-    var moduleSelectionList: some View {
-        VStack {
-            VStack(alignment: .leading) {
-                ForEach(ComposerModule.allCases) { module in
-                    HStack(spacing: 16) {
-                        Image(module.icon)
-                            .renderingMode(.template)
-                            .foregroundColor(theme.colors.accent)
-                        Text(module.title)
-                            .foregroundColor(theme.colors.primaryContent)
-                            .font(theme.fonts.body)
-                        Spacer()
-                    }
-                    .onTapGesture {
-                        isBottomSheetExpanded = false
-                        self.startModuleAction(module)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                }
-            }
-            .padding(.top, 16)
-            .background(theme.colors.background.ignoresSafeArea())
-            Spacer()
+            .padding(.horizontal, 16)
+            .padding(.bottom, 4)
+            .animation(.none)
         }
     }
 }
 
-@available(iOS 16.0, *)
 struct Composer_Previews: PreviewProvider {
     static let stateRenderer = MockComposerScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
     }
+}
+
+enum ComposerCreateActionListViewAction {
+    case selectAction(ComposerCreateAction)
 }

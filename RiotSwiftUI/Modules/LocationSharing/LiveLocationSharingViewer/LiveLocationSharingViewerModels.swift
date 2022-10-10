@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,15 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
 import CoreLocation
+import Foundation
 
 // MARK: - Coordinator
 
 // MARK: View model
 
-enum LiveLocationSharingViewerViewModelResult {    
+enum LiveLocationSharingViewerViewModelResult {
     case done
     case share(_ coordinate: CLLocationCoordinate2D)
 }
@@ -30,7 +30,6 @@ enum LiveLocationSharingViewerViewModelResult {
 // MARK: View
 
 struct LiveLocationSharingViewerViewState: BindableState {
-    
     /// Map style URL
     let mapStyleURL: URL
     
@@ -43,7 +42,7 @@ struct LiveLocationSharingViewerViewState: BindableState {
     /// Live location list items
     var listItemsViewData: [LiveLocationListItemViewData]
 
-    var showLoadingIndicator: Bool = false
+    var showLoadingIndicator = false
     
     var shareButtonEnabled: Bool {
         !showLoadingIndicator
@@ -51,14 +50,14 @@ struct LiveLocationSharingViewerViewState: BindableState {
     
     /// True to indicate that everybody stopped to share live location sharing in the room
     var isAllLocationSharingEnded: Bool {
-        return listItemsViewData.isEmpty
+        listItemsViewData.isEmpty
     }
     
     var isBottomSheetVisible: Bool {
-        return isAllLocationSharingEnded == false
+        isAllLocationSharingEnded == false
     }
     
-    var showMapLoadingError: Bool = false
+    var showMapLoadingError = false
 
     let errorSubject = PassthroughSubject<LocationSharingViewError, Never>()
     

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,34 +33,54 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
     /// A list of screen state definitions
     static var allCases: [MockUserSessionDetailsScreenState] {
         // Each of the presence statuses
-        return [.allSections, sessionSectionOnly]
+        [.allSections, .sessionSectionOnly]
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
-        let currentSessionInfo: UserSessionInfo
+    var screenView: ([Any], AnyView) {
+        let sessionInfo: UserSessionInfo
         switch self {
         case .allSections:
-            currentSessionInfo = UserSessionInfo(sessionId: "session",
-                                                 sessionName: "iOS",
-                                                 deviceType: .mobile,
-                                                 isVerified: false,
-                                                 lastSeenIP: "10.0.0.10",
-                                                 lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+            sessionInfo = UserSessionInfo(id: "alice",
+                                          name: "iOS",
+                                          deviceType: .mobile,
+                                          isVerified: false,
+                                          lastSeenIP: "10.0.0.10",
+                                          lastSeenTimestamp: nil,
+                                          applicationName: "Element iOS",
+                                          applicationVersion: "1.0.0",
+                                          applicationURL: nil,
+                                          deviceModel: nil,
+                                          deviceOS: "iOS 15.5",
+                                          lastSeenIPLocation: nil,
+                                          clientName: "Element",
+                                          clientVersion: "1.0.0",
+                                          isActive: true,
+                                          isCurrent: true)
         case .sessionSectionOnly:
-            currentSessionInfo = UserSessionInfo(sessionId: "session",
-                                                 sessionName: "iOS",
-                                                 deviceType: .mobile,
-                                                 isVerified: false,
-                                                 lastSeenIP: nil,
-                                                 lastSeenTimestamp: Date().timeIntervalSince1970 - 100)
+            sessionInfo = UserSessionInfo(id: "3",
+                                          name: "Android",
+                                          deviceType: .mobile,
+                                          isVerified: false,
+                                          lastSeenIP: "3.0.0.3",
+                                          lastSeenTimestamp: Date().timeIntervalSince1970 - 10,
+                                          applicationName: "Element Android",
+                                          applicationVersion: "1.0.0",
+                                          applicationURL: nil,
+                                          deviceModel: nil,
+                                          deviceOS: "Android 4.0",
+                                          lastSeenIPLocation: nil,
+                                          clientName: "Element",
+                                          clientVersion: "1.0.0",
+                                          isActive: true,
+                                          isCurrent: false)
         }
-        let viewModel = UserSessionDetailsViewModel(userSessionInfo: currentSessionInfo)
+        let viewModel = UserSessionDetailsViewModel(sessionInfo: sessionInfo)
         
         // can simulate service and viewModel actions here if needs be.
         
         return (
-            [currentSessionInfo],
+            [sessionInfo],
             AnyView(UserSessionDetails(viewModel: viewModel.context))
         )
     }

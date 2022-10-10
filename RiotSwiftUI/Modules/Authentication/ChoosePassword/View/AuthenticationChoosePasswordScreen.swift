@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationChoosePasswordScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -100,7 +99,7 @@ struct AuthenticationChoosePasswordScreen: View {
                                configuration: UIKitTextInputConfiguration(returnKeyType: .done,
                                                                           isSecureTextEntry: true),
                                onCommit: submit)
-        .accessibilityIdentifier("passwordTextField")
+            .accessibilityIdentifier("passwordTextField")
     }
 
     /// Sends the `send` view action so long as a valid email address has been input.

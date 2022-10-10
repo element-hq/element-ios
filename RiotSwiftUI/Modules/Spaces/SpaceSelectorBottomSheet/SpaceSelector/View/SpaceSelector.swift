@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct SpaceSelector: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -53,12 +52,11 @@ struct SpaceSelector: View {
                                          notificationCount: item.notificationCount,
                                          highlightedNotificationCount: item.highlightedNotificationCount,
                                          disclosureAction: {
-                                            viewModel.send(viewAction: .spaceDisclosure(item))
+                                             viewModel.send(viewAction: .spaceDisclosure(item))
+                                         })
+                                         .onTapGesture {
+                                             viewModel.send(viewAction: .spaceSelected(item))
                                          }
-                        )
-                        .onTapGesture {
-                            viewModel.send(viewAction: .spaceSelected(item))
-                        }
                 }
             }
         }
