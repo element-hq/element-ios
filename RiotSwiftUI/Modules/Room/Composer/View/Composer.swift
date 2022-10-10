@@ -47,30 +47,31 @@ struct Composer: View {
     var body: some View {
         VStack {
             let rect = RoundedRectangle(cornerRadius: borderHeight / 2)
-            ZStack(alignment: .topTrailing) {
-                WysiwygComposerView(
-                    content: viewModel.content,
-                    replaceText: viewModel.replaceText,
-                    select: viewModel.select,
-                    didUpdateText: viewModel.didUpdateText
-                )
-                .textColor(theme.colors.primaryContent)
-                .frame(height: viewModel.idealHeight)
-                .padding(.horizontal, 12)
-                .onAppear {
-                    viewModel.setup()
-                }
-                Button {
-                    withAnimation(.easeInOut(duration: 0.25)) {
-                        viewModel.maximised.toggle()
-                    }
-                } label: {
-                    Image(viewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
-                        .foregroundColor(theme.colors.tertiaryContent)
-                }
-                .padding(.top, 4)
-                .padding(.trailing, 12)
+            // TODO: Fix maximise animation bugs before re-enabling
+//            ZStack(alignment: .topTrailing) {
+            WysiwygComposerView(
+                content: viewModel.content,
+                replaceText: viewModel.replaceText,
+                select: viewModel.select,
+                didUpdateText: viewModel.didUpdateText
+            )
+            .textColor(theme.colors.primaryContent)
+            .frame(height: viewModel.idealHeight)
+            .padding(.horizontal, 12)
+            .onAppear {
+                viewModel.setup()
             }
+//                Button {
+//                    withAnimation(.easeInOut(duration: 0.25)) {
+//                        viewModel.maximised.toggle()
+//                    }
+//                } label: {
+//                    Image(viewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
+//                        .foregroundColor(theme.colors.tertiaryContent)
+//                }
+//                .padding(.top, 4)
+//                .padding(.trailing, 12)
+//            }
             .padding(.vertical, verticalPadding)
             .clipShape(rect)
             .overlay(rect.stroke(theme.colors.quinaryContent, lineWidth: 2))
