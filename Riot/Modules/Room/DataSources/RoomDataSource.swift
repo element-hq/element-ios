@@ -260,7 +260,7 @@ private extension RoomDataSource {
         return attributedText.string.starts(with: Constants.emoteMessageSlashCommandPrefix)
     }
     
-    func handleReplaceFormattedMessage( for event: MXEvent,
+    func handleReplaceFormattedMessage(for event: MXEvent,
                                                 rawText: String,
                                                 html: String?,
                                                 success: @escaping ((String?) -> Void),
