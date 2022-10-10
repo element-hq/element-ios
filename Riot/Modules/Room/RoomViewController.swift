@@ -52,18 +52,36 @@ extension RoomViewController {
     }
 
 
-    /// Send given attributed text message to the room
+    /// Send the formatted text message and its raw counterpat to the room
     ///
-    /// - Parameter attributedTextMsg: the attributed text message
+    /// - Parameter rawTextMsg: the raw text message
+    /// - Parameter htmlMsg: the html text message
     @objc func sendFormattedTextMessage(_ rawTextMsg: String, htmlMsg: String) {
+        let eventModified = self.roomDataSource.event(withEventId: customizedRoomDataSource?.selectedEventId)
         self.setupRoomDataSource { roomDataSource in
             guard let roomDataSource = roomDataSource as? RoomDataSource else { return }
-            roomDataSource.sendFormattedTextMessage(rawTextMsg, html: htmlMsg) { response in
-                switch response {
-                case .success:
-                    break
-                case .failure:
-                    MXLog.error("[RoomViewController] sendFormattedTextMessage failed")
+            
+            if self.inputToolbar?.sendMode == .edit, let eventModified = eventModified {
+                roomDataSource.replaceFormattedTextMessage(
+                    for: eventModified,
+                    rawText: rawTextMsg,
+                    html: htmlMsg,
+                    success: { _ in
+                        //
+                    },
+                    failure: { _ in
+                        MXLog.error("[RoomViewController] sendFormattedTextMessage failed while updating event", context: [
+                            "event_id": eventModified.eventId
+                        ])
+                })
+            } else {
+                roomDataSource.sendFormattedTextMessage(rawTextMsg, html: htmlMsg) { response in
+                    switch response {
+                    case .success:
+                        break
+                    case .failure:
+                        MXLog.error("[RoomViewController] sendFormattedTextMessage failed")
+                    }
                 }
             }
 
