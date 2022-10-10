@@ -131,27 +131,6 @@ extension RoomDataSource {
        handleFormattedSendReply(to: eventToReply, rawText: rawText, html: htmlText, completion: completion)
     }
     
-    private func handleFormattedSendReply(to eventToReply: MXEvent,
-                                          rawText: String,
-                                          html: String?,
-                                          completion: @escaping (MXResponse<String?>) -> Void) {
-        var localEcho: MXEvent?
-        
-        let stringLocalizer: MXSendReplyEventStringLocalizerProtocol = MXKSendReplyEventStringLocalizer()
-        
-        room.sendReply(to: eventToReply,
-                       textMessage: rawText,
-                       formattedTextMessage: html,
-                       stringLocalizer: stringLocalizer,
-                       threadId: self.threadId,
-                       localEcho: &localEcho,
-                       completion: completion)
-        
-        if localEcho != nil {
-            self.queueEvent(forProcessing: localEcho, with: self.roomState, direction: .forwards)
-            self.processQueuedEvents(nil)
-        }
-    }
     
     /// Replace a text in an event.
     ///
@@ -190,34 +169,6 @@ extension RoomDataSource {
                                       success: @escaping ((String?) -> Void),
                                       failure: @escaping ((Error?) -> Void)) {
         handleReplaceFormattedMessage(for: event, rawText: rawText, html: html, success: success, failure: failure)
-    }
-    
-    private func handleReplaceFormattedMessage( for event: MXEvent,
-                                                rawText: String,
-                                                html: String?,
-                                                success: @escaping ((String?) -> Void),
-                                                failure: @escaping ((Error?) -> Void)) {
-        let eventBody = event.content[kMXMessageBodyKey] as? String
-        let eventFormattedBody = event.content["formatted_body"] as? String
-        if rawText != eventBody && (eventFormattedBody == nil || html != eventFormattedBody) {
-            self.mxSession.aggregations.replaceTextMessageEvent(
-                event,
-                withTextMessage: rawText,
-                formattedText: html,
-                localEcho: { localEcho in
-                    // Apply the local echo to the timeline
-                    self.updateEvent(withReplace: localEcho)
-                    
-                    // Integrate the replace local event into the timeline like when sending a message
-                    // This also allows to manage read receipt on this replace event
-                    self.queueEvent(forProcessing: localEcho, with: self.roomState, direction: .forwards)
-                    self.processQueuedEvents(nil)
-                },
-                success: success,
-                failure: failure)
-        } else {
-            failure(nil)
-        }
     }
 
     /// Retrieve editable attributed text message from an event.
@@ -307,5 +258,55 @@ private extension RoomDataSource {
 
     func isAttributedTextMessageAnEmote(_ attributedText: NSAttributedString) -> Bool {
         return attributedText.string.starts(with: Constants.emoteMessageSlashCommandPrefix)
+    }
+    
+    func handleReplaceFormattedMessage( for event: MXEvent,
+                                                rawText: String,
+                                                html: String?,
+                                                success: @escaping ((String?) -> Void),
+                                                failure: @escaping ((Error?) -> Void)) {
+        let eventBody = event.content[kMXMessageBodyKey] as? String
+        let eventFormattedBody = event.content["formatted_body"] as? String
+        if rawText != eventBody && (eventFormattedBody == nil || html != eventFormattedBody) {
+            self.mxSession.aggregations.replaceTextMessageEvent(
+                event,
+                withTextMessage: rawText,
+                formattedText: html,
+                localEcho: { localEcho in
+                    // Apply the local echo to the timeline
+                    self.updateEvent(withReplace: localEcho)
+                    
+                    // Integrate the replace local event into the timeline like when sending a message
+                    // This also allows to manage read receipt on this replace event
+                    self.queueEvent(forProcessing: localEcho, with: self.roomState, direction: .forwards)
+                    self.processQueuedEvents(nil)
+                },
+                success: success,
+                failure: failure)
+        } else {
+            failure(nil)
+        }
+    }
+    
+    func handleFormattedSendReply(to eventToReply: MXEvent,
+                                          rawText: String,
+                                          html: String?,
+                                          completion: @escaping (MXResponse<String?>) -> Void) {
+        var localEcho: MXEvent?
+        
+        let stringLocalizer: MXSendReplyEventStringLocalizerProtocol = MXKSendReplyEventStringLocalizer()
+        
+        room.sendReply(to: eventToReply,
+                       textMessage: rawText,
+                       formattedTextMessage: html,
+                       stringLocalizer: stringLocalizer,
+                       threadId: self.threadId,
+                       localEcho: &localEcho,
+                       completion: completion)
+        
+        if localEcho != nil {
+            self.queueEvent(forProcessing: localEcho, with: self.roomState, direction: .forwards)
+            self.processQueuedEvents(nil)
+        }
     }
 }
