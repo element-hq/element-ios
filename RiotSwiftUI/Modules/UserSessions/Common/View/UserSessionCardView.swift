@@ -37,19 +37,17 @@ struct UserSessionCardView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 12) {
             DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
+                .accessibilityHidden(true)
             
             Text(viewData.sessionName)
                 .font(theme.fonts.headline)
                 .foregroundColor(theme.colors.primaryContent)
                 .multilineTextAlignment(.center)
             
-            HStack {
-                Image(viewData.verificationStatusImageName)
-                Text(viewData.verificationStatusText)
-                    .font(theme.fonts.subheadline)
-                    .foregroundColor(theme.colors[keyPath: viewData.verificationStatusColor])
-                    .multilineTextAlignment(.center)
-            }
+            Label(viewData.verificationStatusText, image: viewData.verificationStatusImageName)
+                .font(theme.fonts.subheadline)
+                .foregroundColor(theme.colors[keyPath: viewData.verificationStatusColor])
+                .multilineTextAlignment(.center)
             
             if viewData.isCurrentSessionDisplayMode {
                 Text(viewData.verificationStatusAdditionalInfoText)
