@@ -33,6 +33,23 @@ struct UserOtherSessions: View {
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
         .navigationTitle(viewModel.viewState.title)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Picker("Filter menu", selection: $viewModel.filter) {
+                        ForEach(OtherUserSessionsFilter.allCases) { filter in
+                            Text(filter.menuLocalizedName).tag(filter)
+                        }
+                    }
+                    .labelsHidden()
+                    .onChange(of: viewModel.filter) { _ in
+                        viewModel.send(viewAction: .filerWasChanged)
+                    }
+                } label: {
+                    Image(viewModel.filter == .all ? Asset.Images.userOtherSessionsFilter.name : Asset.Images.userOtherSessionsFilterSelected.name)
+                }
+            }
+        }
     }
     
     private func createSessionItemsSection(header: UserOtherSessionsHeaderViewData, items: [UserSessionListItemViewData]) -> some View {

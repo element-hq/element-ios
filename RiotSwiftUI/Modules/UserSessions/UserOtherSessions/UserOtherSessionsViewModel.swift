@@ -18,12 +18,6 @@ import SwiftUI
 
 typealias UserOtherSessionsViewModelType = StateStoreViewModel<UserOtherSessionsViewState, UserOtherSessionsViewAction>
 
-enum OtherUserSessionsFilter {
-    case all
-    case inactive
-    case unverified
-}
-
 class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessionsViewModelProtocol {
     var completion: ((UserOtherSessionsViewModelResult) -> Void)?
     private let sessionInfos: [UserSessionInfo]
@@ -32,8 +26,10 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
          filter: OtherUserSessionsFilter,
          title: String) {
         self.sessionInfos = sessionInfos
-        super.init(initialViewState: UserOtherSessionsViewState(title: title, sections: []))
-        updateViewState(sessionInfos: sessionInfos, filter: filter)
+        super.init(initialViewState: UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: filter),
+                                                                title: title,
+                                                                sections: []))
+        updateViewState(filter: filter)
     }
     
     // MARK: - Public
@@ -46,12 +42,14 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                 return
             }
             completion?(.showUserSessionOverview(sessionInfo: session))
+        case .filerWasChanged:
+            updateViewState(filter: state.bindings.filter)
         }
     }
     
     // MARK: - Private
     
-    private func updateViewState(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter) {
+    private func updateViewState(filter: OtherUserSessionsFilter) {
         let sectionItems = createSectionItems(sessionInfos: sessionInfos, filter: filter)
         let sectionHeader = createHeaderData(filter: filter)
         state.sections = [.sessionItems(header: sectionHeader, items: sectionItems)]

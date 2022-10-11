@@ -107,6 +107,8 @@ internal class Asset: NSObject {
     internal static let deviceTypeMobile = ImageAsset(name: "device_type_mobile")
     internal static let deviceTypeUnknown = ImageAsset(name: "device_type_unknown")
     internal static let deviceTypeWeb = ImageAsset(name: "device_type_web")
+    internal static let userOtherSessionsFilter = ImageAsset(name: "user_other_sessions_filter")
+    internal static let userOtherSessionsFilterSelected = ImageAsset(name: "user_other_sessions_filter_selected")
     internal static let userOtherSessionsInactive = ImageAsset(name: "user_other_sessions_inactive")
     internal static let userOtherSessionsUnverified = ImageAsset(name: "user_other_sessions_unverified")
     internal static let userSessionListItemInactiveSession = ImageAsset(name: "user_session_list_item_inactive_session")

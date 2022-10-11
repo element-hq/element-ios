@@ -31,8 +31,13 @@ enum UserOtherSessionsViewModelResult: Equatable {
 // MARK: View
 
 struct UserOtherSessionsViewState: BindableState, Equatable {
+    var bindings: UserOtherSessionsBindings
     let title: String
     var sections: [UserOtherSessionsSection]
+}
+
+struct UserOtherSessionsBindings: Equatable {
+    var filter: OtherUserSessionsFilter
 }
 
 enum UserOtherSessionsSection: Hashable, Identifiable {
@@ -45,4 +50,5 @@ enum UserOtherSessionsSection: Hashable, Identifiable {
 
 enum UserOtherSessionsViewAction {
     case userOtherSessionSelected(sessionId: String)
+    case filerWasChanged
 }
