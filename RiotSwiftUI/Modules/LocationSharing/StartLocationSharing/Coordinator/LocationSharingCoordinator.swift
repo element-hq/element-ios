@@ -103,8 +103,10 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
                 self.completion?()
             case .share(let latitude, let longitude, let coordinateType):
                 self.shareStaticLocation(latitude: latitude, longitude: longitude, coordinateType: coordinateType)
+                self.completion?()
             case .shareLiveLocation(let timeout):
                 self.startLiveLocationSharing(with: timeout)
+                self.completion?()
             case .checkLiveLocationCanBeStarted(let completion):
                 self.checkLiveLocationCanBeStarted(completion: completion)
             }
@@ -129,28 +131,19 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         } failure: { error in
             MXLog.error("[LocationSharingCoordinator] Failed sharing location", context: error)
         }
-        
-        self.completion?()
     }
     
     private func startLiveLocationSharing(with timeout: TimeInterval) {
         guard let locationService = parameters.roomDataSource.mxSession.locationService, let roomId = parameters.roomDataSource.roomId else {
-            locationSharingViewModel.stopLoading(error: .locationSharingError)
             return
         }
         
-        locationService.startUserLocationSharing(withRoomId: roomId, description: nil, timeout: timeout) { [weak self] response in
-            guard let self = self else { return }
-            
+        locationService.startUserLocationSharing(withRoomId: roomId, description: nil, timeout: timeout) { response in
             switch response {
             case .success:
                 break
             case .failure(let error):
                 MXLog.error("[LocationSharingCoordinator] Failed to start live location sharing", context: error)
-            }
-            
-            DispatchQueue.main.async {
-                self.completion?()
             }
         }
     }
