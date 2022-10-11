@@ -19,12 +19,27 @@ import XCTest
 @testable import RiotSwiftUI
 
 class UserOtherSessionsViewModelTests: XCTestCase {
+    private let unverifiedSectionHeader = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionUnverifiedShort,
+                                                                          subtitle: VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle,
+                                                                          iconName: Asset.Images.userOtherSessionsUnverified.name)
+    
+    private let inactiveSectionHeader = UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuInactive,
+                                                                        subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
+                                                                        iconName: Asset.Images.userOtherSessionsInactive.name)
+    
+    private let allSectionHeader = UserOtherSessionsHeaderViewData(title: nil,
+                                                                   subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
+                                                                   iconName: nil)
+    
+    private let verifiedSectionHeader = UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuVerified,
+                                                                        subtitle: VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle,
+                                                                        iconName: Asset.Images.userOtherSessionsVerified.name)
+    
     func test_whenUserOtherSessionSelectedProcessed_completionWithShowUserSessionOverviewCalled() {
         let expectedUserSessionInfo = createUserSessionInfo(sessionId: "session 2")
-        let sut = UserOtherSessionsViewModel(sessionInfos: [createUserSessionInfo(sessionId: "session 1"),
-                                                            expectedUserSessionInfo],
-                                             filter: .inactive,
-                                             title: "Title")
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            expectedUserSessionInfo]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .inactive)
         
         var modelResult: UserOtherSessionsViewModelResult?
         sut.completion = { result in
@@ -37,43 +52,100 @@ class UserOtherSessionsViewModelTests: XCTestCase {
     func test_whenModelCreated_withInactiveFilter_viewStateIsCorrect() {
         let sessionInfos = [createUserSessionInfo(sessionId: "session 1", isActive: false),
                             createUserSessionInfo(sessionId: "session 2", isActive: false)]
-        let sut = UserOtherSessionsViewModel(sessionInfos: sessionInfos,
-                                             filter: .inactive,
-                                             title: "Title")
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .inactive)
         
-        let expectedHeader = UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuInactive,
-                                                             subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
-                                                             iconName: Asset.Images.userOtherSessionsInactive.name)
         let expectedItems = sessionInfos.filter { !$0.isActive }.asViewData()
         let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .inactive),
                                                        title: "Title",
-                                                       sections: [.sessionItems(header: expectedHeader, items: expectedItems)])
+                                                       sections: [.sessionItems(header: inactiveSectionHeader, items: expectedItems)])
         XCTAssertEqual(sut.state, expectedState)
     }
     
     func test_whenModelCreated_withAllFilter_viewStateIsCorrect() {
-        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"), createUserSessionInfo(sessionId: "session 2")]
-        let sut = UserOtherSessionsViewModel(sessionInfos: sessionInfos,
-                                             filter: .all,
-                                             title: "Title")
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            createUserSessionInfo(sessionId: "session 2")]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
         
-        let expectedHeader = UserOtherSessionsHeaderViewData(title: nil,
-                                                             subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
-                                                             iconName: nil)
         let expectedItems = sessionInfos.filter { !$0.isCurrent }.asViewData()
         let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .all),
                                                        title: "Title",
-                                                       sections: [.sessionItems(header: expectedHeader, items: expectedItems)])
+                                                       sections: [.sessionItems(header: allSectionHeader, items: expectedItems)])
         XCTAssertEqual(sut.state, expectedState)
     }
     
+    func test_whenModelCreated_withUnverifiedFilter_viewStateIsCorrect() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            createUserSessionInfo(sessionId: "session 2")]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .unverified)
+        
+        let expectedItems = sessionInfos.filter { !$0.isCurrent }.asViewData()
+        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .unverified),
+                                                       title: "Title",
+                                                       sections: [.sessionItems(header: unverifiedSectionHeader, items: expectedItems)])
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    func test_whenModelCreated_withVerifiedFilter_viewStateIsCorrect() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1", isVerified: true),
+                            createUserSessionInfo(sessionId: "session 2", isVerified: true)]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .verified)
+        
+        let expectedItems = sessionInfos.filter { !$0.isCurrent }.asViewData()
+        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .verified),
+                                                       title: "Title",
+                                                       sections: [.sessionItems(header: verifiedSectionHeader, items: expectedItems)])
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    func test_whenModelCreated_withVerifiedFilterWithNoVerifiedSessions_viewStateIsCorrect() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1", isVerified: false),
+                            createUserSessionInfo(sessionId: "session 2", isVerified: false)]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .verified)
+        
+        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .verified),
+                                                       title: "Title",
+                                                       sections: [.emptySessionItems(header: verifiedSectionHeader, title: VectorL10n.userOtherSessionNoVerifiedSessions)])
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    func test_whenModelCreated_withUnverifiedFilterWithNoUnverifiedSessions_viewStateIsCorrect() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1", isVerified: true),
+                            createUserSessionInfo(sessionId: "session 2", isVerified: true)]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .unverified)
+        
+        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .unverified),
+                                                       title: "Title",
+                                                       sections: [.emptySessionItems(header: unverifiedSectionHeader, title: VectorL10n.userOtherSessionNoUnverifiedSessions)])
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    func test_whenModelCreated_withInactiveFilterWithNoInactiveSessions_viewStateIsCorrect() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1", isActive: true),
+                            createUserSessionInfo(sessionId: "session 2", isActive: true)]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .inactive)
+        
+        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .inactive),
+                                                       title: "Title",
+                                                       sections: [.emptySessionItems(header: inactiveSectionHeader, title: VectorL10n.userOtherSessionNoInactiveSessions)])
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    private func createSUT(sessionInfos: [UserSessionInfo],
+                           filter: OtherUserSessionsFilter,
+                           title: String = "Title") -> UserOtherSessionsViewModel {
+        UserOtherSessionsViewModel(sessionInfos: sessionInfos,
+                                   filter: filter,
+                                   title: title)
+    }
+    
     private func createUserSessionInfo(sessionId: String,
+                                       isVerified: Bool = false,
                                        isActive: Bool = true,
                                        isCurrent: Bool = false) -> UserSessionInfo {
         UserSessionInfo(id: sessionId,
                         name: "iOS",
                         deviceType: .mobile,
-                        isVerified: false,
+                        isVerified: isVerified,
                         lastSeenIP: "10.0.0.10",
                         lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
                         applicationName: nil,

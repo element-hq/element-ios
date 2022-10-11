@@ -49,4 +49,11 @@ class UserOtherSessionsUITests: MockScreenTestCase {
  
         XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewOtherSessionsSectionInfo].exists)
     }
+    
+    func test_whenOtherSessionsWithVerifiedSessionFilterPresented_correctHeaderDisplayed() {
+        app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.verifiedSessions.title)
+ 
+        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionVerifiedShort].exists)
+        XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle].exists)
+    }
 }
