@@ -95,3 +95,13 @@ extension FormatType {
         }
     }
 }
+
+enum ComposerViewAction {
+    case cancel
+}
+
+enum ComposerViewModelResult {
+    case cancel
+}
+
+

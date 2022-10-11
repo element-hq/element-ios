@@ -19,4 +19,26 @@ import Foundation
 struct ComposerViewState: BindableState {
     var eventSenderDisplayName: String?
     var sendMode: RoomInputToolbarViewSendMode = .send
+    
+    var shouldDisplayContext: Bool {
+        return sendMode == .edit || sendMode == .reply
+    }
+    
+    var contextDescription: String? {
+        switch sendMode {
+        case .reply:
+            guard let eventSenderDisplayName = eventSenderDisplayName else { return nil }
+            return VectorL10n.roomMessageReplyingTo(eventSenderDisplayName)
+        case .edit: return VectorL10n.roomMessageEditing
+        default: return nil
+        }
+    }
+    
+    var contextImageName: String? {
+        switch sendMode {
+        case .edit: return Asset.Images.inputEditIcon.name
+        case .reply: return Asset.Images.inputEditIcon.name
+        default: return nil
+        }
+    }
 }

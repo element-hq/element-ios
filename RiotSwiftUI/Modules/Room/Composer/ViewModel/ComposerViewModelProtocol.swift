@@ -18,6 +18,7 @@ import Foundation
 
 protocol ComposerViewModelProtocol {
     var context: ComposerViewModelType.Context { get }
+    var callback: ((ComposerViewModelResult) -> Void)? { get set }
     
     func setSendMode(_ sendMode: RoomInputToolbarViewSendMode)
     func setEventSenderDisplayName(_ eventSenderDisplayName: String?)

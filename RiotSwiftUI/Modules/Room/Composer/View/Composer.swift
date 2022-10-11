@@ -30,6 +30,7 @@ struct Composer: View {
     
     @State private var showSendButton = false
     
+    private let horizontalPadding: CGFloat = 12
     private let borderHeight: CGFloat = 44
     private let minTextViewHeight: CGFloat = 20
     private var verticalPadding: CGFloat {
@@ -50,31 +51,53 @@ struct Composer: View {
         VStack {
             let rect = RoundedRectangle(cornerRadius: borderHeight / 2)
             // TODO: Fix maximise animation bugs before re-enabling
-//            ZStack(alignment: .topTrailing) {
-            WysiwygComposerView(
-                content: wysiwygViewModel.content,
-                replaceText: wysiwygViewModel.replaceText,
-                select: wysiwygViewModel.select,
-                didUpdateText: wysiwygViewModel.didUpdateText
-            )
-            .textColor(theme.colors.primaryContent)
-            .frame(height: wysiwygViewModel.idealHeight)
-            .padding(.horizontal, 12)
-            .onAppear {
-                wysiwygViewModel.setup()
+            //            ZStack(alignment: .topTrailing) {
+            VStack {
+                if viewModel.viewState.shouldDisplayContext {
+                    HStack {
+                        if let imageName = viewModel.viewState.contextImageName {
+                            Image(imageName)
+                                .foregroundColor(theme.colors.secondaryContent)
+                        }
+                        if let contextDescription = viewModel.viewState.contextDescription {
+                            Text(contextDescription)
+                                .foregroundColor(theme.colors.secondaryContent)
+                        }
+                        Spacer()
+                        Button {
+                            viewModel.send(viewAction: .cancel)
+                        } label: {
+                            Image(Asset.Images.inputCloseIcon.name)
+                                .foregroundColor(theme.colors.secondaryContent)
+                        }
+                    }
+                    .padding(.horizontal, horizontalPadding)
+                }
+                WysiwygComposerView(
+                    content: wysiwygViewModel.content,
+                    replaceText: wysiwygViewModel.replaceText,
+                    select: wysiwygViewModel.select,
+                    didUpdateText: wysiwygViewModel.didUpdateText
+                )
+                .textColor(theme.colors.primaryContent)
+                .frame(height: wysiwygViewModel.idealHeight)
+                .padding(.horizontal, horizontalPadding)
+                .onAppear {
+                    wysiwygViewModel.setup()
+                }
+                //                Button {
+                //                    withAnimation(.easeInOut(duration: 0.25)) {
+                //                        viewModel.maximised.toggle()
+                //                    }
+                //                } label: {
+                //                    Image(viewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
+                //                        .foregroundColor(theme.colors.tertiaryContent)
+                //                }
+                //                .padding(.top, 4)
+                //                .padding(.trailing, 12)
+                //            }
+                .padding(.vertical, verticalPadding)
             }
-//                Button {
-//                    withAnimation(.easeInOut(duration: 0.25)) {
-//                        viewModel.maximised.toggle()
-//                    }
-//                } label: {
-//                    Image(viewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
-//                        .foregroundColor(theme.colors.tertiaryContent)
-//                }
-//                .padding(.top, 4)
-//                .padding(.trailing, 12)
-//            }
-            .padding(.vertical, verticalPadding)
             .clipShape(rect)
             .overlay(rect.stroke(theme.colors.quinaryContent, lineWidth: 2))
             .padding(.horizontal, 12)
@@ -136,8 +159,6 @@ struct Composer_Previews: PreviewProvider {
         stateRenderer.screenGroup()
     }
 }
-
-enum ComposerViewAction {}
 
 enum ComposerCreateActionListViewAction {
     case selectAction(ComposerCreateAction)

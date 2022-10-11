@@ -19,11 +19,26 @@ import SwiftUI
 typealias ComposerViewModelType = StateStoreViewModel<ComposerViewState, ComposerViewAction>
 
 class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol {
+    // MARK: - Properties
+
+    // MARK: Private
+
+    // MARK: Public
+    var callback: ((ComposerViewModelResult) -> Void)?
+    
+    // MARK: - Public
     func setSendMode(_ sendMode: RoomInputToolbarViewSendMode) {
         state.sendMode = sendMode
     }
     
     func setEventSenderDisplayName(_ eventSenderDisplayName: String?) {
         state.eventSenderDisplayName = eventSenderDisplayName
+    }
+    
+    override func process(viewAction: ComposerViewAction) {
+        switch viewAction {
+        case .cancel:
+            callback?(.cancel)
+        }
     }
 }
