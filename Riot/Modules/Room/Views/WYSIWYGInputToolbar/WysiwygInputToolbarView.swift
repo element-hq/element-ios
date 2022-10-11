@@ -34,19 +34,34 @@ class SelfSizingHostingController<Content>: UIHostingController<Content> where C
 }
 
 @objc protocol HtmlRoomInputToolbarViewProtocol: RoomInputToolbarViewProtocol {
-    @objc func setHtml(content: String)
+    @objc var htmlContent: String { get set }
 }
 
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInputToolbarViewProtocol {
-    
-    var eventSenderDisplayName: String! {
-        didSet {
-            viewModel.setEventSenderDisplayName(eventSenderDisplayName)
+    var htmlContent: String {
+        get {
+            self.hostingViewController.rootView.wysiwygViewModel.content.html
+        }
+        set {
+            self.hostingViewController.rootView.wysiwygViewModel.setHtmlContent(newValue)
         }
     }
-    var sendMode: RoomInputToolbarViewSendMode = .send {
-        didSet {
-            viewModel.setSendMode(sendMode)
+    
+    var eventSenderDisplayName: String! {
+        get {
+            viewModel.eventSenderDisplayName
+        }
+        set {
+            viewModel.eventSenderDisplayName = newValue
+        }
+    }
+    
+    var sendMode: RoomInputToolbarViewSendMode {
+        get {
+            viewModel.sendMode
+        }
+        set {
+            viewModel.sendMode = newValue
         }
     }
     
@@ -116,10 +131,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     override func customizeRendering() {
         super.customizeRendering()
         self.backgroundColor = .clear
-    }
-    
-    func setHtml(content: String) {
-        hostingViewController.rootView.wysiwygViewModel.setHtmlContent(content)
     }
     
     func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {
