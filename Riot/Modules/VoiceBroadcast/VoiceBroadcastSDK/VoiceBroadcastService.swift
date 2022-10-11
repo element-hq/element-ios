@@ -61,7 +61,9 @@ public class VoiceBroadcastService: NSObject {
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     /// - Returns: a `MXHTTPOperation` instance.
     func startVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
-        return sendVoiceBroadcastInfo(state: State.started) { (response) in
+        return sendVoiceBroadcastInfo(state: State.started) { [weak self] response in
+            guard let self = self else { return }
+            
             switch response {
             case .success((let eventIdResponse)):
                 self.voiceBroadcastInfoEventId = eventIdResponse
@@ -146,14 +148,14 @@ public class VoiceBroadcastService: NSObject {
             voiceBroadcastContent.chunkLength = BuildSettings.voiceBroadcastChunkLength
         }
         
-        
         guard let stateEventContent = voiceBroadcastContent.jsonDictionary() as? [String: Any] else {
             completion(.failure(VoiceBroadcastServiceError.unknown))
             return nil
         }
         
-        
-        return self.room.sendStateEvent(.custom(VoiceBroadcastSettings.eventType), content: stateEventContent, stateKey: stateKey) { (response) in
+        return self.room.sendStateEvent(.custom(VoiceBroadcastSettings.eventType), content: stateEventContent, stateKey: stateKey) { [weak self] response in
+            guard let self = self else { return }
+            
             switch response {
             case .success(let object):
                 self.state = state
@@ -239,32 +241,18 @@ extension VoiceBroadcastService {
 
 // MARK: - Internal room additions
 extension MXRoom {
-    /**
-     Send a voice broadcast to the room.
-     
-     - parameters:
-         - localURL: the local filesystem path of the file to send.
-         - voiceBroadcastInfoEventId: The id of the voice broadcast info event.
-         - mimeType: (optional) the mime type of the file. Defaults to `audio/ogg`.
-         - duration: the length of the voice message in milliseconds
-         - samples: an array of floating point values normalized to [0, 1]
-         - threadId: the id of the thread to send the message. nil by default.
-     
-     This pointer is set to an actual MXEvent object
-     containing the local created event which should be used to echo the message in
-     the messages list until the resulting event come through the server sync.
-     For information, the identifier of the created local event has the prefix
-     `kMXEventLocalEventIdPrefix`.
-     
-     You may specify nil for this parameter if you do not want this information.
-     
-     You may provide your own MXEvent object, in this case only its send state is updated.
-     
-     - completion: A block object called when the operation completes.
-     - response: Provides the event id of the event generated on the home server on success.
-     
-     - returns: a `MXHTTPOperation` instance.
-     */
+    
+    /// Send a voice broadcast to the room.
+    /// - Parameters:
+    ///   - localURL: the local filesystem path of the file to send.
+    ///   - voiceBroadcastInfoEventId: The id of the voice broadcast info event.
+    ///   - mimeType: (optional) the mime type of the file. Defaults to `audio/ogg`.
+    ///   - duration: the length of the voice message in milliseconds
+    ///   - samples: an array of floating point values normalized to [0, 1]
+    ///   - threadId: the id of the thread to send the message. nil by default.
+    ///   - success: A closure called when the operation is complete.
+    ///   - failure: A closure called  when the operation fails.
+    /// - Returns: a `MXHTTPOperation` instance.
     @nonobjc @discardableResult func sendChunkOfVoiceBroadcast(localURL: URL,
                                                                voiceBroadcastInfoEventId: String,
                                                                mimeType: String?,

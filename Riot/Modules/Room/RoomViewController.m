@@ -2316,6 +2316,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
             }
             
+            // TODO: Init and start voice broadcast
             MXSession* session = self.roomDataSource.mxSession;
             [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
                 if (voiceBroadcastService) {

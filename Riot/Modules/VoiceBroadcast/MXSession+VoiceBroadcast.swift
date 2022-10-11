@@ -21,7 +21,7 @@ extension MXSession {
     
     /// Convenient getter to retrieve VoiceBroadcastService associated to the session
     @objc var voiceBroadcastService: VoiceBroadcastService? {
-        return VoiceBroadcastServiceProvider.shared.voiceBroadcastService
+        return VoiceBroadcastServiceProvider.shared.currentVoiceBroadcastService
     }
     
     /// Initialize VoiceBroadcastService

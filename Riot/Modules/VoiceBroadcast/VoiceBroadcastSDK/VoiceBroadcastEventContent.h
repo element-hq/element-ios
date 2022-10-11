@@ -22,10 +22,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VoiceBroadcastEventContent : MXJSONModel
 
+/// The voice broadcast state (started - paused - resumed - stopped).
 @property (nonatomic) NSString *state;
 
+/// The length of the voice chunks in seconds. Only required on the started state event.
 @property (nonatomic) NSInteger chunkLength;
 
+///  The event id of the started voice broadcast info state event.
 @property (nonatomic, strong, nullable) NSString* eventId;
 
 - (instancetype)initWithState:(NSString *)state

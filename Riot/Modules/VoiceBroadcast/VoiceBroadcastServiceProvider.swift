@@ -25,8 +25,8 @@ class VoiceBroadcastServiceProvider {
     
     // MARK: - Properties
     
-    // VoiceBroadcastService in the current session
-    public var voiceBroadcastService: VoiceBroadcastService? = nil
+    /// VoiceBroadcastService in the current session
+    public var currentVoiceBroadcastService: VoiceBroadcastService?
     
     // MARK: - Setup
     
@@ -35,7 +35,7 @@ class VoiceBroadcastServiceProvider {
     // MARK: - Public
     
     public func getOrCreateVoiceBroadcastService(for room: MXRoom, completion: @escaping (VoiceBroadcastService?) -> Void) {
-        guard let voiceBroadcastService = self.voiceBroadcastService else {
+        guard let voiceBroadcastService = self.currentVoiceBroadcastService else {
             self.setupVoiceBroadcastService(for: room) { voiceBroadcastService in
                 completion(voiceBroadcastService)
             }
@@ -51,7 +51,7 @@ class VoiceBroadcastServiceProvider {
     
     public func tearDownVoiceBroadcastService() {
                 
-        self.voiceBroadcastService = nil
+        self.currentVoiceBroadcastService = nil
 
         MXLog.debug("Stop monitoring voice broadcast recording")
     }
@@ -60,48 +60,61 @@ class VoiceBroadcastServiceProvider {
     
     // MARK: VoiceBroadcastService setup
     
+    /// Get latest voice broadcast info in a room
+    /// - Parameters:
+    ///   - room: The room.
+    ///   - completion: Completion block that will return the lastest voice broadcast info state event of the room.
+    private func getLastVoiceBroadcastInfo(for room: MXRoom, completion: @escaping (MXEvent?) -> Void) {
+        room.state { roomState in
+            completion(roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.eventType))?.last ?? nil)
+        }
+    }
+    
     private func createVoiceBroadcastService(for room: MXRoom, state: VoiceBroadcastService.State) {
                 
         let voiceBroadcastService = VoiceBroadcastService(room: room, state: VoiceBroadcastService.State.stopped)
         
-        self.voiceBroadcastService = voiceBroadcastService
+        self.currentVoiceBroadcastService = voiceBroadcastService
         
         MXLog.debug("Start monitoring voice broadcast recording")
     }
     
+    
+    /// Setup the voice broadcast service if no service is running locally.
+    ///
+    /// A voice broadcast service is created in the following cases :
+    /// - A voice broadcast info state event doesn't exist in the room.
+    /// - The last voice broadcast info state event doesn't contain a valid content.
+    /// - The state of the last voice broadcast info state event is stopped.
+    /// - The state of the last voice broadcast info state event started by the end user is not stopped.
+    ///   This may be due the following situations the application crashed or the voice broadcast has been started from another session.
+    ///     
+    /// - Parameters:
+    ///   - room: The room.
+    ///   - completion: Completion block that will return the voice broadcast service.
     private func setupVoiceBroadcastService(for room: MXRoom, completion: @escaping (VoiceBroadcastService?) -> Void) {
         self.getLastVoiceBroadcastInfo(for: room) { event in
             guard let voiceBroadcastInfoEvent = event else {
                 self.createVoiceBroadcastService(for: room, state: VoiceBroadcastService.State.stopped)
-                completion(self.voiceBroadcastService)
+                completion(self.currentVoiceBroadcastService)
                 return
             }
             
             guard let voiceBroadcastInfoEventContent = VoiceBroadcastEventContent(fromJSON: voiceBroadcastInfoEvent.content) else {
                 self.createVoiceBroadcastService(for: room, state: VoiceBroadcastService.State.stopped)
-                completion(self.voiceBroadcastService)
+                completion(self.currentVoiceBroadcastService)
                 return
             }
             
             if voiceBroadcastInfoEventContent.state == VoiceBroadcastService.State.stopped.rawValue {
                 self.createVoiceBroadcastService(for: room, state: VoiceBroadcastService.State.stopped)
-                completion(self.voiceBroadcastService)
+                completion(self.currentVoiceBroadcastService)
             } else if voiceBroadcastInfoEvent.stateKey == room.mxSession.myUserId {
                 self.createVoiceBroadcastService(for: room, state: VoiceBroadcastService.State(rawValue: voiceBroadcastInfoEventContent.state) ?? VoiceBroadcastService.State.stopped)
-                completion(self.voiceBroadcastService)
+                completion(self.currentVoiceBroadcastService)
             } else {
                 completion(nil)
             }
-        }
-    }
-    
-    /// Get latest voice broadcast info in a room
-    /// - Parameters:
-    ///   - roomId: The room id of the room
-    ///   - completion: Give the lastest voice broadcast info of the room.
-    private func getLastVoiceBroadcastInfo(for room: MXRoom, completion: @escaping (MXEvent?) -> Void) {
-        room.state { roomState in
-            completion(roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.eventType))?.last ?? nil)
         }
     }
 }
