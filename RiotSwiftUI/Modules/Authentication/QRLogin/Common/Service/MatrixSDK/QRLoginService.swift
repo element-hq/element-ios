@@ -183,7 +183,12 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         self.rendezvousService = rendezvousService
         
         MXLog.debug("[QRLoginService] Joining the rendezvous at \(rendezvousURL)")
-        guard case .success(let validationCode) = await rendezvousService.joinRendezvous(withInterlocutorPublicKey: key) else {
+        guard case .success = await rendezvousService.joinRendezvous() else {
+            await teardownRendezvous(state: .failed(error: .rendezvousFailed))
+            return
+        }
+        
+        guard case .success(let validationCode) = await rendezvousService.waitForInterlocutor(withPublicKey: key) else {
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
