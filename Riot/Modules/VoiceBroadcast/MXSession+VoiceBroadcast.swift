@@ -19,13 +19,13 @@ import MatrixSDK
 
 extension MXSession {
     
-    /// Convenient getter to retrieve UserVoiceBroadcastService associated to the session
-    @objc var userVoiceBroadcastService: UserVoiceBroadcastServiceProtocol? {
-        return UserVoiceBroadcastServiceProvider.shared.userVoiceBroadcastService
+    /// Convenient getter to retrieve VoiceBroadcastService associated to the session
+    @objc var voiceBroadcastService: VoiceBroadcastService? {
+        return VoiceBroadcastServiceProvider.shared.voiceBroadcastService
     }
     
-    /// Initialize UserVoiceBroadcastService
-    @objc public func setupUserVoiceBroadcastService(for room: MXRoom) {
-        UserVoiceBroadcastServiceProvider.shared.setupUserVoiceBroadcastServiceIfNeeded(for: room)
+    /// Initialize VoiceBroadcastService
+    @objc public func getOrCreateVoiceBroadcastService(for room: MXRoom, completion: @escaping (VoiceBroadcastService?) -> Void) {
+        VoiceBroadcastServiceProvider.shared.getOrCreateVoiceBroadcastService(for: room, completion: completion)
     }
 }

@@ -33,39 +33,29 @@ public class VoiceBroadcastService: NSObject {
     // MARK: - Properties
     
     private var voiceBroadcastInfoEventId: String?
-    private unowned let room: MXRoom
+    public let room: MXRoom
     public private(set) var state: State
     
     // MARK: - Setup
     
-    public init(room: MXRoom) {
+    public init(room: MXRoom, state: State) {
         self.room = room
-        state = State.stopped
+        self.state = state
     }
 
     // MARK: - Constants
     
-    @objc public enum State: Int {
+    public enum State: String {
         case started
         case paused
         case resumed
         case stopped
-        
-        /// A string representation of the result.
-        var description: String {
-            switch self {
-            case .started:
-                return "started"
-            case .paused:
-                return "paused"
-            case .resumed:
-                return "resumed"
-            case .stopped:
-                return "stopped"
-            }
-        }
     }
     
+    // MARK: - Public
+    
+    // MARK: Voice broadcast info
+        
     /// Start a voice broadcast.
     /// - Parameters:
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
@@ -106,6 +96,34 @@ public class VoiceBroadcastService: NSObject {
         return sendVoiceBroadcastInfo(state: State.stopped, completion: completion)
     }
     
+    func getState() -> String {
+        return self.state.rawValue
+    }
+    
+    // MARK: Voice broadcast chunk
+    
+    /// Send a bunch of a voice broadcast.
+    ///
+    /// While sending, a fake event will be echoed in the messages list.
+    /// Once complete, this local echo will be replaced by the event saved by the homeserver.
+    ///
+    /// - Parameters:
+    ///   - audioFileLocalURL: the local filesystem path of the audio file to send.
+    ///   - mimeType: (optional) the mime type of the file. Defaults to `audio/ogg`
+    ///   - duration: the length of the voice message in milliseconds
+    ///   - samples: an array of floating point values normalized to [0, 1], boxed within NSNumbers
+    ///   - success: A block object called when the operation succeeds. It returns the event id of the event generated on the homeserver
+    ///   - failure: A block object called when the operation fails.
+    func sendChunkOfVoiceBroadcast(audioFileLocalURL: URL, mimeType: String?, duration: UInt, samples: [Float]?, success:@escaping ((String?) -> Void), failure:@escaping ((Error?) -> Void)) {
+        guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
+            return failure(VoiceBroadcastServiceError.notStarted)
+        }
+        
+        self.room.sendChunkOfVoiceBroadcast(localURL: audioFileLocalURL, voiceBroadcastInfoEventId: voiceBroadcastInfoEventId, mimeType: mimeType, duration: duration, samples: samples, success: success, failure: failure)
+    }
+    
+    // MARK: - Private
+    
     private func sendVoiceBroadcastInfo(state: State, completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
         guard let userId = self.room.mxSession.myUserId else {
             completion(.failure(VoiceBroadcastServiceError.missingUserId))
@@ -115,7 +133,7 @@ public class VoiceBroadcastService: NSObject {
         let stateKey = userId
         
         let voiceBroadcastContent = VoiceBroadcastEventContent()
-        voiceBroadcastContent.state = state.description
+        voiceBroadcastContent.state = state.rawValue
         
         if state != State.started {
             guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
@@ -144,26 +162,6 @@ public class VoiceBroadcastService: NSObject {
                 completion(.failure(error))
             }
         }
-    }
-    
-    /// Send a bunch of a voice broadcast.
-    ///
-    /// While sending, a fake event will be echoed in the messages list.
-    /// Once complete, this local echo will be replaced by the event saved by the homeserver.
-    ///
-    /// - Parameters:
-    ///   - audioFileLocalURL: the local filesystem path of the audio file to send.
-    ///   - mimeType: (optional) the mime type of the file. Defaults to `audio/ogg`
-    ///   - duration: the length of the voice message in milliseconds
-    ///   - samples: an array of floating point values normalized to [0, 1], boxed within NSNumbers
-    ///   - success: A block object called when the operation succeeds. It returns the event id of the event generated on the homeserver
-    ///   - failure: A block object called when the operation fails.
-    func sendChunkOfVoiceBroadcast(audioFileLocalURL: URL, mimeType: String?, duration: UInt, samples: [Float]?, success:@escaping ((String?) -> Void), failure:@escaping ((Error?) -> Void)) {
-        guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
-            return failure(VoiceBroadcastServiceError.notStarted)
-        }
-        
-        self.room.sendChunkOfVoiceBroadcast(localURL: audioFileLocalURL, voiceBroadcastInfoEventId: voiceBroadcastInfoEventId, mimeType: mimeType, duration: duration, samples: samples, success: success, failure: failure)
     }
 }
 
