@@ -125,19 +125,12 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     }
     
     private func shareStaticLocation(latitude: Double, longitude: Double, coordinateType: LocationSharingCoordinateType) {
-        locationSharingViewModel.startLoading()
-        
-        parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil, coordinateType: coordinateType.eventAssetType()) { [weak self] _ in
-            guard let self = self else { return }
-            
-            self.locationSharingViewModel.stopLoading()
-            self.completion?()
-        } failure: { [weak self] error in
-            guard let self = self else { return }
-            
+        parameters.roomDataSource.sendLocation(withLatitude: latitude, longitude: longitude, description: nil, coordinateType: coordinateType.eventAssetType()) { _ in
+        } failure: { error in
             MXLog.error("[LocationSharingCoordinator] Failed sharing location", context: error)
-            self.locationSharingViewModel.stopLoading(error: .locationSharingError)
         }
+        
+        self.completion?()
     }
     
     private func startLiveLocationSharing(with timeout: TimeInterval) {
