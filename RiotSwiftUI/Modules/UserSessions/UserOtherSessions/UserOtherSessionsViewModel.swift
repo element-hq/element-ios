@@ -71,6 +71,8 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
             return sessionInfos.filter { !$0.isActive }
         case .unverified:
             return sessionInfos.filter { !$0.isVerified }
+        case .verified:
+            return sessionInfos.filter { $0.isVerified }
         }
     }
     
@@ -81,13 +83,17 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                                                    subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
                                                    iconName: nil)
         case .inactive:
-            return UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
+            return UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuInactive,
                                                    subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
                                                    iconName: Asset.Images.userOtherSessionsInactive.name)
         case .unverified:
-            return UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsUnverifiedTitle,
+            return UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionUnverifiedShort,
                                                    subtitle: VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle,
                                                    iconName: Asset.Images.userOtherSessionsUnverified.name)
+        case .verified:
+            return UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuVerified,
+                                                   subtitle: VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle,
+                                                   iconName: Asset.Images.userOtherSessionsVerified.name)
         }
     }
 }

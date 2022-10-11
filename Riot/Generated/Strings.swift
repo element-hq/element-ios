@@ -8623,6 +8623,22 @@ public class VectorL10n: NSObject {
   public static func userInactiveSessionItemWithDate(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "user_inactive_session_item_with_date", p1)
   }
+  /// All sessions
+  public static var userOtherSessionFilterMenuAll: String { 
+    return VectorL10n.tr("Vector", "user_other_session_filter_menu_all") 
+  }
+  /// Inactive
+  public static var userOtherSessionFilterMenuInactive: String { 
+    return VectorL10n.tr("Vector", "user_other_session_filter_menu_inactive") 
+  }
+  /// Unverified
+  public static var userOtherSessionFilterMenuUnverified: String { 
+    return VectorL10n.tr("Vector", "user_other_session_filter_menu_unverified") 
+  }
+  /// Verified
+  public static var userOtherSessionFilterMenuVerified: String { 
+    return VectorL10n.tr("Vector", "user_other_session_filter_menu_verified") 
+  }
   /// Security recommendation
   public static var userOtherSessionSecurityRecommendationTitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_security_recommendation_title") 
@@ -8634,6 +8650,10 @@ public class VectorL10n: NSObject {
   /// Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.
   public static var userOtherSessionUnverifiedSessionsHeaderSubtitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_unverified_sessions_header_subtitle") 
+  }
+  /// For best security, sign out from any session that you don’t recognize or use anymore.
+  public static var userOtherSessionVerifiedSessionsHeaderSubtitle: String { 
+    return VectorL10n.tr("Vector", "user_other_session_verified_sessions_header_subtitle") 
   }
   /// Name
   public static var userSessionDetailsApplicationName: String { 

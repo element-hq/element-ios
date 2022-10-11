@@ -19,19 +19,22 @@ import Foundation
 enum OtherUserSessionsFilter: Identifiable, Equatable, CaseIterable {
     var id: Self { self }
     case all
-    case inactive
+    case verified
     case unverified
+    case inactive
 }
 
 extension OtherUserSessionsFilter {
     var menuLocalizedName: String {
         switch self {
         case .all:
-            return "All sessions"
-        case .inactive:
-            return "Inactive"
+            return VectorL10n.userOtherSessionFilterMenuAll
+        case .verified:
+            return VectorL10n.userOtherSessionFilterMenuVerified
         case .unverified:
-            return "Unverified"
+            return VectorL10n.userOtherSessionFilterMenuUnverified
+        case .inactive:
+            return VectorL10n.userOtherSessionFilterMenuInactive
         }
     }
 }

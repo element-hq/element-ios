@@ -21,7 +21,7 @@ class UserOtherSessionsUITests: MockScreenTestCase {
     func test_whenOtherSessionsWithInactiveSessionFilterPresented_correctHeaderDisplayed() {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.inactiveSessions.title)
 
-        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle].exists)
+        XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionFilterMenuInactive].exists)
         XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo].exists)
     }
     
@@ -34,7 +34,7 @@ class UserOtherSessionsUITests: MockScreenTestCase {
     func test_whenOtherSessionsWithUnverifiedSessionFilterPresented_correctHeaderDisplayed() {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.unverifiedSessions.title)
  
-        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewSecurityRecommendationsUnverifiedTitle].exists)
+        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionUnverifiedShort].exists)
         XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle].exists)
     }
     
