@@ -77,7 +77,7 @@ struct AuthenticationQRLoginStartScreen: View {
                 .accessibilityIdentifier("subtitleLabel")
         }
     }
-
+    
     /// The screen's footer.
     var footerContent: some View {
         VStack(spacing: 12) {
@@ -87,10 +87,10 @@ struct AuthenticationQRLoginStartScreen: View {
             .buttonStyle(PrimaryActionButtonStyle(font: theme.fonts.bodySB))
             .padding(.bottom, 8)
             .accessibilityIdentifier("scanQRButton")
-
+            
             if context.viewState.canShowDisplayQRButton {
                 LabelledDivider(label: VectorL10n.authenticationQrLoginStartNeedAlternative)
-
+                
                 Button(action: displayQR) {
                     Text(VectorL10n.authenticationQrLoginStartDisplayQr)
                 }

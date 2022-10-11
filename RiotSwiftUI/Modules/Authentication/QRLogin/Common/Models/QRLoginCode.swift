@@ -17,23 +17,78 @@
 import Foundation
 
 struct QRLoginCode: Codable {
-    var user: String?
-    var initiator: QRLoginDataInitiatorDevice?
-    var rendezvous: QRLoginRendezvous?
+    let rendezvous: RendezvousDetails
+    let intent: String
 }
 
-enum QRLoginDataInitiatorDevice: String, Codable {
-    case new = "new_device"
-    case existing = "existing_device"
-}
-
-struct QRLoginRendezvous: Codable {
-    var transport: QRLoginRendezvousTransportDetails
-    var algorithm: String?
+struct RendezvousDetails: Codable {
+    let algorithm: String
+    var transport: RendezvousTransportDetails?
     var key: String?
 }
 
-struct QRLoginRendezvousTransportDetails: Codable {
-    var type: String
-    var uri: String?
+struct RendezvousTransportDetails: Codable {
+    let type: String
+    let uri: String
+}
+
+struct RendezvousMessage: Codable {
+    let iv: String
+    let ciphertext: String
+}
+
+struct QRLoginRendezvousPayload: Codable {
+    let type: `Type`
+    
+    var intent: Intent?
+    var outcome: Outcome?
+    
+    var protocols: [`Protocol`]?
+    var `protocol`: `Protocol`?
+    
+    var homeserver: String?
+    var user: String?
+    var loginToken: String?
+    var deviceId: String?
+    var deviceKey: String?
+    
+    var verifyingDeviceId: String?
+    var verifyingDeviceKey: String?
+    
+    var masterKey: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case type
+        case intent
+        case outcome
+        case homeserver
+        case user
+        case protocols
+        case `protocol`
+        case loginToken = "login_token"
+        case deviceId = "device_id"
+        case deviceKey = "device_key"
+        case verifyingDeviceId = "verifying_device_id"
+        case verifyingDeviceKey = "verifying_device_key"
+        case masterKey = "master_key"
+    }
+    
+    enum `Type`: String, Codable {
+        case loginStart = "m.login.start"
+        case loginProgress = "m.login.progress"
+        case loginFinish = "m.login.finish"
+    }
+
+    enum Intent: String, Codable {
+        case loginStart = "login.start"
+    }
+    
+    enum Outcome: String, Codable {
+        case success = "success"
+        case declined = "declined"
+    }
+    
+    enum `Protocol`: String, Codable {
+        case loginToken = "login_token"
+    }
 }
