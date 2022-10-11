@@ -2054,9 +2054,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)setInputToolBarSendMode:(RoomInputToolbarViewSendMode)sendMode forEventWithId:(NSString *)eventId
 {
-    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:[RoomInputToolbarView class]])
+    if ((self.inputToolbarView) && [self inputToolbarConformsToToolbarViewProtocol])
     {
-        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        MXKRoomInputToolbarView <RoomInputToolbarViewProtocol> *roomInputToolbarView = (MXKRoomInputToolbarView <RoomInputToolbarViewProtocol> *) self.inputToolbarView;
         if (eventId)
         {
             MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
@@ -4614,7 +4614,14 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
     
-    if ([self inputToolbarConformsToToolbarViewProtocol])
+    if ([self inputToolbarConformsToHtmlToolbarViewProtocol]) {
+        // TODO: reimplemented the following line when the cancel UI button is implemented in the WYSIWYG toolbar
+        self.textMessageBeforeEditing = self.inputToolbarView.attributedTextMessage;
+        
+        MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *htmlInputToolBarView = (MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *) self.inputToolbarView;
+        [htmlInputToolBarView setHtmlWithContent: [self.customizedRoomDataSource editableHtmlTextMessageFor:event]];
+    }
+    else if ([self inputToolbarConformsToToolbarViewProtocol])
     {
         self.textMessageBeforeEditing = self.inputToolbarView.attributedTextMessage;
         self.inputToolbarView.attributedTextMessage = [self.customizedRoomDataSource editableAttributedTextMessageFor:event];
@@ -4632,6 +4639,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     
     self.textMessageBeforeEditing = nil;
+}
+
+- (BOOL)inputToolbarConformsToHtmlToolbarViewProtocol
+{
+    return [self.inputToolbarView conformsToProtocol:@protocol(HtmlRoomInputToolbarViewProtocol)];
 }
 
 - (BOOL)inputToolbarConformsToToolbarViewProtocol

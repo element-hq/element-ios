@@ -33,8 +33,14 @@ class SelfSizingHostingController<Content>: UIHostingController<Content> where C
     }
 }
 
-@available(iOS 15.0, *)
-class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputToolbarViewProtocol {
+@objc protocol HtmlRoomInputToolbarViewProtocol: RoomInputToolbarViewProtocol {
+    @objc func setHtml(content: String)
+}
+
+class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInputToolbarViewProtocol {
+    
+    var eventSenderDisplayName: String!
+    var sendMode: RoomInputToolbarViewSendMode = .send
     
     override class func instantiate() -> MXKRoomInputToolbarView! {
         return loadFromNib()
@@ -92,6 +98,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, RoomInputTo
     override func customizeRendering() {
         super.customizeRendering()
         self.backgroundColor = .clear
+    }
+    
+    func setHtml(content: String) {
+        hostingViewController.rootView.viewModel.setHtmlContent(content)
     }
     
     func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {
