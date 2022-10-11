@@ -584,18 +584,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         }
         
         let flowPresenter = SignOutFlowPresenter(session: session, presentingViewController: toPresentable())
-        flowPresenter.callback = { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .startLoading:
-                self.allChatsViewController.view.isUserInteractionEnabled = false
-                self.allChatsViewController.startActivityIndicator()
-            case .stopLoading:
-                self.allChatsViewController.view.isUserInteractionEnabled = true
-                self.allChatsViewController.stopActivityIndicator()
-            }
-        }
+        flowPresenter.delegate = self
         
         flowPresenter.start(sourceView: avatarMenuButton)
         self.signOutFlowPresenter = flowPresenter
@@ -657,6 +646,22 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         let viewController: SettingsViewController = SettingsViewController.instantiate()
         viewController.loadViewIfNeeded()
         return viewController
+    }
+}
+
+extension AllChatsCoordinator: SignOutFlowPresenterDelegate {
+    func signOutFlowPresenterDidStartLoading(_ presenter: SignOutFlowPresenter) {
+        allChatsViewController.view.isUserInteractionEnabled = false
+        allChatsViewController.startActivityIndicator()
+    }
+    
+    func signOutFlowPresenterDidStopLoading(_ presenter: SignOutFlowPresenter) {
+        allChatsViewController.view.isUserInteractionEnabled = true
+        allChatsViewController.stopActivityIndicator()
+    }
+    
+    func signOutFlowPresenter(_ presenter: SignOutFlowPresenter, didFailWith error: Error) {
+        AppDelegate.theDelegate().showError(asAlert: error)
     }
 }
 

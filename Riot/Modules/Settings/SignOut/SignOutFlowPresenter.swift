@@ -16,9 +16,10 @@
 
 import Foundation
 
-@objc enum SignOutFlowPresenterResult: Int {
-    case startLoading
-    case stopLoading
+@objc protocol SignOutFlowPresenterDelegate {
+    func signOutFlowPresenterDidStartLoading(_ presenter: SignOutFlowPresenter)
+    func signOutFlowPresenterDidStopLoading(_ presenter: SignOutFlowPresenter)
+    func signOutFlowPresenter(_ presenter: SignOutFlowPresenter, didFailWith error: Error)
 }
 
 @objcMembers class SignOutFlowPresenter: NSObject {
@@ -27,7 +28,7 @@ import Foundation
     
     private var signOutAlertPresenter = SignOutAlertPresenter()
     
-    var callback: ((SignOutFlowPresenterResult) -> Void)?
+    weak var delegate: SignOutFlowPresenterDelegate?
     
     init(session: MXSession, presentingViewController: UIViewController) {
         self.session = session
@@ -64,13 +65,14 @@ import Foundation
             // Set up cross-signing first
             setupCrossSigning(title: VectorL10n.secureKeyBackupSetupIntroTitle,
                               message: VectorL10n.securitySettingsUserPasswordDescription) { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success(let isCompleted):
                     if isCompleted {
-                        self?.setupSecureBackup2()
+                        self.setupSecureBackup2()
                     }
-                case .failure:
-                    break
+                case .failure(let error):
+                    self.delegate?.signOutFlowPresenter(self, didFailWith: error)
                 }
             }
         }
@@ -88,12 +90,12 @@ import Foundation
     }
     
     private func setupCrossSigning(title: String, message: String, completion: @escaping (Result<Bool, Error>) -> Void) {
-        callback?(.startLoading)
+        delegate?.signOutFlowPresenterDidStartLoading(self)
         
         let dismissAnimation = { [weak self] in
             guard let self = self else { return }
             
-            self.callback?(.stopLoading)
+            self.delegate?.signOutFlowPresenterDidStopLoading(self)
             self.crossSigningSetupCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
                 self.crossSigningSetupCoordinatorBridgePresenter = nil
             })
@@ -121,10 +123,11 @@ extension SignOutFlowPresenter: SignOutAlertPresenterDelegate {
     func signOutAlertPresenterDidTapSignOutAction(_ presenter: SignOutAlertPresenter) {
         // Allow presenting screen to black user interaction when signing out
         // TODO: Prevent user interaction in all application (navigation controller and split view controller included)
-        callback?(.startLoading)
+        delegate?.signOutFlowPresenterDidStartLoading(self)
         
         AppDelegate.theDelegate().logout(withConfirmation: false) { [weak self] isLoggedOut in
-            self?.callback?(.stopLoading)
+            guard let self = self else { return }
+            self.delegate?.signOutFlowPresenterDidStopLoading(self)
         }
     }
     

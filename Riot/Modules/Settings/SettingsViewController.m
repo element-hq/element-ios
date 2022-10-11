@@ -189,6 +189,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 @interface SettingsViewController () <UITextFieldDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, DeactivateAccountViewControllerDelegate,
 NotificationSettingsCoordinatorBridgePresenterDelegate,
+SignOutFlowPresenterDelegate,
 SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
 SettingsIdentityServerCoordinatorBridgePresenterDelegate,
@@ -2955,22 +2956,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     self.signOutButton = (UIButton*)sender;
     
     SignOutFlowPresenter *flowPresenter = [[SignOutFlowPresenter alloc] initWithSession:self.mainSession presentingViewController:self];
-    
-    MXWeakify(self);
-    flowPresenter.callback = ^(enum SignOutFlowPresenterResult result) {
-        MXStrongifyAndReturnIfNil(self);
-        
-        switch (result) {
-            case SignOutFlowPresenterResultStartLoading:
-                [self startActivityIndicator];
-                self.view.userInteractionEnabled = NO;
-                self.signOutButton.enabled = NO;
-            case SignOutFlowPresenterResultStopLoading:
-                [self stopActivityIndicator];
-                self.view.userInteractionEnabled = YES;
-                self.signOutButton.enabled = YES;
-        }
-    };
+    flowPresenter.delegate = self;
     
     [flowPresenter startWithSourceView:self.signOutButton];
     self.signOutFlowPresenter = flowPresenter;
@@ -4182,6 +4168,27 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     [self.notificationSettingsBridgePresenter dismissWithAnimated:YES completion:nil];
     self.notificationSettingsBridgePresenter = nil;
+}
+
+#pragma mark - SignOutFlowPresenterDelegate
+
+- (void)signOutFlowPresenterDidStartLoading:(SignOutFlowPresenter *)presenter
+{
+    [self startActivityIndicator];
+    self.view.userInteractionEnabled = NO;
+    self.signOutButton.enabled = NO;
+}
+
+- (void)signOutFlowPresenterDidStopLoading:(SignOutFlowPresenter *)presenter
+{
+    [self stopActivityIndicator];
+    self.view.userInteractionEnabled = YES;
+    self.signOutButton.enabled = YES;
+}
+
+- (void)signOutFlowPresenter:(SignOutFlowPresenter *)presenter didFailWith:(NSError *)error
+{
+    [[AppDelegate theDelegate] showErrorAsAlert:error];
 }
 
 #pragma mark - SingleImagePickerPresenterDelegate

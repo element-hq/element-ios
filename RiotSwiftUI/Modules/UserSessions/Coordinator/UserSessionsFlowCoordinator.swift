@@ -186,16 +186,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     
     private func showLogoutConfirmationForCurrentSession() {
         let flowPresenter = SignOutFlowPresenter(session: parameters.session, presentingViewController: toPresentable())
-        flowPresenter.callback = { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .startLoading:
-                self.stopLoading()
-            case .stopLoading:
-                self.stopLoading()
-            }
-        }
+        flowPresenter.delegate = self
         
         flowPresenter.start()
         signOutFlowPresenter = flowPresenter
@@ -360,6 +351,22 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     
     func toPresentable() -> UIViewController {
         navigationRouter.toPresentable()
+    }
+}
+
+// MARK: SignOutFlowPresenter
+
+extension UserSessionsFlowCoordinator: SignOutFlowPresenterDelegate {
+    func signOutFlowPresenterDidStartLoading(_ presenter: SignOutFlowPresenter) {
+        startLoading()
+    }
+    
+    func signOutFlowPresenterDidStopLoading(_ presenter: SignOutFlowPresenter) {
+        stopLoading()
+    }
+    
+    func signOutFlowPresenter(_ presenter: SignOutFlowPresenter, didFailWith error: Error) {
+        errorPresenter.presentError(from: toPresentable(), forError: error, animated: true, handler: { })
     }
 }
 
