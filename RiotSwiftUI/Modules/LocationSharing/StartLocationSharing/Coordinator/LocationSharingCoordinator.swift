@@ -135,27 +135,20 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     
     private func startLiveLocationSharing(with timeout: TimeInterval) {
         guard let locationService = parameters.roomDataSource.mxSession.locationService, let roomId = parameters.roomDataSource.roomId else {
-            locationSharingViewModel.stopLoading(error: .locationSharingError)
             return
         }
         
-        locationService.startUserLocationSharing(withRoomId: roomId, description: nil, timeout: timeout) { [weak self] response in
-            guard let self = self else { return }
-            
+        locationService.startUserLocationSharing(withRoomId: roomId, description: nil, timeout: timeout) { response in
             switch response {
             case .success:
-                
-                DispatchQueue.main.async {
-                    self.locationSharingViewModel.stopLoading()
-                    self.completion?()
-                }
+                break
             case .failure(let error):
                 MXLog.error("[LocationSharingCoordinator] Failed to start live location sharing", context: error)
-                
-                DispatchQueue.main.async {
-                    self.locationSharingViewModel.stopLoading(error: .locationSharingError)
-                }
             }
+        }
+        
+        DispatchQueue.main.async {
+            self.completion?()
         }
     }
     
