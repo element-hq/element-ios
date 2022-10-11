@@ -39,8 +39,16 @@ class SelfSizingHostingController<Content>: UIHostingController<Content> where C
 
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInputToolbarViewProtocol {
     
-    var eventSenderDisplayName: String!
-    var sendMode: RoomInputToolbarViewSendMode = .send
+    var eventSenderDisplayName: String! {
+        didSet {
+            viewModel.setEventSenderDisplayName(eventSenderDisplayName)
+        }
+    }
+    var sendMode: RoomInputToolbarViewSendMode = .send {
+        didSet {
+            viewModel.setSendMode(sendMode)
+        }
+    }
     
     override class func instantiate() -> MXKRoomInputToolbarView! {
         return loadFromNib()
@@ -53,13 +61,16 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var cancellables = Set<AnyCancellable>()
     private var heightConstraint: NSLayoutConstraint!
     private var hostingViewController: SelfSizingHostingController<Composer>!
+    private var viewModel: ComposerViewModelProtocol =  ComposerViewModel(initialViewState: ComposerViewState())
     private static let minToolbarHeight: CGFloat = 100
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        let viewModel = WysiwygComposerViewModel()
-        let composer = Composer(viewModel: viewModel, sendMessageAction: { [weak self] content in
+        let wysiwygViewModel = WysiwygComposerViewModel()
+        let composer = Composer(viewModel: viewModel.context,
+            wysiwygViewModel: wysiwygViewModel,
+            sendMessageAction: { [weak self] content in
             guard let self = self else { return }
             self.sendWysiwygMessage(content: content)
         }, showSendMediaActions: { [weak self]  in
@@ -101,7 +112,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
     
     func setHtml(content: String) {
-        hostingViewController.rootView.viewModel.setHtmlContent(content)
+        hostingViewController.rootView.wysiwygViewModel.setHtmlContent(content)
     }
     
     func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {

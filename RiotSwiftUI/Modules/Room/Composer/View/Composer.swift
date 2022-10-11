@@ -21,10 +21,12 @@ import WysiwygComposer
 struct Composer: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    @ObservedObject var viewModel: WysiwygComposerViewModel
+    
+    @ObservedObject var viewModel: ComposerViewModel.Context
+    @ObservedObject var wysiwygViewModel: WysiwygComposerViewModel
+    
     let sendMessageAction: (WysiwygComposerContent) -> Void
     let showSendMediaActions: () -> Void
-    var textColor = Color(.label)
     
     @State private var showSendButton = false
     
@@ -38,8 +40,8 @@ struct Composer: View {
         FormatType.allCases.map { type in
             FormatItem(
                 type: type,
-                active: viewModel.reversedActions.contains(type.composerAction),
-                disabled: viewModel.disabledActions.contains(type.composerAction)
+                active: wysiwygViewModel.reversedActions.contains(type.composerAction),
+                disabled: wysiwygViewModel.disabledActions.contains(type.composerAction)
             )
         }
     }
@@ -50,16 +52,16 @@ struct Composer: View {
             // TODO: Fix maximise animation bugs before re-enabling
 //            ZStack(alignment: .topTrailing) {
             WysiwygComposerView(
-                content: viewModel.content,
-                replaceText: viewModel.replaceText,
-                select: viewModel.select,
-                didUpdateText: viewModel.didUpdateText
+                content: wysiwygViewModel.content,
+                replaceText: wysiwygViewModel.replaceText,
+                select: wysiwygViewModel.select,
+                didUpdateText: wysiwygViewModel.didUpdateText
             )
             .textColor(theme.colors.primaryContent)
-            .frame(height: viewModel.idealHeight)
+            .frame(height: wysiwygViewModel.idealHeight)
             .padding(.horizontal, 12)
             .onAppear {
-                viewModel.setup()
+                wysiwygViewModel.setup()
             }
 //                Button {
 //                    withAnimation(.easeInOut(duration: 0.25)) {
@@ -88,7 +90,7 @@ struct Composer: View {
                         .background(Circle().fill(theme.colors.system))
                 }
                 FormattingToolbar(formatItems: formatItems) { type in
-                    viewModel.apply(type.action)
+                    wysiwygViewModel.apply(type.action)
                 }
                 Spacer()
                 ZStack {
@@ -102,15 +104,20 @@ struct Composer: View {
                     //                        .isHidden(showSendButton)
 //                    .isHidden(true)
                     Button {
-                        sendMessageAction(viewModel.content)
-                        viewModel.clearContent()
+                        sendMessageAction(wysiwygViewModel.content)
+                        wysiwygViewModel.clearContent()
                     } label: {
-                        Image(Asset.Images.sendIcon.name)
-                            .foregroundColor(theme.colors.tertiaryContent)
+                        if viewModel.viewState.sendMode == .edit {
+                            Image(Asset.Images.editIcon.name)
+                                .foregroundColor(theme.colors.tertiaryContent)
+                        } else {
+                            Image(Asset.Images.saveIcon.name)
+                                .foregroundColor(theme.colors.tertiaryContent)
+                        }
                     }
                     .isHidden(!showSendButton)
                 }
-                .onChange(of: viewModel.isContentEmpty) { empty in
+                .onChange(of: wysiwygViewModel.isContentEmpty) { empty in
                     withAnimation(.easeInOut(duration: 0.25)) {
                         showSendButton = !empty
                     }
@@ -129,6 +136,8 @@ struct Composer_Previews: PreviewProvider {
         stateRenderer.screenGroup()
     }
 }
+
+enum ComposerViewAction {}
 
 enum ComposerCreateActionListViewAction {
     case selectAction(ComposerCreateAction)

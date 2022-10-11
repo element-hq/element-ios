@@ -26,13 +26,14 @@ enum MockComposerScreenState: MockScreenState, CaseIterable {
     }
     
     var screenView: ([Any], AnyView) {
-        let viewModel = WysiwygComposerViewModel(minHeight: 20, maxHeight: 360)
+        let viewModel = ComposerViewModel(initialViewState: ComposerViewState())
+        let wysiwygviewModel = WysiwygComposerViewModel(minHeight: 20, maxHeight: 360)
         
         return (
             [viewModel],
             AnyView(VStack {
                 Spacer()
-                Composer(viewModel: viewModel, sendMessageAction: { _ in }, showSendMediaActions: { })
+                Composer(viewModel: viewModel.context, wysiwygViewModel: wysiwygviewModel, sendMessageAction: { _ in }, showSendMediaActions: { })
             }.frame(
                 minWidth: 0,
                 maxWidth: .infinity,
