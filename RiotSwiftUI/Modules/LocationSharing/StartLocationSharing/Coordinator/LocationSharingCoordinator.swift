@@ -144,17 +144,13 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
             
             switch response {
             case .success:
-                
-                DispatchQueue.main.async {
-                    self.locationSharingViewModel.stopLoading()
-                    self.completion?()
-                }
+                break
             case .failure(let error):
                 MXLog.error("[LocationSharingCoordinator] Failed to start live location sharing", context: error)
-                
-                DispatchQueue.main.async {
-                    self.locationSharingViewModel.stopLoading(error: .locationSharingError)
-                }
+            }
+            
+            DispatchQueue.main.async {
+                self.completion?()
             }
         }
     }
