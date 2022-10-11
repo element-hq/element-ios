@@ -66,6 +66,13 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        viewModel.callback = { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .cancel:
+                self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
+            }
+        }
         
         let wysiwygViewModel = WysiwygComposerViewModel()
         let composer = Composer(viewModel: viewModel.context,
