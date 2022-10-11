@@ -68,6 +68,25 @@ class RendezvousService {
         }
     }
     
+    /// Used by the creator to publish its public key after an interlocutor joins
+    func publishPublicKey(_ publicKey: String) async -> Result<(), RendezvousServiceError> {
+        guard let rendezvousURL = transport.rendezvousURL else {
+            return .failure(.channelNotReady)
+        }
+        
+        let details = RendezvousDetails(algorithm: RendezvousChannelAlgorithm.ECDH_V1.rawValue,
+                                        transport: RendezvousTransportDetails(type: "http.v1",
+                                                                              uri: rendezvousURL.absoluteString),
+                                        key: publicKey)
+        
+        switch await transport.send(body: details) {
+        case .failure(let error):
+            return .failure(.transportError(error))
+        case .success:
+            return .success(())
+        }
+    }
+    
     /// After creation we need to wait for the pair to publish its public key as well
     /// At the end of this a symmetric key will be available for encryption
     func waitForInterlocutor() async -> Result<String, RendezvousServiceError> {
@@ -106,13 +125,7 @@ class RendezvousService {
     
     /// Joins an existing rendezvous and publishes the joiner's public key
     /// At the end of this a symmetric key will be available for encryption
-    func joinRendezvous(withInterlocutorPublicKey: String) async -> Result<String, RendezvousServiceError> {
-        guard let interlocutorPublicKeyData = Data(base64Encoded: withInterlocutorPublicKey),
-              let interlocutorPublicKey = try? Curve25519.KeyAgreement.PublicKey(rawRepresentation: interlocutorPublicKeyData) else {
-            MXLog.debug("[RendezvousService] Invalid interlocutor data")
-            return .failure(.invalidInterlocutorKey)
-        }
-        
+    func joinRendezvous() async -> Result<(), RendezvousServiceError> {
         privateKey = Curve25519.KeyAgreement.PrivateKey()
         
         let publicKeyString = privateKey.publicKey.rawRepresentation.base64EncodedString()
@@ -121,6 +134,17 @@ class RendezvousService {
         
         guard case .success = await transport.send(body: payload) else {
             return .failure(.internalError)
+        }
+        
+        return .success(())
+    }
+    
+    /// After joining a rendezvous we need to wait for the other party to share its public key
+    func waitForInterlocutor(withPublicKey publicKey: String) async -> Result<String, RendezvousServiceError> {
+        guard let interlocutorPublicKeyData = Data(base64Encoded: publicKey),
+              let interlocutorPublicKey = try? Curve25519.KeyAgreement.PublicKey(rawRepresentation: interlocutorPublicKeyData) else {
+            MXLog.debug("[RendezvousService] Invalid interlocutor data")
+            return .failure(.invalidInterlocutorKey)
         }
         
         // Wait for interlocutor acknowledgement

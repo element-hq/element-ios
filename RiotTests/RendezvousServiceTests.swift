@@ -25,7 +25,7 @@ class RendezvousServiceTests: XCTestCase {
         let aliceService = RendezvousService(transport: mockTransport)
         
         guard case .success(let rendezvousDetails) = await aliceService.createRendezvous(),
-              let interlocutorPublicKey = rendezvousDetails.key else {
+              let alicePublicKey = rendezvousDetails.key else {
             XCTFail("Rendezvous creation failed")
             return
         }
@@ -34,13 +34,23 @@ class RendezvousServiceTests: XCTestCase {
         
         let bobService = RendezvousService(transport: mockTransport)
         
-        guard case .success = await bobService.joinRendezvous(withInterlocutorPublicKey: interlocutorPublicKey) else {
+        guard case .success = await bobService.joinRendezvous() else {
             XCTFail("Bob failed to join")
             return
         }
          
         guard case .success = await aliceService.waitForInterlocutor() else {
             XCTFail("Alice failed to establish connection")
+            return
+        }
+        
+        guard case .success = await aliceService.publishPublicKey(alicePublicKey) else {
+            XCTFail("Alice failed to publish the public key")
+            return
+        }
+        
+        guard case .success = await bobService.waitForInterlocutor(withPublicKey: alicePublicKey) else {
+            XCTFail("Bob failed receive Alice's public key")
             return
         }
         
