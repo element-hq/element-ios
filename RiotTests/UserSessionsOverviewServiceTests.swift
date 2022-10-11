@@ -27,39 +27,39 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         let dataProvider = MockUserSessionsDataProvider(mode: .currentSessionUnverified)
         let service = UserSessionsOverviewService(dataProvider: dataProvider)
         
-        XCTAssertNotNil(service.overviewData.currentSession)
-        XCTAssertFalse(service.overviewData.currentSession?.isVerified ?? false)
-        XCTAssertTrue(service.overviewData.currentSession?.isActive ?? false)
-        XCTAssertFalse(service.overviewData.unverifiedSessions.isEmpty)
-        XCTAssertTrue(service.overviewData.inactiveSessions.isEmpty)
-        XCTAssertFalse(service.overviewData.linkDeviceEnabled)
+        XCTAssertNotNil(service.currentSession)
+        XCTAssertFalse(service.currentSession?.isVerified ?? false)
+        XCTAssertTrue(service.currentSession?.isActive ?? false)
+        XCTAssertFalse(service.unverifiedSessions.isEmpty)
+        XCTAssertTrue(service.inactiveSessions.isEmpty)
+        XCTAssertFalse(service.linkDeviceEnabled)
         
-        XCTAssertEqual(service.sessionForIdentifier(currentDeviceId), service.overviewData.currentSession)
+        XCTAssertEqual(service.sessionForIdentifier(currentDeviceId), service.currentSession)
     }
     
     func testInitialSessionVerified() {
         let dataProvider = MockUserSessionsDataProvider(mode: .currentSessionVerified)
         let service = UserSessionsOverviewService(dataProvider: dataProvider)
         
-        XCTAssertNotNil(service.overviewData.currentSession)
-        XCTAssertTrue(service.overviewData.currentSession?.isVerified ?? false)
-        XCTAssertTrue(service.overviewData.currentSession?.isActive ?? false)
-        XCTAssertTrue(service.overviewData.unverifiedSessions.isEmpty)
-        XCTAssertTrue(service.overviewData.inactiveSessions.isEmpty)
-        XCTAssertFalse(service.overviewData.linkDeviceEnabled)
+        XCTAssertNotNil(service.currentSession)
+        XCTAssertTrue(service.currentSession?.isVerified ?? false)
+        XCTAssertTrue(service.currentSession?.isActive ?? false)
+        XCTAssertTrue(service.unverifiedSessions.isEmpty)
+        XCTAssertTrue(service.inactiveSessions.isEmpty)
+        XCTAssertFalse(service.linkDeviceEnabled)
     }
     
     func testWithAllSessionsVerified() {
         let service = setupServiceWithMode(.allOtherSessionsValid)
         
-        XCTAssertNotNil(service.overviewData.currentSession)
-        XCTAssertTrue(service.overviewData.currentSession?.isVerified ?? false)
-        XCTAssertTrue(service.overviewData.currentSession?.isActive ?? false)
+        XCTAssertNotNil(service.currentSession)
+        XCTAssertTrue(service.currentSession?.isVerified ?? false)
+        XCTAssertTrue(service.currentSession?.isActive ?? false)
         
-        XCTAssertTrue(service.overviewData.unverifiedSessions.isEmpty)
-        XCTAssertTrue(service.overviewData.inactiveSessions.isEmpty)
-        XCTAssertFalse(service.overviewData.otherSessions.isEmpty)
-        XCTAssertTrue(service.overviewData.linkDeviceEnabled)
+        XCTAssertTrue(service.unverifiedSessions.isEmpty)
+        XCTAssertTrue(service.inactiveSessions.isEmpty)
+        XCTAssertFalse(service.otherSessions.isEmpty)
+        XCTAssertTrue(service.linkDeviceEnabled)
         
         XCTAssertEqual(service.sessionInfos.count, 2)
     }
@@ -67,14 +67,14 @@ class UserSessionsOverviewServiceTests: XCTestCase {
     func testWithSomeUnverifiedSessions() {
         let service = setupServiceWithMode(.someUnverifiedSessions)
         
-        XCTAssertNotNil(service.overviewData.currentSession)
-        XCTAssertTrue(service.overviewData.currentSession?.isVerified ?? false)
-        XCTAssertTrue(service.overviewData.currentSession?.isActive ?? false)
+        XCTAssertNotNil(service.currentSession)
+        XCTAssertTrue(service.currentSession?.isVerified ?? false)
+        XCTAssertTrue(service.currentSession?.isActive ?? false)
         
-        XCTAssertFalse(service.overviewData.unverifiedSessions.isEmpty)
-        XCTAssertTrue(service.overviewData.inactiveSessions.isEmpty)
-        XCTAssertFalse(service.overviewData.otherSessions.isEmpty)
-        XCTAssertTrue(service.overviewData.linkDeviceEnabled)
+        XCTAssertFalse(service.unverifiedSessions.isEmpty)
+        XCTAssertTrue(service.inactiveSessions.isEmpty)
+        XCTAssertFalse(service.otherSessions.isEmpty)
+        XCTAssertTrue(service.linkDeviceEnabled)
         
         XCTAssertEqual(service.sessionInfos.count, 3)
     }
@@ -82,14 +82,14 @@ class UserSessionsOverviewServiceTests: XCTestCase {
     func testWithSomeInactiveSessions() {
         let service = setupServiceWithMode(.someInactiveSessions)
         
-        XCTAssertNotNil(service.overviewData.currentSession)
-        XCTAssertTrue(service.overviewData.currentSession?.isVerified ?? false)
-        XCTAssertTrue(service.overviewData.currentSession?.isActive ?? false)
+        XCTAssertNotNil(service.currentSession)
+        XCTAssertTrue(service.currentSession?.isVerified ?? false)
+        XCTAssertTrue(service.currentSession?.isActive ?? false)
         
-        XCTAssertTrue(service.overviewData.unverifiedSessions.isEmpty)
-        XCTAssertFalse(service.overviewData.inactiveSessions.isEmpty)
-        XCTAssertFalse(service.overviewData.otherSessions.isEmpty)
-        XCTAssertTrue(service.overviewData.linkDeviceEnabled)
+        XCTAssertTrue(service.unverifiedSessions.isEmpty)
+        XCTAssertFalse(service.inactiveSessions.isEmpty)
+        XCTAssertFalse(service.otherSessions.isEmpty)
+        XCTAssertTrue(service.linkDeviceEnabled)
         
         XCTAssertEqual(service.sessionInfos.count, 3)
     }
@@ -97,14 +97,14 @@ class UserSessionsOverviewServiceTests: XCTestCase {
     func testWithSomeUnverifiedAndInactiveSessions() {
         let service = setupServiceWithMode(.someUnverifiedAndInactiveSessions)
         
-        XCTAssertNotNil(service.overviewData.currentSession)
-        XCTAssertTrue(service.overviewData.currentSession?.isVerified ?? false)
-        XCTAssertTrue(service.overviewData.currentSession?.isActive ?? false)
+        XCTAssertNotNil(service.currentSession)
+        XCTAssertTrue(service.currentSession?.isVerified ?? false)
+        XCTAssertTrue(service.currentSession?.isActive ?? false)
         
-        XCTAssertFalse(service.overviewData.unverifiedSessions.isEmpty)
-        XCTAssertFalse(service.overviewData.inactiveSessions.isEmpty)
-        XCTAssertFalse(service.overviewData.otherSessions.isEmpty)
-        XCTAssertTrue(service.overviewData.linkDeviceEnabled)
+        XCTAssertFalse(service.unverifiedSessions.isEmpty)
+        XCTAssertFalse(service.inactiveSessions.isEmpty)
+        XCTAssertFalse(service.otherSessions.isEmpty)
+        XCTAssertTrue(service.linkDeviceEnabled)
         
         XCTAssertEqual(service.sessionInfos.count, 4)
     }

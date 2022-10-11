@@ -36,7 +36,7 @@ enum UserSessionOverviewViewModelResult: Equatable {
 // MARK: View
 
 struct UserSessionOverviewViewState: BindableState {
-    let cardViewData: UserSessionCardViewData
+    var cardViewData: UserSessionCardViewData
     let isCurrentSession: Bool
     var isPusherEnabled: Bool?
     var remotelyTogglingPushersAvailable: Bool

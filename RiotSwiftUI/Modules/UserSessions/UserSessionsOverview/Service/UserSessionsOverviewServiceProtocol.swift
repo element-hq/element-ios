@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-import Foundation
+import Combine
 
 struct UserSessionsOverviewData {
     let currentSession: UserSessionInfo?
@@ -25,10 +25,23 @@ struct UserSessionsOverviewData {
 }
 
 protocol UserSessionsOverviewServiceProtocol {
-    var overviewData: UserSessionsOverviewData { get }
+    var overviewDataPublisher: CurrentValueSubject<UserSessionsOverviewData, Never> { get }
     var sessionInfos: [UserSessionInfo] { get }
     
     func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) -> Void
     
     func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo?
+}
+
+extension UserSessionsOverviewServiceProtocol {
+    /// The user's current session.
+    var currentSession: UserSessionInfo? { overviewDataPublisher.value.currentSession }
+    /// Any unverified sessions on the user's account.
+    var unverifiedSessions: [UserSessionInfo] { overviewDataPublisher.value.unverifiedSessions }
+    /// Any inactive sessions on the user's account (not seen for a while).
+    var inactiveSessions: [UserSessionInfo] { overviewDataPublisher.value.inactiveSessions }
+    /// Any sessions that are verified and have been seen recently.
+    var otherSessions: [UserSessionInfo] { overviewDataPublisher.value.otherSessions }
+    /// Whether it is possible to link a new device via a QR code.
+    var linkDeviceEnabled: Bool { overviewDataPublisher.value.linkDeviceEnabled }
 }

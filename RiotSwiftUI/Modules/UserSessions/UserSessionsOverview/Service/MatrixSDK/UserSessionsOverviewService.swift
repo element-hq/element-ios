@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-import Foundation
+import Combine
 import MatrixSDK
 
 class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
@@ -23,17 +23,17 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     
     private let dataProvider: UserSessionsDataProviderProtocol
     
-    private(set) var overviewData: UserSessionsOverviewData
+    private(set) var overviewDataPublisher: CurrentValueSubject<UserSessionsOverviewData, Never>
     private(set) var sessionInfos: [UserSessionInfo]
     
     init(dataProvider: UserSessionsDataProviderProtocol) {
         self.dataProvider = dataProvider
         
-        overviewData = UserSessionsOverviewData(currentSession: nil,
-                                                unverifiedSessions: [],
-                                                inactiveSessions: [],
-                                                otherSessions: [],
-                                                linkDeviceEnabled: false)
+        overviewDataPublisher = .init(UserSessionsOverviewData(currentSession: nil,
+                                                               unverifiedSessions: [],
+                                                               inactiveSessions: [],
+                                                               otherSessions: [],
+                                                               linkDeviceEnabled: false))
         sessionInfos = []
         setupInitialOverviewData()
     }
@@ -47,9 +47,10 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                 self.sessionInfos = self.sortedSessionInfos(from: devices)
                 Task { @MainActor in
                     let linkDeviceEnabled = try? await self.dataProvider.qrLoginAvailable()
-                    self.overviewData = self.sessionsOverviewData(from: self.sessionInfos,
-                                                                  linkDeviceEnabled: linkDeviceEnabled ?? false)
-                    completion(.success(self.overviewData))
+                    let overviewData = self.sessionsOverviewData(from: self.sessionInfos,
+                                                                 linkDeviceEnabled: linkDeviceEnabled ?? false)
+                    self.overviewDataPublisher.send(overviewData)
+                    completion(.success(overviewData))
                 }
             case .failure(let error):
                 completion(.failure(error))
@@ -58,11 +59,11 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     }
     
     func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo? {
-        if overviewData.currentSession?.id == sessionId {
-            return overviewData.currentSession
+        if currentSession?.id == sessionId {
+            return currentSession
         }
         
-        return overviewData.otherSessions.first(where: { $0.id == sessionId })
+        return otherSessions.first(where: { $0.id == sessionId })
     }
 
     // MARK: - Private
@@ -72,11 +73,11 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
             return
         }
         
-        overviewData = UserSessionsOverviewData(currentSession: currentSessionInfo,
-                                                unverifiedSessions: currentSessionInfo.isVerified ? [] : [currentSessionInfo],
-                                                inactiveSessions: currentSessionInfo.isActive ? [] : [currentSessionInfo],
-                                                otherSessions: [],
-                                                linkDeviceEnabled: false)
+        overviewDataPublisher = .init(UserSessionsOverviewData(currentSession: currentSessionInfo,
+                                                               unverifiedSessions: currentSessionInfo.isVerified ? [] : [currentSessionInfo],
+                                                               inactiveSessions: currentSessionInfo.isActive ? [] : [currentSessionInfo],
+                                                               otherSessions: [],
+                                                               linkDeviceEnabled: false))
     }
     
     private func getCurrentSessionInfo() -> UserSessionInfo? {

@@ -47,6 +47,7 @@ struct UserSessionOverview: View {
             
             SwiftUI.Section {
                 UserSessionOverviewItem(title: VectorL10n.manageSessionSignOut,
+                                        alignment: .center,
                                         isDestructive: true) {
                     viewModel.send(viewAction: .logoutOfSession)
                 }
@@ -66,8 +67,11 @@ struct UserSessionOverview: View {
                         Label(VectorL10n.manageSessionRename, systemImage: "pencil")
                     }
                 } label: {
-                    Image(systemName: "ellipsis.circle")
+                    Image(systemName: "ellipsis")
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 12)
                 }
+                .offset(x: 4) // Re-align the symbol after applying padding.
             }
         }
         .accentColor(theme.colors.accent)

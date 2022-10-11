@@ -123,8 +123,10 @@ struct UserSessionsOverview: View {
     
     private var currentSessionMenu: some View {
         Menu {
-            Button { viewModel.send(viewAction: .renameCurrentSession) } label: {
-                Label(VectorL10n.manageSessionRename, systemImage: "pencil")
+            SwiftUI.Section {
+                Button { viewModel.send(viewAction: .renameCurrentSession) } label: {
+                    Label(VectorL10n.manageSessionRename, systemImage: "pencil")
+                }
             }
             
             if #available(iOS 15, *) {
@@ -137,8 +139,12 @@ struct UserSessionsOverview: View {
                 }
             }
         } label: {
-            Image(systemName: "ellipsis.circle")
+            Image(systemName: "ellipsis")
+                .foregroundColor(theme.colors.secondaryContent)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 12)
         }
+        .offset(x: 8) // Re-align the symbol after applying padding.
     }
     
     private var otherSessionsSection: some View {

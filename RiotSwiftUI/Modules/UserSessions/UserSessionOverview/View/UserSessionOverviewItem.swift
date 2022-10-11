@@ -20,6 +20,7 @@ struct UserSessionOverviewItem: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     let title: String
+    var alignment: Alignment = .leading
     var showsChevron = false
     var isDestructive = false
     var onBackgroundTap: (() -> Void)?
@@ -32,7 +33,7 @@ struct UserSessionOverviewItem: View {
                     Text(title)
                         .font(theme.fonts.body)
                         .foregroundColor(textColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(maxWidth: .infinity, alignment: alignment)
                     
                     if showsChevron {
                         Image(Asset.Images.chevron.name)

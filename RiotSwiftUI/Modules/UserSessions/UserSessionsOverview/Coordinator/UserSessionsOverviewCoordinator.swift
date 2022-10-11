@@ -19,6 +19,7 @@ import SwiftUI
 
 struct UserSessionsOverviewCoordinatorParameters {
     let session: MXSession
+    let service: UserSessionsOverviewService
 }
 
 final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
@@ -36,10 +37,9 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
 
     init(parameters: UserSessionsOverviewCoordinatorParameters) {
         self.parameters = parameters
+        self.service = parameters.service
         
-        let dataProvider = UserSessionsDataProvider(session: parameters.session)
-        service = UserSessionsOverviewService(dataProvider: dataProvider)
-        viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
+        viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: parameters.service)
         
         hostingViewController = VectorHostingController(rootView: UserSessionsOverview(viewModel: viewModel.context))
         hostingViewController.vc_setLargeTitleDisplayMode(.never)

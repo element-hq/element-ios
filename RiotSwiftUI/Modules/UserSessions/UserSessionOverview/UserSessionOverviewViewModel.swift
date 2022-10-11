@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+import Combine
 import SwiftUI
 
 typealias UserSessionOverviewViewModelType = StateStoreViewModel<UserSessionOverviewViewState, UserSessionOverviewViewAction>
@@ -26,7 +27,13 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
     
     // MARK: - Setup
     
-    init(sessionInfo: UserSessionInfo, service: UserSessionOverviewServiceProtocol) {
+    init(sessionInfo: UserSessionInfo,
+         service: UserSessionOverviewServiceProtocol,
+         sessionsOverviewDataPublisher: CurrentValueSubject<UserSessionsOverviewData, Never> = .init(.init(currentSession: nil,
+                                                                                                           unverifiedSessions: [],
+                                                                                                           inactiveSessions: [],
+                                                                                                           otherSessions: [],
+                                                                                                           linkDeviceEnabled: false))) {
         self.sessionInfo = sessionInfo
         self.service = service
         
@@ -39,6 +46,21 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
         super.init(initialViewState: state)
         
         startObservingService()
+        
+        sessionsOverviewDataPublisher.sink { [weak self] overviewData in
+            guard let self = self else { return }
+            
+            var updatedInfo: UserSessionInfo?
+            if let currentSession = overviewData.currentSession, currentSession.id == sessionInfo.id {
+                updatedInfo = currentSession
+            } else if let otherSession = overviewData.otherSessions.first(where: { $0.id == sessionInfo.id }) {
+                updatedInfo = otherSession
+            }
+            
+            guard let updatedInfo = updatedInfo else { return }
+            self.state.cardViewData = UserSessionCardViewData(sessionInfo: updatedInfo)
+        }
+        .store(in: &cancellables)
     }
     
     private func startObservingService() {
