@@ -2420,8 +2420,10 @@ To enable access, tap Settings> Location and select Always";
 
 "user_session_verified" = "Verified session";
 "user_session_unverified" = "Unverified session";
+"user_session_verification_unknown" = "Unknown verification status";
 "user_session_verified_short" = "Verified";
 "user_session_unverified_short" = "Unverified";
+"user_session_verification_unknown_short" = "Unknown";
 
 "user_session_verify_action" = "Verify session";
 "user_session_view_details" = "View details";

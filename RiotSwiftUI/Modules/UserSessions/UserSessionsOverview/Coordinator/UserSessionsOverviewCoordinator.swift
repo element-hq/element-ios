@@ -37,7 +37,7 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
 
     init(parameters: UserSessionsOverviewCoordinatorParameters) {
         self.parameters = parameters
-        self.service = parameters.service
+        service = parameters.service
         
         viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: parameters.service)
         
@@ -60,7 +60,7 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
             case let .showOtherSessions(sessionInfos: sessionInfos, filter: filter):
                 self.showOtherSessions(sessionInfos: sessionInfos, filterBy: filter)
             case .verifyCurrentSession:
-                self.startVerifyCurrentSession()
+                self.completion?(.verifyCurrentSession)
             case .renameSession(let sessionInfo):
                 self.completion?(.renameSession(sessionInfo))
             case .logoutOfSession(let sessionInfo):

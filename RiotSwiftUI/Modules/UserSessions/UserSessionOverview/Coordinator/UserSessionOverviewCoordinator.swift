@@ -64,8 +64,8 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
             
             MXLog.debug("[UserSessionOverviewCoordinator] UserSessionOverviewViewModel did complete with result: \(result).")
             switch result {
-            case .verifyCurrentSession:
-                break // TODO:
+            case let .verifySession(sessionInfo):
+                self.completion?(.verifySession(sessionInfo))
             case let .showSessionDetails(sessionInfo: sessionInfo):
                 self.completion?(.openSessionDetails(sessionInfo: sessionInfo))
             case let .renameSession(sessionInfo):

@@ -8751,6 +8751,14 @@ public class VectorL10n: NSObject {
   public static var userSessionUnverifiedShort: String { 
     return VectorL10n.tr("Vector", "user_session_unverified_short") 
   }
+  /// Unknown verification status
+  public static var userSessionVerificationUnknown: String { 
+    return VectorL10n.tr("Vector", "user_session_verification_unknown") 
+  }
+  /// Unknown
+  public static var userSessionVerificationUnknownShort: String { 
+    return VectorL10n.tr("Vector", "user_session_verification_unknown_short") 
+  }
   /// Verified session
   public static var userSessionVerified: String { 
     return VectorL10n.tr("Vector", "user_session_verified") 

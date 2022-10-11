@@ -68,7 +68,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         UserSessionInfo(id: sessionId,
                         name: "iOS",
                         deviceType: .mobile,
-                        isVerified: false,
+                        verificationState: .unverified,
                         lastSeenIP: "10.0.0.10",
                         lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
                         applicationName: nil,

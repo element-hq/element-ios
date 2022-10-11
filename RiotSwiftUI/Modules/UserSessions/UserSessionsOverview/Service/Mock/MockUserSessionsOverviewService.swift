@@ -80,13 +80,13 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         otherSessions.first { $0.id == sessionId }
     }
     
-    // MARK: - Private∂
+    // MARK: - Private
     
     private var mockCurrentSession: UserSessionInfo {
         UserSessionInfo(id: "alice",
                         name: "iOS",
                         deviceType: .mobile,
-                        isVerified: mode == .currentSessionVerified,
+                        verificationState: mode == .currentSessionVerified ? .verified : .unverified,
                         lastSeenIP: "10.0.0.10",
                         lastSeenTimestamp: nil,
                         applicationName: "Element iOS",
@@ -105,7 +105,7 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         [UserSessionInfo(id: "1 verified: \(verified) active: \(active)",
                          name: "macOS verified: \(verified) active: \(active)",
                          deviceType: .desktop,
-                         isVerified: verified,
+                         verificationState: verified ? .verified : .unverified,
                          lastSeenIP: "1.0.0.1",
                          lastSeenTimestamp: Date().timeIntervalSince1970 - 8_000_000,
                          applicationName: "Element MacOS",
@@ -121,7 +121,7 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
          UserSessionInfo(id: "2 verified: \(verified) active: \(active)",
                          name: "Firefox on Windows verified: \(verified) active: \(active)",
                          deviceType: .web,
-                         isVerified: verified,
+                         verificationState: verified ? .verified : .unverified,
                          lastSeenIP: "2.0.0.2",
                          lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
                          applicationName: "Element Web",
@@ -137,7 +137,7 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
          UserSessionInfo(id: "3 verified: \(verified) active: \(active)",
                          name: "Android verified: \(verified) active: \(active)",
                          deviceType: .mobile,
-                         isVerified: verified,
+                         verificationState: verified ? .verified : .unverified,
                          lastSeenIP: "3.0.0.3",
                          lastSeenTimestamp: Date().timeIntervalSince1970 - 10,
                          applicationName: "Element Android",

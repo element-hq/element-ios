@@ -84,8 +84,8 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
     
     override func process(viewAction: UserSessionOverviewViewAction) {
         switch viewAction {
-        case .verifyCurrentSession:
-            completion?(.verifyCurrentSession)
+        case .verifySession:
+            completion?(.verifySession(sessionInfo))
         case .viewSessionDetails:
             completion?(.showSessionDetails(sessionInfo: sessionInfo))
         case .togglePushNotifications:
