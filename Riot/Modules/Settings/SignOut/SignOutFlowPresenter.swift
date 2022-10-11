@@ -17,11 +17,17 @@
 import Foundation
 
 @objc protocol SignOutFlowPresenterDelegate {
+    /// The presenter is starting an operation that might take while and the UI should indicate this.
     func signOutFlowPresenterDidStartLoading(_ presenter: SignOutFlowPresenter)
+    /// The presenter has finished an operation and the UI should indicate this if necessary.
     func signOutFlowPresenterDidStopLoading(_ presenter: SignOutFlowPresenter)
+    /// The presenter encountered an error and has stopped.
     func signOutFlowPresenter(_ presenter: SignOutFlowPresenter, didFailWith error: Error)
 }
 
+/// This class provides a reusable component to present the sign out flow
+/// for the current session, including the initial prompt, and any follow-up
+/// key-backup setup that is necessary for the user.
 @objcMembers class SignOutFlowPresenter: NSObject {
     private let session: MXSession
     private let presentingViewController: UIViewController
@@ -39,10 +45,13 @@ import Foundation
         signOutAlertPresenter.delegate = self
     }
     
+    /// Starts the flow without a specific source view. On iPad any popups
+    /// will show from the presenting view controller itself.
     func start() {
         start(sourceView: presentingViewController.view)
     }
     
+    /// Starts the flow, presenting any popups on iPad from the specified view.
     func start(sourceView: UIView?) {
         guard let keyBackup = session.crypto?.backup else { return }
         
