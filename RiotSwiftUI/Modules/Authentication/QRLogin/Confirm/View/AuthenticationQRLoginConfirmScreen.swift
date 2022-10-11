@@ -94,11 +94,11 @@ struct AuthenticationQRLoginConfirmScreen: View {
                 .padding(.bottom, 12)
                 .accessibilityIdentifier("alertText")
 
-            Button(action: confirm) {
-                Text(VectorL10n.confirm)
-            }
-            .buttonStyle(PrimaryActionButtonStyle(font: theme.fonts.bodySB))
-            .accessibilityIdentifier("confirmButton")
+//            Button(action: confirm) {
+//                Text(VectorL10n.confirm)
+//            }
+//            .buttonStyle(PrimaryActionButtonStyle(font: theme.fonts.bodySB))
+//            .accessibilityIdentifier("confirmButton")
 
             Button(action: cancel) {
                 Text(VectorL10n.cancel)

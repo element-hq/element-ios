@@ -30,6 +30,8 @@ enum AuthenticationLoginCoordinatorResult: CustomStringConvertible {
     case continueWithSSO(SSOIdentityProvider)
     /// Login was successful with the associated session created.
     case success(session: MXSession, password: String)
+    /// Login was successful with the associated session created.
+    case loggedInWithQRCode(session: MXSession)
     /// Login requested a fallback
     case fallback
     
@@ -40,6 +42,8 @@ enum AuthenticationLoginCoordinatorResult: CustomStringConvertible {
             return "continueWithSSO: \(provider)"
         case .success:
             return "success"
+        case .loggedInWithQRCode:
+            return "loggedInWithQRCode"
         case .fallback:
             return "fallback"
         }
@@ -294,8 +298,13 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         let parameters = AuthenticationQRLoginStartCoordinatorParameters(navigationRouter: navigationRouter,
                                                                          qrLoginService: service)
         let coordinator = AuthenticationQRLoginStartCoordinator(parameters: parameters)
-        coordinator.callback = { [weak self, weak coordinator] _ in
+        coordinator.callback = { [weak self, weak coordinator] callback in
             guard let self = self, let coordinator = coordinator else { return }
+            switch callback {
+            case .done(let session):
+                self.callback?(.loggedInWithQRCode(session: session))
+            }
+            
             self.remove(childCoordinator: coordinator)
         }
 

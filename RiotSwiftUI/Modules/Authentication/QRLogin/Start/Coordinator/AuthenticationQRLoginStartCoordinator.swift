@@ -25,7 +25,7 @@ struct AuthenticationQRLoginStartCoordinatorParameters {
 
 enum AuthenticationQRLoginStartCoordinatorResult {
     /// Login with QR done
-    case done
+    case done(session: MXSession)
 }
 
 final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
@@ -108,18 +108,23 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
         switch state {
         case .initial:
             removeAllChildren()
-        case .connectingToDevice, .waitingForRemoteSignIn, .completed:
+        case .connectingToDevice, .waitingForRemoteSignIn:
             showLoadingScreenIfNeeded()
         case .waitingForConfirmation:
             showConfirmationScreenIfNeeded()
         case .failed(let error):
             switch error {
             case .noCameraAccess, .noCameraAvailable:
-                // handled in scanning screen
-                break
+                break // handled in scanning screen
             default:
                 showFailureScreenIfNeeded()
             }
+        case .completed(let session):
+            guard let session = session as? MXSession else {
+                showFailureScreenIfNeeded()
+                return
+            }
+            callback?(.done(session: session))
         default:
             break
         }
@@ -162,6 +167,8 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     /// Shows the display QR screen.
     private func showDisplayQRScreen() {
         MXLog.debug("[AuthenticationQRLoginStartCoordinator] showDisplayQRScreen")
+        
+        removeAllChildren(animated: false)
 
         let parameters = AuthenticationQRLoginDisplayCoordinatorParameters(navigationRouter: navigationRouter,
                                                                            qrLoginService: qrLoginService)
@@ -182,6 +189,8 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     /// Shows the loading screen.
     private func showLoadingScreenIfNeeded() {
         MXLog.debug("[AuthenticationQRLoginStartCoordinator] showLoadingScreenIfNeeded")
+        
+        removeAllChildren(animated: false)
 
         if let lastCoordinator = childCoordinators.last,
            lastCoordinator is AuthenticationQRLoginLoadingCoordinator {
@@ -208,6 +217,8 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     /// Shows the confirmation screen.
     private func showConfirmationScreenIfNeeded() {
         MXLog.debug("[AuthenticationQRLoginStartCoordinator] showConfirmationScreenIfNeeded")
+        
+        removeAllChildren(animated: false)
 
         if let lastCoordinator = childCoordinators.last,
            lastCoordinator is AuthenticationQRLoginConfirmCoordinator {
@@ -234,6 +245,8 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
     /// Shows the failure screen.
     private func showFailureScreenIfNeeded() {
         MXLog.debug("[AuthenticationQRLoginStartCoordinator] showFailureScreenIfNeeded")
+        
+        removeAllChildren(animated: false)
 
         if let lastCoordinator = childCoordinators.last,
            lastCoordinator is AuthenticationQRLoginFailureCoordinator {

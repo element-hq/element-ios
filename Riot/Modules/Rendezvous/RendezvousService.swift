@@ -17,6 +17,7 @@
 import Foundation
 import CryptoKit
 import Combine
+import MatrixSDK
 
 enum RendezvousServiceError: Error {
     case invalidInterlocutorKey
@@ -35,33 +36,41 @@ enum RendezvousChannelAlgorithm: String {
 @MainActor
 class RendezvousService {
     private let transport: RendezvousTransportProtocol
-    private let privateKey: Curve25519.KeyAgreement.PrivateKey
     
+    private var privateKey: Curve25519.KeyAgreement.PrivateKey!
     private var interlocutorPublicKey: Curve25519.KeyAgreement.PublicKey?
     private var symmetricKey: SymmetricKey?
     
     init(transport: RendezvousTransportProtocol) {
         self.transport = transport
-        self.privateKey = Curve25519.KeyAgreement.PrivateKey()
     }
     
     /// Creates a new rendezvous endpoint and publishes the creator's public key
-    func createRendezvous() async -> Result<(), RendezvousServiceError> {
-        let publicKeyString = self.privateKey.publicKey.rawRepresentation.base64EncodedString()
-        let payload = RendezvousDetails(algorithm: RendezvousChannelAlgorithm.ECDH_V1.rawValue,
-                                        key: publicKeyString)
+    func createRendezvous() async -> Result<RendezvousDetails, RendezvousServiceError> {
+        privateKey = Curve25519.KeyAgreement.PrivateKey()
         
-        switch await transport.create(body: payload) {
+        let publicKeyString = privateKey.publicKey.rawRepresentation.base64EncodedString()
+        let details = RendezvousDetails(algorithm: RendezvousChannelAlgorithm.ECDH_V1.rawValue)
+        
+        switch await transport.create(body: details) {
         case .failure(let transportError):
             return .failure(.transportError(transportError))
         case .success:
-            return .success(())
+            guard let rendezvousURL = transport.rendezvousURL else {
+                return .failure(.transportError(.rendezvousURLInvalid))
+            }
+            
+            let fullDetails = RendezvousDetails(algorithm: RendezvousChannelAlgorithm.ECDH_V1.rawValue,
+                                                transport: RendezvousTransportDetails(type: "http.v1",
+                                                                                      uri: rendezvousURL.absoluteString),
+                                                key: publicKeyString)
+            return .success(fullDetails)
         }
     }
     
     /// After creation we need to wait for the pair to publish its public key as well
     /// At the end of this a symmetric key will be available for encryption
-    func waitForInterlocutor() async -> Result<(), RendezvousServiceError> {
+    func waitForInterlocutor() async -> Result<String, RendezvousServiceError> {
         switch await transport.get() {
         case .failure(let error):
             return .failure(.transportError(error))
@@ -70,7 +79,8 @@ class RendezvousService {
                 return .failure(.decodingError)
             }
                     
-            guard let interlocutorPublicKeyData = Data(base64Encoded: response.key),
+            guard let key = response.key,
+                  let interlocutorPublicKeyData = Data(base64Encoded: key),
                   let interlocutorPublicKey = try? Curve25519.KeyAgreement.PublicKey(rawRepresentation: interlocutorPublicKeyData) else {
                 return .failure(.invalidInterlocutorKey)
             }
@@ -81,31 +91,31 @@ class RendezvousService {
                 return .failure(.internalError)
             }
             
-            self.symmetricKey = generateSymmetricKeyFrom(sharedSecret: sharedSecret)
+            self.symmetricKey = generateSymmetricKeyFrom(sharedSecret: sharedSecret,
+                                                         initiatorPublicKey: privateKey.publicKey,
+                                                         recipientPublicKey: interlocutorPublicKey)
             
-            return .success(())
+            let validationCode = generateValidationCodeFrom(symmetricKey: generateSymmetricKeyFrom(sharedSecret: sharedSecret,
+                                                                                                   initiatorPublicKey: privateKey.publicKey,
+                                                                                                   recipientPublicKey: interlocutorPublicKey,
+                                                                                                   byteCount: 5))
+            
+            return .success(validationCode)
         }
     }
     
     /// Joins an existing rendezvous and publishes the joiner's public key
     /// At the end of this a symmetric key will be available for encryption
-    func joinRendezvous() async -> Result<(), RendezvousServiceError> {
-        guard case let .success(data) = await transport.get() else {
-            return .failure(.internalError)
-        }
-        
-        guard let response = try? JSONDecoder().decode(RendezvousDetails.self, from: data) else {
-            return .failure(.decodingError)
-        }
-        
-        guard let interlocutorPublicKeyData = Data(base64Encoded: response.key),
+    func joinRendezvous(withInterlocutorPublicKey: String) async -> Result<String, RendezvousServiceError> {
+        guard let interlocutorPublicKeyData = Data(base64Encoded: withInterlocutorPublicKey),
               let interlocutorPublicKey = try? Curve25519.KeyAgreement.PublicKey(rawRepresentation: interlocutorPublicKeyData) else {
+            MXLog.debug("[RendezvousService] Invalid interlocutor data")
             return .failure(.invalidInterlocutorKey)
         }
         
-        self.interlocutorPublicKey = interlocutorPublicKey
+        privateKey = Curve25519.KeyAgreement.PrivateKey()
         
-        let publicKeyString = self.privateKey.publicKey.rawRepresentation.base64EncodedString()
+        let publicKeyString = privateKey.publicKey.rawRepresentation.base64EncodedString()
         let payload = RendezvousDetails(algorithm: RendezvousChannelAlgorithm.ECDH_V1.rawValue,
                                         key: publicKeyString)
         
@@ -113,14 +123,44 @@ class RendezvousService {
             return .failure(.internalError)
         }
         
-        // Channel established
+        // Wait for interlocutor acknowledgement
+        // Retrieve its public key and check it matches the one from the QR code above
+        switch await transport.get() {
+        case .failure(let error):
+            MXLog.debug("[RendezvousService] Failed waiting for interlocutor with error: \(error)")
+            return .failure(.transportError(error))
+        case .success(let data):
+            guard let response = try? JSONDecoder().decode(RendezvousDetails.self, from: data) else {
+                MXLog.debug("[RendezvousService] Invalid interlocutor response \(String(describing: String(data: data, encoding: .utf8)))")
+                return .failure(.invalidInterlocutorKey)
+            }
+            
+            guard let key = response.key,
+                  let interlocutorPublicKeyData = Data(base64Encoded: key),
+                  let receivedInterlocutorPublicKey = try? Curve25519.KeyAgreement.PublicKey(rawRepresentation: interlocutorPublicKeyData),
+                  receivedInterlocutorPublicKey.rawRepresentation == interlocutorPublicKey.rawRepresentation else {
+                MXLog.debug("[RendezvousService] Invalid interlocutor data \(response)")
+                return .failure(.invalidInterlocutorKey)
+            }
+        }
+        
+        self.interlocutorPublicKey = interlocutorPublicKey
+        
         guard let sharedSecret = try? privateKey.sharedSecretFromKeyAgreement(with: interlocutorPublicKey) else {
+            MXLog.debug("[RendezvousService] Couldn't create shared secret")
             return .failure(.internalError)
         }
         
-        self.symmetricKey = generateSymmetricKeyFrom(sharedSecret: sharedSecret)
+        symmetricKey = generateSymmetricKeyFrom(sharedSecret: sharedSecret,
+                                                initiatorPublicKey: interlocutorPublicKey,
+                                                recipientPublicKey: privateKey.publicKey)
         
-        return .success(())
+        let validationCode = generateValidationCodeFrom(symmetricKey: generateSymmetricKeyFrom(sharedSecret: sharedSecret,
+                                                                                               initiatorPublicKey: interlocutorPublicKey,
+                                                                                               recipientPublicKey: privateKey.publicKey,
+                                                                                               byteCount: 5))
+        
+        return .success(validationCode)
     }
     
     /// Send arbitrary data over the secure channel
@@ -170,6 +210,8 @@ class RendezvousService {
                 return .failure(.decodingError)
             }
             
+            MXLog.debug("Received rendezvous response: \(response)")
+            
             guard let ciphertextData = Data(base64Encoded: response.ciphertext),
                   let nonceData = Data(base64Encoded: response.iv),
                   let nonce = try? AES.GCM.Nonce(data: nonceData) else {
@@ -189,12 +231,53 @@ class RendezvousService {
         }
     }
     
+    func tearDown() async -> Result<(), RendezvousServiceError> {
+        switch await transport.tearDown() {
+        case .failure(let error):
+            return .failure(.transportError(error))
+        case .success:
+            privateKey = nil
+            interlocutorPublicKey = nil
+            symmetricKey = nil
+            
+            return .success(())
+        }
+    }
+    
     // MARK: - Private
     
-    private func generateSymmetricKeyFrom(sharedSecret: SharedSecret) -> SymmetricKey {
+    private func generateValidationCodeFrom(symmetricKey: SymmetricKey) -> String {
+        let bytes = symmetricKey.withUnsafeBytes {
+            return Data(Array($0))
+        }.map { UInt($0) }
+        
+        let first = (bytes[0] << 5 | bytes[1] >> 3) + 1000
+        let secondPart1 = UInt(bytes[1] & 0x7) << 10
+        let secondPart2 = bytes[2] << 2 | bytes[3] >> 6
+        let second = (secondPart1 | secondPart2) + 1000
+        let third = ((bytes[3] & 0x3f) << 7 | bytes[4] >> 1) + 1000
+        
+        return "\(first)-\(second)-\(third)"
+    }
+    
+    private func generateSymmetricKeyFrom(sharedSecret: SharedSecret,
+                                          initiatorPublicKey: Curve25519.KeyAgreement.PublicKey,
+                                          recipientPublicKey: Curve25519.KeyAgreement.PublicKey,
+                                          byteCount: Int = SHA256Digest.byteCount) -> SymmetricKey {
+        guard let sharedInfoData = [RendezvousChannelAlgorithm.ECDH_V1.rawValue,
+                                    initiatorPublicKey.rawRepresentation.base64EncodedString(),
+                                    recipientPublicKey.rawRepresentation.base64EncodedString()]
+            .joined(separator: "|")
+            .data(using: .utf8) else {
+            fatalError("[RendezvousService] Failed creating symmetric key shared data")
+        }
+        
         // MSC3903 asks for a 8 zero byte salt when deriving the keys
         let salt = Data(repeating: 0, count: 8)
-        return sharedSecret.hkdfDerivedSymmetricKey(using: SHA256.self, salt: salt, sharedInfo: Data(), outputByteCount: 32)
+        return sharedSecret.hkdfDerivedSymmetricKey(using: SHA256.self,
+                                                    salt: salt,
+                                                    sharedInfo: sharedInfoData,
+                                                    outputByteCount: byteCount)
     }
     
     private func generateRandomData(ofLength length: Int) -> Data {

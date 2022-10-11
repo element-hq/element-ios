@@ -52,14 +52,12 @@ class MockQRLoginService: QRLoginServiceProtocol {
     }
 
     func generateQRCode() async throws -> QRLoginCode {
-        let transport = QRLoginRendezvousTransportDetails(type: "http.v1",
-                                                          uri: "https://matrix.org")
-        let rendezvous = QRLoginRendezvous(transport: transport,
-                                           algorithm: "m.rendezvous.v1.curve25519-aes-sha256",
-                                           key: "")
-        return QRLoginCode(user: "@mock:matrix.org",
-                           initiator: .new,
-                           rendezvous: rendezvous)
+        let details = RendezvousDetails(algorithm: "m.rendezvous.v1.curve25519-aes-sha256",
+                                        transport: .init(type: "http.v1",
+                                                         uri: "https://matrix.org"),
+                                        key: "some.public.key")
+        return QRLoginCode(rendezvous: details,
+                           intent: "login.start")
     }
 
     func scannerView() -> AnyView {

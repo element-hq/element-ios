@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import MatrixSDK
 
 class RendezvousTransport: RendezvousTransportProtocol {
     private let baseURL: URL
@@ -33,12 +34,14 @@ class RendezvousTransport: RendezvousTransportProtocol {
     }
     
     func get() async -> Result<Data, RendezvousTransportError> {
-        guard let url = rendezvousURL else {
-            return .failure(.rendezvousURLInvalid)
-        }
-        
         // Keep trying until resource changed
         while true {
+            guard let url = rendezvousURL else {
+                return .failure(.rendezvousURLInvalid)
+            }
+            
+            MXLog.debug("[RendezvousTransport] polling \(url) after etag: \(String(describing: currentEtag))")
+            
             var request = URLRequest(url: url)
             request.httpMethod = "GET"
             
@@ -50,8 +53,8 @@ class RendezvousTransport: RendezvousTransportProtocol {
             // Newer swift concurrency api unavailable due to iOS 14 support
             let result: Result<Data?, RendezvousTransportError> = await withCheckedContinuation { continuation in
                 URLSession.shared.dataTask(with: request) { data, response, error in
-                    guard let data = data,
-                          let response = response,
+                    guard error == nil,
+                          let data = data,
                           let httpURLResponse = response as? HTTPURLResponse else {
                         continuation.resume(returning: .failure(.networkError))
                         return
@@ -59,8 +62,10 @@ class RendezvousTransport: RendezvousTransportProtocol {
                     
                     // Return empty data from here if unchanged so that the external while can continue
                     if httpURLResponse.statusCode == 404 {
+                        MXLog.warning("[RendezvousTransport] Rendezvous no longer available available")
                         continuation.resume(returning: .failure(.rendezvousCancelled))
                     } else if httpURLResponse.statusCode == 304 {
+                        MXLog.debug("[RendezvousTransport] Rendezvous unchanged")
                         continuation.resume(returning: .success(nil))
                     } else if httpURLResponse.statusCode == 200 {
                         // The resouce changed, update the etag
@@ -68,9 +73,12 @@ class RendezvousTransport: RendezvousTransportProtocol {
                             self.currentEtag = etag
                         }
                         
+                        MXLog.debug("[RendezvousTransport] Received update")
+                        
                         continuation.resume(returning: .success(data))
                     }
-                }.resume()
+                }
+                .resume()
             }
 
             switch result {
@@ -78,6 +86,9 @@ class RendezvousTransport: RendezvousTransportProtocol {
                 return .failure(error)
             case .success(let data):
                 guard let data = data else {
+                    // Avoid making too many requests. Sleep for one second before the next attempt
+                    try? await Task.sleep(nanoseconds: 1_000_000_000)
+                    
                     continue
                 }
 
@@ -114,10 +125,35 @@ class RendezvousTransport: RendezvousTransportProtocol {
         }
     }
     
+    func tearDown() async -> Result<(), RendezvousTransportError> {
+        guard let url = rendezvousURL else {
+            return .failure(.rendezvousURLInvalid)
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        return await withCheckedContinuation { continuation in
+            URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+                guard error == nil, response as? HTTPURLResponse != nil else {
+                    MXLog.warning("[RendezvousTransport] Failed tearing down rendezvous with error: \(String(describing: error))")
+                    continuation.resume(returning: .failure(.networkError))
+                    return
+                }
+                
+                MXLog.debug("[RendezvousTransport] Tore down rendezvous at URL: \(url)")
+                
+                self?.rendezvousURL = nil
+                
+                continuation.resume(returning: .success(()))
+            }
+            .resume()
+        }
+    }
+    
     // MARK: - Private
     
     private func send<T: Encodable>(body: T, url: URL, usingMethod method: String) async -> Result<HTTPURLResponse, RendezvousTransportError> {
-        guard let body = try? JSONEncoder().encode(body) else {
+        guard let bodyData = try? JSONEncoder().encode(body) else {
             return .failure(.encodingError)
         }
         
@@ -126,11 +162,17 @@ class RendezvousTransport: RendezvousTransportProtocol {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         
-        request.httpBody = body
+        request.httpBody = bodyData
+        
+        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+        if let etag = currentEtag {
+            request.addValue(etag, forHTTPHeaderField: "If-Match")
+        }
         
         return await withCheckedContinuation { continuation in
             URLSession.shared.dataTask(with: request) { data, response, error in
-                guard let httpURLResponse = response as? HTTPURLResponse else {
+                guard error == nil, let httpURLResponse = response as? HTTPURLResponse else {
+                    MXLog.warning("[RendezvousTransport] Failed sending data with error: \(String(describing: error))")
                     continuation.resume(returning: .failure(.networkError))
                     return
                 }
@@ -139,8 +181,11 @@ class RendezvousTransport: RendezvousTransportProtocol {
                     self.currentEtag = etag
                 }
                 
+                MXLog.debug("[RendezvousTransport] Sent data: \(body)")
+                
                 continuation.resume(returning: .success(httpURLResponse))
-            }.resume()
+            }
+            .resume()
         }
     }
 }

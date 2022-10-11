@@ -39,10 +39,10 @@ struct UserSessionsOverview: View {
                 }
                 .readableFrame()
 
-                if viewModel.viewState.linkDeviceButtonVisible {
-                    linkDeviceView
-                        .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
-                }
+//                if viewModel.viewState.linkDeviceButtonVisible {
+//                    linkDeviceView
+//                        .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
+//                }
             }
         }
         .background(theme.colors.system.ignoresSafeArea())
