@@ -434,4 +434,6 @@ final class BuildSettings: NSObject {
     static let qrLoginEnabledFromAuthenticated = false
     /// Flag indicating whether displaying QRs enabled for the QR login screens
     static let qrLoginEnableDisplayingQRs = false
+    
+    static let rendezvousServerBaseURL = URL(string: "https://rendezvous.lab.element.dev/")!
 }
