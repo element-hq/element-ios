@@ -46,7 +46,7 @@ struct UserSessionCardViewData {
             return Asset.Images.userSessionVerified.name
         case .unverified:
             return Asset.Images.userSessionUnverified.name
-        case.unknown:
+        case .unknown:
             return Asset.Images.userSessionVerificationUnknown.name
         }
     }
@@ -58,8 +58,8 @@ struct UserSessionCardViewData {
             return VectorL10n.userSessionVerified
         case .unverified:
             return VectorL10n.userSessionUnverified
-        case.unknown:
-            return VectorL10n.userSessionUnverified; #warning("Add a string here?")
+        case .unknown:
+            return VectorL10n.userSessionVerificationUnknown
         }
     }
     
@@ -70,7 +70,7 @@ struct UserSessionCardViewData {
             return \.accent
         case .unverified:
             return \.alert
-        case.unknown:
+        case .unknown:
             return \.secondaryContent
         }
     }
@@ -82,8 +82,8 @@ struct UserSessionCardViewData {
             return VectorL10n.userSessionVerifiedAdditionalInfo
         case .unverified:
             return VectorL10n.userSessionUnverifiedAdditionalInfo
-        case.unknown:
-            return VectorL10n.userSessionUnverifiedAdditionalInfo; #warning("Add a string here?")
+        case .unknown:
+            return VectorL10n.userSessionUnverifiedAdditionalInfo
         }
     }
     

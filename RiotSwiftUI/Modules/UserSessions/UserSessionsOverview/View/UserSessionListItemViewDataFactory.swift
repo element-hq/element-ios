@@ -57,7 +57,7 @@ struct UserSessionListItemViewDataFactory {
         case .unverified:
             sessionStatusText = VectorL10n.userSessionUnverifiedShort
         case .unknown:
-            sessionStatusText = VectorL10n.userSessionUnverifiedShort; #warning("Add a string for this.")
+            sessionStatusText = VectorL10n.userSessionVerificationUnknownShort
         }
         
         var lastActivityDateString: String?
