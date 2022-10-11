@@ -2518,3 +2518,50 @@
 "all_chats_user_menu_accessibility_label" = "Menu utente";
 "settings_labs_enable_new_client_info_feature" = "Registra il nome, la versione e l'url del client per riconoscere le sessioni più facilmente nel gestore di sessioni";
 "settings_labs_enable_new_session_manager" = "Nuovo gestore di sessioni";
+"device_type_name_unknown" = "Sconosciuto";
+"device_type_name_mobile" = "Mobile";
+"device_type_name_web" = "Web";
+"device_type_name_desktop" = "Desktop";
+"user_inactive_session_item" = "Inattiva da 90+ giorni";
+"user_inactive_session_item_with_date" = "Inattiva da 90+ giorni (%@)";
+"user_other_session_unverified_current_session_details" = "%@ · La sessione attuale";
+"user_other_session_unverified_sessions_header_subtitle" = "Verifica le tue sessioni per avere conversazioni più sicure o disconnetti quelle che non riconosci o che non usi più.";
+"user_other_session_security_recommendation_title" = "Consiglio di sicurezza";
+"user_sessions_overview_link_device" = "Collega un dispositivo";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"sign_out_confirmation_message" = "Vuoi davvero disconnetterti?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Disconnetti";
+"manage_session_rename" = "Rinomina sessione";
+"authentication_qr_login_failure_retry" = "Riprova";
+"authentication_qr_login_failure_request_timed_out" = "Il collegamento non è stato completato nel tempo previsto.";
+"authentication_qr_login_failure_request_denied" = "La richiesta è stata negata sull'altro dispositivo.";
+"authentication_qr_login_failure_invalid_qr" = "Codice QR non valido.";
+"authentication_qr_login_failure_title" = "Collegamento fallito";
+"authentication_qr_login_loading_signed_in" = "Ora hai fatto l'accesso sull'altro dispositivo.";
+"authentication_qr_login_loading_waiting_signin" = "In attesa che il dispositivo acceda.";
+"authentication_qr_login_loading_connecting_device" = "Connessione al dispositivo";
+"authentication_qr_login_confirm_alert" = "Assicurati di conoscere l'origine di questo codice. Collegando i dispositivi, fornirai a qualcuno l'accesso totale al tuo account.";
+"authentication_qr_login_confirm_subtitle" = "Conferma che il codice sottostante corrisponda nell'altro dispositivo:";
+"authentication_qr_login_confirm_title" = "Connessione sicura stabilita";
+"authentication_qr_login_scan_subtitle" = "Posiziona il codice QR nel riquadro sotto";
+"authentication_qr_login_scan_title" = "Scansiona codice QR";
+"authentication_qr_login_display_step2" = "Seleziona ‘Accedi con codice QR’";
+"authentication_qr_login_display_step1" = "Apri Element sull'altro dispositivo";
+"authentication_qr_login_display_subtitle" = "Scansiona il codice QR sottostante con il dispositivo che è disconnesso.";
+"authentication_qr_login_display_title" = "Collega un dispositivo";
+"authentication_qr_login_start_display_qr" = "Mostra codice QR in questo dispositivo";
+"authentication_qr_login_start_need_alternative" = "Serve un metodo alternativo?";
+"authentication_qr_login_start_step4" = "Seleziona ‘Mostra codice QR in questo dispositivo’";
+"authentication_qr_login_start_step3" = "Seleziona ‘Collega un dispositivo’";
+"authentication_qr_login_start_step2" = "Vai in Impostazioni -> Sicurezza & Privacy";
+"authentication_qr_login_start_step1" = "Apri Element sull'altro dispositivo";
+"authentication_qr_login_start_subtitle" = "Usa la fotocamera di questo dispositivo per scansionare il codice QR mostrato nell'altro dispositivo:";
+"authentication_qr_login_start_title" = "Scansiona codice QR";
+"authentication_login_with_qr" = "Accedi con codice QR";
