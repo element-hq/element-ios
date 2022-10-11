@@ -2437,6 +2437,11 @@ To enable access, tap Settings> Location and select Always";
 "user_other_session_filter_menu_verified" =  "Verified";
 "user_other_session_filter_menu_unverified" =  "Unverified";
 "user_other_session_filter_menu_inactive" =  "Inactive";
+
+"user_other_session_no_inactive_sessions" = "No inactive sessions found.";
+"user_other_session_no_verified_sessions" = "No verified sessions found.";
+"user_other_session_no_unverified_sessions" = "No unverified sessions found.";
+"user_other_session_clear_filter" = "Clear filter";
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
 

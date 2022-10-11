@@ -46,9 +46,11 @@ enum UserOtherSessionsSection: Hashable, Identifiable {
     }
 
     case sessionItems(header: UserOtherSessionsHeaderViewData, items: [UserSessionListItemViewData])
+    case emptySessionItems(header: UserOtherSessionsHeaderViewData, title: String)
 }
 
 enum UserOtherSessionsViewAction {
     case userOtherSessionSelected(sessionId: String)
     case filerWasChanged
+    case clearFilter
 }

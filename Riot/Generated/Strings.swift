@@ -8623,6 +8623,10 @@ public class VectorL10n: NSObject {
   public static func userInactiveSessionItemWithDate(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "user_inactive_session_item_with_date", p1)
   }
+  /// Clear filter
+  public static var userOtherSessionClearFilter: String { 
+    return VectorL10n.tr("Vector", "user_other_session_clear_filter") 
+  }
   /// All sessions
   public static var userOtherSessionFilterMenuAll: String { 
     return VectorL10n.tr("Vector", "user_other_session_filter_menu_all") 
@@ -8638,6 +8642,18 @@ public class VectorL10n: NSObject {
   /// Verified
   public static var userOtherSessionFilterMenuVerified: String { 
     return VectorL10n.tr("Vector", "user_other_session_filter_menu_verified") 
+  }
+  /// No inactive sessions found.
+  public static var userOtherSessionNoInactiveSessions: String { 
+    return VectorL10n.tr("Vector", "user_other_session_no_inactive_sessions") 
+  }
+  /// No unverified sessions found.
+  public static var userOtherSessionNoUnverifiedSessions: String { 
+    return VectorL10n.tr("Vector", "user_other_session_no_unverified_sessions") 
+  }
+  /// No verified sessions found.
+  public static var userOtherSessionNoVerifiedSessions: String { 
+    return VectorL10n.tr("Vector", "user_other_session_no_verified_sessions") 
   }
   /// Security recommendation
   public static var userOtherSessionSecurityRecommendationTitle: String { 

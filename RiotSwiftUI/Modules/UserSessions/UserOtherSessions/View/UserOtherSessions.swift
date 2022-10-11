@@ -27,6 +27,8 @@ struct UserOtherSessions: View {
                 switch section {
                 case let .sessionItems(header: header, items: items):
                     createSessionItemsSection(header: header, items: items)
+                case let .emptySessionItems(header: header, title: title):
+                    createEmptySessionsItemsSection(header: header, title: title)
                 }
             }
         }
@@ -63,10 +65,42 @@ struct UserOtherSessions: View {
             }
             .background(theme.colors.background)
         } header: {
-            UserOtherSessionsHeaderView(viewData: header)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 24.0)
+            headerView(header: header)
         }
+    }
+    
+    private func createEmptySessionsItemsSection(header: UserOtherSessionsHeaderViewData, title: String) -> some View {
+        SwiftUI.Section {
+            VStack {
+                Text(title)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(theme.colors.primaryContent)
+                    .padding(.bottom, 20)
+                Button {
+                    viewModel.send(viewAction: .clearFilter)
+                } label: {
+                    VStack(spacing: 0) {
+                        SeparatorLine()
+                        Text(VectorL10n.userOtherSessionClearFilter)
+                            .font(theme.fonts.body)
+                            .foregroundColor(theme.colors.accent)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.vertical, 11)
+                        SeparatorLine()
+                    }
+                    .background(theme.colors.background)
+                }
+            }
+            
+        } header: {
+            headerView(header: header)
+        }
+    }
+    
+    private func headerView(header: UserOtherSessionsHeaderViewData) -> some View {
+        UserOtherSessionsHeaderView(viewData: header)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 24.0)
     }
 }
 

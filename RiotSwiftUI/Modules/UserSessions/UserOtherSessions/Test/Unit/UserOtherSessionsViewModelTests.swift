@@ -35,16 +35,18 @@ class UserOtherSessionsViewModelTests: XCTestCase {
     }
     
     func test_whenModelCreated_withInactiveFilter_viewStateIsCorrect() {
-        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"), createUserSessionInfo(sessionId: "session 2")]
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1", isActive: false),
+                            createUserSessionInfo(sessionId: "session 2", isActive: false)]
         let sut = UserOtherSessionsViewModel(sessionInfos: sessionInfos,
                                              filter: .inactive,
                                              title: "Title")
         
-        let expectedHeader = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
+        let expectedHeader = UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuInactive,
                                                              subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
                                                              iconName: Asset.Images.userOtherSessionsInactive.name)
         let expectedItems = sessionInfos.filter { !$0.isActive }.asViewData()
-        let expectedState = UserOtherSessionsViewState(title: "Title",
+        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .inactive),
+                                                       title: "Title",
                                                        sections: [.sessionItems(header: expectedHeader, items: expectedItems)])
         XCTAssertEqual(sut.state, expectedState)
     }
@@ -59,12 +61,15 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                              subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
                                                              iconName: nil)
         let expectedItems = sessionInfos.filter { !$0.isCurrent }.asViewData()
-        let expectedState = UserOtherSessionsViewState(title: "Title",
+        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .all),
+                                                       title: "Title",
                                                        sections: [.sessionItems(header: expectedHeader, items: expectedItems)])
         XCTAssertEqual(sut.state, expectedState)
     }
     
-    private func createUserSessionInfo(sessionId: String) -> UserSessionInfo {
+    private func createUserSessionInfo(sessionId: String,
+                                       isActive: Bool = true,
+                                       isCurrent: Bool = false) -> UserSessionInfo {
         UserSessionInfo(id: sessionId,
                         name: "iOS",
                         deviceType: .mobile,
@@ -79,7 +84,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                         lastSeenIPLocation: nil,
                         clientName: nil,
                         clientVersion: nil,
-                        isActive: true,
-                        isCurrent: true)
+                        isActive: isActive,
+                        isCurrent: isCurrent)
     }
 }
