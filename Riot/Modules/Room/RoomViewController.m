@@ -4615,6 +4615,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
     
     if ([self inputToolbarConformsToHtmlToolbarViewProtocol]) {
+        // TODO: reimplemented the following line when the cancel UI button is implemented in the WYSIWYG toolbar
         self.textMessageBeforeEditing = self.inputToolbarView.attributedTextMessage;
         
         MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *htmlInputToolBarView = (MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *) self.inputToolbarView;
