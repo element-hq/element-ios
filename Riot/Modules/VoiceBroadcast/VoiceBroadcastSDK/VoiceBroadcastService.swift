@@ -266,13 +266,13 @@ extension MXRoom {
      - returns: a `MXHTTPOperation` instance.
      */
     @nonobjc @discardableResult func sendChunkOfVoiceBroadcast(localURL: URL,
-                                                        voiceBroadcastInfoEventId: String,
-                                                        mimeType: String?,
-                                                        duration: UInt,
-                                                        samples: [Float]?,
-                                                        threadId: String? = nil,
-                                                        success: @escaping ((String?) -> Void),
-                                                        failure: @escaping ((Error?) -> Void)) -> MXHTTPOperation? {
+                                                               voiceBroadcastInfoEventId: String,
+                                                               mimeType: String?,
+                                                               duration: UInt,
+                                                               samples: [Float]?,
+                                                               threadId: String? = nil,
+                                                               success: @escaping ((String?) -> Void),
+                                                               failure: @escaping ((Error?) -> Void)) -> MXHTTPOperation? {
         let boxedSamples = samples?.compactMap { NSNumber(value: $0) }
         
         
