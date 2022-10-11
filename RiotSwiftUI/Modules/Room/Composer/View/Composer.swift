@@ -22,7 +22,7 @@ struct Composer: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     
-    @ObservedObject var viewModel: ComposerViewModel.Context
+    @ObservedObject var viewModel: ComposerViewModelType.Context
     @ObservedObject var wysiwygViewModel: WysiwygComposerViewModel
     
     let sendMessageAction: (WysiwygComposerContent) -> Void
@@ -108,10 +108,10 @@ struct Composer: View {
                         wysiwygViewModel.clearContent()
                     } label: {
                         if viewModel.viewState.sendMode == .edit {
-                            Image(Asset.Images.editIcon.name)
+                            Image(Asset.Images.saveIcon.name)
                                 .foregroundColor(theme.colors.tertiaryContent)
                         } else {
-                            Image(Asset.Images.saveIcon.name)
+                            Image(Asset.Images.sendIcon.name)
                                 .foregroundColor(theme.colors.tertiaryContent)
                         }
                     }
