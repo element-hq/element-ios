@@ -19,14 +19,21 @@ import SwiftUI
 import WysiwygComposer
 
 enum MockComposerScreenState: MockScreenState, CaseIterable {
-    case composer
+    case send
+    case edit
+    case reply
     
     var screenType: Any.Type {
         Composer.self
     }
     
     var screenView: ([Any], AnyView) {
-        let viewModel = ComposerViewModel(initialViewState: ComposerViewState())
+        let viewModel: ComposerViewModel
+        switch self {
+        case .send: viewModel = ComposerViewModel(initialViewState: ComposerViewState())
+        case .edit: viewModel = ComposerViewModel(initialViewState: ComposerViewState(sendMode: .edit))
+        case .reply: viewModel = ComposerViewModel(initialViewState: ComposerViewState(eventSenderDisplayName: "TestUser", sendMode: .reply))
+        }
         let wysiwygviewModel = WysiwygComposerViewModel(minHeight: 20, maxHeight: 360)
         
         return (
