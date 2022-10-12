@@ -81,7 +81,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         case .unverified:
             return sessionInfos.filter { $0.verificationState != .verified }
         case .verified:
-            return sessionInfos.filter {$0.verificationState == .verified}
+            return sessionInfos.filter { $0.verificationState == .verified }
         }
     }
     
