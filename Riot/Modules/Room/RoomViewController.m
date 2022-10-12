@@ -2308,6 +2308,35 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self showCameraControllerAnimated:YES];
         }]];
     }
+    if (BuildSettings.voiceBroadcastEnabled && !self.isNewDirectChat)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLive.image andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            
+            // TODO: Init and start voice broadcast
+            MXSession* session = self.roomDataSource.mxSession;
+            [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
+                if (voiceBroadcastService) {
+                    if ([[voiceBroadcastService getState] isEqualToString:@"stopped"]) {
+                        [session.voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
+                        
+                        } failure:^(NSError * _Nonnull error) {
+                            
+                        }];
+                    } else {
+                        [session.voiceBroadcastService stopVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
+                        
+                        } failure:^(NSError * _Nonnull error) {
+                            
+                        }];
+                    }
+                }
+            }];            
+        }]];
+    }
     roomInputView.actionsBar.actionItems = actionItems;
 }
 
