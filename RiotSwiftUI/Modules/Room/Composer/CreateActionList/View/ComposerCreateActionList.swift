@@ -17,7 +17,14 @@
 import SwiftUI
 
 struct ComposerCreateActionList: View {
+    
+    // MARK: - Properties
+    
+    // MARK: Private
+    
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    // MARK: Public
     
     @ObservedObject var viewModel: ComposerCreateActionListViewModel.Context
     

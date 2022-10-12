@@ -73,4 +73,18 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
             XCTAssertFalse(linkDeviceButton.exists)
         }
     }
+    
+    func testWhenMoreThan5OtherSessionsThenViewAllButtonVisible() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.currentSessionUnverified.title)
+        app.swipeUp()
+
+        XCTAssertTrue(app.buttons["ViewAllButton"].exists)
+    }
+    
+    func testWhenLessThan5OtherSessionsThenViewAllButtonHidden() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.onlyUnverifiedSessions.title)
+        app.swipeUp()
+
+        XCTAssertFalse(app.buttons["ViewAllButton"].exists)
+    }
 }

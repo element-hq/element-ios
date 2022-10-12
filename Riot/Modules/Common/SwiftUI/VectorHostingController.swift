@@ -16,6 +16,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 /**
  UIHostingController that applies some app-level specific configuration
@@ -25,7 +26,9 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     // MARK: Private
     
+    private let forceZeroSafeAreaInsets: Bool
     private var theme: Theme
+    private var heightSubject = CurrentValueSubject<CGFloat, Never>(0)
     
     // MARK: Public
 
@@ -40,8 +43,12 @@ class VectorHostingController: UIHostingController<AnyView> {
     var enableNavigationBarScrollEdgeAppearance = false
     /// When non-nil, the style will be applied to the status bar.
     var statusBarStyle: UIStatusBarStyle?
-
-    private let forceZeroSafeAreaInsets: Bool
+    /// Whether or not to publish when the height of the view changes
+    var publishHeightChanges: Bool = false
+    /// The publisher to subscribe to if `publishHeightChanges` is enabled.vi
+    var heightPublisher: AnyPublisher<CGFloat, Never> {
+        return heightSubject.eraseToAnyPublisher()
+    }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         statusBarStyle ?? super.preferredStatusBarStyle
@@ -88,9 +95,13 @@ class VectorHostingController: UIHostingController<AnyView> {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        if let navigationController = navigationController, navigationController.isNavigationBarHidden != isNavigationBarHidden {
-            navigationController.isNavigationBarHidden = isNavigationBarHidden
-        }
+        guard
+            let navigationController = navigationController,
+            navigationController.topViewController == self,
+            navigationController.isNavigationBarHidden != isNavigationBarHidden
+        else { return }
+        
+        navigationController.isNavigationBarHidden = isNavigationBarHidden
     }
     
     override func viewDidLayoutSubviews() {
@@ -99,6 +110,10 @@ class VectorHostingController: UIHostingController<AnyView> {
         // Fixes weird iOS 15 bug where the view no longer grows its enclosing host
         if #available(iOS 15.0, *) {
             self.view.invalidateIntrinsicContentSize()
+        }
+        if publishHeightChanges {
+            let height = sizeThatFits(in: CGSize(width: self.view.frame.width, height: UIView.layoutFittingExpandedSize.height)).height
+            heightSubject.send(height)
         }
     }
 

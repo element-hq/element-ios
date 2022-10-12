@@ -72,16 +72,15 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         case .inactive:
             return sessionInfos.filter { !$0.isActive }
         case .unverified:
-            return sessionInfos.filter { !$0.isVerified }
+            return sessionInfos.filter { $0.verificationState != .verified }
         }
     }
     
     private func createHeaderData(filter: OtherUserSessionsFilter) -> UserOtherSessionsHeaderViewData {
         switch filter {
         case .all:
-            // TODO:
             return UserOtherSessionsHeaderViewData(title: nil,
-                                                   subtitle: "",
+                                                   subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
                                                    iconName: nil)
         case .inactive:
             return UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,

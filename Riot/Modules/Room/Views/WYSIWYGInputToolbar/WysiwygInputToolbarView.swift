@@ -22,31 +22,37 @@ import Combine
 import UIKit
 import CoreGraphics
 
-class SelfSizingHostingController<Content>: UIHostingController<Content> where Content: View {
-
-    var heightSubject = CurrentValueSubject<CGFloat, Never>(0)
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        let height = sizeThatFits(in: CGSize(width: self.view.frame.width, height: 800)).height
-        heightSubject.send(height)
-    }
-}
-
 @objc protocol HtmlRoomInputToolbarViewProtocol: RoomInputToolbarViewProtocol {
     @objc var htmlContent: String { get set }
 }
 
+// The toolbar for editing with rich text
+
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInputToolbarViewProtocol {
+    
+    
+    // MARK: - Properties
+    
+    // MARK: Private
+    private var cancellables = Set<AnyCancellable>()
+    private var heightConstraint: NSLayoutConstraint!
+    private var hostingViewController: VectorHostingController!
+    private var wysiwygViewModel: WysiwygComposerViewModel!
+    private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState())
+    
+    // MARK: Public
+    
+    /// The current html content of the composer
     var htmlContent: String {
         get {
-            self.hostingViewController.rootView.wysiwygViewModel.content.html
+            wysiwygViewModel.content.html
         }
         set {
-            self.hostingViewController.rootView.wysiwygViewModel.setHtmlContent(newValue)
+            wysiwygViewModel.setHtmlContent(newValue)
         }
     }
     
+    /// The display name to show when in edit/reply
     var eventSenderDisplayName: String! {
         get {
             viewModel.eventSenderDisplayName
@@ -56,6 +62,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }
     }
     
+    /// Whether the composer is in send, reply or edit mode.
     var sendMode: RoomInputToolbarViewSendMode {
         get {
             viewModel.sendMode.legacySendMode
@@ -65,6 +72,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }
     }
     
+    // MARK: - Setup
+    
     override class func instantiate() -> MXKRoomInputToolbarView! {
         return loadFromNib()
     }
@@ -72,12 +81,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private weak var toolbarViewDelegate: RoomInputToolbarViewDelegate? {
         return (delegate as? RoomInputToolbarViewDelegate) ?? nil
     }
-    
-    private var cancellables = Set<AnyCancellable>()
-    private var heightConstraint: NSLayoutConstraint!
-    private var hostingViewController: SelfSizingHostingController<Composer>!
-    private var viewModel: ComposerViewModelProtocol =  ComposerViewModel(initialViewState: ComposerViewState())
-    private static let minToolbarHeight: CGFloat = 100
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -100,8 +103,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             self.showSendMediaActions()
         })
         
-        hostingViewController = SelfSizingHostingController(rootView: composer)
-        let height = hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: 800)).height
+        hostingViewController = VectorHostingController(rootView: composer)
+        hostingViewController.publishHeightChanges = true
+        let height = hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: UIView.layoutFittingExpandedSize.height)).height
         let subView: UIView = hostingViewController.view
         self.addSubview(subView)
         
@@ -115,42 +119,35 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             subView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
         cancellables = [
-            hostingViewController.heightSubject
+            hostingViewController.heightPublisher
                 .removeDuplicates()
                 .sink(receiveValue: { [weak self] idealHeight in
                     guard let self = self else { return }
-                    let h = self.hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: 800)).height
-                    self.updateToolbarHeight(wysiwygHeight: h)
+                    self.updateToolbarHeight(wysiwygHeight: idealHeight)
                 })
         ]
         
         update(theme: ThemeService.shared().theme)
         registerThemeServiceDidChangeThemeNotification()
     }
-
+    
     override func customizeRendering() {
         super.customizeRendering()
         self.backgroundColor = .clear
     }
     
-    func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {
-        //TODO embed the voice messages UI
-    }
+    // MARK: - Private
     
-    func toolbarHeight() -> CGFloat {
-        return heightConstraint.constant
-    }
-    
-   private func updateToolbarHeight(wysiwygHeight: CGFloat) {
-       self.heightConstraint.constant = wysiwygHeight
-       toolbarViewDelegate?.roomInputToolbarView?(self, heightDidChanged: wysiwygHeight, completion: nil)
+    private func updateToolbarHeight(wysiwygHeight: CGFloat) {
+        self.heightConstraint.constant = wysiwygHeight
+        toolbarViewDelegate?.roomInputToolbarView?(self, heightDidChanged: wysiwygHeight, completion: nil)
     }
     
     private func sendWysiwygMessage(content: WysiwygComposerContent) {
         delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
     }
     
-
+    
     private func showSendMediaActions() {
         delegate?.roomInputToolbarViewShowSendMediaActions?(self)
     }
@@ -166,7 +163,21 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func update(theme: Theme) {
         hostingViewController.view.backgroundColor = theme.colors.background
     }
+    
+    // MARK: - RoomInputToolbarViewProtocol
+    
+    /// Add the voice message toolbar to the composer
+    /// - Parameter voiceMessageToolbarView: the voice message toolbar UIView
+    func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {
+        // TODO embed the voice messages UI
+    }
+    
+    func toolbarHeight() -> CGFloat {
+        return heightConstraint.constant
+    }
 }
+
+// MARK: - LegacySendModeAdapter
 
 fileprivate extension ComposerSendMode {
     init(from sendMode: RoomInputToolbarViewSendMode) {
