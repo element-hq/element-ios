@@ -51,6 +51,6 @@ enum UserOtherSessionsSection: Hashable, Identifiable {
 
 enum UserOtherSessionsViewAction {
     case userOtherSessionSelected(sessionId: String)
-    case filerWasChanged
+    case filterWasChanged
     case clearFilter
 }
