@@ -26,9 +26,9 @@ class AuthenticationQRLoginConfirmUITests: MockScreenTestCase {
         XCTAssertTrue(app.staticTexts["confirmationCodeLabel"].exists)
         XCTAssertTrue(app.staticTexts["alertText"].exists)
 
-        let confirmButton = app.buttons["confirmButton"]
-        XCTAssertTrue(confirmButton.exists)
-        XCTAssertTrue(confirmButton.isEnabled)
+//        let confirmButton = app.buttons["confirmButton"]
+//        XCTAssertTrue(confirmButton.exists)
+//        XCTAssertTrue(confirmButton.isEnabled)
 
         let cancelButton = app.buttons["cancelButton"]
         XCTAssertTrue(cancelButton.exists)
