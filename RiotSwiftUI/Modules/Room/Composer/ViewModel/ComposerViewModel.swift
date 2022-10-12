@@ -18,13 +18,13 @@ import SwiftUI
 
 typealias ComposerViewModelType = StateStoreViewModel<ComposerViewState, ComposerViewAction>
 
-class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol {
-    
+final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol {
     // MARK: - Properties
 
     // MARK: Private
 
     // MARK: Public
+    
     var callback: ((ComposerViewModelResult) -> Void)?
     
     var sendMode: ComposerSendMode {

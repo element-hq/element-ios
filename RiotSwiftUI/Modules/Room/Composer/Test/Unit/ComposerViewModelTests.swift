@@ -18,7 +18,7 @@
 import SwiftUI
 import XCTest
 
-class ComposerViewModelTests: XCTestCase {
+final class ComposerViewModelTests: XCTestCase {
     var viewModel: ComposerViewModel!
     var context: ComposerViewModel.Context!
     
