@@ -91,8 +91,6 @@ struct Composer: View {
                         }
                         .accessibilityIdentifier("cancelButton")
                     }
-                    .accessibilityElement(children: .contain)
-                    .accessibilityIdentifier("contextView")
                     .padding(.top, 8)
                     .padding(.horizontal, horizontalPadding)
                 }
