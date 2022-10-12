@@ -2439,10 +2439,10 @@ To enable access, tap Settings> Location and select Always";
 "user_other_session_unverified_current_session_details" =  "%@ · Your current session";
 "user_other_session_verified_sessions_header_subtitle" = "For best security, sign out from any session that you don’t recognize or use anymore.";
 
-"user_other_session_filter_menu_all" =  "All sessions";
-"user_other_session_filter_menu_verified" =  "Verified";
-"user_other_session_filter_menu_unverified" =  "Unverified";
-"user_other_session_filter_menu_inactive" =  "Inactive";
+"user_other_session_filter_menu_all" = "All sessions";
+"user_other_session_filter_menu_verified" = "Verified";
+"user_other_session_filter_menu_unverified" = "Unverified";
+"user_other_session_filter_menu_inactive" = "Inactive";
 
 "user_other_session_no_inactive_sessions" = "No inactive sessions found.";
 "user_other_session_no_verified_sessions" = "No verified sessions found.";
