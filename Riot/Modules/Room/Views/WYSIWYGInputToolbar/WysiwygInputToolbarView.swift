@@ -37,8 +37,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var cancellables = Set<AnyCancellable>()
     private var heightConstraint: NSLayoutConstraint!
     private var hostingViewController: VectorHostingController!
-    private var wysiwygViewModel: WysiwygComposerViewModel!
-    private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState())
+    private var wysiwygViewModel = WysiwygComposerViewModel()
+    private var viewModel: ComposerViewModelProtocol! = ComposerViewModel(initialViewState: ComposerViewState())
     
     // MARK: Public
     
@@ -84,6 +84,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         viewModel.callback = { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -92,7 +93,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             }
         }
         
-        wysiwygViewModel = WysiwygComposerViewModel()
         let composer = Composer(viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
             sendMessageAction: { [weak self] content in
