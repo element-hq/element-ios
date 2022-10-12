@@ -54,7 +54,6 @@
 @property(nonatomic,getter=isHidden) BOOL hidden;
 
 @property (nonatomic, readwrite) OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter;
-@property (nonatomic) AllChatsOnboardingCoordinatorBridgePresenter *allChatsOnboardingCoordinatorBridgePresenter;
 
 // Tell whether the onboarding screen is preparing.
 @property (nonatomic, readwrite) BOOL isOnboardingCoordinatorPreparing;
@@ -156,8 +155,6 @@
         }];
         [self userInterfaceThemeDidChange];
     }
-    
-    self.tabBar.hidden = BuildSettings.newAppLayoutEnabled;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -214,11 +211,6 @@
         }
         
         [[AppDelegate theDelegate] checkAppVersion];
-
-        if (BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed)
-        {
-            [self showAllChatsOnboardingScreen];
-        }
     }
 }
 
@@ -446,24 +438,6 @@
     [self refreshTabBarBadges];
 }
 
-- (void)showAllChatsOnboardingScreen
-{
-    self.allChatsOnboardingCoordinatorBridgePresenter = [AllChatsOnboardingCoordinatorBridgePresenter new];
-    MXWeakify(self);
-    self.allChatsOnboardingCoordinatorBridgePresenter.completion = ^{
-        RiotSettings.shared.allChatsOnboardingHasBeenDisplayed = YES;
-        
-        MXStrongifyAndReturnIfNil(self);
-        
-        MXWeakify(self);
-        [self.allChatsOnboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-            MXStrongifyAndReturnIfNil(self);
-            self.allChatsOnboardingCoordinatorBridgePresenter = nil;
-        }];
-    };
-    [self.allChatsOnboardingCoordinatorBridgePresenter presentFrom:self animated:YES];
-}
-
 // TODO: Manage the onboarding coordinator at the AppCoordinator level
 - (void)presentOnboardingFlow
 {
@@ -634,26 +608,20 @@
 {
     if (roomParentId) {
         NSString *parentName = [mxSession roomSummaryWithRoomId:roomParentId].displayname;
-        if (!BuildSettings.newAppLayoutEnabled)
-        {
-            NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
+        NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
 
-            MXSpace *firstRootAncestor = roomParentId ? [mxSession.spaceService firstRootAncestorForRoomWithId:roomParentId] : nil;
-            NSString *rootName = nil;
-            if (firstRootAncestor)
-            {
-                rootName = [mxSession roomSummaryWithRoomId:firstRootAncestor.spaceId].displayname;
-                [breadcrumbs insertObject:rootName atIndex:0];
-            }
-            titleView.breadcrumbView.breadcrumbs = breadcrumbs;
+        MXSpace *firstRootAncestor = roomParentId ? [mxSession.spaceService firstRootAncestorForRoomWithId:roomParentId] : nil;
+        NSString *rootName = nil;
+        if (firstRootAncestor)
+        {
+            rootName = [mxSession roomSummaryWithRoomId:firstRootAncestor.spaceId].displayname;
+            [breadcrumbs insertObject:rootName atIndex:0];
         }
+        titleView.breadcrumbView.breadcrumbs = breadcrumbs;
     }
     else
     {
-        if (!BuildSettings.newAppLayoutEnabled)
-        {
-            titleView.breadcrumbView.breadcrumbs = @[];
-        }
+        titleView.breadcrumbView.breadcrumbs = @[];
     }
     
     recentsDataSource.currentSpace = [mxSession.spaceService getSpaceWithId:roomParentId];
@@ -662,8 +630,6 @@
 
 - (void)updateSideMenuNotifcationIcon
 {
-    if (BuildSettings.newAppLayoutEnabled) { return; }
-    
     BOOL displayNotification = NO;
     
     for (MXRoomSummary *summary in recentsDataSource.mxSession.spaceService.rootSpaceSummaries) {
@@ -694,11 +660,8 @@
 
 -(void)setupTitleView
 {
-    if (!BuildSettings.newAppLayoutEnabled)
-    {
-        titleView = [MainTitleView new];
-        self.navigationItem.titleView = titleView;
-    }
+    titleView = [MainTitleView new];
+    self.navigationItem.titleView = titleView;
 }
 
 -(void)setTitleLabelText:(NSString *)text
