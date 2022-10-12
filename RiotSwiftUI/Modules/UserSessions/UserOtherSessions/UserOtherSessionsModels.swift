@@ -31,8 +31,13 @@ enum UserOtherSessionsViewModelResult: Equatable {
 // MARK: View
 
 struct UserOtherSessionsViewState: BindableState, Equatable {
+    var bindings: UserOtherSessionsBindings
     let title: String
     var sections: [UserOtherSessionsSection]
+}
+
+struct UserOtherSessionsBindings: Equatable {
+    var filter: UserOtherSessionsFilter
 }
 
 enum UserOtherSessionsSection: Hashable, Identifiable {
@@ -41,8 +46,11 @@ enum UserOtherSessionsSection: Hashable, Identifiable {
     }
 
     case sessionItems(header: UserOtherSessionsHeaderViewData, items: [UserSessionListItemViewData])
+    case emptySessionItems(header: UserOtherSessionsHeaderViewData, title: String)
 }
 
 enum UserOtherSessionsViewAction {
     case userOtherSessionSelected(sessionId: String)
+    case filterWasChanged
+    case clearFilter
 }

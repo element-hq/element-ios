@@ -23,14 +23,14 @@ enum UserSessionsOverviewCoordinatorResult {
     case renameSession(UserSessionInfo)
     case logoutOfSession(UserSessionInfo)
     case openSessionOverview(sessionInfo: UserSessionInfo)
-    case openOtherSessions(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter)
+    case openOtherSessions(sessionInfos: [UserSessionInfo], filter: UserOtherSessionsFilter)
     case linkDevice
 }
 
 // MARK: View model
 
 enum UserSessionsOverviewViewModelResult: Equatable {
-    case showOtherSessions(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter)
+    case showOtherSessions(sessionInfos: [UserSessionInfo], filter: UserOtherSessionsFilter)
     case verifyCurrentSession
     case renameSession(UserSessionInfo)
     case logoutOfSession(UserSessionInfo)

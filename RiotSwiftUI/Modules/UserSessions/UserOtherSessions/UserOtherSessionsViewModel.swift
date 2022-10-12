@@ -18,22 +18,18 @@ import SwiftUI
 
 typealias UserOtherSessionsViewModelType = StateStoreViewModel<UserOtherSessionsViewState, UserOtherSessionsViewAction>
 
-enum OtherUserSessionsFilter {
-    case all
-    case inactive
-    case unverified
-}
-
 class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessionsViewModelProtocol {
     var completion: ((UserOtherSessionsViewModelResult) -> Void)?
     private let sessionInfos: [UserSessionInfo]
     
     init(sessionInfos: [UserSessionInfo],
-         filter: OtherUserSessionsFilter,
+         filter: UserOtherSessionsFilter,
          title: String) {
         self.sessionInfos = sessionInfos
-        super.init(initialViewState: UserOtherSessionsViewState(title: title, sections: []))
-        updateViewState(sessionInfos: sessionInfos, filter: filter)
+        super.init(initialViewState: UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: filter),
+                                                                title: title,
+                                                                sections: []))
+        updateViewState()
     }
     
     // MARK: - Public
@@ -46,18 +42,29 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                 return
             }
             completion?(.showUserSessionOverview(sessionInfo: session))
+        case .filterWasChanged:
+            updateViewState()
+        case .clearFilter:
+            state.bindings.filter = .all
+            updateViewState()
         }
     }
     
     // MARK: - Private
     
-    private func updateViewState(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter) {
-        let sectionItems = createSectionItems(sessionInfos: sessionInfos, filter: filter)
-        let sectionHeader = createHeaderData(filter: filter)
-        state.sections = [.sessionItems(header: sectionHeader, items: sectionItems)]
+    private func updateViewState() {
+        let sectionItems = createSectionItems(sessionInfos: sessionInfos, filter: state.bindings.filter)
+        let sectionHeader = createHeaderData(filter: state.bindings.filter)
+        if sectionItems.isEmpty {
+            state.sections = [.emptySessionItems(header: sectionHeader,
+                                                 title: noSessionsTitle(filter: state.bindings.filter))]
+        } else {
+            state.sections = [.sessionItems(header: sectionHeader,
+                                            items: sectionItems)]
+        }
     }
     
-    private func createSectionItems(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter) -> [UserSessionListItemViewData] {
+    private func createSectionItems(sessionInfos: [UserSessionInfo], filter: UserOtherSessionsFilter) -> [UserSessionListItemViewData] {
         filterSessions(sessionInfos: sessionInfos, by: filter)
             .map {
                 UserSessionListItemViewDataFactory().create(from: $0,
@@ -65,7 +72,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
             }
     }
     
-    private func filterSessions(sessionInfos: [UserSessionInfo], by filter: OtherUserSessionsFilter) -> [UserSessionInfo] {
+    private func filterSessions(sessionInfos: [UserSessionInfo], by filter: UserOtherSessionsFilter) -> [UserSessionInfo] {
         switch filter {
         case .all:
             return sessionInfos.filter { !$0.isCurrent }
@@ -73,23 +80,43 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
             return sessionInfos.filter { !$0.isActive }
         case .unverified:
             return sessionInfos.filter { $0.verificationState != .verified }
+        case .verified:
+            return sessionInfos.filter { $0.verificationState == .verified }
         }
     }
     
-    private func createHeaderData(filter: OtherUserSessionsFilter) -> UserOtherSessionsHeaderViewData {
+    private func createHeaderData(filter: UserOtherSessionsFilter) -> UserOtherSessionsHeaderViewData {
         switch filter {
         case .all:
             return UserOtherSessionsHeaderViewData(title: nil,
                                                    subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
                                                    iconName: nil)
         case .inactive:
-            return UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveTitle,
+            return UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuInactive,
                                                    subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
                                                    iconName: Asset.Images.userOtherSessionsInactive.name)
         case .unverified:
-            return UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionsOverviewSecurityRecommendationsUnverifiedTitle,
+            return UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionUnverifiedShort,
                                                    subtitle: VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle,
                                                    iconName: Asset.Images.userOtherSessionsUnverified.name)
+        case .verified:
+            return UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuVerified,
+                                                   subtitle: VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle,
+                                                   iconName: Asset.Images.userOtherSessionsVerified.name)
+        }
+    }
+    
+    private func noSessionsTitle(filter: UserOtherSessionsFilter) -> String {
+        switch filter {
+        case .all:
+            assertionFailure("The view is not intended to be displayed without any session")
+            return ""
+        case .verified:
+            return VectorL10n.userOtherSessionNoVerifiedSessions
+        case .unverified:
+            return VectorL10n.userOtherSessionNoUnverifiedSessions
+        case .inactive:
+            return VectorL10n.userOtherSessionNoInactiveSessions
         }
     }
 }

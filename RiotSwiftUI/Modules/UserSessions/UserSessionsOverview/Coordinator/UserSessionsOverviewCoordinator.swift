@@ -94,7 +94,7 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         loadingIndicator = nil
     }
     
-    private func showOtherSessions(sessionInfos: [UserSessionInfo], filterBy filter: OtherUserSessionsFilter) {
+    private func showOtherSessions(sessionInfos: [UserSessionInfo], filterBy filter: UserOtherSessionsFilter) {
         completion?(.openOtherSessions(sessionInfos: sessionInfos, filter: filter))
     }
     

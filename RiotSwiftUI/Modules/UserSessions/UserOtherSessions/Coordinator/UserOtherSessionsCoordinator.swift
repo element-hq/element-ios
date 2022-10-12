@@ -19,7 +19,7 @@ import SwiftUI
 
 struct UserOtherSessionsCoordinatorParameters {
     let sessionInfos: [UserSessionInfo]
-    let filter: OtherUserSessionsFilter
+    let filter: UserOtherSessionsFilter
     let title: String
 }
 
