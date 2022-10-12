@@ -37,12 +37,12 @@ enum MockUserSessionNameScreenState: MockScreenState, CaseIterable {
         let viewModel: UserSessionNameViewModel
         switch self {
         case .initialName:
-            viewModel = UserSessionNameViewModel(sessionInfo: .mockPhone)
+            viewModel = UserSessionNameViewModel(sessionInfo: .mockPhone())
         case .empty:
-            viewModel = UserSessionNameViewModel(sessionInfo: .mockPhone)
+            viewModel = UserSessionNameViewModel(sessionInfo: .mockPhone())
             viewModel.state.bindings.sessionName = ""
         case .changedName:
-            viewModel = UserSessionNameViewModel(sessionInfo: .mockPhone)
+            viewModel = UserSessionNameViewModel(sessionInfo: .mockPhone())
             viewModel.state.bindings.sessionName = "iPhone SE"
         }
         

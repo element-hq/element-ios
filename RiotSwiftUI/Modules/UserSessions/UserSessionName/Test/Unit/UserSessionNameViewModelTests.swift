@@ -23,7 +23,7 @@ class UserSessionNameViewModelTests: XCTestCase {
     var context: UserSessionNameViewModelType.Context!
     
     override func setUpWithError() throws {
-        viewModel = UserSessionNameViewModel(sessionInfo: .mockPhone)
+        viewModel = UserSessionNameViewModel(sessionInfo: .mockPhone())
         context = viewModel.context
     }
 

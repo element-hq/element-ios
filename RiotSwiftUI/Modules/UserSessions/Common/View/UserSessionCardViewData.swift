@@ -83,7 +83,7 @@ struct UserSessionCardViewData {
         case .unverified:
             return VectorL10n.userSessionUnverifiedAdditionalInfo
         case .unknown:
-            return VectorL10n.userSessionUnverifiedAdditionalInfo
+            return VectorL10n.userSessionVerificationUnknownAdditionalInfo
         }
     }
     
