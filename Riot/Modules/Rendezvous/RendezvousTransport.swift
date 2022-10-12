@@ -62,7 +62,7 @@ class RendezvousTransport: RendezvousTransportProtocol {
                     
                     // Return empty data from here if unchanged so that the external while can continue
                     if httpURLResponse.statusCode == 404 {
-                        MXLog.warning("[RendezvousTransport] Rendezvous no longer available available")
+                        MXLog.warning("[RendezvousTransport] Rendezvous no longer available")
                         continuation.resume(returning: .failure(.rendezvousCancelled))
                     } else if httpURLResponse.statusCode == 304 {
                         MXLog.debug("[RendezvousTransport] Rendezvous unchanged")
