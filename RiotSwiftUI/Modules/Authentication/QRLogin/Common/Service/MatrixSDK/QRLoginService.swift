@@ -183,12 +183,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         self.rendezvousService = rendezvousService
         
         MXLog.debug("[QRLoginService] Joining the rendezvous at \(rendezvousURL)")
-        guard case .success = await rendezvousService.joinRendezvous() else {
-            await teardownRendezvous(state: .failed(error: .rendezvousFailed))
-            return
-        }
-        
-        guard case .success(let validationCode) = await rendezvousService.waitForInterlocutor(withPublicKey: key) else {
+        guard case .success(let validationCode) = await rendezvousService.joinRendezvous(withPublicKey: key) else {
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
@@ -218,8 +213,6 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
             return
         }
         
-        state = .waitingForRemoteSignIn
-        
         MXLog.debug("[QRLoginService] Waiting for the login token")
         guard case let .success(data) = await rendezvousService.receive(),
               let responsePayload = try? JSONDecoder().decode(QRLoginRendezvousPayload.self, from: data),
@@ -228,6 +221,8 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
             return
         }
         MXLog.debug("[QRLoginService] Received login token \(responsePayload)")
+        
+        state = .waitingForRemoteSignIn
         
         MXLog.debug("[QRLoginService] Logging in with the login token")
         guard let credentials = try? await client.login(parameters: LoginTokenParameters(token: login_token)) else {
@@ -238,9 +233,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         
         let session = sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false)
         
-        MXLog.debug("[QRLoginService] Created session")
-        
-        MXLog.debug("[QRLoginService] No E2EE support. Inform the interlocutor of finishing")
+        MXLog.debug("[QRLoginService] Session created without E2EE support. Inform the interlocutor of finishing")
         guard let requestData = try? JSONEncoder().encode(QRLoginRendezvousPayload(type: .loginFinish, outcome: .success)),
               case .success = await rendezvousService.send(data: requestData) else {
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
