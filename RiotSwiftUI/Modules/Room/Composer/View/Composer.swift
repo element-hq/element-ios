@@ -23,16 +23,9 @@ struct Composer: View {
     
     // MARK: Private
     
-    @State var focused = false
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    
-    @ObservedObject var viewModel: ComposerViewModelType.Context
-    @ObservedObject var wysiwygViewModel: WysiwygComposerViewModel
-    
-    let sendMessageAction: (WysiwygComposerContent) -> Void
-    let showSendMediaActions: () -> Void
-    
+    @State private var focused = false
     @State private var showSendButton = false
     
     private let horizontalPadding: CGFloat = 12
@@ -59,6 +52,12 @@ struct Composer: View {
     }
     
     // MARK: Public
+    
+    @ObservedObject var viewModel: ComposerViewModelType.Context
+    @ObservedObject var wysiwygViewModel: WysiwygComposerViewModel
+    
+    let sendMessageAction: (WysiwygComposerContent) -> Void
+    let showSendMediaActions: () -> Void
     
     var body: some View {
         VStack {
