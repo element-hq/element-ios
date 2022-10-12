@@ -8639,6 +8639,10 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionClearFilter: String { 
     return VectorL10n.tr("Vector", "user_other_session_clear_filter") 
   }
+  /// Filter
+  public static var userOtherSessionFilter: String { 
+    return VectorL10n.tr("Vector", "user_other_session_filter") 
+  }
   /// All sessions
   public static var userOtherSessionFilterMenuAll: String { 
     return VectorL10n.tr("Vector", "user_other_session_filter_menu_all") 

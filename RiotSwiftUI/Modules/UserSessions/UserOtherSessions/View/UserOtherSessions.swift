@@ -38,7 +38,7 @@ struct UserOtherSessions: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
-                    Picker("Filter menu", selection: $viewModel.filter) {
+                    Picker("", selection: $viewModel.filter) {
                         ForEach(UserOtherSessionsFilter.allCases) { filter in
                             Text(filter.menuLocalizedName).tag(filter)
                         }
@@ -50,6 +50,7 @@ struct UserOtherSessions: View {
                 } label: {
                     Image(viewModel.filter == .all ? Asset.Images.userOtherSessionsFilter.name : Asset.Images.userOtherSessionsFilterSelected.name)
                 }
+                .accessibilityLabel(VectorL10n.userOtherSessionFilter)
             }
         }
     }
