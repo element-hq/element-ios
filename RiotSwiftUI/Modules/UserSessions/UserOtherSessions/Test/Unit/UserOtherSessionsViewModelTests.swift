@@ -49,11 +49,26 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         XCTAssertEqual(sut.state, expectedState)
     }
     
+    func test_whenModelCreated_withAllFilter_viewStateIsCorrect() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"), createUserSessionInfo(sessionId: "session 2")]
+        let sut = UserOtherSessionsViewModel(sessionInfos: sessionInfos,
+                                             filter: .all,
+                                             title: "Title")
+        
+        let expectedHeader = UserOtherSessionsHeaderViewData(title: nil,
+                                                             subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
+                                                             iconName: nil)
+        let expectedItems = sessionInfos.filter { !$0.isCurrent }.asViewData()
+        let expectedState = UserOtherSessionsViewState(title: "Title",
+                                                       sections: [.sessionItems(header: expectedHeader, items: expectedItems)])
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
     private func createUserSessionInfo(sessionId: String) -> UserSessionInfo {
         UserSessionInfo(id: sessionId,
                         name: "iOS",
                         deviceType: .mobile,
-                        isVerified: false,
+                        verificationState: .unverified,
                         lastSeenIP: "10.0.0.10",
                         lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
                         applicationName: nil,

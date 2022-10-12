@@ -21,6 +21,8 @@ struct UserSessionsOverview: View {
     
     @ObservedObject var viewModel: UserSessionsOverviewViewModel.Context
     
+    private let maxOtherSessionsToDisplay = 5
+    
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .leading, spacing: 0) {
@@ -121,8 +123,10 @@ struct UserSessionsOverview: View {
     
     private var currentSessionMenu: some View {
         Menu {
-            Button { viewModel.send(viewAction: .renameCurrentSession) } label: {
-                Label(VectorL10n.manageSessionRename, systemImage: "pencil")
+            SwiftUI.Section {
+                Button { viewModel.send(viewAction: .renameCurrentSession) } label: {
+                    Label(VectorL10n.manageSessionRename, systemImage: "pencil")
+                }
             }
             
             if #available(iOS 15, *) {
@@ -135,17 +139,26 @@ struct UserSessionsOverview: View {
                 }
             }
         } label: {
-            Image(systemName: "ellipsis.circle")
+            Image(systemName: "ellipsis")
+                .foregroundColor(theme.colors.secondaryContent)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 12)
         }
+        .offset(x: 8) // Re-align the symbol after applying padding.
     }
     
     private var otherSessionsSection: some View {
         SwiftUI.Section {
             LazyVStack(spacing: 0) {
-                ForEach(viewModel.viewState.otherSessionsViewData) { viewData in
+                ForEach(viewModel.viewState.otherSessionsViewData.prefix(maxOtherSessionsToDisplay)) { viewData in
                     UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
                         viewModel.send(viewAction: .tapUserSession(sessionId))
                     })
+                }
+                if viewModel.viewState.otherSessionsViewData.count > maxOtherSessionsToDisplay {
+                    UserSessionsListViewAllView(count: viewModel.viewState.otherSessionsViewData.count) {
+                        viewModel.send(viewAction: .viewAllOtherSessions)
+                    }
                 }
             }
             .background(theme.colors.background)

@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-import Foundation
+import Combine
 import MatrixSDK
 
 class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
@@ -22,20 +22,22 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     private static let inactiveSessionDurationTreshold: TimeInterval = 90 * 86400
     
     private let dataProvider: UserSessionsDataProviderProtocol
+    private var cancellables: Set<AnyCancellable> = []
     
-    private(set) var overviewData: UserSessionsOverviewData
+    private(set) var overviewDataPublisher: CurrentValueSubject<UserSessionsOverviewData, Never>
     private(set) var sessionInfos: [UserSessionInfo]
     
     init(dataProvider: UserSessionsDataProviderProtocol) {
         self.dataProvider = dataProvider
         
-        overviewData = UserSessionsOverviewData(currentSession: nil,
-                                                unverifiedSessions: [],
-                                                inactiveSessions: [],
-                                                otherSessions: [],
-                                                linkDeviceEnabled: false)
+        overviewDataPublisher = .init(UserSessionsOverviewData(currentSession: nil,
+                                                               unverifiedSessions: [],
+                                                               inactiveSessions: [],
+                                                               otherSessions: [],
+                                                               linkDeviceEnabled: false))
         sessionInfos = []
         setupInitialOverviewData()
+        listenForSessionUpdates()
     }
     
     // MARK: - Public
@@ -47,9 +49,10 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
                 self.sessionInfos = self.sortedSessionInfos(from: devices)
                 Task { @MainActor in
                     let linkDeviceEnabled = try? await self.dataProvider.qrLoginAvailable()
-                    self.overviewData = self.sessionsOverviewData(from: self.sessionInfos,
-                                                                  linkDeviceEnabled: linkDeviceEnabled ?? false)
-                    completion(.success(self.overviewData))
+                    let overviewData = self.sessionsOverviewData(from: self.sessionInfos,
+                                                                 linkDeviceEnabled: linkDeviceEnabled ?? false)
+                    self.overviewDataPublisher.send(overviewData)
+                    completion(.success(overviewData))
                 }
             case .failure(let error):
                 completion(.failure(error))
@@ -58,25 +61,43 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     }
     
     func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo? {
-        if overviewData.currentSession?.id == sessionId {
-            return overviewData.currentSession
+        if currentSession?.id == sessionId {
+            return currentSession
         }
         
-        return overviewData.otherSessions.first(where: { $0.id == sessionId })
+        return otherSessions.first(where: { $0.id == sessionId })
     }
 
     // MARK: - Private
+    
+    private func listenForSessionUpdates() {
+        NotificationCenter.default.publisher(for: .MXDeviceInfoTrustLevelDidChange)
+            .sink { [weak self] _ in
+                self?.updateOverviewData { _ in }
+            }
+            .store(in: &cancellables)
+        NotificationCenter.default.publisher(for: .MXDeviceListDidUpdateUsersDevices)
+            .sink { [weak self] _ in
+                self?.updateOverviewData { _ in }
+            }
+            .store(in: &cancellables)
+        NotificationCenter.default.publisher(for: .MXCrossSigningInfoTrustLevelDidChange)
+            .sink { [weak self] _ in
+                self?.updateOverviewData { _ in }
+            }
+            .store(in: &cancellables)
+    }
     
     private func setupInitialOverviewData() {
         guard let currentSessionInfo = getCurrentSessionInfo() else {
             return
         }
         
-        overviewData = UserSessionsOverviewData(currentSession: currentSessionInfo,
-                                                unverifiedSessions: currentSessionInfo.isVerified ? [] : [currentSessionInfo],
-                                                inactiveSessions: currentSessionInfo.isActive ? [] : [currentSessionInfo],
-                                                otherSessions: [],
-                                                linkDeviceEnabled: false)
+        overviewDataPublisher = .init(UserSessionsOverviewData(currentSession: currentSessionInfo,
+                                                               unverifiedSessions: currentSessionInfo.verificationState == .verified ? [] : [currentSessionInfo],
+                                                               inactiveSessions: currentSessionInfo.isActive ? [] : [currentSessionInfo],
+                                                               otherSessions: [],
+                                                               linkDeviceEnabled: false))
     }
     
     private func getCurrentSessionInfo() -> UserSessionInfo? {
@@ -96,14 +117,15 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     private func sessionsOverviewData(from allSessions: [UserSessionInfo],
                                       linkDeviceEnabled: Bool) -> UserSessionsOverviewData {
         UserSessionsOverviewData(currentSession: allSessions.filter(\.isCurrent).first,
-                                 unverifiedSessions: allSessions.filter { !$0.isVerified },
+                                 unverifiedSessions: allSessions.filter { $0.verificationState != .verified },
                                  inactiveSessions: allSessions.filter { !$0.isActive },
                                  otherSessions: allSessions.filter { !$0.isCurrent },
                                  linkDeviceEnabled: linkDeviceEnabled)
     }
     
     private func sessionInfo(from device: MXDevice, isCurrentSession: Bool) -> UserSessionInfo {
-        let isSessionVerified = deviceInfo(for: device.deviceId)?.trustLevel.isVerified ?? false
+        let deviceInfo = deviceInfo(for: device.deviceId)
+        let verificationState = dataProvider.verificationState(for: deviceInfo)
 
         let eventType = kMXAccountDataTypeClientInformation + "." + device.deviceId
         let appData = dataProvider.accountData(for: eventType)
@@ -122,7 +144,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         return UserSessionInfo(withDevice: device,
                                applicationData: appData as? [String: String],
                                userAgent: userAgent,
-                               isSessionVerified: isSessionVerified,
+                               verificationState: verificationState,
                                isActive: isSessionActive,
                                isCurrent: isCurrentSession)
     }
@@ -140,13 +162,13 @@ extension UserSessionInfo {
     init(withDevice device: MXDevice,
          applicationData: [String: String]?,
          userAgent: UserAgent?,
-         isSessionVerified: Bool,
+         verificationState: VerificationState,
          isActive: Bool,
          isCurrent: Bool) {
         self.init(id: device.deviceId,
                   name: device.displayName,
                   deviceType: userAgent?.deviceType ?? .unknown,
-                  isVerified: isSessionVerified,
+                  verificationState: verificationState,
                   lastSeenIP: device.lastSeenIp,
                   lastSeenTimestamp: device.lastSeenTs > 0 ? TimeInterval(device.lastSeenTs / 1000) : nil,
                   applicationName: applicationData?["name"],

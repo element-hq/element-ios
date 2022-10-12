@@ -19,6 +19,7 @@ import Foundation
 // MARK: - Coordinator
 
 enum UserSessionsOverviewCoordinatorResult {
+    case verifyCurrentSession
     case renameSession(UserSessionInfo)
     case logoutOfSession(UserSessionInfo)
     case openSessionOverview(sessionInfo: UserSessionInfo)

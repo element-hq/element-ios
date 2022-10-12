@@ -120,7 +120,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         UserSessionInfo(id: id,
                         name: name,
                         deviceType: deviceType,
-                        isVerified: isVerified,
+                        verificationState: isVerified ? .verified : .unverified,
                         lastSeenIP: lastSeenIP,
                         lastSeenTimestamp: lastSeenTimestamp,
                         applicationName: applicationName,
