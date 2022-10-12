@@ -60,15 +60,6 @@ struct Composer: View {
     
     // MARK: Public
     
-    @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    @ObservedObject var viewModel: WysiwygComposerViewModel
-    let sendMessageAction: (WysiwygComposerContent) -> Void
-    let showSendMediaActions: () -> Void
-    var textColor = Color(.label)
-    
-    @State private var showSendButton = false
-    
     var body: some View {
         VStack {
             let rect = RoundedRectangle(cornerRadius: cornerRadius)
