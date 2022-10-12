@@ -43,7 +43,10 @@ struct QRLoginRendezvousPayload: Codable {
     var intent: Intent?
     var outcome: Outcome?
     
+    // swiftformat:disable:next redundantBackticks
     var protocols: [`Protocol`]?
+    
+    // swiftformat:disable:next redundantBackticks
     var `protocol`: `Protocol`?
     
     var homeserver: String?
@@ -84,10 +87,12 @@ struct QRLoginRendezvousPayload: Codable {
     }
     
     enum Outcome: String, Codable {
-        case success = "success"
-        case declined = "declined"
+        case success
+        case declined
+        case verified
     }
     
+    // swiftformat:disable:next redundantBackticks
     enum `Protocol`: String, Codable {
         case loginToken = "login_token"
     }
