@@ -25,7 +25,7 @@ struct AuthenticationQRLoginStartCoordinatorParameters {
 
 enum AuthenticationQRLoginStartCoordinatorResult {
     /// Login with QR done
-    case done(session: MXSession)
+    case done(session: MXSession, securityCompleted: Bool)
 }
 
 final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
@@ -119,12 +119,12 @@ final class AuthenticationQRLoginStartCoordinator: Coordinator, Presentable {
             default:
                 showFailureScreenIfNeeded()
             }
-        case .completed(let session):
+        case .completed(let session, let securityCompleted):
             guard let session = session as? MXSession else {
                 showFailureScreenIfNeeded()
                 return
             }
-            callback?(.done(session: session))
+            callback?(.done(session: session, securityCompleted: securityCompleted))
         default:
             break
         }

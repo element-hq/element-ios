@@ -31,7 +31,7 @@ enum AuthenticationLoginCoordinatorResult: CustomStringConvertible {
     /// Login was successful with the associated session created.
     case success(session: MXSession, password: String)
     /// Login was successful with the associated session created.
-    case loggedInWithQRCode(session: MXSession)
+    case loggedInWithQRCode(session: MXSession, securityCompleted: Bool)
     /// Login requested a fallback
     case fallback
     
@@ -301,8 +301,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         coordinator.callback = { [weak self, weak coordinator] callback in
             guard let self = self, let coordinator = coordinator else { return }
             switch callback {
-            case .done(let session):
-                self.callback?(.loggedInWithQRCode(session: session))
+            case .done(let session, let securityCompleted):
+                self.callback?(.loggedInWithQRCode(session: session, securityCompleted: securityCompleted))
             }
             
             self.remove(childCoordinator: coordinator)

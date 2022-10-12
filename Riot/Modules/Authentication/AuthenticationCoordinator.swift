@@ -336,9 +336,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             password = loginPassword
             authenticationType = .password
             onSessionCreated(session: session, flow: .login)
-        case .loggedInWithQRCode(let session):
+        case .loggedInWithQRCode(let session, let securityCompleted):
             authenticationType = .other
-            onSessionCreated(session: session, flow: .login)
+            onSessionCreated(session: session, flow: .login, securityCompleted: securityCompleted)
         case .fallback:
             showFallback(for: .login)
         }
@@ -525,8 +525,14 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     /// Handles the creation of a new session following on from a successful authentication.
-    @MainActor private func onSessionCreated(session: MXSession, flow: AuthenticationFlow) {
+    @MainActor private func onSessionCreated(session: MXSession, flow: AuthenticationFlow, securityCompleted: Bool = false) {
         self.session = session
+        
+        guard !securityCompleted else {
+            callback?(.didLogin(session: session, authenticationFlow: flow, authenticationType: authenticationType ?? .other))
+            callback?(.didComplete)
+            return
+        }
         
         if canPresentAdditionalScreens {
             showLoadingAnimation()
