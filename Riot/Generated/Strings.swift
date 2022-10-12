@@ -8727,6 +8727,10 @@ public class VectorL10n: NSObject {
   public static var userSessionDetailsDeviceSectionHeader: String { 
     return VectorL10n.tr("Vector", "user_session_details_device_section_header") 
   }
+  /// Last activity
+  public static var userSessionDetailsLastActivity: String { 
+    return VectorL10n.tr("Vector", "user_session_details_last_activity") 
+  }
   /// Session ID
   public static var userSessionDetailsSessionId: String { 
     return VectorL10n.tr("Vector", "user_session_details_session_id") 

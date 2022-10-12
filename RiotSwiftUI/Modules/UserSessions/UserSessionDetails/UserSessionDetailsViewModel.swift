@@ -19,6 +19,12 @@ import Foundation
 typealias UserSessionDetailsViewModelType = StateStoreViewModel<UserSessionDetailsViewState, UserSessionDetailsViewAction>
 
 class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionDetailsViewModelProtocol {
+    private static var lastSeenDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EE, d MMM · HH:mm"
+        return dateFormatter
+    }()
+    
     var completion: ((UserSessionDetailsViewModelResult) -> Void)?
     
     init(sessionInfo: UserSessionInfo) {
@@ -32,9 +38,9 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
     
     private func updateViewState(sessionInfo: UserSessionInfo) {
         var sections = [UserSessionDetailsSectionViewData]()
-
+        
         sections.append(sessionSection(sessionInfo: sessionInfo))
-
+        
         if let applicationSection = applicationSection(sessionInfo: sessionInfo) {
             sections.append(applicationSection)
         }
@@ -48,7 +54,7 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
     
     private func sessionSection(sessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData {
         var sessionItems: [UserSessionDetailsSectionItemViewData] = []
-
+        
         if let sessionName = sessionInfo.name {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsSessionName,
                                       value: sessionName))
@@ -57,14 +63,20 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
         sessionItems.append(.init(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
                                   value: sessionInfo.id))
         
+        if let lastSeenTimestamp = sessionInfo.lastSeenTimestamp {
+            let date = Date(timeIntervalSince1970: lastSeenTimestamp)
+            sessionItems.append(.init(title: VectorL10n.userSessionDetailsLastActivity,
+                                      value: Self.lastSeenDateFormatter.string(from: date)))
+        }
+        
         return .init(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
                      footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                      items: sessionItems)
     }
-
+    
     private func applicationSection(sessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
         var sessionItems: [UserSessionDetailsSectionItemViewData] = []
-
+        
         if let name = sessionInfo.applicationName {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationName,
                                       value: name))
@@ -77,7 +89,7 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationUrl,
                                       value: url))
         }
-
+        
         guard !sessionItems.isEmpty else {
             return nil
         }
@@ -88,7 +100,7 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
     
     private func deviceSection(sessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
         var deviceSectionItems = [UserSessionDetailsSectionItemViewData]()
-
+        
         if let model = sessionInfo.deviceModel {
             deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceModel,
                                             value: model))
