@@ -45,7 +45,7 @@ struct UserOtherSessions: View {
                     }
                     .labelsHidden()
                     .onChange(of: viewModel.filter) { _ in
-                        viewModel.send(viewAction: .filerWasChanged)
+                        viewModel.send(viewAction: .filterWasChanged)
                     }
                 } label: {
                     Image(viewModel.filter == .all ? Asset.Images.userOtherSessionsFilter.name : Asset.Images.userOtherSessionsFilterSelected.name)

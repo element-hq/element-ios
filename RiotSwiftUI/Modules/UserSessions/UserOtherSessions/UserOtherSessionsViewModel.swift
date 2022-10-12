@@ -42,7 +42,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                 return
             }
             completion?(.showUserSessionOverview(sessionInfo: session))
-        case .filerWasChanged:
+        case .filterWasChanged:
             updateViewState()
         case .clearFilter:
             state.bindings.filter = .all
