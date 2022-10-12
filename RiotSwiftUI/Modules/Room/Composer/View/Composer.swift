@@ -61,6 +61,7 @@ struct Composer: View {
                         }
                         if let contextDescription = viewModel.viewState.contextDescription {
                             Text(contextDescription)
+                                .font(.system(size: 12.0, weight: .medium))
                                 .foregroundColor(theme.colors.secondaryContent)
                         }
                         Spacer()
@@ -70,8 +71,10 @@ struct Composer: View {
                             Image(Asset.Images.inputCloseIcon.name)
                                 .foregroundColor(theme.colors.secondaryContent)
                         }
+                        .frame(height: 30)
                     }
                     .padding(.horizontal, horizontalPadding)
+                    .padding(.bottom, -verticalPadding)
                 }
                 WysiwygComposerView(
                     content: wysiwygViewModel.content,

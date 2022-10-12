@@ -37,7 +37,7 @@ struct ComposerViewState: BindableState {
     var contextImageName: String? {
         switch sendMode {
         case .edit: return Asset.Images.inputEditIcon.name
-        case .reply: return Asset.Images.inputEditIcon.name
+        case .reply: return Asset.Images.inputReplyIcon.name
         default: return nil
         }
     }
