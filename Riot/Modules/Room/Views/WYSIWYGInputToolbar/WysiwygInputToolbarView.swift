@@ -92,7 +92,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             }
         }
         
-        let wysiwygViewModel = WysiwygComposerViewModel()
+        wysiwygViewModel = WysiwygComposerViewModel()
         let composer = Composer(viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
             sendMessageAction: { [weak self] content in
