@@ -39,7 +39,7 @@ struct UserOtherSessions: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     Picker("Filter menu", selection: $viewModel.filter) {
-                        ForEach(OtherUserSessionsFilter.allCases) { filter in
+                        ForEach(UserOtherSessionsFilter.allCases) { filter in
                             Text(filter.menuLocalizedName).tag(filter)
                         }
                     }

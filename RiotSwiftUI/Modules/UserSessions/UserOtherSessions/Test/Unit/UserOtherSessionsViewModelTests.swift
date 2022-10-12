@@ -131,7 +131,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
     }
     
     private func createSUT(sessionInfos: [UserSessionInfo],
-                           filter: OtherUserSessionsFilter,
+                           filter: UserOtherSessionsFilter,
                            title: String = "Title") -> UserOtherSessionsViewModel {
         UserOtherSessionsViewModel(sessionInfos: sessionInfos,
                                    filter: filter,

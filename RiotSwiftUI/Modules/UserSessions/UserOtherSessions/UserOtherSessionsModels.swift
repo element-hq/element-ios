@@ -37,7 +37,7 @@ struct UserOtherSessionsViewState: BindableState, Equatable {
 }
 
 struct UserOtherSessionsBindings: Equatable {
-    var filter: OtherUserSessionsFilter
+    var filter: UserOtherSessionsFilter
 }
 
 enum UserOtherSessionsSection: Hashable, Identifiable {

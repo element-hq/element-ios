@@ -23,7 +23,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     private let sessionInfos: [UserSessionInfo]
     
     init(sessionInfos: [UserSessionInfo],
-         filter: OtherUserSessionsFilter,
+         filter: UserOtherSessionsFilter,
          title: String) {
         self.sessionInfos = sessionInfos
         super.init(initialViewState: UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: filter),
@@ -64,7 +64,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         }
     }
     
-    private func createSectionItems(sessionInfos: [UserSessionInfo], filter: OtherUserSessionsFilter) -> [UserSessionListItemViewData] {
+    private func createSectionItems(sessionInfos: [UserSessionInfo], filter: UserOtherSessionsFilter) -> [UserSessionListItemViewData] {
         filterSessions(sessionInfos: sessionInfos, by: filter)
             .map {
                 UserSessionListItemViewDataFactory().create(from: $0,
@@ -72,7 +72,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
             }
     }
     
-    private func filterSessions(sessionInfos: [UserSessionInfo], by filter: OtherUserSessionsFilter) -> [UserSessionInfo] {
+    private func filterSessions(sessionInfos: [UserSessionInfo], by filter: UserOtherSessionsFilter) -> [UserSessionInfo] {
         switch filter {
         case .all:
             return sessionInfos.filter { !$0.isCurrent }
@@ -85,7 +85,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         }
     }
     
-    private func createHeaderData(filter: OtherUserSessionsFilter) -> UserOtherSessionsHeaderViewData {
+    private func createHeaderData(filter: UserOtherSessionsFilter) -> UserOtherSessionsHeaderViewData {
         switch filter {
         case .all:
             return UserOtherSessionsHeaderViewData(title: nil,
@@ -106,7 +106,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         }
     }
     
-    private func noSessionsTitle(filter: OtherUserSessionsFilter) -> String {
+    private func noSessionsTitle(filter: UserOtherSessionsFilter) -> String {
         switch filter {
         case .all:
             assertionFailure("The view is not intended to be displayed without any session")

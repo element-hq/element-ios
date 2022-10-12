@@ -16,7 +16,7 @@
 
 import Foundation
 
-enum OtherUserSessionsFilter: Identifiable, Equatable, CaseIterable {
+enum UserOtherSessionsFilter: Identifiable, Equatable, CaseIterable {
     var id: Self { self }
     case all
     case verified
@@ -24,7 +24,7 @@ enum OtherUserSessionsFilter: Identifiable, Equatable, CaseIterable {
     case inactive
 }
 
-extension OtherUserSessionsFilter {
+extension UserOtherSessionsFilter {
     var menuLocalizedName: String {
         switch self {
         case .all:
