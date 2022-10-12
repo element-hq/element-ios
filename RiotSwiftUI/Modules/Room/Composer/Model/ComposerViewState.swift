@@ -19,7 +19,9 @@ import Foundation
 struct ComposerViewState: BindableState {
     var eventSenderDisplayName: String?
     var sendMode: RoomInputToolbarViewSendMode = .send
-    
+}
+
+extension ComposerViewState {
     var shouldDisplayContext: Bool {
         return sendMode == .edit || sendMode == .reply
     }

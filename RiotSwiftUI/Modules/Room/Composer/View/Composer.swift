@@ -36,6 +36,9 @@ struct Composer: View {
     private var verticalPadding: CGFloat {
         (borderHeight - minTextViewHeight) / 2
     }
+    private var cornerRadius: CGFloat {
+        viewModel.viewState.shouldDisplayContext ? 14 : borderHeight / 2
+    }
     
     private var formatItems: [FormatItem] {
         FormatType.allCases.map { type in
@@ -49,7 +52,7 @@ struct Composer: View {
     
     var body: some View {
         VStack {
-            let rect = RoundedRectangle(cornerRadius: borderHeight / 2)
+            let rect = RoundedRectangle(cornerRadius: cornerRadius)
             // TODO: Fix maximise animation bugs before re-enabling
             //            ZStack(alignment: .topTrailing) {
             VStack {
@@ -57,7 +60,7 @@ struct Composer: View {
                     HStack {
                         if let imageName = viewModel.viewState.contextImageName {
                             Image(imageName)
-                                .foregroundColor(theme.colors.secondaryContent)
+                                .foregroundColor(theme.colors.tertiaryContent)
                         }
                         if let contextDescription = viewModel.viewState.contextDescription {
                             Text(contextDescription)
@@ -69,7 +72,7 @@ struct Composer: View {
                             viewModel.send(viewAction: .cancel)
                         } label: {
                             Image(Asset.Images.inputCloseIcon.name)
-                                .foregroundColor(theme.colors.secondaryContent)
+                                .foregroundColor(theme.colors.tertiaryContent)
                         }
                         .frame(height: 30)
                     }
