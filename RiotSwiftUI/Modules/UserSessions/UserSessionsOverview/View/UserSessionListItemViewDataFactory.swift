@@ -48,32 +48,41 @@ struct UserSessionListItemViewDataFactory {
     }
     
     private func activeSessionDetails(sessionInfo: UserSessionInfo) -> String {
-        let sessionDetailsString: String
+        // Start by creating the main part of the details string.
+        var sessionDetailsString = ""
         
-        let sessionStatusText: String
+        var lastActivityDateString: String?
+        if let lastActivityDate = sessionInfo.lastSeenTimestamp {
+            lastActivityDateString = UserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityDate)
+        }
+        
+        if sessionInfo.isCurrent {
+            sessionDetailsString = VectorL10n.userOtherSessionCurrentSessionDetails
+        } else if let lastActivityDateString = lastActivityDateString, lastActivityDateString.isEmpty == false {
+            sessionDetailsString = VectorL10n.userSessionItemDetailsLastActivity(lastActivityDateString)
+        }
+        
+        // Prepend the verification state if one is known.
+        let sessionStatusText: String?
         switch sessionInfo.verificationState {
         case .verified:
             sessionStatusText = VectorL10n.userSessionVerifiedShort
         case .unverified:
             sessionStatusText = VectorL10n.userSessionUnverifiedShort
         case .unknown:
-            sessionStatusText = VectorL10n.userSessionVerificationUnknownShort
+            sessionStatusText = nil
         }
         
-        var lastActivityDateString: String?
-        
-        if let lastActivityDate = sessionInfo.lastSeenTimestamp {
-            lastActivityDateString = UserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityDate)
+        if let sessionStatusText = sessionStatusText {
+            if sessionDetailsString.isEmpty {
+                sessionDetailsString = sessionStatusText
+            } else {
+                sessionDetailsString = VectorL10n.userSessionItemDetails(sessionStatusText, sessionDetailsString)
+            }
+        } else if sessionDetailsString.isEmpty {
+            sessionDetailsString = VectorL10n.userSessionVerificationUnknownShort
         }
-        
-        if sessionInfo.isCurrent {
-            sessionDetailsString = VectorL10n.userOtherSessionUnverifiedCurrentSessionDetails(sessionStatusText)
-        } else if let lastActivityDateString = lastActivityDateString, lastActivityDateString.isEmpty == false {
-            sessionDetailsString = VectorL10n.userSessionItemDetails(sessionStatusText, lastActivityDateString)
-        } else {
-            sessionDetailsString = sessionStatusText
-        }
-        
+            
         return sessionDetailsString
     }
     
