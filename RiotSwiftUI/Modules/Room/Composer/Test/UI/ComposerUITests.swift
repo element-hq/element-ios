@@ -18,7 +18,6 @@ import RiotSwiftUI
 import XCTest
 
 class ComposerUITests: MockScreenTestCase {
-    
     func testSendMode() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
         
