@@ -195,12 +195,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         
         state = .waitingForConfirmation(validationCode)
         
-        MXLog.debug("[QRLoginService] Requesting login")
-        guard let requestData = try? JSONEncoder().encode(QRLoginRendezvousPayload(type: .loginStart, intent: .loginStart)),
-              case .success = await rendezvousService.send(data: requestData) else {
-            await teardownRendezvous(state: .failed(error: .rendezvousFailed))
-            return
-        }
+        // TODO: check compatibility of intents
         
         MXLog.debug("[QRLoginService] Waiting for available protocols")
         guard case let .success(data) = await rendezvousService.receive(),
