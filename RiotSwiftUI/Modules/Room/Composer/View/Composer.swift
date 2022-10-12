@@ -34,11 +34,17 @@ struct Composer: View {
     private var verticalPadding: CGFloat {
         (borderHeight - minTextViewHeight) / 2
     }
+    
     private var topPadding: CGFloat {
         viewModel.viewState.shouldDisplayContext ? 0 : verticalPadding
     }
+    
     private var cornerRadius: CGFloat {
         viewModel.viewState.shouldDisplayContext ? 14 : borderHeight / 2
+    }
+    
+    private var actionButtonAccessibilityIdentifier: String {
+        viewModel.viewState.sendMode == .edit ? "editButton" : "sendButton"
     }
     
     private var formatItems: [FormatItem] {
@@ -83,7 +89,10 @@ struct Composer: View {
                             Image(Asset.Images.inputCloseIcon.name)
                                 .foregroundColor(theme.colors.tertiaryContent)
                         }
+                        .accessibilityIdentifier("cancelButton")
                     }
+                    .accessibilityElement(children: .contain)
+                    .accessibilityIdentifier("contextView")
                     .padding(.top, 8)
                     .padding(.horizontal, horizontalPadding)
                 }
@@ -158,6 +167,7 @@ struct Composer: View {
                                 .foregroundColor(theme.colors.tertiaryContent)
                         }
                     }
+                    .accessibilityIdentifier(actionButtonAccessibilityIdentifier)
                     .isHidden(!showSendButton)
                 }
                 .onChange(of: wysiwygViewModel.isContentEmpty) { empty in
