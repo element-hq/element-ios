@@ -116,12 +116,23 @@ public class VoiceBroadcastService: NSObject {
     ///   - samples: an array of floating point values normalized to [0, 1], boxed within NSNumbers
     ///   - success: A block object called when the operation succeeds. It returns the event id of the event generated on the homeserver
     ///   - failure: A block object called when the operation fails.
-    func sendChunkOfVoiceBroadcast(audioFileLocalURL: URL, mimeType: String?, duration: UInt, samples: [Float]?, success:@escaping ((String?) -> Void), failure:@escaping ((Error?) -> Void)) {
+    func sendChunkOfVoiceBroadcast(audioFileLocalURL: URL,
+                                   mimeType: String?,
+                                   duration: UInt,
+                                   samples: [Float]?,
+                                   success:@escaping ((String?) -> Void),
+                                   failure:@escaping ((Error?) -> Void)) {
         guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
             return failure(VoiceBroadcastServiceError.notStarted)
         }
         
-        self.room.sendChunkOfVoiceBroadcast(localURL: audioFileLocalURL, voiceBroadcastInfoEventId: voiceBroadcastInfoEventId, mimeType: mimeType, duration: duration, samples: samples, success: success, failure: failure)
+        self.room.sendChunkOfVoiceBroadcast(localURL: audioFileLocalURL,
+                                            voiceBroadcastInfoEventId: voiceBroadcastInfoEventId,
+                                            mimeType: mimeType,
+                                            duration: duration,
+                                            samples: samples,
+                                            success: success,
+                                            failure: failure)
     }
     
     // MARK: - Private
@@ -153,7 +164,8 @@ public class VoiceBroadcastService: NSObject {
             return nil
         }
         
-        return self.room.sendStateEvent(.custom(VoiceBroadcastSettings.eventType), content: stateEventContent, stateKey: stateKey) { [weak self] response in
+        return self.room.sendStateEvent(.custom(VoiceBroadcastSettings.eventType),
+                                        content: stateEventContent, stateKey: stateKey) { [weak self] response in
             guard let self = self else { return }
             
             switch response {
@@ -264,7 +276,8 @@ extension MXRoom {
         let boxedSamples = samples?.compactMap { NSNumber(value: $0) }
         
         
-        guard let relatesTo = MXEventContentRelatesTo(relationType: MXEventRelationTypeReference, eventId: voiceBroadcastInfoEventId).jsonDictionary() as? [String: Any] else {
+        guard let relatesTo = MXEventContentRelatesTo(relationType: MXEventRelationTypeReference,
+                                                      eventId: voiceBroadcastInfoEventId).jsonDictionary() as? [String: Any] else {
             failure(VoiceBroadcastServiceError.unknown)
             return nil
         }
