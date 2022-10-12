@@ -24,6 +24,7 @@ struct UserSessionsFlowCoordinatorParameters {
 
 final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     private let parameters: UserSessionsFlowCoordinatorParameters
+    private let allSessionsService: UserSessionsOverviewService
     
     private let navigationRouter: NavigationRouterType
     private var reauthenticationPresenter: ReauthenticationCoordinatorBridgePresenter?
@@ -40,6 +41,9 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     
     init(parameters: UserSessionsFlowCoordinatorParameters) {
         self.parameters = parameters
+        
+        let dataProvider = UserSessionsDataProvider(session: parameters.session)
+        allSessionsService = UserSessionsOverviewService(dataProvider: dataProvider)
         
         navigationRouter = parameters.router
         errorPresenter = MXKErrorAlertPresentation()
@@ -59,14 +63,17 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     private func createUserSessionsOverviewCoordinator() -> UserSessionsOverviewCoordinator {
-        let parameters = UserSessionsOverviewCoordinatorParameters(session: parameters.session)
+        let parameters = UserSessionsOverviewCoordinatorParameters(session: parameters.session,
+                                                                   service: allSessionsService)
         
         let coordinator = UserSessionsOverviewCoordinator(parameters: parameters)
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
+            case .verifyCurrentSession:
+                self.showCompleteSecurity()
             case let .renameSession(sessionInfo):
-                break
+                self.showRenameSessionScreen(for: sessionInfo)
             case let .logoutOfSession(sessionInfo):
                 self.showLogoutConfirmation(for: sessionInfo)
             case let .openSessionOverview(sessionInfo: sessionInfo):
@@ -97,8 +104,14 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             switch result {
             case let .openSessionDetails(sessionInfo: sessionInfo):
                 self.openSessionDetails(sessionInfo: sessionInfo)
+            case let .verifySession(sessionInfo):
+                if sessionInfo.isCurrent {
+                    self.showCompleteSecurity()
+                } else {
+                    self.showVerification(for: sessionInfo)
+                }
             case let .renameSession(sessionInfo):
-                break
+                self.showRenameSessionScreen(for: sessionInfo)
             case let .logoutOfSession(sessionInfo):
                 self.showLogoutConfirmation(for: sessionInfo)
             }
@@ -123,7 +136,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     
     private func createUserSessionOverviewCoordinator(sessionInfo: UserSessionInfo) -> UserSessionOverviewCoordinator {
         let parameters = UserSessionOverviewCoordinatorParameters(session: parameters.session,
-                                                                  sessionInfo: sessionInfo)
+                                                                  sessionInfo: sessionInfo,
+                                                                  sessionsOverviewDataPublisher: allSessionsService.overviewDataPublisher)
         return UserSessionOverviewCoordinator(parameters: parameters)
     }
     
@@ -203,7 +217,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             self.stopLoading()
 
             guard response.isSuccess else {
-                MXLog.debug("[LogoutDeviceService] Delete device (\(sessionInfo.id) failed")
+                MXLog.debug("[UserSessionsFlowCoordinator] Delete device (\(sessionInfo.id)) failed")
                 if let error = response.error {
                     self.errorPresenter.presentError(from: self.toPresentable(), forError: error, animated: true, handler: { })
                 } else {
@@ -215,6 +229,69 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
 
             self.popToSessionsOverview()
         }
+    }
+    
+    private func showRenameSessionScreen(for sessionInfo: UserSessionInfo) {
+        let parameters = UserSessionNameCoordinatorParameters(session: parameters.session, sessionInfo: sessionInfo)
+        let coordinator = UserSessionNameCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            switch result {
+            case .sessionNameUpdated:
+                self.allSessionsService.updateOverviewData { [weak self] _ in
+                    self?.navigationRouter.dismissModule(animated: true, completion: nil)
+                    self?.remove(childCoordinator: coordinator)
+                }
+            case .cancel:
+                self.navigationRouter.dismissModule(animated: true, completion: nil)
+                self.remove(childCoordinator: coordinator)
+            }
+        }
+        
+        add(childCoordinator: coordinator)
+        let modalRouter = NavigationRouter(navigationController: RiotNavigationController())
+        modalRouter.setRootModule(coordinator)
+        coordinator.start()
+        
+        navigationRouter.present(modalRouter, animated: true)
+    }
+    
+    /// Shows a prompt to the user that it is not possible to verify
+    /// another session until the current session has been verified.
+    private func showCannotVerifyOtherSessionPrompt() {
+        let alert = UIAlertController(title: VectorL10n.securitySettingsCompleteSecurityAlertTitle,
+                                      message: VectorL10n.securitySettingsCompleteSecurityAlertMessage,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: VectorL10n.later, style: .cancel))
+        alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default) { [weak self] _ in
+            self?.showCompleteSecurity()
+        })
+        
+        navigationRouter.present(alert, animated: true)
+    }
+    
+    /// Shows the Complete Security modal for the user to verify their current session.
+    private func showCompleteSecurity() {
+        AppDelegate.theDelegate().presentCompleteSecurity(for: parameters.session)
+    }
+    
+    /// Shows the verification screen for the specified session.
+    private func showVerification(for sessionInfo: UserSessionInfo) {
+        if sessionInfo.verificationState == .unknown {
+            showCannotVerifyOtherSessionPrompt()
+            return
+        }
+        
+        let coordinator = UserVerificationCoordinator(presenter: toPresentable(),
+                                                      session: parameters.session,
+                                                      userId: parameters.session.myUserId,
+                                                      userDisplayName: nil,
+                                                      deviceId: sessionInfo.id)
+        coordinator.delegate = self
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
     }
     
     /// Pops back to the root coordinator in the session management flow.
@@ -260,5 +337,32 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     
     func toPresentable() -> UIViewController {
         navigationRouter.toPresentable()
+    }
+}
+
+// MARK: CrossSigningSetupCoordinatorDelegate
+
+extension UserSessionsFlowCoordinator: CrossSigningSetupCoordinatorDelegate {
+    func crossSigningSetupCoordinatorDidComplete(_ coordinator: CrossSigningSetupCoordinatorType) {
+        // The service is listening for changes so there's nothing to do here.
+        remove(childCoordinator: coordinator)
+    }
+    
+    func crossSigningSetupCoordinatorDidCancel(_ coordinator: CrossSigningSetupCoordinatorType) {
+        remove(childCoordinator: coordinator)
+    }
+    
+    func crossSigningSetupCoordinator(_ coordinator: CrossSigningSetupCoordinatorType, didFailWithError error: Error) {
+        remove(childCoordinator: coordinator)
+        errorPresenter.presentError(from: toPresentable(), forError: error, animated: true, handler: { })
+    }
+}
+
+// MARK: UserVerificationCoordinatorDelegate
+
+extension UserSessionsFlowCoordinator: UserVerificationCoordinatorDelegate {
+    func userVerificationCoordinatorDidComplete(_ coordinator: UserVerificationCoordinatorType) {
+        // The service is listening for changes so there's nothing to do here.
+        remove(childCoordinator: coordinator)
     }
 }

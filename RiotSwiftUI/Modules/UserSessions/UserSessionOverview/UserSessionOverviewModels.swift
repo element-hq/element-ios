@@ -20,6 +20,7 @@ import Foundation
 
 enum UserSessionOverviewCoordinatorResult {
     case openSessionDetails(sessionInfo: UserSessionInfo)
+    case verifySession(UserSessionInfo)
     case renameSession(UserSessionInfo)
     case logoutOfSession(UserSessionInfo)
 }
@@ -28,7 +29,7 @@ enum UserSessionOverviewCoordinatorResult {
 
 enum UserSessionOverviewViewModelResult: Equatable {
     case showSessionDetails(sessionInfo: UserSessionInfo)
-    case verifyCurrentSession
+    case verifySession(UserSessionInfo)
     case renameSession(UserSessionInfo)
     case logoutOfSession(UserSessionInfo)
 }
@@ -36,7 +37,7 @@ enum UserSessionOverviewViewModelResult: Equatable {
 // MARK: View
 
 struct UserSessionOverviewViewState: BindableState {
-    let cardViewData: UserSessionCardViewData
+    var cardViewData: UserSessionCardViewData
     let isCurrentSession: Bool
     var isPusherEnabled: Bool?
     var remotelyTogglingPushersAvailable: Bool
@@ -44,7 +45,7 @@ struct UserSessionOverviewViewState: BindableState {
 }
 
 enum UserSessionOverviewViewAction {
-    case verifyCurrentSession
+    case verifySession
     case viewSessionDetails
     case togglePushNotifications
     case renameSession

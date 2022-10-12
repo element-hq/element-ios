@@ -14,12 +14,14 @@
 // limitations under the License.
 //
 
+import Combine
 import CommonKit
 import SwiftUI
 
 struct UserSessionOverviewCoordinatorParameters {
     let session: MXSession
     let sessionInfo: UserSessionInfo
+    let sessionsOverviewDataPublisher: CurrentValueSubject<UserSessionsOverviewData, Never>
 }
 
 final class UserSessionOverviewCoordinator: Coordinator, Presentable {
@@ -42,7 +44,9 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
         self.parameters = parameters
 
         let service = UserSessionOverviewService(session: parameters.session, sessionInfo: parameters.sessionInfo)
-        viewModel = UserSessionOverviewViewModel(sessionInfo: parameters.sessionInfo, service: service)
+        viewModel = UserSessionOverviewViewModel(sessionInfo: parameters.sessionInfo,
+                                                 service: service,
+                                                 sessionsOverviewDataPublisher: parameters.sessionsOverviewDataPublisher)
         
         hostingController = VectorHostingController(rootView: UserSessionOverview(viewModel: viewModel.context))
         hostingController.vc_setLargeTitleDisplayMode(.never)
@@ -60,8 +64,8 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
             
             MXLog.debug("[UserSessionOverviewCoordinator] UserSessionOverviewViewModel did complete with result: \(result).")
             switch result {
-            case .verifyCurrentSession:
-                break // TODO:
+            case let .verifySession(sessionInfo):
+                self.completion?(.verifySession(sessionInfo))
             case let .showSessionDetails(sessionInfo: sessionInfo):
                 self.completion?(.openSessionDetails(sessionInfo: sessionInfo))
             case let .renameSession(sessionInfo):

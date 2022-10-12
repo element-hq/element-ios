@@ -3619,6 +3619,18 @@ public class VectorL10n: NSObject {
   public static var manageSessionName: String { 
     return VectorL10n.tr("Vector", "manage_session_name") 
   }
+  /// Custom session names can help you recognize your devices more easily.
+  public static var manageSessionNameHint: String { 
+    return VectorL10n.tr("Vector", "manage_session_name_hint") 
+  }
+  /// Please be aware that session names are also visible to people you communicate with. %@
+  public static func manageSessionNameInfo(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "manage_session_name_info", p1)
+  }
+  /// Learn more
+  public static var manageSessionNameInfoLink: String { 
+    return VectorL10n.tr("Vector", "manage_session_name_info_link") 
+  }
   /// Not trusted
   public static var manageSessionNotTrusted: String { 
     return VectorL10n.tr("Vector", "manage_session_not_trusted") 
@@ -8774,6 +8786,14 @@ public class VectorL10n: NSObject {
   /// Unverified
   public static var userSessionUnverifiedShort: String { 
     return VectorL10n.tr("Vector", "user_session_unverified_short") 
+  }
+  /// Unknown verification status
+  public static var userSessionVerificationUnknown: String { 
+    return VectorL10n.tr("Vector", "user_session_verification_unknown") 
+  }
+  /// Unknown
+  public static var userSessionVerificationUnknownShort: String { 
+    return VectorL10n.tr("Vector", "user_session_verification_unknown_short") 
   }
   /// Verified session
   public static var userSessionVerified: String { 

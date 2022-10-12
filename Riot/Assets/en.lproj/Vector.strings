@@ -926,6 +926,10 @@ Tap the + to start adding people.";
 "manage_session_title" = "Manage session";
 "manage_session_info" = "SESSION INFO";
 "manage_session_name" = "Session name";
+"manage_session_name_hint" = "Custom session names can help you recognize your devices more easily.";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Please be aware that session names are also visible to people you communicate with. %@";
+"manage_session_name_info_link" = "Learn more";
 "manage_session_trusted" = "Trusted by you";
 "manage_session_not_trusted" = "Not trusted";
 "manage_session_sign_out" = "Sign out of this session";
@@ -2416,8 +2420,10 @@ To enable access, tap Settings> Location and select Always";
 
 "user_session_verified" = "Verified session";
 "user_session_unverified" = "Unverified session";
+"user_session_verification_unknown" = "Unknown verification status";
 "user_session_verified_short" = "Verified";
 "user_session_unverified_short" = "Unverified";
+"user_session_verification_unknown_short" = "Unknown";
 
 "user_session_verify_action" = "Verify session";
 "user_session_view_details" = "View details";

@@ -136,6 +136,10 @@ class MockAuthenticationRestClient: AuthenticationRestClient {
         throw MockError.unhandled
     }
     
+    func generateLoginToken() async throws -> MXLoginToken {
+        throw MockError.unhandled
+    }
+    
     // MARK: - Registration
     
     var registerFallbackURL: URL {
