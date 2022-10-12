@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,32 +18,39 @@ import SwiftUI
 import WysiwygComposer
 
 struct FormattingToolbar: View {
+    // MARK: - Properties
+    
+    // MARK: Private
+    
+    // MARK: Public
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    /// The list of items to render in the toolbar
     var formatItems: [FormatItem]
-    var formatAction: (FormatType) -> ()
+    /// The action when an item is selected
+    var formatAction: (FormatType) -> Void
     
     var body: some View {
         HStack {
-           ForEach(formatItems) { item in
-               Button {
-                   print("action")
-                   formatAction(item.type)
-               } label: {
-                   Image(item.icon)
-                       .renderingMode(.template)
-                       .foregroundColor(item.active ? theme.colors.accent : theme.colors.tertiaryContent)
-               }
-               .disabled(item.disabled)
-               .background(item.active ? theme.colors.accent.opacity(0.1) : theme.colors.background)
-                   .cornerRadius(8)
-               .accessibilityIdentifier(item.accessibilityIdentifier)
-           }
-
-       }
+            ForEach(formatItems) { item in
+                Button {
+                    formatAction(item.type)
+                } label: {
+                    Image(item.icon)
+                        .renderingMode(.template)
+                        .foregroundColor(item.active ? theme.colors.accent : theme.colors.tertiaryContent)
+                }
+                .disabled(item.disabled)
+                .background(item.active ? theme.colors.accent.opacity(0.1) : theme.colors.background)
+                .cornerRadius(8)
+                .accessibilityIdentifier(item.accessibilityIdentifier)
+            }
+        }
     }
 }
+
+// MARK: - Previews
 
 struct FormattingToolbar_Previews: PreviewProvider {
     static var previews: some View {

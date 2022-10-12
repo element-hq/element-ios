@@ -27,12 +27,12 @@ import Foundation
 /// (mainly for integration in legacy view controllers). Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class ComposerCreateActionListBridgePresenter: NSObject {
-    
     // MARK: - Constants
     
     // MARK: - Properties
     
     // MARK: Private
+    
     private let actions: [ComposerCreateAction]
     private var coordinator: ComposerCreateActionListCoordinator?
     
@@ -43,7 +43,9 @@ final class ComposerCreateActionListBridgePresenter: NSObject {
     // MARK: - Setup
     
     init(actions: [Int]) {
-        self.actions = actions.compactMap({ ComposerCreateAction(rawValue: $0) })
+        self.actions = actions.compactMap {
+            ComposerCreateAction(rawValue: $0)
+        }
         super.init()
     }
     
@@ -55,7 +57,6 @@ final class ComposerCreateActionListBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        
         let composerCreateActionListCoordinator = ComposerCreateActionListCoordinator(actions: actions)
         composerCreateActionListCoordinator.callback = { [weak self] action in
             guard let self = self else { return }
@@ -70,11 +71,11 @@ final class ComposerCreateActionListBridgePresenter: NSObject {
         viewController.present(presentable, animated: animated, completion: nil)
         composerCreateActionListCoordinator.start()
         
-        self.coordinator = composerCreateActionListCoordinator
+        coordinator = composerCreateActionListCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         // Dismiss modal

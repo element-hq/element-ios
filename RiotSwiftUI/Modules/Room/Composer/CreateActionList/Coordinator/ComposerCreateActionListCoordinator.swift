@@ -23,10 +23,10 @@ enum ComposerCreateActionListCoordinatorAction {
 }
 
 final class ComposerCreateActionListCoordinator: NSObject, Coordinator, Presentable, UISheetPresentationControllerDelegate {
-    
     // MARK: - Properties
     
     // MARK: Private
+    
     private let hostingController: UIViewController
     private var view: ComposerCreateActionList
     private var viewModel: ComposerCreateActionListViewModel
@@ -41,7 +41,7 @@ final class ComposerCreateActionListCoordinator: NSObject, Coordinator, Presenta
     
     init(actions: [ComposerCreateAction]) {
         viewModel = ComposerCreateActionListViewModel(initialViewState: ComposerCreateActionListViewState(actions: actions))
-        self.view = ComposerCreateActionList(viewModel: viewModel.context)
+        view = ComposerCreateActionList(viewModel: viewModel.context)
         let hostingVC = VectorHostingController(rootView: view)
         hostingVC.bottomSheetPreferences = VectorHostingBottomSheetPreferences(detents: [.medium])
         hostingController = hostingVC
@@ -62,10 +62,10 @@ final class ComposerCreateActionListCoordinator: NSObject, Coordinator, Presenta
     }
     
     func toPresentable() -> UIViewController {
-        return self.hostingController
+        hostingController
     }
     
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.callback?(.cancel)
-      }
+        callback?(.cancel)
+    }
 }

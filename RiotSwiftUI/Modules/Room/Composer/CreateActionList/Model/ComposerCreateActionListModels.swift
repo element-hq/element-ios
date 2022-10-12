@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,15 +18,19 @@ import Foundation
 
 // MARK: View model
 
-enum ComposerCreateActionListViewModelResult: Equatable {
+enum ComposerCreateActionListViewAction {
     // The user selected an action
+    case selectAction(ComposerCreateAction)
+}
+
+enum ComposerCreateActionListViewModelResult: Equatable {
+    // The user selected an action and is done with the screen
     case done(ComposerCreateAction)
 }
 
 // MARK: View
 
 struct ComposerCreateActionListViewState: BindableState {
-    
     /// The list of composer create actions to display to the user
     let actions: [ComposerCreateAction]
 }

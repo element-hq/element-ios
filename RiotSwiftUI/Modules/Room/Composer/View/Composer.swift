@@ -19,6 +19,11 @@ import SwiftUI
 import WysiwygComposer
 
 struct Composer: View {
+    // MARK: - Properties
+    
+    // MARK: Private
+    
+    @State var focused = false
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     
@@ -52,6 +57,17 @@ struct Composer: View {
             )
         }
     }
+    
+    // MARK: Public
+    
+    @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    @ObservedObject var viewModel: WysiwygComposerViewModel
+    let sendMessageAction: (WysiwygComposerContent) -> Void
+    let showSendMediaActions: () -> Void
+    var textColor = Color(.label)
+    
+    @State private var showSendButton = false
     
     var body: some View {
         VStack {
@@ -112,6 +128,11 @@ struct Composer: View {
             .padding(.horizontal, horizontalPadding)
             .padding(.top, 8)
             .padding(.bottom, 4)
+            .onTapGesture {
+                if !focused {
+                    focused = true
+                }
+            }
             HStack {
                 Button {
                     showSendMediaActions()
@@ -162,13 +183,11 @@ struct Composer: View {
     }
 }
 
+// MARK: Previews
+
 struct Composer_Previews: PreviewProvider {
     static let stateRenderer = MockComposerScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
     }
-}
-
-enum ComposerCreateActionListViewAction {
-    case selectAction(ComposerCreateAction)
 }
