@@ -18,8 +18,13 @@ import Foundation
 
 // MARK: View model
 
-enum ComposerCreateActionListViewModelResult: Equatable {
+enum ComposerCreateActionListViewAction {
     // The user selected an action
+    case selectAction(ComposerCreateAction)
+}
+
+enum ComposerCreateActionListViewModelResult: Equatable {
+    // The user selected an action and is done with the screen
     case done(ComposerCreateAction)
 }
 

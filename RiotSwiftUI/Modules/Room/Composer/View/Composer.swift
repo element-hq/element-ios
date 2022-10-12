@@ -19,14 +19,10 @@ import SwiftUI
 import WysiwygComposer
 
 struct Composer: View {
-    @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    @ObservedObject var viewModel: WysiwygComposerViewModel
-    let sendMessageAction: (WysiwygComposerContent) -> Void
-    let showSendMediaActions: () -> Void
-    var textColor = Color(.label)
+    // MARK: - Properties
     
-    @State private var showSendButton = false
+    // MARK: Private
     
     private let borderHeight: CGFloat = 44
     private let minTextViewHeight: CGFloat = 20
@@ -43,6 +39,17 @@ struct Composer: View {
             )
         }
     }
+    
+    // MARK: Public
+    
+    @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    @ObservedObject var viewModel: WysiwygComposerViewModel
+    let sendMessageAction: (WysiwygComposerContent) -> Void
+    let showSendMediaActions: () -> Void
+    var textColor = Color(.label)
+    
+    @State private var showSendButton = false
     
     var body: some View {
         VStack {
@@ -123,13 +130,10 @@ struct Composer: View {
     }
 }
 
+// MARK: Previews
 struct Composer_Previews: PreviewProvider {
     static let stateRenderer = MockComposerScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
     }
-}
-
-enum ComposerCreateActionListViewAction {
-    case selectAction(ComposerCreateAction)
 }

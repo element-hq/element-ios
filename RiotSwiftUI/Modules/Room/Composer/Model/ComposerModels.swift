@@ -18,12 +18,20 @@ import Foundation
 import SwiftUI
 import WysiwygComposer
 
+// MARK: View
+
+/// An item in the toolbar
 struct FormatItem {
+    
+    /// The type of the item
     let type: FormatType
+    /// Whether it is active(highlighted)
     let active: Bool
+    /// Whether it is disabled or enabled
     let disabled: Bool
 }
 
+/// The types of formatting actions
 enum FormatType {
     case bold
     case italic
@@ -35,12 +43,13 @@ extension FormatType: CaseIterable, Identifiable {
     var id: Self { self }
 }
 
-
 extension FormatItem: Identifiable {
     var id: FormatType { type }
 }
 
 extension FormatItem {
+    
+    /// The icon for the item
     var icon: String {
         switch type {
         case .bold:
@@ -69,6 +78,7 @@ extension FormatItem {
 }
 
 extension FormatType {
+    /// Convenience method to map it to the external ViewModel action
     var action: WysiwygAction {
         switch self {
         case .bold:
@@ -82,6 +92,9 @@ extension FormatType {
         }
     }
     
+    // TODO: We probably don't need to expose this, clean up.
+    
+    /// Convenience method to map it to the external rust binging action
     var composerAction: ComposerAction {
         switch self {
         case .bold:

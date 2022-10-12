@@ -19,16 +19,24 @@ import WysiwygComposer
 
 struct FormattingToolbar: View {
     
+    
+    // MARK: - Properties
+    
+    // MARK: Private
+    
+    // MARK: Public
+    
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    /// The list of items to render in the toolbar
     var formatItems: [FormatItem]
+    /// The action when an item is selected
     var formatAction: (FormatType) -> ()
     
     var body: some View {
         HStack {
            ForEach(formatItems) { item in
                Button {
-                   print("action")
                    formatAction(item.type)
                } label: {
                    Image(item.icon)
@@ -44,6 +52,8 @@ struct FormattingToolbar: View {
        }
     }
 }
+
+// MARK: - Previews
 
 struct FormattingToolbar_Previews: PreviewProvider {
     static var previews: some View {
