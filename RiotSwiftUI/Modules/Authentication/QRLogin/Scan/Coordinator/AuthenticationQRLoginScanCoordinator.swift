@@ -15,8 +15,8 @@
 //
 
 import CommonKit
-import SwiftUI
 import MatrixSDK
+import SwiftUI
 
 struct AuthenticationQRLoginScanCoordinatorParameters {
     let navigationRouter: NavigationRouterType

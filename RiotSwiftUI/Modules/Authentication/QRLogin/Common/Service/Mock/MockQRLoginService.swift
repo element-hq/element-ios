@@ -26,7 +26,7 @@ class MockQRLoginService: QRLoginServiceProtocol {
          canDisplayQR: Bool = true) {
         self.state = state
         self.mode = mode
-        self.mockCanDisplayQR = canDisplayQR
+        mockCanDisplayQR = canDisplayQR
     }
 
     // MARK: - QRLoginServiceProtocol

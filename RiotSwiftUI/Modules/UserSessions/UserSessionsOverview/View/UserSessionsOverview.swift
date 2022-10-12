@@ -24,7 +24,7 @@ struct UserSessionsOverview: View {
     private let maxOtherSessionsToDisplay = 5
     
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { _ in
             VStack(alignment: .leading, spacing: 0) {
                 ScrollView {
                     if hasSecurityRecommendations {
