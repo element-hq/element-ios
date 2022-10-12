@@ -600,7 +600,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
         [sectionLabs addRowWithTag:LABS_ENABLE_NEW_SESSION_MANAGER];
         [sectionLabs addRowWithTag:LABS_ENABLE_NEW_CLIENT_INFO_FEATURE];
-        [sectionLabs addRowWithTag:LABS_ENABLE_WYSIWYG_COMPOSER];
+        if (@available(iOS 15.0, *))
+        {
+            [sectionLabs addRowWithTag:LABS_ENABLE_WYSIWYG_COMPOSER];
+        }
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {

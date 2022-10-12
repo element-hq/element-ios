@@ -7535,7 +7535,7 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableThreads: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
   }
-  /// Use a rich text editor to send formatted messages
+  /// Try out the rich text editor (plain text mode coming soon)
   public static var settingsLabsEnableWysiwygComposer: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_wysiwyg_composer") 
   }

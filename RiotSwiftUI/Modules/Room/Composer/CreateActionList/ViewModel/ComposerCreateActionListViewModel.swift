@@ -32,7 +32,6 @@ class ComposerCreateActionListViewModel: ComposerCreateActionListViewModelType, 
 
     // MARK: - Public
 
-
     override func process(viewAction: ComposerCreateActionListViewAction) {
         switch viewAction {
         case .selectAction(let action):

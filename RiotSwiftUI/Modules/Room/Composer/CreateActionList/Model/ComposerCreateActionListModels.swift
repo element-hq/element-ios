@@ -16,12 +16,33 @@
 
 import Foundation
 
+// MARK: View model
+
+enum ComposerCreateActionListViewModelResult: Equatable {
+    // The user selected an action
+    case done(ComposerCreateAction)
+}
+
+// MARK: View
+
+struct ComposerCreateActionListViewState: BindableState {
+    
+    /// The list of composer create actions to display to the user
+    let actions: [ComposerCreateAction]
+}
+
 @objc enum ComposerCreateAction: Int {
+    /// Upload a photo/video from the media library
     case photoLibrary
+    /// Add a sticker
     case stickers
+    /// Upload an attachment
     case attachments
+    /// Create a Poll
     case polls
+    /// Add a location
     case location
+    /// Upload a photo or video from the camera
     case camera
 }
 
@@ -63,12 +84,4 @@ extension ComposerCreateAction {
             return Asset.Images.actionCamera.name
         }
     }
-}
-
-struct ComposerCreateActionListViewState: BindableState {
-    let actions: [ComposerCreateAction]
-}
-
-enum ComposerCreateActionListViewModelResult: Equatable {
-    case done(ComposerCreateAction)
 }

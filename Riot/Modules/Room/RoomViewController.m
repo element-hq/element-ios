@@ -1997,13 +1997,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     // Show or hide input tool bar
     [self updateInputToolBarVisibility];
     
-    if (@available(iOS 15.0, *)) {
-        if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:WysiwygInputToolbarView.class]) {
-            // Update actions when the input toolbar refreshed
-            [self setupActions];
-        }
-    }
-        
     // Check whether the input toolbar is ready before updating it.
     if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
     {
