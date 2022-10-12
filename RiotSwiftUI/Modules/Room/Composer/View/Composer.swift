@@ -36,6 +36,9 @@ struct Composer: View {
     private var verticalPadding: CGFloat {
         (borderHeight - minTextViewHeight) / 2
     }
+    private var topPadding: CGFloat {
+        viewModel.viewState.shouldDisplayContext ? 0 : verticalPadding
+    }
     private var cornerRadius: CGFloat {
         viewModel.viewState.shouldDisplayContext ? 14 : borderHeight / 2
     }
@@ -55,7 +58,7 @@ struct Composer: View {
             let rect = RoundedRectangle(cornerRadius: cornerRadius)
             // TODO: Fix maximise animation bugs before re-enabling
             //            ZStack(alignment: .topTrailing) {
-            VStack {
+            VStack(spacing: 12) {
                 if viewModel.viewState.shouldDisplayContext {
                     HStack {
                         if let imageName = viewModel.viewState.contextImageName {
@@ -64,7 +67,7 @@ struct Composer: View {
                         }
                         if let contextDescription = viewModel.viewState.contextDescription {
                             Text(contextDescription)
-                                .font(.system(size: 12.0, weight: .medium))
+                                .font(.system(size: 12, weight: .medium))
                                 .foregroundColor(theme.colors.secondaryContent)
                         }
                         Spacer()
@@ -74,10 +77,9 @@ struct Composer: View {
                             Image(Asset.Images.inputCloseIcon.name)
                                 .foregroundColor(theme.colors.tertiaryContent)
                         }
-                        .frame(height: 30)
                     }
+                    .padding(.top, 8)
                     .padding(.horizontal, horizontalPadding)
-                    .padding(.bottom, -verticalPadding)
                 }
                 WysiwygComposerView(
                     content: wysiwygViewModel.content,
@@ -102,7 +104,8 @@ struct Composer: View {
                 //                .padding(.top, 4)
                 //                .padding(.trailing, 12)
                 //            }
-                .padding(.vertical, verticalPadding)
+                .padding(.top, topPadding)
+                .padding(.bottom, verticalPadding)
             }
             .clipShape(rect)
             .overlay(rect.stroke(theme.colors.quinaryContent, lineWidth: 2))
