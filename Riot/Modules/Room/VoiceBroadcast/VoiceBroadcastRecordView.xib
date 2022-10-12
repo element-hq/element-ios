@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleAspectFill" id="dBx-di-5r5" userLabel="Voice Broadcast Record View" customClass="VoiceBroadcastRecordView" customModule="Element" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="490" height="48"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gdd-3s-KAV" userLabel="Background View">
+                    <rect key="frame" x="0.0" y="0.0" width="490" height="48"/>
+                    <color key="backgroundColor" red="0.91372549530000002" green="0.92941176889999999" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="S2k-eO-IZL"/>
+                    </constraints>
+                </view>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="nQ7-71-oWT">
+                    <rect key="frame" x="12" y="0.0" width="466" height="48"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm8-En-lcI" userLabel="Record Button">
+                            <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="VVN-p3-4Rh"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="voice_broadcast_record_button"/>
+                            <connections>
+                                <action selector="onRecordButtonTap" destination="dBx-di-5r5" eventType="touchUpInside" id="nPQ-hW-gNp"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mhg-8K-MBg" userLabel="Stop Button">
+                            <rect key="frame" x="418" y="0.0" width="48" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="jpV-Rd-bHs"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="voice_broadcast_stop_button"/>
+                            <connections>
+                                <action selector="onStopButtonTap" destination="dBx-di-5r5" eventType="touchUpInside" id="dhI-PM-uDg"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="phy-a0-3BI"/>
+            <constraints>
+                <constraint firstItem="gdd-3s-KAV" firstAttribute="top" secondItem="dBx-di-5r5" secondAttribute="top" id="0yn-pf-41h"/>
+                <constraint firstItem="nQ7-71-oWT" firstAttribute="top" secondItem="dBx-di-5r5" secondAttribute="top" id="1hh-Bi-nhX"/>
+                <constraint firstItem="nQ7-71-oWT" firstAttribute="bottom" secondItem="dBx-di-5r5" secondAttribute="bottom" id="RWX-mS-gSr"/>
+                <constraint firstItem="phy-a0-3BI" firstAttribute="trailing" secondItem="gdd-3s-KAV" secondAttribute="trailing" id="UU1-Uu-186"/>
+                <constraint firstItem="nQ7-71-oWT" firstAttribute="leading" secondItem="dBx-di-5r5" secondAttribute="leading" constant="12" id="bM8-qJ-Go3"/>
+                <constraint firstItem="gdd-3s-KAV" firstAttribute="bottom" secondItem="dBx-di-5r5" secondAttribute="bottom" id="chw-sa-0mT"/>
+                <constraint firstItem="gdd-3s-KAV" firstAttribute="leading" secondItem="phy-a0-3BI" secondAttribute="leading" id="hLk-Fw-iBc"/>
+                <constraint firstAttribute="trailing" secondItem="nQ7-71-oWT" secondAttribute="trailing" constant="12" id="hs1-fx-Tai"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="recordButton" destination="xm8-En-lcI" id="qnW-1O-8dI"/>
+                <outlet property="stopButton" destination="Mhg-8K-MBg" id="M2g-v7-k7T"/>
+            </connections>
+            <point key="canvasLocation" x="255.38461538461539" y="33.412322274881518"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="voice_broadcast_record_button" width="48" height="48"/>
+        <image name="voice_broadcast_stop_button" width="48" height="48"/>
+    </resources>
+</document>

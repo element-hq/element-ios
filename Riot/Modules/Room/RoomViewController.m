@@ -3211,6 +3211,10 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
+    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcast)
+    {
+        cellIdentifier = RoomTimelineCellIdentifierVoiceBroadcast;
+    }
     else if (roomBubbleCellData.getFirstBubbleComponentWithDisplay.event.isEmote)
     {
         if (bubbleData.isIncoming)
@@ -7817,13 +7821,29 @@ static CGSize kThreadListBarButtonItemImageSize;
                        samples:(NSArray<NSNumber *> *)samples
                     completion:(void (^)(BOOL))completion
 {
-    [self.roomDataSource sendVoiceMessage:url mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
+//    [self.roomDataSource sendVoiceMessage:url mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
+//        MXLogDebug(@"Success with event id %@", eventId);
+//        completion(YES);
+//    } failure:^(NSError *error) {
+//        MXLogError(@"Failed sending voice message");
+//        completion(NO);
+//    }];
+    
+    [self.customizedRoomDataSource sendVoiceBroadcastWithAudioFileLocalURL:url voiceBroadcastInfoEventId:self.voiceBroadcastService.eventId mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
         MXLogDebug(@"Success with event id %@", eventId);
         completion(YES);
     } failure:^(NSError *error) {
         MXLogError(@"Failed sending voice message");
         completion(NO);
     }];
+    
+//    [self.customizedRoomDataSource sendVoiceBroadcastWithAudioFileLocalURL:url voiceBroadcastInfoEventId:self.voiceBroadcastService.eventId mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
+//        MXLogDebug(@"Success with event id %@", eventId);
+//        completion(YES);
+//    } failure:^(NSError *error) {
+//        MXLogError(@"Failed sending voice message");
+//        completion(NO);
+//    }];
 }
 
 #pragma mark - SpaceDetailPresenterDelegate

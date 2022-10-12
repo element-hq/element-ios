@@ -168,6 +168,9 @@ typedef NS_ENUM(NSUInteger, RoomTimelineCellIdentifier) {
     RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo,
     RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle,
     
+    // - Voice broadcast
+    RoomTimelineCellIdentifierVoiceBroadcast,
+    
     // - Others
     RoomTimelineCellIdentifierEmpty,
     RoomTimelineCellIdentifierSelectedSticker,

@@ -307,7 +307,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             
             break;
         case RoomBubbleCellDataTagVoiceBroadcast:
-            hasNoDisplay = YES;
+            hasNoDisplay = NO;
             break;
         default:
             hasNoDisplay = [super hasNoDisplay];

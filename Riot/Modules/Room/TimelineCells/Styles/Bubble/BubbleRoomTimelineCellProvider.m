@@ -132,6 +132,12 @@
     [tableView registerClass:FileWithoutThumbnailOutoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:FileWithoutThumbnailOutoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
 }
 
+- (void)registerVoiceBroadcastCellsForTableView:(UITableView*)tableView
+{
+    // Recording
+    [tableView registerClass:VoiceBroadcastBubbleCell.class forCellReuseIdentifier:VoiceBroadcastBubbleCell.defaultReuseIdentifier];
+}
+
 #pragma mark - Mapping
 
 - (NSDictionary<NSNumber*, Class>*)incomingTextMessageCellsMapping
@@ -290,6 +296,14 @@
         @(RoomTimelineCellIdentifierOutgoingLocation) : LocationOutgoingWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo) : LocationOutgoingWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle) : LocationOutgoingWithPaginationTitleBubbleCell.class
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)voiceBroadcastCellsMapping
+{
+    return @{
+        // Recording
+        @(RoomTimelineCellIdentifierVoiceBroadcast) : VoiceBroadcastBubbleCell.class
     };
 }
 

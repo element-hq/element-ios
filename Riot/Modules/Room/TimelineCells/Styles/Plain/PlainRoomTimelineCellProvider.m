@@ -112,6 +112,8 @@
     [self registerLocationCellsForTableView:tableView];
     
     [self registerFileWithoutThumbnailCellsForTableView:tableView];
+    
+    [self registerVoiceBroadcastCellsForTableView:tableView];
 
     [tableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
     
@@ -270,6 +272,11 @@
     [tableView registerClass:FileWithoutThumbnailWithPaginationTitlePlainCell.class forCellReuseIdentifier:FileWithoutThumbnailWithPaginationTitlePlainCell.defaultReuseIdentifier];
 }
 
+- (void)registerVoiceBroadcastCellsForTableView:(UITableView*)tableView
+{
+    [tableView registerClass:VoiceBroadcastPlainCell.class forCellReuseIdentifier:VoiceBroadcastPlainCell.defaultReuseIdentifier];
+}
+
 #pragma mark Cell class association
 
 - (NSDictionary<NSNumber*, Class>*)buildCellClasses
@@ -327,6 +334,9 @@
     
     NSDictionary *locationCellsMapping = [self locationCellsMapping];
     [cellClasses addEntriesFromDictionary:locationCellsMapping];
+    
+    NSDictionary *voiceBroadcastCellsMapping = [self voiceBroadcastCellsMapping];
+    [cellClasses addEntriesFromDictionary:voiceBroadcastCellsMapping];
         
     NSDictionary *othersCells = @{
         @(RoomTimelineCellIdentifierEmpty) : RoomEmptyBubbleCell.class,
@@ -547,6 +557,14 @@
         @(RoomTimelineCellIdentifierOutgoingLocation) : LocationPlainCell.class,
         @(RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo) : LocationWithoutSenderInfoPlainCell.class,
         @(RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle) : LocationWithPaginationTitlePlainCell.class
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)voiceBroadcastCellsMapping
+{
+    return @{
+        // Recording
+        @(RoomTimelineCellIdentifierVoiceBroadcast) : VoiceBroadcastPlainCell.class
     };
 }
 
