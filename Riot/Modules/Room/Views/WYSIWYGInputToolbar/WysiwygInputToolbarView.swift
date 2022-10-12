@@ -58,10 +58,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     var sendMode: RoomInputToolbarViewSendMode {
         get {
-            viewModel.sendMode
+            viewModel.sendMode.legacySendMode
         }
         set {
-            viewModel.sendMode = newValue
+            viewModel.sendMode = ComposerSendMode(from: newValue)
         }
     }
     
@@ -165,5 +165,25 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     private func update(theme: Theme) {
         hostingViewController.view.backgroundColor = theme.colors.background
+    }
+}
+
+fileprivate extension ComposerSendMode {
+    init(from sendMode: RoomInputToolbarViewSendMode) {
+        switch sendMode {
+        case .reply: self = .reply
+        case .edit: self = .edit
+        case .createDM: self = .createDM
+        default: self = .send
+        }
+    }
+    
+    var legacySendMode: RoomInputToolbarViewSendMode {
+        switch self {
+        case .createDM: return .createDM
+        case .reply: return .reply
+        case .edit: return .edit
+        case .send: return .send
+        }
     }
 }

@@ -96,6 +96,13 @@ extension FormatType {
     }
 }
 
+enum ComposerSendMode: Equatable {
+    case send
+    case edit
+    case reply
+    case createDM
+}
+
 enum ComposerViewAction {
     case cancel
 }

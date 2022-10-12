@@ -19,6 +19,6 @@ import Foundation
 protocol ComposerViewModelProtocol {
     var context: ComposerViewModelType.Context { get }
     var callback: ((ComposerViewModelResult) -> Void)? { get set }
-    var sendMode: RoomInputToolbarViewSendMode { get set }
+    var sendMode: ComposerSendMode { get set }
     var eventSenderDisplayName: String? { get set }
 }

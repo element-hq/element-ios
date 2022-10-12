@@ -27,7 +27,7 @@ class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol {
     // MARK: Public
     var callback: ((ComposerViewModelResult) -> Void)?
     
-    var sendMode: RoomInputToolbarViewSendMode {
+    var sendMode: ComposerSendMode {
         get {
             state.sendMode
         }

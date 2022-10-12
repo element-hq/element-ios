@@ -109,7 +109,7 @@ struct Composer: View {
             }
             .clipShape(rect)
             .overlay(rect.stroke(theme.colors.quinaryContent, lineWidth: 2))
-            .padding(.horizontal, 12)
+            .padding(.horizontal, horizontalPadding)
             .padding(.top, 8)
             .padding(.bottom, 4)
             HStack {

@@ -18,7 +18,7 @@ import Foundation
 
 struct ComposerViewState: BindableState {
     var eventSenderDisplayName: String?
-    var sendMode: RoomInputToolbarViewSendMode = .send
+    var sendMode: ComposerSendMode = .send
 }
 
 extension ComposerViewState {
