@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,6 @@ enum ComposerCreateActionListViewModelResult: Equatable {
 // MARK: View
 
 struct ComposerCreateActionListViewState: BindableState {
-    
     /// The list of composer create actions to display to the user
     let actions: [ComposerCreateAction]
 }

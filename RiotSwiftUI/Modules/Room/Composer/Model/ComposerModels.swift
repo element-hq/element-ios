@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,6 @@ import WysiwygComposer
 
 /// An item in the toolbar
 struct FormatItem {
-    
     /// The type of the item
     let type: FormatType
     /// Whether it is active(highlighted)
@@ -48,7 +47,6 @@ extension FormatItem: Identifiable {
 }
 
 extension FormatItem {
-    
     /// The icon for the item
     var icon: String {
         switch type {

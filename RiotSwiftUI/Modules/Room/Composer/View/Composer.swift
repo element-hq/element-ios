@@ -19,11 +19,11 @@ import SwiftUI
 import WysiwygComposer
 
 struct Composer: View {
-    
     // MARK: - Properties
     
     // MARK: Private
     
+    @State var focused = false
     private let borderHeight: CGFloat = 44
     private let minTextViewHeight: CGFloat = 20
     private var verticalPadding: CGFloat {
@@ -85,6 +85,11 @@ struct Composer: View {
             .padding(.horizontal, 12)
             .padding(.top, 8)
             .padding(.bottom, 4)
+            .onTapGesture {
+                if !focused {
+                    focused = true
+                }
+            }
             HStack {
                 Button {
                     showSendMediaActions()
@@ -131,6 +136,7 @@ struct Composer: View {
 }
 
 // MARK: Previews
+
 struct Composer_Previews: PreviewProvider {
     static let stateRenderer = MockComposerScreenState.stateRenderer
     static var previews: some View {

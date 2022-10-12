@@ -19,7 +19,6 @@ import SwiftUI
 typealias ComposerCreateActionListViewModelType = StateStoreViewModel<ComposerCreateActionListViewState, ComposerCreateActionListViewAction>
 
 class ComposerCreateActionListViewModel: ComposerCreateActionListViewModelType, ComposerCreateActionListViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private

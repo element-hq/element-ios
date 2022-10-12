@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +18,6 @@ import SwiftUI
 import WysiwygComposer
 
 struct FormattingToolbar: View {
-    
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -31,25 +29,24 @@ struct FormattingToolbar: View {
     /// The list of items to render in the toolbar
     var formatItems: [FormatItem]
     /// The action when an item is selected
-    var formatAction: (FormatType) -> ()
+    var formatAction: (FormatType) -> Void
     
     var body: some View {
         HStack {
-           ForEach(formatItems) { item in
-               Button {
-                   formatAction(item.type)
-               } label: {
-                   Image(item.icon)
-                       .renderingMode(.template)
-                       .foregroundColor(item.active ? theme.colors.accent : theme.colors.tertiaryContent)
-               }
-               .disabled(item.disabled)
-               .background(item.active ? theme.colors.accent.opacity(0.1) : theme.colors.background)
-                   .cornerRadius(8)
-               .accessibilityIdentifier(item.accessibilityIdentifier)
-           }
-
-       }
+            ForEach(formatItems) { item in
+                Button {
+                    formatAction(item.type)
+                } label: {
+                    Image(item.icon)
+                        .renderingMode(.template)
+                        .foregroundColor(item.active ? theme.colors.accent : theme.colors.tertiaryContent)
+                }
+                .disabled(item.disabled)
+                .background(item.active ? theme.colors.accent.opacity(0.1) : theme.colors.background)
+                .cornerRadius(8)
+                .accessibilityIdentifier(item.accessibilityIdentifier)
+            }
+        }
     }
 }
 
