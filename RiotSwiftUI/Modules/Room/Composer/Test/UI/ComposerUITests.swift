@@ -32,28 +32,6 @@ final class ComposerUITests: MockScreenTestCase {
         XCTAssertFalse(app.buttons["editButton"].exists)
     }
     
-    func testEditMode() throws {
-        app.goToScreenWithIdentifier(MockComposerScreenState.edit.title)
-
-        let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
-        XCTAssertTrue(wysiwygTextView.exists)
-        let editButton = app.buttons["editButton"]
-        XCTAssert(!editButton.exists)
-        
-        let cancelButton = app.buttons["cancelButton"]
-        XCTAssertTrue(cancelButton.exists)
-        
-        wysiwygTextView.tap()
-        wysiwygTextView.typeText("test")
-        XCTAssertTrue(editButton.exists)
-        XCTAssertFalse(app.buttons["sendButton"].exists)
-        
-        cancelButton.tap()
-        let textViewContent = wysiwygTextView.value as! String
-        XCTAssertTrue(textViewContent.isEmpty)
-        XCTAssertFalse(cancelButton.exists)
-    }
-    
     func testReplyMode() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.reply.title)
         
@@ -73,6 +51,28 @@ final class ComposerUITests: MockScreenTestCase {
         cancelButton.tap()
         let textViewContent = wysiwygTextView.value as! String
         XCTAssertFalse(textViewContent.isEmpty)
+        XCTAssertFalse(cancelButton.exists)
+    }
+    
+    func testEditMode() throws {
+        app.goToScreenWithIdentifier(MockComposerScreenState.edit.title)
+
+        let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
+        XCTAssertTrue(wysiwygTextView.exists)
+        let editButton = app.buttons["editButton"]
+        XCTAssert(!editButton.exists)
+        
+        let cancelButton = app.buttons["cancelButton"]
+        XCTAssertTrue(cancelButton.exists)
+        
+        wysiwygTextView.tap()
+        wysiwygTextView.typeText("test")
+        XCTAssertTrue(editButton.exists)
+        XCTAssertFalse(app.buttons["sendButton"].exists)
+        
+        cancelButton.tap()
+        let textViewContent = wysiwygTextView.value as! String
+        XCTAssertTrue(textViewContent.isEmpty)
         XCTAssertFalse(cancelButton.exists)
     }
 }

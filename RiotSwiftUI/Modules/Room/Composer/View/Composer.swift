@@ -89,7 +89,6 @@ struct Composer: View {
                             Image(Asset.Images.inputCloseIcon.name)
                                 .foregroundColor(theme.colors.tertiaryContent)
                         }
-                        .accessibilityAddTraits(.isButton)
                         .accessibilityIdentifier("cancelButton")
                     }
                     .padding(.top, 8)
