@@ -42,8 +42,7 @@ final class ComposerViewModelTests: XCTestCase {
         XCTAssert(context.viewState.shouldDisplayContext == true)
         XCTAssert(context.viewState.eventSenderDisplayName == nil)
         XCTAssert(context.viewState.contextImageName == Asset.Images.inputEditIcon.name)
-        // Need to improve this test
-        XCTAssert(context.viewState.contextDescription != nil)
+        XCTAssert(context.viewState.contextDescription == VectorL10n.roomMessageEditing)
     }
     
     func testReplyState() {
@@ -53,8 +52,7 @@ final class ComposerViewModelTests: XCTestCase {
         XCTAssert(context.viewState.shouldDisplayContext == true)
         XCTAssert(context.viewState.eventSenderDisplayName == "TestUser")
         XCTAssert(context.viewState.contextImageName == Asset.Images.inputReplyIcon.name)
-        // Need to imporove this test
-        XCTAssert(context.viewState.contextDescription != nil)
+        XCTAssert(context.viewState.contextDescription == VectorL10n.roomMessageReplyingTo("TestUser"))
     }
     
     func testCancelTapped() {
