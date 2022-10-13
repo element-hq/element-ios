@@ -43,9 +43,9 @@ class VectorHostingController: UIHostingController<AnyView> {
     var enableNavigationBarScrollEdgeAppearance = false
     /// When non-nil, the style will be applied to the status bar.
     var statusBarStyle: UIStatusBarStyle?
-    /// Whether or not to publish when the height of the view changes
+    /// Whether or not to publish when the height of the view changes.
     var publishHeightChanges: Bool = false
-    /// The publisher to subscribe to if `publishHeightChanges` is enabled.vi
+    /// The publisher to subscribe to if `publishHeightChanges` is enabled.
     var heightPublisher: AnyPublisher<CGFloat, Never> {
         return heightSubject.eraseToAnyPublisher()
     }

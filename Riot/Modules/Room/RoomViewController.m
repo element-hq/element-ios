@@ -2047,7 +2047,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)setInputToolBarSendMode:(RoomInputToolbarViewSendMode)sendMode forEventWithId:(NSString *)eventId
 {
-    if ((self.inputToolbarView) && [self inputToolbarConformsToToolbarViewProtocol])
+    if (self.inputToolbarView && [self inputToolbarConformsToToolbarViewProtocol])
     {
         MXKRoomInputToolbarView <RoomInputToolbarViewProtocol> *roomInputToolbarView = (MXKRoomInputToolbarView <RoomInputToolbarViewProtocol> *) self.inputToolbarView;
         if (eventId)

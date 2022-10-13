@@ -72,6 +72,23 @@ extension ComposerCreateAction {
         }
     }
     
+    var accessibilityIdentifier: String {
+        switch self {
+        case .photoLibrary:
+            return "photoLibraryAction"
+        case .stickers:
+            return "stickersAction"
+        case .attachments:
+            return "attachmentsAction"
+        case .polls:
+            return "pollsAction"
+        case .location:
+            return "locationAction"
+        case .camera:
+            return "cameraAction"
+        }
+    }
+    
     var icon: String {
         switch self {
         case .photoLibrary:

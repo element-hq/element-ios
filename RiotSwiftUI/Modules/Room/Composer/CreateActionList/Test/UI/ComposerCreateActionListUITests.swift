@@ -21,14 +21,14 @@ class ComposerCreateActionListUITests: MockScreenTestCase {
     func testFullList() throws {
         app.goToScreenWithIdentifier(MockComposerCreateActionListScreenState.fullList.title)
         
-        XCTAssert(app.staticTexts["Photo Library"].exists)
-        XCTAssert(app.staticTexts["Location"].exists)
+        XCTAssert(app.staticTexts[ComposerCreateAction.photoLibrary.accessibilityIdentifier].exists)
+        XCTAssert(app.staticTexts[ComposerCreateAction.location.accessibilityIdentifier].exists)
     }
     
     func testPartialList() throws {
         app.goToScreenWithIdentifier(MockComposerCreateActionListScreenState.partialList.title)
         
-        XCTAssert(app.staticTexts["Photo Library"].exists)
-        XCTAssertFalse(app.staticTexts["Location"].exists)
+        XCTAssert(app.staticTexts[ComposerCreateAction.photoLibrary.accessibilityIdentifier].exists)
+        XCTAssertFalse(app.staticTexts[ComposerCreateAction.location.accessibilityIdentifier].exists)
     }
 }
