@@ -79,6 +79,7 @@ struct Composer: View {
                         }
                         if let contextDescription = viewModel.viewState.contextDescription {
                             Text(contextDescription)
+                                .accessibilityIdentifier("contextDescription")
                                 .font(.system(size: 12, weight: .medium))
                                 .foregroundColor(theme.colors.secondaryContent)
                         }

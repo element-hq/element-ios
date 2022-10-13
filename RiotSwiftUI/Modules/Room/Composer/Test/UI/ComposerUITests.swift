@@ -43,6 +43,10 @@ final class ComposerUITests: MockScreenTestCase {
         let cancelButton = app.buttons["cancelButton"]
         XCTAssertTrue(cancelButton.exists)
         
+        let contextDescription = app.staticTexts["contextDescription"]
+        XCTAssertTrue(contextDescription.exists)
+        XCTAssert(contextDescription.label == VectorL10n.roomMessageReplyingTo("TestUser"))
+        
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
         XCTAssertTrue(sendButton.exists)
@@ -64,6 +68,10 @@ final class ComposerUITests: MockScreenTestCase {
         
         let cancelButton = app.buttons["cancelButton"]
         XCTAssertTrue(cancelButton.exists)
+        
+        let contextDescription = app.staticTexts["contextDescription"]
+        XCTAssertTrue(contextDescription.exists)
+        XCTAssert(contextDescription.label == VectorL10n.roomMessageEditing)
         
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
