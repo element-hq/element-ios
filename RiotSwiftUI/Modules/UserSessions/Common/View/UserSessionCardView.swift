@@ -81,7 +81,7 @@ struct UserSessionCardView: View {
                 }
             }
             
-            if viewData.verificationState != .verified {
+            if viewData.verificationState == .unverified {
                 Button {
                     onVerifyAction?(viewData.sessionId)
                 } label: {

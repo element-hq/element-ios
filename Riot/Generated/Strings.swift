@@ -8679,9 +8679,17 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionSecurityRecommendationTitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_security_recommendation_title") 
   }
+  /// Verify or sign out from this session for best security and reliability.
+  public static var userOtherSessionUnverifiedAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_other_session_unverified_additional_info") 
+  }
   /// Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.
   public static var userOtherSessionUnverifiedSessionsHeaderSubtitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_unverified_sessions_header_subtitle") 
+  }
+  /// This session is ready for secure messaging.
+  public static var userOtherSessionVerifiedAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_other_session_verified_additional_info") 
   }
   /// For best security, sign out from any session that you don’t recognize or use anymore.
   public static var userOtherSessionVerifiedSessionsHeaderSubtitle: String { 
@@ -8726,6 +8734,10 @@ public class VectorL10n: NSObject {
   /// Device
   public static var userSessionDetailsDeviceSectionHeader: String { 
     return VectorL10n.tr("Vector", "user_session_details_device_section_header") 
+  }
+  /// Last activity
+  public static var userSessionDetailsLastActivity: String { 
+    return VectorL10n.tr("Vector", "user_session_details_last_activity") 
   }
   /// Session ID
   public static var userSessionDetailsSessionId: String { 

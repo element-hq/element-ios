@@ -2431,7 +2431,8 @@ To enable access, tap Settings> Location and select Always";
 "user_session_verified_additional_info" = "Your current session is ready for secure messaging.";
 "user_session_unverified_additional_info" = "Verify your current session for enhanced secure messaging.";
 "user_session_verification_unknown_additional_info" = "Verify your current session to reveal this session's verification status.";
-
+"user_other_session_unverified_additional_info" = "Verify or sign out from this session for best security and reliability.";
+"user_other_session_verified_additional_info" = "This session is ready for secure messaging.";
 "user_session_push_notifications" = "Push notifications";
 "user_session_push_notifications_message" = "When turned on, this session will receive push notifications.";
 
@@ -2476,6 +2477,7 @@ To enable access, tap Settings> Location and select Always";
 "user_session_details_session_name" = "Session name";
 "user_session_details_session_id" = "Session ID";
 "user_session_details_session_section_footer" = "Copy any data by tapping on it and holding it down.";
+"user_session_details_last_activity" = "Last activity";
 "user_session_details_device_ip_address" = "IP address";
 "user_session_details_device_ip_location" = "IP location";
 "user_session_details_device_model" = "Model";
