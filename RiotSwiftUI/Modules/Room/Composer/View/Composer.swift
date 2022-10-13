@@ -140,6 +140,7 @@ struct Composer: View {
                         .padding(11)
                         .background(Circle().fill(theme.colors.system))
                 }
+                .accessibilityLabel(VectorL10n.create)
                 FormattingToolbar(formatItems: formatItems) { type in
                     wysiwygViewModel.apply(type.action)
                 }
@@ -167,6 +168,7 @@ struct Composer: View {
                         }
                     }
                     .accessibilityIdentifier(actionButtonAccessibilityIdentifier)
+                    .accessibilityLabel(VectorL10n.send)
                     .isHidden(!showSendButton)
                 }
                 .onChange(of: wysiwygViewModel.isContentEmpty) { empty in

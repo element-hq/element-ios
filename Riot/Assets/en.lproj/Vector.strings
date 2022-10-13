@@ -2478,7 +2478,7 @@ To enable access, tap Settings> Location and select Always";
 
 // Mark: - WYSIWYG Composer
 
-//Send Media Actions
+// Send Media Actions
 "wysiwyg_composer_start_action_media_picker" = "Photo Library";
 "wysiwyg_composer_start_action_stickers" = "Stickers";
 "wysiwyg_composer_start_action_attachments" = "Attachments";
@@ -2486,6 +2486,12 @@ To enable access, tap Settings> Location and select Always";
 "wysiwyg_composer_start_action_location" = "Location";
 "wysiwyg_composer_start_action_camera" = "Camera";
 "wysiwyg_composer_start_action_text_formatting" = "Text Formatting";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Apply bold format";
+"wysiwyg_composer_format_action_italic" = "Apply italic format";
+"wysiwyg_composer_format_action_underline" = "Apply strikethrough format";
+"wysiwyg_composer_format_action_strikethrough" = "Apply underline format";
 
 // MARK: - MatrixKit
 

@@ -9099,6 +9099,22 @@ public class VectorL10n: NSObject {
   public static var widgetStickerPickerNoStickerpacksAlertAddNow: String { 
     return VectorL10n.tr("Vector", "widget_sticker_picker_no_stickerpacks_alert_add_now") 
   }
+  /// Apply bold format
+  public static var wysiwygComposerFormatActionBold: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_bold") 
+  }
+  /// Apply italic format
+  public static var wysiwygComposerFormatActionItalic: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_italic") 
+  }
+  /// Apply underline format
+  public static var wysiwygComposerFormatActionStrikethrough: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_strikethrough") 
+  }
+  /// Apply strikethrough format
+  public static var wysiwygComposerFormatActionUnderline: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_underline") 
+  }
   /// Attachments
   public static var wysiwygComposerStartActionAttachments: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_attachments") 

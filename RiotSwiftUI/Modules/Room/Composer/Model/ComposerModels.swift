@@ -73,6 +73,19 @@ extension FormatItem {
             return "underlineButton"
         }
     }
+    
+    var accessibilityLabel: String {
+        switch type {
+        case .bold:
+            return VectorL10n.wysiwygComposerFormatActionBold
+        case .italic:
+            return VectorL10n.wysiwygComposerFormatActionItalic
+        case .strikethrough:
+            return VectorL10n.wysiwygComposerFormatActionStrikethrough
+        case .underline:
+            return VectorL10n.wysiwygComposerFormatActionUnderline
+        }
+    }
 }
 
 extension FormatType {
