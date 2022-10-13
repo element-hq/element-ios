@@ -169,7 +169,8 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         MXLog.debug("[QRLoginService] processQRLoginCode: \(code)")
         state = .connectingToDevice
         
-        guard let uri = code.rendezvous.transport?.uri,
+        guard code.intent == QRLoginRendezvousPayload.Intent.loginReciprocate.rawValue,
+              let uri = code.rendezvous.transport?.uri,
               let rendezvousURL = URL(string: uri),
               let key = code.rendezvous.key else {
             MXLog.debug("[QRLoginService] QR code invalid")
@@ -189,8 +190,6 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         }
         
         state = .waitingForConfirmation(validationCode)
-        
-        // TODO: check compatibility of intents
         
         MXLog.debug("[QRLoginService] Waiting for available protocols")
         guard case let .success(data) = await rendezvousService.receive(),

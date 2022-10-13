@@ -84,6 +84,7 @@ struct QRLoginRendezvousPayload: Codable {
 
     enum Intent: String, Codable {
         case loginStart = "login.start"
+        case loginReciprocate = "login.reciprocate"
     }
     
     enum Outcome: String, Codable {
