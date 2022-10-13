@@ -283,24 +283,12 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         
         MXLog.debug("[QRLoginService] Found verifying device info \(verifyingDeviceInfo)")
         
-        var securityCompleted = false
         if verifyingDeviceInfo.fingerprint == verifyingDeviceKey {
             MXLog.debug("[QRLoginService] Locally marking the existing device as verified \(verifyingDeviceInfo)")
             await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
                 session.crypto.setDeviceVerification(.verified, forDevice: verifiyingDeviceId, ofUser: session.myUserId) {
                     MXLog.debug("[QRLoginService] Marked the existing device as verified")
-                    
-                    MXLog.debug("[QRLoginService] Recovering secrets Through the existing device")
-                    session.crypto.crossSigning.requestPrivateKeys(toDeviceIds: [verifiyingDeviceId]) {
-                        MXLog.debug("[QRLoginService] Secrets recovered")
-                        securityCompleted = true
-                        continuation.resume(returning: ())
-                    } onPrivateKeysReceived: {
-                        // Do nothing
-                    } failure: { _ in
-                        MXLog.debug("[QRLoginService] Failed recovering secrets")
-                        continuation.resume(returning: ())
-                    }
+                    continuation.resume(returning: ())
                 } failure: { _ in
                     MXLog.debug("[QRLoginService] Failed marking the existing device as verified")
                     continuation.resume(returning: ())
@@ -309,7 +297,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         }
         
         MXLog.debug("[QRLoginService] Login flow finished, returning session")
-        state = .completed(session: session, securityCompleted: securityCompleted)
+        state = .completed(session: session, securityCompleted: true)
     }
     
     private func declineRendezvous() async {
