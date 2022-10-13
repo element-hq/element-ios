@@ -252,14 +252,8 @@ import MediaPlayer
             return
         }
         
-        let artwork = MPMediaItemArtwork(boundsSize: Constants.roomAvatarImageSize) { [weak self] size in
-            return self?.roomAvatar ?? UIImage()
-        }
-        
         let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
-        nowPlayingInfoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: audioPlayer.displayName ?? VectorL10n.voiceMessageLockScreenPlaceholder,
-                                               MPMediaItemPropertyArtist: currentRoomSummary?.displayname as Any,
-                                               MPMediaItemPropertyArtwork: artwork,
+        nowPlayingInfoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: VectorL10n.voiceMessageLockScreenPlaceholder,
                                                MPMediaItemPropertyPlaybackDuration: audioPlayer.duration as Any,
                                                MPNowPlayingInfoPropertyElapsedPlaybackTime: audioPlayer.currentTime as Any]
     }
