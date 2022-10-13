@@ -23,7 +23,7 @@ import UIKit
 import CoreGraphics
 
 @objc protocol HtmlRoomInputToolbarViewProtocol: RoomInputToolbarViewProtocol {
-    @objc func setHtml(content: String)
+    @objc var htmlContent: String { get set }
 }
 
 // The toolbar for editing with rich text
@@ -37,14 +37,40 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var cancellables = Set<AnyCancellable>()
     private var heightConstraint: NSLayoutConstraint!
     private var hostingViewController: VectorHostingController!
-    private var viewModel: WysiwygComposerViewModel!
+    private var wysiwygViewModel = WysiwygComposerViewModel()
+    private var viewModel: ComposerViewModelProtocol! = ComposerViewModel(initialViewState: ComposerViewState())
     
     // MARK: Public
     
+    /// The current html content of the composer
+    var htmlContent: String {
+        get {
+            wysiwygViewModel.content.html
+        }
+        set {
+            wysiwygViewModel.setHtmlContent(newValue)
+        }
+    }
+    
     /// The display name to show when in edit/reply
-    var eventSenderDisplayName: String!
+    var eventSenderDisplayName: String! {
+        get {
+            viewModel.eventSenderDisplayName
+        }
+        set {
+            viewModel.eventSenderDisplayName = newValue
+        }
+    }
+    
     /// Whether the composer is in send, reply or edit mode.
-    var sendMode: RoomInputToolbarViewSendMode = .send
+    var sendMode: RoomInputToolbarViewSendMode {
+        get {
+            viewModel.sendMode.legacySendMode
+        }
+        set {
+            viewModel.sendMode = ComposerSendMode(from: newValue)
+        }
+    }
     
     // MARK: - Setup
     
@@ -59,8 +85,17 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        viewModel = WysiwygComposerViewModel()
-        let composer = Composer(viewModel: viewModel, sendMessageAction: { [weak self] content in
+        viewModel.callback = { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .cancel:
+                self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
+            }
+        }
+        
+        let composer = Composer(viewModel: viewModel.context,
+            wysiwygViewModel: wysiwygViewModel,
+            sendMessageAction: { [weak self] content in
             guard let self = self else { return }
             self.sendWysiwygMessage(content: content)
         }, showSendMediaActions: { [weak self]  in
@@ -101,14 +136,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         self.backgroundColor = .clear
     }
     
-    // MARK: - Public
-    
-    /// Set the html content on the composer
-    /// - Parameter content: The html string
-    func setHtml(content: String) {
-        viewModel.setHtmlContent(content)
-    }
-    
     // MARK: - Private
     
     private func updateToolbarHeight(wysiwygHeight: CGFloat) {
@@ -147,5 +174,27 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     func toolbarHeight() -> CGFloat {
         return heightConstraint.constant
+    }
+}
+
+// MARK: - LegacySendModeAdapter
+
+fileprivate extension ComposerSendMode {
+    init(from sendMode: RoomInputToolbarViewSendMode) {
+        switch sendMode {
+        case .reply: self = .reply
+        case .edit: self = .edit
+        case .createDM: self = .createDM
+        default: self = .send
+        }
+    }
+    
+    var legacySendMode: RoomInputToolbarViewSendMode {
+        switch self {
+        case .createDM: return .createDM
+        case .reply: return .reply
+        case .edit: return .edit
+        case .send: return .send
+        }
     }
 }

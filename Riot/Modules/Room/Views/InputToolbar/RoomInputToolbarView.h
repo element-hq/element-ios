@@ -50,7 +50,7 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
  
  @param toolbarView the room input toolbar view
  */
-- (void)roomInputToolbarViewDidTapCancel:(RoomInputToolbarView*)toolbarView;
+- (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView<RoomInputToolbarViewProtocol>*)toolbarView;
 
 /**
  Inform the delegate that the text message has changed.
