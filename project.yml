@@ -51,6 +51,9 @@ packages:
   SwiftOGG:
     url: https://github.com/vector-im/swift-ogg
     branch: main
+  WysiwygComposer:
+    url: https://github.com/matrix-org/matrix-wysiwyg-composer-swift
+    branch: main
   DeviceKit:
     url: https://github.com/devicekit/DeviceKit
     majorVersion: 4.7.0
