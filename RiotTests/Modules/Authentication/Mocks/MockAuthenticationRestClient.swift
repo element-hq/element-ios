@@ -216,6 +216,6 @@ class MockAuthenticationRestClient: AuthenticationRestClient {
     // MARK: Versions
 
     func supportedMatrixVersions() async throws -> MXMatrixVersions {
-        throw MockError.unhandled
+        return MXMatrixVersions()
     }
 }
