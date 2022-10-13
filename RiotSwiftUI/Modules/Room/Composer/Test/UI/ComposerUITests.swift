@@ -41,6 +41,7 @@ final class ComposerUITests: MockScreenTestCase {
         XCTAssertTrue(wysiwygTextView.exists)
         let editButton = app.buttons["editButton"]
         XCTAssert(!editButton.exists)
+        
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
         XCTAssertTrue(editButton.exists)
@@ -60,10 +61,12 @@ final class ComposerUITests: MockScreenTestCase {
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         let sendButton = app.buttons["sendButton"]
-        XCTAssertTrue(!sendButton.exists)
+        XCTAssertFalse(sendButton.exists)
+        
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
         XCTAssertTrue(sendButton.exists)
+        XCTAssertFalse(app.buttons["editButton"].exists)
         
         cancelButton.tap()
         XCTAssertFalse(cancelButton.exists)
