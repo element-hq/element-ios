@@ -234,6 +234,8 @@ final class BuildSettings: NSObject {
     
     static let allowInviteExernalUsers: Bool = true
     
+    static let allowBackgroundAudioMessagePlayback: Bool = true
+    
     // MARK: - Side Menu
     static let enableSideMenu: Bool = true && !newAppLayoutEnabled
     static let sideMenuShowInviteFriends: Bool = true

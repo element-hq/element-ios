@@ -183,6 +183,10 @@ import MediaPlayer
     }
     
     private func setUpRemoteCommandCenter() {
+        guard BuildSettings.allowBackgroundAudioMessagePlayback else {
+            return
+        }
+        
         displayLink.isPaused = false
         
         UIApplication.shared.beginReceivingRemoteControlEvents()
