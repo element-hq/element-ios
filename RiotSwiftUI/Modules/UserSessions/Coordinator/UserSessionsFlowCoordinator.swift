@@ -28,6 +28,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     
     private let navigationRouter: NavigationRouterType
     private var reauthenticationPresenter: ReauthenticationCoordinatorBridgePresenter?
+    private var signOutFlowPresenter: SignOutFlowPresenter?
     private var errorPresenter: MXKErrorPresentation
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
@@ -167,6 +168,11 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     
     /// Shows a confirmation dialog to the user to sign out of a session.
     private func showLogoutConfirmation(for sessionInfo: UserSessionInfo) {
+        guard !sessionInfo.isCurrent else {
+            showLogoutConfirmationForCurrentSession()
+            return
+        }
+        
         // Use a UIAlertController as we don't have confirmationDialog in SwiftUI on iOS 14.
         let alert = UIAlertController(title: VectorL10n.signOutConfirmationMessage, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: VectorL10n.signOut, style: .destructive) { [weak self] _ in
@@ -176,6 +182,14 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         alert.popoverPresentationController?.sourceView = toPresentable().view
         
         navigationRouter.present(alert, animated: true)
+    }
+    
+    private func showLogoutConfirmationForCurrentSession() {
+        let flowPresenter = SignOutFlowPresenter(session: parameters.session, presentingViewController: toPresentable())
+        flowPresenter.delegate = self
+        
+        flowPresenter.start()
+        signOutFlowPresenter = flowPresenter
     }
     
     /// Prompts the user to authenticate (if necessary) in order to log out of a specific session.
@@ -337,6 +351,22 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     
     func toPresentable() -> UIViewController {
         navigationRouter.toPresentable()
+    }
+}
+
+// MARK: SignOutFlowPresenter
+
+extension UserSessionsFlowCoordinator: SignOutFlowPresenterDelegate {
+    func signOutFlowPresenterDidStartLoading(_ presenter: SignOutFlowPresenter) {
+        startLoading()
+    }
+    
+    func signOutFlowPresenterDidStopLoading(_ presenter: SignOutFlowPresenter) {
+        stopLoading()
+    }
+    
+    func signOutFlowPresenter(_ presenter: SignOutFlowPresenter, didFailWith error: Error) {
+        errorPresenter.presentError(from: toPresentable(), forError: error, animated: true, handler: { })
     }
 }
 

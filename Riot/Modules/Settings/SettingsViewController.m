@@ -189,8 +189,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 @interface SettingsViewController () <UITextFieldDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, DeactivateAccountViewControllerDelegate,
 NotificationSettingsCoordinatorBridgePresenterDelegate,
-SecureBackupSetupCoordinatorBridgePresenterDelegate,
-SignOutAlertPresenterDelegate,
+SignOutFlowPresenterDelegate,
 SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
 SettingsIdentityServerCoordinatorBridgePresenterDelegate,
@@ -267,7 +266,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic, strong) NotificationSettingsCoordinatorBridgePresenter *notificationSettingsBridgePresenter;
 
-@property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
+@property (nonatomic, strong) SignOutFlowPresenter *signOutFlowPresenter;
 @property (nonatomic, weak) UIButton *signOutButton;
 @property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
 
@@ -275,11 +274,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 @property (nonatomic, strong) SettingsDiscoveryTableViewSection *settingsDiscoveryTableViewSection;
 @property (nonatomic, strong) SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter *discoveryThreePidDetailsPresenter;
 
-@property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
-
 @property (nonatomic, strong) TableViewSections *tableViewSections;
-
-@property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 
 @property (nonatomic, strong) ReauthenticationCoordinatorBridgePresenter *reauthenticationCoordinatorBridgePresenter;
 
@@ -701,9 +696,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }];
     [self userInterfaceThemeDidChange];
     
-    self.signOutAlertPresenter = [SignOutAlertPresenter new];
-    self.signOutAlertPresenter.delegate = self;
-    
     _tableViewSections = [TableViewSections new];
     _tableViewSections.delegate = self;
     [self updateSections];
@@ -770,8 +762,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         
         [super destroy];
     }
-
-    _secureBackupSetupCoordinatorBridgePresenter = nil;
+    
     identityServerSettingsCoordinatorBridgePresenter = nil;
 }
 
@@ -2964,13 +2955,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     self.signOutButton = (UIButton*)sender;
     
-    MXKeyBackup *keyBackup = self.mainSession.crypto.backup;
+    SignOutFlowPresenter *flowPresenter = [[SignOutFlowPresenter alloc] initWithSession:self.mainSession presentingViewController:self];
+    flowPresenter.delegate = self;
     
-    [self.signOutAlertPresenter presentFor:keyBackup.state
-                      areThereKeysToBackup:keyBackup.hasKeysToBackup
-                                      from:self
-                                sourceView:self.signOutButton
-                                  animated:YES];
+    [flowPresenter startWithSourceView:self.signOutButton];
+    self.signOutFlowPresenter = flowPresenter;
 }
 
 - (void)onRemove3PID:(NSIndexPath*)indexPath
@@ -4181,123 +4170,25 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     self.notificationSettingsBridgePresenter = nil;
 }
 
+#pragma mark - SignOutFlowPresenterDelegate
 
-#pragma mark - SecureBackupSetupCoordinatorBridgePresenter
-
-- (void)showSecureBackupSetupFromSignOutFlow
+- (void)signOutFlowPresenterDidStartLoading:(SignOutFlowPresenter *)presenter
 {
-    if (self.canSetupSecureBackup)
-    {
-        [self setupSecureBackup2];
-    }
-    else
-    {
-        // Set up cross-signing first
-        [self setupCrossSigningWithTitle:[VectorL10n secureKeyBackupSetupIntroTitle]
-                                 message:[VectorL10n securitySettingsUserPasswordDescription]
-                                 success:^{
-                                     [self setupSecureBackup2];
-                                 } failure:^(NSError *error) {
-                                 }];
-    }
-}
-
-- (void)setupSecureBackup2
-{
-    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession allowOverwrite:YES];
-    secureBackupSetupCoordinatorBridgePresenter.delegate = self;
-    
-    [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
-    
-    self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter;
-}
-
-- (BOOL)canSetupSecureBackup
-{
-    return [self.mainSession vc_canSetupSecureBackup];
-}
-
-#pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
-
-- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    self.secureBackupSetupCoordinatorBridgePresenter = nil;
-}
-
-- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    self.secureBackupSetupCoordinatorBridgePresenter = nil;
-}
-
-#pragma mark - SignOutAlertPresenterDelegate
-
-- (void)signOutAlertPresenterDidTapBackupAction:(SignOutAlertPresenter * _Nonnull)presenter
-{
-    [self showSecureBackupSetupFromSignOutFlow];
-}
-
-- (void)signOutAlertPresenterDidTapSignOutAction:(SignOutAlertPresenter * _Nonnull)presenter
-{
-    // Prevent user to perform user interaction in settings when sign out
-    // TODO: Prevent user interaction in all application (navigation controller and split view controller included)
+    [self startActivityIndicator];
     self.view.userInteractionEnabled = NO;
     self.signOutButton.enabled = NO;
-    
-    [self startActivityIndicator];
-    
-    MXWeakify(self);
-    
-    [[AppDelegate theDelegate] logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
-        MXStrongifyAndReturnIfNil(self);
-        
-        [self stopActivityIndicator];
-        
-        self.view.userInteractionEnabled = YES;
-        self.signOutButton.enabled = YES;
-    }];
 }
 
-- (void)setupCrossSigningWithTitle:(NSString*)title
-                           message:(NSString*)message
-                           success:(void (^)(void))success
-                           failure:(void (^)(NSError *error))failure
-
+- (void)signOutFlowPresenterDidStopLoading:(SignOutFlowPresenter *)presenter
 {
-    [self startActivityIndicator];
-    self.view.userInteractionEnabled = NO;
-    
-    MXWeakify(self);
-    
-    void (^animationCompletion)(void) = ^void () {
-        MXStrongifyAndReturnIfNil(self);
-        
-        [self stopActivityIndicator];
-        self.view.userInteractionEnabled = YES;
-        [self.crossSigningSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{}];
-        self.crossSigningSetupCoordinatorBridgePresenter = nil;
-    };
-    
-    CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter = [[CrossSigningSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-        
-    [crossSigningSetupCoordinatorBridgePresenter presentWith:title
-                                                     message:message
-                                                        from:self
-                                                    animated:YES
-                                                     success:^{
-        animationCompletion();
-        success();
-    } cancel:^{
-        animationCompletion();
-        failure(nil);
-    } failure:^(NSError * _Nonnull error) {
-        animationCompletion();
-        [[AppDelegate theDelegate] showErrorAsAlert:error];
-        failure(error);
-    }];
-    
-    self.crossSigningSetupCoordinatorBridgePresenter = crossSigningSetupCoordinatorBridgePresenter;
+    [self stopActivityIndicator];
+    self.view.userInteractionEnabled = YES;
+    self.signOutButton.enabled = YES;
+}
+
+- (void)signOutFlowPresenter:(SignOutFlowPresenter *)presenter didFailWith:(NSError *)error
+{
+    [[AppDelegate theDelegate] showErrorAsAlert:error];
 }
 
 #pragma mark - SingleImagePickerPresenterDelegate
