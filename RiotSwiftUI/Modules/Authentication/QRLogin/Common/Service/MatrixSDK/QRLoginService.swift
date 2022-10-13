@@ -215,7 +215,9 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         MXLog.debug("[QRLoginService] Waiting for the login token")
         guard case let .success(data) = await rendezvousService.receive(),
               let responsePayload = try? JSONDecoder().decode(QRLoginRendezvousPayload.self, from: data),
-              let login_token = responsePayload.loginToken else {
+              let login_token = responsePayload.loginToken,
+              let homeserver = responsePayload.homeserver,
+              let homeserverURL  = URL(string: homeserver) else {
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
@@ -223,8 +225,11 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         
         state = .waitingForRemoteSignIn
         
+        // Use a custom rest client linked to the existing device's homeserver
+        let authenticationRestClient = MXRestClient(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
+        
         MXLog.debug("[QRLoginService] Logging in with the login token")
-        guard let credentials = try? await client.login(parameters: LoginTokenParameters(token: login_token)) else {
+        guard let credentials = try? await authenticationRestClient.login(parameters: LoginTokenParameters(token: login_token)) else {
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
