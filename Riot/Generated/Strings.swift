@@ -8687,6 +8687,10 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionUnverifiedSessionsHeaderSubtitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_unverified_sessions_header_subtitle") 
   }
+  /// This session is ready for secure messaging.
+  public static var userOtherSessionVerifiedAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_other_session_verified_additional_info") 
+  }
   /// For best security, sign out from any session that you don’t recognize or use anymore.
   public static var userOtherSessionVerifiedSessionsHeaderSubtitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_verified_sessions_header_subtitle") 

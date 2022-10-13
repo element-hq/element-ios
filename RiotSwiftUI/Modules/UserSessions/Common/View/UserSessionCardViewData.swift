@@ -79,7 +79,7 @@ struct UserSessionCardViewData {
     var verificationStatusAdditionalInfoText: String {
         switch verificationState {
         case .verified:
-            return VectorL10n.userSessionVerifiedAdditionalInfo
+            return isCurrentSessionDisplayMode ? VectorL10n.userSessionVerifiedAdditionalInfo : VectorL10n.userOtherSessionVerifiedAdditionalInfo
         case .unverified:
             return isCurrentSessionDisplayMode ? VectorL10n.userSessionUnverifiedAdditionalInfo : VectorL10n.userOtherSessionUnverifiedAdditionalInfo
         case .unknown:
