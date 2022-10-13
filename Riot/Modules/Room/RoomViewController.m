@@ -195,6 +195,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @property (nonatomic, strong) RoomContextualMenuPresenter *roomContextualMenuPresenter;
 @property (nonatomic, strong) MXKErrorAlertPresentation *errorPresenter;
 @property (nonatomic, strong) NSAttributedString *textMessageBeforeEditing;
+@property (nonatomic, strong) NSString *htmlTextBeforeEditing;
 @property (nonatomic, strong) EditHistoryCoordinatorBridgePresenter *editHistoryPresenter;
 @property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
 @property (nonatomic, strong) EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter;
@@ -4630,12 +4631,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
     
-    if ([self inputToolbarConformsToHtmlToolbarViewProtocol]) {
-        // TODO: reimplemented the following line when the cancel UI button is implemented in the WYSIWYG toolbar
-        self.textMessageBeforeEditing = self.inputToolbarView.attributedTextMessage;
-        
+    if ([self inputToolbarConformsToHtmlToolbarViewProtocol])
+    {
         MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *htmlInputToolBarView = (MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *) self.inputToolbarView;
-        [htmlInputToolBarView setHtmlWithContent: [self.customizedRoomDataSource editableHtmlTextMessageFor:event]];
+        self.htmlTextBeforeEditing = htmlInputToolBarView.htmlContent;
+        htmlInputToolBarView.htmlContent = [self.customizedRoomDataSource editableHtmlTextMessageFor:event];
     }
     else if ([self inputToolbarConformsToToolbarViewProtocol])
     {
@@ -4649,12 +4649,19 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)restoreTextMessageBeforeEditing
 {
     
-    if (self.textMessageBeforeEditing && [self inputToolbarConformsToToolbarViewProtocol])
+   
+    if (self.htmlTextBeforeEditing && [self inputToolbarConformsToHtmlToolbarViewProtocol])
+    {
+        MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *htmlInputToolBarView = (MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *) self.inputToolbarView;
+        htmlInputToolBarView.htmlContent = self.htmlTextBeforeEditing;
+    }
+    else if (self.textMessageBeforeEditing && [self inputToolbarConformsToToolbarViewProtocol])
     {
         self.inputToolbarView.attributedTextMessage = self.textMessageBeforeEditing;
     }
     
     self.textMessageBeforeEditing = nil;
+    self.htmlTextBeforeEditing = nil;
 }
 
 - (BOOL)inputToolbarConformsToHtmlToolbarViewProtocol
@@ -4982,7 +4989,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (void)roomInputToolbarViewDidTapCancel:(RoomInputToolbarView*)toolbarView
+- (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView<RoomInputToolbarViewProtocol>*)toolbarView
 {
     [self cancelEventSelection];
 }
