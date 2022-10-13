@@ -69,7 +69,7 @@ import Foundation
 
     private func showSecureBackupSetupFromSignOutFlow() {
         if canSetupSecureBackup {
-            setupSecureBackup2()
+            setupSecureBackup()
         } else {
             // Set up cross-signing first
             setupCrossSigning(title: VectorL10n.secureKeyBackupSetupIntroTitle,
@@ -78,7 +78,7 @@ import Foundation
                 switch result {
                 case .success(let isCompleted):
                     if isCompleted {
-                        self.setupSecureBackup2()
+                        self.setupSecureBackup()
                     }
                 case .failure(let error):
                     self.delegate?.signOutFlowPresenter(self, didFailWith: error)
@@ -91,7 +91,7 @@ import Foundation
         return session.vc_canSetupSecureBackup()
     }
     
-    private func setupSecureBackup2() {
+    private func setupSecureBackup() {
         let secureBackupSetupCoordinatorBridgePresenter = SecureBackupSetupCoordinatorBridgePresenter(session: session, allowOverwrite: true)
         secureBackupSetupCoordinatorBridgePresenter.delegate = self
         secureBackupSetupCoordinatorBridgePresenter.present(from: presentingViewController, animated: true)
