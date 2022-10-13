@@ -80,10 +80,8 @@ struct UserSessionCardViewData {
         switch verificationState {
         case .verified:
             return VectorL10n.userSessionVerifiedAdditionalInfo
-        case .unverified:
-            return VectorL10n.userSessionUnverifiedAdditionalInfo
-        case .unknown:
-            return VectorL10n.userSessionUnverifiedAdditionalInfo
+        case .unverified, .unknown:
+            return isCurrentSessionDisplayMode ? VectorL10n.userSessionUnverifiedAdditionalInfo : VectorL10n.userOtherSessionUnverifiedAdditionalInfo
         }
     }
     
