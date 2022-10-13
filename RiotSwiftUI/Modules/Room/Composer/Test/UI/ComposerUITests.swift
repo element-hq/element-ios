@@ -35,12 +35,13 @@ final class ComposerUITests: MockScreenTestCase {
     func testEditMode() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.edit.title)
 
-        let cancelButton = app.buttons["cancelButton"]
-        XCTAssertTrue(cancelButton.exists)
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         let editButton = app.buttons["editButton"]
         XCTAssert(!editButton.exists)
+        
+        let cancelButton = app.buttons["cancelButton"]
+        XCTAssertTrue(cancelButton.exists)
         
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
@@ -48,20 +49,21 @@ final class ComposerUITests: MockScreenTestCase {
         XCTAssertFalse(app.buttons["sendButton"].exists)
         
         cancelButton.tap()
-        XCTAssertFalse(cancelButton.exists)
         let textViewContent = wysiwygTextView.value as! String
         XCTAssertTrue(textViewContent.isEmpty)
+        XCTAssertFalse(cancelButton.exists)
     }
     
     func testReplyMode() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.reply.title)
         
-        let cancelButton = app.buttons["cancelButton"]
-        XCTAssertTrue(cancelButton.exists)
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         let sendButton = app.buttons["sendButton"]
         XCTAssertFalse(sendButton.exists)
+        
+        let cancelButton = app.buttons["cancelButton"]
+        XCTAssertTrue(cancelButton.exists)
         
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
@@ -69,8 +71,8 @@ final class ComposerUITests: MockScreenTestCase {
         XCTAssertFalse(app.buttons["editButton"].exists)
         
         cancelButton.tap()
-        XCTAssertFalse(cancelButton.exists)
         let textViewContent = wysiwygTextView.value as! String
         XCTAssertFalse(textViewContent.isEmpty)
+        XCTAssertFalse(cancelButton.exists)
     }
 }
