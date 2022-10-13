@@ -93,13 +93,15 @@ extension UserSessionInfo: Equatable {
 // MARK: - Mocks
 
 extension UserSessionInfo {
-    static var mockPhone: UserSessionInfo {
+    static func mockPhone(verificationState: VerificationState = .verified,
+                          hasTimestamp: Bool = true,
+                          isCurrent: Bool = false) -> UserSessionInfo {
         UserSessionInfo(id: "1",
                         name: "Element Mobile: iOS",
                         deviceType: .mobile,
-                        verificationState: .verified,
+                        verificationState: verificationState,
                         lastSeenIP: "1.0.0.1",
-                        lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
+                        lastSeenTimestamp: hasTimestamp ? Date().timeIntervalSince1970 : nil,
                         applicationName: "Element iOS",
                         applicationVersion: "1.9.8",
                         applicationURL: nil,
@@ -108,45 +110,7 @@ extension UserSessionInfo {
                         lastSeenIPLocation: nil,
                         clientName: nil,
                         clientVersion: nil,
-                        isActive: false,
-                        isCurrent: false)
-    }
-    
-    static var mockPhoneUnverified: UserSessionInfo {
-        UserSessionInfo(id: "1",
-                        name: "Element Mobile: iOS",
-                        deviceType: .mobile,
-                        verificationState: .unverified,
-                        lastSeenIP: "1.0.0.1",
-                        lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
-                        applicationName: "Element iOS",
-                        applicationVersion: "1.9.8",
-                        applicationURL: nil,
-                        deviceModel: nil,
-                        deviceOS: "iOS 16.0.2",
-                        lastSeenIPLocation: nil,
-                        clientName: nil,
-                        clientVersion: nil,
-                        isActive: false,
-                        isCurrent: false)
-    }
-    
-    static var mockPhoneUnknownVerification: UserSessionInfo {
-        UserSessionInfo(id: "1",
-                        name: "Element Mobile: iOS",
-                        deviceType: .mobile,
-                        verificationState: .unknown,
-                        lastSeenIP: "1.0.0.1",
-                        lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
-                        applicationName: "Element iOS",
-                        applicationVersion: "1.9.8",
-                        applicationURL: nil,
-                        deviceModel: nil,
-                        deviceOS: "iOS 16.0.2",
-                        lastSeenIPLocation: nil,
-                        clientName: nil,
-                        clientVersion: nil,
-                        isActive: false,
-                        isCurrent: false)
+                        isActive: true,
+                        isCurrent: isCurrent)
     }
 }

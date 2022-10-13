@@ -404,6 +404,11 @@ final class BuildSettings: NSObject {
     static let defaultTileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
     
     static let locationSharingEnabled = true
+    
+    // MARK: - Voice Broadcast
+    static let voiceBroadcastEnabled = false
+    static let voiceBroadcastChunkLength: Int = 600
+    static let voiceBroadcastMaxLength: Int = 144000
 
     // MARK: - MXKAppSettings
     static let enableBotCreation: Bool = false
@@ -429,4 +434,6 @@ final class BuildSettings: NSObject {
     static let qrLoginEnabledFromAuthenticated = false
     /// Flag indicating whether displaying QRs enabled for the QR login screens
     static let qrLoginEnableDisplayingQRs = false
+    
+    static let rendezvousServerBaseURL = URL(string: "https://rendezvous.lab.element.dev/")!
 }

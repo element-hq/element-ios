@@ -48,7 +48,7 @@ enum MockAuthenticationQRLoginLoadingScreenState: MockScreenState, CaseIterable 
         case .waitingForRemoteSignIn:
             viewModel = .init(qrLoginService: MockQRLoginService(withState: .waitingForRemoteSignIn))
         case .completed:
-            viewModel = .init(qrLoginService: MockQRLoginService(withState: .completed))
+            viewModel = .init(qrLoginService: MockQRLoginService(withState: .completed(session: "")))
         }
         
         // can simulate service and viewModel actions here if needs be.

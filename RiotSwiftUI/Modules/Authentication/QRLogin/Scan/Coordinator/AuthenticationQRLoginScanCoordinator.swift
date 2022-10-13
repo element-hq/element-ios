@@ -16,6 +16,7 @@
 
 import CommonKit
 import SwiftUI
+import MatrixSDK
 
 struct AuthenticationQRLoginScanCoordinatorParameters {
     let navigationRouter: NavigationRouterType
@@ -78,7 +79,10 @@ final class AuthenticationQRLoginScanCoordinator: Coordinator, Presentable {
                 self.showDisplayQRScreen()
             case .qrScanned(let data):
                 self.qrLoginService.stopScanning(destroy: false)
-                self.qrLoginService.processScannedQR(data)
+                
+                Task {
+                    await self.qrLoginService.processScannedQR(data)
+                }
             }
         }
     }

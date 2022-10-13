@@ -33,6 +33,7 @@ enum QRLoginServiceError: Error, Equatable {
     case invalidQR
     case requestDenied
     case requestTimedOut
+    case rendezvousFailed
 }
 
 // MARK: - QRLoginServiceState
@@ -44,7 +45,8 @@ enum QRLoginServiceState: Equatable {
     case waitingForConfirmation(_ code: String)
     case waitingForRemoteSignIn
     case failed(error: QRLoginServiceError)
-    case completed
+    // This is really an MXSession but that would break RiotSwiftUI
+    case completed(session: Any)
 
     static func == (lhs: QRLoginServiceState, rhs: QRLoginServiceState) -> Bool {
         switch (lhs, rhs) {

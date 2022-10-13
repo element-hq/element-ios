@@ -8639,6 +8639,10 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionClearFilter: String { 
     return VectorL10n.tr("Vector", "user_other_session_clear_filter") 
   }
+  /// Your current session
+  public static var userOtherSessionCurrentSessionDetails: String { 
+    return VectorL10n.tr("Vector", "user_other_session_current_session_details") 
+  }
   /// Filter
   public static var userOtherSessionFilter: String { 
     return VectorL10n.tr("Vector", "user_other_session_filter") 
@@ -8678,10 +8682,6 @@ public class VectorL10n: NSObject {
   /// Verify or sign out from this session for best security and reliability.
   public static var userOtherSessionUnverifiedAdditionalInfo: String { 
     return VectorL10n.tr("Vector", "user_other_session_unverified_additional_info") 
-  }
-  /// %@ · Your current session
-  public static func userOtherSessionUnverifiedCurrentSessionDetails(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "user_other_session_unverified_current_session_details", p1)
   }
   /// Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.
   public static var userOtherSessionUnverifiedSessionsHeaderSubtitle: String { 
@@ -8755,9 +8755,13 @@ public class VectorL10n: NSObject {
   public static var userSessionDetailsTitle: String { 
     return VectorL10n.tr("Vector", "user_session_details_title") 
   }
-  /// %@ · Last activity %@
+  /// %1$@ · %2$@
   public static func userSessionItemDetails(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "user_session_item_details", p1, p2)
+  }
+  /// Last activity %@
+  public static func userSessionItemDetailsLastActivity(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_session_item_details_last_activity", p1)
   }
   /// Learn more
   public static var userSessionLearnMore: String { 
@@ -8802,6 +8806,10 @@ public class VectorL10n: NSObject {
   /// Unknown verification status
   public static var userSessionVerificationUnknown: String { 
     return VectorL10n.tr("Vector", "user_session_verification_unknown") 
+  }
+  /// Verify your current session to reveal this session's verification status.
+  public static var userSessionVerificationUnknownAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_session_verification_unknown_additional_info") 
   }
   /// Unknown
   public static var userSessionVerificationUnknownShort: String { 

@@ -336,6 +336,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             password = loginPassword
             authenticationType = .password
             onSessionCreated(session: session, flow: .login)
+        case .loggedInWithQRCode(let session):
+            authenticationType = .other
+            onSessionCreated(session: session, flow: .login)
         case .fallback:
             showFallback(for: .login)
         }

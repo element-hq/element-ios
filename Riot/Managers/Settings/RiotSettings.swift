@@ -395,5 +395,4 @@ final class RiotSettings: NSObject {
 // MARK: - RiotSettings notification constants
 extension RiotSettings {
     public static let didUpdateLiveLocationSharingActivation = Notification.Name("RiotSettingsDidUpdateLiveLocationSharingActivation")
-    public static let newAppLayoutBetaToggleDidChange = Notification.Name("RiotSettingsNewAppLayoutBetaToggleDidChange")
 }

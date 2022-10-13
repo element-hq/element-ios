@@ -197,8 +197,6 @@ extension RoomDataSource {
 
         return editableTextMessage
     }
-
-    
 }
 
 // MARK: - Private Helpers

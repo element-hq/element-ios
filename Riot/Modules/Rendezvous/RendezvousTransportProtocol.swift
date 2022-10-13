@@ -40,4 +40,7 @@ protocol RendezvousTransportProtocol {
         
     /// Publishes new rendezvous data
     func send<T: Encodable>(body: T) async -> Result<(), RendezvousTransportError>
+    
+    /// Deletes the resource at the current rendezvous endpoint
+    func tearDown() async -> Result<(), RendezvousTransportError>
 }

@@ -1,4 +1,4 @@
-//
+// 
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,23 +16,23 @@
 
 import Foundation
 
-struct RendezvousPayload: Codable {
-    var rendezvous: RendezvousDetails
-    var user: String
+/// VoiceBroadcastService error
+public enum VoiceBroadcastServiceError: Int, Error {
+    case missingUserId
+    case roomNotFound
+    case notStarted
+    case unknown
 }
 
-struct RendezvousDetails: Codable {
-    var transport: RendezvousTransportDetails?
-    var algorithm: String
-    var key: String
-}
+// MARK: - VoiceBroadcastService errors
+extension VoiceBroadcastServiceError: CustomNSError {
+    public static let errorDomain = "io.element.voice_broadcast_info"
 
-struct RendezvousTransportDetails: Codable {
-    var type: String
-    var uri: String
-}
+    public var errorCode: Int {
+        return Int(rawValue)
+    }
 
-struct RendezvousMessage: Codable {
-    var iv: String
-    var ciphertext: String
+    public var errorUserInfo: [String: Any] {
+        return [:]
+    }
 }

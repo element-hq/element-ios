@@ -70,7 +70,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     private var indicators = [UserIndicator]()
-    private var signOutAlertPresenter = SignOutAlertPresenter()
     
     // MARK: Public
 
@@ -104,8 +103,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                 
         // If start has been done once do not setup view controllers again
         if self.hasStartedOnce == false {
-            signOutAlertPresenter.delegate = self
-
             let masterTabBarController = self.createMasterTabBarController()
             masterTabBarController.masterTabBarDelegate = self
             self.masterTabBarController = masterTabBarController
@@ -123,8 +120,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
             self.registerUserSessionsServiceNotifications()
             self.registerSessionChange()
             
-            NotificationCenter.default.addObserver(self, selector: #selector(self.newAppLayoutToggleDidChange(notification:)), name: RiotSettings.newAppLayoutBetaToggleDidChange, object: nil)
-
             self.updateMasterTabBarController(with: spaceId, forceReload: true)
         } else {
             self.updateMasterTabBarController(with: spaceId)
@@ -240,15 +235,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     // MARK: - Private methods
-    
-    @objc private func newAppLayoutToggleDidChange(notification: Notification) {
-        self.masterTabBarController = nil
-        start()
-//        updateMasterTabBarController(with: self.currentSpaceId, forceReload: true)
-//        createLeftButtonItem(for: self.masterTabBarController)
-//        createRightButtonItem(for: self.masterTabBarController)
-//        popToHome(animated: true, completion: nil)
-    }
     
     private func createMasterTabBarController() -> MasterTabBarController {
         let tabBarController = MasterTabBarController()
@@ -370,23 +356,21 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         let homeViewController = self.createHomeViewController()
         viewControllers.append(homeViewController)
         
-        if !BuildSettings.newAppLayoutEnabled {
-            if RiotSettings.shared.homeScreenShowFavouritesTab {
-                let favouritesViewController = self.createFavouritesViewController()
-                viewControllers.append(favouritesViewController)
-            }
-            
-            if RiotSettings.shared.homeScreenShowPeopleTab {
-                let peopleViewController = self.createPeopleViewController()
-                viewControllers.append(peopleViewController)
-            }
-            
-            if RiotSettings.shared.homeScreenShowRoomsTab {
-                let roomsViewController = self.createRoomsViewController()
-                viewControllers.append(roomsViewController)
-            }
+        if RiotSettings.shared.homeScreenShowFavouritesTab {
+            let favouritesViewController = self.createFavouritesViewController()
+            viewControllers.append(favouritesViewController)
         }
         
+        if RiotSettings.shared.homeScreenShowPeopleTab {
+            let peopleViewController = self.createPeopleViewController()
+            viewControllers.append(peopleViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowRoomsTab {
+            let roomsViewController = self.createRoomsViewController()
+            viewControllers.append(roomsViewController)
+        }
+
         tabBarController.updateViewControllers(viewControllers)
         
         if let existingVersionCheckCoordinator = self.versionCheckCoordinator {
@@ -697,8 +681,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         if let session = notification.object as? MXSession {
             showCoachMessageIfNeeded(with: session)
         }
-        
-        updateAvatarButtonItem()
     }
     
     // MARK: Navigation bar items management
@@ -707,11 +689,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     private weak var rightMenuButton: UIButton?
     
     private func createLeftButtonItem(for viewController: UIViewController) {
-        guard !BuildSettings.newAppLayoutEnabled else {
-            createAvatarButtonItem(for: viewController)
-            return
-        }
-        
         guard BuildSettings.enableSideMenu else {
             let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
                 self?.showSettings()
@@ -731,10 +708,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
 
     private func createRightButtonItem(for viewController: UIViewController) {
-        guard !BuildSettings.newAppLayoutEnabled else {
-            return
-        }
-        
         let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
             self?.showUnifiedSearch()
         }
@@ -742,164 +715,11 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         viewController.navigationItem.rightBarButtonItem = searchBarButtonItem
     }
     
-    private func createAvatarButtonItem(for viewController: UIViewController) {
-        var actions: [UIMenuElement] = []
-        
-        actions.append(UIAction(title: VectorL10n.settings, image: UIImage(systemName: "gearshape")) { [weak self] action in
-            self?.showSettings()
-        })
-        
-        var subMenuActions: [UIAction] = []
-        if BuildSettings.sideMenuShowInviteFriends {
-            subMenuActions.append(UIAction(title: VectorL10n.inviteTo(AppInfo.current.displayName), image: UIImage(systemName: "envelope")) { [weak self] action in
-                        self?.showInviteFriends(from: nil)
-            })
-        }
-
-        subMenuActions.append(UIAction(title: VectorL10n.sideMenuActionFeedback, image: UIImage(systemName: "questionmark.circle")) { [weak self] action in
-            self?.showBugReport()
-        })
-        
-        actions.append(UIMenu(title: "", options: .displayInline, children: subMenuActions))
-        actions.append(UIMenu(title: "", options: .displayInline, children: [
-            UIAction(title: VectorL10n.settingsSignOut, image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"), attributes: .destructive) { [weak self] action in
-                self?.signOut()
-            }
-        ]))
-
-        let menu = UIMenu(options: .displayInline, children: actions)
-        
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
-        view.backgroundColor = .clear
-        
-        let button: UIButton = UIButton(frame: view.bounds.inset(by: UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)))
-        button.setImage(Asset.Images.tabPeople.image, for: .normal)
-        button.menu = menu
-        button.showsMenuAsPrimaryAction = true
-        button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        view.addSubview(button)
-        self.rightMenuButton = button
-        
-        let avatarView = UserAvatarView(frame: view.bounds.inset(by: UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)))
-        avatarView.isUserInteractionEnabled = false
-        avatarView.update(theme: ThemeService.shared().theme)
-        avatarView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        view.addSubview(avatarView)
-        self.rightMenuAvatarView = avatarView
-
-        if let avatar = userAvatarViewData(from: currentMatrixSession) {
-            avatarView.fill(with: avatar)
-            button.setImage(nil, for: .normal)
-        }
-        
-        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: view)
-    }
-    
-    private func updateAvatarButtonItem() {
-        guard let avatarView = rightMenuAvatarView, let button = rightMenuButton, let avatar = userAvatarViewData(from: currentMatrixSession) else {
-            return
-        }
-        
-        button.setImage(nil, for: .normal)
-        avatarView.fill(with: avatar)
-    }
-    
-    // MARK: Sign out process
-    
-    private func signOut() {
-        guard let keyBackup = currentMatrixSession?.crypto.backup else {
-            return
-        }
-        
-        signOutAlertPresenter.present(for: keyBackup.state,
-                                      areThereKeysToBackup: keyBackup.hasKeysToBackup,
-                                      from: self.masterTabBarController,
-                                      sourceView: nil,
-                                      animated: true)
-    }
-    
-    // MARK: - SecureBackupSetupCoordinatorBridgePresenter
-    
-    private var secureBackupSetupCoordinatorBridgePresenter: SecureBackupSetupCoordinatorBridgePresenter?
-    private var crossSigningSetupCoordinatorBridgePresenter: CrossSigningSetupCoordinatorBridgePresenter?
-
-    private func showSecureBackupSetupFromSignOutFlow() {
-        if canSetupSecureBackup {
-            setupSecureBackup2()
-        } else {
-            // Set up cross-signing first
-            setupCrossSigning(title: VectorL10n.secureKeyBackupSetupIntroTitle,
-                              message: VectorL10n.securitySettingsUserPasswordDescription) { [weak self] result in
-                switch result {
-                case .success(let isCompleted):
-                    if isCompleted {
-                        self?.setupSecureBackup2()
-                    }
-                case .failure:
-                    break
-                }
-            }
-        }
-    }
-    
-    private var canSetupSecureBackup: Bool {
-        return currentMatrixSession?.vc_canSetupSecureBackup() ?? false
-    }
-    
-    private func setupSecureBackup2() {
-        guard let session = currentMatrixSession else {
-            return
-        }
-        
-        let secureBackupSetupCoordinatorBridgePresenter = SecureBackupSetupCoordinatorBridgePresenter(session: session, allowOverwrite: true)
-        secureBackupSetupCoordinatorBridgePresenter.delegate = self
-        secureBackupSetupCoordinatorBridgePresenter.present(from: masterTabBarController, animated: true)
-        self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter
-    }
-    
-    private func setupCrossSigning(title: String, message: String, completion: @escaping (Result<Bool, Error>) -> Void) {
-        guard let session = currentMatrixSession else {
-            return
-        }
-
-        masterTabBarController.homeViewController.startActivityIndicator()
-        masterTabBarController.view.isUserInteractionEnabled = false
-        
-        let dismissAnimation = { [weak self] in
-            guard let self = self else { return }
-            
-            self.masterTabBarController.homeViewController.stopActivityIndicator()
-            self.masterTabBarController.view.isUserInteractionEnabled = true
-            self.crossSigningSetupCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
-                self.crossSigningSetupCoordinatorBridgePresenter = nil
-            })
-        }
-        
-        let crossSigningSetupCoordinatorBridgePresenter = CrossSigningSetupCoordinatorBridgePresenter(session: session)
-        crossSigningSetupCoordinatorBridgePresenter.present(with: title, message: message, from: masterTabBarController, animated: true) {
-            dismissAnimation()
-            completion(.success(true))
-        } cancel: {
-            dismissAnimation()
-            completion(.success(false))
-        } failure: { error in
-            dismissAnimation()
-            completion(.failure(error))
-        }
-
-        self.crossSigningSetupCoordinatorBridgePresenter = crossSigningSetupCoordinatorBridgePresenter
-    }
-
     // MARK: Coach Message
     
     private var windowOverlay: WindowOverlayPresenter?
 
     func showCoachMessageIfNeeded(with session: MXSession) {
-        guard !BuildSettings.newAppLayoutEnabled else {
-            // Showing coach message makes no sense with the new App Layout
-            return
-        }
-        
         if !RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed {
             let isAuthenticated = MXKAccountManager.shared().activeAccounts.first != nil || MXKAccountManager.shared().accounts.first?.isSoftLogout == false
 
@@ -1021,40 +841,6 @@ extension TabBarCoordinator: UIGestureRecognizerDelegate {
             return false
         } else {
             return true
-        }
-    }
-}
-
-extension TabBarCoordinator: SignOutAlertPresenterDelegate {
-    
-    func signOutAlertPresenterDidTapSignOutAction(_ presenter: SignOutAlertPresenter) {
-        // Prevent user to perform user interaction in settings when sign out
-        // TODO: Prevent user interaction in all application (navigation controller and split view controller included)
-        masterNavigationController.view.isUserInteractionEnabled = false
-        masterTabBarController.homeViewController.startActivityIndicator()
-        
-        AppDelegate.theDelegate().logout(withConfirmation: false) { [weak self] isLoggedOut in
-            self?.masterTabBarController.homeViewController.stopActivityIndicator()
-            self?.masterNavigationController.view.isUserInteractionEnabled = true
-        }
-    }
-    
-    func signOutAlertPresenterDidTapBackupAction(_ presenter: SignOutAlertPresenter) {
-        showSecureBackupSetupFromSignOutFlow()
-    }
-    
-}
-
-extension TabBarCoordinator: SecureBackupSetupCoordinatorBridgePresenterDelegate {
-    func secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: SecureBackupSetupCoordinatorBridgePresenter) {
-        coordinatorBridgePresenter.dismiss(animated: true) {
-            self.secureBackupSetupCoordinatorBridgePresenter = nil
-        }
-    }
-    
-    func secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: SecureBackupSetupCoordinatorBridgePresenter) {
-        coordinatorBridgePresenter.dismiss(animated: true) {
-            self.secureBackupSetupCoordinatorBridgePresenter = nil
         }
     }
 }

@@ -54,4 +54,8 @@ class MockRendezvousTransport: RendezvousTransportProtocol {
         
         return .success(())
     }
+    
+    func tearDown() async -> Result<(), RendezvousTransportError> {
+        return .success(())
+    }
 }
