@@ -47,7 +47,6 @@ struct ComposerCreateActionList: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
-                    
                 }
             }
             .padding(.top, 16)
