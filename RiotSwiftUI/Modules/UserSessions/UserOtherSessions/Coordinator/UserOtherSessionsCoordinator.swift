@@ -55,7 +55,7 @@ final class UserOtherSessionsCoordinator: Coordinator, Presentable {
             guard let self = self else { return }
             switch result {
             case let .showUserSessionOverview(sessionInfo: session):
-                self.completion?(.openSessionDetails(sessionInfo: session))
+                self.completion?(.openSessionOverview(sessionInfo: session))
             }
             MXLog.debug("[UserOtherSessionsCoordinator] UserOtherSessionsViewModel did complete with result: \(result).")
         }
