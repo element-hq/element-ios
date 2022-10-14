@@ -37,7 +37,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var cancellables = Set<AnyCancellable>()
     private var heightConstraint: NSLayoutConstraint!
     private var hostingViewController: VectorHostingController!
-    private var wysiwygViewModel = WysiwygComposerViewModel()
+    private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
     private var viewModel: ComposerViewModelProtocol! = ComposerViewModel(initialViewState: ComposerViewState())
     
     // MARK: Public
@@ -162,6 +162,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     private func update(theme: Theme) {
         hostingViewController.view.backgroundColor = theme.colors.background
+        wysiwygViewModel.textColor = theme.colors.primaryContent
     }
     
     // MARK: - RoomInputToolbarViewProtocol
