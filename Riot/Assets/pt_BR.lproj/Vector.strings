@@ -2519,3 +2519,49 @@
 "all_chats_user_menu_accessibility_label" = "Menu de usuária(o)";
 "settings_labs_enable_new_client_info_feature" = "Gravar o nome de cliente, versão, e url para reconhecer sessões mais facilmente em gerenciador de sessão";
 "settings_labs_enable_new_session_manager" = "Novo gerenciador de sessão";
+"device_type_name_unknown" = "Desconhecido";
+"device_type_name_mobile" = "Mobile";
+"device_type_name_web" = "Web";
+"device_type_name_desktop" = "Desktop";
+"user_inactive_session_item_with_date" = "Inativa por 90+ dias (%@)";
+"user_inactive_session_item" = "Inativa por 90+ dias";
+"user_other_session_unverified_sessions_header_subtitle" = "Verifique suas sessões para mensageria de segurança melhorada ou faça signout daquelas que você não reconhece ou usa mais.";
+"user_other_session_security_recommendation_title" = "Recomendação de segurança";
+"user_sessions_overview_link_device" = "Linkar um dispositivo";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"sign_out_confirmation_message" = "Tem certeza que você quer fazer signout?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Fazer signout";
+"manage_session_rename" = "Renomear sessão";
+"authentication_qr_login_failure_retry" = "Tentar de novo";
+"authentication_qr_login_failure_request_timed_out" = "A linkagem não foi completada no tempo requerido.";
+"authentication_qr_login_failure_request_denied" = "A requisição foi negada no outro dispositivo.";
+"authentication_qr_login_failure_invalid_qr" = "QR code é inválido.";
+"authentication_qr_login_failure_title" = "Linkagem falhou";
+"authentication_qr_login_loading_signed_in" = "Você está agora feito signin em seu outro dispositivo.";
+"authentication_qr_login_loading_waiting_signin" = "Esperando por dispositivo para fazer signin.";
+"authentication_qr_login_loading_connecting_device" = "Conectando a dispositivo";
+"authentication_qr_login_confirm_alert" = "Por favor assegure que você sabe a origem deste código. Ao linkar dispositivos, você vai prover alguém com acesso completo a sua conta.";
+"authentication_qr_login_confirm_subtitle" = "Confirme que o código abaixo correspondem com seu outro dispositivo:";
+"authentication_qr_login_confirm_title" = "Conexão segura estabelecida";
+"authentication_qr_login_scan_subtitle" = "Posicione o QR code no quadrado abaixo";
+"authentication_qr_login_scan_title" = "Scannar QR code";
+"authentication_qr_login_display_step2" = "Selecione ‘Fazer signin com QR code’";
+"authentication_qr_login_display_step1" = "Abra Element em seu outro dispositivo";
+"authentication_qr_login_display_subtitle" = "Scanne o QR code abaixo com seu dispositivo que está feito signout.";
+"authentication_qr_login_display_title" = "Linkar um dispositivo";
+"authentication_qr_login_start_display_qr" = "Mostrar QR code neste dispositivo";
+"authentication_qr_login_start_need_alternative" = "Precisa de um método alternativo?";
+"authentication_qr_login_start_step4" = "Selecione ‘Mostrar QR code neste dispositivo’";
+"authentication_qr_login_start_step3" = "Selecione ‘Linkar um dispositivo’";
+"authentication_qr_login_start_step2" = "Vá para Ajustes -> Segurança & Privacidade";
+"authentication_qr_login_start_step1" = "Abra Element em seu outro dispositivo";
+"authentication_qr_login_start_subtitle" = "Use a câmera neste dispositivo para scannar o QR code mostrado em seu outro dispositivo:";
+"authentication_qr_login_start_title" = "Scannar QR code";
+"authentication_login_with_qr" = "Fazer signin com QR code";
