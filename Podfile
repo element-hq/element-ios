@@ -81,8 +81,9 @@ abstract_target 'RiotPods' do
   pod 'zxcvbn-ios'
 
   # Tools
-  pod 'SwiftGen', '~> 6.3'
-  pod 'SwiftLint', '~> 0.44.0'
+  pod 'SwiftGen'
+  pod 'SwiftLint'
+  pod 'SwiftFormat/CLI'
 
   target "Riot" do
     import_MatrixSDK

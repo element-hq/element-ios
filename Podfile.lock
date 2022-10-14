@@ -91,6 +91,7 @@ PODS:
   - Sentry/Core (7.15.0)
   - SideMenu (6.5.0)
   - SwiftBase32 (0.9.0)
+  - SwiftFormat/CLI (0.50.2)
   - SwiftGen (6.6.2)
   - SwiftJWT (3.6.200):
     - BlueCryptor (~> 1.0)
@@ -98,7 +99,7 @@ PODS:
     - BlueRSA (~> 1.0)
     - KituraContracts (~> 1.2)
     - LoggerAPI (~> 1.7)
-  - SwiftLint (0.44.0)
+  - SwiftLint (0.49.1)
   - SwiftyBeaver (1.9.5)
   - UICollectionViewLeftAlignedLayout (1.0.2)
   - UICollectionViewRightAlignedLayout (0.0.3)
@@ -130,9 +131,10 @@ DEPENDENCIES:
   - Sentry (~> 7.15.0)
   - SideMenu (~> 6.5)
   - SwiftBase32 (~> 0.9.0)
-  - SwiftGen (~> 6.3)
+  - SwiftFormat/CLI
+  - SwiftGen
   - SwiftJWT (~> 3.6.200)
-  - SwiftLint (~> 0.44.0)
+  - SwiftLint
   - UICollectionViewLeftAlignedLayout (~> 1.0.2)
   - UICollectionViewRightAlignedLayout (~> 0.0.3)
   - WeakDictionary (~> 2.0)
@@ -173,6 +175,7 @@ SPEC REPOS:
     - Sentry
     - SideMenu
     - SwiftBase32
+    - SwiftFormat
     - SwiftGen
     - SwiftJWT
     - SwiftLint
@@ -227,9 +230,10 @@ SPEC CHECKSUMS:
   Sentry: 63ca44f5e0c8cea0ee5a07686b02e56104f41ef7
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
   SwiftBase32: 9399c25a80666dc66b51e10076bf591e3bbb8f17
+  SwiftFormat: 710117321c55c82675c0dc03055128efbb13c38f
   SwiftGen: 1366a7f71aeef49954ca5a63ba4bef6b0f24138c
   SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
-  SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
+  SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   UICollectionViewLeftAlignedLayout: 830bf6fa5bab9f9b464f62e3384f9d2e00b3c0f6
   UICollectionViewRightAlignedLayout: 823eef8c567eba4a44c21bc2ffcb0d0d5f361e2d
@@ -237,6 +241,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: c6ddab0a8561cf3d4f870aab1073b2a320c2c8dd
+PODFILE CHECKSUM: 34adb69712a819559b32481fd9abb6e340b23b0d
 
 COCOAPODS: 1.11.3
