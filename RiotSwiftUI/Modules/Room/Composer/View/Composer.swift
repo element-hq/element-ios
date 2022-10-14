@@ -101,7 +101,7 @@ struct Composer: View {
                     select: wysiwygViewModel.select,
                     didUpdateText: wysiwygViewModel.didUpdateText
                 )
-                .textColor(theme.colors.primaryContent)
+                .tintColor(theme.colors.accent)
                 .frame(height: wysiwygViewModel.idealHeight)
                 .padding(.horizontal, horizontalPadding)
                 .onAppear {
