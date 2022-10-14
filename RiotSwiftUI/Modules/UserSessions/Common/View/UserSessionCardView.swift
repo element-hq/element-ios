@@ -65,13 +65,18 @@ struct UserSessionCardView: View {
             
             if showExtraInformations {
                 VStack(spacing: 2) {
-                    if let lastActivityDateString = viewData.lastActivityDateString, lastActivityDateString.isEmpty == false {
-                        Text(lastActivityDateString)
-                            .font(theme.fonts.footnote)
-                            .foregroundColor(theme.colors.secondaryContent)
-                            .multilineTextAlignment(.center)
+                    HStack {
+                        if let lastActivityIcon = viewData.lastActivityIcon {
+                            Image(lastActivityIcon)
+                                .padding(.leading, 2)
+                        }
+                        if let lastActivityDateString = viewData.lastActivityDateString, lastActivityDateString.isEmpty == false {
+                            Text(lastActivityDateString)
+                                .font(theme.fonts.footnote)
+                                .foregroundColor(theme.colors.secondaryContent)
+                                .multilineTextAlignment(.center)
+                        }
                     }
-                    
                     if let lastSeenIPInfo = viewData.lastSeenIPInfo, lastSeenIPInfo.isEmpty == false {
                         Text(lastSeenIPInfo)
                             .font(theme.fonts.footnote)
