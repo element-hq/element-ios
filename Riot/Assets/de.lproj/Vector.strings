@@ -2624,3 +2624,18 @@
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Sei dir bitte bewusst, dass Sitzungsnamen auch für Personen, mit denen du kommunizierst, sichtbar sind. %@";
 "manage_session_name_hint" = "Individuelle Sitzungsnamen können dir helfen, deine Geräte einfacher zu erkennen.";
+"user_other_session_filter" = "Filtern";
+"wysiwyg_composer_format_action_strikethrough" = "Unterstrichen formatieren";
+"wysiwyg_composer_format_action_underline" = "Durchgestrichen formatieren";
+"wysiwyg_composer_format_action_italic" = "Kursiv formatieren";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Fett formatieren";
+"wysiwyg_composer_start_action_stickers" = "Sticker";
+
+
+// Mark: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Fotobibliothek";
+"settings_labs_enable_wysiwyg_composer" = "Probiere den Rich-Text-Editor aus (bald auch mit Plain-Text-Modus)";
