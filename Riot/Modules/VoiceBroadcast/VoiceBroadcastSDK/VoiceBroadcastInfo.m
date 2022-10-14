@@ -14,10 +14,10 @@
 // limitations under the License.
 //
 
-#import "VoiceBroadcastEventContent.h"
+#import "VoiceBroadcastInfo.h"
 #import "GeneratedInterface-Swift.h"
 
-@implementation VoiceBroadcastEventContent
+@implementation VoiceBroadcastInfo
 
 - (instancetype)initWithState:(NSString *)state
                   chunkLength:(NSInteger)chunkLength
@@ -56,7 +56,7 @@
         }
     }
 
-    return [[VoiceBroadcastEventContent alloc] initWithState:state chunkLength:chunkLength eventId:eventId];
+    return [[VoiceBroadcastInfo alloc] initWithState:state chunkLength:chunkLength eventId:eventId];
 }
 
 - (NSDictionary *)JSONDictionary

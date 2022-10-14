@@ -136,8 +136,8 @@ public class VoiceBroadcastService: NSObject {
         
         let stateKey = userId
         
-        let voiceBroadcastContent = VoiceBroadcastEventContent()
-        voiceBroadcastContent.state = state.rawValue
+        let voiceBroadcastInfo = VoiceBroadcastInfo()
+        voiceBroadcastInfo.state = state.rawValue
         
         if state != State.started {
             guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
@@ -145,12 +145,12 @@ public class VoiceBroadcastService: NSObject {
                 return nil
             }
             
-            voiceBroadcastContent.eventId = voiceBroadcastInfoEventId
+            voiceBroadcastInfo.eventId = voiceBroadcastInfoEventId
         } else {
-            voiceBroadcastContent.chunkLength = BuildSettings.voiceBroadcastChunkLength
+            voiceBroadcastInfo.chunkLength = BuildSettings.voiceBroadcastChunkLength
         }
         
-        guard let stateEventContent = voiceBroadcastContent.jsonDictionary() as? [String: Any] else {
+        guard let stateEventContent = voiceBroadcastInfo.jsonDictionary() as? [String: Any] else {
             completion(.failure(VoiceBroadcastServiceError.unknown))
             return nil
         }

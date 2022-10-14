@@ -100,17 +100,17 @@ class VoiceBroadcastServiceProvider {
                 return
             }
             
-            guard let voiceBroadcastInfoEventContent = VoiceBroadcastEventContent(fromJSON: voiceBroadcastInfoEvent.content) else {
+            guard let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: voiceBroadcastInfoEvent.content) else {
                 self.createVoiceBroadcastService(for: room, state: VoiceBroadcastService.State.stopped)
                 completion(self.currentVoiceBroadcastService)
                 return
             }
             
-            if voiceBroadcastInfoEventContent.state == VoiceBroadcastService.State.stopped.rawValue {
+            if voiceBroadcastInfo.state == VoiceBroadcastService.State.stopped.rawValue {
                 self.createVoiceBroadcastService(for: room, state: VoiceBroadcastService.State.stopped)
                 completion(self.currentVoiceBroadcastService)
             } else if voiceBroadcastInfoEvent.stateKey == room.mxSession.myUserId {
-                self.createVoiceBroadcastService(for: room, state: VoiceBroadcastService.State(rawValue: voiceBroadcastInfoEventContent.state) ?? VoiceBroadcastService.State.stopped)
+                self.createVoiceBroadcastService(for: room, state: VoiceBroadcastService.State(rawValue: voiceBroadcastInfo.state) ?? VoiceBroadcastService.State.stopped)
                 completion(self.currentVoiceBroadcastService)
             } else {
                 completion(nil)

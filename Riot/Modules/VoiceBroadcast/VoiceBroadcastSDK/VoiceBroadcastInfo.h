@@ -20,7 +20,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface VoiceBroadcastEventContent : MXJSONModel
+@interface VoiceBroadcastInfo : MXJSONModel
 
 /// The voice broadcast state (started - paused - resumed - stopped).
 @property (nonatomic) NSString *state;
@@ -30,6 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///  The event id of the started voice broadcast info state event.
 @property (nonatomic, strong, nullable) NSString* eventId;
+
+/// The event used to build the MXBeaconInfo.
+@property (nonatomic, readonly, nullable) MXEvent *originalEvent;
 
 - (instancetype)initWithState:(NSString *)state
                   chunkLength:(NSInteger)chunkLength
