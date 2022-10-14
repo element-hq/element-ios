@@ -26,7 +26,7 @@ struct Composer: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @State private var focused = false
-    @State private var showSendButton = false
+    @State private var isActionButtonEnabled = false
     
     private let horizontalPadding: CGFloat = 12
     private let borderHeight: CGFloat = 44
@@ -161,20 +161,18 @@ struct Composer: View {
                     } label: {
                         if viewModel.viewState.sendMode == .edit {
                             Image(Asset.Images.saveIcon.name)
-                                .foregroundColor(theme.colors.tertiaryContent)
                         } else {
                             Image(Asset.Images.sendIcon.name)
-                                .foregroundColor(theme.colors.tertiaryContent)
                         }
                     }
+                    .disabled(!isActionButtonEnabled)
+                    .opacity(isActionButtonEnabled ? 1 : 0.3)
+                    .animation(.easeInOut(duration: 0.25), value: isActionButtonEnabled)
                     .accessibilityIdentifier(actionButtonAccessibilityIdentifier)
                     .accessibilityLabel(VectorL10n.send)
-                    .isHidden(!showSendButton)
                 }
                 .onChange(of: wysiwygViewModel.isContentEmpty) { empty in
-                    withAnimation(.easeInOut(duration: 0.25)) {
-                        showSendButton = !empty
-                    }
+                    isActionButtonEnabled = !empty
                 }
             }
             .padding(.horizontal, 16)

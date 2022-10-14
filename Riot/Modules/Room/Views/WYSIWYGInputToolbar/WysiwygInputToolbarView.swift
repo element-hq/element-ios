@@ -38,7 +38,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var heightConstraint: NSLayoutConstraint!
     private var hostingViewController: VectorHostingController!
     private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
-    private var viewModel: ComposerViewModelProtocol! = ComposerViewModel(initialViewState: ComposerViewState())
+    private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState())
     
     // MARK: Public
     
