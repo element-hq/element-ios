@@ -45,6 +45,7 @@ struct FormattingToolbar: View {
                 .background(item.active ? theme.colors.accent.opacity(0.1) : theme.colors.background)
                 .cornerRadius(8)
                 .accessibilityIdentifier(item.accessibilityIdentifier)
+                .accessibilityLabel(item.accessibilityLabel)
             }
         }
     }
