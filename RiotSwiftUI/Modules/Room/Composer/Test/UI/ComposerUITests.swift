@@ -25,10 +25,11 @@ final class ComposerUITests: MockScreenTestCase {
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         let sendButton = app.buttons["sendButton"]
-        XCTAssertFalse(sendButton.exists)
+        XCTAssertTrue(sendButton.exists)
+        XCTAssertFalse(sendButton.isEnabled)
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
-        XCTAssertTrue(sendButton.exists)
+        XCTAssertTrue(sendButton.isEnabled)
         XCTAssertFalse(app.buttons["editButton"].exists)
     }
     
@@ -38,7 +39,8 @@ final class ComposerUITests: MockScreenTestCase {
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         let sendButton = app.buttons["sendButton"]
-        XCTAssertFalse(sendButton.exists)
+        XCTAssertTrue(sendButton.exists)
+        XCTAssertFalse(sendButton.isEnabled)
         
         let cancelButton = app.buttons["cancelButton"]
         XCTAssertTrue(cancelButton.exists)
@@ -49,7 +51,7 @@ final class ComposerUITests: MockScreenTestCase {
         
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
-        XCTAssertTrue(sendButton.exists)
+        XCTAssertTrue(sendButton.isEnabled)
         XCTAssertFalse(app.buttons["editButton"].exists)
         
         cancelButton.tap()
@@ -64,7 +66,8 @@ final class ComposerUITests: MockScreenTestCase {
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         let editButton = app.buttons["editButton"]
-        XCTAssert(!editButton.exists)
+        XCTAssertTrue(editButton.exists)
+        XCTAssertFalse(editButton.isEnabled)
         
         let cancelButton = app.buttons["cancelButton"]
         XCTAssertTrue(cancelButton.exists)
@@ -75,7 +78,7 @@ final class ComposerUITests: MockScreenTestCase {
         
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
-        XCTAssertTrue(editButton.exists)
+        XCTAssertTrue(editButton.isEnabled)
         XCTAssertFalse(app.buttons["sendButton"].exists)
         
         cancelButton.tap()
