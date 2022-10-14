@@ -167,7 +167,7 @@ struct Composer: View {
                     }
                     .disabled(!isActionButtonEnabled)
                     .opacity(isActionButtonEnabled ? 1 : 0.3)
-                    .animation(.easeInOut(duration: 0.25), value: isActionButtonEnabled)
+                    .animation(.easeInOut(duration: 0.15), value: isActionButtonEnabled)
                     .accessibilityIdentifier(actionButtonAccessibilityIdentifier)
                     .accessibilityLabel(VectorL10n.send)
                 }
