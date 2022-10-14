@@ -1033,7 +1033,7 @@
 "event_formatter_call_incoming_voice" = "Panggilan suara masuk";
 
 // Room Notification Settings
-"room_notifs_settings_notify_me_for" = "Beritahu saya untuk";
+"room_notifs_settings_notify_me_for" = "Beri tahu saya untuk";
 "security_settings_secure_backup_restore" = "Pulihkan dari Cadangan";
 "settings_contacts_enable_sync" = "Cari kontak Anda";
 "settings_show_url_previews" = "Tampilkan tampilan website";
@@ -1041,7 +1041,7 @@
 "settings_messages_containing_display_name" = "Nama tampilan saya";
 "settings_encrypted_group_messages" = "Pesan grup terenkripsi";
 "settings_encrypted_direct_messages" = "Pesan langsung terenkripsi";
-"settings_notify_me_for" = "Beritahu saya untuk";
+"settings_notify_me_for" = "Beri tahu saya untuk";
 "settings_mentions_and_keywords" = "Sebutan dan Keyword";
 "find_your_contacts_button_title" = "Cari kontak Anda";
 "call_incoming_voice" = "Panggilan masuk…";
@@ -1931,15 +1931,15 @@
 "call_connecting" = "Menghubungkan…";
 
 // gcm section 
-"notification_settings_notify_all_other" = "Beritahu untuk semua pesan/ruangan lainnya";
+"notification_settings_notify_all_other" = "Beri tahu untuk semua pesan/ruangan lainnya";
 "notification_settings_by_default" = "Secara default...";
-"notification_settings_suppress_from_bots" = "Jangan beritahu saya tentang notifikasi dari bot";
-"notification_settings_receive_a_call" = "Beritahu saya ketika saya menerima panggilan";
-"notification_settings_people_join_leave_rooms" = "Beritahu saya ketika ada orang bergabung atau meninggalkan ruangan";
-"notification_settings_invite_to_a_new_room" = "Beritahu saya ketika saya diundang ke ruangan baru";
-"notification_settings_just_sent_to_me" = "Beritahu saya dengan suara tentang pesan yang baru saja dikirim ke saya";
-"notification_settings_contain_my_display_name" = "Beritahu saya dengan suara tentang pesan yang berisi nama tampilan saya";
-"notification_settings_contain_my_user_name" = "Beritahu saya dengan suara tentang pesan yang berisi nama pengguna saya";
+"notification_settings_suppress_from_bots" = "Jangan beri tahu saya tentang notifikasi dari bot";
+"notification_settings_receive_a_call" = "Beri tahu saya ketika saya menerima panggilan";
+"notification_settings_people_join_leave_rooms" = "Beri tahu saya ketika ada orang bergabung atau meninggalkan ruangan";
+"notification_settings_invite_to_a_new_room" = "Beri tahu saya ketika saya diundang ke ruangan baru";
+"notification_settings_just_sent_to_me" = "Beri tahu saya dengan suara tentang pesan yang baru saja dikirim ke saya";
+"notification_settings_contain_my_display_name" = "Beri tahu saya dengan suara tentang pesan yang berisi nama tampilan saya";
+"notification_settings_contain_my_user_name" = "Beri tahu saya dengan suara tentang pesan yang berisi nama pengguna saya";
 "notification_settings_other_alerts" = "Pemberitahuan Lainnya";
 "notification_settings_select_room" = "Pilih sebuah ruangan";
 "notification_settings_sender_hint" = "@pengguna:domain.com";
@@ -1948,8 +1948,8 @@
 "notification_settings_custom_sound" = "Suara kustom";
 "notification_settings_highlight" = "Sorotan";
 "notification_settings_word_to_match" = "kata untuk dicocokkan";
-"notification_settings_never_notify" = "Jangan diberitahu";
-"notification_settings_always_notify" = "Selalu diberitahu";
+"notification_settings_never_notify" = "Jangan beri tahu";
+"notification_settings_always_notify" = "Selalu beri tahu";
 "notification_settings_per_word_info" = "Kata-kata tidak cocok dengan huruf besar-kecil, dan mungkin menyertakan karakter pengganti *. Jadi:\nfoo cocok dengan string foo yang dikelilingi oleh pembatas kata (misalnya tanda baca dan spasi atau awal/akhir baris).\nfoo* cocok dengan kata apa pun yang dimulai foo.\n*foo* cocok dengan kata apa pun yang menyertakan 3 huruf foo.";
 "notification_settings_per_word_notifications" = "Notifikasi per kata";
 "notification_settings_global_info" = "Pengaturan notifikasi disimpan ke akun pengguna Anda dan dibagikan di antara semua client yang mendukungnya (termasuk pemberitahuan desktop).\n\nAturan diterapkan secara berurutan; aturan pertama yang cocok menentukan hasil untuk pesan.\nJadi: Notifikasi per kata lebih penting daripada notifikasi per ruangan yang lebih penting daripada notifikasi per pengirim.\nUntuk beberapa aturan dengan jenis yang sama, yang pertama dalam daftar yang cocok akan diprioritaskan.";
@@ -2358,7 +2358,7 @@
 "spaces_creation_invite_by_username_message" = "Anda juga dapat mengundang mereka nanti.";
 "spaces_creation_invite_by_username_title" = "Undang tim Anda";
 "spaces_creation_invite_by_username" = "Undang dengan nama pengguna";
-"spaces_creation_add_rooms_message" = "Space ini hanya untuk Anda, tidak akan diberitahukan kepada siapa saja. Anda dapat menambahkan lagi nanti.";
+"spaces_creation_add_rooms_message" = "Space ini hanya untuk Anda, tidak akan diberi tahu kepada siapa pun. Anda dapat menambahkan lagi nanti.";
 "spaces_creation_add_rooms_title" = "Apa yang Anda ingin tambahkan?";
 "spaces_creation_sharing_type_me_and_teammates_detail" = "Space privat untuk Anda & tim Anda";
 "spaces_creation_sharing_type_me_and_teammates_title" = "Saya dan tim saya";
@@ -2674,7 +2674,7 @@
 "room_invites_empty_view_title" = "Belum ada yang baru.";
 "all_chats_onboarding_try_it" = "Coba";
 "all_chats_onboarding_title" = "Apa yang baru";
-"all_chats_onboarding_page_message3" = "Ketuk profil Anda untuk memberitahukan kami bagaimana menurut Anda.";
+"all_chats_onboarding_page_message3" = "Ketuk profil Anda untuk memberi tahu kami bagaimana menurut Anda.";
 "all_chats_onboarding_page_title3" = "Berikan Masukan";
 "all_chats_onboarding_page_message2" = "Akses Space Anda (di kiri bawah) dengan lebih cepat dan lebih mudah dari sebelumnya.";
 "all_chats_onboarding_page_title2" = "Akses Space";
@@ -2745,3 +2745,49 @@
 "all_chats_user_menu_accessibility_label" = "Menu pengguna";
 "settings_labs_enable_new_client_info_feature" = "Rekam nama, versi, dan URL klien untuk dapat mengenal sesi dengan lebih muda dalam pengelola sesi";
 "settings_labs_enable_new_session_manager" = "Pengelola sesi baru";
+"device_type_name_unknown" = "Tidak diketahui";
+"device_type_name_mobile" = "Ponsel";
+"device_type_name_web" = "Web";
+"device_type_name_desktop" = "Desktop";
+"user_inactive_session_item_with_date" = "Tidak aktif selama 90+ hari (%@)";
+"user_inactive_session_item" = "Tidak aktif selama 90+ hari";
+"user_other_session_unverified_sessions_header_subtitle" = "Verifikasi sesi Anda untuk perpesanan aman yang terbaik atau keluarkan sesi yang Anda tidak kenal atau gunakan lagi.";
+"user_other_session_security_recommendation_title" = "Saran keamanan";
+"user_sessions_overview_link_device" = "Tautkan sebuah perangkat";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+
+// MARK: Sign out warning
+
+"sign_out" = "Keluar dari akun";
+"sign_out_confirmation_message" = "Apakah Anda yakin ingin keluar dari akun Anda?";
+"manage_session_rename" = "Ubah nama sesi";
+"authentication_qr_login_failure_retry" = "Coba lagi";
+"authentication_qr_login_failure_request_timed_out" = "Penautan tidak selesai dalam waktu yang diperlukan.";
+"authentication_qr_login_failure_request_denied" = "Permintaan ditolak di perangkat yang lain.";
+"authentication_qr_login_failure_invalid_qr" = "Kode QR tidak absah.";
+"authentication_qr_login_display_subtitle" = "Pindai kode QR di bawah dengan perangkat Anda yang sudah keluar dari akun.";
+"authentication_qr_login_confirm_alert" = "Pastikan Anda tahu asalnya dari kode ini. Dengan menautkan perangkat, Anda akan memberikan seseorang akses penuh ke akun Anda.";
+"authentication_qr_login_loading_signed_in" = "Anda sekarang masuk di perangkat Anda yang lain.";
+"authentication_qr_login_failure_title" = "Penautan gagal";
+"authentication_qr_login_loading_waiting_signin" = "Menunggu perangkat untuk masuk.";
+"authentication_qr_login_loading_connecting_device" = "Menghubungkan ke perangkat";
+"authentication_qr_login_confirm_subtitle" = "Konfirmasi bahwa kode di bawah sesuai dengan perangkat Anda yang lain:";
+"authentication_qr_login_confirm_title" = "Koneksi aman dibuat";
+"authentication_qr_login_scan_subtitle" = "Tempatkan kode QR di dalam kotak di bawah";
+"authentication_qr_login_scan_title" = "Pindai kode QR";
+"authentication_qr_login_display_step2" = "Pilih ‘Masuk dengan kode QR’";
+"authentication_qr_login_display_step1" = "Buka Element di perangkat Anda yang lain";
+"authentication_qr_login_display_title" = "Tautkan sebuah perangkat";
+"authentication_qr_login_start_display_qr" = "Tampilkan kode QR di perangkat ini";
+"authentication_qr_login_start_need_alternative" = "Butuh metode yang lain?";
+"authentication_qr_login_start_step4" = "Pilih ‘Tampilkan kode QR di perangkat ini’";
+"authentication_qr_login_start_step3" = "Pilih ‘Tautkan sebuah perangkat’";
+"authentication_qr_login_start_step2" = "Pergi ke Pengaturan → Keamanan & Privasi";
+"authentication_qr_login_start_step1" = "Buka Element di perangkat Anda yang lain";
+"authentication_qr_login_start_subtitle" = "Gunakan kamera pada perangkat ini untuk memindai kode QR yang ditampilkan di perangkat Anda yang lain:";
+"authentication_qr_login_start_title" = "Pindai kode QR";
+"authentication_login_with_qr" = "Masuk dengan kode QR";

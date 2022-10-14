@@ -2743,3 +2743,49 @@
 "all_chats_user_menu_accessibility_label" = "Меню користувача";
 "settings_labs_enable_new_client_info_feature" = "Запишіть назву клієнта, версію та URL-адресу, щоб легше розпізнавати сеанси в менеджері сеансів";
 "settings_labs_enable_new_session_manager" = "Новий менеджер сеансів";
+"device_type_name_unknown" = "Невідомо";
+"device_type_name_mobile" = "Мобільний";
+"device_type_name_web" = "Браузер";
+"device_type_name_desktop" = "Комп'ютер";
+"user_inactive_session_item_with_date" = "Неактивний понад 90 днів (%@)";
+"user_inactive_session_item" = "Неактивний понад 90 днів";
+"user_other_session_unverified_sessions_header_subtitle" = "Перевірте свої сеанси для посилення безпеки обміну повідомленнями або вийдіть з тих, які ви більше не розпізнаєте або не використовуєте.";
+"user_other_session_security_recommendation_title" = "Поради з безпеки";
+"user_sessions_overview_link_device" = "Пов'язати пристрій";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"sign_out_confirmation_message" = "Точно вийти?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Вийти";
+"manage_session_rename" = "Перейменувати сеанс";
+"authentication_qr_login_failure_retry" = "Повторити спробу";
+"authentication_qr_login_failure_request_timed_out" = "У встановлені терміни з'єднання не було встановлено.";
+"authentication_qr_login_failure_request_denied" = "Запит відхилено на іншому пристрої.";
+"authentication_qr_login_failure_invalid_qr" = "Хибний QR-код.";
+"authentication_qr_login_failure_title" = "Не вдалося під'єднати";
+"authentication_qr_login_loading_signed_in" = "Ви ввійшли на іншому пристрої.";
+"authentication_qr_login_loading_waiting_signin" = "Очікування входу пристрою.";
+"authentication_qr_login_loading_connecting_device" = "Під'єднання до пристрою";
+"authentication_qr_login_confirm_alert" = "Переконайтеся, що ви знаєте походження цього коду. Пов'язавши пристрої, ви надасте будь-кому повний доступ до свого облікового запису.";
+"authentication_qr_login_confirm_subtitle" = "Переконайтеся, що код внизу збігається з кодом вашого іншого пристрою:";
+"authentication_qr_login_confirm_title" = "Установлено захищене з'єднання";
+"authentication_qr_login_scan_subtitle" = "Розмістіть QR-код у квадраті знизу";
+"authentication_qr_login_scan_title" = "Сканувати QR-код";
+"authentication_qr_login_display_step2" = "Виберіть «Увійти використавши QR-код»";
+"authentication_qr_login_display_step1" = "Відкрийте Element на іншому пристрої";
+"authentication_qr_login_display_subtitle" = "Зіскануйте QR-код знизу своїм пристроєм, з якого ви вийшли.";
+"authentication_qr_login_display_title" = "Пов'язати пристрій";
+"authentication_qr_login_start_display_qr" = "Показати QR-код на цьому пристрої";
+"authentication_qr_login_start_need_alternative" = "Потрібен альтернативний метод?";
+"authentication_qr_login_start_step4" = "Виберіть «Показати QR-код на цьому пристрої»";
+"authentication_qr_login_start_step3" = "Виберіть «Пов'язати пристрій»";
+"authentication_qr_login_start_step2" = "Перейдіть до Налаштування -> Безпека й приватність";
+"authentication_qr_login_start_step1" = "Відкрийте Element на іншому пристрої";
+"authentication_qr_login_start_subtitle" = "Використовуйте камеру на цьому пристрої, щоб зісканувати QR-код, показаний на іншому пристрої:";
+"authentication_qr_login_start_title" = "Сканувати QR-код";
+"authentication_login_with_qr" = "Увійти використавши QR-код";
