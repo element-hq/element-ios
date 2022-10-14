@@ -134,8 +134,13 @@
 
 - (void)registerVoiceBroadcastCellsForTableView:(UITableView*)tableView
 {
-    // Recording
-    [tableView registerClass:VoiceBroadcastBubbleCell.class forCellReuseIdentifier:VoiceBroadcastBubbleCell.defaultReuseIdentifier];
+    // Incoming
+    [tableView registerClass:VoiceBroadcastIncomingBubbleCell.class forCellReuseIdentifier:VoiceBroadcastIncomingBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastIncomingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceBroadcastIncomingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastIncomingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceBroadcastIncomingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    // Outgoing
+    [tableView registerClass:VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastOutgoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceBroadcastOutgoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
 }
 
 #pragma mark - Mapping
@@ -302,8 +307,14 @@
 - (NSDictionary<NSNumber*, Class>*)voiceBroadcastCellsMapping
 {
     return @{
-        // Recording
-        @(RoomTimelineCellIdentifierVoiceBroadcast) : VoiceBroadcastBubbleCell.class
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcast) : VoiceBroadcastIncomingBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingPollWithoutSenderInfo) : VoiceBroadcastIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingPollWithPaginationTitle) : VoiceBroadcastIncomingWithPaginationTitleBubbleCell.class,
+        // Outgoing
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcast) : VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithoutSenderInfo) : VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithPaginationTitle) : VoiceBroadcastOutgoingWithPaginationTitleBubbleCell.class,
     };
 }
 

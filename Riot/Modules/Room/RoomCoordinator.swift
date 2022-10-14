@@ -92,6 +92,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.roomViewController.parentSpaceId = parameters.parentSpaceId
 
         TimelinePollProvider.shared.session = parameters.session
+        TimelineVoiceBroadcastProvider.shared.session = parameters.session
         
         super.init()
     }

@@ -275,6 +275,8 @@
 - (void)registerVoiceBroadcastCellsForTableView:(UITableView*)tableView
 {
     [tableView registerClass:VoiceBroadcastPlainCell.class forCellReuseIdentifier:VoiceBroadcastPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastWithoutSenderInfoPlainCell.class forCellReuseIdentifier:VoiceBroadcastWithoutSenderInfoPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastWithPaginationTitlePlainCell.class forCellReuseIdentifier:VoiceBroadcastWithPaginationTitlePlainCell.defaultReuseIdentifier];
 }
 
 #pragma mark Cell class association
@@ -563,8 +565,14 @@
 - (NSDictionary<NSNumber*, Class>*)voiceBroadcastCellsMapping
 {
     return @{
-        // Recording
-        @(RoomTimelineCellIdentifierVoiceBroadcast) : VoiceBroadcastPlainCell.class
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcast) : VoiceBroadcastPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastWithoutSenderInfo) : VoiceBroadcastWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastWithPaginationTitle) : VoiceBroadcastWithPaginationTitlePlainCell.class,
+        // Outoing
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcast) : VoiceBroadcastPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithoutSenderInfo) : VoiceBroadcastWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithPaginationTitle) : VoiceBroadcastWithPaginationTitlePlainCell.class
     };
 }
 
