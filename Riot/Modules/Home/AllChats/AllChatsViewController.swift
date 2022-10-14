@@ -439,7 +439,7 @@ class AllChatsViewController: HomeViewController {
     }
     
     override func shouldShowEmptyView() -> Bool {
-        let shouldShowEmptyView = super.shouldShowEmptyView()
+        let shouldShowEmptyView = super.shouldShowEmptyView() && !AllChatsLayoutSettingsManager.shared.hasAnActiveFilter
         
         if shouldShowEmptyView {
             self.navigationItem.searchController = nil
