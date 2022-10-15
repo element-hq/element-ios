@@ -16,56 +16,6 @@
 
 import Foundation
 
-//class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable, RoomCellThreadSummaryDisplayable {
-//
-//    private(set) var recordController: VoiceBroadcastRecordController!
-//
-//    override func render(_ cellData: MXKCellData!) {
-//        super.render(cellData)
-//
-////        guard let data = cellData as? RoomBubbleCellData else {
-////            return
-////        }
-////
-////        guard data.attachment.type == .voiceMessage || data.attachment.type == .audio else {
-////            fatalError("Invalid attachment type passed to a voice message cell.")
-////        }
-////
-////        if playbackController.attachment != data.attachment {
-////            playbackController.attachment = data.attachment
-////        }
-//
-//        self.update(theme: ThemeService.shared().theme)
-//    }
-//
-//    override func setupViews() {
-//        super.setupViews()
-//
-//        roomCellContentView?.backgroundColor = .clear
-//        roomCellContentView?.showSenderInfo = true
-//        roomCellContentView?.showPaginationTitle = false
-//
-//        guard let contentView = roomCellContentView?.innerContentView else {
-//            return
-//        }
-//
-//        recordController = VoiceBroadcastRecordController()
-//
-//        contentView.vc_addSubViewMatchingParent(recordController.recordView)
-//    }
-//
-//    override func update(theme: Theme) {
-//
-//        super.update(theme: theme)
-//
-//        guard let recordController = recordController else {
-//            return
-//        }
-//
-//        recordController.recordView.update(theme: theme)
-//    }
-//}
-
 class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
     
     private var voiceBroadcastView: UIView?
@@ -73,19 +23,12 @@ class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
-        
-//        guard let contentView = roomCellContentView?.innerContentView,
-//              let bubbleData = cellData as? RoomBubbleCellData,
-//              let event = bubbleData.events.last,
-//              event.eventType == __MXEventType.voiceBroadcastStart,
-//              let view = TimelineVoiceBroadcastProvider.shared.buildTimelineVoiceBroadcastViewForEvent(event) else {
-//            return
-//        }
-        
+                
         guard let contentView = roomCellContentView?.innerContentView,
               let bubbleData = cellData as? RoomBubbleCellData,
               let event = bubbleData.events.last,
-//              event.eventType == __MXEventType.voiceBroadcastStart,
+              let voiceBroadcastContent = VoiceBroadcastInfo(fromJSON: event.content),
+              voiceBroadcastContent.state == VoiceBroadcastService.State.started.rawValue,
               let view = TimelineVoiceBroadcastProvider.shared.buildTimelineVoiceBroadcastViewForEvent(event) else {
             return
         }
@@ -120,4 +63,3 @@ class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable
 }
 
 extension VoiceBroadcastPlainCell: RoomCellThreadSummaryDisplayable {}
-

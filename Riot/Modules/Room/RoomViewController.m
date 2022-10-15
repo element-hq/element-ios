@@ -3213,7 +3213,36 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcast)
     {
-        cellIdentifier = RoomTimelineCellIdentifierVoiceBroadcast;
+        if (bubbleData.isIncoming)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcast;
+            }
+        }
+        else
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcast;
+            }
+        }
     }
     else if (roomBubbleCellData.getFirstBubbleComponentWithDisplay.event.isEmote)
     {
@@ -7821,15 +7850,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                        samples:(NSArray<NSNumber *> *)samples
                     completion:(void (^)(BOOL))completion
 {
-//    [self.roomDataSource sendVoiceMessage:url mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
-//        MXLogDebug(@"Success with event id %@", eventId);
-//        completion(YES);
-//    } failure:^(NSError *error) {
-//        MXLogError(@"Failed sending voice message");
-//        completion(NO);
-//    }];
-    
-    [self.customizedRoomDataSource sendVoiceBroadcastWithAudioFileLocalURL:url voiceBroadcastInfoEventId:self.voiceBroadcastService.eventId mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
+    [self.roomDataSource sendVoiceMessage:url mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
         MXLogDebug(@"Success with event id %@", eventId);
         completion(YES);
     } failure:^(NSError *error) {

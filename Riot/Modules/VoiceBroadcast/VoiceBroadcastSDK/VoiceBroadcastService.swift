@@ -111,8 +111,8 @@ public class VoiceBroadcastService: NSObject {
                                    mimeType: String?,
                                    duration: UInt,
                                    samples: [Float]?,
-                                   success:@escaping ((String?) -> Void),
-                                   failure:@escaping ((Error?) -> Void)) {
+                                   success: @escaping ((String?) -> Void),
+                                   failure: @escaping ((Error?) -> Void)) {
         guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
             return failure(VoiceBroadcastServiceError.notStarted)
         }
@@ -180,7 +180,7 @@ extension VoiceBroadcastService {
     /// - Returns: a `MXHTTPOperation` instance.
     @discardableResult
     @objc public func startVoiceBroadcast(success: @escaping (String?) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
-        return self.startVoiceBroadcast() { (response) in
+        return self.startVoiceBroadcast { (response) in
             switch response {
             case .success(let object):
                 success(object)

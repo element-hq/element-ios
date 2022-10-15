@@ -307,7 +307,10 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             
             break;
         case RoomBubbleCellDataTagVoiceBroadcast:
-            hasNoDisplay = NO;
+            if ([[VoiceBroadcastInfo modelFromJSON:self.events.lastObject.content].state isEqualToString:@"started"]) {
+                hasNoDisplay = NO;
+            }
+            
             break;
         default:
             hasNoDisplay = [super hasNoDisplay];
