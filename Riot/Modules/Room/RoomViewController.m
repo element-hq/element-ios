@@ -2332,7 +2332,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             MXSession* session = self.roomDataSource.mxSession;
             [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
                 if (voiceBroadcastService) {
-                    if ([[voiceBroadcastService getState] isEqualToString:@"stopped"]) {
+                    if ([VoiceBroadcastInfo isStoppedFor:[voiceBroadcastService getState]]) {
                         [session.voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
                         
                         } failure:^(NSError * _Nonnull error) {

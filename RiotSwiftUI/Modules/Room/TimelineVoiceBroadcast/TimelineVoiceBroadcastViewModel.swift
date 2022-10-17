@@ -38,9 +38,6 @@ class TimelineVoiceBroadcastViewModel: TimelineVoiceBroadcastViewModelType, Time
     
     override func process(viewAction: TimelineVoiceBroadcastViewAction) {
         // TODO: add some actions as play pause
-//        switch viewAction {
-//        // Update local state. An update will be pushed from the coordinator once sent.
-//        }
     }
     
     // MARK: - TimelineVoiceBroadcastViewModelProtocol

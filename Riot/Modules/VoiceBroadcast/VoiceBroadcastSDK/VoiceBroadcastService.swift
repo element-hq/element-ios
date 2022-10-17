@@ -25,23 +25,16 @@ public class VoiceBroadcastService: NSObject {
     
     private var voiceBroadcastInfoEventId: String?
     public let room: MXRoom
-    public private(set) var state: State
+    public private(set) var state: VoiceBroadcastInfo.State
     
     // MARK: - Setup
     
-    public init(room: MXRoom, state: State) {
+    public init(room: MXRoom, state: VoiceBroadcastInfo.State) {
         self.room = room
         self.state = state
     }
 
     // MARK: - Constants
-    
-    public enum State: String {
-        case started
-        case paused
-        case resumed
-        case stopped
-    }
     
     // MARK: - Public
     
@@ -52,7 +45,7 @@ public class VoiceBroadcastService: NSObject {
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     /// - Returns: a `MXHTTPOperation` instance.
     func startVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
-        return sendVoiceBroadcastInfo(state: State.started) { [weak self] response in
+        return sendVoiceBroadcastInfo(state: VoiceBroadcastInfo.State.started) { [weak self] response in
             guard let self = self else { return }
             
             switch response {
@@ -70,7 +63,7 @@ public class VoiceBroadcastService: NSObject {
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     /// - Returns: a `MXHTTPOperation` instance.
     func pauseVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
-        return sendVoiceBroadcastInfo(state: State.paused, completion: completion)
+        return sendVoiceBroadcastInfo(state: VoiceBroadcastInfo.State.paused, completion: completion)
     }
     
     /// resume a voice broadcast.
@@ -78,7 +71,7 @@ public class VoiceBroadcastService: NSObject {
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     /// - Returns: a `MXHTTPOperation` instance.
     func resumeVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
-        return sendVoiceBroadcastInfo(state: State.resumed, completion: completion)
+        return sendVoiceBroadcastInfo(state: VoiceBroadcastInfo.State.resumed, completion: completion)
     }
     
     /// stop a voice broadcast info.
@@ -86,7 +79,7 @@ public class VoiceBroadcastService: NSObject {
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     /// - Returns: a `MXHTTPOperation` instance.
     func stopVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
-        return sendVoiceBroadcastInfo(state: State.stopped, completion: completion)
+        return sendVoiceBroadcastInfo(state: VoiceBroadcastInfo.State.stopped, completion: completion)
     }
     
     func getState() -> String {
@@ -128,7 +121,7 @@ public class VoiceBroadcastService: NSObject {
     
     // MARK: - Private
     
-    private func sendVoiceBroadcastInfo(state: State, completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
+    private func sendVoiceBroadcastInfo(state: VoiceBroadcastInfo.State, completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
         guard let userId = self.room.mxSession.myUserId else {
             completion(.failure(VoiceBroadcastServiceError.missingUserId))
             return nil
@@ -139,7 +132,7 @@ public class VoiceBroadcastService: NSObject {
         let voiceBroadcastInfo = VoiceBroadcastInfo()
         voiceBroadcastInfo.state = state.rawValue
         
-        if state != State.started {
+        if state != VoiceBroadcastInfo.State.started {
             guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
                 completion(.failure(VoiceBroadcastServiceError.notStarted))
                 return nil
@@ -180,7 +173,7 @@ extension VoiceBroadcastService {
     /// - Returns: a `MXHTTPOperation` instance.
     @discardableResult
     @objc public func startVoiceBroadcast(success: @escaping (String?) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
-        return self.startVoiceBroadcast { (response) in
+        return self.startVoiceBroadcast { response in
             switch response {
             case .success(let object):
                 success(object)
@@ -197,7 +190,7 @@ extension VoiceBroadcastService {
     /// - Returns: a `MXHTTPOperation` instance.
     @discardableResult
     @objc public func pauseVoiceBroadcast(success: @escaping (String?) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
-        return self.pauseVoiceBroadcast() { (response) in
+        return self.pauseVoiceBroadcast { response in
             switch response {
             case .success(let object):
                 success(object)
@@ -214,7 +207,7 @@ extension VoiceBroadcastService {
     /// - Returns: a `MXHTTPOperation` instance.
     @discardableResult
     @objc public func resumeVoiceBroadcast(success: @escaping (String?) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
-        return self.resumeVoiceBroadcast() { (response) in
+        return self.resumeVoiceBroadcast { response in
             switch response {
             case .success(let object):
                 success(object)
@@ -231,7 +224,7 @@ extension VoiceBroadcastService {
     /// - Returns: a `MXHTTPOperation` instance.
     @discardableResult
     @objc public func stopVoiceBroadcast(success: @escaping (String?) -> Void, failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
-        return self.stopVoiceBroadcast() { (response) in
+        return self.stopVoiceBroadcast { response in
             switch response {
             case .success(let object):
                 success(object)

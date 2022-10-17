@@ -16,13 +16,23 @@
 
 import Foundation
 
-/// Voice Broadcast settings.
-@objcMembers
-final class VoiceBroadcastSettings: NSObject {
-    static let eventType = "io.element.voice_broadcast_info"
+extension VoiceBroadcastInfo {
+    // MARK: - Constants
     
-    static let voiceBroadcastContentKeyState = "state"
-    static let voiceBroadcastContentKeyChunkLength = "chunk_length"
-    static let voiceBroadcastContentKeyChunkType = "io.element.voice_broadcast_chunk"
-    static let voiceBroadcastContentKeyChunkSequence = "sequence"
+    public enum State: String {
+        case started
+        case paused
+        case resumed
+        case stopped
+    }
+    
+    // MARK: - Public
+    
+    @objc static func isStarted(for name: String) -> Bool {
+        return name == State.started.rawValue
+    }
+    
+    @objc static func isStopped(for name: String) -> Bool {
+        return name == State.stopped.rawValue
+    }
 }

@@ -406,7 +406,6 @@ final class BuildSettings: NSObject {
     static let locationSharingEnabled = true
     
     // MARK: - Voice Broadcast
-    static let voiceBroadcastEnabled = true
     static let voiceBroadcastChunkLength: Int = 600
     static let voiceBroadcastMaxLength: UInt64 = 144000
 

@@ -22,7 +22,7 @@ struct VoiceBroadcastBuilder {
         
         let voiceBroadcast = VoiceBroadcast()
         
-        // TODO: create voice broadcast object
+        // TODO: set voice broadcast object
         
         return voiceBroadcast
     }

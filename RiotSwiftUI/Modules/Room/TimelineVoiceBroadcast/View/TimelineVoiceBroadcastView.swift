@@ -31,7 +31,10 @@ struct TimelineVoiceBroadcastView: View {
         let voiceBroadcast = viewModel.viewState.voiceBroadcast
         
         VStack(alignment: .leading, spacing: 16.0) {
-            Text(VectorL10n.voiceBroadcastInTimeline)
+            Text(VectorL10n.voiceBroadcastInTimelineTitle)
+                .font(theme.fonts.bodySB)
+                .foregroundColor(theme.colors.primaryContent)
+            Text(VectorL10n.voiceBroadcastInTimelineBody)
                 .font(theme.fonts.body)
                 .foregroundColor(theme.colors.primaryContent)
         }
@@ -45,10 +48,4 @@ struct TimelineVoiceBroadcastView: View {
 
 // MARK: - Previews
 
-// TODO: Preview
-//struct TimelineVoiceBroadcastView_Previews: PreviewProvider {
-//    static let stateRenderer = MockTimelineVoiceBroadcastScreenState.stateRenderer
-//    static var previews: some View {
-//        stateRenderer.screenGroup()
-//    }
-//}
+// TODO: Add Voice broadcast preview

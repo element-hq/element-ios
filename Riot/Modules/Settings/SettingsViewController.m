@@ -600,9 +600,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             [sectionLabs addRowWithTag:LABS_ENABLE_WYSIWYG_COMPOSER];
         }
-        if (BuildSettings.voiceBroadcastEnabled == YES) {
-            [sectionLabs addRowWithTag:LABS_ENABLE_VOICE_BROADCAST];
-        }
+        [sectionLabs addRowWithTag:LABS_ENABLE_VOICE_BROADCAST];
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
