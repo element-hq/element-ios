@@ -1,0 +1,7 @@
+Improved the WYSIWYG toolbar view to match the Figma designs:
+- Improved spacing of the toolbar buttons and the text view
+- Improved sizes of the toolbar buttons and the text view
+- Changed font size from body to subheadline in the textview (updated swiftpm package)
+- Border colour changes dynamically if the textView is focused or not.
+- Border corner radius changes dynamically if there is more than one line or the toolbar is in edit/reply mode
+- Added handlebar for the bottom sheet and improved spacing
