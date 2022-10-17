@@ -16,13 +16,12 @@
 
 import Foundation
 
-/// Voice Broadcast settings.
-@objcMembers
-final class VoiceBroadcastSettings: NSObject {
-    static let eventType = "io.element.voice_broadcast_info"
+class VoiceBroadcastIncomingWithoutSenderInfoBubbleCell: VoiceBroadcastIncomingBubbleCell {
     
-    static let voiceBroadcastContentKeyState = "state"
-    static let voiceBroadcastContentKeyChunkLength = "chunk_length"
-    static let voiceBroadcastContentKeyChunkType = "io.element.voice_broadcast_chunk"
-    static let voiceBroadcastContentKeyChunkSequence = "sequence"
+    override func setupViews() {
+        super.setupViews()
+        
+        roomCellContentView?.showSenderInfo = false
+    }
+    
 }

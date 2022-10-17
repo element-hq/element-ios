@@ -70,9 +70,9 @@ class VoiceBroadcastServiceProvider {
         }
     }
     
-    private func createVoiceBroadcastService(for room: MXRoom, state: VoiceBroadcastService.State) {
+    private func createVoiceBroadcastService(for room: MXRoom, state: VoiceBroadcastInfo.State) {
                 
-        let voiceBroadcastService = VoiceBroadcastService(room: room, state: VoiceBroadcastService.State.stopped)
+        let voiceBroadcastService = VoiceBroadcastService(room: room, state: VoiceBroadcastInfo.State.stopped)
         
         self.currentVoiceBroadcastService = voiceBroadcastService
         
@@ -95,22 +95,22 @@ class VoiceBroadcastServiceProvider {
     private func setupVoiceBroadcastService(for room: MXRoom, completion: @escaping (VoiceBroadcastService?) -> Void) {
         self.getLastVoiceBroadcastInfo(for: room) { event in
             guard let voiceBroadcastInfoEvent = event else {
-                self.createVoiceBroadcastService(for: room, state: VoiceBroadcastService.State.stopped)
+                self.createVoiceBroadcastService(for: room, state: VoiceBroadcastInfo.State.stopped)
                 completion(self.currentVoiceBroadcastService)
                 return
             }
             
-            guard let voiceBroadcastInfoEventContent = VoiceBroadcastEventContent(fromJSON: voiceBroadcastInfoEvent.content) else {
-                self.createVoiceBroadcastService(for: room, state: VoiceBroadcastService.State.stopped)
+            guard let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: voiceBroadcastInfoEvent.content) else {
+                self.createVoiceBroadcastService(for: room, state: VoiceBroadcastInfo.State.stopped)
                 completion(self.currentVoiceBroadcastService)
                 return
             }
             
-            if voiceBroadcastInfoEventContent.state == VoiceBroadcastService.State.stopped.rawValue {
-                self.createVoiceBroadcastService(for: room, state: VoiceBroadcastService.State.stopped)
+            if voiceBroadcastInfo.state == VoiceBroadcastInfo.State.stopped.rawValue {
+                self.createVoiceBroadcastService(for: room, state: VoiceBroadcastInfo.State.stopped)
                 completion(self.currentVoiceBroadcastService)
             } else if voiceBroadcastInfoEvent.stateKey == room.mxSession.myUserId {
-                self.createVoiceBroadcastService(for: room, state: VoiceBroadcastService.State(rawValue: voiceBroadcastInfoEventContent.state) ?? VoiceBroadcastService.State.stopped)
+                self.createVoiceBroadcastService(for: room, state: VoiceBroadcastInfo.State(rawValue: voiceBroadcastInfo.state) ?? VoiceBroadcastInfo.State.stopped)
                 completion(self.currentVoiceBroadcastService)
             } else {
                 completion(nil)

@@ -16,13 +16,9 @@
 
 import Foundation
 
-/// Voice Broadcast settings.
-@objcMembers
-final class VoiceBroadcastSettings: NSObject {
-    static let eventType = "io.element.voice_broadcast_info"
+protocol TimelineVoiceBroadcastViewModelProtocol {
+    var context: TimelineVoiceBroadcastViewModelType.Context { get }
+    var completion: (() -> Void)? { get set }
     
-    static let voiceBroadcastContentKeyState = "state"
-    static let voiceBroadcastContentKeyChunkLength = "chunk_length"
-    static let voiceBroadcastContentKeyChunkType = "io.element.voice_broadcast_chunk"
-    static let voiceBroadcastContentKeyChunkSequence = "sequence"
+    func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: TimelineVoiceBroadcastDetails)
 }

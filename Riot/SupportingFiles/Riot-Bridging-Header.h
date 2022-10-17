@@ -51,7 +51,7 @@
 #import "RoomSelectedStickerBubbleCell.h"
 #import "MXRoom+Riot.h"
 #import "UniversalLink.h"
-#import "VoiceBroadcastEventContent.h"
+#import "VoiceBroadcastInfo.h"
 
 // MatrixKit common imports, shared with all targets
 #import "MatrixKit-Bridging-Header.h"

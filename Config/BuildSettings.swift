@@ -406,9 +406,8 @@ final class BuildSettings: NSObject {
     static let locationSharingEnabled = true
     
     // MARK: - Voice Broadcast
-    static let voiceBroadcastEnabled = false
     static let voiceBroadcastChunkLength: Int = 600
-    static let voiceBroadcastMaxLength: Int = 144000
+    static let voiceBroadcastMaxLength: UInt64 = 144000
 
     // MARK: - MXKAppSettings
     static let enableBotCreation: Bool = false

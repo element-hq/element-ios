@@ -182,7 +182,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                         // Show timestamps always on right
                         self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
                     }
-                } else if ([event.type isEqualToString:VoiceBroadcastSettings.eventType]) {
+                }
+                else if ([event.type isEqualToString:VoiceBroadcastSettings.eventType])
+                {
                     self.tag = RoomBubbleCellDataTagVoiceBroadcast;
                     self.collapsable = NO;
                     self.collapsed = NO;
@@ -195,8 +197,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             }
             case MXEventTypeRoomMessage:
             {
-                if (event.location) {
+                if (event.location)
+                {
                     self.tag = RoomBubbleCellDataTagLocation;
+                    self.collapsable = NO;
+                    self.collapsed = NO;
+                }
+                else if (event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType])
+                {
+                    self.tag = RoomBubbleCellDataTagVoiceBroadcast;
                     self.collapsable = NO;
                     self.collapsed = NO;
                 }
@@ -307,7 +316,12 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             
             break;
         case RoomBubbleCellDataTagVoiceBroadcast:
-            hasNoDisplay = YES;
+            if (RiotSettings.shared.enableVoiceBroadcast == YES &&
+                [VoiceBroadcastInfo isStartedFor:[VoiceBroadcastInfo modelFromJSON:self.events.lastObject.content].state])
+            {
+                hasNoDisplay = NO;
+            }
+            
             break;
         default:
             hasNoDisplay = [super hasNoDisplay];

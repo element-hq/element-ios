@@ -2320,7 +2320,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self showCameraControllerAnimated:YES];
         }]];
     }
-    if (BuildSettings.voiceBroadcastEnabled && !self.isNewDirectChat)
+    if (RiotSettings.shared.enableVoiceBroadcast && !self.isNewDirectChat)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLive.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -2332,7 +2332,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             MXSession* session = self.roomDataSource.mxSession;
             [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
                 if (voiceBroadcastService) {
-                    if ([[voiceBroadcastService getState] isEqualToString:@"stopped"]) {
+                    if ([VoiceBroadcastInfo isStoppedFor:[voiceBroadcastService getState]]) {
                         [session.voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
                         
                         } failure:^(NSError * _Nonnull error) {
@@ -3208,6 +3208,39 @@ static CGSize kThreadListBarButtonItemImageSize;
             else
             {
                 cellIdentifier = RoomTimelineCellIdentifierOutgoingLocation;
+            }
+        }
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcast)
+    {
+        if (bubbleData.isIncoming)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcast;
+            }
+        }
+        else
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcast;
             }
         }
     }

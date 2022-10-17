@@ -175,6 +175,10 @@ final class RiotSettings: NSObject {
     /// Flag indicating if the wysiwyg composer feature is enabled
     @UserDefault(key: "enableWysiwygComposer", defaultValue: false, storage: defaults)
     var enableWysiwygComposer
+    
+    /// Flag indicating if the voice broadcast feature is enabled
+    @UserDefault(key: "enableVoiceBroadcast", defaultValue: false, storage: defaults)
+    var enableVoiceBroadcast
 
     // MARK: Calls
     

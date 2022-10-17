@@ -16,13 +16,14 @@
 
 import Foundation
 
-/// Voice Broadcast settings.
-@objcMembers
-final class VoiceBroadcastSettings: NSObject {
-    static let eventType = "io.element.voice_broadcast_info"
+struct VoiceBroadcastBuilder {
     
-    static let voiceBroadcastContentKeyState = "state"
-    static let voiceBroadcastContentKeyChunkLength = "chunk_length"
-    static let voiceBroadcastContentKeyChunkType = "io.element.voice_broadcast_chunk"
-    static let voiceBroadcastContentKeyChunkSequence = "sequence"
+    func build(voiceBroadcastStartEventContent: VoiceBroadcastInfo, events: [MXEvent], currentUserIdentifier: String, hasBeenEdited: Bool = false) -> VoiceBroadcastProtocol {
+        
+        let voiceBroadcast = VoiceBroadcast()
+        
+        // TODO: set voice broadcast object
+        
+        return voiceBroadcast
+    }
 }
