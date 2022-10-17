@@ -49,7 +49,7 @@ struct ComposerCreateActionList: View {
                     .padding(.vertical, 12)
                 }
             }
-            .padding(.top, 16)
+            .padding(.top, 8)
             Spacer()
         }.background(theme.colors.background.ignoresSafeArea())
     }
