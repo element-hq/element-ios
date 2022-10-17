@@ -349,7 +349,7 @@ typedef enum : NSUInteger
  actually used to retrieve the keyboard view. Indeed the keyboard view is the superview of
  the accessory view when the message composer become the first responder.
  */
-@property (readonly) UIView *inputAccessoryViewForKeyboard;
+@property UIView *inputAccessoryViewForKeyboard;
 
 /**
  Display the keyboard.
