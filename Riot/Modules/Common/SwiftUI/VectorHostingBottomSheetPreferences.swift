@@ -34,8 +34,8 @@ class VectorHostingBottomSheetPreferences {
             case .large: return .large()
             case let .custom(_, height):
                 if #available(iOS 16, *) {
-                    return .custom { context in
-                        return context.maximumDetentValue
+                    return .custom { _ in
+                        return height
                     }
                 } else {
                     return .medium()
