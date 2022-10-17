@@ -14,31 +14,6 @@
 // limitations under the License.
 //
 
-//import Foundation
-//
-//class VoiceBroadcastBubbleCell: VoiceBroadcastPlainCell, BubbleIncomingRoomCellProtocol {
-//        
-//    override func setupViews() {
-//        super.setupViews()
-//                
-//        roomCellContentView?.innerContentViewLeadingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left
-//        roomCellContentView?.innerContentViewTrailingConstraint.constant = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right
-//        
-////        recordController.recordView.stackViewTrailingContraint.constant = BubbleRoomCellLayoutConstants.voiceMessagePlaybackViewRightMargin
-//        
-//        self.setupBubbleDecorations()
-//    }
-//    
-//    override func update(theme: Theme) {
-//                
-////        guard let recordController = recordController else {
-////            return
-////        }
-//        
-////        recordController.recordView.customBackgroundViewColor = theme.roomCellIncomingBubbleBackgroundColor
-//    }
-//}
-
 import UIKit
 
 class VoiceBroadcastBubbleCell: VoiceBroadcastPlainCell {

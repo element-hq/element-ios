@@ -29,8 +29,8 @@ public protocol VoiceBroadcastAggregatorDelegate: AnyObject {
 }
 
 /**
- Responsible for building poll models out of the original poll start event and listen to replies.
- It will listen for PollResponse and PollEnd events on the live timline and update the built models accordingly.
+ Responsible for building voice broadcast models out of the original voice broadcast start event and listen to replies.
+ It will listen for voice broadcast chunk events on the live timline and update the built models accordingly.
  I will also listen for `mxRoomDidFlushData` and reload all data to avoid gappy sync problems
 */
 

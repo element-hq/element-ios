@@ -18,10 +18,6 @@ import Foundation
 
 struct VoiceBroadcastBuilder {
     
-//    private struct Constants {
-//        static let maxAnswerOptionCount = 20
-//    }
-    
     func build(voiceBroadcastStartEventContent: VoiceBroadcastInfo, events: [MXEvent], currentUserIdentifier: String, hasBeenEdited: Bool = false) -> VoiceBroadcastProtocol {
         
         let voiceBroadcast = VoiceBroadcast()

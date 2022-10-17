@@ -7857,14 +7857,6 @@ static CGSize kThreadListBarButtonItemImageSize;
         MXLogError(@"Failed sending voice message");
         completion(NO);
     }];
-    
-//    [self.customizedRoomDataSource sendVoiceBroadcastWithAudioFileLocalURL:url voiceBroadcastInfoEventId:self.voiceBroadcastService.eventId mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
-//        MXLogDebug(@"Success with event id %@", eventId);
-//        completion(YES);
-//    } failure:^(NSError *error) {
-//        MXLogError(@"Failed sending voice message");
-//        completion(NO);
-//    }];
 }
 
 #pragma mark - SpaceDetailPresenterDelegate

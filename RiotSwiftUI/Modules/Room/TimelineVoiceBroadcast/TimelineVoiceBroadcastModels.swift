@@ -19,10 +19,8 @@ import SwiftUI
 
 typealias TimelineVoiceBroadcastViewModelCallback = () -> Void
 
-enum TimelineVoiceBroadcastViewAction {
-    // TODO: add play pause case
-//    case selectAnswerOptionWithIdentifier(String)
-}
+// TODO: add play pause cases
+enum TimelineVoiceBroadcastViewAction { }
 
 enum TimelineVoiceBroadcastType {
     case disclosed

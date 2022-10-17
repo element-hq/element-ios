@@ -34,16 +34,6 @@ struct TimelineVoiceBroadcastView: View {
             Text(VectorL10n.voiceBroadcastInTimeline)
                 .font(theme.fonts.body)
                 .foregroundColor(theme.colors.primaryContent)
-            
-//            VStack(spacing: 24.0) {
-//                ForEach(voiceBroadcast.answerOptions) { answerOption in
-//                    TimelineVoiceBroadcastAnswerOptionButton(voiceBroadcast: voiceBroadcast, answerOption: answerOption) {
-//                        viewModel.send(viewAction: .selectAnswerOptionWithIdentifier(answerOption.id))
-//                    }
-//                }
-//            }
-//            .disabled(voiceBroadcast.closed)
-//            .fixedSize(horizontal: false, vertical: true)
         }
         .padding([.horizontal, .top], 2.0)
         .padding([.bottom])

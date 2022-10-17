@@ -309,8 +309,8 @@
     return @{
         // Incoming
         @(RoomTimelineCellIdentifierIncomingVoiceBroadcast) : VoiceBroadcastIncomingBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingPollWithoutSenderInfo) : VoiceBroadcastIncomingWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingPollWithPaginationTitle) : VoiceBroadcastIncomingWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastWithoutSenderInfo) : VoiceBroadcastIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastWithPaginationTitle) : VoiceBroadcastIncomingWithPaginationTitleBubbleCell.class,
         // Outgoing
         @(RoomTimelineCellIdentifierOutgoingVoiceBroadcast) : VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithoutSenderInfo) : VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell.class,

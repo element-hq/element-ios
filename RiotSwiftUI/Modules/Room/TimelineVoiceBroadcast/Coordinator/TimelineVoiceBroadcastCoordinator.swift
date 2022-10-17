@@ -50,14 +50,8 @@ final class TimelineVoiceBroadcastCoordinator: Coordinator, Presentable, VoiceBr
         voiceBroadcastAggregator.delegate = self
         
         viewModel = TimelineVoiceBroadcastViewModel(timelineVoiceBroadcastDetails: buildTimelineVoiceBroadcastFrom(voiceBroadcastAggregator.voiceBroadcast))
-//        viewModel.completion = { [weak self] result in
-//            guard let self = self else { return }
-//
-//            switch result {
-//            case .selectedAnswerOptionsWithIdentifiers(let identifiers):
-//                self.selectedAnswerIdentifiersSubject.send(identifiers)
-//            }
-//        }
+        
+        // TODO: manage voicebroacast chunks
         viewModel.completion = { }
 
     }
