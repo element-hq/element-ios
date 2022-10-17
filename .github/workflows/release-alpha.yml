@@ -27,7 +27,11 @@ jobs:
   build:
     # Run job if secrets are available (not available for forks).
     needs: [check-secret]
-    if: needs.check-secret.outputs.out-key == 'true'
+    if: |
+      needs.check-secret.outputs.out-key == 'true' &&
+      (github.event_name == 'push' ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Trigger-PR-Build')))
+
     name: Release
     runs-on: macos-12
     
