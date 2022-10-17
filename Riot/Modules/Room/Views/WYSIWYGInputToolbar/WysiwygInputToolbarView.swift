@@ -101,7 +101,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }, showSendMediaActions: { [weak self]  in
             guard let self = self else { return }
             self.showSendMediaActions()
-        }).introspectTextView { textView in
+        }).introspectTextView { [weak self] textView in
+            guard let self = self else { return }
             textView.inputAccessoryView = self.inputAccessoryViewForKeyboard
         }
         
