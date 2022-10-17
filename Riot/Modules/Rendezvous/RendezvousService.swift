@@ -29,7 +29,7 @@ enum RendezvousServiceError: Error {
 
 /// Algorithm name as per MSC3903
 enum RendezvousChannelAlgorithm: String {
-    case ECDH_V1 = "m.rendezvous.v1.curve25519-aes-sha256"
+    case ECDH_V1 = "org.matrix.msc3903.rendezvous.v1.curve25519-aes-sha256"
 }
 
 /// Allows communication through a secure channel. Based on MSC3886 and MSC3903
@@ -61,7 +61,7 @@ class RendezvousService {
             }
             
             let fullDetails = RendezvousDetails(algorithm: RendezvousChannelAlgorithm.ECDH_V1.rawValue,
-                                                transport: RendezvousTransportDetails(type: "http.v1",
+                                                transport: RendezvousTransportDetails(type: "org.matrix.msc3886.http.v1",
                                                                                       uri: rendezvousURL.absoluteString),
                                                 key: publicKeyString)
             return .success(fullDetails)
