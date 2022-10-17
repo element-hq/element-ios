@@ -77,15 +77,15 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
     private func applicationSection(sessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
         var sessionItems: [UserSessionDetailsSectionItemViewData] = []
 
-        if let name = sessionInfo.applicationName {
+        if let name = sessionInfo.applicationName, !name.isEmpty {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationName,
                                       value: name))
         }
-        if let version = sessionInfo.applicationVersion {
+        if let version = sessionInfo.applicationVersion, !version.isEmpty {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationVersion,
                                       value: version))
         }
-        if let url = sessionInfo.applicationURL {
+        if let url = sessionInfo.applicationURL, !url.isEmpty {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationUrl,
                                       value: url))
         }
