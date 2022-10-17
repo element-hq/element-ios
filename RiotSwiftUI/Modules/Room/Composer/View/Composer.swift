@@ -74,7 +74,7 @@ struct Composer: View {
     let showSendMediaActions: () -> Void
     
     var body: some View {
-        VStack {
+        VStack(spacing: 8) {
             let rect = RoundedRectangle(cornerRadius: cornerRadius)
             // TODO: Fix maximise animation bugs before re-enabling
             //            ZStack(alignment: .topTrailing) {
@@ -139,7 +139,7 @@ struct Composer: View {
                     focused = true
                 }
             }
-            HStack {
+            HStack(spacing: 0) {
                 Button {
                     showSendMediaActions()
                 } label: {
@@ -151,13 +151,12 @@ struct Composer: View {
                 }
                 .frame(width: 36, height: 36)
                 .background(Circle().fill(theme.colors.system))
-                .padding(.vertical, 8)
                 .padding(.trailing, 8)
                 .accessibilityLabel(VectorL10n.create)
                 FormattingToolbar(formatItems: formatItems) { type in
                     wysiwygViewModel.apply(type.action)
                 }
-                .frame(height: 52)
+                .frame(height: 44)
                 Spacer()
                 //                ZStack {
                 // TODO: Add support for voice messages
