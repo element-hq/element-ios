@@ -40,11 +40,19 @@ struct Composer: View {
     }
     
     private var cornerRadius: CGFloat {
-        viewModel.viewState.shouldDisplayContext ? 14 : borderHeight / 2
+        if viewModel.viewState.shouldDisplayContext || wysiwygViewModel.idealHeight > minTextViewHeight + 2 {
+            return 14
+        } else {
+            return borderHeight / 2
+        }
     }
     
     private var actionButtonAccessibilityIdentifier: String {
         viewModel.viewState.sendMode == .edit ? "editButton" : "sendButton"
+    }
+    
+    private var borderColor: Color {
+        focused ? theme.colors.quarterlyContent : theme.colors.quinaryContent
     }
     
     private var formatItems: [FormatItem] {
@@ -122,7 +130,7 @@ struct Composer: View {
                 .padding(.bottom, verticalPadding)
             }
             .clipShape(rect)
-            .overlay(rect.stroke(theme.colors.quinaryContent, lineWidth: 1))
+            .overlay(rect.stroke(borderColor, lineWidth: 1))
             .padding(.horizontal, horizontalPadding)
             .padding(.top, 8)
             .onTapGesture {
