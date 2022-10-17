@@ -31,8 +31,8 @@ struct TimelineVoiceBroadcastView: View {
         let voiceBroadcast = viewModel.viewState.voiceBroadcast
         
         VStack(alignment: .leading, spacing: 16.0) {
-            Text("voicebroadcast here")
-                .font(theme.fonts.bodySB)
+            Text(VectorL10n.voiceBroadcastInTimeline)
+                .font(theme.fonts.body)
                 .foregroundColor(theme.colors.primaryContent)
             
 //            VStack(spacing: 24.0) {

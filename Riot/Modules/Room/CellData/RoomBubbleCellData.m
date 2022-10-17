@@ -307,7 +307,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             
             break;
         case RoomBubbleCellDataTagVoiceBroadcast:
-            if ([[VoiceBroadcastInfo modelFromJSON:self.events.lastObject.content].state isEqualToString:@"started"]) {
+            if (RiotSettings.shared.enableVoiceBroadcast == YES &&
+                [[VoiceBroadcastInfo modelFromJSON:self.events.lastObject.content].state isEqualToString:@"started"]) {
                 hasNoDisplay = NO;
             }
             

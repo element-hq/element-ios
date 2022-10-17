@@ -175,7 +175,8 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_LIVE_LOCATION_SHARING,
     LABS_ENABLE_NEW_SESSION_MANAGER,
     LABS_ENABLE_NEW_CLIENT_INFO_FEATURE,
-    LABS_ENABLE_WYSIWYG_COMPOSER
+    LABS_ENABLE_WYSIWYG_COMPOSER,
+    LABS_ENABLE_VOICE_BROADCAST
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -598,6 +599,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         if (@available(iOS 15.0, *))
         {
             [sectionLabs addRowWithTag:LABS_ENABLE_WYSIWYG_COMPOSER];
+        }
+        if (BuildSettings.voiceBroadcastEnabled == YES) {
+            [sectionLabs addRowWithTag:LABS_ENABLE_VOICE_BROADCAST];
         }
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
@@ -2570,6 +2574,19 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
+        
+        else if (row == LABS_ENABLE_VOICE_BROADCAST)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnableVoiceBroadcast];
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableVoiceBroadcast;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableVoiceBroadcastFeature:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SECTION_TAG_SECURITY)
     {
@@ -3333,6 +3350,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 - (void)toggleEnableWysiwygComposerFeature:(UISwitch *)sender
 {
     RiotSettings.shared.enableWysiwygComposer = sender.isOn;
+}
+
+- (void)toggleEnableVoiceBroadcastFeature:(UISwitch *)sender
+{
+    RiotSettings.shared.enableVoiceBroadcast = sender.isOn;
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender

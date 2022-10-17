@@ -2320,7 +2320,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self showCameraControllerAnimated:YES];
         }]];
     }
-    if (BuildSettings.voiceBroadcastEnabled && !self.isNewDirectChat)
+    if (RiotSettings.shared.enableVoiceBroadcast && !self.isNewDirectChat)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLive.image andAction:^{
             MXStrongifyAndReturnIfNil(self);
