@@ -40,7 +40,7 @@ struct Composer: View {
     }
     
     private var cornerRadius: CGFloat {
-        if viewModel.viewState.shouldDisplayContext || wysiwygViewModel.idealHeight > minTextViewHeight + 2 {
+        if viewModel.viewState.shouldDisplayContext || wysiwygViewModel.idealHeight > minTextViewHeight {
             return 14
         } else {
             return borderHeight / 2
