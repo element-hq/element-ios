@@ -32,6 +32,8 @@ struct UserSessionCardViewData {
     
     let lastActivityDateString: String?
     
+    var lastActivityIcon: String?
+    
     let lastSeenIPInfo: String?
     
     let deviceAvatarViewData: DeviceAvatarViewData
@@ -93,17 +95,22 @@ struct UserSessionCardViewData {
          verificationState: UserSessionInfo.VerificationState,
          lastActivityTimestamp: TimeInterval?,
          lastSeenIP: String?,
-         isCurrentSessionDisplayMode: Bool = false) {
+         isCurrentSessionDisplayMode: Bool = false,
+         isActive: Bool) {
         self.sessionId = sessionId
         sessionName = UserSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
         self.verificationState = verificationState
         
         var lastActivityDateString: String?
-        
         if let lastActivityTimestamp = lastActivityTimestamp {
-            lastActivityDateString = UserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityTimestamp)
+            if isActive {
+                lastActivityDateString = UserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityTimestamp)
+            } else {
+                let dateString = InactiveUserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityTimestamp)
+                lastActivityDateString = VectorL10n.userInactiveSessionItemWithDate(dateString)
+                lastActivityIcon = Asset.Images.userSessionListItemInactiveSession.name
+            }
         }
-        
         self.lastActivityDateString = lastActivityDateString
         lastSeenIPInfo = lastSeenIP
         deviceAvatarViewData = DeviceAvatarViewData(deviceType: deviceType, verificationState: verificationState)
@@ -120,6 +127,7 @@ extension UserSessionCardViewData {
                   verificationState: sessionInfo.verificationState,
                   lastActivityTimestamp: sessionInfo.lastSeenTimestamp,
                   lastSeenIP: sessionInfo.lastSeenIP,
-                  isCurrentSessionDisplayMode: sessionInfo.isCurrent)
+                  isCurrentSessionDisplayMode: sessionInfo.isCurrent,
+                  isActive: sessionInfo.isActive)
     }
 }
