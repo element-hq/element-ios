@@ -29,7 +29,7 @@ struct Composer: View {
     @State private var isActionButtonEnabled = false
     
     private let horizontalPadding: CGFloat = 12
-    private let borderHeight: CGFloat = 44
+    private let borderHeight: CGFloat = 40
     private let minTextViewHeight: CGFloat = 20
     private var verticalPadding: CGFloat {
         (borderHeight - minTextViewHeight) / 2
@@ -40,11 +40,19 @@ struct Composer: View {
     }
     
     private var cornerRadius: CGFloat {
-        viewModel.viewState.shouldDisplayContext ? 14 : borderHeight / 2
+        if viewModel.viewState.shouldDisplayContext || wysiwygViewModel.idealHeight > minTextViewHeight {
+            return 14
+        } else {
+            return borderHeight / 2
+        }
     }
     
     private var actionButtonAccessibilityIdentifier: String {
         viewModel.viewState.sendMode == .edit ? "editButton" : "sendButton"
+    }
+    
+    private var borderColor: Color {
+        focused ? theme.colors.quarterlyContent : theme.colors.quinaryContent
     }
     
     private var formatItems: [FormatItem] {
@@ -66,7 +74,7 @@ struct Composer: View {
     let showSendMediaActions: () -> Void
     
     var body: some View {
-        VStack {
+        VStack(spacing: 8) {
             let rect = RoundedRectangle(cornerRadius: cornerRadius)
             // TODO: Fix maximise animation bugs before re-enabling
             //            ZStack(alignment: .topTrailing) {
@@ -123,60 +131,65 @@ struct Composer: View {
                 .padding(.bottom, verticalPadding)
             }
             .clipShape(rect)
-            .overlay(rect.stroke(theme.colors.quinaryContent, lineWidth: 2))
+            .overlay(rect.stroke(borderColor, lineWidth: 1))
             .padding(.horizontal, horizontalPadding)
             .padding(.top, 8)
-            .padding(.bottom, 4)
             .onTapGesture {
                 if !focused {
                     focused = true
                 }
             }
-            HStack {
+            HStack(spacing: 0) {
                 Button {
                     showSendMediaActions()
                 } label: {
                     Image(Asset.Images.startComposeModule.name)
+                        .resizable()
                         .foregroundColor(theme.colors.tertiaryContent)
-                        .padding(11)
-                        .background(Circle().fill(theme.colors.system))
+                        .frame(width: 14, height: 14)
+                        
                 }
+                .frame(width: 36, height: 36)
+                .background(Circle().fill(theme.colors.system))
+                .padding(.trailing, 8)
                 .accessibilityLabel(VectorL10n.create)
                 FormattingToolbar(formatItems: formatItems) { type in
                     wysiwygViewModel.apply(type.action)
                 }
+                .frame(height: 44)
                 Spacer()
-                ZStack {
-                    // TODO: Add support for voice messages
-//                    Button {
-//
-//                    } label: {
-//                        Image(Asset.Images.voiceMessageRecordButtonDefault.name)
-//                            .foregroundColor(theme.colors.tertiaryContent)
-//                    }
-                    //                        .isHidden(showSendButton)
-//                    .isHidden(true)
-                    Button {
-                        sendMessageAction(wysiwygViewModel.content)
-                        wysiwygViewModel.clearContent()
-                    } label: {
-                        if viewModel.viewState.sendMode == .edit {
-                            Image(Asset.Images.saveIcon.name)
-                        } else {
-                            Image(Asset.Images.sendIcon.name)
-                        }
+                //                ZStack {
+                // TODO: Add support for voice messages
+                //                    Button {
+                //
+                //                    } label: {
+                //                        Image(Asset.Images.voiceMessageRecordButtonDefault.name)
+                //                            .foregroundColor(theme.colors.tertiaryContent)
+                //                    }
+                //                        .isHidden(showSendButton)
+                //                    .isHidden(true)
+                Button {
+                    sendMessageAction(wysiwygViewModel.content)
+                    wysiwygViewModel.clearContent()
+                } label: {
+                    if viewModel.viewState.sendMode == .edit {
+                        Image(Asset.Images.saveIcon.name)
+                    } else {
+                        Image(Asset.Images.sendIcon.name)
                     }
-                    .disabled(!isActionButtonEnabled)
-                    .opacity(isActionButtonEnabled ? 1 : 0.3)
-                    .animation(.easeInOut(duration: 0.15), value: isActionButtonEnabled)
-                    .accessibilityIdentifier(actionButtonAccessibilityIdentifier)
-                    .accessibilityLabel(VectorL10n.send)
                 }
+                .frame(width: 36, height: 36)
+                .padding(.leading, 8)
+                .disabled(!isActionButtonEnabled)
+                .opacity(isActionButtonEnabled ? 1 : 0.3)
+                .animation(.easeInOut(duration: 0.15), value: isActionButtonEnabled)
+                .accessibilityIdentifier(actionButtonAccessibilityIdentifier)
+                .accessibilityLabel(VectorL10n.send)
                 .onChange(of: wysiwygViewModel.isContentEmpty) { empty in
                     isActionButtonEnabled = !empty
                 }
             }
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 12)
             .padding(.bottom, 4)
             .animation(.none)
         }

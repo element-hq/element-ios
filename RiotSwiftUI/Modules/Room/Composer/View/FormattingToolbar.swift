@@ -32,7 +32,7 @@ struct FormattingToolbar: View {
     var formatAction: (FormatType) -> Void
     
     var body: some View {
-        HStack {
+        HStack(spacing: 4) {
             ForEach(formatItems) { item in
                 Button {
                     formatAction(item.type)
@@ -42,6 +42,7 @@ struct FormattingToolbar: View {
                         .foregroundColor(item.active ? theme.colors.accent : theme.colors.tertiaryContent)
                 }
                 .disabled(item.disabled)
+                .frame(width: 44, height: 44)
                 .background(item.active ? theme.colors.accent.opacity(0.1) : theme.colors.background)
                 .cornerRadius(8)
                 .accessibilityIdentifier(item.accessibilityIdentifier)
