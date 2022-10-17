@@ -104,6 +104,7 @@ struct Composer: View {
                     .padding(.horizontal, horizontalPadding)
                 }
                 WysiwygComposerView(
+                    focused: $focused,
                     content: wysiwygViewModel.content,
                     replaceText: wysiwygViewModel.replaceText,
                     select: wysiwygViewModel.select,
