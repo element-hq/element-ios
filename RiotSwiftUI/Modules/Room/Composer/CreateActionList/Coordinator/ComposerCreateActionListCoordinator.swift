@@ -46,7 +46,7 @@ final class ComposerCreateActionListCoordinator: NSObject, Coordinator, Presenta
         hostingVC.bottomSheetPreferences = VectorHostingBottomSheetPreferences(
             detents: [.medium],
             prefersGrabberVisible: true,
-            cornerRadius: 23
+            cornerRadius: 20
         )
         hostingController = hostingVC
         super.init()
