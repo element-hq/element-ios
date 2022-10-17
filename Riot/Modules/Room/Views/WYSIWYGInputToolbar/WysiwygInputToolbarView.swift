@@ -92,7 +92,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                 self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
             }
         }
-        
+        inputAccessoryViewForKeyboard = UIView(frame: .zero)
         let composer = Composer(viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
             sendMessageAction: { [weak self] content in
@@ -101,7 +101,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }, showSendMediaActions: { [weak self]  in
             guard let self = self else { return }
             self.showSendMediaActions()
-        })
+        }).introspectTextView { textView in
+            textView.inputAccessoryView = self.inputAccessoryViewForKeyboard
+        }
         
         hostingViewController = VectorHostingController(rootView: composer)
         hostingViewController.publishHeightChanges = true
