@@ -289,23 +289,22 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             hasNoDisplay = NO;
             break;
         case RoomBubbleCellDataTagPoll:
-            if (self.events.lastObject.isEditEvent) {
-                hasNoDisplay = YES;
+            if (!self.events.lastObject.isEditEvent)
+            {
+                hasNoDisplay = NO;
             }
             
-            hasNoDisplay = NO;
             break;
         case RoomBubbleCellDataTagLocation:
             hasNoDisplay = NO;
             break;
         case RoomBubbleCellDataTagLiveLocation:
-            // If the summary does not exist don't show the cell
-            if (!self.beaconInfoSummary)
+            // Show the cell only if the summary exists
+            if (self.beaconInfoSummary)
             {
-                hasNoDisplay = YES;
+                hasNoDisplay = NO;
             }
             
-            hasNoDisplay = NO;
             break;
         case RoomBubbleCellDataTagVoiceBroadcast:
             hasNoDisplay = YES;
