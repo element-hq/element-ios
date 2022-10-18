@@ -331,7 +331,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     private func createLeftButtonItem(for viewController: UIViewController) {
         createAvatarButtonItem(for: viewController)
     }
-    
+
     private var avatarMenu: UIMenu {
         var actions: [UIMenuElement] = []
         
