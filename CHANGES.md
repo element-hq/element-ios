@@ -1,3 +1,60 @@
+## Changes in 1.9.9 (2022-10-18)
+
+✨ Features
+
+- Added RendezvousService and secure channel establishment implementation ([#6806](https://github.com/vector-im/element-ios/pull/6806))
+- Implemented login with QR code flows when scanning from mobile ([#6857](https://github.com/vector-im/element-ios/pull/6857))
+
+🙌 Improvements
+
+- User agents: Ignore OS version for web based sessions (PSG-826). ([#6852](https://github.com/vector-im/element-ios/pull/6852))
+- Upgrade MatrixSDK version ([v0.24.1](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.24.1)).
+- Display push toggle for sessions with m.local_notification_settings.<device-id> events in account_data ([#6797](https://github.com/vector-im/element-ios/issues/6797))
+- CryptoV2: Incoming verification requests ([#6809](https://github.com/vector-im/element-ios/issues/6809))
+- Check enabled field in notification settings push toggles ([#6814](https://github.com/vector-im/element-ios/issues/6814))
+- Only use device type name as fallback for session display name ([#6820](https://github.com/vector-im/element-ios/issues/6820))
+- Include app name in default session display name ([#6828](https://github.com/vector-im/element-ios/issues/6828))
+- Tidy up TabBarCoordinator now that AllChatsCoordinator exists. ([#6853](https://github.com/vector-im/element-ios/issues/6853))
+- Sign Out: Add a SignOutFlowPresenter and use this in All Chats, Settings and the Device Manager. ([#6854](https://github.com/vector-im/element-ios/issues/6854))
+- Improved the Rich Text Editor to match design requirements. ([#6903](https://github.com/vector-im/element-ios/issues/6903))
+
+🐛 Bugfixes
+
+- Filter out application section in session details if needed. ([#6898](https://github.com/vector-im/element-ios/pull/6898))
+- Rich text editor now supports interactive dismissal by dragging the timeline. ([#6919](https://github.com/vector-im/element-ios/pull/6919), [#6900](https://github.com/vector-im/element-ios/issues/6900))
+- Location sharing: removing the loader. ([#5571](https://github.com/vector-im/element-ios/issues/5571))
+- Element freezes after searching in a room. ([#6762](https://github.com/vector-im/element-ios/issues/6762))
+- Settings: Use regular titles for all of the sub-screens. ([#6804](https://github.com/vector-im/element-ios/issues/6804))
+- All Chats: Fix a header glitch when aborting a pop gesture. ([#6833](https://github.com/vector-im/element-ios/issues/6833))
+- Device manager: Fixes from x-platform testing. ([#6864](https://github.com/vector-im/element-ios/issues/6864))
+- All chats shows no rooms in the list. ([#6869](https://github.com/vector-im/element-ios/issues/6869))
+- Device Manager: Navigating to session overview goes to session details. ([#6877](https://github.com/vector-im/element-ios/issues/6877))
+- "Notifications on this device" not refreshed in user settings screen ([#6888](https://github.com/vector-im/element-ios/issues/6888))
+- Rich text editor now always focuses if field is tapped within the border. ([#6897](https://github.com/vector-im/element-ios/issues/6897))
+- Device Manger: Device client information not updated. ([#6904](https://github.com/vector-im/element-ios/issues/6904))
+
+🧱 Build
+
+- Remove the (now unused) FFMPEG pod. ([#6419](https://github.com/vector-im/element-ios/issues/6419))
+- Update build tools from Cocoapods. ([#6886](https://github.com/vector-im/element-ios/issues/6886))
+
+🚧 In development 🚧
+
+- Device manager: Inactive sessions screen. ([#6786](https://github.com/vector-im/element-ios/issues/6786))
+- Device manager: Unverified sessions screen. ([#6801](https://github.com/vector-im/element-ios/issues/6801))
+- Device Manager: Add logout actions to UserSessionsOverview and UserSessionOverview ([#6802](https://github.com/vector-im/element-ios/issues/6802))
+- Device Manager: 'View all' button in other sessions list. ([#6817](https://github.com/vector-im/element-ios/issues/6817))
+- Device manager: Add UserSessionName and Rename actions to UserSessionsOverview and UserSessionOverview. ([#6823](https://github.com/vector-im/element-ios/issues/6823))
+- Device Manager: Filter sessions. ([#6838](https://github.com/vector-im/element-ios/issues/6838))
+- Device manager: Add verify device actions to UserSessionsOverview and UserSessionOverview. ([#6845](https://github.com/vector-im/element-ios/issues/6845))
+- Device manager: Identify inactive sessions. ([#6881](https://github.com/vector-im/element-ios/issues/6881))
+
+Others
+
+- Expose AuthenticationRestClient async login token generation method ([#6827](https://github.com/vector-im/element-ios/pull/6827))
+- Use unstable prefixes for login with QR flows. ([#6899](https://github.com/vector-im/element-ios/pull/6899))
+
+
 ## Changes in 1.9.8 (2022-10-04)
 
 🙌 Improvements
