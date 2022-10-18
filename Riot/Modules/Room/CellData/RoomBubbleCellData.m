@@ -183,13 +183,29 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                         self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
                     }
                 }
+                else if ([event.type isEqualToString:VoiceBroadcastSettings.eventType])
+                {
+                    self.tag = RoomBubbleCellDataTagVoiceBroadcast;
+                    self.collapsable = NO;
+                    self.collapsed = NO;
+                    
+                    MXLogDebug(@"VB incoming initWithEvent")
+                    break;
+                }
                 
                 break;
             }
             case MXEventTypeRoomMessage:
             {
-                if (event.location) {
+                if (event.location)
+                {
                     self.tag = RoomBubbleCellDataTagLocation;
+                    self.collapsable = NO;
+                    self.collapsed = NO;
+                }
+                else if (event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType])
+                {
+                    self.tag = RoomBubbleCellDataTagVoiceBroadcast;
                     self.collapsable = NO;
                     self.collapsed = NO;
                 }
@@ -271,42 +287,48 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 - (BOOL)hasNoDisplay
 {
-    if (self.tag == RoomBubbleCellDataTagKeyVerificationNoDisplay)
+    BOOL hasNoDisplay = YES;
+    
+    switch (self.tag)
     {
-        return YES;
+        case RoomBubbleCellDataTagKeyVerificationNoDisplay:
+            hasNoDisplay = YES;
+            break;
+        case RoomBubbleCellDataTagRoomCreationIntro:
+            hasNoDisplay = NO;
+            break;
+        case RoomBubbleCellDataTagPoll:
+            if (!self.events.lastObject.isEditEvent)
+            {
+                hasNoDisplay = NO;
+            }
+            
+            break;
+        case RoomBubbleCellDataTagLocation:
+            hasNoDisplay = NO;
+            break;
+        case RoomBubbleCellDataTagLiveLocation:
+            // Show the cell only if the summary exists
+            if (self.beaconInfoSummary)
+            {
+                hasNoDisplay = NO;
+            }
+            
+            break;
+        case RoomBubbleCellDataTagVoiceBroadcast:
+            if (RiotSettings.shared.enableVoiceBroadcast == YES &&
+                [VoiceBroadcastInfo isStartedFor:[VoiceBroadcastInfo modelFromJSON:self.events.lastObject.content].state])
+            {
+                hasNoDisplay = NO;
+            }
+            
+            break;
+        default:
+            hasNoDisplay = [super hasNoDisplay];
+            break;
     }
     
-    if (self.tag == RoomBubbleCellDataTagRoomCreationIntro)
-    {
-        return NO;
-    }
-    
-    if (self.tag == RoomBubbleCellDataTagPoll)
-    {
-        if (self.events.lastObject.isEditEvent) {
-            return YES;
-        }
-        
-        return NO;
-    }
-    
-    if (self.tag == RoomBubbleCellDataTagLocation)
-    {
-        return NO;
-    }
-    
-    if (self.tag == RoomBubbleCellDataTagLiveLocation)
-    {
-        // If the summary does not exist don't show the cell
-        if (!self.beaconInfoSummary)
-        {
-            return YES;
-        }
-        
-        return NO;
-    }
-    
-    return [super hasNoDisplay];
+    return hasNoDisplay;
 }
 
 - (BOOL)hasThreadRoot
@@ -1050,6 +1072,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         case RoomBubbleCellDataTagLiveLocation:
             shouldAddEvent = NO;
             break;
+        case RoomBubbleCellDataTagVoiceBroadcast:
+            shouldAddEvent = NO;
+            break;
         default:
             break;
     }
@@ -1118,6 +1143,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                     {
                         shouldAddEvent = NO;
                     }
+                } else if ([event.type isEqualToString:VoiceBroadcastSettings.eventType]) {
+                    shouldAddEvent = NO;
                 }
                 break;
             }

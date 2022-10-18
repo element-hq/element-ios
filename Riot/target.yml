@@ -42,6 +42,7 @@ targets:
     - package: Mapbox
     - package: OrderedCollections
     - package: SwiftOGG
+    - package: WysiwygComposer
     - package: DeviceKit
 
     configFiles:

@@ -19,6 +19,14 @@
       }
     },
     {
+      "identity" : "matrix-wysiwyg-composer-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/matrix-org/matrix-wysiwyg-composer-swift",
+      "state" : {
+        "revision" : "11dad16e3e589dba423f6cc5707e9df8aace89b0"
+      }
+    },
+    {
       "identity" : "ogg-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vector-im/ogg-swift.git",

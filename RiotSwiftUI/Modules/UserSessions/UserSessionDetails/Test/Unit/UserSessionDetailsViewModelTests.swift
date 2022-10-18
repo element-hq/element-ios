@@ -19,6 +19,12 @@ import XCTest
 @testable import RiotSwiftUI
 
 class UserSessionDetailsViewModelTests: XCTestCase {
+    private static var lastSeenDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EE, d MMM · HH:mm"
+        return dateFormatter
+    }()
+    
     func test_whenSessionNameAndLastSeenIPNil_viewStateCorrect() {
         let userSessionInfo = createUserSessionInfo(id: "session",
                                                     name: nil,
@@ -35,7 +41,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         ]
 
         let expectedModel = UserSessionDetailsViewState(sections: sections)
-        let sut = UserSessionDetailsViewModel(session: userSessionInfo)
+        let sut = UserSessionDetailsViewModel(sessionInfo: userSessionInfo)
         
         XCTAssertEqual(sut.state, expectedModel)
     }
@@ -57,21 +63,24 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         ]
         
         let expectedModel = UserSessionDetailsViewState(sections: sections)
-        let sut = UserSessionDetailsViewModel(session: userSessionInfo)
+        let sut = UserSessionDetailsViewModel(sessionInfo: userSessionInfo)
         
         XCTAssertEqual(sut.state, expectedModel)
     }
     
     func test_whenUserSessionInfoContainsAllValues_viewStateCorrect() {
+        let lastSeenTimestamp = Date().timeIntervalSince1970 - 1_000_000
         let userSessionInfo = createUserSessionInfo(id: "session",
                                                     name: "session name",
                                                     lastSeenIP: "0.0.0.0",
+                                                    lastSeenTimestamp: lastSeenTimestamp,
                                                     applicationName: "Element iOS",
                                                     applicationVersion: "1.0.0")
         
         let sessionItems = [
             sessionNameItem(sessionName: "session name"),
-            sessionIdItem(sessionId: "session")
+            sessionIdItem(sessionId: "session"),
+            sessionLastActivity(lastSeen: lastSeenTimestamp)
         ]
         let appItems = [
             appNameItem(appName: "Element iOS"),
@@ -94,7 +103,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         ]
         
         let expectedModel = UserSessionDetailsViewState(sections: sections)
-        let sut = UserSessionDetailsViewModel(session: userSessionInfo)
+        let sut = UserSessionDetailsViewModel(sessionInfo: userSessionInfo)
         
         XCTAssertEqual(sut.state, expectedModel)
     }
@@ -106,7 +115,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
                                        deviceType: DeviceType = .mobile,
                                        isVerified: Bool = false,
                                        lastSeenIP: String?,
-                                       lastSeenTimestamp: TimeInterval = Date().timeIntervalSince1970,
+                                       lastSeenTimestamp: TimeInterval? = nil,
                                        applicationName: String? = nil,
                                        applicationVersion: String? = nil,
                                        applicationURL: String? = nil,
@@ -120,7 +129,7 @@ class UserSessionDetailsViewModelTests: XCTestCase {
         UserSessionInfo(id: id,
                         name: name,
                         deviceType: deviceType,
-                        isVerified: isVerified,
+                        verificationState: isVerified ? .verified : .unverified,
                         lastSeenIP: lastSeenIP,
                         lastSeenTimestamp: lastSeenTimestamp,
                         applicationName: applicationName,
@@ -143,6 +152,11 @@ class UserSessionDetailsViewModelTests: XCTestCase {
     private func sessionIdItem(sessionId: String) -> UserSessionDetailsSectionItemViewData {
         .init(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
               value: sessionId)
+    }
+    
+    private func sessionLastActivity(lastSeen: TimeInterval) -> UserSessionDetailsSectionItemViewData {
+        .init(title: VectorL10n.userSessionDetailsLastActivity,
+              value: Self.lastSeenDateFormatter.string(from: Date(timeIntervalSince1970: lastSeen)))
     }
 
     private func appNameItem(appName: String) -> UserSessionDetailsSectionItemViewData {

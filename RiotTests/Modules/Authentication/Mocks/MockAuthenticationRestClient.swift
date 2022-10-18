@@ -136,6 +136,10 @@ class MockAuthenticationRestClient: AuthenticationRestClient {
         throw MockError.unhandled
     }
     
+    func generateLoginToken() async throws -> MXLoginToken {
+        throw MockError.unhandled
+    }
+    
     // MARK: - Registration
     
     var registerFallbackURL: URL {
@@ -207,5 +211,11 @@ class MockAuthenticationRestClient: AuthenticationRestClient {
     
     func resetPassword(parameters: [String : Any]) async throws {
         throw MockError.unhandled
+    }
+
+    // MARK: Versions
+
+    func supportedMatrixVersions() async throws -> MXMatrixVersions {
+        return MXMatrixVersions()
     }
 }

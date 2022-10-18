@@ -52,6 +52,55 @@ extension RoomViewController {
     }
 
 
+    /// Send the formatted text message and its raw counterpat to the room
+    ///
+    /// - Parameter rawTextMsg: the raw text message
+    /// - Parameter htmlMsg: the html text message
+    @objc func sendFormattedTextMessage(_ rawTextMsg: String, htmlMsg: String) {
+        let eventModified = self.roomDataSource.event(withEventId: customizedRoomDataSource?.selectedEventId)
+        self.setupRoomDataSource { roomDataSource in
+            guard let roomDataSource = roomDataSource as? RoomDataSource else { return }
+            if self.wysiwygInputToolbar?.sendMode == .reply, let eventModified = eventModified {
+                roomDataSource.sendReply(to: eventModified, rawText: rawTextMsg, htmlText: htmlMsg) { response in
+                    switch response {
+                    case .success:
+                        break
+                    case .failure:
+                        MXLog.error("[RoomViewController] sendFormattedTextMessage failed while updating event", context: [
+                            "event_id": eventModified.eventId
+                        ])
+                    }
+                }
+            } else if self.wysiwygInputToolbar?.sendMode == .edit, let eventModified = eventModified {
+                roomDataSource.replaceFormattedTextMessage(
+                    for: eventModified,
+                    rawText: rawTextMsg,
+                    html: htmlMsg,
+                    success: { _ in
+                        //
+                    },
+                    failure: { _ in
+                        MXLog.error("[RoomViewController] sendFormattedTextMessage failed while updating event", context: [
+                            "event_id": eventModified.eventId
+                        ])
+                })
+            } else {
+                roomDataSource.sendFormattedTextMessage(rawTextMsg, html: htmlMsg) { response in
+                    switch response {
+                    case .success:
+                        break
+                    case .failure:
+                        MXLog.error("[RoomViewController] sendFormattedTextMessage failed")
+                    }
+                }
+            }
+
+            if self.customizedRoomDataSource?.selectedEventId != nil {
+                self.cancelEventSelection()
+            }
+        }
+    }
+    
     /// Send given attributed text message to the room
     /// 
     /// - Parameter attributedTextMsg: the attributed text message
@@ -106,5 +155,9 @@ extension RoomViewController {
 private extension RoomViewController {
     var inputToolbar: RoomInputToolbarView? {
         return self.inputToolbarView as? RoomInputToolbarView
+    }
+    
+    var wysiwygInputToolbar: WysiwygInputToolbarView? {
+        return self.inputToolbarView as? WysiwygInputToolbarView
     }
 }

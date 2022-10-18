@@ -1837,3 +1837,24 @@
 "notice_declined_video_call" = "%@ отказа разговора";
 "e2e_passphrase_too_short" = "Паролата е прекалено кратка (трябва да е дълга поне %d символа)";
 "resume_call" = "Възобнови";
+"onboarding_splash_login_button_title" = "Вече имам акаунт";
+
+// MARK: Onboarding
+"onboarding_splash_register_button_title" = "Създай акаунт";
+"accessibility_button_label" = "бутон";
+"saving" = "Запазване";
+
+// Activities
+"loading" = "Зареждане";
+"invite_to" = "Покани в %@";
+"confirm" = "Потвърди";
+"edit" = "Редактирай";
+"suggest" = "Предложи";
+"add" = "Добави";
+"existing" = "Съществуващо";
+"new_word" = "Ново";
+"stop" = "Спри";
+"done" = "Готово";
+"open" = "Отвори";
+"joining" = "Присъединяване";
+"enable" = "Включи";

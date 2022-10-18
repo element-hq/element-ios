@@ -45,4 +45,10 @@ class String_Element: XCTestCase {
         let string3 = "ab"
         XCTAssertEqual(string3.vc_reversed(), "ba")
     }
+    
+    func testNilIfEmpty() {
+        XCTAssertNil("".vc_nilIfEmpty())
+        XCTAssertNotNil(" ".vc_nilIfEmpty())
+        XCTAssertNotNil("Johnny was here".vc_nilIfEmpty())
+    }
 }

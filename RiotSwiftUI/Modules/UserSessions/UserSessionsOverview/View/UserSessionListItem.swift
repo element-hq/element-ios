@@ -42,11 +42,16 @@ struct UserSessionListItem: View {
                             .font(theme.fonts.bodySB)
                             .foregroundColor(theme.colors.primaryContent)
                             .multilineTextAlignment(.leading)
-                        
-                        Text(viewData.sessionDetails)
-                            .font(theme.fonts.caption1)
-                            .foregroundColor(theme.colors.secondaryContent)
-                            .multilineTextAlignment(.leading)
+                        HStack {
+                            if let sessionDetailsIcon = viewData.sessionDetailsIcon {
+                                Image(sessionDetailsIcon)
+                                    .padding(.leading, 2)
+                            }
+                            Text(viewData.sessionDetails)
+                                .font(theme.fonts.caption1)
+                                .foregroundColor(viewData.highlightSessionDetails ? theme.colors.alert : theme.colors.secondaryContent)
+                                .multilineTextAlignment(.leading)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -68,8 +73,8 @@ struct UserSessionListPreview: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(userSessionsOverviewService.overviewData.otherSessions) { userSessionInfo in
-                let viewData = UserSessionListItemViewData(session: userSessionInfo)
+            ForEach(userSessionsOverviewService.otherSessions) { userSessionInfo in
+                let viewData = UserSessionListItemViewDataFactory().create(from: userSessionInfo)
 
                 UserSessionListItem(viewData: viewData, onBackgroundTap: { _ in
 

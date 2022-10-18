@@ -16,10 +16,13 @@
 
 import SwiftUI
 
-struct UserSessionOverviewDisclosureCell: View {
+struct UserSessionOverviewItem: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     let title: String
+    var alignment: Alignment = .leading
+    var showsChevron = false
+    var isDestructive = false
     var onBackgroundTap: (() -> Void)?
     
     var body: some View {
@@ -29,9 +32,12 @@ struct UserSessionOverviewDisclosureCell: View {
                 HStack {
                     Text(title)
                         .font(theme.fonts.body)
-                        .foregroundColor(theme.colors.primaryContent)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    Image(Asset.Images.chevron.name)
+                        .foregroundColor(textColor)
+                        .frame(maxWidth: .infinity, alignment: alignment)
+                    
+                    if showsChevron {
+                        Image(Asset.Images.chevron.name)
+                    }
                 }
                 .padding(.vertical, 15)
                 .padding(.horizontal, 16)
@@ -40,17 +46,27 @@ struct UserSessionOverviewDisclosureCell: View {
             .background(theme.colors.background)
         }
     }
+    
+    var textColor: Color {
+        isDestructive ? theme.colors.alert : theme.colors.primaryContent
+    }
 }
 
-struct UserSessionOverviewDisclosureCell_Previews: PreviewProvider {
+struct UserSessionOverviewItem_Previews: PreviewProvider {
+    static var buttons: some View {
+        NavigationView {
+            ScrollView {
+                UserSessionOverviewItem(title: "Nav item", showsChevron: true)
+                UserSessionOverviewItem(title: "Button")
+                UserSessionOverviewItem(title: "Button", isDestructive: true)
+            }
+        }
+    }
+    
     static var previews: some View {
         Group {
-            UserSessionOverviewDisclosureCell(title: "Title")
-                .theme(.light)
-                .preferredColorScheme(.light)
-            UserSessionOverviewDisclosureCell(title: "Title")
-                .theme(.dark)
-                .preferredColorScheme(.dark)
+            buttons.theme(.light).preferredColorScheme(.light)
+            buttons.theme(.dark).preferredColorScheme(.dark)
         }
     }
 }

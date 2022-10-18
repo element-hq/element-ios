@@ -25,7 +25,7 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
     // MARK: Private
 
     private let session: MXSession
-    private let transaction: MXIncomingSASTransaction
+    private let transaction: MXSASTransaction
     
     // MARK: Public
 
@@ -41,7 +41,7 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
     
     // MARK: - Setup
     
-    init(session: MXSession, otherUser: MXUser, transaction: MXIncomingSASTransaction) {
+    init(session: MXSession, otherUser: MXUser, transaction: MXSASTransaction) {
         self.session = session
         self.transaction = transaction
         self.userId = otherUser.userId
@@ -83,7 +83,7 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
 
     // MARK: - MXKeyVerificationTransactionDidChange
 
-    private func registerTransactionDidStateChangeNotification(transaction: MXIncomingSASTransaction) {
+    private func registerTransactionDidStateChangeNotification(transaction: MXSASTransaction) {
         NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: NSNotification.Name.MXKeyVerificationTransactionDidChange, object: transaction)
     }
     
@@ -92,7 +92,7 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
     }
 
     @objc private func transactionDidStateChange(notification: Notification) {
-        guard let transaction = notification.object as? MXIncomingSASTransaction else {
+        guard let transaction = notification.object as? MXSASTransaction, transaction.isIncoming else {
             return
         }
 

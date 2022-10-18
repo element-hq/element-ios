@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-import Foundation
+import Combine
 
 class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     enum Mode {
@@ -27,15 +27,17 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     
     private let mode: Mode
     
-    var overviewData: UserSessionsOverviewData
+    var overviewDataPublisher: CurrentValueSubject<UserSessionsOverviewData, Never>
+    var sessionInfos = [UserSessionInfo]()
     
     init(mode: Mode = .currentSessionUnverified) {
         self.mode = mode
         
-        overviewData = UserSessionsOverviewData(currentSession: nil,
-                                                unverifiedSessions: [],
-                                                inactiveSessions: [],
-                                                otherSessions: [])
+        overviewDataPublisher = .init(UserSessionsOverviewData(currentSession: nil,
+                                                               unverifiedSessions: [],
+                                                               inactiveSessions: [],
+                                                               otherSessions: [],
+                                                               linkDeviceEnabled: false))
     }
     
     func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) {
@@ -44,43 +46,47 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         
         switch mode {
         case .noOtherSessions:
-            overviewData = UserSessionsOverviewData(currentSession: currentSession,
-                                                    unverifiedSessions: [],
-                                                    inactiveSessions: [],
-                                                    otherSessions: [])
+            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: mockCurrentSession,
+                                                                unverifiedSessions: [],
+                                                                inactiveSessions: [],
+                                                                otherSessions: [],
+                                                                linkDeviceEnabled: false))
         case .onlyUnverifiedSessions:
-            overviewData = UserSessionsOverviewData(currentSession: currentSession,
-                                                    unverifiedSessions: unverifiedSessions + [currentSession],
-                                                    inactiveSessions: [],
-                                                    otherSessions: unverifiedSessions)
+            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: mockCurrentSession,
+                                                                unverifiedSessions: unverifiedSessions + [mockCurrentSession],
+                                                                inactiveSessions: [],
+                                                                otherSessions: unverifiedSessions,
+                                                                linkDeviceEnabled: false))
         case .onlyInactiveSessions:
-            overviewData = UserSessionsOverviewData(currentSession: currentSession,
-                                                    unverifiedSessions: [],
-                                                    inactiveSessions: inactiveSessions,
-                                                    otherSessions: inactiveSessions)
+            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: mockCurrentSession,
+                                                                unverifiedSessions: [],
+                                                                inactiveSessions: inactiveSessions,
+                                                                otherSessions: inactiveSessions,
+                                                                linkDeviceEnabled: false))
         default:
             let otherSessions = unverifiedSessions + inactiveSessions + buildSessions(verified: true, active: true)
             
-            overviewData = UserSessionsOverviewData(currentSession: currentSession,
-                                                    unverifiedSessions: unverifiedSessions,
-                                                    inactiveSessions: inactiveSessions,
-                                                    otherSessions: otherSessions)
+            overviewDataPublisher.send(UserSessionsOverviewData(currentSession: mockCurrentSession,
+                                                                unverifiedSessions: unverifiedSessions,
+                                                                inactiveSessions: inactiveSessions,
+                                                                otherSessions: otherSessions,
+                                                                linkDeviceEnabled: true))
         }
         
-        completion(.success(overviewData))
+        completion(.success(overviewDataPublisher.value))
     }
     
     func sessionForIdentifier(_ sessionId: String) -> UserSessionInfo? {
-        overviewData.otherSessions.first { $0.id == sessionId }
+        otherSessions.first { $0.id == sessionId }
     }
-
+    
     // MARK: - Private
     
-    private var currentSession: UserSessionInfo {
+    private var mockCurrentSession: UserSessionInfo {
         UserSessionInfo(id: "alice",
                         name: "iOS",
                         deviceType: .mobile,
-                        isVerified: mode == .currentSessionVerified,
+                        verificationState: mode == .currentSessionVerified ? .verified : .unverified,
                         lastSeenIP: "10.0.0.10",
                         lastSeenTimestamp: nil,
                         applicationName: "Element iOS",
@@ -99,14 +105,14 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         [UserSessionInfo(id: "1 verified: \(verified) active: \(active)",
                          name: "macOS verified: \(verified) active: \(active)",
                          deviceType: .desktop,
-                         isVerified: verified,
+                         verificationState: verified ? .verified : .unverified,
                          lastSeenIP: "1.0.0.1",
-                         lastSeenTimestamp: Date().timeIntervalSince1970 - 130_000,
+                         lastSeenTimestamp: Date().timeIntervalSince1970 - 8_000_000,
                          applicationName: "Element MacOS",
                          applicationVersion: "1.0.0",
                          applicationURL: nil,
                          deviceModel: nil,
-                         deviceOS: "macOS 12.5.1",
+                         deviceOS: "macOS",
                          lastSeenIPLocation: nil,
                          clientName: "Electron",
                          clientVersion: "20.0.0",
@@ -115,14 +121,14 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
          UserSessionInfo(id: "2 verified: \(verified) active: \(active)",
                          name: "Firefox on Windows verified: \(verified) active: \(active)",
                          deviceType: .web,
-                         isVerified: verified,
+                         verificationState: verified ? .verified : .unverified,
                          lastSeenIP: "2.0.0.2",
                          lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
                          applicationName: "Element Web",
                          applicationVersion: "1.0.0",
                          applicationURL: nil,
                          deviceModel: nil,
-                         deviceOS: "Windows 10",
+                         deviceOS: "Windows",
                          lastSeenIPLocation: nil,
                          clientName: "Firefox",
                          clientVersion: "39.0",
@@ -131,7 +137,7 @@ class MockUserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
          UserSessionInfo(id: "3 verified: \(verified) active: \(active)",
                          name: "Android verified: \(verified) active: \(active)",
                          deviceType: .mobile,
-                         isVerified: verified,
+                         verificationState: verified ? .verified : .unverified,
                          lastSeenIP: "3.0.0.3",
                          lastSeenTimestamp: Date().timeIntervalSince1970 - 10,
                          applicationName: "Element Android",

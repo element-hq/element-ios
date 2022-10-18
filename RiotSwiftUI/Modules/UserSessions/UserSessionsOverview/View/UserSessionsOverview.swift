@@ -21,22 +21,36 @@ struct UserSessionsOverview: View {
     
     @ObservedObject var viewModel: UserSessionsOverviewViewModel.Context
     
+    private let maxOtherSessionsToDisplay = 5
+    
     var body: some View {
-        ScrollView {
-            if hasSecurityRecommendations {
-                securityRecommendationsSection
-            }
-            
-            currentSessionsSection
-            
-            if !viewModel.viewState.otherSessionsViewData.isEmpty {
-                otherSessionsSection
+        GeometryReader { _ in
+            VStack(alignment: .leading, spacing: 0) {
+                ScrollView {
+                    if hasSecurityRecommendations {
+                        securityRecommendationsSection
+                    }
+
+                    currentSessionsSection
+
+                    if !viewModel.viewState.otherSessionsViewData.isEmpty {
+                        otherSessionsSection
+                    }
+                }
+                .readableFrame()
+
+//                if viewModel.viewState.linkDeviceButtonVisible {
+//                    linkDeviceView
+//                        .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
+//                }
             }
         }
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
         .navigationTitle(VectorL10n.userSessionsOverviewTitle)
+        .navigationBarTitleDisplayMode(.inline)
         .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
+        .accentColor(theme.colors.accent)
         .onAppear {
             viewModel.send(viewAction: .viewAppeared)
         }
@@ -91,25 +105,60 @@ struct UserSessionsOverview: View {
                     viewModel.send(viewAction: .viewCurrentSessionDetails)
                 })
             } header: {
-                Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
-                    .textCase(.uppercase)
-                    .font(theme.fonts.footnote)
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, 12.0)
-                    .padding(.top, 24.0)
+                HStack(alignment: .firstTextBaseline) {
+                    Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
+                        .textCase(.uppercase)
+                        .font(theme.fonts.footnote)
+                        .foregroundColor(theme.colors.secondaryContent)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.bottom, 12.0)
+                        .padding(.top, 24.0)
+                    
+                    currentSessionMenu
+                }
             }
             .padding(.horizontal, 16)
         }
     }
     
+    private var currentSessionMenu: some View {
+        Menu {
+            SwiftUI.Section {
+                Button { viewModel.send(viewAction: .renameCurrentSession) } label: {
+                    Label(VectorL10n.manageSessionRename, systemImage: "pencil")
+                }
+            }
+            
+            if #available(iOS 15, *) {
+                Button(role: .destructive) { viewModel.send(viewAction: .logoutOfCurrentSession) } label: {
+                    Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
+                }
+            } else {
+                Button { viewModel.send(viewAction: .logoutOfCurrentSession) } label: {
+                    Label(VectorL10n.signOut, systemImage: "rectangle.righthalf.inset.fill.arrow.right")
+                }
+            }
+        } label: {
+            Image(systemName: "ellipsis")
+                .foregroundColor(theme.colors.secondaryContent)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 12)
+        }
+        .offset(x: 8) // Re-align the symbol after applying padding.
+    }
+    
     private var otherSessionsSection: some View {
         SwiftUI.Section {
             LazyVStack(spacing: 0) {
-                ForEach(viewModel.viewState.otherSessionsViewData) { viewData in
+                ForEach(viewModel.viewState.otherSessionsViewData.prefix(maxOtherSessionsToDisplay)) { viewData in
                     UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
                         viewModel.send(viewAction: .tapUserSession(sessionId))
                     })
+                }
+                if viewModel.viewState.otherSessionsViewData.count > maxOtherSessionsToDisplay {
+                    UserSessionsListViewAllView(count: viewModel.viewState.otherSessionsViewData.count) {
+                        viewModel.send(viewAction: .viewAllOtherSessions)
+                    }
                 }
             }
             .background(theme.colors.background)
@@ -131,6 +180,23 @@ struct UserSessionsOverview: View {
             .padding(.top, 24.0)
         }
         .accessibilityIdentifier("userSessionsOverviewOtherSection")
+    }
+
+    /// The footer view containing link device button.
+    var linkDeviceView: some View {
+        VStack {
+            Button {
+                viewModel.send(viewAction: .linkDevice)
+            } label: {
+                Text(VectorL10n.userSessionsOverviewLinkDevice)
+            }
+            .buttonStyle(PrimaryActionButtonStyle(font: theme.fonts.bodySB))
+            .padding(.top, 28)
+            .padding(.bottom, 12)
+            .padding(.horizontal, 16)
+            .accessibilityIdentifier("linkDeviceButton")
+        }
+        .background(theme.colors.system.ignoresSafeArea())
     }
 }
 

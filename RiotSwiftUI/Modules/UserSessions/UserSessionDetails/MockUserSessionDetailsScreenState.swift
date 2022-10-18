@@ -38,49 +38,49 @@ enum MockUserSessionDetailsScreenState: MockScreenState, CaseIterable {
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        let session: UserSessionInfo
+        let sessionInfo: UserSessionInfo
         switch self {
         case .allSections:
-            session = UserSessionInfo(id: "alice",
-                                      name: "iOS",
-                                      deviceType: .mobile,
-                                      isVerified: false,
-                                      lastSeenIP: "10.0.0.10",
-                                      lastSeenTimestamp: nil,
-                                      applicationName: "Element iOS",
-                                      applicationVersion: "1.0.0",
-                                      applicationURL: nil,
-                                      deviceModel: nil,
-                                      deviceOS: "iOS 15.5",
-                                      lastSeenIPLocation: nil,
-                                      clientName: "Element",
-                                      clientVersion: "1.0.0",
-                                      isActive: true,
-                                      isCurrent: true)
+            sessionInfo = UserSessionInfo(id: "alice",
+                                          name: "iOS",
+                                          deviceType: .mobile,
+                                          verificationState: .unverified,
+                                          lastSeenIP: "10.0.0.10",
+                                          lastSeenTimestamp: nil,
+                                          applicationName: "Element iOS",
+                                          applicationVersion: "1.0.0",
+                                          applicationURL: nil,
+                                          deviceModel: nil,
+                                          deviceOS: "iOS 15.5",
+                                          lastSeenIPLocation: nil,
+                                          clientName: "Element",
+                                          clientVersion: "1.0.0",
+                                          isActive: true,
+                                          isCurrent: true)
         case .sessionSectionOnly:
-            session = UserSessionInfo(id: "3",
-                                      name: "Android",
-                                      deviceType: .mobile,
-                                      isVerified: false,
-                                      lastSeenIP: "3.0.0.3",
-                                      lastSeenTimestamp: Date().timeIntervalSince1970 - 10,
-                                      applicationName: "Element Android",
-                                      applicationVersion: "1.0.0",
-                                      applicationURL: nil,
-                                      deviceModel: nil,
-                                      deviceOS: "Android 4.0",
-                                      lastSeenIPLocation: nil,
-                                      clientName: "Element",
-                                      clientVersion: "1.0.0",
-                                      isActive: true,
-                                      isCurrent: false)
+            sessionInfo = UserSessionInfo(id: "3",
+                                          name: "Android",
+                                          deviceType: .mobile,
+                                          verificationState: .unverified,
+                                          lastSeenIP: "3.0.0.3",
+                                          lastSeenTimestamp: Date().timeIntervalSince1970 - 10,
+                                          applicationName: "Element Android",
+                                          applicationVersion: "1.0.0",
+                                          applicationURL: nil,
+                                          deviceModel: nil,
+                                          deviceOS: "Android 4.0",
+                                          lastSeenIPLocation: nil,
+                                          clientName: "Element",
+                                          clientVersion: "1.0.0",
+                                          isActive: true,
+                                          isCurrent: false)
         }
-        let viewModel = UserSessionDetailsViewModel(session: session)
+        let viewModel = UserSessionDetailsViewModel(sessionInfo: sessionInfo)
         
         // can simulate service and viewModel actions here if needs be.
         
         return (
-            [session],
+            [sessionInfo],
             AnyView(UserSessionDetails(viewModel: viewModel.context))
         )
     }

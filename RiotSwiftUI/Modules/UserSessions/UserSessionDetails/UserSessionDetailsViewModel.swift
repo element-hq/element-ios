@@ -19,61 +19,73 @@ import Foundation
 typealias UserSessionDetailsViewModelType = StateStoreViewModel<UserSessionDetailsViewState, UserSessionDetailsViewAction>
 
 class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionDetailsViewModelProtocol {
+    private static var lastSeenDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EE, d MMM · HH:mm"
+        return dateFormatter
+    }()
+    
     var completion: ((UserSessionDetailsViewModelResult) -> Void)?
     
-    init(session: UserSessionInfo) {
+    init(sessionInfo: UserSessionInfo) {
         super.init(initialViewState: UserSessionDetailsViewState(sections: []))
-        updateViewState(session: session)
+        updateViewState(sessionInfo: sessionInfo)
     }
     
     // MARK: - Public
     
     // MARK: - Private
     
-    private func updateViewState(session: UserSessionInfo) {
+    private func updateViewState(sessionInfo: UserSessionInfo) {
         var sections = [UserSessionDetailsSectionViewData]()
 
-        sections.append(sessionSection(session: session))
+        sections.append(sessionSection(sessionInfo: sessionInfo))
 
-        if let applicationSection = applicationSection(session: session) {
+        if let applicationSection = applicationSection(sessionInfo: sessionInfo) {
             sections.append(applicationSection)
         }
         
-        if let deviceSection = deviceSection(session: session) {
+        if let deviceSection = deviceSection(sessionInfo: sessionInfo) {
             sections.append(deviceSection)
         }
         
         state = UserSessionDetailsViewState(sections: sections)
     }
     
-    private func sessionSection(session: UserSessionInfo) -> UserSessionDetailsSectionViewData {
+    private func sessionSection(sessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData {
         var sessionItems: [UserSessionDetailsSectionItemViewData] = []
 
-        if let sessionName = session.name {
+        if let sessionName = sessionInfo.name {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsSessionName,
                                       value: sessionName))
         }
         
         sessionItems.append(.init(title: VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle,
-                                  value: session.id))
+                                  value: sessionInfo.id))
+        
+        if let lastSeenTimestamp = sessionInfo.lastSeenTimestamp {
+            let date = Date(timeIntervalSince1970: lastSeenTimestamp)
+            sessionItems.append(.init(title: VectorL10n.userSessionDetailsLastActivity,
+                                      value: Self.lastSeenDateFormatter.string(from: date)))
+        }
         
         return .init(header: VectorL10n.userSessionDetailsSessionSectionHeader.uppercased(),
                      footer: VectorL10n.userSessionDetailsSessionSectionFooter,
                      items: sessionItems)
     }
 
-    private func applicationSection(session: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
+    private func applicationSection(sessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
         var sessionItems: [UserSessionDetailsSectionItemViewData] = []
 
-        if let name = session.applicationName {
+        if let name = sessionInfo.applicationName, !name.isEmpty {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationName,
                                       value: name))
         }
-        if let version = session.applicationVersion {
+        if let version = sessionInfo.applicationVersion, !version.isEmpty {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationVersion,
                                       value: version))
         }
-        if let url = session.applicationURL {
+        if let url = sessionInfo.applicationURL, !url.isEmpty {
             sessionItems.append(.init(title: VectorL10n.userSessionDetailsApplicationUrl,
                                       value: url))
         }
@@ -86,28 +98,28 @@ class UserSessionDetailsViewModel: UserSessionDetailsViewModelType, UserSessionD
                      items: sessionItems)
     }
     
-    private func deviceSection(session: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
+    private func deviceSection(sessionInfo: UserSessionInfo) -> UserSessionDetailsSectionViewData? {
         var deviceSectionItems = [UserSessionDetailsSectionItemViewData]()
 
-        if let model = session.deviceModel {
+        if let model = sessionInfo.deviceModel {
             deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceModel,
                                             value: model))
         }
-        if session.deviceType == .web,
-           let clientName = session.clientName,
-           let clientVersion = session.clientVersion {
+        if sessionInfo.deviceType == .web,
+           let clientName = sessionInfo.clientName,
+           let clientVersion = sessionInfo.clientVersion {
             deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceBrowser,
                                             value: "\(clientName) \(clientVersion)"))
         }
-        if let deviceOS = session.deviceOS {
+        if let deviceOS = sessionInfo.deviceOS {
             deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceOs,
                                             value: deviceOS))
         }
-        if let lastSeenIP = session.lastSeenIP {
+        if let lastSeenIP = sessionInfo.lastSeenIP {
             deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceIpAddress,
                                             value: lastSeenIP))
         }
-        if let lastSeenIPLocation = session.lastSeenIPLocation {
+        if let lastSeenIPLocation = sessionInfo.lastSeenIPLocation {
             deviceSectionItems.append(.init(title: VectorL10n.userSessionDetailsDeviceIpLocation,
                                             value: lastSeenIPLocation))
         }

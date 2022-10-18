@@ -1228,7 +1228,7 @@
 "user_verification_session_details_information_trusted_other_user_part1" = "Цей сеанс довірений для захищеного листування, бо ";
 "user_verification_session_details_information_trusted_other_user_part2" = " звіряє його:";
 "user_verification_session_details_information_untrusted_other_user" = " входить у новому сеансі:";
-"user_verification_session_details_additional_information_untrusted_other_user" = "Надіслані цьому сеансу й цим сеансом повідомлення позначатимуться застереженнями, поки цей користувач йому не довірить. Або ви можете власноруч звірити сеанс.";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Поки цей користувач не довіряє цьому сеансу, повідомлення, що надсилаються до нього і від нього, позначаються попередженнями. Крім того, ви можете звірити його вручну.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Якщо ви не входили в цей сеанс, ваш обліковий запис може бути під загрозою.";
 "user_verification_session_details_verify_action_other_user" = "Звірити власноруч";
 "key_verification_bootstrap_not_setup_message" = "Спершу налаштуйте перехресне підписування.";
@@ -2694,7 +2694,7 @@
 "device_name_mobile" = "%@ Мобільний";
 "device_name_web" = "%@ Браузер";
 "device_name_desktop" = "%@ Комп'ютер";
-"user_session_item_details" = "%@ · Остання активність %@";
+"user_session_item_details" = "%1$@ · %2$@";
 
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
@@ -2707,8 +2707,126 @@
 "user_session_verified_short" = "Звірений";
 "user_session_unverified" = "Не звірений сеанс";
 "user_session_verified" = "Звірений сеанс";
-"user_sessions_overview_current_session_section_title" = "ПОТОЧНИЙ СЕАНС";
+"user_sessions_overview_current_session_section_title" = "Поточний сеанс";
 "user_sessions_overview_other_sessions_section_info" = "Звірте свої сеанси та вийдіть з усіх сеансів, які ви більше не розпізнаєте або не використовуєте для кращої безпеки.";
-"user_sessions_overview_other_sessions_section_title" = "ІНШІ СЕАНСИ";
+"user_sessions_overview_other_sessions_section_title" = "Інші сеанси";
 "settings_labs_enable_new_app_layout" = "Новий вигляд застосунку";
 "room_first_message_placeholder" = "Надішліть своє перше повідомлення…";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "Справжність цього зашифрованого повідомлення не може бути гарантована на цьому пристрої.";
+"user_session_overview_session_details_button_title" = "Подробиці сеансу";
+"user_session_overview_session_title" = "Сеанс";
+"user_session_overview_current_session_title" = "Поточний сеанс";
+"user_session_details_application_url" = "URL";
+"user_session_details_application_version" = "Версія";
+"user_session_details_application_name" = "Назва";
+"user_session_details_device_os" = "Операційна система";
+"user_session_details_device_browser" = "Браузер";
+"user_session_details_device_model" = "Модель";
+"user_session_details_device_ip_location" = "Локація IP";
+"user_session_details_device_ip_address" = "IP-адреса";
+"user_session_details_session_section_footer" = "Копіюйте будь-які дані, затиснувши їх.";
+"user_session_details_session_id" = "ID сеансу";
+"user_session_details_session_name" = "Назва сеансу";
+"user_session_details_device_section_header" = "Пристрій";
+"user_session_details_application_section_header" = "Застосунок";
+"user_session_details_session_section_header" = "Сеанс";
+"user_session_details_title" = "Подробиці сеансу";
+"user_session_push_notifications_message" = "Після ввімкнення цей сеанс отримуватиме push-сповіщення.";
+"user_session_push_notifications" = "Push-сповіщення";
+"user_sessions_view_all_action" = "Переглянути всі (%d)";
+"user_sessions_overview_security_recommendations_inactive_info" = "Розгляньте можливість виходу з давніх сеансів (90 днів або давніше), якими ви більше не користуєтесь.";
+"user_sessions_overview_security_recommendations_inactive_title" = "Неактивні сеанси";
+"user_sessions_overview_security_recommendations_unverified_info" = "Звірте або вийдіть з не звірених сеансів.";
+"user_sessions_overview_security_recommendations_unverified_title" = "Не звірені сеанси";
+"user_sessions_overview_security_recommendations_section_info" = "Посильте безпеку свого облікового запису, дотримуючись цих порад.";
+"user_sessions_overview_security_recommendations_section_title" = "Поради з безпеки";
+"all_chats_user_menu_accessibility_label" = "Меню користувача";
+"settings_labs_enable_new_client_info_feature" = "Запишіть назву клієнта, версію та URL-адресу, щоб легше розпізнавати сеанси в менеджері сеансів";
+"settings_labs_enable_new_session_manager" = "Новий менеджер сеансів";
+"device_type_name_unknown" = "Невідомо";
+"device_type_name_mobile" = "Мобільний";
+"device_type_name_web" = "Браузер";
+"device_type_name_desktop" = "Комп'ютер";
+"user_inactive_session_item_with_date" = "Неактивний понад 90 днів (%@)";
+"user_inactive_session_item" = "Неактивний понад 90 днів";
+"user_other_session_unverified_sessions_header_subtitle" = "Перевірте свої сеанси для посилення безпеки обміну повідомленнями або вийдіть з тих, які ви більше не розпізнаєте або не використовуєте.";
+"user_other_session_security_recommendation_title" = "Поради з безпеки";
+"user_sessions_overview_link_device" = "Пов'язати пристрій";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"sign_out_confirmation_message" = "Точно вийти?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Вийти";
+"manage_session_rename" = "Перейменувати сеанс";
+"authentication_qr_login_failure_retry" = "Повторити спробу";
+"authentication_qr_login_failure_request_timed_out" = "У встановлені терміни з'єднання не було встановлено.";
+"authentication_qr_login_failure_request_denied" = "Запит відхилено на іншому пристрої.";
+"authentication_qr_login_failure_invalid_qr" = "Хибний QR-код.";
+"authentication_qr_login_failure_title" = "Не вдалося під'єднати";
+"authentication_qr_login_loading_signed_in" = "Ви ввійшли на іншому пристрої.";
+"authentication_qr_login_loading_waiting_signin" = "Очікування входу пристрою.";
+"authentication_qr_login_loading_connecting_device" = "Під'єднання до пристрою";
+"authentication_qr_login_confirm_alert" = "Переконайтеся, що ви знаєте походження цього коду. Пов'язавши пристрої, ви надасте будь-кому повний доступ до свого облікового запису.";
+"authentication_qr_login_confirm_subtitle" = "Переконайтеся, що код внизу збігається з кодом вашого іншого пристрою:";
+"authentication_qr_login_confirm_title" = "Установлено захищене з'єднання";
+"authentication_qr_login_scan_subtitle" = "Розмістіть QR-код у квадраті знизу";
+"authentication_qr_login_scan_title" = "Сканувати QR-код";
+"authentication_qr_login_display_step2" = "Виберіть «Увійти використавши QR-код»";
+"authentication_qr_login_display_step1" = "Відкрийте Element на іншому пристрої";
+"authentication_qr_login_display_subtitle" = "Зіскануйте QR-код знизу своїм пристроєм, з якого ви вийшли.";
+"authentication_qr_login_display_title" = "Пов'язати пристрій";
+"authentication_qr_login_start_display_qr" = "Показати QR-код на цьому пристрої";
+"authentication_qr_login_start_need_alternative" = "Потрібен альтернативний метод?";
+"authentication_qr_login_start_step4" = "Виберіть «Показати QR-код на цьому пристрої»";
+"authentication_qr_login_start_step3" = "Виберіть «Пов'язати пристрій»";
+"authentication_qr_login_start_step2" = "Перейдіть до Налаштування -> Безпека й приватність";
+"authentication_qr_login_start_step1" = "Відкрийте Element на іншому пристрої";
+"authentication_qr_login_start_subtitle" = "Використовуйте камеру на цьому пристрої, щоб зісканувати QR-код, показаний на іншому пристрої:";
+"authentication_qr_login_start_title" = "Сканувати QR-код";
+"authentication_login_with_qr" = "Увійти використавши QR-код";
+"wysiwyg_composer_format_action_strikethrough" = "Застосувати форматування підкресленим";
+"wysiwyg_composer_format_action_underline" = "Застосувати форматування перекресленим";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Застосувати форматування жирним";
+"wysiwyg_composer_format_action_italic" = "Застосувати форматування курсивом";
+"wysiwyg_composer_start_action_text_formatting" = "Форматування тексту";
+"wysiwyg_composer_start_action_camera" = "Камера";
+"wysiwyg_composer_start_action_location" = "Місце перебування";
+"wysiwyg_composer_start_action_polls" = "Опитування";
+"wysiwyg_composer_start_action_attachments" = "Вкладення";
+"wysiwyg_composer_start_action_stickers" = "Наліпки";
+
+
+// Mark: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Фотобібліотека";
+"user_session_details_last_activity" = "Остання активність";
+"user_session_item_details_last_activity" = "Остання активність %@";
+"user_other_session_clear_filter" = "Очистити фільтр";
+"user_other_session_no_unverified_sessions" = "Не звірених сеансів не знайдено.";
+"user_other_session_no_verified_sessions" = "Звірених сеансів не знайдено.";
+"user_other_session_no_inactive_sessions" = "Неактивних сеансів не знайдено.";
+"user_other_session_filter_menu_inactive" = "Неактивний";
+"user_other_session_filter_menu_unverified" = "Не звірений";
+"user_other_session_filter_menu_verified" = "Звірений";
+"user_other_session_filter_menu_all" = "Усі сеанси";
+"user_other_session_filter" = "Фільтр";
+"user_other_session_verified_sessions_header_subtitle" = "Для кращої безпеки виходьте з будь-якого сеансу, який ви більше не розпізнаєте або не використовуєте.";
+"user_other_session_current_session_details" = "Ваш поточний сеанс";
+"user_other_session_verified_additional_info" = "Цей сеанс готовий до безпечного обміну повідомленнями.";
+"user_other_session_unverified_additional_info" = "Перевірте або вийдіть з цього сеансу для кращої безпеки та надійності.";
+"user_session_verification_unknown_additional_info" = "Звірте свій поточний сеанс, щоб побачити стан перевірки цього сеансу.";
+"user_session_verification_unknown_short" = "Невідомо";
+"user_session_verification_unknown" = "Невідомий стан перевірки";
+"manage_session_name_info_link" = "Докладніше";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Зауважте, що назви сеансів також видно людям, з якими ви спілкуєтесь. %@";
+"manage_session_name_hint" = "Власні назви сеансів допоможуть вам легше розпізнавати ваші пристрої.";
+"settings_labs_enable_wysiwyg_composer" = "Спробуйте розширений текстовий редактор (незабаром з'явиться режим звичайного тексту)";

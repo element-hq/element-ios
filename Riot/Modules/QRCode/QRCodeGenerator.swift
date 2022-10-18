@@ -16,13 +16,17 @@
 
 import Foundation
 import ZXingObjC
+import UIKit
 
 final class QRCodeGenerator {
     enum Error: Swift.Error {
         case cannotCreateImage
     }
     
-    func generateCode(from data: Data, with size: CGSize) throws -> UIImage {
+    func generateCode(from data: Data,
+                      with size: CGSize,
+                      onColor: UIColor = .black,
+                      offColor: UIColor = .white) throws -> UIImage {
         let writer = ZXMultiFormatWriter()
         let endodedString = String(data: data, encoding: .isoLatin1)
         let scale = UIScreen.main.scale
@@ -33,8 +37,10 @@ final class QRCodeGenerator {
             height: Int32(size.height * scale),
             hints: ZXEncodeHints()
         )
-        
-        guard let cgImage = ZXImage(matrix: bitMatrix).cgimage else {
+
+        guard let cgImage = ZXImage(matrix: bitMatrix,
+                                    on: onColor.cgColor,
+                                    offColor: offColor.cgColor).cgimage else {
             throw Error.cannotCreateImage
         }
         

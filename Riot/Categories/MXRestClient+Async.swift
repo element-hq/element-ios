@@ -57,6 +57,11 @@ extension MXRestClient {
         return MXCredentials(loginResponse: loginResponse, andDefaultCredentials: credentials)
     }
     
+    /// An async version of generateLoginToken(completion:)
+    func generateLoginToken() async throws -> MXLoginToken {
+        try await getResponse(generateLoginToken)
+    }
+    
     // MARK: - Registration
     
     /// An async version of `getRegisterSession(completion:)`.
@@ -154,6 +159,15 @@ extension MXRestClient {
         try await getResponse { completion in
             changePassword(from: oldPassword, to: newPassword, logoutDevices: logoutDevices, completion: completion)
         }
+    }
+
+    // MARK: - Versions
+
+    /// An async version of `supportedMatrixVersions(completion:)`.
+    func supportedMatrixVersions() async throws -> MXMatrixVersions {
+        try await getResponse({ completion in
+            supportedMatrixVersions(completion: completion)
+        })
     }
     
     // MARK: - Private
