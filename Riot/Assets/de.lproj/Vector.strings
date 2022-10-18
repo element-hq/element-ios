@@ -568,10 +568,10 @@
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "Sicherungskopie hat eine ungültige Signatur von %@";
 "settings_key_backup_info_trust_signature_invalid_device_unverified" = "Sicherungskopie hat eine ungültige Signatur von %@";
 "settings_key_backup_button_create" = "Beginne Wiederherstellung mit Hilfe der Sicherheitskopie";
-"settings_key_backup_button_restore" = "Wiederherstellung mit Hilfe der Sicherheitskopie";
-"settings_key_backup_button_delete" = "Sicherheitskopie löschen";
+"settings_key_backup_button_restore" = "Von Sicherung wiederherstellen";
+"settings_key_backup_button_delete" = "Lösche Sicherung";
 "settings_key_backup_button_use" = "Benutze Schlüssel Sicherheitskopie";
-"settings_key_backup_delete_confirmation_prompt_title" = "Sicherheitskopie löschen";
+"settings_key_backup_delete_confirmation_prompt_title" = "Lösche Sicherung";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Bist du Sicher? Damit gehen alle verschlüsselten Mitteilungen verloren wenn deine Schlüssel nicht anderweitig richtig gespeichert wurden.";
 "room_does_not_exist" = "%@ existiert nicht";
 "key_backup_setup_title" = "Sicherheitskopie des Schlüssels";
@@ -636,7 +636,7 @@
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Du wirst deine verschlüsselten Nachrichten verlieren";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Du verlierst den Zugriff auf deine verschlüsselten Nachrichten, es sei denn, du sicherst deine Schlüssel, bevor du dich abmeldest.";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Abmelden";
-"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Sicherungskopie";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Sicherung";
 "sign_out_key_backup_in_progress_alert_title" = "Schlüsselsicherung läuft. Wenn du dich jetzt abmeldest, verlierst du den Zugriff auf deine verschlüsselten Nachrichten.";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Ich brauche meine verschlüsselten Nachrichten nicht";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Ich werde warten";
@@ -646,7 +646,7 @@
 "e2e_key_backup_wrong_version_button_settings" = "Einstellungen";
 "e2e_key_backup_wrong_version_button_wasme" = "Das war ich";
 "key_backup_setup_intro_manual_export_info" = "(Erweitert)";
-"key_backup_setup_intro_manual_export_action" = "Manueller Schlüssel-Export";
+"key_backup_setup_intro_manual_export_action" = "Schlüssel manuell exportieren";
 // String for App Store
 "store_short_description" = "Sicherer, dezentralisierter Chat/VoIP";
 "store_full_description" = "Element ist die neue Art von Kommunikations- und Kooperations-App, die:\n\n1. dir die Kontrolle gibt, deine Privatsphäre zu schützen\n2. dir die Kommunikation mit anderen Personen im Matrix-Netzwerk und darüber hinaus Integration in Apps wie Slack ermöglicht\n3. dich vor Werbung, Datenerfassung, Hintertüren und geschlossene Plattformen schützt\n4. dich durch Ende-zu-Ende-Verschlüsselung absichert und mit Quersignaturen andere überprüft\n\nElement unterscheidet sich grundlegend von anderen Kommunikations- und Kooperations-Diensten, da es dezentralisiert und Open-Source ist.\n\nElement lässt dir die Wahl, ob du einen eigenen Server betreibst oder einen bestehenden wählst, sodass du Datenschutz, Eigentum und Kontrolle über deine Daten und Konversationen hast. Du erhältst Zugriff auf ein offenes Netzwerk und bist nicht auf Element-Nutzer beschränkt. Und es ist sehr sicher.\n\nElement ist in der Lage, all dies zu tun, da es mit Matrix arbeitet – dem Standard für offene, dezentrale Kommunikation.\n\nMit Element hast du die Kontrolle, indem du auswählen kannst, bei wem deine Unterhaltungen liegen. In der Element-App kannst du verschiedene Betreiber auswählen:\n\n1. Hole dir ein kostenloses Konto auf dem öffentlichen Server von matrix.org\n2. Beherberge dein Konto selbst, indem du einen Server auf deiner eigenen Hardware betreibst\n3. Registriere ein Konto auf einem maßgeschneiderten Server, indem du einfach die Element-Matrix-Services abonnierst\n\nWarum Element?\n\nBESITZE DEINE DATEN: Du entscheidest, wo deine Daten und Nachrichten aufbewahrt werden sollen. Du besitzt und kontrollierst sie, nicht irgendein MEGAKONZERN, der deine Daten verwertet oder dritten Zugriff gewährt.\n\nOFFENE KOMMUNIKATION UND ZUSAMMENARBEIT: Du kannst mit allen anderen Mitgliedern des Matrix-Netzwerks schreiben, unabhängig davon, ob sie Element oder eine andere Matrix-App verwenden, selbst wenn sie eine andere Plattform wie beispielsweise Slack, IRC oder XMPP verwenden.\n\nSUPER SICHER: Echte Ende-zu-Ende-Verschlüsselung (nur diejenigen in der Konversation können Nachrichten entschlüsseln) und Quersignierung, um die Geräte der Konversationsteilnehmer zu überprüfen.\n\nVOLLSTÄNDIGE KOMMUNIKATION: Schreiben, Sprach- und Videoanrufe, Dateifreigabe, Bildschirmfreigabe und eine ganze Reihe von Integrationen, Bots und Widgets. Erschaffe Räume, Gemeinschaften, bleib in Kontakt und erledige Dinge.\n\nÜBERALL, WO DU BIST: Bleibe mit dem vollständig synchronisierten Nachrichtenverlauf auf all deinen Geräten und im Internet (unter https://element.io/app) unabhängig voneinander in Kontakt.";
@@ -657,9 +657,9 @@
 "room_event_action_edit" = "Bearbeiten";
 "room_action_reply" = "Antworten";
 "settings_labs_message_reaction" = "Mit einem Emoji reagieren";
-"settings_key_backup_button_connect" = "Verbinde diese Sitzung mit der Schlüsselsicherung";
+"settings_key_backup_button_connect" = "Verbinde diese Sitzung mit einer Schlüsselsicherung";
 "event_formatter_message_edited_mention" = "(bearbeitet)";
-"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Schlüssel dieses Geräts sichern";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Verbinde dieses Gerät mit einer Schlüsselsicherung";
 "key_backup_recover_connent_banner_subtitle" = "Schlüssel dieser Sitzung sichern";
 // MARK: - Device Verification
 "device_verification_title" = "Sitzung verifizieren";
@@ -1000,14 +1000,14 @@
 "room_member_power_level_short_custom" = "Selbstdefiniert";
 "security_settings_secure_backup" = "SICHERE SICHERHEITSKOPIE";
 "security_settings_secure_backup_synchronise" = "Synchronisiere";
-"security_settings_secure_backup_delete" = "Backup löschen";
+"security_settings_secure_backup_delete" = "Lösche Sicherung";
 "security_settings_crosssigning_info_ok" = "Quersignierung ist bereit zur Anwendung.";
 "security_settings_crosssigning_reset" = "Zurücksetzen";
 "security_settings_coming_soon" = "Entschuldigung, diese Funktion ist noch nicht für %@ iOS verfügbar. Bitte nutze eine andere Matrix-Anwendung, um es einzurichten. %@ iOS wird es benutzen.";
 "security_settings_user_password_description" = "Bestätige deine Identität durch Eingabe des Passworts deines Matrix-Kontos";
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Diese App unterstützt nicht diese Authentifizierungsmethode für deinen Heimserver.";
-"secure_key_backup_setup_intro_title" = "Sichere Datensicherung";
+"secure_key_backup_setup_intro_title" = "Verschlüsselte Sicherung";
 "store_promotional_text" = "Privatsphäre-wahrende Kollaborations-App in einem offenen Netzwerk. Dezentral, um dir die Kontrolle zu geben. Keine Datenerfassung, keine Hintertüren und kein Zugriff durch Dritte.";
 "room_participants_action_security_status_complete_security" = "Vollständige Sicherheit";
 "external_link_confirmation_title" = "Überprüfe diesen Link genau";
@@ -1024,17 +1024,17 @@
 "event_formatter_widget_removed_by_you" = "Du hast das Widget entfernt: %@";
 "event_formatter_jitsi_widget_added_by_you" = "Du hast eine VoIP-Konferenz hinzugefügt";
 "event_formatter_jitsi_widget_removed_by_you" = "Du hast eine VoIP-Konferenz entfernt";
-"secure_key_backup_setup_intro_info" = "Absicherung um den Zugriffsverlust auf verschlüsselte Nachrichten und Daten zu verhindern, indem die Schlüssel für die Entschlüsselung auf dem Server gesichert werden.";
+"secure_key_backup_setup_intro_info" = "Verhindere, den Zugriff auf verschlüsselte Nachrichten und Daten zu verlieren, indem du die Verschlüsselungs-Schlüssel auf deinem Server sicherst.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Benutze einen Sicherheitsschlüssel";
-"secure_key_backup_setup_intro_use_security_key_info" = "Generiere einen Sicherheitsschlüssel, welcher z.B. in einer Passwortverwaltung oder in einem Tresor sicher aufbewahrt werden sollte.";
+"secure_key_backup_setup_intro_use_security_key_info" = "Generiere einen Sicherheitsschlüssel, den du in einem Passwort-Manager oder Tresor sicher aufbewahren solltest.";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Benutze Sicherungsphrase";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Gib eine geheime Phrase ein, die nur du kennst, um einen Schlüssel für die Sicherung zu generieren.";
 "secure_key_backup_setup_existing_backup_error_title" = "Eine Sicherheitskopie für Nachrichten existiert bereits";
 "secure_key_backup_setup_existing_backup_error_info" = "Entsperre es, um es in der sicheren Datensicherung wiederzuverwenden, oder lösche es, um eine neue Nachrichtensicherung zu erstellen.";
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "Entschlüsseln";
-"secure_key_backup_setup_cancel_alert_title" = "Sicher?";
-"secure_key_backup_setup_cancel_alert_message" = "Wenn du jetzt abbrichst und den Zugriff zu deinen Sitzungen verlierst, kannst du verschlüsselte Nachrichten & Daten verlieren.\n\nDu kannst auch eine Sicherung einrichten und deine Schlüssel in den Einstellungen verwalten.";
-"secure_backup_setup_banner_title" = "Sichere Datensicherung";
+"secure_key_backup_setup_cancel_alert_title" = "Bist du sicher?";
+"secure_key_backup_setup_cancel_alert_message" = "Wenn du jetzt abbrichst und den Zugriff zu deinen Sitzungen verlierst, kannst du verschlüsselte Nachrichten und Daten verlieren.\n\nDu kannst auch eine Sicherung einrichten und deine Schlüssel in den Einstellungen verwalten.";
+"secure_backup_setup_banner_title" = "Verschlüsselte Sicherung";
 "secure_backup_setup_banner_subtitle" = "Absicherung gegen den Zugriffsverlust auf verschlüsselte Nachrichten und Daten";
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Sicherung wird wiederhergestellt…";
@@ -1366,7 +1366,7 @@
 
 // Success from secure backup
 "key_backup_setup_success_from_secure_backup_info" = "Deine Schlüssel werden gesichert.";
-"security_settings_secure_backup_restore" = "Von Backup wiederherstellen";
+"security_settings_secure_backup_restore" = "Von Sicherung wiederherstellen";
 "security_settings_secure_backup_reset" = "Zurücksetzen";
 "security_settings_secure_backup_info_valid" = "Diese Sitzung sichert deine Schlüssel.";
 "security_settings_secure_backup_info_checking" = "Überprüfen…";
@@ -1804,7 +1804,7 @@
 "room_event_encryption_info_device_id" = "ID\n";
 "room_event_encryption_info_device_verification" = "Überprüfung\n";
 "room_event_encryption_info_device_fingerprint" = "Ed25519-Fingerabdruck\n";
-"room_event_encryption_info_device_verified" = "Überprüft";
+"room_event_encryption_info_device_verified" = "Verifiziert";
 "room_event_encryption_info_device_not_verified" = "NICHT verifiziert";
 "room_event_encryption_info_device_blocked" = "auf schwarzer Liste";
 "room_event_encryption_info_verify" = "Verifiziere …";
@@ -2291,7 +2291,7 @@
 "threads_discourage_information_2" = "\n\nWillst du Threads trotzdem aktivieren?";
 "threads_beta_cancel" = "Nicht jetzt";
 "threads_beta_enable" = "Probiere es aus";
-"threads_beta_information_link" = "Mehr Informationen";
+"threads_beta_information_link" = "Mehr erfahren";
 "threads_beta_information" = "Organisiere Diskussionen mit Threads.\n\nThreads helfen, Konversationen zu folgen und beim Thema zu bleiben. ";
 "threads_beta_title" = "Threads";
 "ignore_user" = "Nutzer:in ignorieren";
@@ -2508,7 +2508,7 @@
 "user_sessions_overview_other_sessions_section_title" = "Andere Sitzungen";
 "device_name_unknown" = "Unbekannte Anwendung";
 "device_name_mobile" = "%@ Mobil";
-"user_session_item_details" = "%@ · Neueste Aktivität %@";
+"user_session_item_details" = "%1$@ · %2$@";
 "user_session_unverified_additional_info" = "Verifiziere deine aktuelle Sitzung für besonders sichere Kommunikation.";
 "user_session_verified_additional_info" = "Deine aktuelle Sitzung ist für sichere Kommunikation bereit.";
 "user_session_learn_more" = "Mehr erfahren";
@@ -2558,7 +2558,7 @@
 "authentication_qr_login_scan_title" = "QR-Code einlesen";
 "authentication_qr_login_display_subtitle" = "Lese den folgenden QR-Code mit deinem abgemeldeten Gerät ein.";
 "authentication_qr_login_start_need_alternative" = "Benötigst du eine andere Methode?";
-"authentication_qr_login_start_display_qr" = "Zeige QR-Code auf diesem Gerät";
+"authentication_qr_login_start_display_qr" = "QR-Code auf diesem Gerät anzeigen";
 "authentication_qr_login_start_step4" = "Wähle „Zeige QR-Code auf diesem Gerät“";
 "authentication_qr_login_display_title" = "Verbinde ein Gerät";
 "authentication_qr_login_start_step3" = "Wähle „Verbinde ein Gerät“";
@@ -2598,3 +2598,29 @@
 "authentication_qr_login_display_step1" = "Öffne Element auf deinem anderen Gerät";
 "authentication_qr_login_start_step1" = "Öffne Element auf deinem anderen Gerät";
 "authentication_qr_login_start_subtitle" = "Nutze die Kamera dieses Gerätes, um den auf deinem anderen Gerät angezeigten QR-Code einzulesen:";
+"wysiwyg_composer_start_action_text_formatting" = "Textformatierung";
+"wysiwyg_composer_start_action_camera" = "Kamera";
+"wysiwyg_composer_start_action_location" = "Standort";
+"wysiwyg_composer_start_action_polls" = "Umfragen";
+"wysiwyg_composer_start_action_attachments" = "Anhänge";
+"user_session_details_last_activity" = "Neueste Aktivität";
+"user_session_item_details_last_activity" = "Neueste Aktivität %@";
+"user_other_session_clear_filter" = "Filter zurücksetzen";
+"user_other_session_no_unverified_sessions" = "Keine unverifizierten Sitzungen gefunden.";
+"user_other_session_no_verified_sessions" = "Keine verifizierten Sitzungen gefunden.";
+"user_other_session_no_inactive_sessions" = "Keine inaktiven Sitzungen gefunden.";
+"user_other_session_filter_menu_inactive" = "Inaktiv";
+"user_other_session_filter_menu_unverified" = "Nicht verifiziert";
+"user_other_session_filter_menu_verified" = "Verifiziert";
+"user_other_session_filter_menu_all" = "Alle Sitzungen";
+"user_other_session_verified_sessions_header_subtitle" = "Für bestmögliche Sicherheit, melde dich von allen Sitzungen ab, die du nicht erkennst oder nutzt.";
+"user_other_session_current_session_details" = "Deine aktuelle Sitzung";
+"user_other_session_verified_additional_info" = "Diese Sitzung ist für sichere Kommunikation bereit.";
+"user_other_session_unverified_additional_info" = "Für bestmögliche Sicherheit und Zuverlässigkeit verifiziere diese Sitzung oder melde sie ab.";
+"user_session_verification_unknown_additional_info" = "Verifiziere deine aktuelle Sitzung, um den Verifizierungsstatus dieser Sitzung anzuzeigen.";
+"user_session_verification_unknown_short" = "Unbekannt";
+"user_session_verification_unknown" = "Unbekannter Verifizierungsstatus";
+"manage_session_name_info_link" = "Mehr erfahren";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Sei dir bitte bewusst, dass Sitzungsnamen auch für Personen, mit denen du kommunizierst, sichtbar sind. %@";
+"manage_session_name_hint" = "Individuelle Sitzungsnamen können dir helfen, deine Geräte einfacher zu erkennen.";
