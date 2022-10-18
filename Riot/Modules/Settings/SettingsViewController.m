@@ -3328,6 +3328,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     BOOL isEnabled = sender.isOn;
     RiotSettings.shared.enableClientInformationFeature = isEnabled;
     MXSDKOptions.sharedInstance.enableNewClientInformationFeature = isEnabled;
+    [self.mainSession updateClientInformation];
 }
 
 - (void)toggleEnableWysiwygComposerFeature:(UISwitch *)sender
