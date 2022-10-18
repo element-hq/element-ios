@@ -2605,3 +2605,4 @@
 "manage_session_name_info" = "Ricorda che i nomi di sessione sono anche visibili alle persone con cui comunichi. %@";
 "manage_session_name_hint" = "I nomi di sessione personalizzati possono aiutarti a riconoscere i tuoi dispositivi più facilmente.";
 "settings_labs_enable_wysiwyg_composer" = "Prova l'editor in rich text (il testo semplice è in arrivo)";
+"settings_labs_enable_voice_broadcast" = "Broadcast voce (in sviluppo attivo). Attualmente rileviamo solo il broadcast vocale nella linea temporale della stanza, non è possibile inviare o ascoltare un vero broadcast vocale";
