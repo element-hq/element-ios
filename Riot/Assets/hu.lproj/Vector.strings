@@ -2489,7 +2489,7 @@
 "device_name_mobile" = "%@ Mobil";
 "device_name_desktop" = "%@ Alkalmazás";
 "device_name_web" = "%@ Web";
-"user_session_item_details" = "%@ · Utolsó aktivitás %@";
+"user_session_item_details" = "%1$@ · %2$@";
 
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
@@ -2502,8 +2502,126 @@
 "user_session_verified_short" = "Hitelesített";
 "user_session_unverified" = "Ellenőrizetlen munkamenet";
 "user_session_verified" = "Ellenőrzött munkamenet";
-"user_sessions_overview_current_session_section_title" = "JELENLEGI MUNKAMENET";
+"user_sessions_overview_current_session_section_title" = "Jelenlegi munkamenet";
 "user_sessions_overview_other_sessions_section_info" = "A legjobb biztonság érdekében ellenőrizd a munkameneteket, és jelentkezz ki minden olyan munkamenetből, melyet már nem ismersz fel vagy nem használsz.";
-"user_sessions_overview_other_sessions_section_title" = "TOVÁBBI MUNKAMENETEK";
+"user_sessions_overview_other_sessions_section_title" = "További munkamenetek";
 "settings_labs_enable_new_app_layout" = "Új alkalmazás kinézet";
 "room_first_message_placeholder" = "Küld el az első üzenetedet…";
+"authentication_qr_login_confirm_title" = "Biztonságos kapcsolat beállítva";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "A titkosított üzenetek valódiságát ezen az eszközön nem lehet garantálni.";
+"wysiwyg_composer_format_action_strikethrough" = "Aláhúzott";
+"wysiwyg_composer_format_action_underline" = "Áthúzott";
+"wysiwyg_composer_format_action_italic" = "Dőlt";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Félkövér";
+"wysiwyg_composer_start_action_text_formatting" = "Szöveg formázás";
+"wysiwyg_composer_start_action_camera" = "Kamera";
+"wysiwyg_composer_start_action_location" = "Földrajzi helyzet";
+"wysiwyg_composer_start_action_polls" = "Szavazások";
+"wysiwyg_composer_start_action_attachments" = "Mellékletek";
+"wysiwyg_composer_start_action_stickers" = "Matricák";
+
+
+// Mark: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Fénykép könyvtár";
+"user_session_overview_session_details_button_title" = "Munkamenet információk";
+"user_session_overview_session_title" = "Munkamenet";
+"user_session_overview_current_session_title" = "Jelenlegi munkamenet";
+"user_session_details_application_url" = "URL";
+"user_session_details_application_version" = "Verzió";
+"user_session_details_application_name" = "Név";
+"user_session_details_device_os" = "Operációs rendszer";
+"user_session_details_device_browser" = "Böngésző";
+"user_session_details_device_model" = "Modell";
+"user_session_details_device_ip_location" = "Tartózkodási helyem";
+"user_session_details_device_ip_address" = "IP cím";
+"user_session_details_last_activity" = "Utolsó tevékenység";
+"user_session_details_session_section_footer" = "A másoláshoz koppints és tartsd rajta az ujjad.";
+"user_session_details_session_id" = "Kapcsolat azonosító";
+"user_session_details_session_name" = "Munkamenet neve";
+"user_session_details_device_section_header" = "Eszköz";
+"user_session_details_application_section_header" = "Alkalmazás";
+"user_session_details_session_section_header" = "Munkamenet";
+"user_session_details_title" = "Munkamenet információk";
+"device_type_name_unknown" = "Ismeretlen";
+"device_type_name_mobile" = "Mobil";
+"device_type_name_web" = "Web";
+"device_type_name_desktop" = "Asztali";
+"user_inactive_session_item_with_date" = "90+ napja inaktív (%@)";
+"user_inactive_session_item" = "90+ napja inaktív";
+"user_session_item_details_last_activity" = "Utolsó tevékenység: %@";
+"user_other_session_clear_filter" = "Szűrő törlése";
+"user_other_session_no_unverified_sessions" = "Nincs ellenőrizetlen munkamenet.";
+"user_other_session_no_verified_sessions" = "Nincs ellenőrzött munkamenet.";
+"user_other_session_no_inactive_sessions" = "Nincs inaktív munkamenet.";
+"user_other_session_filter_menu_inactive" = "Inaktív";
+"user_other_session_filter_menu_unverified" = "Ellenőrizetlen";
+"user_other_session_filter_menu_verified" = "Hitelesített";
+"user_other_session_filter_menu_all" = "Minden munkamenet";
+"user_other_session_filter" = "Szűrés";
+"user_other_session_verified_sessions_header_subtitle" = "A legjobb biztonság érdekében jelentkezz ki minden olyan munkamenetből, melyet már nem ismersz fel vagy nem használsz.";
+"user_other_session_current_session_details" = "Jelenlegi munkamenet";
+"user_other_session_unverified_sessions_header_subtitle" = "Erősítse meg a munkameneteit a még biztonságosabb csevegéshez vagy jelentkezzen ki ezekből, ha nem ismeri fel vagy már nem használja őket.";
+"user_other_session_security_recommendation_title" = "Biztonsági javaslat";
+"user_session_push_notifications_message" = "Ha be van kapcsolva az eszközre Push értesítések lesznek küldve.";
+"user_session_push_notifications" = "Push értesítések";
+"user_other_session_verified_additional_info" = "Ez a munkamenet beállítva a biztonságos üzenetküldéshez.";
+"user_other_session_unverified_additional_info" = "A jobb biztonság vagy megbízhatóság érdekében ellenőrizze vagy jelentkezzen ki ebből a munkamenetből.";
+"user_session_verification_unknown_additional_info" = "Ellenőrizd a jelenlegi munkamenetedet, hogy ismert állapotba kerüljön.";
+"user_session_verification_unknown_short" = "Ismeretlen";
+"user_session_verification_unknown" = "Ismeretlen ellenőrzési státusz";
+"user_sessions_view_all_action" = "Összes megtekintése (%d)";
+"user_sessions_overview_link_device" = "Eszköz összekötése";
+"user_sessions_overview_security_recommendations_inactive_info" = "Fontold meg, hogy kijelentkezel a régi munkamenetekből (90 napja vagy régebben használtál) amit már nem használsz.";
+"user_sessions_overview_security_recommendations_inactive_title" = "Nem aktív munkamenetek";
+"user_sessions_overview_security_recommendations_unverified_info" = "Ellenőrizd vagy jelentkezz ki az ellenőrizetlen munkamenetekből.";
+"user_sessions_overview_security_recommendations_unverified_title" = "Ellenőrizetlen munkamenetek";
+"user_sessions_overview_security_recommendations_section_info" = "Javítsa a fiókja biztonságát azzal, hogy követi a következő javaslatokat.";
+"user_sessions_overview_security_recommendations_section_title" = "Biztonsági javaslatok";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"all_chats_user_menu_accessibility_label" = "Felhasználói menü";
+"sign_out_confirmation_message" = "Biztos, hogy ki akarsz lépni?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Kijelentkezés";
+"manage_session_rename" = "Munkamenet átnevezése";
+"manage_session_name_info_link" = "Tudj meg többet";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Fontos, hogy a munkamenet neve a kommunikációban résztvevők számára látható. %@";
+"manage_session_name_hint" = "Az egyedi munkamenet név segíthet az eszköz könnyebb felismerésében.";
+"settings_labs_enable_wysiwyg_composer" = "Próbálja ki az új szövegbevitelt (hamarosan érkezik a sima szöveges üzemmód)";
+"settings_labs_enable_new_client_info_feature" = "Kliens neve, verziója és url felvétele a munkamenet könnyebb azonosításához a munkamenet kezelőben";
+"settings_labs_enable_new_session_manager" = "Új munkamenet kezelő";
+"authentication_qr_login_failure_retry" = "Próbáld újra";
+"authentication_qr_login_failure_request_timed_out" = "Az összekötés az elvárt időn belül nem fejeződött be.";
+"authentication_qr_login_failure_request_denied" = "A kérést elutasították a másik eszközön.";
+"authentication_qr_login_failure_invalid_qr" = "QR kód érvénytelen.";
+"authentication_qr_login_failure_title" = "Összekötés sikertelen";
+"authentication_qr_login_loading_signed_in" = "Bejelentkeztél a másik eszközöddel.";
+"authentication_qr_login_loading_waiting_signin" = "Várakozás a másik eszköz bejelentkezésére.";
+"authentication_qr_login_loading_connecting_device" = "Csatlakozás az eszközhöz";
+"authentication_qr_login_confirm_alert" = "Győződj meg a kód eredetéről. Az eszközök összekötésével esetleg valakinek teljes hozzáférést adhatsz a fiókodhoz.";
+"authentication_qr_login_confirm_subtitle" = "Erősítsd meg, hogy az alábbi kód megegyezik a másik eszközödön lévővel:";
+"authentication_qr_login_scan_subtitle" = "A QR kód legyen a négyzetben";
+"authentication_qr_login_scan_title" = "QR kód beolvasása";
+"authentication_qr_login_display_step2" = "Válaszd ezt: „Belépés QR kóddal”";
+"authentication_qr_login_display_step1" = "Nyisd meg az Elementet a másik eszközödön";
+"authentication_qr_login_display_subtitle" = "A kijelentkezett eszközzel olvasd be a QR kódot alább.";
+"authentication_qr_login_display_title" = "Eszköz összekötése";
+"authentication_qr_login_start_display_qr" = "QR kód megjelenítése ezen az eszközön";
+"authentication_qr_login_start_need_alternative" = "Más módszer szükséges?";
+"authentication_qr_login_start_step4" = "Válaszd ezt: „QR kód megjelenítése ezen az eszközön”";
+"authentication_qr_login_start_step3" = "Válaszd ezt: „Eszköz összekötése”";
+"authentication_qr_login_start_step2" = "Menj a Beállítások -> Biztonság és Adatvédelem menübe";
+"authentication_qr_login_start_step1" = "Nyisd meg az Elementet a másik eszközödön";
+"authentication_qr_login_start_subtitle" = "Használd a kamerát ezen az eszközön a másik eszközödön megjelenő QR kód beolvasására:";
+"authentication_qr_login_start_title" = "QR kód beolvasása";
+"authentication_login_with_qr" = "Belépés QR kóddal";

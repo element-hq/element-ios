@@ -50,6 +50,8 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
             Task { await callback?(.fallback) }
         case .continueWithSSO(let provider):
             Task { await callback?(.continueWithSSO(provider)) }
+        case .qrLogin:
+            Task { await callback?(.qrLogin) }
         }
     }
     

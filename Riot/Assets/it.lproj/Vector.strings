@@ -2469,7 +2469,7 @@
 "device_name_mobile" = "%@ Mobile";
 "device_name_web" = "%@ Web";
 "device_name_desktop" = "%@ Desktop";
-"user_session_item_details" = "%@ · Ultima attività %@";
+"user_session_item_details" = "%1$@ · %2$@";
 
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
@@ -2482,8 +2482,127 @@
 "user_session_verified_short" = "Verificata";
 "user_session_unverified" = "Sessione non verificata";
 "user_session_verified" = "Sessione verificata";
-"user_sessions_overview_current_session_section_title" = "SESSIONE ATTUALE";
+"user_sessions_overview_current_session_section_title" = "Sessione attuale";
 "user_sessions_overview_other_sessions_section_info" = "Per una maggiore sicurezza, verifica le tue sessioni e disconnetti quelle che non riconosci o che non usi più.";
-"user_sessions_overview_other_sessions_section_title" = "ALTRE SESSIONI";
+"user_sessions_overview_other_sessions_section_title" = "Altre sessioni";
 "settings_labs_enable_new_app_layout" = "Nuova disposizione dell'applicazione";
 "room_first_message_placeholder" = "Invia il tuo primo messaggio…";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "L'autenticità di questo messaggio cifrato non può essere garantita su questo dispositivo.";
+"user_session_overview_session_details_button_title" = "Dettagli sessione";
+"user_session_overview_session_title" = "Sessione";
+"user_session_overview_current_session_title" = "Sessione attuale";
+"user_session_details_application_url" = "URL";
+"user_session_details_application_version" = "Versione";
+"user_session_details_application_name" = "Nome";
+"user_session_details_device_os" = "Sistema operativo";
+"user_session_details_device_browser" = "Browser";
+"user_session_details_device_model" = "Modello";
+"user_session_details_device_ip_location" = "Posizione IP";
+"user_session_details_device_ip_address" = "Indirizzo IP";
+"user_session_details_session_section_footer" = "Copia qualsiasi dato tenendolo premuto.";
+"user_session_details_session_id" = "ID sessione";
+"user_session_details_session_name" = "Nome sessione";
+"user_session_details_device_section_header" = "Dispositivo";
+"user_session_details_application_section_header" = "Applicazione";
+"user_session_details_session_section_header" = "Sessione";
+"user_session_details_title" = "Dettagli sessione";
+"user_session_push_notifications_message" = "Quando attivo, questa sessione riceverà notifiche push.";
+"user_session_push_notifications" = "Notifiche push";
+"user_sessions_view_all_action" = "Vedi tutte (%d)";
+"user_sessions_overview_security_recommendations_inactive_info" = "Considera di disconnettere le sessioni vecchie (90 giorni o più) che non usi più.";
+"user_sessions_overview_security_recommendations_inactive_title" = "Sessioni inattive";
+"user_sessions_overview_security_recommendations_unverified_info" = "Verifica o disconnetti le sessioni non verificate.";
+"user_sessions_overview_security_recommendations_unverified_title" = "Sessioni non verificate";
+"user_sessions_overview_security_recommendations_section_info" = "Migliora la sicurezza del tuo account seguendo questi consigli.";
+"user_sessions_overview_security_recommendations_section_title" = "Consigli di sicurezza";
+"all_chats_user_menu_accessibility_label" = "Menu utente";
+"settings_labs_enable_new_client_info_feature" = "Registra il nome, la versione e l'url del client per riconoscere le sessioni più facilmente nel gestore di sessioni";
+"settings_labs_enable_new_session_manager" = "Nuovo gestore di sessioni";
+"device_type_name_unknown" = "Sconosciuto";
+"device_type_name_mobile" = "Mobile";
+"device_type_name_web" = "Web";
+"device_type_name_desktop" = "Desktop";
+"user_inactive_session_item" = "Inattiva da 90+ giorni";
+"user_inactive_session_item_with_date" = "Inattiva da 90+ giorni (%@)";
+"user_other_session_unverified_sessions_header_subtitle" = "Verifica le tue sessioni per avere conversazioni più sicure o disconnetti quelle che non riconosci o che non usi più.";
+"user_other_session_security_recommendation_title" = "Consiglio di sicurezza";
+"user_sessions_overview_link_device" = "Collega un dispositivo";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"sign_out_confirmation_message" = "Vuoi davvero disconnetterti?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Disconnetti";
+"manage_session_rename" = "Rinomina sessione";
+"authentication_qr_login_failure_retry" = "Riprova";
+"authentication_qr_login_failure_request_timed_out" = "Il collegamento non è stato completato nel tempo previsto.";
+"authentication_qr_login_failure_request_denied" = "La richiesta è stata negata sull'altro dispositivo.";
+"authentication_qr_login_failure_invalid_qr" = "Codice QR non valido.";
+"authentication_qr_login_failure_title" = "Collegamento fallito";
+"authentication_qr_login_loading_signed_in" = "Ora hai fatto l'accesso sull'altro dispositivo.";
+"authentication_qr_login_loading_waiting_signin" = "In attesa che il dispositivo acceda.";
+"authentication_qr_login_loading_connecting_device" = "Connessione al dispositivo";
+"authentication_qr_login_confirm_alert" = "Assicurati di conoscere l'origine di questo codice. Collegando i dispositivi, fornirai a qualcuno l'accesso totale al tuo account.";
+"authentication_qr_login_confirm_subtitle" = "Conferma che il codice sottostante corrisponda nell'altro dispositivo:";
+"authentication_qr_login_confirm_title" = "Connessione sicura stabilita";
+"authentication_qr_login_scan_subtitle" = "Posiziona il codice QR nel riquadro sotto";
+"authentication_qr_login_scan_title" = "Scansiona codice QR";
+"authentication_qr_login_display_step2" = "Seleziona ‘Accedi con codice QR’";
+"authentication_qr_login_display_step1" = "Apri Element sull'altro dispositivo";
+"authentication_qr_login_display_subtitle" = "Scansiona il codice QR sottostante con il dispositivo che è disconnesso.";
+"authentication_qr_login_display_title" = "Collega un dispositivo";
+"authentication_qr_login_start_display_qr" = "Mostra codice QR in questo dispositivo";
+"authentication_qr_login_start_need_alternative" = "Serve un metodo alternativo?";
+"authentication_qr_login_start_step4" = "Seleziona ‘Mostra codice QR in questo dispositivo’";
+"authentication_qr_login_start_step3" = "Seleziona ‘Collega un dispositivo’";
+"authentication_qr_login_start_step2" = "Vai in Impostazioni -> Sicurezza & Privacy";
+"authentication_qr_login_start_step1" = "Apri Element sull'altro dispositivo";
+"authentication_qr_login_start_subtitle" = "Usa la fotocamera di questo dispositivo per scansionare il codice QR mostrato nell'altro dispositivo:";
+"authentication_qr_login_start_title" = "Scansiona codice QR";
+"authentication_login_with_qr" = "Accedi con codice QR";
+"wysiwyg_composer_format_action_strikethrough" = "Applica formato sottolineato";
+"wysiwyg_composer_format_action_underline" = "Applica formato sbarrato";
+"wysiwyg_composer_format_action_italic" = "Applica formato corsivo";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Applica formato grassetto";
+"wysiwyg_composer_start_action_text_formatting" = "Formattazione testo";
+"wysiwyg_composer_start_action_camera" = "Fotocamera";
+"wysiwyg_composer_start_action_location" = "Posizione";
+"wysiwyg_composer_start_action_polls" = "Sondaggi";
+"wysiwyg_composer_start_action_attachments" = "Allegati";
+"wysiwyg_composer_start_action_stickers" = "Adesivi";
+
+
+// Mark: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Album di foto";
+"user_session_details_last_activity" = "Ultima attività";
+"user_session_item_details_last_activity" = "Ultima attività %@";
+"user_other_session_clear_filter" = "Annulla filtro";
+"user_other_session_no_unverified_sessions" = "Nessuna sessione non verificata trovata.";
+"user_other_session_no_verified_sessions" = "Nessuna sessione verificata trovata.";
+"user_other_session_no_inactive_sessions" = "Nessuna sessione inattiva trovata.";
+"user_other_session_filter_menu_inactive" = "Inattive";
+"user_other_session_filter_menu_unverified" = "Non verificate";
+"user_other_session_filter_menu_verified" = "Verificate";
+"user_other_session_filter_menu_all" = "Tutte le sessioni";
+"user_other_session_filter" = "Filtra";
+"user_other_session_verified_sessions_header_subtitle" = "Per una maggiore sicurezza, disconnetti tutte le sessioni che non riconosci o che non usi più.";
+"user_other_session_current_session_details" = "La sessione attuale";
+"user_other_session_verified_additional_info" = "Questa sessione è pronta per i messaggi sicuri.";
+"user_other_session_unverified_additional_info" = "Verifica o disconnetti questa sessione per una migliore sicurezza e affidabilità.";
+"user_session_verification_unknown_additional_info" = "Verifica l'attuale sessione per rivelare lo stato di verifica di questa sessione.";
+"user_session_verification_unknown_short" = "Sconosciuto";
+"user_session_verification_unknown" = "Stato di verifica sconosciuto";
+"manage_session_name_info_link" = "Maggiori info";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Ricorda che i nomi di sessione sono anche visibili alle persone con cui comunichi. %@";
+"manage_session_name_hint" = "I nomi di sessione personalizzati possono aiutarti a riconoscere i tuoi dispositivi più facilmente.";
+"settings_labs_enable_wysiwyg_composer" = "Prova l'editor in rich text (il testo semplice è in arrivo)";
+"settings_labs_enable_voice_broadcast" = "Broadcast voce (in sviluppo attivo). Attualmente rileviamo solo il broadcast vocale nella linea temporale della stanza, non è possibile inviare o ascoltare un vero broadcast vocale";

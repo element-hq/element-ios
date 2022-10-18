@@ -44,7 +44,23 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
         session.crypto.device(withDeviceId: deviceId, ofUser: userId)
     }
     
+    func verificationState(for deviceInfo: MXDeviceInfo?) -> UserSessionInfo.VerificationState {
+        guard let deviceInfo = deviceInfo else { return .unknown }
+
+        guard session.crypto?.crossSigning?.canCrossSign == true else {
+            return deviceInfo.deviceId == session.myDeviceId ? .unverified : .unknown
+        }
+        
+        return deviceInfo.trustLevel.isVerified ? .verified : .unverified
+    }
+    
     func accountData(for eventType: String) -> [AnyHashable: Any]? {
         session.accountData.accountData(forEventType: eventType)
+    }
+
+    func qrLoginAvailable() async throws -> Bool {
+        let service = QRLoginService(client: session.matrixRestClient,
+                                     mode: .authenticated)
+        return try await service.isServiceAvailable()
     }
 }

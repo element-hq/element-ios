@@ -19,6 +19,7 @@ import SwiftUI
 
 struct UserSessionsOverviewCoordinatorParameters {
     let session: MXSession
+    let service: UserSessionsOverviewService
 }
 
 final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
@@ -36,11 +37,14 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
 
     init(parameters: UserSessionsOverviewCoordinatorParameters) {
         self.parameters = parameters
+        service = parameters.service
         
-        let dataProvider = UserSessionsDataProvider(session: parameters.session)
-        service = UserSessionsOverviewService(dataProvider: dataProvider)
-        viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
+        viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: parameters.service)
+        
         hostingViewController = VectorHostingController(rootView: UserSessionsOverview(viewModel: viewModel.context))
+        hostingViewController.vc_setLargeTitleDisplayMode(.never)
+        hostingViewController.vc_removeBackTitle()
+        
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: hostingViewController)
     }
     
@@ -53,18 +57,20 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
             MXLog.debug("[UserSessionsOverviewCoordinator] UserSessionsOverviewViewModel did complete with result: \(result).")
             
             switch result {
-            case .showAllUnverifiedSessions:
-                self.showAllUnverifiedSessions()
-            case .showAllInactiveSessions:
-                self.showAllInactiveSessions()
+            case let .showOtherSessions(sessionInfos: sessionInfos, filter: filter):
+                self.showOtherSessions(sessionInfos: sessionInfos, filterBy: filter)
             case .verifyCurrentSession:
-                self.startVerifyCurrentSession()
+                self.completion?(.verifyCurrentSession)
+            case .renameSession(let sessionInfo):
+                self.completion?(.renameSession(sessionInfo))
+            case .logoutOfSession(let sessionInfo):
+                self.completion?(.logoutOfSession(sessionInfo))
             case let .showCurrentSessionOverview(sessionInfo):
                 self.showCurrentSessionOverview(sessionInfo: sessionInfo)
-            case .showAllOtherSessions:
-                self.showAllOtherSessions()
             case let .showUserSessionOverview(sessionInfo):
                 self.showUserSessionOverview(sessionInfo: sessionInfo)
+            case .linkDevice:
+                self.completion?(.linkDevice)
             }
         }
     }
@@ -88,12 +94,8 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         loadingIndicator = nil
     }
     
-    private func showAllUnverifiedSessions() {
-        // TODO:
-    }
-    
-    private func showAllInactiveSessions() {
-        // TODO:
+    private func showOtherSessions(sessionInfos: [UserSessionInfo], filterBy filter: UserOtherSessionsFilter) {
+        completion?(.openOtherSessions(sessionInfos: sessionInfos, filter: filter))
     }
     
     private func startVerifyCurrentSession() {
@@ -103,12 +105,8 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
     private func showCurrentSessionOverview(sessionInfo: UserSessionInfo) {
         completion?(.openSessionOverview(sessionInfo: sessionInfo))
     }
-
+    
     private func showUserSessionOverview(sessionInfo: UserSessionInfo) {
         completion?(.openSessionOverview(sessionInfo: sessionInfo))
-    }
-    
-    private func showAllOtherSessions() {
-        // TODO:
     }
 }

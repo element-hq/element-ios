@@ -38,17 +38,15 @@ enum DeviceType {
     }
     
     var name: String {
-        let appName = AppInfo.current.displayName
-        
         switch self {
         case .desktop:
-            return VectorL10n.deviceNameDesktop(appName)
+            return VectorL10n.deviceTypeNameDesktop
         case .web:
-            return VectorL10n.deviceNameWeb(appName)
+            return VectorL10n.deviceTypeNameWeb
         case .mobile:
-            return VectorL10n.deviceNameMobile(appName)
+            return VectorL10n.deviceTypeNameMobile
         case .unknown:
-            return VectorL10n.deviceNameUnknown
+            return VectorL10n.deviceTypeNameUnknown
         }
     }
 }

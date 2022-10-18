@@ -23,6 +23,8 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         
         XCTAssertTrue(app.buttons["userSessionCardVerifyButton"].exists)
         XCTAssertTrue(app.staticTexts["userSessionCardViewDetails"].exists)
+
+        verifyLinkDeviceButtonStatus(true)
     }
     
     func testCurrentSessionVerified() {
@@ -30,6 +32,8 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         
         XCTAssertFalse(app.buttons["userSessionCardVerifyButton"].exists)
         XCTAssertTrue(app.staticTexts["userSessionCardViewDetails"].exists)
+
+        verifyLinkDeviceButtonStatus(true)
     }
     
     func testOnlyUnverifiedSessions() {
@@ -37,6 +41,8 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         
         XCTAssertTrue(app.staticTexts["userSessionsOverviewSecurityRecommendationsSection"].exists)
         XCTAssertTrue(app.staticTexts["userSessionsOverviewOtherSection"].exists)
+
+        verifyLinkDeviceButtonStatus(false)
     }
     
     func testOnlyInactiveSessions() {
@@ -44,6 +50,8 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         
         XCTAssertTrue(app.staticTexts["userSessionsOverviewSecurityRecommendationsSection"].exists)
         XCTAssertTrue(app.staticTexts["userSessionsOverviewOtherSection"].exists)
+
+        verifyLinkDeviceButtonStatus(false)
     }
     
     func testNoOtherSessions() {
@@ -51,5 +59,32 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         
         XCTAssertFalse(app.staticTexts["userSessionsOverviewSecurityRecommendationsSection"].exists)
         XCTAssertFalse(app.staticTexts["userSessionsOverviewOtherSection"].exists)
+
+        verifyLinkDeviceButtonStatus(false)
+    }
+
+    func verifyLinkDeviceButtonStatus(_ enabled: Bool) {
+//        if enabled {
+//            let linkDeviceButton = app.buttons["linkDeviceButton"]
+//            XCTAssertTrue(linkDeviceButton.exists)
+//            XCTAssertTrue(linkDeviceButton.isEnabled)
+//        } else {
+//            let linkDeviceButton = app.buttons["linkDeviceButton"]
+//            XCTAssertFalse(linkDeviceButton.exists)
+//        }
+    }
+    
+    func testWhenMoreThan5OtherSessionsThenViewAllButtonVisible() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.currentSessionUnverified.title)
+        app.swipeUp()
+
+        XCTAssertTrue(app.buttons["ViewAllButton"].exists)
+    }
+    
+    func testWhenLessThan5OtherSessionsThenViewAllButtonHidden() {
+        app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.onlyUnverifiedSessions.title)
+        app.swipeUp()
+
+        XCTAssertFalse(app.buttons["ViewAllButton"].exists)
     }
 }

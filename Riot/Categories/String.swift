@@ -63,6 +63,11 @@ extension String {
     func vc_reversed() -> String {
         return String(self.reversed())
     }
+    
+    /// Returns nil if the string is empty or the string itself otherwise
+    func vc_nilIfEmpty() -> String? {
+        isEmpty ? nil : self
+    }
 }
 
 extension Optional where Wrapped == String {

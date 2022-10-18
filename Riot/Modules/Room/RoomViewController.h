@@ -33,6 +33,7 @@
 @class RoomDisplayConfiguration;
 @class ThreadsCoordinatorBridgePresenter;
 @class LiveLocationSharingBannerView;
+@class VoiceBroadcastService;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -106,6 +107,9 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 
 // The customized room data source for Vector
 @property (nonatomic, nullable) RoomDataSource *customizedRoomDataSource;
+
+// The voice broadcast service
+@property (nonatomic, nullable) VoiceBroadcastService *voiceBroadcastService;
 
 /**
  Retrieve the live data source in cases where the timeline is not live.

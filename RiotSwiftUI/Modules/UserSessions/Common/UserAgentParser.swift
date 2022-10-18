@@ -132,11 +132,9 @@ enum UserAgentParser {
             if deviceInfoComponents[safe: 1]?.hasPrefix("Android") == true {
                 deviceOS = deviceInfoComponents[safe: 1]
             } else if deviceInfoComponents.first == "Macintosh" {
-                var osFull = deviceInfoComponents[safe: 1]
-                osFull = osFull?.replacingOccurrences(of: "Intel ", with: "")
-                osFull = osFull?.replacingOccurrences(of: "Mac OS X", with: "macOS")
-                osFull = osFull?.replacingOccurrences(of: "_", with: ".")
-                deviceOS = osFull
+                deviceOS = "macOS"
+            } else if deviceInfoComponents.first?.hasPrefix("Windows") == true {
+                deviceOS = "Windows"
             } else {
                 deviceOS = deviceInfoComponents.first
             }

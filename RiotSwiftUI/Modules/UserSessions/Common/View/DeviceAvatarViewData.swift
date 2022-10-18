@@ -18,7 +18,20 @@ import Foundation
 import SwiftUI
 
 /// View data for DeviceAvatarView
-struct DeviceAvatarViewData {
+struct DeviceAvatarViewData: Hashable {
     let deviceType: DeviceType
-    let isVerified: Bool?
+    /// The current state of verification for the session.
+    let verificationState: UserSessionInfo.VerificationState
+    
+    /// The name of the shield image to show for the device.
+    var verificationImageName: String {
+        switch verificationState {
+        case .verified:
+            return Asset.Images.userSessionVerified.name
+        case .unverified:
+            return Asset.Images.userSessionUnverified.name
+        case .unknown:
+            return Asset.Images.userSessionVerificationUnknown.name
+        }
+    }
 }

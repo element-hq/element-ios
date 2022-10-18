@@ -1116,7 +1116,7 @@
         
         MXLogDebug(@"[MXKRoomVC] setRoomInputToolbarViewClass: Set inputToolbarView to class %@", roomInputToolbarViewClass);
         
-        id inputToolbarView = [roomInputToolbarViewClass roomInputToolbarView];
+        id inputToolbarView = [roomInputToolbarViewClass instantiateRoomInputToolbarView];
         self->inputToolbarView = inputToolbarView;
         self->inputToolbarView.delegate = self;
         
@@ -3359,32 +3359,34 @@
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView heightDidChanged:(CGFloat)height completion:(void (^)(BOOL finished))completion
 {
-    _roomInputToolbarContainerHeightConstraint.constant = height;
-    
-    // Update layout with animation
-    [UIView animateWithDuration:self.resizeComposerAnimationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         // We will scroll to bottom if the bottom of the table is currently visible
-                         BOOL shouldScrollToBottom = [self isBubblesTableScrollViewAtTheBottom];
-                         
-                         CGFloat bubblesTableViewBottomConst = self->_roomInputToolbarContainerBottomConstraint.constant + self->_roomInputToolbarContainerHeightConstraint.constant + self->_roomActivitiesContainerHeightConstraint.constant;
-                         
-                        self->_bubblesTableViewBottomConstraint.constant = bubblesTableViewBottomConst;
-                        
-                        // Force to render the view
-                        [self.view layoutIfNeeded];
-                        
-                        if (shouldScrollToBottom)
-                        {
-                            [self scrollBubblesTableViewToBottomAnimated:NO];
-                        }
-                     }
-                     completion:^(BOOL finished){
-                         if (completion)
-                         {
-                             completion(finished);
-                         }
-                     }];
+    // This dispatch fixes a simultaneous accesses crash if this gets called twice quickly in succession
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Update layout with animation
+        [UIView animateWithDuration:self.resizeComposerAnimationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                         animations:^{
+            // We will scroll to bottom if the bottom of the table is currently visible
+            BOOL shouldScrollToBottom = [self isBubblesTableScrollViewAtTheBottom];
+
+            self->_roomInputToolbarContainerHeightConstraint.constant = height;
+            CGFloat bubblesTableViewBottomConst = self->_roomInputToolbarContainerBottomConstraint.constant + self->_roomInputToolbarContainerHeightConstraint.constant + self->_roomActivitiesContainerHeightConstraint.constant;
+
+            self->_bubblesTableViewBottomConstraint.constant = bubblesTableViewBottomConst;
+
+            // Force to render the view
+            [self.view layoutIfNeeded];
+            
+            if (shouldScrollToBottom)
+            {
+                [self scrollBubblesTableViewToBottomAnimated:NO];
+            }
+        }
+                         completion:^(BOOL finished){
+            if (completion)
+            {
+                completion(finished);
+            }
+        }];
+    });
 }
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView sendTextMessage:(NSString*)textMessage

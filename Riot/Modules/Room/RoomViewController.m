@@ -97,7 +97,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate, RoomInputToolbarViewDelegate, ComposerCreateActionListBridgePresenterDelegate>
 {
     
     // The preview header
@@ -195,6 +195,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @property (nonatomic, strong) RoomContextualMenuPresenter *roomContextualMenuPresenter;
 @property (nonatomic, strong) MXKErrorAlertPresentation *errorPresenter;
 @property (nonatomic, strong) NSAttributedString *textMessageBeforeEditing;
+@property (nonatomic, strong) NSString *htmlTextBeforeEditing;
 @property (nonatomic, strong) EditHistoryCoordinatorBridgePresenter *editHistoryPresenter;
 @property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
 @property (nonatomic, strong) EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter;
@@ -209,6 +210,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @property (nonatomic, strong) ThreadsCoordinatorBridgePresenter *threadsBridgePresenter;
 @property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
 @property (nonatomic, strong) SlidingModalPresenter *threadsNoticeModalPresenter;
+@property (nonatomic, strong) ComposerCreateActionListBridgePresenter *composerCreateActionListBridgePresenter;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 @property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
@@ -672,9 +674,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         // Retrieve the potential message partially typed during last room display.
         // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-        RoomInputToolbarView *inputToolbar = (RoomInputToolbarView *)self.inputToolbarView;
-
-        inputToolbar.attributedTextMessage = self.roomDataSource.partialAttributedTextMessage;
+        self.inputToolbarView.attributedTextMessage = self.roomDataSource.partialAttributedTextMessage;
     }
 }
 
@@ -1152,10 +1152,23 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self notifyDelegateOnLeaveRoomIfNecessary];
 }
 
+
++ (Class) mainToolbarClass
+{
+    if (RiotSettings.shared.enableWysiwygComposer)
+    {
+        return WysiwygInputToolbarView.class;
+    }
+    else
+    {
+        return RoomInputToolbarView.class;
+    }
+}
+
 // Set the input toolbar according to the current display
 - (void)updateRoomInputToolbarViewClassIfNeeded
 {
-    Class roomInputToolbarViewClass = RoomInputToolbarView.class;
+    Class roomInputToolbarViewClass = [RoomViewController mainToolbarClass];
     
     BOOL shouldDismissContextualMenu = NO;
     
@@ -1198,10 +1211,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
         
-        // The voice message toolbar cannot be set on DisabledInputToolbarView and on new direct chat.
-        if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class] && !self.isNewDirectChat)
-        {
-            [(RoomInputToolbarView *)self.inputToolbarView setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];
+        
+        if ([self.inputToolbarView.class conformsToProtocol:@protocol(RoomInputToolbarViewProtocol)]) {
+            id<RoomInputToolbarViewProtocol> inputToolbar = (id<RoomInputToolbarViewProtocol>)self.inputToolbarView;
+            [inputToolbar setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];
         }
         
         [self updateInputToolBarViewHeight];
@@ -1214,9 +1227,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     CGFloat height = 0;
     
-    if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
-    {
-        height = ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarHeightConstraint.constant;
+    if ([self.inputToolbarView.class conformsToProtocol:@protocol(RoomInputToolbarViewProtocol)]) {
+        id<RoomInputToolbarViewProtocol> inputToolbar = (id<RoomInputToolbarViewProtocol>)self.inputToolbarView;
+        height = inputToolbar.toolbarHeight;
     }
     else if ([self.inputToolbarView isKindOfClass:DisabledRoomInputToolbarView.class])
     {
@@ -2029,9 +2042,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)setInputToolBarSendMode:(RoomInputToolbarViewSendMode)sendMode forEventWithId:(NSString *)eventId
 {
-    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:[RoomInputToolbarView class]])
+    if (self.inputToolbarView && [self inputToolbarConformsToToolbarViewProtocol])
     {
-        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        MXKRoomInputToolbarView <RoomInputToolbarViewProtocol> *roomInputToolbarView = (MXKRoomInputToolbarView <RoomInputToolbarViewProtocol> *) self.inputToolbarView;
         if (eventId)
         {
             MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
@@ -2165,11 +2178,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     UIView *sourceView;
     
-    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
-    
-    if (roomInputToolbarView)
+    if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
     {
-        sourceView = roomInputToolbarView.attachMediaButton;
+        sourceView = ((RoomInputToolbarView*)self.inputToolbarView).attachMediaButton;
     }
     else
     {
@@ -2241,6 +2252,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 }
 
 - (void)setupActions {
+    
     if (![self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
         return;
     }
@@ -2306,6 +2318,35 @@ static CGSize kThreadListBarButtonItemImageSize;
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
             }
             [self showCameraControllerAnimated:YES];
+        }]];
+    }
+    if (RiotSettings.shared.enableVoiceBroadcast && !self.isNewDirectChat)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLive.image andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            
+            // TODO: Init and start voice broadcast
+            MXSession* session = self.roomDataSource.mxSession;
+            [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
+                if (voiceBroadcastService) {
+                    if ([VoiceBroadcastInfo isStoppedFor:[voiceBroadcastService getState]]) {
+                        [session.voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
+                        
+                        } failure:^(NSError * _Nonnull error) {
+                            
+                        }];
+                    } else {
+                        [session.voiceBroadcastService stopVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
+                        
+                        } failure:^(NSError * _Nonnull error) {
+                            
+                        }];
+                    }
+                }
+            }];            
         }]];
     }
     roomInputView.actionsBar.actionItems = actionItems;
@@ -2403,8 +2444,7 @@ static CGSize kThreadListBarButtonItemImageSize;
  */
 - (void)sendVideoAsset:(AVAsset *)videoAsset isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
 {
-    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
-    if (!roomInputToolbarView)
+    if (![self inputToolbarConformsToToolbarViewProtocol])
     {
         return;
     }
@@ -2425,15 +2465,27 @@ static CGSize kThreadListBarButtonItemImageSize;
             
             // Create before sending the message in case of a discussion (direct chat)
             [self createDiscussionIfNeeded:^(BOOL readyToSend) {
-                if (readyToSend)
+                if (readyToSend && [self inputToolbarConformsToToolbarViewProtocol])
                 {
-                    [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
+                    [self.inputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
                 }
                 // Errors are handled at the request level. This should be improved in case of code rewriting.
             }];
         }];
-        compressionPrompt.popoverPresentationController.sourceView = roomInputToolbarView.attachMediaButton;
-        compressionPrompt.popoverPresentationController.sourceRect = roomInputToolbarView.attachMediaButton.bounds;
+        
+        UIView *sourceView;
+        
+        if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+        {
+            sourceView = ((RoomInputToolbarView*)self.inputToolbarView).attachMediaButton;
+        }
+        else
+        {
+            sourceView = self.inputToolbarView;
+        }
+        
+        compressionPrompt.popoverPresentationController.sourceView = sourceView;
+        compressionPrompt.popoverPresentationController.sourceRect = sourceView.bounds;
         
         [self presentViewController:compressionPrompt animated:YES completion:nil];
     }
@@ -2444,9 +2496,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         // Create before sending the message in case of a discussion (direct chat)
         [self createDiscussionIfNeeded:^(BOOL readyToSend) {
-            if (readyToSend)
+            if (readyToSend && [self inputToolbarConformsToToolbarViewProtocol])
             {
-                [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
+                [self.inputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
             }
             // Errors are handled at the request level. This should be improved in case of code rewriting.
         }];
@@ -3156,6 +3208,39 @@ static CGSize kThreadListBarButtonItemImageSize;
             else
             {
                 cellIdentifier = RoomTimelineCellIdentifierOutgoingLocation;
+            }
+        }
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcast)
+    {
+        if (bubbleData.isIncoming)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcast;
+            }
+        }
+        else
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcast;
             }
         }
     }
@@ -4579,12 +4664,16 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
     
-    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
-    
-    if (roomInputToolbarView)
+    if ([self inputToolbarConformsToHtmlToolbarViewProtocol])
     {
-        self.textMessageBeforeEditing = roomInputToolbarView.attributedTextMessage;
-        roomInputToolbarView.attributedTextMessage = [self.customizedRoomDataSource editableAttributedTextMessageFor:event];
+        MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *htmlInputToolBarView = (MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *) self.inputToolbarView;
+        self.htmlTextBeforeEditing = htmlInputToolBarView.htmlContent;
+        htmlInputToolBarView.htmlContent = [self.customizedRoomDataSource editableHtmlTextMessageFor:event];
+    }
+    else if ([self inputToolbarConformsToToolbarViewProtocol])
+    {
+        self.textMessageBeforeEditing = self.inputToolbarView.attributedTextMessage;
+        self.inputToolbarView.attributedTextMessage = [self.customizedRoomDataSource editableAttributedTextMessageFor:event];
     }
     
     [self selectEventWithId:eventId inputToolBarSendMode:RoomInputToolbarViewSendModeEdit showTimestamp:YES];
@@ -4592,26 +4681,30 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)restoreTextMessageBeforeEditing
 {
-    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     
-    if (self.textMessageBeforeEditing)
+   
+    if (self.htmlTextBeforeEditing && [self inputToolbarConformsToHtmlToolbarViewProtocol])
     {
-        roomInputToolbarView.attributedTextMessage = self.textMessageBeforeEditing;
+        MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *htmlInputToolBarView = (MXKRoomInputToolbarView <HtmlRoomInputToolbarViewProtocol> *) self.inputToolbarView;
+        htmlInputToolBarView.htmlContent = self.htmlTextBeforeEditing;
+    }
+    else if (self.textMessageBeforeEditing && [self inputToolbarConformsToToolbarViewProtocol])
+    {
+        self.inputToolbarView.attributedTextMessage = self.textMessageBeforeEditing;
     }
     
     self.textMessageBeforeEditing = nil;
+    self.htmlTextBeforeEditing = nil;
 }
 
-- (RoomInputToolbarView*)inputToolbarViewAsRoomInputToolbarView
+- (BOOL)inputToolbarConformsToHtmlToolbarViewProtocol
 {
-    RoomInputToolbarView *roomInputToolbarView;
-    
-    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:[RoomInputToolbarView class]])
-    {
-        roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
-    }
-    
-    return roomInputToolbarView;
+    return [self.inputToolbarView conformsToProtocol:@protocol(HtmlRoomInputToolbarViewProtocol)];
+}
+
+- (BOOL)inputToolbarConformsToToolbarViewProtocol
+{
+    return [self.inputToolbarView conformsToProtocol:@protocol(RoomInputToolbarViewProtocol)];
 }
 
 - (void)showDifferentURLsAlertFor:(NSURL *)url visibleURLString:(NSString *)visibleURLString
@@ -4904,7 +4997,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     if (self.roomInputToolbarContainerHeightConstraint.constant != height)
     {
-        // Hide temporarily the placeholder to prevent its distorsion during height animation
+        // Hide temporarily the placeholder to prevent its distortion during height animation
         if (!savedInputToolbarPlaceholder)
         {
             savedInputToolbarPlaceholder = toolbarView.placeholder.length ? toolbarView.placeholder : @"";
@@ -4929,7 +5022,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (void)roomInputToolbarViewDidTapCancel:(RoomInputToolbarView*)toolbarView
+- (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView<RoomInputToolbarViewProtocol>*)toolbarView
 {
     [self cancelEventSelection];
 }
@@ -4946,6 +5039,53 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         [self shareEncryptionKeys];
     }
+}
+
+- (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendFormattedTextMessage:(NSString *)formattedTextMessage withRawText:(NSString *)rawText
+{
+    // Create before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        if (readyToSend) {
+            [self sendFormattedTextMessage:rawText htmlMsg:formattedTextMessage];
+        }
+        // Errors are handled at the request level. This should be improved in case of code rewriting.
+    }];
+}
+
+- (void)roomInputToolbarViewShowSendMediaActions:(MXKRoomInputToolbarView *)toolbarView
+{
+    NSMutableArray *actionItems = [NSMutableArray new];
+    if (RiotSettings.shared.roomScreenAllowMediaLibraryAction)
+    {
+        [actionItems addObject:@(ComposerCreateActionPhotoLibrary)];
+    }
+    if (RiotSettings.shared.roomScreenAllowStickerAction && !self.isNewDirectChat)
+    {
+        [actionItems addObject:@(ComposerCreateActionStickers)];
+    }
+    if (RiotSettings.shared.roomScreenAllowFilesAction)
+    {
+        [actionItems addObject:@(ComposerCreateActionAttachments)];
+    }
+    if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled && !self.isNewDirectChat)
+    {
+        [actionItems addObject:@(ComposerCreateActionPolls)];
+    }
+    if (BuildSettings.locationSharingEnabled && !self.isNewDirectChat)
+    {
+        [actionItems addObject:@(ComposerCreateActionLocation)];
+    }
+    if (RiotSettings.shared.roomScreenAllowCameraAction)
+    {
+        [actionItems addObject:@(ComposerCreateActionCamera)];
+    }
+    
+    self.composerCreateActionListBridgePresenter = [[ComposerCreateActionListBridgePresenter alloc] initWithActions:actionItems];
+    self.composerCreateActionListBridgePresenter.delegate = self;
+    [self.composerCreateActionListBridgePresenter presentFrom:self animated:YES];
 }
 
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage
@@ -5294,7 +5434,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                     else
                     {
                         // Enable back the text input
-                        [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
+                        [self setRoomInputToolbarViewClass:[RoomViewController mainToolbarClass]];
                         [self updateInputToolBarViewHeight];
                         
                         // And the extra area
@@ -7546,9 +7686,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     // Create before sending the message in case of a discussion (direct chat)
     [self createDiscussionIfNeeded:^(BOOL readyToSend) {
-        if (readyToSend)
+        if (readyToSend && [self inputToolbarConformsToToolbarViewProtocol])
         {
-            [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedImage:imageData
+            [self.inputToolbarView sendSelectedImage:imageData
                                        withMimeType:MXKUTI.jpeg.mimeType
                                  andCompressionMode:MediaCompressionHelper.defaultCompressionMode
                                 isPhotoLibraryAsset:NO];
@@ -7581,9 +7721,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     // Create before sending the message in case of a discussion (direct chat)
     [self createDiscussionIfNeeded:^(BOOL readyToSend) {
-        if (readyToSend)
+        if (readyToSend && [self inputToolbarConformsToToolbarViewProtocol])
         {
-            [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedImage:imageData
+            [self.inputToolbarView sendSelectedImage:imageData
                                        withMimeType:uti.mimeType
                                  andCompressionMode:MediaCompressionHelper.defaultCompressionMode
                                 isPhotoLibraryAsset:YES];
@@ -7610,9 +7750,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     // Create before sending the message in case of a discussion (direct chat)
     [self createDiscussionIfNeeded:^(BOOL readyToSend) {
-        if (readyToSend)
+        if (readyToSend && [self inputToolbarConformsToToolbarViewProtocol])
         {
-            [[self inputToolbarViewAsRoomInputToolbarView] sendSelectedAssets:assets withCompressionMode:MediaCompressionHelper.defaultCompressionMode];
+            [self.inputToolbarView sendSelectedAssets:assets withCompressionMode:MediaCompressionHelper.defaultCompressionMode];
         }
         // Errors are handled at the request level. This should be improved in case of code rewriting.
     }];
@@ -7849,6 +7989,41 @@ static CGSize kThreadListBarButtonItemImageSize;
             [NSTextAttachment registerTextAttachmentViewProviderClass:PillAttachmentViewProvider.class forFileType:PillsFormatter.pillUTType];
         }
     }
+}
+
+#pragma mark - ComposerCreateActionListBridgePresenter
+
+- (void)composerCreateActionListBridgePresenterDelegateDidComplete:(ComposerCreateActionListBridgePresenter *)coordinatorBridgePresenter action:(enum ComposerCreateAction)action
+{
+    
+    [coordinatorBridgePresenter dismissWithAnimated:true completion:^{
+        switch (action) {
+            case ComposerCreateActionPhotoLibrary:
+                [self showMediaPickerAnimated:YES];
+                break;
+            case ComposerCreateActionStickers:
+                [self roomInputToolbarViewPresentStickerPicker];
+                break;
+            case ComposerCreateActionAttachments:
+                [self roomInputToolbarViewDidTapFileUpload];
+                break;
+            case ComposerCreateActionPolls:
+                [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
+                break;
+            case ComposerCreateActionLocation:
+                [self.delegate roomViewControllerDidRequestLocationSharingFormPresentation:self];
+                break;
+            case ComposerCreateActionCamera:
+                [self showCameraControllerAnimated:YES];
+                break;
+        }
+        self.composerCreateActionListBridgePresenter = nil;
+    }];
+}
+
+- (void)composerCreateActionListBridgePresenterDidDismissInteractively:(ComposerCreateActionListBridgePresenter *)coordinatorBridgePresenter
+{
+    self.composerCreateActionListBridgePresenter = nil;
 }
 
 @end

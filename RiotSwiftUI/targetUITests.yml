@@ -35,7 +35,8 @@ targets:
 
     dependencies:
     - target: RiotSwiftUI
-
+    - package: WysiwygComposer
+  
     settings:
       base:
         TEST_TARGET_NAME: RiotSwiftUI
@@ -66,9 +67,11 @@ targets:
     - path: ../Riot/Categories/UISearchBar.swift
     - path: ../Riot/Categories/UIView.swift
     - path: ../Riot/Categories/UIApplication.swift
+    - path: ../Riot/Categories/Codable.swift
     - path: ../Riot/Assets/en.lproj/Vector.strings
     - path: ../Riot/Modules/Analytics/AnalyticsScreen.swift
     - path: ../Riot/Modules/LocationSharing/LocationAuthorizationStatus.swift
+    - path: ../Riot/Modules/QRCode/QRCodeGenerator.swift
     - path: ../Riot/Assets/en.lproj/Untranslated.strings
       buildPhase: resources
     - path: ../Riot/Assets/Images.xcassets

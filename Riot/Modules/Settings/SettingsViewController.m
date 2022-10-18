@@ -174,7 +174,9 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS,
     LABS_ENABLE_LIVE_LOCATION_SHARING,
     LABS_ENABLE_NEW_SESSION_MANAGER,
-    LABS_ENABLE_NEW_CLIENT_INFO_FEATURE
+    LABS_ENABLE_NEW_CLIENT_INFO_FEATURE,
+    LABS_ENABLE_WYSIWYG_COMPOSER,
+    LABS_ENABLE_VOICE_BROADCAST
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -189,8 +191,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 @interface SettingsViewController () <UITextFieldDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, DeactivateAccountViewControllerDelegate,
 NotificationSettingsCoordinatorBridgePresenterDelegate,
-SecureBackupSetupCoordinatorBridgePresenterDelegate,
-SignOutAlertPresenterDelegate,
+SignOutFlowPresenterDelegate,
 SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
 SettingsIdentityServerCoordinatorBridgePresenterDelegate,
@@ -267,7 +268,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic, strong) NotificationSettingsCoordinatorBridgePresenter *notificationSettingsBridgePresenter;
 
-@property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
+@property (nonatomic, strong) SignOutFlowPresenter *signOutFlowPresenter;
 @property (nonatomic, weak) UIButton *signOutButton;
 @property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
 
@@ -275,11 +276,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 @property (nonatomic, strong) SettingsDiscoveryTableViewSection *settingsDiscoveryTableViewSection;
 @property (nonatomic, strong) SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter *discoveryThreePidDetailsPresenter;
 
-@property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
-
 @property (nonatomic, strong) TableViewSections *tableViewSections;
-
-@property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 
 @property (nonatomic, strong) ReauthenticationCoordinatorBridgePresenter *reauthenticationCoordinatorBridgePresenter;
 
@@ -599,6 +596,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
         [sectionLabs addRowWithTag:LABS_ENABLE_NEW_SESSION_MANAGER];
         [sectionLabs addRowWithTag:LABS_ENABLE_NEW_CLIENT_INFO_FEATURE];
+        if (@available(iOS 15.0, *))
+        {
+            [sectionLabs addRowWithTag:LABS_ENABLE_WYSIWYG_COMPOSER];
+        }
+        [sectionLabs addRowWithTag:LABS_ENABLE_VOICE_BROADCAST];
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
@@ -701,9 +703,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }];
     [self userInterfaceThemeDidChange];
     
-    self.signOutAlertPresenter = [SignOutAlertPresenter new];
-    self.signOutAlertPresenter.delegate = self;
-    
     _tableViewSections = [TableViewSections new];
     _tableViewSections.delegate = self;
     [self updateSections];
@@ -770,8 +769,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         
         [super destroy];
     }
-
-    _secureBackupSetupCoordinatorBridgePresenter = nil;
+    
     identityServerSettingsCoordinatorBridgePresenter = nil;
 }
 
@@ -1335,6 +1333,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     // Update notification access
     [self refreshSystemNotificationSettings];
+    
+    [[MXKAccountManager sharedManager].activeAccounts.firstObject loadCurrentPusher:nil failure:nil];
 }
 
 - (void)refreshSystemNotificationSettings
@@ -2560,6 +2560,31 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
+        else if (row == LABS_ENABLE_WYSIWYG_COMPOSER)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnableWysiwygComposer];
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableWysiwygComposer;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableWysiwygComposerFeature:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
+        
+        else if (row == LABS_ENABLE_VOICE_BROADCAST)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnableVoiceBroadcast];
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableVoiceBroadcast;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableVoiceBroadcastFeature:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SECTION_TAG_SECURITY)
     {
@@ -2840,6 +2865,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
                 
                 webViewViewController.title = [VectorL10n settingsCopyright];
+                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
                 
                 [self pushViewController:webViewViewController];
             }
@@ -2848,6 +2874,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationTermsConditionsUrlString];
                 
                 webViewViewController.title = [VectorL10n settingsTermConditions];
+                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
                 
                 [self pushViewController:webViewViewController];
             }
@@ -2856,6 +2883,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationPrivacyPolicyUrlString];
                 
                 webViewViewController.title = [VectorL10n settingsPrivacyPolicy];
+                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
                 
                 [self pushViewController:webViewViewController];
             }
@@ -2866,6 +2894,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
                 
                 webViewViewController.title = [VectorL10n settingsThirdPartyNotices];
+                [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
                 
                 [self pushViewController:webViewViewController];
             }
@@ -2960,13 +2989,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     self.signOutButton = (UIButton*)sender;
     
-    MXKeyBackup *keyBackup = self.mainSession.crypto.backup;
+    SignOutFlowPresenter *flowPresenter = [[SignOutFlowPresenter alloc] initWithSession:self.mainSession presentingViewController:self];
+    flowPresenter.delegate = self;
     
-    [self.signOutAlertPresenter presentFor:keyBackup.state
-                      areThereKeysToBackup:keyBackup.hasKeysToBackup
-                                      from:self
-                                sourceView:self.signOutButton
-                                  animated:YES];
+    [flowPresenter startWithSourceView:self.signOutButton];
+    self.signOutFlowPresenter = flowPresenter;
 }
 
 - (void)onRemove3PID:(NSIndexPath*)indexPath
@@ -3316,6 +3343,17 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     BOOL isEnabled = sender.isOn;
     RiotSettings.shared.enableClientInformationFeature = isEnabled;
     MXSDKOptions.sharedInstance.enableNewClientInformationFeature = isEnabled;
+    [self.mainSession updateClientInformation];
+}
+
+- (void)toggleEnableWysiwygComposerFeature:(UISwitch *)sender
+{
+    RiotSettings.shared.enableWysiwygComposer = sender.isOn;
+}
+
+- (void)toggleEnableVoiceBroadcastFeature:(UISwitch *)sender
+{
+    RiotSettings.shared.enableVoiceBroadcast = sender.isOn;
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender
@@ -4177,123 +4215,25 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     self.notificationSettingsBridgePresenter = nil;
 }
 
+#pragma mark - SignOutFlowPresenterDelegate
 
-#pragma mark - SecureBackupSetupCoordinatorBridgePresenter
-
-- (void)showSecureBackupSetupFromSignOutFlow
+- (void)signOutFlowPresenterDidStartLoading:(SignOutFlowPresenter *)presenter
 {
-    if (self.canSetupSecureBackup)
-    {
-        [self setupSecureBackup2];
-    }
-    else
-    {
-        // Set up cross-signing first
-        [self setupCrossSigningWithTitle:[VectorL10n secureKeyBackupSetupIntroTitle]
-                                 message:[VectorL10n securitySettingsUserPasswordDescription]
-                                 success:^{
-                                     [self setupSecureBackup2];
-                                 } failure:^(NSError *error) {
-                                 }];
-    }
-}
-
-- (void)setupSecureBackup2
-{
-    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession allowOverwrite:YES];
-    secureBackupSetupCoordinatorBridgePresenter.delegate = self;
-    
-    [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
-    
-    self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter;
-}
-
-- (BOOL)canSetupSecureBackup
-{
-    return [self.mainSession vc_canSetupSecureBackup];
-}
-
-#pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
-
-- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    self.secureBackupSetupCoordinatorBridgePresenter = nil;
-}
-
-- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    self.secureBackupSetupCoordinatorBridgePresenter = nil;
-}
-
-#pragma mark - SignOutAlertPresenterDelegate
-
-- (void)signOutAlertPresenterDidTapBackupAction:(SignOutAlertPresenter * _Nonnull)presenter
-{
-    [self showSecureBackupSetupFromSignOutFlow];
-}
-
-- (void)signOutAlertPresenterDidTapSignOutAction:(SignOutAlertPresenter * _Nonnull)presenter
-{
-    // Prevent user to perform user interaction in settings when sign out
-    // TODO: Prevent user interaction in all application (navigation controller and split view controller included)
+    [self startActivityIndicator];
     self.view.userInteractionEnabled = NO;
     self.signOutButton.enabled = NO;
-    
-    [self startActivityIndicator];
-    
-    MXWeakify(self);
-    
-    [[AppDelegate theDelegate] logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
-        MXStrongifyAndReturnIfNil(self);
-        
-        [self stopActivityIndicator];
-        
-        self.view.userInteractionEnabled = YES;
-        self.signOutButton.enabled = YES;
-    }];
 }
 
-- (void)setupCrossSigningWithTitle:(NSString*)title
-                           message:(NSString*)message
-                           success:(void (^)(void))success
-                           failure:(void (^)(NSError *error))failure
-
+- (void)signOutFlowPresenterDidStopLoading:(SignOutFlowPresenter *)presenter
 {
-    [self startActivityIndicator];
-    self.view.userInteractionEnabled = NO;
-    
-    MXWeakify(self);
-    
-    void (^animationCompletion)(void) = ^void () {
-        MXStrongifyAndReturnIfNil(self);
-        
-        [self stopActivityIndicator];
-        self.view.userInteractionEnabled = YES;
-        [self.crossSigningSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{}];
-        self.crossSigningSetupCoordinatorBridgePresenter = nil;
-    };
-    
-    CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter = [[CrossSigningSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-        
-    [crossSigningSetupCoordinatorBridgePresenter presentWith:title
-                                                     message:message
-                                                        from:self
-                                                    animated:YES
-                                                     success:^{
-        animationCompletion();
-        success();
-    } cancel:^{
-        animationCompletion();
-        failure(nil);
-    } failure:^(NSError * _Nonnull error) {
-        animationCompletion();
-        [[AppDelegate theDelegate] showErrorAsAlert:error];
-        failure(error);
-    }];
-    
-    self.crossSigningSetupCoordinatorBridgePresenter = crossSigningSetupCoordinatorBridgePresenter;
+    [self stopActivityIndicator];
+    self.view.userInteractionEnabled = YES;
+    self.signOutButton.enabled = YES;
+}
+
+- (void)signOutFlowPresenter:(SignOutFlowPresenter *)presenter didFailWith:(NSError *)error
+{
+    [[AppDelegate theDelegate] showErrorAsAlert:error];
 }
 
 #pragma mark - SingleImagePickerPresenterDelegate

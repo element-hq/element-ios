@@ -42,12 +42,8 @@ final class UserSessionsFlowCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Private
     
-    private func startUserSessionsFlow(mxSession: MXSession, navigationController: UINavigationController?) {
-        var navigationRouter: NavigationRouterType?
-        
-        if let navigationController = navigationController {
-            navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
-        }
+    private func startUserSessionsFlow(mxSession: MXSession, navigationController: UINavigationController) {
+        let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
         let parameters = UserSessionsFlowCoordinatorParameters(session: mxSession, router: navigationRouter)
         let coordinator = UserSessionsFlowCoordinator(parameters: parameters)

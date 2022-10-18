@@ -20,7 +20,7 @@ typealias UserSessionsOverviewViewModelType = StateStoreViewModel<UserSessionsOv
 
 class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSessionsOverviewViewModelProtocol {
     private let userSessionsOverviewService: UserSessionsOverviewServiceProtocol
-
+    
     var completion: ((UserSessionsOverviewViewModelResult) -> Void)?
 
     init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol) {
@@ -28,7 +28,12 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         
         super.init(initialViewState: .init())
         
-        updateViewState(with: userSessionsOverviewService.overviewData)
+        userSessionsOverviewService.overviewDataPublisher.sink { [weak self] overviewData in
+            self?.updateViewState(with: overviewData)
+        }
+        .store(in: &cancellables)
+        
+        updateViewState(with: userSessionsOverviewService.overviewDataPublisher.value)
     }
     
     // MARK: - Public
@@ -39,24 +44,38 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             loadData()
         case .verifyCurrentSession:
             completion?(.verifyCurrentSession)
-        case .viewCurrentSessionDetails:
-            guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
+        case .renameCurrentSession:
+            guard let currentSessionInfo = userSessionsOverviewService.currentSession else {
                 assertionFailure("Missing current session")
                 return
             }
-            completion?(.showCurrentSessionOverview(session: currentSessionInfo))
+            completion?(.renameSession(currentSessionInfo))
+        case .logoutOfCurrentSession:
+            guard let currentSessionInfo = userSessionsOverviewService.currentSession else {
+                assertionFailure("Missing current session")
+                return
+            }
+            completion?(.logoutOfSession(currentSessionInfo))
+        case .viewCurrentSessionDetails:
+            guard let currentSessionInfo = userSessionsOverviewService.currentSession else {
+                assertionFailure("Missing current session")
+                return
+            }
+            completion?(.showCurrentSessionOverview(sessionInfo: currentSessionInfo))
         case .viewAllUnverifiedSessions:
-            completion?(.showAllUnverifiedSessions)
+            showSessions(filteredBy: .unverified)
         case .viewAllInactiveSessions:
-            completion?(.showAllInactiveSessions)
+            showSessions(filteredBy: .inactive)
         case .viewAllOtherSessions:
-            completion?(.showAllOtherSessions)
+            showSessions(filteredBy: .all)
         case .tapUserSession(let sessionId):
             guard let session = userSessionsOverviewService.sessionForIdentifier(sessionId) else {
                 assertionFailure("Missing session info")
                 return
             }
-            completion?(.showUserSessionOverview(session: session))
+            completion?(.showUserSessionOverview(sessionInfo: session))
+        case .linkDevice:
+            completion?(.linkDevice)
         }
     }
     
@@ -70,31 +89,33 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         if let currentSessionInfo = userSessionsViewData.currentSession {
             state.currentSessionViewData = UserSessionCardViewData(sessionInfo: currentSessionInfo)
         }
+        state.linkDeviceButtonVisible = userSessionsViewData.linkDeviceEnabled
     }
     
     private func loadData() {
         state.showLoadingIndicator = true
         
         userSessionsOverviewService.updateOverviewData { [weak self] result in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
             
             self.state.showLoadingIndicator = false
             
-            switch result {
-            case .success(let overViewData):
-                self.updateViewState(with: overViewData)
-            case .failure(let error):
+            if case let .failure(error) = result {
                 // TODO:
-                break
             }
+            
+            // No need to consume .success as there's a subscription on the data.
         }
+    }
+    
+    private func showSessions(filteredBy filter: UserOtherSessionsFilter) {
+        completion?(.showOtherSessions(sessionInfos: userSessionsOverviewService.sessionInfos,
+                                       filter: filter))
     }
 }
 
-private extension Collection where Element == UserSessionInfo {
+extension Collection where Element == UserSessionInfo {
     func asViewData() -> [UserSessionListItemViewData] {
-        map { UserSessionListItemViewData(session: $0) }
+        map { UserSessionListItemViewDataFactory().create(from: $0) }
     }
 }

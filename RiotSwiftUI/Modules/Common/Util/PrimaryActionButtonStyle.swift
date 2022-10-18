@@ -19,8 +19,11 @@ import SwiftUI
 struct PrimaryActionButtonStyle: ButtonStyle {
     @Environment(\.theme) private var theme
     @Environment(\.isEnabled) private var isEnabled
-    
+
+    /// `theme.colors.accent` by default
     var customColor: Color?
+    /// `theme.colors.body` by default
+    var font: Font?
     
     private var fontColor: Color {
         // Always white unless disabled with a dark theme.
@@ -36,7 +39,7 @@ struct PrimaryActionButtonStyle: ButtonStyle {
             .padding(12.0)
             .frame(maxWidth: .infinity)
             .foregroundColor(fontColor)
-            .font(theme.fonts.body)
+            .font(font ?? theme.fonts.body)
             .background(backgroundColor.opacity(backgroundOpacity(when: configuration.isPressed)))
             .cornerRadius(8.0)
     }

@@ -156,6 +156,7 @@ TableViewSectionsDelegate>
     // Do any additional setup after loading the view, typically from a nib.
     
     self.navigationItem.title = [VectorL10n securitySettingsTitle];
+    [self vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
     [self vc_removeBackTitle];
 
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];

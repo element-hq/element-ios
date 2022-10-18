@@ -16,7 +16,7 @@ use_frameworks!
 # - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '= 0.24.0'
+$matrixSDKVersion = '= 0.24.1'
 # $matrixSDKVersion = :local
 # $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
@@ -61,6 +61,7 @@ end
 def import_SwiftUI_pods
     pod 'Introspect', '~> 0.1'
     pod 'DSBottomSheet', '~> 0.3'
+    pod 'ZXingObjC', '~> 3.6.5'
 end
 
 abstract_target 'RiotPods' do
@@ -80,8 +81,9 @@ abstract_target 'RiotPods' do
   pod 'zxcvbn-ios'
 
   # Tools
-  pod 'SwiftGen', '~> 6.3'
-  pod 'SwiftLint', '~> 0.44.0'
+  pod 'SwiftGen'
+  pod 'SwiftLint'
+  pod 'SwiftFormat/CLI'
 
   target "Riot" do
     import_MatrixSDK
@@ -92,14 +94,12 @@ abstract_target 'RiotPods' do
     pod 'UICollectionViewRightAlignedLayout', '~> 0.0.3'
     pod 'UICollectionViewLeftAlignedLayout', '~> 1.0.2'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
-    pod 'ZXingObjC', '~> 3.6.5'
     pod 'FlowCommoniOS', '~> 1.12.0'
     pod 'ReadMoreTextView', '~> 3.0.1'
     pod 'SwiftBase32', '~> 0.9.0'
     pod 'SwiftJWT', '~> 3.6.200'
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
-    pod 'ffmpeg-kit-ios-audio', '4.5.1'
     
     pod 'FLEX', '~> 4.5.0', :configurations => ['Debug'], :inhibit_warnings => true
 

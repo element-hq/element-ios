@@ -20,16 +20,6 @@ import Foundation
 enum UserSessionNameFormatter {
     /// Session name with client name and session display name
     static func sessionName(deviceType: DeviceType, sessionDisplayName: String?) -> String {
-        let sessionName: String
-        
-        let clientName = deviceType.name
-        
-        if let sessionDisplayName = sessionDisplayName {
-            sessionName = VectorL10n.userSessionName(clientName, sessionDisplayName)
-        } else {
-            sessionName = clientName
-        }
-        
-        return sessionName
+        sessionDisplayName?.vc_nilIfEmpty() ?? deviceType.name
     }
 }
