@@ -1,1 +1,0 @@
-Implemented login with QR code flows when scanning from mobile
