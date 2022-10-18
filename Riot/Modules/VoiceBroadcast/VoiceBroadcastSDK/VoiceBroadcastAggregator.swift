@@ -111,7 +111,7 @@ public class VoiceBroadcastAggregator {
             
             let eventTypes = [VoiceBroadcastSettings.eventType, kMXEventTypeStringRoomMessage]
             self.referenceEventsListener = self.room.listen(toEventsOfTypes: eventTypes) { [weak self] event, direction, state in
-                // TODO: VB check sender id to block fake voice broadcast chunk
+                // TODO: VB check if the sender id is the same as the user id who's created the voice broadcast to block a fake voice broadcast chunk
                 guard let self = self,
                       let relatedEventId = event.relatesTo?.eventId,
                       relatedEventId == self.voiceBroadcastStartEventId,

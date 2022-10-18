@@ -48,6 +48,7 @@ class TimelineVoiceBroadcastViewModel: TimelineVoiceBroadcastViewModelType, Time
     
     /// Listen voice broadcast
     private func play() {
+        // TODO: VB call voice broadcast playback service to play the chunks
         completion?(.played)
     }
     

@@ -16,21 +16,12 @@
 
 import Foundation
 
+//TODO: VB remove duplicated class or struct
 /// Represents user live location
 struct VoiceBroadcastChunk {
-    var userId: String {
-        avatarData.matrixItemId
-    }
-    
-    var displayName: String {
-        avatarData.displayName ?? userId
-    }
-    
-    let avatarData: AvatarInputProtocol
-    
     /// Chunk sequence number
     let sequence: UInt
-    
-    // TODO: VB add chunk attachment here
-    let attachmentUrl: URL
+
+    /// Chunk file url
+    let url: URL
 }

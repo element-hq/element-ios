@@ -18,17 +18,15 @@ import Foundation
 
 public protocol VoiceBroadcastProtocol {
     var chunks: Set<VoiceBroadcastChunk> { get }
-    var isClosed: Bool { get }
     var kind: VoiceBroadcastKind { get }
 }
 
 public enum VoiceBroadcastKind {
-    case disclosed
-    case undisclosed
+    case player
+    case recorder
 }
 
 class VoiceBroadcast: VoiceBroadcastProtocol {
     var chunks: Set<VoiceBroadcastChunk> = []
-    var isClosed: Bool = false
-    var kind: VoiceBroadcastKind = .disclosed
+    var kind: VoiceBroadcastKind = .player
 }

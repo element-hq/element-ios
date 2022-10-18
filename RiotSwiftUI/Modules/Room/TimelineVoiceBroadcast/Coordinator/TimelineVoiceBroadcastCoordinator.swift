@@ -76,7 +76,7 @@ final class TimelineVoiceBroadcastCoordinator: Coordinator, Presentable, VoiceBr
     }
     
     func canEndVoiceBroadcast() -> Bool {
-        // TODO: check is voicebroadcast stopped
+        // TODO: VB check is voicebroadcast stopped
         return false
     }
     
@@ -104,14 +104,13 @@ final class TimelineVoiceBroadcastCoordinator: Coordinator, Presentable, VoiceBr
     // to add the SDK as a dependency to it. We need to translate from one to the other on this level.
     func buildTimelineVoiceBroadcastFrom(_ voiceBroadcast: VoiceBroadcastProtocol) -> TimelineVoiceBroadcastDetails {
         
-        return TimelineVoiceBroadcastDetails(closed: voiceBroadcast.isClosed,
-                                   type: voiceBroadcastKindToTimelineVoiceBroadcastType(voiceBroadcast.kind))
+        return TimelineVoiceBroadcastDetails(chunks: Array(voiceBroadcast.chunks), type: voiceBroadcastKindToTimelineVoiceBroadcastType(voiceBroadcast.kind))
     }
     
     private func voiceBroadcastKindToTimelineVoiceBroadcastType(_ kind: VoiceBroadcastKind) -> TimelineVoiceBroadcastType {
-        let mapping = [VoiceBroadcastKind.disclosed: TimelineVoiceBroadcastType.disclosed,
-                       VoiceBroadcastKind.undisclosed: TimelineVoiceBroadcastType.undisclosed]
+        let mapping = [VoiceBroadcastKind.player: TimelineVoiceBroadcastType.player,
+                       VoiceBroadcastKind.recorder: TimelineVoiceBroadcastType.recorder]
         
-        return mapping[kind] ?? .disclosed
+        return mapping[kind] ?? .player
     }
 }
