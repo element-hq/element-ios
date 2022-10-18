@@ -16,9 +16,21 @@
 
 import Foundation
 
-protocol TimelineVoiceBroadcastViewModelProtocol {
-    var context: TimelineVoiceBroadcastViewModelType.Context { get }
-    var completion: ((TimelineVoiceBroadcastViewModelResult) -> Void)? { get set }
+/// Represents user live location
+struct VoiceBroadcastChunk {
+    var userId: String {
+        avatarData.matrixItemId
+    }
     
-    func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: TimelineVoiceBroadcastDetails)
+    var displayName: String {
+        avatarData.displayName ?? userId
+    }
+    
+    let avatarData: AvatarInputProtocol
+    
+    /// Chunk sequence number
+    let sequence: UInt
+    
+    // TODO: add attachment here
+    let attachment: NSObject
 }

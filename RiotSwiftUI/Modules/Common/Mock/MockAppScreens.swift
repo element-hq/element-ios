@@ -70,6 +70,7 @@ enum MockAppScreens {
         MockTemplateRoomChatScreenState.self,
         MockSpaceSelectorScreenState.self,
         MockComposerScreenState.self,
-        MockComposerCreateActionListScreenState.self
+        MockComposerCreateActionListScreenState.self,
+        MockTimelineVoiceBroadcastScreenState.self
     ]
 }

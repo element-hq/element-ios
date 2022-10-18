@@ -34,9 +34,25 @@ struct TimelineVoiceBroadcastView: View {
             Text(VectorL10n.voiceBroadcastInTimelineTitle)
                 .font(theme.fonts.bodySB)
                 .foregroundColor(theme.colors.primaryContent)
-            Text(VectorL10n.voiceBroadcastInTimelineBody)
-                .font(theme.fonts.body)
-                .foregroundColor(theme.colors.primaryContent)
+//            Text(VectorL10n.voiceBroadcastInTimelineBody)
+//                .font(theme.fonts.body)
+//                .foregroundColor(theme.colors.primaryContent)
+            
+            HStack(alignment: .top, spacing: 16.0) {
+                Button { viewModel.send(viewAction: .play) } label: {
+                    Image("voice_broadcast_play")
+                        .renderingMode(.original)
+                }
+                .accessibilityIdentifier("playButton")
+                
+                Button { viewModel.send(viewAction: .pause) } label: {
+                    Image("voice_broadcast_pause")
+                        .renderingMode(.original)
+                }
+                .accessibilityIdentifier("pauseButton")
+
+            }
+
         }
         .padding([.horizontal, .top], 2.0)
         .padding([.bottom])
@@ -48,4 +64,9 @@ struct TimelineVoiceBroadcastView: View {
 
 // MARK: - Previews
 
-// TODO: Add Voice broadcast preview
+struct TimelineVoiceBroadcastView_Previews: PreviewProvider {
+    static let stateRenderer = MockTimelineVoiceBroadcastScreenState.stateRenderer
+    static var previews: some View {
+        stateRenderer.screenGroup()
+    }
+}

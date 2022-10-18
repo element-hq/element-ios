@@ -20,13 +20,14 @@ import SwiftUI
 typealias TimelineVoiceBroadcastViewModelType = StateStoreViewModel<TimelineVoiceBroadcastViewState, TimelineVoiceBroadcastViewAction>
 
 class TimelineVoiceBroadcastViewModel: TimelineVoiceBroadcastViewModelType, TimelineVoiceBroadcastViewModelProtocol {
+    
     // MARK: - Properties
 
     // MARK: Private
     
     // MARK: Public
     
-    var completion: TimelineVoiceBroadcastViewModelCallback?
+    var completion: ((TimelineVoiceBroadcastViewModelResult) -> Void)?
     
     // MARK: - Setup
     
@@ -37,7 +38,22 @@ class TimelineVoiceBroadcastViewModel: TimelineVoiceBroadcastViewModelType, Time
     // MARK: - Public
     
     override func process(viewAction: TimelineVoiceBroadcastViewAction) {
-        // TODO: add some actions as play pause
+        switch viewAction {
+        case .play:
+            play()
+        case .pause:
+            pause()
+        }
+    }
+    
+    /// Listen voice broadcast
+    private func play() {
+        completion?(.played)
+    }
+    
+    /// Stop voice broadcast
+    private func pause() {
+        completion?(.paused)
     }
     
     // MARK: - TimelineVoiceBroadcastViewModelProtocol
