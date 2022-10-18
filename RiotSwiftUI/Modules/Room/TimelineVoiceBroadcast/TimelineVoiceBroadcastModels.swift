@@ -30,18 +30,17 @@ enum TimelineVoiceBroadcastViewModelResult {
 }
 
 enum TimelineVoiceBroadcastType {
-    case disclosed
-    case undisclosed
+    case player
+    case recorder
 }
 
 struct TimelineVoiceBroadcastDetails {
-    var closed: Bool
     var type: TimelineVoiceBroadcastType
+    var chunks: [VoiceBroadcastChunk]
     
-    init(closed: Bool,
-         type: TimelineVoiceBroadcastType) {
-        self.closed = closed
+    init(chunks: [VoiceBroadcastChunk], type: TimelineVoiceBroadcastType) {
         self.type = type
+        self.chunks = chunks
     }
 }
 
