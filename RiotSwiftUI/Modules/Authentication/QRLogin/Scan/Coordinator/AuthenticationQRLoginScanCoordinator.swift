@@ -79,10 +79,7 @@ final class AuthenticationQRLoginScanCoordinator: Coordinator, Presentable {
                 self.showDisplayQRScreen()
             case .qrScanned(let data):
                 self.qrLoginService.stopScanning(destroy: false)
-                
-                Task {
-                    await self.qrLoginService.processScannedQR(data)
-                }
+                self.qrLoginService.processScannedQR(data)
             }
         }
     }
