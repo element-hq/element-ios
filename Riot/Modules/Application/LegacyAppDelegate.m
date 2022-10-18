@@ -128,6 +128,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      If any the currently displayed key verification dialog
      */
     KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
+    
+    /**
+     Completion block for the requester of key verification
+     */
+    void (^keyVerificationCompletionBlock)(void);
 
     /**
      Currently displayed secure backup setup
@@ -3697,7 +3702,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     return presented;
 }
 
-- (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession
+- (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember
+                                     session:(MXSession*)mxSession
+                                  completion:(void (^)(void))completion;
 {
     MXLogDebug(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: %@", roomMember);
     
@@ -3710,6 +3717,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [keyVerificationCoordinatorBridgePresenter presentFrom:self.presentedViewController roomMember:roomMember animated:YES];
         
         presented = YES;
+        
+        keyVerificationCompletionBlock = completion;
     }
     else
     {
@@ -3762,6 +3771,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }];
     
     keyVerificationCoordinatorBridgePresenter = nil;
+    
+    if (keyVerificationCompletionBlock) {
+        keyVerificationCompletionBlock();
+    }
+    keyVerificationCompletionBlock = nil;
 }
 
 #pragma mark - New request
