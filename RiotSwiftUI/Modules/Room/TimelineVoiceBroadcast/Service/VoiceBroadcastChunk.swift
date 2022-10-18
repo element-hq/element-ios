@@ -31,6 +31,6 @@ struct VoiceBroadcastChunk {
     /// Chunk sequence number
     let sequence: UInt
     
-    // TODO: add attachment here
-    let attachment: NSObject
+    // TODO: VB add chunk attachment here
+    let attachmentUrl: URL
 }

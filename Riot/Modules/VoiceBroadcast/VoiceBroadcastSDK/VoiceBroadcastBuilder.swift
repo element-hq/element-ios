@@ -22,7 +22,7 @@ struct VoiceBroadcastBuilder {
         
         let voiceBroadcast = VoiceBroadcast()
         
-        // TODO: set voice broadcast object
+        // TODO: VB set voice broadcast object
         
         return voiceBroadcast
     }

@@ -56,8 +56,10 @@ final class TimelineVoiceBroadcastCoordinator: Coordinator, Presentable, VoiceBr
             
             switch result {
             case .played:
+                // TODO: VB Add player and playing chunk files
                 MXLog.debug("click on play")
             case .paused:
+                // TODO: VB stop playing chunk files
                 MXLog.debug("click on pause")
             }
         }
