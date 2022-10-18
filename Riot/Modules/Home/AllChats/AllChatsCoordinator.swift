@@ -365,7 +365,8 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
         view.backgroundColor = .clear
         
-        let button: UIButton = UIButton(frame: view.bounds.inset(by: .init(top: 7, left: 7, bottom: 7, right: 7)))
+        let avatarInsets: UIEdgeInsets = .init(top: 7, left: 7, bottom: 7, right: 7)
+        let button: UIButton = .init(frame: view.bounds.inset(by: avatarInsets))
         button.setImage(Asset.Images.tabPeople.image, for: .normal)
         button.menu = avatarMenu
         button.showsMenuAsPrimaryAction = true
@@ -374,18 +375,13 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         view.addSubview(button)
         self.avatarMenuButton = button
 
-        let avatarView = UserAvatarView(frame: view.bounds.inset(by: .init(top: 7, left: 7, bottom: 7, right: 7)))
+        let avatarView = UserAvatarView(frame: view.bounds.inset(by: avatarInsets))
         avatarView.isUserInteractionEnabled = false
         avatarView.update(theme: ThemeService.shared().theme)
         avatarView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         view.addSubview(avatarView)
         self.avatarMenuView = avatarView
-
-        if let avatar = userAvatarViewData(from: currentMatrixSession) {
-            avatarView.fill(with: avatar)
-            button.setImage(nil, for: .normal)
-        }
-        
+        updateAvatarButtonItem()
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: view)
     }
     
