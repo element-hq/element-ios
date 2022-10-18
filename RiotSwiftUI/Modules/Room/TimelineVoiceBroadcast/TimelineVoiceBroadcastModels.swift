@@ -24,6 +24,7 @@ enum TimelineVoiceBroadcastViewAction {
 }
 
 enum TimelineVoiceBroadcastViewModelResult {
+    // TODO: VB send all chunk file urls from ViewModel
     case played
     case paused
 }
