@@ -331,8 +331,8 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     private func createLeftButtonItem(for viewController: UIViewController) {
         createAvatarButtonItem(for: viewController)
     }
-
-    private func createAvatarButtonItem(for viewController: UIViewController) {
+    
+    private var avatarMenu: UIMenu {
         var actions: [UIMenuElement] = []
         
         actions.append(UIAction(title: VectorL10n.allChatsUserMenuSettings, image: UIImage(systemName: "gearshape")) { [weak self] action in
@@ -358,21 +358,23 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
             }
         ]))
 
-        let menu = UIMenu(options: .displayInline, children: actions)
-        
+        return UIMenu(options: .displayInline, children: actions)
+    }
+
+    private func createAvatarButtonItem(for viewController: UIViewController) {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
         view.backgroundColor = .clear
         
-        let button: UIButton = UIButton(frame: view.bounds.inset(by: UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)))
+        let button: UIButton = UIButton(frame: view.bounds.inset(by: .init(top: 7, left: 7, bottom: 7, right: 7)))
         button.setImage(Asset.Images.tabPeople.image, for: .normal)
-        button.menu = menu
+        button.menu = avatarMenu
         button.showsMenuAsPrimaryAction = true
         button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         button.accessibilityLabel = VectorL10n.allChatsUserMenuAccessibilityLabel
         view.addSubview(button)
         self.avatarMenuButton = button
 
-        let avatarView = UserAvatarView(frame: view.bounds.inset(by: UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)))
+        let avatarView = UserAvatarView(frame: view.bounds.inset(by: .init(top: 7, left: 7, bottom: 7, right: 7)))
         avatarView.isUserInteractionEnabled = false
         avatarView.update(theme: ThemeService.shared().theme)
         avatarView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
