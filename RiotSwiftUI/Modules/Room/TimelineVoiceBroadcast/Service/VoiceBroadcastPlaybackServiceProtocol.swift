@@ -14,11 +14,18 @@
 // limitations under the License.
 //
 
+import Combine
+import CoreLocation
 import Foundation
 
-protocol TimelineVoiceBroadcastViewModelProtocol {
-    var context: TimelineVoiceBroadcastViewModelType.Context { get }
-    var completion: ((TimelineVoiceBroadcastViewModelResult) -> Void)? { get set }
+protocol VoiceBroadcastPlaybackServiceProtocol {
+    /// All shared voice broadcast chunks
+    var voiceBroadcastChunks: [VoiceBroadcastChunk] { get }
     
-    func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: TimelineVoiceBroadcastDetails)
+    /// Called when voice broadcast chunks are updated.
+    var didUpdateVoiceBroadcastChunks: (([VoiceBroadcastChunk]) -> Void)? { get set }
+    
+    func startPlayingVoiceBroadcast()
+    
+    func pausePlayingVoiceBroadcast()
 }

@@ -51,8 +51,16 @@ final class TimelineVoiceBroadcastCoordinator: Coordinator, Presentable, VoiceBr
         
         viewModel = TimelineVoiceBroadcastViewModel(timelineVoiceBroadcastDetails: buildTimelineVoiceBroadcastFrom(voiceBroadcastAggregator.voiceBroadcast))
         
-        // TODO: manage voicebroacast chunks
-        viewModel.completion = { }
+        viewModel.completion = { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .played:
+                MXLog.debug("click on play")
+            case .paused:
+                MXLog.debug("click on pause")
+            }
+        }
 
     }
     

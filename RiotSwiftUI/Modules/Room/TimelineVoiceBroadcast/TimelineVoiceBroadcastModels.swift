@@ -17,10 +17,16 @@
 import Foundation
 import SwiftUI
 
-typealias TimelineVoiceBroadcastViewModelCallback = () -> Void
-
 // TODO: add play pause cases
-enum TimelineVoiceBroadcastViewAction { }
+enum TimelineVoiceBroadcastViewAction {
+    case play
+    case pause
+}
+
+enum TimelineVoiceBroadcastViewModelResult {
+    case played
+    case paused
+}
 
 enum TimelineVoiceBroadcastType {
     case disclosed
