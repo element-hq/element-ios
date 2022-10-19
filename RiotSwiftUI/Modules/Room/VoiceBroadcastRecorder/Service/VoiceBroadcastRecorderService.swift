@@ -181,7 +181,8 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             voiceBroadcastService.sendChunkOfVoiceBroadcast(audioFileLocalURL: url,
                                                             mimeType: "audio/mp4",
                                                             duration: UInt(duration * 1000),
-                                                            samples: nil) { eventId in
+                                                            samples: nil,
+                                                            sequence: UInt(self.chunkFileNumber)) { eventId in
                 MXLog.debug("[VoiceBroadcastRecorderService] Send voice broadcast chunk with success.")
                 if eventId != nil {
                     self.deleteRecording(at: url)
