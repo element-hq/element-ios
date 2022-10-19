@@ -2340,7 +2340,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                         }];
                     } else {
                         [session.voiceBroadcastService stopVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
-                        
+                            [session tearDownVoiceBroadcastService];
                         } failure:^(NSError * _Nonnull error) {
                             
                         }];
