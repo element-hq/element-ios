@@ -16,17 +16,12 @@
 
 import Foundation
 
-public protocol VoiceBroadcastProtocol {
-    var chunks: Set<VoiceBroadcastChunk> { get }
-    var kind: VoiceBroadcastKind { get }
-}
-
 public enum VoiceBroadcastKind {
     case player
     case recorder
 }
 
-class VoiceBroadcast: VoiceBroadcastProtocol {
+public struct VoiceBroadcast {
     var chunks: Set<VoiceBroadcastChunk> = []
     var kind: VoiceBroadcastKind = .player
 }

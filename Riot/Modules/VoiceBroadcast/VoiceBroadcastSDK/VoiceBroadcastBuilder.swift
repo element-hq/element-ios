@@ -18,7 +18,7 @@ import Foundation
 
 struct VoiceBroadcastBuilder {
     
-    func build(voiceBroadcastStartEventContent: VoiceBroadcastInfo, events: [MXEvent], currentUserIdentifier: String, hasBeenEdited: Bool = false) -> VoiceBroadcastProtocol {
+    func build(voiceBroadcastStartEventContent: VoiceBroadcastInfo, events: [MXEvent], currentUserIdentifier: String, hasBeenEdited: Bool = false) -> VoiceBroadcast {
         
         let voiceBroadcast = VoiceBroadcast()
         
