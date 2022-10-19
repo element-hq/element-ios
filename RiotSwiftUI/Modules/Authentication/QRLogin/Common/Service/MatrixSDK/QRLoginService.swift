@@ -293,6 +293,11 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         guard let verifyingDeviceInfo = session.crypto.device(withDeviceId: verifiyingDeviceId, ofUser: session.myUserId),
               verifyingDeviceInfo.fingerprint == verifyingDeviceKey else {
             MXLog.error("[QRLoginService] Received invalid verifying device info")
+            // inform other party of potential E2EE issue:
+            guard let requestData = try? JSONEncoder().encode(QRLoginRendezvousPayload(type: .loginFinish, outcome: .e2eeSecurityError)),
+              case .success = await rendezvousService.send(data: requestData) else {
+                // we don't mind if we couldn't inform the other party
+            }
             await teardownRendezvous(state: .failed(error: .e2eeSecurityError))
             return
         }
@@ -304,6 +309,11 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
             // if master key was received from verifier then check that it matches the one from the homeserver
             guard masterKeyFromVerifyingDevice == localMasterKey else {
                 MXLog.error("[QRLoginService] Received invalid master key from verifying device")
+                // inform other party of potential E2EE issue:
+                guard let requestData = try? JSONEncoder().encode(QRLoginRendezvousPayload(type: .loginFinish, outcome: .e2eeSecurityError)),
+                      case .success = await rendezvousService.send(data: requestData) else {
+                    // we don't mind if we couldn't inform the other party
+                }
                 await teardownRendezvous(state: .failed(error: .e2eeSecurityError))
                 return
             }
