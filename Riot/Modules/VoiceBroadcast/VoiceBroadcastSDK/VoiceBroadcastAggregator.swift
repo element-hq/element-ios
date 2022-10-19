@@ -84,9 +84,11 @@ public class VoiceBroadcastAggregator {
         voiceBroadcastInfoStartEventContent = eventContent
         voiceBroadcastUserId = userId
         
-        voiceBroadcast = voiceBroadcastBuilder.build(voiceBroadcastStartEventContent: eventContent,
-                                 events: events,
-                                 currentUserIdentifier: session.myUserId)
+        voiceBroadcast = voiceBroadcastBuilder.build(mediaManager: session.mediaManager,
+                                                     voiceBroadcastStartEventId: voiceBroadcastStartEventId,
+                                                     voiceBroadcastInvoiceBroadcastStartEventContent: eventContent,
+                                                     events: events,
+                                                     currentUserIdentifier: session.myUserId)
         
         reloadVoiceBroadcastData()
     }
@@ -124,14 +126,18 @@ public class VoiceBroadcastAggregator {
                 
                 self.events.append(event)
                 
-                self.voiceBroadcast = self.voiceBroadcastBuilder.build(voiceBroadcastStartEventContent: self.voiceBroadcastInfoStartEventContent,
-                                                   events: self.events,
-                                                   currentUserIdentifier: self.session.myUserId)
+                self.voiceBroadcast = self.voiceBroadcastBuilder.build(mediaManager: self.session.mediaManager,
+                                                                       voiceBroadcastStartEventId: self.voiceBroadcastStartEventId,
+                                                                       voiceBroadcastInvoiceBroadcastStartEventContent: self.voiceBroadcastInfoStartEventContent,
+                                                                       events: self.events,
+                                                                       currentUserIdentifier: self.session.myUserId)
             } as Any
             
-            self.voiceBroadcast = self.voiceBroadcastBuilder.build(voiceBroadcastStartEventContent: self.voiceBroadcastInfoStartEventContent,
-                                               events: self.events,
-                                               currentUserIdentifier: self.session.myUserId)
+            self.voiceBroadcast = self.voiceBroadcastBuilder.build(mediaManager: self.session.mediaManager,
+                                                                   voiceBroadcastStartEventId: self.voiceBroadcastStartEventId,
+                                                                   voiceBroadcastInvoiceBroadcastStartEventContent: self.voiceBroadcastInfoStartEventContent,
+                                                                   events: self.events,
+                                                                   currentUserIdentifier: self.session.myUserId)
             
             self.delegate?.voiceBroadcastAggregatorDidEndLoading(self)
             
