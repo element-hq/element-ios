@@ -18,18 +18,18 @@ import Combine
 import MatrixSDK
 import SwiftUI
 
-struct VoiceBroadcastPlaybackControllerParameters {
+struct VoiceBroadcastPlaybackCoordinatorParameters {
     let session: MXSession
     let room: MXRoom
     let voiceBroadcastStartEvent: MXEvent
 }
 
-final class VoiceBroadcastPlaybackController: Coordinator, Presentable, VoiceBroadcastAggregatorDelegate {
+final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable, VoiceBroadcastAggregatorDelegate {
     // MARK: - Properties
     
     // MARK: Private
     
-    private let parameters: VoiceBroadcastPlaybackControllerParameters
+    private let parameters: VoiceBroadcastPlaybackCoordinatorParameters
     private let selectedAnswerIdentifiersSubject = PassthroughSubject<[String], Never>()
     
     private var voiceBroadcastAggregator: VoiceBroadcastAggregator
@@ -43,7 +43,7 @@ final class VoiceBroadcastPlaybackController: Coordinator, Presentable, VoiceBro
     
     // MARK: - Setup
     
-    init(parameters: VoiceBroadcastPlaybackControllerParameters) throws {
+    init(parameters: VoiceBroadcastPlaybackCoordinatorParameters) throws {
         self.parameters = parameters
         
         try voiceBroadcastAggregator = VoiceBroadcastAggregator(session: parameters.session, room: parameters.room, voiceBroadcastStartEventId: parameters.voiceBroadcastStartEvent.eventId)
