@@ -17,9 +17,9 @@
 import Combine
 import SwiftUI
 
-typealias TimelineVoiceBroadcastViewModelType = StateStoreViewModel<TimelineVoiceBroadcastViewState, TimelineVoiceBroadcastViewAction>
+typealias VoiceBroadcastPlaybackViewModelType = StateStoreViewModel<VoiceBroadcastPlaybackViewState, VoiceBroadcastPlaybackViewAction>
 
-class TimelineVoiceBroadcastViewModel: TimelineVoiceBroadcastViewModelType, TimelineVoiceBroadcastViewModelProtocol {
+class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, VoiceBroadcastPlaybackViewModelProtocol {
     
     // MARK: - Properties
 
@@ -27,17 +27,17 @@ class TimelineVoiceBroadcastViewModel: TimelineVoiceBroadcastViewModelType, Time
     
     // MARK: Public
     
-    var completion: ((TimelineVoiceBroadcastViewModelResult) -> Void)?
+    var completion: ((VoiceBroadcastPlaybackViewModelResult) -> Void)?
     
     // MARK: - Setup
     
-    init(timelineVoiceBroadcastDetails: TimelineVoiceBroadcastDetails) {
-        super.init(initialViewState: TimelineVoiceBroadcastViewState(voiceBroadcast: timelineVoiceBroadcastDetails, bindings: TimelineVoiceBroadcastViewStateBindings()))
+    init(VoiceBroadcastPlaybackDetails: VoiceBroadcastPlaybackDetails) {
+        super.init(initialViewState: VoiceBroadcastPlaybackViewState(voiceBroadcast: VoiceBroadcastPlaybackDetails, bindings: VoiceBroadcastPlaybackViewStateBindings()))
     }
     
     // MARK: - Public
     
-    override func process(viewAction: TimelineVoiceBroadcastViewAction) {
+    override func process(viewAction: VoiceBroadcastPlaybackViewAction) {
         switch viewAction {
         case .play:
             play()
@@ -57,9 +57,9 @@ class TimelineVoiceBroadcastViewModel: TimelineVoiceBroadcastViewModelType, Time
         completion?(.paused)
     }
     
-    // MARK: - TimelineVoiceBroadcastViewModelProtocol
+    // MARK: - VoiceBroadcastPlaybackViewModelProtocol
     
-    func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: TimelineVoiceBroadcastDetails) {
+    func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: VoiceBroadcastPlaybackDetails) {
         state.voiceBroadcast = voiceBroadcastDetails
     }
 }

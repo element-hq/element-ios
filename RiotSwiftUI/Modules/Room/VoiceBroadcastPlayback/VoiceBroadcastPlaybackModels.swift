@@ -17,39 +17,39 @@
 import Foundation
 import SwiftUI
 
-enum TimelineVoiceBroadcastViewAction {
+enum VoiceBroadcastPlaybackViewAction {
     case play
     case pause
 }
 
-enum TimelineVoiceBroadcastViewModelResult {
+enum VoiceBroadcastPlaybackViewModelResult {
     // TODO: VB send all chunk file urls from ViewModel
     case played
     case paused
 }
 
-enum TimelineVoiceBroadcastType {
+enum VoiceBroadcastPlaybackType {
     case player
     case recorder
 }
 
-struct TimelineVoiceBroadcastDetails {
-    var type: TimelineVoiceBroadcastType
+struct VoiceBroadcastPlaybackDetails {
+    var type: VoiceBroadcastPlaybackType
     var chunks: [VoiceBroadcastChunk]
     
     // TODO: VB Add playback state
 }
 
-struct TimelineVoiceBroadcastViewState: BindableState {
-    var voiceBroadcast: TimelineVoiceBroadcastDetails
-    var bindings: TimelineVoiceBroadcastViewStateBindings
+struct VoiceBroadcastPlaybackViewState: BindableState {
+    var voiceBroadcast: VoiceBroadcastPlaybackDetails
+    var bindings: VoiceBroadcastPlaybackViewStateBindings
 }
 
-struct TimelineVoiceBroadcastViewStateBindings {
-    var alertInfo: AlertInfo<TimelineVoiceBroadcastAlertType>?
+struct VoiceBroadcastPlaybackViewStateBindings {
+    var alertInfo: AlertInfo<VoiceBroadcastPlaybackAlertType>?
 }
 
-enum TimelineVoiceBroadcastAlertType {
+enum VoiceBroadcastPlaybackAlertType {
     case failedClosingVoiceBroadcast
 }
 

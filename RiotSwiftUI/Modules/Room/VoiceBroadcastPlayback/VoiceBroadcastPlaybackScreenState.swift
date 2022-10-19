@@ -19,7 +19,7 @@ import SwiftUI
 
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
-enum MockTimelineVoiceBroadcastScreenState: MockScreenState, CaseIterable {
+enum MockVoiceBroadcastPlaybackScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
@@ -27,23 +27,23 @@ enum MockTimelineVoiceBroadcastScreenState: MockScreenState, CaseIterable {
     
     /// The associated screen
     var screenType: Any.Type {
-        TimelineVoiceBroadcastView.self
+        VoiceBroadcastPlaybackView.self
     }
     
     /// A list of screen state definitions
-    static var allCases: [MockTimelineVoiceBroadcastScreenState] {
+    static var allCases: [MockVoiceBroadcastPlaybackScreenState] {
         [.animated]
     }
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {        
-        let voiceBroadcast = TimelineVoiceBroadcastDetails(type: TimelineVoiceBroadcastType.player, chunks: [])
+        let voiceBroadcast = VoiceBroadcastPlaybackDetails(type: VoiceBroadcastPlaybackType.player, chunks: [])
         
-        let viewModel = TimelineVoiceBroadcastViewModel(timelineVoiceBroadcastDetails: voiceBroadcast)
+        let viewModel = VoiceBroadcastPlaybackViewModel(VoiceBroadcastPlaybackDetails: voiceBroadcast)
         
         return (
             [false, viewModel],
-            AnyView(TimelineVoiceBroadcastView(viewModel: viewModel.context))
+            AnyView(VoiceBroadcastPlaybackView(viewModel: viewModel.context))
         )
     }
 }

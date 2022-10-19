@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct TimelineVoiceBroadcastView: View {
+struct VoiceBroadcastPlaybackView: View {
     // MARK: - Properties
     
     // MARK: Private
@@ -25,7 +25,7 @@ struct TimelineVoiceBroadcastView: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: TimelineVoiceBroadcastViewModel.Context
+    @ObservedObject var viewModel: VoiceBroadcastPlaybackViewModel.Context
     
     var body: some View {
         let voiceBroadcast = viewModel.viewState.voiceBroadcast
@@ -64,8 +64,8 @@ struct TimelineVoiceBroadcastView: View {
 
 // MARK: - Previews
 
-struct TimelineVoiceBroadcastView_Previews: PreviewProvider {
-    static let stateRenderer = MockTimelineVoiceBroadcastScreenState.stateRenderer
+struct VoiceBroadcastPlaybackView_Previews: PreviewProvider {
+    static let stateRenderer = MockVoiceBroadcastPlaybackScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
     }
