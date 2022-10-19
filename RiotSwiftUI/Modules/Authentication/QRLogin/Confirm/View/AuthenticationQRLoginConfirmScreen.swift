@@ -84,16 +84,17 @@ struct AuthenticationQRLoginConfirmScreen: View {
     /// The screen's footer.
     var footerContent: some View {
         VStack(spacing: 16) {
-            Text(VectorL10n.authenticationQrLoginConfirmAlert)
-                .padding(10)
-                .multilineTextAlignment(.center)
-                .font(theme.fonts.body)
-                .foregroundColor(theme.colors.alert)
-                .shapedBorder(color: theme.colors.alert, borderWidth: 1, shape: RoundedRectangle(cornerRadius: 8))
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.bottom, 12)
-                .accessibilityIdentifier("alertText")
-
+// These are only applicable to reciprocating a login via QR which isn't yet implemented:
+//
+//            Text(VectorL10n.authenticationQrLoginConfirmAlert)
+//                .padding(10)
+//                .multilineTextAlignment(.center)
+//                .font(theme.fonts.body)
+//                .foregroundColor(theme.colors.alert)
+//                .shapedBorder(color: theme.colors.alert, borderWidth: 1, shape: RoundedRectangle(cornerRadius: 8))
+//                .fixedSize(horizontal: false, vertical: true)
+//                .padding(.bottom, 12)
+//                .accessibilityIdentifier("alertText")
 //            Button(action: confirm) {
 //                Text(VectorL10n.confirm)
 //            }
