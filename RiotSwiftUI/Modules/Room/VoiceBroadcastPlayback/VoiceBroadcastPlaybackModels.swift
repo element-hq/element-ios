@@ -23,9 +23,11 @@ enum VoiceBroadcastPlaybackViewAction {
 }
 
 // TODO: Rename it to VoiceBroadcastPlaybackState
-enum VoiceBroadcastPlaybackViewModelResult {
-    case played
+enum VoiceBroadcastPlaybackState {
+    case stopped
+    case playing
     case paused
+    case error
 }
 
 enum VoiceBroadcastPlaybackType {
@@ -36,12 +38,11 @@ enum VoiceBroadcastPlaybackType {
 struct VoiceBroadcastPlaybackDetails {
     var type: VoiceBroadcastPlaybackType
     var chunks: [VoiceBroadcastChunk]
-    
-    // TODO: VB Add playback state
 }
 
 struct VoiceBroadcastPlaybackViewState: BindableState {
     var voiceBroadcast: VoiceBroadcastPlaybackDetails
+    var playbackState: VoiceBroadcastPlaybackState
     var bindings: VoiceBroadcastPlaybackViewStateBindings
 }
 

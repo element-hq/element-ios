@@ -43,12 +43,14 @@ struct VoiceBroadcastPlaybackView: View {
                     Image("voice_broadcast_play")
                         .renderingMode(.original)
                 }
+                .disabled(viewModel.viewState.playbackState == .playing)
                 .accessibilityIdentifier("playButton")
                 
                 Button { viewModel.send(viewAction: .pause) } label: {
                     Image("voice_broadcast_pause")
                         .renderingMode(.original)
                 }
+                .disabled(!(viewModel.viewState.playbackState == .playing))
                 .accessibilityIdentifier("pauseButton")
 
             }
