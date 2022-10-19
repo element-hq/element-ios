@@ -4998,7 +4998,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (self.roomInputToolbarContainerHeightConstraint.constant != height)
     {
         // Hide temporarily the placeholder to prevent its distortion during height animation
-        if (toolbarView.placeholder)
+        if (toolbarView.placeholder.length)
         {
             savedInputToolbarPlaceholder = toolbarView.placeholder;
             toolbarView.placeholder = nil;
@@ -5012,10 +5012,10 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
             
             // Consider here the saved placeholder only if no new placeholder has been defined during the height animation.
-            if (!toolbarView.placeholder)
+            if (!toolbarView.placeholder && self->savedInputToolbarPlaceholder.length)
             {
                 // Restore the placeholder if any
-                toolbarView.placeholder = self->savedInputToolbarPlaceholder.length ? self->savedInputToolbarPlaceholder : nil;
+                toolbarView.placeholder = self->savedInputToolbarPlaceholder;
             }
             self->savedInputToolbarPlaceholder = nil;
         }];
