@@ -37,10 +37,7 @@ struct TimelineVoiceBroadcastDetails {
     var type: TimelineVoiceBroadcastType
     var chunks: [VoiceBroadcastChunk]
     
-    init(chunks: [VoiceBroadcastChunk], type: TimelineVoiceBroadcastType) {
-        self.type = type
-        self.chunks = chunks
-    }
+    // TODO: VB Add playback state
 }
 
 struct TimelineVoiceBroadcastViewState: BindableState {
