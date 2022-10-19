@@ -24,15 +24,13 @@ struct VoiceBroadcastPlaybackCoordinatorParameters {
     let voiceBroadcastStartEvent: MXEvent
 }
 
-final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable, VoiceBroadcastAggregatorDelegate {
+final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
     // MARK: - Properties
     
     // MARK: Private
     
     private let parameters: VoiceBroadcastPlaybackCoordinatorParameters
-    private let selectedAnswerIdentifiersSubject = PassthroughSubject<[String], Never>()
     
-    private var voiceBroadcastAggregator: VoiceBroadcastAggregator
     private var viewModel: VoiceBroadcastPlaybackViewModelProtocol!
     private var cancellables = Set<AnyCancellable>()
     
@@ -46,23 +44,10 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable, VoiceBr
     init(parameters: VoiceBroadcastPlaybackCoordinatorParameters) throws {
         self.parameters = parameters
         
-        try voiceBroadcastAggregator = VoiceBroadcastAggregator(session: parameters.session, room: parameters.room, voiceBroadcastStartEventId: parameters.voiceBroadcastStartEvent.eventId)
-        voiceBroadcastAggregator.delegate = self
-        
-        viewModel = VoiceBroadcastPlaybackViewModel(VoiceBroadcastPlaybackDetails: buildVoiceBroadcastPlaybackFrom(voiceBroadcastAggregator.voiceBroadcast))
-        
-        viewModel.completion = { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .played:
-                // TODO: VB Add player and playing chunk files
-                MXLog.debug("click on play")
-            case .paused:
-                // TODO: VB stop playing chunk files
-                MXLog.debug("click on pause")
-            }
-        }
+        let voiceBroadcastAggregator = try VoiceBroadcastAggregator(session: parameters.session, room: parameters.room, voiceBroadcastStartEventId: parameters.voiceBroadcastStartEvent.eventId)
+        viewModel = VoiceBroadcastPlaybackViewModel(mediaServiceProvider: VoiceMessageMediaServiceProvider.sharedProvider,
+                                                    cacheManager: VoiceMessageAttachmentCacheManager.sharedManager,
+                                                    voiceBroadcastAggregator: voiceBroadcastAggregator)
 
     }
     
@@ -85,32 +70,4 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable, VoiceBr
     }
     
     func endVoiceBroadcast() {}
-    
-    // MARK: - VoiceBroadcastAggregatorDelegate
-    
-    func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {
-        viewModel.updateWithVoiceBroadcastDetails(buildVoiceBroadcastPlaybackFrom(aggregator.voiceBroadcast))
-    }
-    
-    func voiceBroadcastAggregatorDidStartLoading(_ aggregator: VoiceBroadcastAggregator) { }
-    
-    func voiceBroadcastAggregatorDidEndLoading(_ aggregator: VoiceBroadcastAggregator) { }
-    
-    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didFailWithError: Error) { }
-    
-    // MARK: - Private
-    
-    // VoiceBroadcast is intentionally not available in the SwiftUI target as we don't want
-    // to add the SDK as a dependency to it. We need to translate from one to the other on this level.
-    func buildVoiceBroadcastPlaybackFrom(_ voiceBroadcast: VoiceBroadcast) -> VoiceBroadcastPlaybackDetails {
-        
-        return VoiceBroadcastPlaybackDetails(type: voiceBroadcastKindToVoiceBroadcastPlaybackType(voiceBroadcast.kind), chunks: Array(voiceBroadcast.chunks))
-    }
-    
-    private func voiceBroadcastKindToVoiceBroadcastPlaybackType(_ kind: VoiceBroadcastKind) -> VoiceBroadcastPlaybackType {
-        let mapping = [VoiceBroadcastKind.player: VoiceBroadcastPlaybackType.player,
-                       VoiceBroadcastKind.recorder: VoiceBroadcastPlaybackType.recorder]
-        
-        return mapping[kind] ?? .player
-    }
 }
