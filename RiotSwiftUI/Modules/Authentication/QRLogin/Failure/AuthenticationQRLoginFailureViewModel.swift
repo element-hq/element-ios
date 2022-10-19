@@ -61,6 +61,9 @@ class AuthenticationQRLoginFailureViewModel: AuthenticationQRLoginFailureViewMod
             case .requestTimedOut:
                 self.state.failureText = VectorL10n.authenticationQrLoginFailureRequestTimedOut
                 self.state.retryButtonVisible = true
+            case .e2eeSecurityError:
+                self.state.failureText = VectorL10n.authenticationQrLoginFailureE2eeSecurityError
+                self.state.retryButtonVisible = true
             default:
                 break
             }

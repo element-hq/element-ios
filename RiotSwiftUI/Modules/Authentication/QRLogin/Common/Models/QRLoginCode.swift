@@ -91,6 +91,7 @@ struct QRLoginRendezvousPayload: Codable {
         case success
         case declined
         case verified
+        case e2eeSecurityError = "e2ee_security_error"
     }
     
     // swiftformat:disable:next redundantBackticks

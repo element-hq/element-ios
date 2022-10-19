@@ -289,13 +289,34 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
             return
         }
         
+        // check that device key from verifier matches the one received from the homeserver
+        guard let verifyingDeviceInfo = session.crypto.device(withDeviceId: verifiyingDeviceId, ofUser: session.myUserId),
+              verifyingDeviceInfo.fingerprint == verifyingDeviceKey else {
+            MXLog.error("[QRLoginService] Received invalid verifying device info")
+            
+            // try informing the other party of a potential E2EE issue
+            if let requestData = try? JSONEncoder().encode(QRLoginRendezvousPayload(type: .loginFinish, outcome: .e2eeSecurityError)) {
+                _ = await rendezvousService.send(data: requestData)
+            }
+            
+            await teardownRendezvous(state: .failed(error: .e2eeSecurityError))
+            return
+        }
+        
         MXLog.debug("[QRLoginService] Received cross-signing details \(responsePayload)")
         
         if let masterKeyFromVerifyingDevice = responsePayload.masterKey,
            let localMasterKey = session.crypto.crossSigningKeys(forUser: session.myUserId).masterKeys?.keys {
+            // if master key was received from verifier then check that it matches the one from the homeserver
             guard masterKeyFromVerifyingDevice == localMasterKey else {
                 MXLog.error("[QRLoginService] Received invalid master key from verifying device")
-                await teardownRendezvous(state: .failed(error: .rendezvousFailed))
+                
+                // try informing the other party of a potential E2EE issue
+                if let requestData = try? JSONEncoder().encode(QRLoginRendezvousPayload(type: .loginFinish, outcome: .e2eeSecurityError)) {
+                   _ = await rendezvousService.send(data: requestData)
+                }
+                
+                await teardownRendezvous(state: .failed(error: .e2eeSecurityError))
                 return
             }
             
@@ -311,18 +332,13 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
             
             guard mskVerificationResult == true else {
                 MXLog.error("[QRLoginService] Failed marking the master key as trusted")
-                await teardownRendezvous(state: .failed(error: .rendezvousFailed))
+                await teardownRendezvous(state: .failed(error: .e2eeSecurityError))
                 return
             }
         }
-        
-        guard let verifyingDeviceInfo = session.crypto.device(withDeviceId: verifiyingDeviceId, ofUser: session.myUserId),
-              verifyingDeviceInfo.fingerprint == verifyingDeviceKey else {
-            MXLog.error("[QRLoginService] Received invalid verifying device info")
-            await teardownRendezvous(state: .failed(error: .rendezvousFailed))
-            return
-        }
-        
+
+        // we only mark the verifying device as trusted if the device key matches and the master key matches (or the
+        // master key was not sent)
         MXLog.debug("[QRLoginService] Locally marking the existing device as verified \(verifyingDeviceInfo)")
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             session.crypto.setDeviceVerification(.verified, forDevice: verifiyingDeviceId, ofUser: session.myUserId) {
