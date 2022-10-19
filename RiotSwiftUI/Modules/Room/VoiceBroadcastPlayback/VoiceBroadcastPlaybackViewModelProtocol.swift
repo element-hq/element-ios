@@ -16,9 +16,9 @@
 
 import Foundation
 
-protocol TimelineVoiceBroadcastViewModelProtocol {
-    var context: TimelineVoiceBroadcastViewModelType.Context { get }
-    var completion: ((TimelineVoiceBroadcastViewModelResult) -> Void)? { get set }
+protocol VoiceBroadcastPlaybackViewModelProtocol {
+    var context: VoiceBroadcastPlaybackViewModelType.Context { get }
+    var completion: ((VoiceBroadcastPlaybackViewModelResult) -> Void)? { get set }
     
-    func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: TimelineVoiceBroadcastDetails)
+    func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: VoiceBroadcastPlaybackDetails)
 }

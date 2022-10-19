@@ -16,8 +16,8 @@
 
 import Foundation
 
-class TimelineVoiceBroadcastProvider {
-    static let shared = TimelineVoiceBroadcastProvider()
+class VoiceBroadcastPlaybackProvider {
+    static let shared = VoiceBroadcastPlaybackProvider()
     
     var session: MXSession?
     var coordinatorsForEventIdentifiers = [String: VoiceBroadcastPlaybackController]()
@@ -26,7 +26,7 @@ class TimelineVoiceBroadcastProvider {
     
     /// Create or retrieve the voiceBroadcast timeline coordinator for this event and return
     /// a view to be displayed in the timeline
-    func buildTimelineVoiceBroadcastViewForEvent(_ event: MXEvent) -> UIView? {
+    func buildVoiceBroadcastPlaybackViewForEvent(_ event: MXEvent) -> UIView? {
         guard let session = session, let room = session.room(withRoomId: event.roomId) else {
             return nil
         }

@@ -33,7 +33,7 @@ final class VoiceBroadcastPlaybackController: Coordinator, Presentable, VoiceBro
     private let selectedAnswerIdentifiersSubject = PassthroughSubject<[String], Never>()
     
     private var voiceBroadcastAggregator: VoiceBroadcastAggregator
-    private var viewModel: TimelineVoiceBroadcastViewModelProtocol!
+    private var viewModel: VoiceBroadcastPlaybackViewModelProtocol!
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
@@ -49,7 +49,7 @@ final class VoiceBroadcastPlaybackController: Coordinator, Presentable, VoiceBro
         try voiceBroadcastAggregator = VoiceBroadcastAggregator(session: parameters.session, room: parameters.room, voiceBroadcastStartEventId: parameters.voiceBroadcastStartEvent.eventId)
         voiceBroadcastAggregator.delegate = self
         
-        viewModel = TimelineVoiceBroadcastViewModel(timelineVoiceBroadcastDetails: buildTimelineVoiceBroadcastFrom(voiceBroadcastAggregator.voiceBroadcast))
+        viewModel = VoiceBroadcastPlaybackViewModel(VoiceBroadcastPlaybackDetails: buildVoiceBroadcastPlaybackFrom(voiceBroadcastAggregator.voiceBroadcast))
         
         viewModel.completion = { [weak self] result in
             guard let self = self else { return }
@@ -71,7 +71,7 @@ final class VoiceBroadcastPlaybackController: Coordinator, Presentable, VoiceBro
     func start() { }
     
     func toPresentable() -> UIViewController {
-        VectorHostingController(rootView: TimelineVoiceBroadcastView(viewModel: viewModel.context),
+        VectorHostingController(rootView: VoiceBroadcastPlaybackView(viewModel: viewModel.context),
                                 forceZeroSafeAreaInsets: true)
     }
     
@@ -89,7 +89,7 @@ final class VoiceBroadcastPlaybackController: Coordinator, Presentable, VoiceBro
     // MARK: - VoiceBroadcastAggregatorDelegate
     
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {
-        viewModel.updateWithVoiceBroadcastDetails(buildTimelineVoiceBroadcastFrom(aggregator.voiceBroadcast))
+        viewModel.updateWithVoiceBroadcastDetails(buildVoiceBroadcastPlaybackFrom(aggregator.voiceBroadcast))
     }
     
     func voiceBroadcastAggregatorDidStartLoading(_ aggregator: VoiceBroadcastAggregator) { }
@@ -102,14 +102,14 @@ final class VoiceBroadcastPlaybackController: Coordinator, Presentable, VoiceBro
     
     // VoiceBroadcast is intentionally not available in the SwiftUI target as we don't want
     // to add the SDK as a dependency to it. We need to translate from one to the other on this level.
-    func buildTimelineVoiceBroadcastFrom(_ voiceBroadcast: VoiceBroadcast) -> TimelineVoiceBroadcastDetails {
+    func buildVoiceBroadcastPlaybackFrom(_ voiceBroadcast: VoiceBroadcast) -> VoiceBroadcastPlaybackDetails {
         
-        return TimelineVoiceBroadcastDetails(chunks: Array(voiceBroadcast.chunks), type: voiceBroadcastKindToTimelineVoiceBroadcastType(voiceBroadcast.kind))
+        return VoiceBroadcastPlaybackDetails(type: voiceBroadcastKindToVoiceBroadcastPlaybackType(voiceBroadcast.kind), chunks: Array(voiceBroadcast.chunks))
     }
     
-    private func voiceBroadcastKindToTimelineVoiceBroadcastType(_ kind: VoiceBroadcastKind) -> TimelineVoiceBroadcastType {
-        let mapping = [VoiceBroadcastKind.player: TimelineVoiceBroadcastType.player,
-                       VoiceBroadcastKind.recorder: TimelineVoiceBroadcastType.recorder]
+    private func voiceBroadcastKindToVoiceBroadcastPlaybackType(_ kind: VoiceBroadcastKind) -> VoiceBroadcastPlaybackType {
+        let mapping = [VoiceBroadcastKind.player: VoiceBroadcastPlaybackType.player,
+                       VoiceBroadcastKind.recorder: VoiceBroadcastPlaybackType.recorder]
         
         return mapping[kind] ?? .player
     }
