@@ -5001,10 +5001,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         if (toolbarView.placeholder)
         {
             savedInputToolbarPlaceholder = toolbarView.placeholder;
+            toolbarView.placeholder = nil;
         }
-        
-        toolbarView.placeholder = nil;
-        
+            
         [super roomInputToolbarView:toolbarView heightDidChanged:height completion:^(BOOL finished) {
             
             if (completion)
