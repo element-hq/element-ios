@@ -35,7 +35,7 @@ enum VoiceMessageAudioPlayerError: Error {
 class VoiceMessageAudioPlayer: NSObject {
     
     private var playerItem: AVPlayerItem?
-    private var audioPlayer: AVPlayer?
+    private var audioPlayer: AVQueuePlayer?
     
     private var statusObserver: NSKeyValueObservation?
     private var playbackBufferEmptyObserver: NSKeyValueObservation?
@@ -84,9 +84,14 @@ class VoiceMessageAudioPlayer: NSObject {
         }
         
         playerItem = AVPlayerItem(url: url)
-        audioPlayer = AVPlayer(playerItem: playerItem)
+        audioPlayer = AVQueuePlayer(playerItem: playerItem)
         
         addObservers()
+    }
+    
+    func addContentFromURL(_ url: URL) {
+        let playerItem = AVPlayerItem(url: url)
+        audioPlayer?.insert(playerItem, after: nil)
     }
     
     func unloadContent() {
