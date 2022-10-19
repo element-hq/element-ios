@@ -34,6 +34,7 @@ enum QRLoginServiceError: Error, Equatable {
     case requestDenied
     case requestTimedOut
     case rendezvousFailed
+    case e2eeSecurityError
 }
 
 // MARK: - QRLoginServiceState

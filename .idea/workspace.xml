@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="65f20b28-f599-4654-a6cd-22949c5d77b2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/Riot.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/CommonKit.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/CommonKitUnitTests.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/DesignKit.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/Riot.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/RiotNSE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/RiotShareExtension.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/RiotSwiftUI.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/RiotSwiftUITests.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/RiotSwiftUnitTests.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/RiotTests.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/SiriIntents.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/xcode.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/Podfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Riot.xcodeproj/xcshareddata/xcschemes/Riot.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/Riot.xcodeproj/xcshareddata/xcschemes/Riot.xcscheme" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RiotSwiftUI/Modules/Authentication/QRLogin/Common/Service/MatrixSDK/QRLoginService.swift" beforeDir="false" afterPath="$PROJECT_DIR$/RiotSwiftUI/Modules/Authentication/QRLogin/Common/Service/MatrixSDK/QRLoginService.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RiotSwiftUI/Modules/Authentication/QRLogin/Common/Service/QRLoginServiceProtocol.swift" beforeDir="false" afterPath="$PROJECT_DIR$/RiotSwiftUI/Modules/Authentication/QRLogin/Common/Service/QRLoginServiceProtocol.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RiotSwiftUI/Modules/Authentication/QRLogin/Confirm/View/AuthenticationQRLoginConfirmScreen.swift" beforeDir="false" afterPath="$PROJECT_DIR$/RiotSwiftUI/Modules/Authentication/QRLogin/Confirm/View/AuthenticationQRLoginConfirmScreen.swift" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_76c79de1d22c7ebff42d85107ba91adb484f2264" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="AppCode" />
+    <option name="majorVersion" value="2022" />
+    <option name="minorVersion" value="1.4" />
+  </component>
+  <component name="ProjectId" id="2G2FFH7GA6FzTNtdCx4PABAj7yF" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;OBJC.PRESERVED_TARGET_SELECTION&quot;: &quot;CommonKit&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/element/GitHub/vector-im/element-ios/Riot.xcodeproj&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Application.Riot">
+    <list>
+      <item itemvalue="Application.CommonKit" />
+      <item itemvalue="Application.DesignKit" />
+      <item itemvalue="Application.Riot" />
+      <item itemvalue="Application.RiotSwiftUI" />
+      <item itemvalue="Application Extension.RiotNSE" />
+      <item itemvalue="Application Extension.RiotShareExtension" />
+      <item itemvalue="Application Extension.SiriIntents" />
+      <item itemvalue="XCTest.CommonKitUnitTests" />
+      <item itemvalue="XCTest.RiotSwiftUITests" />
+      <item itemvalue="XCTest.RiotSwiftUnitTests" />
+      <item itemvalue="XCTest.RiotTests" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="65f20b28-f599-4654-a6cd-22949c5d77b2" name="Changes" comment="" />
+      <created>1665578673532</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1665578673532</updated>
+      <workItem from="1665578674585" duration="1557000" />
+      <workItem from="1665580267025" duration="10000" />
+      <workItem from="1665752367645" duration="5000" />
+      <workItem from="1665752536840" duration="294000" />
+      <workItem from="1665752848448" duration="69000" />
+      <workItem from="1665752948793" duration="3166000" />
+      <workItem from="1665764442449" duration="7000" />
+      <workItem from="1666021757817" duration="1105000" />
+      <workItem from="1666025150470" duration="20000" />
+      <workItem from="1666025184554" duration="43000" />
+      <workItem from="1666025232165" duration="307000" />
+      <workItem from="1666047180314" duration="581000" />
+      <workItem from="1666047891442" duration="2297000" />
+      <workItem from="1666050214754" duration="930000" />
+      <workItem from="1666051162926" duration="5753000" />
+      <workItem from="1666094111495" duration="807000" />
+      <workItem from="1666095612393" duration="4585000" />
+      <workItem from="1666170568364" duration="2798000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
