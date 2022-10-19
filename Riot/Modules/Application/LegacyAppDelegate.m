@@ -3750,7 +3750,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
-    MXCrypto *crypto = coordinatorBridgePresenter.session.crypto;
+    id<MXCrypto> crypto = coordinatorBridgePresenter.session.crypto;
     if (!crypto.backup.hasPrivateKeyInCryptoStore || !crypto.backup.enabled)
     {
         MXLogDebug(@"[AppDelegate][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys");
@@ -3995,7 +3995,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)registerUserDidSignInOnNewDeviceNotificationForSession:(MXSession*)session
 {
-    MXCrossSigning *crossSigning = session.crypto.crossSigning;
+    id<MXCrossSigning> crossSigning = session.crypto.crossSigning;
     
     if (!crossSigning)
     {
@@ -4086,7 +4086,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)registerDidChangeCrossSigningKeysNotificationForSession:(MXSession*)session
 {
-    MXCrossSigning *crossSigning = session.crypto.crossSigning;
+    id<MXCrossSigning> crossSigning = session.crypto.crossSigning;
     
     if (!crossSigning)
     {
