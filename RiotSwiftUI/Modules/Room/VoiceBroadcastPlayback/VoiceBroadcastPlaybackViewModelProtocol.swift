@@ -17,8 +17,6 @@
 import Foundation
 
 protocol VoiceBroadcastPlaybackViewModelProtocol {
-    var context: VoiceBroadcastPlaybackViewModelType.Context { get }
-    var completion: ((VoiceBroadcastPlaybackViewModelResult) -> Void)? { get set }
-    
+    var context: VoiceBroadcastPlaybackViewModelType.Context { get }    
     func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: VoiceBroadcastPlaybackDetails)
 }

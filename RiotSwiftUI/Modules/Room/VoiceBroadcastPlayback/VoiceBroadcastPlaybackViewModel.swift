@@ -20,19 +20,30 @@ import SwiftUI
 typealias VoiceBroadcastPlaybackViewModelType = StateStoreViewModel<VoiceBroadcastPlaybackViewState, VoiceBroadcastPlaybackViewAction>
 
 class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, VoiceBroadcastPlaybackViewModelProtocol {
-    
+
     // MARK: - Properties
 
     // MARK: Private
+    private var voiceBroadcastAggregator: VoiceBroadcastAggregator
+    private let mediaServiceProvider: VoiceMessageMediaServiceProvider
+    private let cacheManager: VoiceMessageAttachmentCacheManager
+    private var audioPlayer: VoiceMessageAudioPlayer?
     
     // MARK: Public
     
-    var completion: ((VoiceBroadcastPlaybackViewModelResult) -> Void)?
-    
     // MARK: - Setup
     
-    init(VoiceBroadcastPlaybackDetails: VoiceBroadcastPlaybackDetails) {
-        super.init(initialViewState: VoiceBroadcastPlaybackViewState(voiceBroadcast: VoiceBroadcastPlaybackDetails, bindings: VoiceBroadcastPlaybackViewStateBindings()))
+    init(mediaServiceProvider: VoiceMessageMediaServiceProvider,
+         cacheManager: VoiceMessageAttachmentCacheManager,
+         voiceBroadcastAggregator: VoiceBroadcastAggregator) {
+        self.mediaServiceProvider = mediaServiceProvider
+        self.cacheManager = cacheManager
+        self.voiceBroadcastAggregator = voiceBroadcastAggregator
+        
+        let voiceBroadcastPlaybackDetails = VoiceBroadcastPlaybackDetails(type: VoiceBroadcastPlaybackType.player, chunks: [])
+        super.init(initialViewState: VoiceBroadcastPlaybackViewState(voiceBroadcast: voiceBroadcastPlaybackDetails, bindings: VoiceBroadcastPlaybackViewStateBindings()))
+        
+        self.voiceBroadcastAggregator.delegate = self
     }
     
     // MARK: - Public
@@ -49,17 +60,34 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     /// Listen voice broadcast
     private func play() {
         // TODO: VB call voice broadcast playback service to play the chunks
-        completion?(.played)
     }
     
     /// Stop voice broadcast
     private func pause() {
-        completion?(.paused)
     }
     
     // MARK: - VoiceBroadcastPlaybackViewModelProtocol
     
     func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: VoiceBroadcastPlaybackDetails) {
         state.voiceBroadcast = voiceBroadcastDetails
+    }
+}
+
+extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
+    func voiceBroadcastAggregatorDidStartLoading(_ aggregator: VoiceBroadcastAggregator) {
+        // TODO: VB
+    }
+    
+    func voiceBroadcastAggregatorDidEndLoading(_ aggregator: VoiceBroadcastAggregator) {
+        // TODO: VB
+    }
+    
+    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didFailWithError: Error) {
+        // TODO: VB
+    }
+    
+    func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {
+        let voiceBroadcastPlaybackDetails = VoiceBroadcastPlaybackDetails(type: .player, chunks: Array(aggregator.voiceBroadcast.chunks))
+        self.updateWithVoiceBroadcastDetails(voiceBroadcastPlaybackDetails)
     }
 }

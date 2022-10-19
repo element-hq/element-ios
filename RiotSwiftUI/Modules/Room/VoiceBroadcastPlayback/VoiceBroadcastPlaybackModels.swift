@@ -22,8 +22,8 @@ enum VoiceBroadcastPlaybackViewAction {
     case pause
 }
 
+// TODO: Rename it to VoiceBroadcastPlaybackState
 enum VoiceBroadcastPlaybackViewModelResult {
-    // TODO: VB send all chunk file urls from ViewModel
     case played
     case paused
 }
