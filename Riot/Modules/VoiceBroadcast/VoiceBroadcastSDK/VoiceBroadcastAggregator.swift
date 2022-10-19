@@ -55,6 +55,7 @@ public class VoiceBroadcastAggregator {
         }
     }
     
+    public private(set) var isStarted: Bool = false
     public var delegate: VoiceBroadcastAggregatorDelegate?
     
     deinit {
@@ -90,8 +91,6 @@ public class VoiceBroadcastAggregator {
                                                      voiceBroadcastInvoiceBroadcastStartEventContent: eventContent,
                                                      events: events,
                                                      currentUserIdentifier: session.myUserId)
-        
-        reloadVoiceBroadcastData()
     }
     
     @objc private func handleRoomDataFlush(sender: Notification) {
@@ -99,10 +98,16 @@ public class VoiceBroadcastAggregator {
             return
         }
         
-        reloadVoiceBroadcastData()
+        // TODO: What is the impact on room data flush on steaming?
+        MXLog.warning("[VoiceBroadcastAggregator] handleRoomDataFlush is not supported yet")
     }
     
-    private func reloadVoiceBroadcastData() {
+    func start() {
+        if isStarted {
+            return
+        }
+        isStarted = true
+        
         delegate?.voiceBroadcastAggregatorDidStartLoading(self)
         
         session.aggregations.referenceEvents(forEvent: voiceBroadcastStartEventId, inRoom: room.roomId, from: nil, limit: -1) { [weak self] response in
@@ -161,6 +166,8 @@ public class VoiceBroadcastAggregator {
                 return
             }
             
+            MXLog.error("[VoiceBroadcastAggregator] start failed", context: error)
+            self.isStarted = false
             self.delegate?.voiceBroadcastAggregator(self, didFailWithError: error)
         }
     }

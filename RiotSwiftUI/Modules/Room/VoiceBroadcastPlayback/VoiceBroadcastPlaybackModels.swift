@@ -25,6 +25,7 @@ enum VoiceBroadcastPlaybackViewAction {
 // TODO: Rename it to VoiceBroadcastPlaybackState
 enum VoiceBroadcastPlaybackState {
     case stopped
+    case buffering
     case playing
     case paused
     case error
