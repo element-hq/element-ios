@@ -30,6 +30,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     private let cacheManager: VoiceMessageAttachmentCacheManager
     private var audioPlayer: VoiceMessageAudioPlayer?
     
+    private var voiceBroadcastChunkQueue: [VoiceBroadcastChunk] = []
+    
     // MARK: Public
     
     // MARK: - Setup
@@ -63,44 +65,21 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     
     /// Listen voice broadcast
     private func play() {
-        MXLog.debug("[VoiceBroadcastPlaybackViewModel] play")
-        
-        guard let voiceBroadcast = voiceBroadcastAggregator.voiceBroadcast else {
-            assert(false, "Cannot play. No voice broadcast data")
+        if voiceBroadcastAggregator.isStarted == false {
+            // Start the streaming by fetching broadcast chunks
+            // The audio player will start the automatically playback on incoming chunks
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: Start streaming")
+            state.playbackState = .buffering
+            voiceBroadcastAggregator.start()
         }
-        
-        guard let attachment = voiceBroadcast.chunks.first?.attachment else {
-            MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: Error: No attachment")
-            return
+        else if let audioPlayer = audioPlayer {
+            // Streaming is already up. Just resume or restart after stop
+            // TODO: Does not work
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: audioPlayer.play()")
+            audioPlayer.play()
         }
-        
-        // numberOfSamples is for the equalizer view we do not support yet
-        cacheManager.loadAttachment(attachment, numberOfSamples: 1) { [weak self] result in
-            
-            guard let self = self else {
-                return
-            }
-            
-            switch result {
-                case .success(let result):
-                    guard result.eventIdentifier == attachment.eventId else {
-                        return
-                    }
-
-                    // Avoid listening to old audio player delegates if the attachment for this playbackController/cell changes
-                    self.audioPlayer?.deregisterDelegate(self)
-                    
-                    let audioPlayer = self.mediaServiceProvider.audioPlayerForIdentifier(result.eventIdentifier)
-                    self.audioPlayer?.registerDelegate(self)
-                    
-                    audioPlayer.loadContentFromURL(result.url, displayName: attachment.originalFileName)
-                    audioPlayer.play()
-                    self.audioPlayer = audioPlayer
-                    
-                case .failure (let error):
-                    MXLog.error("[VoiceBroadcastPlaybackViewModel] play: loadAttachment error", context: error)
-                    self.state.playbackState = .error
-            }
+        else {
+            MXLog.error("[VoiceBroadcastPlaybackViewModel] play: Unexpected state")
         }
     }
     
@@ -108,12 +87,62 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     private func pause() {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] pause")
         
-        guard let audioPlayer = audioPlayer else {
+        if let audioPlayer = audioPlayer, audioPlayer.isPlaying {
+            audioPlayer.pause()
+        }
+    }
+    
+    
+    func processNextVoiceBroadcastChunk() {
+        
+        MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: \(voiceBroadcastChunkQueue.count) chunks remaining")
+        
+        guard voiceBroadcastChunkQueue.count > 0 else {
+            // We cached all chunks. Nothing more to do
             return
         }
         
-        if audioPlayer.isPlaying {
-            audioPlayer.pause()
+        let chunk = voiceBroadcastChunkQueue.removeFirst()
+        
+        // numberOfSamples is for the equalizer view we do not support yet
+        cacheManager.loadAttachment(chunk.attachment, numberOfSamples: 1) { [weak self] result in
+            
+            // TODO: Make sure there has no new incoming chunk that should be before this attachment
+            
+            guard let self = self else {
+                return
+            }
+            
+            switch result {
+                case .success(let result):
+                    guard result.eventIdentifier == chunk.attachment.eventId else {
+                        return
+                    }
+                    
+                    if self.audioPlayer == nil {
+                        // Init and start the player on the first chunk
+                        let audioPlayer = self.mediaServiceProvider.audioPlayerForIdentifier(result.eventIdentifier)
+                        audioPlayer.registerDelegate(self)
+                        
+                        audioPlayer.loadContentFromURL(result.url, displayName: chunk.attachment.originalFileName)
+                        audioPlayer.play()
+                        self.audioPlayer = audioPlayer
+                    }
+                    else {
+                        // Append the chunk to the current playlist
+                        self.audioPlayer?.addContentFromURL(result.url)
+                    }
+
+                case .failure (let error):
+                    MXLog.error("[VoiceBroadcastPlaybackViewModel] processVoiceBroadcastChunkQueue: loadAttachment error", context: error)
+                    if self.voiceBroadcastChunkQueue.count == 0 {
+                        // No more chunk to try. Go to error
+                        self.state.playbackState = .error
+                    }
+            }
+            
+            // TODO: Throttle to avoid to download all chunk in mass
+            self.processNextVoiceBroadcastChunk()
         }
     }
 }
@@ -121,34 +150,30 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
 // MARK: - TODO: VoiceBroadcastAggregatorDelegate
 extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
     func voiceBroadcastAggregatorDidStartLoading(_ aggregator: VoiceBroadcastAggregator) {
-        MXLog.debug("AAAA voiceBroadcastAggregatorDidStartLoading")
-        // TODO: VB
     }
     
     func voiceBroadcastAggregatorDidEndLoading(_ aggregator: VoiceBroadcastAggregator) {
-        // TODO: VB
-        MXLog.debug("AAAA voiceBroadcastAggregatorDidEndLoading")
     }
     
     func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didFailWithError: Error) {
-        // TODO: VB
-        MXLog.debug("AAAA voiceBroadcastAggregatordidFailWithError")
+        MXLog.error("[VoiceBroadcastPlaybackViewModel] voiceBroadcastAggregator didFailWithError:", context: didFailWithError)
     }
     
     func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveChunk: VoiceBroadcastChunk) {
-        MXLog.debug("AAAA voiceBroadcastAggregatorDidReceiveChunk")
+        voiceBroadcastChunkQueue.append(didReceiveChunk)
     }
     
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {
-        MXLog.debug("AAAA voiceBroadcastAggregatorDidUpdateData")
+        // Make sure we download and process check in the right order
+        voiceBroadcastChunkQueue = voiceBroadcastChunkQueue.sorted(by: {$0.sequence < $1.sequence})
+        
+        self.processNextVoiceBroadcastChunk()
     }
 }
 
 
 // MARK: - TODO: VoiceMessageAudioPlayerDelegate
 extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
-
-    
     func audioPlayerDidFinishLoading(_ audioPlayer: VoiceMessageAudioPlayer) {
     }
     
@@ -170,13 +195,11 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
     
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         MXLog.debug("AAAA audioPlayerDidFinishPlaying")
-        // TODO: but what ?
-        // Chunk++
-    
-        //        audioPlayer.seekToTime(0.0) { [weak self] _ in
-        //            guard let self = self else { return }
-        //            self.state = .stopped
-        //        }
+//        audioPlayer.seekToTime(0.0) { [weak self] _ in
+//            guard let self = self else { return }
+//            self.state.playbackState = .stopped
+//            audioPlayer.stop()
+//        }
     }
     
 }
