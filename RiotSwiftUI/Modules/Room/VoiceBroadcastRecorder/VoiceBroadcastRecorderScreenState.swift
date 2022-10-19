@@ -31,7 +31,8 @@ enum MockVoiceBroadcastRecorderScreenState: MockScreenState, CaseIterable {
     }
     
     var screenView: ([Any], AnyView) {
-        let viewModel = MockVoiceBroadcastRecorderViewModel(initialViewState: VoiceBroadcastRecorderViewState(recordingState: .stopped, bindings: VoiceBroadcastRecorderViewStateBindings()))
+        let details = VoiceBroadcastRecorderDetails(senderDisplayName: "")
+        let viewModel = MockVoiceBroadcastRecorderViewModel(initialViewState: VoiceBroadcastRecorderViewState(details: details, recordingState: .stopped, bindings: VoiceBroadcastRecorderViewStateBindings()))
         
         return (
             [false, viewModel],

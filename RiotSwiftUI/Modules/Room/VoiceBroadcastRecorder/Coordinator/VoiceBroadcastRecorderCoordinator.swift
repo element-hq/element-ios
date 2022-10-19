@@ -24,6 +24,7 @@ struct VoiceBroadcastRecorderCoordinatorParameters {
     let session: MXSession
     let room: MXRoom
     let voiceBroadcastStartEvent: MXEvent
+    let senderDisplayName: String?
 }
 
 final class VoiceBroadcastRecorderCoordinator: Coordinator, Presentable {
@@ -48,7 +49,9 @@ final class VoiceBroadcastRecorderCoordinator: Coordinator, Presentable {
         
         voiceBroadcastRecorderService = VoiceBroadcastRecorderService(session: parameters.session, roomId: parameters.room.matrixItemId)
         
-        let viewModel = VoiceBroadcastRecorderViewModel(recorderService: voiceBroadcastRecorderService)
+        let details = VoiceBroadcastRecorderDetails(senderDisplayName: parameters.senderDisplayName)
+        let viewModel = VoiceBroadcastRecorderViewModel(details: details,
+                                                        recorderService: voiceBroadcastRecorderService)
         voiceBroadcastRecorderViewModel = viewModel
     }
 

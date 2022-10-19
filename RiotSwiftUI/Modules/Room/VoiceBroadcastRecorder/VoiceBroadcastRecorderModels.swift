@@ -30,7 +30,12 @@ enum VoiceBroadcastRecorderState {
     case resumed
 }
 
+struct VoiceBroadcastRecorderDetails {
+    let senderDisplayName: String?
+}
+
 struct VoiceBroadcastRecorderViewState: BindableState {
+    var details: VoiceBroadcastRecorderDetails
     var recordingState: VoiceBroadcastRecorderState
     var bindings: VoiceBroadcastRecorderViewStateBindings
 }

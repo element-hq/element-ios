@@ -28,49 +28,49 @@ struct VoiceBroadcastRecorderView: View {
     @ObservedObject var viewModel: VoiceBroadcastRecorderViewModel.Context
     
     var body: some View {
+        let details = viewModel.viewState.details
+        
         VStack(alignment: .leading, spacing: 16.0) {
-            Text(VectorL10n.voiceBroadcastInTimelineTitle)
+            Text(details.senderDisplayName ?? "")
                 .font(theme.fonts.bodySB)
                 .foregroundColor(theme.colors.primaryContent)
             
             HStack(alignment: .top, spacing: 16.0) {
                 Button {
-                    // FIXME: Manage record in progress case
-                    viewModel.send(viewAction: .start)
+                    if viewModel.viewState.recordingState == .started {
+                        viewModel.send(viewAction: .stop)
+                    } else {
+                        viewModel.send(viewAction: .start)
+                    }
                 } label: {
-                    // FIXME: Manage record in progress case
-                    Image("voice_broadcast_record")
-                        .renderingMode(.original)
+                    if viewModel.viewState.recordingState == .started {
+                        Image("voice_broadcast_stop")
+                            .renderingMode(.original)
+                    } else {
+                        Image("voice_broadcast_record")
+                            .renderingMode(.original)
+                    }
                 }
                 .accessibilityIdentifier("recordButton")
                 
                 Button {
-                    // FIXME: Manage resume case
-                    viewModel.send(viewAction: .pause)
+                    if viewModel.viewState.recordingState == .paused {
+                        viewModel.send(viewAction: .resume)
+                    } else if viewModel.viewState.recordingState == .started {
+                        viewModel.send(viewAction: .pause)
+                    }
                 } label: {
                     Image("voice_broadcast_record_pause")
                         .renderingMode(.original)
                 }
                 .accessibilityIdentifier("pauseButton")
+                .disabled(viewModel.viewState.recordingState == .stopped)
+                .mask(Color.black.opacity(viewModel.viewState.recordingState == .stopped ? 0.3 : 1.0))
             }
-
         }
         .padding([.horizontal, .top], 2.0)
         .padding([.bottom])
     }
-    
-//    private func updateRecordingStatus() {
-//        switch viewModel.viewState.recordingState {
-//        case .started:
-//            viewModel.send(viewAction: .stop)
-//        case .paused:
-//            viewModel.send(viewAction: .resume)
-//        case .stopped:
-//            viewModel.send(viewAction: .start)
-//        case .resumed:
-//            viewModel.send(viewAction: .pause)
-//        }
-//    }
 }
 
 

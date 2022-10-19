@@ -31,9 +31,12 @@ class VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderViewModelType, Voic
     
     // MARK: - Setup
     
-    init(recorderService: VoiceBroadcastRecorderServiceProtocol) {
+    init(details: VoiceBroadcastRecorderDetails,
+         recorderService: VoiceBroadcastRecorderServiceProtocol) {
         self.voiceBroadcastRecorderService = recorderService
-        super.init(initialViewState: VoiceBroadcastRecorderViewState(recordingState: .stopped, bindings: VoiceBroadcastRecorderViewStateBindings()))
+        super.init(initialViewState: VoiceBroadcastRecorderViewState(details: details,
+                                                                     recordingState: .stopped,
+                                                                     bindings: VoiceBroadcastRecorderViewStateBindings()))
     }
     
     // MARK: - Public

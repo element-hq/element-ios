@@ -34,7 +34,7 @@ class VoiceBroadcastRecorderProvider {
     
     /// Create or retrieve the voiceBroadcast timeline coordinator for this event and return
     /// a view to be displayed in the timeline
-    func buildVoiceBroadcastRecorderViewForEvent(_ event: MXEvent) -> UIView? {
+    func buildVoiceBroadcastRecorderViewForEvent(_ event: MXEvent, senderDisplayName: String?) -> UIView? {
         guard let session = session, let room = session.room(withRoomId: event.roomId) else {
             return nil
         }
@@ -43,7 +43,7 @@ class VoiceBroadcastRecorderProvider {
             return coordinator.toPresentable().view
         }
         
-        let parameters = VoiceBroadcastRecorderCoordinatorParameters(session: session, room: room, voiceBroadcastStartEvent: event)
+        let parameters = VoiceBroadcastRecorderCoordinatorParameters(session: session, room: room, voiceBroadcastStartEvent: event, senderDisplayName: senderDisplayName)
         let coordinator = VoiceBroadcastRecorderCoordinator(parameters: parameters)
         
         coordinatorsForEventIdentifiers[event.eventId] = coordinator
