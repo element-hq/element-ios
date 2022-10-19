@@ -25,8 +25,10 @@ struct UserSessionListItem: View {
     }
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
-
+    
     let viewData: UserSessionListItemViewData
+    
+    var isEditModeEnabled = false
     
     var onBackgroundTap: ((String) -> Void)?
     
@@ -36,6 +38,9 @@ struct UserSessionListItem: View {
         } label: {
             VStack(alignment: .leading, spacing: LayoutConstants.verticalPadding) {
                 HStack(spacing: LayoutConstants.avatarRightMargin) {
+                    if isEditModeEnabled {
+                        Image(Asset.Images.userSessionListItemNotSelected.name)
+                    }
                     DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(viewData.sessionName)
@@ -70,13 +75,14 @@ struct UserSessionListItem: View {
 
 struct UserSessionListPreview: View {
     let userSessionsOverviewService: UserSessionsOverviewServiceProtocol = MockUserSessionsOverviewService()
+    var isEditModeEnabled: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(userSessionsOverviewService.otherSessions) { userSessionInfo in
                 let viewData = UserSessionListItemViewDataFactory().create(from: userSessionInfo)
 
-                UserSessionListItem(viewData: viewData, onBackgroundTap: { _ in
+                UserSessionListItem(viewData: viewData, isEditModeEnabled: isEditModeEnabled, onBackgroundTap: { _ in
 
                 })
             }
@@ -89,6 +95,8 @@ struct UserSessionListItem_Previews: PreviewProvider {
         Group {
             UserSessionListPreview().theme(.light).preferredColorScheme(.light)
             UserSessionListPreview().theme(.dark).preferredColorScheme(.dark)
+            UserSessionListPreview(isEditModeEnabled: true).theme(.light).preferredColorScheme(.light)
+            UserSessionListPreview(isEditModeEnabled: true).theme(.dark).preferredColorScheme(.dark)
         }
     }
 }

@@ -127,6 +127,8 @@ internal class Asset: NSObject {
     internal static let userOtherSessionsUnverified = ImageAsset(name: "user_other_sessions_unverified")
     internal static let userOtherSessionsVerified = ImageAsset(name: "user_other_sessions_verified")
     internal static let userSessionListItemInactiveSession = ImageAsset(name: "user_session_list_item_inactive_session")
+    internal static let userSessionListItemNotSelected = ImageAsset(name: "user_session_list_item_not_selected")
+    internal static let userSessionListItemSelected = ImageAsset(name: "user_session_list_item_selected")
     internal static let userSessionUnverified = ImageAsset(name: "user_session_unverified")
     internal static let userSessionVerificationUnknown = ImageAsset(name: "user_session_verification_unknown")
     internal static let userSessionVerified = ImageAsset(name: "user_session_verified")

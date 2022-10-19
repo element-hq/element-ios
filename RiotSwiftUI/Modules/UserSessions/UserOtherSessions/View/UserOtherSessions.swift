@@ -19,6 +19,8 @@ import SwiftUI
 struct UserOtherSessions: View {
     @Environment(\.theme) private var theme
     
+    @State private var isEditModeEnabled = false
+    
     @ObservedObject var viewModel: UserOtherSessionsViewModel.Context
     
     var body: some View {
@@ -52,14 +54,29 @@ struct UserOtherSessions: View {
                 }
                 .accessibilityLabel(VectorL10n.userOtherSessionFilter)
             }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button {
+                        isEditModeEnabled.toggle()
+                    } label: {
+                        Label("Select sessions", systemImage: "checkmark.circle")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 12)
+                }
+                .offset(x: 4)
+            }
         }
+        .accentColor(theme.colors.accent)
     }
     
     private func createSessionItemsSection(header: UserOtherSessionsHeaderViewData, items: [UserSessionListItemViewData]) -> some View {
         SwiftUI.Section {
             LazyVStack(spacing: 0) {
                 ForEach(items) { viewData in
-                    UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
+                    UserSessionListItem(viewData: viewData, isEditModeEnabled: isEditModeEnabled, onBackgroundTap: { sessionId in
                         viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId))
                     })
                 }
