@@ -771,6 +771,10 @@ public class VectorL10n: NSObject {
   public static var authenticationQrLoginDisplayTitle: String { 
     return VectorL10n.tr("Vector", "authentication_qr_login_display_title") 
   }
+  /// A security issue was encountered setting up secure messaging. One of the following may be compromised: Your homeserver; Your internet connection(s); Your device(s);
+  public static var authenticationQrLoginFailureE2eeSecurityError: String { 
+    return VectorL10n.tr("Vector", "authentication_qr_login_failure_e2ee_security_error") 
+  }
   /// QR code is invalid.
   public static var authenticationQrLoginFailureInvalidQr: String { 
     return VectorL10n.tr("Vector", "authentication_qr_login_failure_invalid_qr") 
