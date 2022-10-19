@@ -28,4 +28,8 @@ extension MXSession {
     @objc public func getOrCreateVoiceBroadcastService(for room: MXRoom, completion: @escaping (VoiceBroadcastService?) -> Void) {
         VoiceBroadcastServiceProvider.shared.getOrCreateVoiceBroadcastService(for: room, completion: completion)
     }
+    
+    @objc public func tearDownVoiceBroadcastService() {
+        VoiceBroadcastServiceProvider.shared.tearDownVoiceBroadcastService()
+    }
 }

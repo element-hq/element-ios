@@ -42,6 +42,8 @@ struct ComposerCreateActionListViewState: BindableState {
     case stickers
     /// Upload an attachment
     case attachments
+    /// Voice broadcast
+    case voiceBroadcast
     /// Create a Poll
     case polls
     /// Add a location
@@ -63,6 +65,8 @@ extension ComposerCreateAction {
             return VectorL10n.wysiwygComposerStartActionStickers
         case .attachments:
             return VectorL10n.wysiwygComposerStartActionAttachments
+        case .voiceBroadcast:
+            return VectorL10n.wysiwygComposerStartActionVoiceBroadcast
         case .polls:
             return VectorL10n.wysiwygComposerStartActionPolls
         case .location:
@@ -80,6 +84,8 @@ extension ComposerCreateAction {
             return "stickersAction"
         case .attachments:
             return "attachmentsAction"
+        case .voiceBroadcast:
+            return "voiceBroadcastAction"
         case .polls:
             return "pollsAction"
         case .location:
@@ -97,6 +103,8 @@ extension ComposerCreateAction {
             return Asset.Images.actionSticker.name
         case .attachments:
             return Asset.Images.actionFile.name
+        case .voiceBroadcast:
+            return Asset.Images.actionLive.name
         case .polls:
             return Asset.Images.actionPoll.name
         case .location:
