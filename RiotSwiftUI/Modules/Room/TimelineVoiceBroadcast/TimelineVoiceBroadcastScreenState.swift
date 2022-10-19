@@ -37,7 +37,7 @@ enum MockTimelineVoiceBroadcastScreenState: MockScreenState, CaseIterable {
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {        
-        let voiceBroadcast = TimelineVoiceBroadcastDetails(chunks: [], type: TimelineVoiceBroadcastType.player)
+        let voiceBroadcast = TimelineVoiceBroadcastDetails(type: TimelineVoiceBroadcastType.player, chunks: [])
         
         let viewModel = TimelineVoiceBroadcastViewModel(timelineVoiceBroadcastDetails: voiceBroadcast)
         
