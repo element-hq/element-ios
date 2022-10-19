@@ -20,7 +20,7 @@ class VoiceBroadcastPlaybackProvider {
     static let shared = VoiceBroadcastPlaybackProvider()
     
     var session: MXSession?
-    var coordinatorsForEventIdentifiers = [String: VoiceBroadcastPlaybackController]()
+    var coordinatorsForEventIdentifiers = [String: VoiceBroadcastPlaybackCoordinator]()
     
     private init() { }
     
@@ -35,8 +35,8 @@ class VoiceBroadcastPlaybackProvider {
             return coordinator.toPresentable().view
         }
         
-        let parameters = VoiceBroadcastPlaybackControllerParameters(session: session, room: room, voiceBroadcastStartEvent: event)
-        guard let coordinator = try? VoiceBroadcastPlaybackController(parameters: parameters) else {
+        let parameters = VoiceBroadcastPlaybackCoordinatorParameters(session: session, room: room, voiceBroadcastStartEvent: event)
+        guard let coordinator = try? VoiceBroadcastPlaybackCoordinator(parameters: parameters) else {
             return nil
         }
         
@@ -46,7 +46,7 @@ class VoiceBroadcastPlaybackProvider {
     }
     
     /// Retrieve the voiceBroadcast timeline coordinator for the given event or nil if it hasn't been created yet
-    func voiceBroadcastPlaybackControllerForEventIdentifier(_ eventIdentifier: String) -> VoiceBroadcastPlaybackController? {
+    func voiceBroadcastPlaybackCoordinatorForEventIdentifier(_ eventIdentifier: String) -> VoiceBroadcastPlaybackCoordinator? {
         coordinatorsForEventIdentifiers[eventIdentifier]
     }
 }
