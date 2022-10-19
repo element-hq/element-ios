@@ -185,18 +185,26 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 }
                 else if ([event.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
                 {
-                    MXEvent *roomVoiceBroadcastInfoEvent = [roomState stateEventsWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType].lastObject;
-                    
-                    VoiceBroadcastInfo *lastVoiceBroadcastInfo = [VoiceBroadcastInfo modelFromJSON: roomVoiceBroadcastInfoEvent.content];
-                    
-                    if ([VoiceBroadcastInfo isStartedFor:lastVoiceBroadcastInfo.state] &&
-                        [event.sender isEqualToString: self.mxSession.myUserId] &&
-                        [lastVoiceBroadcastInfo.deviceId isEqualToString:self.mxSession.myDeviceId]) {
-                        self.tag = RoomBubbleCellDataTagVoiceBroadcastRecord;
-                    } else {
-                        self.tag = RoomBubbleCellDataTagVoiceBroadcastPlayback;
+                    VoiceBroadcastInfo *voiceBroadcastInfo = [VoiceBroadcastInfo modelFromJSON: event.content];
+                    if ([VoiceBroadcastInfo isStartedFor:voiceBroadcastInfo.state])
+                    {
+                        // This state event corresponds to the beginning of a voice broadcast
+                        // Check whether this is a local live broadcast to display it with the recorder view or not
+                        if ([event.sender isEqualToString: self.mxSession.myUserId] &&
+                            [voiceBroadcastInfo.deviceId isEqualToString:self.mxSession.myDeviceId] &&
+                            self.mxSession.voiceBroadcastService != nil)
+                        {
+                            self.tag = RoomBubbleCellDataTagVoiceBroadcastRecord;
+                        }
+                        else
+                        {
+                            self.tag = RoomBubbleCellDataTagVoiceBroadcastPlayback;
+                        }
                     }
-                    
+                    else
+                    {
+                        self.tag = RoomBubbleCellDataTagVoiceBroadcastNoDisplay;
+                    }
                     self.collapsable = NO;
                     self.collapsed = NO;
                     
@@ -215,7 +223,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 }
                 else if (event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType])
                 {
-                    self.tag = RoomBubbleCellDataTagVoiceBroadcastPlayback;
+                    self.tag = RoomBubbleCellDataTagVoiceBroadcastNoDisplay;
                     self.collapsable = NO;
                     self.collapsed = NO;
                 }
@@ -325,13 +333,11 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             }
             
             break;
+        case RoomBubbleCellDataTagVoiceBroadcastRecord:
         case RoomBubbleCellDataTagVoiceBroadcastPlayback:
-            if (RiotSettings.shared.enableVoiceBroadcast == YES &&
-                [VoiceBroadcastInfo isStartedFor:[VoiceBroadcastInfo modelFromJSON:self.events.lastObject.content].state])
-            {
-                hasNoDisplay = NO;
-            }
-            
+            hasNoDisplay = NO;
+            break;
+        case RoomBubbleCellDataTagVoiceBroadcastNoDisplay:
             break;
         default:
             hasNoDisplay = [super hasNoDisplay];
@@ -1082,7 +1088,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         case RoomBubbleCellDataTagLiveLocation:
             shouldAddEvent = NO;
             break;
+        case RoomBubbleCellDataTagVoiceBroadcastRecord:
         case RoomBubbleCellDataTagVoiceBroadcastPlayback:
+        case RoomBubbleCellDataTagVoiceBroadcastNoDisplay:
             shouldAddEvent = NO;
             break;
         default:
