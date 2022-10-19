@@ -37,7 +37,8 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
     RoomBubbleCellDataTagPoll,
     RoomBubbleCellDataTagLocation,
     RoomBubbleCellDataTagLiveLocation,
-    RoomBubbleCellDataTagVoiceBroadcast
+    RoomBubbleCellDataTagVoiceBroadcastPlayback,
+    RoomBubbleCellDataTagVoiceBroadcastRecord
 };
 
 /**

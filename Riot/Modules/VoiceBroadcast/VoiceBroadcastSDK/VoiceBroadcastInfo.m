@@ -19,12 +19,14 @@
 
 @implementation VoiceBroadcastInfo
 
-- (instancetype)initWithState:(NSString *)state
-                  chunkLength:(NSInteger)chunkLength
-                      eventId:(NSString *)eventId
+- (instancetype)initWithDeviceId:(NSString *)deviceId
+                           state:(NSString *)state
+                     chunkLength:(NSInteger)chunkLength
+                         eventId:(NSString *)eventId
 {
     if (self = [super init])
     {
+        _deviceId = deviceId;
         _state = state;
         _chunkLength = chunkLength;
         _eventId = eventId;
@@ -35,6 +37,9 @@
 
 + (id)modelFromJSON:(NSDictionary *)JSONDictionary
 {
+    NSString *deviceId;
+    MXJSONModelSetString(deviceId, JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyDeviceId]);
+    
     NSString *state;
     MXJSONModelSetString(state, JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyState]);
     
@@ -56,12 +61,14 @@
         }
     }
 
-    return [[VoiceBroadcastInfo alloc] initWithState:state chunkLength:chunkLength eventId:eventId];
+    return [[VoiceBroadcastInfo alloc] initWithDeviceId:deviceId state:state chunkLength:chunkLength eventId:eventId];
 }
 
 - (NSDictionary *)JSONDictionary
 {
     NSMutableDictionary *JSONDictionary = [NSMutableDictionary dictionary];
+    
+    JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyDeviceId] = self.deviceId;
     
     JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyState] = self.state;
     
