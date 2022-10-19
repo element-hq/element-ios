@@ -1993,9 +1993,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self updateInputToolBarVisibility];
     
     // Check whether the input toolbar is ready before updating it.
-    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+    if (self.inputToolbarView && [self inputToolbarConformsToToolbarViewProtocol])
     {
-        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        id<RoomInputToolbarViewProtocol> roomInputToolbarView = (id<RoomInputToolbarViewProtocol>) self.inputToolbarView;
         
         // Update encryption decoration if needed
         [self updateEncryptionDecorationForRoomInputToolbar:roomInputToolbarView];
