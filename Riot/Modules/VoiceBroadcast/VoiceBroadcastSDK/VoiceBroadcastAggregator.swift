@@ -109,6 +109,8 @@ public class VoiceBroadcastAggregator {
                 return
             }
             
+            MXLog.debug("[VoiceBroadcastAggregator] Start aggregation for broadcast \(self.voiceBroadcastStartEventId)")
+            
             self.events.removeAll()
             
             self.events.append(contentsOf: response.chunk)
@@ -124,6 +126,7 @@ public class VoiceBroadcastAggregator {
                 }
                 
                 self.events.append(event)
+                MXLog.debug("[VoiceBroadcastAggregator] Got a new chunk for broadcast \(relatedEventId). Total: \(self.events.count)")
                 
                 self.voiceBroadcast = self.voiceBroadcastBuilder.build(mediaManager: self.session.mediaManager,
                                                                        voiceBroadcastStartEventId: self.voiceBroadcastStartEventId,

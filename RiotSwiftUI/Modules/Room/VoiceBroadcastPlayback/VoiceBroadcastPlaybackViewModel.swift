@@ -16,10 +16,11 @@
 
 import Combine
 import SwiftUI
+import MatrixSDK
 
 typealias VoiceBroadcastPlaybackViewModelType = StateStoreViewModel<VoiceBroadcastPlaybackViewState, VoiceBroadcastPlaybackViewAction>
 
-class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, VoiceBroadcastPlaybackViewModelProtocol {
+class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType {
 
     // MARK: - Properties
 
@@ -59,35 +60,155 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     
     /// Listen voice broadcast
     private func play() {
-        // TODO: VB call voice broadcast playback service to play the chunks
+        MXLog.debug("[VoiceBroadcastPlaybackViewModel] play")
+        
+        let requiredNumberOfSamples = 100// playbackView.getRequiredNumberOfSamples() ?
+        
+        guard let voiceBroadcast = voiceBroadcastAggregator.voiceBroadcast else {
+            assert(false, "Cannot play. No voice broadcast data")
+        }
+        
+        
+        // TODO: define which context
+        guard let attachment = voiceBroadcast.chunks.first?.attachment else {
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: Error: No attachment")
+            return
+        }
+        
+        // TODO: Update the view
+        
+        cacheManager.loadAttachment(attachment, numberOfSamples: requiredNumberOfSamples) { [weak self] result in
+            
+            guard let self = self else {
+                return
+            }
+            
+            switch result {
+                case .success(let result):
+                    guard result.eventIdentifier == attachment.eventId else {
+                        return
+                    }
+
+                    
+                    // Avoid listening to old audio player delegates if the attachment for this playbackController/cell changes
+                    self.audioPlayer?.deregisterDelegate(self)
+                    
+                    let audioPlayer = self.mediaServiceProvider.audioPlayerForIdentifier(result.eventIdentifier)
+                    self.audioPlayer?.registerDelegate(self)
+                    
+                    audioPlayer.loadContentFromURL(result.url, displayName: attachment.originalFileName)
+                    audioPlayer.play()
+                    self.audioPlayer = audioPlayer
+                    
+                    
+                    // TODO: Update the view
+                    //                    self.loading = false
+                    //                    self.urlToLoad = result.url
+                    //                    self.duration = result.duration
+                    //                    self.samples = result.samples
+                    
+                    //                    if let audioPlayer = self.audioPlayer {
+                    //                        if audioPlayer.isPlaying {
+                    //                            //self.state = .playing
+                    //                        } else if audioPlayer.currentTime > 0 {
+                    //                            //self.state = .paused
+                    //                        } else {
+                    //                            //self.state = .stopped
+                    //                        }
+                    //                    }
+                case .failure (let error):
+                    MXLog.error("[VoiceBroadcastPlaybackViewModel] play: loadAttachment error", context: error)
+                    //self.state = .error
+            }
+        }
     }
     
     /// Stop voice broadcast
     private func pause() {
+        MXLog.debug("[VoiceBroadcastPlaybackViewModel] pause")
+        
+        guard let audioPlayer = audioPlayer else {
+            return
+        }
+        
+        if audioPlayer.isPlaying {
+            audioPlayer.pause()
+        }
     }
+}
     
-    // MARK: - VoiceBroadcastPlaybackViewModelProtocol
-    
+
+// MARK: - VoiceBroadcastPlaybackViewModelProtocol
+extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelProtocol {
     func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: VoiceBroadcastPlaybackDetails) {
-        state.voiceBroadcast = voiceBroadcastDetails
+        self.state.voiceBroadcast = voiceBroadcastDetails
     }
 }
 
+
+// MARK: - TODO: VoiceBroadcastAggregatorDelegate
 extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
     func voiceBroadcastAggregatorDidStartLoading(_ aggregator: VoiceBroadcastAggregator) {
+        MXLog.debug("AAAA voiceBroadcastAggregatorDidStartLoading")
         // TODO: VB
     }
     
     func voiceBroadcastAggregatorDidEndLoading(_ aggregator: VoiceBroadcastAggregator) {
         // TODO: VB
+        MXLog.debug("AAAA voiceBroadcastAggregatorDidEndLoading")
     }
     
     func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didFailWithError: Error) {
         // TODO: VB
+        MXLog.debug("AAAA voiceBroadcastAggregatordidFailWithError")
     }
     
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {
+        MXLog.debug("AAAA voiceBroadcastAggregatorDidUpdateData")
         let voiceBroadcastPlaybackDetails = VoiceBroadcastPlaybackDetails(type: .player, chunks: Array(aggregator.voiceBroadcast.chunks))
         self.updateWithVoiceBroadcastDetails(voiceBroadcastPlaybackDetails)
     }
+}
+
+
+// MARK: - TODO: VoiceMessageAudioPlayerDelegate
+extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
+
+    
+    func audioPlayerDidFinishLoading(_ audioPlayer: VoiceMessageAudioPlayer) {
+        MXLog.debug("AAAA audioPlayerDidFinishLoading")
+        //updateUI()
+    }
+    
+    func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        MXLog.debug("AAAA audioPlayerDidStartPlaying")
+        //state = .playing
+    }
+    
+    func audioPlayerDidPausePlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        MXLog.debug("AAAA audioPlayerDidPausePlaying")
+        //state = .paused
+    }
+    
+    func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        MXLog.debug("AAAA audioPlayerDidStopPlaying")
+        //state = .stopped
+    }
+    
+    func audioPlayer(_ audioPlayer: VoiceMessageAudioPlayer, didFailWithError error: Error) {
+        MXLog.debug("AAAA audioPlayerdidFailWithError")
+        //        state = .error
+        //        MXLog.error("Failed playing voice message", context: error)
+    }
+    
+    func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        MXLog.debug("AAAA audioPlayerDidFinishPlaying")
+        // Chunk++
+        
+        //        audioPlayer.seekToTime(0.0) { [weak self] _ in
+        //            guard let self = self else { return }
+        //            self.state = .stopped
+        //        }
+    }
+    
 }
