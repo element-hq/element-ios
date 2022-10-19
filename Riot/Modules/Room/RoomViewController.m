@@ -4565,6 +4565,9 @@ static CGSize kThreadListBarButtonItemImageSize;
                             // Do nothing for dummy links
                             shouldDoAction = NO;
                             break;
+                        case RoomMessageURLTypeHttp:
+                            shouldDoAction = YES;
+                            break;
                         default:
                         {
                             MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
@@ -4590,16 +4593,20 @@ static CGSize kThreadListBarButtonItemImageSize;
                     break;
                 case UITextItemInteractionPresentActions:
                 {
-                    // Retrieve the tapped event
-                    MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-                    
-                    if (tappedEvent)
-                    {
-                        // Long press on link, present room contextual menu.
-                        [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:NO cell:cell animated:YES];
+                    if (roomMessageURLType == RoomMessageURLTypeHttp) {
+                        shouldDoAction = YES;
+                    } else {
+                        // Retrieve the tapped event
+                        MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+                        
+                        if (tappedEvent)
+                        {
+                            // Long press on link, present room contextual menu.
+                            [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:NO cell:cell animated:YES];
+                        }
+                        
+                        shouldDoAction = NO;
                     }
-                    
-                    shouldDoAction = NO;
                 }
                     break;
                 case UITextItemInteractionPreview:
