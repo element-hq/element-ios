@@ -39,7 +39,7 @@ struct UserSessionListItem: View {
             VStack(alignment: .leading, spacing: LayoutConstants.verticalPadding) {
                 HStack(spacing: LayoutConstants.avatarRightMargin) {
                     if isEditModeEnabled {
-                        Image(Asset.Images.userSessionListItemNotSelected.name)
+                        Image(viewData.isSelected ? Asset.Images.userSessionListItemSelected.name : Asset.Images.userSessionListItemNotSelected.name)
                     }
                     DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
                     VStack(alignment: .leading, spacing: 2) {

@@ -19,8 +19,6 @@ import SwiftUI
 struct UserOtherSessions: View {
     @Environment(\.theme) private var theme
     
-    @State private var isEditModeEnabled = false
-    
     @ObservedObject var viewModel: UserOtherSessionsViewModel.Context
     
     var body: some View {
@@ -57,9 +55,12 @@ struct UserOtherSessions: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     Button {
-                        isEditModeEnabled.toggle()
+                        viewModel.isEditModeEnabled.toggle()
                     } label: {
                         Label("Select sessions", systemImage: "checkmark.circle")
+                    }
+                    .onChange(of: viewModel.isEditModeEnabled) { newValue in
+                        viewModel.send(viewAction: .editModeWasToggled)
                     }
                 } label: {
                     Image(systemName: "ellipsis")
@@ -76,7 +77,7 @@ struct UserOtherSessions: View {
         SwiftUI.Section {
             LazyVStack(spacing: 0) {
                 ForEach(items) { viewData in
-                    UserSessionListItem(viewData: viewData, isEditModeEnabled: isEditModeEnabled, onBackgroundTap: { sessionId in
+                    UserSessionListItem(viewData: viewData, isEditModeEnabled: viewModel.isEditModeEnabled, onBackgroundTap: { sessionId in
                         viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId))
                     })
                 }

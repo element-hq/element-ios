@@ -38,6 +38,7 @@ struct UserOtherSessionsViewState: BindableState, Equatable {
 
 struct UserOtherSessionsBindings: Equatable {
     var filter: UserOtherSessionsFilter
+    var isEditModeEnabled: Bool
 }
 
 enum UserOtherSessionsSection: Hashable, Identifiable {
@@ -53,4 +54,5 @@ enum UserOtherSessionsViewAction {
     case userOtherSessionSelected(sessionId: String)
     case filterWasChanged
     case clearFilter
+    case editModeWasToggled
 }

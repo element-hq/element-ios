@@ -21,12 +21,13 @@ typealias UserOtherSessionsViewModelType = StateStoreViewModel<UserOtherSessions
 class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessionsViewModelProtocol {
     var completion: ((UserOtherSessionsViewModelResult) -> Void)?
     private let sessionInfos: [UserSessionInfo]
-    
+    private var selectedSessions: Set<SessionId> = []
+
     init(sessionInfos: [UserSessionInfo],
          filter: UserOtherSessionsFilter,
          title: String) {
         self.sessionInfos = sessionInfos
-        super.init(initialViewState: UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: filter),
+        super.init(initialViewState: UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: filter, isEditModeEnabled: false),
                                                                 title: title,
                                                                 sections: []))
         updateViewState()
@@ -37,16 +38,35 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     override func process(viewAction: UserOtherSessionsViewAction) {
         switch viewAction {
         case let .userOtherSessionSelected(sessionId: sessionId):
-            guard let session = sessionInfos.first(where: { $0.id == sessionId }) else {
-                assertionFailure("Session should exist in the array.")
-                return
+            if state.bindings.isEditModeEnabled {
+                updateSelectionForSession(sessionId: sessionId)
+                updateViewState()
+            } else {
+                showUserSessionOverview(sessionId: sessionId)
             }
-            completion?(.showUserSessionOverview(sessionInfo: session))
         case .filterWasChanged:
             updateViewState()
         case .clearFilter:
             state.bindings.filter = .all
             updateViewState()
+        case .editModeWasToggled:
+            selectedSessions.removeAll()
+        }
+    }
+    
+    private func showUserSessionOverview(sessionId: String) {
+        guard let session = sessionInfos.first(where: { $0.id == sessionId }) else {
+            assertionFailure("Session should exist in the array.")
+            return
+        }
+        completion?(.showUserSessionOverview(sessionInfo: session))
+    }
+    
+    private func updateSelectionForSession(sessionId: String) {
+        if selectedSessions.contains(sessionId) {
+            selectedSessions.remove(sessionId)
+        } else {
+            selectedSessions.insert(sessionId)
         }
     }
     
@@ -68,7 +88,8 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         filterSessions(sessionInfos: sessionInfos, by: filter)
             .map {
                 UserSessionListItemViewDataFactory().create(from: $0,
-                                                            highlightSessionDetails: filter == .unverified && $0.isCurrent)
+                                                            highlightSessionDetails: filter == .unverified && $0.isCurrent,
+                                                            isSelected: selectedSessions.contains($0.id))
             }
     }
     
