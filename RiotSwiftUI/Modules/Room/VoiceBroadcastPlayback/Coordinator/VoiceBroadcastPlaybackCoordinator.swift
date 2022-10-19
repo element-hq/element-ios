@@ -22,6 +22,7 @@ struct VoiceBroadcastPlaybackCoordinatorParameters {
     let session: MXSession
     let room: MXRoom
     let voiceBroadcastStartEvent: MXEvent
+    let senderDisplayName: String?
 }
 
 final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
@@ -45,7 +46,10 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         
         let voiceBroadcastAggregator = try VoiceBroadcastAggregator(session: parameters.session, room: parameters.room, voiceBroadcastStartEventId: parameters.voiceBroadcastStartEvent.eventId)
-        viewModel = VoiceBroadcastPlaybackViewModel(mediaServiceProvider: VoiceMessageMediaServiceProvider.sharedProvider,
+        
+        let details = VoiceBroadcastPlaybackDetails(type: VoiceBroadcastPlaybackType.player, senderDisplayName: parameters.senderDisplayName)
+        viewModel = VoiceBroadcastPlaybackViewModel(details: details,
+                                                    mediaServiceProvider: VoiceMessageMediaServiceProvider.sharedProvider,
                                                     cacheManager: VoiceMessageAttachmentCacheManager.sharedManager,
                                                     voiceBroadcastAggregator: voiceBroadcastAggregator)
 

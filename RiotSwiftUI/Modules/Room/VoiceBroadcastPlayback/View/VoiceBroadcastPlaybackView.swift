@@ -28,12 +28,14 @@ struct VoiceBroadcastPlaybackView: View {
     @ObservedObject var viewModel: VoiceBroadcastPlaybackViewModel.Context
     
     var body: some View {
-        let voiceBroadcast = viewModel.viewState.voiceBroadcast
+        let details = viewModel.viewState.details
         
         VStack(alignment: .leading, spacing: 16.0) {
-            Text(VectorL10n.voiceBroadcastInTimelineTitle)
+            Text(details.senderDisplayName ?? "")
+            //Text(VectorL10n.voiceBroadcastInTimelineTitle)
                 .font(theme.fonts.bodySB)
                 .foregroundColor(theme.colors.primaryContent)
+
 //            Text(VectorL10n.voiceBroadcastInTimelineBody)
 //                .font(theme.fonts.body)
 //                .foregroundColor(theme.colors.primaryContent)

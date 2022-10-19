@@ -19,8 +19,6 @@ import SwiftUI
 
 typealias MockVoiceBroadcastPlaybackViewModelType = StateStoreViewModel<VoiceBroadcastPlaybackViewState, VoiceBroadcastPlaybackViewAction>
 class MockVoiceBroadcastPlaybackViewModel: MockVoiceBroadcastPlaybackViewModelType, VoiceBroadcastPlaybackViewModelProtocol {    
-    func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: VoiceBroadcastPlaybackDetails) {
-    }
 }
 
 /// Using an enum for the screen allows you define the different state cases with
@@ -44,8 +42,8 @@ enum MockVoiceBroadcastPlaybackScreenState: MockScreenState, CaseIterable {
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
         
-        let voiceBroadcastPlaybackDetails = VoiceBroadcastPlaybackDetails(type: VoiceBroadcastPlaybackType.player, chunks: [])
-        let viewModel = MockVoiceBroadcastPlaybackViewModel(initialViewState: VoiceBroadcastPlaybackViewState(voiceBroadcast: voiceBroadcastPlaybackDetails, playbackState: .stopped, bindings: VoiceBroadcastPlaybackViewStateBindings()))
+        let details = VoiceBroadcastPlaybackDetails(type: VoiceBroadcastPlaybackType.player, senderDisplayName: "Alice")
+        let viewModel = MockVoiceBroadcastPlaybackViewModel(initialViewState: VoiceBroadcastPlaybackViewState(details: details, playbackState: .stopped, bindings: VoiceBroadcastPlaybackViewStateBindings()))
         
         return (
             [false, viewModel],
