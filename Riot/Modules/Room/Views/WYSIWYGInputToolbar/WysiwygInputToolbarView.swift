@@ -29,8 +29,6 @@ import CoreGraphics
 // The toolbar for editing with rich text
 
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInputToolbarViewProtocol {
-    
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -41,6 +39,11 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState())
     
     // MARK: Public
+    var isEncryptionEnabled = false {
+        didSet {
+            updatePlaceholderText()
+        }
+    }
     
     /// The current html content of the composer
     var htmlContent: String {
@@ -69,6 +72,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }
         set {
             viewModel.sendMode = ComposerSendMode(from: newValue)
+            updatePlaceholderText()
         }
     }
     

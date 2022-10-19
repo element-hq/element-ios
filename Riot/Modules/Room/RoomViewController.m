@@ -2115,9 +2115,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)updateInputToolbarEncryptionDecoration
 {
-    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+    if (self.inputToolbarView && [self inputToolbarConformsToToolbarViewProtocol])
     {
-        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        id<RoomInputToolbarViewProtocol> roomInputToolbarView = (id<RoomInputToolbarViewProtocol>)self.inputToolbarView;
         [self updateEncryptionDecorationForRoomInputToolbar:roomInputToolbarView];
     }
 }
@@ -2133,7 +2133,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     roomTitleView.badgeImageView.image = self.roomEncryptionBadgeImage;
 }
 
-- (void)updateEncryptionDecorationForRoomInputToolbar:(RoomInputToolbarView*)roomInputToolbarView
+- (void)updateEncryptionDecorationForRoomInputToolbar:(id<RoomInputToolbarViewProtocol>)roomInputToolbarView
 {
     roomInputToolbarView.isEncryptionEnabled = self.isEncryptionEnabled;
 }
