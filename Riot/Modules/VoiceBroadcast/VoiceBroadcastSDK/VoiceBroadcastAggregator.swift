@@ -48,7 +48,7 @@ public class VoiceBroadcastAggregator {
     
     private var events: [MXEvent] = []
     
-    public private(set) var voiceBroadcast: VoiceBroadcastProtocol! {
+    public private(set) var voiceBroadcast: VoiceBroadcast! {
         didSet {
             delegate?.voiceBroadcastAggregatorDidUpdateData(self)
         }

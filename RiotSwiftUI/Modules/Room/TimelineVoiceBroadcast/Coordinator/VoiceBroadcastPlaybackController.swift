@@ -100,9 +100,9 @@ final class VoiceBroadcastPlaybackController: Coordinator, Presentable, VoiceBro
     
     // MARK: - Private
     
-    // VoiceBroadcastProtocol is intentionally not available in the SwiftUI target as we don't want
+    // VoiceBroadcast is intentionally not available in the SwiftUI target as we don't want
     // to add the SDK as a dependency to it. We need to translate from one to the other on this level.
-    func buildTimelineVoiceBroadcastFrom(_ voiceBroadcast: VoiceBroadcastProtocol) -> TimelineVoiceBroadcastDetails {
+    func buildTimelineVoiceBroadcastFrom(_ voiceBroadcast: VoiceBroadcast) -> TimelineVoiceBroadcastDetails {
         
         return TimelineVoiceBroadcastDetails(chunks: Array(voiceBroadcast.chunks), type: voiceBroadcastKindToTimelineVoiceBroadcastType(voiceBroadcast.kind))
     }
