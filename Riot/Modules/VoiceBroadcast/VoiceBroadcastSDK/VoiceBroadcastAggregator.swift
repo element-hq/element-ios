@@ -25,6 +25,7 @@ public protocol VoiceBroadcastAggregatorDelegate: AnyObject {
     func voiceBroadcastAggregatorDidStartLoading(_ aggregator: VoiceBroadcastAggregator)
     func voiceBroadcastAggregatorDidEndLoading(_ aggregator: VoiceBroadcastAggregator)
     func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didFailWithError: Error)
+    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveChunk: VoiceBroadcastChunk)
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator)
 }
 
@@ -109,8 +110,6 @@ public class VoiceBroadcastAggregator {
                 return
             }
             
-            MXLog.debug("[VoiceBroadcastAggregator] Start aggregation for broadcast \(self.voiceBroadcastStartEventId)")
-            
             self.events.removeAll()
             
             self.events.append(contentsOf: response.chunk)
@@ -125,6 +124,10 @@ public class VoiceBroadcastAggregator {
                     return
                 }
                 
+                if let chunk = self.voiceBroadcastBuilder.buildChunk(event: event, mediaManager: self.session.mediaManager, voiceBroadcastStartEventId: self.voiceBroadcastStartEventId) {
+                    self.delegate?.voiceBroadcastAggregator(self, didReceiveChunk: chunk)
+                }
+                
                 self.events.append(event)
                 MXLog.debug("[VoiceBroadcastAggregator] Got a new chunk for broadcast \(relatedEventId). Total: \(self.events.count)")
                 
@@ -135,11 +138,21 @@ public class VoiceBroadcastAggregator {
                                                                        currentUserIdentifier: self.session.myUserId)
             } as Any
             
+            
+            self.events.forEach { event in
+                guard let chunk = self.voiceBroadcastBuilder.buildChunk(event: event, mediaManager: self.session.mediaManager, voiceBroadcastStartEventId: self.voiceBroadcastStartEventId) else {
+                    return
+                }
+                self.delegate?.voiceBroadcastAggregator(self, didReceiveChunk: chunk)
+            }
+          
             self.voiceBroadcast = self.voiceBroadcastBuilder.build(mediaManager: self.session.mediaManager,
                                                                    voiceBroadcastStartEventId: self.voiceBroadcastStartEventId,
                                                                    voiceBroadcastInvoiceBroadcastStartEventContent: self.voiceBroadcastInfoStartEventContent,
                                                                    events: self.events,
                                                                    currentUserIdentifier: self.session.myUserId)
+            
+            MXLog.debug("[VoiceBroadcastAggregator] Start aggregation with \(self.voiceBroadcast.chunks.count) chunks for broadcast \(self.voiceBroadcastStartEventId)")
             
             self.delegate?.voiceBroadcastAggregatorDidEndLoading(self)
             

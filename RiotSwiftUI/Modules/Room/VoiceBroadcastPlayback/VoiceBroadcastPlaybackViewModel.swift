@@ -65,9 +65,6 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     private func play() {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] play")
         
-        // TODO: But what?
-        let requiredNumberOfSamples = 100// playbackView.getRequiredNumberOfSamples() ?
-        
         guard let voiceBroadcast = voiceBroadcastAggregator.voiceBroadcast else {
             assert(false, "Cannot play. No voice broadcast data")
         }
@@ -77,7 +74,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             return
         }
         
-        cacheManager.loadAttachment(attachment, numberOfSamples: requiredNumberOfSamples) { [weak self] result in
+        // numberOfSamples is for the equalizer view we do not support yet
+        cacheManager.loadAttachment(attachment, numberOfSamples: 1) { [weak self] result in
             
             guard let self = self else {
                 return
@@ -135,6 +133,10 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
     func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didFailWithError: Error) {
         // TODO: VB
         MXLog.debug("AAAA voiceBroadcastAggregatordidFailWithError")
+    }
+    
+    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveChunk: VoiceBroadcastChunk) {
+        MXLog.debug("AAAA voiceBroadcastAggregatorDidReceiveChunk")
     }
     
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {
