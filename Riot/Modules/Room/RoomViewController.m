@@ -3272,6 +3272,22 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
+    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcastRecord)
+    {
+        if (bubbleData.isPaginationFirstBubble)
+        {
+            cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithPaginationTitle;
+        }
+        else if (bubbleData.shouldHideSenderInformation)
+        {
+            cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithoutSenderInfo;
+        }
+        else
+        {
+            cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder;
+        }
+    }
+    
     else if (roomBubbleCellData.getFirstBubbleComponentWithDisplay.event.isEmote)
     {
         if (bubbleData.isIncoming)
