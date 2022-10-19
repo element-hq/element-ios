@@ -17,7 +17,6 @@
 import Foundation
 import SwiftUI
 
-// TODO: add play pause cases
 enum TimelineVoiceBroadcastViewAction {
     case play
     case pause
