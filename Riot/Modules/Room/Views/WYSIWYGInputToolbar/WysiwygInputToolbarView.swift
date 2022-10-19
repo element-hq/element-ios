@@ -72,6 +72,15 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }
     }
     
+    override var placeholder: String! {
+        get {
+            viewModel.placeholder
+        }
+        set {
+            viewModel.placeholder = newValue
+        }
+    }
+    
     // MARK: - Setup
     
     override class func instantiate() -> MXKRoomInputToolbarView! {
@@ -86,13 +95,11 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         super.awakeFromNib()
         
         viewModel.callback = { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .cancel:
-                self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
-            }
+            self?.handleViewModelResult(result)
         }
+        
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
+        
         let composer = Composer(viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
             sendMessageAction: { [weak self] content in
@@ -150,9 +157,15 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
     }
     
-    
     private func showSendMediaActions() {
         delegate?.roomInputToolbarViewShowSendMediaActions?(self)
+    }
+    
+    private func handleViewModelResult(_ result: ComposerViewModelResult) {
+        switch result {
+        case .cancel:
+            self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
+        }
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
