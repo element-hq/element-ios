@@ -26,7 +26,7 @@ class VoiceBroadcastPlaybackProvider {
     
     /// Create or retrieve the voiceBroadcast timeline coordinator for this event and return
     /// a view to be displayed in the timeline
-    func buildVoiceBroadcastPlaybackViewForEvent(_ event: MXEvent) -> UIView? {
+    func buildVoiceBroadcastPlaybackViewForEvent(_ event: MXEvent, senderDisplayName: String?) -> UIView? {
         guard let session = session, let room = session.room(withRoomId: event.roomId) else {
             return nil
         }
@@ -35,7 +35,10 @@ class VoiceBroadcastPlaybackProvider {
             return coordinator.toPresentable().view
         }
         
-        let parameters = VoiceBroadcastPlaybackCoordinatorParameters(session: session, room: room, voiceBroadcastStartEvent: event)
+        let parameters = VoiceBroadcastPlaybackCoordinatorParameters(session: session,
+                                                                     room: room,
+                                                                     voiceBroadcastStartEvent: event,
+                                                                     senderDisplayName: senderDisplayName)
         guard let coordinator = try? VoiceBroadcastPlaybackCoordinator(parameters: parameters) else {
             return nil
         }

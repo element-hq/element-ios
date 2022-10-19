@@ -30,27 +30,30 @@ enum VoiceBroadcastPlaybackState {
     case error
 }
 
+// TODO: Keept it? It is always player
 enum VoiceBroadcastPlaybackType {
     case player
     case recorder
 }
 
 struct VoiceBroadcastPlaybackDetails {
-    var type: VoiceBroadcastPlaybackType
-    var chunks: [VoiceBroadcastChunk]
+    let type: VoiceBroadcastPlaybackType    // TODO: Keept it? It is always player
+    let senderDisplayName: String?
 }
 
 struct VoiceBroadcastPlaybackViewState: BindableState {
-    var voiceBroadcast: VoiceBroadcastPlaybackDetails
+    var details: VoiceBroadcastPlaybackDetails
     var playbackState: VoiceBroadcastPlaybackState
     var bindings: VoiceBroadcastPlaybackViewStateBindings
 }
 
 struct VoiceBroadcastPlaybackViewStateBindings {
+    // TODO: Neeeded?
     var alertInfo: AlertInfo<VoiceBroadcastPlaybackAlertType>?
 }
 
 enum VoiceBroadcastPlaybackAlertType {
+    // TODO: What is it?
     case failedClosingVoiceBroadcast
 }
 

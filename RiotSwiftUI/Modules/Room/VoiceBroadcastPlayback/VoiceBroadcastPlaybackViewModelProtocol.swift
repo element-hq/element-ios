@@ -18,5 +18,4 @@ import Foundation
 
 protocol VoiceBroadcastPlaybackViewModelProtocol {
     var context: VoiceBroadcastPlaybackViewModelType.Context { get }    
-    func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: VoiceBroadcastPlaybackDetails)
 }

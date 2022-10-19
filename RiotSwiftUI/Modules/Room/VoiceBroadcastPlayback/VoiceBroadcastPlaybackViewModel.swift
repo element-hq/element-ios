@@ -20,7 +20,7 @@ import MatrixSDK
 
 typealias VoiceBroadcastPlaybackViewModelType = StateStoreViewModel<VoiceBroadcastPlaybackViewState, VoiceBroadcastPlaybackViewAction>
 
-class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType {
+class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, VoiceBroadcastPlaybackViewModelProtocol {
 
     // MARK: - Properties
 
@@ -34,15 +34,18 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType {
     
     // MARK: - Setup
     
-    init(mediaServiceProvider: VoiceMessageMediaServiceProvider,
+    init(details: VoiceBroadcastPlaybackDetails,
+         mediaServiceProvider: VoiceMessageMediaServiceProvider,
          cacheManager: VoiceMessageAttachmentCacheManager,
          voiceBroadcastAggregator: VoiceBroadcastAggregator) {
         self.mediaServiceProvider = mediaServiceProvider
         self.cacheManager = cacheManager
         self.voiceBroadcastAggregator = voiceBroadcastAggregator
         
-        let voiceBroadcastPlaybackDetails = VoiceBroadcastPlaybackDetails(type: VoiceBroadcastPlaybackType.player, chunks: [])
-        super.init(initialViewState: VoiceBroadcastPlaybackViewState(voiceBroadcast: voiceBroadcastPlaybackDetails, playbackState: .stopped, bindings: VoiceBroadcastPlaybackViewStateBindings()))
+        let viewState = VoiceBroadcastPlaybackViewState(details: details,
+                                                        playbackState: .stopped,
+                                                        bindings: VoiceBroadcastPlaybackViewStateBindings())
+        super.init(initialViewState: viewState)
         
         self.voiceBroadcastAggregator.delegate = self
     }
@@ -62,6 +65,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType {
     private func play() {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] play")
         
+        // TODO: But what?
         let requiredNumberOfSamples = 100// playbackView.getRequiredNumberOfSamples() ?
         
         guard let voiceBroadcast = voiceBroadcastAggregator.voiceBroadcast else {
@@ -115,15 +119,6 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType {
         }
     }
 }
-    
-
-// MARK: - VoiceBroadcastPlaybackViewModelProtocol
-extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelProtocol {
-    func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: VoiceBroadcastPlaybackDetails) {
-        self.state.voiceBroadcast = voiceBroadcastDetails
-    }
-}
-
 
 // MARK: - TODO: VoiceBroadcastAggregatorDelegate
 extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
@@ -144,8 +139,6 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
     
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {
         MXLog.debug("AAAA voiceBroadcastAggregatorDidUpdateData")
-        let voiceBroadcastPlaybackDetails = VoiceBroadcastPlaybackDetails(type: .player, chunks: Array(aggregator.voiceBroadcast.chunks))
-        self.updateWithVoiceBroadcastDetails(voiceBroadcastPlaybackDetails)
     }
 }
 
