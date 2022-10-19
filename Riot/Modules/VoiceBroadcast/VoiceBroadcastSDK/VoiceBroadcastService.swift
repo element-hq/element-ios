@@ -130,6 +130,9 @@ public class VoiceBroadcastService: NSObject {
         let stateKey = userId
         
         let voiceBroadcastInfo = VoiceBroadcastInfo()
+        
+        voiceBroadcastInfo.deviceId = self.room.mxSession.myDeviceId
+        
         voiceBroadcastInfo.state = state.rawValue
         
         if state != VoiceBroadcastInfo.State.started {
@@ -148,7 +151,7 @@ public class VoiceBroadcastService: NSObject {
             return nil
         }
         
-        return self.room.sendStateEvent(.custom(VoiceBroadcastSettings.eventType),
+        return self.room.sendStateEvent(.custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType),
                                         content: stateEventContent, stateKey: stateKey) { [weak self] response in
             guard let self = self else { return }
             

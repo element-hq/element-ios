@@ -183,13 +183,23 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                         self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
                     }
                 }
-                else if ([event.type isEqualToString:VoiceBroadcastSettings.eventType])
+                else if ([event.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
                 {
-                    self.tag = RoomBubbleCellDataTagVoiceBroadcast;
+                    MXEvent *roomVoiceBroadcastInfoEvent = [roomState stateEventsWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType].lastObject;
+                    
+                    VoiceBroadcastInfo *lastVoiceBroadcastInfo = [VoiceBroadcastInfo modelFromJSON: roomVoiceBroadcastInfoEvent.content];
+                    
+                    if ([VoiceBroadcastInfo isStartedFor:lastVoiceBroadcastInfo.state] &&
+                        [event.sender isEqualToString: self.mxSession.myUserId] &&
+                        [lastVoiceBroadcastInfo.deviceId isEqualToString:self.mxSession.myDeviceId]) {
+                        self.tag = RoomBubbleCellDataTagVoiceBroadcastRecord;
+                    } else {
+                        self.tag = RoomBubbleCellDataTagVoiceBroadcastPlayback;
+                    }
+                    
                     self.collapsable = NO;
                     self.collapsed = NO;
                     
-                    MXLogDebug(@"VB incoming initWithEvent")
                     break;
                 }
                 
@@ -205,7 +215,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 }
                 else if (event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType])
                 {
-                    self.tag = RoomBubbleCellDataTagVoiceBroadcast;
+                    self.tag = RoomBubbleCellDataTagVoiceBroadcastPlayback;
                     self.collapsable = NO;
                     self.collapsed = NO;
                 }
@@ -315,7 +325,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             }
             
             break;
-        case RoomBubbleCellDataTagVoiceBroadcast:
+        case RoomBubbleCellDataTagVoiceBroadcastPlayback:
             if (RiotSettings.shared.enableVoiceBroadcast == YES &&
                 [VoiceBroadcastInfo isStartedFor:[VoiceBroadcastInfo modelFromJSON:self.events.lastObject.content].state])
             {
@@ -1072,7 +1082,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         case RoomBubbleCellDataTagLiveLocation:
             shouldAddEvent = NO;
             break;
-        case RoomBubbleCellDataTagVoiceBroadcast:
+        case RoomBubbleCellDataTagVoiceBroadcastPlayback:
             shouldAddEvent = NO;
             break;
         default:
@@ -1143,7 +1153,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                     {
                         shouldAddEvent = NO;
                     }
-                } else if ([event.type isEqualToString:VoiceBroadcastSettings.eventType]) {
+                } else if ([event.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]) {
                     shouldAddEvent = NO;
                 }
                 break;

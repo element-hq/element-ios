@@ -33,7 +33,7 @@ class AppConfiguration: CommonConfiguration {
         // Get additional events (modular widget, voice broadcast...)
         MXKAppSettings.standard()?.addSupportedEventTypes([kWidgetMatrixEventTypeString,
                                                            kWidgetModularEventTypeString,
-                                                           VoiceBroadcastSettings.eventType])
+                                                           VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
         
         // Hide undecryptable messages that were sent while the user was not in the room
         MXKAppSettings.standard()?.hidePreJoinedUndecryptableEvents = true

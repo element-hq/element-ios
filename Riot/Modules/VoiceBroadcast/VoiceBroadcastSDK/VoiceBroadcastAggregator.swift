@@ -42,7 +42,7 @@ public class VoiceBroadcastAggregator {
     private let voiceBroadcastBuilder: VoiceBroadcastBuilder
     
     private var voiceBroadcastInfoStartEventContent: VoiceBroadcastInfo!
-    private var voiceBroadcastUserId: String!
+    private var voiceBroadcastSenderId: String!
     
     private var referenceEventsListener: Any?
     
@@ -76,13 +76,13 @@ public class VoiceBroadcastAggregator {
     private func buildVoiceBroadcastStartContent() throws {
         guard let event = session.store.event(withEventId: voiceBroadcastStartEventId, inRoom: room.roomId),
               let eventContent = VoiceBroadcastInfo(fromJSON: event.content),
-              let userId = event.stateKey
+              let senderId = event.stateKey
         else {
             throw VoiceBroadcastAggregatorError.invalidVoiceBroadcastStartEvent
         }
         
         voiceBroadcastInfoStartEventContent = eventContent
-        voiceBroadcastUserId = userId
+        voiceBroadcastSenderId = senderId
         
         voiceBroadcast = voiceBroadcastBuilder.build(mediaManager: session.mediaManager,
                                                      voiceBroadcastStartEventId: voiceBroadcastStartEventId,
@@ -113,11 +113,10 @@ public class VoiceBroadcastAggregator {
             
             self.events.append(contentsOf: response.chunk)
             
-            
-            let eventTypes = [VoiceBroadcastSettings.eventType, kMXEventTypeStringRoomMessage]
+            let eventTypes = [VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType, kMXEventTypeStringRoomMessage]
             self.referenceEventsListener = self.room.listen(toEventsOfTypes: eventTypes) { [weak self] event, direction, state in
                 guard let self = self,
-                      event.senderKey == self.voiceBroadcastUserId,
+                      event.sender == self.voiceBroadcastSenderId,
                       let relatedEventId = event.relatesTo?.eventId,
                       relatedEventId == self.voiceBroadcastStartEventId,
                       event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil else {
