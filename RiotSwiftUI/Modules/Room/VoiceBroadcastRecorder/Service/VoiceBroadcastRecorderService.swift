@@ -63,6 +63,12 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         
         // FIXME: Update state
         try? audioEngine.start()
+        
+        voiceBroadcastService?.startVoiceBroadcast(success: { _ in
+            // update recording state
+        }, failure: { error in
+            MXLog.error("[VoiceBroadcastRecorderService] Failed to start voice broadcast", context: error)
+        })
     }
     
     func stopRecordingVoiceBroadcast() {
@@ -128,7 +134,9 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             // FIXME: Manage error
             return
         }
-        let fileUrl = directory.appendingPathComponent("VoiceBroadcastChunk-\(roomId)-\(chunkFileNumber).m4a")
+        let fileUrl = directory.appendingPathComponent("\(roomId)")
+            .appendingPathComponent("VoiceBroadcastChunk-\(chunkFileNumber)")
+            .appendingPathExtension("m4a")
         MXLog.debug("[VoiceBroadcastRecorderService] Create chunk file to \(fileUrl)")
         
         let settings: [String: Any] = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -160,10 +168,10 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                 if let someDuration = try? result.get() {
                     duration = someDuration
                 } else {
-                    MXLog.error("[VoiceBroadcastRecorderService] Failed retrieving media duration")
+                    MXLog.error("[VoiceBroadcastRecorderService] Failed to retrieve media duration")
                 }
             case .failure(let error):
-                MXLog.error("[VoiceBroadcastRecorderService] Failed getting audio duration", context: error)
+                MXLog.error("[VoiceBroadcastRecorderService] Failed to get audio duration", context: error)
             }
             
             dispatchGroup.leave()
@@ -174,12 +182,12 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                                                             mimeType: "audio/mp4",
                                                             duration: UInt(duration * 1000),
                                                             samples: nil) { eventId in
-                MXLog.debug("[VoiceBroadcastRecorderService] sendChunkOfVoiceBroadcast success.")
+                MXLog.debug("[VoiceBroadcastRecorderService] Send voice broadcast chunk with success.")
                 if eventId != nil {
                     self.deleteRecording(at: url)
                 }
             } failure: { error in
-                MXLog.error("[VoiceBroadcastRecorderService] sendChunkOfVoiceBroadcast error.", context: error)
+                MXLog.error("[VoiceBroadcastRecorderService] Failed to send voice broadcast chunk.", context: error)
             }
         }
     }
@@ -193,7 +201,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         do {
             try FileManager.default.removeItem(at: url)
         } catch {
-            MXLog.error("[VoiceBroadcastRecorderService] deleteRecordingAtURL:", context: error)
+            MXLog.error("[VoiceBroadcastRecorderService] Delete chunk file error.", context: error)
         }
     }
 }
