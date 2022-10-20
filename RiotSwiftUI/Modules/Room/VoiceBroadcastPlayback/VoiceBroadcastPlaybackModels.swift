@@ -23,7 +23,6 @@ enum VoiceBroadcastPlaybackViewAction {
     case pause
 }
 
-// TODO: Rename it to VoiceBroadcastPlaybackState
 enum VoiceBroadcastPlaybackState {
     case stopped
     case buffering
