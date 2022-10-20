@@ -60,8 +60,7 @@ final class VoiceBroadcastRecorderCoordinator: Coordinator, Presentable {
     func start() { }
     
     func toPresentable() -> UIViewController {
-        VectorHostingController(rootView: VoiceBroadcastRecorderView(viewModel: voiceBroadcastRecorderViewModel.context),
-                                forceZeroSafeAreaInsets: true)
+        VectorHostingController(rootView: VoiceBroadcastRecorderView(viewModel: voiceBroadcastRecorderViewModel.context))
     }
     
     func pauseRecording() {
