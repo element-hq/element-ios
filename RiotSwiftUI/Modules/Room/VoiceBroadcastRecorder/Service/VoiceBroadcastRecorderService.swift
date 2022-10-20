@@ -48,11 +48,11 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     
     func startRecordingVoiceBroadcast() {
         let inputNode = audioEngine.inputNode
-        
+
         let inputBus = AVAudioNodeBus(0)
         let inputFormat = inputNode.inputFormat(forBus: inputBus)
         MXLog.debug("[VoiceBroadcastRecorderService] Start recording voice broadcast for bus name : \(String(describing: inputNode.name(forInputBus: inputBus)))")
-        
+
         inputNode.installTap(onBus: inputBus,
                              bufferSize: 512,
                              format: inputFormat) { (buffer, time) -> Void in
@@ -60,24 +60,20 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                 self.writeBuffer(buffer)
             }
         }
-        
+
         // FIXME: Update state
         try? audioEngine.start()
-        
-        voiceBroadcastService?.startVoiceBroadcast(success: { _ in
-            // update recording state
-        }, failure: { error in
-            MXLog.error("[VoiceBroadcastRecorderService] Failed to start voice broadcast", context: error)
-        })
     }
     
     func stopRecordingVoiceBroadcast() {
         audioEngine.stop()
         audioEngine.reset() // FIXME: Really needed ?
         resetValues()
-        
+
         voiceBroadcastService?.stopVoiceBroadcast(success: { _ in
             // update recording state
+            MXLog.debug("[VoiceBroadcastRecorderService] Stopped")
+            self.session.tearDownVoiceBroadcastService()
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to stop voice broadcast", context: error)
         })
@@ -134,8 +130,9 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             // FIXME: Manage error
             return
         }
-        let fileUrl = directory.appendingPathComponent("\(roomId)")
-            .appendingPathComponent("VoiceBroadcastChunk-\(chunkFileNumber)")
+        let temporaryFileName = "VoiceBroadcastChunk-\(roomId)-\(chunkFileNumber)"
+        let fileUrl = directory
+            .appendingPathComponent(temporaryFileName)
             .appendingPathExtension("m4a")
         MXLog.debug("[VoiceBroadcastRecorderService] Create chunk file to \(fileUrl)")
         
@@ -145,10 +142,15 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                                      AVNumberOfChannelsKey: 1,
                                      AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue]
         
-        chunkFile = try! AVAudioFile(forWriting: fileUrl, settings: settings)
+        chunkFile = try? AVAudioFile(forWriting: fileUrl, settings: settings)
         
-        chunkFileNumber += 1
-        chunkFrames = 0
+        if chunkFile != nil {
+            chunkFileNumber += 1
+            chunkFrames = 0
+        } else {
+            stopRecordingVoiceBroadcast()
+            // FIXME: Manage error and stop recording ?
+        }
     }
     
     /// Send chunk file to the server.
