@@ -203,14 +203,16 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             dispatchGroup.leave()
         }
         
-        convertAACToM4A(at: url) { url in
-            if let url = url {
+        convertAACToM4A(at: url) { [weak self] convertedUrl in
+            guard let self = self else { return }
+            
+            if let convertedUrl = convertedUrl {
                 dispatchGroup.notify(queue: .main) {
-                    voiceBroadcastService.sendChunkOfVoiceBroadcast(audioFileLocalURL: url,
-                                                                    mimeType: "audio/mp4",
-                                                                    duration: UInt(duration * 1000),
-                                                                    samples: nil,
-                                                                    sequence: UInt(sequence)) { eventId in
+                    self.voiceBroadcastService?.sendChunkOfVoiceBroadcast(audioFileLocalURL: convertedUrl,
+                                                                          mimeType: "audio/mp4",
+                                                                          duration: UInt(duration * 1000),
+                                                                          samples: nil,
+                                                                          sequence: UInt(sequence)) { eventId in
                         MXLog.debug("[VoiceBroadcastRecorderService] Send voice broadcast chunk with success.")
                         if eventId != nil {
                             self.deleteRecording(at: url)
