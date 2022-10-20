@@ -23,13 +23,17 @@ struct UserOtherSessions: View {
     
     var body: some View {
         ScrollView {
-            ForEach(viewModel.viewState.sections) { section in
-                switch section {
-                case let .sessionItems(header: header, items: items):
-                    createSessionItemsSection(header: header, items: items)
-                case let .emptySessionItems(header: header, title: title):
-                    createEmptySessionsItemsSection(header: header, title: title)
+            SwiftUI.Section {
+                LazyVStack(spacing: 0) {
+                    ForEach(viewModel.items) { viewData in
+                        UserSessionListItem(viewData: viewData, isEditModeEnabled: viewModel.isEditModeEnabled, onBackgroundTap: { sessionId in
+                            viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId))
+                        })
+                    }
                 }
+                .background(theme.colors.background)
+            } header: {
+                headerView(header: viewModel.viewState.header)
             }
         }
         .background(theme.colors.system.ignoresSafeArea())
@@ -73,20 +77,7 @@ struct UserOtherSessions: View {
         .accentColor(theme.colors.accent)
     }
     
-    private func createSessionItemsSection(header: UserOtherSessionsHeaderViewData, items: [UserSessionListItemViewData]) -> some View {
-        SwiftUI.Section {
-            LazyVStack(spacing: 0) {
-                ForEach(items) { viewData in
-                    UserSessionListItem(viewData: viewData, isEditModeEnabled: viewModel.isEditModeEnabled, onBackgroundTap: { sessionId in
-                        viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId))
-                    })
-                }
-            }
-            .background(theme.colors.background)
-        } header: {
-            headerView(header: header)
-        }
-    }
+
     
     private func createEmptySessionsItemsSection(header: UserOtherSessionsHeaderViewData, title: String) -> some View {
         SwiftUI.Section {

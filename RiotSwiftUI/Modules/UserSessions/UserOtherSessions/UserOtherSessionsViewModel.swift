@@ -27,9 +27,14 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
          filter: UserOtherSessionsFilter,
          title: String) {
         self.sessionInfos = sessionInfos
-        super.init(initialViewState: UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: filter, isEditModeEnabled: false),
+        let bindings = UserOtherSessionsBindings(filter: filter,
+                                                 isEditModeEnabled: false,
+                                                 items: [])
+        let header = UserOtherSessionsHeaderViewDataFactory().createHeaderData(filter: filter)
+        super.init(initialViewState: UserOtherSessionsViewState(bindings: bindings,
                                                                 title: title,
-                                                                sections: []))
+                                                                header: header,
+                                                                emptyItemsTitle: nil))
         updateViewState()
     }
     
@@ -73,18 +78,16 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     // MARK: - Private
     
     private func updateViewState() {
-        let sectionItems = createSectionItems(sessionInfos: sessionInfos, filter: state.bindings.filter)
-        let sectionHeader = createHeaderData(filter: state.bindings.filter)
-        if sectionItems.isEmpty {
-            state.sections = [.emptySessionItems(header: sectionHeader,
-                                                 title: noSessionsTitle(filter: state.bindings.filter))]
-        } else {
-            state.sections = [.sessionItems(header: sectionHeader,
-                                            items: sectionItems)]
+        state.bindings.items = createItems(sessionInfos: sessionInfos, filter: state.bindings.filter)
+        
+        state.header = UserOtherSessionsHeaderViewDataFactory().createHeaderData(filter: state.bindings.filter)
+       
+        if state.bindings.items.isEmpty {
+            state.emptyItemsTitle = noSessionsTitle(filter: state.bindings.filter)
         }
     }
     
-    private func createSectionItems(sessionInfos: [UserSessionInfo], filter: UserOtherSessionsFilter) -> [UserSessionListItemViewData] {
+    private func createItems(sessionInfos: [UserSessionInfo], filter: UserOtherSessionsFilter) -> [UserSessionListItemViewData] {
         filterSessions(sessionInfos: sessionInfos, by: filter)
             .map {
                 UserSessionListItemViewDataFactory().create(from: $0,
@@ -106,7 +109,26 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         }
     }
     
-    private func createHeaderData(filter: UserOtherSessionsFilter) -> UserOtherSessionsHeaderViewData {
+ 
+    
+    private func noSessionsTitle(filter: UserOtherSessionsFilter) -> String {
+        switch filter {
+        case .all:
+            assertionFailure("The view is not intended to be displayed without any session")
+            return ""
+        case .verified:
+            return VectorL10n.userOtherSessionNoVerifiedSessions
+        case .unverified:
+            return VectorL10n.userOtherSessionNoUnverifiedSessions
+        case .inactive:
+            return VectorL10n.userOtherSessionNoInactiveSessions
+        }
+    }
+}
+
+struct UserOtherSessionsHeaderViewDataFactory {
+    
+    func createHeaderData(filter: UserOtherSessionsFilter) -> UserOtherSessionsHeaderViewData {
         switch filter {
         case .all:
             return UserOtherSessionsHeaderViewData(title: nil,
@@ -124,20 +146,6 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
             return UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuVerified,
                                                    subtitle: VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle,
                                                    iconName: Asset.Images.userOtherSessionsVerified.name)
-        }
-    }
-    
-    private func noSessionsTitle(filter: UserOtherSessionsFilter) -> String {
-        switch filter {
-        case .all:
-            assertionFailure("The view is not intended to be displayed without any session")
-            return ""
-        case .verified:
-            return VectorL10n.userOtherSessionNoVerifiedSessions
-        case .unverified:
-            return VectorL10n.userOtherSessionNoUnverifiedSessions
-        case .inactive:
-            return VectorL10n.userOtherSessionNoInactiveSessions
         }
     }
 }
