@@ -23,7 +23,7 @@ public class VoiceBroadcastService: NSObject {
     
     // MARK: - Properties
     
-    private var voiceBroadcastInfoEventId: String?
+    public private(set) var voiceBroadcastInfoEventId: String?
     public let room: MXRoom
     public private(set) var state: VoiceBroadcastInfo.State
     
