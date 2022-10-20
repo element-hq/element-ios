@@ -143,6 +143,13 @@
     [tableView registerClass:VoiceBroadcastOutgoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceBroadcastOutgoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
 }
 
+- (void)registerVoiceBroadcastRecorderCellsForTableView:(UITableView*)tableView
+{
+    // Outgoing
+    [tableView registerClass:VoiceBroadcastRecorderOutgoingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceBroadcastRecorderOutgoingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastRecorderOutgoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceBroadcastRecorderOutgoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+}
+
 #pragma mark - Mapping
 
 - (NSDictionary<NSNumber*, Class>*)incomingTextMessageCellsMapping
@@ -315,6 +322,16 @@
         @(RoomTimelineCellIdentifierOutgoingVoiceBroadcast) : VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithoutSenderInfo) : VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithPaginationTitle) : VoiceBroadcastOutgoingWithPaginationTitleBubbleCell.class,
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)voiceBroadcastRecorderCellsMapping
+{
+    return @{
+        // Outgoing
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder) : VoiceBroadcastRecorderOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithoutSenderInfo) : VoiceBroadcastRecorderOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithPaginationTitle) : VoiceBroadcastRecorderOutgoingWithPaginationTitleBubbleCell.class,
     };
 }
 

@@ -598,6 +598,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     isAppeared = NO;
     
     [VoiceMessageMediaServiceProvider.sharedProvider pauseAllServices];
+    [VoiceBroadcastRecorderProvider.shared pauseRecording];
     
     // Stop the loading indicator even if the session is still in progress
     [self stopLoadingUserIndicator];
@@ -2436,15 +2437,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (session.voiceBroadcastService)
     {
         [self showAlertWithTitle:[VectorL10n voiceBroadcastUnauthorizedTitle] message:[VectorL10n voiceBroadcastAlreadyInProgressMessage]];
-        
-        //*** Temporary code - To be removed ***
-        // We stop here the current voice broadcasting (required until the actual stop button is available)
-        [session.voiceBroadcastService stopVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
-            [session tearDownVoiceBroadcastService];
-        } failure:^(NSError * _Nonnull error) {
-        }];
-        //*** End ***
-        
         return;
     }
     
@@ -3272,6 +3264,22 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
+    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcastRecord)
+    {
+        if (bubbleData.isPaginationFirstBubble)
+        {
+            cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithPaginationTitle;
+        }
+        else if (bubbleData.shouldHideSenderInformation)
+        {
+            cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithoutSenderInfo;
+        }
+        else
+        {
+            cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder;
+        }
+    }
+    
     else if (roomBubbleCellData.getFirstBubbleComponentWithDisplay.event.isEmote)
     {
         if (bubbleData.isIncoming)

@@ -190,9 +190,13 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                     {
                         // This state event corresponds to the beginning of a voice broadcast
                         // Check whether this is a local live broadcast to display it with the recorder view or not
+                        // Note: Because of race condition, the voiceBroadcastService may be running without id here (the sync response may be received before
+                        // the success of the event sending), in that case, we will display a recorder view by default to let the user be able to stop a potential record.
                         if ([event.sender isEqualToString: self.mxSession.myUserId] &&
                             [voiceBroadcastInfo.deviceId isEqualToString:self.mxSession.myDeviceId] &&
-                            self.mxSession.voiceBroadcastService != nil)
+                            self.mxSession.voiceBroadcastService != nil &&
+                            ([event.eventId isEqualToString: self.mxSession.voiceBroadcastService.voiceBroadcastInfoEventId] ||
+                             self.mxSession.voiceBroadcastService.voiceBroadcastInfoEventId == nil))
                         {
                             self.tag = RoomBubbleCellDataTagVoiceBroadcastRecord;
                         }
@@ -204,6 +208,14 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                     else
                     {
                         self.tag = RoomBubbleCellDataTagVoiceBroadcastNoDisplay;
+                        
+                        if ([VoiceBroadcastInfo isStoppedFor:voiceBroadcastInfo.state])
+                        {
+                            // This state event corresponds to the end of a voice broadcast
+                            // Force the tag of the potential cellData which corresponds to the started event to switch the display from recorder to listener
+                            id<MXKRoomBubbleCellDataStoring> bubbleData = [roomDataSource cellDataOfEventWithEventId:voiceBroadcastInfo.eventId];
+                            bubbleData.tag = RoomBubbleCellDataTagVoiceBroadcastPlayback;
+                        }
                     }
                     self.collapsable = NO;
                     self.collapsed = NO;

@@ -37,11 +37,17 @@
 
 + (id)modelFromJSON:(NSDictionary *)JSONDictionary
 {
-    NSString *deviceId;
-    MXJSONModelSetString(deviceId, JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyDeviceId]);
+    // Return nil for redacted state event
+    if (!JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyState])
+    {
+        return nil;
+    }
     
     NSString *state;
     MXJSONModelSetString(state, JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyState]);
+    
+    NSString *deviceId;
+    MXJSONModelSetString(deviceId, JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyDeviceId]);
     
     NSInteger chunkLength = BuildSettings.voiceBroadcastChunkLength;
     if (JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLength])
