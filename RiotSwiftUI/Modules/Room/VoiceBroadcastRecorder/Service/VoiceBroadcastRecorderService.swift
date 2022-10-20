@@ -87,7 +87,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .stopped)
             
             // Send current chunk
-            self.sendChunkFile(at: self.chunkFile.url)
+            self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
             
             self.session.tearDownVoiceBroadcastService()
         }, failure: { error in
@@ -102,7 +102,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             guard let self = self else { return }
             
             // Send current chunk
-            self.sendChunkFile(at: self.chunkFile.url)
+            self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
             self.chunkFile = nil
             
         }, failure: { error in
@@ -129,6 +129,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     
     /// Write audio buffer to chunk file.
     private func writeBuffer(_ buffer: AVAudioPCMBuffer) {
+        MXLog.debug("[VoiceBroadcastRecorderService] writeBuffer")
         let sampleRate = buffer.format.sampleRate
         
         if chunkFile == nil {
@@ -139,7 +140,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         chunkFrames += buffer.frameLength
         
         if chunkFrames > AVAudioFrameCount(Double(BuildSettings.voiceBroadcastChunkLength) * sampleRate) {
-            sendChunkFile(at: chunkFile.url)
+            sendChunkFile(at: chunkFile.url, sequence: self.chunkFileNumber)
             // Reset chunkFile
             chunkFile = nil
         }
@@ -175,7 +176,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     }
     
     /// Send chunk file to the server.
-    private func sendChunkFile(at url: URL) {
+    private func sendChunkFile(at url: URL, sequence: Int) {
         guard let voiceBroadcastService = voiceBroadcastService else {
             // FIXME: Manage error
             return
@@ -205,7 +206,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                                                             mimeType: "audio/mp4",
                                                             duration: UInt(duration * 1000),
                                                             samples: nil,
-                                                            sequence: UInt(self.chunkFileNumber)) { eventId in
+                                                            sequence: UInt(sequence)) { eventId in
                 MXLog.debug("[VoiceBroadcastRecorderService] Send voice broadcast chunk with success.")
                 if eventId != nil {
                     self.deleteRecording(at: url)
