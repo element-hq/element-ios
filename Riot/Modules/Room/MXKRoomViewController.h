@@ -74,11 +74,6 @@ typedef NS_ENUM(NSUInteger, MXKRoomViewControllerJoinRoomResult) {
     MXKAttachment *currentSharedAttachment;
     
     /**
-     The potential text input placeholder is saved when it is replaced temporarily
-     */
-    NSString *savedInputToolbarPlaceholder;
-    
-    /**
      Tell whether the input toolbar required to run an animation indicator.
      */
     BOOL isInputToolbarProcessing;
