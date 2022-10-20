@@ -598,6 +598,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     isAppeared = NO;
     
     [VoiceMessageMediaServiceProvider.sharedProvider pauseAllServices];
+    [VoiceBroadcastRecorderProvider.shared pauseRecording];
     
     // Stop the loading indicator even if the session is still in progress
     [self stopLoadingUserIndicator];
@@ -2295,6 +2296,16 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self roomInputToolbarViewDidTapFileUpload];
         }]];
     }
+    if (RiotSettings.shared.enableVoiceBroadcast && !self.isNewDirectChat)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLive.image andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self roomInputToolbarViewDidTapVoiceBroadcast];
+        }]];
+    }
     if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled && !self.isNewDirectChat)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionPoll.image andAction:^{
@@ -2323,16 +2334,6 @@ static CGSize kThreadListBarButtonItemImageSize;
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
             }
             [self showCameraControllerAnimated:YES];
-        }]];
-    }
-    if (RiotSettings.shared.enableVoiceBroadcast && !self.isNewDirectChat)
-    {
-        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLive.image andAction:^{
-            MXStrongifyAndReturnIfNil(self);
-            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
-                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
-            }
-            [self roomInputToolbarViewDidTapVoiceBroadcast];
         }]];
     }
     roomInputView.actionsBar.actionItems = actionItems;
@@ -2425,7 +2426,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)roomInputToolbarViewDidTapVoiceBroadcast
 {
     // Check first the room permission
-    if (![self canSendStateEventWithType:VoiceBroadcastSettings.eventType])
+    if (![self canSendStateEventWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
     {
         [self showAlertWithTitle:[VectorL10n voiceBroadcastUnauthorizedTitle] message:[VectorL10n voiceBroadcastPermissionDeniedMessage]];
         return;
@@ -2436,15 +2437,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (session.voiceBroadcastService)
     {
         [self showAlertWithTitle:[VectorL10n voiceBroadcastUnauthorizedTitle] message:[VectorL10n voiceBroadcastAlreadyInProgressMessage]];
-        
-        //*** Temporary code - To be removed ***
-        // We stop here the current voice broadcasting (required until the actual stop button is available)
-        [session.voiceBroadcastService stopVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
-            [session tearDownVoiceBroadcastService];
-        } failure:^(NSError * _Nonnull error) {
-        }];
-        //*** End ***
-        
         return;
     }
     
@@ -3239,7 +3231,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
-    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcast)
+    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcastPlayback)
     {
         if (bubbleData.isIncoming)
         {
@@ -3272,6 +3264,22 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
+    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcastRecord)
+    {
+        if (bubbleData.isPaginationFirstBubble)
+        {
+            cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithPaginationTitle;
+        }
+        else if (bubbleData.shouldHideSenderInformation)
+        {
+            cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithoutSenderInfo;
+        }
+        else
+        {
+            cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder;
+        }
+    }
+    
     else if (roomBubbleCellData.getFirstBubbleComponentWithDisplay.event.isEmote)
     {
         if (bubbleData.isIncoming)

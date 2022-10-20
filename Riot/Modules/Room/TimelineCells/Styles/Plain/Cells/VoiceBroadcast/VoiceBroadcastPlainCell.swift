@@ -28,7 +28,7 @@ class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable
               let event = bubbleData.events.last,
               let voiceBroadcastContent = VoiceBroadcastInfo(fromJSON: event.content),
               voiceBroadcastContent.state == VoiceBroadcastInfo.State.started.rawValue,
-              let controller = TimelineVoiceBroadcastProvider.shared.buildTimelineVoiceBroadcastVCForEvent(event) else {
+              let controller = VoiceBroadcastPlaybackProvider.shared.buildVoiceBroadcastPlaybackVCForEvent(event, senderDisplayName: bubbleData.senderDisplayName) else {
             return
         }
         

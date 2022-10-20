@@ -35,7 +35,7 @@ enum VoiceMessageAudioPlayerError: Error {
 class VoiceMessageAudioPlayer: NSObject {
     
     private var playerItem: AVPlayerItem?
-    private var audioPlayer: AVPlayer?
+    private var audioPlayer: AVQueuePlayer?
     
     private var statusObserver: NSKeyValueObservation?
     private var playbackBufferEmptyObserver: NSKeyValueObservation?
@@ -64,6 +64,14 @@ class VoiceMessageAudioPlayer: NSObject {
         return abs(CMTimeGetSeconds(audioPlayer?.currentTime() ?? .zero))
     }
     
+    var playerItems: [AVPlayerItem] {
+        guard let audioPlayer = audioPlayer else {
+            return []
+        }
+        
+        return audioPlayer.items()
+    }
+    
     private(set) var isStopped = true
     
     deinit {
@@ -85,9 +93,28 @@ class VoiceMessageAudioPlayer: NSObject {
         }
         
         playerItem = AVPlayerItem(url: url)
-        audioPlayer = AVPlayer(playerItem: playerItem)
+        audioPlayer = AVQueuePlayer(playerItem: playerItem)
         
         addObservers()
+    }
+    
+    func addContentFromURL(_ url: URL) {
+        let playerItem = AVPlayerItem(url: url)
+        audioPlayer?.insert(playerItem, after: nil)
+        
+        // audioPlayerDidFinishPlaying must be called on this last AVPlayerItem
+        NotificationCenter.default.removeObserver(playToEndObserver as Any)
+        playToEndObserver = NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem, queue: nil) { [weak self] notification in
+            guard let self = self else { return }
+            
+            self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidFinishPlaying(self)
+            }
+        }
+    }
+    
+    func removeAllPlayerItems() {
+        audioPlayer?.removeAllItems()
     }
     
     func unloadContent() {
@@ -122,7 +149,7 @@ class VoiceMessageAudioPlayer: NSObject {
         audioPlayer?.seek(to: .zero)
     }
     
-    func seekToTime(_ time: TimeInterval, completionHandler:@escaping (Bool) -> Void = { _ in }) {
+    func seekToTime(_ time: TimeInterval, completionHandler: @escaping (Bool) -> Void = { _ in }) {
         audioPlayer?.seek(to: CMTime(seconds: time, preferredTimescale: 60000), completionHandler: completionHandler)
     }
     

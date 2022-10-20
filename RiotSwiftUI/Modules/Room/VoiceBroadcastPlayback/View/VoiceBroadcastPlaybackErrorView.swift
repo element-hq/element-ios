@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct TimelineVoiceBroadcastView: View {
+struct VoiceBroadcastPlaybackErrorView: View {
     // MARK: - Properties
     
     // MARK: Private
@@ -25,27 +25,27 @@ struct TimelineVoiceBroadcastView: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: TimelineVoiceBroadcastViewModel.Context
+    var action: (() -> Void)?
     
     var body: some View {
-        let voiceBroadcast = viewModel.viewState.voiceBroadcast
-        
-        VStack(alignment: .leading, spacing: 16.0) {
-            Text(VectorL10n.voiceBroadcastInTimelineTitle)
-                .font(theme.fonts.bodySB)
-                .foregroundColor(theme.colors.primaryContent)
-            Text(VectorL10n.voiceBroadcastInTimelineBody)
-                .font(theme.fonts.body)
-                .foregroundColor(theme.colors.primaryContent)
+        VStack {
+            VStack {
+                Image(uiImage: Asset.Images.errorIcon.image)
+                    .frame(width: 40, height: 40)
+                Text(VectorL10n.voiceBroadcastPlaybackLoadingError)
+                    .multilineTextAlignment(.center)
+                    .font(theme.fonts.caption1)
+                    .foregroundColor(theme.colors.primaryContent)
+            }
+            .padding()
         }
-        .padding([.horizontal, .top], 2.0)
-        .padding([.bottom])
-        .alert(item: $viewModel.alertInfo) { info in
-            info.alert
-        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(theme.colors.system.ignoresSafeArea())
     }
 }
 
-// MARK: - Previews
-
-// TODO: Add Voice broadcast preview
+struct VoiceBroadcastPlaybackErrorView_Previews: PreviewProvider {
+    static var previews: some View {
+        VoiceBroadcastPlaybackErrorView()
+    }
+}

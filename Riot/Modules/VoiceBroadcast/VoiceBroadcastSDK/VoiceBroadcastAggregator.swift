@@ -25,6 +25,8 @@ public protocol VoiceBroadcastAggregatorDelegate: AnyObject {
     func voiceBroadcastAggregatorDidStartLoading(_ aggregator: VoiceBroadcastAggregator)
     func voiceBroadcastAggregatorDidEndLoading(_ aggregator: VoiceBroadcastAggregator)
     func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didFailWithError: Error)
+    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveChunk: VoiceBroadcastChunk)
+    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveState: VoiceBroadcastInfo.State)
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator)
 }
 
@@ -42,17 +44,20 @@ public class VoiceBroadcastAggregator {
     private let voiceBroadcastBuilder: VoiceBroadcastBuilder
     
     private var voiceBroadcastInfoStartEventContent: VoiceBroadcastInfo!
+    private var voiceBroadcastSenderId: String!
     
     private var referenceEventsListener: Any?
     
     private var events: [MXEvent] = []
     
-    public private(set) var voiceBroadcast: VoiceBroadcastProtocol! {
+    public private(set) var voiceBroadcast: VoiceBroadcast! {
         didSet {
             delegate?.voiceBroadcastAggregatorDidUpdateData(self)
         }
     }
     
+    public private(set) var isStarted: Bool = false
+    public private(set) var voiceBroadcastState: VoiceBroadcastInfo.State
     public var delegate: VoiceBroadcastAggregatorDelegate?
     
     deinit {
@@ -61,31 +66,34 @@ public class VoiceBroadcastAggregator {
         }
     }
     
-    public init(session: MXSession, room: MXRoom, voiceBroadcastStartEventId: String) throws {
+    public init(session: MXSession, room: MXRoom, voiceBroadcastStartEventId: String, voiceBroadcastState: VoiceBroadcastInfo.State) throws {
         self.session = session
         self.room = room
         self.voiceBroadcastStartEventId = voiceBroadcastStartEventId
+        self.voiceBroadcastState = voiceBroadcastState
         self.voiceBroadcastBuilder = VoiceBroadcastBuilder()
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleRoomDataFlush), name: NSNotification.Name.mxRoomDidFlushData, object: self.room)
-        
+
         try buildVoiceBroadcastStartContent()
     }
     
     private func buildVoiceBroadcastStartContent() throws {
         guard let event = session.store.event(withEventId: voiceBroadcastStartEventId, inRoom: room.roomId),
-              let eventContent = VoiceBroadcastInfo(fromJSON: event.content)
+              let eventContent = VoiceBroadcastInfo(fromJSON: event.content),
+              let senderId = event.stateKey
         else {
             throw VoiceBroadcastAggregatorError.invalidVoiceBroadcastStartEvent
         }
         
         voiceBroadcastInfoStartEventContent = eventContent
+        voiceBroadcastSenderId = senderId
         
-        voiceBroadcast = voiceBroadcastBuilder.build(voiceBroadcastStartEventContent: eventContent,
-                                 events: events,
-                                 currentUserIdentifier: session.myUserId)
-        
-        reloadVoiceBroadcastData()
+        voiceBroadcast = voiceBroadcastBuilder.build(mediaManager: session.mediaManager,
+                                                     voiceBroadcastStartEventId: voiceBroadcastStartEventId,
+                                                     voiceBroadcastInvoiceBroadcastStartEventContent: eventContent,
+                                                     events: events,
+                                                     currentUserIdentifier: session.myUserId)
     }
     
     @objc private func handleRoomDataFlush(sender: Notification) {
@@ -93,10 +101,30 @@ public class VoiceBroadcastAggregator {
             return
         }
         
-        reloadVoiceBroadcastData()
+        // TODO: What is the impact on room data flush on voice broadcast audio streaming?
+        MXLog.warning("[VoiceBroadcastAggregator] handleRoomDataFlush is not supported yet")
     }
     
-    private func reloadVoiceBroadcastData() {
+    private func updateState() {
+        self.room.state { roomState in
+            guard let event = roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last,
+                  event.stateKey == self.voiceBroadcastSenderId,
+                  let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
+                  (event.eventId == self.voiceBroadcastStartEventId || voiceBroadcastInfo.eventId == self.voiceBroadcastStartEventId),
+                  let state = VoiceBroadcastInfo.State(rawValue: voiceBroadcastInfo.state) else {
+                return
+            }
+        
+            self.delegate?.voiceBroadcastAggregator(self, didReceiveState: state)
+        }
+    }
+        
+    func start() {
+        if isStarted {
+            return
+        }
+        isStarted = true
+        
         delegate?.voiceBroadcastAggregatorDidStartLoading(self)
         
         session.aggregations.referenceEvents(forEvent: voiceBroadcastStartEventId, inRoom: room.roomId, from: nil, limit: -1) { [weak self] response in
@@ -106,29 +134,66 @@ public class VoiceBroadcastAggregator {
             
             self.events.removeAll()
             
-            self.events.append(contentsOf: response.chunk)
+            let filteredChunk = response.chunk.filter { event in
+                event.sender == self.voiceBroadcastSenderId &&
+                event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil
+            }
             
+            self.events.append(contentsOf: filteredChunk)
             
-            let eventTypes = [VoiceBroadcastSettings.eventType, kMXEventTypeStringRoomMessage]
+            let eventTypes = [VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType, kMXEventTypeStringRoomMessage]
             self.referenceEventsListener = self.room.listen(toEventsOfTypes: eventTypes) { [weak self] event, direction, state in
-                // TODO: check sender id to block fake voice broadcast chunk
-                guard let self = self,
-                      let relatedEventId = event.relatesTo?.eventId,
-                      relatedEventId == self.voiceBroadcastStartEventId,
-                      event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil else {
+                
+                guard let self = self else {
                     return
                 }
                 
-                self.events.append(event)
-                
-                self.voiceBroadcast = self.voiceBroadcastBuilder.build(voiceBroadcastStartEventContent: self.voiceBroadcastInfoStartEventContent,
-                                                   events: self.events,
-                                                   currentUserIdentifier: self.session.myUserId)
+                if event.eventType == .roomMessage {
+                    guard event.sender == self.voiceBroadcastSenderId,
+                          let relatedEventId = event.relatesTo?.eventId,
+                          relatedEventId == self.voiceBroadcastStartEventId,
+                          event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil else {
+                        return
+                    }
+                    
+                    if let chunk = self.voiceBroadcastBuilder.buildChunk(event: event, mediaManager: self.session.mediaManager, voiceBroadcastStartEventId: self.voiceBroadcastStartEventId) {
+                        self.delegate?.voiceBroadcastAggregator(self, didReceiveChunk: chunk)
+                    }
+                    
+                    if !self.events.contains(where: { newEvent in
+                        newEvent.eventId == event.eventId
+                    }) {
+                        self.events.append(event)
+                        MXLog.debug("[VoiceBroadcastAggregator] Got a new chunk for broadcast \(relatedEventId). Total: \(self.events.count)")
+                        
+                        self.voiceBroadcast = self.voiceBroadcastBuilder.build(mediaManager: self.session.mediaManager,
+                                                                               voiceBroadcastStartEventId: self.voiceBroadcastStartEventId,
+                                                                               voiceBroadcastInvoiceBroadcastStartEventContent: self.voiceBroadcastInfoStartEventContent,
+                                                                               events: self.events,
+                                                                               currentUserIdentifier: self.session.myUserId)
+                    }
+                } else {
+                    self.updateState()
+                }
             } as Any
             
-            self.voiceBroadcast = self.voiceBroadcastBuilder.build(voiceBroadcastStartEventContent: self.voiceBroadcastInfoStartEventContent,
-                                               events: self.events,
-                                               currentUserIdentifier: self.session.myUserId)
+            
+            self.events.forEach { event in
+                guard let chunk = self.voiceBroadcastBuilder.buildChunk(event: event, mediaManager: self.session.mediaManager, voiceBroadcastStartEventId: self.voiceBroadcastStartEventId) else {
+                    return
+                }
+                self.delegate?.voiceBroadcastAggregator(self, didReceiveChunk: chunk)
+            }
+            
+            self.updateState()
+          
+            self.voiceBroadcast = self.voiceBroadcastBuilder.build(mediaManager: self.session.mediaManager,
+                                                                   voiceBroadcastStartEventId: self.voiceBroadcastStartEventId,
+                                                                   voiceBroadcastInvoiceBroadcastStartEventContent: self.voiceBroadcastInfoStartEventContent,
+                                                                   events: self.events,
+                                                                   currentUserIdentifier: self.session.myUserId)
+            
+            MXLog.debug("[VoiceBroadcastAggregator] Start aggregation with \(self.voiceBroadcast.chunks.count) chunks for broadcast \(self.voiceBroadcastStartEventId)")
             
             self.delegate?.voiceBroadcastAggregatorDidEndLoading(self)
             
@@ -137,6 +202,8 @@ public class VoiceBroadcastAggregator {
                 return
             }
             
+            MXLog.error("[VoiceBroadcastAggregator] start failed", context: error)
+            self.isStarted = false
             self.delegate?.voiceBroadcastAggregator(self, didFailWithError: error)
         }
     }

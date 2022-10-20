@@ -408,7 +408,7 @@ final class BuildSettings: NSObject {
     static let locationSharingEnabled = true
     
     // MARK: - Voice Broadcast
-    static let voiceBroadcastChunkLength: Int = 600
+    static let voiceBroadcastChunkLength: Int = 120
     static let voiceBroadcastMaxLength: UInt64 = 144000
 
     // MARK: - MXKAppSettings

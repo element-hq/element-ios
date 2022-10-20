@@ -7535,7 +7535,7 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableThreads: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
   }
-  /// Voice broadcast (under active development). We currently only detect voice broadcast in the room timeline, this is not possible to send or listen an actual voice broadcast
+  /// Voice broadcast (under active development)
   public static var settingsLabsEnableVoiceBroadcast: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_voice_broadcast") 
   }
@@ -9062,6 +9062,10 @@ public class VectorL10n: NSObject {
   /// You don't have the required permissions to start a voice broadcast in this room. Contact a room administrator to upgrade your permissions.
   public static var voiceBroadcastPermissionDeniedMessage: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_permission_denied_message") 
+  }
+  /// Unable to play this voice broadcast.
+  public static var voiceBroadcastPlaybackLoadingError: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_playback_loading_error") 
   }
   /// Can't start a new voice broadcast
   public static var voiceBroadcastUnauthorizedTitle: String { 
