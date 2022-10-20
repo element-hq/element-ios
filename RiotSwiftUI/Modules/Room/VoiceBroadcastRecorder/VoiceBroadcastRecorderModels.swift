@@ -41,9 +41,4 @@ struct VoiceBroadcastRecorderViewState: BindableState {
 }
 
 struct VoiceBroadcastRecorderViewStateBindings {
-//    var alertInfo: AlertInfo<VoiceBroadcastRecorderAlertType>?
-}
-
-enum VoiceBroadcastRecorderAlertType {
-//    case failedClosingVoiceBroadcast
 }

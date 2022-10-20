@@ -24,9 +24,11 @@ import Foundation
     // MARK: - Properties
     // MARK: Public
     var session: MXSession?
-    var currentEventIdentifier: String?
     var coordinatorsForEventIdentifiers = [String: VoiceBroadcastRecorderCoordinator]()
     
+    // MARK: Private
+    private var currentEventIdentifier: String?
+
     // MARK: - Setup
     private override init() { }
     
