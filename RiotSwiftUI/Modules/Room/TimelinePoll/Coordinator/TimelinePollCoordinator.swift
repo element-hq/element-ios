@@ -84,8 +84,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     func start() { }
     
     func toPresentable() -> UIViewController {
-        VectorHostingController(rootView: TimelinePollView(viewModel: viewModel.context),
-                                forceZeroSafeAreaInsets: true)
+        VectorHostingController(rootView: TimelinePollView(viewModel: viewModel.context))
     }
     
     func canEndPoll() -> Bool {

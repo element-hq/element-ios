@@ -41,6 +41,7 @@ class VoiceMessageAudioPlayer: NSObject {
     private var playbackBufferEmptyObserver: NSKeyValueObservation?
     private var rateObserver: NSKeyValueObservation?
     private var playToEndObserver: NSObjectProtocol?
+    private var appBackgroundObserver: NSObjectProtocol?
     
     private let delegateContainer = DelegateContainer()
     
@@ -225,6 +226,15 @@ class VoiceMessageAudioPlayer: NSObject {
                 (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidFinishPlaying(self)
             }
         }
+        
+        appBackgroundObserver = NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil) { [weak self] _ in
+            guard let self = self, !BuildSettings.allowBackgroundAudioMessagePlayback else { return }
+            
+            self.pause()
+            self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidPausePlaying(self)
+            }
+        }
     }
     
     private func removeObservers() {
@@ -232,6 +242,7 @@ class VoiceMessageAudioPlayer: NSObject {
         playbackBufferEmptyObserver?.invalidate()
         rateObserver?.invalidate()
         NotificationCenter.default.removeObserver(playToEndObserver as Any)
+        NotificationCenter.default.removeObserver(appBackgroundObserver as Any)
     }
 }
 

@@ -61,8 +61,7 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
     func start() { }
     
     func toPresentable() -> UIViewController {
-        VectorHostingController(rootView: VoiceBroadcastPlaybackView(viewModel: viewModel.context),
-                                forceZeroSafeAreaInsets: true)
+        VectorHostingController(rootView: VoiceBroadcastPlaybackView(viewModel: viewModel.context))
     }
     
     func canEndVoiceBroadcast() -> Bool {
