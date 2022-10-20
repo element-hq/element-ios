@@ -16,7 +16,6 @@
 
 import Combine
 import SwiftUI
-import MatrixSDK
 
 typealias VoiceBroadcastPlaybackViewModelType = StateStoreViewModel<VoiceBroadcastPlaybackViewState, VoiceBroadcastPlaybackViewAction>
 
