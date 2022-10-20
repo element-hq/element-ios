@@ -143,7 +143,7 @@ class AvatarView: UIView, Themable {
     
     private func updateAvatarContentMode(contentMode: UIView.ContentMode) {
         avatarImageView?.contentMode = contentMode
-        avatarImageView?.imageView.contentMode = contentMode
+        avatarImageView?.imageView?.contentMode = contentMode
     }
         
     // MARK: - Actions
