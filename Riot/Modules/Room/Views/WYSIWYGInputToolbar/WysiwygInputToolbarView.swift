@@ -29,8 +29,6 @@ import CoreGraphics
 // The toolbar for editing with rich text
 
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInputToolbarViewProtocol {
-    
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -41,6 +39,11 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState())
     
     // MARK: Public
+    var isEncryptionEnabled = false {
+        didSet {
+            updatePlaceholderText()
+        }
+    }
     
     /// The current html content of the composer
     var htmlContent: String {
@@ -69,6 +72,16 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }
         set {
             viewModel.sendMode = ComposerSendMode(from: newValue)
+            updatePlaceholderText()
+        }
+    }
+    
+    override var placeholder: String! {
+        get {
+            viewModel.placeholder
+        }
+        set {
+            viewModel.placeholder = newValue
         }
     }
     
@@ -86,13 +99,11 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         super.awakeFromNib()
         
         viewModel.callback = { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .cancel:
-                self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
-            }
+            self?.handleViewModelResult(result)
         }
+        
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
+        
         let composer = Composer(viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
             sendMessageAction: { [weak self] content in
@@ -150,9 +161,15 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
     }
     
-    
     private func showSendMediaActions() {
         delegate?.roomInputToolbarViewShowSendMediaActions?(self)
+    }
+    
+    private func handleViewModelResult(_ result: ComposerViewModelResult) {
+        switch result {
+        case .cancel:
+            self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
+        }
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {

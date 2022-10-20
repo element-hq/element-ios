@@ -19,7 +19,6 @@
 
 #import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
-#import "GBDeviceInfo_iOS.h"
 
 static const CGFloat kContextBarHeight = 24;
 static const CGFloat kActionMenuAttachButtonSpringVelocity = 7;
@@ -30,7 +29,7 @@ static const NSTimeInterval kActionMenuAttachButtonAnimationDuration = .4;
 static const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
 static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
-@interface RoomInputToolbarView() <UITextViewDelegate, RoomInputToolbarTextViewDelegate, RoomInputToolbarViewProtocol>
+@interface RoomInputToolbarView() <UITextViewDelegate, RoomInputToolbarTextViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *mainToolbarView;
 
@@ -279,69 +278,6 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
             }
         }];
     }
-}
-
-- (void)updatePlaceholder
-{
-    // Consider the default placeholder
-    
-    NSString *placeholder;
-    
-    // Check the device screen size before using large placeholder
-    BOOL shouldDisplayLargePlaceholder = [GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay5p8Inch;
-    
-    if (!shouldDisplayLargePlaceholder)
-    {
-        switch (_sendMode)
-        {
-            case RoomInputToolbarViewSendModeReply:
-                placeholder = [VectorL10n roomMessageReplyToShortPlaceholder];
-                break;
-                
-            case RoomInputToolbarViewSendModeCreateDM:
-                placeholder = [VectorL10n roomFirstMessagePlaceholder];
-                break;
-
-            default:
-                placeholder = [VectorL10n roomMessageShortPlaceholder];
-                break;
-        }
-    }
-    else
-    {
-        if (_isEncryptionEnabled)
-        {
-            switch (_sendMode)
-            {
-                case RoomInputToolbarViewSendModeReply:
-                    placeholder = [VectorL10n encryptedRoomMessageReplyToPlaceholder];
-                    break;
-
-                default:
-                    placeholder = [VectorL10n encryptedRoomMessagePlaceholder];
-                    break;
-            }
-        }
-        else
-        {
-            switch (_sendMode)
-            {
-                case RoomInputToolbarViewSendModeReply:
-                    placeholder = [VectorL10n roomMessageReplyToPlaceholder];
-                    break;
-
-                case RoomInputToolbarViewSendModeCreateDM:
-                    placeholder = [VectorL10n roomFirstMessagePlaceholder];
-                    break;
-                    
-                default:
-                    placeholder = [VectorL10n roomMessagePlaceholder];
-                    break;
-            }
-        }
-    }
-    
-    self.placeholder = placeholder;
 }
 
 - (void)setPlaceholder:(NSString *)inPlaceholder
