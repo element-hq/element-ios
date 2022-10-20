@@ -173,7 +173,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
               let uri = code.rendezvous.transport?.uri,
               let rendezvousURL = URL(string: uri),
               let key = code.rendezvous.key else {
-            MXLog.debug("[QRLoginService] QR code invalid")
+            MXLog.error("[QRLoginService] QR code invalid")
             state = .failed(error: .invalidQR)
             return
         }
@@ -185,6 +185,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         
         MXLog.debug("[QRLoginService] Joining the rendezvous at \(rendezvousURL)")
         guard case .success(let validationCode) = await rendezvousService.joinRendezvous(withPublicKey: key) else {
+            MXLog.error("[QRLoginService] Failed joining rendezvous")
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
@@ -194,6 +195,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         MXLog.debug("[QRLoginService] Waiting for available protocols")
         guard case let .success(data) = await rendezvousService.receive(),
               let responsePayload = try? JSONDecoder().decode(QRLoginRendezvousPayload.self, from: data) else {
+            MXLog.error("[QRLoginService] Failed receiving available protocols")
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
@@ -201,6 +203,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         MXLog.debug("[QRLoginService] Received available protocols \(responsePayload)")
         guard let protocols = responsePayload.protocols,
               protocols.contains(.loginToken) else {
+            MXLog.error("[QRLoginService] Unexpected protocols, cannot continue")
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
@@ -208,6 +211,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         MXLog.debug("[QRLoginService] Request login with `login_token`")
         guard let requestData = try? JSONEncoder().encode(QRLoginRendezvousPayload(type: .loginProgress, protocol: .loginToken)),
               case .success = await rendezvousService.send(data: requestData) else {
+            MXLog.error("[QRLoginService] Failed sending continue with `login_token` request")
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
@@ -218,6 +222,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
               let login_token = responsePayload.loginToken,
               let homeserver = responsePayload.homeserver,
               let homeserverURL  = URL(string: homeserver) else {
+            MXLog.error("[QRLoginService] Invalid login details")
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
@@ -230,9 +235,11 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         
         MXLog.debug("[QRLoginService] Logging in with the login token")
         guard let credentials = try? await authenticationRestClient.login(parameters: LoginTokenParameters(token: login_token)) else {
+            MXLog.error("[QRLoginService] Failed logging in with the login token")
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
+        
         MXLog.debug("[QRLoginService] Got acess token")
         
         let session = sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false)
@@ -255,6 +262,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         }
         
         guard case .success = cryptoResult else {
+            MXLog.error("[QRLoginService] Failed enabling crypto")
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
@@ -265,6 +273,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
                                                                                    deviceId: session.myDeviceId,
                                                                                    deviceKey: session.crypto.deviceEd25519Key)),
               case .success = await rendezvousService.send(data: requestData) else {
+            MXLog.error("[QRLoginService] Failed sending session details")
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
@@ -275,31 +284,56 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
               responsePayload.outcome == .verified,
               let verifiyingDeviceId = responsePayload.verifyingDeviceId,
               let verifyingDeviceKey = responsePayload.verifyingDeviceKey else {
+            MXLog.error("[QRLoginService] Received invalid cross-signing details")
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
             return
         }
+        
         MXLog.debug("[QRLoginService] Received cross-signing details \(responsePayload)")
         
-        guard let verifyingDeviceInfo = session.crypto.device(withDeviceId: verifiyingDeviceId, ofUser: session.myUserId) else {
-            await teardownRendezvous(state: .failed(error: .rendezvousFailed))
-            return
-        }
-        
-        MXLog.debug("[QRLoginService] Found verifying device info \(verifyingDeviceInfo)")
-        
-        if verifyingDeviceInfo.fingerprint == verifyingDeviceKey {
-            MXLog.debug("[QRLoginService] Locally marking the existing device as verified \(verifyingDeviceInfo)")
-            await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-                session.crypto.setDeviceVerification(.verified, forDevice: verifiyingDeviceId, ofUser: session.myUserId) {
-                    MXLog.debug("[QRLoginService] Marked the existing device as verified")
-                    continuation.resume(returning: ())
-                } failure: { _ in
-                    MXLog.debug("[QRLoginService] Failed marking the existing device as verified")
-                    continuation.resume(returning: ())
+        if let masterKeyFromVerifyingDevice = responsePayload.masterKey,
+           let localMasterKey = session.crypto.crossSigningKeys(forUser: session.myUserId).masterKeys?.keys {
+            guard masterKeyFromVerifyingDevice == localMasterKey else {
+                MXLog.error("[QRLoginService] Received invalid master key from verifying device")
+                await teardownRendezvous(state: .failed(error: .rendezvousFailed))
+                return
+            }
+            
+            MXLog.debug("[QRLoginService] Marking the received master key as trusted")
+            let mskVerificationResult = await withCheckedContinuation { (continuation: CheckedContinuation<Bool, Never>) in
+                session.crypto.setUserVerification(true, forUser: session.myUserId) {
+                    MXLog.debug("[QRLoginService] Successfully marked the received master key as trusted")
+                    continuation.resume(returning: true)
+                } failure: { error in
+                    continuation.resume(returning: false)
                 }
+            }
+            
+            guard mskVerificationResult == true else {
+                MXLog.error("[QRLoginService] Failed marking the master key as trusted")
+                await teardownRendezvous(state: .failed(error: .rendezvousFailed))
+                return
             }
         }
         
+        guard let verifyingDeviceInfo = session.crypto.device(withDeviceId: verifiyingDeviceId, ofUser: session.myUserId),
+              verifyingDeviceInfo.fingerprint == verifyingDeviceKey else {
+            MXLog.error("[QRLoginService] Received invalid verifying device info")
+            await teardownRendezvous(state: .failed(error: .rendezvousFailed))
+            return
+        }
+        
+        MXLog.debug("[QRLoginService] Locally marking the existing device as verified \(verifyingDeviceInfo)")
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            session.crypto.setDeviceVerification(.verified, forDevice: verifiyingDeviceId, ofUser: session.myUserId) {
+                MXLog.debug("[QRLoginService] Marked the existing device as verified")
+                continuation.resume(returning: ())
+            } failure: { _ in
+                MXLog.error("[QRLoginService] Failed marking the existing device as verified")
+                continuation.resume(returning: ())
+            }
+        }
+
         MXLog.debug("[QRLoginService] Login flow finished, returning session")
         state = .completed(session: session, securityCompleted: true)
     }

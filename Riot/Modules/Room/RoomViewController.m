@@ -1775,15 +1775,20 @@ static CGSize kThreadListBarButtonItemImageSize;
     || self.customizedRoomDataSource.jitsiWidget;
 }
 
+- (BOOL)canSendStateEventWithType:(MXEventTypeString)eventTypeString
+{
+    MXRoomPowerLevels *powerLevels = [self.roomDataSource.roomState powerLevels];
+    NSInteger requiredPower = [powerLevels minimumPowerLevelForSendingEventAsStateEvent:eventTypeString];
+    NSInteger myPower = [powerLevels powerLevelOfUserWithUserID:self.roomDataSource.mxSession.myUserId];
+    return myPower >= requiredPower;
+}
+
 /**
  Returns a flag for the current user whether it's privileged to add/remove Jitsi widgets to this room.
  */
 - (BOOL)canEditJitsiWidget
 {
-    MXRoomPowerLevels *powerLevels = [self.roomDataSource.roomState powerLevels];
-    NSInteger requiredPower = [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kWidgetModularEventTypeString];
-    NSInteger myPower = [powerLevels powerLevelOfUserWithUserID:self.roomDataSource.mxSession.myUserId];
-    return myPower >= requiredPower;
+    return [self canSendStateEventWithType:kWidgetModularEventTypeString];
 }
 
 - (void)registerURLPreviewNotifications
@@ -2327,26 +2332,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
             }
-            
-            // TODO: Init and start voice broadcast
-            MXSession* session = self.roomDataSource.mxSession;
-            [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
-                if (voiceBroadcastService) {
-                    if ([VoiceBroadcastInfo isStoppedFor:[voiceBroadcastService getState]]) {
-                        [session.voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
-                        
-                        } failure:^(NSError * _Nonnull error) {
-                            
-                        }];
-                    } else {
-                        [session.voiceBroadcastService stopVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
-                            [session tearDownVoiceBroadcastService];
-                        } failure:^(NSError * _Nonnull error) {
-                            
-                        }];
-                    }
-                }
-            }];            
+            [self roomInputToolbarViewDidTapVoiceBroadcast];
         }]];
     }
     roomInputView.actionsBar.actionItems = actionItems;
@@ -2434,6 +2420,48 @@ static CGSize kThreadListBarButtonItemImageSize;
     [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
     
     self.documentPickerPresenter = documentPickerPresenter;
+}
+
+- (void)roomInputToolbarViewDidTapVoiceBroadcast
+{
+    // Check first the room permission
+    if (![self canSendStateEventWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
+    {
+        [self showAlertWithTitle:[VectorL10n voiceBroadcastUnauthorizedTitle] message:[VectorL10n voiceBroadcastPermissionDeniedMessage]];
+        return;
+    }
+    
+    MXSession* session = self.roomDataSource.mxSession;
+    // Check whether the user is not already broadcasting here or in another room
+    if (session.voiceBroadcastService)
+    {
+        [self showAlertWithTitle:[VectorL10n voiceBroadcastUnauthorizedTitle] message:[VectorL10n voiceBroadcastAlreadyInProgressMessage]];
+        
+        //*** Temporary code - To be removed ***
+        // We stop here the current voice broadcasting (required until the actual stop button is available)
+        [session.voiceBroadcastService stopVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
+            [session tearDownVoiceBroadcastService];
+        } failure:^(NSError * _Nonnull error) {
+        }];
+        //*** End ***
+        
+        return;
+    }
+    
+    // Request the voice broadcast service to start recording - No service is returned if someone else is already broadcasting in the room
+    [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
+        if (voiceBroadcastService) {
+            [voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
+            
+            } failure:^(NSError * _Nonnull error) {
+                
+            }];
+        }
+        else
+        {
+            [self showAlertWithTitle:[VectorL10n voiceBroadcastUnauthorizedTitle] message:[VectorL10n voiceBroadcastBlockedBySomeoneElseMessage]];
+        }
+    }];
 }
 
 /**
@@ -5069,6 +5097,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (RiotSettings.shared.roomScreenAllowFilesAction)
     {
         [actionItems addObject:@(ComposerCreateActionAttachments)];
+    }
+    if (RiotSettings.shared.enableVoiceBroadcast && !self.isNewDirectChat)
+    {
+        [actionItems addObject:@(ComposerCreateActionVoiceBroadcast)];
     }
     if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled && !self.isNewDirectChat)
     {
@@ -8006,6 +8038,9 @@ static CGSize kThreadListBarButtonItemImageSize;
                 break;
             case ComposerCreateActionAttachments:
                 [self roomInputToolbarViewDidTapFileUpload];
+                break;
+            case ComposerCreateActionVoiceBroadcast:
+                [self roomInputToolbarViewDidTapVoiceBroadcast];
                 break;
             case ComposerCreateActionPolls:
                 [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];

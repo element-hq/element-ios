@@ -30,6 +30,6 @@ extension MXSession {
     }
     
     @objc public func tearDownVoiceBroadcastService() {
-        return VoiceBroadcastServiceProvider.shared.tearDownVoiceBroadcastService()
+        VoiceBroadcastServiceProvider.shared.tearDownVoiceBroadcastService()
     }
 }

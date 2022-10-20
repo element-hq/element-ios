@@ -139,7 +139,7 @@ class RoomInputToolbarTextView: UITextView {
     }
     
     private func updateUI() {
-        var height = sizeThatFits(CGSize(width: bounds.size.width, height: CGFloat.greatestFiniteMagnitude)).height
+        var height = contentSize.height
         height = minHeight > 0 ? max(height, minHeight) : height
         height = maxHeight > 0 ? min(height, maxHeight) : height
         

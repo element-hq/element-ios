@@ -35,26 +35,27 @@ struct VoiceBroadcastPlaybackView: View {
             //Text(VectorL10n.voiceBroadcastInTimelineTitle)
                 .font(theme.fonts.bodySB)
                 .foregroundColor(theme.colors.primaryContent)
-
-//            Text(VectorL10n.voiceBroadcastInTimelineBody)
-//                .font(theme.fonts.body)
-//                .foregroundColor(theme.colors.primaryContent)
             
-            HStack(alignment: .top, spacing: 16.0) {
-                Button { viewModel.send(viewAction: .play) } label: {
-                    Image("voice_broadcast_play")
-                        .renderingMode(.original)
+            if viewModel.viewState.playbackState == .error {
+                VoiceBroadcastPlaybackErrorView()
+            } else {
+                HStack(alignment: .top, spacing: 16.0) {
+                    if viewModel.viewState.playbackState == .playing {
+                        Button { viewModel.send(viewAction: .pause) } label: {
+                            Image("voice_broadcast_pause")
+                                .renderingMode(.original)
+                        }
+                        .accessibilityIdentifier("pauseButton")
+                    } else {
+                        Button { viewModel.send(viewAction: .play) } label: {
+                            Image("voice_broadcast_play")
+                                .renderingMode(.original)
+                        }
+                        .disabled(viewModel.viewState.playbackState == .buffering)
+                        .accessibilityIdentifier("playButton")
+                    }
                 }
-                .disabled(viewModel.viewState.playbackState == .playing)
-                .accessibilityIdentifier("playButton")
-                
-                Button { viewModel.send(viewAction: .pause) } label: {
-                    Image("voice_broadcast_pause")
-                        .renderingMode(.original)
-                }
-                .disabled(!(viewModel.viewState.playbackState == .playing))
-                .accessibilityIdentifier("pauseButton")
-
+                .activityIndicator(show: viewModel.viewState.playbackState == .buffering)
             }
 
         }

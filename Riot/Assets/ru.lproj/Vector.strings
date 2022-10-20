@@ -2153,3 +2153,8 @@
 "authentication_server_selection_login_title" = "Подключиться к домашнему серверу";
 "authentication_cancel_flow_confirmation_message" = "Ваш аккаунт ещё не создан. Остановить процесс регистрации?";
 "settings_timeline" = "Лента сообщений";
+"manage_session_name_info_link" = "Узнать больше";
+"user_other_session_verified_additional_info" = "Эта сессия готова к безопасному обмену сообщениями.";
+"user_other_session_current_session_details" = "Текущая сессия";
+"user_other_session_filter_menu_all" = "Все сессии";
+"wysiwyg_composer_start_action_stickers" = "Наклейки";

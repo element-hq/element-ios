@@ -33,6 +33,39 @@ To use it (before it becomes an Xcode template):
 - Import created files in the Xcode project
 
 
+# SwiftUISimpleScreenTemplate
+This is the boilerplate to create a simple SwiftUI screen including view model, screen coordinator, unit and UI tests. 
+ 
+To create a screen from this template (before it becomes an Xcode template):
+
+- `./createSwiftUISimpleScreen.sh ScreenFolder MyScreenName`
+- Import created files in the Xcode project
+
+This will create `ScreenFolder` within the `RiotSwiftUI/Modules`. Files inside will be named `MyScreenNameXxx`.
+
+
+# SwiftUISingleScreenTempalte
+This is the boilerplate to create a simple SwiftUI screen including view model, screen coordinator, service, unit and UI tests. 
+ 
+To create a screen from this template (before it becomes an Xcode template):
+
+- `./createSwiftUISingleScreen.sh ScreenFolder MyScreenName`
+- Import created files in the Xcode project
+
+This will create `ScreenFolder` within the `RiotSwiftUI/Modules`. Files inside will be named `MyScreenNameXxx`.
+
+
+# SwiftUITwoScreenTemplate
+This is the boilerplate to create two single SwiftUI screens (including view models, screen coordinators, services, unit and UI tests) and a flow coordinator. 
+ 
+To create screens from this template (before it becomes an Xcode template):
+
+- `./createSwiftUITwoScreen.sh TwoScreenFolder MyRootCoordinator FirstScreenName SecondScreenName`
+- Import created files in the Xcode project
+
+This will create `TwoScreenFolder` within the `RiotSwiftUI/Modules`.
+
+
 # Usage example
 Following commands:
 

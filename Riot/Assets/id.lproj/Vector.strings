@@ -2696,7 +2696,7 @@
 "device_name_mobile" = "%@ Ponsel";
 "device_name_web" = "%@ Web";
 "device_name_desktop" = "%@ Desktop";
-"user_session_item_details" = "%@ · Aktivitas terakhir %@";
+"user_session_item_details" = "%1$@ · %2$@";
 
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
@@ -2791,3 +2791,44 @@
 "authentication_qr_login_start_subtitle" = "Gunakan kamera pada perangkat ini untuk memindai kode QR yang ditampilkan di perangkat Anda yang lain:";
 "authentication_qr_login_start_title" = "Pindai kode QR";
 "authentication_login_with_qr" = "Masuk dengan kode QR";
+"wysiwyg_composer_format_action_strikethrough" = "Terapkan format garis bawah";
+"wysiwyg_composer_format_action_underline" = "Terapkan format coret";
+"wysiwyg_composer_format_action_italic" = "Terapkan format miring";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Terapkan format tebal";
+"wysiwyg_composer_start_action_text_formatting" = "Format Teks";
+"wysiwyg_composer_start_action_polls" = "Pemungutan Suara";
+"wysiwyg_composer_start_action_camera" = "Kamera";
+"wysiwyg_composer_start_action_location" = "Lokasi";
+"wysiwyg_composer_start_action_attachments" = "Lampiran";
+"wysiwyg_composer_start_action_stickers" = "Stiker";
+
+
+// Mark: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Pustaka Foto";
+"user_session_details_last_activity" = "Aktivitas terakhir";
+"user_session_item_details_last_activity" = "Aktivitas terakhir %@";
+"user_other_session_clear_filter" = "Hapus saringan";
+"user_other_session_no_unverified_sessions" = "Tidak ditemukan sesi yang belum diverifikasi.";
+"user_other_session_no_verified_sessions" = "Tidak ditemukan sesi yang terverifikasi.";
+"user_other_session_no_inactive_sessions" = "Tidak ditemukan sesi yang tidak aktif.";
+"user_other_session_filter_menu_inactive" = "Tidak aktif";
+"user_other_session_filter_menu_unverified" = "Belum diverifikasi";
+"user_other_session_filter_menu_verified" = "Terverifikasi";
+"user_other_session_filter_menu_all" = "Semua sesi";
+"user_other_session_filter" = "Saring";
+"user_other_session_verified_sessions_header_subtitle" = "Untuk keamanan yang terbaik, keluarkan sesi yang Anda tidak kenal atau tidak digunakan lagi.";
+"user_other_session_current_session_details" = "Sesi Anda saat ini";
+"user_other_session_verified_additional_info" = "Sesi ini siap untuk perpesanan aman.";
+"user_other_session_unverified_additional_info" = "Verifikasi atau keluarkan sesi ini untuk keamanan dan keandalan yang terbaik.";
+"user_session_verification_unknown_additional_info" = "Verifikasi sesi Anda saat ini untuk menampilkan status verifikasi sesi ini.";
+"user_session_verification_unknown_short" = "Tidak diketahui";
+"user_session_verification_unknown" = "Status verifikasi tidak diketahui";
+"manage_session_name_info_link" = "Pelajari lebih lanjut";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Harap diketahui bahwa nama sesi juga terlihat ke orang-orang yang Anda berkomunikasi. %@";
+"manage_session_name_hint" = "Nama sesi khusus dapat membantu Anda mengenal perangkat Anda dengan lebih mudah.";
+"settings_labs_enable_wysiwyg_composer" = "Coba editor teks kaya (mode teks biasa akan datang)";
