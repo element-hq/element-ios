@@ -2830,3 +2830,12 @@
 "manage_session_name_info" = "Зауважте, що назви сеансів також видно людям, з якими ви спілкуєтесь. %@";
 "manage_session_name_hint" = "Власні назви сеансів допоможуть вам легше розпізнавати ваші пристрої.";
 "settings_labs_enable_wysiwyg_composer" = "Спробуйте розширений текстовий редактор (незабаром з'явиться режим звичайного тексту)";
+"wysiwyg_composer_start_action_voice_broadcast" = "Голосові повідомлення";
+"voice_broadcast_playback_loading_error" = "Неможливо відтворити це голосове повідомлення.";
+"voice_broadcast_already_in_progress_message" = "Ви вже записуєте голосове повідомлення. Завершіть поточну трансляцію, щоб розпочати нову.";
+"voice_broadcast_blocked_by_someone_else_message" = "Хтось інший вже записує голосове повідомлення. Зачекайте, поки закінчиться трансляція, щоб розпочати нову.";
+"voice_broadcast_permission_denied_message" = "Ви не маєте необхідних дозволів для початку трансляції голосового повідомлення в цій кімнаті. Зверніться до адміністратора кімнати, щоб оновити ваші дозволи.";
+
+// Mark: - Voice broadcast
+"voice_broadcast_unauthorized_title" = "Не вдалося розпочати трансляцію нового голосового повідомлення";
+"settings_labs_enable_voice_broadcast" = "Голосові повідомлення (в активній розробці)";
