@@ -2425,7 +2425,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)roomInputToolbarViewDidTapVoiceBroadcast
 {
     // Check first the room permission
-    if (![self canSendStateEventWithType:VoiceBroadcastSettings.eventType])
+    if (![self canSendStateEventWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
     {
         [self showAlertWithTitle:[VectorL10n voiceBroadcastUnauthorizedTitle] message:[VectorL10n voiceBroadcastPermissionDeniedMessage]];
         return;

@@ -41,21 +41,24 @@ struct VoiceBroadcastPlaybackView: View {
 //                .foregroundColor(theme.colors.primaryContent)
             
             HStack(alignment: .top, spacing: 16.0) {
-                Button { viewModel.send(viewAction: .play) } label: {
-                    Image("voice_broadcast_play")
-                        .renderingMode(.original)
+                if viewModel.viewState.playbackState == .playing {
+                    Button { viewModel.send(viewAction: .pause) } label: {
+                        Image("voice_broadcast_pause")
+                            .renderingMode(.original)
+                    }
+                    .accessibilityIdentifier("pauseButton")
+                } else {
+                    Button { viewModel.send(viewAction: .play) } label: {
+                        Image("voice_broadcast_play")
+                            .renderingMode(.original)
+                    }
+                    .disabled(viewModel.viewState.playbackState == .buffering)
+                    .accessibilityIdentifier("playButton")
                 }
-                .disabled(viewModel.viewState.playbackState == .playing)
-                .accessibilityIdentifier("playButton")
                 
-                Button { viewModel.send(viewAction: .pause) } label: {
-                    Image("voice_broadcast_pause")
-                        .renderingMode(.original)
-                }
-                .disabled(!(viewModel.viewState.playbackState == .playing))
-                .accessibilityIdentifier("pauseButton")
-
+                
             }
+            .activityIndicator(show: viewModel.viewState.playbackState == .buffering)
 
         }
         .padding([.horizontal, .top], 2.0)
