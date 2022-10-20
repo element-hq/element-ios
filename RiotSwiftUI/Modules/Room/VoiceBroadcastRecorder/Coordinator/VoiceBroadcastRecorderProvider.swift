@@ -17,33 +17,40 @@
 import Foundation
 import AVFoundation
 
-class VoiceBroadcastRecorderProvider {
+@objc public class VoiceBroadcastRecorderProvider: NSObject {
     
     // MARK: - Constants
-    static let shared = VoiceBroadcastRecorderProvider()
+    @objc public static let shared = VoiceBroadcastRecorderProvider()
     
     // MARK: - Properties
     // MARK: Public
     var session: MXSession?
+    var currentEventIdentifier: String?
     var coordinatorsForEventIdentifiers = [String: VoiceBroadcastRecorderCoordinator]()
     
     // MARK: - Setup
-    private init() { }
+    private override init() { }
     
     // MARK: - Public
     
     /// Create or retrieve the voiceBroadcast timeline coordinator for this event and return
     /// a view to be displayed in the timeline
     func buildVoiceBroadcastRecorderViewForEvent(_ event: MXEvent, senderDisplayName: String?) -> UIView? {
-        guard let session = session, let room = session.room(withRoomId: event.roomId) else {
+        guard let session = session,
+              let room = session.room(withRoomId: event.roomId) else {
             return nil
         }
+        
+        self.currentEventIdentifier = event.eventId
         
         if let coordinator = coordinatorsForEventIdentifiers[event.eventId] {
             return coordinator.toPresentable().view
         }
         
-        let parameters = VoiceBroadcastRecorderCoordinatorParameters(session: session, room: room, voiceBroadcastStartEvent: event, senderDisplayName: senderDisplayName)
+        let parameters = VoiceBroadcastRecorderCoordinatorParameters(session: session,
+                                                                     room: room,
+                                                                     voiceBroadcastStartEvent: event,
+                                                                     senderDisplayName: senderDisplayName)
         let coordinator = VoiceBroadcastRecorderCoordinator(parameters: parameters)
         
         coordinatorsForEventIdentifiers[event.eventId] = coordinator
@@ -51,8 +58,19 @@ class VoiceBroadcastRecorderProvider {
         return coordinator.toPresentable().view
     }
     
-    /// Retrieve the voiceBroadcast timeline coordinator for the given event or nil if it hasn't been created yet
-    func voiceBroadcastRecorderControllerForEventIdentifier(_ eventIdentifier: String) -> VoiceBroadcastRecorderCoordinator? {
-        coordinatorsForEventIdentifiers[eventIdentifier]
+    /// Pause current voice broadcast recording.
+    @objc public func pauseRecording() {
+        voiceBroadcastRecorderCoordinatorForCurrentEvent()?.pauseRecording()
+    }
+    
+    // MARK: - Private
+    
+    /// Retrieve the voiceBroadcast recorder coordinator for the current event or nil if it hasn't been created yet
+    private func voiceBroadcastRecorderCoordinatorForCurrentEvent() -> VoiceBroadcastRecorderCoordinator? {
+        guard let currentEventIdentifier = currentEventIdentifier else {
+            return nil
+        }
+
+        return coordinatorsForEventIdentifiers[currentEventIdentifier]
     }
 }

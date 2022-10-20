@@ -63,6 +63,10 @@ final class VoiceBroadcastRecorderCoordinator: Coordinator, Presentable {
         VectorHostingController(rootView: VoiceBroadcastRecorderView(viewModel: voiceBroadcastRecorderViewModel.context),
                                 forceZeroSafeAreaInsets: true)
     }
+    
+    func pauseRecording() {
+        voiceBroadcastRecorderViewModel.context.send(viewAction: .pause)
+    }
 
     // MARK: - Private
 }

@@ -610,6 +610,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Analytics: Force to send the pending actions
     [[DecryptionFailureTracker sharedInstance] dispatch];
     [Analytics.shared forceUpload];
+    
+    // Pause Voice Broadcast recording if needed
+    [VoiceBroadcastRecorderProvider.shared pauseRecording];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
