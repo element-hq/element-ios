@@ -61,8 +61,7 @@ final class TimelineVoiceBroadcastCoordinator: Coordinator, Presentable, VoiceBr
     func start() { }
     
     func toPresentable() -> UIViewController {
-        VectorHostingController(rootView: TimelineVoiceBroadcastView(viewModel: viewModel.context),
-                                forceZeroSafeAreaInsets: true)
+        VectorHostingController(rootView: TimelineVoiceBroadcastView(viewModel: viewModel.context))
     }
     
     func canEndVoiceBroadcast() -> Bool {
