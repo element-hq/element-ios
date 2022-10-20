@@ -18,6 +18,9 @@ import Combine
 import Foundation
 
 protocol VoiceBroadcastRecorderServiceProtocol {
+    /// Service delegate
+    var serviceDelegate: VoiceBroadcastRecorderServiceDelegate? { get set }
+    
     /// Start voice broadcast recording.
     func startRecordingVoiceBroadcast()
 

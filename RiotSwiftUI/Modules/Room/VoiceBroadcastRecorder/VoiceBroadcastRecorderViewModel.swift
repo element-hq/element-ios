@@ -25,7 +25,7 @@ class VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderViewModelType, Voic
     
     // MARK: Private
     
-    private let voiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol
+    private var voiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol
     
     // MARK: Public
     
@@ -37,6 +37,8 @@ class VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderViewModelType, Voic
         super.init(initialViewState: VoiceBroadcastRecorderViewState(details: details,
                                                                      recordingState: .stopped,
                                                                      bindings: VoiceBroadcastRecorderViewStateBindings()))
+        
+        self.voiceBroadcastRecorderService.serviceDelegate = self
         process(viewAction: .start)
     }
     
@@ -74,5 +76,11 @@ class VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderViewModelType, Voic
     private func resume() {
         self.state.recordingState = .resumed
         voiceBroadcastRecorderService.resumeRecordingVoiceBroadcast()
+    }
+}
+
+extension VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderServiceDelegate {
+    func voiceBroadcastRecorderService(_ service: VoiceBroadcastRecorderServiceProtocol, didUpdateState state: VoiceBroadcastRecorderState) {
+        self.state.recordingState = state
     }
 }

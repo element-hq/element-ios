@@ -17,6 +17,10 @@
 import Combine
 import Foundation
 
+protocol VoiceBroadcastRecorderServiceDelegate: AnyObject {
+    func voiceBroadcastRecorderService(_ service: VoiceBroadcastRecorderServiceProtocol, didUpdateState state: VoiceBroadcastRecorderState)
+}
+
 class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     
     // MARK: - Properties
@@ -37,6 +41,8 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     private var chunkFileNumber: Int = 0
         
     // MARK: Public
+    
+    weak var serviceDelegate: VoiceBroadcastRecorderServiceDelegate?
 
     // MARK: - Setup
     
@@ -73,10 +79,12 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         resetValues()
 
         voiceBroadcastService?.stopVoiceBroadcast(success: { [weak self] _ in
+            MXLog.debug("[VoiceBroadcastRecorderService] Stopped")
+            
             guard let self = self else { return }
             
-            // update recording state
-            MXLog.debug("[VoiceBroadcastRecorderService] Stopped")
+            // Update state
+            self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .stopped)
             
             // Send current chunk
             self.sendChunkFile(at: self.chunkFile.url)
@@ -92,7 +100,6 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         
         voiceBroadcastService?.pauseVoiceBroadcast(success: { [weak self] _ in
             guard let self = self else { return }
-            // update recording state
             
             // Send current chunk
             self.sendChunkFile(at: self.chunkFile.url)
@@ -107,7 +114,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         try? audioEngine.start()
         
         voiceBroadcastService?.resumeVoiceBroadcast(success: { _ in
-            // update recording state
+            //
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to resume voice broadcast", context: error)
         })
