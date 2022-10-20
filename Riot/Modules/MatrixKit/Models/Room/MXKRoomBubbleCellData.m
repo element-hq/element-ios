@@ -522,48 +522,29 @@
         return CGSizeZero;
     }
     
-    // Grab the default textContainer insets and lineFragmentPadding from a dummy text view.
-    // This has no business being here but the refactoring effort would be too great (sceriu 05.09.2022)
-    static UITextView* measurementTextView = nil;
-    if (!measurementTextView)
-    {
-        measurementTextView = [[UITextView alloc] init];
-    }
-    
-    CGFloat verticalInset = measurementTextView.textContainerInset.top + measurementTextView.textContainerInset.bottom;
-    CGFloat horizontalInset = measurementTextView.textContainer.lineFragmentPadding * 2;
-    
-    CGSize size = [self sizeForAttributedString:attributedText fittingWidth:_maxTextViewWidth - horizontalInset];
-
-    // The result is expected to contain the textView textContainer's paddings. Add them back if necessary
-    if (removeVerticalInset == NO) {
-        size.height += verticalInset;
-    }
-    
-    size.width += horizontalInset;
-    
-    return size;
+    return [self sizeForAttributedString:attributedText fittingWidth:_maxTextViewWidth removeVerticalInset:removeVerticalInset];
 }
 
-// https://stackoverflow.com/questions/54497598/nsattributedstring-boundingrect-returns-wrong-height
-- (CGSize)sizeForAttributedString:(NSAttributedString *)attributedString fittingWidth:(CGFloat)width
+- (CGSize)sizeForAttributedString:(NSAttributedString *)attributedString fittingWidth:(CGFloat)width removeVerticalInset:(BOOL)removeVerticalInset
 {
-    NSTextStorage *textStorage = [[NSTextStorage alloc] initWithAttributedString:attributedString];
+    static UITextView* aTextView = nil;
+    if (!aTextView)
+    {
+        aTextView = [[UITextView alloc] init];
+    }
     
-    CGRect boundingRect = CGRectMake(0.0, 0.0, width, CGFLOAT_MAX);
+    CGFloat verticalInset = aTextView.textContainerInset.top + aTextView.textContainerInset.bottom;
+    aTextView.attributedText = attributedString;
+    [aTextView setBounds: CGRectMake(0, 0, width, 0)];
+    [aTextView setNeedsLayout];
+    [aTextView layoutIfNeeded];
+    CGSize size = aTextView.contentSize;
     
-    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:boundingRect.size];
-    textContainer.lineFragmentPadding = 0;
-
-    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
-    [layoutManager addTextContainer: textContainer];
-
-    [textStorage addLayoutManager:layoutManager];
-    [layoutManager glyphRangeForBoundingRect:boundingRect inTextContainer:textContainer];
-
-    CGRect rect = [layoutManager usedRectForTextContainer:textContainer];
+    if (removeVerticalInset == YES) {
+        size.height -= verticalInset;
+    }
     
-    return CGRectIntegral(rect).size;
+    return size;
 }
 
 #pragma mark - Properties
