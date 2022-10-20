@@ -47,7 +47,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         self.voiceBroadcastAggregator = voiceBroadcastAggregator
         
         let viewState = VoiceBroadcastPlaybackViewState(details: details,
-                                                        broadcastState: .unknown,
+                                                        broadcastState: VoiceBroadcastPlaybackViewModel.getBroadcastState(from: voiceBroadcastAggregator.voiceBroadcastState),
                                                         playbackState: .stopped,
                                                         bindings: VoiceBroadcastPlaybackViewStateBindings())
         super.init(initialViewState: viewState)
@@ -239,6 +239,22 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             self.processNextVoiceBroadcastChunk()
         }
     }
+    
+    private static func getBroadcastState(from state: VoiceBroadcastInfo.State) -> VoiceBroadcastState {
+        var broadcastState: VoiceBroadcastState
+        switch state {
+        case .started:
+            broadcastState = VoiceBroadcastState.live
+        case .paused:
+            broadcastState = VoiceBroadcastState.paused
+        case .resumed:
+            broadcastState = VoiceBroadcastState.live
+        case .stopped:
+            broadcastState = VoiceBroadcastState.stopped
+        }
+        
+        return broadcastState
+    }
 }
 
 // MARK: VoiceBroadcastAggregatorDelegate
@@ -255,6 +271,10 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
     
     func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveChunk: VoiceBroadcastChunk) {
         voiceBroadcastChunkQueue.append(didReceiveChunk)
+    }
+    
+    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveState: VoiceBroadcastInfo.State) {
+        state.broadcastState = VoiceBroadcastPlaybackViewModel.getBroadcastState(from: didReceiveState)
     }
     
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {

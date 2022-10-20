@@ -335,6 +335,7 @@ internal class Asset: NSObject {
     internal static let tabHome = ImageAsset(name: "tab_home")
     internal static let tabPeople = ImageAsset(name: "tab_people")
     internal static let tabRooms = ImageAsset(name: "tab_rooms")
+    internal static let voiceBroadcastLive = ImageAsset(name: "voice_broadcast_live")
     internal static let voiceBroadcastPause = ImageAsset(name: "voice_broadcast_pause")
     internal static let voiceBroadcastPlay = ImageAsset(name: "voice_broadcast_play")
     internal static let launchScreenLogo = ImageAsset(name: "launch_screen_logo")
