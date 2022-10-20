@@ -16,9 +16,10 @@
 
 import Combine
 import SwiftUI
-import MatrixSDK
 
-typealias VoiceBroadcastPlaybackViewModelType = StateStoreViewModel<VoiceBroadcastPlaybackViewState, VoiceBroadcastPlaybackViewAction>
+// TODO: VoiceBroadcastPlaybackViewModel must be revisited in order to not depend on MatrixSDK
+// We need a VoiceBroadcastPlaybackServiceProtocol and VoiceBroadcastAggregatorProtocol
+import MatrixSDK
 
 class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, VoiceBroadcastPlaybackViewModelProtocol {
 

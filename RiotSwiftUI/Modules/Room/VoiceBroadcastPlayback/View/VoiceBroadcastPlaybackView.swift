@@ -16,6 +16,14 @@
 
 import SwiftUI
 
+// TODO: To remove
+// VoiceBroadcastPlaybackViewModel must be revisited in order to not depend on MatrixSDK
+#if canImport(MatrixSDK)
+typealias VoiceBroadcastPlaybackViewModelImpl = VoiceBroadcastPlaybackViewModel
+#else
+typealias VoiceBroadcastPlaybackViewModelImpl = MockVoiceBroadcastPlaybackViewModel
+#endif
+
 struct VoiceBroadcastPlaybackView: View {
     // MARK: - Properties
     
@@ -32,7 +40,7 @@ struct VoiceBroadcastPlaybackView: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: VoiceBroadcastPlaybackViewModel.Context
+    @ObservedObject var viewModel: VoiceBroadcastPlaybackViewModelImpl.Context
     
     var body: some View {
         let details = viewModel.viewState.details

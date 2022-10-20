@@ -16,6 +16,8 @@
 
 import Foundation
 
+typealias VoiceBroadcastPlaybackViewModelType = StateStoreViewModel<VoiceBroadcastPlaybackViewState, VoiceBroadcastPlaybackViewAction>
+
 protocol VoiceBroadcastPlaybackViewModelProtocol {
     var context: VoiceBroadcastPlaybackViewModelType.Context { get }    
 }
