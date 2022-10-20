@@ -32,6 +32,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     
     private var voiceBroadcastChunkQueue: [VoiceBroadcastChunk] = []
     
+    private var isLivePlayback = false
+    
     // MARK: Public
     
     // MARK: - Setup
@@ -67,6 +69,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         switch viewAction {
         case .play:
             play()
+        case .playLive:
+            playLive()
         case .pause:
             pause()
         }
@@ -77,6 +81,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     
     /// Listen voice broadcast
     private func play() {
+        isLivePlayback = false
+        
         if voiceBroadcastAggregator.isStarted == false {
             // Start the streaming by fetching broadcast chunks
             // The audio player will start the automatically playback on incoming chunks
@@ -96,6 +102,18 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             voiceBroadcastChunkQueue.append(contentsOf: chunks)
             processPendingVoiceBroadcastChunks()
         }
+    }
+    
+    private func playLive() {
+        guard isLivePlayback == false else {
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] playLive: Already playing live")
+            return
+        }
+        
+        isLivePlayback = true
+        state.playbackState = .buffering
+        
+        // TODO: TBC
     }
     
     /// Stop voice broadcast
@@ -220,7 +238,12 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
     }
     
     func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
-        state.playbackState = .playing
+        if isLivePlayback {
+            state.playbackState = .playingLive
+        }
+        else {
+            state.playbackState = .playing
+        }
     }
     
     func audioPlayerDidPausePlaying(_ audioPlayer: VoiceMessageAudioPlayer) {

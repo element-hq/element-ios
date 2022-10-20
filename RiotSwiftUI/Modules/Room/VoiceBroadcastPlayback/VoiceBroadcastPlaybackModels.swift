@@ -19,6 +19,7 @@ import SwiftUI
 
 enum VoiceBroadcastPlaybackViewAction {
     case play
+    case playLive
     case pause
 }
 
@@ -27,6 +28,7 @@ enum VoiceBroadcastPlaybackState {
     case stopped
     case buffering
     case playing
+    case playingLive
     case paused
     case error
 }
