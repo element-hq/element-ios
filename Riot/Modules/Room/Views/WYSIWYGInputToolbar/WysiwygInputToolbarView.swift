@@ -135,8 +135,19 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         case .cancel:
             self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
         case let .contentDidChange(isEmpty):
-            break
+            setVoiceMessageToolbarIsHidden(!isEmpty)
         }
+    }
+    
+    private func setVoiceMessageToolbarIsHidden(_ isHidden: Bool) {
+        guard let voiceMessageToolbarView = voiceMessageToolbarView else { return }
+        UIView.transition(
+            with: voiceMessageToolbarView, duration: 0.15,
+            options: .transitionCrossDissolve,
+            animations: {
+                voiceMessageToolbarView.isHidden = isHidden
+            }
+        )
     }
         
     private func registerThemeServiceDidChangeThemeNotification() {

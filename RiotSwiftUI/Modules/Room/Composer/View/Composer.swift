@@ -175,13 +175,14 @@ struct Composer: View {
                 .accessibilityIdentifier(actionButtonAccessibilityIdentifier)
                 .accessibilityLabel(VectorL10n.send)
                 .onChange(of: wysiwygViewModel.isContentEmpty) { isEmpty in
-                    isActionButtonShowing = !isEmpty
                     viewModel.send(viewAction: .contentDidChange(isEmpty: isEmpty))
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        isActionButtonShowing = !isEmpty
+                    }
                 }
             }
             .padding(.horizontal, 12)
             .padding(.bottom, 4)
-            .animation(.none)
         }
     }
 }
