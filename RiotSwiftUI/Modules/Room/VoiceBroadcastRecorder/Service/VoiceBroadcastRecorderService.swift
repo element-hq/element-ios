@@ -72,9 +72,15 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
 
         resetValues()
 
-        voiceBroadcastService?.stopVoiceBroadcast(success: { _ in
+        voiceBroadcastService?.stopVoiceBroadcast(success: { [weak self] _ in
+            guard let self = self else { return }
+            
             // update recording state
             MXLog.debug("[VoiceBroadcastRecorderService] Stopped")
+            
+            // Send current chunk
+            self.sendChunkFile(at: self.chunkFile.url)
+            
             self.session.tearDownVoiceBroadcastService()
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to stop voice broadcast", context: error)
@@ -84,15 +90,21 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     func pauseRecordingVoiceBroadcast() {
         audioEngine.pause()
         
-        voiceBroadcastService?.pauseVoiceBroadcast(success: { _ in
+        voiceBroadcastService?.pauseVoiceBroadcast(success: { [weak self] _ in
+            guard let self = self else { return }
             // update recording state
+            
+            // Send current chunk
+            self.sendChunkFile(at: self.chunkFile.url)
+            self.chunkFile = nil
+            
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to pause voice broadcast", context: error)
         })
     }
     
     func resumeRecordingVoiceBroadcast() {
-        try? audioEngine.start() // FIXME: Verifiy if start is ok for a restart/resume
+        try? audioEngine.start()
         
         voiceBroadcastService?.resumeVoiceBroadcast(success: { _ in
             // update recording state
