@@ -16,6 +16,10 @@
 
 import Foundation
 
+protocol VoiceBroadcastRecorderServiceDelegate: AnyObject {
+    func voiceBroadcastRecorderService(_ service: VoiceBroadcastRecorderServiceProtocol, didUpdateState state: VoiceBroadcastRecorderState)
+}
+
 protocol VoiceBroadcastRecorderServiceProtocol {
     /// Service delegate
     var serviceDelegate: VoiceBroadcastRecorderServiceDelegate? { get set }

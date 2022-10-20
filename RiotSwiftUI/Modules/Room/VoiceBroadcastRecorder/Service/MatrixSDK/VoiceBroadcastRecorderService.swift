@@ -16,10 +16,6 @@
 
 import Foundation
 
-protocol VoiceBroadcastRecorderServiceDelegate: AnyObject {
-    func voiceBroadcastRecorderService(_ service: VoiceBroadcastRecorderServiceProtocol, didUpdateState state: VoiceBroadcastRecorderState)
-}
-
 class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     
     // MARK: - Properties
