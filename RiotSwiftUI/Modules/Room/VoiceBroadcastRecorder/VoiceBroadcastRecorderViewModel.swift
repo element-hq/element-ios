@@ -37,6 +37,7 @@ class VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderViewModelType, Voic
         super.init(initialViewState: VoiceBroadcastRecorderViewState(details: details,
                                                                      recordingState: .stopped,
                                                                      bindings: VoiceBroadcastRecorderViewStateBindings()))
+        process(viewAction: .start)
     }
     
     // MARK: - Public

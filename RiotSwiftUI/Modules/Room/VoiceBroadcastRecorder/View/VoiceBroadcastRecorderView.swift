@@ -37,13 +37,13 @@ struct VoiceBroadcastRecorderView: View {
             
             HStack(alignment: .top, spacing: 16.0) {
                 Button {
-                    if viewModel.viewState.recordingState == .started {
+                    if viewModel.viewState.recordingState != .stopped {
                         viewModel.send(viewAction: .stop)
                     } else {
                         viewModel.send(viewAction: .start)
                     }
                 } label: {
-                    if viewModel.viewState.recordingState == .started {
+                    if viewModel.viewState.recordingState != .stopped {
                         Image("voice_broadcast_stop")
                             .renderingMode(.original)
                     } else {
@@ -56,7 +56,7 @@ struct VoiceBroadcastRecorderView: View {
                 Button {
                     if viewModel.viewState.recordingState == .paused {
                         viewModel.send(viewAction: .resume)
-                    } else if viewModel.viewState.recordingState == .started {
+                    } else {
                         viewModel.send(viewAction: .pause)
                     }
                 } label: {
