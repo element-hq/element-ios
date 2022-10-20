@@ -128,7 +128,6 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     
     /// Write audio buffer to chunk file.
     private func writeBuffer(_ buffer: AVAudioPCMBuffer) {
-        MXLog.debug("[VoiceBroadcastRecorderService] writeBuffer")
         let sampleRate = buffer.format.sampleRate
         
         if chunkFile == nil {
