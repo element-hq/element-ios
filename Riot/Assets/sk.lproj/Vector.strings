@@ -2828,3 +2828,11 @@
 "manage_session_name_info" = "Uvedomte si, že názvy relácií sú viditeľné aj pre ľudí, s ktorými komunikujete. %@";
 "manage_session_name_hint" = "Vlastné názvy relácií vám pomôžu ľahšie rozpoznať vaše zariadenia.";
 "settings_labs_enable_wysiwyg_composer" = "Vyskúšajte rozšírený textový editor (čistý textový režim sa objaví čoskoro)";
+"wysiwyg_composer_start_action_voice_broadcast" = "Hlasové vysielanie";
+"voice_broadcast_already_in_progress_message" = "Už nahrávate hlasové vysielanie. Ukončite aktuálne hlasové vysielanie a spustite nové.";
+"voice_broadcast_blocked_by_someone_else_message" = "Niekto iný už nahráva hlasové vysielanie. Počkajte, kým sa skončí jeho hlasové vysielanie, a potom spustite nové.";
+"voice_broadcast_permission_denied_message" = "Nemáte požadované oprávnenia na spustenie hlasového vysielania v tejto miestnosti. Obráťte sa na správcu miestnosti, aby vám rozšíril oprávnenia.";
+
+// Mark: - Voice broadcast
+"voice_broadcast_unauthorized_title" = "Nie je možné spustiť nové hlasové vysielanie";
+"settings_labs_enable_voice_broadcast" = "Hlasové vysielanie (v štádiu aktívneho vývoja). V súčasnosti rozpoznávame iba hlasové vysielanie na časovej osi miestnosti, nie je možné odosielať alebo počúvať skutočné hlasové vysielanie";
