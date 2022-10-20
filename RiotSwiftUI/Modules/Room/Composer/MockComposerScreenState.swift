@@ -45,6 +45,7 @@ enum MockComposerScreenState: MockScreenState, CaseIterable {
             }
             switch result {
             case .cancel: viewModel.sendMode = .send
+            default: break
             }
         }
         

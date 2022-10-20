@@ -129,10 +129,12 @@ enum ComposerSendMode: Equatable {
 
 enum ComposerViewAction {
     case cancel
+    case contentDidChange(isEmpty: Bool)
 }
 
 enum ComposerViewModelResult {
     case cancel
+    case contentDidChange(isEmpty: Bool)
 }
 
 

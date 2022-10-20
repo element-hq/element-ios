@@ -60,6 +60,8 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
         switch viewAction {
         case .cancel:
             callback?(.cancel)
+        case let .contentDidChange(isEmpty):
+            callback?(.contentDidChange(isEmpty: isEmpty))
         }
     }
 }
