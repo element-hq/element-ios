@@ -26,13 +26,13 @@ class VoiceBroadcastPlaybackProvider {
     
     /// Create or retrieve the voiceBroadcast timeline coordinator for this event and return
     /// a view to be displayed in the timeline
-    func buildVoiceBroadcastPlaybackViewForEvent(_ event: MXEvent, senderDisplayName: String?) -> UIView? {
+    func buildVoiceBroadcastPlaybackVCForEvent(_ event: MXEvent, senderDisplayName: String?) -> UIViewController? {
         guard let session = session, let room = session.room(withRoomId: event.roomId) else {
             return nil
         }
         
         if let coordinator = coordinatorsForEventIdentifiers[event.eventId] {
-            return coordinator.toPresentable().view
+            return coordinator.toPresentable()
         }
         
         let dispatchGroup = DispatchGroup()
@@ -62,7 +62,7 @@ class VoiceBroadcastPlaybackProvider {
         
         coordinatorsForEventIdentifiers[event.eventId] = coordinator
         
-        return coordinator.toPresentable().view
+        return coordinator.toPresentable()
 
     }
     
