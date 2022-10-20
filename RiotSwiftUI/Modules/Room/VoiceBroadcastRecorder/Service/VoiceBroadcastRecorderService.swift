@@ -114,8 +114,11 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     func resumeRecordingVoiceBroadcast() {
         try? audioEngine.start()
         
-        voiceBroadcastService?.resumeVoiceBroadcast(success: { _ in
-            //
+        voiceBroadcastService?.resumeVoiceBroadcast(success: { [weak self] _ in
+            guard let self = self else { return }
+            
+            // Update state
+            self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .started)
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to resume voice broadcast", context: error)
         })
