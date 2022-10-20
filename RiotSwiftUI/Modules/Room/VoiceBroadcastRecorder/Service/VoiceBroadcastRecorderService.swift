@@ -67,7 +67,6 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             }
         }
 
-        // FIXME: Update state
         try? audioEngine.start()
     }
     
@@ -133,7 +132,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         let sampleRate = buffer.format.sampleRate
         
         if chunkFile == nil {
-            createNewChunkFile(sampleRate: sampleRate)
+            createNewChunkFile(channelsCount: buffer.format.channelCount, sampleRate: sampleRate)
         }
         try? chunkFile.write(from: buffer)
         
@@ -147,7 +146,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     }
     
     /// Create new chunk file with sample rate.
-    private func createNewChunkFile(sampleRate: Float64) {
+    private func createNewChunkFile(channelsCount: AVAudioChannelCount, sampleRate: Float64) {
         guard let directory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
             // FIXME: Manage error
             return
@@ -155,13 +154,13 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         let temporaryFileName = "VoiceBroadcastChunk-\(roomId)-\(chunkFileNumber)"
         let fileUrl = directory
             .appendingPathComponent(temporaryFileName)
-            .appendingPathExtension("m4a")
+            .appendingPathExtension("aac")
         MXLog.debug("[VoiceBroadcastRecorderService] Create chunk file to \(fileUrl)")
         
         let settings: [String: Any] = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
                                      AVSampleRateKey: sampleRate,
                                      AVEncoderBitRateKey: 128000,
-                                     AVNumberOfChannelsKey: 1,
+                                     AVNumberOfChannelsKey: channelsCount,
                                      AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue]
         
         chunkFile = try? AVAudioFile(forWriting: fileUrl, settings: settings)
@@ -201,18 +200,22 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             dispatchGroup.leave()
         }
         
-        dispatchGroup.notify(queue: .main) {
-            voiceBroadcastService.sendChunkOfVoiceBroadcast(audioFileLocalURL: url,
-                                                            mimeType: "audio/mp4",
-                                                            duration: UInt(duration * 1000),
-                                                            samples: nil,
-                                                            sequence: UInt(sequence)) { eventId in
-                MXLog.debug("[VoiceBroadcastRecorderService] Send voice broadcast chunk with success.")
-                if eventId != nil {
-                    self.deleteRecording(at: url)
+        convertAACToM4A(at: url) { url in
+            if let url = url {
+                dispatchGroup.notify(queue: .main) {
+                    voiceBroadcastService.sendChunkOfVoiceBroadcast(audioFileLocalURL: url,
+                                                                    mimeType: "audio/mp4",
+                                                                    duration: UInt(duration * 1000),
+                                                                    samples: nil,
+                                                                    sequence: UInt(sequence)) { eventId in
+                        MXLog.debug("[VoiceBroadcastRecorderService] Send voice broadcast chunk with success.")
+                        if eventId != nil {
+                            self.deleteRecording(at: url)
+                        }
+                    } failure: { error in
+                        MXLog.error("[VoiceBroadcastRecorderService] Failed to send voice broadcast chunk.", context: error)
+                    }
                 }
-            } failure: { error in
-                MXLog.error("[VoiceBroadcastRecorderService] Failed to send voice broadcast chunk.", context: error)
             }
         }
     }
@@ -227,6 +230,44 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             try FileManager.default.removeItem(at: url)
         } catch {
             MXLog.error("[VoiceBroadcastRecorderService] Delete chunk file error.", context: error)
+        }
+    }
+    
+    /// Convert AAC file into m4a one.
+    private func convertAACToM4A(at url: URL, completion: @escaping (URL?) -> Void) {
+        // FIXME: Manage errors at completion
+        let asset = AVURLAsset(url: url)
+        let updatedPath = url.path.replacingOccurrences(of: ".aac", with: ".m4a")
+        let outputUrl = URL(string: "file://" + updatedPath)
+        MXLog.debug("[VoiceBroadcastRecorderService] convertAACToM4A updatedPath : \(updatedPath).")
+        
+        if FileManager.default.fileExists(atPath: updatedPath) {
+            try? FileManager.default.removeItem(atPath: updatedPath)
+        }
+        
+        guard let exportSession = AVAssetExportSession(asset: asset,
+                                                       presetName: AVAssetExportPresetPassthrough) else {
+            completion(nil)
+            return
+        }
+        
+        exportSession.outputURL = outputUrl
+        exportSession.outputFileType = AVFileType.m4a
+        let start = CMTimeMakeWithSeconds(0.0, preferredTimescale: 0)
+        let range = CMTimeRangeMake(start: start, duration: asset.duration)
+        exportSession.timeRange = range
+        exportSession.exportAsynchronously() {
+            switch exportSession.status {
+            case .failed:
+                MXLog.error("[VoiceBroadcastRecorderService] convertAACToM4A error", context: exportSession.error)
+                completion(nil)
+            case .completed:
+                MXLog.debug("[VoiceBroadcastRecorderService] convertAACToM4A success.")
+                completion(outputUrl)
+            default:
+                MXLog.debug("[VoiceBroadcastRecorderService] convertAACToM4A other cases.")
+                completion(nil)
+            }
         }
     }
 }
