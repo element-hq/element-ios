@@ -33,14 +33,7 @@ enum VoiceBroadcastPlaybackState {
     case error
 }
 
-// TODO: Keept it? It is always player
-enum VoiceBroadcastPlaybackType {
-    case player
-    case recorder
-}
-
 struct VoiceBroadcastPlaybackDetails {
-    let type: VoiceBroadcastPlaybackType    // TODO: Keept it? It is always player
     let senderDisplayName: String?
 }
 

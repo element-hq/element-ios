@@ -98,7 +98,7 @@ public class VoiceBroadcastAggregator {
             return
         }
         
-        // TODO: What is the impact on room data flush on steaming?
+        // TODO: What is the impact on room data flush on voice broadcast audio streaming?
         MXLog.warning("[VoiceBroadcastAggregator] handleRoomDataFlush is not supported yet")
     }
     

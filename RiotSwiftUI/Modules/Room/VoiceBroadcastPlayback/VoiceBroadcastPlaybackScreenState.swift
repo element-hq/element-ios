@@ -42,7 +42,7 @@ enum MockVoiceBroadcastPlaybackScreenState: MockScreenState, CaseIterable {
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
         
-        let details = VoiceBroadcastPlaybackDetails(type: VoiceBroadcastPlaybackType.player, senderDisplayName: "Alice")
+        let details = VoiceBroadcastPlaybackDetails(senderDisplayName: "Alice")
         let viewModel = MockVoiceBroadcastPlaybackViewModel(initialViewState: VoiceBroadcastPlaybackViewState(details: details, broadcastState: .live,  playbackState: .stopped, bindings: VoiceBroadcastPlaybackViewStateBindings()))
         
         return (

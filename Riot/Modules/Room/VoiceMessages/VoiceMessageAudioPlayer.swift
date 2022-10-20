@@ -104,8 +104,6 @@ class VoiceMessageAudioPlayer: NSObject {
         // audioPlayerDidFinishPlaying must be called on this last AVPlayerItem
         NotificationCenter.default.removeObserver(playToEndObserver as Any)
         playToEndObserver = NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem, queue: nil) { [weak self] notification in
-            MXLog.debug("[VoiceBroadcastPlaybackViewModel] audioPlayerDidFinishPlaying ")
-            
             guard let self = self else { return }
             
             self.delegateContainer.notifyDelegatesWithBlock { delegate in
