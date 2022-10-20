@@ -86,7 +86,9 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .stopped)
             
             // Send current chunk
-            self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
+            if self.chunkFile != nil {
+                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
+            }
             
             self.session.tearDownVoiceBroadcastService()
         }, failure: { error in
