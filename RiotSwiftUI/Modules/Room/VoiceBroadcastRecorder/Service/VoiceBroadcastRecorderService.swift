@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-import Combine
 import Foundation
 
 protocol VoiceBroadcastRecorderServiceDelegate: AnyObject {
@@ -174,7 +173,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             chunkFrames = 0
         } else {
             stopRecordingVoiceBroadcast()
-            // FIXME: Manage error and stop recording ?
+            // FIXME: Manage error ?
         }
     }
     
