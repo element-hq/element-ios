@@ -38,7 +38,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     
     private var chunkFile: AVAudioFile! = nil
     private var chunkFrames: AVAudioFrameCount = 0
-    private var chunkFileNumber: Int = 0
+    private var chunkFileNumber: Int = 1
         
     // MARK: Public
     
@@ -124,7 +124,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     /// Reset chunk values.
     private func resetValues() {
         chunkFrames = 0
-        chunkFileNumber = 0
+        chunkFileNumber = 1
     }
     
     /// Write audio buffer to chunk file.
