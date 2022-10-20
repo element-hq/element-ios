@@ -134,7 +134,12 @@ public class VoiceBroadcastAggregator {
             
             self.events.removeAll()
             
-            self.events.append(contentsOf: response.chunk)
+            let filteredChunk = response.chunk.filter { event in
+                event.sender == self.voiceBroadcastSenderId &&
+                event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil
+            }
+            
+            self.events.append(contentsOf: filteredChunk)
             
             let eventTypes = [VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType, kMXEventTypeStringRoomMessage]
             self.referenceEventsListener = self.room.listen(toEventsOfTypes: eventTypes) { [weak self] event, direction, state in

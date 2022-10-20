@@ -65,8 +65,10 @@ struct VoiceBroadcastPlaybackView: View {
                         }
                         
                     }
+                    .padding(5.0)
+                    .background(RoundedRectangle(cornerRadius: 4, style: .continuous)
+                        .fill(backgroundColor))
                     .accessibilityIdentifier("liveButton")
-                    .background(backgroundColor)
                 }
             }
     
