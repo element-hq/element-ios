@@ -22,20 +22,20 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     var completion: ((UserOtherSessionsViewModelResult) -> Void)?
     private let sessionInfos: [UserSessionInfo]
     private var selectedSessions: Set<SessionId> = []
-
+    private let defaultTitle: String
+    
     init(sessionInfos: [UserSessionInfo],
          filter: UserOtherSessionsFilter,
          title: String) {
         self.sessionInfos = sessionInfos
-        let bindings = UserOtherSessionsBindings(filter: filter,
-                                                 isEditModeEnabled: false,
-                                                 items: [])
-        let header = UserOtherSessionsHeaderViewDataFactory().createHeaderData(filter: filter)
+        self.defaultTitle = title
+        let bindings = UserOtherSessionsBindings(filter: filter, isEditModeEnabled: false)
+        let items = filter.filterSessionInfos(sessionInfos: sessionInfos, selectedSessions: selectedSessions)
         super.init(initialViewState: UserOtherSessionsViewState(bindings: bindings,
                                                                 title: title,
-                                                                header: header,
-                                                                emptyItemsTitle: nil))
-        updateViewState()
+                                                                items: items,
+                                                                header: filter.userOtherSessionsViewHeader,
+                                                                emptyItemsTitle: filter.userOtherSessionsViewEmptyResultsTitle))
     }
     
     // MARK: - Public
@@ -56,6 +56,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
             updateViewState()
         case .editModeWasToggled:
             selectedSessions.removeAll()
+            updateViewState()
         }
     }
     
@@ -78,58 +79,25 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     // MARK: - Private
     
     private func updateViewState() {
-        state.bindings.items = createItems(sessionInfos: sessionInfos, filter: state.bindings.filter)
+        let currentFilter = state.bindings.filter
         
-        state.header = UserOtherSessionsHeaderViewDataFactory().createHeaderData(filter: state.bindings.filter)
-       
-        if state.bindings.items.isEmpty {
-            state.emptyItemsTitle = noSessionsTitle(filter: state.bindings.filter)
+        state.items = currentFilter.filterSessionInfos(sessionInfos: sessionInfos, selectedSessions: selectedSessions)
+        state.header = currentFilter.userOtherSessionsViewHeader
+        
+        if state.bindings.isEditModeEnabled {
+            state.title = VectorL10n.userOtherSessionSelectedCount(String(selectedSessions.count))
+        } else {
+            state.title = defaultTitle
         }
-    }
-    
-    private func createItems(sessionInfos: [UserSessionInfo], filter: UserOtherSessionsFilter) -> [UserSessionListItemViewData] {
-        filterSessions(sessionInfos: sessionInfos, by: filter)
-            .map {
-                UserSessionListItemViewDataFactory().create(from: $0,
-                                                            highlightSessionDetails: filter == .unverified && $0.isCurrent,
-                                                            isSelected: selectedSessions.contains($0.id))
-            }
-    }
-    
-    private func filterSessions(sessionInfos: [UserSessionInfo], by filter: UserOtherSessionsFilter) -> [UserSessionInfo] {
-        switch filter {
-        case .all:
-            return sessionInfos.filter { !$0.isCurrent }
-        case .inactive:
-            return sessionInfos.filter { !$0.isActive }
-        case .unverified:
-            return sessionInfos.filter { $0.verificationState != .verified }
-        case .verified:
-            return sessionInfos.filter { $0.verificationState == .verified }
-        }
-    }
-    
- 
-    
-    private func noSessionsTitle(filter: UserOtherSessionsFilter) -> String {
-        switch filter {
-        case .all:
-            assertionFailure("The view is not intended to be displayed without any session")
-            return ""
-        case .verified:
-            return VectorL10n.userOtherSessionNoVerifiedSessions
-        case .unverified:
-            return VectorL10n.userOtherSessionNoUnverifiedSessions
-        case .inactive:
-            return VectorL10n.userOtherSessionNoInactiveSessions
-        }
+        
+        state.emptyItemsTitle = currentFilter.userOtherSessionsViewEmptyResultsTitle
     }
 }
 
-struct UserOtherSessionsHeaderViewDataFactory {
+private extension UserOtherSessionsFilter {
     
-    func createHeaderData(filter: UserOtherSessionsFilter) -> UserOtherSessionsHeaderViewData {
-        switch filter {
+    var userOtherSessionsViewHeader: UserOtherSessionsHeaderViewData {
+        switch self {
         case .all:
             return UserOtherSessionsHeaderViewData(title: nil,
                                                    subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
@@ -147,5 +115,40 @@ struct UserOtherSessionsHeaderViewDataFactory {
                                                    subtitle: VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle,
                                                    iconName: Asset.Images.userOtherSessionsVerified.name)
         }
+    }
+    
+    var userOtherSessionsViewEmptyResultsTitle: String {
+        switch self {
+        case .all:
+            return ""
+        case .verified:
+            return VectorL10n.userOtherSessionNoVerifiedSessions
+        case .unverified:
+            return VectorL10n.userOtherSessionNoUnverifiedSessions
+        case .inactive:
+            return VectorL10n.userOtherSessionNoInactiveSessions
+        }
+    }
+    
+    func filterSessionsInfos(_ sessionInfos: [UserSessionInfo]) -> [UserSessionInfo] {
+        switch self {
+        case .all:
+            return sessionInfos.filter { !$0.isCurrent }
+        case .inactive:
+            return sessionInfos.filter { !$0.isActive }
+        case .unverified:
+            return sessionInfos.filter { $0.verificationState != .verified }
+        case .verified:
+            return sessionInfos.filter { $0.verificationState == .verified }
+        }
+    }
+    
+    func filterSessionInfos(sessionInfos: [UserSessionInfo], selectedSessions: Set<SessionId>) -> [UserSessionListItemViewData] {
+        filterSessionsInfos(sessionInfos)
+            .map {
+                UserSessionListItemViewDataFactory().create(from: $0,
+                                                            highlightSessionDetails: self == .unverified && $0.isCurrent,
+                                                            isSelected: selectedSessions.contains($0.id))
+            }
     }
 }

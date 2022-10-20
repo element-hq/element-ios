@@ -36,38 +36,46 @@ struct UserSessionListItem: View {
         Button {
             onBackgroundTap?(viewData.sessionId)
         } label: {
-            VStack(alignment: .leading, spacing: LayoutConstants.verticalPadding) {
-                HStack(spacing: LayoutConstants.avatarRightMargin) {
-                    if isEditModeEnabled {
-                        Image(viewData.isSelected ? Asset.Images.userSessionListItemSelected.name : Asset.Images.userSessionListItemNotSelected.name)
-                    }
-                    DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(viewData.sessionName)
-                            .font(theme.fonts.bodySB)
-                            .foregroundColor(theme.colors.primaryContent)
-                            .multilineTextAlignment(.leading)
-                        HStack {
-                            if let sessionDetailsIcon = viewData.sessionDetailsIcon {
-                                Image(sessionDetailsIcon)
-                                    .padding(.leading, 2)
-                            }
-                            Text(viewData.sessionDetails)
-                                .font(theme.fonts.caption1)
-                                .foregroundColor(viewData.highlightSessionDetails ? theme.colors.alert : theme.colors.secondaryContent)
+            ZStack {
+                if viewData.isSelected {
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .fill(theme.colors.system)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(4)
+                }
+                VStack(alignment: .leading, spacing: LayoutConstants.verticalPadding) {
+                    HStack(spacing: LayoutConstants.avatarRightMargin) {
+                        if isEditModeEnabled {
+                            Image(viewData.isSelected ? Asset.Images.userSessionListItemSelected.name : Asset.Images.userSessionListItemNotSelected.name)
+                        }
+                        DeviceAvatarView(viewData: viewData.deviceAvatarViewData, isSelected: viewData.isSelected)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(viewData.sessionName)
+                                .font(theme.fonts.bodySB)
+                                .foregroundColor(theme.colors.primaryContent)
                                 .multilineTextAlignment(.leading)
+                            HStack {
+                                if let sessionDetailsIcon = viewData.sessionDetailsIcon {
+                                    Image(sessionDetailsIcon)
+                                        .padding(.leading, 2)
+                                }
+                                Text(viewData.sessionDetails)
+                                    .font(theme.fonts.caption1)
+                                    .foregroundColor(viewData.highlightSessionDetails ? theme.colors.alert : theme.colors.secondaryContent)
+                                    .multilineTextAlignment(.leading)
+                            }
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, LayoutConstants.horizontalPadding)
+                    
+                    // Separator
+                    // Note: Separator leading is matching the text leading, we could use alignment guide in the future
+                    SeparatorLine()
+                        .padding(.leading, LayoutConstants.horizontalPadding + LayoutConstants.avatarRightMargin + LayoutConstants.avatarWidth)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, LayoutConstants.horizontalPadding)
-                
-                // Separator
-                // Note: Separator leading is matching the text leading, we could use alignment guide in the future
-                SeparatorLine()
-                    .padding(.leading, LayoutConstants.horizontalPadding + LayoutConstants.avatarRightMargin + LayoutConstants.avatarWidth)
+                .padding(.top, LayoutConstants.verticalPadding)
             }
-            .padding(.top, LayoutConstants.verticalPadding)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -75,15 +83,15 @@ struct UserSessionListItem: View {
 
 struct UserSessionListPreview: View {
     let userSessionsOverviewService: UserSessionsOverviewServiceProtocol = MockUserSessionsOverviewService()
-    var isEditModeEnabled: Bool = false
+    var isEditModeEnabled = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(userSessionsOverviewService.otherSessions) { userSessionInfo in
                 let viewData = UserSessionListItemViewDataFactory().create(from: userSessionInfo)
-
+                
                 UserSessionListItem(viewData: viewData, isEditModeEnabled: isEditModeEnabled, onBackgroundTap: { _ in
-
+                    
                 })
             }
         }

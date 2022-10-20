@@ -32,15 +32,15 @@ enum UserOtherSessionsViewModelResult: Equatable {
 
 struct UserOtherSessionsViewState: BindableState, Equatable {
     var bindings: UserOtherSessionsBindings
-    let title: String
+    var title: String
+    var items: [UserSessionListItemViewData]
     var header: UserOtherSessionsHeaderViewData
-    var emptyItemsTitle: String?
+    var emptyItemsTitle: String
 }
 
 struct UserOtherSessionsBindings: Equatable {
     var filter: UserOtherSessionsFilter
     var isEditModeEnabled: Bool
-    var items: [UserSessionListItemViewData]
 }
 
 enum UserOtherSessionsViewAction {
