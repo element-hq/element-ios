@@ -30,6 +30,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     }
     
     private let audioEngine = AVAudioEngine()
+    private let audioNodeBus = AVAudioNodeBus(0)
     
     private var chunkFile: AVAudioFile! = nil
     private var chunkFrames: AVAudioFrameCount = 0
@@ -49,11 +50,10 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     func startRecordingVoiceBroadcast() {
         let inputNode = audioEngine.inputNode
 
-        let inputBus = AVAudioNodeBus(0)
-        let inputFormat = inputNode.inputFormat(forBus: inputBus)
-        MXLog.debug("[VoiceBroadcastRecorderService] Start recording voice broadcast for bus name : \(String(describing: inputNode.name(forInputBus: inputBus)))")
+        let inputFormat = inputNode.inputFormat(forBus: audioNodeBus)
+        MXLog.debug("[VoiceBroadcastRecorderService] Start recording voice broadcast for bus name : \(String(describing: inputNode.name(forInputBus: audioNodeBus)))")
 
-        inputNode.installTap(onBus: inputBus,
+        inputNode.installTap(onBus: audioNodeBus,
                              bufferSize: 512,
                              format: inputFormat) { (buffer, time) -> Void in
             DispatchQueue.main.async {
@@ -66,8 +66,10 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     }
     
     func stopRecordingVoiceBroadcast() {
+        MXLog.debug("[VoiceBroadcastRecorderService] Stop recording voice broadcast")
         audioEngine.stop()
-        audioEngine.reset() // FIXME: Really needed ?
+        audioEngine.inputNode.removeTap(onBus: audioNodeBus)
+
         resetValues()
 
         voiceBroadcastService?.stopVoiceBroadcast(success: { _ in
