@@ -42,8 +42,16 @@ struct VoiceBroadcastPlaybackDetails {
     let senderDisplayName: String?
 }
 
+enum VoiceBroadcastState {
+    case unknown
+    case stopped
+    case live
+    case paused
+}
+
 struct VoiceBroadcastPlaybackViewState: BindableState {
     var details: VoiceBroadcastPlaybackDetails
+    var broadcastState: VoiceBroadcastState
     var playbackState: VoiceBroadcastPlaybackState
     var bindings: VoiceBroadcastPlaybackViewStateBindings
 }

@@ -43,7 +43,7 @@ enum MockVoiceBroadcastPlaybackScreenState: MockScreenState, CaseIterable {
     var screenView: ([Any], AnyView) {
         
         let details = VoiceBroadcastPlaybackDetails(type: VoiceBroadcastPlaybackType.player, senderDisplayName: "Alice")
-        let viewModel = MockVoiceBroadcastPlaybackViewModel(initialViewState: VoiceBroadcastPlaybackViewState(details: details, playbackState: .stopped, bindings: VoiceBroadcastPlaybackViewStateBindings()))
+        let viewModel = MockVoiceBroadcastPlaybackViewModel(initialViewState: VoiceBroadcastPlaybackViewState(details: details, broadcastState: .live,  playbackState: .stopped, bindings: VoiceBroadcastPlaybackViewStateBindings()))
         
         return (
             [false, viewModel],

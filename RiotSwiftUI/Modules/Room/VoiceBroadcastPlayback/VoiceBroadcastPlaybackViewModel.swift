@@ -45,6 +45,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         self.voiceBroadcastAggregator = voiceBroadcastAggregator
         
         let viewState = VoiceBroadcastPlaybackViewState(details: details,
+                                                        broadcastState: .unknown,
                                                         playbackState: .stopped,
                                                         bindings: VoiceBroadcastPlaybackViewStateBindings())
         super.init(initialViewState: viewState)
