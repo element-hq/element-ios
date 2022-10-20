@@ -52,6 +52,14 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         self.voiceBroadcastAggregator.delegate = self
     }
     
+    private func release() {
+        MXLog.debug("[VoiceBroadcastPlaybackViewModel] release")
+        if let audioPlayer = audioPlayer {
+            audioPlayer.deregisterDelegate(self)
+            self.audioPlayer = nil
+        }
+    }
+    
     // MARK: - Public
     
     override func process(viewAction: VoiceBroadcastPlaybackViewAction) {
@@ -63,6 +71,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         }
     }
     
+    
+    // MARK: - Private
+    
     /// Listen voice broadcast
     private func play() {
         if voiceBroadcastAggregator.isStarted == false {
@@ -73,13 +84,16 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             voiceBroadcastAggregator.start()
         }
         else if let audioPlayer = audioPlayer {
-            // Streaming is already up. Just resume or restart after stop
-            // TODO: Does not work
-            MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: audioPlayer.play()")
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: resume")
             audioPlayer.play()
         }
         else {
-            MXLog.error("[VoiceBroadcastPlaybackViewModel] play: Unexpected state")
+            let chunks = voiceBroadcastAggregator.voiceBroadcast.chunks
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: restart from the beginning: \(chunks.count) chunks")
+            
+            // Reinject all the chunck we already have
+            voiceBroadcastChunkQueue.append(contentsOf: chunks)
+            processPendingVoiceBroadcastChunks()
         }
     }
     
@@ -92,8 +106,35 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         }
     }
     
+    private func stopIfVoiceBroadcastOver() {
+        MXLog.debug("[VoiceBroadcastPlaybackViewModel] stopIfVoiceBroadcastOver")
+        
+        // TODO: Check if the broadcast is over before stopping everything
+        // If not, the player should not stopped. The view state must be move to buffering
+        stop()
+    }
     
-    func processNextVoiceBroadcastChunk() {
+    private func stop() {
+        MXLog.debug("[VoiceBroadcastPlaybackViewModel] stop")
+        
+        // Objects will be released on audioPlayerDidStopPlaying
+        audioPlayer?.stop()
+    }
+    
+    
+    // MARK: - Voice broadcast chunks playback
+    
+    private func processPendingVoiceBroadcastChunks() {
+        reorderPendingVoiceBroadcastChunks()
+        processNextVoiceBroadcastChunk()
+    }
+    
+    private func reorderPendingVoiceBroadcastChunks() {
+        // Make sure we download and process check in the right order
+        voiceBroadcastChunkQueue = voiceBroadcastChunkQueue.sorted(by: {$0.sequence < $1.sequence})
+    }
+    
+    private func processNextVoiceBroadcastChunk() {
         
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: \(voiceBroadcastChunkQueue.count) chunks remaining")
         
@@ -102,17 +143,21 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             return
         }
         
+        // TODO: Control the download rate to avoid to download all chunk in mass
+        // We could synchronise it with the number of chunks in the player playlist (audioPlayer.playerItems)
+        
         let chunk = voiceBroadcastChunkQueue.removeFirst()
         
         // numberOfSamples is for the equalizer view we do not support yet
         cacheManager.loadAttachment(chunk.attachment, numberOfSamples: 1) { [weak self] result in
-            
-            // TODO: Make sure there has no new incoming chunk that should be before this attachment
-            
             guard let self = self else {
                 return
             }
             
+            // TODO: Make sure there has no new incoming chunk that should be before this attachment
+            // Be careful that this new chunk is not older than the chunk being played by the audio player. Else
+            // we will get an unexecpted rewind.
+
             switch result {
                 case .success(let result):
                     guard result.eventIdentifier == chunk.attachment.eventId else {
@@ -141,7 +186,6 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     }
             }
             
-            // TODO: Throttle to avoid to download all chunk in mass
             self.processNextVoiceBroadcastChunk()
         }
     }
@@ -164,10 +208,7 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
     }
     
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {
-        // Make sure we download and process check in the right order
-        voiceBroadcastChunkQueue = voiceBroadcastChunkQueue.sorted(by: {$0.sequence < $1.sequence})
-        
-        self.processNextVoiceBroadcastChunk()
+        processPendingVoiceBroadcastChunks()
     }
 }
 
@@ -186,7 +227,9 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
     }
     
     func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        MXLog.debug("[VoiceBroadcastPlaybackViewModel] audioPlayerDidStopPlaying")
         state.playbackState = .stopped
+        release()
     }
     
     func audioPlayer(_ audioPlayer: VoiceMessageAudioPlayer, didFailWithError error: Error) {
@@ -194,12 +237,7 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
     }
     
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
-        MXLog.debug("AAAA audioPlayerDidFinishPlaying")
-//        audioPlayer.seekToTime(0.0) { [weak self] _ in
-//            guard let self = self else { return }
-//            self.state.playbackState = .stopped
-//            audioPlayer.stop()
-//        }
+        MXLog.debug("[VoiceBroadcastPlaybackViewModel] audioPlayerDidFinishPlaying: \(audioPlayer.playerItems.count)")
+        stopIfVoiceBroadcastOver()
     }
-    
 }

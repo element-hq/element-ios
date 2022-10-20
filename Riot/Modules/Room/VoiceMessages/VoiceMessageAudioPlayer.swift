@@ -63,6 +63,14 @@ class VoiceMessageAudioPlayer: NSObject {
         return abs(CMTimeGetSeconds(audioPlayer?.currentTime() ?? .zero))
     }
     
+    var playerItems: [AVPlayerItem] {
+        guard let audioPlayer = audioPlayer else {
+            return []
+        }
+        
+        return audioPlayer.items()
+    }
+    
     private(set) var isStopped = true
     
     deinit {
@@ -92,6 +100,18 @@ class VoiceMessageAudioPlayer: NSObject {
     func addContentFromURL(_ url: URL) {
         let playerItem = AVPlayerItem(url: url)
         audioPlayer?.insert(playerItem, after: nil)
+        
+        // audioPlayerDidFinishPlaying must be called on this last AVPlayerItem
+        NotificationCenter.default.removeObserver(playToEndObserver as Any)
+        playToEndObserver = NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem, queue: nil) { [weak self] notification in
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] audioPlayerDidFinishPlaying ")
+            
+            guard let self = self else { return }
+            
+            self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidFinishPlaying(self)
+            }
+        }
     }
     
     func unloadContent() {
@@ -126,7 +146,7 @@ class VoiceMessageAudioPlayer: NSObject {
         audioPlayer?.seek(to: .zero)
     }
     
-    func seekToTime(_ time: TimeInterval, completionHandler:@escaping (Bool) -> Void = { _ in }) {
+    func seekToTime(_ time: TimeInterval, completionHandler: @escaping (Bool) -> Void = { _ in }) {
         audioPlayer?.seek(to: CMTime(seconds: time, preferredTimescale: 60000), completionHandler: completionHandler)
     }
     
