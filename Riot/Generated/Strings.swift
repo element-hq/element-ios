@@ -9063,6 +9063,10 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastPermissionDeniedMessage: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_permission_denied_message") 
   }
+  /// Unable to play this voice broadcast.
+  public static var voiceBroadcastPlaybackLoadingError: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_playback_loading_error") 
+  }
   /// Can't start a new voice broadcast
   public static var voiceBroadcastUnauthorizedTitle: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_unauthorized_title") 
