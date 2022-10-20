@@ -37,14 +37,17 @@ struct VoiceBroadcastRecorderView: View {
             
             HStack(alignment: .top, spacing: 16.0) {
                 Button {
-                    if viewModel.viewState.recordingState != .stopped {
-                        viewModel.send(viewAction: .stop)
-                    } else {
+                    switch viewModel.viewState.recordingState {
+                    case .started, .resumed:
+                        viewModel.send(viewAction: .pause)
+                    case .stopped:
                         viewModel.send(viewAction: .start)
+                    case .paused:
+                        viewModel.send(viewAction: .resume)
                     }
                 } label: {
-                    if viewModel.viewState.recordingState != .stopped {
-                        Image("voice_broadcast_stop")
+                    if viewModel.viewState.recordingState == .started || viewModel.viewState.recordingState == .resumed {
+                        Image("voice_broadcast_record_pause")
                             .renderingMode(.original)
                     } else {
                         Image("voice_broadcast_record")
@@ -54,16 +57,12 @@ struct VoiceBroadcastRecorderView: View {
                 .accessibilityIdentifier("recordButton")
                 
                 Button {
-                    if viewModel.viewState.recordingState == .paused {
-                        viewModel.send(viewAction: .resume)
-                    } else {
-                        viewModel.send(viewAction: .pause)
-                    }
+                    viewModel.send(viewAction: .stop)
                 } label: {
-                    Image("voice_broadcast_record_pause")
+                    Image("voice_broadcast_stop")
                         .renderingMode(.original)
                 }
-                .accessibilityIdentifier("pauseButton")
+                .accessibilityIdentifier("stopButton")
                 .disabled(viewModel.viewState.recordingState == .stopped)
                 .mask(Color.black.opacity(viewModel.viewState.recordingState == .stopped ? 0.3 : 1.0))
             }
