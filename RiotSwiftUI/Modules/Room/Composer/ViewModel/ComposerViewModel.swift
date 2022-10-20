@@ -45,6 +45,15 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
         }
     }
     
+    var placeholder: String? {
+        get {
+            state.placeholder
+        }
+        set {
+            state.placeholder = newValue
+        }
+    }
+    
     // MARK: - Public
     
     override func process(viewAction: ComposerViewAction) {

@@ -1998,9 +1998,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self updateInputToolBarVisibility];
     
     // Check whether the input toolbar is ready before updating it.
-    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+    if (self.inputToolbarView && [self inputToolbarConformsToToolbarViewProtocol])
     {
-        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        id<RoomInputToolbarViewProtocol> roomInputToolbarView = (id<RoomInputToolbarViewProtocol>) self.inputToolbarView;
         
         // Update encryption decoration if needed
         [self updateEncryptionDecorationForRoomInputToolbar:roomInputToolbarView];
@@ -2120,9 +2120,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)updateInputToolbarEncryptionDecoration
 {
-    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+    if (self.inputToolbarView && [self inputToolbarConformsToToolbarViewProtocol])
     {
-        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        id<RoomInputToolbarViewProtocol> roomInputToolbarView = (id<RoomInputToolbarViewProtocol>)self.inputToolbarView;
         [self updateEncryptionDecorationForRoomInputToolbar:roomInputToolbarView];
     }
 }
@@ -2138,7 +2138,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     roomTitleView.badgeImageView.image = self.roomEncryptionBadgeImage;
 }
 
-- (void)updateEncryptionDecorationForRoomInputToolbar:(RoomInputToolbarView*)roomInputToolbarView
+- (void)updateEncryptionDecorationForRoomInputToolbar:(id<RoomInputToolbarViewProtocol>)roomInputToolbarView
 {
     roomInputToolbarView.isEncryptionEnabled = self.isEncryptionEnabled;
 }
@@ -4593,6 +4593,9 @@ static CGSize kThreadListBarButtonItemImageSize;
                             // Do nothing for dummy links
                             shouldDoAction = NO;
                             break;
+                        case RoomMessageURLTypeHttp:
+                            shouldDoAction = YES;
+                            break;
                         default:
                         {
                             MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
@@ -4618,16 +4621,20 @@ static CGSize kThreadListBarButtonItemImageSize;
                     break;
                 case UITextItemInteractionPresentActions:
                 {
-                    // Retrieve the tapped event
-                    MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-                    
-                    if (tappedEvent)
-                    {
-                        // Long press on link, present room contextual menu.
-                        [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:NO cell:cell animated:YES];
+                    if (roomMessageURLType == RoomMessageURLTypeHttp) {
+                        shouldDoAction = YES;
+                    } else {
+                        // Retrieve the tapped event
+                        MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+                        
+                        if (tappedEvent)
+                        {
+                            // Long press on link, present room contextual menu.
+                            [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:NO cell:cell animated:YES];
+                        }
+                        
+                        shouldDoAction = NO;
                     }
-                    
-                    shouldDoAction = NO;
                 }
                     break;
                 case UITextItemInteractionPreview:
@@ -5026,12 +5033,12 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (self.roomInputToolbarContainerHeightConstraint.constant != height)
     {
         // Hide temporarily the placeholder to prevent its distortion during height animation
-        if (!savedInputToolbarPlaceholder)
+        if (toolbarView.placeholder.length)
         {
-            savedInputToolbarPlaceholder = toolbarView.placeholder.length ? toolbarView.placeholder : @"";
+            savedInputToolbarPlaceholder = toolbarView.placeholder;
+            toolbarView.placeholder = nil;
         }
-        toolbarView.placeholder = nil;
-        
+            
         [super roomInputToolbarView:toolbarView heightDidChanged:height completion:^(BOOL finished) {
             
             if (completion)
@@ -5040,10 +5047,10 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
             
             // Consider here the saved placeholder only if no new placeholder has been defined during the height animation.
-            if (!toolbarView.placeholder)
+            if (!toolbarView.placeholder && self->savedInputToolbarPlaceholder.length)
             {
                 // Restore the placeholder if any
-                toolbarView.placeholder = self->savedInputToolbarPlaceholder.length ? self->savedInputToolbarPlaceholder : nil;
+                toolbarView.placeholder = self->savedInputToolbarPlaceholder;
             }
             self->savedInputToolbarPlaceholder = nil;
         }];

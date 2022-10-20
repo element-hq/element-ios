@@ -237,6 +237,7 @@ static BOOL _disableLongPressGestureOnEvent;
     [tapGesture setDelegate:self];
     [self.messageTextView addGestureRecognizer:tapGesture];
     self.messageTextView.userInteractionEnabled = YES;
+    self.messageTextView.clipsToBounds = NO;
     
     // Recognise and make tappable phone numbers, address, etc.
     self.messageTextView.dataDetectorTypes = UIDataDetectorTypeAll;
