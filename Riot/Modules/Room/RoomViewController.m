@@ -2436,15 +2436,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (session.voiceBroadcastService)
     {
         [self showAlertWithTitle:[VectorL10n voiceBroadcastUnauthorizedTitle] message:[VectorL10n voiceBroadcastAlreadyInProgressMessage]];
-        
-        //*** Temporary code - To be removed ***
-        // We stop here the current voice broadcasting (required until the actual stop button is available)
-        [session.voiceBroadcastService stopVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
-            [session tearDownVoiceBroadcastService];
-        } failure:^(NSError * _Nonnull error) {
-        }];
-        //*** End ***
-        
         return;
     }
     
