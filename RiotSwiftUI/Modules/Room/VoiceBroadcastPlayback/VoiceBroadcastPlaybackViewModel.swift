@@ -111,14 +111,32 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         }
         
         isLivePlayback = true
-        state.playbackState = .buffering
         
-        // TODO: TBC
+        // Flush the current audio player playlist
+        audioPlayer?.removeAllPlayerItems()
+        
+        if voiceBroadcastAggregator.isStarted == false {
+            // Start the streaming by fetching broadcast chunks
+            // The audio player will start the automatically playback on incoming chunks
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] playLive: Start streaming")
+            state.playbackState = .buffering
+            voiceBroadcastAggregator.start()
+        }
+        else {
+            let chunks = voiceBroadcastAggregator.voiceBroadcast.chunks
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] playLive: restart from the last chunk: \(chunks.count) chunks")
+            
+            // Reinject all the chunck we already have
+            voiceBroadcastChunkQueue.append(contentsOf: chunks)
+            processPendingVoiceBroadcastChunksForLivePlayback()
+        }
     }
     
     /// Stop voice broadcast
     private func pause() {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] pause")
+        
+        isLivePlayback = false
         
         if let audioPlayer = audioPlayer, audioPlayer.isPlaying {
             audioPlayer.pause()
@@ -143,14 +161,28 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     
     // MARK: - Voice broadcast chunks playback
     
+    /// Start the broadcast from the beginning or push more chunks
     private func processPendingVoiceBroadcastChunks() {
         reorderPendingVoiceBroadcastChunks()
         processNextVoiceBroadcastChunk()
     }
     
+    /// Start the broadcast from the last known chunk
+    private func processPendingVoiceBroadcastChunksForLivePlayback() {
+        let chunks = reorderVoiceBroadcastChunks(chunks: Array(voiceBroadcastAggregator.voiceBroadcast.chunks))
+        if let lastChunk = chunks.last {
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] processPendingVoiceBroadcastChunksForLivePlayback. Use the last chunk (sequence: \(lastChunk.sequence) out of the \(voiceBroadcastChunkQueue) chunks")
+            voiceBroadcastChunkQueue = [lastChunk]
+        }
+        processNextVoiceBroadcastChunk()
+    }
+    
     private func reorderPendingVoiceBroadcastChunks() {
         // Make sure we download and process check in the right order
-        voiceBroadcastChunkQueue = voiceBroadcastChunkQueue.sorted(by: {$0.sequence < $1.sequence})
+        voiceBroadcastChunkQueue = reorderVoiceBroadcastChunks(chunks: voiceBroadcastChunkQueue)
+    }
+    private func reorderVoiceBroadcastChunks(chunks: [VoiceBroadcastChunk]) -> [VoiceBroadcastChunk] {
+        chunks.sorted(by: {$0.sequence < $1.sequence})
     }
     
     private func processNextVoiceBroadcastChunk() {
@@ -227,7 +259,14 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
     }
     
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {
-        processPendingVoiceBroadcastChunks()
+        if isLivePlayback && state.playbackState == .buffering {
+            // We started directly with a live playback but there was no known chuncks at that time
+            // This is the first chunks we get. Start the playback on the latest one
+            processPendingVoiceBroadcastChunksForLivePlayback()
+        }
+        else {
+            processPendingVoiceBroadcastChunks()
+        }
     }
 }
 

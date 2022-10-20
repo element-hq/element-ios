@@ -114,6 +114,10 @@ class VoiceMessageAudioPlayer: NSObject {
         }
     }
     
+    func removeAllPlayerItems() {
+        audioPlayer?.removeAllItems()
+    }
+    
     func unloadContent() {
         url = nil
         audioPlayer?.replaceCurrentItem(with: nil)
