@@ -154,6 +154,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     private func stop() {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] stop")
         
+        isLivePlayback = false
+        
         // Objects will be released on audioPlayerDidStopPlaying
         audioPlayer?.stop()
     }
@@ -171,7 +173,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     private func processPendingVoiceBroadcastChunksForLivePlayback() {
         let chunks = reorderVoiceBroadcastChunks(chunks: Array(voiceBroadcastAggregator.voiceBroadcast.chunks))
         if let lastChunk = chunks.last {
-            MXLog.debug("[VoiceBroadcastPlaybackViewModel] processPendingVoiceBroadcastChunksForLivePlayback. Use the last chunk (sequence: \(lastChunk.sequence) out of the \(voiceBroadcastChunkQueue) chunks")
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] processPendingVoiceBroadcastChunksForLivePlayback. Use the last chunk: sequence: \(lastChunk.sequence) out of the \(voiceBroadcastChunkQueue.count) chunks")
             voiceBroadcastChunkQueue = [lastChunk]
         }
         processNextVoiceBroadcastChunk()
@@ -214,7 +216,17 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                         return
                     }
                     
-                    if self.audioPlayer == nil {
+                    if let audioPlayer = self.audioPlayer {
+                        // Append the chunk to the current playlist
+                        audioPlayer.addContentFromURL(result.url)
+                        
+                        // Resume the player. Needed after a pause
+                        if audioPlayer.isPlaying == false {
+                            MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: Resume the player")
+                            audioPlayer.play()
+                        }
+                    }
+                    else {
                         // Init and start the player on the first chunk
                         let audioPlayer = self.mediaServiceProvider.audioPlayerForIdentifier(result.eventIdentifier)
                         audioPlayer.registerDelegate(self)
@@ -222,10 +234,6 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                         audioPlayer.loadContentFromURL(result.url, displayName: chunk.attachment.originalFileName)
                         audioPlayer.play()
                         self.audioPlayer = audioPlayer
-                    }
-                    else {
-                        // Append the chunk to the current playlist
-                        self.audioPlayer?.addContentFromURL(result.url)
                     }
 
                 case .failure (let error):
