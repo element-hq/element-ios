@@ -25,35 +25,9 @@ struct UserOtherSessions: View {
         ScrollView {
             SwiftUI.Section {
                 if viewModel.viewState.items.isEmpty {
-                    VStack {
-                        Text(viewModel.viewState.emptyItemsTitle)
-                            .font(theme.fonts.footnote)
-                            .foregroundColor(theme.colors.primaryContent)
-                            .padding(.bottom, 20)
-                        Button {
-                            viewModel.send(viewAction: .clearFilter)
-                        } label: {
-                            VStack(spacing: 0) {
-                                SeparatorLine()
-                                Text(VectorL10n.userOtherSessionClearFilter)
-                                    .font(theme.fonts.body)
-                                    .foregroundColor(theme.colors.accent)
-                                    .frame(maxWidth: .infinity, alignment: .center)
-                                    .padding(.vertical, 11)
-                                SeparatorLine()
-                            }
-                            .background(theme.colors.background)
-                        }
-                    }
+                    noItemsView()
                 } else {
-                    LazyVStack(spacing: 0) {
-                        ForEach(viewModel.viewState.items) { viewData in
-                            UserSessionListItem(viewData: viewData, isEditModeEnabled: viewModel.isEditModeEnabled, onBackgroundTap: { sessionId in
-                                viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId))
-                            })
-                        }
-                    }
-                    .background(theme.colors.background)
+                    itemsView()
                 }
             } header: {
                 UserOtherSessionsHeaderView(viewData: viewModel.viewState.header)
@@ -61,46 +35,59 @@ struct UserOtherSessions: View {
                     .padding(.top, 24.0)
             }
         }
+        .onChange(of: viewModel.isEditModeEnabled) { _ in
+            viewModel.send(viewAction: .editModeWasToggled)
+        }
+        .onChange(of: viewModel.filter) { _ in
+            viewModel.send(viewAction: .filterWasChanged)
+        }
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
         .navigationTitle(viewModel.viewState.title)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Menu {
-                    Picker("", selection: $viewModel.filter) {
-                        ForEach(UserOtherSessionsFilter.allCases) { filter in
-                            Text(filter.menuLocalizedName).tag(filter)
-                        }
-                    }
-                    .labelsHidden()
-                    .onChange(of: viewModel.filter) { _ in
-                        viewModel.send(viewAction: .filterWasChanged)
-                    }
-                } label: {
-                    Image(viewModel.filter == .all ? Asset.Images.userOtherSessionsFilter.name : Asset.Images.userOtherSessionsFilterSelected.name)
-                }
-                .offset(x: 7)
-                .accessibilityLabel(VectorL10n.userOtherSessionFilter)
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Menu {
-                    Button {
-                        viewModel.isEditModeEnabled.toggle()
-                    } label: {
-                        Label(VectorL10n.userOtherSessionMenuSelectSessions, systemImage: "checkmark.circle")
-                    }
-                    .onChange(of: viewModel.isEditModeEnabled) { _ in
-                        viewModel.send(viewAction: .editModeWasToggled)
-                    }
-                } label: {
-                    Image(systemName: "ellipsis")
-                        .padding(.horizontal, 4)
-                        .padding(.vertical, 12)
-                }
-                .offset(x: 4)
+            UserOtherSessionsToolbar(isEditModeEnabled: $viewModel.isEditModeEnabled,
+                                     filter: $viewModel.filter,
+                                     allItemsSelected: viewModel.viewState.allItemsSelected) {
+                viewModel.send(viewAction: .toggleAllSelection)
             }
         }
+        .navigationBarBackButtonHidden(viewModel.isEditModeEnabled)
         .accentColor(theme.colors.accent)
+    }
+    
+    private func noItemsView() -> some View {
+        VStack {
+            Text(viewModel.viewState.emptyItemsTitle)
+                .font(theme.fonts.footnote)
+                .foregroundColor(theme.colors.primaryContent)
+                .padding(.bottom, 20)
+            Button {
+                viewModel.send(viewAction: .clearFilter)
+            } label: {
+                VStack(spacing: 0) {
+                    SeparatorLine()
+                    Text(VectorL10n.userOtherSessionClearFilter)
+                        .font(theme.fonts.body)
+                        .foregroundColor(theme.colors.accent)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.vertical, 11)
+                    SeparatorLine()
+                }
+                .background(theme.colors.background)
+            }
+        }
+    }
+    
+    private func itemsView() -> some View {
+        LazyVStack(spacing: 0) {
+            ForEach(viewModel.viewState.items) { viewData in
+                UserSessionListItem(viewData: viewData,
+                                    isEditModeEnabled: viewModel.isEditModeEnabled,
+                                    onBackgroundTap: { sessionId in viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId)) },
+                                    onBackgroundLongPress: { _ in viewModel.isEditModeEnabled = true })
+            }
+        }
+        .background(theme.colors.background)
     }
 }
 

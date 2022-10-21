@@ -36,6 +36,7 @@ struct UserOtherSessionsViewState: BindableState, Equatable {
     var items: [UserSessionListItemViewData]
     var header: UserOtherSessionsHeaderViewData
     var emptyItemsTitle: String
+    var allItemsSelected: Bool
 }
 
 struct UserOtherSessionsBindings: Equatable {
@@ -48,4 +49,5 @@ enum UserOtherSessionsViewAction {
     case filterWasChanged
     case clearFilter
     case editModeWasToggled
+    case toggleAllSelection
 }

@@ -1523,6 +1523,10 @@ public class VectorL10n: NSObject {
   public static var delete: String { 
     return VectorL10n.tr("Vector", "delete") 
   }
+  /// Deselect All
+  public static var deselectAll: String { 
+    return VectorL10n.tr("Vector", "deselect_all") 
+  }
   /// This operation requires additional authentication.\nTo continue, please enter your password.
   public static var deviceDetailsDeletePromptMessage: String { 
     return VectorL10n.tr("Vector", "device_details_delete_prompt_message") 

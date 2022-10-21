@@ -2584,6 +2584,7 @@ To enable access, tap Settings> Location and select Always";
 "reset_to_default" = "Reset to default";
 "resend_message" = "Resend the message";
 "select_all" = "Select All";
+"deselect_all" = "Deselect All";
 "cancel_upload" = "Cancel Upload";
 "cancel_download" = "Cancel Download";
 "show_details" = "Show Details";

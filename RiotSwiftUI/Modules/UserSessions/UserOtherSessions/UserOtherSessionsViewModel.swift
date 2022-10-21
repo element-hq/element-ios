@@ -28,14 +28,15 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
          filter: UserOtherSessionsFilter,
          title: String) {
         self.sessionInfos = sessionInfos
-        self.defaultTitle = title
+        defaultTitle = title
         let bindings = UserOtherSessionsBindings(filter: filter, isEditModeEnabled: false)
         let items = filter.filterSessionInfos(sessionInfos: sessionInfos, selectedSessions: selectedSessions)
         super.init(initialViewState: UserOtherSessionsViewState(bindings: bindings,
                                                                 title: title,
                                                                 items: items,
                                                                 header: filter.userOtherSessionsViewHeader,
-                                                                emptyItemsTitle: filter.userOtherSessionsViewEmptyResultsTitle))
+                                                                emptyItemsTitle: filter.userOtherSessionsViewEmptyResultsTitle,
+                                                                allItemsSelected: false))
     }
     
     // MARK: - Public
@@ -57,8 +58,13 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         case .editModeWasToggled:
             selectedSessions.removeAll()
             updateViewState()
+        case .toggleAllSelection:
+            toggleAllSelection()
+            updateViewState()
         }
     }
+
+    // MARK: - Private
     
     private func showUserSessionOverview(sessionId: String) {
         guard let session = sessionInfos.first(where: { $0.id == sessionId }) else {
@@ -76,8 +82,6 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         }
     }
     
-    // MARK: - Private
-    
     private func updateViewState() {
         let currentFilter = state.bindings.filter
         
@@ -91,11 +95,22 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         }
         
         state.emptyItemsTitle = currentFilter.userOtherSessionsViewEmptyResultsTitle
+        
+        state.allItemsSelected = sessionInfos.count == selectedSessions.count
+    }
+    
+    private func toggleAllSelection() {
+        if state.allItemsSelected {
+            selectedSessions.removeAll()
+        } else {
+            sessionInfos.forEach { sessionInfo in
+                selectedSessions.insert(sessionInfo.id)
+            }
+        }
     }
 }
 
 private extension UserOtherSessionsFilter {
-    
     var userOtherSessionsViewHeader: UserOtherSessionsHeaderViewData {
         switch self {
         case .all:

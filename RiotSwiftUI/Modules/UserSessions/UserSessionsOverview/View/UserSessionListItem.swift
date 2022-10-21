@@ -31,11 +31,10 @@ struct UserSessionListItem: View {
     var isEditModeEnabled = false
     
     var onBackgroundTap: ((String) -> Void)?
+    var onBackgroundLongPress: ((String) -> Void)?
     
     var body: some View {
-        Button {
-            onBackgroundTap?(viewData.sessionId)
-        } label: {
+        Button { } label: {
             ZStack {
                 if viewData.isSelected {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
@@ -75,6 +74,11 @@ struct UserSessionListItem: View {
                         .padding(.leading, LayoutConstants.horizontalPadding + LayoutConstants.avatarRightMargin + LayoutConstants.avatarWidth)
                 }
                 .padding(.top, LayoutConstants.verticalPadding)
+            }.onTapGesture {
+                onBackgroundTap?(viewData.sessionId)
+            }
+            .onLongPressGesture {
+                onBackgroundLongPress?(viewData.sessionId)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -89,9 +93,7 @@ struct UserSessionListPreview: View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(userSessionsOverviewService.otherSessions) { userSessionInfo in
                 let viewData = UserSessionListItemViewDataFactory().create(from: userSessionInfo)
-                
                 UserSessionListItem(viewData: viewData, isEditModeEnabled: isEditModeEnabled, onBackgroundTap: { _ in
-                    
                 })
             }
         }
