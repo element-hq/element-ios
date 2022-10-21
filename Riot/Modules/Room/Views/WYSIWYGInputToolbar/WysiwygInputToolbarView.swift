@@ -103,7 +103,12 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                 .sink(receiveValue: { [weak self] idealHeight in
                     guard let self = self else { return }
                     self.updateToolbarHeight(wysiwygHeight: idealHeight)
-                })
+                }),
+            wysiwygViewModel.$idealHeight
+                .removeDuplicates()
+                .sink { [weak hostingViewController] _ in
+                    hostingViewController?.view.setNeedsLayout()
+                }
         ]
         
         update(theme: ThemeService.shared().theme)
