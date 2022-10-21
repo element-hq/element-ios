@@ -332,7 +332,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         createAvatarButtonItem(for: viewController)
     }
 
-    private func createAvatarButtonItem(for viewController: UIViewController) {
+    private var avatarMenu: UIMenu {
         var actions: [UIMenuElement] = []
         
         actions.append(UIAction(title: VectorL10n.allChatsUserMenuSettings, image: UIImage(systemName: "gearshape")) { [weak self] action in
@@ -358,32 +358,30 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
             }
         ]))
 
-        let menu = UIMenu(options: .displayInline, children: actions)
-        
+        return UIMenu(options: .displayInline, children: actions)
+    }
+
+    private func createAvatarButtonItem(for viewController: UIViewController) {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
         view.backgroundColor = .clear
         
-        let button: UIButton = UIButton(frame: view.bounds.inset(by: UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)))
+        let avatarInsets: UIEdgeInsets = .init(top: 7, left: 7, bottom: 7, right: 7)
+        let button: UIButton = .init(frame: view.bounds.inset(by: avatarInsets))
         button.setImage(Asset.Images.tabPeople.image, for: .normal)
-        button.menu = menu
+        button.menu = avatarMenu
         button.showsMenuAsPrimaryAction = true
         button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         button.accessibilityLabel = VectorL10n.allChatsUserMenuAccessibilityLabel
         view.addSubview(button)
         self.avatarMenuButton = button
 
-        let avatarView = UserAvatarView(frame: view.bounds.inset(by: UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)))
+        let avatarView = UserAvatarView(frame: view.bounds.inset(by: avatarInsets))
         avatarView.isUserInteractionEnabled = false
         avatarView.update(theme: ThemeService.shared().theme)
         avatarView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         view.addSubview(avatarView)
         self.avatarMenuView = avatarView
-
-        if let avatar = userAvatarViewData(from: currentMatrixSession) {
-            avatarView.fill(with: avatar)
-            button.setImage(nil, for: .normal)
-        }
-        
+        updateAvatarButtonItem()
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: view)
     }
     

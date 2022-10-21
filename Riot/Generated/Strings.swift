@@ -7539,7 +7539,7 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableThreads: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
   }
-  /// Voice broadcast (under active development). We currently only detect voice broadcast in the room timeline, this is not possible to send or listen an actual voice broadcast
+  /// Voice broadcast (under active development)
   public static var settingsLabsEnableVoiceBroadcast: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_voice_broadcast") 
   }
@@ -9063,6 +9063,26 @@ public class VectorL10n: NSObject {
   public static var voice: String { 
     return VectorL10n.tr("Vector", "voice") 
   }
+  /// You are already recording a voice broadcast. Please end your current voice broadcast to start a new one.
+  public static var voiceBroadcastAlreadyInProgressMessage: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_already_in_progress_message") 
+  }
+  /// Someone else is already recording a voice broadcast. Wait for their voice broadcast to end to start a new one.
+  public static var voiceBroadcastBlockedBySomeoneElseMessage: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_blocked_by_someone_else_message") 
+  }
+  /// You don't have the required permissions to start a voice broadcast in this room. Contact a room administrator to upgrade your permissions.
+  public static var voiceBroadcastPermissionDeniedMessage: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_permission_denied_message") 
+  }
+  /// Unable to play this voice broadcast.
+  public static var voiceBroadcastPlaybackLoadingError: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_playback_loading_error") 
+  }
+  /// Can't start a new voice broadcast
+  public static var voiceBroadcastUnauthorizedTitle: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_unauthorized_title") 
+  }
   /// Voice message
   public static var voiceMessageLockScreenPlaceholder: String { 
     return VectorL10n.tr("Vector", "voice_message_lock_screen_placeholder") 
@@ -9218,6 +9238,10 @@ public class VectorL10n: NSObject {
   /// Text Formatting
   public static var wysiwygComposerStartActionTextFormatting: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_text_formatting") 
+  }
+  /// Voice broadcast
+  public static var wysiwygComposerStartActionVoiceBroadcast: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_start_action_voice_broadcast") 
   }
   /// Yes
   public static var yes: String { 

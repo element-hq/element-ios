@@ -19,8 +19,9 @@ import Foundation
 /// Voice Broadcast settings.
 @objcMembers
 final class VoiceBroadcastSettings: NSObject {
-    static let eventType = "io.element.voice_broadcast_info"
+    static let voiceBroadcastInfoContentKeyType = "io.element.voice_broadcast_info"
     
+    static let voiceBroadcastContentKeyDeviceId = "device_id"
     static let voiceBroadcastContentKeyState = "state"
     static let voiceBroadcastContentKeyChunkLength = "chunk_length"
     static let voiceBroadcastContentKeyChunkType = "io.element.voice_broadcast_chunk"

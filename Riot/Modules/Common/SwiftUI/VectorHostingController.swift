@@ -25,8 +25,7 @@ import Combine
 class VectorHostingController: UIHostingController<AnyView> {
     
     // MARK: Private
-    
-    private let forceZeroSafeAreaInsets: Bool
+
     private var theme: Theme
     private var heightSubject = CurrentValueSubject<CGFloat, Never>(0)
     
@@ -55,11 +54,8 @@ class VectorHostingController: UIHostingController<AnyView> {
     }
     /// Initializer
     /// - Parameter rootView: Root view for the controller.
-    /// - Parameter forceZeroSafeAreaInsets: Whether to force-set the hosting view's safe area insets to zero. Useful when the view is used as part of a table view.
-    init<Content>(rootView: Content,
-                  forceZeroSafeAreaInsets: Bool = false) where Content: View {
+    init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme
-        self.forceZeroSafeAreaInsets = forceZeroSafeAreaInsets
         super.init(rootView: AnyView(rootView.vectorContent()))
     }
     
@@ -114,22 +110,6 @@ class VectorHostingController: UIHostingController<AnyView> {
         if publishHeightChanges {
             let height = sizeThatFits(in: CGSize(width: self.view.frame.width, height: UIView.layoutFittingExpandedSize.height)).height
             heightSubject.send(height)
-        }
-    }
-
-    override func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
-
-        guard forceZeroSafeAreaInsets else {
-            return
-        }
-
-        let counterSafeAreaInsets = UIEdgeInsets(top: -view.safeAreaInsets.top,
-                                                 left: -view.safeAreaInsets.left,
-                                                 bottom: -view.safeAreaInsets.bottom,
-                                                 right: -view.safeAreaInsets.right)
-        if additionalSafeAreaInsets != counterSafeAreaInsets, counterSafeAreaInsets != .zero {
-            additionalSafeAreaInsets = counterSafeAreaInsets
         }
     }
     

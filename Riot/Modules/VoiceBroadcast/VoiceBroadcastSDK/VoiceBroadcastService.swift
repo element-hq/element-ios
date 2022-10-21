@@ -23,7 +23,7 @@ public class VoiceBroadcastService: NSObject {
     
     // MARK: - Properties
     
-    private var voiceBroadcastInfoEventId: String?
+    public private(set) var voiceBroadcastInfoEventId: String?
     public let room: MXRoom
     public private(set) var state: VoiceBroadcastInfo.State
     
@@ -98,12 +98,14 @@ public class VoiceBroadcastService: NSObject {
     ///   - mimeType: (optional) the mime type of the file. Defaults to `audio/ogg`
     ///   - duration: the length of the voice message in milliseconds
     ///   - samples: an array of floating point values normalized to [0, 1], boxed within NSNumbers
+    ///   - sequence: value of the chunk sequence.
     ///   - success: A block object called when the operation succeeds. It returns the event id of the event generated on the homeserver
     ///   - failure: A block object called when the operation fails.
     func sendChunkOfVoiceBroadcast(audioFileLocalURL: URL,
                                    mimeType: String?,
                                    duration: UInt,
                                    samples: [Float]?,
+                                   sequence: UInt,
                                    success: @escaping ((String?) -> Void),
                                    failure: @escaping ((Error?) -> Void)) {
         guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
@@ -115,6 +117,7 @@ public class VoiceBroadcastService: NSObject {
                                             mimeType: mimeType,
                                             duration: duration,
                                             samples: samples,
+                                            sequence: sequence,
                                             success: success,
                                             failure: failure)
     }
@@ -130,6 +133,9 @@ public class VoiceBroadcastService: NSObject {
         let stateKey = userId
         
         let voiceBroadcastInfo = VoiceBroadcastInfo()
+        
+        voiceBroadcastInfo.deviceId = self.room.mxSession.myDeviceId
+        
         voiceBroadcastInfo.state = state.rawValue
         
         if state != VoiceBroadcastInfo.State.started {
@@ -148,7 +154,7 @@ public class VoiceBroadcastService: NSObject {
             return nil
         }
         
-        return self.room.sendStateEvent(.custom(VoiceBroadcastSettings.eventType),
+        return self.room.sendStateEvent(.custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType),
                                         content: stateEventContent, stateKey: stateKey) { [weak self] response in
             guard let self = self else { return }
             
@@ -246,6 +252,7 @@ extension MXRoom {
     ///   - duration: the length of the voice message in milliseconds
     ///   - samples: an array of floating point values normalized to [0, 1]
     ///   - threadId: the id of the thread to send the message. nil by default.
+    ///   - sequence: value of the chunk sequence.
     ///   - success: A closure called when the operation is complete.
     ///   - failure: A closure called  when the operation fails.
     /// - Returns: a `MXHTTPOperation` instance.
@@ -255,6 +262,7 @@ extension MXRoom {
                                                                duration: UInt,
                                                                samples: [Float]?,
                                                                threadId: String? = nil,
+                                                               sequence: UInt,
                                                                success: @escaping ((String?) -> Void),
                                                                failure: @escaping ((Error?) -> Void)) -> MXHTTPOperation? {
         let boxedSamples = samples?.compactMap { NSNumber(value: $0) }
@@ -265,9 +273,12 @@ extension MXRoom {
             failure(VoiceBroadcastServiceError.unknown)
             return nil
         }
+        
+        let sequenceValue = [VoiceBroadcastSettings.voiceBroadcastContentKeyChunkSequence: sequence]
 
         return __sendVoiceMessage(localURL,
-                                  additionalContentParams: [kMXEventRelationRelatesToKey: relatesTo],
+                                  additionalContentParams: [kMXEventRelationRelatesToKey: relatesTo,
+                                                            VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType: sequenceValue],
                                   mimeType: mimeType,
                                   duration: duration,
                                   samples: boxedSamples,

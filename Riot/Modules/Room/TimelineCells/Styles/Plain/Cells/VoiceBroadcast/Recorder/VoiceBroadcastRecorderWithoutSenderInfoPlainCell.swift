@@ -16,9 +16,12 @@
 
 import Foundation
 
-protocol TimelineVoiceBroadcastViewModelProtocol {
-    var context: TimelineVoiceBroadcastViewModelType.Context { get }
-    var completion: (() -> Void)? { get set }
+class VoiceBroadcastRecorderWithoutSenderInfoPlainCell: VoiceBroadcastRecorderPlainCell {
     
-    func updateWithVoiceBroadcastDetails(_ voiceBroadcastDetails: TimelineVoiceBroadcastDetails)
+    override func setupViews() {
+        super.setupViews()
+        
+        roomCellContentView?.showSenderInfo = false
+    }
+    
 }

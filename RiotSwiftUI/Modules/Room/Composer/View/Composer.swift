@@ -111,6 +111,7 @@ struct Composer: View {
                     didUpdateText: wysiwygViewModel.didUpdateText
                 )
                 .tintColor(theme.colors.accent)
+                .placeholder(viewModel.viewState.placeholder, color: theme.colors.tertiaryContent)
                 .frame(height: wysiwygViewModel.idealHeight)
                 .padding(.horizontal, horizontalPadding)
                 .onAppear {

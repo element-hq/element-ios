@@ -178,6 +178,11 @@ typedef NS_ENUM(NSUInteger, RoomTimelineCellIdentifier) {
     RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithoutSenderInfo,
     RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithPaginationTitle,
     
+    // - Voice broadcast recorder
+    RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder,
+    RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithPaginationTitle,
+    
     // - Others
     RoomTimelineCellIdentifierEmpty,
     RoomTimelineCellIdentifierSelectedSticker,

@@ -18,7 +18,6 @@ import Foundation
 
 class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
     
-    private var voiceBroadcastView: UIView?
     private var event: MXEvent?
     
     override func render(_ cellData: MXKCellData!) {
@@ -29,12 +28,12 @@ class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable
               let event = bubbleData.events.last,
               let voiceBroadcastContent = VoiceBroadcastInfo(fromJSON: event.content),
               voiceBroadcastContent.state == VoiceBroadcastInfo.State.started.rawValue,
-              let view = TimelineVoiceBroadcastProvider.shared.buildTimelineVoiceBroadcastViewForEvent(event) else {
+              let controller = VoiceBroadcastPlaybackProvider.shared.buildVoiceBroadcastPlaybackVCForEvent(event, senderDisplayName: bubbleData.senderDisplayName) else {
             return
         }
         
         self.event = event
-        self.addVoiceBroadcastView(view, on: contentView)
+        self.addContentViewController(controller, on: contentView)
     }
     
     override func setupViews() {
@@ -52,13 +51,6 @@ class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable
         }
         
         delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnContentView, userInfo: [kMXKRoomBubbleCellEventKey: event])
-    }
-    
-    func addVoiceBroadcastView(_ voiceBroadcastView: UIView, on contentView: UIView) {
-        
-        self.voiceBroadcastView?.removeFromSuperview()
-        contentView.vc_addSubViewMatchingParent(voiceBroadcastView)
-        self.voiceBroadcastView = voiceBroadcastView
     }
 }
 

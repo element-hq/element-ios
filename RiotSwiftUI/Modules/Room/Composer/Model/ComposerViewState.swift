@@ -19,6 +19,7 @@ import Foundation
 struct ComposerViewState: BindableState {
     var eventSenderDisplayName: String?
     var sendMode: ComposerSendMode = .send
+    var placeholder: String?
 }
 
 extension ComposerViewState {

@@ -58,6 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSDictionary<NSNumber*, Class>*)voiceBroadcastCellsMapping;
 
+- (NSDictionary<NSNumber*, Class>*)voiceBroadcastRecorderCellsMapping;
+
 @end
 
 NS_ASSUME_NONNULL_END

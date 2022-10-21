@@ -20,4 +20,3 @@
 
 "image_picker_action_files" = "Choose from files";
 "voice_broadcast_in_timeline_title" = "Voice broadcast detected (under active development)";
-"voice_broadcast_in_timeline_body" = "We currently only detect voice broadcast in the room timeline, this is not possible to send or listen an actual voice broadcast";
