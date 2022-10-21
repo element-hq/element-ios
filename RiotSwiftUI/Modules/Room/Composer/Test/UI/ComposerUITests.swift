@@ -22,25 +22,23 @@ final class ComposerUITests: MockScreenTestCase {
         app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
         
         XCTAssertFalse(app.buttons["cancelButton"].exists)
-        let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
+        let wysiwygTextView = app.textViews["WysiwygComposer"]
         XCTAssertTrue(wysiwygTextView.exists)
         let sendButton = app.buttons["sendButton"]
-        XCTAssertTrue(sendButton.exists)
-        XCTAssertFalse(sendButton.isEnabled)
+        XCTAssertFalse(sendButton.exists)
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
-        XCTAssertTrue(sendButton.isEnabled)
+        XCTAssertTrue(sendButton.exists)
         XCTAssertFalse(app.buttons["editButton"].exists)
     }
     
     func testReplyMode() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.reply.title)
         
-        let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
+        let wysiwygTextView = app.textViews["WysiwygComposer"]
         XCTAssertTrue(wysiwygTextView.exists)
         let sendButton = app.buttons["sendButton"]
-        XCTAssertTrue(sendButton.exists)
-        XCTAssertFalse(sendButton.isEnabled)
+        XCTAssertFalse(sendButton.exists)
         
         let cancelButton = app.buttons["cancelButton"]
         XCTAssertTrue(cancelButton.exists)
@@ -51,7 +49,7 @@ final class ComposerUITests: MockScreenTestCase {
         
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
-        XCTAssertTrue(sendButton.isEnabled)
+        XCTAssertTrue(sendButton.exists)
         XCTAssertFalse(app.buttons["editButton"].exists)
         
         cancelButton.tap()
@@ -63,11 +61,10 @@ final class ComposerUITests: MockScreenTestCase {
     func testEditMode() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.edit.title)
 
-        let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
+        let wysiwygTextView = app.textViews["WysiwygComposer"]
         XCTAssertTrue(wysiwygTextView.exists)
         let editButton = app.buttons["editButton"]
-        XCTAssertTrue(editButton.exists)
-        XCTAssertFalse(editButton.isEnabled)
+        XCTAssertFalse(editButton.exists)
         
         let cancelButton = app.buttons["cancelButton"]
         XCTAssertTrue(cancelButton.exists)
@@ -78,7 +75,7 @@ final class ComposerUITests: MockScreenTestCase {
         
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
-        XCTAssertTrue(editButton.isEnabled)
+        XCTAssertTrue(editButton.exists)
         XCTAssertFalse(app.buttons["sendButton"].exists)
         
         cancelButton.tap()

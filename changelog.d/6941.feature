@@ -1,0 +1,1 @@
+Added voice message support to the Rich Text Composer
