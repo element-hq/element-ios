@@ -22,7 +22,7 @@ final class ComposerUITests: MockScreenTestCase {
         app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
         
         XCTAssertFalse(app.buttons["cancelButton"].exists)
-        let wysiwygTextView = app.textViews["WysiwygComposer"]
+        let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         let sendButton = app.buttons["sendButton"]
         XCTAssertFalse(sendButton.exists)
@@ -35,7 +35,7 @@ final class ComposerUITests: MockScreenTestCase {
     func testReplyMode() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.reply.title)
         
-        let wysiwygTextView = app.textViews["WysiwygComposer"]
+        let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         let sendButton = app.buttons["sendButton"]
         XCTAssertFalse(sendButton.exists)
@@ -61,7 +61,7 @@ final class ComposerUITests: MockScreenTestCase {
     func testEditMode() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.edit.title)
 
-        let wysiwygTextView = app.textViews["WysiwygComposer"]
+        let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         let editButton = app.buttons["editButton"]
         XCTAssertFalse(editButton.exists)
