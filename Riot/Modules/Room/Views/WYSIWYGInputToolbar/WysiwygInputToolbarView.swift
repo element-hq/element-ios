@@ -32,6 +32,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     // MARK: - Properties
     
     // MARK: Private
+    private var voiceMessageToolbarView: VoiceMessageToolbarView?
     private var cancellables = Set<AnyCancellable>()
     private var heightConstraint: NSLayoutConstraint!
     private var hostingViewController: VectorHostingController!
@@ -39,42 +40,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState())
     
     // MARK: Public
-    var isEncryptionEnabled = false {
-        didSet {
-            updatePlaceholderText()
-        }
-    }
-    
-    /// The current html content of the composer
-    var htmlContent: String {
-        get {
-            wysiwygViewModel.content.html
-        }
-        set {
-            wysiwygViewModel.setHtmlContent(newValue)
-        }
-    }
-    
-    /// The display name to show when in edit/reply
-    var eventSenderDisplayName: String! {
-        get {
-            viewModel.eventSenderDisplayName
-        }
-        set {
-            viewModel.eventSenderDisplayName = newValue
-        }
-    }
-    
-    /// Whether the composer is in send, reply or edit mode.
-    var sendMode: RoomInputToolbarViewSendMode {
-        get {
-            viewModel.sendMode.legacySendMode
-        }
-        set {
-            viewModel.sendMode = ComposerSendMode(from: newValue)
-            updatePlaceholderText()
-        }
-    }
     
     override var placeholder: String! {
         get {
@@ -169,9 +134,22 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         switch result {
         case .cancel:
             self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
+        case let .contentDidChange(isEmpty):
+            setVoiceMessageToolbarIsHidden(!isEmpty)
         }
     }
     
+    private func setVoiceMessageToolbarIsHidden(_ isHidden: Bool) {
+        guard let voiceMessageToolbarView = voiceMessageToolbarView else { return }
+        UIView.transition(
+            with: voiceMessageToolbarView, duration: 0.15,
+            options: .transitionCrossDissolve,
+            animations: {
+                voiceMessageToolbarView.isHidden = isHidden
+            }
+        )
+    }
+        
     private func registerThemeServiceDidChangeThemeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
     }
@@ -185,12 +163,64 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         wysiwygViewModel.textColor = theme.colors.primaryContent
     }
     
-    // MARK: - RoomInputToolbarViewProtocol
+    // MARK: - HtmlRoomInputToolbarViewProtocol
+    var isEncryptionEnabled = false {
+        didSet {
+            updatePlaceholderText()
+        }
+    }
+    
+    /// The current html content of the composer
+    var htmlContent: String {
+        get {
+            wysiwygViewModel.content.html
+        }
+        set {
+            wysiwygViewModel.setHtmlContent(newValue)
+        }
+    }
+    
+    /// The display name to show when in edit/reply
+    var eventSenderDisplayName: String! {
+        get {
+            viewModel.eventSenderDisplayName
+        }
+        set {
+            viewModel.eventSenderDisplayName = newValue
+        }
+    }
+    
+    /// Whether the composer is in send, reply or edit mode.
+    var sendMode: RoomInputToolbarViewSendMode {
+        get {
+            viewModel.sendMode.legacySendMode
+        }
+        set {
+            viewModel.sendMode = ComposerSendMode(from: newValue)
+            updatePlaceholderText()
+        }
+    }
     
     /// Add the voice message toolbar to the composer
     /// - Parameter voiceMessageToolbarView: the voice message toolbar UIView
     func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {
-        // TODO embed the voice messages UI
+        if let voiceMessageToolbarView = voiceMessageToolbarView as? VoiceMessageToolbarView {
+            self.voiceMessageToolbarView = voiceMessageToolbarView
+            voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.deactivate(voiceMessageToolbarView.containersTopConstraints)
+            addSubview(voiceMessageToolbarView)
+            NSLayoutConstraint.activate(
+                [
+                    hostingViewController.view.topAnchor.constraint(equalTo: voiceMessageToolbarView.topAnchor),
+                    hostingViewController.view.leftAnchor.constraint(equalTo: voiceMessageToolbarView.leftAnchor),
+                    hostingViewController.view.bottomAnchor.constraint(equalTo: voiceMessageToolbarView.bottomAnchor, constant: 4),
+                    hostingViewController.view.rightAnchor.constraint(equalTo: voiceMessageToolbarView.rightAnchor)
+                ]
+            )
+        } else {
+            self.voiceMessageToolbarView?.removeFromSuperview()
+            self.voiceMessageToolbarView = nil
+        }
     }
     
     func toolbarHeight() -> CGFloat {
