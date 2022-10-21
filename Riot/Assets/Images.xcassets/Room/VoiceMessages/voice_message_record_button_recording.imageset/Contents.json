@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "voice_message_record_button_recording.png",
+      "filename" : "Microphone asset.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "voice_message_record_button_recording@2x.png",
+      "filename" : "Microphone asset@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "voice_message_record_button_recording@3x.png",
+      "filename" : "Microphone asset@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
