@@ -126,9 +126,7 @@ struct Composer: View {
                         wysiwygViewModel.setup()
                     }
                     Button {
-                        withAnimation(.easeInOut(duration: 0.15)) {
-                            wysiwygViewModel.maximised.toggle()
-                        }
+                        wysiwygViewModel.maximised.toggle()
                     } label: {
                         Image(toggleButtonImageName)
                             .resizable()
@@ -151,6 +149,7 @@ struct Composer: View {
                     focused = true
                 }
             }
+            .animation(.easeInOut(duration: 0.1), value: wysiwygViewModel.idealHeight)
             HStack(spacing: 0) {
                 Button {
                     showSendMediaActions()
