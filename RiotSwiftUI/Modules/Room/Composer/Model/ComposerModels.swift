@@ -127,12 +127,12 @@ enum ComposerSendMode: Equatable {
     case createDM
 }
 
-enum ComposerViewAction {
+enum ComposerViewAction: Equatable {
     case cancel
     case contentDidChange(isEmpty: Bool)
 }
 
-enum ComposerViewModelResult {
+enum ComposerViewModelResult: Equatable {
     case cancel
     case contentDidChange(isEmpty: Bool)
 }
