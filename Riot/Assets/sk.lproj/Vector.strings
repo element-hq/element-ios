@@ -2835,4 +2835,5 @@
 
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Nie je možné spustiť nové hlasové vysielanie";
-"settings_labs_enable_voice_broadcast" = "Hlasové vysielanie (v štádiu aktívneho vývoja). V súčasnosti rozpoznávame iba hlasové vysielanie na časovej osi miestnosti, nie je možné odosielať alebo počúvať skutočné hlasové vysielanie";
+"settings_labs_enable_voice_broadcast" = "Hlasové vysielanie (v štádiu aktívneho vývoja)";
+"voice_broadcast_playback_loading_error" = "Toto hlasové vysielanie nie je možné prehrať.";
