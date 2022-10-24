@@ -55,11 +55,7 @@ class SizableBaseRoomCell: BaseRoomCell, SizableBaseRoomCellType {
     // MARK: - Overrides
     
     override class func height(for cellData: MXKCellData!, withMaximumWidth maxWidth: CGFloat) -> CGFloat {
-        guard let cellData = cellData else {
-            return 0
-        }
-        
-        guard let roomBubbleCellData = cellData as? MXKRoomBubbleCellData else {
+        guard let cellData = cellData, let roomBubbleCellData = cellData as? MXKRoomBubbleCellData else {
             return 0
         }
         
