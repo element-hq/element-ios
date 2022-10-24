@@ -2358,15 +2358,18 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
         // Update cell data we have received a read receipt for
         NSArray *readEventIds = receiptEvent.readReceiptEventIds;
-        for (NSString* eventId in readEventIds)
+        NSArray *readThreadIds = receiptEvent.readReceiptThreadIds;
+        for (int i = 0 ; i < readEventIds.count ; i++)
         {
+            NSString *eventId = readEventIds[i];
             MXKRoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
             if (cellData)
             {
+                NSString *threadId = readThreadIds[i] == [NSNull null] ? kMXEventTimelineMain : readThreadIds[i];
                 @synchronized(self->bubbles)
                 {
                     dispatch_group_enter(dispatchGroup);
-                    [self addReadReceiptsForEvent:eventId inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
+                    [self addReadReceiptsForEvent:eventId threadId:threadId inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
                         dispatch_group_leave(dispatchGroup);
                     }];
                 }
@@ -3512,7 +3515,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                     @autoreleasepool
                     {
                         dispatch_group_enter(dispatchGroup);
-                        [self addReadReceiptsForEvent:queuedEvent.event.eventId inCellDatas:self->bubblesSnapshot startingAtCellData:self->eventIdToBubbleMap[queuedEvent.event.eventId] completion:^{
+                        [self addReadReceiptsForEvent:queuedEvent.event.eventId
+                                             threadId:queuedEvent.event.threadId
+                                          inCellDatas:self->bubblesSnapshot
+                                   startingAtCellData:self->eventIdToBubbleMap[queuedEvent.event.eventId] completion:^{
                             dispatch_group_leave(dispatchGroup);
                         }];
                     }
@@ -3667,16 +3673,22 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
  If the event is not displayed, read receipts will be added to a previous displayed message.
 
  @param eventId the id of the event.
+ @param threadId the Id of the thread related of the event.
  @param cellDatas the working array of cell datas.
  @param cellData the original cell data the event belongs to.
+ @param completion completion block
  */
-- (void)addReadReceiptsForEvent:(NSString*)eventId inCellDatas:(NSArray<id<MXKRoomBubbleCellDataStoring>>*)cellDatas startingAtCellData:(id<MXKRoomBubbleCellDataStoring>)cellData completion:(void (^)(void))completion
+- (void)addReadReceiptsForEvent:(NSString*)eventId
+                       threadId:(NSString *)threadId
+                    inCellDatas:(NSArray<id<MXKRoomBubbleCellDataStoring>>*)cellDatas
+             startingAtCellData:(id<MXKRoomBubbleCellDataStoring>)cellData
+                     completion:(void (^)(void))completion
 {
     if (self.showBubbleReceipts)
     {
         if (self.room)
         {
-            [self.room getEventReceipts:eventId sorted:YES completion:^(NSArray<MXReceiptData *> * _Nonnull readReceipts) {
+            [self.room getEventReceipts:eventId threadId:threadId sorted:YES completion:^(NSArray<MXReceiptData *> * _Nonnull readReceipts) {
                 if (readReceipts.count)
                 {
                     NSInteger cellDataIndex = [cellDatas indexOfObject:cellData];
