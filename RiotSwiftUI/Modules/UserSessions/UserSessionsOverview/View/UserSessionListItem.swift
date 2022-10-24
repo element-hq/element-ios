@@ -82,6 +82,7 @@ struct UserSessionListItem: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityIdentifier("UserSessionListItem_\(viewData.sessionId)")
     }
 }
 

@@ -71,7 +71,6 @@ struct UserOtherSessionsToolbar: ToolbarContent {
             } label: {
                 Image(filter == .all ? Asset.Images.userOtherSessionsFilter.name : Asset.Images.userOtherSessionsFilterSelected.name)
             }
-            
             .accessibilityLabel(VectorL10n.userOtherSessionFilter)
         }
     }
