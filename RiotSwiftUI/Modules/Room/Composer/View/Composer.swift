@@ -84,8 +84,6 @@ struct Composer: View {
     var body: some View {
         VStack(spacing: 8) {
             let rect = RoundedRectangle(cornerRadius: cornerRadius)
-            // TODO: Fix maximise animation bugs before re-enabling
-            //            ZStack(alignment: .topTrailing) {
             VStack(spacing: 12) {
                 if viewModel.viewState.shouldDisplayContext {
                     HStack {
