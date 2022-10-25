@@ -16,7 +16,7 @@
 
 import Foundation
 
-class VoiceBroadcastWithoutSenderInfoPlainCell: VoiceBroadcastPlainCell {
+class VoiceBroadcastPlaybackWithoutSenderInfoPlainCell: VoiceBroadcastPlaybackPlainBubbleCell {
     
     override func setupViews() {
         super.setupViews()
