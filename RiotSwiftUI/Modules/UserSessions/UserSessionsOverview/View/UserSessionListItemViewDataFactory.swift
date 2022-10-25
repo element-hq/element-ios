@@ -17,7 +17,9 @@
 import Foundation
 
 struct UserSessionListItemViewDataFactory {
-    func create(from sessionInfo: UserSessionInfo, highlightSessionDetails: Bool = false) -> UserSessionListItemViewData {
+    func create(from sessionInfo: UserSessionInfo,
+                highlightSessionDetails: Bool = false,
+                isSelected: Bool = false) -> UserSessionListItemViewData {
         let sessionName = UserSessionNameFormatter.sessionName(deviceType: sessionInfo.deviceType,
                                                                sessionDisplayName: sessionInfo.name)
         let sessionDetails = buildSessionDetails(sessionInfo: sessionInfo)
@@ -28,7 +30,8 @@ struct UserSessionListItemViewDataFactory {
                                            sessionDetails: sessionDetails,
                                            highlightSessionDetails: highlightSessionDetails,
                                            deviceAvatarViewData: deviceAvatarViewData,
-                                           sessionDetailsIcon: getSessionDetailsIcon(isActive: sessionInfo.isActive))
+                                           sessionDetailsIcon: getSessionDetailsIcon(isActive: sessionInfo.isActive),
+                                           isSelected: isSelected)
     }
     
     private func buildSessionDetails(sessionInfo: UserSessionInfo) -> String {
