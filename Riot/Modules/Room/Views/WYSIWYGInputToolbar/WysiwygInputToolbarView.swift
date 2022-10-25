@@ -104,6 +104,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                     guard let self = self else { return }
                     self.updateToolbarHeight(wysiwygHeight: idealHeight)
                 }),
+            // Required to update the view constraints after minimise/maximise is tapped
             wysiwygViewModel.$idealHeight
                 .removeDuplicates()
                 .sink { [weak hostingViewController] _ in
