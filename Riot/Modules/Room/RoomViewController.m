@@ -3237,30 +3237,30 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             if (bubbleData.isPaginationFirstBubble)
             {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastWithPaginationTitle;
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastPlaybackWithPaginationTitle;
             }
             else if (bubbleData.shouldHideSenderInformation)
             {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastWithoutSenderInfo;
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastPlaybackWithoutSenderInfo;
             }
             else
             {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcast;
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastPlayback;
             }
         }
         else
         {
             if (bubbleData.isPaginationFirstBubble)
             {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithPaginationTitle;
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlaybackWithPaginationTitle;
             }
             else if (bubbleData.shouldHideSenderInformation)
             {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithoutSenderInfo;
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlaybackWithoutSenderInfo;
             }
             else
             {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcast;
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlayback;
             }
         }
     }

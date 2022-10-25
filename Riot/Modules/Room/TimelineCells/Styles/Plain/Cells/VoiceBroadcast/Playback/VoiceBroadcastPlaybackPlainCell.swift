@@ -16,7 +16,7 @@
 
 import Foundation
 
-class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
+class VoiceBroadcastPlaybackPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
     
     private var event: MXEvent?
     
@@ -54,4 +54,4 @@ class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable
     }
 }
 
-extension VoiceBroadcastPlainCell: RoomCellThreadSummaryDisplayable {}
+extension VoiceBroadcastPlaybackPlainCell: RoomCellThreadSummaryDisplayable {}

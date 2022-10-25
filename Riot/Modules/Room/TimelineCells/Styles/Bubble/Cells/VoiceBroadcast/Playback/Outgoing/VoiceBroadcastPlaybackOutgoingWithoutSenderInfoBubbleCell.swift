@@ -16,22 +16,26 @@
 
 import Foundation
 
-class VoiceBroadcastPlainBubbleCell: VoiceBroadcastBubbleCell {
-    
+class VoiceBroadcastPlaybackOutgoingWithoutSenderInfoBubbleCell: VoiceBroadcastPlaybackBubbleCell, BubbleOutgoingRoomCellProtocol {
+        
     override func setupViews() {
         super.setupViews()
         
-        // TODO: VB update margins attributes
-        let leftMargin: CGFloat = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.left
-        let rightMargin: CGFloat = 15 + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.right
+        roomCellContentView?.showSenderInfo = false
         
-        roomCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
+        // TODO: VB update margins attributes
+        let leftMargin: CGFloat = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.left + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.left
+        let rightMargin: CGFloat = BubbleRoomCellLayoutConstants.outgoingBubbleBackgroundMargins.right + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.right
+        
         roomCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
+        roomCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
+        
+        self.setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {
         super.update(theme: theme)
         
-        self.bubbleBackgroundColor = theme.roomCellIncomingBubbleBackgroundColor
+        self.bubbleBackgroundColor = theme.roomCellOutgoingBubbleBackgroundColor
     }
 }

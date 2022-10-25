@@ -16,7 +16,7 @@
 
 import Foundation
 
-class VoiceBroadcastIncomingBubbleCell: VoiceBroadcastBubbleCell, BubbleIncomingRoomCellProtocol {
+class VoiceBroadcastPlaybackIncomingBubbleCell: VoiceBroadcastPlaybackBubbleCell, BubbleIncomingRoomCellProtocol {
 
     override func setupViews() {
         super.setupViews()
