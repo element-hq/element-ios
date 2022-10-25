@@ -33,7 +33,7 @@ enum UserOtherSessionsViewModelResult: Equatable {
 struct UserOtherSessionsViewState: BindableState, Equatable {
     var bindings: UserOtherSessionsBindings
     var title: String
-    var items: [UserSessionListItemViewData]
+    var sessionItems: [UserSessionListItemViewData]
     var header: UserOtherSessionsHeaderViewData
     var emptyItemsTitle: String
     var allItemsSelected: Bool

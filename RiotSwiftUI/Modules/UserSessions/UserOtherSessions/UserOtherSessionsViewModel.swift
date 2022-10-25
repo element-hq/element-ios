@@ -30,10 +30,10 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         self.sessionInfos = sessionInfos
         defaultTitle = title
         let bindings = UserOtherSessionsBindings(filter: filter, isEditModeEnabled: false)
-        let items = filter.filterSessionInfos(sessionInfos: sessionInfos, selectedSessions: selectedSessions)
+        let sessionItems = filter.filterSessionInfos(sessionInfos: sessionInfos, selectedSessions: selectedSessions)
         super.init(initialViewState: UserOtherSessionsViewState(bindings: bindings,
                                                                 title: title,
-                                                                items: items,
+                                                                sessionItems: sessionItems,
                                                                 header: filter.userOtherSessionsViewHeader,
                                                                 emptyItemsTitle: filter.userOtherSessionsViewEmptyResultsTitle,
                                                                 allItemsSelected: false))
@@ -85,7 +85,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     private func updateViewState() {
         let currentFilter = state.bindings.filter
         
-        state.items = currentFilter.filterSessionInfos(sessionInfos: sessionInfos, selectedSessions: selectedSessions)
+        state.sessionItems = currentFilter.filterSessionInfos(sessionInfos: sessionInfos, selectedSessions: selectedSessions)
         state.header = currentFilter.userOtherSessionsViewHeader
         
         if state.bindings.isEditModeEnabled {
