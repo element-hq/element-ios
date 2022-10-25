@@ -33,7 +33,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     
     private var chunkFile: AVAudioFile! = nil
     private var chunkFrames: AVAudioFrameCount = 0
-    private var chunkFileNumber: Int = 1
+    private var chunkFileNumber: Int = 0
         
     // MARK: Public
     
@@ -123,7 +123,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     /// Reset chunk values.
     private func resetValues() {
         chunkFrames = 0
-        chunkFileNumber = 1
+        chunkFileNumber = 0
     }
     
     /// Write audio buffer to chunk file.
@@ -150,6 +150,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             // FIXME: Manage error
             return
         }
+        chunkFileNumber += 1
         let temporaryFileName = "VoiceBroadcastChunk-\(roomId)-\(chunkFileNumber)"
         let fileUrl = directory
             .appendingPathComponent(temporaryFileName)
@@ -165,9 +166,9 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         chunkFile = try? AVAudioFile(forWriting: fileUrl, settings: settings)
         
         if chunkFile != nil {
-            chunkFileNumber += 1
             chunkFrames = 0
         } else {
+            chunkFileNumber -= 1
             stopRecordingVoiceBroadcast()
             // FIXME: Manage error ?
         }
