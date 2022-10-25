@@ -76,7 +76,11 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             case let .renameSession(sessionInfo):
                 self.showRenameSessionScreen(for: sessionInfo)
             case let .logoutOfSession(sessionInfo):
-                self.showLogoutConfirmation(for: sessionInfo)
+                if sessionInfo.isCurrent {
+                    self.showLogoutConfirmationForCurrentSession()
+                } else {
+                    self.showLogoutConfirmation(for: [sessionInfo])
+                }
             case let .openSessionOverview(sessionInfo: sessionInfo):
                 self.openSessionOverview(sessionInfo: sessionInfo)
             case let .openOtherSessions(sessionInfos: sessionInfos, filter: filter):
@@ -114,7 +118,11 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             case let .renameSession(sessionInfo):
                 self.showRenameSessionScreen(for: sessionInfo)
             case let .logoutOfSession(sessionInfo):
-                self.showLogoutConfirmation(for: sessionInfo)
+                if sessionInfo.isCurrent {
+                    self.showLogoutConfirmationForCurrentSession()
+                } else {
+                    self.showLogoutConfirmation(for: [sessionInfo])
+                }
             }
         }
         pushScreen(with: coordinator)
@@ -152,6 +160,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             switch result {
             case let .openSessionOverview(sessionInfo: session):
                 self.openSessionOverview(sessionInfo: session)
+            case let .singOutFromUserSessions(sessionInfos: sessionInfos):
+                self.showLogoutConfirmation(for: sessionInfos)
             }
         }
         pushScreen(with: coordinator)
@@ -167,16 +177,15 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     /// Shows a confirmation dialog to the user to sign out of a session.
-    private func showLogoutConfirmation(for sessionInfo: UserSessionInfo) {
-        guard !sessionInfo.isCurrent else {
-            showLogoutConfirmationForCurrentSession()
-            return
-        }
-        
+    private func showLogoutConfirmation(for sessionInfos: [UserSessionInfo]) {
         // Use a UIAlertController as we don't have confirmationDialog in SwiftUI on iOS 14.
         let alert = UIAlertController(title: VectorL10n.signOutConfirmationMessage, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: VectorL10n.signOut, style: .destructive) { [weak self] _ in
-            self?.showLogoutAuthentication(for: sessionInfo)
+            if sessionInfos.count == 1, let onlySession = sessionInfos.first {
+                self?.showLogoutAuthentication(for: onlySession)
+            } else {
+                // todo:
+            }
         })
         alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel))
         alert.popoverPresentationController?.sourceView = toPresentable().view

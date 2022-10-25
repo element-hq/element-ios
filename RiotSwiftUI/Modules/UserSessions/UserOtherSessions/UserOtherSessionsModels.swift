@@ -20,12 +20,14 @@ import Foundation
 
 enum UserOtherSessionsCoordinatorResult {
     case openSessionOverview(sessionInfo: UserSessionInfo)
+    case singOutFromUserSessions(sessionInfos: [UserSessionInfo])
 }
 
 // MARK: View model
 
 enum UserOtherSessionsViewModelResult: Equatable {
     case showUserSessionOverview(sessionInfo: UserSessionInfo)
+    case singOutFromUserSessions(sessionInfos: [UserSessionInfo])
 }
 
 // MARK: View
@@ -50,4 +52,5 @@ enum UserOtherSessionsViewAction {
     case clearFilter
     case editModeWasToggled
     case toggleAllSelection
+    case signOut
 }

@@ -47,9 +47,10 @@ struct UserOtherSessions: View {
         .toolbar {
             UserOtherSessionsToolbar(isEditModeEnabled: $viewModel.isEditModeEnabled,
                                      filter: $viewModel.filter,
-                                     allItemsSelected: viewModel.viewState.allItemsSelected) {
-                viewModel.send(viewAction: .toggleAllSelection)
-            }
+                                     allItemsSelected: viewModel.viewState.allItemsSelected,
+                                     sessionCount: viewModel.viewState.items.count,
+                                     onToggleSelection: { viewModel.send(viewAction: .toggleAllSelection)},
+                                     onSignOut: { viewModel.send(viewAction: .signOut)})
         }
         .navigationBarBackButtonHidden(viewModel.isEditModeEnabled)
         .accentColor(theme.colors.accent)

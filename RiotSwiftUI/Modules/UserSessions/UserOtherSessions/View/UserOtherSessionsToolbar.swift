@@ -21,8 +21,10 @@ struct UserOtherSessionsToolbar: ToolbarContent {
     
     @Binding var isEditModeEnabled: Bool
     @Binding var filter: UserOtherSessionsFilter
-    var allItemsSelected: Bool
+    let allItemsSelected: Bool
+    let sessionCount: Int
     let onToggleSelection: () -> Void
+    let onSignOut: () -> Void
     
     var body: some ToolbarContent {
         navigationBarLeading()
@@ -83,11 +85,29 @@ struct UserOtherSessionsToolbar: ToolbarContent {
                 } label: {
                     Label(VectorL10n.userOtherSessionMenuSelectSessions, systemImage: "checkmark.circle")
                 }
-                
+                signOutButton()
             } label: {
                 Image(systemName: "ellipsis")
                     .padding(.horizontal, 4)
                     .padding(.vertical, 12)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func signOutButton() -> some View {
+        let label = Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(sessionCount)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
+        if #available(iOS 15, *) {
+            Button(role: .destructive) {
+                onSignOut()
+            } label: {
+                label
+            }
+        } else {
+            Button {
+                onSignOut()
+            } label: {
+                label
             }
         }
     }

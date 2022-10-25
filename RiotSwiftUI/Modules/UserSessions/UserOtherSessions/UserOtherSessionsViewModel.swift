@@ -61,6 +61,8 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         case .toggleAllSelection:
             toggleAllSelection()
             updateViewState()
+        case .signOut:
+            completion?(.singOutFromUserSessions(sessionInfos: sessionInfos))
         }
     }
 
