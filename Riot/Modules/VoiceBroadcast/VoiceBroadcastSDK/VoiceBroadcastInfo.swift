@@ -35,4 +35,20 @@ extension VoiceBroadcastInfo {
     @objc static func isStopped(for name: String) -> Bool {
         return name == State.stopped.rawValue
     }
+    
+    @objc static func startedValue() -> String {
+        return State.started.rawValue
+    }
+    
+    @objc static func pausedValue() -> String {
+        return State.paused.rawValue
+    }
+    
+    @objc static func resumedValue() -> String {
+        return State.resumed.rawValue
+    }
+    
+    @objc static func stoppedValue() -> String {
+        return State.stopped.rawValue
+    }
 }
