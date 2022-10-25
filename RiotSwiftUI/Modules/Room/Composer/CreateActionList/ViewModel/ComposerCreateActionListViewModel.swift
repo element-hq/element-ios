@@ -35,6 +35,8 @@ class ComposerCreateActionListViewModel: ComposerCreateActionListViewModelType, 
         switch viewAction {
         case .selectAction(let action):
             callback?(.done(action))
+        case .toggleTextFormatting(let enabled):
+            callback?(.toggleTextFormatting(enabled))
         }
     }
 }

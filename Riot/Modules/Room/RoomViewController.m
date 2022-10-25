@@ -5115,7 +5115,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         [actionItems addObject:@(ComposerCreateActionCamera)];
     }
     
-    self.composerCreateActionListBridgePresenter = [[ComposerCreateActionListBridgePresenter alloc] initWithActions:actionItems];
+    self.composerCreateActionListBridgePresenter = [[ComposerCreateActionListBridgePresenter alloc] initWithActions:actionItems
+                                                                                                     wysiwygEnabled:RiotSettings.shared.enableWysiwygComposer
+                                                                                              textFormattingEnabled:RiotSettings.shared.enableWysiwygTextFormatting];
     self.composerCreateActionListBridgePresenter.delegate = self;
     [self.composerCreateActionListBridgePresenter presentFrom:self animated:YES];
 }
@@ -8054,6 +8056,11 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         self.composerCreateActionListBridgePresenter = nil;
     }];
+}
+
+- (void)composerCreateActionListBridgePresenterDelegateDidToggleTextFormatting:(ComposerCreateActionListBridgePresenter *)coordinatorBridgePresenter enabled:(BOOL)enabled
+{
+    [self togglePlainTextMode];
 }
 
 - (void)composerCreateActionListBridgePresenterDidDismissInteractively:(ComposerCreateActionListBridgePresenter *)coordinatorBridgePresenter

@@ -19,6 +19,7 @@ import Foundation
 struct ComposerViewState: BindableState {
     var eventSenderDisplayName: String?
     var sendMode: ComposerSendMode = .send
+    var textFormattingEnabled: Bool = RiotSettings.shared.enableWysiwygTextFormatting
     var placeholder: String?
 }
 
