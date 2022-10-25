@@ -2634,3 +2634,6 @@
 
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Az új hang közvetítés nem indítható el";
+"deselect_all" = "Semmit nem jelöl ki";
+"user_other_session_menu_select_sessions" = "Munkamenetek kiválasztása";
+"user_other_session_selected_count" = "%@ kiválasztva";
