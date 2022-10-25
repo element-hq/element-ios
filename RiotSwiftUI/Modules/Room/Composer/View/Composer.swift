@@ -52,7 +52,7 @@ struct Composer: View {
     }
     
     private var toggleButtonAcccessibilityIdentifier: String {
-        wysiwygViewModel.maximised ? "minimiseToggle" : "maximisedToggle"
+        wysiwygViewModel.maximised ? "minimiseToggle" : "maximiseToggle"
     }
     
     private var toggleButtonImageName: String {
