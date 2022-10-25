@@ -58,7 +58,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .inactive, isEditModeEnabled: false)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       items: expectedItems,
+                                                       sessionItems: expectedItems,
                                                        header: inactiveSectionHeader,
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoInactiveSessions,
                                                        allItemsSelected: false)
@@ -74,7 +74,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: false)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       items: expectedItems,
+                                                       sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: false)
@@ -90,7 +90,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .unverified, isEditModeEnabled: false)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       items: expectedItems,
+                                                       sessionItems: expectedItems,
                                                        header: unverifiedSectionHeader,
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoUnverifiedSessions,
                                                        allItemsSelected: false)
@@ -106,7 +106,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .verified, isEditModeEnabled: false)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       items: expectedItems,
+                                                       sessionItems: expectedItems,
                                                        header: verifiedSectionHeader,
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoVerifiedSessions,
                                                        allItemsSelected: false)
@@ -120,7 +120,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .verified, isEditModeEnabled: false)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       items: [],
+                                                       sessionItems: [],
                                                        header: verifiedSectionHeader,
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoVerifiedSessions,
                                                        allItemsSelected: false)
@@ -134,7 +134,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .unverified, isEditModeEnabled: false)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       items: [],
+                                                       sessionItems: [],
                                                        header: unverifiedSectionHeader,
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoUnverifiedSessions,
                                                        allItemsSelected: false)
@@ -148,7 +148,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .inactive, isEditModeEnabled: false)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       items: [],
+                                                       sessionItems: [],
                                                        header: inactiveSectionHeader,
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoInactiveSessions,
                                                        allItemsSelected: false)
@@ -167,7 +167,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: true)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: VectorL10n.userOtherSessionSelectedCount("2"),
-                                                       items: expectedItems,
+                                                       sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: true)
@@ -186,7 +186,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: true)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: VectorL10n.userOtherSessionSelectedCount("0"),
-                                                       items: expectedItems,
+                                                       sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: false)
@@ -204,7 +204,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: true)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: VectorL10n.userOtherSessionSelectedCount("1"),
-                                                       items: expectedItems,
+                                                       sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: false)
@@ -222,7 +222,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: true)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: VectorL10n.userOtherSessionSelectedCount("2"),
-                                                       items: expectedItems,
+                                                       sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: true)
@@ -240,7 +240,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: true)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: VectorL10n.userOtherSessionSelectedCount("0"),
-                                                       items: expectedItems,
+                                                       sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: false)
@@ -261,7 +261,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: true)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: VectorL10n.userOtherSessionSelectedCount("0"),
-                                                       items: expectedItems,
+                                                       sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: false)

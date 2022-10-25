@@ -88,6 +88,8 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     @IBOutlet private var toastNotificationContainerView: UIView!
     @IBOutlet private var toastNotificationLabel: UILabel!
     
+    @IBOutlet var containersTopConstraints: [NSLayoutConstraint]!
+    
     private var playbackView: VoiceMessagePlaybackView!
     
     private var cancelLabelToRecordButtonDistance: CGFloat = 0.0

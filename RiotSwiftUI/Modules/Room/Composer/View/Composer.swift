@@ -26,7 +26,7 @@ struct Composer: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @State private var focused = false
-    @State private var isActionButtonEnabled = false
+    @State private var isActionButtonShowing = false
     
     private let horizontalPadding: CGFloat = 12
     private let borderHeight: CGFloat = 40
@@ -148,7 +148,7 @@ struct Composer: View {
                         .resizable()
                         .foregroundColor(theme.colors.tertiaryContent)
                         .frame(width: 14, height: 14)
-                        
+                    
                 }
                 .frame(width: 36, height: 36)
                 .background(Circle().fill(theme.colors.system))
@@ -159,16 +159,6 @@ struct Composer: View {
                 }
                 .frame(height: 44)
                 Spacer()
-                //                ZStack {
-                // TODO: Add support for voice messages
-                //                    Button {
-                //
-                //                    } label: {
-                //                        Image(Asset.Images.voiceMessageRecordButtonDefault.name)
-                //                            .foregroundColor(theme.colors.tertiaryContent)
-                //                    }
-                //                        .isHidden(showSendButton)
-                //                    .isHidden(true)
                 Button {
                     sendMessageAction(wysiwygViewModel.content)
                     wysiwygViewModel.clearContent()
@@ -181,18 +171,18 @@ struct Composer: View {
                 }
                 .frame(width: 36, height: 36)
                 .padding(.leading, 8)
-                .disabled(!isActionButtonEnabled)
-                .opacity(isActionButtonEnabled ? 1 : 0.3)
-                .animation(.easeInOut(duration: 0.15), value: isActionButtonEnabled)
+                .isHidden(!isActionButtonShowing)
                 .accessibilityIdentifier(actionButtonAccessibilityIdentifier)
                 .accessibilityLabel(VectorL10n.send)
-                .onChange(of: wysiwygViewModel.isContentEmpty) { empty in
-                    isActionButtonEnabled = !empty
+                .onChange(of: wysiwygViewModel.isContentEmpty) { isEmpty in
+                    viewModel.send(viewAction: .contentDidChange(isEmpty: isEmpty))
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        isActionButtonShowing = !isEmpty
+                    }
                 }
             }
             .padding(.horizontal, 12)
             .padding(.bottom, 4)
-            .animation(.none)
         }
     }
 }

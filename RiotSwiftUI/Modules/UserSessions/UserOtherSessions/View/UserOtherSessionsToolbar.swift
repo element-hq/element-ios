@@ -48,7 +48,7 @@ struct UserOtherSessionsToolbar: ToolbarContent {
             } else {
                 filterMenuButton()
                     .offset(x: 12)
-                kebabMenu()
+                optionsMenu()
             }
         }
     }
@@ -77,7 +77,7 @@ struct UserOtherSessionsToolbar: ToolbarContent {
         }
     }
     
-    private func kebabMenu() -> some View {
+    private func optionsMenu() -> some View {
         Button { } label: {
             Menu {
                 Button {

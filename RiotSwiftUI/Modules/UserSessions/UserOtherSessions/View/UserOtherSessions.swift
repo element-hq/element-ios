@@ -24,7 +24,7 @@ struct UserOtherSessions: View {
     var body: some View {
         ScrollView {
             SwiftUI.Section {
-                if viewModel.viewState.items.isEmpty {
+                if viewModel.viewState.sessionItems.isEmpty {
                     noItemsView()
                 } else {
                     itemsView()
@@ -81,7 +81,7 @@ struct UserOtherSessions: View {
     
     private func itemsView() -> some View {
         LazyVStack(spacing: 0) {
-            ForEach(viewModel.viewState.items) { viewData in
+            ForEach(viewModel.viewState.sessionItems) { viewData in
                 UserSessionListItem(viewData: viewData,
                                     isEditModeEnabled: viewModel.isEditModeEnabled,
                                     onBackgroundTap: { sessionId in viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId)) },
