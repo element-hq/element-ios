@@ -30,6 +30,19 @@ final class ComposerUITests: MockScreenTestCase {
         wysiwygTextView.typeText("test")
         XCTAssertTrue(sendButton.exists)
         XCTAssertFalse(app.buttons["editButton"].exists)
+        
+        let maximiseButton = app.buttons["maximiseButton"]
+        let minimiseButton = app.buttons["minimiseButton"]
+        XCTAssertFalse(minimiseButton.exists)
+        XCTAssertTrue(maximiseButton.exists)
+        
+        maximiseButton.tap()
+        XCTAssertTrue(minimiseButton.exists)
+        XCTAssertFalse(maximiseButton.exists)
+        
+        minimiseButton.tap()
+        XCTAssertFalse(minimiseButton.exists)
+        XCTAssertTrue(maximiseButton.exists)
     }
     
     func testReplyMode() throws {
@@ -56,6 +69,19 @@ final class ComposerUITests: MockScreenTestCase {
         let textViewContent = wysiwygTextView.value as! String
         XCTAssertFalse(textViewContent.isEmpty)
         XCTAssertFalse(cancelButton.exists)
+        
+        let maximiseButton = app.buttons["maximiseButton"]
+        let minimiseButton = app.buttons["minimiseButton"]
+        XCTAssertFalse(minimiseButton.exists)
+        XCTAssertTrue(maximiseButton.exists)
+        
+        maximiseButton.tap()
+        XCTAssertTrue(minimiseButton.exists)
+        XCTAssertFalse(maximiseButton.exists)
+        
+        minimiseButton.tap()
+        XCTAssertFalse(minimiseButton.exists)
+        XCTAssertTrue(maximiseButton.exists)
     }
     
     func testEditMode() throws {
@@ -82,5 +108,18 @@ final class ComposerUITests: MockScreenTestCase {
         let textViewContent = wysiwygTextView.value as! String
         XCTAssertTrue(textViewContent.isEmpty)
         XCTAssertFalse(cancelButton.exists)
+        
+        let maximiseButton = app.buttons["maximiseButton"]
+        let minimiseButton = app.buttons["minimiseButton"]
+        XCTAssertFalse(minimiseButton.exists)
+        XCTAssertTrue(maximiseButton.exists)
+        
+        maximiseButton.tap()
+        XCTAssertTrue(minimiseButton.exists)
+        XCTAssertFalse(maximiseButton.exists)
+        
+        minimiseButton.tap()
+        XCTAssertFalse(minimiseButton.exists)
+        XCTAssertTrue(maximiseButton.exists)
     }
 }
