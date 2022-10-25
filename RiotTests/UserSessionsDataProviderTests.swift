@@ -111,7 +111,7 @@ private class MockSession: MXSession {
 }
 
 /// A mock `MXCrypto` that can override the `canCrossSign` state.
-private class MockCrypto: MXCrypto {
+private class MockCrypto: MXLegacyCrypto {
     let canCrossSign: Bool
     override var crossSigning: MXCrossSigning! { MockCrossSigning(canCrossSign: canCrossSign) }
     
@@ -123,7 +123,7 @@ private class MockCrypto: MXCrypto {
 }
 
 /// A mock `MXCrossSigning` with an overridden `canCrossSign` property.
-private class MockCrossSigning: MXCrossSigning {
+private class MockCrossSigning: MXLegacyCrossSigning {
     let canCrossSignMock: Bool
     override var canCrossSign: Bool { canCrossSignMock }
     
