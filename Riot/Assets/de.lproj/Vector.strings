@@ -2648,3 +2648,6 @@
 "voice_broadcast_unauthorized_title" = "Sprachübertragung kann nicht gestartet werden";
 "settings_labs_enable_voice_broadcast" = "Sprachübertragung (in aktiver Entwicklung)";
 "voice_broadcast_playback_loading_error" = "Wiedergabe der Sprachübertragung nicht möglich.";
+"deselect_all" = "Alle abwählen";
+"user_other_session_menu_select_sessions" = "Sitzungen auswählen";
+"user_other_session_selected_count" = "%@ ausgewählt";
