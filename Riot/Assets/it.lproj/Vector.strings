@@ -2614,3 +2614,6 @@
 
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Impossibile iniziare una nuova trasmissione vocale";
+"deselect_all" = "Deseleziona tutti";
+"user_other_session_menu_select_sessions" = "Seleziona sessioni";
+"user_other_session_selected_count" = "%@ selezionate";
