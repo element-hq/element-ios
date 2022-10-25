@@ -88,7 +88,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         let subView: UIView = hostingViewController.view
         self.addSubview(subView)
         
-        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        self.translatesAutoresizingMaskIntoConstraints = false
         subView.translatesAutoresizingMaskIntoConstraints = false
         heightConstraint = subView.heightAnchor.constraint(equalToConstant: height)
         NSLayoutConstraint.activate([

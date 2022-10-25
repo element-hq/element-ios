@@ -135,6 +135,7 @@ struct Composer: View {
                     }
                     .accessibilityIdentifier(toggleButtonAcccessibilityIdentifier)
                     .padding(.leading, 12)
+                    .padding(.trailing, 4)
                 }
                 .padding(.horizontal, horizontalPadding)
                 .padding(.top, topPadding)
