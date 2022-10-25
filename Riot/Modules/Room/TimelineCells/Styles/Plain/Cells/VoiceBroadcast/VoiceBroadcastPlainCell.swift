@@ -22,7 +22,7 @@ class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
-                
+        
         guard let contentView = roomCellContentView?.innerContentView,
               let bubbleData = cellData as? RoomBubbleCellData,
               let event = bubbleData.events.last,

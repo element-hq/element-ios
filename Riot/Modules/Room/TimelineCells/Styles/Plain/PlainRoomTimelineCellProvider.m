@@ -276,14 +276,14 @@
 
 - (void)registerVoiceBroadcastCellsForTableView:(UITableView*)tableView
 {
-    [tableView registerClass:VoiceBroadcastPlainCell.class forCellReuseIdentifier:VoiceBroadcastPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastPlainBubbleCell.class forCellReuseIdentifier:VoiceBroadcastPlainBubbleCell.defaultReuseIdentifier];
     [tableView registerClass:VoiceBroadcastWithoutSenderInfoPlainCell.class forCellReuseIdentifier:VoiceBroadcastWithoutSenderInfoPlainCell.defaultReuseIdentifier];
     [tableView registerClass:VoiceBroadcastWithPaginationTitlePlainCell.class forCellReuseIdentifier:VoiceBroadcastWithPaginationTitlePlainCell.defaultReuseIdentifier];
 }
 
 - (void)registerVoiceBroadcastRecorderCellsForTableView:(UITableView*)tableView
 {
-    [tableView registerClass:VoiceBroadcastRecorderPlainCell.class forCellReuseIdentifier:VoiceBroadcastRecorderPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastRecorderPlainBubbleCell.class forCellReuseIdentifier:VoiceBroadcastRecorderPlainBubbleCell.defaultReuseIdentifier];
     [tableView registerClass:VoiceBroadcastRecorderWithoutSenderInfoPlainCell.class forCellReuseIdentifier:VoiceBroadcastRecorderWithoutSenderInfoPlainCell.defaultReuseIdentifier];
     [tableView registerClass:VoiceBroadcastRecorderWithPaginationTitlePlainCell.class forCellReuseIdentifier:VoiceBroadcastRecorderWithPaginationTitlePlainCell.defaultReuseIdentifier];
 }
@@ -578,11 +578,11 @@
 {
     return @{
         // Incoming
-        @(RoomTimelineCellIdentifierIncomingVoiceBroadcast) : VoiceBroadcastPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcast) : VoiceBroadcastPlainBubbleCell.class,
         @(RoomTimelineCellIdentifierIncomingVoiceBroadcastWithoutSenderInfo) : VoiceBroadcastWithoutSenderInfoPlainCell.class,
         @(RoomTimelineCellIdentifierIncomingVoiceBroadcastWithPaginationTitle) : VoiceBroadcastWithPaginationTitlePlainCell.class,
         // Outoing
-        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcast) : VoiceBroadcastPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcast) : VoiceBroadcastPlainBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithoutSenderInfo) : VoiceBroadcastWithoutSenderInfoPlainCell.class,
         @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithPaginationTitle) : VoiceBroadcastWithPaginationTitlePlainCell.class
     };
@@ -592,7 +592,7 @@
 {
     return @{
         // Outoing
-        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder) : VoiceBroadcastRecorderPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder) : VoiceBroadcastRecorderPlainBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithoutSenderInfo) : VoiceBroadcastRecorderWithoutSenderInfoPlainCell.class,
         @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithPaginationTitle) : VoiceBroadcastRecorderWithPaginationTitlePlainCell.class
     };
