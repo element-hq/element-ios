@@ -98,9 +98,10 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             guard let self = self else { return }
             
             // Send current chunk
-            self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
-            self.chunkFile = nil
-            
+            if self.chunkFile != nil {
+                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
+                self.chunkFile = nil
+            }
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to pause voice broadcast", context: error)
         })
