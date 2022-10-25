@@ -22,17 +22,27 @@
 - (instancetype)initWithDeviceId:(NSString *)deviceId
                            state:(NSString *)state
                      chunkLength:(NSInteger)chunkLength
-                         eventId:(NSString *)eventId
+                voiceBroadcastId:(NSString *)voiceBroadcastId
 {
     if (self = [super init])
     {
         _deviceId = deviceId;
         _state = state;
         _chunkLength = chunkLength;
-        _eventId = eventId;
+        _voiceBroadcastId = voiceBroadcastId;
     }
     
     return self;
+}
+
++ (id)modelFromJSON:(NSDictionary *)JSONDictionary withDefaultVoiceBroadcastId:(NSString*)voiceBroadcastId
+{
+    VoiceBroadcastInfo *info = [VoiceBroadcastInfo modelFromJSON:JSONDictionary];
+    if (!info.voiceBroadcastId) {
+        info.voiceBroadcastId = voiceBroadcastId;
+    }
+    
+    return info;
 }
 
 + (id)modelFromJSON:(NSDictionary *)JSONDictionary
@@ -55,7 +65,7 @@
         MXJSONModelSetInteger(chunkLength, JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLength]);
     }
     
-    NSString *eventId;
+    NSString *voiceBroadcastId;
     if (JSONDictionary[kMXEventRelationRelatesToKey]) {
         MXEventContentRelatesTo *relatesTo;
         
@@ -63,11 +73,11 @@
         
         if (relatesTo && [relatesTo.relationType isEqualToString:MXEventRelationTypeReference])
         {
-            eventId = relatesTo.eventId;
+            voiceBroadcastId = relatesTo.eventId;
         }
     }
 
-    return [[VoiceBroadcastInfo alloc] initWithDeviceId:deviceId state:state chunkLength:chunkLength eventId:eventId];
+    return [[VoiceBroadcastInfo alloc] initWithDeviceId:deviceId state:state chunkLength:chunkLength voiceBroadcastId:voiceBroadcastId];
 }
 
 - (NSDictionary *)JSONDictionary
@@ -78,8 +88,8 @@
     
     JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyState] = self.state;
     
-    if (_eventId) {
-        MXEventContentRelatesTo *relatesTo = [[MXEventContentRelatesTo alloc] initWithRelationType:MXEventRelationTypeReference eventId:_eventId];
+    if (_voiceBroadcastId) {
+        MXEventContentRelatesTo *relatesTo = [[MXEventContentRelatesTo alloc] initWithRelationType:MXEventRelationTypeReference eventId:_voiceBroadcastId];
 
         JSONDictionary[kMXEventRelationRelatesToKey] = relatesTo.JSONDictionary;
     } else {
