@@ -204,6 +204,9 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         convertAACToM4A(at: url) { [weak self] convertedUrl in
             guard let self = self else { return }
             
+            // Delete the source file.
+            self.deleteRecording(at: url)
+            
             if let convertedUrl = convertedUrl {
                 dispatchGroup.notify(queue: .main) {
                     self.voiceBroadcastService?.sendChunkOfVoiceBroadcast(audioFileLocalURL: convertedUrl,
@@ -212,11 +215,12 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                                                                           samples: nil,
                                                                           sequence: UInt(sequence)) { eventId in
                         MXLog.debug("[VoiceBroadcastRecorderService] Send voice broadcast chunk with success.")
-                        if eventId != nil {
-                            self.deleteRecording(at: url)
-                        }
+                        self.deleteRecording(at: convertedUrl)
                     } failure: { error in
                         MXLog.error("[VoiceBroadcastRecorderService] Failed to send voice broadcast chunk.", context: error)
+                        // Do not delete the file to be sent if request failed, the retry flow will need it
+                        // There's no manual mechanism to clean it up afterwards but the tmp folder
+                        // they live in will eventually be deleted by the system
                     }
                 }
             }

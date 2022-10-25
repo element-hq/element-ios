@@ -34,15 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// The event id of the started voice broadcast info state event.
 @property (nonatomic, strong, nullable) NSString* voiceBroadcastId;
 
-/// The event used to build the MXBeaconInfo.
-@property (nonatomic, readonly, nullable) MXEvent *originalEvent;
-
 - (instancetype)initWithDeviceId:(NSString *)deviceId
                            state:(NSString *)state
                      chunkLength:(NSInteger)chunkLength
                 voiceBroadcastId:(NSString *)voiceBroadcastId;
-
-+ (id)modelFromJSON:(NSDictionary *)JSONDictionary withDefaultVoiceBroadcastId:(NSString*)voiceBroadcastId;
 
 @end
 

@@ -190,17 +190,22 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                     // Check if the state event corresponds to the beginning of a voice broadcast
                     if ([VoiceBroadcastInfo isStartedFor:voiceBroadcastInfo.state])
                     {
-                        // Retreive the most recent voice broadcast state event.
+                        // Retrieve the most recent voice broadcast info.
                         MXEvent *lastVoiceBroadcastInfoEvent = [roomDataSource.roomState stateEventsWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType].lastObject;
                         if (event.originServerTs > lastVoiceBroadcastInfoEvent.originServerTs)
                         {
                             lastVoiceBroadcastInfoEvent = event;
                         }
                         
-                        // Check if the voice broadcast is still alive.
-                        VoiceBroadcastInfo *lastVoiceBroadcastInfo = [VoiceBroadcastInfo modelFromJSON: lastVoiceBroadcastInfoEvent.content
-                                                                           withDefaultVoiceBroadcastId: lastVoiceBroadcastInfoEvent.eventId];
+                        VoiceBroadcastInfo *lastVoiceBroadcastInfo = [VoiceBroadcastInfo modelFromJSON: lastVoiceBroadcastInfoEvent.content];
                         
+                        // Handle the specific case where the state event is a started voice broadcast (the voiceBroadcastId is the event id itself).
+                        if (!lastVoiceBroadcastInfo.voiceBroadcastId)
+                        {
+                            lastVoiceBroadcastInfo.voiceBroadcastId = lastVoiceBroadcastInfoEvent.eventId;
+                        }
+                        
+                        // Check if the voice broadcast is still alive.
                         if ([lastVoiceBroadcastInfo.voiceBroadcastId isEqualToString:event.eventId] && ![VoiceBroadcastInfo isStoppedFor:lastVoiceBroadcastInfo.state])
                         {
                             // Check whether this broadcast is sent from the currrent session to display it with the recorder view or not.

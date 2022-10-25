@@ -35,16 +35,6 @@
     return self;
 }
 
-+ (id)modelFromJSON:(NSDictionary *)JSONDictionary withDefaultVoiceBroadcastId:(NSString*)voiceBroadcastId
-{
-    VoiceBroadcastInfo *info = [VoiceBroadcastInfo modelFromJSON:JSONDictionary];
-    if (!info.voiceBroadcastId) {
-        info.voiceBroadcastId = voiceBroadcastId;
-    }
-    
-    return info;
-}
-
 + (id)modelFromJSON:(NSDictionary *)JSONDictionary
 {
     // Return nil for redacted state event
