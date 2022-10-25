@@ -130,6 +130,11 @@ public class VoiceBroadcastService: NSObject {
             return nil
         }
         
+        guard state != self.state else {
+            completion(.failure(VoiceBroadcastServiceError.unknown))
+            return nil
+        }
+        
         let stateKey = userId
         
         let voiceBroadcastInfo = VoiceBroadcastInfo()
