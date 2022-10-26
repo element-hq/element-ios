@@ -101,20 +101,16 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
 
 extension UserSessionOverviewViewState {
     var bottomSheetTitle: String {
-        cardViewData.verificationState.bottomSheetTitle(isSessionActive: nil)
+        cardViewData.verificationState.bottomSheetTitle
     }
     
     var bottomSheetDescription: String {
-        cardViewData.verificationState.bottomSheetDescription(isSessionActive: nil)
+        cardViewData.verificationState.bottomSheetDescription
     }
 }
 
 private extension UserSessionInfo.VerificationState {
-    func bottomSheetTitle(isSessionActive: Bool? = nil) -> String {
-        guard isSessionActive != false else {
-            return VectorL10n.userSessionInactiveSessionTitle
-        }
-        
+    var bottomSheetTitle: String {
         switch self {
         case .unverified:
             return VectorL10n.userSessionUnverifiedSessionTitle
@@ -125,11 +121,7 @@ private extension UserSessionInfo.VerificationState {
         }
     }
     
-    func bottomSheetDescription(isSessionActive: Bool?) -> String {
-        guard isSessionActive != false else {
-            return VectorL10n.userSessionInactiveSessionDescription
-        }
-        
+    var bottomSheetDescription: String {
         switch self {
         case .unverified:
             return VectorL10n.userSessionUnverifiedSessionDescription

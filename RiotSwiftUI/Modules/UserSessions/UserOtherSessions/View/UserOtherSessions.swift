@@ -33,7 +33,7 @@ struct UserOtherSessions: View {
                 UserOtherSessionsHeaderView(
                     viewData: viewModel.viewState.header,
                     onLearnMoreAction: {
-                        
+                        viewModel.showBottomSheet = true
                     }
                 )
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -58,6 +58,11 @@ struct UserOtherSessions: View {
         }
         .navigationBarBackButtonHidden(viewModel.isEditModeEnabled)
         .accentColor(theme.colors.accent)
+        .bottomSheet(isPresented: $viewModel.showBottomSheet) {
+            InfoView(title: viewModel.viewState.bottomSheetTitle,
+                     descripion: viewModel.viewState.bottomSheetDescription,
+                     action: .init(text: VectorL10n.userSessionGotIt, action: { viewModel.showBottomSheet = false }))
+        }
     }
     
     private func noItemsView() -> some View {

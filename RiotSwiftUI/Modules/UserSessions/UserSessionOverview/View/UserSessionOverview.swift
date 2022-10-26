@@ -85,7 +85,7 @@ struct UserSessionOverview: View {
         .bottomSheet(isPresented: $viewModel.showBottomSheet) {
             InfoView(title: viewModel.viewState.bottomSheetTitle,
                      descripion: viewModel.viewState.bottomSheetDescription,
-                     action: .init(text: VectorL10n.userSessionGotIt, action: { $viewModel.showBottomSheet.wrappedValue = false }))
+                     action: .init(text: VectorL10n.userSessionGotIt, action: { viewModel.showBottomSheet = false }))
         }
     }
 }

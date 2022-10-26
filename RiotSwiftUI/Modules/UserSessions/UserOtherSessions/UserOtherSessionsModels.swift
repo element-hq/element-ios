@@ -42,6 +42,7 @@ struct UserOtherSessionsViewState: BindableState, Equatable {
 struct UserOtherSessionsBindings: Equatable {
     var filter: UserOtherSessionsFilter
     var isEditModeEnabled: Bool
+    var showBottomSheet: Bool = false
 }
 
 enum UserOtherSessionsViewAction {

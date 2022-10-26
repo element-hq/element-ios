@@ -167,3 +167,33 @@ private extension UserOtherSessionsFilter {
             }
     }
 }
+
+extension UserOtherSessionsViewState {
+    var bottomSheetTitle: String {
+        switch bindings.filter {
+        case .unverified:
+            return VectorL10n.userSessionUnverifiedSessionTitle
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionTitle
+        case .inactive:
+            return VectorL10n.userSessionInactiveSessionTitle
+        case .all:
+            return ""
+        }
+    }
+    
+    var bottomSheetDescription: String {
+        switch bindings.filter {
+        case .unverified:
+            return VectorL10n.userSessionUnverifiedSessionDescription
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionDescription
+        case .inactive:
+            return VectorL10n.userSessionInactiveSessionDescription
+        case .all:
+            return ""
+        }
+    }
+}
+
+
