@@ -952,7 +952,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         {
             // Force a reload of device keys at the next session start.
             // This will fix potential UISIs other peoples receive for our messages.
-            [mxSession.crypto resetDeviceKeys];
+            [(MXLegacyCrypto *)mxSession.crypto resetDeviceKeys];
             
             // Clean other stores
             [mxSession.scanManager deleteAllAntivirusScans];
