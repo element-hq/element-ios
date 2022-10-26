@@ -60,7 +60,7 @@ struct UserOtherSessions: View {
         .accentColor(theme.colors.accent)
         .bottomSheet(isPresented: $viewModel.showBottomSheet) {
             InfoView(title: viewModel.viewState.bottomSheetTitle,
-                     descripion: viewModel.viewState.bottomSheetDescription,
+                     description: viewModel.viewState.bottomSheetDescription,
                      action: .init(text: VectorL10n.userSessionGotIt, action: { viewModel.showBottomSheet = false }))
         }
     }
