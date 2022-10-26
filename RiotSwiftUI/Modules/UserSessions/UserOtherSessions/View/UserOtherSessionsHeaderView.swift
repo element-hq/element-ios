@@ -49,7 +49,7 @@ struct UserOtherSessionsHeaderView: View {
                         .foregroundColor(theme.colors.primaryContent)
                         .padding(.vertical, 9.0)
                 }
-                InlineTextButton(viewData.subtitle, tappableText: VectorL10n.userSessionLearnMore) {
+                InlineTextButton(viewData.subtitle, tappableText: VectorL10n.userSessionLearnMore, alwaysCallAction: false) {
                     onLearnMoreAction?()
                 }
                 .font(theme.fonts.footnote)

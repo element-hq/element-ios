@@ -49,7 +49,7 @@ struct UserSessionCardView: View {
                 .foregroundColor(theme.colors[keyPath: viewData.verificationStatusColor])
                 .multilineTextAlignment(.center)
             
-            InlineTextButton(viewData.verificationStatusAdditionalInfoText, tappableText: VectorL10n.userSessionLearnMore) {
+            InlineTextButton(viewData.verificationStatusAdditionalInfoText, tappableText: VectorL10n.userSessionLearnMore, alwaysCallAction: false) {
                 onLearnMoreAction?()
             }
             .font(theme.fonts.footnote)
