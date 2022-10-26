@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct InfoView: View {
+struct InfoSheet: View {
     struct Action {
         let text: String
         let action: () -> Void
@@ -65,8 +65,8 @@ struct InfoView: View {
 
 struct InfoView_Previews: PreviewProvider {
     static var previews: some View {
-        InfoView(title: "Verified sessions",
-                 description: "Verified sessions have logged in with your credentials and then been verified, either using your secure passphrase or by cross-verifying.\n\nThis means they hold encryption keys for your previous messages, and confirm to other users you are communicating with that these sessions are really you.",
-                 action: .init(text: "GOT IT", action: {}))
+        InfoSheet(title: "Verified sessions",
+                  description: "Verified sessions have logged in with your credentials and then been verified, either using your secure passphrase or by cross-verifying.\n\nThis means they hold encryption keys for your previous messages, and confirm to other users you are communicating with that these sessions are really you.",
+                  action: .init(text: "GOT IT", action: {}))
     }
 }

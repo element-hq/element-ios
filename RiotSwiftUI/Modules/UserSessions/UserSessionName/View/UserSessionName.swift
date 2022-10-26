@@ -31,9 +31,9 @@ struct UserSessionName: View {
         .toolbar { toolbar }
         .accentColor(theme.colors.accent)
         .bottomSheet(isPresented: $viewModel.showBottomSheet) {
-            InfoView(title: VectorL10n.userSessionRenameSessionTitle,
-                     description: VectorL10n.userSessionRenameSessionDescription,
-                     action: .init(text: VectorL10n.userSessionGotIt, action: { viewModel.showBottomSheet = false }))
+            InfoSheet(title: VectorL10n.userSessionRenameSessionTitle,
+                      description: VectorL10n.userSessionRenameSessionDescription,
+                      action: .init(text: VectorL10n.userSessionGotIt, action: { viewModel.showBottomSheet = false }))
         }
     }
     
