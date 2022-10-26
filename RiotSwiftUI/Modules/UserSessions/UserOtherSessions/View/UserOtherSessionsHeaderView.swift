@@ -17,9 +17,9 @@
 import SwiftUI
 
 struct UserOtherSessionsHeaderViewData: Hashable {
-    var title: String?
+    let title: String?
     let subtitle: String
-    var iconName: String?
+    let iconName: String?
 }
 
 struct UserOtherSessionsHeaderView: View {
@@ -30,6 +30,7 @@ struct UserOtherSessionsHeaderView: View {
     @Environment(\.theme) private var theme
     
     let viewData: UserOtherSessionsHeaderViewData
+    var onLearnMoreAction: (() -> Void)?
     
     var body: some View {
         HStack(alignment: .top, spacing: 0) {
@@ -48,10 +49,12 @@ struct UserOtherSessionsHeaderView: View {
                         .foregroundColor(theme.colors.primaryContent)
                         .padding(.vertical, 9.0)
                 }
-                Text(viewData.subtitle)
-                    .font(theme.fonts.footnote)
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.bottom, 20.0)
+                InlineTextButton(viewData.subtitle, tappableText: VectorL10n.userSessionLearnMore) {
+                    onLearnMoreAction?()
+                }
+                .font(theme.fonts.footnote)
+                .foregroundColor(theme.colors.secondaryContent)
+                .padding(.bottom, 20.0)
             })
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -119,15 +119,15 @@ private extension UserOtherSessionsFilter {
                                                    iconName: nil)
         case .inactive:
             return UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuInactive,
-                                                   subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
+                                                   subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo + " %@",
                                                    iconName: Asset.Images.userOtherSessionsInactive.name)
         case .unverified:
             return UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionUnverifiedShort,
-                                                   subtitle: VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle,
+                                                   subtitle: VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle + " %@",
                                                    iconName: Asset.Images.userOtherSessionsUnverified.name)
         case .verified:
             return UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuVerified,
-                                                   subtitle: VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle,
+                                                   subtitle: VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle + " %@",
                                                    iconName: Asset.Images.userOtherSessionsVerified.name)
         }
     }
