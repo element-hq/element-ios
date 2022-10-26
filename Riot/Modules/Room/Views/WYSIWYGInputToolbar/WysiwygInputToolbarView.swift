@@ -88,7 +88,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         let subView: UIView = hostingViewController.view
         self.addSubview(subView)
         
-        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        self.translatesAutoresizingMaskIntoConstraints = false
         subView.translatesAutoresizingMaskIntoConstraints = false
         heightConstraint = subView.heightAnchor.constraint(equalToConstant: height)
         NSLayoutConstraint.activate([
@@ -103,7 +103,13 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                 .sink(receiveValue: { [weak self] idealHeight in
                     guard let self = self else { return }
                     self.updateToolbarHeight(wysiwygHeight: idealHeight)
-                })
+                }),
+            // Required to update the view constraints after minimise/maximise is tapped
+            wysiwygViewModel.$idealHeight
+                .removeDuplicates()
+                .sink { [weak hostingViewController] _ in
+                    hostingViewController?.view.setNeedsLayout()
+                }
         ]
         
         update(theme: ThemeService.shared().theme)

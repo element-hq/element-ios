@@ -2605,4 +2605,15 @@
 "manage_session_name_info" = "Ricorda che i nomi di sessione sono anche visibili alle persone con cui comunichi. %@";
 "manage_session_name_hint" = "I nomi di sessione personalizzati possono aiutarti a riconoscere i tuoi dispositivi più facilmente.";
 "settings_labs_enable_wysiwyg_composer" = "Prova l'editor in rich text (il testo semplice è in arrivo)";
-"settings_labs_enable_voice_broadcast" = "Broadcast voce (in sviluppo attivo). Attualmente rileviamo solo il broadcast vocale nella linea temporale della stanza, non è possibile inviare o ascoltare un vero broadcast vocale";
+"settings_labs_enable_voice_broadcast" = "Trasmissione vocale (in sviluppo attivo)";
+"wysiwyg_composer_start_action_voice_broadcast" = "Trasmissione vocale";
+"voice_broadcast_playback_loading_error" = "Impossibile avviare questa trasmissione vocale.";
+"voice_broadcast_already_in_progress_message" = "Stai già registrando una trasmissione vocale. Termina quella in corso per iniziarne una nuova.";
+"voice_broadcast_blocked_by_someone_else_message" = "Qualcun altro sta già registrando una trasmissione vocale. Aspetta che finisca prima di iniziarne una nuova.";
+"voice_broadcast_permission_denied_message" = "Non hai l'autorizzazione necessaria per iniziare un broadcast vocale in questa stanza. Contatta un amministratore della stanza per aggiornare le tue autorizzazioni.";
+
+// Mark: - Voice broadcast
+"voice_broadcast_unauthorized_title" = "Impossibile iniziare una nuova trasmissione vocale";
+"deselect_all" = "Deseleziona tutti";
+"user_other_session_menu_select_sessions" = "Seleziona sessioni";
+"user_other_session_selected_count" = "%@ selezionate";

@@ -51,6 +51,14 @@ struct Composer: View {
         viewModel.viewState.sendMode == .edit ? "editButton" : "sendButton"
     }
     
+    private var toggleButtonAcccessibilityIdentifier: String {
+        wysiwygViewModel.maximised ? "minimiseButton" : "maximiseButton"
+    }
+    
+    private var toggleButtonImageName: String {
+        wysiwygViewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name
+    }
+    
     private var borderColor: Color {
         focused ? theme.colors.quarterlyContent : theme.colors.quinaryContent
     }
@@ -76,8 +84,6 @@ struct Composer: View {
     var body: some View {
         VStack(spacing: 8) {
             let rect = RoundedRectangle(cornerRadius: cornerRadius)
-            // TODO: Fix maximise animation bugs before re-enabling
-            //            ZStack(alignment: .topTrailing) {
             VStack(spacing: 12) {
                 if viewModel.viewState.shouldDisplayContext {
                     HStack {
@@ -103,36 +109,39 @@ struct Composer: View {
                     .padding(.top, 8)
                     .padding(.horizontal, horizontalPadding)
                 }
-                WysiwygComposerView(
-                    focused: $focused,
-                    content: wysiwygViewModel.content,
-                    replaceText: wysiwygViewModel.replaceText,
-                    select: wysiwygViewModel.select,
-                    didUpdateText: wysiwygViewModel.didUpdateText
-                )
-                .tintColor(theme.colors.accent)
-                .placeholder(viewModel.viewState.placeholder, color: theme.colors.tertiaryContent)
-                .frame(height: wysiwygViewModel.idealHeight)
-                .padding(.horizontal, horizontalPadding)
-                .onAppear {
-                    wysiwygViewModel.setup()
+                HStack(alignment: .top, spacing: 0) {
+                    WysiwygComposerView(
+                        focused: $focused,
+                        content: wysiwygViewModel.content,
+                        replaceText: wysiwygViewModel.replaceText,
+                        select: wysiwygViewModel.select,
+                        didUpdateText: wysiwygViewModel.didUpdateText
+                    )
+                    .tintColor(theme.colors.accent)
+                    .placeholder(viewModel.viewState.placeholder, color: theme.colors.tertiaryContent)
+                    .frame(height: wysiwygViewModel.idealHeight)
+                    .onAppear {
+                        wysiwygViewModel.setup()
+                    }
+                    Button {
+                        wysiwygViewModel.maximised.toggle()
+                    } label: {
+                        Image(toggleButtonImageName)
+                            .resizable()
+                            .foregroundColor(theme.colors.tertiaryContent)
+                            .frame(width: 16, height: 16)
+                    }
+                    .accessibilityIdentifier(toggleButtonAcccessibilityIdentifier)
+                    .padding(.leading, 12)
+                    .padding(.trailing, 4)
                 }
-                //                Button {
-                //                    withAnimation(.easeInOut(duration: 0.25)) {
-                //                        viewModel.maximised.toggle()
-                //                    }
-                //                } label: {
-                //                    Image(viewModel.maximised ? Asset.Images.minimiseComposer.name : Asset.Images.maximiseComposer.name)
-                //                        .foregroundColor(theme.colors.tertiaryContent)
-                //                }
-                //                .padding(.top, 4)
-                //                .padding(.trailing, 12)
-                //            }
+                .padding(.horizontal, horizontalPadding)
                 .padding(.top, topPadding)
                 .padding(.bottom, verticalPadding)
             }
             .clipShape(rect)
             .overlay(rect.stroke(borderColor, lineWidth: 1))
+            .animation(.easeInOut(duration: 0.1), value: wysiwygViewModel.idealHeight)
             .padding(.horizontal, horizontalPadding)
             .padding(.top, 8)
             .onTapGesture {
@@ -148,7 +157,6 @@ struct Composer: View {
                         .resizable()
                         .foregroundColor(theme.colors.tertiaryContent)
                         .frame(width: 14, height: 14)
-                    
                 }
                 .frame(width: 36, height: 36)
                 .background(Circle().fill(theme.colors.system))

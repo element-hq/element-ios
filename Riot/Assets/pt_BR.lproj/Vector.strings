@@ -2606,3 +2606,12 @@
 "manage_session_name_info" = "Por favor esteja ciente que nomes de sessões também são visíveis a pessoas com quem você se comunica. %@";
 "manage_session_name_hint" = "Nomes de sessões personalizados podem ajudar você a reconhecer seus dispositivos mais facilmente.";
 "settings_labs_enable_wysiwyg_composer" = "Experimente o editor de texto rico (modo de texto puro vindo em breve)";
+"wysiwyg_composer_start_action_voice_broadcast" = "Broadcast de voz";
+"voice_broadcast_playback_loading_error" = "Incapaz de tocar este broadcast de voz.";
+"voice_broadcast_already_in_progress_message" = "Você já está gravando um broadcast de voz. Por favor termine seu broadcast de voz atual para começar um novo.";
+"voice_broadcast_blocked_by_someone_else_message" = "Alguma outra pessoa já está gravando um broadcast de voz. Espere que o broadcast de voz dela termine para começar um novo.";
+"voice_broadcast_permission_denied_message" = "Você não tem as permissões requeridas para começar um broadcast de voz nesta sala. Contacte um(a) administrador(a) da sala para fazer upgrade de suas permissões.";
+
+// Mark: - Voice broadcast
+"voice_broadcast_unauthorized_title" = "Não dá para começar um novo broadcast de voz";
+"settings_labs_enable_voice_broadcast" = "Broadcast de voz (sob desenvolvimento ativo)";
