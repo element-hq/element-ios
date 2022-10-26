@@ -97,6 +97,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             subView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             subView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
+        
         cancellables = [
             hostingViewController.heightPublisher
                 .removeDuplicates()
