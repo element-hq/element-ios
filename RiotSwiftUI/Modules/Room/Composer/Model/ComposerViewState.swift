@@ -19,13 +19,13 @@ import Foundation
 struct ComposerViewState: BindableState {
     var eventSenderDisplayName: String?
     var sendMode: ComposerSendMode = .send
-    var textFormattingEnabled: Bool = RiotSettings.shared.enableWysiwygTextFormatting
+    var textFormattingEnabled = true
     var placeholder: String?
 }
 
 extension ComposerViewState {
     var shouldDisplayContext: Bool {
-        return sendMode == .edit || sendMode == .reply
+        sendMode == .edit || sendMode == .reply
     }
     
     var contextDescription: String? {
