@@ -23,7 +23,7 @@ public class VoiceBroadcastService: NSObject {
     
     // MARK: - Properties
     
-    public private(set) var voiceBroadcastInfoEventId: String?
+    public private(set) var voiceBroadcastId: String?
     public let room: MXRoom
     public private(set) var state: VoiceBroadcastInfo.State
     
@@ -50,7 +50,7 @@ public class VoiceBroadcastService: NSObject {
             
             switch response {
             case .success((let eventIdResponse)):
-                self.voiceBroadcastInfoEventId = eventIdResponse
+                self.voiceBroadcastId = eventIdResponse
                 completion(.success(eventIdResponse))
             case .failure(let error):
                 completion(.failure(error))
@@ -108,12 +108,12 @@ public class VoiceBroadcastService: NSObject {
                                    sequence: UInt,
                                    success: @escaping ((String?) -> Void),
                                    failure: @escaping ((Error?) -> Void)) {
-        guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
+        guard let voiceBroadcastId = self.voiceBroadcastId else {
             return failure(VoiceBroadcastServiceError.notStarted)
         }
         
         self.room.sendChunkOfVoiceBroadcast(localURL: audioFileLocalURL,
-                                            voiceBroadcastInfoEventId: voiceBroadcastInfoEventId,
+                                            voiceBroadcastId: voiceBroadcastId,
                                             mimeType: mimeType,
                                             duration: duration,
                                             samples: samples,
@@ -124,14 +124,28 @@ public class VoiceBroadcastService: NSObject {
     
     // MARK: - Private
     
+    private func allowedStates(from state: VoiceBroadcastInfo.State) -> [VoiceBroadcastInfo.State] {
+        switch state {
+        case .started:
+            return [.paused, .stopped]
+        case .paused:
+            return [.resumed, .stopped]
+        case .resumed:
+            return [.paused, .stopped]
+        case .stopped:
+            return [.started]
+        }
+    }
+    
     private func sendVoiceBroadcastInfo(state: VoiceBroadcastInfo.State, completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
         guard let userId = self.room.mxSession.myUserId else {
             completion(.failure(VoiceBroadcastServiceError.missingUserId))
             return nil
         }
         
-        guard state != self.state else {
-            completion(.failure(VoiceBroadcastServiceError.unknown))
+        guard self.allowedStates(from: self.state).contains(state) else {
+            MXLog.warning("[VoiceBroadcastService] sendVoiceBroadcastInfo: unexpected state change \(self.state) -> \(state)")
+            completion(.failure(VoiceBroadcastServiceError.unexpectedState))
             return nil
         }
         
@@ -144,12 +158,12 @@ public class VoiceBroadcastService: NSObject {
         voiceBroadcastInfo.state = state.rawValue
         
         if state != VoiceBroadcastInfo.State.started {
-            guard let voiceBroadcastInfoEventId = self.voiceBroadcastInfoEventId else {
+            guard let voiceBroadcastId = self.voiceBroadcastId else {
                 completion(.failure(VoiceBroadcastServiceError.notStarted))
                 return nil
             }
             
-            voiceBroadcastInfo.voiceBroadcastId = voiceBroadcastInfoEventId
+            voiceBroadcastInfo.voiceBroadcastId = voiceBroadcastId
         } else {
             voiceBroadcastInfo.chunkLength = BuildSettings.voiceBroadcastChunkLength
         }
@@ -252,7 +266,7 @@ extension MXRoom {
     /// Send a voice broadcast to the room.
     /// - Parameters:
     ///   - localURL: the local filesystem path of the file to send.
-    ///   - voiceBroadcastInfoEventId: The id of the voice broadcast info event.
+    ///   - voiceBroadcastId: The event id of the started voice broadcast info state event
     ///   - mimeType: (optional) the mime type of the file. Defaults to `audio/ogg`.
     ///   - duration: the length of the voice message in milliseconds
     ///   - samples: an array of floating point values normalized to [0, 1]
@@ -262,7 +276,7 @@ extension MXRoom {
     ///   - failure: A closure called  when the operation fails.
     /// - Returns: a `MXHTTPOperation` instance.
     @nonobjc @discardableResult func sendChunkOfVoiceBroadcast(localURL: URL,
-                                                               voiceBroadcastInfoEventId: String,
+                                                               voiceBroadcastId: String,
                                                                mimeType: String?,
                                                                duration: UInt,
                                                                samples: [Float]?,
@@ -274,7 +288,7 @@ extension MXRoom {
         
         
         guard let relatesTo = MXEventContentRelatesTo(relationType: MXEventRelationTypeReference,
-                                                      eventId: voiceBroadcastInfoEventId).jsonDictionary() as? [String: Any] else {
+                                                      eventId: voiceBroadcastId).jsonDictionary() as? [String: Any] else {
             failure(VoiceBroadcastServiceError.unknown)
             return nil
         }
