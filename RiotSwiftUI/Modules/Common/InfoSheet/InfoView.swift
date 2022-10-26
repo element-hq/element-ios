@@ -50,9 +50,9 @@ struct InfoView: View {
                     Text(action.text)
                         .font(theme.fonts.bodySB)
                         .foregroundColor(theme.colors.background)
+                        .frame(height: 48)
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(height: 48)
-                .frame(maxWidth: .infinity)
                 .background(theme.colors.accent)
                 .cornerRadius(8)
             }
