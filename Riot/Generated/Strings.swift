@@ -8827,6 +8827,14 @@ public class VectorL10n: NSObject {
   public static var userSessionPushNotificationsMessage: String { 
     return VectorL10n.tr("Vector", "user_session_push_notifications_message") 
   }
+  /// Other users in direct messages and rooms that you join are able to view a full list of your sessions.\n\nThis provides them with confidence that they are really speaking to you, but it also means they can see the session name you enter here.
+  public static var userSessionRenameSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_rename_session_description") 
+  }
+  /// Renaming sessions
+  public static var userSessionRenameSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_rename_session_title") 
+  }
   /// Unverified session
   public static var userSessionUnverified: String { 
     return VectorL10n.tr("Vector", "user_session_unverified") 

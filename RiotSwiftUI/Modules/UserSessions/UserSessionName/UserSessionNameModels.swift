@@ -52,6 +52,8 @@ struct UserSessionNameBindings {
     var sessionName: String
     /// The currently displayed alert's info value otherwise `nil`.
     var alertInfo: AlertInfo<Int>?
+    /// Specifies if the informational bottom sheet is onscreen or not
+    var showBottomSheet: Bool = false
 }
 
 enum UserSessionNameViewAction {
@@ -59,6 +61,4 @@ enum UserSessionNameViewAction {
     case done
     /// The user tapped the cancel button.
     case cancel
-    /// The user tapped the Learn More link.
-    case learnMore
 }

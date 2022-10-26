@@ -30,6 +30,11 @@ struct UserSessionName: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbar }
         .accentColor(theme.colors.accent)
+        .bottomSheet(isPresented: $viewModel.showBottomSheet) {
+            InfoView(title: VectorL10n.userSessionRenameSessionTitle,
+                     descripion: VectorL10n.userSessionRenameSessionDescription,
+                     action: .init(text: VectorL10n.userSessionGotIt, action: { viewModel.showBottomSheet = false }))
+        }
     }
     
     private var textFieldFooter: some View {
@@ -39,7 +44,7 @@ struct UserSessionName: View {
             
             InlineTextButton(VectorL10n.manageSessionNameInfo("%@"),
                              tappableText: VectorL10n.manageSessionNameInfoLink) {
-                viewModel.send(viewAction: .learnMore)
+                viewModel.showBottomSheet = true
             }
             .foregroundColor(theme.colors.secondaryContent)
         }

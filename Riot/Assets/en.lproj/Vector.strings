@@ -2451,6 +2451,8 @@ To enable access, tap Settings> Location and select Always";
 "user_session_unverified_session_description" = "Unverified sessions are sessions that have logged in with your credentials but not been cross-verified.\n\nYou should make especially certain that you recognise these sessions as they could represent an unauthorised use of your account.";
 "user_session_inactive_session_title" = "Inactive sessions";
 "user_session_inactive_session_description" = "Inactive sessions are sessions you have not used in some time, but they continue to receive encryption keys.\n\nRemoving inactive sessions improves security and performance, and makes it easier for you to identify if a new session is suspicious.";
+"user_session_rename_session_title" = "Renaming sessions";
+"user_session_rename_session_description" = "Other users in direct messages and rooms that you join are able to view a full list of your sessions.\n\nThis provides them with confidence that they are really speaking to you, but it also means they can see the session name you enter here.";
 
 "user_other_session_security_recommendation_title" = "Security recommendation";
 "user_other_session_unverified_sessions_header_subtitle" = "Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.";
