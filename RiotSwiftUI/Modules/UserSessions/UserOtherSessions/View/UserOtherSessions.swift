@@ -22,17 +22,22 @@ struct UserOtherSessions: View {
     @ObservedObject var viewModel: UserOtherSessionsViewModel.Context
     
     var body: some View {
-        ScrollView {
-            SwiftUI.Section {
-                if viewModel.viewState.sessionItems.isEmpty {
-                    noItemsView()
-                } else {
-                    itemsView()
+        VStack {
+            ScrollView {
+                SwiftUI.Section {
+                    if viewModel.viewState.sessionItems.isEmpty {
+                        noItemsView()
+                    } else {
+                        itemsView()
+                    }
+                } header: {
+                    UserOtherSessionsHeaderView(viewData: viewModel.viewState.header)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.top, 24.0)
                 }
-            } header: {
-                UserOtherSessionsHeaderView(viewData: viewModel.viewState.header)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, 24.0)
+            }
+            if viewModel.isEditModeEnabled {
+                bottomToolbar()
             }
         }
         .onChange(of: viewModel.isEditModeEnabled) { _ in
@@ -48,7 +53,7 @@ struct UserOtherSessions: View {
             UserOtherSessionsToolbar(isEditModeEnabled: $viewModel.isEditModeEnabled,
                                      filter: $viewModel.filter,
                                      allItemsSelected: viewModel.viewState.allItemsSelected,
-                                     sessionCount: viewModel.viewState.items.count,
+                                     sessionCount: viewModel.viewState.sessionItems.count,
                                      onToggleSelection: { viewModel.send(viewAction: .toggleAllSelection)},
                                      onSignOut: { viewModel.send(viewAction: .signOut)})
         }
@@ -89,6 +94,25 @@ struct UserOtherSessions: View {
             }
         }
         .background(theme.colors.background)
+    }
+    
+    private func bottomToolbar() -> some View {
+        VStack{
+            SeparatorLine()
+                .padding(0)
+            HStack {
+                Spacer()
+                Button {
+                    viewModel.send(viewAction: .signOut)
+                } label: {
+                    Text(VectorL10n.signOut)
+                        .foregroundColor(viewModel.viewState.enableSignOutButton ? theme.colors.alert : theme.colors.tertiaryContent)
+                }
+                .padding(.trailing, 16)
+                .padding(.vertical, 10)
+                .disabled(!viewModel.viewState.enableSignOutButton)
+            }
+        }
     }
 }
 

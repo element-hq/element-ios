@@ -36,7 +36,8 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                                                                 sessionItems: sessionItems,
                                                                 header: filter.userOtherSessionsViewHeader,
                                                                 emptyItemsTitle: filter.userOtherSessionsViewEmptyResultsTitle,
-                                                                allItemsSelected: false))
+                                                                allItemsSelected: false,
+                                                                enableSignOutButton: false))
     }
     
     // MARK: - Public
@@ -62,7 +63,10 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
             toggleAllSelection()
             updateViewState()
         case .signOut:
-            completion?(.singOutFromUserSessions(sessionInfos: sessionInfos))
+            let selectedSessionInfos = sessionInfos.filter { sessionInfo in
+                selectedSessions.contains(sessionInfo.id)
+            }
+            completion?(.singOutFromUserSessions(sessionInfos: selectedSessionInfos))
         }
     }
 
@@ -99,6 +103,8 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         state.emptyItemsTitle = currentFilter.userOtherSessionsViewEmptyResultsTitle
         
         state.allItemsSelected = sessionInfos.count == selectedSessions.count
+        
+        state.enableSignOutButton = selectedSessions.count > 0
     }
     
     private func toggleAllSelection() {

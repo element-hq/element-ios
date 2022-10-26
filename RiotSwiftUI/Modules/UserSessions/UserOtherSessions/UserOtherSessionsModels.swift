@@ -39,6 +39,7 @@ struct UserOtherSessionsViewState: BindableState, Equatable {
     var header: UserOtherSessionsHeaderViewData
     var emptyItemsTitle: String
     var allItemsSelected: Bool
+    var enableSignOutButton: Bool
 }
 
 struct UserOtherSessionsBindings: Equatable {
