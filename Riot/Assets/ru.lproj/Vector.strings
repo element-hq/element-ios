@@ -603,7 +603,7 @@
 "key_backup_recover_from_passphrase_passphrase_title" = "Ввод";
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "Введите секретную фразу";
 "key_backup_recover_from_passphrase_recover_action" = "Разблокировать историю";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Не знаете вашу секретную фразу для восстановления? Вы можете ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Не помните свою мнемоническую фразу? Вы можете ";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "использовать ключ безопасности";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
 "key_backup_recover_from_recovery_key_info" = "Используйте ключ безопасности для разблокировки истории безопасных сообщений";
@@ -624,7 +624,7 @@
 "key_backup_setup_success_from_recovery_key_recovery_key_title" = "Ключ безопасности";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Сделать копию";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "Я сделал копию";
-"key_backup_recover_invalid_passphrase_title" = "Неверная секретная фраза для восстановления";
+"key_backup_recover_invalid_passphrase_title" = "Неверная мнемоническая фраза";
 "key_backup_recover_invalid_recovery_key_title" = "Несоответствующий ключ безопасности";
 "key_backup_setup_banner_title" = "Не теряйте зашифрованные сообщения";
 "key_backup_setup_banner_subtitle" = "Начать использовать ключ восстановления";
@@ -641,7 +641,7 @@
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Использовать ключ восстановления";
 "settings_key_backup_info" = "Зашифрованные сообщения защищены сквозным шифрованием. Только вы и получатель(и) имеют ключи для чтения этих сообщений.";
 "settings_key_backup_info_signout_warning" = "Сделайте резервную копию ключей перед выходом, чтобы не потерять их.";
-"key_backup_setup_passphrase_title" = "Защитите резервную копию секретной фразой";
+"key_backup_setup_passphrase_title" = "Защитите резервную копию мнемонической фразой";
 "key_backup_setup_passphrase_setup_recovery_key_info" = "Или защитите свою резервную копию с помощью ключа безопасности, сохранив ее в безопасном месте.";
 "key_backup_setup_passphrase_setup_recovery_key_action" = "(Расширенный) Настройка с ключом безопасности";
 // Success from passphrase
@@ -654,7 +654,7 @@
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Зашифрованные сообщения будут утеряны";
 "sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Мне не нужны мои зашифрованные сообщения";
 "sign_out_non_existing_key_backup_alert_title" = "Вы потеряете доступ к зашифрованным сообщениям если выйдете сейчас";
-"key_backup_recover_invalid_passphrase" = "Невозможно расшифровать резервную копию с помощью этой секретной фразы: убедитесь, что вы ввели верную секретную фразу для восстановления.";
+"key_backup_recover_invalid_passphrase" = "Невозможно расшифровать резервную копию с помощью этой фразы: убедитесь, что вы ввели верную мнемоническую фразу.";
 "key_backup_recover_invalid_recovery_key" = "Невозможно расшифровать резервную копию с помощью этого ключа: убедитесь, что вы ввели верный ключ безопасности.";
 "e2e_key_backup_wrong_version_button_settings" = "Настройки";
 "key_backup_setup_intro_manual_export_info" = "(Расширенный)";
@@ -986,7 +986,7 @@
 "secure_key_backup_setup_intro_info" = "Защитите себя от потери доступа к зашифрованным сообщениям и данным, создав резервную копию ключей шифрования на своём сервере.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Используйте ключ безопасности";
 "secure_key_backup_setup_intro_use_security_key_info" = "Создайте ключ безопасности для хранения в надежном месте, например в менеджере паролей или сейфе.";
-"secure_key_backup_setup_intro_use_security_passphrase_title" = "Использовать секретную фразу";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Использовать мнемоническую фразу";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Введите секретную фразу, известную только вам, и создайте ключ для резервного копирования.";
 "secure_key_backup_setup_existing_backup_error_title" = "Резервная копия сообщений уже существует";
 "secure_key_backup_setup_existing_backup_error_info" = "Разблокируйте его для повторного использования в защищенной резервной копии или удалите для создания новой резервной копии сообщений в защищенной резервной копии.";
@@ -1024,7 +1024,7 @@
 "device_verification_self_verify_wait_information" = "Подтвердите этот сеанс на одном из других ваших сеансов, предоставив ему доступ к зашифрованным сообщениям.\n\nИспользуйте последнюю версию %@ на других ваших устройствах:";
 "device_verification_self_verify_wait_additional_information" = "Это работает с %@ и другими клиентами Matrix с поддержкой кросс-подписи.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Используйте ключ безопасности";
-"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Используйте секретную фразу или ключ безопасности";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Используйте мнемоническую фразу или бумажный ключ";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Если вы не можете получить доступ к существующему сеансу";
 "key_verification_verify_sas_title_emoji" = "Сравните смайлы";
 "key_verification_verify_sas_title_number" = "Сравните числа";
@@ -1102,17 +1102,17 @@
 "user_verification_session_details_verify_action_current_user" = "Интерактивная проверка";
 "user_verification_session_details_verify_action_current_user_manually" = "Ручная проверка с помощью текста";
 "user_verification_session_details_verify_action_other_user" = "Подтверждение вручную";
-"secrets_recovery_with_passphrase_title" = "Секретная фраза";
+"secrets_recovery_with_passphrase_title" = "Мнемоническая фраза";
 "secrets_recovery_with_passphrase_information_default" = "Получите доступ к своей защищённой истории сообщений и вашей личности с кросс-подписью для проверки других сеансов, введя секретную фразу.";
-"secrets_recovery_with_passphrase_information_verify_device" = "Используйте секретную фразу, чтобы проверить это устройство.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Используйте свою мнемоническую фразу, чтобы заверить эту сессию.";
 "secrets_recovery_with_passphrase_passphrase_title" = "Ввод";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "Введите секретную фразу";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Введите мнемоническую фразу";
 "secrets_recovery_with_passphrase_recover_action" = "Использовать секретную фразу";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Не знаете вашу секретную фразу? Вы можете ";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "использовать ключ безопасности";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Не помните свою мнемоническую фразу? Вы можете ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "использовать бумажный ключ";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Невозможно получить доступ к секретному хранилищу";
-"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Убедитесь, что вы ввели правильную секретную фразу.";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Убедитесь, что вы ввели верную мнемоническую фразу.";
 "secrets_recovery_with_key_title" = "Ключ безопасности";
 "secrets_recovery_with_key_information_default" = "Получите доступ к своей защищённой истории сообщений и вашей личности с кросс-подписью для проверки других сеансов, введя ключ безопасности.";
 "secrets_recovery_with_key_information_verify_device" = "Используйте ключ безопасности, чтобы проверить это устройство.";
@@ -1128,11 +1128,11 @@
 "secrets_setup_recovery_key_done_action" = "Готово";
 "secrets_setup_recovery_key_storage_alert_title" = "Храните его в безопасности";
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Распечатайте и храните в безопасном месте\n✓ Сохраните его на USB-носителе или резервном носителе\n✓ Скопируйте его в свое личное облачное хранилище";
-"secrets_setup_recovery_passphrase_title" = "Задайте секретную фразу";
+"secrets_setup_recovery_passphrase_title" = "Задайте мнемоническую фразу";
 "secrets_setup_recovery_passphrase_information" = "Введите секретную фразу, известную только вам, для защиты данных на вашем сервере.";
 "secrets_setup_recovery_passphrase_additional_information" = "Не используйте пароль своей учетной записи.";
 "secrets_setup_recovery_passphrase_validate_action" = "Готово";
-"secrets_setup_recovery_passphrase_confirm_information" = "Для подтверждения введите вашу секретную фразу ещё раз.";
+"secrets_setup_recovery_passphrase_confirm_information" = "Введите мнемоническую фразу ещё раз, чтобы подтвердить её.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Подтвердить";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Подтвердить секретную фразу";
 "cross_signing_setup_banner_title" = "Настройка шифрования";
@@ -1238,8 +1238,8 @@
 // MARK: - Home
 
 "home_empty_view_title" = "Добро пожаловать в %@,\n%@";
-"secrets_setup_recovery_passphrase_summary_information" = "Запомните свою секретную фразу. Её можно использовать для разблокировки ваших зашифрованных сообщений и данных.";
-"secrets_setup_recovery_passphrase_summary_title" = "Сохраните вашу секретную фразу";
+"secrets_setup_recovery_passphrase_summary_information" = "Запомните свою мнемоническую фразу. Её можно использовать для разблокировки ваших зашифрованных сообщений и данных.";
+"secrets_setup_recovery_passphrase_summary_title" = "Сохраните свою мнемоническую фразу";
 "favourites_empty_view_information" = "Вы можете добавить в избранное несколькими способами - самый быстрый - просто нажать и удерживать. Нажмите на звёздочку, и они автоматически появятся здесь, и вы их навсегда сохраните.";
 
 // MARK: - Favourites
@@ -1355,7 +1355,7 @@
 
 "space_feature_unavailable_title" = "Пространств ещё нет";
 "secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Введите свой ключ безопасности, чтобы продолжить.";
-"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Введите секретную фразу, чтобы продолжить.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Введите мнемоническую фразу, чтобы продолжить.";
 "key_verification_verify_qr_code_scan_code_other_device_action" = "Сканирование с помощью этого устройства";
 
 // Success from secure backup

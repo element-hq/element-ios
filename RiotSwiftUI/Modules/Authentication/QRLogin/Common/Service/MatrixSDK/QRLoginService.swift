@@ -292,7 +292,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         MXLog.debug("[QRLoginService] Received cross-signing details \(responsePayload)")
         
         if let masterKeyFromVerifyingDevice = responsePayload.masterKey,
-           let localMasterKey = session.crypto.crossSigningKeys(forUser: session.myUserId).masterKeys?.keys {
+           let localMasterKey = session.crypto.crossSigning.crossSigningKeys(forUser: session.myUserId)?.masterKeys?.keys {
             guard masterKeyFromVerifyingDevice == localMasterKey else {
                 MXLog.error("[QRLoginService] Received invalid master key from verifying device")
                 await teardownRendezvous(state: .failed(error: .rendezvousFailed))

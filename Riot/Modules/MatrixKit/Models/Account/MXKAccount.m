@@ -1743,8 +1743,18 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         return;
     }
     
+    if (![mxSession.crypto.crossSigning isKindOfClass:[MXLegacyCrossSigning class]]) {
+        MXLogFailure(@"Device dehydratation is currently only supported by legacy cross signing, add support to all implementations");
+        if (failure)
+        {
+            failure(nil);
+        }
+        return;
+    }
+    MXLegacyCrossSigning *crossSigning = (MXLegacyCrossSigning *)mxSession.crypto.crossSigning;;
+    
     MXLogDebug(@"[MXKAccount] attemptDeviceDehydrationWithRetry: starting device dehydration");
-    [[MXKAccountManager sharedManager].dehydrationService dehydrateDeviceWithMatrixRestClient:mxRestClient crypto:mxSession.crypto dehydrationKey:keyData success:^(NSString *deviceId) {
+    [[MXKAccountManager sharedManager].dehydrationService dehydrateDeviceWithMatrixRestClient:mxRestClient crossSigning:crossSigning dehydrationKey:keyData success:^(NSString *deviceId) {
         MXLogDebug(@"[MXKAccount] attemptDeviceDehydrationWithRetry: device successfully dehydrated");
         
         if (success)

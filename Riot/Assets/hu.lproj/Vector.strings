@@ -2625,4 +2625,15 @@
 "authentication_qr_login_start_subtitle" = "Használd a kamerát ezen az eszközön a másik eszközödön megjelenő QR kód beolvasására:";
 "authentication_qr_login_start_title" = "QR kód beolvasása";
 "authentication_login_with_qr" = "Belépés QR kóddal";
-"settings_labs_enable_voice_broadcast" = "Hang közvetítés (aktív fejlesztés alatt). Jelenleg a hang közvetítést csak a szoba idővonalán jelezzük, egyenlőre nem lehet hangot sugározni vagy belehallgatni a közvetítésbe";
+"settings_labs_enable_voice_broadcast" = "Hang közvetítés (aktív fejlesztés alatt)";
+"wysiwyg_composer_start_action_voice_broadcast" = "Hang közvetítés";
+"voice_broadcast_playback_loading_error" = "A hang közvetítés nem játszható le.";
+"voice_broadcast_already_in_progress_message" = "Egy hang közvetítés már folyamatban van. Először fejezd be a jelenlegi közvetítést egy új indításához.";
+"voice_broadcast_blocked_by_someone_else_message" = "Valaki már elindított egy hang közvetítést. Várd meg a közvetítés végét az új indításához.";
+"voice_broadcast_permission_denied_message" = "Nincs jogosultságod hang közvetítést indítani ebben a szobában. Vedd fel a kapcsolatot a szoba adminisztrátorával a szükséges jogosultság megszerzéséhez.";
+
+// Mark: - Voice broadcast
+"voice_broadcast_unauthorized_title" = "Az új hang közvetítés nem indítható el";
+"deselect_all" = "Semmit nem jelöl ki";
+"user_other_session_menu_select_sessions" = "Munkamenetek kiválasztása";
+"user_other_session_selected_count" = "%@ kiválasztva";

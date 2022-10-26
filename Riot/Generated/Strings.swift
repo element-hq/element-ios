@@ -1523,6 +1523,10 @@ public class VectorL10n: NSObject {
   public static var delete: String { 
     return VectorL10n.tr("Vector", "delete") 
   }
+  /// Deselect All
+  public static var deselectAll: String { 
+    return VectorL10n.tr("Vector", "deselect_all") 
+  }
   /// This operation requires additional authentication.\nTo continue, please enter your password.
   public static var deviceDetailsDeletePromptMessage: String { 
     return VectorL10n.tr("Vector", "device_details_delete_prompt_message") 
@@ -8671,6 +8675,10 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionFilterMenuVerified: String { 
     return VectorL10n.tr("Vector", "user_other_session_filter_menu_verified") 
   }
+  /// Select sessions
+  public static var userOtherSessionMenuSelectSessions: String { 
+    return VectorL10n.tr("Vector", "user_other_session_menu_select_sessions") 
+  }
   /// No inactive sessions found.
   public static var userOtherSessionNoInactiveSessions: String { 
     return VectorL10n.tr("Vector", "user_other_session_no_inactive_sessions") 
@@ -8686,6 +8694,10 @@ public class VectorL10n: NSObject {
   /// Security recommendation
   public static var userOtherSessionSecurityRecommendationTitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_security_recommendation_title") 
+  }
+  /// %@ selected
+  public static func userOtherSessionSelectedCount(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_other_session_selected_count", p1)
   }
   /// Verify or sign out from this session for best security and reliability.
   public static var userOtherSessionUnverifiedAdditionalInfo: String { 
