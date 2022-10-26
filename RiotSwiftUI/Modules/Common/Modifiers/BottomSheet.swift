@@ -15,6 +15,7 @@
 //
 
 import SwiftUI
+import DSBottomSheet
 
 extension View {
     func bottomSheet<V: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> V) -> some View {
@@ -25,7 +26,11 @@ extension View {
                         .presentationDetents([.medium, .large])
                 }
             } else {
-                sheet(isPresented: isPresented, content: content)
+                bottomSheet(BottomSheet(isExpanded: isPresented,
+                                        minHeight: .percentage(0),
+                                        maxHeight: .percentage(0.5),
+                                        style: BottomSheetStyle(cornerRadius: 8, handleStyle: .init(width: 50, height: 4)),
+                                        content: content))
             }
         }
     }
