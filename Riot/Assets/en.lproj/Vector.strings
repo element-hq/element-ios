@@ -2444,6 +2444,11 @@ To enable access, tap Settings> Location and select Always";
 "user_other_session_verified_additional_info" = "This session is ready for secure messaging.";
 "user_session_push_notifications" = "Push notifications";
 "user_session_push_notifications_message" = "When turned on, this session will receive push notifications.";
+"user_session_got_it" = "GOT IT";
+"user_session_verified_session_title" = "Verified sessions";
+"user_session_verified_session_description" = "Verified sessions have logged in with your credentials and then been verified, either using your secure passphrase or by cross-verifying.\n\nThis means they hold encryption keys for your previous messages, and confirm to other users you are communicating with that these sessions are really you.";
+"user_session_unverified_session_title" = "Unverified session";
+"user_session_unverified_session_description" = "Unverified sessions are sessions that have logged in with your credentials but not been cross-verified.\n\nYou should make especially certain that you recognise these sessions as they could represent an unauthorised use of your account.";
 
 "user_other_session_security_recommendation_title" = "Security recommendation";
 "user_other_session_unverified_sessions_header_subtitle" = "Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.";

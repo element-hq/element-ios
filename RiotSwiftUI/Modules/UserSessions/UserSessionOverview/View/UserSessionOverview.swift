@@ -83,9 +83,9 @@ struct UserSessionOverview: View {
         }
         .accentColor(theme.colors.accent)
         .bottomSheet(isPresented: $viewModel.showBottomSheet) {
-            InfoView(title: "Verified sessions",
-                     descripion: "Further context on verified sessions. What do those mean, and how do they differ from unverified ones.\n\nWe could provide a link to an external reference resource for even more context.",
-                     action: .init(text: "GOT IT", action: { $viewModel.showBottomSheet.wrappedValue = false }))
+            InfoView(title: viewModel.viewState.bottomSheetTitle,
+                     descripion: viewModel.viewState.bottomSheetDescription,
+                     action: .init(text: VectorL10n.userSessionGotIt, action: { $viewModel.showBottomSheet.wrappedValue = false }))
         }
     }
 }
