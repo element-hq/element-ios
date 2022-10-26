@@ -197,6 +197,8 @@ internal class Asset: NSObject {
     internal static let peopleFloatingAction = ImageAsset(name: "people_floating_action")
     internal static let actionCamera = ImageAsset(name: "action_camera")
     internal static let actionFile = ImageAsset(name: "action_file")
+    internal static let actionFormattingDisabled = ImageAsset(name: "action_formatting_disabled")
+    internal static let actionFormattingEnabled = ImageAsset(name: "action_formatting_enabled")
     internal static let actionLive = ImageAsset(name: "action_live")
     internal static let actionLocation = ImageAsset(name: "action_location")
     internal static let actionMediaLibrary = ImageAsset(name: "action_media_library")
