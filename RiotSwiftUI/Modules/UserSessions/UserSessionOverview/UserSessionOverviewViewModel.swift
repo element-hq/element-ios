@@ -101,35 +101,42 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
 
 extension UserSessionOverviewViewState {
     var bottomSheetTitle: String {
-        cardViewData.verificationState.bottomSheetTitle
+        cardViewData.verificationState.bottomSheetTitle(isSessionActive: nil)
     }
     
     var bottomSheetDescription: String {
-        cardViewData.verificationState.bottomSheetDescription
+        cardViewData.verificationState.bottomSheetDescription(isSessionActive: nil)
     }
 }
 
-#warning("AG: add missing localisations")
 private extension UserSessionInfo.VerificationState {
-    var bottomSheetTitle: String {
+    func bottomSheetTitle(isSessionActive: Bool? = nil) -> String {
+        guard isSessionActive != false else {
+            return VectorL10n.userSessionInactiveSessionTitle
+        }
+        
         switch self {
-        case .unknown:
-            return "TODO_TITLE"
         case .unverified:
             return VectorL10n.userSessionUnverifiedSessionTitle
         case .verified:
             return VectorL10n.userSessionVerifiedSessionTitle
+        case .unknown:
+            return ""
         }
     }
     
-    var bottomSheetDescription: String {
+    func bottomSheetDescription(isSessionActive: Bool?) -> String {
+        guard isSessionActive != false else {
+            return VectorL10n.userSessionInactiveSessionDescription
+        }
+        
         switch self {
-        case .unknown:
-            return "TODO_DESCRIPTION"
         case .unverified:
             return VectorL10n.userSessionUnverifiedSessionDescription
         case .verified:
             return VectorL10n.userSessionVerifiedSessionDescription
+        case .unknown:
+            return ""
         }
     }
 }

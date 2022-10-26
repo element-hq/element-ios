@@ -2449,6 +2449,8 @@ To enable access, tap Settings> Location and select Always";
 "user_session_verified_session_description" = "Verified sessions have logged in with your credentials and then been verified, either using your secure passphrase or by cross-verifying.\n\nThis means they hold encryption keys for your previous messages, and confirm to other users you are communicating with that these sessions are really you.";
 "user_session_unverified_session_title" = "Unverified session";
 "user_session_unverified_session_description" = "Unverified sessions are sessions that have logged in with your credentials but not been cross-verified.\n\nYou should make especially certain that you recognise these sessions as they could represent an unauthorised use of your account.";
+"user_session_inactive_session_title" = "Inactive sessions";
+"user_session_inactive_session_description" = "Inactive sessions are sessions you have not used in some time, but they continue to receive encryption keys.\n\nRemoving inactive sessions improves security and performance, and makes it easier for you to identify if a new session is suspicious.";
 
 "user_other_session_security_recommendation_title" = "Security recommendation";
 "user_other_session_unverified_sessions_header_subtitle" = "Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.";

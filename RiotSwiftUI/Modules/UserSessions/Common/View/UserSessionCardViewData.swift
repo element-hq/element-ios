@@ -38,7 +38,7 @@ struct UserSessionCardViewData {
     
     let deviceAvatarViewData: DeviceAvatarViewData
     
-    /// Indicate if the current user session is shown and to adpat the layout
+    /// Indicate if the current user session is shown and to adapt the layout
     let isCurrentSessionDisplayMode: Bool
     
     /// The name of the shield image to show the verification status.

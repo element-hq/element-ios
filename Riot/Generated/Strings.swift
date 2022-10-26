@@ -8783,6 +8783,14 @@ public class VectorL10n: NSObject {
   public static var userSessionGotIt: String { 
     return VectorL10n.tr("Vector", "user_session_got_it") 
   }
+  /// Inactive sessions are sessions you have not used in some time, but they continue to receive encryption keys.\n\nRemoving inactive sessions improves security and performance, and makes it easier for you to identify if a new session is suspicious.
+  public static var userSessionInactiveSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_inactive_session_description") 
+  }
+  /// Inactive sessions
+  public static var userSessionInactiveSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_inactive_session_title") 
+  }
   /// %1$@ · %2$@
   public static func userSessionItemDetails(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "user_session_item_details", p1, p2)
