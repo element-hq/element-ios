@@ -21,10 +21,7 @@ class UserSuggestionUITests: MockScreenTestCase {
     func testUserSuggestionScreen() throws {
         app.goToScreenWithIdentifier(MockUserSuggestionScreenState.multipleResults.title)
         
-        XCTAssert(app.tables.firstMatch.waitForExistence(timeout: 1))
-        
-        let firstButton = app.tables.firstMatch.buttons.firstMatch
-        _ = firstButton.waitForExistence(timeout: 10)
-        XCTAssert(firstButton.identifier == "displayNameText-userIdText")
+        let firstButton = app.buttons["displayNameText-userIdText"].firstMatch
+        XCTAssert(firstButton.waitForExistence(timeout: 10))
     }
 }
