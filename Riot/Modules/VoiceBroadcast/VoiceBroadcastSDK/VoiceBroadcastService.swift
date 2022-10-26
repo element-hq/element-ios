@@ -149,7 +149,7 @@ public class VoiceBroadcastService: NSObject {
                 return nil
             }
             
-            voiceBroadcastInfo.eventId = voiceBroadcastInfoEventId
+            voiceBroadcastInfo.voiceBroadcastId = voiceBroadcastInfoEventId
         } else {
             voiceBroadcastInfo.chunkLength = BuildSettings.voiceBroadcastChunkLength
         }
