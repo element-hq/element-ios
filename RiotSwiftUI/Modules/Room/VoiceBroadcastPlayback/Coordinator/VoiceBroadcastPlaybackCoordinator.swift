@@ -48,7 +48,7 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
         
         let voiceBroadcastAggregator = try VoiceBroadcastAggregator(session: parameters.session, room: parameters.room, voiceBroadcastStartEventId: parameters.voiceBroadcastStartEvent.eventId, voiceBroadcastState: parameters.voiceBroadcastState)
         
-        let details = VoiceBroadcastPlaybackDetails(senderDisplayName: parameters.senderDisplayName)
+        let details = VoiceBroadcastPlaybackDetails(senderDisplayName: parameters.senderDisplayName, avatarData: parameters.room.avatarData)
         viewModel = VoiceBroadcastPlaybackViewModel(details: details,
                                                     mediaServiceProvider: VoiceMessageMediaServiceProvider.sharedProvider,
                                                     cacheManager: VoiceMessageAttachmentCacheManager.sharedManager,

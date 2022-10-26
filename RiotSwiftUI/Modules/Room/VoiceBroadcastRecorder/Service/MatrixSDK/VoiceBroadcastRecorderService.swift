@@ -33,7 +33,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     
     private var chunkFile: AVAudioFile! = nil
     private var chunkFrames: AVAudioFrameCount = 0
-    private var chunkFileNumber: Int = 1
+    private var chunkFileNumber: Int = 0
         
     // MARK: Public
     
@@ -98,9 +98,10 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             guard let self = self else { return }
             
             // Send current chunk
-            self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
-            self.chunkFile = nil
-            
+            if self.chunkFile != nil {
+                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
+                self.chunkFile = nil
+            }
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to pause voice broadcast", context: error)
         })
@@ -123,7 +124,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     /// Reset chunk values.
     private func resetValues() {
         chunkFrames = 0
-        chunkFileNumber = 1
+        chunkFileNumber = 0
     }
     
     /// Write audio buffer to chunk file.
@@ -150,6 +151,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             // FIXME: Manage error
             return
         }
+        chunkFileNumber += 1
         let temporaryFileName = "VoiceBroadcastChunk-\(roomId)-\(chunkFileNumber)"
         let fileUrl = directory
             .appendingPathComponent(temporaryFileName)
@@ -165,9 +167,9 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         chunkFile = try? AVAudioFile(forWriting: fileUrl, settings: settings)
         
         if chunkFile != nil {
-            chunkFileNumber += 1
             chunkFrames = 0
         } else {
+            chunkFileNumber -= 1
             stopRecordingVoiceBroadcast()
             // FIXME: Manage error ?
         }
@@ -202,6 +204,9 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         convertAACToM4A(at: url) { [weak self] convertedUrl in
             guard let self = self else { return }
             
+            // Delete the source file.
+            self.deleteRecording(at: url)
+            
             if let convertedUrl = convertedUrl {
                 dispatchGroup.notify(queue: .main) {
                     self.voiceBroadcastService?.sendChunkOfVoiceBroadcast(audioFileLocalURL: convertedUrl,
@@ -210,11 +215,12 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                                                                           samples: nil,
                                                                           sequence: UInt(sequence)) { eventId in
                         MXLog.debug("[VoiceBroadcastRecorderService] Send voice broadcast chunk with success.")
-                        if eventId != nil {
-                            self.deleteRecording(at: url)
-                        }
+                        self.deleteRecording(at: convertedUrl)
                     } failure: { error in
                         MXLog.error("[VoiceBroadcastRecorderService] Failed to send voice broadcast chunk.", context: error)
+                        // Do not delete the file to be sent if request failed, the retry flow will need it
+                        // There's no manual mechanism to clean it up afterwards but the tmp folder
+                        // they live in will eventually be deleted by the system
                     }
                 }
             }

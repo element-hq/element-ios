@@ -16,19 +16,22 @@
 
 import Foundation
 
-class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
+class VoiceBroadcastPlaybackPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
     
     private var event: MXEvent?
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
-                
+        
         guard let contentView = roomCellContentView?.innerContentView,
               let bubbleData = cellData as? RoomBubbleCellData,
               let event = bubbleData.events.last,
               let voiceBroadcastContent = VoiceBroadcastInfo(fromJSON: event.content),
               voiceBroadcastContent.state == VoiceBroadcastInfo.State.started.rawValue,
-              let controller = VoiceBroadcastPlaybackProvider.shared.buildVoiceBroadcastPlaybackVCForEvent(event, senderDisplayName: bubbleData.senderDisplayName) else {
+              let controller = VoiceBroadcastPlaybackProvider.shared.buildVoiceBroadcastPlaybackVCForEvent(event,
+                                                                                                           senderDisplayName: bubbleData.senderDisplayName,
+                                                                                                           voiceBroadcastState: bubbleData.voiceBroadcastState)
+        else {
             return
         }
         
@@ -54,4 +57,4 @@ class VoiceBroadcastPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable
     }
 }
 
-extension VoiceBroadcastPlainCell: RoomCellThreadSummaryDisplayable {}
+extension VoiceBroadcastPlaybackPlainCell: RoomCellThreadSummaryDisplayable {}

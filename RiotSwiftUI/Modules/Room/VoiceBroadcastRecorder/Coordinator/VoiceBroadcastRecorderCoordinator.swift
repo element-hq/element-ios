@@ -45,7 +45,7 @@ final class VoiceBroadcastRecorderCoordinator: Coordinator, Presentable {
         
         voiceBroadcastRecorderService = VoiceBroadcastRecorderService(session: parameters.session, roomId: parameters.room.matrixItemId)
         
-        let details = VoiceBroadcastRecorderDetails(senderDisplayName: parameters.senderDisplayName)
+        let details = VoiceBroadcastRecorderDetails(senderDisplayName: parameters.senderDisplayName, avatarData: parameters.room.avatarData)
         let viewModel = VoiceBroadcastRecorderViewModel(details: details,
                                                         recorderService: voiceBroadcastRecorderService)
         voiceBroadcastRecorderViewModel = viewModel

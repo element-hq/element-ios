@@ -45,33 +45,49 @@ struct VoiceBroadcastPlaybackView: View {
     var body: some View {
         let details = viewModel.viewState.details
         
-        VStack(alignment: .center, spacing: 16.0) {
+        VStack(alignment: .center) {
             
-            HStack {
-                Text(details.senderDisplayName ?? "")
-                //Text(VectorL10n.voiceBroadcastInTimelineTitle)
-                    .font(theme.fonts.bodySB)
-                    .foregroundColor(theme.colors.primaryContent)
+            HStack (alignment: .top) {
+                AvatarImage(avatarData: viewModel.viewState.details.avatarData, size: .xSmall)
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(details.avatarData.displayName ?? details.avatarData.matrixItemId)
+                        .font(theme.fonts.bodySB)
+                        .foregroundColor(theme.colors.primaryContent)
+                    Label {
+                        Text(details.senderDisplayName ?? details.avatarData.matrixItemId)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .font(theme.fonts.caption1)
+                    } icon: {
+                        Image(uiImage: Asset.Images.voiceBroadcastTileMic.image)
+                    }
+                    Label {
+                        Text(VectorL10n.voiceBroadcastTile)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .font(theme.fonts.caption1)
+                    } icon: {
+                        Image(uiImage: Asset.Images.voiceBroadcastTileLive.image)
+                    }
+                }.frame(maxWidth: .infinity, alignment: .leading)
                 
                 if viewModel.viewState.broadcastState == .live {
                     Button { viewModel.send(viewAction: .playLive) } label:
                     {
-                        HStack {
-                            Image(uiImage: Asset.Images.voiceBroadcastLive.image)
-                                .renderingMode(.original)
-                            Text("Live")
-                                .font(theme.fonts.bodySB)
+                        Label {
+                            Text(VectorL10n.voiceBroadcastLive)
+                                .font(theme.fonts.caption1SB)
                                 .foregroundColor(Color.white)
+                        } icon: {
+                            Image(uiImage: Asset.Images.voiceBroadcastLive.image)
                         }
-                        
                     }
-                    .padding(5.0)
-                    .background(RoundedRectangle(cornerRadius: 4, style: .continuous)
-                        .fill(backgroundColor))
+                    .padding(.horizontal, 5)
+                    .background(RoundedRectangle(cornerRadius: 4, style: .continuous).fill(backgroundColor))
                     .accessibilityIdentifier("liveButton")
                 }
             }
-    
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
             if viewModel.viewState.playbackState == .error {
                 VoiceBroadcastPlaybackErrorView()
             } else {
@@ -101,13 +117,9 @@ struct VoiceBroadcastPlaybackView: View {
                 }
                 .activityIndicator(show: viewModel.viewState.playbackState == .buffering)
             }
-
         }
         .padding([.horizontal, .top], 2.0)
         .padding([.bottom])
-        .alert(item: $viewModel.alertInfo) { info in
-            info.alert
-        }
     }
 }
 

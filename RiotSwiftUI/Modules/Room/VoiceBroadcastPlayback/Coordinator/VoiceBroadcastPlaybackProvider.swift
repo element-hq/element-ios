@@ -26,7 +26,7 @@ class VoiceBroadcastPlaybackProvider {
     
     /// Create or retrieve the voiceBroadcast timeline coordinator for this event and return
     /// a view to be displayed in the timeline
-    func buildVoiceBroadcastPlaybackVCForEvent(_ event: MXEvent, senderDisplayName: String?) -> UIViewController? {
+    func buildVoiceBroadcastPlaybackVCForEvent(_ event: MXEvent, senderDisplayName: String?, voiceBroadcastState: String) -> UIViewController? {
         guard let session = session, let room = session.room(withRoomId: event.roomId) else {
             return nil
         }
@@ -35,26 +35,10 @@ class VoiceBroadcastPlaybackProvider {
             return coordinator.toPresentable()
         }
         
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        var voiceBroadcastState = VoiceBroadcastInfo.State.stopped
-        
-        room.state { roomState in
-            if let stateEvent = roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last,
-               stateEvent.stateKey == event.stateKey,
-               let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: stateEvent.content),
-               (stateEvent.eventId == event.eventId || voiceBroadcastInfo.eventId == event.eventId),
-               let state = VoiceBroadcastInfo.State(rawValue: voiceBroadcastInfo.state) {
-                   voiceBroadcastState = state
-               }
-            
-            dispatchGroup.leave()
-        }
-        
         let parameters = VoiceBroadcastPlaybackCoordinatorParameters(session: session,
                                                                      room: room,
                                                                      voiceBroadcastStartEvent: event,
-                                                                     voiceBroadcastState: voiceBroadcastState,
+                                                                     voiceBroadcastState: VoiceBroadcastInfo.State(rawValue: voiceBroadcastState) ?? VoiceBroadcastInfo.State.stopped,
                                                                      senderDisplayName: senderDisplayName)
         guard let coordinator = try? VoiceBroadcastPlaybackCoordinator(parameters: parameters) else {
             return nil
