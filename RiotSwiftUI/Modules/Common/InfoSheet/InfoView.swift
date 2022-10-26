@@ -21,6 +21,8 @@ struct InfoView: View {
         let text: String
         let action: () -> Void
     }
+    
+    @Environment(\.theme) var theme: ThemeSwiftUI
     private let title: String
     private let description: String
     private let action: Action
@@ -32,15 +34,30 @@ struct InfoView: View {
     }
     
     var body: some View {
-        VStack(spacing: 24) {
-            VStack(spacing: 16) {
-                Text(title)
-                Text(description)
+        GeometryReader { proxy in
+            VStack(alignment: .leading, spacing: 24) {
+                VStack(alignment: .leading, spacing: 16) {
+                    Text(title)
+                        .font(theme.fonts.title1B)
+                        .foregroundColor(theme.colors.primaryContent)
+                    
+                    Text(description)
+                        .font(theme.fonts.body)
+                        .foregroundColor(theme.colors.primaryContent)
+                }
+                
+                Button(action: action.action) {
+                    Text(action.text)
+                        .font(theme.fonts.bodySB)
+                        .foregroundColor(theme.colors.background)
+                }
+                .frame(height: 48)
+                .frame(maxWidth: .infinity)
+                .background(theme.colors.accent)
+                .cornerRadius(8)
             }
-            
-            Button(action: action.action) {
-                Text(action.text)
-            }
+            .padding(24)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
