@@ -38,11 +38,11 @@ struct InfoView: View {
             VStack(alignment: .leading, spacing: 24) {
                 VStack(alignment: .leading, spacing: 16) {
                     Text(title)
-                        .font(theme.fonts.title1B)
+                        .font(theme.fonts.calloutSB)
                         .foregroundColor(theme.colors.primaryContent)
                     
                     Text(description)
-                        .font(theme.fonts.body)
+                        .font(theme.fonts.footnote)
                         .foregroundColor(theme.colors.primaryContent)
                 }
                 
@@ -65,7 +65,7 @@ struct InfoView: View {
 struct InfoView_Previews: PreviewProvider {
     static var previews: some View {
         InfoView(title: "Verified sessions",
-                 descripion: "Further context on verified sessions. What do those mean, and how do they differ from unverified ones.\n\nWe could provide a link to an external reference resource for even more context.",
+                 descripion: "Verified sessions have logged in with your credentials and then been verified, either using your secure passphrase or by cross-verifying.\n\nThis means they hold encryption keys for your previous messages, and confirm to other users you are communicating with that these sessions are really you.",
                  action: .init(text: "GOT IT", action: {}))
     }
 }

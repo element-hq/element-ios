@@ -22,7 +22,7 @@ extension View {
             if #available(iOS 16, *) {
                 sheet(isPresented: isPresented) {
                     content()
-                        .presentationDetents([.medium])
+                        .presentationDetents([.medium, .large])
                 }
             } else {
                 sheet(isPresented: isPresented, content: content)
