@@ -63,8 +63,20 @@ struct UserSessionOverview: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
-                    Button { viewModel.send(viewAction: .renameSession) } label: {
-                        Label(VectorL10n.manageSessionRename, systemImage: "pencil")
+                    SwiftUI.Section {
+                        Button { viewModel.send(viewAction: .renameSession) } label: {
+                            Label(VectorL10n.manageSessionRename, systemImage: "pencil")
+                        }
+                    }
+                    
+                    if #available(iOS 15, *) {
+                        Button(role: .destructive) { viewModel.send(viewAction: .logoutOfSession) } label: {
+                            Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
+                        }
+                    } else {
+                        Button { viewModel.send(viewAction: .logoutOfSession) } label: {
+                            Label(VectorL10n.signOut, systemImage: "rectangle.righthalf.inset.fill.arrow.right")
+                        }
                     }
                 } label: {
                     Image(systemName: "ellipsis")
