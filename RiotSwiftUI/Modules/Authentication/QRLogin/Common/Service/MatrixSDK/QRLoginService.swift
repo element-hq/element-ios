@@ -352,6 +352,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         await teardownRendezvous()
     }
     
+    @MainActor
     private func teardownRendezvous(state: QRLoginServiceState? = nil) async {
         // Stop listening for changes, try deleting the resource
         _ = await rendezvousService?.tearDown()
