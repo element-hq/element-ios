@@ -67,16 +67,19 @@ struct UserSessionOverview: View {
                         Button { viewModel.send(viewAction: .renameSession) } label: {
                             Label(VectorL10n.manageSessionRename, systemImage: "pencil")
                         }
+                        .accessibilityIdentifier(VectorL10n.manageSessionRename)
                     }
                     
                     if #available(iOS 15, *) {
                         Button(role: .destructive) { viewModel.send(viewAction: .logoutOfSession) } label: {
                             Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
                         }
+                        .accessibilityIdentifier(VectorL10n.signOut)
                     } else {
                         Button { viewModel.send(viewAction: .logoutOfSession) } label: {
                             Label(VectorL10n.signOut, systemImage: "rectangle.righthalf.inset.fill.arrow.right")
                         }
+                        .accessibilityIdentifier(VectorL10n.signOut)
                     }
                 } label: {
                     Image(systemName: "ellipsis")
@@ -84,6 +87,7 @@ struct UserSessionOverview: View {
                         .padding(.vertical, 12)
                 }
                 .offset(x: 4) // Re-align the symbol after applying padding.
+                .accessibilityIdentifier("Menu")
             }
         }
         .accentColor(theme.colors.accent)
