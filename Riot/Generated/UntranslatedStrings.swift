@@ -14,6 +14,10 @@ public extension VectorL10n {
   static var imagePickerActionFiles: String { 
     return VectorL10n.tr("Untranslated", "image_picker_action_files") 
   }
+  /// Enable Incognito Mode
+  static var roomSettingsAdvancedIncognitoTitle: String { 
+    return VectorL10n.tr("Untranslated", "room_settings_advanced_incognito_title") 
+  }
   /// Voice broadcast detected (under active development)
   static var voiceBroadcastInTimelineTitle: String { 
     return VectorL10n.tr("Untranslated", "voice_broadcast_in_timeline_title") 

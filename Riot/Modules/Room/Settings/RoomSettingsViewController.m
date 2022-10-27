@@ -33,6 +33,7 @@
 #import "RoomMemberDetailsViewController.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "MXRoom+Riot.h"
 
 enum
 {
@@ -82,7 +83,8 @@ enum
     ROOM_SETTINGS_ADVANCED_ENCRYPT_TO_VERIFIED,
     ROOM_SETTINGS_ADVANCED_ENCRYPTION_ENABLED,
     ROOM_SETTINGS_ADVANCED_ENABLE_ENCRYPTION,
-    ROOM_SETTINGS_ADVANCED_ENCRYPTION_DISABLED
+    ROOM_SETTINGS_ADVANCED_ENCRYPTION_DISABLED,
+    ROOM_SETTINGS_ADVANCED_INCOGNITO
 };
 
 enum
@@ -119,6 +121,9 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
 NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvancedCellViewIdentifier";
 NSString *const kRoomSettingsAdvancedEnableE2eCellViewIdentifier = @"kRoomSettingsAdvancedEnableE2eCellViewIdentifier";
 NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSettingsAdvancedE2eEnabledCellViewIdentifier";
+
+NSString *const kRoomSettingsAdvancedIncognito = @"kRoomSettingsAdvancedIncognito";
+
 
 @interface RoomSettingsViewController () <SingleImagePickerPresenterDelegate, TableViewSectionsDelegate, RoomAccessCoordinatorBridgePresenterDelegate, RoomSuggestionCoordinatorBridgePresenterDelegate>
 {
@@ -605,6 +610,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_BANNED_ADVANCED];
         
         [sectionAdvanced addRowWithTag:ROOM_SETTINGS_ADVANCED_ROOM_ID];
+        [sectionAdvanced addRowWithTag:ROOM_SETTINGS_ADVANCED_INCOGNITO];
         if (mxRoom.mxSession.crypto)
         {
             if (mxRoom.summary.isEncrypted)
@@ -2018,6 +2024,43 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             BOOL blacklistUnverifiedDevices = [((NSNumber*)updatedItemsDict[kRoomSettingsEncryptionBlacklistUnverifiedDevicesKey]) boolValue];
             [mxRoom.mxSession.crypto setBlacklistUnverifiedDevicesInRoom:mxRoom.roomId blacklist:blacklistUnverifiedDevices];
         }
+        
+        if(updatedItemsDict[kRoomSettingsAdvancedIncognito]) {
+            BOOL enableIncognito = [((NSNumber*)updatedItemsDict[kRoomSettingsAdvancedIncognito]) boolValue];
+            
+            // m.room.custom.policy will be stored with key incognito and value incognito.enabled to enable the incognito mode
+            [mxRoom sendStateEventOfType:@"m.room.custom.policy"
+                                 content:@{@"incognito" : enableIncognito ? @"incognito.enabled" : @"incognito.disabled"}
+                                stateKey:nil
+                                 success:^(NSString *eventId) {
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    [self->updatedItemsDict removeObjectForKey:kRoomSettingsAdvancedIncognito];
+                    [self onSave:nil];
+                }
+                
+            } failure:^(NSError *error) {
+                MXLogDebug(@"[RoomSettingsViewController] Update incognito failed");
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    self->pendingOperation = nil;
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSString* message = error.localizedDescription;
+                        if (!message.length)
+                        {
+                            message = @"Failed to update incoginto";
+                        }
+                        [self onSaveFailed:message withKeys:@[kRoomSettingsAdvancedIncognito]];
+                        
+                    });
+                }
+                
+            }
+            ];
+        }
     }
     
     [self getNavigationItem].rightBarButtonItem.enabled = NO;
@@ -2798,6 +2841,16 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
+        else if (row == ROOM_SETTINGS_ADVANCED_INCOGNITO)
+        {
+            MXKTableViewCellWithLabelAndSwitch *roomIncognitoModeCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            [roomIncognitoModeCell.mxkSwitch addTarget:self action:@selector(toggleIncognitoMode:) forControlEvents:UIControlEventValueChanged];
+            roomIncognitoModeCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            roomIncognitoModeCell.mxkSwitch.on = [MXRoom isRoomIncognitoEnabled:mxRoomState];
+            roomIncognitoModeCell.mxkLabel.text = [VectorL10n roomSettingsAdvancedIncognitoTitle];
+            cell = roomIncognitoModeCell;
+            cell.userInteractionEnabled = oneSelfPowerLevel == RoomPowerLevelAdmin;
+        }
     }
     
     // Sanity check
@@ -3387,6 +3440,20 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
 }
 
+- (void)toggleIncognitoMode:(UISwitch*)theSwitch
+{
+    
+    if ([MXRoom isRoomIncognitoEnabled:mxRoomState] != theSwitch.on)
+    {
+        updatedItemsDict[kRoomSettingsAdvancedIncognito] = @(theSwitch.on);
+    }
+    else
+    {
+        [updatedItemsDict removeObjectForKey:kRoomSettingsAdvancedIncognito];
+    }
+
+    [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+}
 
 - (void)toggleDirectoryVisibility:(UISwitch*)theSwitch
 {

@@ -20,3 +20,4 @@
 
 "image_picker_action_files" = "Choose from files";
 "voice_broadcast_in_timeline_title" = "Voice broadcast detected (under active development)";
+"room_settings_advanced_incognito_title" = "Enable Incognito Mode";
