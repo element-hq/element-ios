@@ -55,7 +55,7 @@ struct UserOtherSessions: View {
                                      allItemsSelected: viewModel.viewState.allItemsSelected,
                                      sessionCount: viewModel.viewState.sessionItems.count,
                                      onToggleSelection: { viewModel.send(viewAction: .toggleAllSelection) },
-                                     onSignOut: { viewModel.send(viewAction: .signOut) })
+                                     onSignOut: { viewModel.send(viewAction: .signOutAllUserSessions) })
         }
         .navigationBarBackButtonHidden(viewModel.isEditModeEnabled)
         .accentColor(theme.colors.accent)
@@ -103,7 +103,7 @@ struct UserOtherSessions: View {
             HStack {
                 Spacer()
                 Button {
-                    viewModel.send(viewAction: .signOut)
+                    viewModel.send(viewAction: .signOutSelectedUserSessions)
                 } label: {
                     Text(VectorL10n.signOut)
                         .foregroundColor(viewModel.viewState.enableSignOutButton ? theme.colors.alert : theme.colors.tertiaryContent)

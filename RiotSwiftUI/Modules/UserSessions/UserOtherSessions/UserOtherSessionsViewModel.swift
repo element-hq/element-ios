@@ -62,7 +62,10 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         case .toggleAllSelection:
             toggleAllSelection()
             updateViewState()
-        case .signOut:
+        case .signOutAllUserSessions:
+            let filteredSessions = state.bindings.filter.filterSessionsInfos(sessionInfos)
+            completion?(.singOutFromUserSessions(sessionInfos: filteredSessions))
+        case .signOutSelectedUserSessions:
             let selectedSessionInfos = sessionInfos.filter { sessionInfo in
                 selectedSessions.contains(sessionInfo.id)
             }

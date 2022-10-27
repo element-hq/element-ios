@@ -164,11 +164,15 @@ struct UserSessionsOverview: View {
             .background(theme.colors.background)
         } header: {
             VStack(alignment: .leading) {
-                Text(VectorL10n.userSessionsOverviewOtherSessionsSectionTitle)
-                    .textCase(.uppercase)
-                    .font(theme.fonts.footnote)
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.bottom, 8.0)
+                HStack {
+                    Text(VectorL10n.userSessionsOverviewOtherSessionsSectionTitle)
+                        .textCase(.uppercase)
+                        .font(theme.fonts.footnote)
+                        .foregroundColor(theme.colors.secondaryContent)
+                        .padding(.bottom, 8.0)
+                    Spacer()
+                    optionsMenu
+                }
                 
                 Text(VectorL10n.userSessionsOverviewOtherSessionsSectionInfo)
                     .font(theme.fonts.footnote)
@@ -197,6 +201,37 @@ struct UserSessionsOverview: View {
             .accessibilityIdentifier("linkDeviceButton")
         }
         .background(theme.colors.system.ignoresSafeArea())
+    }
+    
+    private var optionsMenu: some View {
+        Button { } label: {
+            Menu {
+                signOutButton
+            } label: {
+                Image(systemName: "ellipsis")
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 12)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var signOutButton: some View {
+        let label = Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(viewModel.viewState.otherSessionsViewData.count)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
+        if #available(iOS 15, *) {
+            Button(role: .destructive) {
+                viewModel.send(viewAction: .signOutOtherSessions)
+            } label: {
+                label
+            }
+        } else {
+            Button {
+                viewModel.send(viewAction: .signOutOtherSessions)
+            } label: {
+                label
+            }
+        }
     }
 }
 

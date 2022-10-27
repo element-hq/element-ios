@@ -85,7 +85,10 @@ struct UserOtherSessionsToolbar: ToolbarContent {
                 } label: {
                     Label(VectorL10n.userOtherSessionMenuSelectSessions, systemImage: "checkmark.circle")
                 }
-                signOutButton()
+                .disabled(sessionCount == 0)
+                if sessionCount > 0 {
+                    signOutButton()
+                }
             } label: {
                 Image(systemName: "ellipsis")
                     .padding(.horizontal, 4)

@@ -68,6 +68,7 @@ struct UserSessionOverview: View {
                     }
                 } label: {
                     Image(systemName: "ellipsis")
+                        .foregroundColor(theme.colors.secondaryContent)
                         .padding(.horizontal, 4)
                         .padding(.vertical, 12)
                 }

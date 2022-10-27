@@ -53,5 +53,6 @@ enum UserOtherSessionsViewAction {
     case clearFilter
     case editModeWasToggled
     case toggleAllSelection
-    case signOut
+    case signOutAllUserSessions
+    case signOutSelectedUserSessions
 }

@@ -76,6 +76,8 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             completion?(.showUserSessionOverview(sessionInfo: session))
         case .linkDevice:
             completion?(.linkDevice)
+        case .signOutOtherSessions:
+            completion?(.singOutFromUserSessions(sessionInfos: userSessionsOverviewService.sessionInfos))
         }
     }
     

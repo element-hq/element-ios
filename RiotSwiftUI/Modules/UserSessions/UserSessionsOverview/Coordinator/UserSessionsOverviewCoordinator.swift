@@ -71,6 +71,8 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
                 self.showUserSessionOverview(sessionInfo: sessionInfo)
             case .linkDevice:
                 self.completion?(.linkDevice)
+            case let .singOutFromUserSessions(sessionInfos: sessionInfos):
+                self.completion?(.singOutFromUserSessions(sessionInfos: sessionInfos))
             }
         }
     }
