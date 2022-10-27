@@ -5270,7 +5270,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
     }
     
-    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
     {
         MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
         if (roomBubbleTableViewCell.readMarkerView)
@@ -6522,7 +6522,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (self.roomDataSource.isLive && !self.roomDataSource.isPeeking && self.roomDataSource.showReadMarker && self.roomDataSource.room.accountData.readMarkerEventId)
     {
         UITableViewCell *cell = [self.bubblesTableView visibleCells].firstObject;
-        if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+        if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
         {
             MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
             // Check whether the read marker is inside the first displayed cell.
