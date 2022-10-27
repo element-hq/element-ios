@@ -821,7 +821,7 @@
 "media_type_accessibility_video" = "Video";
 "media_type_accessibility_location" = "Standort";
 "media_type_accessibility_file" = "Datei";
-"media_type_accessibility_sticker" = "Aufkleber";
+"media_type_accessibility_sticker" = "Sticker";
 "settings_identity_server_settings" = "IDENTITÄTSERVER";
 "settings_three_pids_management_information_part1" = "Verwalte hier, mit welchen E-Mail-Adressen oder Telefonnummern du dich anmeldest, oder dein Konto wiederherstellen kannst. Kontrolliere, wer dich finden kann ";
 "settings_three_pids_management_information_part3" = ".";
@@ -1766,7 +1766,7 @@
 "notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ hat den zukünftigen Verlauf für alle Raumteilnehmer ab deren Einladung sichtbar gemacht.";
 "notice_crypto_unable_to_decrypt" = "** Entschlüsselung nicht möglich: %@ **";
 "notice_crypto_error_unknown_inbound_session_id" = "Die absendende Sitzung hat uns keine Schlüssel für diese Nachricht gesendet.";
-"notice_sticker" = "Aufkleber";
+"notice_sticker" = "Sticker";
 "notice_in_reply_to" = "Als Antwort auf";
 // room display name
 "room_displayname_empty_room" = "Leerer Raum";
@@ -2365,7 +2365,7 @@
 "spaces_explore_rooms_room_number" = "%@ Räume";
 "spaces_create_space_title" = "Einen Space erstellen";
 "spaces_add_space_title" = "Space erstellen";
-"space_invite_not_enough_permission" = "Du hast keine Berechtigung, Personen zu diesem Space einzuladen";
+"space_invite_not_enough_permission" = "Du hast keine Berechtigung, Personen in diesen Space einzuladen";
 "room_invite_not_enough_permission" = "Du hast keine Berechtigung, Personen zu diesem Raum einzuladen";
 "room_invite_to_room_option_detail" = "Sie werden kein Teil von %@ sein.";
 "room_invite_to_room_option_title" = "Nur zu diesem Raum";
