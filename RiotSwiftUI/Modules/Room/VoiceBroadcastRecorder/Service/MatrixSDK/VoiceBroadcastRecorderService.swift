@@ -70,8 +70,6 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         audioEngine.stop()
         audioEngine.inputNode.removeTap(onBus: audioNodeBus)
 
-        resetValues()
-
         voiceBroadcastService?.stopVoiceBroadcast(success: { [weak self] _ in
             MXLog.debug("[VoiceBroadcastRecorderService] Stopped")
             
@@ -82,12 +80,15 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             
             // Send current chunk
             if self.chunkFile != nil {
-                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
+                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber){
+                    self.tearDownVoiceBroadcastService()
+                }
+            } else {
+                self.tearDownVoiceBroadcastService()
             }
-            
-            self.session.tearDownVoiceBroadcastService()
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to stop voice broadcast", context: error)
+            self.tearDownVoiceBroadcastService()
         })
     }
     
@@ -99,7 +100,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             
             // Send current chunk
             if self.chunkFile != nil {
-                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
+                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber){}
                 self.chunkFile = nil
             }
         }, failure: { error in
@@ -127,6 +128,12 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         chunkFileNumber = 0
     }
     
+    /// Release the service
+    private func tearDownVoiceBroadcastService() {
+        resetValues()
+        session.tearDownVoiceBroadcastService()
+    }
+    
     /// Write audio buffer to chunk file.
     private func writeBuffer(_ buffer: AVAudioPCMBuffer) {
         let sampleRate = buffer.format.sampleRate
@@ -139,7 +146,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         chunkFrames += buffer.frameLength
         
         if chunkFrames > AVAudioFrameCount(Double(BuildSettings.voiceBroadcastChunkLength) * sampleRate) {
-            sendChunkFile(at: chunkFile.url, sequence: self.chunkFileNumber)
+            sendChunkFile(at: chunkFile.url, sequence: self.chunkFileNumber){}
             // Reset chunkFile
             chunkFile = nil
         }
@@ -176,9 +183,10 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     }
     
     /// Send chunk file to the server.
-    private func sendChunkFile(at url: URL, sequence: Int) {
+    private func sendChunkFile(at url: URL, sequence: Int, completion: @escaping () -> Void) {
         guard let voiceBroadcastService = voiceBroadcastService else {
             // FIXME: Manage error
+            completion()
             return
         }
         
@@ -202,7 +210,10 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         }
         
         convertAACToM4A(at: url) { [weak self] convertedUrl in
-            guard let self = self else { return }
+            guard let self = self else {
+                completion()
+                return
+            }
             
             // Delete the source file.
             self.deleteRecording(at: url)
@@ -215,11 +226,13 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                                                                           sequence: UInt(sequence)) { eventId in
                         MXLog.debug("[VoiceBroadcastRecorderService] Send voice broadcast chunk with success.")
                         self.deleteRecording(at: convertedUrl)
+                        completion()
                     } failure: { error in
                         MXLog.error("[VoiceBroadcastRecorderService] Failed to send voice broadcast chunk.", context: error)
                         // Do not delete the file to be sent if request failed, the retry flow will need it
                         // There's no manual mechanism to clean it up afterwards but the tmp folder
                         // they live in will eventually be deleted by the system
+                        completion()
                     }
                 }
             }
