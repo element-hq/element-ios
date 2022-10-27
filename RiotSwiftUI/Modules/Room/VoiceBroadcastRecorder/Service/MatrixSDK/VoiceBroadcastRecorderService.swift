@@ -88,7 +88,10 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             }
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to stop voice broadcast", context: error)
-            self.tearDownVoiceBroadcastService()
+            // Discard the service on VoiceBroadcastService error. We keep the service in case of other error type
+            if error as? VoiceBroadcastServiceError != nil {
+                self.tearDownVoiceBroadcastService()
+            }
         })
     }
     
@@ -100,7 +103,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             
             // Send current chunk
             if self.chunkFile != nil {
-                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber){}
+                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
                 self.chunkFile = nil
             }
         }, failure: { error in
@@ -146,7 +149,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         chunkFrames += buffer.frameLength
         
         if chunkFrames > AVAudioFrameCount(Double(BuildSettings.voiceBroadcastChunkLength) * sampleRate) {
-            sendChunkFile(at: chunkFile.url, sequence: self.chunkFileNumber){}
+            sendChunkFile(at: chunkFile.url, sequence: self.chunkFileNumber)
             // Reset chunkFile
             chunkFile = nil
         }
@@ -183,9 +186,10 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     }
     
     /// Send chunk file to the server.
-    private func sendChunkFile(at url: URL, sequence: Int, completion: @escaping () -> Void) {
-        guard let voiceBroadcastService = voiceBroadcastService else {
+    private func sendChunkFile(at url: URL, sequence: Int, completion: @escaping () -> Void = {}) {
+        guard voiceBroadcastService != nil else {
             // FIXME: Manage error
+            MXLog.debug("[VoiceBroadcastRecorderService] sendChunkFile: service is not available")
             completion()
             return
         }
