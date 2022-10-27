@@ -324,7 +324,7 @@ TableViewSectionsDelegate>
     
     // Crypto sessions section
         
-    if (RiotSettings.shared.settingsSecurityScreenShowSessions)
+    if (RiotSettings.shared.settingsSecurityScreenShowSessions && !RiotSettings.shared.enableNewSessionManager)
     {
         Section *sessionsSection = [Section sectionWithTag:SECTION_CRYPTO_SESSIONS];
         
