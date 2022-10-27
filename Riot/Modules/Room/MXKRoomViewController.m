@@ -1857,7 +1857,7 @@
                                            
                                            CGFloat localPositionOfEvent = 0.0;
                                            
-                                           if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+                                           if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
                                            {
                                                MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
                                                
@@ -2301,7 +2301,7 @@
                 CGFloat eventBottomPosition = eventTopPosition + cell.frame.size.height;
                 
                 // Compute accurate event positions in case of bubble with multiple components
-                if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+                if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
                 {
                     MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
                     NSArray *bubbleComponents = roomBubbleTableViewCell.bubbleData.bubbleComponents;
@@ -2599,11 +2599,11 @@
         roomDataSource.showBubblesDateTime = !roomDataSource.showBubblesDateTime;
         MXLogDebug(@"    -> Turn %@ cells date", roomDataSource.showBubblesDateTime ? @"ON" : @"OFF");
     }
-    else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView] && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView] && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
     {
         [self showAttachmentInCell:(MXKRoomBubbleTableViewCell *)cell];
     }
-    else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnProgressView] && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnProgressView] && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
     {
         MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
         
@@ -2714,7 +2714,7 @@
             }
         }
     }
-    else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnEvent] && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnEvent] && [cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
     {
         [self dismissKeyboard];
         
@@ -3084,7 +3084,7 @@
         return;
     }
     
-    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
     {
         MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
         selectedText = roomBubbleTableViewCell.bubbleData.textMessage;
@@ -3623,7 +3623,7 @@
                     
                     // Keep here the image view used to display the attachment in the selected cell.
                     // Note: Only `MXKRoomBubbleTableViewCell` and `MXKSearchTableViewCell` are supported for the moment.
-                    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+                    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
                     {
                         self.openedAttachmentImageView = ((MXKRoomBubbleTableViewCell *)cell).attachmentView.imageView;
                     }
@@ -3801,7 +3801,7 @@
                     
                 }];
                 
-                if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+                if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
                 {
                     // Start animation in case of download
                     MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
