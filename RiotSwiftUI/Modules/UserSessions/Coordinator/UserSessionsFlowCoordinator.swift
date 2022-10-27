@@ -184,7 +184,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             if sessionInfos.count == 1, let onlySession = sessionInfos.first {
                 self?.showLogoutAuthentication(for: onlySession)
             } else {
-                // todo:
+                self?.showLogoutAuthenticationAndLogoutFromSessions(sessionInfos: sessionInfos)
             }
         })
         alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel))
@@ -227,6 +227,60 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
 
         reauthenticationPresenter = presenter
     }
+    
+    
+    
+    // TODO: move to into a command
+    private func showLogoutAuthenticationAndLogoutFromSessions(sessionInfos: [UserSessionInfo]) {
+        startLoading()
+        let deviceIds = sessionInfos.map { $0.id }
+        let deleteDeviceRequest = AuthenticatedEndpointRequest.deleteDevices(deviceIds)
+        let coordinatorParameters = ReauthenticationCoordinatorParameters(session: parameters.session,
+                                                                          presenter: navigationRouter.toPresentable(),
+                                                                          title: VectorL10n.deviceDetailsDeletePromptTitle,
+                                                                          message: VectorL10n.deviceDetailsDeletePromptMessage,
+                                                                          authenticatedEndpointRequest: deleteDeviceRequest)
+        let presenter = ReauthenticationCoordinatorBridgePresenter()
+        presenter.present(with: coordinatorParameters, animated: true) { [weak self] authenticationParameters in
+            self?.finalizeLogout2(of: deviceIds, with: authenticationParameters)
+            self?.reauthenticationPresenter = nil
+        } cancel: { [weak self] in
+            self?.stopLoading()
+            self?.reauthenticationPresenter = nil
+        } failure: { [weak self] error in
+            guard let self = self else { return }
+            self.stopLoading()
+            self.errorPresenter.presentError(from: self.toPresentable(), forError: error, animated: true, handler: { })
+            self.reauthenticationPresenter = nil
+        }
+
+        reauthenticationPresenter = presenter
+    }
+    
+    private func finalizeLogout2(of deviceIds: [String], with authenticationParameters: [String: Any]?) {
+      
+        parameters.session.matrixRestClient.deleteDevices(deviceIds,
+                                                         authParameters: authenticationParameters ?? [:]) { [weak self] response in
+            guard let self = self else { return }
+            
+            self.stopLoading()
+
+            guard response.isSuccess else {
+                MXLog.debug("[UserSessionsFlowCoordinator] Delete devices failed")
+                if let error = response.error {
+                    self.errorPresenter.presentError(from: self.toPresentable(), forError: error, animated: true, handler: { })
+                } else {
+                    self.errorPresenter.presentGenericError(from: self.toPresentable(), animated: true, handler: { })
+                }
+                
+                return
+            }
+
+            self.popToSessionsOverview()
+        }
+    }
+    
+    
     
     /// Finishes the logout process by deleting the device from the user's account.
     /// - Parameters:
