@@ -201,7 +201,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     private func showLogoutAuthentication(for sessionInfos: [UserSessionInfo]) {
         startLoading()
         
-        let deviceIDs = sessionInfos.map { $0.id }
+        let deviceIDs = sessionInfos.map(\.id)
         let deleteDevicesRequest = AuthenticatedEndpointRequest.deleteDevices(deviceIDs)
         let coordinatorParameters = ReauthenticationCoordinatorParameters(session: parameters.session,
                                                                           presenter: navigationRouter.toPresentable(),
@@ -231,7 +231,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     ///   - authenticationParameters: The parameters from performing interactive authentication on the `devices` endpoint.
     private func finalizeLogout(of deviceIDs: [String], with authenticationParameters: [String: Any]?) {
         parameters.session.matrixRestClient.deleteDevices(deviceIDs,
-                                                         authParameters: authenticationParameters ?? [:]) { [weak self] response in
+                                                          authParameters: authenticationParameters ?? [:]) { [weak self] response in
             guard let self = self else { return }
             
             self.stopLoading()

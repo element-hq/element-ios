@@ -153,9 +153,7 @@ struct UserSessionsOverview: View {
                 ForEach(viewModel.viewState.otherSessionsViewData.prefix(maxOtherSessionsToDisplay)) { viewData in
                     UserSessionListItem(viewData: viewData,
                                         isSeparatorHidden: viewData == viewModel.viewState.otherSessionsViewData.last,
-                                        onBackgroundTap: { sessionId in
-                        viewModel.send(viewAction: .tapUserSession(sessionId))
-                    })
+                                        onBackgroundTap: { sessionId in viewModel.send(viewAction: .tapUserSession(sessionId)) })
                 }
                 if viewModel.viewState.otherSessionsViewData.count > maxOtherSessionsToDisplay {
                     UserSessionsListViewAllView(count: viewModel.viewState.otherSessionsViewData.count) {

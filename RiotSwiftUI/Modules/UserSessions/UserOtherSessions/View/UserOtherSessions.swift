@@ -54,8 +54,8 @@ struct UserOtherSessions: View {
                                      filter: $viewModel.filter,
                                      allItemsSelected: viewModel.viewState.allItemsSelected,
                                      sessionCount: viewModel.viewState.sessionItems.count,
-                                     onToggleSelection: { viewModel.send(viewAction: .toggleAllSelection)},
-                                     onSignOut: { viewModel.send(viewAction: .signOut)})
+                                     onToggleSelection: { viewModel.send(viewAction: .toggleAllSelection) },
+                                     onSignOut: { viewModel.send(viewAction: .signOut) })
         }
         .navigationBarBackButtonHidden(viewModel.isEditModeEnabled)
         .accentColor(theme.colors.accent)
@@ -98,7 +98,7 @@ struct UserOtherSessions: View {
     }
     
     private func bottomToolbar() -> some View {
-        VStack (spacing: 0){
+        VStack(spacing: 0) {
             SeparatorLine()
             HStack {
                 Spacer()
