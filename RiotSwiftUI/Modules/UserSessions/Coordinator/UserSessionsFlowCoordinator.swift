@@ -181,11 +181,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         // Use a UIAlertController as we don't have confirmationDialog in SwiftUI on iOS 14.
         let alert = UIAlertController(title: VectorL10n.signOutConfirmationMessage, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: VectorL10n.signOut, style: .destructive) { [weak self] _ in
-            if sessionInfos.count == 1, let onlySession = sessionInfos.first {
-                self?.showLogoutAuthentication(for: onlySession)
-            } else {
-                self?.showLogoutAuthenticationAndLogoutFromSessions(sessionInfos: sessionInfos)
-            }
+            self?.showLogoutAuthentication(for: sessionInfos)
         })
         alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel))
         alert.popoverPresentationController?.sourceView = toPresentable().view
@@ -201,19 +197,20 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         signOutFlowPresenter = flowPresenter
     }
     
-    /// Prompts the user to authenticate (if necessary) in order to log out of a specific session.
-    private func showLogoutAuthentication(for sessionInfo: UserSessionInfo) {
+    /// Prompts the user to authenticate (if necessary) in order to log out of specific sessions.
+    private func showLogoutAuthentication(for sessionInfos: [UserSessionInfo]) {
         startLoading()
         
-        let deleteDeviceRequest = AuthenticatedEndpointRequest.deleteDevice(sessionInfo.id)
+        let deviceIDs = sessionInfos.map { $0.id }
+        let deleteDevicesRequest = AuthenticatedEndpointRequest.deleteDevices(deviceIDs)
         let coordinatorParameters = ReauthenticationCoordinatorParameters(session: parameters.session,
                                                                           presenter: navigationRouter.toPresentable(),
                                                                           title: VectorL10n.deviceDetailsDeletePromptTitle,
                                                                           message: VectorL10n.deviceDetailsDeletePromptMessage,
-                                                                          authenticatedEndpointRequest: deleteDeviceRequest)
+                                                                          authenticatedEndpointRequest: deleteDevicesRequest)
         let presenter = ReauthenticationCoordinatorBridgePresenter()
         presenter.present(with: coordinatorParameters, animated: true) { [weak self] authenticationParameters in
-            self?.finalizeLogout(of: sessionInfo, with: authenticationParameters)
+            self?.finalizeLogout(of: deviceIDs, with: authenticationParameters)
             self?.reauthenticationPresenter = nil
         } cancel: { [weak self] in
             self?.stopLoading()
@@ -227,39 +224,13 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
 
         reauthenticationPresenter = presenter
     }
-    
-    
-    
-    // TODO: move to into a command
-    private func showLogoutAuthenticationAndLogoutFromSessions(sessionInfos: [UserSessionInfo]) {
-        startLoading()
-        let deviceIds = sessionInfos.map { $0.id }
-        let deleteDeviceRequest = AuthenticatedEndpointRequest.deleteDevices(deviceIds)
-        let coordinatorParameters = ReauthenticationCoordinatorParameters(session: parameters.session,
-                                                                          presenter: navigationRouter.toPresentable(),
-                                                                          title: VectorL10n.deviceDetailsDeletePromptTitle,
-                                                                          message: VectorL10n.deviceDetailsDeletePromptMessage,
-                                                                          authenticatedEndpointRequest: deleteDeviceRequest)
-        let presenter = ReauthenticationCoordinatorBridgePresenter()
-        presenter.present(with: coordinatorParameters, animated: true) { [weak self] authenticationParameters in
-            self?.finalizeLogout2(of: deviceIds, with: authenticationParameters)
-            self?.reauthenticationPresenter = nil
-        } cancel: { [weak self] in
-            self?.stopLoading()
-            self?.reauthenticationPresenter = nil
-        } failure: { [weak self] error in
-            guard let self = self else { return }
-            self.stopLoading()
-            self.errorPresenter.presentError(from: self.toPresentable(), forError: error, animated: true, handler: { })
-            self.reauthenticationPresenter = nil
-        }
 
-        reauthenticationPresenter = presenter
-    }
-    
-    private func finalizeLogout2(of deviceIds: [String], with authenticationParameters: [String: Any]?) {
-      
-        parameters.session.matrixRestClient.deleteDevices(deviceIds,
+    /// Finishes the logout process by deleting the devices from the user's account.
+    /// - Parameters:
+    ///   - deviceIDs: IDs for the sessions to be removed.
+    ///   - authenticationParameters: The parameters from performing interactive authentication on the `devices` endpoint.
+    private func finalizeLogout(of deviceIDs: [String], with authenticationParameters: [String: Any]?) {
+        parameters.session.matrixRestClient.deleteDevices(deviceIDs,
                                                          authParameters: authenticationParameters ?? [:]) { [weak self] response in
             guard let self = self else { return }
             
@@ -267,34 +238,6 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
 
             guard response.isSuccess else {
                 MXLog.debug("[UserSessionsFlowCoordinator] Delete devices failed")
-                if let error = response.error {
-                    self.errorPresenter.presentError(from: self.toPresentable(), forError: error, animated: true, handler: { })
-                } else {
-                    self.errorPresenter.presentGenericError(from: self.toPresentable(), animated: true, handler: { })
-                }
-                
-                return
-            }
-
-            self.popToSessionsOverview()
-        }
-    }
-    
-    
-    
-    /// Finishes the logout process by deleting the device from the user's account.
-    /// - Parameters:
-    ///   - sessionInfo: The `UserSessionInfo` for the session to be removed.
-    ///   - authenticationParameters: The parameters from performing interactive authentication on the `devices` endpoint.
-    private func finalizeLogout(of sessionInfo: UserSessionInfo, with authenticationParameters: [String: Any]?) {
-        parameters.session.matrixRestClient.deleteDevice(sessionInfo.id,
-                                                         authParameters: authenticationParameters ?? [:]) { [weak self] response in
-            guard let self = self else { return }
-            
-            self.stopLoading()
-
-            guard response.isSuccess else {
-                MXLog.debug("[UserSessionsFlowCoordinator] Delete device (\(sessionInfo.id)) failed")
                 if let error = response.error {
                     self.errorPresenter.presentError(from: self.toPresentable(), forError: error, animated: true, handler: { })
                 } else {

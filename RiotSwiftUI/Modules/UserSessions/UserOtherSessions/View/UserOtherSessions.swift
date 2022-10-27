@@ -22,7 +22,7 @@ struct UserOtherSessions: View {
     @ObservedObject var viewModel: UserOtherSessionsViewModel.Context
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             ScrollView {
                 SwiftUI.Section {
                     if viewModel.viewState.sessionItems.isEmpty {
@@ -88,6 +88,7 @@ struct UserOtherSessions: View {
         LazyVStack(spacing: 0) {
             ForEach(viewModel.viewState.sessionItems) { viewData in
                 UserSessionListItem(viewData: viewData,
+                                    isSeparatorHidden: viewData == viewModel.viewState.sessionItems.last,
                                     isEditModeEnabled: viewModel.isEditModeEnabled,
                                     onBackgroundTap: { sessionId in viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId)) },
                                     onBackgroundLongPress: { _ in viewModel.isEditModeEnabled = true })
@@ -97,9 +98,8 @@ struct UserOtherSessions: View {
     }
     
     private func bottomToolbar() -> some View {
-        VStack{
+        VStack (spacing: 0){
             SeparatorLine()
-                .padding(0)
             HStack {
                 Spacer()
                 Button {
