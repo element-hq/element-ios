@@ -60,19 +60,7 @@ final class ComposerUITests: MockScreenTestCase {
     
     func testLongPressDelete() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
-        let text =
-            """
-            Line 1
-            Line 2
-            Line 3
-            Line 4
-            Line 5
-            Line 6
-            Line 7
-            Line 8
-            Line 9
-            Line 10
-            """
+        let text = "test1 test2 test3 test4 test5 test6 test7 test8 test9"
         sleep(1)
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
