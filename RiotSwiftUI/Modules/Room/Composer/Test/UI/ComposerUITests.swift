@@ -48,7 +48,7 @@ final class ComposerUITests: MockScreenTestCase {
     // This test requires "connect hardware keyboard" to be off on the simulator
     func testFastTyping() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
-        let text = "Some text that should be typed very fast!"
+        let text = "fast typing test"
         sleep(1)
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
