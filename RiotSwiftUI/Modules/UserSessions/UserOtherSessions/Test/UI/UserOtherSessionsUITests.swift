@@ -23,8 +23,6 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionFilterMenuInactive].exists)
         let buttonLearnMore = app.buttons["\(VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo) \(VectorL10n.userSessionLearnMore)"]
         XCTAssertTrue(buttonLearnMore.exists)
-        buttonLearnMore.tap()
-        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionInactiveSessionTitle].exists)
     }
     
     func test_whenOtherSessionsWithInactiveSessionFilterPresented_correctItemsDisplayed() {
@@ -39,8 +37,6 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionFilterMenuUnverified].exists)
         let buttonLearnMore = app.buttons["\(VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle) \(VectorL10n.userSessionLearnMore)"]
         XCTAssertTrue(buttonLearnMore.exists)
-        buttonLearnMore.tap()
-        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionUnverifiedSessionTitle].exists)
     }
     
     func test_whenOtherSessionsWithUnverifiedSessionFilterPresented_correctItemsDisplayed() {
@@ -61,8 +57,6 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionFilterMenuVerified].exists)
         let buttonLearnMore = app.buttons["\(VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle) \(VectorL10n.userSessionLearnMore)"]
         XCTAssertTrue(buttonLearnMore.exists)
-        buttonLearnMore.tap()
-        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionVerifiedSessionTitle].exists)
     }
     
     func test_whenOtherSessionsMoreMenuButtonSelected_selectSessionsButtonExists() {

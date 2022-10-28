@@ -75,8 +75,6 @@ class UserSessionOverviewUITests: MockScreenTestCase {
         let buttonId = "\(VectorL10n.userOtherSessionVerifiedAdditionalInfo) \(VectorL10n.userSessionLearnMore)"
         let button = app.buttons[buttonId]
         XCTAssertTrue(button.exists)
-        button.tap()
-        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionVerifiedSessionTitle].exists)
     }
     
     func test_whenOtherUnverifiedSessionSelected_learnMoreButtonExists() {
@@ -84,7 +82,5 @@ class UserSessionOverviewUITests: MockScreenTestCase {
         let buttonId = "\(VectorL10n.userOtherSessionUnverifiedAdditionalInfo) \(VectorL10n.userSessionLearnMore)"
         let button = app.buttons[buttonId]
         XCTAssertTrue(button.exists)
-        button.tap()
-        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionUnverifiedSessionTitle].exists)
     }
 }
