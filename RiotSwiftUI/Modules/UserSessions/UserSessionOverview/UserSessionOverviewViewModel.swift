@@ -95,6 +95,8 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
             completion?(.renameSession(sessionInfo))
         case .logoutOfSession:
             completion?(.logoutOfSession(sessionInfo))
+        case .viewSessionInfo:
+            completion?(.showSessionStateInfo(sessionInfo))
         }
     }
 }

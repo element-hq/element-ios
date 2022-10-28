@@ -32,7 +32,7 @@ struct UserSessionOverview: View {
                     viewModel.send(viewAction: .viewSessionDetails)
                 },
                 onLearnMoreAction: {
-                    viewModel.showBottomSheet = true
+                    viewModel.send(viewAction: .viewSessionInfo)
                 }
             )
             .padding(16)

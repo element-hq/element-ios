@@ -115,6 +115,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
                 self.showRenameSessionScreen(for: sessionInfo)
             case let .logoutOfSession(sessionInfo):
                 self.showLogoutConfirmation(for: sessionInfo)
+            case let .showSessionStateInfo(sessionInfo):
+                break
             }
         }
         pushScreen(with: coordinator)

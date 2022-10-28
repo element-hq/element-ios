@@ -72,6 +72,8 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
                 self.completion?(.renameSession(sessionInfo))
             case let .logoutOfSession(sessionInfo):
                 self.completion?(.logoutOfSession(sessionInfo))
+            case let .showSessionStateInfo(sessionInfo):
+                self.completion?(.showSessionStateInfo(sessionInfo))
             }
         }
     }
