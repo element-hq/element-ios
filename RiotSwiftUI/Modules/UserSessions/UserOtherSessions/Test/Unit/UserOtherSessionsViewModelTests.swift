@@ -281,6 +281,47 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         XCTAssertEqual(sut.state, expectedState)
     }
     
+    func test_whenSignOutAllUserSessions_correctCompletionResultReceived() {
+        let sessionInfoWithSessionId1 = createUserSessionInfo(sessionId: "session 1")
+        let sessionInfoWithSessionId3 = createUserSessionInfo(sessionId: "session 3")
+        let sessionInfos = [sessionInfoWithSessionId1,
+                            createUserSessionInfo(sessionId: "session 2"),
+                            sessionInfoWithSessionId3]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
+        var receivedUserSessions = [UserSessionInfo]()
+        sut.completion = { result in
+            switch result {
+            case let .singOutFromUserSessions(sessionInfos: sessionInfos):
+                receivedUserSessions = sessionInfos
+            default:
+                break
+            }
+        }
+        toggleEditMode(for: sut, value: true)
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: sessionInfoWithSessionId1.id))
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: sessionInfoWithSessionId3.id))
+        sut.process(viewAction: .signOutSelectedUserSessions)
+        XCTAssertEqual(receivedUserSessions, [sessionInfoWithSessionId1, sessionInfoWithSessionId3])
+    }
+    
+    func test_whenSignOutSelectedUserSessions_correctCompletionResultReceived() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            createUserSessionInfo(sessionId: "session 2"),
+                            createUserSessionInfo(sessionId: "session 3")]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
+        var receivedUserSessions = [UserSessionInfo]()
+        sut.completion = { result in
+            switch result {
+            case let .singOutFromUserSessions(sessionInfos: sessionInfos):
+                receivedUserSessions = sessionInfos
+            default:
+                break
+            }
+        }
+        sut.process(viewAction: .signOutAllUserSessions)
+        XCTAssertEqual(receivedUserSessions, sessionInfos)
+    }
+    
     private func toggleEditMode(for model: UserOtherSessionsViewModel, value: Bool) {
         model.context.isEditModeEnabled = value
         model.process(viewAction: .editModeWasToggled)
