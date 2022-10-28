@@ -38,17 +38,12 @@ enum UserSessionOverviewViewModelResult: Equatable {
 
 // MARK: View
 
-struct UserSessionOverviewViewBindings {
-    var showBottomSheet: Bool = false
-}
-
 struct UserSessionOverviewViewState: BindableState {
     var cardViewData: UserSessionCardViewData
     let isCurrentSession: Bool
     var isPusherEnabled: Bool?
     var remotelyTogglingPushersAvailable: Bool
     var showLoadingIndicator: Bool
-    var bindings: UserSessionOverviewViewBindings = .init()
 }
 
 enum UserSessionOverviewViewAction {

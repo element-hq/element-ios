@@ -33,7 +33,7 @@ struct UserOtherSessions: View {
                 UserOtherSessionsHeaderView(
                     viewData: viewModel.viewState.header,
                     onLearnMoreAction: {
-                        viewModel.showBottomSheet = true
+                        viewModel.send(viewAction: .viewSessionInfo)
                     }
                 )
                 .frame(maxWidth: .infinity, alignment: .leading)

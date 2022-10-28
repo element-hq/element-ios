@@ -20,12 +20,14 @@ import Foundation
 
 enum UserOtherSessionsCoordinatorResult {
     case openSessionOverview(sessionInfo: UserSessionInfo)
+    case showSessionStateByFilter(filter: UserOtherSessionsFilter)
 }
 
 // MARK: View model
 
 enum UserOtherSessionsViewModelResult: Equatable {
     case showUserSessionOverview(sessionInfo: UserSessionInfo)
+    case showSessionStateInfo(filter: UserOtherSessionsFilter)
 }
 
 // MARK: View
@@ -42,7 +44,6 @@ struct UserOtherSessionsViewState: BindableState, Equatable {
 struct UserOtherSessionsBindings: Equatable {
     var filter: UserOtherSessionsFilter
     var isEditModeEnabled: Bool
-    var showBottomSheet = false
 }
 
 enum UserOtherSessionsViewAction {
@@ -51,4 +52,5 @@ enum UserOtherSessionsViewAction {
     case clearFilter
     case editModeWasToggled
     case toggleAllSelection
+    case viewSessionInfo
 }

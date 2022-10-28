@@ -116,7 +116,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             case let .logoutOfSession(sessionInfo):
                 self.showLogoutConfirmation(for: sessionInfo)
             case let .showSessionStateInfo(sessionInfo):
-                self.showBottomSheet(for: sessionInfo)
+                self.showInfoSheet(parameters: .init(userSessionInfo: sessionInfo))
             }
         }
         pushScreen(with: coordinator)
@@ -154,6 +154,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             switch result {
             case let .openSessionOverview(sessionInfo: session):
                 self.openSessionOverview(sessionInfo: session)
+            case let .showSessionStateByFilter(filter):
+                self.showInfoSheet(parameters: .init(filter: filter))
             }
         }
         pushScreen(with: coordinator)
@@ -186,10 +188,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         navigationRouter.present(alert, animated: true)
     }
     
-    private func showBottomSheet(for sessionInfo: UserSessionInfo) {
-        let coordinator = InfoSheetCoordinator(parameters: .init(title: sessionInfo.bottomSheetTitle,
-                                                                 description: sessionInfo.bottomSheetDescription,
-                                                                 action: .init(text: VectorL10n.userSessionGotIt, action: {})))
+    private func showInfoSheet(parameters: InfoSheetCoordinatorParameters) {
+        let coordinator = InfoSheetCoordinator(parameters: parameters)
         
         coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
@@ -419,6 +419,20 @@ extension UserSessionsFlowCoordinator: UserVerificationCoordinatorDelegate {
     }
 }
 
+private extension InfoSheetCoordinatorParameters {
+    init(userSessionInfo: UserSessionInfo) {
+        self.init(title: userSessionInfo.bottomSheetTitle,
+                  description: userSessionInfo.bottomSheetDescription,
+                  action: .init(text: VectorL10n.userSessionGotIt, action: {}))
+    }
+    
+    init(filter: UserOtherSessionsFilter) {
+        self.init(title: filter.bottomSheetTitle,
+                  description: filter.bottomSheetDescription,
+                  action: .init(text: VectorL10n.userSessionGotIt, action: {}))
+    }
+}
+
 private extension UserSessionInfo {
     var bottomSheetTitle: String {
         switch verificationState {
@@ -443,3 +457,30 @@ private extension UserSessionInfo {
     }
 }
 
+private extension UserOtherSessionsFilter {
+    var bottomSheetTitle: String {
+        switch self {
+        case .unverified:
+            return VectorL10n.userSessionUnverifiedSessionTitle
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionTitle
+        case .inactive:
+            return VectorL10n.userSessionInactiveSessionTitle
+        case .all:
+            return ""
+        }
+    }
+    
+    var bottomSheetDescription: String {
+        switch self {
+        case .unverified:
+            return VectorL10n.userSessionUnverifiedSessionDescription
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionDescription
+        case .inactive:
+            return VectorL10n.userSessionInactiveSessionDescription
+        case .all:
+            return ""
+        }
+    }
+}
