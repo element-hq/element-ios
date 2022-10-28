@@ -58,6 +58,8 @@ final class UserSessionNameCoordinator: Coordinator, Presentable {
                 self.updateName(newName)
             case .cancel:
                 self.completion?(.cancel)
+            case .learnMore:
+                self.completion?(.learnMore)
             }
         }
     }

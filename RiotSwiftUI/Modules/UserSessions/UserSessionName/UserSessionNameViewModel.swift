@@ -34,6 +34,8 @@ class UserSessionNameViewModel: UserSessionNameViewModelType, UserSessionNameVie
             completion?(.updateName(state.bindings.sessionName))
         case .cancel:
             completion?(.cancel)
+        case .learnMore:
+            completion?(.learnMore)
         }
     }
     

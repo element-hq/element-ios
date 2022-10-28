@@ -39,8 +39,7 @@ struct UserSessionName: View {
             
             InlineTextButton(VectorL10n.manageSessionNameInfo("%@"),
                              tappableText: VectorL10n.manageSessionNameInfoLink) {
-                hideKeyboard()
-                viewModel.showBottomSheet = true
+                viewModel.send(viewAction: .learnMore)
             }
             .foregroundColor(theme.colors.secondaryContent)
         }
