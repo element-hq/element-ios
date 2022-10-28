@@ -58,7 +58,6 @@ final class ComposerUITests: MockScreenTestCase {
         XCTAssert(wysiwygTextView.value as? String == text)
     }
     
-    // This test requires "connect hardware keyboard" to be off on the simulator
     func testLongPressDelete() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
         let text =
