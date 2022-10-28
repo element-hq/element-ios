@@ -22,7 +22,7 @@ struct UserSessionNameCoordinatorParameters {
     let sessionInfo: UserSessionInfo
 }
 
-final class UserSessionNameCoordinator: Coordinator, Presentable {
+final class UserSessionNameCoordinator: NSObject, Coordinator, Presentable {
     private let parameters: UserSessionNameCoordinatorParameters
     private let userSessionNameHostingController: UIViewController
     private var userSessionNameViewModel: UserSessionNameViewModelProtocol
@@ -102,7 +102,7 @@ final class UserSessionNameCoordinator: Coordinator, Presentable {
     
     private func showInfoSheet(parameters: InfoSheetCoordinatorParameters) {
         let coordinator = InfoSheetCoordinator(parameters: parameters)
-        
+        coordinator.toPresentable().presentationController?.delegate = self
         coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             
@@ -116,5 +116,17 @@ final class UserSessionNameCoordinator: Coordinator, Presentable {
         add(childCoordinator: coordinator)
         coordinator.start()
         toPresentable().present(coordinator.toPresentable(), animated: true)
+    }
+}
+
+// MARK: UIAdaptivePresentationControllerDelegate
+
+extension UserSessionNameCoordinator: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard let coordinator = childCoordinators.last else {
+            return
+        }
+        
+        remove(childCoordinator: coordinator)
     }
 }

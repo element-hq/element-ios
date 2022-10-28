@@ -33,7 +33,7 @@ enum MockInfoSheetScreenState: MockScreenState, CaseIterable {
     /// A list of screen state definitions
     static var allCases: [MockInfoSheetScreenState] {
         // Each of the presence statuses
-        [.sheet(title: VectorL10n.userSessionVerifiedSessionTitle, subtitle: VectorL10n.userSessionVerifiedSessionDescription, action: .init(text: VectorL10n.userSessionGotIt, action: {}))]
+        [.sheet(title: VectorL10n.userSessionVerifiedSessionTitle, subtitle: VectorL10n.userSessionVerifiedSessionDescription, action: .init(text: VectorL10n.userSessionGotIt, action: { }))]
     }
     
     /// Generate the view struct for the screen state.

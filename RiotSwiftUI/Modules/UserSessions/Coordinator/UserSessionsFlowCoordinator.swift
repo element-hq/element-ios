@@ -22,7 +22,7 @@ struct UserSessionsFlowCoordinatorParameters {
     let router: NavigationRouterType
 }
 
-final class UserSessionsFlowCoordinator: Coordinator, Presentable {
+final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
     private let parameters: UserSessionsFlowCoordinatorParameters
     private let allSessionsService: UserSessionsOverviewService
     
@@ -191,6 +191,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     private func showInfoSheet(parameters: InfoSheetCoordinatorParameters) {
         let coordinator = InfoSheetCoordinator(parameters: parameters)
         
+        coordinator.toPresentable().presentationController?.delegate = self
         coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             
@@ -289,7 +290,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         let modalRouter = NavigationRouter(navigationController: RiotNavigationController())
         modalRouter.setRootModule(coordinator)
         coordinator.start()
-        
+        modalRouter.toPresentable().presentationController?.delegate = self
         navigationRouter.present(modalRouter, animated: true)
     }
     
@@ -419,17 +420,31 @@ extension UserSessionsFlowCoordinator: UserVerificationCoordinatorDelegate {
     }
 }
 
+// MARK: UIAdaptivePresentationControllerDelegate
+
+extension UserSessionsFlowCoordinator: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard let coordinator = childCoordinators.last else {
+            return
+        }
+        
+        remove(childCoordinator: coordinator)
+    }
+}
+
+// MARK: Private
+
 private extension InfoSheetCoordinatorParameters {
     init(userSessionInfo: UserSessionInfo) {
         self.init(title: userSessionInfo.bottomSheetTitle,
                   description: userSessionInfo.bottomSheetDescription,
-                  action: .init(text: VectorL10n.userSessionGotIt, action: {}))
+                  action: .init(text: VectorL10n.userSessionGotIt, action: { }))
     }
     
     init(filter: UserOtherSessionsFilter) {
         self.init(title: filter.bottomSheetTitle,
                   description: filter.bottomSheetDescription,
-                  action: .init(text: VectorL10n.userSessionGotIt, action: {}))
+                  action: .init(text: VectorL10n.userSessionGotIt, action: { }))
     }
 }
 
