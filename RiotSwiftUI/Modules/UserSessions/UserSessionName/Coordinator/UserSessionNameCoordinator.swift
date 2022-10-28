@@ -59,7 +59,9 @@ final class UserSessionNameCoordinator: Coordinator, Presentable {
             case .cancel:
                 self.completion?(.cancel)
             case .learnMore:
-                self.completion?(.learnMore)
+                self.showInfoSheet(parameters: .init(title: VectorL10n.userSessionRenameSessionTitle,
+                                                     description: VectorL10n.userSessionRenameSessionDescription,
+                                                     action: .init(text: VectorL10n.userSessionGotIt, action: {})))
             }
         }
     }
@@ -96,5 +98,23 @@ final class UserSessionNameCoordinator: Coordinator, Presentable {
     /// Hide the currently displayed activity indicator.
     private func stopLoading() {
         loadingIndicator = nil
+    }
+    
+    private func showInfoSheet(parameters: InfoSheetCoordinatorParameters) {
+        let coordinator = InfoSheetCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            
+            switch result {
+            case .actionTriggered:
+                self.toPresentable().dismiss(animated: true)
+                self.remove(childCoordinator: coordinator)
+            }
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        toPresentable().present(coordinator.toPresentable(), animated: true)
     }
 }

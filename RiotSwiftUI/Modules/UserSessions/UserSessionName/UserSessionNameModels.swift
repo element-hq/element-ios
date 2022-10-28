@@ -23,8 +23,6 @@ enum UserSessionNameCoordinatorResult {
     case cancel
     /// The user successfully updated the name of the session.
     case sessionNameUpdated
-    /// The user tapped the learn more button.
-    case learnMore
 }
 
 // MARK: View model

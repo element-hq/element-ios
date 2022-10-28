@@ -282,10 +282,6 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             case .cancel:
                 self.navigationRouter.dismissModule(animated: true, completion: nil)
                 self.remove(childCoordinator: coordinator)
-            case .learnMore:
-                self.showInfoSheet(parameters: .init(title: VectorL10n.userSessionRenameSessionTitle,
-                                                     description: VectorL10n.userSessionRenameSessionDescription,
-                                                     action: .init(text: VectorL10n.userSessionGotIt, action: {})))
             }
         }
         
