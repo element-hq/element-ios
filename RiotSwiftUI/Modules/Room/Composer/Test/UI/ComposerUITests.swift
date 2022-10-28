@@ -46,10 +46,12 @@ final class ComposerUITests: MockScreenTestCase {
     }
     
     // This test requires "connect hardware keyboard" to be off on the simulator
-    func testFastTyping() {
+    func testFastTyping() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
         let text = "Some text that should be typed very fast!"
+        sleep(1)
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
+        XCTAssertTrue(wysiwygTextView.exists)
         wysiwygTextView.tap()
         sleep(1)
         wysiwygTextView.typeText(text)
@@ -57,7 +59,7 @@ final class ComposerUITests: MockScreenTestCase {
     }
     
     // This test requires "connect hardware keyboard" to be off on the simulator
-    func testLongPressDelete() {
+    func testLongPressDelete() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
         let text =
             """
@@ -72,7 +74,9 @@ final class ComposerUITests: MockScreenTestCase {
             Line 9
             Line 10
             """
+        sleep(1)
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
+        XCTAssertTrue(wysiwygTextView.exists)
         wysiwygTextView.tap()
         sleep(1)
         wysiwygTextView.typeText(text)
