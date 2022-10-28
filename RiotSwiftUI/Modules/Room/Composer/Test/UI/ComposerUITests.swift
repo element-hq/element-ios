@@ -49,28 +49,26 @@ final class ComposerUITests: MockScreenTestCase {
     func testFastTyping() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
         let text = "fast typing test"
-        sleep(2)
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         wysiwygTextView.tap()
         sleep(2)
         wysiwygTextView.typeText(text)
         let value = wysiwygTextView.value as! String
-        XCTAssert(value == text, "Text view value is:\n\(value)")
+        XCTAssert(value == text, "Text view value is: \(value)")
     }
     
     func testLongPressDelete() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
-        let text = "test1 test2 test3 test4 test5 test6 test7 test8 test9"
-        sleep(2)
+        let text = "test1 test2 test3 test4 test5 test6 test7"
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         wysiwygTextView.tap()
         sleep(2)
         wysiwygTextView.typeText(text)
-        XCUIApplication().keys["delete"].press(forDuration: 12.0)
+        XCUIApplication().keys["delete"].press(forDuration: 10.0)
         let value = wysiwygTextView.value as! String
-        XCTAssert(value == "", "Text view value is:\n\(value)")
+        XCTAssert(value == "", "Text view value is: \(value)")
     }
     
     func testReplyMode() throws {
