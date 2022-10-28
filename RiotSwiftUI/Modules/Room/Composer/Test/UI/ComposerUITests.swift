@@ -45,6 +45,41 @@ final class ComposerUITests: MockScreenTestCase {
         XCTAssertTrue(maximiseButton.exists)
     }
     
+    // This test requires "connect hardware keyboard" to be off on the simulator
+    func testFastTyping() {
+        app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
+        let text = "Some text that should be typed very fast!"
+        let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
+        wysiwygTextView.tap()
+        sleep(1)
+        wysiwygTextView.typeText(text)
+        XCTAssert(wysiwygTextView.value as? String == text)
+    }
+    
+    // This test requires "connect hardware keyboard" to be off on the simulator
+    func testLongPressDelete() {
+        app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
+        let text =
+            """
+            Line 1
+            Line 2
+            Line 3
+            Line 4
+            Line 5
+            Line 6
+            Line 7
+            Line 8
+            Line 9
+            Line 10
+            """
+        let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
+        wysiwygTextView.tap()
+        sleep(1)
+        wysiwygTextView.typeText(text)
+        XCUIApplication().keys["delete"].press(forDuration: 10.0)
+        XCTAssert(wysiwygTextView.value as? String == "")
+    }
+    
     func testReplyMode() throws {
         app.goToScreenWithIdentifier(MockComposerScreenState.reply.title)
         

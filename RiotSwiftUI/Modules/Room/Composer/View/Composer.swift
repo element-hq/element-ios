@@ -112,10 +112,7 @@ struct Composer: View {
                 HStack(alignment: .top, spacing: 0) {
                     WysiwygComposerView(
                         focused: $focused,
-                        content: wysiwygViewModel.content,
-                        replaceText: wysiwygViewModel.replaceText,
-                        select: wysiwygViewModel.select,
-                        didUpdateText: wysiwygViewModel.didUpdateText
+                        viewModel: wysiwygViewModel
                     )
                     .tintColor(theme.colors.accent)
                     .placeholder(viewModel.viewState.placeholder, color: theme.colors.tertiaryContent)
