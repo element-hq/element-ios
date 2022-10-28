@@ -81,6 +81,10 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         hostingViewController
     }
     
+    func refreshData() {
+        viewModel.context.send(viewAction: .viewAppeared)
+    }
+    
     // MARK: - Private
     
     /// Show an activity indicator whilst loading.

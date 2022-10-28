@@ -319,7 +319,11 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     /// Pops back to the root coordinator in the session management flow.
     private func popToSessionsOverview() {
         guard let sessionsOverviewCoordinator = sessionsOverviewCoordinator else { return }
-        navigationRouter.popToModule(sessionsOverviewCoordinator, animated: true)
+        if let coordinator = navigationRouter.modules.last as? UserSessionsOverviewCoordinator {
+            coordinator.refreshData()
+        } else {
+            navigationRouter.popToModule(sessionsOverviewCoordinator, animated: true)
+        }
     }
     
     /// Show an activity indicator whilst loading.
