@@ -66,7 +66,7 @@ final class ComposerUITests: MockScreenTestCase {
         wysiwygTextView.tap()
         sleep(2)
         wysiwygTextView.typeText(text)
-        XCUIApplication().keys["delete"].press(forDuration: 10.0)
+        app.keys["delete"].press(forDuration: 10.0)
         let value = wysiwygTextView.value as! String
         XCTAssert(value == "", "Text view value is: \(value)")
     }
