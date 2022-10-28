@@ -80,7 +80,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             
             // Send current chunk
             if self.chunkFile != nil {
-                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber){
+                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber) {
                     self.tearDownVoiceBroadcastService()
                 }
             } else {
@@ -186,11 +186,11 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     }
     
     /// Send chunk file to the server.
-    private func sendChunkFile(at url: URL, sequence: Int, completion: @escaping () -> Void = {}) {
+    private func sendChunkFile(at url: URL, sequence: Int, completion: (() -> Void)? = nil) {
         guard voiceBroadcastService != nil else {
             // FIXME: Manage error
             MXLog.debug("[VoiceBroadcastRecorderService] sendChunkFile: service is not available")
-            completion()
+            completion?()
             return
         }
         
@@ -215,7 +215,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         
         convertAACToM4A(at: url) { [weak self] convertedUrl in
             guard let self = self else {
-                completion()
+                completion?()
                 return
             }
             
@@ -230,13 +230,13 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                                                                           sequence: UInt(sequence)) { eventId in
                         MXLog.debug("[VoiceBroadcastRecorderService] Send voice broadcast chunk with success.")
                         self.deleteRecording(at: convertedUrl)
-                        completion()
+                        completion?()
                     } failure: { error in
                         MXLog.error("[VoiceBroadcastRecorderService] Failed to send voice broadcast chunk.", context: error)
                         // Do not delete the file to be sent if request failed, the retry flow will need it
                         // There's no manual mechanism to clean it up afterwards but the tmp folder
                         // they live in will eventually be deleted by the system
-                        completion()
+                        completion?()
                     }
                 }
             }
