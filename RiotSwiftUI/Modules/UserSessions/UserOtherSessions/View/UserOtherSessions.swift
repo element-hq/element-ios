@@ -109,7 +109,7 @@ struct UserOtherSessions: View {
                         .foregroundColor(viewModel.viewState.enableSignOutButton ? theme.colors.alert : theme.colors.tertiaryContent)
                 }
                 .padding(.trailing, 16)
-                .padding(.vertical, 10)
+                .padding(.vertical, 12)
                 .disabled(!viewModel.viewState.enableSignOutButton)
             }
         }
