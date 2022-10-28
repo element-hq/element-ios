@@ -173,7 +173,6 @@ private extension UserOtherSessionsFilter {
         filterSessionsInfos(sessionInfos)
             .map {
                 UserSessionListItemViewDataFactory().create(from: $0,
-                                                            highlightSessionDetails: self == .unverified && $0.isCurrent,
                                                             isSelected: selectedSessions.contains($0.id))
             }
     }

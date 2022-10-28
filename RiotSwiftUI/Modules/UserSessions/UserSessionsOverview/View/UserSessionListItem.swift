@@ -54,7 +54,7 @@ struct UserSessionListItem: View {
                             }
                             Text(viewData.sessionDetails)
                                 .font(theme.fonts.caption1)
-                                .foregroundColor(viewData.highlightSessionDetails ? theme.colors.alert : theme.colors.secondaryContent)
+                                .foregroundColor(theme.colors.secondaryContent)
                                 .multilineTextAlignment(.leading)
                         }
                         .padding(.bottom, 16)
