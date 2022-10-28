@@ -65,10 +65,11 @@ struct InfoSheet: View {
     }
 }
 
-/*struct InfoView_Previews: PreviewProvider {
+// MARK: - Previews
+
+struct InfoSheet_Previews: PreviewProvider {
+    static let stateRenderer = MockInfoSheetScreenState.stateRenderer
     static var previews: some View {
-        InfoSheet(title: "Verified sessions",
-                  description: "Verified sessions have logged in with your credentials and then been verified, either using your secure passphrase or by cross-verifying.\n\nThis means they hold encryption keys for your previous messages, and confirm to other users you are communicating with that these sessions are really you.",
-                  action: .init(text: "GOT IT", action: {}))
+        stateRenderer.screenGroup()
     }
-}*/
+}
