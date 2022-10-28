@@ -30,6 +30,7 @@ struct VoiceBroadcastPlaybackView: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    @State var sliderValue : Float = 0.0
     
     private var backgroundColor: Color {
         if viewModel.viewState.playbackState == .playingLive {
@@ -117,6 +118,14 @@ struct VoiceBroadcastPlaybackView: View {
                 }
                 .activityIndicator(show: viewModel.viewState.playbackState == .buffering)
             }
+            
+            Slider(value: $sliderValue, in: 0...viewModel.viewState.playingState.duration) {
+                Text("Slider")
+            } minimumValueLabel: {
+                Text("")
+            } maximumValueLabel: {
+                Text(viewModel.viewState.playingState.durationLabel ?? "").font(.body)
+            }.padding()
         }
         .padding([.horizontal, .top], 2.0)
         .padding([.bottom])

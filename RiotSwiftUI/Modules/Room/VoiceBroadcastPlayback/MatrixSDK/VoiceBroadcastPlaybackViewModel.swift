@@ -30,6 +30,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     private let mediaServiceProvider: VoiceMessageMediaServiceProvider
     private let cacheManager: VoiceMessageAttachmentCacheManager
     private var audioPlayer: VoiceMessageAudioPlayer?
+    private var displayLink: CADisplayLink!
     
     private var voiceBroadcastChunkQueue: [VoiceBroadcastChunk] = []
     
@@ -50,6 +51,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         let viewState = VoiceBroadcastPlaybackViewState(details: details,
                                                         broadcastState: VoiceBroadcastPlaybackViewModel.getBroadcastState(from: voiceBroadcastAggregator.voiceBroadcastState),
                                                         playbackState: .stopped,
+                                                        playingState: VoiceBroadcastPlayingState(duration: Float(voiceBroadcastAggregator.voiceBroadcast.duration), position: 0),
                                                         bindings: VoiceBroadcastPlaybackViewStateBindings())
         super.init(initialViewState: viewState)
         
@@ -90,6 +92,20 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: Start streaming")
             state.playbackState = .buffering
             voiceBroadcastAggregator.start()
+            
+            
+            displayLink = CADisplayLink(target: WeakTarget(self, selector: #selector(handleDisplayLinkTick)), selector: WeakTarget.triggerSelector)
+            displayLink.isPaused = true
+            displayLink.add(to: .current, forMode: .common)
+            
+            state.playingState.duration = Float(voiceBroadcastAggregator.voiceBroadcast.duration)
+
+            let time = TimeInterval(voiceBroadcastAggregator.voiceBroadcast.duration / 1000)
+            let formatter = DateComponentsFormatter()
+            formatter.unitsStyle = .abbreviated
+            
+            state.playingState.durationLabel = formatter.string(from: time)
+            
         }
         else if let audioPlayer = audioPlayer {
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: resume")
@@ -122,6 +138,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] playLive: Start streaming")
             state.playbackState = .buffering
             voiceBroadcastAggregator.start()
+            
+            state.playingState.duration = Float(voiceBroadcastAggregator.voiceBroadcast.duration)
         }
         else {
             let chunks = voiceBroadcastAggregator.voiceBroadcast.chunks
@@ -247,6 +265,28 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             
             self.processNextVoiceBroadcastChunk()
         }
+    }
+    
+    @objc private func handleDisplayLinkTick() {
+        updateUI()
+    }
+    
+    private func updateUI() {
+        // TODO: update slider position
+        state.playingState.position = (audioPlayer?.currentTime.rounded() ?? 0) * 1000
+//        var details = VoiceMessagePlaybackViewDetails()
+//
+//        details.playbackEnabled = (state != .error)
+//        details.playing = (state == .playing)
+//        details.samples = samples
+//        // Show the current time if the player is paused, show duration when at 0.
+//        let duration = self.duration
+//        let currentTime = audioPlayer?.currentTime ?? 0
+//        let displayTime = currentTime > 0 ? currentTime : duration
+//        details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: displayTime))
+//        details.progress = duration > 0 ? currentTime / duration : 0
+//        details.loading = self.loading
+//        playbackView.configureWithDetails(details)
     }
     
     private static func getBroadcastState(from state: VoiceBroadcastInfo.State) -> VoiceBroadcastState {

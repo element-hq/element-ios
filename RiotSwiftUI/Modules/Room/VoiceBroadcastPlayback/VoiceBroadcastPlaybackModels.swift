@@ -44,10 +44,17 @@ enum VoiceBroadcastState {
     case paused
 }
 
+struct VoiceBroadcastPlayingState {
+    var duration: Float
+    var position: Double
+    var durationLabel: String?
+}
+
 struct VoiceBroadcastPlaybackViewState: BindableState {
     var details: VoiceBroadcastPlaybackDetails
     var broadcastState: VoiceBroadcastState
     var playbackState: VoiceBroadcastPlaybackState
+    var playingState: VoiceBroadcastPlayingState
     var bindings: VoiceBroadcastPlaybackViewStateBindings
 }
 
