@@ -30,11 +30,6 @@ struct UserSessionName: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbar }
         .accentColor(theme.colors.accent)
-        .bottomSheet(isPresented: $viewModel.showBottomSheet) {
-            InfoSheet(title: VectorL10n.userSessionRenameSessionTitle,
-                      description: VectorL10n.userSessionRenameSessionDescription,
-                      action: .init(text: VectorL10n.userSessionGotIt, action: { viewModel.showBottomSheet = false }))
-        }
     }
     
     private var textFieldFooter: some View {

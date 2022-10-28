@@ -82,11 +82,6 @@ struct UserSessionOverview: View {
             }
         }
         .accentColor(theme.colors.accent)
-        .bottomSheet(isPresented: $viewModel.showBottomSheet) {
-            InfoSheet(title: viewModel.viewState.bottomSheetTitle,
-                      description: viewModel.viewState.bottomSheetDescription,
-                      action: .init(text: VectorL10n.userSessionGotIt, action: { viewModel.showBottomSheet = false }))
-        }
     }
 }
 

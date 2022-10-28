@@ -23,50 +23,52 @@ struct InfoSheet: View {
     }
     
     @Environment(\.theme) var theme: ThemeSwiftUI
-    private let title: String
-    private let description: String
-    private let action: Action
+    private let viewModel: InfoSheetViewModel.Context
     
-    init(title: String, description: String, action: Action) {
-        self.title = title
-        self.description = description
-        self.action = action
+    init(viewModel: InfoSheetViewModel.Context) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             VStack(alignment: .leading, spacing: 16) {
-                Text(title)
+                Text(viewModel.viewState.title)
                     .font(theme.fonts.calloutSB)
                     .foregroundColor(theme.colors.primaryContent)
-                    .accessibilityIdentifier(title)
+                    .accessibilityIdentifier(viewModel.viewState.title)
                 
-                Text(description)
+                Text(viewModel.viewState.description)
                     .font(theme.fonts.footnote)
                     .foregroundColor(theme.colors.primaryContent)
-                    .accessibilityIdentifier(description)
+                    .accessibilityIdentifier(viewModel.viewState.description)
             }
             
-            Button(action: action.action) {
-                Text(action.text)
+            Button {
+                viewModel.viewState.action.action()
+                viewModel.send(viewAction: .actionTriggered)
+            }
+            label: {
+                Text(viewModel.viewState.action.text)
                     .font(theme.fonts.bodySB)
                     .foregroundColor(theme.colors.background)
                     .frame(height: 48)
                     .frame(maxWidth: .infinity)
-                    .accessibilityIdentifier(action.text)
+                    .accessibilityIdentifier(viewModel.viewState.action.text)
             }
             .background(theme.colors.accent)
             .cornerRadius(8)
         }
         .padding(24)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(theme.colors.background)
+        .ignoresSafeArea(edges: .bottom)
     }
 }
 
-struct InfoView_Previews: PreviewProvider {
+/*struct InfoView_Previews: PreviewProvider {
     static var previews: some View {
         InfoSheet(title: "Verified sessions",
                   description: "Verified sessions have logged in with your credentials and then been verified, either using your secure passphrase or by cross-verifying.\n\nThis means they hold encryption keys for your previous messages, and confirm to other users you are communicating with that these sessions are really you.",
                   action: .init(text: "GOT IT", action: {}))
     }
-}
+}*/

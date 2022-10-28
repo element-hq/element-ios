@@ -116,7 +116,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             case let .logoutOfSession(sessionInfo):
                 self.showLogoutConfirmation(for: sessionInfo)
             case let .showSessionStateInfo(sessionInfo):
-                break
+                self.showBottomSheet(for: sessionInfo)
             }
         }
         pushScreen(with: coordinator)
@@ -184,6 +184,26 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         alert.popoverPresentationController?.sourceView = toPresentable().view
         
         navigationRouter.present(alert, animated: true)
+    }
+    
+    private func showBottomSheet(for sessionInfo: UserSessionInfo) {
+        let coordinator = InfoSheetCoordinator(parameters: .init(title: sessionInfo.bottomSheetTitle,
+                                                                 description: sessionInfo.bottomSheetDescription,
+                                                                 action: .init(text: VectorL10n.userSessionGotIt, action: {})))
+        
+        coordinator.completion = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            
+            switch result {
+            case .actionTriggered:
+                self.navigationRouter.dismissModule(animated: true, completion: nil)
+                self.remove(childCoordinator: coordinator)
+            }
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        navigationRouter.present(coordinator, animated: true)
     }
     
     private func showLogoutConfirmationForCurrentSession() {
@@ -398,3 +418,28 @@ extension UserSessionsFlowCoordinator: UserVerificationCoordinatorDelegate {
         remove(childCoordinator: coordinator)
     }
 }
+
+private extension UserSessionInfo {
+    var bottomSheetTitle: String {
+        switch verificationState {
+        case .unverified:
+            return VectorL10n.userSessionUnverifiedSessionTitle
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionTitle
+        case .unknown:
+            return ""
+        }
+    }
+
+    var bottomSheetDescription: String {
+        switch verificationState {
+        case .unverified:
+            return VectorL10n.userSessionUnverifiedSessionDescription
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionDescription
+        case .unknown:
+            return ""
+        }
+    }
+}
+

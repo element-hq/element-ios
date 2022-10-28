@@ -100,37 +100,3 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
         }
     }
 }
-
-extension UserSessionOverviewViewState {
-    var bottomSheetTitle: String {
-        cardViewData.verificationState.bottomSheetTitle
-    }
-    
-    var bottomSheetDescription: String {
-        cardViewData.verificationState.bottomSheetDescription
-    }
-}
-
-private extension UserSessionInfo.VerificationState {
-    var bottomSheetTitle: String {
-        switch self {
-        case .unverified:
-            return VectorL10n.userSessionUnverifiedSessionTitle
-        case .verified:
-            return VectorL10n.userSessionVerifiedSessionTitle
-        case .unknown:
-            return ""
-        }
-    }
-    
-    var bottomSheetDescription: String {
-        switch self {
-        case .unverified:
-            return VectorL10n.userSessionUnverifiedSessionDescription
-        case .verified:
-            return VectorL10n.userSessionVerifiedSessionDescription
-        case .unknown:
-            return ""
-        }
-    }
-}
