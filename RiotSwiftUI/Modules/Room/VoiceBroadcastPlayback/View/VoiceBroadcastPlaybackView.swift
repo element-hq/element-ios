@@ -119,13 +119,15 @@ struct VoiceBroadcastPlaybackView: View {
                 .activityIndicator(show: viewModel.viewState.playbackState == .buffering)
             }
             
-            Slider(value: $sliderValue, in: 0...viewModel.viewState.playingState.duration) {
+            Slider(value: $viewModel.progress, in: 0...viewModel.viewState.playingState.duration) {
                 Text("Slider")
             } minimumValueLabel: {
                 Text("")
             } maximumValueLabel: {
                 Text(viewModel.viewState.playingState.durationLabel ?? "").font(.body)
-            }.padding()
+            } onEditingChanged: { didChange in
+                viewModel.send(viewAction: .sliderChange(didChange: didChange))
+            }
         }
         .padding([.horizontal, .top], 2.0)
         .padding([.bottom])

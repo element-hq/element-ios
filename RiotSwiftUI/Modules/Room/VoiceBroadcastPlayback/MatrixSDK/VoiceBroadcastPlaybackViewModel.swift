@@ -26,15 +26,14 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     // MARK: - Properties
 
     // MARK: Private
-    private var voiceBroadcastAggregator: VoiceBroadcastAggregator
     private let mediaServiceProvider: VoiceMessageMediaServiceProvider
     private let cacheManager: VoiceMessageAttachmentCacheManager
+    private var voiceBroadcastAggregator: VoiceBroadcastAggregator
     private var audioPlayer: VoiceMessageAudioPlayer?
     private var displayLink: CADisplayLink!
-    
     private var voiceBroadcastChunkQueue: [VoiceBroadcastChunk] = []
-    
     private var isLivePlayback = false
+    private var acceptProgressUpdates = true
     
     // MARK: Public
     
@@ -51,9 +50,13 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         let viewState = VoiceBroadcastPlaybackViewState(details: details,
                                                         broadcastState: VoiceBroadcastPlaybackViewModel.getBroadcastState(from: voiceBroadcastAggregator.voiceBroadcastState),
                                                         playbackState: .stopped,
-                                                        playingState: VoiceBroadcastPlayingState(duration: Float(voiceBroadcastAggregator.voiceBroadcast.duration), position: 0),
-                                                        bindings: VoiceBroadcastPlaybackViewStateBindings())
+                                                        playingState: VoiceBroadcastPlayingState(duration: Float(voiceBroadcastAggregator.voiceBroadcast.duration)),
+                                                        bindings: VoiceBroadcastPlaybackViewStateBindings(progress: 0))
         super.init(initialViewState: viewState)
+        
+        displayLink = CADisplayLink(target: WeakTarget(self, selector: #selector(handleDisplayLinkTick)), selector: WeakTarget.triggerSelector)
+        displayLink.isPaused = true
+        displayLink.add(to: .current, forMode: .common)
         
         self.voiceBroadcastAggregator.delegate = self
     }
@@ -76,6 +79,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             playLive()
         case .pause:
             pause()
+        case .sliderChange(let didChange):
+            didSliderChanged(didChange)
         }
     }
     
@@ -85,6 +90,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     /// Listen voice broadcast
     private func play() {
         isLivePlayback = false
+        displayLink.isPaused = false
         
         if voiceBroadcastAggregator.isStarted == false {
             // Start the streaming by fetching broadcast chunks
@@ -93,19 +99,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             state.playbackState = .buffering
             voiceBroadcastAggregator.start()
             
-            
-            displayLink = CADisplayLink(target: WeakTarget(self, selector: #selector(handleDisplayLinkTick)), selector: WeakTarget.triggerSelector)
-            displayLink.isPaused = true
-            displayLink.add(to: .current, forMode: .common)
-            
-            state.playingState.duration = Float(voiceBroadcastAggregator.voiceBroadcast.duration)
-
-            let time = TimeInterval(voiceBroadcastAggregator.voiceBroadcast.duration / 1000)
-            let formatter = DateComponentsFormatter()
-            formatter.unitsStyle = .abbreviated
-            
-            state.playingState.durationLabel = formatter.string(from: time)
-            
+            updateDuration()
         }
         else if let audioPlayer = audioPlayer {
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: resume")
@@ -156,6 +150,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] pause")
         
         isLivePlayback = false
+        displayLink.isPaused = true
         
         if let audioPlayer = audioPlayer, audioPlayer.isPlaying {
             audioPlayer.pause()
@@ -174,6 +169,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] stop")
         
         isLivePlayback = false
+        displayLink.isPaused = true
         
         // Objects will be released on audioPlayerDidStopPlaying
         audioPlayer?.stop()
@@ -267,13 +263,39 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         }
     }
     
+    private func updateDuration() {
+        let duration = voiceBroadcastAggregator.voiceBroadcast.duration
+        let time = TimeInterval(duration / 1000)
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .abbreviated
+        
+        state.playingState.duration = Float(duration)
+        state.playingState.durationLabel = formatter.string(from: time)
+    }
+    
+    private func didSliderChanged(_ didChange: Bool) {
+        acceptProgressUpdates = !didChange
+        if didChange {
+            audioPlayer?.pause()
+            displayLink.isPaused = true
+        } else {
+            //audioPlayer?.seek(to: state.bindings.progress)
+            MXLog.debug(state.bindings.progress.value)
+            audioPlayer?.seekToTime(TimeInterval(state.bindings.progress / 1000))
+            audioPlayer?.play()
+            displayLink.isPaused = false
+            
+        }
+    }
+    
     @objc private func handleDisplayLinkTick() {
         updateUI()
     }
     
     private func updateUI() {
-        // TODO: update slider position
-        state.playingState.position = (audioPlayer?.currentTime.rounded() ?? 0) * 1000
+        // TODO: update slider position by adding previous chunks duration
+        state.bindings.progress = Float((audioPlayer?.currentTime.rounded() ?? 0) * 1000)
+//        state.playingState.position = (audioPlayer?.currentTime.rounded() ?? 0) * 1000
 //        var details = VoiceMessagePlaybackViewDetails()
 //
 //        details.playbackEnabled = (state != .error)
