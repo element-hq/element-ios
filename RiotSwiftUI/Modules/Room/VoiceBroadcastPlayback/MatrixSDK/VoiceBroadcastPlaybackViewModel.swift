@@ -183,9 +183,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     // MARK: - Voice broadcast chunks playback
     
     /// Start the playback from the beginning or push more chunks to it
-    private func processPendingVoiceBroadcastChunks() {
+    private func processPendingVoiceBroadcastChunks(_ time: TimeInterval? = nil) {
         reorderPendingVoiceBroadcastChunks()
-        processNextVoiceBroadcastChunk()
+        processNextVoiceBroadcastChunk(time)
     }
     
     /// Start the playback from the last known chunk
@@ -206,7 +206,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         chunks.sorted(by: {$0.sequence < $1.sequence})
     }
     
-    private func processNextVoiceBroadcastChunk() {
+    private func processNextVoiceBroadcastChunk(_ time: TimeInterval? = nil) {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: \(voiceBroadcastChunkQueue.count) chunks remaining")
         
         guard voiceBroadcastChunkQueue.count > 0 else {
@@ -244,7 +244,11 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     // Resume the player. Needed after a pause
                     if audioPlayer.isPlaying == false {
                         MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: Resume the player")
+                        self.displayLink.isPaused = false
                         audioPlayer.play()
+                        if let time = time {
+                            audioPlayer.seekToTime(time)
+                        }
                     }
                 }
                 else {
@@ -253,7 +257,11 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     audioPlayer.registerDelegate(self)
                     
                     audioPlayer.loadContentFromURL(result.url, displayName: chunk.attachment.originalFileName)
+                    self.displayLink.isPaused = false
                     audioPlayer.play()
+                    if let time = time {
+                        audioPlayer.seekToTime(time)
+                    }
                     self.audioPlayer = audioPlayer
                 }
                 
@@ -285,12 +293,25 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             audioPlayer?.pause()
             displayLink.isPaused = true
         } else {
-            //audioPlayer?.seek(to: state.bindings.progress)
-            MXLog.debug(state.bindings.progress.value)
-            audioPlayer?.seekToTime(TimeInterval(state.bindings.progress / 1000))
-            audioPlayer?.play()
-            displayLink.isPaused = false
+            // Flush the current audio player playlist
+            audioPlayer?.removeAllPlayerItems()
+                        
+            let chunks = reorderVoiceBroadcastChunks(chunks: Array(voiceBroadcastAggregator.voiceBroadcast.chunks))
             
+            // Reinject the chunks we need and play them
+            let remainingTime = state.playingState.duration - state.bindings.progress
+            var chunksDuration: UInt = 0
+            for chunk in chunks.reversed() {
+                chunksDuration += chunk.duration
+                voiceBroadcastChunkQueue.append(chunk)
+                if Float(chunksDuration) >= remainingTime {
+                    break
+                }
+            }
+            
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] didSliderChanged: restart to time: \(state.bindings.progress) milliseconds")
+            let time = state.bindings.progress - state.playingState.duration + Float(chunksDuration)
+            processPendingVoiceBroadcastChunks(TimeInterval(time / 1000))
         }
     }
     
