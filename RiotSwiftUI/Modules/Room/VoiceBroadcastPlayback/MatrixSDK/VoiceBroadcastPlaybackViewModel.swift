@@ -28,10 +28,14 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     // MARK: Private
     private let mediaServiceProvider: VoiceMessageMediaServiceProvider
     private let cacheManager: VoiceMessageAttachmentCacheManager
+    
     private var voiceBroadcastAggregator: VoiceBroadcastAggregator
+    private var voiceBroadcastChunkQueue: [VoiceBroadcastChunk] = []
+    private var voiceBroadcastAttachmentCacheManagerLoadResults: [VoiceMessageAttachmentCacheManagerLoadResult] = []
+    
     private var audioPlayer: VoiceMessageAudioPlayer?
     private var displayLink: CADisplayLink!
-    private var voiceBroadcastChunkQueue: [VoiceBroadcastChunk] = []
+    
     private var isLivePlayback = false
     private var acceptProgressUpdates = true
     
@@ -224,39 +228,41 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             // TODO: Make sure there has no new incoming chunk that should be before this attachment
             // Be careful that this new chunk is not older than the chunk being played by the audio player. Else
             // we will get an unexecpted rewind.
-
+            
             switch result {
-                case .success(let result):
-                    guard result.eventIdentifier == chunk.attachment.eventId else {
-                        return
-                    }
+            case .success(let result):
+                guard result.eventIdentifier == chunk.attachment.eventId else {
+                    return
+                }
+                
+                self.voiceBroadcastAttachmentCacheManagerLoadResults.append(result)
+                
+                if let audioPlayer = self.audioPlayer {
+                    // Append the chunk to the current playlist
+                    audioPlayer.addContentFromURL(result.url)
                     
-                    if let audioPlayer = self.audioPlayer {
-                        // Append the chunk to the current playlist
-                        audioPlayer.addContentFromURL(result.url)
-                        
-                        // Resume the player. Needed after a pause
-                        if audioPlayer.isPlaying == false {
-                            MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: Resume the player")
-                            audioPlayer.play()
-                        }
-                    }
-                    else {
-                        // Init and start the player on the first chunk
-                        let audioPlayer = self.mediaServiceProvider.audioPlayerForIdentifier(result.eventIdentifier)
-                        audioPlayer.registerDelegate(self)
-                        
-                        audioPlayer.loadContentFromURL(result.url, displayName: chunk.attachment.originalFileName)
+                    // Resume the player. Needed after a pause
+                    if audioPlayer.isPlaying == false {
+                        MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: Resume the player")
                         audioPlayer.play()
-                        self.audioPlayer = audioPlayer
                     }
-
-                case .failure (let error):
-                    MXLog.error("[VoiceBroadcastPlaybackViewModel] processVoiceBroadcastChunkQueue: loadAttachment error", context: error)
-                    if self.voiceBroadcastChunkQueue.count == 0 {
-                        // No more chunk to try. Go to error
-                        self.state.playbackState = .error
-                    }
+                }
+                else {
+                    // Init and start the player on the first chunk
+                    let audioPlayer = self.mediaServiceProvider.audioPlayerForIdentifier(result.eventIdentifier)
+                    audioPlayer.registerDelegate(self)
+                    
+                    audioPlayer.loadContentFromURL(result.url, displayName: chunk.attachment.originalFileName)
+                    audioPlayer.play()
+                    self.audioPlayer = audioPlayer
+                }
+                
+            case .failure (let error):
+                MXLog.error("[VoiceBroadcastPlaybackViewModel] processVoiceBroadcastChunkQueue: loadAttachment error", context: error)
+                if self.voiceBroadcastChunkQueue.count == 0 {
+                    // No more chunk to try. Go to error
+                    self.state.playbackState = .error
+                }
             }
             
             self.processNextVoiceBroadcastChunk()
@@ -293,22 +299,20 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     }
     
     private func updateUI() {
-        // TODO: update slider position by adding previous chunks duration
-        state.bindings.progress = Float((audioPlayer?.currentTime.rounded() ?? 0) * 1000)
-//        state.playingState.position = (audioPlayer?.currentTime.rounded() ?? 0) * 1000
-//        var details = VoiceMessagePlaybackViewDetails()
-//
-//        details.playbackEnabled = (state != .error)
-//        details.playing = (state == .playing)
-//        details.samples = samples
-//        // Show the current time if the player is paused, show duration when at 0.
-//        let duration = self.duration
-//        let currentTime = audioPlayer?.currentTime ?? 0
-//        let displayTime = currentTime > 0 ? currentTime : duration
-//        details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: displayTime))
-//        details.progress = duration > 0 ? currentTime / duration : 0
-//        details.loading = self.loading
-//        playbackView.configureWithDetails(details)
+        guard let playingEventId = voiceBroadcastAttachmentCacheManagerLoadResults.first(where: { result in
+                  result.url == audioPlayer?.currentUrl
+              })?.eventIdentifier,
+              let playingSequence = voiceBroadcastAggregator.voiceBroadcast.chunks.first(where: { chunk in
+                  chunk.attachment.eventId == playingEventId
+              })?.sequence else {
+            return
+        }
+        
+        let progress = Double(voiceBroadcastAggregator.voiceBroadcast.chunks.filter { chunk in
+            chunk.sequence < playingSequence
+        }.reduce(0) { $0 + $1.duration}) + (audioPlayer?.currentTime.rounded() ?? 0) * 1000
+        
+        state.bindings.progress = Float(progress)
     }
     
     private static func getBroadcastState(from state: VoiceBroadcastInfo.State) -> VoiceBroadcastState {
