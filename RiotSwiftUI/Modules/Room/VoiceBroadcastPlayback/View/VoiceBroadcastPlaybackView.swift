@@ -30,7 +30,6 @@ struct VoiceBroadcastPlaybackView: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    @State var sliderValue : Float = 0.0
     
     private var backgroundColor: Color {
         if viewModel.viewState.playbackState == .playingLive {
