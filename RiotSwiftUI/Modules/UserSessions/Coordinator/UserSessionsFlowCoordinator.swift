@@ -87,7 +87,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
                 self.openOtherSessions(sessionInfos: sessionInfos, filterBy: filter)
             case .linkDevice:
                 self.openQRLoginScreen()
-            case let .singOutFromUserSessions(sessionInfos: sessionInfos):
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
                 self.showLogoutConfirmation(for: sessionInfos)
             }
         }

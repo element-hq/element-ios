@@ -221,13 +221,13 @@ struct UserSessionsOverview: View {
         let label = Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(viewModel.viewState.otherSessionsViewData.count)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
         if #available(iOS 15, *) {
             Button(role: .destructive) {
-                viewModel.send(viewAction: .signOutOtherSessions)
+                viewModel.send(viewAction: .logoutOtherSessions)
             } label: {
                 label
             }
         } else {
             Button {
-                viewModel.send(viewAction: .signOutOtherSessions)
+                viewModel.send(viewAction: .logoutOtherSessions)
             } label: {
                 label
             }
