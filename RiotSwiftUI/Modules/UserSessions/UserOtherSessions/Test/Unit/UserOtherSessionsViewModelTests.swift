@@ -300,7 +300,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         toggleEditMode(for: sut, value: true)
         sut.process(viewAction: .userOtherSessionSelected(sessionId: sessionInfoWithSessionId1.id))
         sut.process(viewAction: .userOtherSessionSelected(sessionId: sessionInfoWithSessionId3.id))
-        sut.process(viewAction: .signOutSelectedUserSessions)
+        sut.process(viewAction: .logoutSelectedUserSessions)
         XCTAssertEqual(receivedUserSessions, [sessionInfoWithSessionId1, sessionInfoWithSessionId3])
     }
     
@@ -318,7 +318,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                 break
             }
         }
-        sut.process(viewAction: .signOutAllUserSessions)
+        sut.process(viewAction: .logoutAllUserSessions)
         XCTAssertEqual(receivedUserSessions, sessionInfos)
     }
     
