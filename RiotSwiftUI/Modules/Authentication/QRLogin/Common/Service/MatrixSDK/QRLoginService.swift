@@ -106,7 +106,11 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
     }
 
     func stopScanning(destroy: Bool) {
-        zxCapture.delegate = nil
+        if (zxCapture.delegate != nil) {
+            // Setting the zxCapture to nil without checking makes it start
+            // scanning and implicitly requesting camera access
+            zxCapture.delegate = nil
+        }
         
         guard zxCapture.running else {
             return
@@ -292,7 +296,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         MXLog.debug("[QRLoginService] Received cross-signing details \(responsePayload)")
         
         if let masterKeyFromVerifyingDevice = responsePayload.masterKey,
-           let localMasterKey = session.crypto.crossSigningKeys(forUser: session.myUserId).masterKeys?.keys {
+           let localMasterKey = session.crypto.crossSigning.crossSigningKeys(forUser: session.myUserId)?.masterKeys?.keys {
             guard masterKeyFromVerifyingDevice == localMasterKey else {
                 MXLog.error("[QRLoginService] Received invalid master key from verifying device")
                 await teardownRendezvous(state: .failed(error: .rendezvousFailed))
@@ -348,6 +352,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         await teardownRendezvous()
     }
     
+    @MainActor
     private func teardownRendezvous(state: QRLoginServiceState? = nil) async {
         // Stop listening for changes, try deleting the resource
         _ = await rendezvousService?.tearDown()

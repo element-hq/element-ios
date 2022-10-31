@@ -36,6 +36,7 @@ struct ScreenList: View {
             VStack {
                 TextField("Search", text: $searchQuery)
                     .textFieldStyle(.roundedBorder)
+                    .autocorrectionDisabled()
                     .padding(.horizontal)
                     .accessibilityIdentifier("searchQueryTextField")
                     .onChange(of: searchQuery, perform: search)
