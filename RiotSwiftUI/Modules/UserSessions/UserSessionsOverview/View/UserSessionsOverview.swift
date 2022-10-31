@@ -127,16 +127,18 @@ struct UserSessionsOverview: View {
                 Button { viewModel.send(viewAction: .renameCurrentSession) } label: {
                     Label(VectorL10n.manageSessionRename, systemImage: "pencil")
                 }
+                if #available(iOS 15, *) {
+                    Button(role: .destructive) { viewModel.send(viewAction: .logoutOfCurrentSession) } label: {
+                        Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
+                    }
+                } else {
+                    Button { viewModel.send(viewAction: .logoutOfCurrentSession) } label: {
+                        Label(VectorL10n.signOut, systemImage: "rectangle.righthalf.inset.fill.arrow.right")
+                    }
+                }
             }
-            
-            if #available(iOS 15, *) {
-                Button(role: .destructive) { viewModel.send(viewAction: .logoutOfCurrentSession) } label: {
-                    Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
-                }
-            } else {
-                Button { viewModel.send(viewAction: .logoutOfCurrentSession) } label: {
-                    Label(VectorL10n.signOut, systemImage: "rectangle.righthalf.inset.fill.arrow.right")
-                }
+            if viewModel.viewState.otherSessionsViewData.count > 0 {
+                signOutOtherSessionsButton
             }
         } label: {
             Image(systemName: "ellipsis")
@@ -144,6 +146,7 @@ struct UserSessionsOverview: View {
                 .padding(.horizontal, 8)
                 .padding(.vertical, 12)
         }
+        .accessibilityIdentifier("MoreOptionsMenu")
         .offset(x: 8) // Re-align the symbol after applying padding.
     }
     
@@ -229,6 +232,20 @@ struct UserSessionsOverview: View {
             Button {
                 viewModel.send(viewAction: .logoutOtherSessions)
             } label: {
+                label
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var signOutOtherSessionsButton: some View {
+        let label = Label(VectorL10n.manageSessionSignOutOtherSessions, systemImage: "rectangle.portrait.and.arrow.forward.fill")
+        if #available(iOS 15, *) {
+            Button(role: .destructive) { viewModel.send(viewAction: .logoutOtherSessions) } label: {
+                label
+            }
+        } else {
+            Button { viewModel.send(viewAction: .logoutOtherSessions) } label: {
                 label
             }
         }
