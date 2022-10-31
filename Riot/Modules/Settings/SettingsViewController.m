@@ -588,12 +588,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     if (BuildSettings.settingsScreenShowLabSettings)
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
-        #if DEBUG
         if (MXSDKOptions.sharedInstance.isCryptoSDKAvailable)
         {
             [sectionLabs addRowWithTag:LABS_ENABLE_CRYPTO_SDK];
         }
-        #endif
         
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
@@ -2593,7 +2591,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
         else
         {
-        #if DEBUG
             if (row == LABS_ENABLE_CRYPTO_SDK)
             {
                 MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -2606,7 +2603,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 
                 cell = labelAndSwitchCell;
             }
-        #endif
         }
     }
     else if (section == SECTION_TAG_SECURITY)
@@ -3379,7 +3375,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     RiotSettings.shared.enableVoiceBroadcast = sender.isOn;
 }
 
-#if DEBUG
 - (void)toggleEnableCryptoSDKFeature:(UISwitch *)sender
 {
     BOOL isEnabled = sender.isOn;
@@ -3407,7 +3402,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     [self presentViewController:confirmationAlert animated:YES completion:nil];
     currentAlert = confirmationAlert;
 }
-#endif
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender
 {

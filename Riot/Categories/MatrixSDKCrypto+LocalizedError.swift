@@ -15,9 +15,6 @@
 //
 
 import Foundation
-
-#if DEBUG
-
 import MatrixSDKCrypto
 
 extension CryptoStoreError: LocalizedError {
@@ -27,5 +24,3 @@ extension CryptoStoreError: LocalizedError {
         return VectorL10n.e2eNeedLogInAgain
     }
 }
-
-#endif
