@@ -16,8 +16,6 @@
 
 import Foundation
 
-#if DEBUG
-
 /// Configuration for enabling / disabling Matrix Crypto SDK
 @objcMembers class CryptoSDKConfiguration: NSObject {
     static let shared = CryptoSDKConfiguration()
@@ -29,6 +27,7 @@ import Foundation
         
         RiotSettings.shared.enableCryptoSDK = true
         MXSDKOptions.sharedInstance().enableCryptoSDK = true
+        MXSDKOptions.sharedInstance().enableStartupProgress = true
         
         MXLog.debug("[CryptoSDKConfiguration] enabling Crypto SDK")
     }
@@ -36,9 +35,8 @@ import Foundation
     func disable() {
         RiotSettings.shared.enableCryptoSDK = false
         MXSDKOptions.sharedInstance().enableCryptoSDK = false
+        MXSDKOptions.sharedInstance().enableStartupProgress = false
         
         MXLog.debug("[CryptoSDKConfiguration] disabling Crypto SDK")
     }
 }
-
-#endif
