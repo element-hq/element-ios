@@ -6255,7 +6255,13 @@ static CGSize kThreadListBarButtonItemImageSize;
                 
                 // Acknowledge the existence of all devices
                 [self startActivityIndicator];
-                [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
+                
+                if (![self.mainSession.crypto isKindOfClass:[MXLegacyCrypto class]])
+                {
+                    MXLogFailure(@"[RoomVC] eventDidChangeSentState: Only legacy crypto supports manual setting of known devices");
+                    return;
+                }
+                [(MXLegacyCrypto *)self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
                     
                     self->unknownDevices = nil;
                     [self stopActivityIndicator];

@@ -69,7 +69,7 @@ class SessionVerificationListener {
         }
 
         if session.state == .storeDataReady {
-            if let crypto = session.crypto, crypto.crossSigning != nil {
+            if let crypto = session.crypto as? MXLegacyCrypto {
                 // Do not make key share requests while the "Complete security" is not complete.
                 // If the device is self-verified, the SDK will restore the existing key backup.
                 // Then, it  will re-enable outgoing key share requests
@@ -78,7 +78,8 @@ class SessionVerificationListener {
         } else if session.state == .running {
             unregisterSessionStateChangeNotification()
             
-            if let crypto = session.crypto, let crossSigning = crypto.crossSigning {
+            if let crypto = session.crypto {
+                let crossSigning = crypto.crossSigning
                 crossSigning.refreshState { [weak self] stateUpdated in
                     guard let self = self else { return }
                     
@@ -100,7 +101,7 @@ class SessionVerificationListener {
                                     self.completion?(.authenticationIsComplete)
                                 } failure: { error in
                                     MXLog.error("[SessionVerificationListener] sessionStateDidChange: Bootstrap failed", context: error)
-                                    crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
+                                    (crypto as? MXLegacyCrypto)?.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
                                     self.completion?(.authenticationIsComplete)
                                 }
                             } else {
@@ -110,12 +111,12 @@ class SessionVerificationListener {
                                     self.completion?(.authenticationIsComplete)
                                 } failure: { error in
                                     MXLog.error("[SessionVerificationListener] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.")
-                                    crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
+                                    (crypto as? MXLegacyCrypto)?.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
                                     self.completion?(.authenticationIsComplete)
                                 }
                             }
                         } else {
-                            crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
+                            (crypto as? MXLegacyCrypto)?.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
                             self.completion?(.authenticationIsComplete)
                         }
                     case .crossSigningExists:
@@ -124,12 +125,12 @@ class SessionVerificationListener {
                     default:
                         MXLog.debug("[SessionVerificationListener] sessionStateDidChange: Nothing to do")
                         
-                        crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
+                        (crypto as? MXLegacyCrypto)?.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
                         self.completion?(.authenticationIsComplete)
                     }
                 } failure: { [weak self] error in
                     MXLog.error("[SessionVerificationListener] sessionStateDidChange: Fail to refresh crypto state", context: error)
-                    crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
+                    (crypto as? MXLegacyCrypto)?.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
                     self?.completion?(.authenticationIsComplete)
                 }
             } else {
