@@ -64,12 +64,12 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
             updateViewState()
         case .logoutAllUserSessions:
             let filteredSessions = state.bindings.filter.filterSessionsInfos(sessionInfos)
-            completion?(.singOutFromUserSessions(sessionInfos: filteredSessions))
+            completion?(.logoutFromUserSessions(sessionInfos: filteredSessions))
         case .logoutSelectedUserSessions:
             let selectedSessionInfos = sessionInfos.filter { sessionInfo in
                 selectedSessions.contains(sessionInfo.id)
             }
-            completion?(.singOutFromUserSessions(sessionInfos: selectedSessionInfos))
+            completion?(.logoutFromUserSessions(sessionInfos: selectedSessionInfos))
         }
     }
 

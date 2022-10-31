@@ -162,7 +162,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             switch result {
             case let .openSessionOverview(sessionInfo: session):
                 self.openSessionOverview(sessionInfo: session)
-            case let .singOutFromUserSessions(sessionInfos: sessionInfos):
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
                 self.showLogoutConfirmation(for: sessionInfos)
             }
         }

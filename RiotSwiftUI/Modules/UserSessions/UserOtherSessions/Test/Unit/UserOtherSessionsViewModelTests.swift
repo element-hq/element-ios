@@ -291,7 +291,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         var receivedUserSessions = [UserSessionInfo]()
         sut.completion = { result in
             switch result {
-            case let .singOutFromUserSessions(sessionInfos: sessionInfos):
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
                 receivedUserSessions = sessionInfos
             default:
                 break
@@ -312,7 +312,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         var receivedUserSessions = [UserSessionInfo]()
         sut.completion = { result in
             switch result {
-            case let .singOutFromUserSessions(sessionInfos: sessionInfos):
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
                 receivedUserSessions = sessionInfos
             default:
                 break
