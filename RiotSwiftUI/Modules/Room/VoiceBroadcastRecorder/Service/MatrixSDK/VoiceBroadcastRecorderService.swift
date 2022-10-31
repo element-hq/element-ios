@@ -63,12 +63,16 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         }
 
         try? audioEngine.start()
+        
+        // Disable the sleep mode during the recording until we are able to handle it
+        UIApplication.shared.isIdleTimerDisabled = true
     }
     
     func stopRecordingVoiceBroadcast() {
         MXLog.debug("[VoiceBroadcastRecorderService] Stop recording voice broadcast")
         audioEngine.stop()
         audioEngine.inputNode.removeTap(onBus: audioNodeBus)
+        UIApplication.shared.isIdleTimerDisabled = false
 
         voiceBroadcastService?.stopVoiceBroadcast(success: { [weak self] _ in
             MXLog.debug("[VoiceBroadcastRecorderService] Stopped")
@@ -97,6 +101,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     
     func pauseRecordingVoiceBroadcast() {
         audioEngine.pause()
+        UIApplication.shared.isIdleTimerDisabled = false
         
         voiceBroadcastService?.pauseVoiceBroadcast(success: { [weak self] _ in
             guard let self = self else { return }
@@ -118,7 +123,8 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             guard let self = self else { return }
             
             // Update state
-            self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .started)
+            self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .resumed)
+            UIApplication.shared.isIdleTimerDisabled = true
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to resume voice broadcast", context: error)
         })
