@@ -27,8 +27,6 @@ public class ThreadDataSource: RoomDataSource {
     
     public override func finalizeInitialization() {
         super.finalizeInitialization()
-        showReadMarker = true
-        showBubbleReceipts = true
         showTypingRow = false
 
         NotificationCenter.default.addObserver(self,

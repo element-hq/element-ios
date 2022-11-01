@@ -2365,13 +2365,38 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             MXKRoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
             if (cellData)
             {
-                NSString *threadId = readThreadIds[i] == [NSNull null] ? kMXEventTimelineMain : readThreadIds[i];
-                @synchronized(self->bubbles)
+                if (readThreadIds[i] == [NSNull null])
                 {
-                    dispatch_group_enter(dispatchGroup);
-                    [self addReadReceiptsForEvent:eventId threadId:threadId inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
-                        dispatch_group_leave(dispatchGroup);
+                    // Unthreaded RR must be propagated through all threads.
+                    [self.mxSession.threadingService allThreadsInRoomWithId:self.roomId onlyParticipated:NO completion:^(NSArray<id<MXThreadProtocol>> *threads) {
+                        NSMutableArray *threadIds = [NSMutableArray arrayWithObject:kMXEventTimelineMain];
+                        for (id<MXThreadProtocol> thread in threads)
+                        {
+                            [threadIds addObject:thread.id];
+                        }
+                        
+                        for (NSString *threadId in threadIds)
+                        {
+                            @synchronized(self->bubbles)
+                            {
+                                dispatch_group_enter(dispatchGroup);
+                                [self addReadReceiptsForEvent:eventId threadId:threadId inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
+                                    dispatch_group_leave(dispatchGroup);
+                                }];
+                            }
+                        }
                     }];
+                }
+                else
+                {
+                    NSString *threadId = readThreadIds[i];
+                    @synchronized(self->bubbles)
+                    {
+                        dispatch_group_enter(dispatchGroup);
+                        [self addReadReceiptsForEvent:eventId threadId:threadId inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
+                            dispatch_group_leave(dispatchGroup);
+                        }];
+                    }
                 }
             }
         }
