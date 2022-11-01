@@ -2506,3 +2506,86 @@
 "authentication_qr_login_start_subtitle" = "Kasuta selle seadme kaamerat ja logi sisse teises seadmes kuvatud QR-koodi alusel:";
 "authentication_qr_login_start_title" = "Loe QR-koodi";
 "authentication_login_with_qr" = "Logi sisse QR-koodi abil";
+"wysiwyg_composer_format_action_strikethrough" = "Kasuta allajoonitud kirja";
+"wysiwyg_composer_format_action_underline" = "Kasuta läbijoonitud kirja";
+"wysiwyg_composer_format_action_italic" = "Kasuta kaldkirja";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Kasuta paksu kirja";
+"wysiwyg_composer_start_action_voice_broadcast" = "Ringhäälingukõne";
+"wysiwyg_composer_start_action_text_formatting" = "Tekstivorming";
+"wysiwyg_composer_start_action_camera" = "Kaamera";
+"wysiwyg_composer_start_action_location" = "Asukoht";
+"wysiwyg_composer_start_action_polls" = "Küsitlused";
+"wysiwyg_composer_start_action_attachments" = "Manused";
+"wysiwyg_composer_start_action_stickers" = "Kleepsud";
+
+
+// Mark: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Fotode kogu";
+"user_session_details_last_activity" = "Viimati kasutusel";
+"device_type_name_unknown" = "Tundmatu seadmetüüp";
+"device_type_name_mobile" = "Mobiiltelefon";
+"device_type_name_web" = "Veebiliides";
+"device_type_name_desktop" = "Töölauarakendus";
+"user_inactive_session_item_with_date" = "Pole olnud kasutusel üle 90 päeva (%@)";
+"user_inactive_session_item" = "Pole olnud kasutusel üle 90 päeva";
+"user_session_item_details_last_activity" = "Viimati kasutusel %@";
+"user_other_session_clear_filter" = "Eemalda filter";
+"user_other_session_no_unverified_sessions" = "Verifitseerimata sessioone ei leidu.";
+"user_other_session_no_verified_sessions" = "Verifitseeritud sessioone ei leidu.";
+"user_other_session_no_inactive_sessions" = "Ei leidu sessioone, mis pole aktiivses kasutuses.";
+"user_other_session_filter_menu_inactive" = "Pole pidevas kasutuses";
+"user_other_session_filter_menu_unverified" = "Verifitseerimata";
+"user_other_session_filter_menu_verified" = "Verifitseeritud";
+"user_other_session_filter_menu_all" = "Kõik sessioonid";
+"user_other_session_filter" = "Filtreeri";
+"user_other_session_verified_sessions_header_subtitle" = "Parima turvalisuse nimel logi välja neist sessioonidest, mida sa enam ei kasuta või ei tunne ära.";
+"user_other_session_current_session_details" = "Sinu praegune sessioon";
+"user_other_session_unverified_sessions_header_subtitle" = "Turvalise sõnumvahetuse nimel verifitseeri kõik oma sessioonid ning logi neist välja, mida sa enam ei kasuta või ei tunne enam ära.";
+"user_other_session_security_recommendation_title" = "Turvalisusega seotud soovitused";
+"user_other_session_verified_additional_info" = "See sessioon on valmis turvaliseks sõnumivahetuseks.";
+"user_other_session_unverified_additional_info" = "Parima turvalisuse ja töökindluse nimel verifitseeri see sessioon või logi ta võrgust välja.";
+"user_session_verification_unknown_additional_info" = "Selle sessiooni olekut ei saa tuvastada enne kui oled ta verifitseerinud.";
+"user_session_verification_unknown_short" = "Teadmata olek";
+"user_session_verification_unknown" = "Verifitseerimise olek on määratlemata";
+"user_sessions_overview_link_device" = "Seo teise seadmega";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"voice_broadcast_playback_loading_error" = "Selle ringhäälingukõne esitamine ei õnnestu.";
+"voice_broadcast_already_in_progress_message" = "Sa juba salvestad ringhäälingukõnet. Uue alustamiseks palun lõpeta eelmine salvestus.";
+"voice_broadcast_blocked_by_someone_else_message" = "Keegi juba salvestab ringhäälingukõnet. Uue ringhäälingukõne salvestamiseks palun oota, kuni see teine ringhäälingukõne on lõppenud.";
+"voice_broadcast_permission_denied_message" = "Sul pole piisavalt õigusi selles jututoas ringhäälingukõne algatamiseks. Õiguste lisamiseks palun võta ühendust jututoa haldajaga.";
+
+// Mark: - Voice broadcast
+"voice_broadcast_unauthorized_title" = "Uue ringhäälingukõne alustamine pole võimalik";
+"sign_out_confirmation_message" = "Kas sa oled kindel et soovid välja logida?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Logi välja";
+"manage_session_rename" = "Muuda sessiooni nime";
+"manage_session_name_info_link" = "Lisateave";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Palun arvesta, et sessioonide nimed on näha ka kõikidele osapooltele, kellega sa suhtled. %@";
+"manage_session_name_hint" = "Sinu enda kirjutatud sessiooninimede alusel on sul oma seadmeid lihtsam ära tunda.";
+"settings_labs_enable_voice_broadcast" = "Ringhäälingukõne (aktiivses arenduses)";
+"settings_labs_enable_wysiwyg_composer" = "Proovi vormindatud teksti alusel töötavat tekstitoimetit (varsti lisandub ka vormindamata teksti režiim)";
+"authentication_qr_login_failure_retry" = "Proovi uuesti";
+"authentication_qr_login_failure_request_timed_out" = "Sidumine ei lõppenud etteantud aja jooksul.";
+"authentication_qr_login_failure_request_denied" = "Teine seade lükkas päringu tagasi.";
+"authentication_qr_login_failure_invalid_qr" = "QR-kood on vigane.";
+"authentication_qr_login_failure_title" = "Seose loomine ei õnenstunud";
+"authentication_qr_login_loading_signed_in" = "Sa oled oma teises seadmes sisse loginud Matrix'i võrku.";
+"authentication_qr_login_loading_waiting_signin" = "Ootame, et teine seade logiks võrku.";
+"authentication_qr_login_loading_connecting_device" = "Loon ühendust seadmega";
+"authentication_qr_login_confirm_alert" = "Palun vaata, et sa kindlasti tead, kust see QR-kood kuvatakse. Sellisel viisil seadmete sidumisel sa annad oma kasutajakontole täiemahulise ligipääsu.";
+"authentication_qr_login_confirm_subtitle" = "Kontrolli, et järgnev kood klapib teises seadmes kuvatava koodiga:";
+"deselect_all" = "Eemalda kõik valikud";
+"user_other_session_menu_select_sessions" = "Vali sessioonid";
+"user_other_session_selected_count" = "%@ valitud";

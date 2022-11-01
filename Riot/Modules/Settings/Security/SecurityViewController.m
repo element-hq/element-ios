@@ -324,7 +324,7 @@ TableViewSectionsDelegate>
     
     // Crypto sessions section
         
-    if (RiotSettings.shared.settingsSecurityScreenShowSessions)
+    if (RiotSettings.shared.settingsSecurityScreenShowSessions && !RiotSettings.shared.enableNewSessionManager)
     {
         Section *sessionsSection = [Section sectionWithTag:SECTION_CRYPTO_SESSIONS];
         
@@ -627,7 +627,7 @@ TableViewSectionsDelegate>
 
 - (void)loadCrossSigning
 {
-    MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+    id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
     
     [crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
         if (stateUpdated)
@@ -643,7 +643,7 @@ TableViewSectionsDelegate>
 {
     NSInteger numberOfRowsInCrossSigningSection;
     
-    MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+    id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
     switch (crossSigning.state)
     {
         case MXCrossSigningStateNotBootstrapped:                // Action: Bootstrap
@@ -661,7 +661,7 @@ TableViewSectionsDelegate>
 
 - (NSAttributedString*)crossSigningInformation
 {
-    MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+    id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
     
     NSString *crossSigningInformation;
     switch (crossSigning.state)
@@ -708,7 +708,7 @@ TableViewSectionsDelegate>
     buttonCell.mxkButton.accessibilityIdentifier = nil;
     
     // And customise it
-    MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+    id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
     switch (crossSigning.state)
     {
         case MXCrossSigningStateNotBootstrapped:                // Action: Bootstrap

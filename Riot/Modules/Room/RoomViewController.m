@@ -598,6 +598,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     isAppeared = NO;
     
     [VoiceMessageMediaServiceProvider.sharedProvider pauseAllServices];
+    [VoiceBroadcastRecorderProvider.shared pauseRecording];
     
     // Stop the loading indicator even if the session is still in progress
     [self stopLoadingUserIndicator];
@@ -1775,15 +1776,20 @@ static CGSize kThreadListBarButtonItemImageSize;
     || self.customizedRoomDataSource.jitsiWidget;
 }
 
+- (BOOL)canSendStateEventWithType:(MXEventTypeString)eventTypeString
+{
+    MXRoomPowerLevels *powerLevels = [self.roomDataSource.roomState powerLevels];
+    NSInteger requiredPower = [powerLevels minimumPowerLevelForSendingEventAsStateEvent:eventTypeString];
+    NSInteger myPower = [powerLevels powerLevelOfUserWithUserID:self.roomDataSource.mxSession.myUserId];
+    return myPower >= requiredPower;
+}
+
 /**
  Returns a flag for the current user whether it's privileged to add/remove Jitsi widgets to this room.
  */
 - (BOOL)canEditJitsiWidget
 {
-    MXRoomPowerLevels *powerLevels = [self.roomDataSource.roomState powerLevels];
-    NSInteger requiredPower = [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kWidgetModularEventTypeString];
-    NSInteger myPower = [powerLevels powerLevelOfUserWithUserID:self.roomDataSource.mxSession.myUserId];
-    return myPower >= requiredPower;
+    return [self canSendStateEventWithType:kWidgetModularEventTypeString];
 }
 
 - (void)registerURLPreviewNotifications
@@ -1993,9 +1999,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self updateInputToolBarVisibility];
     
     // Check whether the input toolbar is ready before updating it.
-    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+    if (self.inputToolbarView && [self inputToolbarConformsToToolbarViewProtocol])
     {
-        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        id<RoomInputToolbarViewProtocol> roomInputToolbarView = (id<RoomInputToolbarViewProtocol>) self.inputToolbarView;
         
         // Update encryption decoration if needed
         [self updateEncryptionDecorationForRoomInputToolbar:roomInputToolbarView];
@@ -2115,9 +2121,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)updateInputToolbarEncryptionDecoration
 {
-    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+    if (self.inputToolbarView && [self inputToolbarConformsToToolbarViewProtocol])
     {
-        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        id<RoomInputToolbarViewProtocol> roomInputToolbarView = (id<RoomInputToolbarViewProtocol>)self.inputToolbarView;
         [self updateEncryptionDecorationForRoomInputToolbar:roomInputToolbarView];
     }
 }
@@ -2133,7 +2139,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     roomTitleView.badgeImageView.image = self.roomEncryptionBadgeImage;
 }
 
-- (void)updateEncryptionDecorationForRoomInputToolbar:(RoomInputToolbarView*)roomInputToolbarView
+- (void)updateEncryptionDecorationForRoomInputToolbar:(id<RoomInputToolbarViewProtocol>)roomInputToolbarView
 {
     roomInputToolbarView.isEncryptionEnabled = self.isEncryptionEnabled;
 }
@@ -2290,6 +2296,16 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self roomInputToolbarViewDidTapFileUpload];
         }]];
     }
+    if (RiotSettings.shared.enableVoiceBroadcast && !self.isNewDirectChat)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLive.image andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self roomInputToolbarViewDidTapVoiceBroadcast];
+        }]];
+    }
     if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled && !self.isNewDirectChat)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionPoll.image andAction:^{
@@ -2318,35 +2334,6 @@ static CGSize kThreadListBarButtonItemImageSize;
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
             }
             [self showCameraControllerAnimated:YES];
-        }]];
-    }
-    if (RiotSettings.shared.enableVoiceBroadcast && !self.isNewDirectChat)
-    {
-        [actionItems addObject:[[RoomActionItem alloc] initWithImage:AssetImages.actionLive.image andAction:^{
-            MXStrongifyAndReturnIfNil(self);
-            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
-                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
-            }
-            
-            // TODO: Init and start voice broadcast
-            MXSession* session = self.roomDataSource.mxSession;
-            [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
-                if (voiceBroadcastService) {
-                    if ([VoiceBroadcastInfo isStoppedFor:[voiceBroadcastService getState]]) {
-                        [session.voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
-                        
-                        } failure:^(NSError * _Nonnull error) {
-                            
-                        }];
-                    } else {
-                        [session.voiceBroadcastService stopVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
-                        
-                        } failure:^(NSError * _Nonnull error) {
-                            
-                        }];
-                    }
-                }
-            }];            
         }]];
     }
     roomInputView.actionsBar.actionItems = actionItems;
@@ -2434,6 +2421,39 @@ static CGSize kThreadListBarButtonItemImageSize;
     [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
     
     self.documentPickerPresenter = documentPickerPresenter;
+}
+
+- (void)roomInputToolbarViewDidTapVoiceBroadcast
+{
+    // Check first the room permission
+    if (![self canSendStateEventWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
+    {
+        [self showAlertWithTitle:[VectorL10n voiceBroadcastUnauthorizedTitle] message:[VectorL10n voiceBroadcastPermissionDeniedMessage]];
+        return;
+    }
+    
+    MXSession* session = self.roomDataSource.mxSession;
+    // Check whether the user is not already broadcasting here or in another room
+    if (session.voiceBroadcastService)
+    {
+        [self showAlertWithTitle:[VectorL10n voiceBroadcastUnauthorizedTitle] message:[VectorL10n voiceBroadcastAlreadyInProgressMessage]];
+        return;
+    }
+    
+    // Request the voice broadcast service to start recording - No service is returned if someone else is already broadcasting in the room
+    [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
+        if (voiceBroadcastService) {
+            [voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
+            
+            } failure:^(NSError * _Nonnull error) {
+                
+            }];
+        }
+        else
+        {
+            [self showAlertWithTitle:[VectorL10n voiceBroadcastUnauthorizedTitle] message:[VectorL10n voiceBroadcastBlockedBySomeoneElseMessage]];
+        }
+    }];
 }
 
 /**
@@ -3211,7 +3231,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
-    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcast)
+    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcastPlayback)
     {
         if (bubbleData.isIncoming)
         {
@@ -3244,6 +3264,22 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
         }
     }
+    else if (bubbleData.tag == RoomBubbleCellDataTagVoiceBroadcastRecord)
+    {
+        if (bubbleData.isPaginationFirstBubble)
+        {
+            cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithPaginationTitle;
+        }
+        else if (bubbleData.shouldHideSenderInformation)
+        {
+            cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithoutSenderInfo;
+        }
+        else
+        {
+            cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder;
+        }
+    }
+    
     else if (roomBubbleCellData.getFirstBubbleComponentWithDisplay.event.isEmote)
     {
         if (bubbleData.isIncoming)
@@ -4565,6 +4601,9 @@ static CGSize kThreadListBarButtonItemImageSize;
                             // Do nothing for dummy links
                             shouldDoAction = NO;
                             break;
+                        case RoomMessageURLTypeHttp:
+                            shouldDoAction = YES;
+                            break;
                         default:
                         {
                             MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
@@ -4590,16 +4629,20 @@ static CGSize kThreadListBarButtonItemImageSize;
                     break;
                 case UITextItemInteractionPresentActions:
                 {
-                    // Retrieve the tapped event
-                    MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-                    
-                    if (tappedEvent)
-                    {
-                        // Long press on link, present room contextual menu.
-                        [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:NO cell:cell animated:YES];
+                    if (roomMessageURLType == RoomMessageURLTypeHttp) {
+                        shouldDoAction = YES;
+                    } else {
+                        // Retrieve the tapped event
+                        MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+                        
+                        if (tappedEvent)
+                        {
+                            // Long press on link, present room contextual menu.
+                            [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:NO cell:cell animated:YES];
+                        }
+                        
+                        shouldDoAction = NO;
                     }
-                    
-                    shouldDoAction = NO;
                 }
                     break;
                 case UITextItemInteractionPreview:
@@ -4997,27 +5040,12 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     if (self.roomInputToolbarContainerHeightConstraint.constant != height)
     {
-        // Hide temporarily the placeholder to prevent its distortion during height animation
-        if (!savedInputToolbarPlaceholder)
-        {
-            savedInputToolbarPlaceholder = toolbarView.placeholder.length ? toolbarView.placeholder : @"";
-        }
-        toolbarView.placeholder = nil;
-        
         [super roomInputToolbarView:toolbarView heightDidChanged:height completion:^(BOOL finished) {
             
             if (completion)
             {
                 completion (finished);
             }
-            
-            // Consider here the saved placeholder only if no new placeholder has been defined during the height animation.
-            if (!toolbarView.placeholder)
-            {
-                // Restore the placeholder if any
-                toolbarView.placeholder = self->savedInputToolbarPlaceholder.length ? self->savedInputToolbarPlaceholder : nil;
-            }
-            self->savedInputToolbarPlaceholder = nil;
         }];
     }
 }
@@ -5069,6 +5097,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (RiotSettings.shared.roomScreenAllowFilesAction)
     {
         [actionItems addObject:@(ComposerCreateActionAttachments)];
+    }
+    if (RiotSettings.shared.enableVoiceBroadcast && !self.isNewDirectChat)
+    {
+        [actionItems addObject:@(ComposerCreateActionVoiceBroadcast)];
     }
     if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled && !self.isNewDirectChat)
     {
@@ -6223,7 +6255,13 @@ static CGSize kThreadListBarButtonItemImageSize;
                 
                 // Acknowledge the existence of all devices
                 [self startActivityIndicator];
-                [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
+                
+                if (![self.mainSession.crypto isKindOfClass:[MXLegacyCrypto class]])
+                {
+                    MXLogFailure(@"[RoomVC] eventDidChangeSentState: Only legacy crypto supports manual setting of known devices");
+                    return;
+                }
+                [(MXLegacyCrypto *)self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
                     
                     self->unknownDevices = nil;
                     [self stopActivityIndicator];
@@ -8006,6 +8044,9 @@ static CGSize kThreadListBarButtonItemImageSize;
                 break;
             case ComposerCreateActionAttachments:
                 [self roomInputToolbarViewDidTapFileUpload];
+                break;
+            case ComposerCreateActionVoiceBroadcast:
+                [self roomInputToolbarViewDidTapVoiceBroadcast];
                 break;
             case ComposerCreateActionPolls:
                 [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];

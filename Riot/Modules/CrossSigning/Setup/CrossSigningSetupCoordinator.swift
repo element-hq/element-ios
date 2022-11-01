@@ -72,7 +72,7 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
     }
     
     private func setupCrossSigning(with authenticationParameters: [String: Any]) {
-        guard let crossSigning = self.parameters.session.crypto.crossSigning else {
+        guard let crossSigning = self.parameters.session.crypto?.crossSigning else {
             return
         }
         

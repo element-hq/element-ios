@@ -66,7 +66,7 @@ class VoiceBroadcastServiceProvider {
     ///   - completion: Completion block that will return the lastest voice broadcast info state event of the room.
     private func getLastVoiceBroadcastInfo(for room: MXRoom, completion: @escaping (MXEvent?) -> Void) {
         room.state { roomState in
-            completion(roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.eventType))?.last ?? nil)
+            completion(roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last ?? nil)
         }
     }
     

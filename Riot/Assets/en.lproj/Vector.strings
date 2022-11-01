@@ -798,7 +798,7 @@ Tap the + to start adding people.";
 "settings_labs_enable_new_client_info_feature" = "Record the client name, version, and url to recognise sessions more easily in session manager";
 "settings_labs_enable_new_app_layout" = "New Application Layout";
 "settings_labs_enable_wysiwyg_composer" = "Try out the rich text editor (plain text mode coming soon)";
-"settings_labs_enable_voice_broadcast" = "Voice broadcast (under active development). We currently only detect voice broadcast in the room timeline, this is not possible to send or listen an actual voice broadcast";
+"settings_labs_enable_voice_broadcast" = "Voice broadcast (under active development)";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -2189,6 +2189,13 @@ Tap the + to start adding people.";
 "voice_message_stop_locked_mode_recording" = "Tap on your recording to stop or listen";
 "voice_message_lock_screen_placeholder" = "Voice message";
 
+// Mark: - Voice broadcast
+"voice_broadcast_unauthorized_title" = "Can't start a new voice broadcast";
+"voice_broadcast_permission_denied_message" = "You don't have the required permissions to start a voice broadcast in this room. Contact a room administrator to upgrade your permissions.";
+"voice_broadcast_blocked_by_someone_else_message" = "Someone else is already recording a voice broadcast. Wait for their voice broadcast to end to start a new one.";
+"voice_broadcast_already_in_progress_message" = "You are already recording a voice broadcast. Please end your current voice broadcast to start a new one.";
+"voice_broadcast_playback_loading_error" = "Unable to play this voice broadcast.";
+
 // Mark: - Version check
 
 "version_check_banner_title_supported" = "We’re ending support for iOS %@";
@@ -2453,6 +2460,8 @@ To enable access, tap Settings> Location and select Always";
 "user_other_session_no_verified_sessions" = "No verified sessions found.";
 "user_other_session_no_unverified_sessions" = "No unverified sessions found.";
 "user_other_session_clear_filter" = "Clear filter";
+"user_other_session_selected_count" = "%@ selected";
+"user_other_session_menu_select_sessions" = "Select sessions";
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
 
@@ -2503,6 +2512,7 @@ To enable access, tap Settings> Location and select Always";
 "wysiwyg_composer_start_action_location" = "Location";
 "wysiwyg_composer_start_action_camera" = "Camera";
 "wysiwyg_composer_start_action_text_formatting" = "Text Formatting";
+"wysiwyg_composer_start_action_voice_broadcast" = "Voice broadcast";
 
 // Formatting Actions
 "wysiwyg_composer_format_action_bold" = "Apply bold format";
@@ -2582,6 +2592,7 @@ To enable access, tap Settings> Location and select Always";
 "reset_to_default" = "Reset to default";
 "resend_message" = "Resend the message";
 "select_all" = "Select All";
+"deselect_all" = "Deselect All";
 "cancel_upload" = "Cancel Upload";
 "cancel_download" = "Cancel Download";
 "show_details" = "Show Details";

@@ -21,7 +21,7 @@ platform :ios do
 
   before_all do
     # Ensure used Xcode version
-    xcversion(version: "~> 13.4")
+    xcversion(version: "~> 14.0.1")
   end
 
   #### Public ####
@@ -196,7 +196,7 @@ platform :ios do
     run_tests(
       workspace: "Riot.xcworkspace",
       scheme: "RiotSwiftUITests",
-      device: "iPhone 13",
+      device: "iPhone 14",
       code_coverage: true,
       # Test result configuration
       result_bundle: true,

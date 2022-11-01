@@ -25,12 +25,24 @@ final class ComposerUITests: MockScreenTestCase {
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         let sendButton = app.buttons["sendButton"]
-        XCTAssertTrue(sendButton.exists)
-        XCTAssertFalse(sendButton.isEnabled)
+        XCTAssertFalse(sendButton.exists)
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
-        XCTAssertTrue(sendButton.isEnabled)
+        XCTAssertTrue(sendButton.exists)
         XCTAssertFalse(app.buttons["editButton"].exists)
+        
+        let maximiseButton = app.buttons["maximiseButton"]
+        let minimiseButton = app.buttons["minimiseButton"]
+        XCTAssertFalse(minimiseButton.exists)
+        XCTAssertTrue(maximiseButton.exists)
+        
+        maximiseButton.tap()
+        XCTAssertTrue(minimiseButton.exists)
+        XCTAssertFalse(maximiseButton.exists)
+        
+        minimiseButton.tap()
+        XCTAssertFalse(minimiseButton.exists)
+        XCTAssertTrue(maximiseButton.exists)
     }
     
     func testReplyMode() throws {
@@ -39,8 +51,7 @@ final class ComposerUITests: MockScreenTestCase {
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         let sendButton = app.buttons["sendButton"]
-        XCTAssertTrue(sendButton.exists)
-        XCTAssertFalse(sendButton.isEnabled)
+        XCTAssertFalse(sendButton.exists)
         
         let cancelButton = app.buttons["cancelButton"]
         XCTAssertTrue(cancelButton.exists)
@@ -51,13 +62,26 @@ final class ComposerUITests: MockScreenTestCase {
         
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
-        XCTAssertTrue(sendButton.isEnabled)
+        XCTAssertTrue(sendButton.exists)
         XCTAssertFalse(app.buttons["editButton"].exists)
         
         cancelButton.tap()
         let textViewContent = wysiwygTextView.value as! String
         XCTAssertFalse(textViewContent.isEmpty)
         XCTAssertFalse(cancelButton.exists)
+        
+        let maximiseButton = app.buttons["maximiseButton"]
+        let minimiseButton = app.buttons["minimiseButton"]
+        XCTAssertFalse(minimiseButton.exists)
+        XCTAssertTrue(maximiseButton.exists)
+        
+        maximiseButton.tap()
+        XCTAssertTrue(minimiseButton.exists)
+        XCTAssertFalse(maximiseButton.exists)
+        
+        minimiseButton.tap()
+        XCTAssertFalse(minimiseButton.exists)
+        XCTAssertTrue(maximiseButton.exists)
     }
     
     func testEditMode() throws {
@@ -66,8 +90,7 @@ final class ComposerUITests: MockScreenTestCase {
         let wysiwygTextView = app.textViews.allElementsBoundByIndex[0]
         XCTAssertTrue(wysiwygTextView.exists)
         let editButton = app.buttons["editButton"]
-        XCTAssertTrue(editButton.exists)
-        XCTAssertFalse(editButton.isEnabled)
+        XCTAssertFalse(editButton.exists)
         
         let cancelButton = app.buttons["cancelButton"]
         XCTAssertTrue(cancelButton.exists)
@@ -78,12 +101,25 @@ final class ComposerUITests: MockScreenTestCase {
         
         wysiwygTextView.tap()
         wysiwygTextView.typeText("test")
-        XCTAssertTrue(editButton.isEnabled)
+        XCTAssertTrue(editButton.exists)
         XCTAssertFalse(app.buttons["sendButton"].exists)
         
         cancelButton.tap()
         let textViewContent = wysiwygTextView.value as! String
         XCTAssertTrue(textViewContent.isEmpty)
         XCTAssertFalse(cancelButton.exists)
+        
+        let maximiseButton = app.buttons["maximiseButton"]
+        let minimiseButton = app.buttons["minimiseButton"]
+        XCTAssertFalse(minimiseButton.exists)
+        XCTAssertTrue(maximiseButton.exists)
+        
+        maximiseButton.tap()
+        XCTAssertTrue(minimiseButton.exists)
+        XCTAssertFalse(maximiseButton.exists)
+        
+        minimiseButton.tap()
+        XCTAssertFalse(minimiseButton.exists)
+        XCTAssertTrue(maximiseButton.exists)
     }
 }
