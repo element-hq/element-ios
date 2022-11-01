@@ -172,7 +172,7 @@ class CommonConfiguration: NSObject, Configurable {
     
     func setupSettingsWhenLoaded(for matrixSession: MXSession) {
         // Do not warn for unknown devices. We have cross-signing now
-        matrixSession.crypto?.warnOnUnknowDevices = false
+        (matrixSession.crypto as? MXLegacyCrypto)?.warnOnUnknowDevices = false
     }
     
 }

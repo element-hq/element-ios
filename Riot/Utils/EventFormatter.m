@@ -272,7 +272,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                 // Build the attributed string with the right font and color for the events
                 return [self renderString:displayText forEvent:event];
             }
-        } else if ([event.type isEqualToString:VoiceBroadcastSettings.eventType]) {
+        } else if ([event.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]) {
             MXLogDebug(@"VB incoming build string")
         }
     }

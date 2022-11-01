@@ -40,11 +40,13 @@ enum MockComposerScreenState: MockScreenState, CaseIterable {
         
         viewModel.callback = { [weak viewModel, weak wysiwygviewModel] result in
             guard let viewModel = viewModel else { return }
-            if viewModel.sendMode == .edit {
-                wysiwygviewModel?.setHtmlContent("")
-            }
             switch result {
-            case .cancel: viewModel.sendMode = .send
+            case .cancel:
+                if viewModel.sendMode == .edit {
+                    wysiwygviewModel?.setHtmlContent("")
+                }
+                viewModel.sendMode = .send
+            default: break
             }
         }
         

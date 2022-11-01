@@ -29,11 +29,10 @@ import CoreGraphics
 // The toolbar for editing with rich text
 
 class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInputToolbarViewProtocol {
-    
-    
     // MARK: - Properties
     
     // MARK: Private
+    private var voiceMessageToolbarView: VoiceMessageToolbarView?
     private var cancellables = Set<AnyCancellable>()
     private var heightConstraint: NSLayoutConstraint!
     private var hostingViewController: VectorHostingController!
@@ -41,6 +40,141 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState())
     
     // MARK: Public
+    
+    override var placeholder: String! {
+        get {
+            viewModel.placeholder
+        }
+        set {
+            viewModel.placeholder = newValue
+        }
+    }
+    
+    // MARK: - Setup
+    
+    override class func instantiate() -> MXKRoomInputToolbarView! {
+        return loadFromNib()
+    }
+    
+    private weak var toolbarViewDelegate: RoomInputToolbarViewDelegate? {
+        return (delegate as? RoomInputToolbarViewDelegate) ?? nil
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        viewModel.callback = { [weak self] result in
+            self?.handleViewModelResult(result)
+        }
+        
+        inputAccessoryViewForKeyboard = UIView(frame: .zero)
+        
+        let composer = Composer(viewModel: viewModel.context,
+            wysiwygViewModel: wysiwygViewModel,
+            sendMessageAction: { [weak self] content in
+            guard let self = self else { return }
+            self.sendWysiwygMessage(content: content)
+        }, showSendMediaActions: { [weak self]  in
+            guard let self = self else { return }
+            self.showSendMediaActions()
+        }).introspectTextView { [weak self] textView in
+            guard let self = self else { return }
+            textView.inputAccessoryView = self.inputAccessoryViewForKeyboard
+        }
+        
+        hostingViewController = VectorHostingController(rootView: composer)
+        hostingViewController.publishHeightChanges = true
+        let height = hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: UIView.layoutFittingExpandedSize.height)).height
+        let subView: UIView = hostingViewController.view
+        self.addSubview(subView)
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
+        subView.translatesAutoresizingMaskIntoConstraints = false
+        heightConstraint = subView.heightAnchor.constraint(equalToConstant: height)
+        NSLayoutConstraint.activate([
+            heightConstraint,
+            subView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            subView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            subView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        ])
+        cancellables = [
+            hostingViewController.heightPublisher
+                .removeDuplicates()
+                .sink(receiveValue: { [weak self] idealHeight in
+                    guard let self = self else { return }
+                    self.updateToolbarHeight(wysiwygHeight: idealHeight)
+                }),
+            // Required to update the view constraints after minimise/maximise is tapped
+            wysiwygViewModel.$idealHeight
+                .removeDuplicates()
+                .sink { [weak hostingViewController] _ in
+                    hostingViewController?.view.setNeedsLayout()
+                }
+        ]
+        
+        update(theme: ThemeService.shared().theme)
+        registerThemeServiceDidChangeThemeNotification()
+    }
+    
+    override func customizeRendering() {
+        super.customizeRendering()
+        self.backgroundColor = .clear
+    }
+    
+    // MARK: - Private
+    
+    private func updateToolbarHeight(wysiwygHeight: CGFloat) {
+        self.heightConstraint.constant = wysiwygHeight
+        toolbarViewDelegate?.roomInputToolbarView?(self, heightDidChanged: wysiwygHeight, completion: nil)
+    }
+    
+    private func sendWysiwygMessage(content: WysiwygComposerContent) {
+        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
+    }
+    
+    private func showSendMediaActions() {
+        delegate?.roomInputToolbarViewShowSendMediaActions?(self)
+    }
+    
+    private func handleViewModelResult(_ result: ComposerViewModelResult) {
+        switch result {
+        case .cancel:
+            self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
+        case let .contentDidChange(isEmpty):
+            setVoiceMessageToolbarIsHidden(!isEmpty)
+        }
+    }
+    
+    private func setVoiceMessageToolbarIsHidden(_ isHidden: Bool) {
+        guard let voiceMessageToolbarView = voiceMessageToolbarView else { return }
+        UIView.transition(
+            with: voiceMessageToolbarView, duration: 0.15,
+            options: .transitionCrossDissolve,
+            animations: {
+                voiceMessageToolbarView.isHidden = isHidden
+            }
+        )
+    }
+        
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
+    }
+    
+    private func update(theme: Theme) {
+        hostingViewController.view.backgroundColor = theme.colors.background
+        wysiwygViewModel.textColor = theme.colors.primaryContent
+    }
+    
+    // MARK: - HtmlRoomInputToolbarViewProtocol
+    var isEncryptionEnabled = false {
+        didSet {
+            updatePlaceholderText()
+        }
+    }
     
     /// The current html content of the composer
     var htmlContent: String {
@@ -69,111 +203,30 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }
         set {
             viewModel.sendMode = ComposerSendMode(from: newValue)
+            updatePlaceholderText()
         }
     }
-    
-    // MARK: - Setup
-    
-    override class func instantiate() -> MXKRoomInputToolbarView! {
-        return loadFromNib()
-    }
-    
-    private weak var toolbarViewDelegate: RoomInputToolbarViewDelegate? {
-        return (delegate as? RoomInputToolbarViewDelegate) ?? nil
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        viewModel.callback = { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .cancel:
-                self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
-            }
-        }
-        inputAccessoryViewForKeyboard = UIView(frame: .zero)
-        let composer = Composer(viewModel: viewModel.context,
-            wysiwygViewModel: wysiwygViewModel,
-            sendMessageAction: { [weak self] content in
-            guard let self = self else { return }
-            self.sendWysiwygMessage(content: content)
-        }, showSendMediaActions: { [weak self]  in
-            guard let self = self else { return }
-            self.showSendMediaActions()
-        }).introspectTextView { [weak self] textView in
-            guard let self = self else { return }
-            textView.inputAccessoryView = self.inputAccessoryViewForKeyboard
-        }
-        
-        hostingViewController = VectorHostingController(rootView: composer)
-        hostingViewController.publishHeightChanges = true
-        let height = hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: UIView.layoutFittingExpandedSize.height)).height
-        let subView: UIView = hostingViewController.view
-        self.addSubview(subView)
-        
-        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        subView.translatesAutoresizingMaskIntoConstraints = false
-        heightConstraint = subView.heightAnchor.constraint(equalToConstant: height)
-        NSLayoutConstraint.activate([
-            heightConstraint,
-            subView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            subView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            subView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        ])
-        cancellables = [
-            hostingViewController.heightPublisher
-                .removeDuplicates()
-                .sink(receiveValue: { [weak self] idealHeight in
-                    guard let self = self else { return }
-                    self.updateToolbarHeight(wysiwygHeight: idealHeight)
-                })
-        ]
-        
-        update(theme: ThemeService.shared().theme)
-        registerThemeServiceDidChangeThemeNotification()
-    }
-    
-    override func customizeRendering() {
-        super.customizeRendering()
-        self.backgroundColor = .clear
-    }
-    
-    // MARK: - Private
-    
-    private func updateToolbarHeight(wysiwygHeight: CGFloat) {
-        self.heightConstraint.constant = wysiwygHeight
-        toolbarViewDelegate?.roomInputToolbarView?(self, heightDidChanged: wysiwygHeight, completion: nil)
-    }
-    
-    private func sendWysiwygMessage(content: WysiwygComposerContent) {
-        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
-    }
-    
-    
-    private func showSendMediaActions() {
-        delegate?.roomInputToolbarViewShowSendMediaActions?(self)
-    }
-    
-    private func registerThemeServiceDidChangeThemeNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
-    }
-    
-    @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
-    }
-    
-    private func update(theme: Theme) {
-        hostingViewController.view.backgroundColor = theme.colors.background
-        wysiwygViewModel.textColor = theme.colors.primaryContent
-    }
-    
-    // MARK: - RoomInputToolbarViewProtocol
     
     /// Add the voice message toolbar to the composer
     /// - Parameter voiceMessageToolbarView: the voice message toolbar UIView
     func setVoiceMessageToolbarView(_ voiceMessageToolbarView: UIView!) {
-        // TODO embed the voice messages UI
+        if let voiceMessageToolbarView = voiceMessageToolbarView as? VoiceMessageToolbarView {
+            self.voiceMessageToolbarView = voiceMessageToolbarView
+            voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.deactivate(voiceMessageToolbarView.containersTopConstraints)
+            addSubview(voiceMessageToolbarView)
+            NSLayoutConstraint.activate(
+                [
+                    hostingViewController.view.topAnchor.constraint(equalTo: voiceMessageToolbarView.topAnchor),
+                    hostingViewController.view.leftAnchor.constraint(equalTo: voiceMessageToolbarView.leftAnchor),
+                    hostingViewController.view.bottomAnchor.constraint(equalTo: voiceMessageToolbarView.bottomAnchor, constant: 4),
+                    hostingViewController.view.rightAnchor.constraint(equalTo: voiceMessageToolbarView.rightAnchor)
+                ]
+            )
+        } else {
+            self.voiceMessageToolbarView?.removeFromSuperview()
+            self.voiceMessageToolbarView = nil
+        }
     }
     
     func toolbarHeight() -> CGFloat {

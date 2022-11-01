@@ -36,10 +36,10 @@ class VoiceBroadcastBubbleCell: VoiceBroadcastPlainCell {
         self.setupBubbleBackgroundView()
     }
     
-    override func addVoiceBroadcastView(_ voiceBroadcastView: UIView, on contentView: UIView) {
-        super.addVoiceBroadcastView(voiceBroadcastView, on: contentView)
-        
-        self.addBubbleBackgroundViewIfNeeded(for: voiceBroadcastView)
+    override func addContentViewController(_ controller: UIViewController, on contentView: UIView) {
+        super.addContentViewController(controller, on: contentView)
+
+        self.addBubbleBackgroundViewIfNeeded(for: controller.view)
     }
     
     // MARK: - Private

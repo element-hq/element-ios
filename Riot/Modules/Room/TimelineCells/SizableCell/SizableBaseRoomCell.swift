@@ -16,6 +16,7 @@
 
 import UIKit
 import MatrixSDK
+import SwiftUI
 
 @objc protocol SizableBaseRoomCellType: BaseRoomCellProtocol {
     static func sizingViewHeightHashValue(from bubbleCellData: MXKRoomBubbleCellData) -> Int
@@ -35,6 +36,7 @@ class SizableBaseRoomCell: BaseRoomCell, SizableBaseRoomCellType {
     private static let reactionsViewModelBuilder = RoomReactionsViewModelBuilder()
     
     private static let urlPreviewViewSizer = URLPreviewViewSizer()
+    private var contentVC: UIViewController?
 
     private class var sizingView: SizableBaseRoomCell {
         let sizingView: SizableBaseRoomCell
@@ -115,6 +117,10 @@ class SizableBaseRoomCell: BaseRoomCell, SizableBaseRoomCellType {
         sizingView.setNeedsLayout()
         sizingView.layoutIfNeeded()
         
+        if let contentVC = sizingView.contentVC as? UIHostingController<AnyView> {
+            contentVC.view.invalidateIntrinsicContentSize()
+        }
+
         let fittingSize = CGSize(width: width, height: UIView.layoutFittingCompressedSize.height)
         var height = sizingView.systemLayoutSizeFitting(fittingSize).height
         
@@ -168,4 +174,24 @@ class SizableBaseRoomCell: BaseRoomCell, SizableBaseRoomCellType {
         
         return height
     }         
+
+    func addContentViewController(_ controller: UIViewController, on contentView: UIView) {
+        controller.view.invalidateIntrinsicContentSize()
+
+        let parent = vc_parentViewController
+        parent?.addChild(controller)
+        contentView.vc_addSubViewMatchingParent(controller.view)
+        controller.didMove(toParent: parent)
+
+        contentVC = controller
+    }
+
+    override func prepareForReuse() {
+        contentVC?.removeFromParent()
+        contentVC?.view.removeFromSuperview()
+        contentVC?.didMove(toParent: nil)
+        contentVC = nil
+
+        super.prepareForReuse()
+    }
 }

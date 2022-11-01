@@ -63,4 +63,10 @@ final class ComposerViewModelTests: XCTestCase {
         context.send(viewAction: .cancel)
         XCTAssert(result == .cancel)
     }
+    
+    func testPlaceholder() {
+        XCTAssert(context.viewState.placeholder == nil)
+        viewModel.placeholder = "Placeholder Test"
+        XCTAssert(context.viewState.placeholder == "Placeholder Test")
+    }
 }

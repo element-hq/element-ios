@@ -56,4 +56,40 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         XCTAssertTrue(app.staticTexts[VectorL10n.userSessionVerifiedShort].exists)
         XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle].exists)
     }
+    
+    func test_whenOtherSessionsMoreMenuButtonSelected_selectSessionsButtonExists() {
+        app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.all.title)
+        
+        app.buttons["More"].tap()
+        XCTAssertTrue(app.buttons["Select sessions"].exists)
+    }
+    
+    func test_whenOtherSessionsSelectSessionsSelected_navBarContainsCorrectButtons() {
+        app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.all.title)
+        
+        app.buttons["More"].tap()
+        app.buttons["Select sessions"].tap()
+        XCTAssertTrue(app.buttons["Select All"].exists)
+        XCTAssertTrue(app.buttons["Cancel"].exists)
+    }
+    
+    func test_whenOtherSessionsSelectAllSelected_navBarContainsCorrectButtons() {
+        app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.all.title)
+        
+        app.buttons["More"].tap()
+        app.buttons["Select sessions"].tap()
+        app.buttons["Select All"].tap()
+        XCTAssertTrue(app.buttons["Deselect All"].exists)
+        XCTAssertTrue(app.buttons["Cancel"].exists)
+    }
+    
+    func test_whenAllOtherSessionsAreSelected_navBarContainsCorrectButtons() {
+        app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.all.title)
+        app.buttons["More"].tap()
+        app.buttons["Select sessions"].tap()
+        for i in 0...MockUserOtherSessionsScreenState.all.allSessions().count - 1 {
+            app.buttons["UserSessionListItem_\(i)"].tap()
+        }
+        XCTAssertTrue(app.buttons["Deselect All"].exists)
+    }
 }

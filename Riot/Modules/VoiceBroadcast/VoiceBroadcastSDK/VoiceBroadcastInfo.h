@@ -22,21 +22,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VoiceBroadcastInfo : MXJSONModel
 
+/// The device id from which the broadcast has been started
+@property (nonatomic) NSString *deviceId;
+
 /// The voice broadcast state (started - paused - resumed - stopped).
 @property (nonatomic) NSString *state;
 
 /// The length of the voice chunks in seconds. Only required on the started state event.
 @property (nonatomic) NSInteger chunkLength;
 
-///  The event id of the started voice broadcast info state event.
+/// The event id of the started voice broadcast info state event.
 @property (nonatomic, strong, nullable) NSString* eventId;
 
 /// The event used to build the MXBeaconInfo.
 @property (nonatomic, readonly, nullable) MXEvent *originalEvent;
 
-- (instancetype)initWithState:(NSString *)state
-                  chunkLength:(NSInteger)chunkLength
-                      eventId:(NSString *)eventId;
+- (instancetype)initWithDeviceId:(NSString *)deviceId
+                           state:(NSString *)state
+                     chunkLength:(NSInteger)chunkLength
+                         eventId:(NSString *)eventId;
 
 @end
 

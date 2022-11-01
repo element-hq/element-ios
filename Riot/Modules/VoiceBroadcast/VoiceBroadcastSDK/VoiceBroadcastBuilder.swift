@@ -18,12 +18,29 @@ import Foundation
 
 struct VoiceBroadcastBuilder {
     
-    func build(voiceBroadcastStartEventContent: VoiceBroadcastInfo, events: [MXEvent], currentUserIdentifier: String, hasBeenEdited: Bool = false) -> VoiceBroadcastProtocol {
+    func build(mediaManager: MXMediaManager,
+               voiceBroadcastStartEventId: String,
+               voiceBroadcastInvoiceBroadcastStartEventContent: VoiceBroadcastInfo,
+               events: [MXEvent],
+               currentUserIdentifier: String,
+               hasBeenEdited: Bool = false) -> VoiceBroadcast {
         
-        let voiceBroadcast = VoiceBroadcast()
+        var voiceBroadcast = VoiceBroadcast()
         
-        // TODO: set voice broadcast object
+        voiceBroadcast.chunks = Set(events.compactMap { event in
+            buildChunk(event: event, mediaManager: mediaManager, voiceBroadcastStartEventId: voiceBroadcastStartEventId)
+        })
         
         return voiceBroadcast
+    }
+    
+    func buildChunk(event: MXEvent, mediaManager: MXMediaManager, voiceBroadcastStartEventId: String) -> VoiceBroadcastChunk? {
+        guard let attachment = MXKAttachment(event: event, andMediaManager: mediaManager),
+              let chunkInfo = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] as? [String: UInt],
+              let sequence = chunkInfo[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkSequence] else {
+            return nil
+        }
+        
+        return VoiceBroadcastChunk(voiceBroadcastInfoEventId: voiceBroadcastStartEventId, sequence: sequence, attachment: attachment)
     }
 }

@@ -115,6 +115,8 @@
     
     [self registerVoiceBroadcastCellsForTableView:tableView];
 
+    [self registerVoiceBroadcastRecorderCellsForTableView:tableView];
+    
     [tableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
     
     [tableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
@@ -279,6 +281,13 @@
     [tableView registerClass:VoiceBroadcastWithPaginationTitlePlainCell.class forCellReuseIdentifier:VoiceBroadcastWithPaginationTitlePlainCell.defaultReuseIdentifier];
 }
 
+- (void)registerVoiceBroadcastRecorderCellsForTableView:(UITableView*)tableView
+{
+    [tableView registerClass:VoiceBroadcastRecorderPlainCell.class forCellReuseIdentifier:VoiceBroadcastRecorderPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastRecorderWithoutSenderInfoPlainCell.class forCellReuseIdentifier:VoiceBroadcastRecorderWithoutSenderInfoPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastRecorderWithPaginationTitlePlainCell.class forCellReuseIdentifier:VoiceBroadcastRecorderWithPaginationTitlePlainCell.defaultReuseIdentifier];
+}
+
 #pragma mark Cell class association
 
 - (NSDictionary<NSNumber*, Class>*)buildCellClasses
@@ -339,6 +348,9 @@
     
     NSDictionary *voiceBroadcastCellsMapping = [self voiceBroadcastCellsMapping];
     [cellClasses addEntriesFromDictionary:voiceBroadcastCellsMapping];
+    
+    NSDictionary *voiceBroadcastRecorderCellsMapping = [self voiceBroadcastRecorderCellsMapping];
+    [cellClasses addEntriesFromDictionary:voiceBroadcastRecorderCellsMapping];
         
     NSDictionary *othersCells = @{
         @(RoomTimelineCellIdentifierEmpty) : RoomEmptyBubbleCell.class,
@@ -576,5 +588,14 @@
     };
 }
 
+- (NSDictionary<NSNumber*, Class>*)voiceBroadcastRecorderCellsMapping
+{
+    return @{
+        // Outoing
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder) : VoiceBroadcastRecorderPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithoutSenderInfo) : VoiceBroadcastRecorderWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithPaginationTitle) : VoiceBroadcastRecorderWithPaginationTitlePlainCell.class
+    };
+}
 
 @end

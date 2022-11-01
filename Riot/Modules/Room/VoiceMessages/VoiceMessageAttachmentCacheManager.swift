@@ -208,7 +208,8 @@ class VoiceMessageAttachmentCacheManager {
             return
         }
         
-        let newURL = temporaryFilesFolderURL.appendingPathComponent(identifier).appendingPathExtension("m4a")
+        let fileExtension = filePath.hasSuffix(".mp4") ? "mp4" : "m4a"
+        let newURL = temporaryFilesFolderURL.appendingPathComponent(identifier).appendingPathExtension(fileExtension)
         
         let conversionCompletion: (Result<Void, VoiceMessageAudioConverterError>) -> Void = { result in
             self.workQueue.async {

@@ -37,6 +37,7 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
 
 @property (nonatomic, strong) NSString *eventSenderDisplayName;
 @property (nonatomic, assign) RoomInputToolbarViewSendMode sendMode;
+@property (nonatomic, assign) BOOL isEncryptionEnabled;
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView;
 - (CGFloat)toolbarHeight;
 
@@ -80,7 +81,7 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
  `RoomInputToolbarView` instance is a view used to handle all kinds of available inputs
  for a room (message composer, attachments selection...).
  */
-@interface RoomInputToolbarView : MXKRoomInputToolbarView
+@interface RoomInputToolbarView : MXKRoomInputToolbarView<RoomInputToolbarViewProtocol>
 
 /**
  The delegate notified when inputs are ready.

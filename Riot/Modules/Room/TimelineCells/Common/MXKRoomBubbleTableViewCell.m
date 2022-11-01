@@ -237,6 +237,7 @@ static BOOL _disableLongPressGestureOnEvent;
     [tapGesture setDelegate:self];
     [self.messageTextView addGestureRecognizer:tapGesture];
     self.messageTextView.userInteractionEnabled = YES;
+    self.messageTextView.clipsToBounds = NO;
     
     // Recognise and make tappable phone numbers, address, etc.
     self.messageTextView.dataDetectorTypes = UIDataDetectorTypeAll;
@@ -805,7 +806,7 @@ static BOOL _disableLongPressGestureOnEvent;
             mimetype = bubbleData.attachment.contentInfo[@"mimetype"];
         }
         
-        if ([mimetype isEqualToString:@"image/gif"])
+        if ([mimetype isKindOfClass:[NSString class]] && [mimetype isEqualToString:@"image/gif"])
         {
             if (_isAutoAnimatedGif)
             {
