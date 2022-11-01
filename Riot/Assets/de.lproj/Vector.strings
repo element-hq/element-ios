@@ -153,15 +153,15 @@
 "room_two_users_are_typing" = "%@ und %@ tippen…";
 "room_many_users_are_typing" = "%@, %@ und andere tippen…";
 "room_message_placeholder" = "Nachricht senden (unverschlüsselt)…";
-"encrypted_room_message_placeholder" = "Verschlüsselte Nachricht…";
-"room_message_short_placeholder" = "Sende eine Nachricht…";
+"encrypted_room_message_placeholder" = "Verschlüsselte Nachricht senden …";
+"room_message_short_placeholder" = "Nachricht senden …";
 "room_offline_notification" = "Verbindung zum Server wurde unterbrochen.";
-"room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet.";
-"room_unsent_messages_unknown_devices_notification" = "Nachrichten wurden nicht gesendet, da unbekannte Sitzungen vorhanden waren.";
+"room_unsent_messages_notification" = "Senden der Nachrichten fehlgeschlagen.";
+"room_unsent_messages_unknown_devices_notification" = "Senden der Nachrichten aufgrund unbekannter Sitzungen fehlgeschlagen.";
 "room_prompt_resend" = "Alle erneut senden";
-"room_prompt_cancel" = "Alles abbrechen";
+"room_prompt_cancel" = "Alle abbrechen";
 "room_resend_unsent_messages" = "Ungesendete Nachrichten erneut senden";
-"room_delete_unsent_messages" = "Lösche ungesendete Nachrichten";
+"room_delete_unsent_messages" = "Nicht gesendete Nachrichten löschen";
 "room_event_action_copy" = "Kopieren";
 "room_event_action_quote" = "Zitieren";
 "room_event_action_more" = "Mehr";
@@ -301,7 +301,7 @@
 "room_participants_action_unban" = "Entsperren";
 "room_participants_action_set_default_power_level" = "Besondere Berechtigungen entziehen";
 "room_participants_action_start_voice_call" = "Starte Sprach-Anruf";
-"room_ongoing_conference_call" = "Laufender Konferenz-Anruf. Trete bei als %@ oder %@.";
+"room_ongoing_conference_call" = "Laufender Konferenzanruf. Tritt als %@ oder %@ bei.";
 "room_event_action_redact" = "Entfernen";
 "room_warning_about_encryption" = "Ende-zu-Ende-Verschlüsselung ist in Beta und ist evtl. nicht zuverlässig.\n\nMan sollte noch nicht darauf vertrauen, dass die Daten sicher sind.\n\nGeräte werden Nachrichten von vor dem Beitritt des Raumes nicht entschlüsseln können.\n\nVerschlüsselte Nachrichten sind nicht lesbar in Anwendungen, die die Verschlüsselung noch nicht implementiert haben.";
 "unknown_devices_alert" = "Dieser Raum enthält unbekannte Sitzungen, die nicht verifiziert wurden.\nDas bedeutet, es gibt keine Garantie, dass sie den angegebenen Benutzern gehört.\nWir empfehlen eine Überprüfung für jedes Gerät, bevor du weitermachst. Du kannst die Nachricht auch ohne Verifizierung erneut senden.";
@@ -411,14 +411,14 @@
 "auth_home_server_placeholder" = "URL (z.B. https://matrix.org)";
 "auth_identity_server_placeholder" = "URL (z. B. https://vector.im)";
 "room_ongoing_conference_call_close" = "Schließen";
-"room_conference_call_no_power" = "Du brauchst die Berechtigung Konferenzgespräche in diesem Raum zu verwalten";
+"room_conference_call_no_power" = "Du bist nicht berechtigt, Konferenzgespräche in diesem Raum zu verwalten";
 "settings_labs_create_conference_with_jitsi" = "Erstelle Konferenzgespräche mit Jitsi";
 "call_already_displayed" = "Es existiert bereits ein Gespräch.";
 "call_jitsi_error" = "Konferenzgespräch konnte nicht betreten werden.";
 // Widget
 "widget_no_power_to_manage" = "Du brauchst die Berechtigung um Widgets in diesem Raum zu verwalten";
 "widget_creation_failure" = "Widget-Erstellung fehlgeschlagen";
-"room_ongoing_conference_call_with_close" = "Laufendes Konferenzgespräch. Trete mit %@ oder %@ bei. %@ es.";
+"room_ongoing_conference_call_with_close" = "Laufendes Konferenzgespräch. Tritt als %@ oder %@ bei. %@ es.";
 "settings_ui_theme" = "Thema";
 "settings_ui_theme_auto" = "Auto";
 "settings_ui_theme_light" = "Hell";
@@ -436,13 +436,13 @@
 "call_incoming_voice" = "Eingehender Anruf…";
 "call_incoming_video" = "Eingehender Videoanruf…";
 // Widget Integration Manager
-"widget_integration_need_to_be_able_to_invite" = "Du musst Benutzer einladen können um das zu tun.";
+"widget_integration_need_to_be_able_to_invite" = "Du musst Benutzer einladen dürfen, um dies zu tun.";
 "widget_integration_unable_to_create" = "Erstellen des Widgets nicht möglich.";
 "widget_integration_failed_to_send_request" = "Senden der Anfrage fehlgeschlagen.";
 "widget_integration_room_not_recognised" = "Dieser Raum wurde nicht erkannt.";
 "widget_integration_positive_power_level" = "Berechtigungslevel muss eine positive Zahl sein.";
 "widget_integration_must_be_in_room" = "Du bist nicht in diesem Raum.";
-"widget_integration_no_permission_in_room" = "Du hast keine Berechtigung dies in diesem Raum zu tun.";
+"widget_integration_no_permission_in_room" = "Du bist nicht berechtigt, dies in diesem Raum zu tun.";
 "widget_integration_missing_room_id" = "room_id fehlt in der Anfrage.";
 "widget_integration_missing_user_id" = "user_id fehlt in der Anfrage.";
 "widget_integration_room_not_visible" = "Raum %@ ist nicht sichtbar.";
@@ -502,7 +502,7 @@
 // Group rooms
 "group_rooms_filter_rooms" = "Filtere Community-Räume";
 "e2e_room_key_request_message_new_device" = "Du hast die neue Sitzung '%@' hinzugefügt, welche Verschlüsselungs-Schlüssel anfordert.";
-"room_do_not_have_permission_to_post" = "Du hast keine Berechtigung Nachrichten in diesem Raum zu senden";
+"room_do_not_have_permission_to_post" = "Du bist nicht berechtigt, Nachrichten in diesem Raum zu senden";
 "room_event_action_kick_prompt_reason" = "Grund für das Entfernen des Benutzers";
 "room_event_action_ban_prompt_reason" = "Grund für die Verbannung der Person";
 "room_action_send_photo_or_video" = "Foto oder Video senden";
@@ -532,8 +532,8 @@
 "rerequest_keys_alert_title" = "Anfrage gesendet";
 "rerequest_keys_alert_message" = "Bitte %@ auf einem anderen Gerät öffnen, das die Nachricht entschlüsseln kann, damit es die Schlüssel an diese Sitzung senden kann.";
 "room_message_reply_to_placeholder" = "Antwort senden (unverschlüsselt)…";
-"encrypted_room_message_reply_to_placeholder" = "Sende eine verschlüsselte Antwort…";
-"room_message_reply_to_short_placeholder" = "Sende eine Antwort…";
+"encrypted_room_message_reply_to_placeholder" = "Verschlüsselte Antwort senden …";
+"room_message_reply_to_short_placeholder" = "Antwort senden …";
 "room_replacement_information" = "Dieser Raum wurde ersetzt und ist nicht länger aktiv.";
 "room_replacement_link" = "Die Konversation wird hier fortgesetzt.";
 "room_predecessor_information" = "Dieser Raum ist die Fortsetzung einer anderen Konversation.";
@@ -743,8 +743,8 @@
 "room_action_send_file" = "Datei senden";
 "room_message_edits_history_title" = "Bearbeitungsverlauf";
 // Widget
-"widget_no_integrations_server_configured" = "Kein Integrationsserver konfiguriert";
-"widget_integrations_server_failed_to_connect" = "Verbindung zum Integrationsserver fehlgeschlagen";
+"widget_no_integrations_server_configured" = "Kein Integrations-Server konfiguriert";
+"widget_integrations_server_failed_to_connect" = "Verbindung zum Integrations-Server fehlgeschlagen";
 "device_verification_security_advice" = "Für maximale Sicherheit empfehlen wir, dies persönlich zu tun oder ein anderes vertrauenswürdiges Kommunikationsmittel zu verwenden";
 "device_verification_incoming_description_1" = "Überprüfe diese Sitzung, um sie als vertrauenswürdig zu markieren. Sitzungen von Partnern zu vertrauen gibt dir zusätzliche Sicherheit bei der Verwendung von Ende-zu-Ende verschlüsselten Nachrichten.";
 "device_verification_incoming_description_2" = "Wenn du diese Sitzung verifizierst, wird sie für dich und für dein Gegenüber als vertrauenswürdig gekennzeichnet.";
@@ -821,7 +821,7 @@
 "media_type_accessibility_video" = "Video";
 "media_type_accessibility_location" = "Standort";
 "media_type_accessibility_file" = "Datei";
-"media_type_accessibility_sticker" = "Aufkleber";
+"media_type_accessibility_sticker" = "Sticker";
 "settings_identity_server_settings" = "IDENTITÄTSERVER";
 "settings_three_pids_management_information_part1" = "Verwalte hier, mit welchen E-Mail-Adressen oder Telefonnummern du dich anmeldest, oder dein Konto wiederherstellen kannst. Kontrolliere, wer dich finden kann ";
 "settings_three_pids_management_information_part3" = ".";
@@ -902,7 +902,7 @@
 "room_participants_security_loading" = "Lade…";
 "room_participants_security_information_room_not_encrypted" = "Nachrichten in diesem Raum sind nicht Ende-zu-Ende verschlüsselt.";
 "settings_security" = "SICHERHEIT";
-"settings_integrations_allow_description" = "Benutze einen Integrationsmanager (%@), um Bots, Bridges, Widgets und Aufkleberpakete zu verwalten.\n\nIntegrationsmanager erhalten Konfigurationsdaten und können Widgets verändern, Raum-Einladungen versenden sowie Berechtigungen in deinem Namen einstellen.";
+"settings_integrations_allow_description" = "Nutze einen Integrationsassistenten (%@), um Bots, Brücken, Widgets und Sticker-Pakete zu verwalten.\n\nIntegrationsassistenten erhalten Konfigurationsdaten und können Widgets verändern, Raumeinladungen versenden sowie Berechtigungen in deinem Namen einstellen.";
 "settings_labs_enable_cross_signing" = "Aktiviere Cross-Signing, um deinen Gesprächspartner anstatt dessen Gerät zu verifizieren (in Entwicklung)";
 // Security settings
 "security_settings_title" = "Sicherheit";
@@ -1301,8 +1301,8 @@
 "settings_show_NSFW_public_rooms" = "Öffentliche Räume mit anstößigen Inhalte anzeigen";
 "room_open_dialpad" = "Wähltastatur";
 "room_place_voice_call" = "Sprachanruf";
-"room_unsent_messages_cancel_message" = "Bist du dir sicher alle nicht gesendete Nachrichten in diesem Raum zu löschen?";
-"room_unsent_messages_cancel_title" = "Lösche nicht gesendete Nachrichten";
+"room_unsent_messages_cancel_message" = "Bist du dir sicher, dass du alle nicht gesendeten Nachrichten in diesem Raum löschen möchtest?";
+"room_unsent_messages_cancel_title" = "Nicht gesendete Nachrichten löschen";
 "callbar_return" = "Zurück";
 "callbar_only_multiple_paused" = "%@ pausierte Anrufe";
 "callbar_only_single_paused" = "Pausierter Anruf";
@@ -1483,7 +1483,7 @@
 
 // Alert explaining what an identity server / integration manager is.
 "service_terms_modal_information_title_identity_server" = "Indentitätsserver";
-"service_terms_modal_description_integration_manager" = "Das erlaubt dir Bots, Bridges und Stickerpacks zu verwenden.";
+"service_terms_modal_description_integration_manager" = "Dies wird dir die Verwendung von Bots, Brücken und Sticker-Paketen ermöglichen.";
 "service_terms_modal_description_identity_server" = "Dies erlaubt Personen, die deine Telefonnummer oder E-Mail in ihren Kontakten hat, dich zu finden.";
 "service_terms_modal_table_header_identity_server" = "NUTZUNGSBEDINGUNGEN IDENTITÄTSSERVER";
 "service_terms_modal_table_header_integration_manager" = "NUTZUNGSBEDINGUNGEN INTEGRATIONSMANAGER";
@@ -1506,12 +1506,12 @@
 "poll_edit_form_add_option" = "Option hinzufügen";
 "poll_edit_form_option_number" = "Option %lu";
 "poll_edit_form_question_or_topic" = "Frage oder Thematik";
-"room_event_action_end_poll" = "Umfrage beenden";
-"room_event_action_remove_poll" = "Umfrage entfernen";
+"room_event_action_end_poll" = "Abstimmung beenden";
+"room_event_action_remove_poll" = "Abstimmung entfernen";
 
 // Mark: - Polls
 
-"poll_edit_form_create_poll" = "Umfrage erstellen";
+"poll_edit_form_create_poll" = "Abstimmung erstellen";
 "settings_labs_enabled_polls" = "Umfragen";
 "share_extension_send_now" = "Jetzt senden";
 "accessibility_button_label" = "Knopf";
@@ -1538,7 +1538,7 @@
 "poll_edit_form_poll_question_or_topic" = "Frage oder Thema der Umfrage";
 "poll_edit_form_input_placeholder" = "Schreib etwas";
 "analytics_prompt_terms_link_upgrade" = "hier";
-"poll_timeline_not_closed_title" = "Fehler beim Beenden der Abstimmung";
+"poll_timeline_not_closed_title" = "Beenden der Abstimmung fehlgeschlagen";
 "poll_timeline_vote_not_registered_subtitle" = "Wir konnten deine Stimme leider nicht erfassen. Versuche es bitte erneut";
 "poll_timeline_total_final_results" = "Es wurden %lu Stimmen abgegeben";
 "poll_timeline_total_final_results_one_vote" = "Es wurde 1 Stimme abgegeben";
@@ -1547,7 +1547,7 @@
 "poll_timeline_not_closed_subtitle" = "Versuche es bitte erneut";
 "poll_timeline_vote_not_registered_title" = "Stimme nicht erfasst";
 "poll_edit_form_post_failure_subtitle" = "Versuche es bitte erneut";
-"poll_edit_form_post_failure_title" = "Fehler beim Senden der Abstimmung";
+"poll_edit_form_post_failure_title" = "Absenden der Abstimmung fehlgeschlagen";
 "share_extension_low_quality_video_message" = "Für eine bessere Qualität sende es in %@ oder sende es in niedriger Qualität.";
 "share_extension_low_quality_video_title" = "Das Video wird in niedriger Qualität gesendet werden";
 "analytics_prompt_stop" = "Teilen beenden";
@@ -1588,11 +1588,11 @@
 "onboarding_splash_register_button_title" = "Konto erstellen";
 "settings_enable_room_message_bubbles" = "Nachrichtenblasen";
 "poll_edit_form_update_failure_subtitle" = "Bitte erneut versuchen";
-"poll_edit_form_poll_type" = "Umfragetyp";
-"poll_edit_form_poll_type_closed_description" = "Ergebnisse werden erst angezeigt, wenn du die Umfrage beendest";
-"poll_edit_form_poll_type_closed" = "Geschlossene Umfrage";
-"poll_edit_form_poll_type_open_description" = "Ergebnisse werden direkt nach Stimmabgabe angezeigt";
-"poll_edit_form_poll_type_open" = "Offene Umfrage";
+"poll_edit_form_poll_type" = "Abstimmungsart";
+"poll_edit_form_poll_type_closed_description" = "Die Ergebnisse werden erst sichtbar, sobald du die Umfrage beendest";
+"poll_edit_form_poll_type_closed" = "Abgeschlossene Abstimmung";
+"poll_edit_form_poll_type_open_description" = "Abstimmende können die Ergebnisse nach Stimmabgabe sehen";
+"poll_edit_form_poll_type_open" = "Laufende Abstimmung";
 "poll_edit_form_update_failure_title" = "Aktualisierung der Umfrage fehlgeschlagen";
 "threads_empty_tip" = "Hinweis: Tippe auf eine Nachricht und wähle „Thread“ um einen neuen zu starten.";
 "threads_empty_info_my" = "Antworte auf einen laufenden Thread oder tippe auf eine Nachricht und wähle „Thread“ um einen neuen zu starten.";
@@ -1766,7 +1766,7 @@
 "notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ hat den zukünftigen Verlauf für alle Raumteilnehmer ab deren Einladung sichtbar gemacht.";
 "notice_crypto_unable_to_decrypt" = "** Entschlüsselung nicht möglich: %@ **";
 "notice_crypto_error_unknown_inbound_session_id" = "Die absendende Sitzung hat uns keine Schlüssel für diese Nachricht gesendet.";
-"notice_sticker" = "Aufkleber";
+"notice_sticker" = "Sticker";
 "notice_in_reply_to" = "Als Antwort auf";
 // room display name
 "room_displayname_empty_room" = "Leerer Raum";
@@ -2365,7 +2365,7 @@
 "spaces_explore_rooms_room_number" = "%@ Räume";
 "spaces_create_space_title" = "Einen Space erstellen";
 "spaces_add_space_title" = "Space erstellen";
-"space_invite_not_enough_permission" = "Du hast keine Berechtigung, Personen zu diesem Space einzuladen";
+"space_invite_not_enough_permission" = "Du hast keine Berechtigung, Personen in diesen Space einzuladen";
 "room_invite_not_enough_permission" = "Du hast keine Berechtigung, Personen zu diesem Raum einzuladen";
 "room_invite_to_room_option_detail" = "Sie werden kein Teil von %@ sein.";
 "room_invite_to_room_option_title" = "Nur zu diesem Raum";
