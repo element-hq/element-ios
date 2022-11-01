@@ -5918,17 +5918,13 @@ static CGSize kThreadListBarButtonItemImageSize;
             {
                 if (self.roomDataSource.room)
                 {
-                    // Retrieve the unread messages count
-                    NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
+                    // Retrieve the unread messages count on the current thread
+                    NSUInteger unreadCount = [self.mainSession.store
+                                              localUnreadEventCount:self.roomDataSource.room.roomId
+                                              threadId:self.roomDataSource.threadId ?: kMXEventTimelineMain
+                                              withTypeIn:self.mainSession.unreadEventTypes];
                     
-                    if (!self.roomDataSource.threadId)
-                    {
-                        self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
-                    }
-                    else
-                    {
-                        self.scrollToBottomBadgeLabel.text = nil;
-                    }
+                    self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
                     self.scrollToBottomHidden = NO;
                 }
                 else

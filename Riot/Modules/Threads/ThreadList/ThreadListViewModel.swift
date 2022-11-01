@@ -210,7 +210,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         return eventFormatter.attributedString(from: message.replyStrippedVersion,
                                                with: roomState,
                                                andLatestRoomState: nil,
-                                               error: formatterError).vc_byRemovingLinks
+                                               error: formatterError)?.vc_byRemovingLinks
     }
     
     private func lastMessageTextAndTime(forThread thread: MXThreadProtocol) -> (NSAttributedString?, String?) {
