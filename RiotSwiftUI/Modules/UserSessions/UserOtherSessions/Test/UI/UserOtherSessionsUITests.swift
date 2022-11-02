@@ -100,8 +100,8 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         XCTAssertFalse(signOutButton.isEnabled)
         let sessionListItem = app.buttons["UserSessionListItem_0"]
         sessionListItem.tap()
-        XCTAssertTrue(singOutButton.isEnabled)
+        XCTAssertTrue(signOutButton.isEnabled)
         sessionListItem.tap()
-        XCTAssertFalse(singOutButton.isEnabled)
+        XCTAssertFalse(signOutButton.isEnabled)
     }
 }
