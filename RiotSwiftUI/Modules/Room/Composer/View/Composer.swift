@@ -25,7 +25,6 @@ struct Composer: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    @State private var focused = false
     @State private var isActionButtonShowing = false
     
     private let horizontalPadding: CGFloat = 12
@@ -60,7 +59,7 @@ struct Composer: View {
     }
     
     private var borderColor: Color {
-        focused ? theme.colors.quarterlyContent : theme.colors.quinaryContent
+        viewModel.focused ? theme.colors.quarterlyContent : theme.colors.quinaryContent
     }
     
     private var formatItems: [FormatItem] {
@@ -111,7 +110,7 @@ struct Composer: View {
                 }
                 HStack(alignment: .top, spacing: 0) {
                     WysiwygComposerView(
-                        focused: $focused,
+                        focused: $viewModel.focused,
                         viewModel: wysiwygViewModel
                     )
                     .tintColor(theme.colors.accent)
@@ -142,8 +141,8 @@ struct Composer: View {
             .padding(.horizontal, horizontalPadding)
             .padding(.top, 8)
             .onTapGesture {
-                if !focused {
-                    focused = true
+                if viewModel.focused {
+                    viewModel.focused = true
                 }
             }
             HStack(spacing: 0) {
