@@ -2842,3 +2842,4 @@
 "deselect_all" = "Скасувати вибір усіх";
 "user_other_session_menu_select_sessions" = "Вибрати сеанси";
 "user_other_session_selected_count" = "Вибрано %@";
+"user_other_session_menu_sign_out_sessions" = "Вийти з %@ сеансів";
