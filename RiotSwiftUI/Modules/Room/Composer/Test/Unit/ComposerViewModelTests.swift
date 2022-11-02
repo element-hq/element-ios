@@ -23,7 +23,7 @@ final class ComposerViewModelTests: XCTestCase {
     var context: ComposerViewModel.Context!
     
     override func setUpWithError() throws {
-        viewModel = ComposerViewModel(initialViewState: ComposerViewState())
+        viewModel = ComposerViewModel(initialViewState: ComposerViewState(bindings: ComposerBindings(focused: false)))
         context = viewModel.context
     }
     
@@ -68,5 +68,11 @@ final class ComposerViewModelTests: XCTestCase {
         XCTAssert(context.viewState.placeholder == nil)
         viewModel.placeholder = "Placeholder Test"
         XCTAssert(context.viewState.placeholder == "Placeholder Test")
+    }
+    
+    func testDimissKeyboard() {
+        viewModel.state.bindings.focused = true
+        viewModel.dismissKeyboard()
+        XCTAssert(context.viewState.bindings.focused == false)
     }
 }

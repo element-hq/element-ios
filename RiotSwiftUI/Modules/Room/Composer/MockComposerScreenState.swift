@@ -29,11 +29,12 @@ enum MockComposerScreenState: MockScreenState, CaseIterable {
     
     var screenView: ([Any], AnyView) {
         let viewModel: ComposerViewModel
+        let bindings = ComposerBindings(focused: false)
         
         switch self {
-        case .send: viewModel = ComposerViewModel(initialViewState: ComposerViewState())
-        case .edit: viewModel = ComposerViewModel(initialViewState: ComposerViewState(sendMode: .edit))
-        case .reply: viewModel = ComposerViewModel(initialViewState: ComposerViewState(eventSenderDisplayName: "TestUser", sendMode: .reply))
+        case .send: viewModel = ComposerViewModel(initialViewState: ComposerViewState(bindings: bindings))
+        case .edit: viewModel = ComposerViewModel(initialViewState: ComposerViewState(sendMode: .edit, bindings: bindings))
+        case .reply: viewModel = ComposerViewModel(initialViewState: ComposerViewState(eventSenderDisplayName: "TestUser", sendMode: .reply, bindings: bindings))
         }
         
         let wysiwygviewModel = WysiwygComposerViewModel(minHeight: 20, maxHeight: 360)
