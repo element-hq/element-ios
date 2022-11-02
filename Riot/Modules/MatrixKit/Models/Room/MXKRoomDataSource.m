@@ -2365,7 +2365,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             MXKRoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
             if (cellData)
             {
-                if (readThreadIds[i] == [NSNull null])
+                if ([readThreadIds[i] isEqualToString:kMXEventUnthreaded])
                 {
                     // Unthreaded RR must be propagated through all threads.
                     [self.mxSession.threadingService allThreadsInRoomWithId:self.roomId onlyParticipated:NO completion:^(NSArray<id<MXThreadProtocol>> *threads) {
