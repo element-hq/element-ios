@@ -2840,3 +2840,4 @@
 "deselect_all" = "Zrušiť výber všetkých";
 "user_other_session_selected_count" = "%@ vybratých";
 "user_other_session_menu_select_sessions" = "Vyberte relácie";
+"user_other_session_menu_sign_out_sessions" = "Odhlásiť sa z %@ relácií";
