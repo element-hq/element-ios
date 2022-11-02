@@ -77,6 +77,7 @@ struct Composer: View {
     
     @ObservedObject var viewModel: ComposerViewModelType.Context
     @ObservedObject var wysiwygViewModel: WysiwygComposerViewModel
+    let resizeAnimationDuration: Double
     
     let sendMessageAction: (WysiwygComposerContent) -> Void
     let showSendMediaActions: () -> Void
@@ -138,7 +139,7 @@ struct Composer: View {
             }
             .clipShape(rect)
             .overlay(rect.stroke(borderColor, lineWidth: 1))
-            .animation(.easeInOut(duration: 0.1), value: wysiwygViewModel.idealHeight)
+            .animation(.easeInOut(duration: resizeAnimationDuration), value: wysiwygViewModel.idealHeight)
             .padding(.horizontal, horizontalPadding)
             .padding(.top, 8)
             .onTapGesture {

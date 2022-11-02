@@ -54,7 +54,11 @@ enum MockComposerScreenState: MockScreenState, CaseIterable {
             [viewModel, wysiwygviewModel],
             AnyView(VStack {
                 Spacer()
-                Composer(viewModel: viewModel.context, wysiwygViewModel: wysiwygviewModel, sendMessageAction: { _ in }, showSendMediaActions: { })
+                Composer(viewModel: viewModel.context,
+                         wysiwygViewModel: wysiwygviewModel,
+                         resizeAnimationDuration: 0.1,
+                         sendMessageAction: { _ in },
+                         showSendMediaActions: { })
             }.frame(
                 minWidth: 0,
                 maxWidth: .infinity,

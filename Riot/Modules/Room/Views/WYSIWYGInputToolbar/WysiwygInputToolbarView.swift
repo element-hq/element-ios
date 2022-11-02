@@ -69,8 +69,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
         
-        let composer = Composer(viewModel: viewModel.context,
+        let composer = Composer(
+            viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
+            resizeAnimationDuration: Double(kResizeComposerAnimationDuration),
             sendMessageAction: { [weak self] content in
             guard let self = self else { return }
             self.sendWysiwygMessage(content: content)
