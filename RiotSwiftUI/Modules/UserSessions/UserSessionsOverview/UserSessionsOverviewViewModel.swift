@@ -33,6 +33,14 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         }
         .store(in: &cancellables)
         
+        NotificationCenter.default
+            .publisher(for: .userDefaultValueUpdated)
+            .compactMap { $0.object as? String }
+            .filter { $0 == RiotSettings.UserDefaultsKeys.showIPAddressesInSessionsManager }
+            .map { _ in RiotSettings.shared.showIPAddressesInSessionsManager }
+            .weakAssign(to: \.state.showLocationInfo, on: self)
+            .store(in: &cancellables)
+        
         updateViewState(with: userSessionsOverviewService.overviewDataPublisher.value)
     }
     

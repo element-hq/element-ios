@@ -95,6 +95,9 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
             completion?(.renameSession(sessionInfo))
         case .logoutOfSession:
             completion?(.logoutOfSession(sessionInfo))
+        case .showLocationInfo:
+            RiotSettings.shared.showIPAddressesInSessionsManager.toggle()
+            state.showLocationInfo = RiotSettings.shared.showIPAddressesInSessionsManager
         }
     }
 }

@@ -36,17 +36,13 @@ enum UserSessionOverviewViewModelResult: Equatable {
 
 // MARK: View
 
-struct UserSessionOverviewViewBindings {
-    var showLocationInfo = false
-}
-
 struct UserSessionOverviewViewState: BindableState {
     var cardViewData: UserSessionCardViewData
     let isCurrentSession: Bool
     var isPusherEnabled: Bool?
     var remotelyTogglingPushersAvailable: Bool
     var showLoadingIndicator: Bool
-    var bindings: UserSessionOverviewViewBindings = .init()
+    var showLocationInfo = RiotSettings.shared.showIPAddressesInSessionsManager
 }
 
 enum UserSessionOverviewViewAction {
@@ -55,4 +51,5 @@ enum UserSessionOverviewViewAction {
     case togglePushNotifications
     case renameSession
     case logoutOfSession
+    case showLocationInfo
 }

@@ -23,12 +23,15 @@ struct UserSessionOverview: View {
     
     var body: some View {
         ScrollView {
-            UserSessionCardView(viewData: viewModel.viewState.cardViewData, onVerifyAction: { _ in
-                viewModel.send(viewAction: .verifySession)
-            },
-            onViewDetailsAction: { _ in
-                viewModel.send(viewAction: .viewSessionDetails)
-            }, showLocationInformations: viewModel.showLocationInfo)
+            UserSessionCardView(
+                viewData: viewModel.viewState.cardViewData, onVerifyAction: { _ in
+                    viewModel.send(viewAction: .verifySession)
+                },
+                onViewDetailsAction: { _ in
+                    viewModel.send(viewAction: .viewSessionDetails)
+                },
+                showLocationInformations: viewModel.viewState.showLocationInfo
+            )
             .padding(16)
             SwiftUI.Section {
                 UserSessionOverviewItem(title: VectorL10n.userSessionOverviewSessionDetailsButtonTitle,
@@ -71,9 +74,9 @@ struct UserSessionOverview: View {
                         
                         if viewModel.viewState.isCurrentSession == false {
                             Button {
-                                viewModel.showLocationInfo.toggle()
+                                viewModel.send(viewAction: .showLocationInfo)
                             } label: {
-                                Label(showLocationInfo: viewModel.showLocationInfo)
+                                Label(showLocationInfo: viewModel.viewState.showLocationInfo)
                             }
                         }
                     }
