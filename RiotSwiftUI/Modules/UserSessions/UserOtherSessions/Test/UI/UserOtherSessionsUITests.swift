@@ -64,9 +64,9 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         
         app.buttons["More"].tap()
         app.buttons["Select sessions"].tap()
-        let singOutButton = app.buttons["Sign out"]
-        XCTAssertTrue(singOutButton.exists)
-        XCTAssertFalse(singOutButton.isEnabled)
+        let signOutButton = app.buttons["Sign out"]
+        XCTAssertTrue(signOutButton.exists)
+        XCTAssertFalse(signOutButton.isEnabled)
         XCTAssertTrue(app.buttons["Select All"].exists)
         XCTAssertTrue(app.buttons["Cancel"].exists)
     }
