@@ -42,7 +42,7 @@ struct UserSessionOverviewViewState: BindableState {
     var isPusherEnabled: Bool?
     var remotelyTogglingPushersAvailable: Bool
     var showLoadingIndicator: Bool
-    var showLocationInfo = RiotSettings.shared.showIPAddressesInSessionsManager
+    var showLocationInfo: Bool
 }
 
 enum UserSessionOverviewViewAction {

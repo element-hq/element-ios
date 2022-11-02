@@ -22,13 +22,15 @@ typealias UserSessionOverviewViewModelType = StateStoreViewModel<UserSessionOver
 class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessionOverviewViewModelProtocol {
     private let sessionInfo: UserSessionInfo
     private let service: UserSessionOverviewServiceProtocol
-    
+    private let settingService: UserSessionSettingsProtocol
+
     var completion: ((UserSessionOverviewViewModelResult) -> Void)?
     
     // MARK: - Setup
     
     init(sessionInfo: UserSessionInfo,
          service: UserSessionOverviewServiceProtocol,
+         settingsService: UserSessionSettingsProtocol,
          sessionsOverviewDataPublisher: CurrentValueSubject<UserSessionsOverviewData, Never> = .init(.init(currentSession: nil,
                                                                                                            unverifiedSessions: [],
                                                                                                            inactiveSessions: [],
@@ -36,13 +38,15 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
                                                                                                            linkDeviceEnabled: false))) {
         self.sessionInfo = sessionInfo
         self.service = service
+        self.settingService = settingsService
         
         let cardViewData = UserSessionCardViewData(sessionInfo: sessionInfo)
         let state = UserSessionOverviewViewState(cardViewData: cardViewData,
                                                  isCurrentSession: sessionInfo.isCurrent,
                                                  isPusherEnabled: service.pusherEnabledSubject.value,
                                                  remotelyTogglingPushersAvailable: service.remotelyTogglingPushersAvailableSubject.value,
-                                                 showLoadingIndicator: false)
+                                                 showLoadingIndicator: false,
+                                                 showLocationInfo: settingsService.showIPAddressesInSessionsManager)
         super.init(initialViewState: state)
         
         startObservingService()
@@ -96,8 +100,8 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
         case .logoutOfSession:
             completion?(.logoutOfSession(sessionInfo))
         case .showLocationInfo:
-            RiotSettings.shared.showIPAddressesInSessionsManager.toggle()
-            state.showLocationInfo = RiotSettings.shared.showIPAddressesInSessionsManager
+            settingService.showIPAddressesInSessionsManager.toggle()
+            state.showLocationInfo = settingService.showIPAddressesInSessionsManager
         }
     }
 }
