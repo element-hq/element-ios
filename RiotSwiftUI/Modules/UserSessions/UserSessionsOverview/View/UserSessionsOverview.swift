@@ -136,13 +136,29 @@ struct UserSessionsOverview: View {
                 }
             }
         } label: {
-            Image(systemName: "ellipsis")
-                .foregroundColor(theme.colors.secondaryContent)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 12)
+            menuImage
         }
         .accessibilityIdentifier("MoreOptionsMenu")
         .offset(x: 8) // Re-align the symbol after applying padding.
+    }
+    
+    private var otherSessionsMenu: some View {
+        Menu {
+            Button { viewModel.send(viewAction: .viewOtherSessionsLocation) } label: {
+                let text = viewModel.viewState.showLocationInfo ? VectorL10n.userSessionsHideLocationInfo : VectorL10n.userSessionsShowLocationInfo
+                let image = viewModel.viewState.showLocationInfo ? "eye.slash" : "eye"
+                Label(text, systemImage: image)
+            }
+        } label: {
+            menuImage
+        }
+    }
+    
+    private var menuImage: some View {
+        Image(systemName: "ellipsis")
+            .foregroundColor(theme.colors.secondaryContent)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 12)
     }
     
     private var otherSessionsSection: some View {
@@ -150,7 +166,7 @@ struct UserSessionsOverview: View {
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.viewState.otherSessionsViewData.prefix(maxOtherSessionsToDisplay)) { viewData in
                     UserSessionListItem(viewData: viewData,
-                                        showsLocationInfo: false,
+                                        showsLocationInfo: viewModel.viewState.showLocationInfo,
                                         isSeparatorHidden: viewData == viewModel.viewState.otherSessionsViewData.last,
                                         onBackgroundTap: { sessionId in viewModel.send(viewAction: .tapUserSession(sessionId)) })
                 }
