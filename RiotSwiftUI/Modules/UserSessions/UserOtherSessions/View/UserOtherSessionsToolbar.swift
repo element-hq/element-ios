@@ -91,9 +91,7 @@ struct UserOtherSessionsToolbar: ToolbarContent {
                 Button {
                     isShowLocationEnabled.toggle()
                 } label: {
-                    let text = isShowLocationEnabled ? VectorL10n.userSessionsHideLocationInfo : VectorL10n.userSessionsShowLocationInfo
-                    let image = isShowLocationEnabled ? "eye.slash" : "eye"
-                    Label(text, systemImage: image)
+                    Label(showLocationInfo: isShowLocationEnabled)
                 }
                 
                 if sessionCount > 0 {

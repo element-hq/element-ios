@@ -70,10 +70,10 @@ struct UserSessionOverview: View {
                         .accessibilityIdentifier(VectorL10n.manageSessionRename)
                         
                         if viewModel.viewState.isCurrentSession == false {
-                            Button { viewModel.showLocationInfo.toggle() } label: {
-                                let text = viewModel.showLocationInfo ? VectorL10n.userSessionsHideLocationInfo : VectorL10n.userSessionsShowLocationInfo
-                                let image = viewModel.showLocationInfo ? "eye.slash" : "eye"
-                                Label(text, systemImage: image)
+                            Button {
+                                viewModel.showLocationInfo.toggle()
+                            } label: {
+                                Label(showLocationInfo: viewModel.showLocationInfo)
                             }
                         }
                     }

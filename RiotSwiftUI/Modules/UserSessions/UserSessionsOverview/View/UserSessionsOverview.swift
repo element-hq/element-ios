@@ -147,9 +147,7 @@ struct UserSessionsOverview: View {
             Button {
                 viewModel.showLocationInfo.toggle()
             } label: {
-                let text = viewModel.showLocationInfo ? VectorL10n.userSessionsHideLocationInfo : VectorL10n.userSessionsShowLocationInfo
-                let image = viewModel.showLocationInfo ? "eye.slash" : "eye"
-                Label(text, systemImage: image)
+                Label(showLocationInfo: viewModel.showLocationInfo)
             }
             
             signOutButton
