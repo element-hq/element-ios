@@ -36,7 +36,8 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                                                                 sessionItems: sessionItems,
                                                                 header: filter.userOtherSessionsViewHeader,
                                                                 emptyItemsTitle: filter.userOtherSessionsViewEmptyResultsTitle,
-                                                                allItemsSelected: false))
+                                                                allItemsSelected: false,
+                                                                enableSignOutButton: false))
     }
     
     // MARK: - Public
@@ -61,6 +62,14 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         case .toggleAllSelection:
             toggleAllSelection()
             updateViewState()
+        case .logoutAllUserSessions:
+            let filteredSessions = state.bindings.filter.filterSessionsInfos(sessionInfos)
+            completion?(.logoutFromUserSessions(sessionInfos: filteredSessions))
+        case .logoutSelectedUserSessions:
+            let selectedSessionInfos = sessionInfos.filter { sessionInfo in
+                selectedSessions.contains(sessionInfo.id)
+            }
+            completion?(.logoutFromUserSessions(sessionInfos: selectedSessionInfos))
         }
     }
 
@@ -97,6 +106,8 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         state.emptyItemsTitle = currentFilter.userOtherSessionsViewEmptyResultsTitle
         
         state.allItemsSelected = sessionInfos.count == selectedSessions.count
+        
+        state.enableSignOutButton = selectedSessions.count > 0
     }
     
     private func toggleAllSelection() {
@@ -162,7 +173,6 @@ private extension UserOtherSessionsFilter {
         filterSessionsInfos(sessionInfos)
             .map {
                 UserSessionListItemViewDataFactory().create(from: $0,
-                                                            highlightSessionDetails: self == .unverified && $0.isCurrent,
                                                             isSelected: selectedSessions.contains($0.id))
             }
     }

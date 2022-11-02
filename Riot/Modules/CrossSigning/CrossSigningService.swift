@@ -78,7 +78,7 @@ final class CrossSigningService: NSObject {
     
     func setupCrossSigningRequest() -> AuthenticatedEndpointRequest {
         let path = "\(kMXAPIPrefixPathUnstable)/keys/device_signing/upload"
-        return AuthenticatedEndpointRequest(path: path, httpMethod: "POST")
+        return AuthenticatedEndpointRequest(path: path, httpMethod: "POST", params: [:])
     }
     
     /// Setup cross-signing without authentication. Useful when a grace period is enabled.

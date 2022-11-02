@@ -71,12 +71,18 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
                 self.showUserSessionOverview(sessionInfo: sessionInfo)
             case .linkDevice:
                 self.completion?(.linkDevice)
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
+                self.completion?(.logoutFromUserSessions(sessionInfos: sessionInfos))
             }
         }
     }
     
     func toPresentable() -> UIViewController {
         hostingViewController
+    }
+    
+    func refreshData() {
+        viewModel.context.send(viewAction: .viewAppeared)
     }
     
     // MARK: - Private
