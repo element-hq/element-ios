@@ -24,21 +24,19 @@ struct UserSessionsOverview: View {
     private let maxOtherSessionsToDisplay = 5
     
     var body: some View {
-        GeometryReader { _ in
-            VStack(alignment: .leading, spacing: 0) {
-                ScrollView {
-                    if hasSecurityRecommendations {
-                        securityRecommendationsSection
-                    }
-
-                    currentSessionsSection
-
-                    if !viewModel.viewState.otherSessionsViewData.isEmpty {
-                        otherSessionsSection
-                    }
+        VStack(alignment: .leading, spacing: 0) {
+            ScrollView {
+                if hasSecurityRecommendations {
+                    securityRecommendationsSection
                 }
-                .readableFrame()
+                
+                currentSessionsSection
+                
+                if !viewModel.viewState.otherSessionsViewData.isEmpty {
+                    otherSessionsSection
+                }
             }
+            .readableFrame()
         }
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
