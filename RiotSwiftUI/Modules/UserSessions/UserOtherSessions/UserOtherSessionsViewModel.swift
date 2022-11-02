@@ -70,6 +70,9 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                 selectedSessions.contains(sessionInfo.id)
             }
             completion?(.logoutFromUserSessions(sessionInfos: selectedSessionInfos))
+        case .showLocationInfo:
+            RiotSettings.shared.showIPAddressesInSessionsManager.toggle()
+            state.showLocationInfo = RiotSettings.shared.showIPAddressesInSessionsManager
         }
     }
 

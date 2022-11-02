@@ -40,12 +40,12 @@ struct UserOtherSessionsViewState: BindableState, Equatable {
     var emptyItemsTitle: String
     var allItemsSelected: Bool
     var enableSignOutButton: Bool
+    var showLocationInfo: Bool = RiotSettings.shared.showIPAddressesInSessionsManager
 }
 
 struct UserOtherSessionsBindings: Equatable {
     var filter: UserOtherSessionsFilter
     var isEditModeEnabled: Bool
-    var showLocationInfo = false
 }
 
 enum UserOtherSessionsViewAction {
@@ -56,4 +56,5 @@ enum UserOtherSessionsViewAction {
     case toggleAllSelection
     case logoutAllUserSessions
     case logoutSelectedUserSessions
+    case showLocationInfo
 }
