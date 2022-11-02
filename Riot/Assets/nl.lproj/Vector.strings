@@ -2463,7 +2463,7 @@
 "room_access_settings_screen_upgrade_alert_note" = "Houd er rekening mee dat bij het upgraden een nieuwe versie van de kamer wordt gemaakt. Alle huidige berichten blijven in deze gearchiveerde ruimte.";
 "room_access_settings_screen_upgrade_alert_message_no_param" = "Iedereen in een bovenliggende space kan deze ruimte vinden en er lid van worden. Het is niet nodig om iedereen handmatig uit te nodigen. U kunt dit op elk moment wijzigen in de kamerinstellingen.";
 "room_access_settings_screen_upgrade_alert_message" = "Iedereen in %@ kan deze ruimte vinden en er lid van worden - het is niet nodig om iedereen handmatig uit te nodigen. U kunt dit op elk moment wijzigen in de kamerinstellingen.";
-"settings_presence_offline_mode_description" = "Indien ingeschakeld, verschijnt u altijd offline voor andere personen, zelfs wanneer u de applicatie gebruikt.";
+"settings_presence_offline_mode_description" = "Indien ingeschakeld, verschijnt u altijd offline voor andere personen, zelfs wanneer u de toepassing gebruikt.";
 "settings_presence_offline_mode" = "Offline modus";
 "settings_presence" = "Aanwezigheid";
 "threads_discourage_information_2" = "\n\nWilt u toch threads inschakelen?";
@@ -2652,3 +2652,156 @@
 // User sessions management
 "user_sessions_settings" = "Beheer sessies";
 "invite_to" = "Uitnodigen %@";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "De authenticiteit van dit versleutelde bericht kan niet worden gegarandeerd op dit apparaat.";
+"deselect_all" = "Deselecteer alles";
+"wysiwyg_composer_format_action_strikethrough" = "Onderstrepen formaat toepassen";
+"wysiwyg_composer_format_action_underline" = "Doorstrepen formaat toepassen";
+"wysiwyg_composer_format_action_italic" = "Cursief formaat toepassen";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Vet formaat toepassen";
+"wysiwyg_composer_start_action_voice_broadcast" = "Spraakuitzending";
+"wysiwyg_composer_start_action_text_formatting" = "Tekst opmaak";
+"wysiwyg_composer_start_action_camera" = "Camera";
+"wysiwyg_composer_start_action_location" = "Locatie";
+"wysiwyg_composer_start_action_polls" = "Peilingen";
+"wysiwyg_composer_start_action_attachments" = "Bijlagen";
+"wysiwyg_composer_start_action_stickers" = "Stikkers";
+
+
+// Mark: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Fotobibliotheek";
+"user_session_overview_session_details_button_title" = "Sessie details";
+"user_session_overview_session_title" = "Sessie";
+"user_session_overview_current_session_title" = "Huidige sessie";
+"user_session_details_application_url" = "URL";
+"user_session_details_application_version" = "Versie";
+"user_session_details_application_name" = "Naam";
+"user_session_details_device_os" = "Besturingssysteem";
+"user_session_details_device_browser" = "Browser";
+"user_session_details_device_model" = "Model";
+"user_session_details_device_ip_location" = "IP locatie";
+"user_session_details_device_ip_address" = "IP adres";
+"user_session_details_last_activity" = "Laatste activiteit";
+"user_session_details_session_section_footer" = "Kopieer alle gegevens door erop te tikken en ingedrukt te houden.";
+"user_session_details_session_id" = "Sessie ID";
+"user_session_details_session_name" = "Sessie naam";
+"user_session_details_device_section_header" = "Apparaat";
+"device_name_unknown" = "Onbekende toepassing";
+"settings_labs_enable_new_app_layout" = "Nieuwe toepassing-indeling";
+"settings_labs_enable_new_client_info_feature" = "Noteer de naam, versie en url van de toepassing om sessies gemakkelijker te herkennen in sessiebeheer";
+"user_session_details_application_section_header" = "Toepassing";
+"user_session_details_session_section_header" = "Sessie";
+"user_session_details_title" = "Toon details";
+"device_type_name_unknown" = "Onbekend";
+"device_type_name_mobile" = "Mobiel";
+"device_type_name_web" = "Web";
+"device_type_name_desktop" = "Desktop";
+"device_name_mobile" = "%@ Mobiel";
+"device_name_web" = "%@ Web";
+"device_name_desktop" = "%@ Desktop";
+"user_inactive_session_item_with_date" = "Meer dan 90 dagen inactief (%@)";
+"user_inactive_session_item" = "90+ dagen inactief";
+"user_session_item_details_last_activity" = "Laatste activiteit %@";
+
+/* %1$@ will be the verification state and %2$@ will be user_session_item_details_verification_unknown or user_other_session_current_session_details */
+"user_session_item_details" = "%1$@ · %2$@";
+// First item is client name and second item is session display name
+"user_session_name" = "%@: %@";
+"user_other_session_menu_select_sessions" = "Selecteer sessies";
+"user_other_session_selected_count" = "%@ geselecteerd";
+"user_other_session_clear_filter" = "Leeg filter";
+"user_other_session_no_unverified_sessions" = "Geen niet geverifieerde sessies gevonden.";
+"user_other_session_no_verified_sessions" = "Geen geverifieerde sessies gevonden.";
+"user_other_session_no_inactive_sessions" = "Geen inactieve sessies gevonden.";
+"user_other_session_filter_menu_inactive" = "Inactief";
+"user_other_session_filter_menu_unverified" = "Niet geverifieerd";
+"user_other_session_filter_menu_verified" = "Geverifieerd";
+"user_other_session_filter_menu_all" = "Alle sessies";
+"user_other_session_filter" = "Filter";
+"user_other_session_verified_sessions_header_subtitle" = "Voor de beste beveiliging logt u uit bij elke sessie die u niet meer herkent of gebruikt.";
+"user_other_session_current_session_details" = "Uw huidige sessie";
+"user_other_session_unverified_sessions_header_subtitle" = "Verifieer uw sessies voor verbeterde beveiligde berichtenuitwisseling of meld u af bij sessies die u niet meer herkent of gebruikt.";
+"user_other_session_security_recommendation_title" = "Beveiligingsaanbeveling";
+"user_session_push_notifications_message" = "Indien ingeschakeld, ontvangt deze sessie pushmeldingen.";
+"user_session_push_notifications" = "Pushmeldingen";
+"user_other_session_verified_additional_info" = "Deze sessie is klaar voor beveiligde berichtenuitwisseling.";
+"user_other_session_unverified_additional_info" = "Verifieer of meld u af bij deze sessie voor de beste beveiliging en betrouwbaarheid.";
+"user_session_verification_unknown_additional_info" = "Verifieer uw huidige sessie om de verificatiestatus van deze sessie weer te geven.";
+"user_session_unverified_additional_info" = "Verifieer uw huidige sessie voor verbeterde beveiligde berichtenuitwisseling.";
+"user_session_verified_additional_info" = "Uw huidige sessie is klaar voor beveiligde berichtenuitwisseling.";
+"user_session_learn_more" = "Meer lezen";
+"user_session_view_details" = "Bekijk details";
+"user_session_verify_action" = "Sessie verifiëren";
+"user_session_verification_unknown_short" = "Onbekend";
+"user_session_unverified_short" = "Niet geverifieerd";
+"user_session_verified_short" = "Geverifieerd";
+"user_session_verification_unknown" = "Onbekende verificatiestatus";
+"user_session_unverified" = "Niet geverifieerde sessie";
+"user_session_verified" = "Geverifieerde sessie";
+"user_sessions_view_all_action" = "Alles bekijken (%d)";
+"user_sessions_overview_link_device" = "Een apparaat koppelen";
+"user_sessions_overview_current_session_section_title" = "Huidige sessie";
+"user_sessions_overview_other_sessions_section_info" = "Voor de beste beveiliging verifieert u uw sessies en meldt u zich af bij elke sessie die u niet meer herkent of gebruikt.";
+"user_sessions_overview_other_sessions_section_title" = "Andere sessies";
+"user_sessions_overview_security_recommendations_inactive_info" = "Overweeg om u af te melden bij oude sessies (90 dagen of ouder) die u niet meer gebruikt.";
+"user_sessions_overview_security_recommendations_inactive_title" = "Inactieve sessies";
+"user_sessions_overview_security_recommendations_unverified_info" = "Verifieer of meld u af bij niet geverifieerde sessies.";
+"user_sessions_overview_security_recommendations_unverified_title" = "Niet geverifieerde sessies";
+"user_sessions_overview_security_recommendations_section_info" = "Verbeter uw accountbeveiliging door deze aanbevelingen op te volgen.";
+"user_sessions_overview_security_recommendations_section_title" = "Beveiligingsaanbevelingen";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"all_chats_user_menu_accessibility_label" = "Gebruikersmenu";
+"voice_broadcast_playback_loading_error" = "Kan deze spraakuitzending niet afspelen.";
+"voice_broadcast_already_in_progress_message" = "U neemt al een spraakuitzending op. Beëindig uw huidige spraakuitzending om een nieuwe te starten.";
+"voice_broadcast_blocked_by_someone_else_message" = "Iemand anders neemt al een spraakuitzending op. Wacht tot hun spraakuitzending is afgelopen om een nieuwe te starten.";
+"voice_broadcast_permission_denied_message" = "U heeft niet de vereiste rechten om een spraakuitzending in deze kamer te starten. Neem contact op met een kamer beheerder om uw machtigingen te upgraden.";
+
+// Mark: - Voice broadcast
+"voice_broadcast_unauthorized_title" = "Kan geen nieuwe spraakuitzending starten";
+"sign_out_confirmation_message" = "Weet u zeker dat u zich wilt afmelden?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Afmelden";
+"manage_session_rename" = "Sessie hernoemen";
+"manage_session_name_info_link" = "Lees meer";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Houd er rekening mee dat sessienamen ook zichtbaar zijn voor mensen met wie u communiceert. %@";
+"manage_session_name_hint" = "Met aangepaste sessienamen kunt u uw apparaten gemakkelijker herkennen.";
+"settings_labs_enable_voice_broadcast" = "Voice-uitzending (in actieve ontwikkeling)";
+"settings_labs_enable_wysiwyg_composer" = "Probeer de rich-text-editor (platte tekst-modus komt binnenkort)";
+"settings_labs_enable_new_session_manager" = "Nieuwe sessiemanager";
+"room_first_message_placeholder" = "Stuur uw eerste bericht…";
+"authentication_qr_login_failure_retry" = "Probeer het nog eens";
+"authentication_qr_login_failure_request_timed_out" = "De koppeling is niet binnen de vereiste tijd voltooid.";
+"authentication_qr_login_failure_request_denied" = "Het verzoek is geweigerd op het andere apparaat.";
+"authentication_qr_login_failure_invalid_qr" = "QR-code is ongeldig.";
+"authentication_qr_login_failure_title" = "Koppelen mislukt";
+"authentication_qr_login_loading_signed_in" = "U bent nu aangemeld op uw andere apparaat.";
+"authentication_qr_login_loading_waiting_signin" = "Wachten tot het apparaat zich aanmeldt.";
+"authentication_qr_login_loading_connecting_device" = "Verbinden met apparaat";
+"authentication_qr_login_confirm_alert" = "Zorg ervoor dat u de herkomst van deze code kent. Door apparaten te koppelen, geeft u iemand volledige toegang tot uw account.";
+"authentication_qr_login_confirm_subtitle" = "Controleer of de onderstaande code overeenkomt met uw andere apparaat:";
+"authentication_qr_login_confirm_title" = "Beveiligde verbinding tot stand gebracht";
+"authentication_qr_login_scan_subtitle" = "Positioneer de QR-code in het vierkant hieronder";
+"authentication_qr_login_scan_title" = "Scan QR-code";
+"authentication_qr_login_display_step2" = "Selecteer 'Aanmelden met QR-code'";
+"authentication_qr_login_display_step1" = "Open Element op uw andere apparaat";
+"authentication_qr_login_display_subtitle" = "Scan de onderstaande QR-code met uw apparaat dat is uitgelogd.";
+"authentication_qr_login_display_title" = "Een apparaat koppelen";
+"authentication_qr_login_start_display_qr" = "QR-code weergeven op dit apparaat";
+"authentication_qr_login_start_need_alternative" = "Een alternatieve methode nodig?";
+"authentication_qr_login_start_step4" = "Selecteer 'Toon QR-code op dit apparaat'";
+"authentication_qr_login_start_step3" = "Selecteer 'Een apparaat koppelen'";
+"authentication_qr_login_start_step2" = "Ga naar Instellingen -> Beveiliging en privacy";
+"authentication_qr_login_start_step1" = "Open Element op uw andere apparaat";
+"authentication_qr_login_start_subtitle" = "Gebruik de camera op dit apparaat om de QR-code te scannen die op uw andere apparaat wordt weergegeven:";
+"authentication_qr_login_start_title" = "Scan QR-code";
+"authentication_login_with_qr" = "Log in met QR-code";

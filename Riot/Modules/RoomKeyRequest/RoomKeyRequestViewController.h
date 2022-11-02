@@ -39,10 +39,15 @@
  @param deviceInfo the device to share keys to.
  @param wasNewDevice flag indicating whether this is the first time we meet the device.
  @param session the related matrix session.
+ @param crypto the related (legacy) crypto module
  @param onComplete a block called when the the dialog is closed.
  @return the newly created instance.
  */
-- (instancetype)initWithDeviceInfo:(MXDeviceInfo*)deviceInfo wasNewDevice:(BOOL)wasNewDevice andMatrixSession:(MXSession*)session onComplete:(void (^)(void))onComplete;
+- (instancetype)initWithDeviceInfo:(MXDeviceInfo*)deviceInfo
+                      wasNewDevice:(BOOL)wasNewDevice
+                  andMatrixSession:(MXSession*)session
+                            crypto:(MXLegacyCrypto *)crypto
+                        onComplete:(void (^)(void))onComplete;
 
 /**
  Show the dialog in a modal way.

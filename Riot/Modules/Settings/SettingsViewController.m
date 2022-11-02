@@ -1445,13 +1445,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     NSString *sdkVersionInfo = [NSString stringWithFormat:@"Matrix SDK %@", MatrixSDKVersion];
     
-    NSString *olmVersionInfo = [NSString stringWithFormat:@"OLM %@", [OLMKit versionString]];    
-    
     [footerText appendFormat:@"%@\n", loggedUserInfo];
     [footerText appendFormat:@"%@\n", homeserverInfo];
     [footerText appendFormat:@"%@\n", appVersionInfo];
     [footerText appendFormat:@"%@\n", sdkVersionInfo];
-    [footerText appendFormat:@"%@", olmVersionInfo];
+    [footerText appendFormat:@"%@", self.mainSession.crypto.version];
     
     return [footerText copy];
 }

@@ -60,8 +60,6 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertTrue(service.inactiveSessions.isEmpty)
         XCTAssertFalse(service.otherSessions.isEmpty)
         XCTAssertTrue(service.linkDeviceEnabled)
-        
-        XCTAssertEqual(service.sessionInfos.count, 2)
     }
     
     func testWithSomeUnverifiedSessions() {
@@ -75,8 +73,6 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertTrue(service.inactiveSessions.isEmpty)
         XCTAssertFalse(service.otherSessions.isEmpty)
         XCTAssertTrue(service.linkDeviceEnabled)
-        
-        XCTAssertEqual(service.sessionInfos.count, 3)
     }
     
     func testWithSomeInactiveSessions() {
@@ -90,8 +86,6 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertFalse(service.inactiveSessions.isEmpty)
         XCTAssertFalse(service.otherSessions.isEmpty)
         XCTAssertTrue(service.linkDeviceEnabled)
-        
-        XCTAssertEqual(service.sessionInfos.count, 3)
     }
     
     func testWithSomeUnverifiedAndInactiveSessions() {
@@ -105,8 +99,6 @@ class UserSessionsOverviewServiceTests: XCTestCase {
         XCTAssertFalse(service.inactiveSessions.isEmpty)
         XCTAssertFalse(service.otherSessions.isEmpty)
         XCTAssertTrue(service.linkDeviceEnabled)
-        
-        XCTAssertEqual(service.sessionInfos.count, 4)
     }
     
     // MARK: - Private

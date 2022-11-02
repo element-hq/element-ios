@@ -274,7 +274,12 @@
 {
     // Acknowledge the existence of all devices before leaving this screen
     [self startActivityIndicator];
-    [mxSession.crypto setDevicesKnown:usersDevices complete:^{
+    if (![self.mainSession.crypto isKindOfClass:[MXLegacyCrypto class]])
+    {
+        MXLogFailure(@"[UsersDevicesViewController] onDone: Only legacy crypto supports manual setting of known devices");
+        return;
+    }
+    [(MXLegacyCrypto *)mxSession.crypto setDevicesKnown:usersDevices complete:^{
 
         [self stopActivityIndicator];
         [self dismissViewControllerAnimated:YES completion:nil];

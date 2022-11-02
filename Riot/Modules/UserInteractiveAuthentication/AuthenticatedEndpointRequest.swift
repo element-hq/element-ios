@@ -44,7 +44,7 @@ extension AuthenticatedEndpointRequest {
 
 extension AuthenticatedEndpointRequest {
     /// Create an authenticated request on `_matrix/client/r0/delete_devices`.
-    /// - Parameter deviceID: The device ID that is to be deleted.
+    /// - Parameter deviceIDs: IDs for devices that is to be deleted.
     static func deleteDevices(_ deviceIDs: [String]) -> AuthenticatedEndpointRequest {
         let path = String(format: "%@/delete_devices", kMXAPIPrefixPathR0)
         return AuthenticatedEndpointRequest(path: path, httpMethod: "POST", params: ["devices": deviceIDs])

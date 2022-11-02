@@ -85,7 +85,7 @@ final class CrossSigningService: NSObject {
     @discardableResult
     func setupCrossSigningWithoutAuthentication(for session: MXSession, success: @escaping (() -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation? {
         
-        guard let crossSigning = session.crypto.crossSigning else {
+        guard let crossSigning = session.crypto?.crossSigning else {
             failure(CrossSigningServiceError.unknown)
             return nil
         }
