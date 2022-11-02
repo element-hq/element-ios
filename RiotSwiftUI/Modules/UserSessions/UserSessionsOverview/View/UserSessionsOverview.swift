@@ -38,11 +38,6 @@ struct UserSessionsOverview: View {
                     }
                 }
                 .readableFrame()
-
-//                if viewModel.viewState.linkDeviceButtonVisible {
-//                    linkDeviceView
-//                        .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
-//                }
             }
         }
         .background(theme.colors.system.ignoresSafeArea())
@@ -155,6 +150,7 @@ struct UserSessionsOverview: View {
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.viewState.otherSessionsViewData.prefix(maxOtherSessionsToDisplay)) { viewData in
                     UserSessionListItem(viewData: viewData,
+                                        showsLocationInfo: false,
                                         isSeparatorHidden: viewData == viewModel.viewState.otherSessionsViewData.last,
                                         onBackgroundTap: { sessionId in viewModel.send(viewAction: .tapUserSession(sessionId)) })
                 }

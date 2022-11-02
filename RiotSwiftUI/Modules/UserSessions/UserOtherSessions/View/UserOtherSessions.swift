@@ -88,6 +88,7 @@ struct UserOtherSessions: View {
         LazyVStack(spacing: 0) {
             ForEach(viewModel.viewState.sessionItems) { viewData in
                 UserSessionListItem(viewData: viewData,
+                                    showsLocationInfo: false,
                                     isSeparatorHidden: viewData == viewModel.viewState.sessionItems.last,
                                     isEditModeEnabled: viewModel.isEditModeEnabled,
                                     onBackgroundTap: { sessionId in viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId)) },
