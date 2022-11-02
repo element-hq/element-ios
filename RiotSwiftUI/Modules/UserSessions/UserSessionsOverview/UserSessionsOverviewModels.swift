@@ -50,7 +50,7 @@ struct UserSessionsOverviewViewState: BindableState {
     var otherSessionsViewData = [UserSessionListItemViewData]()
     var showLoadingIndicator = false
     var linkDeviceButtonVisible = false
-    var showLocationInfo = RiotSettings.shared.showIPAddressesInSessionsManager
+    var showLocationInfo: Bool
 }
 
 enum UserSessionsOverviewViewAction {

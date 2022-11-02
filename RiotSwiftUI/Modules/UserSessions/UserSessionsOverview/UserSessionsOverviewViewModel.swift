@@ -20,24 +20,23 @@ typealias UserSessionsOverviewViewModelType = StateStoreViewModel<UserSessionsOv
 
 class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSessionsOverviewViewModelProtocol {
     private let userSessionsOverviewService: UserSessionsOverviewServiceProtocol
+    private let settingsService: UserSessionSettingsProtocol
     
     var completion: ((UserSessionsOverviewViewModelResult) -> Void)?
 
-    init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol) {
+    init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol, settingsService: UserSessionSettingsProtocol) {
         self.userSessionsOverviewService = userSessionsOverviewService
+        self.settingsService = settingsService
         
-        super.init(initialViewState: .init())
+        super.init(initialViewState: .init(showLocationInfo: settingsService.showIPAddressesInSessionsManager))
         
         userSessionsOverviewService.overviewDataPublisher.sink { [weak self] overviewData in
             self?.updateViewState(with: overviewData)
         }
         .store(in: &cancellables)
         
-        NotificationCenter.default
-            .publisher(for: .userDefaultValueUpdated)
-            .compactMap { $0.object as? String }
-            .filter { $0 == RiotSettings.UserDefaultsKeys.showIPAddressesInSessionsManager }
-            .map { _ in RiotSettings.shared.showIPAddressesInSessionsManager }
+        self.settingsService
+            .showIPAddressesInSessionsManagerPublisher
             .weakAssign(to: \.state.showLocationInfo, on: self)
             .store(in: &cancellables)
         
@@ -87,8 +86,8 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
         case .logoutOtherSessions:
             completion?(.logoutFromUserSessions(sessionInfos: userSessionsOverviewService.otherSessions))
         case .showLocationInfo:
-            RiotSettings.shared.showIPAddressesInSessionsManager.toggle()
-            state.showLocationInfo = RiotSettings.shared.showIPAddressesInSessionsManager
+            settingsService.showIPAddressesInSessionsManager.toggle()
+            state.showLocationInfo = settingsService.showIPAddressesInSessionsManager
         }
     }
     
