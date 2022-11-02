@@ -1688,7 +1688,7 @@
 "invite_user" = "Convidar Usuária(o) matrix";
 "reset_to_default" = "Resettar para default";
 "resend_message" = "Reenviar a mensagem";
-"select_all" = "Selecionar Todas";
+"select_all" = "Selecionar Todas(os)";
 "cancel_upload" = "Cancelar Upload";
 "cancel_download" = "Cancelar Download";
 "show_details" = "Mostrar Detalhes";
@@ -2615,3 +2615,6 @@
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Não dá para começar um novo broadcast de voz";
 "settings_labs_enable_voice_broadcast" = "Broadcast de voz (sob desenvolvimento ativo)";
+"deselect_all" = "Desselecionar Todas(os)";
+"user_other_session_menu_select_sessions" = "Selecionar sessões";
+"user_other_session_selected_count" = "%@ selecionadas";
