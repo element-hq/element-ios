@@ -28,7 +28,7 @@ struct UserSessionOverview: View {
             },
             onViewDetailsAction: { _ in
                 viewModel.send(viewAction: .viewSessionDetails)
-            })
+            }, showLocationInformations: viewModel.showLocationInfo)
             .padding(16)
             SwiftUI.Section {
                 UserSessionOverviewItem(title: VectorL10n.userSessionOverviewSessionDetailsButtonTitle,
@@ -68,6 +68,14 @@ struct UserSessionOverview: View {
                             Label(VectorL10n.manageSessionRename, systemImage: "pencil")
                         }
                         .accessibilityIdentifier(VectorL10n.manageSessionRename)
+                        
+                        if viewModel.viewState.isCurrentSession == false {
+                            Button { viewModel.showLocationInfo.toggle() } label: {
+                                let text = viewModel.showLocationInfo ? VectorL10n.userSessionsHideLocationInfo : VectorL10n.userSessionsShowLocationInfo
+                                let image = viewModel.showLocationInfo ? "eye.slash" : "eye"
+                                Label(text, systemImage: image)
+                            }
+                        }
                     }
                     DestructiveButton {
                         viewModel.send(viewAction: .logoutOfSession)
