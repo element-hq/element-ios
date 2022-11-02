@@ -2651,3 +2651,4 @@
 "deselect_all" = "Alle abwählen";
 "user_other_session_menu_select_sessions" = "Sitzungen auswählen";
 "user_other_session_selected_count" = "%@ ausgewählt";
+"user_other_session_menu_sign_out_sessions" = "Von %@ Sitzungen abmelden";
