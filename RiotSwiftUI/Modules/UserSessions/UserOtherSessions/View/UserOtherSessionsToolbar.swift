@@ -21,6 +21,7 @@ struct UserOtherSessionsToolbar: ToolbarContent {
     
     @Binding var isEditModeEnabled: Bool
     @Binding var filter: UserOtherSessionsFilter
+    @Binding var isShowLocationEnabled: Bool
     let allItemsSelected: Bool
     let sessionCount: Int
     let onToggleSelection: () -> Void
@@ -93,6 +94,14 @@ struct UserOtherSessionsToolbar: ToolbarContent {
                         Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(sessionCount)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
                     }
                 }
+
+Button {
+isShowLocationEnabled.toggle()
+} label: {
+let text = isShowLocationEnabled ? VectorL10n.userSessionsHideLocationInfo : VectorL10n.userSessionsShowLocationInfo
+let image = isShowLocationEnabled ? "eye.slash" : "eye"
+Label(text, systemImage: image)
+}
             } label: {
                 Image(systemName: "ellipsis")
                     .padding(.horizontal, 4)

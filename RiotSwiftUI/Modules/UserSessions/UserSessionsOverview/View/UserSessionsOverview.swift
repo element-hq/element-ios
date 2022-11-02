@@ -144,9 +144,9 @@ struct UserSessionsOverview: View {
     
     private var otherSessionsMenu: some View {
         Menu {
-            Button { viewModel.send(viewAction: .viewOtherSessionsLocation) } label: {
-                let text = viewModel.viewState.showLocationInfo ? VectorL10n.userSessionsHideLocationInfo : VectorL10n.userSessionsShowLocationInfo
-                let image = viewModel.viewState.showLocationInfo ? "eye.slash" : "eye"
+            Button { viewModel.showLocationInfo.toggle() } label: {
+                let text = viewModel.showLocationInfo ? VectorL10n.userSessionsHideLocationInfo : VectorL10n.userSessionsShowLocationInfo
+                let image = viewModel.showLocationInfo ? "eye.slash" : "eye"
                 Label(text, systemImage: image)
             }
         } label: {
@@ -166,7 +166,7 @@ struct UserSessionsOverview: View {
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.viewState.otherSessionsViewData.prefix(maxOtherSessionsToDisplay)) { viewData in
                     UserSessionListItem(viewData: viewData,
-                                        showsLocationInfo: viewModel.viewState.showLocationInfo,
+                                        showsLocationInfo: viewModel.showLocationInfo,
                                         isSeparatorHidden: viewData == viewModel.viewState.otherSessionsViewData.last,
                                         onBackgroundTap: { sessionId in viewModel.send(viewAction: .tapUserSession(sessionId)) })
                 }

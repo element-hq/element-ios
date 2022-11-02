@@ -52,6 +52,7 @@ struct UserOtherSessions: View {
         .toolbar {
             UserOtherSessionsToolbar(isEditModeEnabled: $viewModel.isEditModeEnabled,
                                      filter: $viewModel.filter,
+                                     isShowLocationEnabled: $viewModel.showLocationInfo,
                                      allItemsSelected: viewModel.viewState.allItemsSelected,
                                      sessionCount: viewModel.viewState.sessionItems.count,
                                      onToggleSelection: { viewModel.send(viewAction: .toggleAllSelection) },
@@ -88,7 +89,7 @@ struct UserOtherSessions: View {
         LazyVStack(spacing: 0) {
             ForEach(viewModel.viewState.sessionItems) { viewData in
                 UserSessionListItem(viewData: viewData,
-                                    showsLocationInfo: false,
+                                    showsLocationInfo: viewModel.showLocationInfo,
                                     isSeparatorHidden: viewData == viewModel.viewState.sessionItems.last,
                                     isEditModeEnabled: viewModel.isEditModeEnabled,
                                     onBackgroundTap: { sessionId in viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId)) },
