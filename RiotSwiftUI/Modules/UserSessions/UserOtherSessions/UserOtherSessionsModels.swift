@@ -40,7 +40,7 @@ struct UserOtherSessionsViewState: BindableState, Equatable {
     var emptyItemsTitle: String
     var allItemsSelected: Bool
     var enableSignOutButton: Bool
-    var showLocationInfo: Bool = RiotSettings.shared.showIPAddressesInSessionsManager
+    var showLocationInfo: Bool
 }
 
 struct UserOtherSessionsBindings: Equatable {
