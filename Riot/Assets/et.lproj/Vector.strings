@@ -2589,3 +2589,4 @@
 "deselect_all" = "Eemalda kõik valikud";
 "user_other_session_menu_select_sessions" = "Vali sessioonid";
 "user_other_session_selected_count" = "%@ valitud";
+"user_other_session_menu_sign_out_sessions" = "Logi välja %@'st sessioonist";
