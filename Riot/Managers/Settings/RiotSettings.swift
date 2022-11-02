@@ -176,6 +176,10 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "enableWysiwygComposer", defaultValue: false, storage: defaults)
     var enableWysiwygComposer
     
+    /// Flag indicating if the IP addresses should be shown in the new device manager
+    @UserDefault(key: "showIPAddressesInSessionsManager", defaultValue: false, storage: defaults)
+    var showIPAddressesInSessionsManager
+    
     /// Flag indicating if the voice broadcast feature is enabled
     @UserDefault(key: "enableVoiceBroadcast", defaultValue: false, storage: defaults)
     var enableVoiceBroadcast

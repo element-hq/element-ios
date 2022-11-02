@@ -96,7 +96,7 @@ struct UserSessionsOverview: View {
                     viewModel.send(viewAction: .verifyCurrentSession)
                 }, onViewDetailsAction: { _ in
                     viewModel.send(viewAction: .viewCurrentSessionDetails)
-                }, showLocationInformations: viewModel.showLocationInfo)
+                }, showLocationInformations: viewModel.viewState.showLocationInfo)
             } header: {
                 HStack(alignment: .firstTextBaseline) {
                     Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
@@ -143,9 +143,9 @@ struct UserSessionsOverview: View {
     private var otherSessionsMenu: some View {
         Menu {
             Button {
-                viewModel.showLocationInfo.toggle()
+                viewModel.send(viewAction: .showLocationInfo)
             } label: {
-                Label(showLocationInfo: viewModel.showLocationInfo)
+                Label(showLocationInfo: viewModel.viewState.showLocationInfo)
             }
             
             signOutButton
@@ -166,7 +166,7 @@ struct UserSessionsOverview: View {
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.viewState.otherSessionsViewData.prefix(maxOtherSessionsToDisplay)) { viewData in
                     UserSessionListItem(viewData: viewData,
-                                        showsLocationInfo: viewModel.showLocationInfo,
+                                        showsLocationInfo: viewModel.viewState.showLocationInfo,
                                         isSeparatorHidden: viewData == viewModel.viewState.otherSessionsViewData.last,
                                         onBackgroundTap: { sessionId in viewModel.send(viewAction: .tapUserSession(sessionId)) })
                 }

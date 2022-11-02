@@ -78,6 +78,10 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             completion?(.linkDevice)
         case .logoutOtherSessions:
             completion?(.logoutFromUserSessions(sessionInfos: userSessionsOverviewService.otherSessions))
+        case .showLocationInfo:
+            let newShowLocationInfo = !RiotSettings.shared.showIPAddressesInSessionsManager
+            RiotSettings.shared.showIPAddressesInSessionsManager = newShowLocationInfo
+            state.showLocationInfo = newShowLocationInfo
         }
     }
     

@@ -43,10 +43,6 @@ enum UserSessionsOverviewViewModelResult: Equatable {
 
 // MARK: View
 
-struct UserSessionsOverviewViewBindings {
-    var showLocationInfo = false
-}
-
 struct UserSessionsOverviewViewState: BindableState {
     var currentSessionViewData: UserSessionCardViewData?
     var unverifiedSessionsViewData = [UserSessionListItemViewData]()
@@ -54,7 +50,7 @@ struct UserSessionsOverviewViewState: BindableState {
     var otherSessionsViewData = [UserSessionListItemViewData]()
     var showLoadingIndicator = false
     var linkDeviceButtonVisible = false
-    var bindings: UserSessionsOverviewViewBindings = .init()
+    var showLocationInfo = RiotSettings.shared.showIPAddressesInSessionsManager
 }
 
 enum UserSessionsOverviewViewAction {
@@ -69,4 +65,5 @@ enum UserSessionsOverviewViewAction {
     case tapUserSession(_ sessionId: String)
     case linkDevice
     case logoutOtherSessions
+    case showLocationInfo
 }
