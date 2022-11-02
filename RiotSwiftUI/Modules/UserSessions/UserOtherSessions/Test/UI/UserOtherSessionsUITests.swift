@@ -95,9 +95,9 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.all.title)
         app.buttons["More"].tap()
         app.buttons["Select sessions"].tap()
-        let singOutButton = app.buttons["Sign out"]
-        XCTAssertTrue(singOutButton.exists)
-        XCTAssertFalse(singOutButton.isEnabled)
+        let signOutButton = app.buttons["Sign out"]
+        XCTAssertTrue(signOutButton.exists)
+        XCTAssertFalse(signOutButton.isEnabled)
         let sessionListItem = app.buttons["UserSessionListItem_0"]
         sessionListItem.tap()
         XCTAssertTrue(singOutButton.isEnabled)
