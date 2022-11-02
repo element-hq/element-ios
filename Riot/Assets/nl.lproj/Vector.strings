@@ -2805,3 +2805,4 @@
 "authentication_qr_login_start_subtitle" = "Gebruik de camera op dit apparaat om de QR-code te scannen die op je andere apparaat wordt weergegeven:";
 "authentication_qr_login_start_title" = "Scan QR-code";
 "authentication_login_with_qr" = "Log in met QR-code";
+"user_other_session_menu_sign_out_sessions" = "Bij %@ sessies afmelden";
