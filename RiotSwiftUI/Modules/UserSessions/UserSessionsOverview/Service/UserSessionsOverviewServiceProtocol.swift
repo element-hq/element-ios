@@ -26,7 +26,6 @@ struct UserSessionsOverviewData {
 
 protocol UserSessionsOverviewServiceProtocol {
     var overviewDataPublisher: CurrentValueSubject<UserSessionsOverviewData, Never> { get }
-    var sessionInfos: [UserSessionInfo] { get }
     
     func updateOverviewData(completion: @escaping (Result<UserSessionsOverviewData, Error>) -> Void) -> Void
     

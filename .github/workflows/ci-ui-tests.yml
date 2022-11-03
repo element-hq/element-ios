@@ -1,9 +1,6 @@
 name: UI Tests CI
 
 on:
-  push:
-    branches: [ develop ]
-
   pull_request:
 
   workflow_dispatch:

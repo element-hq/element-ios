@@ -55,9 +55,14 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let sut = createSUT(sessionInfos: sessionInfos, filter: .inactive)
         
         let expectedItems = sessionInfos.filter { !$0.isActive }.asViewData()
-        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .inactive),
+        let bindings = UserOtherSessionsBindings(filter: .inactive, isEditModeEnabled: false)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       sections: [.sessionItems(header: inactiveSectionHeader, items: expectedItems)])
+                                                       sessionItems: expectedItems,
+                                                       header: inactiveSectionHeader,
+                                                       emptyItemsTitle: VectorL10n.userOtherSessionNoInactiveSessions,
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -67,9 +72,14 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
         
         let expectedItems = sessionInfos.filter { !$0.isCurrent }.asViewData()
-        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .all),
+        let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: false)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       sections: [.sessionItems(header: allSectionHeader, items: expectedItems)])
+                                                       sessionItems: expectedItems,
+                                                       header: allSectionHeader,
+                                                       emptyItemsTitle: "",
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -79,9 +89,14 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let sut = createSUT(sessionInfos: sessionInfos, filter: .unverified)
         
         let expectedItems = sessionInfos.filter { !$0.isCurrent }.asViewData()
-        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .unverified),
+        let bindings = UserOtherSessionsBindings(filter: .unverified, isEditModeEnabled: false)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       sections: [.sessionItems(header: unverifiedSectionHeader, items: expectedItems)])
+                                                       sessionItems: expectedItems,
+                                                       header: unverifiedSectionHeader,
+                                                       emptyItemsTitle: VectorL10n.userOtherSessionNoUnverifiedSessions,
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -91,9 +106,14 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let sut = createSUT(sessionInfos: sessionInfos, filter: .verified)
         
         let expectedItems = sessionInfos.filter { !$0.isCurrent }.asViewData()
-        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .verified),
+        let bindings = UserOtherSessionsBindings(filter: .verified, isEditModeEnabled: false)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       sections: [.sessionItems(header: verifiedSectionHeader, items: expectedItems)])
+                                                       sessionItems: expectedItems,
+                                                       header: verifiedSectionHeader,
+                                                       emptyItemsTitle: VectorL10n.userOtherSessionNoVerifiedSessions,
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -101,10 +121,14 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let sessionInfos = [createUserSessionInfo(sessionId: "session 1", isVerified: false),
                             createUserSessionInfo(sessionId: "session 2", isVerified: false)]
         let sut = createSUT(sessionInfos: sessionInfos, filter: .verified)
-        
-        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .verified),
+        let bindings = UserOtherSessionsBindings(filter: .verified, isEditModeEnabled: false)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       sections: [.emptySessionItems(header: verifiedSectionHeader, title: VectorL10n.userOtherSessionNoVerifiedSessions)])
+                                                       sessionItems: [],
+                                                       header: verifiedSectionHeader,
+                                                       emptyItemsTitle: VectorL10n.userOtherSessionNoVerifiedSessions,
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -112,10 +136,14 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let sessionInfos = [createUserSessionInfo(sessionId: "session 1", isVerified: true),
                             createUserSessionInfo(sessionId: "session 2", isVerified: true)]
         let sut = createSUT(sessionInfos: sessionInfos, filter: .unverified)
-        
-        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .unverified),
+        let bindings = UserOtherSessionsBindings(filter: .unverified, isEditModeEnabled: false)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       sections: [.emptySessionItems(header: unverifiedSectionHeader, title: VectorL10n.userOtherSessionNoUnverifiedSessions)])
+                                                       sessionItems: [],
+                                                       header: unverifiedSectionHeader,
+                                                       emptyItemsTitle: VectorL10n.userOtherSessionNoUnverifiedSessions,
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -123,11 +151,180 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         let sessionInfos = [createUserSessionInfo(sessionId: "session 1", isActive: true),
                             createUserSessionInfo(sessionId: "session 2", isActive: true)]
         let sut = createSUT(sessionInfos: sessionInfos, filter: .inactive)
-        
-        let expectedState = UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: .inactive),
+        let bindings = UserOtherSessionsBindings(filter: .inactive, isEditModeEnabled: false)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
-                                                       sections: [.emptySessionItems(header: inactiveSectionHeader, title: VectorL10n.userOtherSessionNoInactiveSessions)])
+                                                       sessionItems: [],
+                                                       header: inactiveSectionHeader,
+                                                       emptyItemsTitle: VectorL10n.userOtherSessionNoInactiveSessions,
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    func test_whenEditModeEnabledAndAllItemsSelected_viewStateIsCorrect() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            createUserSessionInfo(sessionId: "session 2")]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
+        toggleEditMode(for: sut, value: true)
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: "session 1"))
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: "session 2"))
+        
+        let expectedItems = sessionInfos.map { UserSessionListItemViewDataFactory().create(from: $0, isSelected: true) }
+        let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: true)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
+                                                       title: VectorL10n.userOtherSessionSelectedCount("2"),
+                                                       sessionItems: expectedItems,
+                                                       header: allSectionHeader,
+                                                       emptyItemsTitle: "",
+                                                       allItemsSelected: true,
+                                                       enableSignOutButton: true)
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    func test_whenEditModeEnabledAndItemSelectedAndDeselected_viewStateIsCorrect() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            createUserSessionInfo(sessionId: "session 2")]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
+        toggleEditMode(for: sut, value: true)
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: "session 1"))
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: "session 1"))
+        
+        let expectedItems = sessionInfos.map { UserSessionListItemViewDataFactory().create(from: $0, isSelected: false) }
+        let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: true)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
+                                                       title: VectorL10n.userOtherSessionSelectedCount("0"),
+                                                       sessionItems: expectedItems,
+                                                       header: allSectionHeader,
+                                                       emptyItemsTitle: "",
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    func test_whenEditModeEnabledAndNotAllItemsSelected_viewStateIsCorrect() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            createUserSessionInfo(sessionId: "session 2")]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
+        toggleEditMode(for: sut, value: true)
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: "session 2"))
+        
+        let expectedItems = sessionInfos.map { UserSessionListItemViewDataFactory().create(from: $0, isSelected: $0.id == "session 2") }
+        let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: true)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
+                                                       title: VectorL10n.userOtherSessionSelectedCount("1"),
+                                                       sessionItems: expectedItems,
+                                                       header: allSectionHeader,
+                                                       emptyItemsTitle: "",
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: true)
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    func test_whenEditModeEnabledAndAllItemsSelectedByButton_viewStateIsCorrect() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            createUserSessionInfo(sessionId: "session 2")]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
+        toggleEditMode(for: sut, value: true)
+        sut.process(viewAction: .toggleAllSelection)
+        
+        let expectedItems = sessionInfos.map { UserSessionListItemViewDataFactory().create(from: $0, isSelected: true) }
+        let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: true)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
+                                                       title: VectorL10n.userOtherSessionSelectedCount("2"),
+                                                       sessionItems: expectedItems,
+                                                       header: allSectionHeader,
+                                                       emptyItemsTitle: "",
+                                                       allItemsSelected: true,
+                                                       enableSignOutButton: true)
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    func test_whenEditModeEnabledAndAllItemsDeselectedByButton_viewStateIsCorrect() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            createUserSessionInfo(sessionId: "session 2")]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
+        toggleEditMode(for: sut, value: true)
+        sut.process(viewAction: .toggleAllSelection)
+        sut.process(viewAction: .toggleAllSelection)
+        let expectedItems = sessionInfos.map { UserSessionListItemViewDataFactory().create(from: $0, isSelected: false) }
+        let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: true)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
+                                                       title: VectorL10n.userOtherSessionSelectedCount("0"),
+                                                       sessionItems: expectedItems,
+                                                       header: allSectionHeader,
+                                                       emptyItemsTitle: "",
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    func test_whenEditModeEnabledDisabledAndEnabled_viewStateIsCorrect() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            createUserSessionInfo(sessionId: "session 2")]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
+        toggleEditMode(for: sut, value: true)
+        sut.process(viewAction: .editModeWasToggled)
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: "session 1"))
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: "session 2"))
+        toggleEditMode(for: sut, value: false)
+        toggleEditMode(for: sut, value: true)
+        let expectedItems = sessionInfos.map { UserSessionListItemViewDataFactory().create(from: $0, isSelected: false) }
+        let bindings = UserOtherSessionsBindings(filter: .all, isEditModeEnabled: true)
+        let expectedState = UserOtherSessionsViewState(bindings: bindings,
+                                                       title: VectorL10n.userOtherSessionSelectedCount("0"),
+                                                       sessionItems: expectedItems,
+                                                       header: allSectionHeader,
+                                                       emptyItemsTitle: "",
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
+        XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    func test_whenSignOutAllUserSessions_correctCompletionResultReceived() {
+        let sessionInfoWithSessionId1 = createUserSessionInfo(sessionId: "session 1")
+        let sessionInfoWithSessionId3 = createUserSessionInfo(sessionId: "session 3")
+        let sessionInfos = [sessionInfoWithSessionId1,
+                            createUserSessionInfo(sessionId: "session 2"),
+                            sessionInfoWithSessionId3]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
+        var receivedUserSessions = [UserSessionInfo]()
+        sut.completion = { result in
+            switch result {
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
+                receivedUserSessions = sessionInfos
+            default:
+                break
+            }
+        }
+        toggleEditMode(for: sut, value: true)
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: sessionInfoWithSessionId1.id))
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: sessionInfoWithSessionId3.id))
+        sut.process(viewAction: .logoutSelectedUserSessions)
+        XCTAssertEqual(receivedUserSessions, [sessionInfoWithSessionId1, sessionInfoWithSessionId3])
+    }
+    
+    func test_whenSignOutSelectedUserSessions_correctCompletionResultReceived() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            createUserSessionInfo(sessionId: "session 2"),
+                            createUserSessionInfo(sessionId: "session 3")]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
+        var receivedUserSessions = [UserSessionInfo]()
+        sut.completion = { result in
+            switch result {
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
+                receivedUserSessions = sessionInfos
+            default:
+                break
+            }
+        }
+        sut.process(viewAction: .logoutAllUserSessions)
+        XCTAssertEqual(receivedUserSessions, sessionInfos)
+    }
+    
+    private func toggleEditMode(for model: UserOtherSessionsViewModel, value: Bool) {
+        model.context.isEditModeEnabled = value
+        model.process(viewAction: .editModeWasToggled)
     }
     
     private func createSUT(sessionInfos: [UserSessionInfo],

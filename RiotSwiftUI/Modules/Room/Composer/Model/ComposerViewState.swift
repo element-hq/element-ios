@@ -20,6 +20,8 @@ struct ComposerViewState: BindableState {
     var eventSenderDisplayName: String?
     var sendMode: ComposerSendMode = .send
     var placeholder: String?
+    
+    var bindings: ComposerBindings
 }
 
 extension ComposerViewState {
@@ -44,4 +46,8 @@ extension ComposerViewState {
         default: return nil
         }
     }
+}
+
+struct ComposerBindings {
+    var focused: Bool
 }

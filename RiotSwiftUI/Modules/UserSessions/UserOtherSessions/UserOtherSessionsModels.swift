@@ -20,37 +20,39 @@ import Foundation
 
 enum UserOtherSessionsCoordinatorResult {
     case openSessionOverview(sessionInfo: UserSessionInfo)
+    case logoutFromUserSessions(sessionInfos: [UserSessionInfo])
 }
 
 // MARK: View model
 
 enum UserOtherSessionsViewModelResult: Equatable {
     case showUserSessionOverview(sessionInfo: UserSessionInfo)
+    case logoutFromUserSessions(sessionInfos: [UserSessionInfo])
 }
 
 // MARK: View
 
 struct UserOtherSessionsViewState: BindableState, Equatable {
     var bindings: UserOtherSessionsBindings
-    let title: String
-    var sections: [UserOtherSessionsSection]
+    var title: String
+    var sessionItems: [UserSessionListItemViewData]
+    var header: UserOtherSessionsHeaderViewData
+    var emptyItemsTitle: String
+    var allItemsSelected: Bool
+    var enableSignOutButton: Bool
 }
 
 struct UserOtherSessionsBindings: Equatable {
     var filter: UserOtherSessionsFilter
-}
-
-enum UserOtherSessionsSection: Hashable, Identifiable {
-    var id: Self {
-        self
-    }
-
-    case sessionItems(header: UserOtherSessionsHeaderViewData, items: [UserSessionListItemViewData])
-    case emptySessionItems(header: UserOtherSessionsHeaderViewData, title: String)
+    var isEditModeEnabled: Bool
 }
 
 enum UserOtherSessionsViewAction {
     case userOtherSessionSelected(sessionId: String)
     case filterWasChanged
     case clearFilter
+    case editModeWasToggled
+    case toggleAllSelection
+    case logoutAllUserSessions
+    case logoutSelectedUserSessions
 }

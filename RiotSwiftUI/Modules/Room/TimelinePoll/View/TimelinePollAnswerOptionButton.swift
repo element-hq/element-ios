@@ -41,6 +41,7 @@ struct TimelinePollAnswerOptionButton: View {
                 .overlay(rect.stroke(borderAccentColor, lineWidth: 1.0))
                 .accentColor(progressViewAccentColor)
         }
+        .accessibilityIdentifier("PollAnswerOption\(optionIndex)")
     }
     
     var answerOptionLabel: some View {
@@ -53,6 +54,7 @@ struct TimelinePollAnswerOptionButton: View {
                 Text(answerOption.text)
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.primaryContent)
+                    .accessibilityIdentifier("PollAnswerOption\(optionIndex)Label")
                 
                 if poll.closed, answerOption.winner {
                     Spacer()
@@ -66,11 +68,13 @@ struct TimelinePollAnswerOptionButton: View {
                                  total: Double(poll.totalAnswerCount))
                         .progressViewStyle(LinearProgressViewStyle())
                         .scaleEffect(x: 1.0, y: 1.2, anchor: .center)
+                        .accessibilityIdentifier("PollAnswerOption\(optionIndex)Progress")
                     
                     if poll.shouldDiscloseResults {
                         Text(answerOption.count == 1 ? VectorL10n.pollTimelineOneVote : VectorL10n.pollTimelineVotesCount(Int(answerOption.count)))
                             .font(theme.fonts.footnote)
                             .foregroundColor(poll.closed && answerOption.winner ? theme.colors.accent : theme.colors.secondaryContent)
+                            .accessibilityIdentifier("PollAnswerOption\(optionIndex)Count")
                     }
                 }
             }
@@ -91,6 +95,10 @@ struct TimelinePollAnswerOptionButton: View {
         }
         
         return answerOption.selected ? theme.colors.accent : theme.colors.quarterlyContent
+    }
+    
+    var optionIndex: Int {
+        poll.answerOptions.firstIndex { $0.id == answerOption.id } ?? Int.max
     }
 }
 

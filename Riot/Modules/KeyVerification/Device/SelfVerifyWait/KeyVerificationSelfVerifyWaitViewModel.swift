@@ -92,21 +92,29 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
             //  be sure that session has completed its first sync
             if session.state >= .running {
                 
-                // Always send request instead of waiting for an incoming one as per recent EW changes
-                MXLog.debug("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices instead of waiting")
-                
-                let keyVerificationService = KeyVerificationService()
-                self.verificationManager.requestVerificationByToDevice(withUserId: self.session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
-                    guard let self = self else {
-                        return
-                    }
+                if let existingRequest = verificationManager.pendingRequests.first(where: { $0.isFromMyUser && !$0.isFromMyDevice && $0.state == MXKeyVerificationRequestStatePending }) {
+                    MXLog.debug("[KeyVerificationSelfVerifyWaitViewModel] loadData: Accepting an existing self-verification request instead of starting a new one")
                     
-                    self.keyVerificationRequest = keyVerificationRequest
+                    registerTransactionDidStateChangeNotification()
+                    acceptKeyVerificationRequest(existingRequest)
+                } else {
                     
-                }, failure: { [weak self] error in
-                    self?.update(viewState: .error(error))
-                })
-                continueLoadData()
+                    // Always send request instead of waiting for an incoming one as per recent EW changes
+                    MXLog.debug("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices instead of waiting")
+                    
+                    let keyVerificationService = KeyVerificationService()
+                    self.verificationManager.requestVerificationByToDevice(withUserId: self.session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
+                        guard let self = self else {
+                            return
+                        }
+                        
+                        self.keyVerificationRequest = keyVerificationRequest
+                        
+                    }, failure: { [weak self] error in
+                        self?.update(viewState: .error(error))
+                    })
+                    continueLoadData()
+                }
             } else {
                 //  show loader
                 self.update(viewState: .secretsRecoveryCheckingAvailability(VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsCheckingAvailability))
