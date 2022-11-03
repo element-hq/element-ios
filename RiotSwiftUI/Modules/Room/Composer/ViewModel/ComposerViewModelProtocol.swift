@@ -24,4 +24,5 @@ protocol ComposerViewModelProtocol {
     var placeholder: String? { get set }
     
     func dismissKeyboard()
+    func focus()
 }

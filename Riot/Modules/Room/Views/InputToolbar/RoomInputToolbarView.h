@@ -20,6 +20,7 @@
 
 @class RoomActionsBar;
 @class RoomInputToolbarView;
+@class ComposerBridgePresenter;
 
 /**
  Destination of the message in the composer
@@ -74,6 +75,8 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
  @param attributedTextMessage the attributed string to send.
  */
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage;
+
+- (void)presentFullscreenToolbar:(ComposerBridgePresenter *)presenter;
 
 @end
 

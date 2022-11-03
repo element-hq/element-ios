@@ -38,6 +38,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var hostingViewController: VectorHostingController!
     private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
     private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState(bindings: ComposerBindings(focused: false)))
+    private var coordinator: ComposerCoordinator!
     
     // MARK: Public
     
@@ -99,6 +100,12 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             subView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             subView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
+        
+        update(theme: ThemeService.shared().theme)
+        registerThemeServiceDidChangeThemeNotification()
+        
+        coordinator = ComposerCoordinator(hostingVC: hostingViewController, viewModel: viewModel)
+        
         cancellables = [
             hostingViewController.heightPublisher
                 .removeDuplicates()
@@ -111,11 +118,20 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                 .removeDuplicates()
                 .sink { [weak hostingViewController] _ in
                     hostingViewController?.view.setNeedsLayout()
+                },
+            
+            wysiwygViewModel.$maximised
+                .removeDuplicates()
+                .sink { [weak self] value in
+                    guard let self = self else { return }
+                    let presenter = ComposerBridgePresenter(coordinator: self.coordinator)
+                    if value {
+                        self.toolbarViewDelegate?.presentFullscreenToolbar(presenter)
+                    } else {
+                        presenter.dismiss(animated: true, completion: nil)
+                    }
                 }
         ]
-        
-        update(theme: ThemeService.shared().theme)
-        registerThemeServiceDidChangeThemeNotification()
     }
     
     override func customizeRendering() {

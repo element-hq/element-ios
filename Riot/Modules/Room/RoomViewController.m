@@ -5015,6 +5015,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 #pragma mark - MXKRoomInputToolbarViewDelegate
 
+-(void)presentFullscreenToolbar:(ComposerBridgePresenter *)presenter
+{
+    [presenter presentFrom:self animated:YES];
+}
+
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
 {
     [super roomInputToolbarView:toolbarView isTyping:typing];

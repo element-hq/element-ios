@@ -68,4 +68,8 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
     func dismissKeyboard() {
         state.bindings.focused = false
     }
+    
+    func focus() {
+        state.bindings.focused = true
+    }
 }
