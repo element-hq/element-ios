@@ -76,6 +76,8 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             completion?(.showUserSessionOverview(sessionInfo: session))
         case .linkDevice:
             completion?(.linkDevice)
+        case .logoutOtherSessions:
+            completion?(.logoutFromUserSessions(sessionInfos: userSessionsOverviewService.otherSessions))
         }
     }
     
@@ -109,7 +111,7 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
     }
     
     private func showSessions(filteredBy filter: UserOtherSessionsFilter) {
-        completion?(.showOtherSessions(sessionInfos: userSessionsOverviewService.sessionInfos,
+        completion?(.showOtherSessions(sessionInfos: userSessionsOverviewService.otherSessions,
                                        filter: filter))
     }
 }

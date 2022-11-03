@@ -47,7 +47,7 @@ enum DeactivateAccountServiceError: Error {
 @objcMembers class DeactivateAccountService: NSObject {
     private let session: MXSession
     private let uiaService: UserInteractiveAuthenticationService
-    private let request = AuthenticatedEndpointRequest(path: "\(kMXAPIPrefixPathR0)/account/deactivate", httpMethod: "POST")
+    private let request = AuthenticatedEndpointRequest(path: "\(kMXAPIPrefixPathR0)/account/deactivate", httpMethod: "POST", params: [:])
     
     /// The authentication session's ID if interactive authentication has begun, otherwise `nil`.
     private var sessionID: String?

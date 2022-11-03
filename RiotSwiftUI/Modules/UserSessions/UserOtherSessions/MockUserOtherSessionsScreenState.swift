@@ -207,7 +207,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
                          isCurrent: false)]
     }
     
-    private func allSessions() -> [UserSessionInfo] {
+    func allSessions() -> [UserSessionInfo] {
         [UserSessionInfo(id: "0",
                          name: "iOS",
                          deviceType: .mobile,

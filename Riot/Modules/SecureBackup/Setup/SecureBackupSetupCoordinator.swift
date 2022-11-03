@@ -149,11 +149,11 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     }
     
     private func showKeyBackupRestore() {
-        guard let keyBackupVersion = self.keyBackup?.keyBackupVersion else {
+        guard let backup = keyBackup, let keyBackupVersion = backup.keyBackupVersion else {
             return
         }
         
-        let coordinator = KeyBackupRecoverCoordinator(session: self.session, keyBackupVersion: keyBackupVersion, navigationRouter: self.navigationRouter)
+        let coordinator = KeyBackupRecoverCoordinator(keyBackup: backup, keyBackupVersion: keyBackupVersion, navigationRouter: self.navigationRouter)
         
         self.add(childCoordinator: coordinator)
         coordinator.delegate = self

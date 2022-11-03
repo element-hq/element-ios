@@ -36,7 +36,7 @@ struct UserSessionCardView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 12) {
-            DeviceAvatarView(viewData: viewData.deviceAvatarViewData)
+            DeviceAvatarView(viewData: viewData.deviceAvatarViewData, isSelected: false)
                 .accessibilityHidden(true)
             
             Text(viewData.sessionName)

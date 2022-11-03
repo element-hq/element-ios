@@ -49,7 +49,12 @@ final class KeyBackupRecoverCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let keyBackupSetupCoordinator = KeyBackupRecoverCoordinator(session: self.session, keyBackupVersion: keyBackupVersion)
+        guard let keyBackup = session.crypto?.backup else {
+            MXLog.failure("[KeyBackupRecoverCoordinatorBridgePresenter] Cannot setup backups without backup module")
+            return
+        }
+        
+        let keyBackupSetupCoordinator = KeyBackupRecoverCoordinator(keyBackup: keyBackup, keyBackupVersion: keyBackupVersion)
         keyBackupSetupCoordinator.delegate = self
         viewController.present(keyBackupSetupCoordinator.toPresentable(), animated: animated, completion: nil)
         keyBackupSetupCoordinator.start()
@@ -58,12 +63,16 @@ final class KeyBackupRecoverCoordinatorBridgePresenter: NSObject {
     }
     
     func push(from navigationController: UINavigationController, animated: Bool) {
+        guard let keyBackup = session.crypto?.backup else {
+            MXLog.failure("[KeyBackupRecoverCoordinatorBridgePresenter] Cannot setup backups without backup module")
+            return
+        }
         
         MXLog.debug("[KeyBackupRecoverCoordinatorBridgePresenter] Push complete security from \(navigationController)")
         
         let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
-        let keyBackupSetupCoordinator = KeyBackupRecoverCoordinator(session: self.session, keyBackupVersion: keyBackupVersion, navigationRouter: navigationRouter)
+        let keyBackupSetupCoordinator = KeyBackupRecoverCoordinator(keyBackup: keyBackup, keyBackupVersion: keyBackupVersion, navigationRouter: navigationRouter)
         keyBackupSetupCoordinator.delegate = self
         keyBackupSetupCoordinator.start() // Will trigger view controller push
         

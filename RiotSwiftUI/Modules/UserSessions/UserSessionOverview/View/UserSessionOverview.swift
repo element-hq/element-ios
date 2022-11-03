@@ -63,15 +63,26 @@ struct UserSessionOverview: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
-                    Button { viewModel.send(viewAction: .renameSession) } label: {
-                        Label(VectorL10n.manageSessionRename, systemImage: "pencil")
+                    SwiftUI.Section {
+                        Button { viewModel.send(viewAction: .renameSession) } label: {
+                            Label(VectorL10n.manageSessionRename, systemImage: "pencil")
+                        }
+                        .accessibilityIdentifier(VectorL10n.manageSessionRename)
                     }
+                    DestructiveButton {
+                        viewModel.send(viewAction: .logoutOfSession)
+                    } label: {
+                        Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
+                    }
+                    .accessibilityIdentifier(VectorL10n.signOut)
                 } label: {
                     Image(systemName: "ellipsis")
+                        .foregroundColor(theme.colors.secondaryContent)
                         .padding(.horizontal, 4)
                         .padding(.vertical, 12)
                 }
                 .offset(x: 4) // Re-align the symbol after applying padding.
+                .accessibilityIdentifier("Menu")
             }
         }
         .accentColor(theme.colors.accent)

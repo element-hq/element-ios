@@ -22,86 +22,97 @@ struct UserOtherSessions: View {
     @ObservedObject var viewModel: UserOtherSessionsViewModel.Context
     
     var body: some View {
-        ScrollView {
-            ForEach(viewModel.viewState.sections) { section in
-                switch section {
-                case let .sessionItems(header: header, items: items):
-                    createSessionItemsSection(header: header, items: items)
-                case let .emptySessionItems(header: header, title: title):
-                    createEmptySessionsItemsSection(header: header, title: title)
+        VStack(spacing: 0) {
+            ScrollView {
+                SwiftUI.Section {
+                    if viewModel.viewState.sessionItems.isEmpty {
+                        noItemsView()
+                    } else {
+                        itemsView()
+                    }
+                } header: {
+                    UserOtherSessionsHeaderView(viewData: viewModel.viewState.header)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.top, 24.0)
                 }
             }
+            if viewModel.isEditModeEnabled {
+                bottomToolbar()
+            }
+        }
+        .onChange(of: viewModel.isEditModeEnabled) { _ in
+            viewModel.send(viewAction: .editModeWasToggled)
+        }
+        .onChange(of: viewModel.filter) { _ in
+            viewModel.send(viewAction: .filterWasChanged)
         }
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
         .navigationTitle(viewModel.viewState.title)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Menu {
-                    Picker("", selection: $viewModel.filter) {
-                        ForEach(UserOtherSessionsFilter.allCases) { filter in
-                            Text(filter.menuLocalizedName).tag(filter)
-                        }
-                    }
-                    .labelsHidden()
-                    .onChange(of: viewModel.filter) { _ in
-                        viewModel.send(viewAction: .filterWasChanged)
-                    }
-                } label: {
-                    Image(viewModel.filter == .all ? Asset.Images.userOtherSessionsFilter.name : Asset.Images.userOtherSessionsFilterSelected.name)
+            UserOtherSessionsToolbar(isEditModeEnabled: $viewModel.isEditModeEnabled,
+                                     filter: $viewModel.filter,
+                                     allItemsSelected: viewModel.viewState.allItemsSelected,
+                                     sessionCount: viewModel.viewState.sessionItems.count,
+                                     onToggleSelection: { viewModel.send(viewAction: .toggleAllSelection) },
+                                     onSignOut: { viewModel.send(viewAction: .logoutAllUserSessions) })
+        }
+        .navigationBarBackButtonHidden(viewModel.isEditModeEnabled)
+        .accentColor(theme.colors.accent)
+    }
+    
+    private func noItemsView() -> some View {
+        VStack {
+            Text(viewModel.viewState.emptyItemsTitle)
+                .font(theme.fonts.footnote)
+                .foregroundColor(theme.colors.primaryContent)
+                .padding(.bottom, 20)
+            Button {
+                viewModel.send(viewAction: .clearFilter)
+            } label: {
+                VStack(spacing: 0) {
+                    SeparatorLine()
+                    Text(VectorL10n.userOtherSessionClearFilter)
+                        .font(theme.fonts.body)
+                        .foregroundColor(theme.colors.accent)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.vertical, 11)
+                    SeparatorLine()
                 }
-                .accessibilityLabel(VectorL10n.userOtherSessionFilter)
+                .background(theme.colors.background)
             }
         }
     }
     
-    private func createSessionItemsSection(header: UserOtherSessionsHeaderViewData, items: [UserSessionListItemViewData]) -> some View {
-        SwiftUI.Section {
-            LazyVStack(spacing: 0) {
-                ForEach(items) { viewData in
-                    UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
-                        viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId))
-                    })
-                }
+    private func itemsView() -> some View {
+        LazyVStack(spacing: 0) {
+            ForEach(viewModel.viewState.sessionItems) { viewData in
+                UserSessionListItem(viewData: viewData,
+                                    isSeparatorHidden: viewData == viewModel.viewState.sessionItems.last,
+                                    isEditModeEnabled: viewModel.isEditModeEnabled,
+                                    onBackgroundTap: { sessionId in viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId)) },
+                                    onBackgroundLongPress: { _ in viewModel.isEditModeEnabled = true })
             }
-            .background(theme.colors.background)
-        } header: {
-            headerView(header: header)
         }
+        .background(theme.colors.background)
     }
     
-    private func createEmptySessionsItemsSection(header: UserOtherSessionsHeaderViewData, title: String) -> some View {
-        SwiftUI.Section {
-            VStack {
-                Text(title)
-                    .font(theme.fonts.footnote)
-                    .foregroundColor(theme.colors.primaryContent)
-                    .padding(.bottom, 20)
+    private func bottomToolbar() -> some View {
+        VStack(spacing: 0) {
+            SeparatorLine()
+            HStack {
+                Spacer()
                 Button {
-                    viewModel.send(viewAction: .clearFilter)
+                    viewModel.send(viewAction: .logoutSelectedUserSessions)
                 } label: {
-                    VStack(spacing: 0) {
-                        SeparatorLine()
-                        Text(VectorL10n.userOtherSessionClearFilter)
-                            .font(theme.fonts.body)
-                            .foregroundColor(theme.colors.accent)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .padding(.vertical, 11)
-                        SeparatorLine()
-                    }
-                    .background(theme.colors.background)
+                    Text(VectorL10n.signOut)
+                        .foregroundColor(viewModel.viewState.enableSignOutButton ? theme.colors.alert : theme.colors.tertiaryContent)
                 }
+                .padding(.trailing, 16)
+                .padding(.vertical, 12)
+                .disabled(!viewModel.viewState.enableSignOutButton)
             }
-            
-        } header: {
-            headerView(header: header)
         }
-    }
-    
-    private func headerView(header: UserOtherSessionsHeaderViewData) -> some View {
-        UserOtherSessionsHeaderView(viewData: header)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 24.0)
     }
 }
 
