@@ -2845,3 +2845,4 @@
 "user_other_session_menu_select_sessions" = "Pilih sesi";
 "user_other_session_selected_count" = "%@ dipilih";
 "user_other_session_menu_sign_out_sessions" = "Keluar dari %@ sesi";
+"manage_session_sign_out_other_sessions" = "Keluarkan semua sesi lain";
