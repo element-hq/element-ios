@@ -2843,3 +2843,4 @@
 "user_other_session_menu_select_sessions" = "Вибрати сеанси";
 "user_other_session_selected_count" = "Вибрано %@";
 "user_other_session_menu_sign_out_sessions" = "Вийти з %@ сеансів";
+"manage_session_sign_out_other_sessions" = "Вийти з усіх інших сеансів";
