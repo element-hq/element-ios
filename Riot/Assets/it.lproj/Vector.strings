@@ -2617,3 +2617,4 @@
 "deselect_all" = "Deseleziona tutti";
 "user_other_session_menu_select_sessions" = "Seleziona sessioni";
 "user_other_session_selected_count" = "%@ selezionate";
+"user_other_session_menu_sign_out_sessions" = "Disconnetti da %@ sessioni";
