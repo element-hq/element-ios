@@ -123,7 +123,7 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
             service = MockUserSessionOverviewService(pusherEnabled: true, remotelyTogglingPushersAvailable: false)
         }
 
-        let viewModel = UserSessionOverviewViewModel(sessionInfo: session, service: service)
+        let viewModel = UserSessionOverviewViewModel(sessionInfo: session, service: service, settingsService: MockUserSessionSettings())
         // can simulate service and viewModel actions here if needs be.
         return ([viewModel], AnyView(UserSessionOverview(viewModel: viewModel.context)))
     }

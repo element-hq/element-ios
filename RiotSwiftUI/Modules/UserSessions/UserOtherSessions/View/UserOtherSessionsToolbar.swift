@@ -21,6 +21,7 @@ struct UserOtherSessionsToolbar: ToolbarContent {
     
     @Binding var isEditModeEnabled: Bool
     @Binding var filter: UserOtherSessionsFilter
+    @Binding var isShowLocationEnabled: Bool
     let allItemsSelected: Bool
     let sessionCount: Int
     let onToggleSelection: () -> Void
@@ -86,6 +87,13 @@ struct UserOtherSessionsToolbar: ToolbarContent {
                     Label(VectorL10n.userOtherSessionMenuSelectSessions, systemImage: "checkmark.circle")
                 }
                 .disabled(sessionCount == 0)
+                
+                Button {
+                    isShowLocationEnabled.toggle()
+                } label: {
+                    Label(showLocationInfo: isShowLocationEnabled)
+                }
+                
                 if sessionCount > 0 {
                     DestructiveButton {
                         onSignOut()

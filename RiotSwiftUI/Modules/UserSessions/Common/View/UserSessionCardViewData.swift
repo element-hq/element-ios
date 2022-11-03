@@ -34,7 +34,8 @@ struct UserSessionCardViewData {
     
     var lastActivityIcon: String?
     
-    let lastSeenIPInfo: String?
+    let lastSeenIP: String?
+    let lastSeenIPLocation: String?
     
     let deviceAvatarViewData: DeviceAvatarViewData
     
@@ -95,6 +96,7 @@ struct UserSessionCardViewData {
          verificationState: UserSessionInfo.VerificationState,
          lastActivityTimestamp: TimeInterval?,
          lastSeenIP: String?,
+         lastSeenIPLocation: String?,
          isCurrentSessionDisplayMode: Bool = false,
          isActive: Bool) {
         self.sessionId = sessionId
@@ -112,7 +114,8 @@ struct UserSessionCardViewData {
             }
         }
         self.lastActivityDateString = lastActivityDateString
-        lastSeenIPInfo = lastSeenIP
+        self.lastSeenIP = lastSeenIP
+        self.lastSeenIPLocation = lastSeenIPLocation
         deviceAvatarViewData = DeviceAvatarViewData(deviceType: deviceType, verificationState: verificationState)
         
         self.isCurrentSessionDisplayMode = isCurrentSessionDisplayMode
@@ -127,6 +130,7 @@ extension UserSessionCardViewData {
                   verificationState: sessionInfo.verificationState,
                   lastActivityTimestamp: sessionInfo.lastSeenTimestamp,
                   lastSeenIP: sessionInfo.lastSeenIP,
+                  lastSeenIPLocation: sessionInfo.lastSeenIPLocation,
                   isCurrentSessionDisplayMode: sessionInfo.isCurrent,
                   isActive: sessionInfo.isActive)
     }

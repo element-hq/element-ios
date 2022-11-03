@@ -20,6 +20,8 @@ struct UserSessionListItem: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     let viewData: UserSessionListItemViewData
+    let showsLocationInfo: Bool
+    
     var isSeparatorHidden = false
     var isEditModeEnabled = false
     var onBackgroundTap: ((String) -> Void)?
@@ -52,10 +54,16 @@ struct UserSessionListItem: View {
                                 Image(sessionDetailsIcon)
                                     .padding(.leading, 2)
                             }
-                            Text(viewData.sessionDetails)
-                                .font(theme.fonts.caption1)
-                                .foregroundColor(theme.colors.secondaryContent)
-                                .multilineTextAlignment(.leading)
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text(viewData.sessionDetails)
+                                
+                                if showsLocationInfo, let ipText = ipText {
+                                    Text(ipText)
+                                }
+                            }
+                            .font(theme.fonts.caption1)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .multilineTextAlignment(.leading)
                         }
                         .padding(.bottom, 16)
                         .padding(.trailing, 16)
@@ -66,7 +74,8 @@ struct UserSessionListItem: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 16)
-            }.onTapGesture {
+            }
+            .onTapGesture {
                 onBackgroundTap?(viewData.sessionId)
             }
             .onLongPressGesture {
@@ -75,6 +84,13 @@ struct UserSessionListItem: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityIdentifier("UserSessionListItem_\(viewData.sessionId)")
+    }
+    
+    private var ipText: String? {
+        guard let lastSeenIp = viewData.lastSeenIP, !lastSeenIp.isEmpty else {
+            return nil
+        }
+        return viewData.lastSeenIPLocation.map { "\(lastSeenIp) (\($0))" } ?? lastSeenIp
     }
 }
 
@@ -86,7 +102,7 @@ struct UserSessionListPreview: View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(userSessionsOverviewService.otherSessions) { userSessionInfo in
                 let viewData = UserSessionListItemViewDataFactory().create(from: userSessionInfo)
-                UserSessionListItem(viewData: viewData, isEditModeEnabled: isEditModeEnabled, onBackgroundTap: { _ in
+                UserSessionListItem(viewData: viewData, showsLocationInfo: true, isEditModeEnabled: isEditModeEnabled, onBackgroundTap: { _ in
                 })
             }
         }

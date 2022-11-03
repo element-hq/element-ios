@@ -33,7 +33,8 @@ struct UserSessionOverview: View {
                 },
                 onLearnMoreAction: {
                     viewModel.send(viewAction: .viewSessionInfo)
-                }
+                },
+                showLocationInformations: viewModel.viewState.showLocationInfo
             )
             .padding(16)
             
@@ -75,6 +76,14 @@ struct UserSessionOverview: View {
                             Label(VectorL10n.manageSessionRename, systemImage: "pencil")
                         }
                         .accessibilityIdentifier(VectorL10n.manageSessionRename)
+                        
+                        if viewModel.viewState.isCurrentSession == false {
+                            Button {
+                                viewModel.send(viewAction: .showLocationInfo)
+                            } label: {
+                                Label(showLocationInfo: viewModel.viewState.showLocationInfo)
+                            }
+                        }
                     }
                     DestructiveButton {
                         viewModel.send(viewAction: .logoutOfSession)

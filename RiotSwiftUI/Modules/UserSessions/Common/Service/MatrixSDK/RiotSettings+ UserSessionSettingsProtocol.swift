@@ -1,4 +1,4 @@
-//
+// 
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +14,15 @@
 // limitations under the License.
 //
 
-import Foundation
+import Combine
 
-typealias SessionId = String
-
-/// View data for UserSessionListItem
-struct UserSessionListItemViewData: Identifiable, Hashable {
-    var id: String {
-        sessionId
+extension RiotSettings: UserSessionSettingsProtocol {
+    var showIPAddressesInSessionsManagerPublisher: AnyPublisher<Bool, Never> {
+        NotificationCenter.default
+            .publisher(for: .userDefaultValueUpdated)
+            .compactMap { $0.object as? String }
+            .filter { $0 == RiotSettings.UserDefaultsKeys.showIPAddressesInSessionsManager }
+            .map { _ in RiotSettings.shared.showIPAddressesInSessionsManager }
+            .eraseToAnyPublisher()
     }
-    
-    let sessionId: SessionId
-    let sessionName: String
-    let sessionDetails: String
-    let deviceAvatarViewData: DeviceAvatarViewData
-    let sessionDetailsIcon: String?
-    let isSelected: Bool
-    let lastSeenIP: String?
-    let lastSeenIPLocation: String?
 }

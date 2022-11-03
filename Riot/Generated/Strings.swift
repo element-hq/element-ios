@@ -8907,6 +8907,10 @@ public class VectorL10n: NSObject {
   public static func userSessionsDefaultSessionDisplayName(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "user_sessions_default_session_display_name", p1)
   }
+  /// Hide IP address
+  public static var userSessionsHideLocationInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_hide_location_info") 
+  }
   /// Current session
   public static var userSessionsOverviewCurrentSessionSectionTitle: String { 
     return VectorL10n.tr("Vector", "user_sessions_overview_current_session_section_title") 
@@ -8954,6 +8958,10 @@ public class VectorL10n: NSObject {
   /// Manage sessions
   public static var userSessionsSettings: String { 
     return VectorL10n.tr("Vector", "user_sessions_settings") 
+  }
+  /// Show IP address
+  public static var userSessionsShowLocationInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_show_location_info") 
   }
   /// View all (%d)
   public static func userSessionsViewAllAction(_ p1: Int) -> String {

@@ -42,6 +42,7 @@ struct UserOtherSessionsViewState: BindableState, Equatable {
     var emptyItemsTitle: String
     var allItemsSelected: Bool
     var enableSignOutButton: Bool
+    var showLocationInfo: Bool
 }
 
 struct UserOtherSessionsBindings: Equatable {
@@ -57,5 +58,6 @@ enum UserOtherSessionsViewAction {
     case toggleAllSelection
     case logoutAllUserSessions
     case logoutSelectedUserSessions
+    case showLocationInfo
     case viewSessionInfo
 }
