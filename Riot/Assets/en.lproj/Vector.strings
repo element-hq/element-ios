@@ -936,7 +936,7 @@ Tap the + to start adding people.";
 "manage_session_not_trusted" = "Not trusted";
 "manage_session_sign_out" = "Sign out of this session";
 "manage_session_rename" = "Rename session";
-
+"manage_session_sign_out_other_sessions" = "Sign out of all other sessions";
 // User sessions management
 "user_sessions_settings" = "Manage sessions";
 
