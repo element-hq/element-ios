@@ -2844,3 +2844,5 @@
 "user_other_session_selected_count" = "Вибрано %@";
 "user_other_session_menu_sign_out_sessions" = "Вийти з %@ сеансів";
 "manage_session_sign_out_other_sessions" = "Вийти з усіх інших сеансів";
+"user_sessions_hide_location_info" = "Сховати IP-адресу";
+"user_sessions_show_location_info" = "Показати IP-адресу";
