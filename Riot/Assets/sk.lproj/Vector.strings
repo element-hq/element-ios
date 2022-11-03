@@ -2841,3 +2841,6 @@
 "user_other_session_selected_count" = "%@ vybratých";
 "user_other_session_menu_select_sessions" = "Vyberte relácie";
 "user_other_session_menu_sign_out_sessions" = "Odhlásiť sa z %@ relácií";
+"user_sessions_hide_location_info" = "Skryť IP adresu";
+"user_sessions_show_location_info" = "Zobraziť IP adresu";
+"manage_session_sign_out_other_sessions" = "Odhlásiť zo všetkých ostatných relácií";
