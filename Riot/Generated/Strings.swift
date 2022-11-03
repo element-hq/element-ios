@@ -3647,6 +3647,10 @@ public class VectorL10n: NSObject {
   public static var manageSessionSignOut: String { 
     return VectorL10n.tr("Vector", "manage_session_sign_out") 
   }
+  /// Sign out of all other sessions
+  public static var manageSessionSignOutOtherSessions: String { 
+    return VectorL10n.tr("Vector", "manage_session_sign_out_other_sessions") 
+  }
   /// Manage session
   public static var manageSessionTitle: String { 
     return VectorL10n.tr("Vector", "manage_session_title") 

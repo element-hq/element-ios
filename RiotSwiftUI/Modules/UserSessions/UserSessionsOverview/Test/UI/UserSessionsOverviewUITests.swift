@@ -29,10 +29,10 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
     
     func testCurrentSessionVerified() {
         app.goToScreenWithIdentifier(MockUserSessionsOverviewScreenState.currentSessionVerified.title)
-        
         XCTAssertFalse(app.buttons["userSessionCardVerifyButton"].exists)
         XCTAssertTrue(app.staticTexts["userSessionCardViewDetails"].exists)
-
+        app.buttons["MoreOptionsMenu"].tap()
+        XCTAssertTrue(app.buttons["Sign out of all other sessions"].exists)
         verifyLinkDeviceButtonStatus(true)
     }
     
@@ -59,7 +59,8 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         
         XCTAssertFalse(app.staticTexts["userSessionsOverviewSecurityRecommendationsSection"].exists)
         XCTAssertFalse(app.staticTexts["userSessionsOverviewOtherSection"].exists)
-
+        app.buttons["MoreOptionsMenu"].tap()
+        XCTAssertFalse(app.buttons["Sign out of all other sessions"].exists)
         verifyLinkDeviceButtonStatus(false)
     }
 
