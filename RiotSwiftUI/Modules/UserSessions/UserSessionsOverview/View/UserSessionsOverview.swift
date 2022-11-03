@@ -143,7 +143,9 @@ struct UserSessionsOverview: View {
     private var otherSessionsMenu: some View {
         Menu {
             Button {
-                viewModel.send(viewAction: .showLocationInfo)
+                withAnimation {
+                    viewModel.send(viewAction: .showLocationInfo)
+                }
             } label: {
                 Label(showLocationInfo: viewModel.viewState.showLocationInfo)
             }

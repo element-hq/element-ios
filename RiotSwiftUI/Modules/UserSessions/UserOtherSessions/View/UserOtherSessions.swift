@@ -53,7 +53,7 @@ struct UserOtherSessions: View {
             UserOtherSessionsToolbar(isEditModeEnabled: $viewModel.isEditModeEnabled,
                                      filter: $viewModel.filter,
                                      isShowLocationEnabled: .init(get: { viewModel.viewState.showLocationInfo },
-                                                                  set: { _ in viewModel.send(viewAction: .showLocationInfo) }),
+                                                                  set: { _ in withAnimation { viewModel.send(viewAction: .showLocationInfo) } }),
                                      allItemsSelected: viewModel.viewState.allItemsSelected,
                                      sessionCount: viewModel.viewState.sessionItems.count,
                                      onToggleSelection: { viewModel.send(viewAction: .toggleAllSelection) },
