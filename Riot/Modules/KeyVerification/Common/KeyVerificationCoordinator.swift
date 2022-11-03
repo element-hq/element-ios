@@ -324,12 +324,8 @@ extension KeyVerificationCoordinator: KeyVerificationDataLoadingCoordinatorDeleg
 
 // MARK: - DeviceVerificationStartCoordinatorDelegate
 extension KeyVerificationCoordinator: DeviceVerificationStartCoordinatorDelegate {
-    func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
-        self.showVerifyBySAS(transaction: transaction, animated: true)
-    }
-
-    func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
-        self.didCancel()
+    func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, otherDidAcceptRequest request: MXKeyVerificationRequest) {
+        self.showVerifyByScanning(keyVerificationRequest: request, animated: true)
     }
 
     func deviceVerificationStartCoordinatorDidCancel(_ coordinator: DeviceVerificationStartCoordinatorType) {

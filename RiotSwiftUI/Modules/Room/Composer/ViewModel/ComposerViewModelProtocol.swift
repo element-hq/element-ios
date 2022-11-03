@@ -22,4 +22,6 @@ protocol ComposerViewModelProtocol {
     var sendMode: ComposerSendMode { get set }
     var eventSenderDisplayName: String? { get set }
     var placeholder: String? { get set }
+    
+    func dismissKeyboard()
 }

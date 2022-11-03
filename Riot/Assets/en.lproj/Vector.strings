@@ -936,7 +936,7 @@ Tap the + to start adding people.";
 "manage_session_not_trusted" = "Not trusted";
 "manage_session_sign_out" = "Sign out of this session";
 "manage_session_rename" = "Rename session";
-
+"manage_session_sign_out_other_sessions" = "Sign out of all other sessions";
 // User sessions management
 "user_sessions_settings" = "Manage sessions";
 
@@ -2460,6 +2460,9 @@ To enable access, tap Settings> Location and select Always";
 "user_other_session_no_verified_sessions" = "No verified sessions found.";
 "user_other_session_no_unverified_sessions" = "No unverified sessions found.";
 "user_other_session_clear_filter" = "Clear filter";
+"user_other_session_selected_count" = "%@ selected";
+"user_other_session_menu_select_sessions" = "Select sessions";
+"user_other_session_menu_sign_out_sessions" = "Sign out of %@ sessions";
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
 
@@ -2590,6 +2593,7 @@ To enable access, tap Settings> Location and select Always";
 "reset_to_default" = "Reset to default";
 "resend_message" = "Resend the message";
 "select_all" = "Select All";
+"deselect_all" = "Deselect All";
 "cancel_upload" = "Cancel Upload";
 "cancel_download" = "Cancel Download";
 "show_details" = "Show Details";

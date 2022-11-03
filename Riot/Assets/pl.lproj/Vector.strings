@@ -751,7 +751,7 @@
 "group_participants_invited_section" = "ZAPROSZONY";
 "receipt_status_read" = "Odczytano: ";
 // Media picker
-"media_picker_title" = "Selektor mediów";
+"media_picker_title" = "Biblioteka mediów";
 // Image picker
 "image_picker_action_camera" = "Zrób zdjęcie";
 "image_picker_action_library" = "Wybierz z biblioteki";
@@ -2569,7 +2569,7 @@
 
 // Mark: - All Chats
 
-"all_chats_title" = "Wszystkie rozmowy";
+"all_chats_title" = "Rozmowy";
 "spaces_subspace_creation_visibility_message" = "Utworzona przestrzeń zostanie dodana do %@.";
 "spaces_subspace_creation_visibility_title" = "Jakiego rodzaju podprzestrzeń chcesz utworzyć?";
 "spaces_explore_rooms_format" = "Przeglądaj %@";

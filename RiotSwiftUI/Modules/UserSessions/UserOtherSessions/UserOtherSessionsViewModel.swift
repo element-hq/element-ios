@@ -21,15 +21,23 @@ typealias UserOtherSessionsViewModelType = StateStoreViewModel<UserOtherSessions
 class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessionsViewModelProtocol {
     var completion: ((UserOtherSessionsViewModelResult) -> Void)?
     private let sessionInfos: [UserSessionInfo]
+    private var selectedSessions: Set<SessionId> = []
+    private let defaultTitle: String
     
     init(sessionInfos: [UserSessionInfo],
          filter: UserOtherSessionsFilter,
          title: String) {
         self.sessionInfos = sessionInfos
-        super.init(initialViewState: UserOtherSessionsViewState(bindings: UserOtherSessionsBindings(filter: filter),
+        defaultTitle = title
+        let bindings = UserOtherSessionsBindings(filter: filter, isEditModeEnabled: false)
+        let sessionItems = filter.filterSessionInfos(sessionInfos: sessionInfos, selectedSessions: selectedSessions)
+        super.init(initialViewState: UserOtherSessionsViewState(bindings: bindings,
                                                                 title: title,
-                                                                sections: []))
-        updateViewState()
+                                                                sessionItems: sessionItems,
+                                                                header: filter.userOtherSessionsViewHeader,
+                                                                emptyItemsTitle: filter.userOtherSessionsViewEmptyResultsTitle,
+                                                                allItemsSelected: false,
+                                                                enableSignOutButton: false))
     }
     
     // MARK: - Public
@@ -37,56 +45,85 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     override func process(viewAction: UserOtherSessionsViewAction) {
         switch viewAction {
         case let .userOtherSessionSelected(sessionId: sessionId):
-            guard let session = sessionInfos.first(where: { $0.id == sessionId }) else {
-                assertionFailure("Session should exist in the array.")
-                return
+            if state.bindings.isEditModeEnabled {
+                updateSelectionForSession(sessionId: sessionId)
+                updateViewState()
+            } else {
+                showUserSessionOverview(sessionId: sessionId)
             }
-            completion?(.showUserSessionOverview(sessionInfo: session))
         case .filterWasChanged:
             updateViewState()
         case .clearFilter:
             state.bindings.filter = .all
             updateViewState()
+        case .editModeWasToggled:
+            selectedSessions.removeAll()
+            updateViewState()
+        case .toggleAllSelection:
+            toggleAllSelection()
+            updateViewState()
+        case .logoutAllUserSessions:
+            let filteredSessions = state.bindings.filter.filterSessionsInfos(sessionInfos)
+            completion?(.logoutFromUserSessions(sessionInfos: filteredSessions))
+        case .logoutSelectedUserSessions:
+            let selectedSessionInfos = sessionInfos.filter { sessionInfo in
+                selectedSessions.contains(sessionInfo.id)
+            }
+            completion?(.logoutFromUserSessions(sessionInfos: selectedSessionInfos))
         }
     }
-    
+
     // MARK: - Private
     
-    private func updateViewState() {
-        let sectionItems = createSectionItems(sessionInfos: sessionInfos, filter: state.bindings.filter)
-        let sectionHeader = createHeaderData(filter: state.bindings.filter)
-        if sectionItems.isEmpty {
-            state.sections = [.emptySessionItems(header: sectionHeader,
-                                                 title: noSessionsTitle(filter: state.bindings.filter))]
+    private func showUserSessionOverview(sessionId: String) {
+        guard let session = sessionInfos.first(where: { $0.id == sessionId }) else {
+            assertionFailure("Session should exist in the array.")
+            return
+        }
+        completion?(.showUserSessionOverview(sessionInfo: session))
+    }
+    
+    private func updateSelectionForSession(sessionId: String) {
+        if selectedSessions.contains(sessionId) {
+            selectedSessions.remove(sessionId)
         } else {
-            state.sections = [.sessionItems(header: sectionHeader,
-                                            items: sectionItems)]
+            selectedSessions.insert(sessionId)
         }
     }
     
-    private func createSectionItems(sessionInfos: [UserSessionInfo], filter: UserOtherSessionsFilter) -> [UserSessionListItemViewData] {
-        filterSessions(sessionInfos: sessionInfos, by: filter)
-            .map {
-                UserSessionListItemViewDataFactory().create(from: $0,
-                                                            highlightSessionDetails: filter == .unverified && $0.isCurrent)
+    private func updateViewState() {
+        let currentFilter = state.bindings.filter
+        
+        state.sessionItems = currentFilter.filterSessionInfos(sessionInfos: sessionInfos, selectedSessions: selectedSessions)
+        state.header = currentFilter.userOtherSessionsViewHeader
+        
+        if state.bindings.isEditModeEnabled {
+            state.title = VectorL10n.userOtherSessionSelectedCount(String(selectedSessions.count))
+        } else {
+            state.title = defaultTitle
+        }
+        
+        state.emptyItemsTitle = currentFilter.userOtherSessionsViewEmptyResultsTitle
+        
+        state.allItemsSelected = sessionInfos.count == selectedSessions.count
+        
+        state.enableSignOutButton = selectedSessions.count > 0
+    }
+    
+    private func toggleAllSelection() {
+        if state.allItemsSelected {
+            selectedSessions.removeAll()
+        } else {
+            sessionInfos.forEach { sessionInfo in
+                selectedSessions.insert(sessionInfo.id)
             }
-    }
-    
-    private func filterSessions(sessionInfos: [UserSessionInfo], by filter: UserOtherSessionsFilter) -> [UserSessionInfo] {
-        switch filter {
-        case .all:
-            return sessionInfos.filter { !$0.isCurrent }
-        case .inactive:
-            return sessionInfos.filter { !$0.isActive }
-        case .unverified:
-            return sessionInfos.filter { $0.verificationState != .verified }
-        case .verified:
-            return sessionInfos.filter { $0.verificationState == .verified }
         }
     }
-    
-    private func createHeaderData(filter: UserOtherSessionsFilter) -> UserOtherSessionsHeaderViewData {
-        switch filter {
+}
+
+private extension UserOtherSessionsFilter {
+    var userOtherSessionsViewHeader: UserOtherSessionsHeaderViewData {
+        switch self {
         case .all:
             return UserOtherSessionsHeaderViewData(title: nil,
                                                    subtitle: VectorL10n.userSessionsOverviewOtherSessionsSectionInfo,
@@ -106,10 +143,9 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         }
     }
     
-    private func noSessionsTitle(filter: UserOtherSessionsFilter) -> String {
-        switch filter {
+    var userOtherSessionsViewEmptyResultsTitle: String {
+        switch self {
         case .all:
-            assertionFailure("The view is not intended to be displayed without any session")
             return ""
         case .verified:
             return VectorL10n.userOtherSessionNoVerifiedSessions
@@ -118,5 +154,26 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         case .inactive:
             return VectorL10n.userOtherSessionNoInactiveSessions
         }
+    }
+    
+    func filterSessionsInfos(_ sessionInfos: [UserSessionInfo]) -> [UserSessionInfo] {
+        switch self {
+        case .all:
+            return sessionInfos.filter { !$0.isCurrent }
+        case .inactive:
+            return sessionInfos.filter { !$0.isActive }
+        case .unverified:
+            return sessionInfos.filter { $0.verificationState != .verified }
+        case .verified:
+            return sessionInfos.filter { $0.verificationState == .verified }
+        }
+    }
+    
+    func filterSessionInfos(sessionInfos: [UserSessionInfo], selectedSessions: Set<SessionId>) -> [UserSessionListItemViewData] {
+        filterSessionsInfos(sessionInfos)
+            .map {
+                UserSessionListItemViewDataFactory().create(from: $0,
+                                                            isSelected: selectedSessions.contains($0.id))
+            }
     }
 }
