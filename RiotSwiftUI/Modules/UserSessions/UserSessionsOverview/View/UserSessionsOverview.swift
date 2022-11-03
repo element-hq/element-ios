@@ -148,7 +148,11 @@ struct UserSessionsOverview: View {
                 Label(showLocationInfo: viewModel.viewState.showLocationInfo)
             }
             
-            signOutButton
+            DestructiveButton {
+                viewModel.send(viewAction: .logoutOtherSessions)
+            } label: {
+                Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(viewModel.viewState.otherSessionsViewData.count)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
+            }
         } label: {
             menuImage
         }
@@ -216,23 +220,6 @@ struct UserSessionsOverview: View {
             .accessibilityIdentifier("linkDeviceButton")
         }
         .background(theme.colors.system.ignoresSafeArea())
-    }
-    
-    private var optionsMenu: some View {
-        Button { } label: {
-            Menu {
-                DestructiveButton {
-                    viewModel.send(viewAction: .logoutOtherSessions)
-                } label: {
-                    Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(viewModel.viewState.otherSessionsViewData.count)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
-                }
-            } label: {
-                Image(systemName: "ellipsis")
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.horizontal, 4)
-                    .padding(.vertical, 12)
-            }
-        }
     }
 }
 
