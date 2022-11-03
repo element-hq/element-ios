@@ -2653,3 +2653,5 @@
 "user_other_session_selected_count" = "%@ ausgewählt";
 "user_other_session_menu_sign_out_sessions" = "Von %@ Sitzungen abmelden";
 "manage_session_sign_out_other_sessions" = "Von allen anderen Sitzungen abmelden";
+"user_sessions_hide_location_info" = "IP-Adresse ausblenden";
+"user_sessions_show_location_info" = "IP-Adresse anzeigen";
