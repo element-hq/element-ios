@@ -127,14 +127,10 @@ struct UserSessionsOverview: View {
                 Button { viewModel.send(viewAction: .renameCurrentSession) } label: {
                     Label(VectorL10n.manageSessionRename, systemImage: "pencil")
                 }
-                if #available(iOS 15, *) {
-                    Button(role: .destructive) { viewModel.send(viewAction: .logoutOfCurrentSession) } label: {
-                        Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
-                    }
-                } else {
-                    Button { viewModel.send(viewAction: .logoutOfCurrentSession) } label: {
-                        Label(VectorL10n.signOut, systemImage: "rectangle.righthalf.inset.fill.arrow.right")
-                    }
+                DestructiveButton {
+                    viewModel.send(viewAction: .logoutOfCurrentSession)
+                } label: {
+                    Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
                 }
             }
             if viewModel.viewState.otherSessionsViewData.count > 0 {

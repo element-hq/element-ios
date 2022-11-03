@@ -69,18 +69,12 @@ struct UserSessionOverview: View {
                         }
                         .accessibilityIdentifier(VectorL10n.manageSessionRename)
                     }
-                    
-                    if #available(iOS 15, *) {
-                        Button(role: .destructive) { viewModel.send(viewAction: .logoutOfSession) } label: {
-                            Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
-                        }
-                        .accessibilityIdentifier(VectorL10n.signOut)
-                    } else {
-                        Button { viewModel.send(viewAction: .logoutOfSession) } label: {
-                            Label(VectorL10n.signOut, systemImage: "rectangle.righthalf.inset.fill.arrow.right")
-                        }
-                        .accessibilityIdentifier(VectorL10n.signOut)
+                    DestructiveButton {
+                        viewModel.send(viewAction: .logoutOfSession)
+                    } label: {
+                        Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
                     }
+                    .accessibilityIdentifier(VectorL10n.signOut)
                 } label: {
                     Image(systemName: "ellipsis")
                         .foregroundColor(theme.colors.secondaryContent)
