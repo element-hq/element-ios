@@ -2618,3 +2618,4 @@
 "deselect_all" = "Desselecionar Todas(os)";
 "user_other_session_menu_select_sessions" = "Selecionar sessões";
 "user_other_session_selected_count" = "%@ selecionadas";
+"user_other_session_menu_sign_out_sessions" = "Fazer signout de %@ sessões";
