@@ -2590,3 +2590,6 @@
 "user_other_session_menu_select_sessions" = "Vali sessioonid";
 "user_other_session_selected_count" = "%@ valitud";
 "user_other_session_menu_sign_out_sessions" = "Logi välja %@'st sessioonist";
+"user_sessions_hide_location_info" = "Peida IP-aadress";
+"user_sessions_show_location_info" = "Näita IP-aadressi";
+"manage_session_sign_out_other_sessions" = "Logi välja kõikidest oma muudest sessioonidest";
