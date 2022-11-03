@@ -24,26 +24,19 @@ struct UserSessionsOverview: View {
     private let maxOtherSessionsToDisplay = 5
     
     var body: some View {
-        GeometryReader { _ in
-            VStack(alignment: .leading, spacing: 0) {
-                ScrollView {
-                    if hasSecurityRecommendations {
-                        securityRecommendationsSection
-                    }
-
-                    currentSessionsSection
-
-                    if !viewModel.viewState.otherSessionsViewData.isEmpty {
-                        otherSessionsSection
-                    }
+        VStack(alignment: .leading, spacing: 0) {
+            ScrollView {
+                if hasSecurityRecommendations {
+                    securityRecommendationsSection
                 }
-                .readableFrame()
-
-//                if viewModel.viewState.linkDeviceButtonVisible {
-//                    linkDeviceView
-//                        .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
-//                }
+                
+                currentSessionsSection
+                
+                if !viewModel.viewState.otherSessionsViewData.isEmpty {
+                    otherSessionsSection
+                }
             }
+            .readableFrame()
         }
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
@@ -103,7 +96,7 @@ struct UserSessionsOverview: View {
                     viewModel.send(viewAction: .verifyCurrentSession)
                 }, onViewDetailsAction: { _ in
                     viewModel.send(viewAction: .viewCurrentSessionDetails)
-                })
+                }, showLocationInformations: viewModel.viewState.showLocationInfo)
             } header: {
                 HStack(alignment: .firstTextBaseline) {
                     Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
@@ -141,13 +134,37 @@ struct UserSessionsOverview: View {
                 }
             }
         } label: {
-            Image(systemName: "ellipsis")
-                .foregroundColor(theme.colors.secondaryContent)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 12)
+            menuImage
         }
         .accessibilityIdentifier("MoreOptionsMenu")
         .offset(x: 8) // Re-align the symbol after applying padding.
+    }
+    
+    private var otherSessionsMenu: some View {
+        Menu {
+            Button {
+                withAnimation {
+                    viewModel.send(viewAction: .showLocationInfo)
+                }
+            } label: {
+                Label(showLocationInfo: viewModel.viewState.showLocationInfo)
+            }
+            
+            DestructiveButton {
+                viewModel.send(viewAction: .logoutOtherSessions)
+            } label: {
+                Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(viewModel.viewState.otherSessionsViewData.count)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
+            }
+        } label: {
+            menuImage
+        }
+    }
+    
+    private var menuImage: some View {
+        Image(systemName: "ellipsis")
+            .foregroundColor(theme.colors.secondaryContent)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 12)
     }
     
     private var otherSessionsSection: some View {
@@ -155,6 +172,7 @@ struct UserSessionsOverview: View {
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.viewState.otherSessionsViewData.prefix(maxOtherSessionsToDisplay)) { viewData in
                     UserSessionListItem(viewData: viewData,
+                                        showsLocationInfo: viewModel.viewState.showLocationInfo,
                                         isSeparatorHidden: viewData == viewModel.viewState.otherSessionsViewData.last,
                                         onBackgroundTap: { sessionId in viewModel.send(viewAction: .tapUserSession(sessionId)) })
                 }
@@ -174,7 +192,7 @@ struct UserSessionsOverview: View {
                         .foregroundColor(theme.colors.secondaryContent)
                         .padding(.bottom, 8.0)
                     Spacer()
-                    optionsMenu
+                    otherSessionsMenu
                 }
                 
                 Text(VectorL10n.userSessionsOverviewOtherSessionsSectionInfo)
@@ -204,23 +222,6 @@ struct UserSessionsOverview: View {
             .accessibilityIdentifier("linkDeviceButton")
         }
         .background(theme.colors.system.ignoresSafeArea())
-    }
-    
-    private var optionsMenu: some View {
-        Button { } label: {
-            Menu {
-                DestructiveButton {
-                    viewModel.send(viewAction: .logoutOtherSessions)
-                } label: {
-                    Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(viewModel.viewState.otherSessionsViewData.count)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
-                }
-            } label: {
-                Image(systemName: "ellipsis")
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.horizontal, 4)
-                    .padding(.vertical, 12)
-            }
-        }
     }
 }
 

@@ -29,7 +29,9 @@ struct UserSessionListItemViewDataFactory {
                                            sessionDetails: sessionDetails,
                                            deviceAvatarViewData: deviceAvatarViewData,
                                            sessionDetailsIcon: getSessionDetailsIcon(isActive: sessionInfo.isActive),
-                                           isSelected: isSelected)
+                                           isSelected: isSelected,
+                                           lastSeenIP: sessionInfo.lastSeenIP,
+                                           lastSeenIPLocation: sessionInfo.lastSeenIPLocation)
     }
     
     private func buildSessionDetails(sessionInfo: UserSessionInfo) -> String {
