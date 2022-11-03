@@ -179,5 +179,3 @@ private extension UserOtherSessionsFilter {
             }
     }
 }
-
-
