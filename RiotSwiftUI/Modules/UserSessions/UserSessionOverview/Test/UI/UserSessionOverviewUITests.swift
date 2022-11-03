@@ -63,7 +63,7 @@ class UserSessionOverviewUITests: MockScreenTestCase {
     }
     
     func test_whenSessionSelected_kebabMenuShows() {
-        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.otherSession.title)
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.otherSession(sessionState: .verified).title)
         let navTitle = VectorL10n.userSessionOverviewSessionTitle
         let barButton = app.navigationBars[navTitle].buttons["Menu"]
         XCTAssertTrue(barButton.exists)
