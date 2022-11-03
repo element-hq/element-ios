@@ -87,30 +87,16 @@ struct UserOtherSessionsToolbar: ToolbarContent {
                 }
                 .disabled(sessionCount == 0)
                 if sessionCount > 0 {
-                    signOutButton()
+                    DestructiveButton {
+                        onSignOut()
+                    } label: {
+                        Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(sessionCount)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
+                    }
                 }
             } label: {
                 Image(systemName: "ellipsis")
                     .padding(.horizontal, 4)
                     .padding(.vertical, 12)
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private func signOutButton() -> some View {
-        let label = Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(sessionCount)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
-        if #available(iOS 15, *) {
-            Button(role: .destructive) {
-                onSignOut()
-            } label: {
-                label
-            }
-        } else {
-            Button {
-                onSignOut()
-            } label: {
-                label
             }
         }
     }
