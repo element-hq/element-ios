@@ -39,12 +39,6 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         XCTAssertTrue(buttonLearnMore.exists)
     }
     
-    func test_whenOtherSessionsWithUnverifiedSessionFilterPresented_correctItemsDisplayed() {
-        app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.unverifiedSessions.title)
- 
-        XCTAssertTrue(app.buttons["iOS, Unverified · Your current session"].exists)
-    }
-    
     func test_whenOtherSessionsWithAllSessionFilterPresented_correctHeaderDisplayed() {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.all.title)
  
@@ -59,11 +53,12 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         XCTAssertTrue(buttonLearnMore.exists)
     }
     
-    func test_whenOtherSessionsMoreMenuButtonSelected_selectSessionsButtonExists() {
+    func test_whenOtherSessionsMoreMenuButtonSelected_moreMenuIsCorrect() {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.all.title)
         
         app.buttons["More"].tap()
         XCTAssertTrue(app.buttons["Select sessions"].exists)
+        XCTAssertTrue(app.buttons["Sign out of 6 sessions"].exists)
     }
     
     func test_whenOtherSessionsSelectSessionsSelected_navBarContainsCorrectButtons() {
@@ -71,6 +66,9 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         
         app.buttons["More"].tap()
         app.buttons["Select sessions"].tap()
+        let signOutButton = app.buttons["Sign out"]
+        XCTAssertTrue(signOutButton.exists)
+        XCTAssertFalse(signOutButton.isEnabled)
         XCTAssertTrue(app.buttons["Select All"].exists)
         XCTAssertTrue(app.buttons["Cancel"].exists)
     }
@@ -93,6 +91,20 @@ class UserOtherSessionsUITests: MockScreenTestCase {
             app.buttons["UserSessionListItem_\(i)"].tap()
         }
         XCTAssertTrue(app.buttons["Deselect All"].exists)
+    }
+    
+    func test_whenChangingSessionSelection_signOutButtonChangesItState() {
+        app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.all.title)
+        app.buttons["More"].tap()
+        app.buttons["Select sessions"].tap()
+        let signOutButton = app.buttons["Sign out"]
+        XCTAssertTrue(signOutButton.exists)
+        XCTAssertFalse(signOutButton.isEnabled)
+        let sessionListItem = app.buttons["UserSessionListItem_0"]
+        sessionListItem.tap()
+        XCTAssertTrue(signOutButton.isEnabled)
+        sessionListItem.tap()
+        XCTAssertFalse(signOutButton.isEnabled)
     }
     
     func test_whenAllOtherSessionsAreShown_learnMoreButtonIsNotShown() {

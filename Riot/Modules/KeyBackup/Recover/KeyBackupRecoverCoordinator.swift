@@ -22,7 +22,7 @@ final class KeyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType {
     
     // MARK: Private
     
-    private let session: MXSession
+    private let keyBackup: MXKeyBackup
     private let navigationRouter: NavigationRouterType
     private let keyBackupVersion: MXKeyBackupVersion
     
@@ -34,8 +34,8 @@ final class KeyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession, keyBackupVersion: MXKeyBackupVersion, navigationRouter: NavigationRouterType? = nil) {
-        self.session = session
+    init(keyBackup: MXKeyBackup, keyBackupVersion: MXKeyBackupVersion, navigationRouter: NavigationRouterType? = nil) {
+        self.keyBackup = keyBackup
         self.keyBackupVersion = keyBackupVersion
         
         if let navigationRouter = navigationRouter {
@@ -52,7 +52,7 @@ final class KeyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType {
         let rootCoordinator: Coordinator & Presentable
         
         // Check if we have the private key locally
-        if self.session.crypto.backup.hasPrivateKeyInCryptoStore {
+        if keyBackup.hasPrivateKeyInCryptoStore {
             rootCoordinator = self.createRecoverFromPrivateKeyCoordinator()
         } else {
             rootCoordinator = self.createRecoverWithUserInteractionCoordinator()
@@ -93,19 +93,19 @@ final class KeyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType {
     }
     
     private func createRecoverFromPrivateKeyCoordinator() -> KeyBackupRecoverFromPrivateKeyCoordinator {
-        let coordinator = KeyBackupRecoverFromPrivateKeyCoordinator(keyBackup: self.session.crypto.backup, keyBackupVersion: self.keyBackupVersion)
+        let coordinator = KeyBackupRecoverFromPrivateKeyCoordinator(keyBackup: keyBackup, keyBackupVersion: self.keyBackupVersion)
         coordinator.delegate = self
         return coordinator
     }
     
     private func createRecoverFromPassphraseCoordinator() -> KeyBackupRecoverFromPassphraseCoordinator {
-        let coordinator = KeyBackupRecoverFromPassphraseCoordinator(keyBackup: self.session.crypto.backup, keyBackupVersion: self.keyBackupVersion)
+        let coordinator = KeyBackupRecoverFromPassphraseCoordinator(keyBackup: keyBackup, keyBackupVersion: self.keyBackupVersion)
         coordinator.delegate = self
         return coordinator
     }
     
     private func createRecoverFromRecoveryKeyCoordinator() -> KeyBackupRecoverFromRecoveryKeyCoordinator {
-        let coordinator = KeyBackupRecoverFromRecoveryKeyCoordinator(keyBackup: self.session.crypto.backup, keyBackupVersion: self.keyBackupVersion)
+        let coordinator = KeyBackupRecoverFromRecoveryKeyCoordinator(keyBackup: keyBackup, keyBackupVersion: self.keyBackupVersion)
         coordinator.delegate = self
         return coordinator
     }

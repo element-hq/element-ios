@@ -62,6 +62,16 @@ class UserSessionOverviewUITests: MockScreenTestCase {
         XCTAssertTrue(app.staticTexts[VectorL10n.userSessionPushNotificationsMessage].exists)
     }
     
+    func test_whenSessionSelected_kebabMenuShows() {
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.otherSession.title)
+        let navTitle = VectorL10n.userSessionOverviewSessionTitle
+        let barButton = app.navigationBars[navTitle].buttons["Menu"]
+        XCTAssertTrue(barButton.exists)
+        barButton.tap()
+        XCTAssertTrue(app.buttons[VectorL10n.signOut].exists)
+        XCTAssertTrue(app.buttons[VectorL10n.manageSessionRename].exists)
+    }
+    
     func test_whenOtherSessionSelected_learnMoreButtonDoesnExist() {
         let title = MockUserSessionOverviewScreenState.currentSession(sessionState: .verified).title
         app.goToScreenWithIdentifier(title)

@@ -30,8 +30,6 @@ struct UserSessionListItemViewData: Identifiable, Hashable {
     
     let sessionDetails: String
     
-    let highlightSessionDetails: Bool
-    
     let deviceAvatarViewData: DeviceAvatarViewData
 
     let sessionDetailsIcon: String?

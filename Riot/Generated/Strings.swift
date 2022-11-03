@@ -8679,6 +8679,10 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionMenuSelectSessions: String { 
     return VectorL10n.tr("Vector", "user_other_session_menu_select_sessions") 
   }
+  /// Sign out of %@ sessions
+  public static func userOtherSessionMenuSignOutSessions(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_other_session_menu_sign_out_sessions", p1)
+  }
   /// No inactive sessions found.
   public static var userOtherSessionNoInactiveSessions: String { 
     return VectorL10n.tr("Vector", "user_other_session_no_inactive_sessions") 

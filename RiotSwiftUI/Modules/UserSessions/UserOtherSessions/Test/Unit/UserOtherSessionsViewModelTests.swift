@@ -61,7 +61,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: expectedItems,
                                                        header: inactiveSectionHeader,
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoInactiveSessions,
-                                                       allItemsSelected: false)
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -77,7 +78,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
-                                                       allItemsSelected: false)
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -93,7 +95,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: expectedItems,
                                                        header: unverifiedSectionHeader,
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoUnverifiedSessions,
-                                                       allItemsSelected: false)
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -109,7 +112,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: expectedItems,
                                                        header: verifiedSectionHeader,
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoVerifiedSessions,
-                                                       allItemsSelected: false)
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -123,7 +127,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: [],
                                                        header: verifiedSectionHeader,
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoVerifiedSessions,
-                                                       allItemsSelected: false)
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -137,7 +142,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: [],
                                                        header: unverifiedSectionHeader,
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoUnverifiedSessions,
-                                                       allItemsSelected: false)
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -151,7 +157,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: [],
                                                        header: inactiveSectionHeader,
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoInactiveSessions,
-                                                       allItemsSelected: false)
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -170,7 +177,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
-                                                       allItemsSelected: true)
+                                                       allItemsSelected: true,
+                                                       enableSignOutButton: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -189,7 +197,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
-                                                       allItemsSelected: false)
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -207,7 +216,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
-                                                       allItemsSelected: false)
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -225,7 +235,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
-                                                       allItemsSelected: true)
+                                                       allItemsSelected: true,
+                                                       enableSignOutButton: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -243,7 +254,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
-                                                       allItemsSelected: false)
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -264,8 +276,50 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        sessionItems: expectedItems,
                                                        header: allSectionHeader,
                                                        emptyItemsTitle: "",
-                                                       allItemsSelected: false)
+                                                       allItemsSelected: false,
+                                                       enableSignOutButton: false)
         XCTAssertEqual(sut.state, expectedState)
+    }
+    
+    func test_whenSignOutAllUserSessions_correctCompletionResultReceived() {
+        let sessionInfoWithSessionId1 = createUserSessionInfo(sessionId: "session 1")
+        let sessionInfoWithSessionId3 = createUserSessionInfo(sessionId: "session 3")
+        let sessionInfos = [sessionInfoWithSessionId1,
+                            createUserSessionInfo(sessionId: "session 2"),
+                            sessionInfoWithSessionId3]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
+        var receivedUserSessions = [UserSessionInfo]()
+        sut.completion = { result in
+            switch result {
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
+                receivedUserSessions = sessionInfos
+            default:
+                break
+            }
+        }
+        toggleEditMode(for: sut, value: true)
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: sessionInfoWithSessionId1.id))
+        sut.process(viewAction: .userOtherSessionSelected(sessionId: sessionInfoWithSessionId3.id))
+        sut.process(viewAction: .logoutSelectedUserSessions)
+        XCTAssertEqual(receivedUserSessions, [sessionInfoWithSessionId1, sessionInfoWithSessionId3])
+    }
+    
+    func test_whenSignOutSelectedUserSessions_correctCompletionResultReceived() {
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            createUserSessionInfo(sessionId: "session 2"),
+                            createUserSessionInfo(sessionId: "session 3")]
+        let sut = createSUT(sessionInfos: sessionInfos, filter: .all)
+        var receivedUserSessions = [UserSessionInfo]()
+        sut.completion = { result in
+            switch result {
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
+                receivedUserSessions = sessionInfos
+            default:
+                break
+            }
+        }
+        sut.process(viewAction: .logoutAllUserSessions)
+        XCTAssertEqual(receivedUserSessions, sessionInfos)
     }
     
     private func toggleEditMode(for model: UserOtherSessionsViewModel, value: Bool) {
