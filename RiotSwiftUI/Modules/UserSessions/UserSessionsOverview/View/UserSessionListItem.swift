@@ -54,10 +54,16 @@ struct UserSessionListItem: View {
                                 Image(sessionDetailsIcon)
                                     .padding(.leading, 2)
                             }
-                            Text(viewData.sessionDetails)
-                                .font(theme.fonts.caption1)
-                                .foregroundColor(theme.colors.secondaryContent)
-                                .multilineTextAlignment(.leading)
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text(viewData.sessionDetails)
+                                
+                                if showsLocationInfo, let ipText = ipText {
+                                    Text(ipText)
+                                }
+                            }
+                            .font(theme.fonts.caption1)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .multilineTextAlignment(.leading)
                         }
                         .padding(.bottom, 16)
                         .padding(.trailing, 16)
@@ -68,7 +74,8 @@ struct UserSessionListItem: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 16)
-            }.onTapGesture {
+            }
+            .onTapGesture {
                 onBackgroundTap?(viewData.sessionId)
             }
             .onLongPressGesture {

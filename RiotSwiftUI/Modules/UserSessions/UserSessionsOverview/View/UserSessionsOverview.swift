@@ -144,11 +144,15 @@ struct UserSessionsOverview: View {
     
     private var otherSessionsMenu: some View {
         Menu {
-            Button { viewModel.showLocationInfo.toggle() } label: {
+            Button {
+                viewModel.showLocationInfo.toggle()
+            } label: {
                 let text = viewModel.showLocationInfo ? VectorL10n.userSessionsHideLocationInfo : VectorL10n.userSessionsShowLocationInfo
                 let image = viewModel.showLocationInfo ? "eye.slash" : "eye"
                 Label(text, systemImage: image)
             }
+            
+            signOutButton
         } label: {
             menuImage
         }
@@ -186,7 +190,7 @@ struct UserSessionsOverview: View {
                         .foregroundColor(theme.colors.secondaryContent)
                         .padding(.bottom, 8.0)
                     Spacer()
-                    optionsMenu
+                    otherSessionsMenu
                 }
                 
                 Text(VectorL10n.userSessionsOverviewOtherSessionsSectionInfo)

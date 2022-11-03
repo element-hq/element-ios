@@ -87,6 +87,15 @@ struct UserOtherSessionsToolbar: ToolbarContent {
                     Label(VectorL10n.userOtherSessionMenuSelectSessions, systemImage: "checkmark.circle")
                 }
                 .disabled(sessionCount == 0)
+                
+                Button {
+                    isShowLocationEnabled.toggle()
+                } label: {
+                    let text = isShowLocationEnabled ? VectorL10n.userSessionsHideLocationInfo : VectorL10n.userSessionsShowLocationInfo
+                    let image = isShowLocationEnabled ? "eye.slash" : "eye"
+                    Label(text, systemImage: image)
+                }
+                
                 if sessionCount > 0 {
                     DestructiveButton {
                         onSignOut()
@@ -94,14 +103,6 @@ struct UserOtherSessionsToolbar: ToolbarContent {
                         Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(sessionCount)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
                     }
                 }
-
-Button {
-isShowLocationEnabled.toggle()
-} label: {
-let text = isShowLocationEnabled ? VectorL10n.userSessionsHideLocationInfo : VectorL10n.userSessionsShowLocationInfo
-let image = isShowLocationEnabled ? "eye.slash" : "eye"
-Label(text, systemImage: image)
-}
             } label: {
                 Image(systemName: "ellipsis")
                     .padding(.horizontal, 4)
