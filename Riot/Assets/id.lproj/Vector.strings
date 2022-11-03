@@ -2846,3 +2846,5 @@
 "user_other_session_selected_count" = "%@ dipilih";
 "user_other_session_menu_sign_out_sessions" = "Keluar dari %@ sesi";
 "manage_session_sign_out_other_sessions" = "Keluarkan semua sesi lain";
+"user_sessions_hide_location_info" = "Sembunyikan alamat IP";
+"user_sessions_show_location_info" = "Tampilkan alamat IP";
