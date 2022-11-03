@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-
 final class ComposerCoordinator: NSObject, Coordinator, Presentable, UISheetPresentationControllerDelegate {
     // MARK: - Properties
     

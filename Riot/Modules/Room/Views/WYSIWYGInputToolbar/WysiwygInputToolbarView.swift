@@ -39,6 +39,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
     private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState(bindings: ComposerBindings(focused: false)))
     private var coordinator: ComposerCoordinator!
+    private let transition = SheetAnimator()
     
     // MARK: Public
     
@@ -86,6 +87,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }
         
         hostingViewController = VectorHostingController(rootView: composer)
+        hostingViewController.transitioningDelegate = self
         hostingViewController.publishHeightChanges = true
         let height = hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: UIView.layoutFittingExpandedSize.height)).height
         let subView: UIView = hostingViewController.view
@@ -275,5 +277,81 @@ fileprivate extension ComposerSendMode {
         case .edit: return .edit
         case .send: return .send
         }
+    }
+}
+
+extension WysiwygInputToolbarView: UIViewControllerTransitioningDelegate {
+    func animationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController, source: UIViewController)
+    -> UIViewControllerAnimatedTransitioning? {
+        transition.originFrame = self.frame
+        transition.presenting = true
+        let superview = self.superview
+        hostingViewController.view.removeFromSuperview()
+        heightConstraint.constant = 0
+        superview?.setNeedsLayout()
+        return transition
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController)
+    -> UIViewControllerAnimatedTransitioning? {
+        return nil
+    }
+}
+
+final class SheetAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+    let duration = 0.9
+    var presenting = true
+    var originFrame = CGRect.zero
+    
+    
+    
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        return duration
+    }
+    
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        let containerView = transitionContext.containerView
+        let toView = transitionContext.view(forKey: .to)!
+        let sheetView = presenting ? toView : transitionContext.view(forKey: .from)!
+        let initialFrame = presenting ? originFrame : sheetView.frame
+        let finalFrame = presenting ? sheetView.frame : originFrame
+        
+        let xScaleFactor = presenting ?
+        initialFrame.width / finalFrame.width :
+        finalFrame.width / initialFrame.width
+        
+        let yScaleFactor = presenting ?
+        initialFrame.height / finalFrame.height :
+        finalFrame.height / initialFrame.height
+        let scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
+        
+        if presenting {
+            sheetView.transform = scaleTransform
+            sheetView.center = CGPoint(
+                x: initialFrame.midX,
+                y: initialFrame.midY)
+            sheetView.clipsToBounds = true
+        }
+        
+        sheetView.layer.cornerRadius = presenting ? 20.0 : 0.0
+        sheetView.layer.masksToBounds = true
+        
+        containerView.addSubview(toView)
+        containerView.bringSubviewToFront(sheetView)
+        
+        UIView.animate(
+            withDuration: duration,
+            delay: 0.0,
+            usingSpringWithDamping: 0.5,
+            initialSpringVelocity: 0.2,
+            animations: {
+                sheetView.transform = self.presenting ? .identity : scaleTransform
+                sheetView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+                sheetView.layer.cornerRadius = !self.presenting ? 20.0 : 0.0
+            }, completion: { _ in
+                transitionContext.completeTransition(true)
+            })
     }
 }
