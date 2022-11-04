@@ -2358,45 +2358,63 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
         // Update cell data we have received a read receipt for
         NSArray *readEventIds = receiptEvent.readReceiptEventIds;
-        NSArray *readThreadIds = receiptEvent.readReceiptThreadIds;
-        for (int i = 0 ; i < readEventIds.count ; i++)
+        if (RiotSettings.shared.enableThreads)
         {
-            NSString *eventId = readEventIds[i];
-            MXKRoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
-            if (cellData)
+            NSArray *readThreadIds = receiptEvent.readReceiptThreadIds;
+            for (int i = 0 ; i < readEventIds.count ; i++)
             {
-                if ([readThreadIds[i] isEqualToString:kMXEventUnthreaded])
+                NSString *eventId = readEventIds[i];
+                MXKRoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
+                if (cellData)
                 {
-                    // Unthreaded RR must be propagated through all threads.
-                    [self.mxSession.threadingService allThreadsInRoomWithId:self.roomId onlyParticipated:NO completion:^(NSArray<id<MXThreadProtocol>> *threads) {
-                        NSMutableArray *threadIds = [NSMutableArray arrayWithObject:kMXEventTimelineMain];
-                        for (id<MXThreadProtocol> thread in threads)
-                        {
-                            [threadIds addObject:thread.id];
-                        }
-                        
-                        for (NSString *threadId in threadIds)
-                        {
-                            @synchronized(self->bubbles)
-                            {
-                                dispatch_group_enter(dispatchGroup);
-                                [self addReadReceiptsForEvent:eventId threadId:threadId inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
-                                    dispatch_group_leave(dispatchGroup);
-                                }];
-                            }
-                        }
-                    }];
-                }
-                else
-                {
-                    NSString *threadId = readThreadIds[i];
-                    @synchronized(self->bubbles)
+                    if ([readThreadIds[i] isEqualToString:kMXEventUnthreaded])
                     {
-                        dispatch_group_enter(dispatchGroup);
-                        [self addReadReceiptsForEvent:eventId threadId:threadId inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
-                            dispatch_group_leave(dispatchGroup);
+                        // Unthreaded RR must be propagated through all threads.
+                        [self.mxSession.threadingService allThreadsInRoomWithId:self.roomId onlyParticipated:NO completion:^(NSArray<id<MXThreadProtocol>> *threads) {
+                            NSMutableArray *threadIds = [NSMutableArray arrayWithObject:kMXEventTimelineMain];
+                            for (id<MXThreadProtocol> thread in threads)
+                            {
+                                [threadIds addObject:thread.id];
+                            }
+                            
+                            for (NSString *threadId in threadIds)
+                            {
+                                @synchronized(self->bubbles)
+                                {
+                                    dispatch_group_enter(dispatchGroup);
+                                    [self addReadReceiptsForEvent:eventId threadId:threadId inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
+                                        dispatch_group_leave(dispatchGroup);
+                                    }];
+                                }
+                            }
                         }];
                     }
+                    else
+                    {
+                        NSString *threadId = readThreadIds[i];
+                        @synchronized(self->bubbles)
+                        {
+                            dispatch_group_enter(dispatchGroup);
+                            [self addReadReceiptsForEvent:eventId threadId:threadId inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
+                                dispatch_group_leave(dispatchGroup);
+                            }];
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            // If
+            for (NSString *eventId in readEventIds)
+            {
+                MXKRoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
+                @synchronized(self->bubbles)
+                {
+                    dispatch_group_enter(dispatchGroup);
+                    [self addReadReceiptsForEvent:eventId threadId:kMXEventTimelineMain inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
+                        dispatch_group_leave(dispatchGroup);
+                    }];
                 }
             }
         }
@@ -3723,6 +3741,14 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                     }
                 }
                 
+                if (!RiotSettings.shared.enableThreads)
+                {
+                    // If threads are disabled, we may have several threaded RR with same userId
+                    // but different threadId within the same timeline.
+                    // We just need to keep the latest one.
+                    [self clearDuplicatedReadReceiptsInCellDatas:cellDatas];
+                }
+
                 if (completion)
                 {
                     completion();
@@ -3808,6 +3834,45 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
+/**
+ Clear all potential duplicated RR with same user ID within a given list of cell data.
+ 
+ This is needed for client with threads disabled in order to clean threaded RRs.
+ 
+ @param cellDatas the working array of cell datas.
+ */
+- (void)clearDuplicatedReadReceiptsInCellDatas:(NSArray<id<MXKRoomBubbleCellDataStoring>>*)cellDatas
+{
+    NSMutableSet<NSString *> *seenUserIds = [NSMutableSet set];
+    for (id<MXKRoomBubbleCellDataStoring> cellData in cellDatas.reverseObjectEnumerator)
+    {
+        if ([cellData isKindOfClass:MXKRoomBubbleCellData.class])
+        {
+            MXKRoomBubbleCellData *roomBubbleCellData = (MXKRoomBubbleCellData*)cellData;
+
+            for (MXKRoomBubbleComponent *component in roomBubbleCellData.bubbleComponents)
+            {
+                if (component.attributedTextMessage)
+                {
+                    if (roomBubbleCellData.readReceipts[component.event.eventId])
+                    {
+                        NSArray<MXReceiptData*> *currentReadReceipts = roomBubbleCellData.readReceipts[component.event.eventId];
+                        NSMutableArray<MXReceiptData*> *newReadReceipts = [NSMutableArray array];
+                        for (MXReceiptData *readReceipt in currentReadReceipts)
+                        {
+                            if (![seenUserIds containsObject:readReceipt.userId])
+                            {
+                                [newReadReceipts addObject:readReceipt];
+                                [seenUserIds addObject:readReceipt.userId];
+                            }
+                        }
+                        [self updateCellData:roomBubbleCellData withReadReceipts:newReadReceipts forEventId:component.event.eventId];
+                    }
+                }
+            }
+        }
+    }
+}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
