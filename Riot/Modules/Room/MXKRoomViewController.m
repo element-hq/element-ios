@@ -1117,8 +1117,16 @@
         NSParameterAssert([roomInputToolbarViewClass isSubclassOfClass:MXKRoomInputToolbarView.class]);
         
         MXLogDebug(@"[MXKRoomVC] setRoomInputToolbarViewClass: Set inputToolbarView to class %@", roomInputToolbarViewClass);
-        
-        id inputToolbarView = [roomInputToolbarViewClass instantiateRoomInputToolbarView];
+        id inputToolbarView;
+        if ([roomInputToolbarViewClass isEqual: WysiwygInputToolbarView.class])
+        {
+            self.wysiwygInputToolbarViewController = [[WysiwygInputToolbarViewController alloc] init];
+            inputToolbarView = self.wysiwygInputToolbarViewController.view;
+        }
+        else
+        {
+            inputToolbarView = [roomInputToolbarViewClass instantiateRoomInputToolbarView];
+        }
         self->inputToolbarView = inputToolbarView;
         self->inputToolbarView.delegate = self;
         

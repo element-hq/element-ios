@@ -28,6 +28,7 @@
 #import "MXKAttachmentAnimator.h"
 
 @class UserIndicatorStore;
+@class WysiwygInputToolbarViewController;
 
 typedef NS_ENUM(NSUInteger, MXKRoomViewControllerJoinRoomResult) {
     MXKRoomViewControllerJoinRoomResultSuccess,
@@ -211,6 +212,8 @@ typedef NS_ENUM(NSUInteger, MXKRoomViewControllerJoinRoomResult) {
  This label is used to display the reason why the room has been left.
  */
 @property (nonatomic, weak, readonly) UILabel *leftRoomReasonLabel;
+
+@property(nonatomic, strong, nullable) WysiwygInputToolbarViewController *wysiwygInputToolbarViewController;
 
 @property (weak, nonatomic) IBOutlet UITableView *bubblesTableView;
 @property (weak, nonatomic) IBOutlet UIView *roomTitleViewContainer;

@@ -32,32 +32,7 @@ class SheetAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 }
 
 final class WysiwygInputToolbarViewController: UIViewController {
-    private let wysiwygInputToolbarView: WysiwygInputToolbarView
     private let transition = SheetAnimator()
-    
-    init(view: WysiwygInputToolbarView){
-        self.wysiwygInputToolbarView = view
-        super.init(nibName: nil, bundle: nil)
-        self.transitioningDelegate = self
-        self.modalPresentationStyle = .overFullScreen
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.addSubview(wysiwygInputToolbarView)
-        NSLayoutConstraint.activate(
-            [
-                self.view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: wysiwygInputToolbarView.bottomAnchor),
-                self.view.safeAreaLayoutGuide.leftAnchor.constraint(equalTo: wysiwygInputToolbarView.leftAnchor),
-                self.view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: wysiwygInputToolbarView.rightAnchor),
-                self.view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: wysiwygInputToolbarView.topAnchor)
-            ]
-        )
-    }
 }
 
 extension WysiwygInputToolbarViewController: UIViewControllerTransitioningDelegate {
