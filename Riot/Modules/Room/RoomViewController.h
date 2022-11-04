@@ -115,6 +115,9 @@ extern NSTimeInterval const kResizeComposerAnimationDuration;
 // The voice broadcast service
 @property (nonatomic, nullable) VoiceBroadcastService *voiceBroadcastService;
 
+@property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray<NSLayoutConstraint*> *toolbarContainerConstraints;
+
+
 /**
  Retrieve the live data source in cases where the timeline is not live.
 

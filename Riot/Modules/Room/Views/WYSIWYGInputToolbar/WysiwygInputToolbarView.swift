@@ -111,6 +111,12 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                 .removeDuplicates()
                 .sink { [weak hostingViewController] _ in
                     hostingViewController?.view.setNeedsLayout()
+                },
+            
+            wysiwygViewModel.$maximised
+                .removeDuplicates()
+                .sink { [weak self] value in
+                    self?.toolbarViewDelegate?.didChangeMaximisedState(value)
                 }
         ]
         

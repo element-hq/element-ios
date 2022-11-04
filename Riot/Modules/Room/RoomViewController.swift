@@ -150,27 +150,19 @@ extension RoomViewController {
         }
     }
     
-    @objc func moveToolbarContainerIfNeeded() {
-        if inputToolbarView is WysiwygInputToolbarView,
-           let container = roomInputToolbarContainer,
+    @objc func didChangeMaximisedState(_ state: Bool) {
+        if state,
+           roomInputToolbarContainer.superview == self.view,
            let view = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
-            
-            view.addSubview(container)
-            container.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
-            container.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-            container.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        }
-    }
-    
-    @objc func showToolbarContainerIfNeeded() {
-        if inputToolbarView is WysiwygInputToolbarView {
-            roomInputToolbarContainer.isHidden = false
-        }
-    }
-    
-    @objc func hideToolbarContainerIfNeeded() {
-        if inputToolbarView is WysiwygInputToolbarView {
-            roomInputToolbarContainer.isHidden = true
+            roomInputToolbarContainer.removeFromSuperview()
+            view.addSubview(roomInputToolbarContainer)
+            roomInputToolbarContainer.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+            roomInputToolbarContainer.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+            roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        } else if roomInputToolbarContainer.superview != self.view {
+            roomInputToolbarContainer.removeFromSuperview()
+            self.view.addSubview(roomInputToolbarContainer)
+            NSLayoutConstraint.activate(toolbarContainerConstraints)
         }
     }
 }

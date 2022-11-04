@@ -553,7 +553,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self updateTopBanners];
     
     self.bubblesTableView.clipsToBounds = NO;
-    [self showToolbarContainerIfNeeded];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -603,7 +602,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     // Stop the loading indicator even if the session is still in progress
     [self stopLoadingUserIndicator];
-    [self hideToolbarContainerIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -1213,7 +1211,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (!self.inputToolbarView || ![self.inputToolbarView isMemberOfClass:roomInputToolbarViewClass])
     {
         [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
-        [self moveToolbarContainerIfNeeded];
         if ([self.inputToolbarView.class conformsToProtocol:@protocol(RoomInputToolbarViewProtocol)]) {
             id<RoomInputToolbarViewProtocol> inputToolbar = (id<RoomInputToolbarViewProtocol>)self.inputToolbarView;
             [inputToolbar setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];
