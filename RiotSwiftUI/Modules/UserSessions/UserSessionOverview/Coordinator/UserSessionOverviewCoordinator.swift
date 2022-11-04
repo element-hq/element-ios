@@ -46,6 +46,7 @@ final class UserSessionOverviewCoordinator: Coordinator, Presentable {
         let service = UserSessionOverviewService(session: parameters.session, sessionInfo: parameters.sessionInfo)
         viewModel = UserSessionOverviewViewModel(sessionInfo: parameters.sessionInfo,
                                                  service: service,
+                                                 settingsService: RiotSettings.shared,
                                                  sessionsOverviewDataPublisher: parameters.sessionsOverviewDataPublisher)
         
         hostingController = VectorHostingController(rootView: UserSessionOverview(viewModel: viewModel.context))

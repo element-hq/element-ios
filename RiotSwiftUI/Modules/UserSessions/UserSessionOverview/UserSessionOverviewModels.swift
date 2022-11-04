@@ -42,6 +42,7 @@ struct UserSessionOverviewViewState: BindableState {
     var isPusherEnabled: Bool?
     var remotelyTogglingPushersAvailable: Bool
     var showLoadingIndicator: Bool
+    var showLocationInfo: Bool
 }
 
 enum UserSessionOverviewViewAction {
@@ -50,4 +51,5 @@ enum UserSessionOverviewViewAction {
     case togglePushNotifications
     case renameSession
     case logoutOfSession
+    case showLocationInfo
 }
