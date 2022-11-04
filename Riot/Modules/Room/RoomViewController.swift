@@ -149,6 +149,30 @@ extension RoomViewController {
             }
         }
     }
+    
+    @objc func moveToolbarContainerIfNeeded() {
+        if inputToolbarView is WysiwygInputToolbarView,
+           let container = roomInputToolbarContainer,
+           let view = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
+            
+            view.addSubview(container)
+            container.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+            container.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+            container.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        }
+    }
+    
+    @objc func showToolbarContainerIfNeeded() {
+        if inputToolbarView is WysiwygInputToolbarView {
+            roomInputToolbarContainer.isHidden = false
+        }
+    }
+    
+    @objc func hideToolbarContainerIfNeeded() {
+        if inputToolbarView is WysiwygInputToolbarView {
+            roomInputToolbarContainer.isHidden = true
+        }
+    }
 }
 
 // MARK: - Private Helpers
