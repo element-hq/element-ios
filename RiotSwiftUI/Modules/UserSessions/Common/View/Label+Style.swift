@@ -1,4 +1,4 @@
-//
+// 
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +14,12 @@
 // limitations under the License.
 //
 
-import Foundation
+import SwiftUI
 
-typealias SessionId = String
-
-/// View data for UserSessionListItem
-struct UserSessionListItemViewData: Identifiable, Hashable {
-    var id: String {
-        sessionId
+extension Label where Title == Text, Icon == Image  {
+    init(showLocationInfo: Bool) {
+        let text = showLocationInfo ? VectorL10n.userSessionsHideLocationInfo : VectorL10n.userSessionsShowLocationInfo
+        let image = showLocationInfo ? "eye.slash" : "eye"
+        self.init(text, systemImage: image)
     }
-    
-    let sessionId: SessionId
-    let sessionName: String
-    let sessionDetails: String
-    let deviceAvatarViewData: DeviceAvatarViewData
-    let sessionDetailsIcon: String?
-    let isSelected: Bool
-    let lastSeenIP: String?
-    let lastSeenIPLocation: String?
 }

@@ -20,18 +20,25 @@ typealias UserSessionsOverviewViewModelType = StateStoreViewModel<UserSessionsOv
 
 class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSessionsOverviewViewModelProtocol {
     private let userSessionsOverviewService: UserSessionsOverviewServiceProtocol
+    private let settingsService: UserSessionSettingsProtocol
     
     var completion: ((UserSessionsOverviewViewModelResult) -> Void)?
 
-    init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol) {
+    init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol, settingsService: UserSessionSettingsProtocol) {
         self.userSessionsOverviewService = userSessionsOverviewService
+        self.settingsService = settingsService
         
-        super.init(initialViewState: .init())
+        super.init(initialViewState: .init(showLocationInfo: settingsService.showIPAddressesInSessionsManager))
         
         userSessionsOverviewService.overviewDataPublisher.sink { [weak self] overviewData in
             self?.updateViewState(with: overviewData)
         }
         .store(in: &cancellables)
+        
+        self.settingsService
+            .showIPAddressesInSessionsManagerPublisher
+            .weakAssign(to: \.state.showLocationInfo, on: self)
+            .store(in: &cancellables)
         
         updateViewState(with: userSessionsOverviewService.overviewDataPublisher.value)
     }
@@ -78,6 +85,9 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
             completion?(.linkDevice)
         case .logoutOtherSessions:
             completion?(.logoutFromUserSessions(sessionInfos: userSessionsOverviewService.otherSessions))
+        case .showLocationInfo:
+            settingsService.showIPAddressesInSessionsManager.toggle()
+            state.showLocationInfo = settingsService.showIPAddressesInSessionsManager
         }
     }
     

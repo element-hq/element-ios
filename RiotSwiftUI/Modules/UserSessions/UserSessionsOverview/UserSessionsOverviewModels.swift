@@ -45,16 +45,12 @@ enum UserSessionsOverviewViewModelResult: Equatable {
 
 struct UserSessionsOverviewViewState: BindableState {
     var currentSessionViewData: UserSessionCardViewData?
-    
     var unverifiedSessionsViewData = [UserSessionListItemViewData]()
-    
     var inactiveSessionsViewData = [UserSessionListItemViewData]()
-    
     var otherSessionsViewData = [UserSessionListItemViewData]()
-    
     var showLoadingIndicator = false
-
     var linkDeviceButtonVisible = false
+    var showLocationInfo: Bool
 }
 
 enum UserSessionsOverviewViewAction {
@@ -69,4 +65,5 @@ enum UserSessionsOverviewViewAction {
     case tapUserSession(_ sessionId: String)
     case linkDevice
     case logoutOtherSessions
+    case showLocationInfo
 }

@@ -51,7 +51,7 @@ enum MockUserSessionsOverviewScreenState: MockScreenState, CaseIterable {
             fatalError()
         }
         
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service, settingsService: MockUserSessionSettings())
         
         return (
             [service, viewModel],

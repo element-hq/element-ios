@@ -33,7 +33,7 @@ import Foundation
 /// It provides a nice layer of consistency and also safety. As we are not passing the `ViewModel` to the view directly, shortcuts/hacks
 /// can't be made into the `ViewModel`.
 @dynamicMemberLookup
-class ViewModelContext<ViewState: BindableState, ViewAction>: ObservableObject {
+final class ViewModelContext<ViewState: BindableState, ViewAction>: ObservableObject {
     // MARK: - Properties
 
     // MARK: Private

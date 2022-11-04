@@ -30,8 +30,9 @@ struct UserSessionCardView: View {
         RoundedRectangle(cornerRadius: 8)
     }
     
+    let showLocationInformations: Bool
     private var showExtraInformations: Bool {
-        viewData.isCurrentSessionDisplayMode == false && (viewData.lastActivityDateString.isEmptyOrNil == false || viewData.lastSeenIPInfo.isEmptyOrNil == false)
+        viewData.isCurrentSessionDisplayMode == false && (viewData.lastActivityDateString.isEmptyOrNil == false || ipText.isEmptyOrNil == false)
     }
     
     var body: some View {
@@ -77,8 +78,8 @@ struct UserSessionCardView: View {
                                 .multilineTextAlignment(.center)
                         }
                     }
-                    if let lastSeenIPInfo = viewData.lastSeenIPInfo, lastSeenIPInfo.isEmpty == false {
-                        Text(lastSeenIPInfo)
+                    if showLocationInformations, let ipText = ipText {
+                        Text(ipText)
                             .font(theme.fonts.footnote)
                             .foregroundColor(theme.colors.secondaryContent)
                             .multilineTextAlignment(.center)
@@ -117,6 +118,13 @@ struct UserSessionCardView: View {
             }
         }
     }
+    
+    private var ipText: String? {
+        guard let lastSeenIp = viewData.lastSeenIP, !lastSeenIp.isEmpty else {
+            return nil
+        }
+        return viewData.lastSeenIPLocation.map { "\(lastSeenIp) (\($0))" } ?? lastSeenIp
+    }
 }
 
 struct UserSessionCardViewPreview: View {
@@ -146,7 +154,7 @@ struct UserSessionCardViewPreview: View {
     
     var body: some View {
         VStack {
-            UserSessionCardView(viewData: viewData)
+            UserSessionCardView(viewData: viewData, showLocationInformations: true)
         }
         .frame(maxWidth: .infinity)
         .background(theme.colors.system)
