@@ -161,7 +161,7 @@ extension RoomViewController {
             roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         } else if roomInputToolbarContainer.superview != self.view {
             roomInputToolbarContainer.removeFromSuperview()
-            self.view.addSubview(roomInputToolbarContainer)
+            self.view.insertSubview(roomInputToolbarContainer, belowSubview: overlayContainerView)
             NSLayoutConstraint.activate(toolbarContainerConstraints)
         }
     }

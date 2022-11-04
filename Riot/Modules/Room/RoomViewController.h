@@ -72,6 +72,7 @@ extern NSTimeInterval const kResizeComposerAnimationDuration;
 @property (weak, nonatomic, nullable) IBOutlet UIView *inputBackgroundView;
 @property (weak, nonatomic, nullable) IBOutlet UIButton *scrollToBottomButton;
 @property (weak, nonatomic, nullable) IBOutlet BadgeLabel *scrollToBottomBadgeLabel;
+@property (nonatomic, strong) IBOutlet UIView *overlayContainerView;
 
 // Remove Jitsi widget container
 @property (weak, nonatomic, nullable) IBOutlet UIView *removeJitsiWidgetContainer;

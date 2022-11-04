@@ -187,7 +187,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     MXTaskProfile *notificationTaskProfile;
 }
 
-@property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
 @property (nonatomic, strong) RemoveJitsiWidgetView *removeJitsiWidgetView;
 
 
