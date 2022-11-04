@@ -2619,3 +2619,6 @@
 "user_other_session_menu_select_sessions" = "Selecionar sessões";
 "user_other_session_selected_count" = "%@ selecionadas";
 "user_other_session_menu_sign_out_sessions" = "Fazer signout de %@ sessões";
+"user_sessions_hide_location_info" = "Esconder endereço de IP";
+"user_sessions_show_location_info" = "Mostrar endereço de IP";
+"manage_session_sign_out_other_sessions" = "Fazer signout de todas as outras sessões";
