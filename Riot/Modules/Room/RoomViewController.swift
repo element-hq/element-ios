@@ -153,12 +153,12 @@ extension RoomViewController {
     @objc func didChangeMaximisedState(_ state: Bool) {
         if state,
            roomInputToolbarContainer.superview == self.view,
-           let view = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
+           let view = self.navigationController?.navigationController?.view {
             roomInputToolbarContainer.removeFromSuperview()
             view.addSubview(roomInputToolbarContainer)
             roomInputToolbarContainer.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
             roomInputToolbarContainer.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-            roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+            roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         } else if roomInputToolbarContainer.superview != self.view {
             roomInputToolbarContainer.removeFromSuperview()
             self.view.insertSubview(roomInputToolbarContainer, belowSubview: overlayContainerView)
