@@ -2448,7 +2448,7 @@ To enable access, tap Settings> Location and select Always";
 "user_session_push_notifications_message" = "When turned on, this session will receive push notifications.";
 "user_session_got_it" = "GOT IT";
 "user_session_verified_session_title" = "Verified sessions";
-"user_session_verified_session_description" = "Verified sessions have logged in with your credentials and then been verified, either using your secure passphrase or by cross-verifying.\n\nThis means they hold encryption keys for your previous messages, and confirm to other users you are communicating with that these sessions are really you.";
+"user_session_verified_session_description" = "Verified sessions are anywhere you are using Element after entering your passphrase or confirming your identity with another verified session.\n\nThis means that you have all the keys needed to unlock your encrypted messages and confirm to other users that you trust this session.";
 "user_session_unverified_session_title" = "Unverified session";
 "user_session_unverified_session_description" = "Unverified sessions are sessions that have logged in with your credentials but not been cross-verified.\n\nYou should make especially certain that you recognise these sessions as they could represent an unauthorised use of your account.";
 "user_session_inactive_session_title" = "Inactive sessions";
