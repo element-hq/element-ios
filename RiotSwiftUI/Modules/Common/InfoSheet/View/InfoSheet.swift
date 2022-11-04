@@ -33,7 +33,7 @@ struct InfoSheet: View {
         VStack(alignment: .leading, spacing: 24) {
             VStack(alignment: .leading, spacing: 16) {
                 Text(viewModel.viewState.title)
-                    .font(theme.fonts.calloutSB)
+                    .font(theme.fonts.headline)
                     .foregroundColor(theme.colors.primaryContent)
                     .accessibilityIdentifier(viewModel.viewState.title)
                 
