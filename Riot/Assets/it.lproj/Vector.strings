@@ -2618,3 +2618,6 @@
 "user_other_session_menu_select_sessions" = "Seleziona sessioni";
 "user_other_session_selected_count" = "%@ selezionate";
 "user_other_session_menu_sign_out_sessions" = "Disconnetti da %@ sessioni";
+"user_sessions_hide_location_info" = "Nascondi indirizzo IP";
+"user_sessions_show_location_info" = "Mostra indirizzo IP";
+"manage_session_sign_out_other_sessions" = "Disconnetti da tutte le altre sessioni";
