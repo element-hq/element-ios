@@ -1,4 +1,4 @@
-//
+// 
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +14,12 @@
 // limitations under the License.
 //
 
-import Foundation
+import Combine
 
-typealias SessionId = String
-
-/// View data for UserSessionListItem
-struct UserSessionListItemViewData: Identifiable, Hashable {
-    var id: String {
-        sessionId
-    }
+final class MockUserSessionSettings: UserSessionSettingsProtocol {
+    var showIPAddressesInSessionsManager: Bool = false
     
-    let sessionId: SessionId
-    let sessionName: String
-    let sessionDetails: String
-    let deviceAvatarViewData: DeviceAvatarViewData
-    let sessionDetailsIcon: String?
-    let isSelected: Bool
-    let lastSeenIP: String?
-    let lastSeenIPLocation: String?
+    var showIPAddressesInSessionsManagerPublisher: AnyPublisher<Bool, Never> {
+        Just(showIPAddressesInSessionsManager).eraseToAnyPublisher()
+    }
 }

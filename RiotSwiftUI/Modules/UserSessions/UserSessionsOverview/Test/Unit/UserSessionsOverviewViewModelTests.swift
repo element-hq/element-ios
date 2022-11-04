@@ -21,7 +21,7 @@ import XCTest
 
 class UserSessionsOverviewViewModelTests: XCTestCase {
     func testInitialStateEmpty() {
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService())
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService(), settingsService: MockUserSessionSettings())
         
         XCTAssertNil(viewModel.state.currentSessionViewData)
         XCTAssertTrue(viewModel.state.unverifiedSessionsViewData.isEmpty)
@@ -31,7 +31,7 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
     }
     
     func testLoadOnDidAppear() {
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService())
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService(), settingsService: MockUserSessionSettings())
         viewModel.process(viewAction: .viewAppeared)
         
         XCTAssertNotNil(viewModel.state.currentSessionViewData)
@@ -42,7 +42,7 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
     }
     
     func testSimpleActionProcessing() {
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService())
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService(), settingsService: MockUserSessionSettings())
         
         var result: UserSessionsOverviewViewModelResult?
         viewModel.completion = { action in
@@ -69,7 +69,7 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
         let service = MockUserSessionsOverviewService()
         service.updateOverviewData { _ in }
         
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service, settingsService: MockUserSessionSettings())
         
         var result: UserSessionsOverviewViewModelResult?
         viewModel.completion = { action in

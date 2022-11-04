@@ -47,19 +47,23 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
         case .all:
             viewModel = UserOtherSessionsViewModel(sessionInfos: allSessions(),
                                                    filter: .all,
-                                                   title: VectorL10n.userSessionsOverviewOtherSessionsSectionTitle)
+                                                   title: VectorL10n.userSessionsOverviewOtherSessionsSectionTitle,
+                                                   settingService: MockUserSessionSettings())
         case .inactiveSessions:
             viewModel = UserOtherSessionsViewModel(sessionInfos: inactiveSessions(),
                                                    filter: .inactive,
-                                                   title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
+                                                   title: VectorL10n.userOtherSessionSecurityRecommendationTitle,
+                                                   settingService: MockUserSessionSettings())
         case .unverifiedSessions:
             viewModel = UserOtherSessionsViewModel(sessionInfos: unverifiedSessions(),
                                                    filter: .unverified,
-                                                   title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
+                                                   title: VectorL10n.userOtherSessionSecurityRecommendationTitle,
+                                                   settingService: MockUserSessionSettings())
         case .verifiedSessions:
             viewModel = UserOtherSessionsViewModel(sessionInfos: verifiedSessions(),
                                                    filter: .verified,
-                                                   title: VectorL10n.userOtherSessionSecurityRecommendationTitle)
+                                                   title: VectorL10n.userOtherSessionSecurityRecommendationTitle,
+                                                   settingService: MockUserSessionSettings())
         }
         
         // can simulate service and viewModel actions here if needs be.
