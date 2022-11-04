@@ -2637,3 +2637,7 @@
 "deselect_all" = "Semmit nem jelöl ki";
 "user_other_session_menu_select_sessions" = "Munkamenetek kiválasztása";
 "user_other_session_selected_count" = "%@ kiválasztva";
+"user_other_session_menu_sign_out_sessions" = "Kijelentkezés %@ munkamenetből";
+"user_sessions_hide_location_info" = "IP címek elrejtése";
+"user_sessions_show_location_info" = "IP címek megjelenítése";
+"manage_session_sign_out_other_sessions" = "Kijelentkezés minden más munkamenetből";
