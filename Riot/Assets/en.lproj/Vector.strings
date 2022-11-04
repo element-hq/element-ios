@@ -255,6 +255,10 @@
 "password_validation_error_contain_number" = "Contain a number.";
 "password_validation_error_contain_symbol" = "Contain a symbol.";
 
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Too short password";
+"password_policy_weak_pwd_error" = "This password is too weak. It must contain at least 8 characters, with at least one character of each type: uppercase, lowercase, digit and special character.";
+"password_policy_pwd_in_dict_error" = "This password has been found in a dictionary, and is not allowed.";
 
 // MARK: Legacy Authentication
 "auth_login" = "Log in";

@@ -204,7 +204,8 @@ final class AuthenticationVerifyMsisdnCoordinator: Coordinator, Presentable {
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleError(_ error: Error) {
         if let mxError = MXError(nsError: error as NSError) {
-            authenticationVerifyMsisdnViewModel.displayError(.mxError(mxError.error))
+            let message = mxError.authenticationErrorMessage()
+            authenticationVerifyMsisdnViewModel.displayError(.mxError(message))
             return
         }
 
