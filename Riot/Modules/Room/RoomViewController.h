@@ -34,6 +34,7 @@
 @class ThreadsCoordinatorBridgePresenter;
 @class LiveLocationSharingBannerView;
 @class VoiceBroadcastService;
+@class WysiwygInputToolbarViewController;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -114,6 +115,8 @@ extern NSTimeInterval const kResizeComposerAnimationDuration;
 
 // The voice broadcast service
 @property (nonatomic, nullable) VoiceBroadcastService *voiceBroadcastService;
+
+@property(nonatomic, strong, nullable) WysiwygInputToolbarViewController *wysiwygInputToolbarViewController;
 
 /**
  Retrieve the live data source in cases where the timeline is not live.

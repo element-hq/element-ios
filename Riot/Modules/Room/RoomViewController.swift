@@ -149,6 +149,15 @@ extension RoomViewController {
             }
         }
     }
+    
+    
+    @objc func roomInputToolbarDidTransition(_ isFullscreen: Bool) {
+        if wysiwygInputToolbarViewController == nil, let wysiwygInputToolbar = wysiwygInputToolbar {
+            wysiwygInputToolbarViewController = WysiwygInputToolbarViewController(view: wysiwygInputToolbar)
+        }
+        guard let wysiwygInputToolbarViewController = wysiwygInputToolbarViewController else { return }
+        self.present(wysiwygInputToolbarViewController, animated: true)
+    }
 }
 
 // MARK: - Private Helpers

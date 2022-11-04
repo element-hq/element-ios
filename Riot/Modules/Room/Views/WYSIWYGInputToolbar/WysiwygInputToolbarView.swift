@@ -102,15 +102,20 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         cancellables = [
             hostingViewController.heightPublisher
                 .removeDuplicates()
-                .sink(receiveValue: { [weak self] idealHeight in
+                .sink { [weak self] idealHeight in
                     guard let self = self else { return }
                     self.updateToolbarHeight(wysiwygHeight: idealHeight)
-                }),
+                },
             // Required to update the view constraints after minimise/maximise is tapped
             wysiwygViewModel.$idealHeight
                 .removeDuplicates()
                 .sink { [weak hostingViewController] _ in
                     hostingViewController?.view.setNeedsLayout()
+                },
+            
+            wysiwygViewModel.$maximised
+                .sink { [weak self] maximised in
+                    self?.toolbarViewDelegate?.roomInputToolbarDidTransition(maximised)
                 }
         ]
         

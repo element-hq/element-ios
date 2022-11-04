@@ -75,6 +75,8 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
  */
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage;
 
+- (void)roomInputToolbarDidTransition: (BOOL) isFullscreen;
+
 @end
 
 /**
