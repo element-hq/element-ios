@@ -2628,3 +2628,5 @@
 "authentication_qr_login_start_title" = "Skanoni kodin QR";
 "authentication_login_with_qr" = "Hyni me kod QR";
 "invite_to" = "Ftojeni te %@";
+"all_chats_empty_list_placeholder_title" = "S’ka gjë tjetër për të parë.";
+"all_chats_edit_layout_add_filters_message" = "Filtroni automatikisht mesazhet tuaj në kategori që caktoni vetë";
