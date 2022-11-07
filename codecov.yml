@@ -9,8 +9,16 @@ coverage:
     patch: false
 
 ignore:
-  - "Riot/Generated/**/*"
-  - "RiotSwiftUI/Modules/(?!UserSessions)/**/*"
+  - "Riot"
+  - "RiotSwiftUI/Modules/AnalyticsPrompt"
+  - "RiotSwiftUI/Modules/Authentication"
+  - "RiotSwiftUI/Modules/Common"
+  - "RiotSwiftUI/Modules/LocationSharing"
+  - "RiotSwiftUI/Modules/Onboarding"
+  - "RiotSwiftUI/Modules/Room"
+  - "RiotSwiftUI/Modules/Settings"
+  - "RiotSwiftUI/Modules/Spaces"
+  - "RiotSwiftUI/Modules/Template"  
 
 flag_management:
   default_rules:
