@@ -9,7 +9,8 @@ coverage:
     patch: false
 
 ignore:
-  - "Riot/Generated"  # ignore the folder and all its contents
+  - "Riot/Generated/**/*"
+  - "RiotSwiftUI/Modules/(?!UserSessions)/**/*"
 
 flag_management:
   default_rules:
