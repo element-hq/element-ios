@@ -903,7 +903,7 @@
 
 - (void)presentReviewUnverifiedSessionsAlertIfNeededWithSession:(MXSession*)session
 {
-    if (RiotSettings.shared.hideReviewSessionsAlert || self.reviewSessionAlertHasBeenDisplayed)
+    if (self.reviewSessionAlertHasBeenDisplayed)
     {
         return;
     }
@@ -948,13 +948,6 @@
                                               style:UIAlertActionStyleCancel
                                             handler:nil]];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n doNotAskAgain]
-                                              style:UIAlertActionStyleDestructive
-                                            handler:^(UIAlertAction * action) {
-                                                RiotSettings.shared.hideReviewSessionsAlert = YES;
-                                            }]];
-    
-    
     [self presentViewController:alert animated:YES completion:nil];
     
     currentAlert = alert;
@@ -975,7 +968,6 @@
 {
     self.reviewSessionAlertHasBeenDisplayed = NO;
     RiotSettings.shared.hideVerifyThisSessionAlert = NO;
-    RiotSettings.shared.hideReviewSessionsAlert = NO;
 }
 
 #pragma mark - UITabBarDelegate

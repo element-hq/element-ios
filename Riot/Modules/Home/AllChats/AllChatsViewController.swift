@@ -842,7 +842,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
     /// - Parameters:
     ///   - session: the matrix session.
     func presentReviewUnverifiedSessionsAlertIfNeeded(with session: MXSession) {
-        guard !RiotSettings.shared.hideReviewSessionsAlert, !reviewSessionAlertHasBeenDisplayed else {
+        guard !reviewSessionAlertHasBeenDisplayed else {
             return
         }
         
@@ -1009,10 +1009,6 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
         
         alert.addAction(UIAlertAction(title: VectorL10n.later, style: .cancel))
         
-        alert.addAction(UIAlertAction(title: VectorL10n.doNotAskAgain, style: .destructive, handler: { action in
-            RiotSettings.shared.hideReviewSessionsAlert = true
-        }))
-        
         present(alert, animated: true)
         currentAlert = alert
     }
@@ -1055,7 +1051,6 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
     private func resetReviewSessionsFlags() {
         reviewSessionAlertHasBeenDisplayed = false
         RiotSettings.shared.hideVerifyThisSessionAlert = false
-        RiotSettings.shared.hideReviewSessionsAlert = false
     }
     
     private func presentOnboardingFlow() {
