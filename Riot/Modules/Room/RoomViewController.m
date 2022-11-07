@@ -7449,31 +7449,27 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     MXThreadNotificationsCount *notificationsCount = [service notificationsCountForRoom:self.roomDataSource.roomId];
     
-    if (notificationsCount.numberOfHighlightedThreads > 0)
+    [button setImage:[AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize]
+            forState:UIControlStateNormal];
+    button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
+
+    if (notificationsCount.numberOfNotifiedThreads > 0)
     {
-        [button setImage:AssetImages.threadsIconRedDot.image
-                forState:UIControlStateNormal];
-        button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsDot;
-    }
-    else if (notificationsCount.numberOfNotifiedThreads > 0)
-    {
-        if (ThemeService.shared.isCurrentThemeDark)
-        {
-            [button setImage:AssetImages.threadsIconGrayDotDark.image
-                    forState:UIControlStateNormal];
-        }
-        else
-        {
-            [button setImage:AssetImages.threadsIconGrayDotLight.image
-                    forState:UIControlStateNormal];
-        }
-        button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsDot;
-    }
-    else
-    {
-        [button setImage:[AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize]
-                forState:UIControlStateNormal];
-        button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
+        BadgeLabel *badgeLabel = [[BadgeLabel alloc] init];
+        badgeLabel.text = [NSString stringWithFormat:@"%lu", notificationsCount.numberOfNotifiedThreads];
+        id<Theme> theme = ThemeService.shared.theme;
+        badgeLabel.font = theme.fonts.caption1SB;
+        badgeLabel.textColor = theme.colors.navigation;
+        badgeLabel.badgeColor = notificationsCount.numberOfHighlightedThreads ? theme.colors.alert : theme.colors.secondaryContent;
+        [button addSubview:badgeLabel];
+        
+        [badgeLabel layoutIfNeeded];
+        
+        badgeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [badgeLabel.bottomAnchor constraintEqualToAnchor:button.centerYAnchor
+                                                constant:badgeLabel.bounds.size.height - kThreadListBarButtonItemImageSize.height / 6].active = YES;
+        [badgeLabel.leadingAnchor constraintEqualToAnchor:button.centerXAnchor
+                                                 constant:badgeLabel.bounds.size.width + kThreadListBarButtonItemImageSize.width / 6].active = YES;
     }
 
     if (replaceIndex == NSNotFound)
