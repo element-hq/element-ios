@@ -7547,7 +7547,7 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableVoiceBroadcast: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_voice_broadcast") 
   }
-  /// Try out the rich text editor (plain text mode coming soon)
+  /// Try out the rich text editor
   public static var settingsLabsEnableWysiwygComposer: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_wysiwyg_composer") 
   }
