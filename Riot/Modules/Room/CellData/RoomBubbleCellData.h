@@ -105,6 +105,8 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
  */
 @property(nonatomic) NSInteger componentIndexOfSentMessageTick;
 
+@property(nonatomic, strong) NSString *voiceBroadcastState;
+
 /**
  Indicate that both the text message layout and any additional content height are no longer
  valid and should be recomputed before presentation in a bubble cell. This could be due

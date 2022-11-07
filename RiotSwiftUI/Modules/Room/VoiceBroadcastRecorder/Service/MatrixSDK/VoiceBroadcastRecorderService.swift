@@ -33,7 +33,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     
     private var chunkFile: AVAudioFile! = nil
     private var chunkFrames: AVAudioFrameCount = 0
-    private var chunkFileNumber: Int = 1
+    private var chunkFileNumber: Int = 0
         
     // MARK: Public
     
@@ -63,14 +63,16 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         }
 
         try? audioEngine.start()
+        
+        // Disable the sleep mode during the recording until we are able to handle it
+        UIApplication.shared.isIdleTimerDisabled = true
     }
     
     func stopRecordingVoiceBroadcast() {
         MXLog.debug("[VoiceBroadcastRecorderService] Stop recording voice broadcast")
         audioEngine.stop()
         audioEngine.inputNode.removeTap(onBus: audioNodeBus)
-
-        resetValues()
+        UIApplication.shared.isIdleTimerDisabled = false
 
         voiceBroadcastService?.stopVoiceBroadcast(success: { [weak self] _ in
             MXLog.debug("[VoiceBroadcastRecorderService] Stopped")
@@ -82,25 +84,33 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             
             // Send current chunk
             if self.chunkFile != nil {
-                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
+                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber) {
+                    self.tearDownVoiceBroadcastService()
+                }
+            } else {
+                self.tearDownVoiceBroadcastService()
             }
-            
-            self.session.tearDownVoiceBroadcastService()
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to stop voice broadcast", context: error)
+            // Discard the service on VoiceBroadcastService error. We keep the service in case of other error type
+            if error as? VoiceBroadcastServiceError != nil {
+                self.tearDownVoiceBroadcastService()
+            }
         })
     }
     
     func pauseRecordingVoiceBroadcast() {
         audioEngine.pause()
+        UIApplication.shared.isIdleTimerDisabled = false
         
         voiceBroadcastService?.pauseVoiceBroadcast(success: { [weak self] _ in
             guard let self = self else { return }
             
             // Send current chunk
-            self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
-            self.chunkFile = nil
-            
+            if self.chunkFile != nil {
+                self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
+                self.chunkFile = nil
+            }
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to pause voice broadcast", context: error)
         })
@@ -113,7 +123,8 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             guard let self = self else { return }
             
             // Update state
-            self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .started)
+            self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .resumed)
+            UIApplication.shared.isIdleTimerDisabled = true
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to resume voice broadcast", context: error)
         })
@@ -123,7 +134,13 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     /// Reset chunk values.
     private func resetValues() {
         chunkFrames = 0
-        chunkFileNumber = 1
+        chunkFileNumber = 0
+    }
+    
+    /// Release the service
+    private func tearDownVoiceBroadcastService() {
+        resetValues()
+        session.tearDownVoiceBroadcastService()
     }
     
     /// Write audio buffer to chunk file.
@@ -150,6 +167,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             // FIXME: Manage error
             return
         }
+        chunkFileNumber += 1
         let temporaryFileName = "VoiceBroadcastChunk-\(roomId)-\(chunkFileNumber)"
         let fileUrl = directory
             .appendingPathComponent(temporaryFileName)
@@ -165,18 +183,20 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         chunkFile = try? AVAudioFile(forWriting: fileUrl, settings: settings)
         
         if chunkFile != nil {
-            chunkFileNumber += 1
             chunkFrames = 0
         } else {
+            chunkFileNumber -= 1
             stopRecordingVoiceBroadcast()
             // FIXME: Manage error ?
         }
     }
     
     /// Send chunk file to the server.
-    private func sendChunkFile(at url: URL, sequence: Int) {
-        guard let voiceBroadcastService = voiceBroadcastService else {
+    private func sendChunkFile(at url: URL, sequence: Int, completion: (() -> Void)? = nil) {
+        guard voiceBroadcastService != nil else {
             // FIXME: Manage error
+            MXLog.debug("[VoiceBroadcastRecorderService] sendChunkFile: service is not available")
+            completion?()
             return
         }
         
@@ -200,21 +220,29 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         }
         
         convertAACToM4A(at: url) { [weak self] convertedUrl in
-            guard let self = self else { return }
+            guard let self = self else {
+                completion?()
+                return
+            }
+            
+            // Delete the source file.
+            self.deleteRecording(at: url)
             
             if let convertedUrl = convertedUrl {
                 dispatchGroup.notify(queue: .main) {
                     self.voiceBroadcastService?.sendChunkOfVoiceBroadcast(audioFileLocalURL: convertedUrl,
                                                                           mimeType: "audio/mp4",
                                                                           duration: UInt(duration * 1000),
-                                                                          samples: nil,
                                                                           sequence: UInt(sequence)) { eventId in
                         MXLog.debug("[VoiceBroadcastRecorderService] Send voice broadcast chunk with success.")
-                        if eventId != nil {
-                            self.deleteRecording(at: url)
-                        }
+                        self.deleteRecording(at: convertedUrl)
+                        completion?()
                     } failure: { error in
                         MXLog.error("[VoiceBroadcastRecorderService] Failed to send voice broadcast chunk.", context: error)
+                        // Do not delete the file to be sent if request failed, the retry flow will need it
+                        // There's no manual mechanism to clean it up afterwards but the tmp folder
+                        // they live in will eventually be deleted by the system
+                        completion?()
                     }
                 }
             }

@@ -20,6 +20,7 @@ protocol ComposerViewModelProtocol {
     var context: ComposerViewModelType.Context { get }
     var callback: ((ComposerViewModelResult) -> Void)? { get set }
     var sendMode: ComposerSendMode { get set }
+    var textFormattingEnabled: Bool { get set }
     var eventSenderDisplayName: String? { get set }
     var placeholder: String? { get set }
     

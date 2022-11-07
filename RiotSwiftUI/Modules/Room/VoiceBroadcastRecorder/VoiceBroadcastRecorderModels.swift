@@ -32,6 +32,7 @@ enum VoiceBroadcastRecorderState {
 
 struct VoiceBroadcastRecorderDetails {
     let senderDisplayName: String?
+    let avatarData: AvatarInputProtocol
 }
 
 struct VoiceBroadcastRecorderViewState: BindableState {

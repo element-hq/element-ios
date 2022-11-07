@@ -16,12 +16,12 @@
 
 import Foundation
 
-class VoiceBroadcastIncomingWithoutSenderInfoBubbleCell: VoiceBroadcastIncomingBubbleCell {
+class VoiceBroadcastPlaybackWithPaginationTitlePlainCell: VoiceBroadcastPlaybackPlainBubbleCell {
     
     override func setupViews() {
         super.setupViews()
         
-        roomCellContentView?.showSenderInfo = false
+        roomCellContentView?.showPaginationTitle = true
     }
     
 }

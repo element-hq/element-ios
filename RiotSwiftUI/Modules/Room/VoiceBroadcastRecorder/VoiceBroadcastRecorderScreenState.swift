@@ -31,7 +31,7 @@ enum MockVoiceBroadcastRecorderScreenState: MockScreenState, CaseIterable {
     }
     
     var screenView: ([Any], AnyView) {
-        let details = VoiceBroadcastRecorderDetails(senderDisplayName: "")
+        let details = VoiceBroadcastRecorderDetails(senderDisplayName: "", avatarData: AvatarInput(mxContentUri: "", matrixItemId: "!fakeroomid:matrix.org", displayName: "The name of the room"))
         let viewModel = MockVoiceBroadcastRecorderViewModel(initialViewState: VoiceBroadcastRecorderViewState(details: details, recordingState: .started, bindings: VoiceBroadcastRecorderViewStateBindings()))
         
         return (

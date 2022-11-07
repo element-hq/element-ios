@@ -83,70 +83,10 @@ struct Composer: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            let rect = RoundedRectangle(cornerRadius: cornerRadius)
-            VStack(spacing: 12) {
-                if viewModel.viewState.shouldDisplayContext {
-                    HStack {
-                        if let imageName = viewModel.viewState.contextImageName {
-                            Image(imageName)
-                                .foregroundColor(theme.colors.tertiaryContent)
-                        }
-                        if let contextDescription = viewModel.viewState.contextDescription {
-                            Text(contextDescription)
-                                .accessibilityIdentifier("contextDescription")
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundColor(theme.colors.secondaryContent)
-                        }
-                        Spacer()
-                        Button {
-                            viewModel.send(viewAction: .cancel)
-                        } label: {
-                            Image(Asset.Images.inputCloseIcon.name)
-                                .foregroundColor(theme.colors.tertiaryContent)
-                        }
-                        .accessibilityIdentifier("cancelButton")
-                    }
-                    .padding(.top, 8)
-                    .padding(.horizontal, horizontalPadding)
-                }
-                HStack(alignment: .top, spacing: 0) {
-                    WysiwygComposerView(
-                        focused: $viewModel.focused,
-                        viewModel: wysiwygViewModel
-                    )
-                    .tintColor(theme.colors.accent)
-                    .placeholder(viewModel.viewState.placeholder, color: theme.colors.tertiaryContent)
-                    .frame(height: wysiwygViewModel.idealHeight)
-                    .onAppear {
-                        wysiwygViewModel.setup()
-                    }
-                    Button {
-                        wysiwygViewModel.maximised.toggle()
-                    } label: {
-                        Image(toggleButtonImageName)
-                            .resizable()
-                            .foregroundColor(theme.colors.tertiaryContent)
-                            .frame(width: 16, height: 16)
-                    }
-                    .accessibilityIdentifier(toggleButtonAcccessibilityIdentifier)
-                    .padding(.leading, 12)
-                    .padding(.trailing, 4)
-                }
-                .padding(.horizontal, horizontalPadding)
-                .padding(.top, topPadding)
-                .padding(.bottom, verticalPadding)
+            if viewModel.viewState.textFormattingEnabled {
+                composerContainer
             }
-            .clipShape(rect)
-            .overlay(rect.stroke(borderColor, lineWidth: 1))
-            .animation(.easeInOut(duration: resizeAnimationDuration), value: wysiwygViewModel.idealHeight)
-            .padding(.horizontal, horizontalPadding)
-            .padding(.top, 8)
-            .onTapGesture {
-                if viewModel.focused {
-                    viewModel.focused = true
-                }
-            }
-            HStack(spacing: 0) {
+            HStack(alignment: .bottom, spacing: 0) {
                 Button {
                     showSendMediaActions()
                 } label: {
@@ -159,13 +99,21 @@ struct Composer: View {
                 .background(Circle().fill(theme.colors.system))
                 .padding(.trailing, 8)
                 .accessibilityLabel(VectorL10n.create)
-                FormattingToolbar(formatItems: formatItems) { type in
-                    wysiwygViewModel.apply(type.action)
+                if viewModel.viewState.textFormattingEnabled {
+                    FormattingToolbar(formatItems: formatItems) { type in
+                        wysiwygViewModel.apply(type.action)
+                    }
+                    .frame(height: 44)
+                    Spacer()
+                } else {
+                    composerContainer
                 }
-                .frame(height: 44)
-                Spacer()
                 Button {
-                    sendMessageAction(wysiwygViewModel.content)
+                    if wysiwygViewModel.plainTextMode {
+                        sendMessageAction(wysiwygViewModel.plainTextModeContent)
+                    } else {
+                        sendMessageAction(wysiwygViewModel.content)
+                    }
                     wysiwygViewModel.clearContent()
                 } label: {
                     if viewModel.viewState.sendMode == .edit {
@@ -188,6 +136,76 @@ struct Composer: View {
             }
             .padding(.horizontal, 12)
             .padding(.bottom, 4)
+        }
+    }
+
+    private var composerContainer: some View {
+        let rect = RoundedRectangle(cornerRadius: cornerRadius)
+        return VStack(spacing: 12) {
+            if viewModel.viewState.shouldDisplayContext {
+                HStack {
+                    if let imageName = viewModel.viewState.contextImageName {
+                        Image(imageName)
+                            .foregroundColor(theme.colors.tertiaryContent)
+                    }
+                    if let contextDescription = viewModel.viewState.contextDescription {
+                        Text(contextDescription)
+                            .accessibilityIdentifier("contextDescription")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(theme.colors.secondaryContent)
+                    }
+                    Spacer()
+                    Button {
+                        viewModel.send(viewAction: .cancel)
+                    } label: {
+                        Image(Asset.Images.inputCloseIcon.name)
+                            .foregroundColor(theme.colors.tertiaryContent)
+                    }
+                    .accessibilityIdentifier("cancelButton")
+                }
+                .padding(.top, 8)
+                .padding(.horizontal, horizontalPadding)
+            }
+            HStack(alignment: .top, spacing: 0) {
+                WysiwygComposerView(
+                    focused: $viewModel.focused,
+                    viewModel: wysiwygViewModel
+                )
+                .tintColor(theme.colors.accent)
+                .placeholder(viewModel.viewState.placeholder, color: theme.colors.tertiaryContent)
+                .frame(height: wysiwygViewModel.idealHeight)
+                .onAppear {
+                    if wysiwygViewModel.isContentEmpty {
+                        wysiwygViewModel.setup()
+                    }
+                }
+                if viewModel.viewState.textFormattingEnabled {
+                    Button {
+                        wysiwygViewModel.maximised.toggle()
+                    } label: {
+                        Image(toggleButtonImageName)
+                            .resizable()
+                            .foregroundColor(theme.colors.tertiaryContent)
+                            .frame(width: 16, height: 16)
+                    }
+                    .accessibilityIdentifier(toggleButtonAcccessibilityIdentifier)
+                    .padding(.leading, 12)
+                    .padding(.trailing, 4)
+                }
+            }
+            .padding(.horizontal, horizontalPadding)
+            .padding(.top, topPadding)
+            .padding(.bottom, verticalPadding)
+        }
+        .clipShape(rect)
+        .overlay(rect.stroke(borderColor, lineWidth: 1))
+        .animation(.easeInOut(duration: resizeAnimationDuration), value: wysiwygViewModel.idealHeight)
+        .padding(.horizontal, horizontalPadding)
+        .padding(.top, 8)
+        .onTapGesture {
+            if viewModel.focused {
+                viewModel.focused = true
+            }
         }
     }
 }
