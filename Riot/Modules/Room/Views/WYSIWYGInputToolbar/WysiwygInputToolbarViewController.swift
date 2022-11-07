@@ -28,8 +28,8 @@ class SheetAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let containerView = transitionContext.containerView
-        let toView = transitionContext.view(forKey: .to)
-        let toolbarView = presenting ? transitionContext.view(forKey: .to)! : transitionContext.view(forKey: .from)!
+        let toView = transitionContext.view(forKey: .to)!
+        let toolbarView = presenting ? toView : transitionContext.view(forKey: .from)!
         let finalFrame = presenting ? originFrame : toolbarView.frame
         let initialFrame = presenting ? toolbarView.frame : originFrame
         if presenting {
@@ -38,14 +38,12 @@ class SheetAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         }
         toolbarView.layer.cornerRadius = presenting ? 20.0 : 0.0
         toolbarView.layer.masksToBounds = true
-        if let toView = toView {
-            containerView.addSubview(toView)
-        }
+        containerView.addSubview(toView)
         containerView.bringSubviewToFront(toolbarView)
         UIView.animate(
           withDuration: duration,
           animations: {
-            toolbarView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+            toolbarView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY + 500)
             toolbarView.layer.cornerRadius = !self.presenting ? 20.0 : 0.0
           }, completion: { _ in
             transitionContext.completeTransition(true)
@@ -63,6 +61,7 @@ final class WysiwygInputToolbarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.transitioningDelegate = self
+        self.modalPresentationStyle = .custom
     }
 }
 
@@ -85,4 +84,11 @@ extension WysiwygInputToolbarViewController: UIViewControllerTransitioningDelega
         transition.presenting = false
         return transition
     }
+    
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+            return SheethPresentationController(presentedViewController: presented, presenting: presenting ?? source)
+        }
+}
+
+final class SheethPresentationController: UIPresentationController {
 }
