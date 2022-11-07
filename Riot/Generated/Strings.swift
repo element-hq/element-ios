@@ -2923,6 +2923,14 @@ public class VectorL10n: NSObject {
   public static var keyBackupSetupTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_title") 
   }
+  /// Review to ensure your account is safe.
+  public static var keyVerificationAlertBody: String { 
+    return VectorL10n.tr("Vector", "key_verification_alert_body") 
+  }
+  /// You have unverified sessions
+  public static var keyVerificationAlertTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_alert_title") 
+  }
   /// You need to bootstrap cross-signing first.
   public static var keyVerificationBootstrapNotSetupMessage: String { 
     return VectorL10n.tr("Vector", "key_verification_bootstrap_not_setup_message") 
@@ -3006,14 +3014,6 @@ public class VectorL10n: NSObject {
   /// Verify
   public static var keyVerificationSelfVerifyCurrentSessionAlertValidateAction: String { 
     return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_validate_action") 
-  }
-  /// Verify all your sessions to ensure your account & messages are safe.
-  public static var keyVerificationSelfVerifyUnverifiedSessionsAlertMessage: String { 
-    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_message") 
-  }
-  /// Review where you're logged in
-  public static var keyVerificationSelfVerifyUnverifiedSessionsAlertTitle: String { 
-    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_title") 
   }
   /// Review
   public static var keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction: String { 

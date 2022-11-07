@@ -997,8 +997,8 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
         
         currentAlert?.dismiss(animated: true, completion: nil)
         
-        let alert = UIAlertController(title: VectorL10n.keyVerificationSelfVerifyUnverifiedSessionsAlertTitle,
-                                      message: VectorL10n.keyVerificationSelfVerifyUnverifiedSessionsAlertMessage,
+        let alert = UIAlertController(title: VectorL10n.keyVerificationAlertTitle,
+                                      message: VectorL10n.keyVerificationAlertBody,
                                       preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: VectorL10n.keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction,
