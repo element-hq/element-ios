@@ -2638,7 +2638,7 @@
 
 // Send Media Actions
 "wysiwyg_composer_start_action_media_picker" = "Fotobibliothek";
-"settings_labs_enable_wysiwyg_composer" = "Probiere den Rich-Text-Editor aus (bald auch mit Plain-Text-Modus)";
+"settings_labs_enable_wysiwyg_composer" = "Probiere den Textverarbeitungs-Editor aus";
 "wysiwyg_composer_start_action_voice_broadcast" = "Sprachübertragung";
 "voice_broadcast_already_in_progress_message" = "Du zeichnest bereits eine Sprachübertragung auf. Bitte beende die laufende Übertragung, um eine neue zu beginnen.";
 "voice_broadcast_blocked_by_someone_else_message" = "Jemand anderes nimmt bereits eine Sprachübertragung auf. Warte auf das Ende der Übertragung, bevor du eine neue startest.";
@@ -2655,3 +2655,5 @@
 "manage_session_sign_out_other_sessions" = "Von allen anderen Sitzungen abmelden";
 "user_sessions_hide_location_info" = "IP-Adresse ausblenden";
 "user_sessions_show_location_info" = "IP-Adresse anzeigen";
+"voice_broadcast_tile" = "Sprachübertragung";
+"voice_broadcast_live" = "Live";
