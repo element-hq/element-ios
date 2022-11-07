@@ -20,6 +20,7 @@ class SheetAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     let duration = 1.0
     var presenting = true
     var originFrame = CGRect.zero
+    var dismissCompletion: (() -> ())?
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
@@ -27,24 +28,61 @@ class SheetAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let containerView = transitionContext.containerView
-        let toView = transitionContext.view(forKey: .to)!
+        let toView = transitionContext.view(forKey: .to)
+        let toolbarView = presenting ? transitionContext.view(forKey: .to)! : transitionContext.view(forKey: .from)!
+        let finalFrame = presenting ? originFrame : toolbarView.frame
+        let initialFrame = presenting ? toolbarView.frame : originFrame
+        if presenting {
+          toolbarView.center =  CGPoint(x: initialFrame.midX, y: initialFrame.midY)
+          toolbarView.clipsToBounds = true
+        }
+        toolbarView.layer.cornerRadius = presenting ? 20.0 : 0.0
+        toolbarView.layer.masksToBounds = true
+        if let toView = toView {
+            containerView.addSubview(toView)
+        }
+        containerView.bringSubviewToFront(toolbarView)
+        UIView.animate(
+          withDuration: duration,
+          animations: {
+            toolbarView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+            toolbarView.layer.cornerRadius = !self.presenting ? 20.0 : 0.0
+          }, completion: { _ in
+            transitionContext.completeTransition(true)
+        })
     }
 }
 
 final class WysiwygInputToolbarViewController: UIViewController {
     private let transition = SheetAnimator()
+    
+    private var wysiwygInputToolbar: WysiwygInputToolbarView? {
+        return view as? WysiwygInputToolbarView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.transitioningDelegate = self
+    }
 }
 
 extension WysiwygInputToolbarViewController: UIViewControllerTransitioningDelegate {
     func animationController(
-      forPresented presented: UIViewController,
-      presenting: UIViewController, source: UIViewController)
-        -> UIViewControllerAnimatedTransitioning? {
-      return transition
+        forPresented presented: UIViewController,
+        presenting: UIViewController, source: UIViewController)
+    -> UIViewControllerAnimatedTransitioning? {
+        transition.presenting = true
+        if let roomViewController = source as? RoomViewController,
+           let inputToolbarView = roomViewController.inputToolbarView,
+            let inputToolbarSuperview = inputToolbarView.superview {
+            transition.originFrame = inputToolbarSuperview.convert(inputToolbarView.frame, to: nil)
+        }
+        return transition
     }
     
     func animationController(forDismissed dismissed: UIViewController)
-        -> UIViewControllerAnimatedTransitioning? {
-      return nil
+    -> UIViewControllerAnimatedTransitioning? {
+        transition.presenting = false
+        return transition
     }
 }
