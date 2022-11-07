@@ -2575,7 +2575,7 @@
 "manage_session_name_info" = "Palun arvesta, et sessioonide nimed on näha ka kõikidele osapooltele, kellega sa suhtled. %@";
 "manage_session_name_hint" = "Sinu enda kirjutatud sessiooninimede alusel on sul oma seadmeid lihtsam ära tunda.";
 "settings_labs_enable_voice_broadcast" = "Ringhäälingukõne (aktiivses arenduses)";
-"settings_labs_enable_wysiwyg_composer" = "Proovi vormindatud teksti alusel töötavat tekstitoimetit (varsti lisandub ka vormindamata teksti režiim)";
+"settings_labs_enable_wysiwyg_composer" = "Proovi vormindatud teksti alusel töötavat tekstitoimetit";
 "authentication_qr_login_failure_retry" = "Proovi uuesti";
 "authentication_qr_login_failure_request_timed_out" = "Sidumine ei lõppenud etteantud aja jooksul.";
 "authentication_qr_login_failure_request_denied" = "Teine seade lükkas päringu tagasi.";
@@ -2593,3 +2593,5 @@
 "user_sessions_hide_location_info" = "Peida IP-aadress";
 "user_sessions_show_location_info" = "Näita IP-aadressi";
 "manage_session_sign_out_other_sessions" = "Logi välja kõikidest oma muudest sessioonidest";
+"voice_broadcast_tile" = "Ringhäälingukõne";
+"voice_broadcast_live" = "Otse eetris";
