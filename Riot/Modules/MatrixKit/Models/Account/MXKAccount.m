@@ -952,7 +952,10 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         {
             // Force a reload of device keys at the next session start.
             // This will fix potential UISIs other peoples receive for our messages.
-            [mxSession.crypto resetDeviceKeys];
+            if ([mxSession.crypto isKindOfClass:[MXLegacyCrypto class]])
+            {
+                [(MXLegacyCrypto *)mxSession.crypto resetDeviceKeys];
+            }
             
             // Clean other stores
             [mxSession.scanManager deleteAllAntivirusScans];
@@ -2195,11 +2198,11 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     // Set that limit in the filter
     if (syncWithLazyLoadOfRoomMembers)
     {
-        syncFilter = [MXFilterJSONModel syncFilterForLazyLoadingWithMessageLimit:limit];
+        syncFilter = [MXFilterJSONModel syncFilterForLazyLoadingWithMessageLimit:limit unreadThreadNotifications:YES];
     }
     else
     {
-        syncFilter = [MXFilterJSONModel syncFilterWithMessageLimit:limit];
+        syncFilter = [MXFilterJSONModel syncFilterWithMessageLimit:limit unreadThreadNotifications:YES];
     }
 
     // TODO: We could extend the filter to match other settings (self.showAllEventsInRoomHistory,

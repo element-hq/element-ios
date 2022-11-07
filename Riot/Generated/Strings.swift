@@ -3647,6 +3647,10 @@ public class VectorL10n: NSObject {
   public static var manageSessionSignOut: String { 
     return VectorL10n.tr("Vector", "manage_session_sign_out") 
   }
+  /// Sign out of all other sessions
+  public static var manageSessionSignOutOtherSessions: String { 
+    return VectorL10n.tr("Vector", "manage_session_sign_out_other_sessions") 
+  }
   /// Manage session
   public static var manageSessionTitle: String { 
     return VectorL10n.tr("Vector", "manage_session_title") 
@@ -8679,6 +8683,10 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionMenuSelectSessions: String { 
     return VectorL10n.tr("Vector", "user_other_session_menu_select_sessions") 
   }
+  /// Sign out of %@ sessions
+  public static func userOtherSessionMenuSignOutSessions(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_other_session_menu_sign_out_sessions", p1)
+  }
   /// No inactive sessions found.
   public static var userOtherSessionNoInactiveSessions: String { 
     return VectorL10n.tr("Vector", "user_other_session_no_inactive_sessions") 
@@ -8863,6 +8871,10 @@ public class VectorL10n: NSObject {
   public static func userSessionsDefaultSessionDisplayName(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "user_sessions_default_session_display_name", p1)
   }
+  /// Hide IP address
+  public static var userSessionsHideLocationInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_hide_location_info") 
+  }
   /// Current session
   public static var userSessionsOverviewCurrentSessionSectionTitle: String { 
     return VectorL10n.tr("Vector", "user_sessions_overview_current_session_section_title") 
@@ -8910,6 +8922,10 @@ public class VectorL10n: NSObject {
   /// Manage sessions
   public static var userSessionsSettings: String { 
     return VectorL10n.tr("Vector", "user_sessions_settings") 
+  }
+  /// Show IP address
+  public static var userSessionsShowLocationInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_show_location_info") 
   }
   /// View all (%d)
   public static func userSessionsViewAllAction(_ p1: Int) -> String {

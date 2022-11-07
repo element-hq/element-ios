@@ -32,6 +32,7 @@ final class RiotSettings: NSObject {
         static let showAllRoomsInHomeSpace = "showAllRoomsInHomeSpace"
         static let enableUISIAutoReporting = "enableUISIAutoReporting"
         static let enableLiveLocationSharing = "enableLiveLocationSharing"
+        static let showIPAddressesInSessionsManager = "showIPAddressesInSessionsManager"
     }
     
     static let shared = RiotSettings()
@@ -178,6 +179,10 @@ final class RiotSettings: NSObject {
 
     @UserDefault(key: "enableWysiwygTextFormatting", defaultValue: true, storage: defaults)
     var enableWysiwygTextFormatting
+    
+    /// Flag indicating if the IP addresses should be shown in the new device manager
+    @UserDefault(key: UserDefaultsKeys.showIPAddressesInSessionsManager, defaultValue: false, storage: defaults)
+    var showIPAddressesInSessionsManager
     
     /// Flag indicating if the voice broadcast feature is enabled
     @UserDefault(key: "enableVoiceBroadcast", defaultValue: false, storage: defaults)

@@ -20,12 +20,14 @@ import Foundation
 
 enum UserOtherSessionsCoordinatorResult {
     case openSessionOverview(sessionInfo: UserSessionInfo)
+    case logoutFromUserSessions(sessionInfos: [UserSessionInfo])
 }
 
 // MARK: View model
 
 enum UserOtherSessionsViewModelResult: Equatable {
     case showUserSessionOverview(sessionInfo: UserSessionInfo)
+    case logoutFromUserSessions(sessionInfos: [UserSessionInfo])
 }
 
 // MARK: View
@@ -37,6 +39,8 @@ struct UserOtherSessionsViewState: BindableState, Equatable {
     var header: UserOtherSessionsHeaderViewData
     var emptyItemsTitle: String
     var allItemsSelected: Bool
+    var enableSignOutButton: Bool
+    var showLocationInfo: Bool
 }
 
 struct UserOtherSessionsBindings: Equatable {
@@ -50,4 +54,7 @@ enum UserOtherSessionsViewAction {
     case clearFilter
     case editModeWasToggled
     case toggleAllSelection
+    case logoutAllUserSessions
+    case logoutSelectedUserSessions
+    case showLocationInfo
 }

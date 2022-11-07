@@ -106,7 +106,11 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
     }
 
     func stopScanning(destroy: Bool) {
-        zxCapture.delegate = nil
+        if (zxCapture.delegate != nil) {
+            // Setting the zxCapture to nil without checking makes it start
+            // scanning and implicitly requesting camera access
+            zxCapture.delegate = nil
+        }
         
         guard zxCapture.running else {
             return
@@ -348,6 +352,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         await teardownRendezvous()
     }
     
+    @MainActor
     private func teardownRendezvous(state: QRLoginServiceState? = nil) async {
         // Stop listening for changes, try deleting the resource
         _ = await rendezvousService?.tearDown()

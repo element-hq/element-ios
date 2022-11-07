@@ -368,6 +368,8 @@
     
     //  Mark all messages as read when the room is displayed
     [self.roomDataSource.room.summary markAllAsReadLocally];
+    
+    [self updateCurrentEventIdAtTableBottom:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -2497,7 +2499,10 @@
                             updateReadMarker = (currentReadMarkerEvent && (currentReadMarkerEvent.originServerTs <= component.event.originServerTs));
                         }
                         
-                        [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:updateReadMarker];
+                        if (self.navigationController.viewControllers.lastObject == self)
+                        {
+                            [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:updateReadMarker];
+                        }
                     }
                     break;
                 }

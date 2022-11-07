@@ -37,7 +37,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var heightConstraint: NSLayoutConstraint!
     private var hostingViewController: VectorHostingController!
     private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
-    private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState())
+    private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState(bindings: ComposerBindings(focused: false)))
     
     // MARK: Public
     
@@ -70,8 +70,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
         
-        let composer = Composer(viewModel: viewModel.context,
+        let composer = Composer(
+            viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
+            resizeAnimationDuration: Double(kResizeComposerAnimationDuration),
             sendMessageAction: { [weak self] content in
             guard let self = self else { return }
             self.sendWysiwygMessage(content: content)
@@ -121,6 +123,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     override func customizeRendering() {
         super.customizeRendering()
         self.backgroundColor = .clear
+    }
+    
+    override func dismissKeyboard() {
+        self.viewModel.dismissKeyboard()
     }
     
     // MARK: - Private

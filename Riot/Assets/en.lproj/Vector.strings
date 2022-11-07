@@ -936,7 +936,7 @@ Tap the + to start adding people.";
 "manage_session_not_trusted" = "Not trusted";
 "manage_session_sign_out" = "Sign out of this session";
 "manage_session_rename" = "Rename session";
-
+"manage_session_sign_out_other_sessions" = "Sign out of all other sessions";
 // User sessions management
 "user_sessions_settings" = "Manage sessions";
 
@@ -2423,6 +2423,8 @@ To enable access, tap Settings> Location and select Always";
 
 "user_sessions_overview_other_sessions_section_title" = "Other sessions";
 "user_sessions_overview_other_sessions_section_info" = "For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.";
+"user_sessions_show_location_info" = "Show IP address";
+"user_sessions_hide_location_info" = "Hide IP address";
 
 "user_sessions_overview_current_session_section_title" = "Current session";
 "user_sessions_overview_link_device" = "Link a device";
@@ -2464,6 +2466,7 @@ To enable access, tap Settings> Location and select Always";
 "user_other_session_clear_filter" = "Clear filter";
 "user_other_session_selected_count" = "%@ selected";
 "user_other_session_menu_select_sessions" = "Select sessions";
+"user_other_session_menu_sign_out_sessions" = "Sign out of %@ sessions";
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
 

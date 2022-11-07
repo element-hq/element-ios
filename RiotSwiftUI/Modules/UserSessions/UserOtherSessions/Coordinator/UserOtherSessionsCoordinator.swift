@@ -39,7 +39,8 @@ final class UserOtherSessionsCoordinator: Coordinator, Presentable {
         
         let viewModel = UserOtherSessionsViewModel(sessionInfos: parameters.sessionInfos,
                                                    filter: parameters.filter,
-                                                   title: parameters.title)
+                                                   title: parameters.title,
+                                                   settingService: RiotSettings.shared)
         let view = UserOtherSessions(viewModel: viewModel.context)
         userOtherSessionsViewModel = viewModel
         userOtherSessionsHostingController = VectorHostingController(rootView: view)
@@ -56,6 +57,8 @@ final class UserOtherSessionsCoordinator: Coordinator, Presentable {
             switch result {
             case let .showUserSessionOverview(sessionInfo: session):
                 self.completion?(.openSessionOverview(sessionInfo: session))
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
+                self.completion?(.logoutFromUserSessions(sessionInfos: sessionInfos))
             }
             MXLog.debug("[UserOtherSessionsCoordinator] UserOtherSessionsViewModel did complete with result: \(result).")
         }

@@ -23,12 +23,15 @@ struct UserSessionOverview: View {
     
     var body: some View {
         ScrollView {
-            UserSessionCardView(viewData: viewModel.viewState.cardViewData, onVerifyAction: { _ in
-                viewModel.send(viewAction: .verifySession)
-            },
-            onViewDetailsAction: { _ in
-                viewModel.send(viewAction: .viewSessionDetails)
-            })
+            UserSessionCardView(
+                viewData: viewModel.viewState.cardViewData, onVerifyAction: { _ in
+                    viewModel.send(viewAction: .verifySession)
+                },
+                onViewDetailsAction: { _ in
+                    viewModel.send(viewAction: .viewSessionDetails)
+                },
+                showLocationInformations: viewModel.viewState.showLocationInfo
+            )
             .padding(16)
             SwiftUI.Section {
                 UserSessionOverviewItem(title: VectorL10n.userSessionOverviewSessionDetailsButtonTitle,
@@ -63,15 +66,34 @@ struct UserSessionOverview: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
-                    Button { viewModel.send(viewAction: .renameSession) } label: {
-                        Label(VectorL10n.manageSessionRename, systemImage: "pencil")
+                    SwiftUI.Section {
+                        Button { viewModel.send(viewAction: .renameSession) } label: {
+                            Label(VectorL10n.manageSessionRename, systemImage: "pencil")
+                        }
+                        .accessibilityIdentifier(VectorL10n.manageSessionRename)
+                        
+                        if viewModel.viewState.isCurrentSession == false {
+                            Button {
+                                viewModel.send(viewAction: .showLocationInfo)
+                            } label: {
+                                Label(showLocationInfo: viewModel.viewState.showLocationInfo)
+                            }
+                        }
                     }
+                    DestructiveButton {
+                        viewModel.send(viewAction: .logoutOfSession)
+                    } label: {
+                        Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
+                    }
+                    .accessibilityIdentifier(VectorL10n.signOut)
                 } label: {
                     Image(systemName: "ellipsis")
+                        .foregroundColor(theme.colors.secondaryContent)
                         .padding(.horizontal, 4)
                         .padding(.vertical, 12)
                 }
                 .offset(x: 4) // Re-align the symbol after applying padding.
+                .accessibilityIdentifier("Menu")
             }
         }
         .accentColor(theme.colors.accent)

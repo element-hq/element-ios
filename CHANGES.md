@@ -1,3 +1,40 @@
+## Changes in 1.9.10 (2022-11-01)
+
+✨ Features
+
+- Changed the info in the background audio message player. ([#6870](https://github.com/vector-im/element-ios/pull/6870))
+- Added voice message support to the Rich Text Composer ([#6941](https://github.com/vector-im/element-ios/issues/6941))
+
+🙌 Improvements
+
+- Improves external links interaction UX. ([#6936](https://github.com/vector-im/element-ios/pull/6936))
+- Verification: Deprecate legacy device-to-device verification ([#6937](https://github.com/vector-im/element-ios/pull/6937))
+- Crypto: Define MXCrypto and MXCrossSigning as protocols ([#6943](https://github.com/vector-im/element-ios/pull/6943))
+- Hide the old session list when the new device manager is enabled. ([#6999](https://github.com/vector-im/element-ios/pull/6999))
+- Upgrade MatrixSDK version ([v0.24.2](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.24.2)).
+- Added a responsive placeholder text to the Rich Text Composer ([#6935](https://github.com/vector-im/element-ios/issues/6935))
+- Added the maximise/minimise toggle button to the Rich Text Composer ([#6954](https://github.com/vector-im/element-ios/issues/6954))
+
+🐛 Bugfixes
+
+- Timeline: Fix layout for SwiftUI content views. ([#5326](https://github.com/vector-im/element-ios/issues/5326))
+- Updates the avatar image loading logics. ([#6847](https://github.com/vector-im/element-ios/issues/6847))
+- Fixes input text view height when containing multiple lines of text. ([#6849](https://github.com/vector-im/element-ios/issues/6849))
+- Fixed the placeholder flickering in the input toolbar when there is an height change. ([#6949](https://github.com/vector-im/element-ios/issues/6949))
+
+🧱 Build
+
+- Add Z-Labs tag for rich text editor and update to the new label naming. ([#6996](https://github.com/vector-im/element-ios/pull/6996))
+
+🚧 In development 🚧
+
+- Device Manager: Multi-session selection. ([#6928](https://github.com/vector-im/element-ios/issues/6928))
+
+Others
+
+- Updated templates readme file. ([#6925](https://github.com/vector-im/element-ios/issues/6925))
+
+
 ## Changes in 1.9.9 (2022-10-18)
 
 ✨ Features

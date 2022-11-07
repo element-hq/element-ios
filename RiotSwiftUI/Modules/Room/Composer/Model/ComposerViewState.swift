@@ -21,6 +21,8 @@ struct ComposerViewState: BindableState {
     var sendMode: ComposerSendMode = .send
     var textFormattingEnabled = true
     var placeholder: String?
+    
+    var bindings: ComposerBindings
 }
 
 extension ComposerViewState {
@@ -45,4 +47,8 @@ extension ComposerViewState {
         default: return nil
         }
     }
+}
+
+struct ComposerBindings {
+    var focused: Bool
 }

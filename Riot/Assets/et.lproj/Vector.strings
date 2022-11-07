@@ -2586,3 +2586,6 @@
 "authentication_qr_login_loading_connecting_device" = "Loon ühendust seadmega";
 "authentication_qr_login_confirm_alert" = "Palun vaata, et sa kindlasti tead, kust see QR-kood kuvatakse. Sellisel viisil seadmete sidumisel sa annad oma kasutajakontole täiemahulise ligipääsu.";
 "authentication_qr_login_confirm_subtitle" = "Kontrolli, et järgnev kood klapib teises seadmes kuvatava koodiga:";
+"deselect_all" = "Eemalda kõik valikud";
+"user_other_session_menu_select_sessions" = "Vali sessioonid";
+"user_other_session_selected_count" = "%@ valitud";

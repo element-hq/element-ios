@@ -5920,17 +5920,13 @@ static CGSize kThreadListBarButtonItemImageSize;
             {
                 if (self.roomDataSource.room)
                 {
-                    // Retrieve the unread messages count
-                    NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
+                    // Retrieve the unread messages count on the current thread
+                    NSUInteger unreadCount = [self.mainSession.store
+                                              localUnreadEventCount:self.roomDataSource.room.roomId
+                                              threadId:self.roomDataSource.threadId ?: kMXEventTimelineMain
+                                              withTypeIn:self.mainSession.unreadEventTypes];
                     
-                    if (!self.roomDataSource.threadId)
-                    {
-                        self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
-                    }
-                    else
-                    {
-                        self.scrollToBottomBadgeLabel.text = nil;
-                    }
+                    self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
                     self.scrollToBottomHidden = NO;
                 }
                 else
@@ -6257,7 +6253,13 @@ static CGSize kThreadListBarButtonItemImageSize;
                 
                 // Acknowledge the existence of all devices
                 [self startActivityIndicator];
-                [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
+                
+                if (![self.mainSession.crypto isKindOfClass:[MXLegacyCrypto class]])
+                {
+                    MXLogFailure(@"[RoomVC] eventDidChangeSentState: Only legacy crypto supports manual setting of known devices");
+                    return;
+                }
+                [(MXLegacyCrypto *)self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
                     
                     self->unknownDevices = nil;
                     [self stopActivityIndicator];
@@ -7449,31 +7451,27 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     MXThreadNotificationsCount *notificationsCount = [service notificationsCountForRoom:self.roomDataSource.roomId];
     
-    if (notificationsCount.numberOfHighlightedThreads > 0)
+    [button setImage:[AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize]
+            forState:UIControlStateNormal];
+    button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
+
+    if (notificationsCount.numberOfNotifiedThreads > 0)
     {
-        [button setImage:AssetImages.threadsIconRedDot.image
-                forState:UIControlStateNormal];
-        button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsDot;
-    }
-    else if (notificationsCount.numberOfNotifiedThreads > 0)
-    {
-        if (ThemeService.shared.isCurrentThemeDark)
-        {
-            [button setImage:AssetImages.threadsIconGrayDotDark.image
-                    forState:UIControlStateNormal];
-        }
-        else
-        {
-            [button setImage:AssetImages.threadsIconGrayDotLight.image
-                    forState:UIControlStateNormal];
-        }
-        button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsDot;
-    }
-    else
-    {
-        [button setImage:[AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize]
-                forState:UIControlStateNormal];
-        button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
+        BadgeLabel *badgeLabel = [[BadgeLabel alloc] init];
+        badgeLabel.text = [NSString stringWithFormat:@"%lu", notificationsCount.numberOfNotifiedThreads];
+        id<Theme> theme = ThemeService.shared.theme;
+        badgeLabel.font = theme.fonts.caption1SB;
+        badgeLabel.textColor = theme.colors.navigation;
+        badgeLabel.badgeColor = notificationsCount.numberOfHighlightedThreads ? theme.colors.alert : theme.colors.secondaryContent;
+        [button addSubview:badgeLabel];
+        
+        [badgeLabel layoutIfNeeded];
+        
+        badgeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [badgeLabel.bottomAnchor constraintEqualToAnchor:button.centerYAnchor
+                                                constant:badgeLabel.bounds.size.height - kThreadListBarButtonItemImageSize.height / 6].active = YES;
+        [badgeLabel.leadingAnchor constraintEqualToAnchor:button.centerXAnchor
+                                                 constant:badgeLabel.bounds.size.width + kThreadListBarButtonItemImageSize.width / 6].active = YES;
     }
 
     if (replaceIndex == NSNotFound)

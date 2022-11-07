@@ -39,7 +39,7 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         service = parameters.service
         
-        viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: parameters.service)
+        viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: parameters.service, settingsService: RiotSettings.shared)
         
         hostingViewController = VectorHostingController(rootView: UserSessionsOverview(viewModel: viewModel.context))
         hostingViewController.vc_setLargeTitleDisplayMode(.never)
@@ -71,12 +71,18 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
                 self.showUserSessionOverview(sessionInfo: sessionInfo)
             case .linkDevice:
                 self.completion?(.linkDevice)
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
+                self.completion?(.logoutFromUserSessions(sessionInfos: sessionInfos))
             }
         }
     }
     
     func toPresentable() -> UIViewController {
         hostingViewController
+    }
+    
+    func refreshData() {
+        viewModel.context.send(viewAction: .viewAppeared)
     }
     
     // MARK: - Private

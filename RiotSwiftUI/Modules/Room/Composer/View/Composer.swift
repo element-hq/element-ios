@@ -25,7 +25,6 @@ struct Composer: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    @State private var focused = false
     @State private var isActionButtonShowing = false
     
     private let horizontalPadding: CGFloat = 12
@@ -60,7 +59,7 @@ struct Composer: View {
     }
     
     private var borderColor: Color {
-        focused ? theme.colors.quarterlyContent : theme.colors.quinaryContent
+        viewModel.focused ? theme.colors.quarterlyContent : theme.colors.quinaryContent
     }
     
     private var formatItems: [FormatItem] {
@@ -77,6 +76,7 @@ struct Composer: View {
     
     @ObservedObject var viewModel: ComposerViewModelType.Context
     @ObservedObject var wysiwygViewModel: WysiwygComposerViewModel
+    let resizeAnimationDuration: Double
     
     let sendMessageAction: (WysiwygComposerContent) -> Void
     let showSendMediaActions: () -> Void
@@ -168,11 +168,8 @@ struct Composer: View {
             }
             HStack(alignment: .top, spacing: 0) {
                 WysiwygComposerView(
-                    focused: $focused,
-                    content: wysiwygViewModel.content,
-                    replaceText: wysiwygViewModel.replaceText,
-                    select: wysiwygViewModel.select,
-                    didUpdateText: wysiwygViewModel.didUpdateText
+                    focused: $viewModel.focused,
+                    viewModel: wysiwygViewModel
                 )
                 .tintColor(theme.colors.accent)
                 .placeholder(viewModel.viewState.placeholder, color: theme.colors.tertiaryContent)
@@ -202,12 +199,12 @@ struct Composer: View {
         }
         .clipShape(rect)
         .overlay(rect.stroke(borderColor, lineWidth: 1))
-        .animation(.easeInOut(duration: 0.1), value: wysiwygViewModel.idealHeight)
+        .animation(.easeInOut(duration: resizeAnimationDuration), value: wysiwygViewModel.idealHeight)
         .padding(.horizontal, horizontalPadding)
         .padding(.top, 8)
         .onTapGesture {
-            if !focused {
-                focused = true
+            if viewModel.focused {
+                viewModel.focused = true
             }
         }
     }

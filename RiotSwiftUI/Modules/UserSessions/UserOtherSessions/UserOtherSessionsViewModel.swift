@@ -23,20 +23,25 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     private let sessionInfos: [UserSessionInfo]
     private var selectedSessions: Set<SessionId> = []
     private let defaultTitle: String
+    private let settingsService: UserSessionSettingsProtocol
     
     init(sessionInfos: [UserSessionInfo],
          filter: UserOtherSessionsFilter,
-         title: String) {
+         title: String,
+         settingService: UserSessionSettingsProtocol) {
         self.sessionInfos = sessionInfos
         defaultTitle = title
         let bindings = UserOtherSessionsBindings(filter: filter, isEditModeEnabled: false)
         let sessionItems = filter.filterSessionInfos(sessionInfos: sessionInfos, selectedSessions: selectedSessions)
+        self.settingsService = settingService
         super.init(initialViewState: UserOtherSessionsViewState(bindings: bindings,
                                                                 title: title,
                                                                 sessionItems: sessionItems,
                                                                 header: filter.userOtherSessionsViewHeader,
                                                                 emptyItemsTitle: filter.userOtherSessionsViewEmptyResultsTitle,
-                                                                allItemsSelected: false))
+                                                                allItemsSelected: false,
+                                                                enableSignOutButton: false,
+                                                                showLocationInfo: settingService.showIPAddressesInSessionsManager))
     }
     
     // MARK: - Public
@@ -61,6 +66,17 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         case .toggleAllSelection:
             toggleAllSelection()
             updateViewState()
+        case .logoutAllUserSessions:
+            let filteredSessions = state.bindings.filter.filterSessionsInfos(sessionInfos)
+            completion?(.logoutFromUserSessions(sessionInfos: filteredSessions))
+        case .logoutSelectedUserSessions:
+            let selectedSessionInfos = sessionInfos.filter { sessionInfo in
+                selectedSessions.contains(sessionInfo.id)
+            }
+            completion?(.logoutFromUserSessions(sessionInfos: selectedSessionInfos))
+        case .showLocationInfo:
+            settingsService.showIPAddressesInSessionsManager.toggle()
+            state.showLocationInfo = settingsService.showIPAddressesInSessionsManager
         }
     }
 
@@ -97,6 +113,8 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
         state.emptyItemsTitle = currentFilter.userOtherSessionsViewEmptyResultsTitle
         
         state.allItemsSelected = sessionInfos.count == selectedSessions.count
+        
+        state.enableSignOutButton = selectedSessions.count > 0
     }
     
     private func toggleAllSelection() {
@@ -162,7 +180,6 @@ private extension UserOtherSessionsFilter {
         filterSessionsInfos(sessionInfos)
             .map {
                 UserSessionListItemViewDataFactory().create(from: $0,
-                                                            highlightSessionDetails: self == .unverified && $0.isCurrent,
                                                             isSelected: selectedSessions.contains($0.id))
             }
     }
