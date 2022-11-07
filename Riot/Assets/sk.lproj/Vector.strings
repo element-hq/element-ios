@@ -2827,7 +2827,7 @@
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Uvedomte si, že názvy relácií sú viditeľné aj pre ľudí, s ktorými komunikujete. %@";
 "manage_session_name_hint" = "Vlastné názvy relácií vám pomôžu ľahšie rozpoznať vaše zariadenia.";
-"settings_labs_enable_wysiwyg_composer" = "Vyskúšajte rozšírený textový editor (čistý textový režim sa objaví čoskoro)";
+"settings_labs_enable_wysiwyg_composer" = "Vyskúšajte rozšírený textový editor";
 "wysiwyg_composer_start_action_voice_broadcast" = "Hlasové vysielanie";
 "voice_broadcast_already_in_progress_message" = "Už nahrávate hlasové vysielanie. Ukončite aktuálne hlasové vysielanie a spustite nové.";
 "voice_broadcast_blocked_by_someone_else_message" = "Niekto iný už nahráva hlasové vysielanie. Počkajte, kým sa skončí jeho hlasové vysielanie, a potom spustite nové.";
@@ -2844,3 +2844,5 @@
 "user_sessions_hide_location_info" = "Skryť IP adresu";
 "user_sessions_show_location_info" = "Zobraziť IP adresu";
 "manage_session_sign_out_other_sessions" = "Odhlásiť zo všetkých ostatných relácií";
+"voice_broadcast_tile" = "Hlasové vysielanie";
+"voice_broadcast_live" = "Naživo";
