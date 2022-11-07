@@ -2829,7 +2829,7 @@
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Зауважте, що назви сеансів також видно людям, з якими ви спілкуєтесь. %@";
 "manage_session_name_hint" = "Власні назви сеансів допоможуть вам легше розпізнавати ваші пристрої.";
-"settings_labs_enable_wysiwyg_composer" = "Спробуйте розширений текстовий редактор (незабаром з'явиться режим звичайного тексту)";
+"settings_labs_enable_wysiwyg_composer" = "Спробуйте розширений текстовий редактор";
 "wysiwyg_composer_start_action_voice_broadcast" = "Голосові повідомлення";
 "voice_broadcast_playback_loading_error" = "Неможливо відтворити це голосове повідомлення.";
 "voice_broadcast_already_in_progress_message" = "Ви вже записуєте голосове повідомлення. Завершіть поточну трансляцію, щоб розпочати нову.";
@@ -2846,3 +2846,5 @@
 "manage_session_sign_out_other_sessions" = "Вийти з усіх інших сеансів";
 "user_sessions_hide_location_info" = "Сховати IP-адресу";
 "user_sessions_show_location_info" = "Показати IP-адресу";
+"voice_broadcast_tile" = "Голосові повідомлення";
+"voice_broadcast_live" = "Наживо";
