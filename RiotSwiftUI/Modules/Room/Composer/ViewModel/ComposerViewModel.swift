@@ -35,6 +35,15 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
             state.sendMode = newValue
         }
     }
+
+    var textFormattingEnabled: Bool {
+        get {
+            state.textFormattingEnabled
+        }
+        set {
+            state.textFormattingEnabled = newValue
+        }
+    }
     
     var eventSenderDisplayName: String? {
         get {

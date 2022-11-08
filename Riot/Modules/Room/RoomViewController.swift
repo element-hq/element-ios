@@ -149,6 +149,11 @@ extension RoomViewController {
             }
         }
     }
+
+    @objc func togglePlainTextMode() {
+        RiotSettings.shared.enableWysiwygTextFormatting.toggle()
+        wysiwygInputToolbar?.textFormattingEnabled.toggle()
+    }
     
     @objc func didChangeMaximisedState(_ state: Bool) {
         if state,

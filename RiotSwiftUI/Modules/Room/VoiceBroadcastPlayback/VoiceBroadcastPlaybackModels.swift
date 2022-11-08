@@ -34,6 +34,7 @@ enum VoiceBroadcastPlaybackState {
 
 struct VoiceBroadcastPlaybackDetails {
     let senderDisplayName: String?
+    let avatarData: AvatarInputProtocol
 }
 
 enum VoiceBroadcastState {
@@ -51,12 +52,5 @@ struct VoiceBroadcastPlaybackViewState: BindableState {
 }
 
 struct VoiceBroadcastPlaybackViewStateBindings {
-    // TODO: Neeeded?
-    var alertInfo: AlertInfo<VoiceBroadcastPlaybackAlertType>?
-}
-
-enum VoiceBroadcastPlaybackAlertType {
-    // TODO: What is it?
-    case failedClosingVoiceBroadcast
 }
 

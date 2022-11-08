@@ -135,12 +135,12 @@
 - (void)registerVoiceBroadcastCellsForTableView:(UITableView*)tableView
 {
     // Incoming
-    [tableView registerClass:VoiceBroadcastIncomingBubbleCell.class forCellReuseIdentifier:VoiceBroadcastIncomingBubbleCell.defaultReuseIdentifier];
-    [tableView registerClass:VoiceBroadcastIncomingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceBroadcastIncomingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [tableView registerClass:VoiceBroadcastIncomingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceBroadcastIncomingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastPlaybackIncomingBubbleCell.class forCellReuseIdentifier:VoiceBroadcastPlaybackIncomingBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastPlaybackIncomingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceBroadcastPlaybackIncomingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastPlaybackIncomingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceBroadcastPlaybackIncomingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     // Outgoing
-    [tableView registerClass:VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [tableView registerClass:VoiceBroadcastOutgoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceBroadcastOutgoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastPlaybackOutgoingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceBroadcastPlaybackOutgoingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastPlaybackOutgoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceBroadcastPlaybackOutgoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
 }
 
 - (void)registerVoiceBroadcastRecorderCellsForTableView:(UITableView*)tableView
@@ -311,17 +311,17 @@
     };
 }
 
-- (NSDictionary<NSNumber*, Class>*)voiceBroadcastCellsMapping
+- (NSDictionary<NSNumber*, Class>*)voiceBroadcastPlaybackCellsMapping
 {
     return @{
         // Incoming
-        @(RoomTimelineCellIdentifierIncomingVoiceBroadcast) : VoiceBroadcastIncomingBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastWithoutSenderInfo) : VoiceBroadcastIncomingWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastWithPaginationTitle) : VoiceBroadcastIncomingWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastPlayback) : VoiceBroadcastPlaybackIncomingBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastPlaybackWithoutSenderInfo) : VoiceBroadcastPlaybackIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastPlaybackWithPaginationTitle) : VoiceBroadcastPlaybackIncomingWithPaginationTitleBubbleCell.class,
         // Outgoing
-        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcast) : VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithoutSenderInfo) : VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithPaginationTitle) : VoiceBroadcastOutgoingWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlayback) : VoiceBroadcastPlaybackOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlaybackWithoutSenderInfo) : VoiceBroadcastPlaybackOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlaybackWithPaginationTitle) : VoiceBroadcastPlaybackOutgoingWithPaginationTitleBubbleCell.class,
     };
 }
 

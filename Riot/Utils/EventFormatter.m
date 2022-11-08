@@ -273,7 +273,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                 return [self renderString:displayText forEvent:event];
             }
         } else if ([event.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]) {
-            MXLogDebug(@"VB incoming build string")
+            //  do not show voice broadcast info in the timeline
+            return nil;
         }
     }
     

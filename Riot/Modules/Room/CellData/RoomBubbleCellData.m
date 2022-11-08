@@ -186,23 +186,45 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 else if ([event.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
                 {
                     VoiceBroadcastInfo *voiceBroadcastInfo = [VoiceBroadcastInfo modelFromJSON: event.content];
+                    
+                    // Check if the state event corresponds to the beginning of a voice broadcast
                     if ([VoiceBroadcastInfo isStartedFor:voiceBroadcastInfo.state])
                     {
-                        // This state event corresponds to the beginning of a voice broadcast
-                        // Check whether this is a local live broadcast to display it with the recorder view or not
-                        // Note: Because of race condition, the voiceBroadcastService may be running without id here (the sync response may be received before
-                        // the success of the event sending), in that case, we will display a recorder view by default to let the user be able to stop a potential record.
-                        if ([event.sender isEqualToString: self.mxSession.myUserId] &&
-                            [voiceBroadcastInfo.deviceId isEqualToString:self.mxSession.myDeviceId] &&
-                            self.mxSession.voiceBroadcastService != nil &&
-                            ([event.eventId isEqualToString: self.mxSession.voiceBroadcastService.voiceBroadcastInfoEventId] ||
-                             self.mxSession.voiceBroadcastService.voiceBroadcastInfoEventId == nil))
+                        // Retrieve the most recent voice broadcast info.
+                        MXEvent *lastVoiceBroadcastInfoEvent = [roomDataSource.roomState stateEventsWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType].lastObject;
+                        if (event.originServerTs > lastVoiceBroadcastInfoEvent.originServerTs)
                         {
-                            self.tag = RoomBubbleCellDataTagVoiceBroadcastRecord;
+                            lastVoiceBroadcastInfoEvent = event;
+                        }
+                        
+                        VoiceBroadcastInfo *lastVoiceBroadcastInfo = [VoiceBroadcastInfo modelFromJSON: lastVoiceBroadcastInfoEvent.content];
+                        
+                        // Handle the specific case where the state event is a started voice broadcast (the voiceBroadcastId is the event id itself).
+                        if (!lastVoiceBroadcastInfo.voiceBroadcastId)
+                        {
+                            lastVoiceBroadcastInfo.voiceBroadcastId = lastVoiceBroadcastInfoEvent.eventId;
+                        }
+                        
+                        // Check if the voice broadcast is still alive.
+                        if ([lastVoiceBroadcastInfo.voiceBroadcastId isEqualToString:event.eventId] && ![VoiceBroadcastInfo isStoppedFor:lastVoiceBroadcastInfo.state])
+                        {
+                            // Check whether this broadcast is sent from the currrent session to display it with the recorder view or not.
+                            if ([event.stateKey isEqualToString:self.mxSession.myUserId] &&
+                                [voiceBroadcastInfo.deviceId isEqualToString:self.mxSession.myDeviceId])
+                            {
+                                self.tag = RoomBubbleCellDataTagVoiceBroadcastRecord;
+                            }
+                            else
+                            {
+                                self.tag = RoomBubbleCellDataTagVoiceBroadcastPlayback;
+                            }
+                            
+                            self.voiceBroadcastState = lastVoiceBroadcastInfo.state;
                         }
                         else
                         {
                             self.tag = RoomBubbleCellDataTagVoiceBroadcastPlayback;
+                            self.voiceBroadcastState = VoiceBroadcastInfo.stoppedValue;
                         }
                     }
                     else
@@ -213,8 +235,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                         {
                             // This state event corresponds to the end of a voice broadcast
                             // Force the tag of the potential cellData which corresponds to the started event to switch the display from recorder to listener
-                            id<MXKRoomBubbleCellDataStoring> bubbleData = [roomDataSource cellDataOfEventWithEventId:voiceBroadcastInfo.eventId];
+                            RoomBubbleCellData *bubbleData = [roomDataSource cellDataOfEventWithEventId:voiceBroadcastInfo.voiceBroadcastId];
                             bubbleData.tag = RoomBubbleCellDataTagVoiceBroadcastPlayback;
+                            bubbleData.voiceBroadcastState = VoiceBroadcastInfo.stoppedValue;
                         }
                     }
                     self.collapsable = NO;
