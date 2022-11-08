@@ -156,12 +156,21 @@ extension RoomViewController {
     }
     
     @objc func didChangeMaximisedState(_ state: Bool) {
-        if state,
-           roomInputToolbarContainer.superview == self.view,
-           let view = self.navigationController?.navigationController?.view {
+        if state {
+            var view: UIView!
+            // iPhone
+            if let navView = self.navigationController?.navigationController?.view {
+                view = navView
+            // iPad
+            } else if let navView = self.navigationController?.view {
+                view = navView
+            } else {
+                return
+            }
             let originalRect = roomInputToolbarContainer.convert(roomInputToolbarContainer.frame, to: view)
             self.roomInputToolbarContainer.removeFromSuperview()
             let dimmingView = UIView(frame: view.frame)
+            dimmingView.translatesAutoresizingMaskIntoConstraints = false
             dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
             view.addSubview(dimmingView)
             dimmingView.addSubview(self.roomInputToolbarContainer)
@@ -169,7 +178,7 @@ extension RoomViewController {
             self.roomInputToolbarContainer.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
             self.roomInputToolbarContainer.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
             self.roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut]) {
                 view.layoutIfNeeded()
             }
         } else {
@@ -179,7 +188,7 @@ extension RoomViewController {
             self.view.insertSubview(self.roomInputToolbarContainer, belowSubview: self.overlayContainerView)
             NSLayoutConstraint.activate(self.toolbarContainerConstraints)
             self.roomInputToolbarContainerBottomConstraint.isActive = true
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut]) {
                 self.view.layoutIfNeeded()
             }
         }
