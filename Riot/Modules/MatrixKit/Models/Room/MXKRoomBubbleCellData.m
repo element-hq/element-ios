@@ -538,6 +538,9 @@
         
         selectedTextView.frame = CGRectMake(0, 0, _maxTextViewWidth, 0);
         selectedTextView.attributedText = attributedText;
+        
+        // Force the layout manager to layout the text, fixes problems starting iOS 16
+        [selectedTextView.layoutManager ensureLayoutForTextContainer:selectedTextView.textContainer];
             
         CGSize size = [selectedTextView sizeThatFits:selectedTextView.frame.size];
 
