@@ -32,11 +32,19 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     // MARK: - Properties
     
     // MARK: Private
+    private var keyboardHeight: CGFloat = .zero {
+        didSet {
+            let height = UIScreen.main.bounds.height
+            let finalHeight = height - keyboardHeight - 138
+            // TODO: Set the maxHeight in the wysiwygViewModel once exposed
+            return
+        }
+    }
     private var voiceMessageToolbarView: VoiceMessageToolbarView?
     private var cancellables = Set<AnyCancellable>()
     private var heightConstraint: NSLayoutConstraint!
     private var hostingViewController: VectorHostingController!
-    private var wysiwygViewModel = WysiwygComposerViewModel(maxHeight: 700, textColor: ThemeService.shared().theme.colors.primaryContent)
+    private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
     private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState(bindings: ComposerBindings(focused: false)))
     
     // MARK: Public
@@ -118,12 +126,30 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             wysiwygViewModel.$maximised
                 .removeDuplicates()
                 .sink { [weak self] value in
-                    self?.toolbarViewDelegate?.didChangeMaximisedState(value)
+                    guard let self = self else { return }
+                    self.toolbarViewDelegate?.didChangeMaximisedState(value)
+                    self.hostingViewController.view.layer.cornerRadius = value ? 20 : 0
+                    if value {
+                        self.viewModel.showKeyboard()
+                    }
                 }
         ]
         
         update(theme: ThemeService.shared().theme)
         registerThemeServiceDidChangeThemeNotification()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            keyboardHeight = keyboardRectangle.height
+        }
     }
     
     override func customizeRendering() {

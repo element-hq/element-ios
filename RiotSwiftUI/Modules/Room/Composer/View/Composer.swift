@@ -83,6 +83,12 @@ struct Composer: View {
     
     var body: some View {
         VStack(spacing: 8) {
+            if wysiwygViewModel.maximised {
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(theme.colors.quinaryContent)
+                    .frame(width: 36, height: 5)
+                    .padding(.top, 10)
+            }
             if viewModel.viewState.textFormattingEnabled {
                 composerContainer
             }

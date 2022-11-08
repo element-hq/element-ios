@@ -159,16 +159,29 @@ extension RoomViewController {
         if state,
            roomInputToolbarContainer.superview == self.view,
            let view = self.navigationController?.navigationController?.view {
-            roomInputToolbarContainer.removeFromSuperview()
-            view.addSubview(roomInputToolbarContainer)
-            roomInputToolbarContainer.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
-            roomInputToolbarContainer.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-            roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        } else if roomInputToolbarContainer.superview != self.view {
-            roomInputToolbarContainer.removeFromSuperview()
-            self.view.insertSubview(roomInputToolbarContainer, belowSubview: overlayContainerView)
-            NSLayoutConstraint.activate(toolbarContainerConstraints)
-            roomInputToolbarContainerBottomConstraint.isActive = true
+            let originalRect = roomInputToolbarContainer.convert(roomInputToolbarContainer.frame, to: view)
+            self.roomInputToolbarContainer.removeFromSuperview()
+            let dimmingView = UIView(frame: view.frame)
+            dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+            view.addSubview(dimmingView)
+            dimmingView.addSubview(self.roomInputToolbarContainer)
+            roomInputToolbarContainer.frame = originalRect
+            self.roomInputToolbarContainer.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+            self.roomInputToolbarContainer.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+            self.roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+            UIView.animate(withDuration: 0.3) {
+                view.layoutIfNeeded()
+            }
+        } else {
+            let superView = self.roomInputToolbarContainer.superview
+            self.roomInputToolbarContainer.removeFromSuperview()
+            superView?.removeFromSuperview()
+            self.view.insertSubview(self.roomInputToolbarContainer, belowSubview: self.overlayContainerView)
+            NSLayoutConstraint.activate(self.toolbarContainerConstraints)
+            self.roomInputToolbarContainerBottomConstraint.isActive = true
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
 }
