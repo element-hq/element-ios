@@ -23,7 +23,13 @@ class ComposerCreateActionListTests: XCTestCase {
     var context: ComposerCreateActionListViewModel.Context!
     
     override func setUpWithError() throws {
-        viewModel = ComposerCreateActionListViewModel(initialViewState: ComposerCreateActionListViewState(actions: ComposerCreateAction.allCases))
+        viewModel = ComposerCreateActionListViewModel(
+            initialViewState: ComposerCreateActionListViewState(
+                actions: ComposerCreateAction.allCases,
+                wysiwygEnabled: true,
+                bindings: ComposerCreateActionListBindings(textFormattingEnabled: true)
+            )
+        )
         context = viewModel.context
     }
     

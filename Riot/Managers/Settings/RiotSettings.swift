@@ -176,6 +176,9 @@ final class RiotSettings: NSObject {
     /// Flag indicating if the wysiwyg composer feature is enabled
     @UserDefault(key: "enableWysiwygComposer", defaultValue: false, storage: defaults)
     var enableWysiwygComposer
+
+    @UserDefault(key: "enableWysiwygTextFormatting", defaultValue: true, storage: defaults)
+    var enableWysiwygTextFormatting
     
     /// Flag indicating if the IP addresses should be shown in the new device manager
     @UserDefault(key: UserDefaultsKeys.showIPAddressesInSessionsManager, defaultValue: false, storage: defaults)

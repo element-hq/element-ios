@@ -66,6 +66,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         viewModel.callback = { [weak self] result in
             self?.handleViewModelResult(result)
         }
+        wysiwygViewModel.plainTextMode = !RiotSettings.shared.enableWysiwygTextFormatting
         
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
         
@@ -99,6 +100,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             subView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             subView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
+        
         cancellables = [
             hostingViewController.heightPublisher
                 .removeDuplicates()
@@ -135,7 +137,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
     
     private func sendWysiwygMessage(content: WysiwygComposerContent) {
-        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
+        let html = content.html.isEmpty ? content.plainText : content.html
+        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: html, withRawText: content.plainText)
     }
     
     private func showSendMediaActions() {
@@ -210,6 +213,20 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         set {
             viewModel.sendMode = ComposerSendMode(from: newValue)
             updatePlaceholderText()
+        }
+    }
+
+    /// Whether text formatting is currently enabled in the composer.
+    var textFormattingEnabled: Bool {
+        get {
+            self.viewModel.textFormattingEnabled
+        }
+        set {
+            self.viewModel.textFormattingEnabled = newValue
+            self.wysiwygViewModel.plainTextMode = !newValue
+            if !newValue {
+                self.wysiwygViewModel.maximised = false
+            }
         }
     }
     

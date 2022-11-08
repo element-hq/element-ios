@@ -43,14 +43,23 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
         if let localNotificationSettings = localNotificationSettings, let isSilenced = localNotificationSettings[kMXAccountDataIsSilencedKey] as? Bool {
             remotelyTogglingPushersAvailableSubject.send(true)
             pusherEnabledSubject.send(!isSilenced)
-        }
-        
-        checkPusher { [weak self] in
-            guard self?.pusher != nil else {
-                return
+        } else {
+            loadPushers { [weak self] pushers in
+                guard let pusher = pushers.first(where: {$0.deviceId == sessionInfo.id}) else {
+                    self?.pusherEnabledSubject.send(nil)
+                    return
+                }
+                self?.pusher = pusher
+                self?.checkIfRemotelyTogglingSupported { supported in
+                    self?.remotelyTogglingPushersAvailableSubject.send(supported)
+                    
+                    if supported {
+                        self?.pusherEnabledSubject.send(pusher.enabled?.boolValue ?? false)
+                    } else {
+                        self?.pusherEnabledSubject.send(nil)
+                    }
+                }
             }
-            
-            self?.checkServerVersions()
         }
     }
     
@@ -94,7 +103,14 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
                     account.loadCurrentPusher(nil)
                 }
                 
-                self.checkPusher()
+                self.loadPushers { [weak self] pushers in
+                    guard let pusher = pushers.first(where: {$0.deviceId == self?.sessionInfo.id}) else {
+                        self?.pusherEnabledSubject.send(nil)
+                        return
+                    }
+                    self?.pusher = pusher
+                    self?.pusherEnabledSubject.send(pusher.enabled?.boolValue ?? false)
+                }
             case .failure(let error):
                 MXLog.warning("[UserSessionOverviewService] togglePusher failed due to error: \(error)")
                 self.pusherEnabledSubject.send(!enabled)
@@ -118,40 +134,27 @@ class UserSessionOverviewService: UserSessionOverviewServiceProtocol {
         }
     }
 
-    private func checkServerVersions() {
-        session.supportedMatrixVersions { [weak self] response in
+    private func checkIfRemotelyTogglingSupported(completion: @escaping ((Bool) -> Void)) {
+        session.supportedMatrixVersions { response in
             switch response {
             case .success(let versions):
-                self?.remotelyTogglingPushersAvailableSubject.send(versions.supportsRemotelyTogglingPushNotifications)
+                completion(versions.supportsRemotelyTogglingPushNotifications)
             case .failure(let error):
                 MXLog.warning("[UserSessionOverviewService] checkServerVersions failed due to error: \(error)")
+                completion(false)
             }
         }
     }
     
-    private func checkPusher(_ completion: (() -> Void)? = nil) {
-        session.matrixRestClient.pushers { [weak self] response in
+    private func loadPushers(_ completion: @escaping ([MXPusher]) -> Void) {
+        session.matrixRestClient.pushers { response in
             switch response {
             case .success(let pushers):
-                self?.check(pushers: pushers)
+                completion(pushers)
             case .failure(let error):
                 MXLog.warning("[UserSessionOverviewService] checkPusher failed due to error: \(error)")
+                completion([])
             }
-            completion?()
-        }
-    }
-    
-    private func check(pushers: [MXPusher]) {
-        for pusher in pushers where pusher.deviceId == sessionInfo.id {
-            self.pusher = pusher
-            
-            guard let enabled = pusher.enabled else {
-                // For backwards compatibility, any pusher without an enabled field should be treated as if enabled is false
-                pusherEnabledSubject.send(false)
-                return
-            }
-            
-            pusherEnabledSubject.send(enabled.boolValue)
         }
     }
 }

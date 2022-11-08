@@ -48,7 +48,7 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
         
         let voiceBroadcastAggregator = try VoiceBroadcastAggregator(session: parameters.session, room: parameters.room, voiceBroadcastStartEventId: parameters.voiceBroadcastStartEvent.eventId, voiceBroadcastState: parameters.voiceBroadcastState)
         
-        let details = VoiceBroadcastPlaybackDetails(senderDisplayName: parameters.senderDisplayName)
+        let details = VoiceBroadcastPlaybackDetails(senderDisplayName: parameters.senderDisplayName, avatarData: parameters.room.avatarData)
         viewModel = VoiceBroadcastPlaybackViewModel(details: details,
                                                     mediaServiceProvider: VoiceMessageMediaServiceProvider.sharedProvider,
                                                     cacheManager: VoiceMessageAttachmentCacheManager.sharedManager,
@@ -61,7 +61,9 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
     func start() { }
     
     func toPresentable() -> UIViewController {
-        VectorHostingController(rootView: VoiceBroadcastPlaybackView(viewModel: viewModel.context))
+        let view = VoiceBroadcastPlaybackView(viewModel: viewModel.context)
+            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+        return VectorHostingController(rootView: view)
     }
     
     func canEndVoiceBroadcast() -> Bool {

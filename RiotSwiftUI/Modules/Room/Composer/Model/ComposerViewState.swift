@@ -19,6 +19,7 @@ import Foundation
 struct ComposerViewState: BindableState {
     var eventSenderDisplayName: String?
     var sendMode: ComposerSendMode = .send
+    var textFormattingEnabled = true
     var placeholder: String?
     
     var bindings: ComposerBindings
@@ -26,7 +27,7 @@ struct ComposerViewState: BindableState {
 
 extension ComposerViewState {
     var shouldDisplayContext: Bool {
-        return sendMode == .edit || sendMode == .reply
+        sendMode == .edit || sendMode == .reply
     }
     
     var contextDescription: String? {

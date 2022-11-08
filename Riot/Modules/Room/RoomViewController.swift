@@ -149,6 +149,11 @@ extension RoomViewController {
             }
         }
     }
+
+    @objc func togglePlainTextMode() {
+        RiotSettings.shared.enableWysiwygTextFormatting.toggle()
+        wysiwygInputToolbar?.textFormattingEnabled.toggle()
+    }
 }
 
 // MARK: - Private Helpers

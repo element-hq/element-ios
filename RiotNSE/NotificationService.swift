@@ -845,7 +845,7 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        mxRestClient.sendReadReceipt(toRoom: roomId, forEvent: eventId) { response in
+        mxRestClient.sendReadReceipt(toRoom: roomId, forEvent: eventId, threadId: event.threadId) { response in
             if response.isSuccess {
                 MXLog.debug("[NotificationService] sendReadReceipt: Read receipt send successfully.")
             } else if let error = response.error {

@@ -7547,7 +7547,7 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableVoiceBroadcast: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_voice_broadcast") 
   }
-  /// Try out the rich text editor (plain text mode coming soon)
+  /// Try out the rich text editor
   public static var settingsLabsEnableWysiwygComposer: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_wysiwyg_composer") 
   }
@@ -9123,6 +9123,10 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastBlockedBySomeoneElseMessage: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_blocked_by_someone_else_message") 
   }
+  /// Live
+  public static var voiceBroadcastLive: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_live") 
+  }
   /// You don't have the required permissions to start a voice broadcast in this room. Contact a room administrator to upgrade your permissions.
   public static var voiceBroadcastPermissionDeniedMessage: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_permission_denied_message") 
@@ -9130,6 +9134,10 @@ public class VectorL10n: NSObject {
   /// Unable to play this voice broadcast.
   public static var voiceBroadcastPlaybackLoadingError: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_playback_loading_error") 
+  }
+  /// Voice broadcast
+  public static var voiceBroadcastTile: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_tile") 
   }
   /// Can't start a new voice broadcast
   public static var voiceBroadcastUnauthorizedTitle: String { 

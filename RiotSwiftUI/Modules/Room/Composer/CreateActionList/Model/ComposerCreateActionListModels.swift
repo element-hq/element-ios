@@ -21,11 +21,15 @@ import Foundation
 enum ComposerCreateActionListViewAction {
     // The user selected an action
     case selectAction(ComposerCreateAction)
+    // The user toggled the text formatting action
+    case toggleTextFormatting(Bool)
 }
 
 enum ComposerCreateActionListViewModelResult: Equatable {
     // The user selected an action and is done with the screen
     case done(ComposerCreateAction)
+    // The user toggled the text formatting setting but might not be done with the screen
+    case toggleTextFormatting(Bool)
 }
 
 // MARK: View
@@ -33,6 +37,13 @@ enum ComposerCreateActionListViewModelResult: Equatable {
 struct ComposerCreateActionListViewState: BindableState {
     /// The list of composer create actions to display to the user
     let actions: [ComposerCreateAction]
+    let wysiwygEnabled: Bool
+
+    var bindings: ComposerCreateActionListBindings
+}
+
+struct ComposerCreateActionListBindings {
+    var textFormattingEnabled: Bool
 }
 
 @objc enum ComposerCreateAction: Int {
