@@ -246,7 +246,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             addSubview(voiceMessageToolbarView)
             NSLayoutConstraint.activate(
                 [
-                    self.topAnchor.constraint(equalTo: voiceMessageToolbarView.topAnchor),
+                    self.safeAreaLayoutGuide.topAnchor.constraint(equalTo: voiceMessageToolbarView.topAnchor),
                     self.safeAreaLayoutGuide.leftAnchor.constraint(equalTo: voiceMessageToolbarView.leftAnchor),
                     self.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: voiceMessageToolbarView.bottomAnchor, constant: 4),
                     self.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: voiceMessageToolbarView.rightAnchor)

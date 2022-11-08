@@ -601,6 +601,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     // Stop the loading indicator even if the session is still in progress
     [self stopLoadingUserIndicator];
+    
+    self.roomInputToolbarContainer.hidden = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -676,6 +678,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
         self.inputToolbarView.attributedTextMessage = self.roomDataSource.partialAttributedTextMessage;
     }
+    
+    self.roomInputToolbarContainer.hidden = NO;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
