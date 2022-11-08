@@ -39,7 +39,7 @@ final class InfoSheetCoordinator: Coordinator, Presentable {
         let view = InfoSheet(viewModel: viewModel.context)
         infoSheetViewModel = viewModel
         let controller = VectorHostingController(rootView: view)
-        controller.bottomSheetPreferences = .init()
+        controller.bottomSheetPreferences = .init(cornerRadius: 24)
         infoSheetHostingController = controller
     }
     

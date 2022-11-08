@@ -30,18 +30,26 @@ struct InfoSheet: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            VStack(alignment: .leading, spacing: 16) {
+        let padding: CGFloat = 16
+        VStack(spacing: 24) {
+            VStack(spacing: 18) {
                 Text(viewModel.viewState.title)
                     .font(theme.fonts.headline)
                     .foregroundColor(theme.colors.primaryContent)
                     .accessibilityIdentifier(viewModel.viewState.title)
+                    .padding([.leading, .trailing], padding)
+                
+                Rectangle()
+                    .foregroundColor(theme.colors.system)
+                    .frame(height: 1)
                 
                 Text(viewModel.viewState.description)
-                    .font(theme.fonts.footnote)
+                    .font(theme.fonts.body)
                     .foregroundColor(theme.colors.primaryContent)
                     .accessibilityIdentifier(viewModel.viewState.description)
+                    .padding([.leading, .trailing], padding)
             }
+            .layoutPriority(1)
             
             Button {
                 viewModel.viewState.action.action()
@@ -51,17 +59,19 @@ struct InfoSheet: View {
                 Text(viewModel.viewState.action.text)
                     .font(theme.fonts.bodySB)
                     .foregroundColor(theme.colors.background)
-                    .frame(height: 48)
+                    .frame(height: 46)
                     .frame(maxWidth: .infinity)
                     .accessibilityIdentifier(viewModel.viewState.action.text)
             }
             .background(theme.colors.accent)
             .cornerRadius(8)
+            .padding([.leading, .trailing], padding)
+            .frame(maxHeight: .infinity, alignment: .bottom)
         }
-        .padding(24)
+        .padding(.bottom, padding)
+        .padding(.top, 32)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(theme.colors.background)
-        .ignoresSafeArea(edges: .bottom)
+        .background(theme.colors.background.ignoresSafeArea(edges: .bottom))
     }
 }
 

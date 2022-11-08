@@ -8787,7 +8787,7 @@ public class VectorL10n: NSObject {
   public static var userSessionDetailsTitle: String { 
     return VectorL10n.tr("Vector", "user_session_details_title") 
   }
-  /// GOT IT
+  /// Got it
   public static var userSessionGotIt: String { 
     return VectorL10n.tr("Vector", "user_session_got_it") 
   }
