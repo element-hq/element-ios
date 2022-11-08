@@ -169,8 +169,7 @@ extension RoomViewController {
             }
             let originalRect = roomInputToolbarContainer.convert(roomInputToolbarContainer.frame, to: view)
             self.roomInputToolbarContainer.removeFromSuperview()
-            let dimmingView = UIView(frame: view.frame)
-            dimmingView.translatesAutoresizingMaskIntoConstraints = false
+            let dimmingView = UIView(frame: view.bounds)
             dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
             view.addSubview(dimmingView)
             dimmingView.addSubview(self.roomInputToolbarContainer)
