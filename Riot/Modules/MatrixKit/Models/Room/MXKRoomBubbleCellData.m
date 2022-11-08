@@ -534,7 +534,7 @@
     CGFloat horizontalInset = measurementTextView.textContainer.lineFragmentPadding * 2;
     
     CGSize size = [attributedText boundingRectWithSize:CGSizeMake(_maxTextViewWidth - horizontalInset, CGFLOAT_MAX)
-                                               options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading | NSStringDrawingUsesDeviceMetrics
+                                               options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                                context:nil].size;
     
     //In iOS 7 and later, this method returns fractional sizes (in the size component of the returned rectangle);
