@@ -533,7 +533,15 @@
     CGFloat verticalInset = measurementTextView.textContainerInset.top + measurementTextView.textContainerInset.bottom;
     CGFloat horizontalInset = measurementTextView.textContainer.lineFragmentPadding * 2;
     
-    CGSize size = [self sizeForAttributedString:attributedText fittingWidth:_maxTextViewWidth - horizontalInset];
+    CGSize size = [attributedText boundingRectWithSize:CGSizeMake(_maxTextViewWidth - horizontalInset, CGFLOAT_MAX)
+                                               options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading | NSStringDrawingUsesDeviceMetrics
+                                               context:nil].size;
+    
+    //In iOS 7 and later, this method returns fractional sizes (in the size component of the returned rectangle);
+    // to use a returned size to size views, you must use raise its value to the nearest higher integer using the
+    // [ceil](https://developer.apple.com/documentation/kernel/1557272-ceil?changes=latest_major) function.
+    size.width = ceil(size.width);
+    size.height = ceil(size.height);
 
     // The result is expected to contain the textView textContainer's paddings. Add them back if necessary
     if (removeVerticalInset == NO) {
@@ -543,27 +551,6 @@
     size.width += horizontalInset;
     
     return size;
-}
-
-// https://stackoverflow.com/questions/54497598/nsattributedstring-boundingrect-returns-wrong-height
-- (CGSize)sizeForAttributedString:(NSAttributedString *)attributedString fittingWidth:(CGFloat)width
-{
-    NSTextStorage *textStorage = [[NSTextStorage alloc] initWithAttributedString:attributedString];
-    
-    CGRect boundingRect = CGRectMake(0.0, 0.0, width, CGFLOAT_MAX);
-    
-    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:boundingRect.size];
-    textContainer.lineFragmentPadding = 0;
-
-    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
-    [layoutManager addTextContainer: textContainer];
-
-    [textStorage addLayoutManager:layoutManager];
-    [layoutManager glyphRangeForBoundingRect:boundingRect inTextContainer:textContainer];
-
-    CGRect rect = [layoutManager usedRectForTextContainer:textContainer];
-    
-    return CGRectIntegral(rect).size;
 }
 
 #pragma mark - Properties
