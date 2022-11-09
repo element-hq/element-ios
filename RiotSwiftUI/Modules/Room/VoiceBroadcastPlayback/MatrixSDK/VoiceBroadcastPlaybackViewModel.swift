@@ -39,6 +39,16 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     private var isLivePlayback = false
     private var acceptProgressUpdates = true
     
+    private var wasPlayingBeforeBuffering: Bool = false
+    private var isBuffering: Bool {
+        return audioPlayer?.isPlaying == false
+        && wasPlayingBeforeBuffering
+    }
+    
+    private var canResumePlaying: Bool {
+        return !isBuffering
+    }
+    
     // MARK: Public
     
     // MARK: - Setup
@@ -96,6 +106,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         isLivePlayback = false
         displayLink.isPaused = false
         
+        wasPlayingBeforeBuffering = true
+        
         if voiceBroadcastAggregator.isStarted == false {
             // Start the streaming by fetching broadcast chunks
             // The audio player will automatically start the playback on incoming chunks
@@ -127,7 +139,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         
         // Flush the current audio player playlist
         audioPlayer?.removeAllPlayerItems()
-        
+
+        wasPlayingBeforeBuffering = true
+
         if voiceBroadcastAggregator.isStarted == false {
             // Start the streaming by fetching broadcast chunks
             // The audio player will automatically start the playback on incoming chunks
@@ -152,6 +166,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         
         isLivePlayback = false
         displayLink.isPaused = true
+        wasPlayingBeforeBuffering = false
         
         if let audioPlayer = audioPlayer, audioPlayer.isPlaying {
             audioPlayer.pause()
@@ -171,6 +186,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         
         isLivePlayback = false
         displayLink.isPaused = true
+        wasPlayingBeforeBuffering = false
         
         // Objects will be released on audioPlayerDidStopPlaying
         audioPlayer?.stop()
@@ -239,10 +255,13 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     audioPlayer.addContentFromURL(result.url)
                     
                     // Resume the player. Needed after a pause
-                    if audioPlayer.isPlaying == false {
+                    if audioPlayer.isPlaying == false,
+                        self.canResumePlaying {
                         MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: Resume the player")
                         self.displayLink.isPaused = false
                         audioPlayer.play()
+                        self.wasPlayingBeforeBuffering = false
+                        
                         if let time = time {
                             audioPlayer.seekToTime(time)
                         }
@@ -254,9 +273,12 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     
                     audioPlayer.loadContentFromURL(result.url, displayName: chunk.attachment.originalFileName)
                     self.displayLink.isPaused = false
-                    audioPlayer.play()
-                    if let time = time {
-                        audioPlayer.seekToTime(time)
+                    if self.canResumePlaying {
+                        audioPlayer.play()
+                        self.wasPlayingBeforeBuffering = false
+                        if let time = time {
+                            audioPlayer.seekToTime(time)
+                        }
                     }
                     self.audioPlayer = audioPlayer
                 }
@@ -396,6 +418,9 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
     
     func audioPlayerDidPausePlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         state.playbackState = .paused
+        if isBuffering {
+            state.playbackState = .buffering
+        }
     }
     
     func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
