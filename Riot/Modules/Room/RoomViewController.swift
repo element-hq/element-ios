@@ -84,7 +84,7 @@ extension RoomViewController {
                             "event_id": eventModified.eventId
                         ])
                 })
-            } else {
+            } else if !self.send(asIRCStyleCommandIfPossible: rawTextMsg) {
                 roomDataSource.sendFormattedTextMessage(rawTextMsg, html: htmlMsg) { response in
                     switch response {
                     case .success:
