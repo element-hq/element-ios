@@ -7795,6 +7795,10 @@ public class VectorL10n: NSObject {
   public static var settingsUiThemeAuto: String { 
     return VectorL10n.tr("Vector", "settings_ui_theme_auto") 
   }
+  /// Auto (Black)
+  public static var settingsUiThemeAutoBlack: String {
+    return VectorL10n.tr("Vector", "settings_ui_theme_autoblack")
+  }
   /// Black
   public static var settingsUiThemeBlack: String { 
     return VectorL10n.tr("Vector", "settings_ui_theme_black") 

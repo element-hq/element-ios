@@ -767,6 +767,7 @@ Tap the + to start adding people.";
 "settings_ui_language" = "Language";
 "settings_ui_theme" = "Theme";
 "settings_ui_theme_auto" = "Auto";
+"settings_ui_theme_autoblack" = "Auto (Black)";
 "settings_ui_theme_light" = "Light";
 "settings_ui_theme_dark" = "Dark";
 "settings_ui_theme_black" = "Black";
