@@ -19,7 +19,7 @@ import Foundation
 struct ComposerViewState: BindableState {
     var eventSenderDisplayName: String?
     var sendMode: ComposerSendMode = .send
-    var textFormattingEnabled = true
+    var textFormattingEnabled: Bool
     var placeholder: String?
     
     var bindings: ComposerBindings
