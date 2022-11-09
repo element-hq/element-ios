@@ -158,11 +158,7 @@ struct Composer: View {
 
     private var sendButton: some View {
         return Button {
-            if wysiwygViewModel.plainTextMode {
-                sendMessageAction(wysiwygViewModel.plainTextModeContent)
-            } else {
-                sendMessageAction(wysiwygViewModel.content)
-            }
+            sendMessageAction(wysiwygViewModel.content)
             wysiwygViewModel.clearContent()
         } label: {
             if viewModel.viewState.sendMode == .edit {
