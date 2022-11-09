@@ -71,85 +71,6 @@ struct Composer: View {
             )
         }
     }
-    
-    // MARK: Public
-    
-    @ObservedObject var viewModel: ComposerViewModelType.Context
-    @ObservedObject var wysiwygViewModel: WysiwygComposerViewModel
-    let resizeAnimationDuration: Double
-    
-    let sendMessageAction: (WysiwygComposerContent) -> Void
-    let showSendMediaActions: () -> Void
-    
-    var body: some View {
-        VStack(spacing: 8) {
-            HStack(alignment: .bottom, spacing: 0) {
-                if !viewModel.viewState.textFormattingEnabled {
-                    sendMediaButton
-                }
-                composerContainer
-                if !viewModel.viewState.textFormattingEnabled {
-                    sendButton
-                }
-            }
-            if viewModel.viewState.textFormattingEnabled {
-                HStack(alignment: .center, spacing: 0) {
-                    sendMediaButton
-                    FormattingToolbar(formatItems: formatItems) { type in
-                        wysiwygViewModel.apply(type.action)
-                    }
-                    .frame(height: 44)
-                    Spacer()
-                    sendButton
-                }
-            }
-        }
-        .padding(.horizontal, horizontalPadding)
-        .padding(.bottom, 4)
-    }
-
-    private var sendButton: some View {
-        return Button {
-            if wysiwygViewModel.plainTextMode {
-                sendMessageAction(wysiwygViewModel.plainTextModeContent)
-            } else {
-                sendMessageAction(wysiwygViewModel.content)
-            }
-            wysiwygViewModel.clearContent()
-        } label: {
-            if viewModel.viewState.sendMode == .edit {
-                Image(Asset.Images.saveIcon.name)
-            } else {
-                Image(Asset.Images.sendIcon.name)
-            }
-        }
-        .frame(width: 36, height: 36)
-        .padding(.leading, 8)
-        .isHidden(!isActionButtonShowing)
-        .accessibilityIdentifier(actionButtonAccessibilityIdentifier)
-        .accessibilityLabel(VectorL10n.send)
-        .onChange(of: wysiwygViewModel.isContentEmpty) { isEmpty in
-            viewModel.send(viewAction: .contentDidChange(isEmpty: isEmpty))
-            withAnimation(.easeInOut(duration: 0.15)) {
-                isActionButtonShowing = !isEmpty
-            }
-        }
-    }
-
-    private var sendMediaButton: some View {
-        return Button {
-            showSendMediaActions()
-        } label: {
-            Image(Asset.Images.startComposeModule.name)
-                .resizable()
-                .foregroundColor(theme.colors.tertiaryContent)
-                .frame(width: 14, height: 14)
-        }
-        .frame(width: 36, height: 36)
-        .background(Circle().fill(theme.colors.system))
-        .padding(.trailing, 8)
-        .accessibilityLabel(VectorL10n.create)
-    }
 
     private var composerContainer: some View {
         let rect = RoundedRectangle(cornerRadius: cornerRadius)
@@ -218,6 +139,85 @@ struct Composer: View {
                 viewModel.focused = true
             }
         }
+    }
+
+    private var sendMediaButton: some View {
+        return Button {
+            showSendMediaActions()
+        } label: {
+            Image(Asset.Images.startComposeModule.name)
+                .resizable()
+                .foregroundColor(theme.colors.tertiaryContent)
+                .frame(width: 14, height: 14)
+        }
+        .frame(width: 36, height: 36)
+        .background(Circle().fill(theme.colors.system))
+        .padding(.trailing, 8)
+        .accessibilityLabel(VectorL10n.create)
+    }
+
+    private var sendButton: some View {
+        return Button {
+            if wysiwygViewModel.plainTextMode {
+                sendMessageAction(wysiwygViewModel.plainTextModeContent)
+            } else {
+                sendMessageAction(wysiwygViewModel.content)
+            }
+            wysiwygViewModel.clearContent()
+        } label: {
+            if viewModel.viewState.sendMode == .edit {
+                Image(Asset.Images.saveIcon.name)
+            } else {
+                Image(Asset.Images.sendIcon.name)
+            }
+        }
+        .frame(width: 36, height: 36)
+        .padding(.leading, 8)
+        .isHidden(!isActionButtonShowing)
+        .accessibilityIdentifier(actionButtonAccessibilityIdentifier)
+        .accessibilityLabel(VectorL10n.send)
+        .onChange(of: wysiwygViewModel.isContentEmpty) { isEmpty in
+            viewModel.send(viewAction: .contentDidChange(isEmpty: isEmpty))
+            withAnimation(.easeInOut(duration: 0.15)) {
+                isActionButtonShowing = !isEmpty
+            }
+        }
+    }
+    
+    // MARK: Public
+    
+    @ObservedObject var viewModel: ComposerViewModelType.Context
+    @ObservedObject var wysiwygViewModel: WysiwygComposerViewModel
+    let resizeAnimationDuration: Double
+    
+    let sendMessageAction: (WysiwygComposerContent) -> Void
+    let showSendMediaActions: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(alignment: .bottom, spacing: 0) {
+                if !viewModel.viewState.textFormattingEnabled {
+                    sendMediaButton
+                }
+                composerContainer
+                if !viewModel.viewState.textFormattingEnabled {
+                    sendButton
+                }
+            }
+            if viewModel.viewState.textFormattingEnabled {
+                HStack(alignment: .center, spacing: 0) {
+                    sendMediaButton
+                    FormattingToolbar(formatItems: formatItems) { type in
+                        wysiwygViewModel.apply(type.action)
+                    }
+                    .frame(height: 44)
+                    Spacer()
+                    sendButton
+                }
+            }
+        }
+        .padding(.horizontal, horizontalPadding)
+        .padding(.bottom, 4)
     }
 }
 
