@@ -469,6 +469,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.colors.navigation;
         [self.jumpToLastUnreadBanner vc_removeShadow];
         self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.colors.quarterlyContent;
+        if (self.maximisedToolbarDimmingView) {
+            self.maximisedToolbarDimmingView.backgroundColor = [UIColor.blackColor colorWithAlphaComponent:0.29];
+        }
     }
     else
     {
@@ -480,6 +483,9 @@ static CGSize kThreadListBarButtonItemImageSize;
                                                     radius:8
                                                    opacity:0.1];
         self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.colors.tertiaryContent;
+        if (self.maximisedToolbarDimmingView) {
+            self.maximisedToolbarDimmingView.backgroundColor = [UIColor.blackColor colorWithAlphaComponent:0.12];
+        }
     }
     
     self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;

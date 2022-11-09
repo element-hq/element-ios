@@ -170,7 +170,9 @@ extension RoomViewController {
             let originalRect = roomInputToolbarContainer.convert(roomInputToolbarContainer.frame, to: view)
             self.roomInputToolbarContainer.removeFromSuperview()
             let dimmingView = UIView(frame: view.bounds)
-            dimmingView.backgroundColor = .black.withAlphaComponent(0.65)
+            // Same as the system dimming background color
+            dimmingView.backgroundColor = .black.withAlphaComponent(ThemeService.shared().isCurrentThemeDark() ? 0.29 : 0.12)
+            maximisedToolbarDimmingView = dimmingView
             view.addSubview(dimmingView)
             dimmingView.addSubview(self.roomInputToolbarContainer)
             roomInputToolbarContainer.frame = originalRect
@@ -214,25 +216,27 @@ private extension RoomViewController {
     }
     
     @objc private func didPanRoomToolbarContainer(_ sender: UIPanGestureRecognizer) {
+        guard let wysiwygInputToolbar = wysiwygInputToolbar else { return }
         switch sender.state {
         case .began:
-            originalMaximisedToolbarCenter = roomInputToolbarContainer.center
+            originalMaximisedWysiwygHeight = wysiwygInputToolbar.idealHeight
         case .changed:
             let translation = sender.translation(in: view)
-            guard originalMaximisedToolbarCenter.y + translation.y > originalMaximisedToolbarCenter.y else { return }
-            roomInputToolbarContainer.center = CGPoint(x: originalMaximisedToolbarCenter.x,
-                                          y: originalMaximisedToolbarCenter.y + translation.y)
+            guard wysiwygInputToolbar.idealHeight - translation.y < originalMaximisedWysiwygHeight else { return }
+            wysiwygInputToolbar.idealHeight = originalMaximisedWysiwygHeight - translation.y
         case .ended:
-            if roomInputToolbarContainer.center.y > originalMaximisedToolbarCenter.y + roomInputToolbarContainer.frame.height / 4 {
-                wysiwygInputToolbar?.minimise()
+            if wysiwygInputToolbar.idealHeight < originalMaximisedWysiwygHeight * 0.5 {
+                wysiwygInputToolbar.minimise()
             } else {
+                wysiwygInputToolbar.idealHeight = self.originalMaximisedWysiwygHeight
                 UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut]) {
-                    self.roomInputToolbarContainer.center = self.originalMaximisedToolbarCenter
+                    wysiwygInputToolbar.layoutIfNeeded()
                 }
             }
         case .cancelled:
+            wysiwygInputToolbar.idealHeight = self.originalMaximisedWysiwygHeight
             UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut]) {
-                self.roomInputToolbarContainer.center = self.originalMaximisedToolbarCenter
+                wysiwygInputToolbar.layoutIfNeeded()
             }
         default:
             break

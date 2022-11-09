@@ -118,7 +118,9 @@ extern NSTimeInterval const kResizeComposerAnimationDuration;
 
 @property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray<NSLayoutConstraint*> *toolbarContainerConstraints;
 
-@property (nonatomic, assign) CGPoint originalMaximisedToolbarCenter;
+@property (nonatomic, assign) CGFloat originalMaximisedWysiwygHeight;
+
+@property (strong, nonatomic, nullable) UIView* maximisedToolbarDimmingView;
 
 
 /**

@@ -62,6 +62,15 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         wysiwygViewModel.maximised
     }
     
+    var idealHeight: CGFloat {
+        get {
+            wysiwygViewModel.idealHeight
+        }
+        set {
+            wysiwygViewModel.idealHeight = newValue
+        }
+    }
+    
     // MARK: - Setup
     
     override class func instantiate() -> MXKRoomInputToolbarView! {
