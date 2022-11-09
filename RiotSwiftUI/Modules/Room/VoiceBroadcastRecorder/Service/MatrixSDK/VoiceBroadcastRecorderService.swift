@@ -49,20 +49,28 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     // MARK: - VoiceBroadcastRecorderServiceProtocol
     
     func startRecordingVoiceBroadcast() {
-        let inputNode = audioEngine.inputNode
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
 
-        let inputFormat = inputNode.inputFormat(forBus: audioNodeBus)
-        MXLog.debug("[VoiceBroadcastRecorderService] Start recording voice broadcast for bus name : \(String(describing: inputNode.name(forInputBus: audioNodeBus)))")
+            let inputNode = audioEngine.inputNode
 
-        inputNode.installTap(onBus: audioNodeBus,
-                             bufferSize: 512,
-                             format: inputFormat) { (buffer, time) -> Void in
-            DispatchQueue.main.async {
-                self.writeBuffer(buffer)
+            let inputFormat = inputNode.inputFormat(forBus: audioNodeBus)
+            MXLog.debug("[VoiceBroadcastRecorderService] Start recording voice broadcast for bus name : \(String(describing: inputNode.name(forInputBus: audioNodeBus)))")
+
+            inputNode.installTap(onBus: audioNodeBus,
+                                 bufferSize: 512,
+                                 format: inputFormat) { (buffer, time) -> Void in
+                DispatchQueue.main.async {
+                    self.writeBuffer(buffer)
+                }
             }
-        }
 
-        try? audioEngine.start()
+            try audioEngine.start()
+        } catch {
+            MXLog.debug("[VoiceBroadcastRecorderService] startRecordingVoiceBroadcast error", context: error)
+            stopRecordingVoiceBroadcast()
+        }
     }
     
     func stopRecordingVoiceBroadcast() {
@@ -135,6 +143,12 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     private func tearDownVoiceBroadcastService() {
         resetValues()
         session.tearDownVoiceBroadcastService()
+        
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch {
+            MXLog.error("[VoiceBroadcastRecorderService] tearDownVoiceBroadcastService error", context: error)
+        }
     }
     
     /// Write audio buffer to chunk file.
