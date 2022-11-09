@@ -58,6 +58,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }
     }
     
+    var isMaximised: Bool {
+        wysiwygViewModel.maximised
+    }
+    
     // MARK: - Setup
     
     override class func instantiate() -> MXKRoomInputToolbarView! {
@@ -145,13 +149,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         )
     }
     
-    @objc func keyboardWillShow(_ notification: Notification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            keyboardHeight = keyboardRectangle.height
-        }
-    }
-    
     override func customizeRendering() {
         super.customizeRendering()
         self.backgroundColor = .clear
@@ -161,7 +158,18 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         self.viewModel.dismissKeyboard()
     }
     
+    func minimise() {
+        wysiwygViewModel.maximised = false
+    }
+    
     // MARK: - Private
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            keyboardHeight = keyboardRectangle.height
+        }
+    }
     
     private func updateToolbarHeight(wysiwygHeight: CGFloat) {
         self.heightConstraint.constant = wysiwygHeight
@@ -272,10 +280,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             addSubview(voiceMessageToolbarView)
             NSLayoutConstraint.activate(
                 [
-                    self.safeAreaLayoutGuide.topAnchor.constraint(equalTo: voiceMessageToolbarView.topAnchor),
-                    self.safeAreaLayoutGuide.leftAnchor.constraint(equalTo: voiceMessageToolbarView.leftAnchor),
-                    self.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: voiceMessageToolbarView.bottomAnchor, constant: 4),
-                    self.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: voiceMessageToolbarView.rightAnchor)
+                    hostingViewController.view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: voiceMessageToolbarView.topAnchor),
+                    hostingViewController.view.safeAreaLayoutGuide.leftAnchor.constraint(equalTo: voiceMessageToolbarView.leftAnchor),
+                    hostingViewController.view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: voiceMessageToolbarView.bottomAnchor, constant: 4),
+                    hostingViewController.view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: voiceMessageToolbarView.rightAnchor)
                 ]
             )
         } else {

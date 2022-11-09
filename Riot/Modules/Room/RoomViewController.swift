@@ -174,12 +174,14 @@ extension RoomViewController {
             view.addSubview(dimmingView)
             dimmingView.addSubview(self.roomInputToolbarContainer)
             roomInputToolbarContainer.frame = originalRect
-            self.roomInputToolbarContainer.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-            self.roomInputToolbarContainer.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+            self.roomInputToolbarContainer.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+            self.roomInputToolbarContainer.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
             self.roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
             UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut]) {
                 view.layoutIfNeeded()
             }
+            let panGesture = UIPanGestureRecognizer(target: self, action: #selector(didPanRoomToolbarContainer(_ :)))
+            roomInputToolbarContainer.addGestureRecognizer(panGesture)
         } else {
             let superView = self.roomInputToolbarContainer.superview
             self.roomInputToolbarContainer.removeFromSuperview()
@@ -190,6 +192,13 @@ extension RoomViewController {
             UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut]) {
                 self.view.layoutIfNeeded()
             }
+            roomInputToolbarContainer.gestureRecognizers?.removeAll()
+        }
+    }
+    
+    @objc func setMaximisedToolbarIsHiddenIfNeeded(_ isHidden: Bool) {
+        if wysiwygInputToolbar?.isMaximised == true {
+            roomInputToolbarContainer.superview?.isHidden = isHidden
         }
     }
 }
@@ -203,4 +212,27 @@ private extension RoomViewController {
     var wysiwygInputToolbar: WysiwygInputToolbarView? {
         return self.inputToolbarView as? WysiwygInputToolbarView
     }
+    
+    @objc private func didPanRoomToolbarContainer(_ sender: UIPanGestureRecognizer) {
+        switch sender.state {
+        case .began:
+            originalMaximisedToolbarCenter = roomInputToolbarContainer.center
+        case .changed:
+            let translation = sender.translation(in: view)
+            guard originalMaximisedToolbarCenter.y + translation.y > originalMaximisedToolbarCenter.y else { return }
+            roomInputToolbarContainer.center = CGPoint(x: originalMaximisedToolbarCenter.x,
+                                          y: originalMaximisedToolbarCenter.y + translation.y)
+        case .ended, .cancelled:
+            if roomInputToolbarContainer.center.y > originalMaximisedToolbarCenter.y + roomInputToolbarContainer.frame.height / 4 {
+                wysiwygInputToolbar?.minimise()
+            } else {
+                UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut]) {
+                    self.roomInputToolbarContainer.center = self.originalMaximisedToolbarCenter
+                }
+            }
+        default:
+            break
+        }
+    }
+
 }

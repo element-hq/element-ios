@@ -118,6 +118,8 @@ extern NSTimeInterval const kResizeComposerAnimationDuration;
 
 @property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray<NSLayoutConstraint*> *toolbarContainerConstraints;
 
+@property (nonatomic, assign) CGPoint originalMaximisedToolbarCenter;
+
 
 /**
  Retrieve the live data source in cases where the timeline is not live.

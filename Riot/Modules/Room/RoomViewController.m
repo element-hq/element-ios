@@ -602,7 +602,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     // Stop the loading indicator even if the session is still in progress
     [self stopLoadingUserIndicator];
     
-    self.roomInputToolbarContainer.hidden = YES;
+    [self setMaximisedToolbarIsHiddenIfNeeded: YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -679,7 +679,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         self.inputToolbarView.attributedTextMessage = self.roomDataSource.partialAttributedTextMessage;
     }
     
-    self.roomInputToolbarContainer.hidden = NO;
+    [self setMaximisedToolbarIsHiddenIfNeeded: NO];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
