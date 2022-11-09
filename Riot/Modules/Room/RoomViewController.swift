@@ -155,8 +155,8 @@ extension RoomViewController {
         wysiwygInputToolbar?.textFormattingEnabled.toggle()
     }
     
-    @objc func didChangeMaximisedState(_ state: Bool) {
-        if state {
+    @objc func didChangeMaximisedState(_ isMaximised: Bool) {
+        if isMaximised {
             var view: UIView!
             // iPhone
             if let navView = self.navigationController?.navigationController?.view {
@@ -170,7 +170,7 @@ extension RoomViewController {
             let originalRect = roomInputToolbarContainer.convert(roomInputToolbarContainer.frame, to: view)
             self.roomInputToolbarContainer.removeFromSuperview()
             let dimmingView = UIView(frame: view.bounds)
-            dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+            dimmingView.backgroundColor = .black.withAlphaComponent(0.65)
             view.addSubview(dimmingView)
             dimmingView.addSubview(self.roomInputToolbarContainer)
             roomInputToolbarContainer.frame = originalRect
@@ -222,13 +222,17 @@ private extension RoomViewController {
             guard originalMaximisedToolbarCenter.y + translation.y > originalMaximisedToolbarCenter.y else { return }
             roomInputToolbarContainer.center = CGPoint(x: originalMaximisedToolbarCenter.x,
                                           y: originalMaximisedToolbarCenter.y + translation.y)
-        case .ended, .cancelled:
+        case .ended:
             if roomInputToolbarContainer.center.y > originalMaximisedToolbarCenter.y + roomInputToolbarContainer.frame.height / 4 {
                 wysiwygInputToolbar?.minimise()
             } else {
                 UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut]) {
                     self.roomInputToolbarContainer.center = self.originalMaximisedToolbarCenter
                 }
+            }
+        case .cancelled:
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut]) {
+                self.roomInputToolbarContainer.center = self.originalMaximisedToolbarCenter
             }
         default:
             break

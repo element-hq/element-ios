@@ -75,7 +75,7 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
  */
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage;
 
-- (void)didChangeMaximisedState: (BOOL) state;
+- (void)didChangeMaximisedState: (BOOL) isMaximised;
 
 @end
 
