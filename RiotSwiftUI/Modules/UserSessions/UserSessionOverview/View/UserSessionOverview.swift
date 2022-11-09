@@ -24,15 +24,20 @@ struct UserSessionOverview: View {
     var body: some View {
         ScrollView {
             UserSessionCardView(
-                viewData: viewModel.viewState.cardViewData, onVerifyAction: { _ in
+                viewData: viewModel.viewState.cardViewData,
+                onVerifyAction: { _ in
                     viewModel.send(viewAction: .verifySession)
                 },
                 onViewDetailsAction: { _ in
                     viewModel.send(viewAction: .viewSessionDetails)
                 },
+                onLearnMoreAction: {
+                    viewModel.send(viewAction: .viewSessionInfo)
+                },
                 showLocationInformations: viewModel.viewState.showLocationInfo
             )
             .padding(16)
+            
             SwiftUI.Section {
                 UserSessionOverviewItem(title: VectorL10n.userSessionOverviewSessionDetailsButtonTitle,
                                         showsChevron: true) {

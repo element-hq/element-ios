@@ -20,9 +20,9 @@ import XCTest
 class UserOtherSessionsUITests: MockScreenTestCase {
     func test_whenOtherSessionsWithInactiveSessionFilterPresented_correctHeaderDisplayed() {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.inactiveSessions.title)
-
         XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionFilterMenuInactive].exists)
-        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo].exists)
+        let buttonLearnMore = app.buttons["\(VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo) \(VectorL10n.userSessionLearnMore)"]
+        XCTAssertTrue(buttonLearnMore.exists)
     }
     
     func test_whenOtherSessionsWithInactiveSessionFilterPresented_correctItemsDisplayed() {
@@ -33,22 +33,24 @@ class UserOtherSessionsUITests: MockScreenTestCase {
     
     func test_whenOtherSessionsWithUnverifiedSessionFilterPresented_correctHeaderDisplayed() {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.unverifiedSessions.title)
- 
         XCTAssertTrue(app.staticTexts[VectorL10n.userSessionUnverifiedShort].exists)
-        XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle].exists)
+        XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionFilterMenuUnverified].exists)
+        let buttonLearnMore = app.buttons["\(VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle) \(VectorL10n.userSessionLearnMore)"]
+        XCTAssertTrue(buttonLearnMore.exists)
     }
     
     func test_whenOtherSessionsWithAllSessionFilterPresented_correctHeaderDisplayed() {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.all.title)
  
-        XCTAssertTrue(app.staticTexts[VectorL10n.userSessionsOverviewOtherSessionsSectionInfo].exists)
+        XCTAssertTrue(app.buttons[VectorL10n.userSessionsOverviewOtherSessionsSectionInfo].exists)
     }
     
     func test_whenOtherSessionsWithVerifiedSessionFilterPresented_correctHeaderDisplayed() {
         app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.verifiedSessions.title)
- 
         XCTAssertTrue(app.staticTexts[VectorL10n.userSessionVerifiedShort].exists)
-        XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle].exists)
+        XCTAssertTrue(app.staticTexts[VectorL10n.userOtherSessionFilterMenuVerified].exists)
+        let buttonLearnMore = app.buttons["\(VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle) \(VectorL10n.userSessionLearnMore)"]
+        XCTAssertTrue(buttonLearnMore.exists)
     }
     
     func test_whenOtherSessionsMoreMenuButtonSelected_moreMenuIsCorrect() {
@@ -103,5 +105,13 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         XCTAssertTrue(signOutButton.isEnabled)
         sessionListItem.tap()
         XCTAssertFalse(signOutButton.isEnabled)
+    }
+    
+    func test_whenAllOtherSessionsAreShown_learnMoreButtonIsNotShown() {
+        app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.all.title)
+        let button = app.buttons[VectorL10n.userSessionsOverviewOtherSessionsSectionInfo]
+        let buttonLearnMore = app.buttons["\(VectorL10n.userSessionsOverviewOtherSessionsSectionInfo) + \(VectorL10n.userSessionLearnMore)"]
+        XCTAssertTrue(button.exists)
+        XCTAssertFalse(buttonLearnMore.exists)
     }
 }

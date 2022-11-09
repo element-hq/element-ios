@@ -23,6 +23,7 @@ enum UserSessionOverviewCoordinatorResult {
     case verifySession(UserSessionInfo)
     case renameSession(UserSessionInfo)
     case logoutOfSession(UserSessionInfo)
+    case showSessionStateInfo(UserSessionInfo)
 }
 
 // MARK: View model
@@ -32,6 +33,7 @@ enum UserSessionOverviewViewModelResult: Equatable {
     case verifySession(UserSessionInfo)
     case renameSession(UserSessionInfo)
     case logoutOfSession(UserSessionInfo)
+    case showSessionStateInfo(UserSessionInfo)
 }
 
 // MARK: View
@@ -52,4 +54,5 @@ enum UserSessionOverviewViewAction {
     case renameSession
     case logoutOfSession
     case showLocationInfo
+    case viewSessionInfo
 }

@@ -22,7 +22,7 @@ struct UserSessionsFlowCoordinatorParameters {
     let router: NavigationRouterType
 }
 
-final class UserSessionsFlowCoordinator: Coordinator, Presentable {
+final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
     private let parameters: UserSessionsFlowCoordinatorParameters
     private let allSessionsService: UserSessionsOverviewService
     
@@ -125,6 +125,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
                 } else {
                     self.showLogoutConfirmation(for: [sessionInfo])
                 }
+            case let .showSessionStateInfo(sessionInfo):
+                self.showInfoSheet(parameters: .init(userSessionInfo: sessionInfo, parentSize: self.toPresentable().view.bounds.size))
             }
         }
         pushScreen(with: coordinator)
@@ -164,6 +166,8 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
                 self.openSessionOverview(sessionInfo: session)
             case let .logoutFromUserSessions(sessionInfos: sessionInfos):
                 self.showLogoutConfirmation(for: sessionInfos)
+            case let .showSessionStateByFilter(filter):
+                self.showInfoSheet(parameters: .init(filter: filter, parentSize: self.toPresentable().view.bounds.size))
             }
         }
         pushScreen(with: coordinator)
@@ -189,6 +193,25 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         alert.popoverPresentationController?.sourceView = toPresentable().view
         
         navigationRouter.present(alert, animated: true)
+    }
+    
+    private func showInfoSheet(parameters: InfoSheetCoordinatorParameters) {
+        let coordinator = InfoSheetCoordinator(parameters: parameters)
+        
+        coordinator.toPresentable().presentationController?.delegate = self
+        coordinator.completion = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            
+            switch result {
+            case .actionTriggered:
+                self.navigationRouter.dismissModule(animated: true, completion: nil)
+                self.remove(childCoordinator: coordinator)
+            }
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        navigationRouter.present(coordinator, animated: true)
     }
     
     private func showLogoutConfirmationForCurrentSession() {
@@ -275,7 +298,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         let modalRouter = NavigationRouter(navigationController: RiotNavigationController())
         modalRouter.setRootModule(coordinator)
         coordinator.start()
-        
+        modalRouter.toPresentable().presentationController?.delegate = self
         navigationRouter.present(modalRouter, animated: true)
     }
     
@@ -406,5 +429,87 @@ extension UserSessionsFlowCoordinator: UserVerificationCoordinatorDelegate {
     func userVerificationCoordinatorDidComplete(_ coordinator: UserVerificationCoordinatorType) {
         // The service is listening for changes so there's nothing to do here.
         remove(childCoordinator: coordinator)
+    }
+}
+
+// MARK: UIAdaptivePresentationControllerDelegate
+
+extension UserSessionsFlowCoordinator: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard let coordinator = childCoordinators.last else {
+            return
+        }
+        
+        remove(childCoordinator: coordinator)
+    }
+}
+
+// MARK: Private
+
+private extension InfoSheetCoordinatorParameters {
+    init(userSessionInfo: UserSessionInfo, parentSize: CGSize) {
+        self.init(title: userSessionInfo.bottomSheetTitle,
+                  description: userSessionInfo.bottomSheetDescription,
+                  action: .init(text: VectorL10n.userSessionGotIt, action: { }),
+                  parentSize: parentSize)
+    }
+    
+    init(filter: UserOtherSessionsFilter, parentSize: CGSize) {
+        self.init(title: filter.bottomSheetTitle,
+                  description: filter.bottomSheetDescription,
+                  action: .init(text: VectorL10n.userSessionGotIt, action: { }),
+                  parentSize: parentSize)
+    }
+}
+
+private extension UserSessionInfo {
+    var bottomSheetTitle: String {
+        switch verificationState {
+        case .unverified:
+            return VectorL10n.userSessionUnverifiedSessionTitle
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionTitle
+        case .unknown:
+            return ""
+        }
+    }
+
+    var bottomSheetDescription: String {
+        switch verificationState {
+        case .unverified:
+            return VectorL10n.userSessionUnverifiedSessionDescription
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionDescription
+        case .unknown:
+            return ""
+        }
+    }
+}
+
+private extension UserOtherSessionsFilter {
+    var bottomSheetTitle: String {
+        switch self {
+        case .unverified:
+            return VectorL10n.userSessionUnverifiedSessionTitle
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionTitle
+        case .inactive:
+            return VectorL10n.userSessionInactiveSessionTitle
+        case .all:
+            return ""
+        }
+    }
+    
+    var bottomSheetDescription: String {
+        switch self {
+        case .unverified:
+            return VectorL10n.userSessionUnverifiedSessionDescription
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionDescription
+        case .inactive:
+            return VectorL10n.userSessionInactiveSessionDescription
+        case .all:
+            return ""
+        }
     }
 }

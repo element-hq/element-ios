@@ -8787,6 +8787,18 @@ public class VectorL10n: NSObject {
   public static var userSessionDetailsTitle: String { 
     return VectorL10n.tr("Vector", "user_session_details_title") 
   }
+  /// Got it
+  public static var userSessionGotIt: String { 
+    return VectorL10n.tr("Vector", "user_session_got_it") 
+  }
+  /// Inactive sessions are sessions you have not used in some time, but they continue to receive encryption keys.\n\nRemoving inactive sessions improves security and performance, and makes it easier for you to identify if a new session is suspicious.
+  public static var userSessionInactiveSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_inactive_session_description") 
+  }
+  /// Inactive sessions
+  public static var userSessionInactiveSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_inactive_session_title") 
+  }
   /// %1$@ · %2$@
   public static func userSessionItemDetails(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "user_session_item_details", p1, p2)
@@ -8823,6 +8835,14 @@ public class VectorL10n: NSObject {
   public static var userSessionPushNotificationsMessage: String { 
     return VectorL10n.tr("Vector", "user_session_push_notifications_message") 
   }
+  /// Other users in direct messages and rooms that you join are able to view a full list of your sessions.\n\nThis provides them with confidence that they are really speaking to you, but it also means they can see the session name you enter here.
+  public static var userSessionRenameSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_rename_session_description") 
+  }
+  /// Renaming sessions
+  public static var userSessionRenameSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_rename_session_title") 
+  }
   /// Unverified session
   public static var userSessionUnverified: String { 
     return VectorL10n.tr("Vector", "user_session_unverified") 
@@ -8830,6 +8850,14 @@ public class VectorL10n: NSObject {
   /// Verify your current session for enhanced secure messaging.
   public static var userSessionUnverifiedAdditionalInfo: String { 
     return VectorL10n.tr("Vector", "user_session_unverified_additional_info") 
+  }
+  /// Unverified sessions are sessions that have logged in with your credentials but not been cross-verified.\n\nYou should make especially certain that you recognise these sessions as they could represent an unauthorised use of your account.
+  public static var userSessionUnverifiedSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_unverified_session_description") 
+  }
+  /// Unverified session
+  public static var userSessionUnverifiedSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_unverified_session_title") 
   }
   /// Unverified
   public static var userSessionUnverifiedShort: String { 
@@ -8854,6 +8882,14 @@ public class VectorL10n: NSObject {
   /// Your current session is ready for secure messaging.
   public static var userSessionVerifiedAdditionalInfo: String { 
     return VectorL10n.tr("Vector", "user_session_verified_additional_info") 
+  }
+  /// Verified sessions are anywhere you are using Element after entering your passphrase or confirming your identity with another verified session.\n\nThis means that you have all the keys needed to unlock your encrypted messages and confirm to other users that you trust this session.
+  public static var userSessionVerifiedSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_verified_session_description") 
+  }
+  /// Verified sessions
+  public static var userSessionVerifiedSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_verified_session_title") 
   }
   /// Verified
   public static var userSessionVerifiedShort: String { 

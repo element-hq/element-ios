@@ -50,19 +50,12 @@ struct UserSessionCardView: View {
                 .foregroundColor(theme.colors[keyPath: viewData.verificationStatusColor])
                 .multilineTextAlignment(.center)
             
-            if viewData.isCurrentSessionDisplayMode {
-                Text(viewData.verificationStatusAdditionalInfoText)
-                    .font(theme.fonts.footnote)
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .multilineTextAlignment(.center)
-            } else {
-                InlineTextButton(viewData.verificationStatusAdditionalInfoText + " %@", tappableText: VectorL10n.userSessionLearnMore) {
-                    onLearnMoreAction?()
-                }
-                .font(theme.fonts.footnote)
-                .foregroundColor(theme.colors.secondaryContent)
-                .multilineTextAlignment(.center)
+            InlineTextButton(viewData.verificationStatusAdditionalInfoText, tappableText: VectorL10n.userSessionLearnMore, alwaysCallAction: false) {
+                onLearnMoreAction?()
             }
+            .font(theme.fonts.footnote)
+            .foregroundColor(theme.colors.secondaryContent)
+            .multilineTextAlignment(.center)
             
             if showExtraInformations {
                 VStack(spacing: 2) {

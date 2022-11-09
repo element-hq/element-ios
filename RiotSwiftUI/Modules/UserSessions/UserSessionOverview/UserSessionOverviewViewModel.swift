@@ -102,6 +102,8 @@ class UserSessionOverviewViewModel: UserSessionOverviewViewModelType, UserSessio
         case .showLocationInfo:
             settingService.showIPAddressesInSessionsManager.toggle()
             state.showLocationInfo = settingService.showIPAddressesInSessionsManager
+        case .viewSessionInfo:
+            completion?(.showSessionStateInfo(sessionInfo))
         }
     }
 }

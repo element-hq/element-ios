@@ -21,6 +21,7 @@ import Foundation
 enum UserOtherSessionsCoordinatorResult {
     case openSessionOverview(sessionInfo: UserSessionInfo)
     case logoutFromUserSessions(sessionInfos: [UserSessionInfo])
+    case showSessionStateByFilter(filter: UserOtherSessionsFilter)
 }
 
 // MARK: View model
@@ -28,6 +29,7 @@ enum UserOtherSessionsCoordinatorResult {
 enum UserOtherSessionsViewModelResult: Equatable {
     case showUserSessionOverview(sessionInfo: UserSessionInfo)
     case logoutFromUserSessions(sessionInfos: [UserSessionInfo])
+    case showSessionStateInfo(filter: UserOtherSessionsFilter)
 }
 
 // MARK: View
@@ -57,4 +59,5 @@ enum UserOtherSessionsViewAction {
     case logoutAllUserSessions
     case logoutSelectedUserSessions
     case showLocationInfo
+    case viewSessionInfo
 }

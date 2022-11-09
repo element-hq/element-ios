@@ -39,7 +39,7 @@ struct UserSessionCardViewData {
     
     let deviceAvatarViewData: DeviceAvatarViewData
     
-    /// Indicate if the current user session is shown and to adpat the layout
+    /// Indicate if the current user session is shown and to adapt the layout
     let isCurrentSessionDisplayMode: Bool
     
     /// The name of the shield image to show the verification status.
@@ -82,9 +82,9 @@ struct UserSessionCardViewData {
     var verificationStatusAdditionalInfoText: String {
         switch verificationState {
         case .verified:
-            return isCurrentSessionDisplayMode ? VectorL10n.userSessionVerifiedAdditionalInfo : VectorL10n.userOtherSessionVerifiedAdditionalInfo
+            return isCurrentSessionDisplayMode ? VectorL10n.userSessionVerifiedAdditionalInfo : VectorL10n.userOtherSessionVerifiedAdditionalInfo + " %@"
         case .unverified:
-            return isCurrentSessionDisplayMode ? VectorL10n.userSessionUnverifiedAdditionalInfo : VectorL10n.userOtherSessionUnverifiedAdditionalInfo
+            return isCurrentSessionDisplayMode ? VectorL10n.userSessionUnverifiedAdditionalInfo : VectorL10n.userOtherSessionUnverifiedAdditionalInfo + " %@"
         case .unknown:
             return VectorL10n.userSessionVerificationUnknownAdditionalInfo
         }
