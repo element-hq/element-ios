@@ -638,6 +638,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self.pushNotificationService applicationDidBecomeActive];
     
     [self configurePinCodeScreenFor:application createIfRequired:NO];
+    
+    [self checkCrossSigningForSession:self.mxSessions.firstObject];
 }
 
 - (void)configurePinCodeScreenFor:(UIApplication *)application
@@ -2192,6 +2194,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Reset analytics
     [Analytics.shared reset];
+    
+    [[[ReviewSessionAlertSnoozeController alloc] init] clearSnooze];
     
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack

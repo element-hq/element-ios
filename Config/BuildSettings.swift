@@ -437,4 +437,7 @@ final class BuildSettings: NSObject {
     static let qrLoginEnableDisplayingQRs = false
     
     static let rendezvousServerBaseURL = URL(string: "https://rendezvous.lab.element.dev/")!
+    
+    // MARK: - Alerts
+    static let showUnverifiedSessionsAlert = true
 }
