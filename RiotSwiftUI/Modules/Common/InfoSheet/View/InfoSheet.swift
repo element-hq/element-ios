@@ -48,6 +48,7 @@ struct InfoSheet: View {
                     .foregroundColor(theme.colors.primaryContent)
                     .accessibilityIdentifier(viewModel.viewState.description)
                     .padding([.leading, .trailing], padding)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             .layoutPriority(1)
             
@@ -70,7 +71,7 @@ struct InfoSheet: View {
         }
         .padding(.bottom, padding)
         .padding(.top, 32)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
         .background(theme.colors.background.ignoresSafeArea(edges: .bottom))
     }
 }

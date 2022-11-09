@@ -61,7 +61,8 @@ final class UserSessionNameCoordinator: NSObject, Coordinator, Presentable {
             case .learnMore:
                 self.showInfoSheet(parameters: .init(title: VectorL10n.userSessionRenameSessionTitle,
                                                      description: VectorL10n.userSessionRenameSessionDescription,
-                                                     action: .init(text: VectorL10n.userSessionGotIt, action: {})))
+                                                     action: .init(text: VectorL10n.userSessionGotIt, action: {}),
+                                                     parentSize: self.toPresentable().view.bounds.size))
             }
         }
     }

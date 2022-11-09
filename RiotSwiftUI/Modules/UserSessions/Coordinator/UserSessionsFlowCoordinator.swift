@@ -126,7 +126,7 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
                     self.showLogoutConfirmation(for: [sessionInfo])
                 }
             case let .showSessionStateInfo(sessionInfo):
-                self.showInfoSheet(parameters: .init(userSessionInfo: sessionInfo))
+                self.showInfoSheet(parameters: .init(userSessionInfo: sessionInfo, parentSize: self.toPresentable().view.bounds.size))
             }
         }
         pushScreen(with: coordinator)
@@ -167,7 +167,7 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
             case let .logoutFromUserSessions(sessionInfos: sessionInfos):
                 self.showLogoutConfirmation(for: sessionInfos)
             case let .showSessionStateByFilter(filter):
-                self.showInfoSheet(parameters: .init(filter: filter))
+                self.showInfoSheet(parameters: .init(filter: filter, parentSize: self.toPresentable().view.bounds.size))
             }
         }
         pushScreen(with: coordinator)
@@ -447,16 +447,18 @@ extension UserSessionsFlowCoordinator: UIAdaptivePresentationControllerDelegate 
 // MARK: Private
 
 private extension InfoSheetCoordinatorParameters {
-    init(userSessionInfo: UserSessionInfo) {
+    init(userSessionInfo: UserSessionInfo, parentSize: CGSize) {
         self.init(title: userSessionInfo.bottomSheetTitle,
                   description: userSessionInfo.bottomSheetDescription,
-                  action: .init(text: VectorL10n.userSessionGotIt, action: { }))
+                  action: .init(text: VectorL10n.userSessionGotIt, action: { }),
+                  parentSize: parentSize)
     }
     
-    init(filter: UserOtherSessionsFilter) {
+    init(filter: UserOtherSessionsFilter, parentSize: CGSize) {
         self.init(title: filter.bottomSheetTitle,
                   description: filter.bottomSheetDescription,
-                  action: .init(text: VectorL10n.userSessionGotIt, action: { }))
+                  action: .init(text: VectorL10n.userSessionGotIt, action: { }),
+                  parentSize: parentSize)
     }
 }
 

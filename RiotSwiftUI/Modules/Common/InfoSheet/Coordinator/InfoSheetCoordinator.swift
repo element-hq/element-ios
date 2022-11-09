@@ -21,6 +21,7 @@ struct InfoSheetCoordinatorParameters {
     let title: String
     let description: String
     let action: InfoSheet.Action
+    let parentSize: CGSize?
 }
 
 final class InfoSheetCoordinator: Coordinator, Presentable {
@@ -39,8 +40,8 @@ final class InfoSheetCoordinator: Coordinator, Presentable {
         let view = InfoSheet(viewModel: viewModel.context)
         infoSheetViewModel = viewModel
         let controller = VectorHostingController(rootView: view)
-        controller.bottomSheetPreferences = .init(cornerRadius: 24)
         infoSheetHostingController = controller
+        setupPresentation(of: controller)
     }
     
     // MARK: - Public
@@ -56,5 +57,35 @@ final class InfoSheetCoordinator: Coordinator, Presentable {
     
     func toPresentable() -> UIViewController {
         infoSheetHostingController
+    }
+}
+
+private extension InfoSheetCoordinator {
+    // The bottom sheet should be presented with the content intrinsic height as for design requirement
+    // We can do it easily just on iOS 16+
+    func setupPresentation(of viewController: VectorHostingController) {
+        let cornerRadius: CGFloat = 24
+        
+        guard
+            #available(iOS 16, *),
+            let parentSize = parameters.parentSize,
+            let presentationController = viewController.sheetPresentationController
+        else {
+            viewController.bottomSheetPreferences = .init(cornerRadius: cornerRadius)
+            return
+        }
+        
+        let intrisincSize = viewController.view.systemLayoutSizeFitting(.init(width: parentSize.width, height: 0),
+                                                                        withHorizontalFittingPriority: .defaultHigh,
+                                                                        verticalFittingPriority: .defaultLow)
+        
+        presentationController.preferredCornerRadius = cornerRadius
+        presentationController.prefersGrabberVisible = true
+        presentationController.detents = [
+            .custom { context in
+                min(context.maximumDetentValue, intrisincSize.height)
+            },
+            .large()
+        ]
     }
 }
