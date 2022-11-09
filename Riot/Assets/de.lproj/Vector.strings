@@ -2657,3 +2657,12 @@
 "user_sessions_show_location_info" = "IP-Adresse anzeigen";
 "voice_broadcast_tile" = "Sprachübertragung";
 "voice_broadcast_live" = "Live";
+"user_session_verified_session_description" = "Auf verifizierte Sitzungen kannst du überall mit Element zugreifen, wenn du deine Passphrase eingegeben oder Element mit einer anderen Sitzung verifiziert hast.\n\nDies bedeutet, dass du alle Schlüssel zum Entsperren deiner verschlüsselten Nachrichten hast und anderen bestätigst, dieser Sitzung zu vertrauen.";
+"user_session_got_it" = "Verstanden";
+"user_session_rename_session_description" = "Andere Nutzer in Direktnachrichten und Räumen, in denen du dich befindest, können eine vollständige Liste deiner Sitzungen einsehen.\n\nDies gibt ihnen die Sicherheit, dass sie auch wirklich mit dir kommunizieren. Allerdings bedeutet es auch, dass sie die Sitzungsnamen sehen können, die du hier angibst.";
+"user_session_rename_session_title" = "Sitzungen umbenennen";
+"user_session_inactive_session_description" = "Inaktive Sitzungen sind jene, die du einige Zeit nicht mehr verwendet hast, die aber weiterhin Verschlüsselungs-Schlüssel erhalten.\n\nDas Löschen von inaktiven Sitzungen verbessert Sicherheit und Leistung, und hilft dir zu erkennen, ob eine neue Sitzung verdächtig ist.";
+"user_session_inactive_session_title" = "Inaktive Sitzungen";
+"user_session_unverified_session_description" = "Nicht verifizierte Sitzungen sind jene, die angemeldet, aber nicht quer signiert sind.\n\nDu solltest besonders sicherstellen, dass du diese Sitzungen erkennst, da sie auf eine nicht autorisierte Nutzung deines Kontos hindeuten könnten.";
+"user_session_unverified_session_title" = "Nicht verifizierte Sitzungen";
+"user_session_verified_session_title" = "Verifizierte Sitzungen";
