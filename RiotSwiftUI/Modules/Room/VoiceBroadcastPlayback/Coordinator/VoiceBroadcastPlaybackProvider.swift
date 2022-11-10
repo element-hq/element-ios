@@ -19,10 +19,20 @@ import Foundation
 class VoiceBroadcastPlaybackProvider {
     static let shared = VoiceBroadcastPlaybackProvider()
     
-    var session: MXSession?
+    private var session: MXSession?
     var coordinatorsForEventIdentifiers = [String: VoiceBroadcastPlaybackCoordinator]()
     
     private init() { }
+    
+    func setSession(_ session: MXSession) {
+        if let currentSession = self.session {
+            if currentSession != session {
+                // Clear all stored coordinators on new session
+                coordinatorsForEventIdentifiers.removeAll()
+            }
+        }
+        self.session = session
+    }
     
     /// Create or retrieve the voiceBroadcast timeline coordinator for this event and return
     /// a view to be displayed in the timeline
