@@ -41,7 +41,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var cancellables = Set<AnyCancellable>()
     private var heightConstraint: NSLayoutConstraint!
     private var hostingViewController: VectorHostingController!
-    private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
+    private var wysiwygViewModel = WysiwygComposerViewModel(minHeight: 22, textColor: ThemeService.shared().theme.colors.primaryContent)
     private var viewModel: ComposerViewModelProtocol = ComposerViewModel(
         initialViewState: ComposerViewState(textFormattingEnabled: RiotSettings.shared.enableWysiwygTextFormatting,
                                             bindings: ComposerBindings(focused: false)))
@@ -72,6 +72,18 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         set {
             wysiwygViewModel.idealHeight = newValue
         }
+    }
+    
+    var compressedHeight: CGFloat {
+        wysiwygViewModel.compressedHeight
+    }
+    
+    var maxExpandedHeight: CGFloat {
+        wysiwygViewModel.maxExpandedHeight
+    }
+    
+    var maxCompressedHeight: CGFloat {
+        wysiwygViewModel.maxCompressedHeight
     }
     
     // MARK: - Setup

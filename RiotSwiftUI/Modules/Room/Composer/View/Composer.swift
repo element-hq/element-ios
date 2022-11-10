@@ -29,7 +29,7 @@ struct Composer: View {
     
     private let horizontalPadding: CGFloat = 12
     private let borderHeight: CGFloat = 40
-    private let minTextViewHeight: CGFloat = 20
+    private let minTextViewHeight: CGFloat = 22
     private var verticalPadding: CGFloat {
         (borderHeight - minTextViewHeight) / 2
     }

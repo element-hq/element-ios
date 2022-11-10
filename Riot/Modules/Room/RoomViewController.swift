@@ -247,22 +247,23 @@ private extension RoomViewController {
         guard let wysiwygInputToolbar = wysiwygInputToolbar else { return }
         switch sender.state {
         case .began:
-            originalMaximisedWysiwygHeight = wysiwygInputToolbar.idealHeight
+            break
         case .changed:
             let translation = sender.translation(in: view)
-            guard wysiwygInputToolbar.idealHeight - translation.y < originalMaximisedWysiwygHeight else { return }
-            wysiwygInputToolbar.idealHeight = originalMaximisedWysiwygHeight - translation.y
+            let translatedValue = wysiwygInputToolbar.maxExpandedHeight - translation.y
+            guard translatedValue <= wysiwygInputToolbar.maxExpandedHeight, translatedValue >= wysiwygInputToolbar.compressedHeight else { return }
+            wysiwygInputToolbar.idealHeight = translatedValue
         case .ended:
-            if wysiwygInputToolbar.idealHeight < originalMaximisedWysiwygHeight * 0.5 {
+            if wysiwygInputToolbar.idealHeight <= wysiwygInputToolbar.maxCompressedHeight {
                 wysiwygInputToolbar.minimise()
             } else {
-                wysiwygInputToolbar.idealHeight = self.originalMaximisedWysiwygHeight
+                wysiwygInputToolbar.idealHeight = wysiwygInputToolbar.maxExpandedHeight
                 UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut]) {
                     wysiwygInputToolbar.layoutIfNeeded()
                 }
             }
         case .cancelled:
-            wysiwygInputToolbar.idealHeight = self.originalMaximisedWysiwygHeight
+            wysiwygInputToolbar.idealHeight = wysiwygInputToolbar.maxExpandedHeight
             UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut]) {
                 wysiwygInputToolbar.layoutIfNeeded()
             }
