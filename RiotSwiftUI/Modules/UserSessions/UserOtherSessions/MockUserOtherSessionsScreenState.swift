@@ -49,27 +49,27 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
             viewModel = UserOtherSessionsViewModel(sessionInfos: allSessions(),
                                                    filter: .all,
                                                    title: VectorL10n.userSessionsOverviewOtherSessionsSectionTitle,
-                                                   settingService: MockUserSessionSettings())
+                                                   settingsService: MockUserSessionSettings())
         case .none:
             viewModel = UserOtherSessionsViewModel(sessionInfos: [],
                                                    filter: .all,
                                                    title: VectorL10n.userSessionsOverviewOtherSessionsSectionTitle,
-                                                   settingService: MockUserSessionSettings())
+                                                   settingsService: MockUserSessionSettings())
         case .inactiveSessions:
             viewModel = UserOtherSessionsViewModel(sessionInfos: inactiveSessions(),
                                                    filter: .inactive,
                                                    title: VectorL10n.userOtherSessionSecurityRecommendationTitle,
-                                                   settingService: MockUserSessionSettings())
+                                                   settingsService: MockUserSessionSettings())
         case .unverifiedSessions:
             viewModel = UserOtherSessionsViewModel(sessionInfos: unverifiedSessions(),
                                                    filter: .unverified,
                                                    title: VectorL10n.userOtherSessionSecurityRecommendationTitle,
-                                                   settingService: MockUserSessionSettings())
+                                                   settingsService: MockUserSessionSettings())
         case .verifiedSessions:
             viewModel = UserOtherSessionsViewModel(sessionInfos: verifiedSessions(),
                                                    filter: .verified,
                                                    title: VectorL10n.userOtherSessionSecurityRecommendationTitle,
-                                                   settingService: MockUserSessionSettings())
+                                                   settingsService: MockUserSessionSettings())
         }
         
         // can simulate service and viewModel actions here if needs be.
