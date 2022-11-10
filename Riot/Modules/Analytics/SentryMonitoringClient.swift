@@ -42,6 +42,10 @@ struct SentryMonitoringClient {
             options.enableNetworkTracking = false
             
             options.beforeSend = { event in
+                // Use the actual error message as issue fingerprint
+                if let message = event.message?.formatted {
+                    event.fingerprint = [message]
+                }
                 MXLog.debug("[SentryMonitoringClient] Issue detected: \(event)")
                 return event
             }

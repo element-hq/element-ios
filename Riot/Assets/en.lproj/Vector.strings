@@ -1968,6 +1968,12 @@ Tap the + to start adding people.";
 "call_transfer_error_title" = "Error";
 "call_transfer_error_message" = "Call transfer failed";
 
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Syncing with the server";
+"launch_loading_server_syncing_nth_attempt" = "Syncing with the server\n(%@ attempt)";
+"launch_loading_processing_response" = "Processing data\n%@ %%";
+
 // MARK: - Home
 
 "home_empty_view_title" = "Welcome to %@,\n%@";
