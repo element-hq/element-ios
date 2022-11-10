@@ -34,10 +34,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     // MARK: Private
     private var keyboardHeight: CGFloat = .zero {
         didSet {
-            let height = UIScreen.main.bounds.height
-            let finalHeight = height - keyboardHeight - 138
-            // TODO: Set the maxHeight in the wysiwygViewModel once exposed
-            return
+            updateTextViewHeight()
         }
     }
     private var voiceMessageToolbarView: VoiceMessageToolbarView?
@@ -159,6 +156,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             name: UIResponder.keyboardWillShowNotification,
             object: nil
         )
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     override func customizeRendering() {
@@ -169,6 +167,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     override func dismissKeyboard() {
         self.viewModel.dismissKeyboard()
     }
+
     
     func showKeyboard() {
         self.viewModel.showKeyboard()
@@ -184,6 +183,12 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
             keyboardHeight = keyboardRectangle.height
+        }
+    }
+    
+    @objc private func deviceDidRotate(_ notification: Notification) {
+        DispatchQueue.main.async {
+            self.updateTextViewHeight()
         }
     }
     
@@ -231,6 +236,14 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func update(theme: Theme) {
         hostingViewController.view.backgroundColor = theme.colors.background
         wysiwygViewModel.textColor = theme.colors.primaryContent
+    }
+    
+    private func updateTextViewHeight() {
+        let height = UIScreen.main.bounds.height
+        let barOffset: CGFloat = 68
+        let toolbarHeight: CGFloat = 118
+        let finalHeight = height - keyboardHeight - toolbarHeight - barOffset
+        wysiwygViewModel.maxExpandedHeight = finalHeight
     }
     
     // MARK: - HtmlRoomInputToolbarViewProtocol
