@@ -73,6 +73,7 @@ struct UserOtherSessions: View {
                 .font(theme.fonts.footnote)
                 .foregroundColor(theme.colors.primaryContent)
                 .padding(.bottom, 20)
+                .accessibilityIdentifier("UserOtherSessions.noItemsText")
             Button {
                 viewModel.send(viewAction: .clearFilter)
             } label: {
@@ -87,6 +88,7 @@ struct UserOtherSessions: View {
                 }
                 .background(theme.colors.background)
             }
+            .accessibilityIdentifier(VectorL10n.userOtherSessionClearFilter)
         }
     }
     

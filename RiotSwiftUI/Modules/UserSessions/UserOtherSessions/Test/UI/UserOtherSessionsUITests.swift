@@ -114,4 +114,12 @@ class UserOtherSessionsUITests: MockScreenTestCase {
         XCTAssertTrue(button.exists)
         XCTAssertFalse(buttonLearnMore.exists)
     }
+    
+    func test_whenNoSessionAreShown_theLayoutIsCorrect() {
+        app.goToScreenWithIdentifier(MockUserOtherSessionsScreenState.none.title)
+        let button = app.buttons[VectorL10n.userOtherSessionClearFilter]
+        let text = app.staticTexts["UserOtherSessions.noItemsText"]
+        XCTAssertTrue(button.exists)
+        XCTAssertTrue(text.exists)
+    }
 }

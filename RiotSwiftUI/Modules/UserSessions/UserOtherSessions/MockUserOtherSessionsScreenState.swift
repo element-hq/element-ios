@@ -25,6 +25,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
     // mock that screen.
     
     case all
+    case none
     case inactiveSessions
     case unverifiedSessions
     case verifiedSessions
@@ -37,7 +38,7 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
     /// A list of screen state definitions
     static var allCases: [MockUserOtherSessionsScreenState] {
         // Each of the presence statuses
-        [.all, .inactiveSessions, .unverifiedSessions, .verifiedSessions]
+        [.all, .none, .inactiveSessions, .unverifiedSessions, .verifiedSessions]
     }
     
     /// Generate the view struct for the screen state.
@@ -46,6 +47,11 @@ enum MockUserOtherSessionsScreenState: MockScreenState, CaseIterable {
         switch self {
         case .all:
             viewModel = UserOtherSessionsViewModel(sessionInfos: allSessions(),
+                                                   filter: .all,
+                                                   title: VectorL10n.userSessionsOverviewOtherSessionsSectionTitle,
+                                                   settingService: MockUserSessionSettings())
+        case .none:
+            viewModel = UserOtherSessionsViewModel(sessionInfos: [],
                                                    filter: .all,
                                                    title: VectorL10n.userSessionsOverviewOtherSessionsSectionTitle,
                                                    settingService: MockUserSessionSettings())
