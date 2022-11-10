@@ -118,6 +118,12 @@ class UserSessionsOverviewServiceTests: XCTestCase {
     }
 }
 
+private extension UserSessionsOverviewServiceProtocol {
+    var unverifiedSessions: [UserSessionInfo] { overviewDataPublisher.value.unverifiedSessions }
+    var inactiveSessions: [UserSessionInfo] { overviewDataPublisher.value.inactiveSessions }
+    var linkDeviceEnabled: Bool { overviewDataPublisher.value.linkDeviceEnabled }
+}
+
 private class MockUserSessionsDataProvider: UserSessionsDataProviderProtocol {
     enum Mode {
         case currentSessionUnverified
