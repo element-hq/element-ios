@@ -2095,7 +2095,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     };
 
     // Check if the server supports LL sync filter
-    MXFilterJSONModel *filter = [self syncFilterWithLazyLoadOfRoomMembers:YES];
+    MXFilterJSONModel *filter = [self syncFilterWithLazyLoadOfRoomMembers:YES supportsNotificationsForThreads:NO];
     [mxSession.store filterIdForFilter:filter success:^(NSString * _Nullable filterId) {
 
         if (filterId)
@@ -2133,28 +2133,38 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     // Check settings
     BOOL syncWithLazyLoadOfRoomMembersSetting = [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers;
 
-    if (syncWithLazyLoadOfRoomMembersSetting)
-    {
-        // Check if the server supports LL sync filter before enabling it
-        [self supportLazyLoadOfRoomMembers:^(BOOL supportLazyLoadOfRoomMembers) {
+    void(^buildSyncFilter)(BOOL) = ^(BOOL supportsNotificationsForThreads) {
+        if (syncWithLazyLoadOfRoomMembersSetting)
+        {
+            // Check if the server supports LL sync filter before enabling it
+            [self supportLazyLoadOfRoomMembers:^(BOOL supportLazyLoadOfRoomMembers) {
 
-            if (supportLazyLoadOfRoomMembers)
-            {
-                completion([self syncFilterWithLazyLoadOfRoomMembers:YES]);
-            }
-            else
-            {
-                // No support from the HS
-                // Disable the setting. That will avoid to make a request at every startup
-                [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = NO;
-                completion([self syncFilterWithLazyLoadOfRoomMembers:NO]);
-            }
-        }];
-    }
-    else
-    {
-        completion([self syncFilterWithLazyLoadOfRoomMembers:NO]);
-    }
+                if (supportLazyLoadOfRoomMembers)
+                {
+                    completion([self syncFilterWithLazyLoadOfRoomMembers:YES
+                                         supportsNotificationsForThreads:supportsNotificationsForThreads]);
+                }
+                else
+                {
+                    // No support from the HS
+                    // Disable the setting. That will avoid to make a request at every startup
+                    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = NO;
+                    completion([self syncFilterWithLazyLoadOfRoomMembers:NO
+                                         supportsNotificationsForThreads:supportsNotificationsForThreads]);
+                }
+            }];
+        }
+        else
+        {
+            completion([self syncFilterWithLazyLoadOfRoomMembers:NO supportsNotificationsForThreads:supportsNotificationsForThreads]);
+        }
+    };
+
+    [mxSession supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
+        buildSyncFilter(matrixVersions.supportsNotificationsForThreads);
+    } failure:^(NSError *error) {
+        buildSyncFilter(NO);
+    }];
 }
 
 /**
@@ -2163,7 +2173,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
  @param syncWithLazyLoadOfRoomMembers enable LL support.
  @return the sync filter to use.
  */
-- (MXFilterJSONModel *)syncFilterWithLazyLoadOfRoomMembers:(BOOL)syncWithLazyLoadOfRoomMembers
+- (MXFilterJSONModel *)syncFilterWithLazyLoadOfRoomMembers:(BOOL)syncWithLazyLoadOfRoomMembers supportsNotificationsForThreads:(BOOL)supportsNotificationsForThreads
 {
     MXFilterJSONModel *syncFilter;
     NSUInteger limit = 10;
@@ -2198,11 +2208,11 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     // Set that limit in the filter
     if (syncWithLazyLoadOfRoomMembers)
     {
-        syncFilter = [MXFilterJSONModel syncFilterForLazyLoadingWithMessageLimit:limit unreadThreadNotifications:YES];
+        syncFilter = [MXFilterJSONModel syncFilterForLazyLoadingWithMessageLimit:limit unreadThreadNotifications:supportsNotificationsForThreads];
     }
     else
     {
-        syncFilter = [MXFilterJSONModel syncFilterWithMessageLimit:limit unreadThreadNotifications:YES];
+        syncFilter = [MXFilterJSONModel syncFilterWithMessageLimit:limit unreadThreadNotifications:supportsNotificationsForThreads];
     }
 
     // TODO: We could extend the filter to match other settings (self.showAllEventsInRoomHistory,
