@@ -177,11 +177,20 @@ extension RoomViewController {
             }
             wysiwygInputToolbar.showKeyboard()
             roomInputToolbarContainer.removeFromSuperview()
-            let dimmingView = UIView(frame: view.bounds)
+            let dimmingView = UIView()
             // Same as the system dimming background color
+            dimmingView.translatesAutoresizingMaskIntoConstraints = false
             dimmingView.backgroundColor = .black.withAlphaComponent(ThemeService.shared().isCurrentThemeDark() ? 0.29 : 0.12)
             maximisedToolbarDimmingView = dimmingView
             view.addSubview(dimmingView)
+            NSLayoutConstraint.activate(
+                [
+                    dimmingView.topAnchor.constraint(equalTo: view.topAnchor),
+                    dimmingView.leftAnchor.constraint(equalTo: view.leftAnchor),
+                    dimmingView.rightAnchor.constraint(equalTo: view.rightAnchor),
+                    dimmingView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                ]
+            )
             dimmingView.addSubview(self.roomInputToolbarContainer)
             roomInputToolbarContainer.frame = originalRect
             roomInputToolbarContainer.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
@@ -202,9 +211,9 @@ extension RoomViewController {
                 textView?.becomeFirstResponder()
                 wysiwygInputToolbar.showKeyboard()
             }
-            let superView = self.roomInputToolbarContainer.superview
             self.roomInputToolbarContainer.removeFromSuperview()
-            superView?.removeFromSuperview()
+            maximisedToolbarDimmingView?.removeFromSuperview()
+            maximisedToolbarDimmingView = nil
             self.view.insertSubview(self.roomInputToolbarContainer, belowSubview: self.overlayContainerView)
             roomInputToolbarContainer.frame = originalRect
             NSLayoutConstraint.activate(self.toolbarContainerConstraints)
