@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,8 @@ final class ComposerViewModelTests: XCTestCase {
     var context: ComposerViewModel.Context!
     
     override func setUpWithError() throws {
-        viewModel = ComposerViewModel(initialViewState: ComposerViewState(bindings: ComposerBindings(focused: false)))
+        viewModel = ComposerViewModel(initialViewState: ComposerViewState(textFormattingEnabled: true,
+                                                                          bindings: ComposerBindings(focused: false)))
         context = viewModel.context
     }
     
