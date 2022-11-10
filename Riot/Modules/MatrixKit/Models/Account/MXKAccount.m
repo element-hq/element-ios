@@ -2088,7 +2088,8 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 #pragma mark - Sync filter
 
-- (void)supportLazyLoadOfRoomMembers:(void (^)(BOOL supportLazyLoadOfRoomMembers))completion
+- (void)supportLazyLoadOfRoomMembersWithMatrixVersion:(MXMatrixVersions *)matrixVersions
+                                           completion:(void (^)(BOOL supportLazyLoadOfRoomMembers))completion
 {
     void(^onUnsupportedLazyLoadOfRoomMembers)(NSError *) = ^(NSError *error) {
         completion(NO);
@@ -2106,8 +2107,8 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         else
         {
             // Check the Matrix versions supported by the HS
-            [self.mxSession supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
-
+            if (matrixVersions)
+            {
                 if (matrixVersions.supportLazyLoadMembers)
                 {
                     // The HS supports LL
@@ -2117,8 +2118,11 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                 {
                     onUnsupportedLazyLoadOfRoomMembers(nil);
                 }
-
-            } failure:onUnsupportedLazyLoadOfRoomMembers];
+            }
+            else
+            {
+                completion(NO);
+            }
         }
     } failure:onUnsupportedLazyLoadOfRoomMembers];
 }
@@ -2133,11 +2137,14 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     // Check settings
     BOOL syncWithLazyLoadOfRoomMembersSetting = [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers;
 
-    void(^buildSyncFilter)(BOOL) = ^(BOOL supportsNotificationsForThreads) {
+    void(^buildSyncFilter)(MXMatrixVersions *) = ^(MXMatrixVersions *matrixVersions) {
+        BOOL supportsNotificationsForThreads = matrixVersions ? matrixVersions.supportsNotificationsForThreads : NO;
+        
         if (syncWithLazyLoadOfRoomMembersSetting)
         {
             // Check if the server supports LL sync filter before enabling it
-            [self supportLazyLoadOfRoomMembers:^(BOOL supportLazyLoadOfRoomMembers) {
+            [self supportLazyLoadOfRoomMembersWithMatrixVersion:matrixVersions completion:^(BOOL supportLazyLoadOfRoomMembers) {
+                
 
                 if (supportLazyLoadOfRoomMembers)
                 {
@@ -2161,9 +2168,10 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     };
 
     [mxSession supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
-        buildSyncFilter(matrixVersions.supportsNotificationsForThreads);
+        buildSyncFilter(matrixVersions);
     } failure:^(NSError *error) {
-        buildSyncFilter(NO);
+        MXLogWarning(@"[MXAccount] buildSyncFilter: failed to get supported versions: %@", error);
+        buildSyncFilter(nil);
     }];
 }
 
