@@ -52,7 +52,6 @@ private extension UserSessionNameUITests {
         
         for buttonId in buttons {
             let button = app.buttons[buttonId]
-            button.tap()
             XCTAssertTrue(button.exists)
         }
     }
