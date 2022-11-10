@@ -58,6 +58,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }
     }
     
+    override var isFocused: Bool {
+        viewModel.isFocused
+    }
+    
     var isMaximised: Bool {
         wysiwygViewModel.maximised
     }
@@ -142,9 +146,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                     guard let self = self else { return }
                     self.toolbarViewDelegate?.didChangeMaximisedState(value)
                     self.hostingViewController.view.layer.cornerRadius = value ? 20 : 0
-                    if value {
-                        self.viewModel.showKeyboard()
-                    }
                 }
         ]
         
@@ -165,6 +166,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     override func dismissKeyboard() {
         self.viewModel.dismissKeyboard()
+    }
+    
+    func showKeyboard() {
+        self.viewModel.showKeyboard()
     }
     
     func minimise() {

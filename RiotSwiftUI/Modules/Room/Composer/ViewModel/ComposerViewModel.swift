@@ -63,6 +63,10 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
         }
     }
     
+    var isFocused: Bool {
+        state.bindings.focused
+    }
+    
     // MARK: - Public
     
     override func process(viewAction: ComposerViewAction) {

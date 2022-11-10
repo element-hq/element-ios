@@ -23,6 +23,7 @@ protocol ComposerViewModelProtocol {
     var textFormattingEnabled: Bool { get set }
     var eventSenderDisplayName: String? { get set }
     var placeholder: String? { get set }
+    var isFocused: Bool { get }
     
     func dismissKeyboard()
     func showKeyboard()
