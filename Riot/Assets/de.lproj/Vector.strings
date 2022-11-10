@@ -2666,3 +2666,7 @@
 "user_session_unverified_session_description" = "Nicht verifizierte Sitzungen sind jene, die angemeldet, aber nicht quer signiert sind.\n\nDu solltest besonders sicherstellen, dass du diese Sitzungen erkennst, da sie auf eine nicht autorisierte Nutzung deines Kontos hindeuten könnten.";
 "user_session_unverified_session_title" = "Nicht verifizierte Sitzungen";
 "user_session_verified_session_title" = "Verifizierte Sitzungen";
+"key_verification_alert_body" = "Überprüfe sie, um ein sicheres Konto gewährleisten zu können.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Du hast nicht verifizierte Sitzungen";
