@@ -139,8 +139,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
     
     private func sendWysiwygMessage(content: WysiwygComposerContent) {
-        let html = content.html.isEmpty ? content.plainText : content.html
-        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: html, withRawText: content.plainText)
+        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.markdown)
     }
     
     private func showSendMediaActions() {
