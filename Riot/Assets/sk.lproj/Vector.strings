@@ -2846,3 +2846,16 @@
 "manage_session_sign_out_other_sessions" = "Odhlásiť zo všetkých ostatných relácií";
 "voice_broadcast_tile" = "Hlasové vysielanie";
 "voice_broadcast_live" = "Naživo";
+"user_session_rename_session_description" = "Ostatní používatelia v priamych správach a miestnostiach, do ktorých sa pripojíte, si môžu pozrieť úplný zoznam vašich relácií.\n\nTo im poskytuje istotu, že komunikujú naozaj s vami, ale zároveň to znamená, že vidia názov relácie, ktorý sem zadáte.";
+"user_session_rename_session_title" = "Premenovanie relácií";
+"user_session_inactive_session_description" = "Neaktívne relácie sú relácie, ktoré ste určitý čas nepoužívali, ale naďalej dostávajú šifrovacie kľúče.\n\nOdstránenie neaktívnych relácií zvyšuje bezpečnosť a výkon a uľahčuje identifikáciu podozrivých nových relácií.";
+"user_session_inactive_session_title" = "Neaktívne relácie";
+"user_session_unverified_session_description" = "Neoverené relácie sú relácie, do ktorých ste sa prihlásili pomocou svojich prístupových údajov, ale ktoré neboli krížovo overené.\n\nMali by ste si byť obzvlášť istí, že tieto relácie poznáte, pretože by mohli predstavovať neoprávnené použitie vášho konta.";
+"user_session_unverified_session_title" = "Neoverená relácia";
+"user_session_verified_session_description" = "Overené relácie sú všade tam, kde používate Element po zadaní svojho prístupového hesla alebo po potvrdení svojej totožnosti inou overenou reláciou.\n\nTo znamená, že máte všetky kľúče potrebné na odomknutie zašifrovaných správ a potvrdenie pre ostatných používateľov, že tejto relácii dôverujete.";
+"user_session_verified_session_title" = "Overené relácie";
+"user_session_got_it" = "Rozumiem";
+"key_verification_alert_body" = "Skontrolujte, či je vaše konto bezpečné.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Máte neoverené relácie";
