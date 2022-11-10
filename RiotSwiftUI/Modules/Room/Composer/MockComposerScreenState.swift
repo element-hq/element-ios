@@ -32,12 +32,12 @@ enum MockComposerScreenState: MockScreenState, CaseIterable {
         let bindings = ComposerBindings(focused: false)
         
         switch self {
-        case .send: viewModel = ComposerViewModel(initialViewState: ComposerViewState(bindings: bindings))
-        case .edit: viewModel = ComposerViewModel(initialViewState: ComposerViewState(sendMode: .edit, bindings: bindings))
-        case .reply: viewModel = ComposerViewModel(initialViewState: ComposerViewState(eventSenderDisplayName: "TestUser", sendMode: .reply, bindings: bindings))
+        case .send: viewModel = ComposerViewModel(initialViewState: ComposerViewState(textFormattingEnabled: true, bindings: bindings))
+        case .edit: viewModel = ComposerViewModel(initialViewState: ComposerViewState(sendMode: .edit, textFormattingEnabled: true, bindings: bindings))
+        case .reply: viewModel = ComposerViewModel(initialViewState: ComposerViewState(eventSenderDisplayName: "TestUser", sendMode: .reply, textFormattingEnabled: true, bindings: bindings))
         }
         
-        let wysiwygviewModel = WysiwygComposerViewModel(minHeight: 20, maxHeight: 360)
+        let wysiwygviewModel = WysiwygComposerViewModel(minHeight: 20, maxCompressedHeight: 360)
         
         viewModel.callback = { [weak viewModel, weak wysiwygviewModel] result in
             guard let viewModel = viewModel else { return }

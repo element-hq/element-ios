@@ -1,5 +1,5 @@
-// 
-// Copyright 2021 Vector Creations Ltd
+//
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,9 @@
 // limitations under the License.
 //
 
-// Version
-MARKETING_VERSION = 1.9.12
-CURRENT_PROJECT_VERSION = 1.9.12
+import Foundation
+
+protocol InfoSheetViewModelProtocol {
+    var completion: ((InfoSheetViewModelResult) -> Void)? { get set }
+    var context: InfoSheetViewModelType.Context { get }
+}

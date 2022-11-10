@@ -45,7 +45,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var heightConstraint: NSLayoutConstraint!
     private var hostingViewController: VectorHostingController!
     private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
-    private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState(bindings: ComposerBindings(focused: false)))
+    private var viewModel: ComposerViewModelProtocol = ComposerViewModel(
+        initialViewState: ComposerViewState(textFormattingEnabled: RiotSettings.shared.enableWysiwygTextFormatting,
+                                            bindings: ComposerBindings(focused: false)))
     
     // MARK: Public
     
@@ -191,8 +193,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
     
     private func sendWysiwygMessage(content: WysiwygComposerContent) {
-        let html = content.html.isEmpty ? content.plainText : content.html
-        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: html, withRawText: content.plainText)
+        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.markdown)
     }
     
     private func showSendMediaActions() {

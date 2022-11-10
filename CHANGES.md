@@ -1,3 +1,10 @@
+## Changes in 1.9.11 (2022-11-08)
+
+🐛 Bugfixes
+
+- Prevent autolayout crashes when showing toast notifications ([#7046](https://github.com/vector-im/element-ios/pull/7046))
+
+
 ## Changes in 1.9.10 (2022-11-01)
 
 ✨ Features

@@ -90,11 +90,9 @@ jobs:
       - name: Build Ad-hoc release and send it to Diawi
         run: bundle exec fastlane alpha
         env:
-          # Automatically bypass 2FA upgrade if possible on Apple account.
-          SPACESHIP_SKIP_2FA_UPGRADE: true
-          APPLE_ID: ${{ secrets.FASTLANE_USER }}
-          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          APPSTORECONNECT_KEY_ID: ${{ secrets.APPSTORECONNECT_KEY_ID }}
+          APPSTORECONNECT_KEY_ISSUER_ID: ${{ secrets.APPSTORECONNECT_KEY_ISSUER_ID }}
+          APPSTORECONNECT_KEY_CONTENT: ${{ secrets.APPSTORECONNECT_KEY_CONTENT }}
           DIAWI_API_TOKEN: ${{ secrets.DIAWI_API_TOKEN }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 

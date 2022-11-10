@@ -39,10 +39,11 @@ struct InlineTextButton: View {
     ///   - mainText: The main text that shouldn't appear tappable. This must contain a single `%@` placeholder somewhere within.
     ///   - tappableText: The tappable text that will be substituted into the `%@` placeholder.
     ///   - action: The action to perform when tapping the button.
-    internal init(_ mainText: String, tappableText: String, action: @escaping () -> Void) {
+    ///   - alwaysCallAction: If true calls the action on tap action even if the `tappableText` isn't found inside the `mainText`
+    init(_ mainText: String, tappableText: String, alwaysCallAction: Bool = true, action: @escaping () -> Void) {
         guard let range = mainText.range(of: "%@") else {
             components = [StringComponent(string: Substring(mainText), isTinted: false)]
-            self.action = action
+            self.action = alwaysCallAction ? action : { }
             return
         }
         
@@ -69,8 +70,13 @@ struct InlineTextButton: View {
         
         func makeBody(configuration: Configuration) -> some View {
             components.reduce(Text("")) { lastValue, component in
-                lastValue + Text(component.string)
-                    .foregroundColor(component.isTinted ? .accentColor.opacity(configuration.isPressed ? 0.2 : 1) : nil)
+                var text: Text = .init(component.string)
+                
+                if component.isTinted {
+                    text = text.foregroundColor(.accentColor.opacity(configuration.isPressed ? 0.2 : 1))
+                }
+                
+                return lastValue + text
             }
         }
     }

@@ -20,11 +20,11 @@ import XCTest
 
 class UserOtherSessionsViewModelTests: XCTestCase {
     private let unverifiedSectionHeader = UserOtherSessionsHeaderViewData(title: VectorL10n.userSessionUnverifiedShort,
-                                                                          subtitle: VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle,
+                                                                          subtitle: VectorL10n.userOtherSessionUnverifiedSessionsHeaderSubtitle + " %@",
                                                                           iconName: Asset.Images.userOtherSessionsUnverified.name)
     
     private let inactiveSectionHeader = UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuInactive,
-                                                                        subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo,
+                                                                        subtitle: VectorL10n.userSessionsOverviewSecurityRecommendationsInactiveInfo + " %@",
                                                                         iconName: Asset.Images.userOtherSessionsInactive.name)
     
     private let allSectionHeader = UserOtherSessionsHeaderViewData(title: nil,
@@ -32,7 +32,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                                    iconName: nil)
     
     private let verifiedSectionHeader = UserOtherSessionsHeaderViewData(title: VectorL10n.userOtherSessionFilterMenuVerified,
-                                                                        subtitle: VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle,
+                                                                        subtitle: VectorL10n.userOtherSessionVerifiedSessionsHeaderSubtitle + " %@",
                                                                         iconName: Asset.Images.userOtherSessionsVerified.name)
     
     func test_whenUserOtherSessionSelectedProcessed_completionWithShowUserSessionOverviewCalled() {

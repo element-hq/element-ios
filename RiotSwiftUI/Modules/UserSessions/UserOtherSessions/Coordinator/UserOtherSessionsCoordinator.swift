@@ -59,6 +59,8 @@ final class UserOtherSessionsCoordinator: Coordinator, Presentable {
                 self.completion?(.openSessionOverview(sessionInfo: session))
             case let .logoutFromUserSessions(sessionInfos: sessionInfos):
                 self.completion?(.logoutFromUserSessions(sessionInfos: sessionInfos))
+            case .showSessionStateInfo(filter: let filter):
+                self.completion?(.showSessionStateByFilter(filter: filter))
             }
             MXLog.debug("[UserOtherSessionsCoordinator] UserOtherSessionsViewModel did complete with result: \(result).")
         }

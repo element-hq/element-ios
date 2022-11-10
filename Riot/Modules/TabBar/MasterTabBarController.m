@@ -903,7 +903,7 @@
 
 - (void)presentReviewUnverifiedSessionsAlertIfNeededWithSession:(MXSession*)session
 {
-    if (RiotSettings.shared.hideReviewSessionsAlert || self.reviewSessionAlertHasBeenDisplayed)
+    if (self.reviewSessionAlertHasBeenDisplayed)
     {
         return;
     }
@@ -934,8 +934,8 @@
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n keyVerificationSelfVerifyUnverifiedSessionsAlertTitle]
-                                                                   message:[VectorL10n keyVerificationSelfVerifyUnverifiedSessionsAlertMessage]
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n keyVerificationAlertTitle]
+                                                                   message:[VectorL10n keyVerificationAlertBody]
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction]
@@ -947,13 +947,6 @@
     [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n later]
                                               style:UIAlertActionStyleCancel
                                             handler:nil]];
-    
-    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n doNotAskAgain]
-                                              style:UIAlertActionStyleDestructive
-                                            handler:^(UIAlertAction * action) {
-                                                RiotSettings.shared.hideReviewSessionsAlert = YES;
-                                            }]];
-    
     
     [self presentViewController:alert animated:YES completion:nil];
     
@@ -975,7 +968,6 @@
 {
     self.reviewSessionAlertHasBeenDisplayed = NO;
     RiotSettings.shared.hideVerifyThisSessionAlert = NO;
-    RiotSettings.shared.hideReviewSessionsAlert = NO;
 }
 
 #pragma mark - UITabBarDelegate

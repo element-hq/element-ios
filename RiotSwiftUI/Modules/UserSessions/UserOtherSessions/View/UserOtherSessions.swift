@@ -31,9 +31,13 @@ struct UserOtherSessions: View {
                         itemsView()
                     }
                 } header: {
-                    UserOtherSessionsHeaderView(viewData: viewModel.viewState.header)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.top, 24.0)
+                    UserOtherSessionsHeaderView(
+                        viewData: viewModel.viewState.header,
+                        onLearnMoreAction: {
+                            viewModel.send(viewAction: .viewSessionInfo)
+                        }
+                    )
+                    .padding(.top)
                 }
             }
             if viewModel.isEditModeEnabled {
