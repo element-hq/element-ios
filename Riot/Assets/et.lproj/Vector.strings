@@ -2604,3 +2604,7 @@
 "user_session_verified_session_description" = "Verifitseeritud sessioonidesks loetakse Element'is või mõnes muus Matrix'i rakenduses selliseid sessioone, kus sa kas oled sisestanud oma salafraasi või tuvastanud end mõne teise verifitseeritud sessiooni abil.\n\nSee tähendab, et selles sessioonis on ka kõik vajalikud võtmed krüptitud sõnumite lugemiseks ja teistele kasutajatele kinnitamiseks, et sa usaldad seda sessiooni.";
 "user_session_verified_session_title" = "Verifitseeritud sessioonid";
 "user_session_got_it" = "Selge lugu";
+"key_verification_alert_body" = "Tagamaks, et su konto on sinu kontrolli all, vaata andmed üle.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Sul on verifitseerimata sessioone";
