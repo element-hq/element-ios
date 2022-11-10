@@ -1548,9 +1548,8 @@ Tap the + to start adding people.";
 "key_verification_self_verify_current_session_alert_validate_action" = "Verify";
 
 // Unverified sessions
-
-"key_verification_self_verify_unverified_sessions_alert_title" = "Review where you're logged in";
-"key_verification_self_verify_unverified_sessions_alert_message" = "Verify all your sessions to ensure your account & messages are safe.";
+"key_verification_alert_title" = "You have unverified sessions";
+"key_verification_alert_body" = "Review to ensure your account is safe.";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Review";
 
 // MARK: Self verification wait

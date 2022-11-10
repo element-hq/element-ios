@@ -203,9 +203,6 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "hideVerifyThisSessionAlert", defaultValue: false, storage: defaults)
     var hideVerifyThisSessionAlert
     
-    @UserDefault(key: "hideReviewSessionsAlert", defaultValue: false, storage: defaults)
-    var hideReviewSessionsAlert
-    
     @UserDefault(key: "matrixApps", defaultValue: false, storage: defaults)
     var matrixApps
     
