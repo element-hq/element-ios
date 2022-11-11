@@ -132,7 +132,7 @@ struct Composer: View {
         }
         .clipShape(rect)
         .overlay(rect.stroke(borderColor, lineWidth: 1))
-         .animation(.easeInOut(duration: resizeAnimationDuration), value: wysiwygViewModel.idealHeight)
+        .animation(.easeInOut(duration: resizeAnimationDuration), value: wysiwygViewModel.idealHeight)
         .padding(.top, 8)
         .onTapGesture {
             if viewModel.focused {
