@@ -168,7 +168,7 @@ extension RoomViewController {
             } else {
                 return
             }
-            let originalRect = wysiwygInputToolbar.convert(wysiwygInputToolbar.frame, to: view)
+            let originalRect = roomInputToolbarContainer.convert(roomInputToolbarContainer.frame, to: view)
             var textView: UITextView?
             if wysiwygInputToolbar.isFocused {
                 textView = UITextView()
@@ -183,6 +183,7 @@ extension RoomViewController {
             dimmingView.backgroundColor = .black.withAlphaComponent(ThemeService.shared().isCurrentThemeDark() ? 0.29 : 0.12)
             maximisedToolbarDimmingView = dimmingView
             view.addSubview(dimmingView)
+            dimmingView.frame = view.bounds
             NSLayoutConstraint.activate(
                 [
                     dimmingView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -197,7 +198,8 @@ extension RoomViewController {
             roomInputToolbarContainer.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
             roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
             UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut]) {
-                wysiwygInputToolbar.layoutIfNeeded()
+                view.layoutIfNeeded()
+                self.roomInputToolbarContainer.layoutIfNeeded()
             }
             let panGesture = UIPanGestureRecognizer(target: self, action: #selector(didPanRoomToolbarContainer(_ :)))
             roomInputToolbarContainer.addGestureRecognizer(panGesture)
@@ -258,15 +260,9 @@ private extension RoomViewController {
                 wysiwygInputToolbar.minimise()
             } else {
                 wysiwygInputToolbar.idealHeight = wysiwygInputToolbar.maxExpandedHeight
-                UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut]) {
-                    wysiwygInputToolbar.layoutIfNeeded()
-                }
             }
         case .cancelled:
             wysiwygInputToolbar.idealHeight = wysiwygInputToolbar.maxExpandedHeight
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseInOut]) {
-                wysiwygInputToolbar.layoutIfNeeded()
-            }
         default:
             break
         }
