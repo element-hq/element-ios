@@ -2604,7 +2604,7 @@
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Ricorda che i nomi di sessione sono anche visibili alle persone con cui comunichi. %@";
 "manage_session_name_hint" = "I nomi di sessione personalizzati possono aiutarti a riconoscere i tuoi dispositivi più facilmente.";
-"settings_labs_enable_wysiwyg_composer" = "Prova l'editor in rich text (il testo semplice è in arrivo)";
+"settings_labs_enable_wysiwyg_composer" = "Prova l'editor in rich text";
 "settings_labs_enable_voice_broadcast" = "Trasmissione vocale (in sviluppo attivo)";
 "wysiwyg_composer_start_action_voice_broadcast" = "Trasmissione vocale";
 "voice_broadcast_playback_loading_error" = "Impossibile avviare questa trasmissione vocale.";
@@ -2621,3 +2621,18 @@
 "user_sessions_hide_location_info" = "Nascondi indirizzo IP";
 "user_sessions_show_location_info" = "Mostra indirizzo IP";
 "manage_session_sign_out_other_sessions" = "Disconnetti da tutte le altre sessioni";
+"user_session_rename_session_description" = "Gli altri utenti nei messaggi diretti e nelle stanze in cui entri, possono vedere una lista completa delle tue sessioni.\n\nIn questo modo hanno la certezza che stanno parlando davvero con te, ma significa anche che possono vedere il nome della sessione che inserisci qui.";
+"user_session_rename_session_title" = "Rinominare le sessioni";
+"user_session_inactive_session_description" = "Le sessioni inattive sono quelle che non usi da un po' di tempo, ma che continuano a ricevere chiavi di crittografia.\n\nLa rimozione di sessioni inattive migliora la sicurezza e le prestazioni, e ti rende più facile capire se una sessione nuova è sospetta.";
+"user_session_inactive_session_title" = "Sessioni inattive";
+"user_session_unverified_session_description" = "Le sessioni non verificate sono quelle in cui è stato fatto l'accesso con le tue credenziali, ma che non sono state verificate.\n\nDovresti essere particolarmente sicuro di riconoscere queste sessioni dato che potrebbero rappresentare un uso non autorizzato del tuo account.";
+"user_session_unverified_session_title" = "Sessione non verificata";
+"user_session_verified_session_description" = "Le sessioni verificate sono ovunque usi Element dopo l'inserimento della password o la conferma della tua identità con un'altra sessione verificata.\n\nCiò significa che hai tutte le chiavi necessarie per sbloccare i tuoi messaggi cifrati e per confermare agli altri utenti che ti fidi di questa sessione.";
+"user_session_verified_session_title" = "Sessioni verificate";
+"user_session_got_it" = "Capito";
+"voice_broadcast_tile" = "Trasmissione vocale";
+"voice_broadcast_live" = "In diretta";
+"key_verification_alert_body" = "Controlla per assicurarti che l'account sia sicuro.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Hai sessioni non verificate";
