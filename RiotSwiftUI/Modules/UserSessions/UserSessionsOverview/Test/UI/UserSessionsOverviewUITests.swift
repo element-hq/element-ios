@@ -23,8 +23,6 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         
         XCTAssertTrue(app.buttons["userSessionCardVerifyButton"].exists)
         XCTAssertTrue(app.staticTexts["userSessionCardViewDetails"].exists)
-
-        verifyLinkDeviceButtonStatus(true)
     }
     
     func testCurrentSessionVerified() {
@@ -33,7 +31,6 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         XCTAssertTrue(app.staticTexts["userSessionCardViewDetails"].exists)
         app.buttons["MoreOptionsMenu"].tap()
         XCTAssertTrue(app.buttons["Sign out of all other sessions"].exists)
-        verifyLinkDeviceButtonStatus(true)
     }
     
     func testOnlyUnverifiedSessions() {
@@ -41,8 +38,6 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         
         XCTAssertTrue(app.staticTexts["userSessionsOverviewSecurityRecommendationsSection"].exists)
         XCTAssertTrue(app.staticTexts["userSessionsOverviewOtherSection"].exists)
-
-        verifyLinkDeviceButtonStatus(false)
     }
     
     func testOnlyInactiveSessions() {
@@ -50,8 +45,6 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         
         XCTAssertTrue(app.staticTexts["userSessionsOverviewSecurityRecommendationsSection"].exists)
         XCTAssertTrue(app.staticTexts["userSessionsOverviewOtherSection"].exists)
-
-        verifyLinkDeviceButtonStatus(false)
     }
     
     func testNoOtherSessions() {
@@ -61,18 +54,6 @@ class UserSessionsOverviewUITests: MockScreenTestCase {
         XCTAssertFalse(app.staticTexts["userSessionsOverviewOtherSection"].exists)
         app.buttons["MoreOptionsMenu"].tap()
         XCTAssertFalse(app.buttons["Sign out of all other sessions"].exists)
-        verifyLinkDeviceButtonStatus(false)
-    }
-
-    func verifyLinkDeviceButtonStatus(_ enabled: Bool) {
-//        if enabled {
-//            let linkDeviceButton = app.buttons["linkDeviceButton"]
-//            XCTAssertTrue(linkDeviceButton.exists)
-//            XCTAssertTrue(linkDeviceButton.isEnabled)
-//        } else {
-//            let linkDeviceButton = app.buttons["linkDeviceButton"]
-//            XCTAssertFalse(linkDeviceButton.exists)
-//        }
     }
     
     func testWhenMoreThan5OtherSessionsThenViewAllButtonVisible() {

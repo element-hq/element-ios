@@ -346,7 +346,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         UserOtherSessionsViewModel(sessionInfos: sessionInfos,
                                    filter: filter,
                                    title: title,
-                                   settingService: MockUserSessionSettings())
+                                   settingsService: MockUserSessionSettings())
     }
     
     private func createUserSessionInfo(sessionId: String,

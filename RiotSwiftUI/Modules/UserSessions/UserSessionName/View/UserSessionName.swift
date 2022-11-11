@@ -42,6 +42,7 @@ struct UserSessionName: View {
                 viewModel.send(viewAction: .learnMore)
             }
             .foregroundColor(theme.colors.secondaryContent)
+            .accessibility(identifier: "LearnMore")
         }
     }
     

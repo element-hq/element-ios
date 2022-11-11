@@ -15,7 +15,6 @@
 //
 
 import XCTest
-
 @testable import RiotSwiftUI
 
 class UserSessionNameViewModelTests: XCTestCase {
@@ -47,5 +46,39 @@ class UserSessionNameViewModelTests: XCTestCase {
         
         // Then the done button should be enabled.
         XCTAssertTrue(context.viewState.canUpdateName, "The done button should be enabled when the name has been changed.")
+    }
+    
+    func testCancelIsCalled() {
+        viewModel.completion = { result in
+            guard case .cancel = result else {
+                XCTFail()
+                return
+            }
+        }
+        
+        viewModel.context.send(viewAction: .cancel)
+    }
+    
+    func testLearnMoreIsCalled() {
+        viewModel.completion = { result in
+            guard case .learnMore = result else {
+                XCTFail()
+                return
+            }
+        }
+        
+        viewModel.context.send(viewAction: .learnMore)
+    }
+    
+    func testUpdateNameIsCalled() {
+        viewModel.completion = { result in
+            guard case let .updateName(name) = result else {
+                XCTFail()
+                return
+            }
+            XCTAssertEqual(name, "Element Mobile: iOS")
+        }
+        
+        viewModel.context.send(viewAction: .done)
     }
 }
