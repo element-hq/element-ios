@@ -75,13 +75,14 @@ struct UserSessionListItem: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 16)
             }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                onBackgroundTap?(viewData.sessionId)
+            }
+            .onLongPressGesture {
+                onBackgroundLongPress?(viewData.sessionId)
+            }
         }
-        .simultaneousGesture(LongPressGesture().onEnded { _ in
-            onBackgroundLongPress?(viewData.sessionId)
-        })
-        .simultaneousGesture(TapGesture().onEnded {
-            onBackgroundTap?(viewData.sessionId)
-        })
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityIdentifier("UserSessionListItem_\(viewData.sessionId)")
     }
