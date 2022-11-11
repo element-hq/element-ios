@@ -88,7 +88,7 @@ struct UserOtherSessions: View {
                 }
                 .background(theme.colors.background)
             }
-            .accessibilityIdentifier(VectorL10n.userOtherSessionClearFilter)
+            .accessibilityIdentifier("UserOtherSessions.clearFilter")
         }
     }
     
