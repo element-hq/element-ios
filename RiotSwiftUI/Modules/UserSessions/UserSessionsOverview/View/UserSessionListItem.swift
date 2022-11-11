@@ -75,6 +75,7 @@ struct UserSessionListItem: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 16)
             }
+            .contentShape(Rectangle())
             .onTapGesture {
                 onBackgroundTap?(viewData.sessionId)
             }
