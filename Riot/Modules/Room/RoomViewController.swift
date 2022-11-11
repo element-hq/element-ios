@@ -168,18 +168,19 @@ extension RoomViewController {
             } else {
                 return
             }
-            let originalRect = roomInputToolbarContainer.convert(roomInputToolbarContainer.frame, to: view)
+            var originalRect = roomInputToolbarContainer.convert(roomInputToolbarContainer.frame, to: view)
             var textView: UITextView?
             if wysiwygInputToolbar.isFocused {
                 textView = UITextView()
                 self.view.window?.addSubview(textView!)
                 textView?.becomeFirstResponder()
+                originalRect = wysiwygInputToolbar.convert(wysiwygInputToolbar.frame, to: view)
             }
             wysiwygInputToolbar.showKeyboard()
             roomInputToolbarContainer.removeFromSuperview()
             let dimmingView = UIView()
-            // Same as the system dimming background color
             dimmingView.translatesAutoresizingMaskIntoConstraints = false
+            // Same as the system dimming background color
             dimmingView.backgroundColor = .black.withAlphaComponent(ThemeService.shared().isCurrentThemeDark() ? 0.29 : 0.12)
             maximisedToolbarDimmingView = dimmingView
             view.addSubview(dimmingView)
@@ -199,7 +200,6 @@ extension RoomViewController {
             roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
             UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut]) {
                 view.layoutIfNeeded()
-                self.roomInputToolbarContainer.layoutIfNeeded()
             }
             let panGesture = UIPanGestureRecognizer(target: self, action: #selector(didPanRoomToolbarContainer(_ :)))
             roomInputToolbarContainer.addGestureRecognizer(panGesture)
