@@ -40,6 +40,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var voiceMessageToolbarView: VoiceMessageToolbarView?
     private var cancellables = Set<AnyCancellable>()
     private var heightConstraint: NSLayoutConstraint!
+    private var voiceMessageBottomConstraint: NSLayoutConstraint?
     private var hostingViewController: VectorHostingController!
     private var wysiwygViewModel = WysiwygComposerViewModel(minHeight: 22, textColor: ThemeService.shared().theme.colors.primaryContent)
     private var viewModel: ComposerViewModelProtocol = ComposerViewModel(
@@ -195,6 +196,14 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
             keyboardHeight = keyboardRectangle.height
+            UIView.performWithoutAnimation {
+                if self.isMaximised {
+                    self.voiceMessageBottomConstraint?.constant = keyboardHeight - 30
+                } else {
+                    self.voiceMessageBottomConstraint?.constant = 4
+                }
+                self.layoutIfNeeded()
+            }
         }
     }
     
@@ -318,11 +327,13 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.deactivate(voiceMessageToolbarView.containersTopConstraints)
             addSubview(voiceMessageToolbarView)
+            let bottomConstraint = hostingViewController.view.bottomAnchor.constraint(equalTo: voiceMessageToolbarView.bottomAnchor, constant: 4)
+            voiceMessageBottomConstraint = bottomConstraint
             NSLayoutConstraint.activate(
                 [
                     hostingViewController.view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: voiceMessageToolbarView.topAnchor),
                     hostingViewController.view.safeAreaLayoutGuide.leftAnchor.constraint(equalTo: voiceMessageToolbarView.leftAnchor),
-                    hostingViewController.view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: voiceMessageToolbarView.bottomAnchor, constant: 4),
+                    bottomConstraint,
                     hostingViewController.view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: voiceMessageToolbarView.rightAnchor)
                 ]
             )

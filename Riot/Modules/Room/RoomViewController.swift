@@ -198,7 +198,7 @@ extension RoomViewController {
             roomInputToolbarContainer.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
             roomInputToolbarContainer.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
             roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut]) {
+            UIView.animate(withDuration: kResizeComposerAnimationDuration, delay: 0, options: [.curveEaseInOut]) {
                 view.layoutIfNeeded()
             }
             let panGesture = UIPanGestureRecognizer(target: self, action: #selector(didPanRoomToolbarContainer(_ :)))
@@ -220,7 +220,7 @@ extension RoomViewController {
             roomInputToolbarContainer.frame = originalRect
             NSLayoutConstraint.activate(self.toolbarContainerConstraints)
             self.roomInputToolbarContainerBottomConstraint.isActive = true
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut]) {
+            UIView.animate(withDuration: kResizeComposerAnimationDuration, delay: 0, options: [.curveEaseInOut]) {
                 self.view.layoutIfNeeded()
             }
             roomInputToolbarContainer.gestureRecognizers?.removeAll()
