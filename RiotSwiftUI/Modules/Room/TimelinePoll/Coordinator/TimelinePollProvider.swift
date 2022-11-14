@@ -23,8 +23,6 @@ class TimelinePollProvider: NSObject {
     var session: MXSession?
     var coordinatorsForEventIdentifiers = [String: TimelinePollCoordinator]()
     
-    private override init() { }
-    
     /// Create or retrieve the poll timeline coordinator for this event and return
     /// a view to be displayed in the timeline
     func buildTimelinePollVCForEvent(_ event: MXEvent) -> UIViewController? {
