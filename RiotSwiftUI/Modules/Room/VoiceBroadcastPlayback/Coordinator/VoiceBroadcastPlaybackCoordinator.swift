@@ -76,4 +76,8 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
     }
     
     func endVoiceBroadcast() {}
+    
+    func pausePlaying() {
+        viewModel.context.send(viewAction: .pause)
+    }
 }
