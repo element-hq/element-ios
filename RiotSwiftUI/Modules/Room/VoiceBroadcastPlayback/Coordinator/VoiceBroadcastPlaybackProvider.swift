@@ -19,20 +19,19 @@ import Foundation
 @objc class VoiceBroadcastPlaybackProvider: NSObject {
     @objc static let shared = VoiceBroadcastPlaybackProvider()
     
-    private var session: MXSession?
-    var coordinatorsForEventIdentifiers = [String: VoiceBroadcastPlaybackCoordinator]()
-    
-    private override init() { }
-    
-    func setSession(_ session: MXSession) {
-        if let currentSession = self.session {
-            if currentSession != session {
+    var session: MXSession? {
+        willSet {
+            guard let currentSession = self.session else { return }
+            
+            if currentSession != newValue {
                 // Clear all stored coordinators on new session
                 coordinatorsForEventIdentifiers.removeAll()
             }
         }
-        self.session = session
     }
+    var coordinatorsForEventIdentifiers = [String: VoiceBroadcastPlaybackCoordinator]()
+    
+    private override init() { }
     
     /// Create or retrieve the voiceBroadcast timeline coordinator for this event and return
     /// a view to be displayed in the timeline

@@ -19,7 +19,16 @@ import Foundation
 class TimelinePollProvider {
     static let shared = TimelinePollProvider()
     
-    var session: MXSession?
+    var session: MXSession? {
+        willSet {
+            guard let currentSession = self.session else { return }
+            
+            if currentSession != newValue {
+                // Clear all stored coordinators on new session
+                coordinatorsForEventIdentifiers.removeAll()
+            }
+        }
+    }
     var coordinatorsForEventIdentifiers = [String: TimelinePollCoordinator]()
     
     private init() { }
