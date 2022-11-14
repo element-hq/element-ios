@@ -55,9 +55,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     // We will notify user only once on session failure
     BOOL notifyOpenSessionFailure;
     
-    // The timer used to postpone server sync on failure
-    NSTimer* initialServerSyncTimer;
-    
     // Reachability observer
     id reachabilityObserver;
     
@@ -934,9 +931,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         sessionStateObserver = nil;
     }
     
-    [initialServerSyncTimer invalidate];
-    initialServerSyncTimer = nil;
-    
     if (userUpdateListener)
     {
         [mxSession.myUser removeListener:userUpdateListener];
@@ -1136,8 +1130,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         // Cancel pending actions
         [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
         reachabilityObserver = nil;
-        [initialServerSyncTimer invalidate];
-        initialServerSyncTimer = nil;
 
         MXLogDebug(@"[MXKAccount] Pause is delayed due to the session state: %@", [MXTools readableSessionState: mxSession.state]);
     }
@@ -1627,8 +1619,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     // Cancel potential reachability observer and pending action
     [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
     reachabilityObserver = nil;
-    [initialServerSyncTimer invalidate];
-    initialServerSyncTimer = nil;
     
     // Sanity check
     if (!mxSession || (mxSession.state != MXSessionStateStoreDataReady && mxSession.state != MXSessionStateInitialSyncFailed))
@@ -1694,9 +1684,8 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
                 if (networkReachabilityManager.isReachable)
                 {
-                    // The problem is not the network
-                    // Postpone a new attempt in 10 sec
-                    self->initialServerSyncTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(launchInitialServerSync) userInfo:self repeats:NO];
+                    // If we have network, we retry immediately, otherwise the server may clear any cache it has computed thus far
+                    [self launchInitialServerSync];
                 }
                 else
                 {
