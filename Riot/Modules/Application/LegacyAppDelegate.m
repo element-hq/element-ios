@@ -2197,6 +2197,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     [[[ReviewSessionAlertSnoozeController alloc] init] clearSnooze];
     
+    [TimelinePollProvider.shared reset];
+    
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack
     for (MXKAccount *account in MXKAccountManager.sharedManager.accounts)

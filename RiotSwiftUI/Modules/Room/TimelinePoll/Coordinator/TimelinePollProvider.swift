@@ -16,13 +16,12 @@
 
 import Foundation
 
-class TimelinePollProvider {
+@objcMembers
+class TimelinePollProvider: NSObject {
     static let shared = TimelinePollProvider()
     
     var session: MXSession?
     var coordinatorsForEventIdentifiers = [String: TimelinePollCoordinator]()
-    
-    private init() { }
     
     /// Create or retrieve the poll timeline coordinator for this event and return
     /// a view to be displayed in the timeline
@@ -48,5 +47,9 @@ class TimelinePollProvider {
     /// Retrieve the poll timeline coordinator for the given event or nil if it hasn't been created yet
     func timelinePollCoordinatorForEventIdentifier(_ eventIdentifier: String) -> TimelinePollCoordinator? {
         coordinatorsForEventIdentifiers[eventIdentifier]
+    }
+    
+    func reset() {
+        coordinatorsForEventIdentifiers.removeAll()
     }
 }
