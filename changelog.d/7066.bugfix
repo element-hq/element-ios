@@ -1,0 +1,1 @@
+Threads: removed "unread_thread_notifications" from sync filters for server that doesn't support MSC3773
