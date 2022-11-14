@@ -16,13 +16,13 @@
 
 import Foundation
 
-class VoiceBroadcastPlaybackProvider {
-    static let shared = VoiceBroadcastPlaybackProvider()
+@objc class VoiceBroadcastPlaybackProvider: NSObject {
+    @objc static let shared = VoiceBroadcastPlaybackProvider()
     
     private var session: MXSession?
     var coordinatorsForEventIdentifiers = [String: VoiceBroadcastPlaybackCoordinator]()
     
-    private init() { }
+    private override init() { }
     
     func setSession(_ session: MXSession) {
         if let currentSession = self.session {
@@ -63,5 +63,12 @@ class VoiceBroadcastPlaybackProvider {
     /// Retrieve the voiceBroadcast timeline coordinator for the given event or nil if it hasn't been created yet
     func voiceBroadcastPlaybackCoordinatorForEventIdentifier(_ eventIdentifier: String) -> VoiceBroadcastPlaybackCoordinator? {
         coordinatorsForEventIdentifiers[eventIdentifier]
+    }
+    
+    /// Pause current voice broadcast playback.
+    @objc public func pausePlaying() {
+        coordinatorsForEventIdentifiers.forEach { _, coordinator in
+            coordinator.pausePlaying()
+        }
     }
 }
