@@ -2605,3 +2605,13 @@
 "authentication_qr_login_start_subtitle" = "Utilisez l’appareil photo de cet appareil pour scanner le QR code affiché sur votre autre appareil :";
 "authentication_qr_login_start_title" = "Scanner le QR code";
 "authentication_login_with_qr" = "Se connecter avec un QR code";
+"key_verification_alert_body" = "Passez les en revue pour vous assurer que votre compte n’est pas compromis.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Vous avez des sessions non-vérifiées";
+"manage_session_sign_out_other_sessions" = "Déconnecter toutes les autres sessions";
+"manage_session_name_info_link" = "Plus";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Gardez en tête que les noms des sessions sont aussi visibles par les personnes avec qui vous communiquez. %@";
+"manage_session_name_hint" = "Personnaliser les noms des sessions peut vous aider à reconnaître vos appareils plus facilement.";
+"settings_labs_enable_wysiwyg_composer" = "Essayez le compositeur de messages visuel";
