@@ -2162,3 +2162,9 @@
 "onboarding_avatar_message" = "Время добавить лицо к имени";
 "onboarding_congratulations_home_button" = "На главную";
 "invite_to" = "Пригласить в %@";
+"authentication_qr_login_start_step3" = "Выберите «Соеденить устройство»";
+"authentication_qr_login_start_step2" = "Зайдите в Настройки -> Безопасность и Приватность";
+"authentication_qr_login_start_step1" = "Откройте Element на вашем другом устройстве";
+"authentication_qr_login_start_subtitle" = "Используйте камеру на этом устройстве, чтобы сканировать QR-код, отображённый на вашем другом устройстве:";
+"authentication_qr_login_start_title" = "Сканировать QR-код";
+"authentication_terms_policy_url_error" = "Не получилось найти выбранные правила. Пожалуйста, попробуйте снова позже.";
