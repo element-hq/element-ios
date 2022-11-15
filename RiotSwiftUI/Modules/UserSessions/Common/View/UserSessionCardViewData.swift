@@ -47,7 +47,7 @@ struct UserSessionCardViewData {
         switch verificationState {
         case .verified:
             return Asset.Images.userSessionVerified.name
-        case .unverified:
+        case .unverified, .permanentlyUnverified:
             return Asset.Images.userSessionUnverified.name
         case .unknown:
             return Asset.Images.userSessionVerificationUnknown.name
@@ -59,7 +59,7 @@ struct UserSessionCardViewData {
         switch verificationState {
         case .verified:
             return VectorL10n.userSessionVerified
-        case .unverified:
+        case .unverified, .permanentlyUnverified:
             return VectorL10n.userSessionUnverified
         case .unknown:
             return VectorL10n.userSessionVerificationUnknown
@@ -71,7 +71,7 @@ struct UserSessionCardViewData {
         switch verificationState {
         case .verified:
             return \.accent
-        case .unverified:
+        case .unverified, .permanentlyUnverified:
             return \.alert
         case .unknown:
             return \.secondaryContent
@@ -83,7 +83,7 @@ struct UserSessionCardViewData {
         switch verificationState {
         case .verified:
             return isCurrentSessionDisplayMode ? VectorL10n.userSessionVerifiedAdditionalInfo : VectorL10n.userOtherSessionVerifiedAdditionalInfo + " %@"
-        case .unverified:
+        case .unverified, .permanentlyUnverified:
             return isCurrentSessionDisplayMode ? VectorL10n.userSessionUnverifiedAdditionalInfo : VectorL10n.userOtherSessionUnverifiedAdditionalInfo + " %@"
         case .unknown:
             return VectorL10n.userSessionVerificationUnknownAdditionalInfo
