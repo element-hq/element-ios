@@ -34,10 +34,12 @@ struct UserSessionDetailsItem: View {
                 .foregroundColor(theme.colors.secondaryContent)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .frame(maxHeight: .infinity, alignment: .top)
+                .accessibility(identifier: "UserSessionDetailsItem.title")
             Text(viewData.value)
                 .font(theme.fonts.subheadline)
                 .foregroundColor(theme.colors.primaryContent)
                 .multilineTextAlignment(.trailing)
+                .accessibility(identifier: "UserSessionDetailsItem.value")
         }
         .contextMenu {
             Button {

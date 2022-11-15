@@ -40,9 +40,9 @@ PODS:
     - DTFoundation/Core
   - FLEX (4.5.0)
   - FlowCommoniOS (1.12.2)
-  - GBDeviceInfo (6.6.0):
-    - GBDeviceInfo/Core (= 6.6.0)
-  - GBDeviceInfo/Core (6.6.0)
+  - GBDeviceInfo (7.1.0):
+    - GBDeviceInfo/Core (= 7.1.0)
+  - GBDeviceInfo/Core (7.1.0)
   - GZIP (1.3.0)
   - Introspect (0.1.4)
   - JitsiMeetSDK (5.0.2)
@@ -117,7 +117,7 @@ DEPENDENCIES:
   - DTCoreText (~> 1.6.25)
   - FLEX (~> 4.5.0)
   - FlowCommoniOS (~> 1.12.0)
-  - GBDeviceInfo (~> 6.6.0)
+  - GBDeviceInfo (~> 7.1.0)
   - Introspect (~> 0.1)
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
@@ -209,7 +209,7 @@ SPEC CHECKSUMS:
   DTFoundation: a53f8cda2489208cbc71c648be177f902ee17536
   FLEX: e51461dd6f0bfb00643c262acdfea5d5d12c596b
   FlowCommoniOS: ca92071ab526dc89905495a37844fd7e78d1a7f2
-  GBDeviceInfo: ed0db16230d2fa280e1cbb39a5a7f60f6946aaec
+  GBDeviceInfo: 5d62fa85bdcce3ed288d83c28789adf1173e4376
   GZIP: 416858efbe66b41b206895ac6dfd5493200d95b3
   Introspect: b62c4dd2063072327c21d618ef2bedc3c87bc366
   JitsiMeetSDK: edcac8e2b92ee0c7f3e75bd0aefefbe9faccfc93
@@ -241,6 +241,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 96a971e076c61e54ae5bb7bf30ecba80563eeacf
+PODFILE CHECKSUM: d4f1318b49e324a4e70b758e6b383ada67414a15
 
 COCOAPODS: 1.11.3

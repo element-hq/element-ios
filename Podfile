@@ -66,7 +66,7 @@ end
 
 abstract_target 'RiotPods' do
 
-  pod 'GBDeviceInfo', '~> 6.6.0'
+  pod 'GBDeviceInfo', '~> 7.1.0'
   pod 'Reusable', '~> 4.1'
   pod 'KeychainAccess', '~> 4.2.2'
   pod 'WeakDictionary', '~> 2.0'

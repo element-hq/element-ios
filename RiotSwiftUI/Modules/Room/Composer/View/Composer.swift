@@ -23,6 +23,13 @@ struct Composer: View {
     
     // MARK: Private
     
+    @ObservedObject private var viewModel: ComposerViewModelType.Context
+    @ObservedObject private var wysiwygViewModel: WysiwygComposerViewModel
+    private let resizeAnimationDuration: Double
+    
+    private let sendMessageAction: (WysiwygComposerContent) -> Void
+    private let showSendMediaActions: () -> Void
+    
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @State private var isActionButtonShowing = false
@@ -66,8 +73,8 @@ struct Composer: View {
         FormatType.allCases.map { type in
             FormatItem(
                 type: type,
-                active: wysiwygViewModel.reversedActions.contains(type.composerAction),
-                disabled: wysiwygViewModel.disabledActions.contains(type.composerAction)
+                active: wysiwygViewModel.actionStates[type.composerAction] == .reversed,
+                disabled: wysiwygViewModel.actionStates[type.composerAction] == .disabled
             )
         }
     }
@@ -182,12 +189,18 @@ struct Composer: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: ComposerViewModelType.Context
-    @ObservedObject var wysiwygViewModel: WysiwygComposerViewModel
-    let resizeAnimationDuration: Double
-    
-    let sendMessageAction: (WysiwygComposerContent) -> Void
-    let showSendMediaActions: () -> Void
+    init(
+        viewModel: ComposerViewModelType.Context,
+        wysiwygViewModel: WysiwygComposerViewModel,
+        resizeAnimationDuration: Double,
+        sendMessageAction: @escaping (WysiwygComposerContent) -> Void,
+        showSendMediaActions: @escaping () -> Void) {
+            self.viewModel = viewModel
+            self.wysiwygViewModel = wysiwygViewModel
+            self.resizeAnimationDuration = resizeAnimationDuration
+            self.sendMessageAction = sendMessageAction
+            self.showSendMediaActions = showSendMediaActions
+        }
     
     var body: some View {
         VStack(spacing: 8) {

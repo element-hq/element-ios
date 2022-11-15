@@ -604,6 +604,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     [VoiceMessageMediaServiceProvider.sharedProvider pauseAllServices];
     [VoiceBroadcastRecorderProvider.shared pauseRecording];
+    [VoiceBroadcastPlaybackProvider.shared pausePlaying];
     
     // Stop the loading indicator even if the session is still in progress
     [self stopLoadingUserIndicator];

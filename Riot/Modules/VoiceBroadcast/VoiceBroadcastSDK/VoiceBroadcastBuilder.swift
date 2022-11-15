@@ -27,9 +27,12 @@ struct VoiceBroadcastBuilder {
         
         var voiceBroadcast = VoiceBroadcast()
         
-        voiceBroadcast.chunks = Set(events.compactMap { event in
+        let chunks = Set(events.compactMap { event in
             buildChunk(event: event, mediaManager: mediaManager, voiceBroadcastStartEventId: voiceBroadcastStartEventId)
         })
+        
+        voiceBroadcast.chunks = chunks
+        voiceBroadcast.duration = chunks.reduce(0) { $0 + $1.duration}
         
         return voiceBroadcast
     }
@@ -37,10 +40,12 @@ struct VoiceBroadcastBuilder {
     func buildChunk(event: MXEvent, mediaManager: MXMediaManager, voiceBroadcastStartEventId: String) -> VoiceBroadcastChunk? {
         guard let attachment = MXKAttachment(event: event, andMediaManager: mediaManager),
               let chunkInfo = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] as? [String: UInt],
-              let sequence = chunkInfo[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkSequence] else {
+              let sequence = chunkInfo[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkSequence],
+              let audio = event.content[kMXMessageContentKeyExtensibleAudioMSC1767] as? [String: UInt],
+              let duration = audio[kMXMessageContentKeyExtensibleAudioDuration] else {
             return nil
         }
         
-        return VoiceBroadcastChunk(voiceBroadcastInfoEventId: voiceBroadcastStartEventId, sequence: sequence, attachment: attachment)
+        return VoiceBroadcastChunk(voiceBroadcastInfoEventId: voiceBroadcastStartEventId, sequence: sequence, attachment: attachment, duration: duration)
     }
 }

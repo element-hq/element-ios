@@ -24,4 +24,5 @@ public enum VoiceBroadcastKind {
 public struct VoiceBroadcast {
     var chunks: Set<VoiceBroadcastChunk> = []
     var kind: VoiceBroadcastKind = .player
+    var duration: UInt = 0
 }

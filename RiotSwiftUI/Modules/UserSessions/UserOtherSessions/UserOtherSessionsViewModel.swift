@@ -28,12 +28,12 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     init(sessionInfos: [UserSessionInfo],
          filter: UserOtherSessionsFilter,
          title: String,
-         settingService: UserSessionSettingsProtocol) {
+         settingsService: UserSessionSettingsProtocol) {
         self.sessionInfos = sessionInfos
         defaultTitle = title
         let bindings = UserOtherSessionsBindings(filter: filter, isEditModeEnabled: false)
         let sessionItems = filter.filterSessionInfos(sessionInfos: sessionInfos, selectedSessions: selectedSessions)
-        self.settingsService = settingService
+        self.settingsService = settingsService
         super.init(initialViewState: UserOtherSessionsViewState(bindings: bindings,
                                                                 title: title,
                                                                 sessionItems: sessionItems,
@@ -41,7 +41,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                                                                 emptyItemsTitle: filter.userOtherSessionsViewEmptyResultsTitle,
                                                                 allItemsSelected: false,
                                                                 enableSignOutButton: false,
-                                                                showLocationInfo: settingService.showIPAddressesInSessionsManager))
+                                                                showLocationInfo: settingsService.showIPAddressesInSessionsManager))
     }
     
     // MARK: - Public
