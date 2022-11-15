@@ -42,7 +42,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var heightConstraint: NSLayoutConstraint!
     private var voiceMessageBottomConstraint: NSLayoutConstraint?
     private var hostingViewController: VectorHostingController!
-    private var wysiwygViewModel = WysiwygComposerViewModel(minHeight: 22, textColor: ThemeService.shared().theme.colors.primaryContent)
+    private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
     private var viewModel: ComposerViewModelProtocol = ComposerViewModel(
         initialViewState: ComposerViewState(textFormattingEnabled: RiotSettings.shared.enableWysiwygTextFormatting,
                                             bindings: ComposerBindings(focused: false)))
@@ -198,7 +198,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             keyboardHeight = keyboardRectangle.height
             UIView.performWithoutAnimation {
                 if self.isMaximised {
-                    self.voiceMessageBottomConstraint?.constant = keyboardHeight - 30
+                    self.voiceMessageBottomConstraint?.constant = keyboardHeight + 4
                 } else {
                     self.voiceMessageBottomConstraint?.constant = 4
                 }
