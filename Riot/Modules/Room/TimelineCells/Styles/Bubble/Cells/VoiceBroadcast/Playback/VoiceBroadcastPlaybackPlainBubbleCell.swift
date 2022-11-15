@@ -16,19 +16,17 @@
 
 import Foundation
 
-class VoiceBroadcastIncomingBubbleCell: VoiceBroadcastBubbleCell, BubbleIncomingRoomCellProtocol {
-
+class VoiceBroadcastPlaybackPlainBubbleCell: VoiceBroadcastPlaybackBubbleCell {
+    
     override func setupViews() {
         super.setupViews()
         
         // TODO: VB update margins attributes
         let leftMargin: CGFloat = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.left + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.left
-        let rightMargin: CGFloat = BubbleRoomCellLayoutConstants.incomingBubbleBackgroundMargins.right + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.right
+        let rightMargin: CGFloat = 15 + BubbleRoomCellLayoutConstants.pollBubbleBackgroundInsets.right
         
         roomCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
         roomCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
-        
-        self.setupBubbleDecorations()
     }
     
     override func update(theme: Theme) {

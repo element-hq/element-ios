@@ -45,7 +45,7 @@ final class VoiceBroadcastRecorderCoordinator: Coordinator, Presentable {
         
         voiceBroadcastRecorderService = VoiceBroadcastRecorderService(session: parameters.session, roomId: parameters.room.matrixItemId)
         
-        let details = VoiceBroadcastRecorderDetails(senderDisplayName: parameters.senderDisplayName)
+        let details = VoiceBroadcastRecorderDetails(senderDisplayName: parameters.senderDisplayName, avatarData: parameters.room.avatarData)
         let viewModel = VoiceBroadcastRecorderViewModel(details: details,
                                                         recorderService: voiceBroadcastRecorderService)
         voiceBroadcastRecorderViewModel = viewModel
@@ -56,7 +56,9 @@ final class VoiceBroadcastRecorderCoordinator: Coordinator, Presentable {
     func start() { }
     
     func toPresentable() -> UIViewController {
-        VectorHostingController(rootView: VoiceBroadcastRecorderView(viewModel: voiceBroadcastRecorderViewModel.context))
+        let view = VoiceBroadcastRecorderView(viewModel: voiceBroadcastRecorderViewModel.context)
+            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+        return VectorHostingController(rootView: view)
     }
     
     func pauseRecording() {

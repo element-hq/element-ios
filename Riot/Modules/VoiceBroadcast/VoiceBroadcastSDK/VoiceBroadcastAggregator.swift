@@ -110,7 +110,7 @@ public class VoiceBroadcastAggregator {
             guard let event = roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last,
                   event.stateKey == self.voiceBroadcastSenderId,
                   let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
-                  (event.eventId == self.voiceBroadcastStartEventId || voiceBroadcastInfo.eventId == self.voiceBroadcastStartEventId),
+                  (event.eventId == self.voiceBroadcastStartEventId || voiceBroadcastInfo.voiceBroadcastId == self.voiceBroadcastStartEventId),
                   let state = VoiceBroadcastInfo.State(rawValue: voiceBroadcastInfo.state) else {
                 return
             }

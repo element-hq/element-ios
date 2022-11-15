@@ -197,6 +197,8 @@ internal class Asset: NSObject {
     internal static let peopleFloatingAction = ImageAsset(name: "people_floating_action")
     internal static let actionCamera = ImageAsset(name: "action_camera")
     internal static let actionFile = ImageAsset(name: "action_file")
+    internal static let actionFormattingDisabled = ImageAsset(name: "action_formatting_disabled")
+    internal static let actionFormattingEnabled = ImageAsset(name: "action_formatting_enabled")
     internal static let actionLive = ImageAsset(name: "action_live")
     internal static let actionLocation = ImageAsset(name: "action_location")
     internal static let actionMediaLibrary = ImageAsset(name: "action_media_library")
@@ -343,6 +345,8 @@ internal class Asset: NSObject {
     internal static let voiceBroadcastRecord = ImageAsset(name: "voice_broadcast_record")
     internal static let voiceBroadcastRecordPause = ImageAsset(name: "voice_broadcast_record_pause")
     internal static let voiceBroadcastStop = ImageAsset(name: "voice_broadcast_stop")
+    internal static let voiceBroadcastTileLive = ImageAsset(name: "voice_broadcast_tile_live")
+    internal static let voiceBroadcastTileMic = ImageAsset(name: "voice_broadcast_tile_mic")
     internal static let launchScreenLogo = ImageAsset(name: "launch_screen_logo")
   }
   @objcMembers

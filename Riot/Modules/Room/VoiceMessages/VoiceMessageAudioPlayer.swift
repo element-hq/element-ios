@@ -72,6 +72,10 @@ class VoiceMessageAudioPlayer: NSObject {
         return audioPlayer.items()
     }
     
+    var currentUrl: URL? {
+        return (audioPlayer?.currentItem?.asset as? AVURLAsset)?.url
+    }
+    
     private(set) var isStopped = true
     
     deinit {

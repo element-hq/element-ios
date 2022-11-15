@@ -55,9 +55,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     // We will notify user only once on session failure
     BOOL notifyOpenSessionFailure;
     
-    // The timer used to postpone server sync on failure
-    NSTimer* initialServerSyncTimer;
-    
     // Reachability observer
     id reachabilityObserver;
     
@@ -934,9 +931,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         sessionStateObserver = nil;
     }
     
-    [initialServerSyncTimer invalidate];
-    initialServerSyncTimer = nil;
-    
     if (userUpdateListener)
     {
         [mxSession.myUser removeListener:userUpdateListener];
@@ -1136,8 +1130,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         // Cancel pending actions
         [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
         reachabilityObserver = nil;
-        [initialServerSyncTimer invalidate];
-        initialServerSyncTimer = nil;
 
         MXLogDebug(@"[MXKAccount] Pause is delayed due to the session state: %@", [MXTools readableSessionState: mxSession.state]);
     }
@@ -1627,8 +1619,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     // Cancel potential reachability observer and pending action
     [[NSNotificationCenter defaultCenter] removeObserver:reachabilityObserver];
     reachabilityObserver = nil;
-    [initialServerSyncTimer invalidate];
-    initialServerSyncTimer = nil;
     
     // Sanity check
     if (!mxSession || (mxSession.state != MXSessionStateStoreDataReady && mxSession.state != MXSessionStateInitialSyncFailed))
@@ -1694,9 +1684,8 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
                 if (networkReachabilityManager.isReachable)
                 {
-                    // The problem is not the network
-                    // Postpone a new attempt in 10 sec
-                    self->initialServerSyncTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(launchInitialServerSync) userInfo:self repeats:NO];
+                    // If we have network, we retry immediately, otherwise the server may clear any cache it has computed thus far
+                    [self launchInitialServerSync];
                 }
                 else
                 {
@@ -2088,14 +2077,15 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
 #pragma mark - Sync filter
 
-- (void)supportLazyLoadOfRoomMembers:(void (^)(BOOL supportLazyLoadOfRoomMembers))completion
+- (void)supportLazyLoadOfRoomMembersWithMatrixVersion:(MXMatrixVersions *)matrixVersions
+                                           completion:(void (^)(BOOL supportLazyLoadOfRoomMembers))completion
 {
     void(^onUnsupportedLazyLoadOfRoomMembers)(NSError *) = ^(NSError *error) {
         completion(NO);
     };
 
     // Check if the server supports LL sync filter
-    MXFilterJSONModel *filter = [self syncFilterWithLazyLoadOfRoomMembers:YES];
+    MXFilterJSONModel *filter = [self syncFilterWithLazyLoadOfRoomMembers:YES supportsNotificationsForThreads:NO];
     [mxSession.store filterIdForFilter:filter success:^(NSString * _Nullable filterId) {
 
         if (filterId)
@@ -2106,8 +2096,8 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         else
         {
             // Check the Matrix versions supported by the HS
-            [self.mxSession supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
-
+            if (matrixVersions)
+            {
                 if (matrixVersions.supportLazyLoadMembers)
                 {
                     // The HS supports LL
@@ -2117,8 +2107,11 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                 {
                     onUnsupportedLazyLoadOfRoomMembers(nil);
                 }
-
-            } failure:onUnsupportedLazyLoadOfRoomMembers];
+            }
+            else
+            {
+                completion(NO);
+            }
         }
     } failure:onUnsupportedLazyLoadOfRoomMembers];
 }
@@ -2133,28 +2126,42 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     // Check settings
     BOOL syncWithLazyLoadOfRoomMembersSetting = [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers;
 
-    if (syncWithLazyLoadOfRoomMembersSetting)
-    {
-        // Check if the server supports LL sync filter before enabling it
-        [self supportLazyLoadOfRoomMembers:^(BOOL supportLazyLoadOfRoomMembers) {
+    void(^buildSyncFilter)(MXMatrixVersions *) = ^(MXMatrixVersions *matrixVersions) {
+        BOOL supportsNotificationsForThreads = matrixVersions ? matrixVersions.supportsNotificationsForThreads : NO;
+        
+        if (syncWithLazyLoadOfRoomMembersSetting)
+        {
+            // Check if the server supports LL sync filter before enabling it
+            [self supportLazyLoadOfRoomMembersWithMatrixVersion:matrixVersions completion:^(BOOL supportLazyLoadOfRoomMembers) {
+                
 
-            if (supportLazyLoadOfRoomMembers)
-            {
-                completion([self syncFilterWithLazyLoadOfRoomMembers:YES]);
-            }
-            else
-            {
-                // No support from the HS
-                // Disable the setting. That will avoid to make a request at every startup
-                [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = NO;
-                completion([self syncFilterWithLazyLoadOfRoomMembers:NO]);
-            }
-        }];
-    }
-    else
-    {
-        completion([self syncFilterWithLazyLoadOfRoomMembers:NO]);
-    }
+                if (supportLazyLoadOfRoomMembers)
+                {
+                    completion([self syncFilterWithLazyLoadOfRoomMembers:YES
+                                         supportsNotificationsForThreads:supportsNotificationsForThreads]);
+                }
+                else
+                {
+                    // No support from the HS
+                    // Disable the setting. That will avoid to make a request at every startup
+                    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = NO;
+                    completion([self syncFilterWithLazyLoadOfRoomMembers:NO
+                                         supportsNotificationsForThreads:supportsNotificationsForThreads]);
+                }
+            }];
+        }
+        else
+        {
+            completion([self syncFilterWithLazyLoadOfRoomMembers:NO supportsNotificationsForThreads:supportsNotificationsForThreads]);
+        }
+    };
+
+    [mxSession supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
+        buildSyncFilter(matrixVersions);
+    } failure:^(NSError *error) {
+        MXLogWarning(@"[MXAccount] buildSyncFilter: failed to get supported versions: %@", error);
+        buildSyncFilter(nil);
+    }];
 }
 
 /**
@@ -2163,7 +2170,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
  @param syncWithLazyLoadOfRoomMembers enable LL support.
  @return the sync filter to use.
  */
-- (MXFilterJSONModel *)syncFilterWithLazyLoadOfRoomMembers:(BOOL)syncWithLazyLoadOfRoomMembers
+- (MXFilterJSONModel *)syncFilterWithLazyLoadOfRoomMembers:(BOOL)syncWithLazyLoadOfRoomMembers supportsNotificationsForThreads:(BOOL)supportsNotificationsForThreads
 {
     MXFilterJSONModel *syncFilter;
     NSUInteger limit = 10;
@@ -2198,11 +2205,11 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     // Set that limit in the filter
     if (syncWithLazyLoadOfRoomMembers)
     {
-        syncFilter = [MXFilterJSONModel syncFilterForLazyLoadingWithMessageLimit:limit];
+        syncFilter = [MXFilterJSONModel syncFilterForLazyLoadingWithMessageLimit:limit unreadThreadNotifications:supportsNotificationsForThreads];
     }
     else
     {
-        syncFilter = [MXFilterJSONModel syncFilterWithMessageLimit:limit];
+        syncFilter = [MXFilterJSONModel syncFilterWithMessageLimit:limit unreadThreadNotifications:supportsNotificationsForThreads];
     }
 
     // TODO: We could extend the filter to match other settings (self.showAllEventsInRoomHistory,

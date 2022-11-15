@@ -1628,7 +1628,7 @@
 "room_event_action_view_in_room" = "Im Raum anzeigen";
 "location_sharing_open_open_street_maps" = "In OpenStreetMap öffnen";
 "onboarding_use_case_title" = "Mit wem wirst du am meisten schreiben?";
-"onboarding_use_case_message" = "Wir helfen dir, dich zu verbinden";
+"onboarding_use_case_message" = "Wir helfen dir, dich zu vernetzen";
 "onboarding_use_case_personal_messaging" = "Freunde und Familie";
 "onboarding_use_case_work_messaging" = "Teams";
 "onboarding_use_case_community_messaging" = "Gemeinschaften";
@@ -2638,7 +2638,7 @@
 
 // Send Media Actions
 "wysiwyg_composer_start_action_media_picker" = "Fotobibliothek";
-"settings_labs_enable_wysiwyg_composer" = "Probiere den Rich-Text-Editor aus (bald auch mit Plain-Text-Modus)";
+"settings_labs_enable_wysiwyg_composer" = "Probiere den Textverarbeitungs-Editor aus";
 "wysiwyg_composer_start_action_voice_broadcast" = "Sprachübertragung";
 "voice_broadcast_already_in_progress_message" = "Du zeichnest bereits eine Sprachübertragung auf. Bitte beende die laufende Übertragung, um eine neue zu beginnen.";
 "voice_broadcast_blocked_by_someone_else_message" = "Jemand anderes nimmt bereits eine Sprachübertragung auf. Warte auf das Ende der Übertragung, bevor du eine neue startest.";
@@ -2651,3 +2651,22 @@
 "deselect_all" = "Alle abwählen";
 "user_other_session_menu_select_sessions" = "Sitzungen auswählen";
 "user_other_session_selected_count" = "%@ ausgewählt";
+"user_other_session_menu_sign_out_sessions" = "Von %@ Sitzungen abmelden";
+"manage_session_sign_out_other_sessions" = "Von allen anderen Sitzungen abmelden";
+"user_sessions_hide_location_info" = "IP-Adresse ausblenden";
+"user_sessions_show_location_info" = "IP-Adresse anzeigen";
+"voice_broadcast_tile" = "Sprachübertragung";
+"voice_broadcast_live" = "Live";
+"user_session_verified_session_description" = "Auf verifizierte Sitzungen kannst du überall mit Element zugreifen, wenn du deine Passphrase eingegeben oder Element mit einer anderen Sitzung verifiziert hast.\n\nDies bedeutet, dass du alle Schlüssel zum Entsperren deiner verschlüsselten Nachrichten hast und anderen bestätigst, dieser Sitzung zu vertrauen.";
+"user_session_got_it" = "Verstanden";
+"user_session_rename_session_description" = "Andere Nutzer in Direktnachrichten und Räumen, in denen du dich befindest, können eine vollständige Liste deiner Sitzungen einsehen.\n\nDies gibt ihnen die Sicherheit, dass sie auch wirklich mit dir kommunizieren. Allerdings bedeutet es auch, dass sie die Sitzungsnamen sehen können, die du hier angibst.";
+"user_session_rename_session_title" = "Sitzungen umbenennen";
+"user_session_inactive_session_description" = "Inaktive Sitzungen sind jene, die du einige Zeit nicht mehr verwendet hast, die aber weiterhin Verschlüsselungs-Schlüssel erhalten.\n\nDas Löschen von inaktiven Sitzungen verbessert Sicherheit und Leistung, und hilft dir zu erkennen, ob eine neue Sitzung verdächtig ist.";
+"user_session_inactive_session_title" = "Inaktive Sitzungen";
+"user_session_unverified_session_description" = "Nicht verifizierte Sitzungen sind jene, die angemeldet, aber nicht quer signiert sind.\n\nDu solltest besonders sicherstellen, dass du diese Sitzungen erkennst, da sie auf eine nicht autorisierte Nutzung deines Kontos hindeuten könnten.";
+"user_session_unverified_session_title" = "Nicht verifizierte Sitzungen";
+"user_session_verified_session_title" = "Verifizierte Sitzungen";
+"key_verification_alert_body" = "Überprüfe sie, um ein sicheres Konto gewährleisten zu können.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Du hast nicht verifizierte Sitzungen";

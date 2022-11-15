@@ -14,14 +14,11 @@
 // limitations under the License.
 //
 
-import Foundation
+import UIKit
+import SwiftUI
 
-class VoiceBroadcastWithoutSenderInfoPlainCell: VoiceBroadcastPlainCell {
-    
-    override func setupViews() {
-        super.setupViews()
-        
-        roomCellContentView?.showSenderInfo = false
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.vc_closeKeyboard()
     }
-    
 }

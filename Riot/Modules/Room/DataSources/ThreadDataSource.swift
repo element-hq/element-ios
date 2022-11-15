@@ -27,8 +27,8 @@ public class ThreadDataSource: RoomDataSource {
     
     public override func finalizeInitialization() {
         super.finalizeInitialization()
-        showReadMarker = false
-        showBubbleReceipts = false
+        showReadMarker = true
+        showBubbleReceipts = true
         showTypingRow = false
 
         NotificationCenter.default.addObserver(self,
@@ -42,22 +42,6 @@ public class ThreadDataSource: RoomDataSource {
                                                object: nil)
     }
     
-    public override var showReadMarker: Bool {
-        get {
-            return false
-        } set {
-            _ = newValue
-        }
-    }
-    
-    public override var showBubbleReceipts: Bool {
-        get {
-            return false
-        } set {
-            _ = newValue
-        }
-    }
-
     public override class func load(withRoomId roomId: String!,
                                     initialEventId: String!,
                                     threadId: String!,

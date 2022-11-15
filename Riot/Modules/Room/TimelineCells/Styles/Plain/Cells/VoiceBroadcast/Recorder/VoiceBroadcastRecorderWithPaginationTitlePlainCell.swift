@@ -16,7 +16,7 @@
 
 import Foundation
 
-class VoiceBroadcastRecorderWithPaginationTitlePlainCell: VoiceBroadcastRecorderPlainCell {
+class VoiceBroadcastRecorderWithPaginationTitlePlainCell: VoiceBroadcastRecorderPlainBubbleCell {
     
     override func setupViews() {
         super.setupViews()

@@ -599,6 +599,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     [VoiceMessageMediaServiceProvider.sharedProvider pauseAllServices];
     [VoiceBroadcastRecorderProvider.shared pauseRecording];
+    [VoiceBroadcastPlaybackProvider.shared pausePlaying];
     
     // Stop the loading indicator even if the session is still in progress
     [self stopLoadingUserIndicator];
@@ -3237,30 +3238,30 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             if (bubbleData.isPaginationFirstBubble)
             {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastWithPaginationTitle;
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastPlaybackWithPaginationTitle;
             }
             else if (bubbleData.shouldHideSenderInformation)
             {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastWithoutSenderInfo;
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastPlaybackWithoutSenderInfo;
             }
             else
             {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcast;
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceBroadcastPlayback;
             }
         }
         else
         {
             if (bubbleData.isPaginationFirstBubble)
             {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithPaginationTitle;
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlaybackWithPaginationTitle;
             }
             else if (bubbleData.shouldHideSenderInformation)
             {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastWithoutSenderInfo;
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlaybackWithoutSenderInfo;
             }
             else
             {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcast;
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlayback;
             }
         }
     }
@@ -5115,7 +5116,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         [actionItems addObject:@(ComposerCreateActionCamera)];
     }
     
-    self.composerCreateActionListBridgePresenter = [[ComposerCreateActionListBridgePresenter alloc] initWithActions:actionItems];
+    self.composerCreateActionListBridgePresenter = [[ComposerCreateActionListBridgePresenter alloc] initWithActions:actionItems
+                                                                                                     wysiwygEnabled:RiotSettings.shared.enableWysiwygComposer
+                                                                                              textFormattingEnabled:RiotSettings.shared.enableWysiwygTextFormatting];
     self.composerCreateActionListBridgePresenter.delegate = self;
     [self.composerCreateActionListBridgePresenter presentFrom:self animated:YES];
 }
@@ -5268,7 +5271,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
     }
     
-    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
     {
         MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
         if (roomBubbleTableViewCell.readMarkerView)
@@ -5918,17 +5921,13 @@ static CGSize kThreadListBarButtonItemImageSize;
             {
                 if (self.roomDataSource.room)
                 {
-                    // Retrieve the unread messages count
-                    NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
+                    // Retrieve the unread messages count on the current thread
+                    NSUInteger unreadCount = [self.mainSession.store
+                                              localUnreadEventCount:self.roomDataSource.room.roomId
+                                              threadId:self.roomDataSource.threadId ?: kMXEventTimelineMain
+                                              withTypeIn:self.mainSession.unreadEventTypes];
                     
-                    if (!self.roomDataSource.threadId)
-                    {
-                        self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
-                    }
-                    else
-                    {
-                        self.scrollToBottomBadgeLabel.text = nil;
-                    }
+                    self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
                     self.scrollToBottomHidden = NO;
                 }
                 else
@@ -6526,7 +6525,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (self.roomDataSource.isLive && !self.roomDataSource.isPeeking && self.roomDataSource.showReadMarker && self.roomDataSource.room.accountData.readMarkerEventId)
     {
         UITableViewCell *cell = [self.bubblesTableView visibleCells].firstObject;
-        if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+        if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
         {
             MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
             // Check whether the read marker is inside the first displayed cell.
@@ -6764,8 +6763,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n keyVerificationSelfVerifyUnverifiedSessionsAlertTitle]
-                                                                   message:[VectorL10n keyVerificationSelfVerifyUnverifiedSessionsAlertMessage]
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n keyVerificationAlertTitle]
+                                                                   message:[VectorL10n keyVerificationAlertBody]
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction]
@@ -7453,31 +7452,27 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     MXThreadNotificationsCount *notificationsCount = [service notificationsCountForRoom:self.roomDataSource.roomId];
     
-    if (notificationsCount.numberOfHighlightedThreads > 0)
+    UIImage *buttonIcon = [AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize];
+    [button setImage:buttonIcon forState:UIControlStateNormal];
+    button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
+
+    if (notificationsCount.notificationsNumber > 0)
     {
-        [button setImage:AssetImages.threadsIconRedDot.image
-                forState:UIControlStateNormal];
-        button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsDot;
-    }
-    else if (notificationsCount.numberOfNotifiedThreads > 0)
-    {
-        if (ThemeService.shared.isCurrentThemeDark)
-        {
-            [button setImage:AssetImages.threadsIconGrayDotDark.image
-                    forState:UIControlStateNormal];
-        }
-        else
-        {
-            [button setImage:AssetImages.threadsIconGrayDotLight.image
-                    forState:UIControlStateNormal];
-        }
-        button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsDot;
-    }
-    else
-    {
-        [button setImage:[AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize]
-                forState:UIControlStateNormal];
-        button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
+        BadgeLabel *badgeLabel = [[BadgeLabel alloc] init];
+        badgeLabel.text = notificationsCount.notificationsNumber > 99 ? @"99+" : [NSString stringWithFormat:@"%lu", notificationsCount.notificationsNumber];
+        id<Theme> theme = ThemeService.shared.theme;
+        badgeLabel.font = theme.fonts.caption1SB;
+        badgeLabel.textColor = theme.colors.navigation;
+        badgeLabel.badgeColor = notificationsCount.numberOfHighlightedThreads ? theme.colors.alert : theme.colors.secondaryContent;
+        [button addSubview:badgeLabel];
+        
+        [badgeLabel layoutIfNeeded];
+        
+        badgeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [badgeLabel.centerYAnchor constraintEqualToAnchor:button.centerYAnchor
+                                                constant:badgeLabel.bounds.size.height - buttonIcon.size.height / 2].active = YES;
+        [badgeLabel.centerXAnchor constraintEqualToAnchor:button.centerXAnchor
+                                                 constant:badgeLabel.bounds.size.width + buttonIcon.size.width / 2].active = YES;
     }
 
     if (replaceIndex == NSNotFound)
@@ -8060,6 +8055,11 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         self.composerCreateActionListBridgePresenter = nil;
     }];
+}
+
+- (void)composerCreateActionListBridgePresenterDelegateDidToggleTextFormatting:(ComposerCreateActionListBridgePresenter *)coordinatorBridgePresenter enabled:(BOOL)enabled
+{
+    [self togglePlainTextMode];
 }
 
 - (void)composerCreateActionListBridgePresenterDidDismissInteractively:(ComposerCreateActionListBridgePresenter *)coordinatorBridgePresenter

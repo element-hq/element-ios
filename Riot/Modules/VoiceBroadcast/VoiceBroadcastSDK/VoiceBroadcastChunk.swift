@@ -20,13 +20,16 @@ public class VoiceBroadcastChunk: NSObject {
     public private(set) var voiceBroadcastInfoEventId: String
     public private(set) var sequence: UInt
     public private(set) var attachment: MXKAttachment
+    public private(set) var duration: UInt
     
     public init(voiceBroadcastInfoEventId: String,
                 sequence: UInt,
-                attachment: MXKAttachment) {
+                attachment: MXKAttachment,
+                duration: UInt) {
         self.voiceBroadcastInfoEventId = voiceBroadcastInfoEventId
         self.sequence = sequence
         self.attachment = attachment
+        self.duration = duration
     }
     
     public static func == (lhs: VoiceBroadcastChunk, rhs: VoiceBroadcastChunk) -> Bool {

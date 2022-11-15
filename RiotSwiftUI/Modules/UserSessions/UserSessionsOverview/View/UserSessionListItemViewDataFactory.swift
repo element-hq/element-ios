@@ -18,7 +18,6 @@ import Foundation
 
 struct UserSessionListItemViewDataFactory {
     func create(from sessionInfo: UserSessionInfo,
-                highlightSessionDetails: Bool = false,
                 isSelected: Bool = false) -> UserSessionListItemViewData {
         let sessionName = UserSessionNameFormatter.sessionName(deviceType: sessionInfo.deviceType,
                                                                sessionDisplayName: sessionInfo.name)
@@ -28,10 +27,11 @@ struct UserSessionListItemViewDataFactory {
         return UserSessionListItemViewData(sessionId: sessionInfo.id,
                                            sessionName: sessionName,
                                            sessionDetails: sessionDetails,
-                                           highlightSessionDetails: highlightSessionDetails,
                                            deviceAvatarViewData: deviceAvatarViewData,
                                            sessionDetailsIcon: getSessionDetailsIcon(isActive: sessionInfo.isActive),
-                                           isSelected: isSelected)
+                                           isSelected: isSelected,
+                                           lastSeenIP: sessionInfo.lastSeenIP,
+                                           lastSeenIPLocation: sessionInfo.lastSeenIPLocation)
     }
     
     private func buildSessionDetails(sessionInfo: UserSessionInfo) -> String {
@@ -52,16 +52,13 @@ struct UserSessionListItemViewDataFactory {
     
     private func activeSessionDetails(sessionInfo: UserSessionInfo) -> String {
         // Start by creating the main part of the details string.
-        var sessionDetailsString = ""
         
         var lastActivityDateString: String?
         if let lastActivityDate = sessionInfo.lastSeenTimestamp {
             lastActivityDateString = UserSessionLastActivityFormatter.lastActivityDateString(from: lastActivityDate)
         }
-        
-        if sessionInfo.isCurrent {
-            sessionDetailsString = VectorL10n.userOtherSessionCurrentSessionDetails
-        } else if let lastActivityDateString = lastActivityDateString, lastActivityDateString.isEmpty == false {
+        var sessionDetailsString = ""
+        if let lastActivityDateString = lastActivityDateString, lastActivityDateString.isEmpty == false {
             sessionDetailsString = VectorL10n.userSessionItemDetailsLastActivity(lastActivityDateString)
         }
         

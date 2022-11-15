@@ -2575,7 +2575,7 @@
 "manage_session_name_info" = "Palun arvesta, et sessioonide nimed on näha ka kõikidele osapooltele, kellega sa suhtled. %@";
 "manage_session_name_hint" = "Sinu enda kirjutatud sessiooninimede alusel on sul oma seadmeid lihtsam ära tunda.";
 "settings_labs_enable_voice_broadcast" = "Ringhäälingukõne (aktiivses arenduses)";
-"settings_labs_enable_wysiwyg_composer" = "Proovi vormindatud teksti alusel töötavat tekstitoimetit (varsti lisandub ka vormindamata teksti režiim)";
+"settings_labs_enable_wysiwyg_composer" = "Proovi vormindatud teksti alusel töötavat tekstitoimetit";
 "authentication_qr_login_failure_retry" = "Proovi uuesti";
 "authentication_qr_login_failure_request_timed_out" = "Sidumine ei lõppenud etteantud aja jooksul.";
 "authentication_qr_login_failure_request_denied" = "Teine seade lükkas päringu tagasi.";
@@ -2589,3 +2589,22 @@
 "deselect_all" = "Eemalda kõik valikud";
 "user_other_session_menu_select_sessions" = "Vali sessioonid";
 "user_other_session_selected_count" = "%@ valitud";
+"user_other_session_menu_sign_out_sessions" = "Logi välja %@'st sessioonist";
+"user_sessions_hide_location_info" = "Peida IP-aadress";
+"user_sessions_show_location_info" = "Näita IP-aadressi";
+"manage_session_sign_out_other_sessions" = "Logi välja kõikidest oma muudest sessioonidest";
+"voice_broadcast_tile" = "Ringhäälingukõne";
+"voice_broadcast_live" = "Otse eetris";
+"user_session_rename_session_description" = "Teised osapooled nii otsesõnumites kui jututubades näevad sinu kõikide sessioonide loendit.\n\nSee tähendab, et nad võivad uskuda, et tegemist on tõesti sinuga. Samal ajal näevad ka siin sisestatud sessiooninime.";
+"user_session_unverified_session_description" = "Verifitseerimata sessioonid on sellised, kuhu sa oled oma kasutajanime ja salasõnaga sisse loginud, kuid mille puhul on risttunnustamine tegemata.\n\nPalun kontrolli, et need on sulle teadaolevad sessioonid. Vastasel korral võib olla tegemist sinu kasutajakonto lubamatu kasutamisega.";
+"user_session_rename_session_title" = "Sessioonide nimede muutmine";
+"user_session_inactive_session_description" = "Mitteaktiivsed sessioonid on sellised, mida sa pole mõnda aega kasutanud, aga nad saavad jätkuvalt pärida sinu krüptovõtmeid.\n\nSelliste sessioonide eemaldamine parandab jõudlust ja turvalisust ning sul on lihtsam märgata, kui loendisse tekib midagi kahtlast.";
+"user_session_inactive_session_title" = "Mitteaktiivsed sessioonid";
+"user_session_unverified_session_title" = "Verifitseerimata sessioon";
+"user_session_verified_session_description" = "Verifitseeritud sessioonideks loetakse Element'is või mõnes muus Matrix'i rakenduses selliseid sessioone, kus sa kas oled sisestanud oma salafraasi või tuvastanud end mõne teise oma verifitseeritud sessiooni abil.\n\nSee tähendab, et selles sessioonis on ka kõik vajalikud võtmed krüptitud sõnumite lugemiseks ja teistele kasutajatele kinnitamiseks, et sa usaldad seda sessiooni.";
+"user_session_verified_session_title" = "Verifitseeritud sessioonid";
+"user_session_got_it" = "Selge lugu";
+"key_verification_alert_body" = "Tagamaks, et su konto on sinu kontrolli all, vaata andmed üle.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Sul on verifitseerimata sessioone";

@@ -46,6 +46,10 @@ extern NSNotificationName const RoomCallTileTappedNotification;
  Notification string used to indicate group call tile tapped in a room. Notification object will be the `RoomBubbleCellData` object.
  */
 extern NSNotificationName const RoomGroupCallTileTappedNotification;
+/**
+ Duration for the composer resize animation.
+ */
+extern NSTimeInterval const kResizeComposerAnimationDuration;
 
 @interface RoomViewController : MXKRoomViewController
 

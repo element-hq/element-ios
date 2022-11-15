@@ -37,7 +37,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var heightConstraint: NSLayoutConstraint!
     private var hostingViewController: VectorHostingController!
     private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
-    private var viewModel: ComposerViewModelProtocol = ComposerViewModel(initialViewState: ComposerViewState())
+    private var viewModel: ComposerViewModelProtocol = ComposerViewModel(
+        initialViewState: ComposerViewState(textFormattingEnabled: RiotSettings.shared.enableWysiwygTextFormatting,
+                                            bindings: ComposerBindings(focused: false)))
     
     // MARK: Public
     
@@ -66,11 +68,14 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         viewModel.callback = { [weak self] result in
             self?.handleViewModelResult(result)
         }
+        wysiwygViewModel.plainTextMode = !RiotSettings.shared.enableWysiwygTextFormatting
         
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
         
-        let composer = Composer(viewModel: viewModel.context,
+        let composer = Composer(
+            viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
+            resizeAnimationDuration: Double(kResizeComposerAnimationDuration),
             sendMessageAction: { [weak self] content in
             guard let self = self else { return }
             self.sendWysiwygMessage(content: content)
@@ -97,6 +102,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             subView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             subView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
+        
         cancellables = [
             hostingViewController.heightPublisher
                 .removeDuplicates()
@@ -121,6 +127,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         self.backgroundColor = .clear
     }
     
+    override func dismissKeyboard() {
+        self.viewModel.dismissKeyboard()
+    }
+    
     // MARK: - Private
     
     private func updateToolbarHeight(wysiwygHeight: CGFloat) {
@@ -129,7 +139,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
     
     private func sendWysiwygMessage(content: WysiwygComposerContent) {
-        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.plainText)
+        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.markdown)
     }
     
     private func showSendMediaActions() {
@@ -204,6 +214,20 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         set {
             viewModel.sendMode = ComposerSendMode(from: newValue)
             updatePlaceholderText()
+        }
+    }
+
+    /// Whether text formatting is currently enabled in the composer.
+    var textFormattingEnabled: Bool {
+        get {
+            self.viewModel.textFormattingEnabled
+        }
+        set {
+            self.viewModel.textFormattingEnabled = newValue
+            self.wysiwygViewModel.plainTextMode = !newValue
+            if !newValue {
+                self.wysiwygViewModel.maximised = false
+            }
         }
     }
     

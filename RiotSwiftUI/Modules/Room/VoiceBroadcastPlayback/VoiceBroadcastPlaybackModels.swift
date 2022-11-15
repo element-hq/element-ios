@@ -21,6 +21,7 @@ enum VoiceBroadcastPlaybackViewAction {
     case play
     case playLive
     case pause
+    case sliderChange(didChange: Bool)
 }
 
 enum VoiceBroadcastPlaybackState {
@@ -34,6 +35,7 @@ enum VoiceBroadcastPlaybackState {
 
 struct VoiceBroadcastPlaybackDetails {
     let senderDisplayName: String?
+    let avatarData: AvatarInputProtocol
 }
 
 enum VoiceBroadcastState {
@@ -43,20 +45,20 @@ enum VoiceBroadcastState {
     case paused
 }
 
+struct VoiceBroadcastPlayingState {
+    var duration: Float
+    var durationLabel: String?
+}
+
 struct VoiceBroadcastPlaybackViewState: BindableState {
     var details: VoiceBroadcastPlaybackDetails
     var broadcastState: VoiceBroadcastState
     var playbackState: VoiceBroadcastPlaybackState
+    var playingState: VoiceBroadcastPlayingState
     var bindings: VoiceBroadcastPlaybackViewStateBindings
 }
 
 struct VoiceBroadcastPlaybackViewStateBindings {
-    // TODO: Neeeded?
-    var alertInfo: AlertInfo<VoiceBroadcastPlaybackAlertType>?
-}
-
-enum VoiceBroadcastPlaybackAlertType {
-    // TODO: What is it?
-    case failedClosingVoiceBroadcast
+    var progress: Float
 }
 

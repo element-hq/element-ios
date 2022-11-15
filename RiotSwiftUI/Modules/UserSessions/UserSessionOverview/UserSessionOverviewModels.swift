@@ -23,6 +23,7 @@ enum UserSessionOverviewCoordinatorResult {
     case verifySession(UserSessionInfo)
     case renameSession(UserSessionInfo)
     case logoutOfSession(UserSessionInfo)
+    case showSessionStateInfo(UserSessionInfo)
 }
 
 // MARK: View model
@@ -32,6 +33,7 @@ enum UserSessionOverviewViewModelResult: Equatable {
     case verifySession(UserSessionInfo)
     case renameSession(UserSessionInfo)
     case logoutOfSession(UserSessionInfo)
+    case showSessionStateInfo(UserSessionInfo)
 }
 
 // MARK: View
@@ -42,6 +44,7 @@ struct UserSessionOverviewViewState: BindableState {
     var isPusherEnabled: Bool?
     var remotelyTogglingPushersAvailable: Bool
     var showLoadingIndicator: Bool
+    var showLocationInfo: Bool
 }
 
 enum UserSessionOverviewViewAction {
@@ -50,4 +53,6 @@ enum UserSessionOverviewViewAction {
     case togglePushNotifications
     case renameSession
     case logoutOfSession
+    case showLocationInfo
+    case viewSessionInfo
 }

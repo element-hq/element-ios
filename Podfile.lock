@@ -40,9 +40,9 @@ PODS:
     - DTFoundation/Core
   - FLEX (4.5.0)
   - FlowCommoniOS (1.12.2)
-  - GBDeviceInfo (6.6.0):
-    - GBDeviceInfo/Core (= 6.6.0)
-  - GBDeviceInfo/Core (6.6.0)
+  - GBDeviceInfo (7.1.0):
+    - GBDeviceInfo/Core (= 7.1.0)
+  - GBDeviceInfo/Core (7.1.0)
   - GZIP (1.3.0)
   - Introspect (0.1.4)
   - JitsiMeetSDK (5.0.2)
@@ -55,9 +55,9 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatrixSDK (0.24.2):
-    - MatrixSDK/Core (= 0.24.2)
-  - MatrixSDK/Core (0.24.2):
+  - MatrixSDK (0.24.3):
+    - MatrixSDK/Core (= 0.24.3)
+  - MatrixSDK/Core (0.24.3):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
@@ -65,9 +65,9 @@ PODS:
     - OLMKit (~> 3.2.5)
     - Realm (= 10.27.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/CryptoSDK (0.24.2):
+  - MatrixSDK/CryptoSDK (0.24.3):
     - MatrixSDKCrypto (= 0.1.5)
-  - MatrixSDK/JingleCallStack (0.24.2):
+  - MatrixSDK/JingleCallStack (0.24.3):
     - JitsiMeetSDK (= 5.0.2)
     - MatrixSDK/Core
   - MatrixSDKCrypto (0.1.5)
@@ -117,13 +117,13 @@ DEPENDENCIES:
   - DTCoreText (~> 1.6.25)
   - FLEX (~> 4.5.0)
   - FlowCommoniOS (~> 1.12.0)
-  - GBDeviceInfo (~> 6.6.0)
+  - GBDeviceInfo (~> 7.1.0)
   - Introspect (~> 0.1)
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - libPhoneNumber-iOS (~> 0.9.13)
-  - MatrixSDK (= 0.24.2)
-  - MatrixSDK/JingleCallStack (= 0.24.2)
+  - MatrixSDK (= 0.24.3)
+  - MatrixSDK/JingleCallStack (= 0.24.3)
   - OLMKit
   - PostHog (~> 1.4.4)
   - ReadMoreTextView (~> 3.0.1)
@@ -209,7 +209,7 @@ SPEC CHECKSUMS:
   DTFoundation: a53f8cda2489208cbc71c648be177f902ee17536
   FLEX: e51461dd6f0bfb00643c262acdfea5d5d12c596b
   FlowCommoniOS: ca92071ab526dc89905495a37844fd7e78d1a7f2
-  GBDeviceInfo: ed0db16230d2fa280e1cbb39a5a7f60f6946aaec
+  GBDeviceInfo: 5d62fa85bdcce3ed288d83c28789adf1173e4376
   GZIP: 416858efbe66b41b206895ac6dfd5493200d95b3
   Introspect: b62c4dd2063072327c21d618ef2bedc3c87bc366
   JitsiMeetSDK: edcac8e2b92ee0c7f3e75bd0aefefbe9faccfc93
@@ -220,7 +220,7 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: 1b64384084050652fcffafdf8641200f1ab25060
+  MatrixSDK: caa83fd5fa63872295bf868afbd334e0ca67dda2
   MatrixSDKCrypto: dcab554bc7157cad31c01fc1137cf5acb01959a4
   OLMKit: da115f16582e47626616874e20f7bb92222c7a51
   PostHog: 4b6321b521569092d4ef3a02238d9435dbaeb99f
@@ -241,6 +241,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 96a971e076c61e54ae5bb7bf30ecba80563eeacf
+PODFILE CHECKSUM: 154d5d74ff0efd23cb8c97e9ee2a000103270e09
 
 COCOAPODS: 1.11.2
