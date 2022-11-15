@@ -169,6 +169,12 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             name: UIResponder.keyboardWillShowNotification,
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
         NotificationCenter.default.addObserver(self, selector: #selector(deviceDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
@@ -213,6 +219,15 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }
     }
     
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        if self.isMaximised {
+            UIView.performWithoutAnimation {
+                self.voiceMessageBottomConstraint?.constant = 4
+                self.layoutIfNeeded()
+            }
+        }
+    }
+    
     @objc private func deviceDidRotate(_ notification: Notification) {
         DispatchQueue.main.async {
             self.updateTextViewHeight()
@@ -233,9 +248,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     private func showSendMediaActions() {
         delegate?.roomInputToolbarViewShowSendMediaActions?(self)
-        if isMaximised {
-            minimise()
-        }
     }
     
     private func handleViewModelResult(_ result: ComposerViewModelResult) {
