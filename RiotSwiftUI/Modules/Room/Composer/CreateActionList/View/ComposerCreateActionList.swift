@@ -34,7 +34,7 @@ struct ComposerCreateActionList: View {
     @ObservedObject var viewModel: ComposerCreateActionListViewModel.Context
 
     var body: some View {
-        VStack {
+        ScrollView {
             VStack(alignment: .leading) {
                 ForEach(viewModel.viewState.actions) { action in
                     HStack(spacing: 16) {
