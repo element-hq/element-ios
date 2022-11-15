@@ -63,6 +63,10 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
         }
     }
     
+    var isFocused: Bool {
+        state.bindings.focused
+    }
+    
     // MARK: - Public
     
     override func process(viewAction: ComposerViewAction) {
@@ -76,5 +80,9 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
     
     func dismissKeyboard() {
         state.bindings.focused = false
+    }
+    
+    func showKeyboard() {
+        state.bindings.focused = true
     }
 }

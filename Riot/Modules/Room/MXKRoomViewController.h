@@ -214,14 +214,14 @@ typedef NS_ENUM(NSUInteger, MXKRoomViewControllerJoinRoomResult) {
 
 @property (weak, nonatomic) IBOutlet UITableView *bubblesTableView;
 @property (weak, nonatomic) IBOutlet UIView *roomTitleViewContainer;
-@property (weak, nonatomic) IBOutlet UIView *roomInputToolbarContainer;
+@property (strong, nonatomic) IBOutlet UIView *roomInputToolbarContainer;
 @property (weak, nonatomic) IBOutlet UIView *roomActivitiesContainer;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bubblesTableViewTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bubblesTableViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomActivitiesContainerHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomInputToolbarContainerHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomInputToolbarContainerBottomConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *roomInputToolbarContainerBottomConstraint;
 
 #pragma mark - Class methods
 
