@@ -210,7 +210,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             keyboardHeight = keyboardRectangle.height
             UIView.performWithoutAnimation {
                 if self.isMaximised {
-                    self.voiceMessageBottomConstraint?.constant = keyboardHeight + 4
+                    self.voiceMessageBottomConstraint?.constant = keyboardHeight - (window?.safeAreaInsets.bottom ?? 0) + 4
                 } else {
                     self.voiceMessageBottomConstraint?.constant = 4
                 }
@@ -286,7 +286,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func updateTextViewHeight() {
         let height = UIScreen.main.bounds.height
         let barOffset: CGFloat = 68
-        let toolbarHeight: CGFloat = 83
+        let toolbarHeight: CGFloat = 82
         let finalHeight = height - keyboardHeight - toolbarHeight - barOffset
         wysiwygViewModel.maxExpandedHeight = finalHeight
     }
@@ -364,6 +364,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         } else {
             self.voiceMessageToolbarView?.removeFromSuperview()
             self.voiceMessageToolbarView = nil
+            self.voiceMessageBottomConstraint?.isActive = false
+            self.voiceMessageBottomConstraint = nil
         }
     }
     

@@ -197,7 +197,7 @@ extension RoomViewController {
             roomInputToolbarContainer.frame = originalRect
             roomInputToolbarContainer.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
             roomInputToolbarContainer.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-            roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+            roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
             UIView.animate(withDuration: kResizeComposerAnimationDuration, delay: 0, options: [.curveEaseInOut]) {
                 view.layoutIfNeeded()
             }
