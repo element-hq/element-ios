@@ -2131,7 +2131,7 @@
 "authentication_recaptcha_title" = "Вы человек?";
 /* The placeholder will show the homeserver's domain */
 "authentication_terms_message" = "Пожалуйста прочитайте условия и политику %@";
-"authentication_terms_title" = "Политика сервера";
+"authentication_terms_title" = "Политика приватности";
 "authentication_verify_msisdn_invalid_phone_number" = "Недействительный номер телефона";
 "authentication_verify_msisdn_waiting_button" = "Отправить код повторно";
 /* The placeholder will show the phone number that was entered. */
@@ -2158,3 +2158,13 @@
 "user_other_session_current_session_details" = "Текущая сессия";
 "user_other_session_filter_menu_all" = "Все сессии";
 "wysiwyg_composer_start_action_stickers" = "Наклейки";
+"authentication_login_with_qr" = "Войти при помощи QR-кода";
+"onboarding_avatar_message" = "Время добавить лицо к имени";
+"onboarding_congratulations_home_button" = "На главную";
+"invite_to" = "Пригласить в %@";
+"authentication_qr_login_start_step3" = "Выберите «Соеденить устройство»";
+"authentication_qr_login_start_step2" = "Зайдите в Настройки -> Безопасность и Приватность";
+"authentication_qr_login_start_step1" = "Откройте Element на вашем другом устройстве";
+"authentication_qr_login_start_subtitle" = "Используйте камеру на этом устройстве, чтобы сканировать QR-код, отображённый на вашем другом устройстве:";
+"authentication_qr_login_start_title" = "Сканировать QR-код";
+"authentication_terms_policy_url_error" = "Не получилось найти выбранные правила. Пожалуйста, попробуйте снова позже.";

@@ -25,7 +25,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     private var cancellables: Set<AnyCancellable> = []
     
     private(set) var overviewDataPublisher: CurrentValueSubject<UserSessionsOverviewData, Never>
-    private(set) var sessionInfos: [UserSessionInfo]
+    private var sessionInfos: [UserSessionInfo]
     
     init(dataProvider: UserSessionsDataProviderProtocol) {
         self.dataProvider = dataProvider

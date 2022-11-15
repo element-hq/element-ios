@@ -25,6 +25,7 @@ enum UserSessionsOverviewCoordinatorResult {
     case openSessionOverview(sessionInfo: UserSessionInfo)
     case openOtherSessions(sessionInfos: [UserSessionInfo], filter: UserOtherSessionsFilter)
     case linkDevice
+    case logoutFromUserSessions(sessionInfos: [UserSessionInfo])
 }
 
 // MARK: View model
@@ -37,22 +38,19 @@ enum UserSessionsOverviewViewModelResult: Equatable {
     case showCurrentSessionOverview(sessionInfo: UserSessionInfo)
     case showUserSessionOverview(sessionInfo: UserSessionInfo)
     case linkDevice
+    case logoutFromUserSessions(sessionInfos: [UserSessionInfo])
 }
 
 // MARK: View
 
 struct UserSessionsOverviewViewState: BindableState {
     var currentSessionViewData: UserSessionCardViewData?
-    
     var unverifiedSessionsViewData = [UserSessionListItemViewData]()
-    
     var inactiveSessionsViewData = [UserSessionListItemViewData]()
-    
     var otherSessionsViewData = [UserSessionListItemViewData]()
-    
     var showLoadingIndicator = false
-
     var linkDeviceButtonVisible = false
+    var showLocationInfo: Bool
 }
 
 enum UserSessionsOverviewViewAction {
@@ -66,4 +64,6 @@ enum UserSessionsOverviewViewAction {
     case viewAllOtherSessions
     case tapUserSession(_ sessionId: String)
     case linkDevice
+    case logoutOtherSessions
+    case showLocationInfo
 }

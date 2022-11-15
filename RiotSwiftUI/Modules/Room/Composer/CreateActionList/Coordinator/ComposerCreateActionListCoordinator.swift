@@ -19,6 +19,7 @@ import SwiftUI
 /// Actions returned by the coordinator callback
 enum ComposerCreateActionListCoordinatorAction {
     case done(ComposerCreateAction)
+    case toggleTextFormatting(Bool)
     case cancel
 }
 
@@ -39,8 +40,11 @@ final class ComposerCreateActionListCoordinator: NSObject, Coordinator, Presenta
     
     // MARK: - Setup
     
-    init(actions: [ComposerCreateAction]) {
-        viewModel = ComposerCreateActionListViewModel(initialViewState: ComposerCreateActionListViewState(actions: actions))
+    init(actions: [ComposerCreateAction], wysiwygEnabled: Bool, textFormattingEnabled: Bool) {
+        viewModel = ComposerCreateActionListViewModel(initialViewState: ComposerCreateActionListViewState(
+            actions: actions,
+            wysiwygEnabled: wysiwygEnabled,
+            bindings: ComposerCreateActionListBindings(textFormattingEnabled: textFormattingEnabled)))
         view = ComposerCreateActionList(viewModel: viewModel.context)
         let hostingVC = VectorHostingController(rootView: view)
         hostingVC.bottomSheetPreferences = VectorHostingBottomSheetPreferences(
@@ -61,6 +65,8 @@ final class ComposerCreateActionListCoordinator: NSObject, Coordinator, Presenta
             switch result {
             case .done(let action):
                 self.callback?(.done(action))
+            case .toggleTextFormatting(let enabled):
+                self.callback?(.toggleTextFormatting(enabled))
             }
         }
     }

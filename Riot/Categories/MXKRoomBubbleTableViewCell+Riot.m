@@ -623,6 +623,10 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
             selectedComponentHeight = roomBubbleTableViewCell.frame.size.height - selectedComponentPositionY;
         }
         
+        // Force the textView used underneath to layout its frame properly
+        [roomBubbleTableViewCell setNeedsLayout];
+        [roomBubbleTableViewCell layoutIfNeeded];
+        
         selectedComponenContentViewYOffset = roomBubbleTableViewCell.messageTextView.frame.origin.y;
     }
     

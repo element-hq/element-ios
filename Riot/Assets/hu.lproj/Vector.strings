@@ -2597,7 +2597,7 @@
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Fontos, hogy a munkamenet neve a kommunikációban résztvevők számára látható. %@";
 "manage_session_name_hint" = "Az egyedi munkamenet név segíthet az eszköz könnyebb felismerésében.";
-"settings_labs_enable_wysiwyg_composer" = "Próbálja ki az új szövegbevitelt (hamarosan érkezik a sima szöveges üzemmód)";
+"settings_labs_enable_wysiwyg_composer" = "Próbálja ki az új szövegbevitelt";
 "settings_labs_enable_new_client_info_feature" = "Kliens neve, verziója és url felvétele a munkamenet könnyebb azonosításához a munkamenet kezelőben";
 "settings_labs_enable_new_session_manager" = "Új munkamenet kezelő";
 "authentication_qr_login_failure_retry" = "Próbáld újra";
@@ -2637,3 +2637,22 @@
 "deselect_all" = "Semmit nem jelöl ki";
 "user_other_session_menu_select_sessions" = "Munkamenetek kiválasztása";
 "user_other_session_selected_count" = "%@ kiválasztva";
+"user_other_session_menu_sign_out_sessions" = "Kijelentkezés %@ munkamenetből";
+"user_sessions_hide_location_info" = "IP címek elrejtése";
+"user_sessions_show_location_info" = "IP címek megjelenítése";
+"manage_session_sign_out_other_sessions" = "Kijelentkezés minden más munkamenetből";
+"user_session_verified_session_description" = "Mindenhol ellenőrzött munkamenetek vannak ahol Elementet használva megadtad a jelmondatodat vagy egy másik már hitelesített munkamenetből megerősítetted az identitásodat.\n\nEz azt jelenti, hogy a titkosított üzenetek visszafejtéséhez rendelkezel a kulcsokkal és megerősíted a többiek felé, hogy megbízol a munkamenetben.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Ellenőrizetlen bejelentkezései vannak";
+"user_session_rename_session_description" = "Más felhasználók akikkel közvetlenül vagy szobában beszélgetsz látják a teljes listát a munkameneteidről.\n\nEzzel ők biztosak lehetnek abban, hogy ténylegesen veled beszélgetnek. Ez azt is jelenti, hogy látják a munkamenet nevét amit itt megadsz.";
+"user_session_rename_session_title" = "Munkamenet átnevezése";
+"user_session_inactive_session_description" = "Az inaktív munkamenetek azok amiket egy ideje nem használtál, de továbbra is megkapják a titkosítási kulcsokat.\n\nA nem aktív munkamenetek törlésével növelhető a biztonság és a sebesség valamint könnyebb lesz felismerni a gyanús munkameneteket.";
+"user_session_inactive_session_title" = "Nem aktív munkamenetek";
+"user_session_unverified_session_description" = "Az ellenőrizetlen munkamenetek azok amikre a felhasználói neveddel és jelszavaddal léptek be de nem lett ellenőrizve.\n\nMindenképpen győződj meg arról, hogy felismered ezeket a munkameneteket mert lehet, hogy illetéktelenül használják a fiókodat.";
+"user_session_unverified_session_title" = "Ellenőrizetlen munkamenet";
+"user_session_verified_session_title" = "Hitelesített munkamenetek";
+"user_session_got_it" = "Értem";
+"voice_broadcast_tile" = "Hang közvetítés";
+"voice_broadcast_live" = "Élő";
+"key_verification_alert_body" = "Tekintsd át, hogy meggyőződj arról, hogy a fiókod biztonságban van.";

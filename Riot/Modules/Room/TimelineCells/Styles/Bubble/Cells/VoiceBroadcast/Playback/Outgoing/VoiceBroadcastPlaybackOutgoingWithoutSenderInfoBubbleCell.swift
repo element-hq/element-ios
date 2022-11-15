@@ -16,7 +16,7 @@
 
 import Foundation
 
-class VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell: VoiceBroadcastBubbleCell, BubbleOutgoingRoomCellProtocol {
+class VoiceBroadcastPlaybackOutgoingWithoutSenderInfoBubbleCell: VoiceBroadcastPlaybackBubbleCell, BubbleOutgoingRoomCellProtocol {
         
     override func setupViews() {
         super.setupViews()

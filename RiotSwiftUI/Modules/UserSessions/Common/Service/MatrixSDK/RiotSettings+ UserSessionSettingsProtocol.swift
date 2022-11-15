@@ -14,14 +14,15 @@
 // limitations under the License.
 //
 
-import Foundation
+import Combine
 
-class VoiceBroadcastOutgoingWithPaginationTitleBubbleCell: VoiceBroadcastOutgoingWithoutSenderInfoBubbleCell {
-    
-    override func setupViews() {
-        super.setupViews()
-        
-        roomCellContentView?.showPaginationTitle = true
+extension RiotSettings: UserSessionSettingsProtocol {
+    var showIPAddressesInSessionsManagerPublisher: AnyPublisher<Bool, Never> {
+        NotificationCenter.default
+            .publisher(for: .userDefaultValueUpdated)
+            .compactMap { $0.object as? String }
+            .filter { $0 == RiotSettings.UserDefaultsKeys.showIPAddressesInSessionsManager }
+            .map { _ in RiotSettings.shared.showIPAddressesInSessionsManager }
+            .eraseToAnyPublisher()
     }
-    
 }

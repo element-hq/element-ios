@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
+@testable import RiotSwiftUI
 import XCTest
-@testable import Element
 
 class UserAgentParserTests: XCTestCase {
-
     func testAndroidUserAgents() throws {
         let uaStrings = [
             // New User Agent Implementation
@@ -182,7 +181,7 @@ class UserAgentParserTests: XCTestCase {
             "Element/1.9.9; iOS",
             "Element/1.9.7 Android",
             "some random string",
-            "Element/1.9.9; iOS ",
+            "Element/1.9.9; iOS "
         ]
         let userAgents = uaStrings.map { UserAgentParser.parse($0) }
 
@@ -200,5 +199,4 @@ class UserAgentParserTests: XCTestCase {
 
         XCTAssertEqual(userAgents, expected)
     }
-
 }

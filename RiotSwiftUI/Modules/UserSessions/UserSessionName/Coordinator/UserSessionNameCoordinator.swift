@@ -22,7 +22,7 @@ struct UserSessionNameCoordinatorParameters {
     let sessionInfo: UserSessionInfo
 }
 
-final class UserSessionNameCoordinator: Coordinator, Presentable {
+final class UserSessionNameCoordinator: NSObject, Coordinator, Presentable {
     private let parameters: UserSessionNameCoordinatorParameters
     private let userSessionNameHostingController: UIViewController
     private var userSessionNameViewModel: UserSessionNameViewModelProtocol
@@ -58,6 +58,11 @@ final class UserSessionNameCoordinator: Coordinator, Presentable {
                 self.updateName(newName)
             case .cancel:
                 self.completion?(.cancel)
+            case .learnMore:
+                self.showInfoSheet(parameters: .init(title: VectorL10n.userSessionRenameSessionTitle,
+                                                     description: VectorL10n.userSessionRenameSessionDescription,
+                                                     action: .init(text: VectorL10n.userSessionGotIt, action: {}),
+                                                     parentSize: self.toPresentable().view.bounds.size))
             }
         }
     }
@@ -94,5 +99,35 @@ final class UserSessionNameCoordinator: Coordinator, Presentable {
     /// Hide the currently displayed activity indicator.
     private func stopLoading() {
         loadingIndicator = nil
+    }
+    
+    private func showInfoSheet(parameters: InfoSheetCoordinatorParameters) {
+        let coordinator = InfoSheetCoordinator(parameters: parameters)
+        coordinator.toPresentable().presentationController?.delegate = self
+        coordinator.completion = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            
+            switch result {
+            case .actionTriggered:
+                self.toPresentable().dismiss(animated: true)
+                self.remove(childCoordinator: coordinator)
+            }
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        toPresentable().present(coordinator.toPresentable(), animated: true)
+    }
+}
+
+// MARK: UIAdaptivePresentationControllerDelegate
+
+extension UserSessionNameCoordinator: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard let coordinator = childCoordinators.last else {
+            return
+        }
+        
+        remove(childCoordinator: coordinator)
     }
 }

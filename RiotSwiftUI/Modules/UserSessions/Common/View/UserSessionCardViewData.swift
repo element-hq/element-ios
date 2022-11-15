@@ -34,11 +34,12 @@ struct UserSessionCardViewData {
     
     var lastActivityIcon: String?
     
-    let lastSeenIPInfo: String?
+    let lastSeenIP: String?
+    let lastSeenIPLocation: String?
     
     let deviceAvatarViewData: DeviceAvatarViewData
     
-    /// Indicate if the current user session is shown and to adpat the layout
+    /// Indicate if the current user session is shown and to adapt the layout
     let isCurrentSessionDisplayMode: Bool
     
     /// The name of the shield image to show the verification status.
@@ -81,9 +82,9 @@ struct UserSessionCardViewData {
     var verificationStatusAdditionalInfoText: String {
         switch verificationState {
         case .verified:
-            return isCurrentSessionDisplayMode ? VectorL10n.userSessionVerifiedAdditionalInfo : VectorL10n.userOtherSessionVerifiedAdditionalInfo
+            return isCurrentSessionDisplayMode ? VectorL10n.userSessionVerifiedAdditionalInfo : VectorL10n.userOtherSessionVerifiedAdditionalInfo + " %@"
         case .unverified:
-            return isCurrentSessionDisplayMode ? VectorL10n.userSessionUnverifiedAdditionalInfo : VectorL10n.userOtherSessionUnverifiedAdditionalInfo
+            return isCurrentSessionDisplayMode ? VectorL10n.userSessionUnverifiedAdditionalInfo : VectorL10n.userOtherSessionUnverifiedAdditionalInfo + " %@"
         case .unknown:
             return VectorL10n.userSessionVerificationUnknownAdditionalInfo
         }
@@ -95,6 +96,7 @@ struct UserSessionCardViewData {
          verificationState: UserSessionInfo.VerificationState,
          lastActivityTimestamp: TimeInterval?,
          lastSeenIP: String?,
+         lastSeenIPLocation: String?,
          isCurrentSessionDisplayMode: Bool = false,
          isActive: Bool) {
         self.sessionId = sessionId
@@ -112,7 +114,8 @@ struct UserSessionCardViewData {
             }
         }
         self.lastActivityDateString = lastActivityDateString
-        lastSeenIPInfo = lastSeenIP
+        self.lastSeenIP = lastSeenIP
+        self.lastSeenIPLocation = lastSeenIPLocation
         deviceAvatarViewData = DeviceAvatarViewData(deviceType: deviceType, verificationState: verificationState)
         
         self.isCurrentSessionDisplayMode = isCurrentSessionDisplayMode
@@ -127,6 +130,7 @@ extension UserSessionCardViewData {
                   verificationState: sessionInfo.verificationState,
                   lastActivityTimestamp: sessionInfo.lastSeenTimestamp,
                   lastSeenIP: sessionInfo.lastSeenIP,
+                  lastSeenIPLocation: sessionInfo.lastSeenIPLocation,
                   isCurrentSessionDisplayMode: sessionInfo.isCurrent,
                   isActive: sessionInfo.isActive)
     }

@@ -21,6 +21,7 @@ class UserSessionNameUITests: MockScreenTestCase {
     func testUserSessionNameInitialState() {
         app.goToScreenWithIdentifier(MockUserSessionNameScreenState.initialName.title)
         
+        assertButtonsExists()
         let doneButton = app.buttons[VectorL10n.done]
         XCTAssertTrue(doneButton.exists)
         XCTAssertFalse(doneButton.isEnabled)
@@ -29,6 +30,7 @@ class UserSessionNameUITests: MockScreenTestCase {
     func testUserSessionNameEmptyState() {
         app.goToScreenWithIdentifier(MockUserSessionNameScreenState.empty.title)
         
+        assertButtonsExists()
         let doneButton = app.buttons[VectorL10n.done]
         XCTAssertTrue(doneButton.exists)
         XCTAssertFalse(doneButton.isEnabled)
@@ -37,8 +39,20 @@ class UserSessionNameUITests: MockScreenTestCase {
     func testUserSessionNameChangedState() {
         app.goToScreenWithIdentifier(MockUserSessionNameScreenState.changedName.title)
         
+        assertButtonsExists()
         let doneButton = app.buttons[VectorL10n.done]
         XCTAssertTrue(doneButton.exists)
         XCTAssertTrue(doneButton.isEnabled)
+    }
+}
+
+private extension UserSessionNameUITests {
+    func assertButtonsExists() {
+        let buttons = [VectorL10n.done, VectorL10n.cancel, "LearnMore"]
+        
+        for buttonId in buttons {
+            let button = app.buttons[buttonId]
+            XCTAssertTrue(button.exists)
+        }
     }
 }

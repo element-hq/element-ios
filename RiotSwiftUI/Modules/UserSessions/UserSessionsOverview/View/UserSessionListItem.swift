@@ -17,19 +17,13 @@
 import SwiftUI
 
 struct UserSessionListItem: View {
-    private enum LayoutConstants {
-        static let horizontalPadding: CGFloat = 15
-        static let verticalPadding: CGFloat = 16
-        static let avatarWidth: CGFloat = 40
-        static let avatarRightMargin: CGFloat = 18
-    }
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     let viewData: UserSessionListItemViewData
+    let showsLocationInfo: Bool
     
+    var isSeparatorHidden = false
     var isEditModeEnabled = false
-    
     var onBackgroundTap: ((String) -> Void)?
     var onBackgroundLongPress: ((String) -> Void)?
     
@@ -42,39 +36,47 @@ struct UserSessionListItem: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(4)
                 }
-                VStack(alignment: .leading, spacing: LayoutConstants.verticalPadding) {
-                    HStack(spacing: LayoutConstants.avatarRightMargin) {
-                        if isEditModeEnabled {
-                            Image(viewData.isSelected ? Asset.Images.userSessionListItemSelected.name : Asset.Images.userSessionListItemNotSelected.name)
-                        }
-                        DeviceAvatarView(viewData: viewData.deviceAvatarViewData, isSelected: viewData.isSelected)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(viewData.sessionName)
-                                .font(theme.fonts.bodySB)
-                                .foregroundColor(theme.colors.primaryContent)
-                                .multilineTextAlignment(.leading)
-                            HStack {
-                                if let sessionDetailsIcon = viewData.sessionDetailsIcon {
-                                    Image(sessionDetailsIcon)
-                                        .padding(.leading, 2)
-                                }
-                                Text(viewData.sessionDetails)
-                                    .font(theme.fonts.caption1)
-                                    .foregroundColor(viewData.highlightSessionDetails ? theme.colors.alert : theme.colors.secondaryContent)
-                                    .multilineTextAlignment(.leading)
-                            }
-                        }
+                HStack {
+                    if isEditModeEnabled {
+                        Image(viewData.isSelected ? Asset.Images.userSessionListItemSelected.name : Asset.Images.userSessionListItemNotSelected.name)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, LayoutConstants.horizontalPadding)
-                    
-                    // Separator
-                    // Note: Separator leading is matching the text leading, we could use alignment guide in the future
-                    SeparatorLine()
-                        .padding(.leading, LayoutConstants.horizontalPadding + LayoutConstants.avatarRightMargin + LayoutConstants.avatarWidth)
+                    DeviceAvatarView(viewData: viewData.deviceAvatarViewData, isSelected: viewData.isSelected)
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text(viewData.sessionName)
+                            .font(theme.fonts.bodySB)
+                            .foregroundColor(theme.colors.primaryContent)
+                            .multilineTextAlignment(.leading)
+                            .padding(.top, 16)
+                            .padding(.bottom, 2)
+                            .padding(.trailing, 16)
+                        HStack {
+                            if let sessionDetailsIcon = viewData.sessionDetailsIcon {
+                                Image(sessionDetailsIcon)
+                                    .padding(.leading, 2)
+                            }
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text(viewData.sessionDetails)
+                                
+                                if showsLocationInfo, let ipText = ipText {
+                                    Text(ipText)
+                                }
+                            }
+                            .font(theme.fonts.caption1)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .multilineTextAlignment(.leading)
+                        }
+                        .padding(.bottom, 16)
+                        .padding(.trailing, 16)
+                        SeparatorLine()
+                            .isHidden(isSeparatorHidden)
+                    }
+                    .padding(.leading, 7)
                 }
-                .padding(.top, LayoutConstants.verticalPadding)
-            }.onTapGesture {
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 16)
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
                 onBackgroundTap?(viewData.sessionId)
             }
             .onLongPressGesture {
@@ -83,6 +85,13 @@ struct UserSessionListItem: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityIdentifier("UserSessionListItem_\(viewData.sessionId)")
+    }
+    
+    private var ipText: String? {
+        guard let lastSeenIp = viewData.lastSeenIP, !lastSeenIp.isEmpty else {
+            return nil
+        }
+        return viewData.lastSeenIPLocation.map { "\(lastSeenIp) (\($0))" } ?? lastSeenIp
     }
 }
 
@@ -94,7 +103,7 @@ struct UserSessionListPreview: View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(userSessionsOverviewService.otherSessions) { userSessionInfo in
                 let viewData = UserSessionListItemViewDataFactory().create(from: userSessionInfo)
-                UserSessionListItem(viewData: viewData, isEditModeEnabled: isEditModeEnabled, onBackgroundTap: { _ in
+                UserSessionListItem(viewData: viewData, showsLocationInfo: true, isEditModeEnabled: isEditModeEnabled, onBackgroundTap: { _ in
                 })
             }
         }

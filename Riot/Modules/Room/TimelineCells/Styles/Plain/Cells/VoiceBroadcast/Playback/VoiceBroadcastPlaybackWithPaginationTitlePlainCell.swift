@@ -16,7 +16,7 @@
 
 import Foundation
 
-class VoiceBroadcastIncomingWithPaginationTitleBubbleCell: VoiceBroadcastIncomingBubbleCell {
+class VoiceBroadcastPlaybackWithPaginationTitlePlainCell: VoiceBroadcastPlaybackPlainBubbleCell {
     
     override func setupViews() {
         super.setupViews()

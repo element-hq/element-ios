@@ -29,14 +29,15 @@ enum MockComposerScreenState: MockScreenState, CaseIterable {
     
     var screenView: ([Any], AnyView) {
         let viewModel: ComposerViewModel
+        let bindings = ComposerBindings(focused: false)
         
         switch self {
-        case .send: viewModel = ComposerViewModel(initialViewState: ComposerViewState())
-        case .edit: viewModel = ComposerViewModel(initialViewState: ComposerViewState(sendMode: .edit))
-        case .reply: viewModel = ComposerViewModel(initialViewState: ComposerViewState(eventSenderDisplayName: "TestUser", sendMode: .reply))
+        case .send: viewModel = ComposerViewModel(initialViewState: ComposerViewState(textFormattingEnabled: true, bindings: bindings))
+        case .edit: viewModel = ComposerViewModel(initialViewState: ComposerViewState(sendMode: .edit, textFormattingEnabled: true, bindings: bindings))
+        case .reply: viewModel = ComposerViewModel(initialViewState: ComposerViewState(eventSenderDisplayName: "TestUser", sendMode: .reply, textFormattingEnabled: true, bindings: bindings))
         }
         
-        let wysiwygviewModel = WysiwygComposerViewModel(minHeight: 20, maxHeight: 360)
+        let wysiwygviewModel = WysiwygComposerViewModel(minHeight: 20, maxCompressedHeight: 360)
         
         viewModel.callback = { [weak viewModel, weak wysiwygviewModel] result in
             guard let viewModel = viewModel else { return }
@@ -54,7 +55,11 @@ enum MockComposerScreenState: MockScreenState, CaseIterable {
             [viewModel, wysiwygviewModel],
             AnyView(VStack {
                 Spacer()
-                Composer(viewModel: viewModel.context, wysiwygViewModel: wysiwygviewModel, sendMessageAction: { _ in }, showSendMediaActions: { })
+                Composer(viewModel: viewModel.context,
+                         wysiwygViewModel: wysiwygviewModel,
+                         resizeAnimationDuration: 0.1,
+                         sendMessageAction: { _ in },
+                         showSendMediaActions: { })
             }.frame(
                 minWidth: 0,
                 maxWidth: .infinity,

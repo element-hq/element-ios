@@ -16,7 +16,7 @@
 
 import UIKit
 
-class VoiceBroadcastBubbleCell: VoiceBroadcastPlainCell {
+class VoiceBroadcastPlaybackBubbleCell: VoiceBroadcastPlaybackPlainCell {
     
     // MARK: - Properties
     
@@ -95,7 +95,7 @@ class VoiceBroadcastBubbleCell: VoiceBroadcastPlainCell {
 }
 
 // MARK: - RoomCellTimestampDisplayable
-extension VoiceBroadcastBubbleCell: TimestampDisplayable {
+extension VoiceBroadcastPlaybackBubbleCell: TimestampDisplayable {
     
     func addTimestampView(_ timestampView: UIView) {
         guard let messageBubbleBackgroundView = self.getBubbleBackgroundView() else {

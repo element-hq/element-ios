@@ -24,26 +24,19 @@ struct UserSessionsOverview: View {
     private let maxOtherSessionsToDisplay = 5
     
     var body: some View {
-        GeometryReader { _ in
-            VStack(alignment: .leading, spacing: 0) {
-                ScrollView {
-                    if hasSecurityRecommendations {
-                        securityRecommendationsSection
-                    }
-
-                    currentSessionsSection
-
-                    if !viewModel.viewState.otherSessionsViewData.isEmpty {
-                        otherSessionsSection
-                    }
+        VStack(alignment: .leading, spacing: 0) {
+            ScrollView {
+                if hasSecurityRecommendations {
+                    securityRecommendationsSection
                 }
-                .readableFrame()
-
-//                if viewModel.viewState.linkDeviceButtonVisible {
-//                    linkDeviceView
-//                        .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
-//                }
+                
+                currentSessionsSection
+                
+                if !viewModel.viewState.otherSessionsViewData.isEmpty {
+                    otherSessionsSection
+                }
             }
+            .readableFrame()
         }
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
@@ -103,7 +96,7 @@ struct UserSessionsOverview: View {
                     viewModel.send(viewAction: .verifyCurrentSession)
                 }, onViewDetailsAction: { _ in
                     viewModel.send(viewAction: .viewCurrentSessionDetails)
-                })
+                }, showLocationInformations: viewModel.viewState.showLocationInfo)
             } header: {
                 HStack(alignment: .firstTextBaseline) {
                     Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
@@ -127,33 +120,61 @@ struct UserSessionsOverview: View {
                 Button { viewModel.send(viewAction: .renameCurrentSession) } label: {
                     Label(VectorL10n.manageSessionRename, systemImage: "pencil")
                 }
-            }
-            
-            if #available(iOS 15, *) {
-                Button(role: .destructive) { viewModel.send(viewAction: .logoutOfCurrentSession) } label: {
+                DestructiveButton {
+                    viewModel.send(viewAction: .logoutOfCurrentSession)
+                } label: {
                     Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
                 }
-            } else {
-                Button { viewModel.send(viewAction: .logoutOfCurrentSession) } label: {
-                    Label(VectorL10n.signOut, systemImage: "rectangle.righthalf.inset.fill.arrow.right")
+            }
+            if viewModel.viewState.otherSessionsViewData.count > 0 {
+                DestructiveButton {
+                    viewModel.send(viewAction: .logoutOtherSessions)
+                } label: {
+                    Label(VectorL10n.manageSessionSignOutOtherSessions, systemImage: "rectangle.portrait.and.arrow.forward.fill")
                 }
             }
         } label: {
-            Image(systemName: "ellipsis")
-                .foregroundColor(theme.colors.secondaryContent)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 12)
+            menuImage
         }
+        .accessibilityIdentifier("MoreOptionsMenu")
         .offset(x: 8) // Re-align the symbol after applying padding.
+    }
+    
+    private var otherSessionsMenu: some View {
+        Menu {
+            Button {
+                withAnimation {
+                    viewModel.send(viewAction: .showLocationInfo)
+                }
+            } label: {
+                Label(showLocationInfo: viewModel.viewState.showLocationInfo)
+            }
+            
+            DestructiveButton {
+                viewModel.send(viewAction: .logoutOtherSessions)
+            } label: {
+                Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(viewModel.viewState.otherSessionsViewData.count)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
+            }
+        } label: {
+            menuImage
+        }
+    }
+    
+    private var menuImage: some View {
+        Image(systemName: "ellipsis")
+            .foregroundColor(theme.colors.secondaryContent)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 12)
     }
     
     private var otherSessionsSection: some View {
         SwiftUI.Section {
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.viewState.otherSessionsViewData.prefix(maxOtherSessionsToDisplay)) { viewData in
-                    UserSessionListItem(viewData: viewData, onBackgroundTap: { sessionId in
-                        viewModel.send(viewAction: .tapUserSession(sessionId))
-                    })
+                    UserSessionListItem(viewData: viewData,
+                                        showsLocationInfo: viewModel.viewState.showLocationInfo,
+                                        isSeparatorHidden: viewData == viewModel.viewState.otherSessionsViewData.last,
+                                        onBackgroundTap: { sessionId in viewModel.send(viewAction: .tapUserSession(sessionId)) })
                 }
                 if viewModel.viewState.otherSessionsViewData.count > maxOtherSessionsToDisplay {
                     UserSessionsListViewAllView(count: viewModel.viewState.otherSessionsViewData.count) {
@@ -164,11 +185,15 @@ struct UserSessionsOverview: View {
             .background(theme.colors.background)
         } header: {
             VStack(alignment: .leading) {
-                Text(VectorL10n.userSessionsOverviewOtherSessionsSectionTitle)
-                    .textCase(.uppercase)
-                    .font(theme.fonts.footnote)
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.bottom, 8.0)
+                HStack {
+                    Text(VectorL10n.userSessionsOverviewOtherSessionsSectionTitle)
+                        .textCase(.uppercase)
+                        .font(theme.fonts.footnote)
+                        .foregroundColor(theme.colors.secondaryContent)
+                        .padding(.bottom, 8.0)
+                    Spacer()
+                    otherSessionsMenu
+                }
                 
                 Text(VectorL10n.userSessionsOverviewOtherSessionsSectionInfo)
                     .font(theme.fonts.footnote)
