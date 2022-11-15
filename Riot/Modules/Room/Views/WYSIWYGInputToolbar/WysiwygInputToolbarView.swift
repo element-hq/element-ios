@@ -180,7 +180,13 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     override func dismissKeyboard() {
         self.viewModel.dismissKeyboard()
     }
-
+    
+    override func dismissValidationView(_ validationView: MXKImageView!) {
+        super.dismissValidationView(validationView)
+        if isMaximised {
+            showKeyboard()
+        }
+    }
     
     func showKeyboard() {
         self.viewModel.showKeyboard()
@@ -227,6 +233,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     private func showSendMediaActions() {
         delegate?.roomInputToolbarViewShowSendMediaActions?(self)
+        if isMaximised {
+            minimise()
+        }
     }
     
     private func handleViewModelResult(_ result: ComposerViewModelResult) {
