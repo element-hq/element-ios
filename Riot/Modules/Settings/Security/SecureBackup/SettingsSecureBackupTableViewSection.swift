@@ -140,8 +140,20 @@ private enum BackupRows {
                     .info(text: infoText),
                     .createSecureBackupAction
                 ]
-            case .keyBackup(let keyBackupVersion, _, _),
-                 .keyBackupNotTrusted(let keyBackupVersion, _):     // Manage the key backup in the same way for the moment
+            case .keyBackup(let keyBackupVersion, _, let progress):
+                if let progress = progress {
+                    backupRows = [
+                        .info(text: importProgressText(for: progress)),
+                        .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion)
+                    ]
+                } else {
+                    backupRows = [
+                        .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
+                        .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
+                        .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion)
+                    ]
+                }
+            case .keyBackupNotTrusted(let keyBackupVersion, _):
                 backupRows = [
                     .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
                     .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
@@ -160,8 +172,22 @@ private enum BackupRows {
                     .createKeyBackupAction,
                     .resetSecureBackupAction
                 ]
-            case .keyBackup(let keyBackupVersion, _, _),
-                 .keyBackupNotTrusted(let keyBackupVersion, _):     // Manage the key backup in the same way for the moment
+            case .keyBackup(let keyBackupVersion, _, let progress):
+                if let progress = progress {
+                    backupRows = [
+                        .info(text: importProgressText(for: progress)),
+                        .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
+                        .resetSecureBackupAction
+                    ]
+                } else {
+                    backupRows = [
+                        .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
+                        .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
+                        .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
+                        .resetSecureBackupAction
+                    ]
+                }
+            case .keyBackupNotTrusted(let keyBackupVersion, _):
                 backupRows = [
                     .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
                     .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
@@ -171,6 +197,11 @@ private enum BackupRows {
             }
         }
         self.backupRows = backupRows
+    }
+    
+    private func importProgressText(for progress: Progress) -> String {
+        let percentage = Int(round(progress.fractionCompleted * 100))
+        return VectorL10n.keyBackupRecoverFromPrivateKeyInfo + " \(percentage)%"
     }
 
     // MARK: - Cells -
