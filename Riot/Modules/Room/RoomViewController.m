@@ -7452,14 +7452,14 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     MXThreadNotificationsCount *notificationsCount = [service notificationsCountForRoom:self.roomDataSource.roomId];
     
-    [button setImage:[AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize]
-            forState:UIControlStateNormal];
+    UIImage *buttonIcon = [AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize];
+    [button setImage:buttonIcon forState:UIControlStateNormal];
     button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
 
-    if (notificationsCount.numberOfNotifiedThreads > 0)
+    if (notificationsCount.notificationsNumber > 0)
     {
         BadgeLabel *badgeLabel = [[BadgeLabel alloc] init];
-        badgeLabel.text = [NSString stringWithFormat:@"%lu", notificationsCount.numberOfNotifiedThreads];
+        badgeLabel.text = notificationsCount.notificationsNumber > 99 ? @"99+" : [NSString stringWithFormat:@"%lu", notificationsCount.notificationsNumber];
         id<Theme> theme = ThemeService.shared.theme;
         badgeLabel.font = theme.fonts.caption1SB;
         badgeLabel.textColor = theme.colors.navigation;
@@ -7469,10 +7469,10 @@ static CGSize kThreadListBarButtonItemImageSize;
         [badgeLabel layoutIfNeeded];
         
         badgeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        [badgeLabel.bottomAnchor constraintEqualToAnchor:button.centerYAnchor
-                                                constant:badgeLabel.bounds.size.height - kThreadListBarButtonItemImageSize.height / 6].active = YES;
-        [badgeLabel.leadingAnchor constraintEqualToAnchor:button.centerXAnchor
-                                                 constant:badgeLabel.bounds.size.width + kThreadListBarButtonItemImageSize.width / 6].active = YES;
+        [badgeLabel.centerYAnchor constraintEqualToAnchor:button.centerYAnchor
+                                                constant:badgeLabel.bounds.size.height - buttonIcon.size.height / 2].active = YES;
+        [badgeLabel.centerXAnchor constraintEqualToAnchor:button.centerXAnchor
+                                                 constant:badgeLabel.bounds.size.width + buttonIcon.size.width / 2].active = YES;
     }
 
     if (replaceIndex == NSNotFound)
