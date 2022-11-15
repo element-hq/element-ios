@@ -25,7 +25,7 @@
 "preview" = "プレビュー";
 "camera" = "カメラ";
 "voice" = "音声";
-"video" = "映像";
+"video" = "動画";
 "active_call" = "通話開始";
 "active_call_details" = "通話開始（%@）";
 "later" = "後で";
@@ -133,8 +133,8 @@
 "search_in_progress" = "検索しています…";
 // Directory
 "directory_cell_title" = "ルーム一覧を見る";
-"directory_cell_description" = "%tu ルーム";
-"directory_search_results_title" = "ルーム一覧検索結果";
+"directory_cell_description" = "%tuつのルーム";
+"directory_search_results_title" = "ルーム一覧の検索結果";
 "directory_searching_title" = "ルーム一覧を検索しています…";
 "directory_search_fail" = "一覧を取得できませんでした";
 // Contacts
@@ -492,13 +492,13 @@
 // Group Details
 "group_details_title" = "コミュニティーの詳細";
 "group_details_home" = "ホーム";
-"group_details_people" = "人々";
+"group_details_people" = "連絡先";
 "group_details_rooms" = "ルーム";
 // Group Home
-"group_home_one_member_format" = "1メンバー";
-"group_home_multi_members_format" = "%tuメンバー";
-"group_home_one_room_format" = "1ルーム";
-"group_home_multi_rooms_format" = "%tuルーム";
+"group_home_one_member_format" = "1名のメンバー";
+"group_home_multi_members_format" = "%tu名のメンバー";
+"group_home_one_room_format" = "1つのルーム";
+"group_home_multi_rooms_format" = "%tuつのルーム";
 "group_invitation_format" = "%@がこのコミュニティーにあなたを招待しました";
 // Group participants
 "group_participants_add_participant" = "参加者を追加";
@@ -529,7 +529,7 @@
 "e2e_room_key_request_ignore_request" = "要求を無視";
 // GDPR
 "gdpr_consent_not_given_alert_message" = "%@ホームサーバーを引き続き使用するには、利用規約を確認して同意する必要があります。";
-"gdpr_consent_not_given_alert_review_now_action" = "今レビュー";
+"gdpr_consent_not_given_alert_review_now_action" = "確認";
 "deactivate_account_title" = "無効なアカウント";
 "deactivate_account_informations_part1" = "これにより、アカウントは永久に使用できなくなります。ログインすることはできず、誰も同じユーザーIDを再登録することはできません。これにより、あなたのアカウントは参加している全てのルームから退去し、あなたのIDサーバーからアカウントの詳細が削除されます。 ";
 "deactivate_account_informations_part2_emphasize" = "この動作は元に戻せません。";
@@ -563,7 +563,7 @@
 
 // MARK: - Room Info
 
-"room_info_list_one_member" = "1人のメンバー";
+"room_info_list_one_member" = "1名のメンバー";
 "create_room_placeholder_address" = "#testroom:matrix.org";
 "create_room_section_header_address" = "アドレス";
 "create_room_show_in_directory" = "ルーム一覧に掲載";
@@ -1541,7 +1541,7 @@
 "room_intro_cell_information_room_without_topic_sentence2_part1" = "トピックを追加";
 "security_settings_secure_backup_restore" = "バックアップから復元";
 "settings_device_notifications" = "端末の通知";
-"settings_contacts_enable_sync" = "連絡先を探す";
+"settings_contacts_enable_sync" = "連絡先を検索";
 "settings_analytics_and_crash_data" = "クラッシュ・分析データを送信";
 "settings_ui_theme_picker_message_invert_colours" = "「自動」は端末の色の「反転」設定を使用します";
 "settings_ui_theme_picker_message_match_system_theme" = "「自動」は端末と同じ外観を自動で使用します";
@@ -1587,7 +1587,7 @@
 "biometrics_usage_reason" = "アプリを開くには認証が必要です";
 "settings_sending_media" = "画像と動画の送信";
 "invite_friends_share_text" = "%@ での連絡先: %@";
-"side_menu_action_invite_friends" = "友だちを招待する";
+"side_menu_action_invite_friends" = "友だちを招待";
 "call_more_actions_change_audio_device" = "オーディオデバイスを変更";
 "call_more_actions_dialpad" = "ダイヤルパッド";
 "onboarding_splash_login_button_title" = "既にアカウントを持っています";
@@ -1670,8 +1670,8 @@
 "sign_out_existing_key_backup_alert_title" = "サインアウトしてよろしいですか？";
 "find_your_contacts_message" = "%@ であなたの連絡先を表示し、知人とのチャットを素早く始めます。";
 "find_your_contacts_footer" = "この設定はいつでも無効にできます";
-"find_your_contacts_button_title" = "連絡先を検索する";
-"find_your_contacts_title" = "連絡先をリストアップする";
+"find_your_contacts_button_title" = "連絡先を検索";
+"find_your_contacts_title" = "連絡先をリストアップ";
 
 // Mark: - Room avatar view
 
@@ -1679,7 +1679,7 @@
 
 // MARK: - Invite friends
 
-"invite_friends_action" = "友だちを %@ に招待する";
+"invite_friends_action" = "友だちを %@ に招待";
 "call_transfer_error_title" = "エラー";
 "home_context_menu_mark_as_read" = "既読にする";
 "home_context_menu_normal_priority" = "通常優先度";
@@ -1690,14 +1690,14 @@
 // MARK: - Call Transfer
 "call_transfer_title" = "転送";
 "room_info_back_button_title" = "ルーム情報";
-"create_room_processing" = "ルーム作成中";
+"create_room_processing" = "ルームを作成しています";
 "call_transfer_users" = "ユーザー";
 "home_context_menu_notifications" = "通知";
 "home_context_menu_make_dm" = "連絡先に移動";
 "home_context_menu_make_room" = "ルームに移動";
 "leave_space_title" = "%@ を退出";
 "room_participants_leave_success" = "ルームを退出しました";
-"room_participants_leave_processing" = "退出中";
+"room_participants_leave_processing" = "退出しています";
 "event_formatter_group_call_leave" = "退出";
 "home_context_menu_leave" = "退出";
 
@@ -1756,15 +1756,15 @@
 "room_notifs_settings_notify_me_for" = "以下の場合に通知";
 "room_details_access_row_title" = "アクセス";
 "room_details_notifs" = "通知";
-"location_sharing_invalid_power_level_title" = "ライブ現在地共有に必要な権限がありません";
-"settings_labs_enable_live_location_sharing" = "ライブ現在地共有 - 現在地を共有します (開発中の機能、位置情報が一時的にルームの履歴に残ります)";
+"location_sharing_invalid_power_level_title" = "位置情報（ライブ）の共有に必要な権限がありません";
+"settings_labs_enable_live_location_sharing" = "位置情報（ライブ）の共有 - 現在の位置情報を共有（開発中の機能。位置情報が一時的にルームの履歴に残ります）";
 "event_formatter_message_deleted" = "削除済みのメッセージ";
 "home_context_menu_unfavourite" = "お気に入りから削除";
 "home_context_menu_favourite" = "お気に入り";
 "all_chats_user_menu_settings" = "ユーザー設定";
 "all_chats_edit_layout_show_filters" = "フィルターを表示";
 "all_chats_edit_layout_show_recents" = "最近使用したものを表示";
-"all_chats_edit_layout_alphabetical_order" = "A-Z で並び替え";
+"all_chats_edit_layout_alphabetical_order" = "アルファベット順で並び替え";
 "all_chats_edit_layout_activity_order" = "アクティビティで並び替え";
 "space_selector_create_space" = "スペースを作成";
 "space_selector_empty_view_information" = "スペースは、ルームや連絡先をグループ化する方法です。以下からスペースを作成できます。";
@@ -1776,20 +1776,26 @@
 // Mark: - All Chats
 
 "all_chats_title" = "全てのチャット";
-"location_sharing_live_loading" = "ライブ現在地共有を読み込み中...";
+"location_sharing_live_loading" = "位置情報（ライブ）を読み込んでいます…";
 "location_sharing_live_list_item_stop_sharing_action" = "停止";
 "location_sharing_live_list_item_current_user_display_name" = "あなた";
 "live_location_sharing_banner_stop" = "停止";
-"live_location_sharing_ended" = "ライブ現在地共有が終了";
-"live_location_sharing_banner_title" = "ライブ現在地共有が有効";
+"live_location_sharing_ended" = "位置情報（ライブ）が終了しました";
+"live_location_sharing_banner_title" = "位置情報（ライブ）が有効です";
 "location_sharing_invalid_authorization_settings" = "設定";
 
 // MARK: Live location sharing
 
-"location_sharing_live_share_title" = "ライブ現在地共有";
-"service_terms_modal_decline_button" = "拒否する";
-"service_terms_modal_accept_button" = "同意する";
+"location_sharing_live_share_title" = "位置情報（ライブ）を共有";
+"service_terms_modal_decline_button" = "拒否";
+"service_terms_modal_accept_button" = "同意";
 "service_terms_modal_description_identity_server" = "この操作により、端末の連絡先にあなたの電話番号や電子メールを保存している人があなたを検索できるようになります。";
 
 // Service terms
 "service_terms_modal_title_message" = "続行するには、以下の利用規約に同意してください";
+"service_terms_modal_information_title_integration_manager" = "インテグレーションマネージャー";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "IDサーバー";
+"location_sharing_invalid_power_level_message" = "位置情報（ライブ）の共有には適切な権限が必要です。";
+"location_sharing_live_error" = "位置情報（ライブ）のエラー";
