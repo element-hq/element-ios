@@ -220,6 +220,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     private func sendWysiwygMessage(content: WysiwygComposerContent) {
         delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.markdown)
+        if isMaximised {
+            minimise()
+        }
     }
     
     private func showSendMediaActions() {
