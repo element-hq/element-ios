@@ -78,9 +78,10 @@ struct ComposerCreateActionList: View {
 
                 }
             }
-            .padding(.top, 8)
             Spacer()
-        }.background(theme.colors.background.ignoresSafeArea())
+        }
+        .padding(.top, 23)
+        .background(theme.colors.background.ignoresSafeArea())
     }
 }
 

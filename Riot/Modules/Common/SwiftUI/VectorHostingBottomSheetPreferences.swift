@@ -25,11 +25,23 @@ class VectorHostingBottomSheetPreferences {
         case medium
         case large
         
+        /// only available on iOS16, medium behaviour will be used instead
+        case custom(height: CGFloat, identifier: String = "custom")
+        
         @available(iOS 15, *)
         fileprivate func uiSheetDetent() -> UISheetPresentationController.Detent {
             switch self {
             case .medium: return .medium()
             case .large: return .large()
+            case let .custom(height, identifier):
+                if #available(iOS 16, *) {
+                    let identifier = UISheetPresentationController.Detent.Identifier(identifier)
+                    return .custom(identifier: identifier) { context in
+                        return min(height, context.maximumDetentValue)
+                    }
+                } else {
+                    return .medium()
+                }
             }
         }
         
@@ -38,6 +50,12 @@ class VectorHostingBottomSheetPreferences {
             switch self {
             case .medium: return .medium
             case .large: return .large
+            case let .custom(_, identifier):
+                if #available(iOS 16, *) {
+                    return UISheetPresentationController.Detent.Identifier(identifier)
+                } else {
+                    return .medium
+                }
             }
         }
     }
