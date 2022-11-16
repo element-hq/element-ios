@@ -154,6 +154,85 @@ extension RoomViewController {
         RiotSettings.shared.enableWysiwygTextFormatting.toggle()
         wysiwygInputToolbar?.textFormattingEnabled.toggle()
     }
+    
+    @objc func didChangeMaximisedState(_ isMaximised: Bool) {
+        guard let wysiwygInputToolbar = wysiwygInputToolbar else { return }
+        if isMaximised {
+            var view: UIView!
+            // iPhone
+            if let navView = self.navigationController?.navigationController?.view {
+                view = navView
+            // iPad
+            } else if let navView = self.navigationController?.view {
+                view = navView
+            } else {
+                return
+            }
+            var originalRect = roomInputToolbarContainer.convert(roomInputToolbarContainer.frame, to: view)
+            var textView: UITextView?
+            if wysiwygInputToolbar.isFocused {
+                textView = UITextView()
+                self.view.window?.addSubview(textView!)
+                textView?.becomeFirstResponder()
+                originalRect = wysiwygInputToolbar.convert(wysiwygInputToolbar.frame, to: view)
+            }
+            wysiwygInputToolbar.showKeyboard()
+            roomInputToolbarContainer.removeFromSuperview()
+            let dimmingView = UIView()
+            dimmingView.translatesAutoresizingMaskIntoConstraints = false
+            // Same as the system dimming background color
+            dimmingView.backgroundColor = .black.withAlphaComponent(ThemeService.shared().isCurrentThemeDark() ? 0.29 : 0.12)
+            maximisedToolbarDimmingView = dimmingView
+            view.addSubview(dimmingView)
+            dimmingView.frame = view.bounds
+            NSLayoutConstraint.activate(
+                [
+                    dimmingView.topAnchor.constraint(equalTo: view.topAnchor),
+                    dimmingView.leftAnchor.constraint(equalTo: view.leftAnchor),
+                    dimmingView.rightAnchor.constraint(equalTo: view.rightAnchor),
+                    dimmingView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                ]
+            )
+            dimmingView.addSubview(self.roomInputToolbarContainer)
+            roomInputToolbarContainer.frame = originalRect
+            roomInputToolbarContainer.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+            roomInputToolbarContainer.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+            roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+            UIView.animate(withDuration: kResizeComposerAnimationDuration, delay: 0, options: [.curveEaseInOut]) {
+                view.layoutIfNeeded()
+            }
+            let panGesture = UIPanGestureRecognizer(target: self, action: #selector(didPanRoomToolbarContainer(_ :)))
+            roomInputToolbarContainer.addGestureRecognizer(panGesture)
+            textView?.removeFromSuperview()
+        } else {
+            let originalRect = wysiwygInputToolbar.convert(wysiwygInputToolbar.frame, to: view)
+            var textView: UITextView?
+            if wysiwygInputToolbar.isFocused {
+                textView = UITextView()
+                self.view.window?.addSubview(textView!)
+                textView?.becomeFirstResponder()
+                wysiwygInputToolbar.showKeyboard()
+            }
+            self.roomInputToolbarContainer.removeFromSuperview()
+            maximisedToolbarDimmingView?.removeFromSuperview()
+            maximisedToolbarDimmingView = nil
+            self.view.insertSubview(self.roomInputToolbarContainer, belowSubview: self.overlayContainerView)
+            roomInputToolbarContainer.frame = originalRect
+            NSLayoutConstraint.activate(self.toolbarContainerConstraints)
+            self.roomInputToolbarContainerBottomConstraint.isActive = true
+            UIView.animate(withDuration: kResizeComposerAnimationDuration, delay: 0, options: [.curveEaseInOut]) {
+                self.view.layoutIfNeeded()
+            }
+            roomInputToolbarContainer.gestureRecognizers?.removeAll()
+            textView?.removeFromSuperview()
+        }
+    }
+    
+    @objc func setMaximisedToolbarIsHiddenIfNeeded(_ isHidden: Bool) {
+        if wysiwygInputToolbar?.isMaximised == true {
+            roomInputToolbarContainer.superview?.isHidden = isHidden
+        }
+    }
 }
 
 // MARK: - Private Helpers
@@ -165,4 +244,28 @@ private extension RoomViewController {
     var wysiwygInputToolbar: WysiwygInputToolbarView? {
         return self.inputToolbarView as? WysiwygInputToolbarView
     }
+    
+    @objc private func didPanRoomToolbarContainer(_ sender: UIPanGestureRecognizer) {
+        guard let wysiwygInputToolbar = wysiwygInputToolbar else { return }
+        switch sender.state {
+        case .began:
+            break
+        case .changed:
+            let translation = sender.translation(in: view)
+            let translatedValue = wysiwygInputToolbar.maxExpandedHeight - translation.y
+            guard translatedValue <= wysiwygInputToolbar.maxExpandedHeight, translatedValue >= wysiwygInputToolbar.compressedHeight else { return }
+            wysiwygInputToolbar.idealHeight = translatedValue
+        case .ended:
+            if wysiwygInputToolbar.idealHeight <= wysiwygInputToolbar.maxCompressedHeight {
+                wysiwygInputToolbar.minimise()
+            } else {
+                wysiwygInputToolbar.idealHeight = wysiwygInputToolbar.maxExpandedHeight
+            }
+        case .cancelled:
+            wysiwygInputToolbar.idealHeight = wysiwygInputToolbar.maxExpandedHeight
+        default:
+            break
+        }
+    }
+
 }

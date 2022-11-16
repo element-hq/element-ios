@@ -187,7 +187,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     MXTaskProfile *notificationTaskProfile;
 }
 
-@property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
 @property (nonatomic, strong) RemoveJitsiWidgetView *removeJitsiWidgetView;
 
 
@@ -470,6 +469,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.colors.navigation;
         [self.jumpToLastUnreadBanner vc_removeShadow];
         self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.colors.quarterlyContent;
+        if (self.maximisedToolbarDimmingView) {
+            self.maximisedToolbarDimmingView.backgroundColor = [UIColor.blackColor colorWithAlphaComponent:0.29];
+        }
     }
     else
     {
@@ -481,6 +483,9 @@ static CGSize kThreadListBarButtonItemImageSize;
                                                     radius:8
                                                    opacity:0.1];
         self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.colors.tertiaryContent;
+        if (self.maximisedToolbarDimmingView) {
+            self.maximisedToolbarDimmingView.backgroundColor = [UIColor.blackColor colorWithAlphaComponent:0.12];
+        }
     }
     
     self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;
@@ -603,6 +608,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     // Stop the loading indicator even if the session is still in progress
     [self stopLoadingUserIndicator];
+    
+    [self setMaximisedToolbarIsHiddenIfNeeded: YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -678,6 +685,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
         self.inputToolbarView.attributedTextMessage = self.roomDataSource.partialAttributedTextMessage;
     }
+    
+    [self setMaximisedToolbarIsHiddenIfNeeded: NO];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -1212,8 +1221,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     if (!self.inputToolbarView || ![self.inputToolbarView isMemberOfClass:roomInputToolbarViewClass])
     {
         [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
-        
-        
         if ([self.inputToolbarView.class conformsToProtocol:@protocol(RoomInputToolbarViewProtocol)]) {
             id<RoomInputToolbarViewProtocol> inputToolbar = (id<RoomInputToolbarViewProtocol>)self.inputToolbarView;
             [inputToolbar setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];

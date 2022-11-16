@@ -47,6 +47,7 @@ typedef enum : NSUInteger
 
 
 @class MXKRoomInputToolbarView;
+@class MXKImageView;
 @protocol MXKRoomInputToolbarViewDelegate <NSObject>
 
 /**
@@ -380,5 +381,7 @@ typedef enum : NSUInteger
  The current attributed text message in message composer.
  */
 @property (nonatomic) NSAttributedString *attributedTextMessage;
+
+- (void)dismissValidationView:(MXKImageView*)validationView;
 
 @end

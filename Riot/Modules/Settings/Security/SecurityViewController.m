@@ -1218,9 +1218,9 @@ TableViewSectionsDelegate>
         cell = [secureBackupSection cellForRowAtRow:rowTag];
     }
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
-    else if (section == SECTION_KEYBACKUP)
+    else if (sectionTag == SECTION_KEYBACKUP)
     {
-        cell = [keyBackupSection cellForRowAtRow:row];
+        cell = [keyBackupSection cellForRowAtRow:rowTag];
     }
 #endif
     else if (sectionTag == SECTION_CROSSSIGNING)
