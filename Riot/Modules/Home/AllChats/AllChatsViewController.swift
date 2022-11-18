@@ -73,10 +73,6 @@ class AllChatsViewController: HomeViewController {
 
     private var allChatsOnboardingCoordinatorBridgePresenter: AllChatsOnboardingCoordinatorBridgePresenter?
     
-    private var session: MXSession? {
-        UserSessionsService.shared.mainUserSession?.matrixSession
-    }
-    
     private var theme: Theme {
         ThemeService.shared().theme
     }
@@ -469,10 +465,10 @@ class AllChatsViewController: HomeViewController {
             return
         }
         
-        self.update()
+        self.update(with: theme)
     }
     
-    private func update() {
+    private func update(with theme: Theme) {
         self.navigationController?.toolbar?.tintColor = theme.colors.accent
     }
     
@@ -528,10 +524,10 @@ class AllChatsViewController: HomeViewController {
         guard isViewLoaded else {
             return
         }
-        spacesButton.badgeText = session.map {
+        spacesButton.badgeText = mainSession.map {
             "\($0.spaceService.rootSpacesNotificationCount)"
         }
-        spacesButton.badgeBackgroundColor = session.map {
+        spacesButton.badgeBackgroundColor = mainSession.map {
             $0.spaceService.rootSpacesHaveHighlightNotification ? theme.noticeColor : theme.noticeSecondaryColor
         } ?? .clear
     }
@@ -542,7 +538,7 @@ class AllChatsViewController: HomeViewController {
         }
         
         self.isToolbarHidden = false
-        self.update()
+        self.update(with: theme)
         
         self.toolbar.items = [
             spacesButton,
