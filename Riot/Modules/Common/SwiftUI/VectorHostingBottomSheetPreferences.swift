@@ -26,6 +26,9 @@ class VectorHostingBottomSheetPreferences {
         case large
         
         /// only available on iOS16, medium behaviour will be used instead
+        /// - Parameters:
+        ///   - height: The height of the custom detent, if the height is bigger than the maximum possible height for a detent the latter will be returned
+        ///   - identifier: The identifier used to identify the custom detent during detent transitions, by default the value is set to "custom", however if you are supporting multiple custom detents in a bottom sheet, you should specify a different identifier for each
         case custom(height: CGFloat, identifier: String = "custom")
         
         @available(iOS 15, *)
