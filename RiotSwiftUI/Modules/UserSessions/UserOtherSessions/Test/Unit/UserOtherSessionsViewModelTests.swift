@@ -93,7 +93,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         
         let expectedItems = sessionInfos
             .filter {
-                !$0.isCurrent && ($0.verificationState == .unverified || $0.verificationState == .permanentlyUnverified)
+                !$0.isCurrent && $0.verificationState.isUnverified
             }
             .asViewData()
         let bindings = UserOtherSessionsBindings(filter: .unverified, isEditModeEnabled: false)

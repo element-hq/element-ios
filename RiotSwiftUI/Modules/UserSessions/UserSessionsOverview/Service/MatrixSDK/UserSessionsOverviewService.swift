@@ -117,7 +117,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
     private func sessionsOverviewData(from allSessions: [UserSessionInfo],
                                       linkDeviceEnabled: Bool) -> UserSessionsOverviewData {
         UserSessionsOverviewData(currentSession: allSessions.filter(\.isCurrent).first,
-                                 unverifiedSessions: allSessions.filter { ($0.verificationState == .unverified || $0.verificationState == .permanentlyUnverified) && !$0.isCurrent },
+                                 unverifiedSessions: allSessions.filter { $0.verificationState.isUnverified && !$0.isCurrent },
                                  inactiveSessions: allSessions.filter { !$0.isActive },
                                  otherSessions: allSessions.filter { !$0.isCurrent },
                                  linkDeviceEnabled: linkDeviceEnabled)
