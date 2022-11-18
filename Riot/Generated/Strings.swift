@@ -8699,6 +8699,10 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionNoVerifiedSessions: String { 
     return VectorL10n.tr("Vector", "user_other_session_no_verified_sessions") 
   }
+  /// This session cannot be verified because it does not support encryption.
+  public static var userOtherSessionPermanentlyUnverifiedAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_other_session_permanently_unverified_additional_info") 
+  }
   /// Security recommendation
   public static var userOtherSessionSecurityRecommendationTitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_security_recommendation_title") 

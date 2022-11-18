@@ -87,10 +87,15 @@ class UserOtherSessionsViewModelTests: XCTestCase {
     
     func test_whenModelCreated_withUnverifiedFilter_viewStateIsCorrect() {
         let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
-                            createUserSessionInfo(sessionId: "session 2")]
+                            createUserSessionInfo(sessionId: "session 2", verificationState: .permanentlyUnverified),
+                            createUserSessionInfo(sessionId: "session 3", verificationState: .unknown)]
         let sut = createSUT(sessionInfos: sessionInfos, filter: .unverified)
         
-        let expectedItems = sessionInfos.filter { !$0.isCurrent }.asViewData()
+        let expectedItems = sessionInfos
+            .filter {
+                !$0.isCurrent && $0.verificationState.isUnverified
+            }
+            .asViewData()
         let bindings = UserOtherSessionsBindings(filter: .unverified, isEditModeEnabled: false)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
                                                        title: "Title",
@@ -100,12 +105,13 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        allItemsSelected: false,
                                                        enableSignOutButton: false,
                                                        showLocationInfo: false)
+        XCTAssertEqual(expectedItems.count, 2)
         XCTAssertEqual(sut.state, expectedState)
     }
     
     func test_whenModelCreated_withVerifiedFilter_viewStateIsCorrect() {
-        let sessionInfos = [createUserSessionInfo(sessionId: "session 1", isVerified: true),
-                            createUserSessionInfo(sessionId: "session 2", isVerified: true)]
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1", verificationState: .verified),
+                            createUserSessionInfo(sessionId: "session 2", verificationState: .verified)]
         let sut = createSUT(sessionInfos: sessionInfos, filter: .verified)
         
         let expectedItems = sessionInfos.filter { !$0.isCurrent }.asViewData()
@@ -122,8 +128,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
     }
     
     func test_whenModelCreated_withVerifiedFilterWithNoVerifiedSessions_viewStateIsCorrect() {
-        let sessionInfos = [createUserSessionInfo(sessionId: "session 1", isVerified: false),
-                            createUserSessionInfo(sessionId: "session 2", isVerified: false)]
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1"),
+                            createUserSessionInfo(sessionId: "session 2")]
         let sut = createSUT(sessionInfos: sessionInfos, filter: .verified)
         let bindings = UserOtherSessionsBindings(filter: .verified, isEditModeEnabled: false)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
@@ -138,8 +144,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
     }
     
     func test_whenModelCreated_withUnverifiedFilterWithNoUnverifiedSessions_viewStateIsCorrect() {
-        let sessionInfos = [createUserSessionInfo(sessionId: "session 1", isVerified: true),
-                            createUserSessionInfo(sessionId: "session 2", isVerified: true)]
+        let sessionInfos = [createUserSessionInfo(sessionId: "session 1", verificationState: .verified),
+                            createUserSessionInfo(sessionId: "session 2", verificationState: .verified)]
         let sut = createSUT(sessionInfos: sessionInfos, filter: .unverified)
         let bindings = UserOtherSessionsBindings(filter: .unverified, isEditModeEnabled: false)
         let expectedState = UserOtherSessionsViewState(bindings: bindings,
@@ -350,13 +356,13 @@ class UserOtherSessionsViewModelTests: XCTestCase {
     }
     
     private func createUserSessionInfo(sessionId: String,
-                                       isVerified: Bool = false,
+                                       verificationState: UserSessionInfo.VerificationState = .unverified,
                                        isActive: Bool = true,
                                        isCurrent: Bool = false) -> UserSessionInfo {
         UserSessionInfo(id: sessionId,
                         name: "iOS",
                         deviceType: .mobile,
-                        verificationState: isVerified ? .verified : .unverified,
+                        verificationState: verificationState,
                         lastSeenIP: "10.0.0.10",
                         lastSeenTimestamp: Date().timeIntervalSince1970 - 100,
                         applicationName: nil,
