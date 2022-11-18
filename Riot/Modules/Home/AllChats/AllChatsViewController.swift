@@ -72,6 +72,14 @@ class AllChatsViewController: HomeViewController {
     private var isOnboardingCoordinatorPreparing: Bool = false
 
     private var allChatsOnboardingCoordinatorBridgePresenter: AllChatsOnboardingCoordinatorBridgePresenter?
+    
+    private var session: MXSession? {
+        UserSessionsService.shared.mainUserSession?.matrixSession
+    }
+    
+    private var theme: Theme {
+        ThemeService.shared().theme
+    }
 
     @IBOutlet private var toolbar: UIToolbar!
     private var isToolbarHidden: Bool = false {
@@ -137,12 +145,13 @@ class AllChatsViewController: HomeViewController {
         searchController.delegate = self
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.setupEditOptions), name: AllChatsLayoutSettingsManager.didUpdateSettings, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateBadgeButton), name: MXSpaceNotificationCounter.didUpdateNotificationCount, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.toolbar.tintColor = ThemeService.shared().theme.colors.accent
+        self.toolbar.tintColor = theme.colors.accent
         if self.navigationItem.searchController == nil {
             self.navigationItem.searchController = searchController
         }
@@ -460,10 +469,10 @@ class AllChatsViewController: HomeViewController {
             return
         }
         
-        self.update(with: ThemeService.shared().theme)
+        self.update()
     }
     
-    private func update(with theme: Theme) {
+    private func update() {
         self.navigationController?.toolbar?.tintColor = theme.colors.accent
     }
     
@@ -500,10 +509,31 @@ class AllChatsViewController: HomeViewController {
             self?.updateToolbar(with: menu)
         }))
         updateEmptyView()
+        updateBadgeButton()
     }
     
     private func updateRightNavigationItem(with menu: UIMenu) {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: menu)
+    }
+    
+    private lazy var spacesButton: BadgedBarButtonItem = {
+        let innerButton = UIButton(type: .system)
+        innerButton.accessibilityLabel = VectorL10n.spaceSelectorTitle
+        innerButton.addTarget(self, action: #selector(self.showSpaceSelectorAction(sender:)), for: .touchUpInside)
+        innerButton.setImage(Asset.Images.allChatsSpacesIcon.image, for: .normal)
+        return BadgedBarButtonItem(withBaseButton: innerButton, theme: theme)
+    }()
+    
+    @objc private func updateBadgeButton() {
+        guard isViewLoaded else {
+            return
+        }
+        spacesButton.badgeText = session.map {
+            "\($0.spaceService.rootSpacesNotificationCount)"
+        }
+        spacesButton.badgeBackgroundColor = session.map {
+            $0.spaceService.rootSpacesHaveHighlightNotification ? theme.noticeColor : theme.noticeSecondaryColor
+        } ?? .clear
     }
     
     private func updateToolbar(with menu: UIMenu) {
@@ -512,10 +542,7 @@ class AllChatsViewController: HomeViewController {
         }
         
         self.isToolbarHidden = false
-        self.update(with: ThemeService.shared().theme)
-        
-        let spacesButton = UIBarButtonItem(image: Asset.Images.allChatsSpacesIcon.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: )))
-        spacesButton.accessibilityLabel = VectorL10n.spaceSelectorTitle
+        self.update()
         
         self.toolbar.items = [
             spacesButton,
@@ -1074,5 +1101,23 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
         
         // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
         self.refreshCurrentSelectedCell(false)
+    }
+}
+
+private extension MXSpaceService {
+    var rootSpacesNotificationCount: UInt {
+        rootSpaces.reduce(0) { partialResult, space in
+            let count = notificationCounter.notificationState(forSpaceWithId: space.spaceId)?.allCount ?? 0
+            return partialResult + count
+        }
+    }
+    
+    var rootSpacesHaveHighlightNotification: Bool {
+        rootSpaces.contains { space in
+            guard let notificationState = notificationCounter.notificationState(forSpaceWithId: space.spaceId) else {
+                return false
+            }
+            return notificationState.allHighlightCount > 0
+        }
     }
 }
