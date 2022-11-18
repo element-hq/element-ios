@@ -1102,10 +1102,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
 
 private extension MXSpaceService {
     var rootSpacesNotificationCount: UInt {
-        rootSpaces.reduce(0) { partialResult, space in
-            let count = notificationCounter.notificationState(forSpaceWithId: space.spaceId)?.allCount ?? 0
-            return partialResult + count
-        }
+        notificationCounter.notificationState(forAllSpacesExcept: nil).allCount
     }
     
     var rootSpacesHaveHighlightNotification: Bool {
