@@ -48,9 +48,10 @@ final class ComposerCreateActionListCoordinator: NSObject, Coordinator, Presenta
         view = ComposerCreateActionList(viewModel: viewModel.context)
         let hostingVC = VectorHostingController(rootView: view)
         hostingVC.bottomSheetPreferences = VectorHostingBottomSheetPreferences(
-            detents: [.medium],
+            detents: [.custom(height: 470)],
             prefersGrabberVisible: true,
-            cornerRadius: 20
+            cornerRadius: 20,
+            prefersScrollingExpandsWhenScrolledToEdge: false
         )
         hostingController = hostingVC
         super.init()
