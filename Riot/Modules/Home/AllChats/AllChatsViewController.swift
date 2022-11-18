@@ -524,11 +524,11 @@ class AllChatsViewController: HomeViewController {
         guard isViewLoaded else {
             return
         }
-        spacesButton.badgeText = mainSession.map {
-            "\($0.spaceService.rootSpacesNotificationCount)"
-        }
-        spacesButton.badgeBackgroundColor = mainSession.map {
-            $0.spaceService.rootSpacesHaveHighlightNotification ? theme.noticeColor : theme.noticeSecondaryColor
+        
+        let notificationState = mainSession?.spaceService.notificationCounter.notificationState(forAllSpacesExcept: nil)
+        spacesButton.badgeText = notificationState.map { "\($0.allCount)" }
+        spacesButton.badgeBackgroundColor = notificationState.map {
+            $0.allHighlightCount > 0 ? theme.noticeColor : theme.noticeSecondaryColor
         } ?? .clear
     }
     
@@ -1097,20 +1097,5 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
         
         // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
         self.refreshCurrentSelectedCell(false)
-    }
-}
-
-private extension MXSpaceService {
-    var rootSpacesNotificationCount: UInt {
-        notificationCounter.notificationState(forAllSpacesExcept: nil).allCount
-    }
-    
-    var rootSpacesHaveHighlightNotification: Bool {
-        rootSpaces.contains { space in
-            guard let notificationState = notificationCounter.notificationState(forSpaceWithId: space.spaceId) else {
-                return false
-            }
-            return notificationState.allHighlightCount > 0
-        }
     }
 }
