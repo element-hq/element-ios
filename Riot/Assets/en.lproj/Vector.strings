@@ -2444,6 +2444,7 @@ To enable access, tap Settings> Location and select Always";
 "user_session_unverified_additional_info" = "Verify your current session for enhanced secure messaging.";
 "user_session_verification_unknown_additional_info" = "Verify your current session to reveal this session's verification status.";
 "user_other_session_unverified_additional_info" = "Verify or sign out from this session for best security and reliability.";
+"user_other_session_permanently_unverified_additional_info" = "This session cannot be verified because it does not support encryption.";
 "user_other_session_verified_additional_info" = "This session is ready for secure messaging.";
 "user_session_push_notifications" = "Push notifications";
 "user_session_push_notifications_message" = "When turned on, this session will receive push notifications.";

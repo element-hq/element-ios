@@ -172,7 +172,7 @@ private extension UserOtherSessionsFilter {
         case .inactive:
             return sessionInfos.filter { !$0.isActive }
         case .unverified:
-            return sessionInfos.filter { $0.verificationState != .verified }
+            return sessionInfos.filter { $0.verificationState.isUnverified }
         case .verified:
             return sessionInfos.filter { $0.verificationState == .verified }
         }

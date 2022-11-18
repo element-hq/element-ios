@@ -465,7 +465,7 @@ private extension InfoSheetCoordinatorParameters {
 private extension UserSessionInfo {
     var bottomSheetTitle: String {
         switch verificationState {
-        case .unverified:
+        case .unverified, .permanentlyUnverified:
             return VectorL10n.userSessionUnverifiedSessionTitle
         case .verified:
             return VectorL10n.userSessionVerifiedSessionTitle
@@ -476,7 +476,7 @@ private extension UserSessionInfo {
 
     var bottomSheetDescription: String {
         switch verificationState {
-        case .unverified:
+        case .unverified, .permanentlyUnverified:
             return VectorL10n.userSessionUnverifiedSessionDescription
         case .verified:
             return VectorL10n.userSessionVerifiedSessionDescription
