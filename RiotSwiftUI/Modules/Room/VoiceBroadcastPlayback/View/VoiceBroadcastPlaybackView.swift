@@ -100,14 +100,7 @@ struct VoiceBroadcastPlaybackView: View {
                         }
                         .accessibilityIdentifier("pauseButton")
                     } else  {
-                        Button {
-                            if viewModel.viewState.broadcastState == .live &&
-                                viewModel.viewState.playbackState == .stopped {
-                                viewModel.send(viewAction: .playLive)
-                            } else {
-                                viewModel.send(viewAction: .play)
-                            }
-                        } label: {
+                        Button { viewModel.send(viewAction: .play) } label: {
                             Image(uiImage: Asset.Images.voiceBroadcastPlay.image)
                                 .renderingMode(.original)
                         }
