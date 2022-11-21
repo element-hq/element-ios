@@ -95,7 +95,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     
     /// Listen voice broadcast
     private func play() {
-        isLivePlayback = false
+        let wasLivePlayback = isLivePlayback
+        isLivePlayback = state.broadcastState == .live && (state.playbackState == .stopped || (audioPlayer?.playerItems.last?.asset as? AVURLAsset)?.url == audioPlayer?.currentUrl)
         displayLink.isPaused = false
         isActuallyPaused = false
         
@@ -105,18 +106,21 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: Start streaming")
             state.playbackState = .buffering
             voiceBroadcastAggregator.start()
-            
-            updateDuration()
-        } else if let audioPlayer = audioPlayer {
+        } else if wasLivePlayback == isLivePlayback || !isLivePlayback, let audioPlayer = audioPlayer {
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: resume")
             audioPlayer.play()
         } else {
             let chunks = voiceBroadcastAggregator.voiceBroadcast.chunks
-            MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: restart from the beginning: \(chunks.count) chunks")
             
             // Reinject all the chunks we already have and play them
             voiceBroadcastChunkQueue.append(contentsOf: chunks)
-            processPendingVoiceBroadcastChunks()
+            if isLivePlayback {
+                MXLog.debug("[VoiceBroadcastPlaybackViewModel] playLive: restart from the last chunk: \(chunks.count) chunks")
+                processPendingVoiceBroadcastChunksForLivePlayback()
+            } else {
+                MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: restart from the beginning: \(chunks.count) chunks")
+                processPendingVoiceBroadcastChunks()
+            }
         }
     }
     
@@ -126,29 +130,11 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             return
         }
         
-        isLivePlayback = true
-        displayLink.isPaused = false
-        isActuallyPaused = false
-        
+        audioPlayer?.pause()
         // Flush the current audio player playlist
         audioPlayer?.removeAllPlayerItems()
         
-        if voiceBroadcastAggregator.isStarted == false {
-            // Start the streaming by fetching broadcast chunks
-            // The audio player will automatically start the playback on incoming chunks
-            MXLog.debug("[VoiceBroadcastPlaybackViewModel] playLive: Start streaming")
-            state.playbackState = .buffering
-            voiceBroadcastAggregator.start()
-            
-            state.playingState.duration = Float(voiceBroadcastAggregator.voiceBroadcast.duration)
-        } else {
-            let chunks = voiceBroadcastAggregator.voiceBroadcast.chunks
-            MXLog.debug("[VoiceBroadcastPlaybackViewModel] playLive: restart from the last chunk: \(chunks.count) chunks")
-            
-            // Reinject all the chunks we already have and play the last one
-            voiceBroadcastChunkQueue.append(contentsOf: chunks)
-            processPendingVoiceBroadcastChunksForLivePlayback()
-        }
+        play()
     }
     
     /// Pause voice broadcast
@@ -254,14 +240,15 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     // Append the chunk to the current playlist
                     audioPlayer.addContentFromURL(result.url)
                     
+                    if let time = time {
+                        audioPlayer.seekToTime(time)
+                    }
+                    
                     // Resume the player. Needed after a buffering
                     if audioPlayer.isPlaying == false && self.state.playbackState == .buffering {
                         MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: Resume the player")
                         self.displayLink.isPaused = false
                         audioPlayer.play()
-                        if let time = time {
-                            audioPlayer.seekToTime(time)
-                        }
                     }
                 } else {
                     // Init and start the player on the first chunk
@@ -320,6 +307,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     break
                 }
             }
+            
+            isLivePlayback = state.broadcastState == .live && voiceBroadcastChunkQueue.count <= 1
             
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] didSliderChanged: restart to time: \(state.bindings.progress) milliseconds")
             let time = state.bindings.progress - state.playingState.duration + Float(chunksDuration)
@@ -386,6 +375,9 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
     }
     
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {
+        
+        updateDuration()
+        
         if isLivePlayback && state.playbackState == .buffering {
             // We started directly with a live playback but there was no known chunks at that time
             // These are the first chunks we get. Start the playback on the latest one
