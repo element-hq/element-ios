@@ -35,7 +35,7 @@ struct Composer: View {
     
     private var isLandscapeIphone: Bool {
         let device = UIDevice.current
-        return device.isPhone && device.orientation.isLandscape
+        return device.userInterfaceIdiom == .phone && device.orientation.isLandscape
     }
     
     private let horizontalPadding: CGFloat = 12
