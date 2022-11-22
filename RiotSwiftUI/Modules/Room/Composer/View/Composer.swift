@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-import DSBottomSheet
 import SwiftUI
 import WysiwygComposer
 
@@ -22,7 +21,6 @@ struct Composer: View {
     // MARK: - Properties
     
     // MARK: Private
-    
     @ObservedObject private var viewModel: ComposerViewModelType.Context
     @ObservedObject private var wysiwygViewModel: WysiwygComposerViewModel
     private let resizeAnimationDuration: Double
@@ -33,12 +31,17 @@ struct Composer: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @State private var isActionButtonShowing = false
+    @State private var isToggleButtonHidden = false
+    
+    private var isLandscapeIphone: Bool {
+        let device = UIDevice.current
+        return device.isPhone && device.orientation.isLandscape
+    }
     
     private let horizontalPadding: CGFloat = 12
     private let borderHeight: CGFloat = 40
-    private let minTextViewHeight: CGFloat = 22
     private var verticalPadding: CGFloat {
-        (borderHeight - minTextViewHeight) / 2
+        (borderHeight - wysiwygViewModel.minHeight) / 2
     }
     
     private var topPadding: CGFloat {
@@ -46,7 +49,7 @@ struct Composer: View {
     }
     
     private var cornerRadius: CGFloat {
-        if viewModel.viewState.shouldDisplayContext || wysiwygViewModel.idealHeight > minTextViewHeight {
+        if viewModel.viewState.shouldDisplayContext || wysiwygViewModel.idealHeight > wysiwygViewModel.minHeight {
             return 14
         } else {
             return borderHeight / 2
@@ -129,6 +132,7 @@ struct Composer: View {
                             .frame(width: 16, height: 16)
                     }
                     .accessibilityIdentifier(toggleButtonAcccessibilityIdentifier)
+                    .isHidden(isToggleButtonHidden)
                     .padding(.leading, 12)
                     .padding(.trailing, 4)
                 }
@@ -200,6 +204,7 @@ struct Composer: View {
             self.resizeAnimationDuration = resizeAnimationDuration
             self.sendMessageAction = sendMessageAction
             self.showSendMediaActions = showSendMediaActions
+            self._isToggleButtonHidden = State(initialValue: isLandscapeIphone)
         }
     
     var body: some View {
@@ -233,6 +238,12 @@ struct Composer: View {
         }
         .padding(.horizontal, horizontalPadding)
         .padding(.bottom, 4)
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+            if wysiwygViewModel.maximised, isLandscapeIphone {
+                wysiwygViewModel.maximised = false
+            }
+            isToggleButtonHidden = isLandscapeIphone
+        }
     }
 }
 

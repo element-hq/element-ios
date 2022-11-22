@@ -286,9 +286,14 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func updateTextViewHeight() {
         let height = UIScreen.main.bounds.height
         let barOffset: CGFloat = 68
-        let toolbarHeight: CGFloat = 82
+        let toolbarHeight: CGFloat = 96
         let finalHeight = height - keyboardHeight - toolbarHeight - barOffset
         wysiwygViewModel.maxExpandedHeight = finalHeight
+        if finalHeight < 200 {
+            wysiwygViewModel.maxCompressedHeight = finalHeight > wysiwygViewModel.minHeight ? finalHeight : wysiwygViewModel.minHeight
+        } else {
+            wysiwygViewModel.maxCompressedHeight = 200
+        }
     }
     
     // MARK: - HtmlRoomInputToolbarViewProtocol
