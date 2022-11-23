@@ -64,28 +64,22 @@ private extension InfoSheetCoordinator {
     // The bottom sheet should be presented with the content intrinsic height as for design requirement
     // We can do it easily just on iOS 16+
     func setupPresentation(of viewController: VectorHostingController) {
-        let cornerRadius: CGFloat = 24
+        let detents: [VectorHostingBottomSheetPreferences.Detent]
         
-        guard
+        if
             #available(iOS 16, *),
-            let parentSize = parameters.parentSize,
-            let presentationController = viewController.sheetPresentationController
-        else {
-            viewController.bottomSheetPreferences = .init(cornerRadius: cornerRadius)
-            return
+            let parentSize = parameters.parentSize {
+            
+            let intrisincSize = viewController.view.systemLayoutSizeFitting(.init(width: parentSize.width, height: UIView.layoutFittingCompressedSize.height),
+                                                                            withHorizontalFittingPriority: .defaultHigh,
+                                                                            verticalFittingPriority: .defaultLow)
+            
+            detents = [.custom(height: intrisincSize.height), .large]
+        } else {
+            detents = [.medium, .large]
         }
         
-        let intrisincSize = viewController.view.systemLayoutSizeFitting(.init(width: parentSize.width, height: 0),
-                                                                        withHorizontalFittingPriority: .defaultHigh,
-                                                                        verticalFittingPriority: .defaultLow)
-        
-        presentationController.preferredCornerRadius = cornerRadius
-        presentationController.prefersGrabberVisible = true
-        presentationController.detents = [
-            .custom { context in
-                min(context.maximumDetentValue, intrisincSize.height)
-            },
-            .large()
-        ]
+        viewController.bottomSheetPreferences = .init(detents: detents, cornerRadius: 24)
+        viewController.bottomSheetPreferences?.setup(viewController: viewController)
     }
 }
