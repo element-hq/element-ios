@@ -346,7 +346,7 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                 self.showInviteFriends(from: self.avatarMenuButton)
             })
         }
-        if BuildSettings.sideMenuShowFeedback {
+        if BuildSettings.allowBugReportingAndFeedbackManually {
             subMenuActions.append(UIAction(title: VectorL10n.sideMenuActionFeedback, image: UIImage(systemName: "questionmark.circle")) { [weak self] action in
                 self?.showBugReport()
             })

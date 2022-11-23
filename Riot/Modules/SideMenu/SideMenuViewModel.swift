@@ -109,7 +109,7 @@ final class SideMenuViewModel: SideMenuViewModelType {
             .settings
         ]
         
-        if BuildSettings.sideMenuShowFeedback {
+        if BuildSettings.allowBugReportingAndFeedbackManually {
             sideMenuItems += [.feedback]
         }
         

@@ -554,7 +554,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }
     [sectionAdvanced addRowWithTag:ADVANCED_MARK_ALL_AS_READ_INDEX];
     [sectionAdvanced addRowWithTag:ADVANCED_CLEAR_CACHE_INDEX];
-    if (BuildSettings.settingsScreenAllowBugReportingManually)
+    if (BuildSettings.allowBugReportingAndFeedbackManually)
     {
         [sectionAdvanced addRowWithTag:ADVANCED_REPORT_BUG_INDEX];
     }
