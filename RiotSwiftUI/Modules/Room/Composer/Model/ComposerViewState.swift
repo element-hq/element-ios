@@ -49,7 +49,7 @@ extension ComposerViewState {
         }
     }
     
-    var isForcedMinimised: Bool {
+    var isMinimiseForced: Bool {
         isLandscapePhone || !textFormattingEnabled
     }
 }

@@ -116,7 +116,7 @@ struct Composer: View {
                         wysiwygViewModel.setup()
                     }
                 }
-                if !viewModel.viewState.isForcedMinimised {
+                if !viewModel.viewState.isMinimiseForced {
                     Button {
                         wysiwygViewModel.maximised.toggle()
                     } label: {
@@ -230,7 +230,7 @@ struct Composer: View {
         }
         .padding(.horizontal, horizontalPadding)
         .padding(.bottom, 4)
-        .onChange(of: viewModel.viewState.isForcedMinimised) { newValue in
+        .onChange(of: viewModel.viewState.isMinimiseForced) { newValue in
             if wysiwygViewModel.maximised && newValue {
                 wysiwygViewModel.maximised = false
             }
