@@ -34,8 +34,10 @@ class VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderViewModelType, Voic
     init(details: VoiceBroadcastRecorderDetails,
          recorderService: VoiceBroadcastRecorderServiceProtocol) {
         self.voiceBroadcastRecorderService = recorderService
+        let currentRecordingState = VoiceBroadcastRecordingState(remainingTime: BuildSettings.voiceBroadcastMaxLength)
         super.init(initialViewState: VoiceBroadcastRecorderViewState(details: details,
                                                                      recordingState: .stopped,
+                                                                     currentRecordingState: currentRecordingState,
                                                                      bindings: VoiceBroadcastRecorderViewStateBindings()))
         
         self.voiceBroadcastRecorderService.serviceDelegate = self
@@ -77,10 +79,23 @@ class VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderViewModelType, Voic
         self.state.recordingState = .resumed
         voiceBroadcastRecorderService.resumeRecordingVoiceBroadcast()
     }
+    
+    private func updateRemainingTime(_ remainingTime: UInt) {
+        let time = TimeInterval(Double(remainingTime))
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .abbreviated
+        
+        state.currentRecordingState.remainingTime = remainingTime
+        state.currentRecordingState.remainingTimeLabel = VectorL10n.voiceBroadcastTimeLeft(formatter.string(from: time) ?? "0s")
+    }
 }
 
 extension VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderServiceDelegate {
     func voiceBroadcastRecorderService(_ service: VoiceBroadcastRecorderServiceProtocol, didUpdateState state: VoiceBroadcastRecorderState) {
         self.state.recordingState = state
+    }
+    
+    func voiceBroadcastRecorderService(_ service: VoiceBroadcastRecorderServiceProtocol, didUpdateRemainingTime remainingTime: UInt) {
+        self.updateRemainingTime(remainingTime)
     }
 }
