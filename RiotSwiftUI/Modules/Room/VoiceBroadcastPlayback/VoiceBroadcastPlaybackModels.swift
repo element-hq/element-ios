@@ -19,7 +19,6 @@ import SwiftUI
 
 enum VoiceBroadcastPlaybackViewAction {
     case play
-    case playLive
     case pause
     case sliderChange(didChange: Bool)
 }
@@ -39,7 +38,6 @@ struct VoiceBroadcastPlaybackDetails {
 }
 
 enum VoiceBroadcastState {
-    case unknown
     case stopped
     case live
     case paused
