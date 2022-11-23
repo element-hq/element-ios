@@ -63,6 +63,15 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
         }
     }
     
+    var isLandscapePhone: Bool {
+        get {
+            state.isLandscapePhone
+        }
+        set {
+            state.isLandscapePhone = newValue
+        }
+    }
+    
     var isFocused: Bool {
         state.bindings.focused
     }

@@ -43,9 +43,12 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var voiceMessageBottomConstraint: NSLayoutConstraint?
     private var hostingViewController: VectorHostingController!
     private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
-    private var viewModel: ComposerViewModelProtocol = ComposerViewModel(
-        initialViewState: ComposerViewState(textFormattingEnabled: RiotSettings.shared.enableWysiwygTextFormatting,
-                                            bindings: ComposerBindings(focused: false)))
+    private var viewModel: ComposerViewModelProtocol!
+    
+    private var isLandscapePhone: Bool {
+        let device = UIDevice.current
+        return device.isPhone && device.orientation.isLandscape
+    }
     
     // MARK: Public
     
@@ -99,6 +102,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        viewModel = ComposerViewModel(
+            initialViewState: ComposerViewState(textFormattingEnabled: RiotSettings.shared.enableWysiwygTextFormatting,
+                                                isLandscapePhone: isLandscapePhone, bindings: ComposerBindings(focused: false)))
         
         viewModel.callback = { [weak self] result in
             self?.handleViewModelResult(result)
@@ -153,6 +159,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                 },
             
             wysiwygViewModel.$maximised
+                .dropFirst()
                 .removeDuplicates()
                 .sink { [weak self] value in
                     guard let self = self else { return }
@@ -229,6 +236,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
     
     @objc private func deviceDidRotate(_ notification: Notification) {
+        viewModel.isLandscapePhone = isLandscapePhone
         DispatchQueue.main.async {
             self.updateTextViewHeight()
         }
@@ -342,9 +350,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         set {
             self.viewModel.textFormattingEnabled = newValue
             self.wysiwygViewModel.plainTextMode = !newValue
-            if !newValue {
-                self.wysiwygViewModel.maximised = false
-            }
         }
     }
     

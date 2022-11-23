@@ -31,12 +31,6 @@ struct Composer: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @State private var isActionButtonShowing = false
-    @State private var isToggleButtonHidden = false
-    
-    private var isLandscapeIphone: Bool {
-        let device = UIDevice.current
-        return device.userInterfaceIdiom == .phone && device.orientation.isLandscape
-    }
     
     private let horizontalPadding: CGFloat = 12
     private let borderHeight: CGFloat = 40
@@ -122,7 +116,7 @@ struct Composer: View {
                         wysiwygViewModel.setup()
                     }
                 }
-                if viewModel.viewState.textFormattingEnabled {
+                if !viewModel.viewState.isForcedMinimised {
                     Button {
                         wysiwygViewModel.maximised.toggle()
                     } label: {
@@ -132,7 +126,6 @@ struct Composer: View {
                             .frame(width: 16, height: 16)
                     }
                     .accessibilityIdentifier(toggleButtonAcccessibilityIdentifier)
-                    .isHidden(isToggleButtonHidden)
                     .padding(.leading, 12)
                     .padding(.trailing, 4)
                 }
@@ -204,7 +197,6 @@ struct Composer: View {
             self.resizeAnimationDuration = resizeAnimationDuration
             self.sendMessageAction = sendMessageAction
             self.showSendMediaActions = showSendMediaActions
-            self._isToggleButtonHidden = State(initialValue: isLandscapeIphone)
         }
     
     var body: some View {
@@ -238,11 +230,10 @@ struct Composer: View {
         }
         .padding(.horizontal, horizontalPadding)
         .padding(.bottom, 4)
-        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-            if wysiwygViewModel.maximised, isLandscapeIphone {
+        .onChange(of: viewModel.viewState.isForcedMinimised) { newValue in
+            if wysiwygViewModel.maximised && newValue {
                 wysiwygViewModel.maximised = false
             }
-            isToggleButtonHidden = isLandscapeIphone
         }
     }
 }
