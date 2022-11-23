@@ -37,7 +37,7 @@ struct VoiceBroadcastRecorderDetails {
 
 struct VoiceBroadcastRecordingState {
     var remainingTime: UInt
-    var remainingTimeLabel: String?
+    var remainingTimeLabel: String
 }
 
 struct VoiceBroadcastRecorderViewState: BindableState {

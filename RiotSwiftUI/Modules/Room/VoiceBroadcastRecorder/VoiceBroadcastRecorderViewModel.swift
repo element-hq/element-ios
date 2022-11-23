@@ -34,7 +34,7 @@ class VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderViewModelType, Voic
     init(details: VoiceBroadcastRecorderDetails,
          recorderService: VoiceBroadcastRecorderServiceProtocol) {
         self.voiceBroadcastRecorderService = recorderService
-        let currentRecordingState = VoiceBroadcastRecordingState(remainingTime: BuildSettings.voiceBroadcastMaxLength)
+        let currentRecordingState = VoiceBroadcastRecorderViewModel.currentRecordingState(from: BuildSettings.voiceBroadcastMaxLength)
         super.init(initialViewState: VoiceBroadcastRecorderViewState(details: details,
                                                                      recordingState: .stopped,
                                                                      currentRecordingState: currentRecordingState,
@@ -81,12 +81,16 @@ class VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderViewModelType, Voic
     }
     
     private func updateRemainingTime(_ remainingTime: UInt) {
+        state.currentRecordingState = VoiceBroadcastRecorderViewModel.currentRecordingState(from: remainingTime)
+    }
+    
+    private static func currentRecordingState(from remainingTime: UInt) -> VoiceBroadcastRecordingState {
         let time = TimeInterval(Double(remainingTime))
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .abbreviated
-        
-        state.currentRecordingState.remainingTime = remainingTime
-        state.currentRecordingState.remainingTimeLabel = VectorL10n.voiceBroadcastTimeLeft(formatter.string(from: time) ?? "0s")
+
+        return VoiceBroadcastRecordingState(remainingTime: remainingTime,
+                                            remainingTimeLabel: VectorL10n.voiceBroadcastTimeLeft(formatter.string(from: time) ?? "0s"))
     }
 }
 
