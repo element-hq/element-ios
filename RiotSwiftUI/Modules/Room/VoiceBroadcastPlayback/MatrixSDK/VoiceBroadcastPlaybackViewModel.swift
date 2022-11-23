@@ -378,9 +378,9 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
         
         updateDuration()
         
+        // Handle specifically the case where we were waiting data to start playing a live playback
         if isLivePlayback && state.playbackState == .buffering {
-            // We started directly with a live playback but there was no known chunks at that time
-            // These are the first chunks we get. Start the playback on the latest one
+            // Start the playback on the latest one
             processPendingVoiceBroadcastChunksForLivePlayback()
         } else {
             processPendingVoiceBroadcastChunks()
