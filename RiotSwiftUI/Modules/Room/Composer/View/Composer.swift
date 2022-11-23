@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-import DSBottomSheet
 import SwiftUI
 import WysiwygComposer
 
@@ -22,7 +21,6 @@ struct Composer: View {
     // MARK: - Properties
     
     // MARK: Private
-    
     @ObservedObject private var viewModel: ComposerViewModelType.Context
     @ObservedObject private var wysiwygViewModel: WysiwygComposerViewModel
     private let resizeAnimationDuration: Double
@@ -36,9 +34,8 @@ struct Composer: View {
     
     private let horizontalPadding: CGFloat = 12
     private let borderHeight: CGFloat = 40
-    private let minTextViewHeight: CGFloat = 22
     private var verticalPadding: CGFloat {
-        (borderHeight - minTextViewHeight) / 2
+        (borderHeight - wysiwygViewModel.minHeight) / 2
     }
     
     private var topPadding: CGFloat {
@@ -46,7 +43,7 @@ struct Composer: View {
     }
     
     private var cornerRadius: CGFloat {
-        if viewModel.viewState.shouldDisplayContext || wysiwygViewModel.idealHeight > minTextViewHeight {
+        if viewModel.viewState.shouldDisplayContext || wysiwygViewModel.idealHeight > wysiwygViewModel.minHeight {
             return 14
         } else {
             return borderHeight / 2
@@ -119,7 +116,7 @@ struct Composer: View {
                         wysiwygViewModel.setup()
                     }
                 }
-                if viewModel.viewState.textFormattingEnabled {
+                if !viewModel.viewState.isMinimiseForced {
                     Button {
                         wysiwygViewModel.maximised.toggle()
                     } label: {
@@ -233,6 +230,11 @@ struct Composer: View {
         }
         .padding(.horizontal, horizontalPadding)
         .padding(.bottom, 4)
+        .onChange(of: viewModel.viewState.isMinimiseForced) { newValue in
+            if wysiwygViewModel.maximised && newValue {
+                wysiwygViewModel.maximised = false
+            }
+        }
     }
 }
 

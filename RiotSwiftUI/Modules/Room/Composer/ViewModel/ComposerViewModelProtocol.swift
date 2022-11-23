@@ -24,6 +24,7 @@ protocol ComposerViewModelProtocol {
     var eventSenderDisplayName: String? { get set }
     var placeholder: String? { get set }
     var isFocused: Bool { get }
+    var isLandscapePhone: Bool { get set }
     
     func dismissKeyboard()
     func showKeyboard()
