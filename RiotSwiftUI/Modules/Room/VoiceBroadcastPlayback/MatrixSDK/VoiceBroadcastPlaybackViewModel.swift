@@ -358,8 +358,18 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
         let broadcastState = VoiceBroadcastPlaybackViewModel.getBroadcastState(from: didReceiveState)
         state.broadcastState = broadcastState
         
-        if isLivePlayback, broadcastState == .paused {
-            state.playbackState = .playing
+        // Handle the live icon appearance
+        switch broadcastState {
+        case .paused:
+            if state.playbackState == .playingLive {
+                state.playbackState = .playing
+            }
+        case .live:
+            if isLivePlayback, state.playbackState == .playing {
+                state.playbackState = .playingLive
+            }
+        default:
+            break
         }
     }
     
