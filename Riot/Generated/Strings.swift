@@ -3179,6 +3179,18 @@ public class VectorL10n: NSObject {
   public static var later: String { 
     return VectorL10n.tr("Vector", "later") 
   }
+  /// Processing data\n%@ %%
+  public static func launchLoadingProcessingResponse(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "launch_loading_processing_response", p1)
+  }
+  /// Syncing with the server
+  public static var launchLoadingServerSyncing: String { 
+    return VectorL10n.tr("Vector", "launch_loading_server_syncing") 
+  }
+  /// Syncing with the server\n(%@ attempt)
+  public static func launchLoadingServerSyncingNthAttempt(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "launch_loading_server_syncing_nth_attempt", p1)
+  }
   /// Leave
   public static var leave: String { 
     return VectorL10n.tr("Vector", "leave") 

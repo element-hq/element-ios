@@ -2394,7 +2394,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         MXLogDebug(@"[AppDelegate] showLaunchAnimation");
         
-        LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];
+        LaunchLoadingView *launchLoadingView;
+        if (MXSDKOptions.sharedInstance.enableSyncProgress)
+        {
+            MXSession *mainSession = self.mxSessions.firstObject;
+            launchLoadingView = [LaunchLoadingView instantiateWithSyncProgress:mainSession.syncProgress];
+        }
+        else
+        {
+            launchLoadingView = [LaunchLoadingView instantiateWithSyncProgress:nil];
+        }
+                
         launchLoadingView.frame = window.bounds;
         [launchLoadingView updateWithTheme:ThemeService.shared.theme];
         launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
