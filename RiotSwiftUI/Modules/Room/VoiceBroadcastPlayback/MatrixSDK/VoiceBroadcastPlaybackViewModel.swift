@@ -343,7 +343,7 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
         voiceBroadcastChunkQueue.append(didReceiveChunk)
     }
     
-    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveState: VoiceBroadcastInfo.State) {
+    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveState: VoiceBroadcastInfoState) {
         state.broadcastState = didReceiveState
         
         // Handle the live icon appearance

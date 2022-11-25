@@ -44,7 +44,7 @@ struct VoiceBroadcastPlayingState {
 
 struct VoiceBroadcastPlaybackViewState: BindableState {
     var details: VoiceBroadcastPlaybackDetails
-    var broadcastState: VoiceBroadcastInfo.State
+    var broadcastState: VoiceBroadcastInfoState
     var playbackState: VoiceBroadcastPlaybackState
     var playingState: VoiceBroadcastPlayingState
     var bindings: VoiceBroadcastPlaybackViewStateBindings

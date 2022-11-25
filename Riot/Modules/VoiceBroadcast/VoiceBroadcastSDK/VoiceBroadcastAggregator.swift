@@ -26,7 +26,7 @@ public protocol VoiceBroadcastAggregatorDelegate: AnyObject {
     func voiceBroadcastAggregatorDidEndLoading(_ aggregator: VoiceBroadcastAggregator)
     func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didFailWithError: Error)
     func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveChunk: VoiceBroadcastChunk)
-    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveState: VoiceBroadcastInfo.State)
+    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveState: VoiceBroadcastInfoState)
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator)
 }
 
@@ -57,7 +57,7 @@ public class VoiceBroadcastAggregator {
     }
     
     public private(set) var isStarted: Bool = false
-    public private(set) var voiceBroadcastState: VoiceBroadcastInfo.State
+    public private(set) var voiceBroadcastState: VoiceBroadcastInfoState
     public var delegate: VoiceBroadcastAggregatorDelegate?
     
     deinit {
@@ -66,7 +66,7 @@ public class VoiceBroadcastAggregator {
         }
     }
     
-    public init(session: MXSession, room: MXRoom, voiceBroadcastStartEventId: String, voiceBroadcastState: VoiceBroadcastInfo.State) throws {
+    public init(session: MXSession, room: MXRoom, voiceBroadcastStartEventId: String, voiceBroadcastState: VoiceBroadcastInfoState) throws {
         self.session = session
         self.room = room
         self.voiceBroadcastStartEventId = voiceBroadcastStartEventId
@@ -111,7 +111,7 @@ public class VoiceBroadcastAggregator {
                   event.stateKey == self.voiceBroadcastSenderId,
                   let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
                   (event.eventId == self.voiceBroadcastStartEventId || voiceBroadcastInfo.voiceBroadcastId == self.voiceBroadcastStartEventId),
-                  let state = VoiceBroadcastInfo.State(rawValue: voiceBroadcastInfo.state) else {
+                  let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state) else {
                 return
             }
         

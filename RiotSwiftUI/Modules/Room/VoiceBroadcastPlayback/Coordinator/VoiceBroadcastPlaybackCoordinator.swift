@@ -22,7 +22,7 @@ struct VoiceBroadcastPlaybackCoordinatorParameters {
     let session: MXSession
     let room: MXRoom
     let voiceBroadcastStartEvent: MXEvent
-    let voiceBroadcastState: VoiceBroadcastInfo.State
+    let voiceBroadcastState: VoiceBroadcastInfoState
     let senderDisplayName: String?
 }
 
