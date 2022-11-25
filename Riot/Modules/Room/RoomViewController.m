@@ -97,7 +97,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate, RoomInputToolbarViewDelegate, ComposerCreateActionListBridgePresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, ThreadsBetaCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate, RoomInputToolbarViewDelegate, ComposerCreateActionListBridgePresenterDelegate, BubbleCellActionProviderDelegate, MessageContextMenuCoordinatorBridgePresenterDelegate>
 {
     
     // The preview header
@@ -233,6 +233,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 // scroll state just before the layout change, and restore it after the layout.
 @property (nonatomic) BOOL wasScrollAtBottomBeforeLayout;
 
+@property (nonatomic) BubbleCellContextMenuProvider *contextMenuProvider;
+@property (nonatomic) MessageContextMenuCoordinatorBridgePresenter *contextMenuPresenter;
+
 @end
 
 @implementation RoomViewController
@@ -319,6 +322,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     [super finalizeInit];
 
     [self registerPillAttachmentViewProviderIfNeeded];
+    
+    self.contextMenuProvider = [BubbleCellContextMenuProvider new];
+    
     self.resizeComposerAnimationDuration = kResizeComposerAnimationDuration;
     
     // Setup `MXKViewControllerHandling` properties
@@ -3934,19 +3940,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     // Add actions for text message
     if (!attachment)
     {
-        // Retrieved data related to the selected event
-        NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
-        MXKRoomBubbleComponent *selectedComponent;
-        for (selectedComponent in components)
-        {
-            if ([selectedComponent.event.eventId isEqualToString:selectedEvent.eventId])
-            {
-                break;
-            }
-            selectedComponent = nil;
-        }
-        
-        
         // Check status of the selected event
         if (selectedEvent.sentState == MXEventSentStatePreparing ||
             selectedEvent.sentState == MXEventSentStateEncrypting ||
@@ -3960,9 +3953,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 
                 self->currentAlert = nil;
                 
-                // Cancel and remove the outgoing message
-                [self.roomDataSource.room cancelSendingOperation:selectedEvent.eventId];
-                [self.roomDataSource removeEventWithEventId:selectedEvent.eventId];
+                [self cancelSending:selectedEvent from:roomBubbleTableViewCell];
                 
                 [self cancelEventSelection];
             }]];
@@ -3978,6 +3969,17 @@ static CGSize kThreadListBarButtonItemImageSize;
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
+
+                NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
+                MXKRoomBubbleComponent *selectedComponent;
+                for (selectedComponent in components)
+                {
+                    if ([selectedComponent.event.eventId isEqualToString:selectedEvent.eventId])
+                    {
+                        break;
+                    }
+                    selectedComponent = nil;
+                }
 
                 // Quote the message a la Markdown into the input toolbar composer
                 NSString *prefix = [self.inputToolbarView.textMessage length] ? [NSString stringWithFormat:@"%@\n", self.inputToolbarView.textMessage] : @"";
@@ -4016,24 +4018,26 @@ static CGSize kThreadListBarButtonItemImageSize;
                 
                 [self cancelEventSelection];
                 
-                UIActivityViewController *activityViewController = nil;
-                if (selectedEvent.location) {
-                    activityViewController = [self.delegate roomViewController:self locationShareActivityViewControllerForEvent:selectedEvent];
-                }
-                
-                if (activityViewController == nil && selectedComponent.textMessage) {
-                    NSArray *activityItems = @[selectedComponent.textMessage];
-                    activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
-                }
-                
-                if (activityViewController)
-                {
-                    activityViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-                    activityViewController.popoverPresentationController.sourceView = roomBubbleTableViewCell;
-                    activityViewController.popoverPresentationController.sourceRect = roomBubbleTableViewCell.bounds;
-                    
-                    [self presentViewController:activityViewController animated:YES completion:nil];
-                }
+//                UIActivityViewController *activityViewController = nil;
+//                if (selectedEvent.location) {
+//                    activityViewController = [self.delegate roomViewController:self locationShareActivityViewControllerForEvent:selectedEvent];
+//                }
+//                
+//                if (activityViewController == nil && selectedComponent.textMessage) {
+//                    NSArray *activityItems = @[selectedComponent.textMessage];
+//                    activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+//                }
+//                
+//                if (activityViewController)
+//                {
+//                    activityViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//                    activityViewController.popoverPresentationController.sourceView = roomBubbleTableViewCell;
+//                    activityViewController.popoverPresentationController.sourceRect = roomBubbleTableViewCell.bounds;
+//                    
+//                    [self presentViewController:activityViewController animated:YES completion:nil];
+//                }
+
+                [self shareEvent:selectedEvent from:roomBubbleTableViewCell];
             }]];
         }
     }
@@ -4068,22 +4072,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                     
                     [self cancelEventSelection];
                     
-                    [self startActivityIndicator];
-                    
-                    MXWeakify(self);
-                    [attachment save:^{
-                        MXStrongifyAndReturnIfNil(self);
-                        [self stopActivityIndicator];
-                    } failure:^(NSError *error) {
-                        MXStrongifyAndReturnIfNil(self);
-                        [self stopActivityIndicator];
-                        
-                        //Alert user
-                        [self showError:error];
-                    }];
-                    
-                    // Start animation in case of download during attachment preparing
-                    [roomBubbleTableViewCell startProgressUI];
+                    [self saveAttachementFrom:roomBubbleTableViewCell];
                 }]];
             }
         }
@@ -4105,24 +4094,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                     
                     MXStrongifyAndReturnIfNil(self);
                     
-                    // Get again the loader
-                    MXMediaLoader *loader = [MXMediaManager existingUploaderWithId:uploadId];
-                    if (loader)
-                    {
-                        [loader cancel];
-                    }
-                    // Hide the progress animation
-                    roomBubbleTableViewCell.progressView.hidden = YES;
-                    
-                    self->currentAlert = nil;
-                    
-                    // Remove the outgoing message and its related cached file.
-                    [[NSFileManager defaultManager] removeItemAtPath:roomBubbleTableViewCell.bubbleData.attachment.cacheFilePath error:nil];
-                    [[NSFileManager defaultManager] removeItemAtPath:roomBubbleTableViewCell.bubbleData.attachment.thumbnailCachePath error:nil];
-                    
-                    // Cancel and remove the outgoing message
-                    [self.roomDataSource.room cancelSendingOperation:selectedEvent.eventId];
-                    [self.roomDataSource removeEventWithEventId:selectedEvent.eventId];
+                    [self cancelSending:selectedEvent from:roomBubbleTableViewCell];
                     
                     [self cancelEventSelection];
                 }]];
@@ -4140,33 +4112,8 @@ static CGSize kThreadListBarButtonItemImageSize;
                     MXStrongifyAndReturnIfNil(self);
                     
                     [self cancelEventSelection];
-                    
-                    [self startActivityIndicator];
-                    
-                    MXWeakify(self);
-                    [attachment prepareShare:^(NSURL *fileURL) {
-                        MXStrongifyAndReturnIfNil(self);
-                        
-                        [self stopActivityIndicator];
-                        
-                        self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
-                        [self->documentInteractionController setDelegate:self];
-                        self->currentSharedAttachment = attachment;
-                        
-                        if (![self->documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES])
-                        {
-                            self->documentInteractionController = nil;
-                            [attachment onShareEnded];
-                            self->currentSharedAttachment = nil;
-                        }
-                        
-                    } failure:^(NSError *error) {
-                        [self showError:error];
-                        [self stopActivityIndicator];
-                    }];
-                    
-                    // Start animation in case of download during attachment preparing
-                    [roomBubbleTableViewCell startProgressUI];
+
+                    [self shareEvent:selectedEvent from:roomBubbleTableViewCell];
                 }]];
             }
         }
@@ -4189,14 +4136,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                     
                     [self cancelEventSelection];
                     
-                    // Get again the loader
-                    MXMediaLoader *loader = [MXMediaManager existingDownloaderWithIdentifier:downloadId];
-                    if (loader)
-                    {
-                        [loader cancel];
-                    }
-                    // Hide the progress animation
-                    roomBubbleTableViewCell.progressView.hidden = YES;
+                    [self cancelMediaLoadingFor:roomBubbleTableViewCell andClearCache:NO];
                 }]];
             }
         }
@@ -4211,23 +4151,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 
                 [self cancelEventSelection];
                 
-                // Create a matrix.to permalink that is common to all matrix clients
-                NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
-                NSURL *url = [NSURL URLWithString:permalink];
-                
-                if (url)
-                {
-                    MXKPasteboardManager.shared.pasteboard.URL = url;
-                    [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
-                                             image:AssetImages.linkIcon.image
-                                          duration:2.0
-                                          position:ToastPositionBottom
-                                  additionalMargin:self.roomInputToolbarContainerHeightConstraint.constant];
-                }
-                else
-                {
-                    MXLogDebug(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
-                }
+                [self copyLinkForEvent:selectedEvent];
             }]];
         }
         
@@ -4290,18 +4214,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 
                 [self startActivityIndicator];
                 
-                MXWeakify(self);
-                [self.roomDataSource.room redactEvent:selectedEvent.eventId reason:nil success:^{
-                    MXStrongifyAndReturnIfNil(self);
-                    [self stopActivityIndicator];
-                } failure:^(NSError *error) {
-                    MXStrongifyAndReturnIfNil(self);
-                    [self stopActivityIndicator];
-                    
-                    MXLogDebug(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
-                    //Alert user
-                    [self showError:error];
-                }];
+                [self redact:selectedEvent];
             }]];
         }
         
@@ -4348,86 +4261,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 
                 [self cancelEventSelection];
                 
-                // Prompt user to enter a description of the problem content.
-                UIAlertController *reportReasonAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionReportPromptReason]
-                                                                                           message:nil
-                                                                                    preferredStyle:UIAlertControllerStyleAlert];
-                
-                [reportReasonAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-                    textField.secureTextEntry = NO;
-                    textField.placeholder = nil;
-                    textField.keyboardType = UIKeyboardTypeDefault;
-                }];
-                
-                MXWeakify(self);
-                [reportReasonAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                    MXStrongifyAndReturnIfNil(self);
-                    
-                    NSString *text = [self->currentAlert textFields].firstObject.text;
-                    self->currentAlert = nil;
-                    
-                    [self startActivityIndicator];
-                    
-                    MXWeakify(self);
-                    [self.roomDataSource.room reportEvent:selectedEvent.eventId score:-100 reason:text success:^{
-                        MXStrongifyAndReturnIfNil(self);
-                        
-                        [self stopActivityIndicator];
-                        
-                        // Prompt user to ignore content from this user
-                        UIAlertController *ignoreUserAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionReportPromptIgnoreUser]
-                                                                                                 message:nil
-                                                                                          preferredStyle:UIAlertControllerStyleAlert];
-                        
-                        MXWeakify(self);
-                        [ignoreUserAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n yes] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                            
-                            MXStrongifyAndReturnIfNil(self);
-                            self->currentAlert = nil;
-                            
-                            [self startActivityIndicator];
-                            
-                            MXWeakify(self);
-                            // Add the user to the blacklist: ignored users
-                            [self.mainSession ignoreUsers:@[selectedEvent.sender] success:^{
-                                MXStrongifyAndReturnIfNil(self);
-                                [self stopActivityIndicator];
-                            } failure:^(NSError *error) {
-                                MXStrongifyAndReturnIfNil(self);
-                                [self stopActivityIndicator];
-                                
-                                MXLogDebug(@"[RoomVC] Ignore user (%@) failed", selectedEvent.sender);
-                                //Alert user
-                                [self showError:error];
-                            }];
-                        }]];
-                        
-                        [ignoreUserAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n no] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                            MXStrongifyAndReturnIfNil(self);
-                            self->currentAlert = nil;
-                        }]];
-                        
-                        [self presentViewController:ignoreUserAlert animated:YES completion:nil];
-                        self->currentAlert = ignoreUserAlert;
-                        
-                    } failure:^(NSError *error) {
-                        MXStrongifyAndReturnIfNil(self);
-                        [self stopActivityIndicator];
-                        
-                        MXLogDebug(@"[RoomVC] Report event (%@) failed", selectedEvent.eventId);
-                        //Alert user
-                        [self showError:error];
-                        
-                    }];
-                }]];
-                
-                [reportReasonAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-                    MXStrongifyAndReturnIfNil(self);
-                    self->currentAlert = nil;
-                }]];
-                
-                [self presentViewController:reportReasonAlert animated:YES completion:nil];
-                self->currentAlert = reportReasonAlert;
+                [self showReportEvent:selectedEvent];
             }]];
         }
         
@@ -6908,6 +6742,17 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)showContextualMenuForEvent:(MXEvent*)event fromSingleTapGesture:(BOOL)usedSingleTapGesture cell:(id<MXKCellRendering>)cell animated:(BOOL)animated
 {
+    if (@available(iOS 14.0, *))
+    {
+        if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && [self.roomDataSource canReactToEventWithId:event.eventId])
+        {
+            self.contextMenuPresenter = [[MessageContextMenuCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+            _contextMenuPresenter.delegate = self;
+            [_contextMenuPresenter presentFrom:self event:event cell:(MXKRoomBubbleTableViewCell*)cell roomDataSource:self.roomDataSource canEndPoll:[self.delegate roomViewController:self canEndPollWithEventIdentifier:event.eventId] animated:YES];
+            return;
+        }
+    }
+    
     if (self.roomContextualMenuPresenter.isPresenting)
     {
         return;
@@ -7039,19 +6884,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         [self hideContextualMenuAnimated:YES cancelEventSelection:YES completion:^{
             MXStrongifyAndReturnIfNil(self);
             
-            UIAlertController *deleteConfirmation = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionDeleteConfirmationTitle]
-                                                                                        message:[VectorL10n roomEventActionDeleteConfirmationMessage]
-                                                                                 preferredStyle:UIAlertControllerStyleAlert];
-            
-            [deleteConfirmation addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            }]];
-            
-            [deleteConfirmation addAction:[UIAlertAction actionWithTitle:[VectorL10n delete] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-                [self.roomDataSource removeEventWithEventId:event.eventId];
-            }]];
-            
-            [self presentViewController:deleteConfirmation animated:YES completion:nil];
-            self->currentAlert = deleteConfirmation;
+            [self deleteEvent: event];
         }];
     };
     
@@ -7512,41 +7345,21 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)reactionsMenuViewModel:(ReactionsMenuViewModel *)viewModel didAddReaction:(NSString *)reaction forEventId:(NSString *)eventId
 {
-    MXWeakify(self);
-    
     [self hideContextualMenuAnimated:YES completion:^{
-        
-        [self.roomDataSource addReaction:reaction forEventId:eventId success:^{
-            
-        } failure:^(NSError *error) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
-        }];
+        [self addReaction:reaction forEventId:eventId];
     }];
 }
 
 - (void)reactionsMenuViewModel:(ReactionsMenuViewModel *)viewModel didRemoveReaction:(NSString *)reaction forEventId:(NSString *)eventId
 {
-    MXWeakify(self);
-    
     [self hideContextualMenuAnimated:YES completion:^{
-        
-        [self.roomDataSource removeReaction:reaction forEventId:eventId success:^{
-            
-        } failure:^(NSError *error) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
-        }];
-        
+        [self removeReaction:reaction forEventId:eventId];
     }];
 }
 
 - (void)reactionsMenuViewModelDidTapMoreReactions:(ReactionsMenuViewModel *)viewModel forEventId:(NSString *)eventId
 {
     [self hideContextualMenuAnimated:YES];
-
     [self showEmojiPickerForEventId:eventId];
 }
 
@@ -8072,6 +7885,603 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)composerCreateActionListBridgePresenterDidDismissInteractively:(ComposerCreateActionListBridgePresenter *)coordinatorBridgePresenter
 {
     self.composerCreateActionListBridgePresenter = nil;
+}
+
+#pragma mark - BubbleCellActionProviderDelegate
+
+- (void)bubbleCellActionProvider:(BubbleCellActionProvider *)actionProvider didSelectActionWithType:(enum BubbleCellActionType)actionType for:(MXEvent *)event from:(MXKRoomBubbleTableViewCell*)cell API_AVAILABLE(ios(13.0))
+{
+    switch (actionType) {
+        case BubbleCellActionTypeCopy:
+            [self copyEvent:event inCell:cell withCellData:cell.bubbleData];
+            break;
+        case BubbleCellActionTypeEdit:
+            [self editEventContentWithId:event.eventId];
+            [self.inputToolbarView becomeFirstResponder];
+            break;
+        case BubbleCellActionTypeQuote:
+            // Quote the message a la Markdown into the input toolbar composer
+            self.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@\n>%@\n\n",
+                                                 self.inputToolbarView.textMessage, [self selectedComponentFrom:cell for:event].textMessage];
+            // And display the keyboard
+            [self.inputToolbarView becomeFirstResponder];
+            break;
+        case BubbleCellActionTypeReply:
+            [self selectEventWithId:event.eventId inputToolBarSendMode:RoomInputToolbarViewSendModeReply showTimestamp:NO];
+            break;
+        case BubbleCellActionTypeShare:
+            [self shareEvent:event from:cell];
+            break;
+        case BubbleCellActionTypeRemove:
+            [self deleteEvent:event];
+            break;
+        case BubbleCellActionTypeReport:
+            [self showReportEvent:event];
+            break;
+        case BubbleCellActionTypeForward:
+            [self presentEventForwardingDialogForSelectedEvent:event];
+            break;
+        case BubbleCellActionTypeCopyLink:
+            [self copyLinkForEvent:event];
+            break;
+        case BubbleCellActionTypeViewSource:
+            [self showEventDetails:event];
+            break;
+        case BubbleCellActionTypeViewDecryptedSource:
+            [self showEventDetails:event.clearEvent];
+            break;
+        case BubbleCellActionTypeReplyInThread:
+            if (RiotSettings.shared.enableThreads)
+            {
+                [self openThreadWithId:event.eventId];
+            }
+            else
+            {
+                [self showThreadsBetaForEvent:event];
+            }
+            break;
+        case BubbleCellActionTypeResend:
+            [self.roomDataSource resendEventWithEventId:event.eventId success:nil failure:nil];
+            break;
+        case BubbleCellActionTypeViewInRoom:
+            [self.delegate roomViewController:self
+                               showRoomWithId:self.roomDataSource.roomId
+                                      eventId:event.eventId];
+            break;
+        case BubbleCellActionTypeCancelSending:
+            [self cancelSending:event from:cell];
+            break;
+        case BubbleCellActionTypeSave:
+            [self saveAttachementFrom:cell];
+            break;
+        case BubbleCellActionTypeCancelDownload:
+            [self cancelMediaLoadingFor:cell andClearCache:NO];
+            break;
+        case BubbleCellActionTypeRedact:
+            [self redact:event];
+            break;
+        case BubbleCellActionTypeEndPoll:
+            [self.delegate roomViewController:self endPollWithEventIdentifier:event.eventId];
+            break;
+        case BubbleCellActionTypeEncryptionInfo:
+            [self showEncryptionInformation:event];
+            break;
+        default:
+            break;
+    }
+}
+
+- (BOOL)bubbleCellActionProvider:(BubbleCellActionProvider *)actionProvider canEndPollFor:(MXEvent *)event API_AVAILABLE(ios(13.0))
+{
+    return [self.delegate roomViewController:self canEndPollWithEventIdentifier:event.eventId];
+}
+
+- (void)cancelSending:(MXEvent*)event from:(MXKRoomBubbleTableViewCell*)cell
+{
+    [self cancelMediaLoadingFor:cell andClearCache:YES];
+    
+    // Cancel and remove the outgoing message
+    [self.roomDataSource.room cancelSendingOperation:event.eventId];
+    [self.roomDataSource removeEventWithEventId:event.eventId];
+}
+
+- (void)cancelMediaLoadingFor:(MXKRoomBubbleTableViewCell*)cell andClearCache:(BOOL)clearCache
+{
+    // Upload id is stored in attachment url (nasty trick)
+    NSString *uploadId = cell.bubbleData.attachment.contentURL;
+    if (uploadId)
+    {
+        MXMediaLoader *loader = [MXMediaManager existingUploaderWithId:uploadId];
+        if (loader)
+        {
+            [loader cancel];
+        }
+        
+        // Hide the progress animation
+        cell.progressView.hidden = YES;
+        
+        if (clearCache)
+        {
+            // Remove the related cached file.
+            [[NSFileManager defaultManager] removeItemAtPath:cell.bubbleData.attachment.cacheFilePath error:nil];
+            [[NSFileManager defaultManager] removeItemAtPath:cell.bubbleData.attachment.thumbnailCachePath error:nil];
+        }
+    }
+}
+
+- (MXKRoomBubbleComponent *)selectedComponentFrom:(MXKRoomBubbleTableViewCell*)cell for:(MXEvent*)event
+{
+    if (![cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    {
+        return nil;
+    }
+    
+    // Retrieved data related to the selected event
+    NSArray *components = cell.bubbleData.bubbleComponents;
+    MXKRoomBubbleComponent *selectedComponent;
+    for (selectedComponent in components)
+    {
+        if ([selectedComponent.event.eventId isEqualToString:event.eventId])
+        {
+            break;
+        }
+        selectedComponent = nil;
+    }
+    
+    return selectedComponent;
+}
+
+- (void)deleteEvent:(MXEvent*)event {
+    UIAlertController *deleteConfirmation = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionDeleteConfirmationTitle]
+                                                                                message:[VectorL10n roomEventActionDeleteConfirmationMessage]
+                                                                         preferredStyle:UIAlertControllerStyleAlert];
+    
+    [deleteConfirmation addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    }]];
+    
+    [deleteConfirmation addAction:[UIAlertAction actionWithTitle:[VectorL10n delete] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+        [self.roomDataSource removeEventWithEventId:event.eventId];
+    }]];
+    
+    [self presentViewController:deleteConfirmation animated:YES completion:nil];
+    self->currentAlert = deleteConfirmation;
+}
+
+- (void)shareEvent:(MXEvent*)event from:(MXKRoomBubbleTableViewCell*)cell {
+    MXKAttachment *attachment = cell.bubbleData.attachment;
+    
+    if (attachment)
+    {
+        [self startActivityIndicator];
+        
+        MXWeakify(self);
+        [attachment prepareShare:^(NSURL *fileURL) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self stopActivityIndicator];
+            
+            self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
+            [self->documentInteractionController setDelegate:self];
+            self->currentSharedAttachment = attachment;
+            
+            if (![self->documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES])
+            {
+                self->documentInteractionController = nil;
+                [attachment onShareEnded];
+                self->currentSharedAttachment = nil;
+            }
+            
+        } failure:^(NSError *error) {
+            [self showError:error];
+            [self stopActivityIndicator];
+        }];
+        
+        // Start animation in case of download during attachment preparing
+        [cell startProgressUI];
+        return;
+    }
+
+    UIActivityViewController *activityViewController = nil;
+    if (event.location) {
+        activityViewController = [self.delegate roomViewController:self locationShareActivityViewControllerForEvent:event];
+    }
+    
+    if (activityViewController == nil) {
+        NSArray *activityItems = @[[self selectedComponentFrom:cell for:event].textMessage];
+        activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+    }
+    
+    if (activityViewController)
+    {
+        activityViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        activityViewController.popoverPresentationController.sourceView = cell;
+        activityViewController.popoverPresentationController.sourceRect = cell.bounds;
+        
+        [self presentViewController:activityViewController animated:YES completion:nil];
+    }
+}
+
+- (void)showReportEvent:(MXEvent*)event
+{
+    // Prompt user to enter a description of the problem content.
+    UIAlertController *reportReasonAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionReportPromptReason]
+                                                                               message:nil
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+    
+    [reportReasonAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.secureTextEntry = NO;
+        textField.placeholder = nil;
+        textField.keyboardType = UIKeyboardTypeDefault;
+    }];
+    
+    MXWeakify(self);
+    [reportReasonAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        NSString *text = [self->currentAlert textFields].firstObject.text;
+        self->currentAlert = nil;
+        
+        [self startActivityIndicator];
+        
+        MXWeakify(self);
+        [self.roomDataSource.room reportEvent:event.eventId score:-100 reason:text success:^{
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self stopActivityIndicator];
+            
+            // Prompt user to ignore content from this user
+            UIAlertController *ignoreUserAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionReportPromptIgnoreUser]
+                                                                                     message:nil
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            
+            MXWeakify(self);
+            [ignoreUserAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n yes] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                
+                MXStrongifyAndReturnIfNil(self);
+                self->currentAlert = nil;
+                
+                [self startActivityIndicator];
+                
+                MXWeakify(self);
+                // Add the user to the blacklist: ignored users
+                [self.mainSession ignoreUsers:@[event.sender] success:^{
+                    MXStrongifyAndReturnIfNil(self);
+                    [self stopActivityIndicator];
+                } failure:^(NSError *error) {
+                    MXStrongifyAndReturnIfNil(self);
+                    [self stopActivityIndicator];
+                    
+                    MXLogDebug(@"[RoomVC] Ignore user (%@) failed", event.sender);
+                    //Alert user
+                    [self showError:error];
+                }];
+            }]];
+            
+            [ignoreUserAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n no] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
+                self->currentAlert = nil;
+            }]];
+            
+            [self presentViewController:ignoreUserAlert animated:YES completion:nil];
+            self->currentAlert = ignoreUserAlert;
+            
+        } failure:^(NSError *error) {
+            MXStrongifyAndReturnIfNil(self);
+            [self stopActivityIndicator];
+            
+            MXLogDebug(@"[RoomVC] Report event (%@) failed", event.eventId);
+            //Alert user
+            [self showError:error];
+            
+        }];
+    }]];
+    
+    [reportReasonAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        self->currentAlert = nil;
+    }]];
+    
+    [self presentViewController:reportReasonAlert animated:YES completion:nil];
+    self->currentAlert = reportReasonAlert;
+}
+
+- (void)copyLinkForEvent:(MXEvent*)event
+{
+    // Create a matrix.to permalink that is common to all matrix clients
+    NSString *permalink = [MXTools permalinkToEvent:event.eventId inRoom:event.roomId];
+    NSURL *url = [NSURL URLWithString:permalink];
+    
+    if (url)
+    {
+        MXKPasteboardManager.shared.pasteboard.URL = url;
+        [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
+                                 image:AssetImages.linkIcon.image
+                              duration:2.0
+                              position:ToastPositionBottom
+                      additionalMargin:self.roomInputToolbarContainerHeightConstraint.constant];
+    }
+    else
+    {
+        MXLogDebug(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", event.roomId, event.eventId);
+    }
+}
+
+- (void)saveAttachementFrom:(MXKRoomBubbleTableViewCell*)cell
+{
+    MXKAttachment *attachment = cell.bubbleData.attachment;
+    if (!attachment)
+    {
+        return;
+    }
+    
+    [self startActivityIndicator];
+    
+    MXWeakify(self);
+    [attachment save:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        
+        //Alert user
+        [self showError:error];
+    }];
+    
+    // Start animation in case of download during attachment preparing
+    [cell startProgressUI];
+}
+
+- (void)redact:(MXEvent*)event
+{
+    [self startActivityIndicator];
+    
+    MXWeakify(self);
+    [self.roomDataSource.room redactEvent:event.eventId reason:nil success:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        
+        MXLogDebug(@"[RoomVC] Redact event (%@) failed", event.eventId);
+        //Alert user
+        [self showError:error];
+    }];
+}
+
+- (void)addReaction:(NSString *)reaction forEventId:(NSString *)eventId
+{
+    MXWeakify(self);
+    
+    [self.roomDataSource addReaction:reaction forEventId:eventId success:^{
+        
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
+    }];
+}
+
+- (void)removeReaction:(NSString *)reaction forEventId:(NSString *)eventId
+{
+    MXWeakify(self);
+    
+    [self.roomDataSource removeReaction:reaction forEventId:eventId success:^{
+        
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
+    }];
+}
+
+- (void)moreReactionsForEventId:(NSString *)eventId
+{
+    EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter = [[EmojiPickerCoordinatorBridgePresenter alloc] initWithSession:self.mainSession roomId:self.roomDataSource.roomId eventId:eventId];
+    emojiPickerCoordinatorBridgePresenter.delegate = self;
+    
+    NSInteger cellRow = [self.roomDataSource indexOfCellDataWithEventId:eventId];
+    
+    UIView *sourceView;
+    CGRect sourceRect = CGRectNull;
+    
+    if (cellRow >= 0)
+    {
+        NSIndexPath *cellIndexPath = [NSIndexPath indexPathForRow:cellRow inSection:0];
+        UITableViewCell *cell = [self.bubblesTableView cellForRowAtIndexPath:cellIndexPath];
+        sourceView = cell;
+        
+        if ([cell isKindOfClass:[MXKRoomBubbleTableViewCell class]])
+        {
+            MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
+            NSInteger bubbleComponentIndex = [roomBubbleTableViewCell.bubbleData bubbleComponentIndexForEventId:eventId];
+            sourceRect = [roomBubbleTableViewCell componentFrameInContentViewForIndex:bubbleComponentIndex];
+        }
+        
+    }
+    
+    [emojiPickerCoordinatorBridgePresenter presentFrom:self sourceView:sourceView sourceRect:sourceRect animated:YES];
+    self.emojiPickerCoordinatorBridgePresenter = emojiPickerCoordinatorBridgePresenter;
+}
+
+#pragma mark - MessageContextMenuCoordinatorBridgePresenterDelegate
+
+- (void)messageContextMenuCoordinatorBridgePresenterDelegateDidComplete:(MessageContextMenuCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        self.contextMenuPresenter = nil;
+    }];
+}
+
+- (void)messageContextMenuCoordinatorBridgePresenterDelegate:(MessageContextMenuCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectActionOfType:(enum MessageContextMenuActionType)actionType for:(MXEvent *)event from:(MXKRoomBubbleTableViewCell *)cell
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    switch (actionType) {
+        case MessageContextMenuActionTypeCopy:
+            [self copyEvent:event inCell:cell withCellData:cell.bubbleData];
+            break;
+        case MessageContextMenuActionTypeEdit:
+            [self editEventContentWithId:event.eventId];
+            [self.inputToolbarView becomeFirstResponder];
+            break;
+        case MessageContextMenuActionTypeQuote:
+            // Quote the message a la Markdown into the input toolbar composer
+            self.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@\n>%@\n\n",
+                                                 self.inputToolbarView.textMessage, [self selectedComponentFrom:cell for:event].textMessage];
+            // And display the keyboard
+            [self.inputToolbarView becomeFirstResponder];
+            break;
+        case MessageContextMenuActionTypeReply:
+            [self selectEventWithId:event.eventId inputToolBarSendMode:RoomInputToolbarViewSendModeReply showTimestamp:NO];
+            break;
+        case MessageContextMenuActionTypeShare:
+            [self shareEvent:event from:cell];
+            break;
+        case MessageContextMenuActionTypeRemove:
+            [self deleteEvent:event];
+            break;
+        case MessageContextMenuActionTypeReport:
+            [self showReportEvent:event];
+            break;
+        case MessageContextMenuActionTypeForward:
+            [self presentEventForwardingDialogForSelectedEvent:event];
+            break;
+        case MessageContextMenuActionTypeCopyLink:
+            [self copyLinkForEvent:event];
+            break;
+        case MessageContextMenuActionTypeViewSource:
+            [self showEventDetails:event];
+            break;
+        case MessageContextMenuActionTypeViewDecryptedSource:
+            [self showEventDetails:event.clearEvent];
+            break;
+        case MessageContextMenuActionTypeReplyInThread:
+            if (RiotSettings.shared.enableThreads)
+            {
+                [self openThreadWithId:event.eventId];
+            }
+            else
+            {
+                [self showThreadsBetaForEvent:event];
+            }
+            break;
+        case MessageContextMenuActionTypeResend:
+            [self.roomDataSource resendEventWithEventId:event.eventId success:nil failure:nil];
+            break;
+        case MessageContextMenuActionTypeViewInRoom:
+            [self.delegate roomViewController:self
+                               showRoomWithId:self.roomDataSource.roomId
+                                      eventId:event.eventId];
+            break;
+        case MessageContextMenuActionTypeCancelSending:
+            [self cancelSending:event from:cell];
+            break;
+        case MessageContextMenuActionTypeSave:
+            [self saveAttachementFrom:cell];
+            break;
+        case MessageContextMenuActionTypeCancelDownload:
+            [self cancelMediaLoadingFor:cell andClearCache:NO];
+            break;
+        case MessageContextMenuActionTypeRedact:
+            [self redact:event];
+            break;
+        case MessageContextMenuActionTypeEndPoll:
+            [self.delegate roomViewController:self endPollWithEventIdentifier:event.eventId];
+            break;
+        case MessageContextMenuActionTypeEncryptionInfo:
+            [self showEncryptionInformation:event];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)messageContextMenuCoordinatorBridgePresenterDelegate:(MessageContextMenuCoordinatorBridgePresenter *)coordinatorBridgePresenter didUpdateReaction:(NSString *)reaction hasSelected:(BOOL)isSelected for:(MXEvent *)event
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    if (isSelected)
+    {
+        [self addReaction:reaction forEventId:event.eventId];
+    }
+    else
+    {
+        [self removeReaction:reaction forEventId:event.eventId];
+    }
+}
+
+- (void)messageContextMenuCoordinatorBridgePresenterDelegate:(MessageContextMenuCoordinatorBridgePresenter *)coordinatorBridgePresenter displayMoreReactionsFor:(MXEvent *)event
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    [self moreReactionsForEventId:event.eventId];
+}
+
+#pragma mark - Context Menu
+
+- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+{
+    id<MXKRoomBubbleCellDataStoring> cellData = [self.roomDataSource cellDataAtIndex:indexPath.row];
+    MXKRoomBubbleTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if (!cellData || !cell || ![cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    {
+        return nil;
+    }
+    
+    MXEvent *tappedEvent = [cellData.events lastObject];
+//    self.recentsUpdateEnabled = NO;
+    return [self.contextMenuProvider contextMenuConfigurationWith:tappedEvent from:cell at:indexPath session:self.mainSession roomDataSource:self.roomDataSource delegate:self];
+}
+
+- (void)tableView:(UITableView *)tableView willPerformPreviewActionForMenuWithConfiguration:(UIContextMenuConfiguration *)configuration animator:(id<UIContextMenuInteractionCommitAnimating>)animator API_AVAILABLE(ios(13.0))
+{
+    MXKRoomBubbleTableViewCell *cell = [tableView cellForRowAtIndexPath:(NSIndexPath *)configuration.identifier];
+    if (cell.attachmentView != nil) {
+        [animator addCompletion:^{
+            [self showAttachmentInCell:cell];
+        }];
+    }
+//    NSString *roomId = [self.contextMenuProvider roomIdFrom:configuration.identifier];
+//
+//    if (!roomId)
+//    {
+//        self.recentsUpdateEnabled = YES;
+//        return;
+//    }
+//
+//    [animator addCompletion:^{
+//        self.recentsUpdateEnabled = YES;
+//        [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
+//    }];
+}
+
+- (UITargetedPreview *)tableView:(UITableView *)tableView previewForHighlightingContextMenuWithConfiguration:(UIContextMenuConfiguration *)configuration API_AVAILABLE(ios(13.0))
+{
+    return [self previewForCellAt:(NSIndexPath *)configuration.identifier];
+}
+
+- (UITargetedPreview *)tableView:(UITableView *)tableView previewForDismissingContextMenuWithConfiguration:(UIContextMenuConfiguration *)configuration API_AVAILABLE(ios(13.0))
+{
+//    self.recentsUpdateEnabled = YES;
+    return [self previewForCellAt:(NSIndexPath *)configuration.identifier];
+}
+
+- (UITargetedPreview*)previewForCellAt:(NSIndexPath *)indexPath API_AVAILABLE(ios(13.0)) {
+    MXKRoomBubbleTableViewCell *cell = [self.bubblesTableView cellForRowAtIndexPath:indexPath];
+    
+    if (!cell.previewableView)
+    {
+        return nil;
+    }
+    
+    UITargetedPreview *preview = [[UITargetedPreview alloc] initWithView:cell.previewableView];
+//    preview.parameters.backgroundColor = UIColor.clearColor;
+//    if (@available(iOS 14.0, *)) {
+//        preview.parameters.shadowPath = [UIBezierPath bezierPathWithRoundedRect:cell.attachmentView.frame cornerRadius:6];
+//    } else {
+//        preview.parameters.visiblePath = [UIBezierPath bezierPathWithRoundedRect:cell.attachmentView.frame cornerRadius:6];
+//    }
+    return preview;
 }
 
 @end

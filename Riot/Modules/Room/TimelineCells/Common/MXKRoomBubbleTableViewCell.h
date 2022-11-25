@@ -263,6 +263,8 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
  */
 @property (nonatomic, readonly) NSAttributedString *suitableAttributedTextMessage;
 
+@property (nonatomic, readonly) UIView *previewableView;
+
 /**
  Called during the designated initializer of the UITableViewCell class to set the default
  properties values.

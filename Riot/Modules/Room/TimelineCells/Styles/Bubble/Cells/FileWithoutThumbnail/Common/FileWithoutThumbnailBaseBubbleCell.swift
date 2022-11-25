@@ -55,4 +55,8 @@ class FileWithoutThumbnailBaseBubbleCell: SizableBaseRoomCell, RoomCellReactions
             super.onContentViewTap(sender)
         }
     }
+    
+    override var previewableView: UIView! {
+        return fileAttachementView ?? super.previewableView
+    }
 }

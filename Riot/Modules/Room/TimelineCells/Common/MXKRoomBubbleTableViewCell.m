@@ -169,9 +169,9 @@ static BOOL _disableLongPressGestureOnEvent;
     if (_disableLongPressGestureOnEvent == NO)
     {
         // Add a long gesture recognizer on text view (in order to display for example the event details)
-        UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
-        longPressGestureRecognizer.delegate = self;
-        [self.contentView addGestureRecognizer:longPressGestureRecognizer];
+//        UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
+//        longPressGestureRecognizer.delegate = self;
+//        [self.contentView addGestureRecognizer:longPressGestureRecognizer];
     }
     
     [self setupConstraintsConstantDefaultValues];
@@ -1535,6 +1535,26 @@ static NSMutableDictionary *childClasses;
     }
     
     return YES;
+}
+
+- (UIView*)previewableView
+{
+    if (self.attachmentView)
+    {
+        return self.attachmentView;
+    }
+    else if (self.attachmentWebView)
+    {
+        return self.attachmentWebView;
+    }
+    else if (self.messageTextView.superview)
+    {
+        return self.messageTextView.superview;
+    }
+    else
+    {
+        return self.messageTextView;
+    }
 }
 
 @end

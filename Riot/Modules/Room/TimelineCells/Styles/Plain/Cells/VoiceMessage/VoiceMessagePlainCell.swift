@@ -65,4 +65,8 @@ class VoiceMessagePlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, 
         
         playbackController.playbackView.update(theme: theme)
     }
+    
+    override var previewableView: UIView! {
+        return playbackController.playbackView
+    }
 }

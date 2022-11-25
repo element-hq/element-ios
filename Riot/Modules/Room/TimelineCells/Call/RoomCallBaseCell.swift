@@ -105,6 +105,10 @@ class RoomCallBaseCell: MXKRoomBubbleTableViewCell {
         }
     }
     
+    override var previewableView: UIView! {
+        return innerContentView.bgView
+    }
+    
     //  MARK: - MXKCellRendering
     
     override func render(_ cellData: MXKCellData!) {

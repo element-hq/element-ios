@@ -28,7 +28,7 @@ class CallCellContentView: UIView {
     @IBOutlet private weak var paginationLabel: UILabel!
     @IBOutlet private weak var paginationSeparatorView: UIView!
     
-    @IBOutlet private weak var bgView: UIView!
+    @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var avatarImageView: MXKImageView!
     @IBOutlet weak var callerNameLabel: UILabel!
     @IBOutlet weak var callIconView: UIImageView!
