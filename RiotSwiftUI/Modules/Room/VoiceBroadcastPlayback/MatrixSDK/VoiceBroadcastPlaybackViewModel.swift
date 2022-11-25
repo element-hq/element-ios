@@ -177,7 +177,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             return
         }
         
-        if (isActuallyPaused == false && state.playbackState == .paused) || state.playbackState == .stopped {
+        if (isActuallyPaused == false && state.playbackState == .paused) {
             state.playbackState = .buffering
         }
         
