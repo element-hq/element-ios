@@ -21,6 +21,13 @@ public enum VoiceBroadcastAggregatorError: Error {
     case invalidVoiceBroadcastStartEvent
 }
 
+public enum VoiceBroadcastAggregatorLaunchState {
+    case idle
+    case starting
+    case loaded
+    case error
+}
+
 public protocol VoiceBroadcastAggregatorDelegate: AnyObject {
     func voiceBroadcastAggregatorDidStartLoading(_ aggregator: VoiceBroadcastAggregator)
     func voiceBroadcastAggregatorDidEndLoading(_ aggregator: VoiceBroadcastAggregator)
@@ -56,7 +63,7 @@ public class VoiceBroadcastAggregator {
         }
     }
     
-    public private(set) var isStarted: Bool = false
+    private(set) var launchState: VoiceBroadcastAggregatorLaunchState = .idle
     public private(set) var voiceBroadcastState: VoiceBroadcastInfo.State
     public var delegate: VoiceBroadcastAggregatorDelegate?
     
@@ -120,15 +127,16 @@ public class VoiceBroadcastAggregator {
     }
         
     func start() {
-        if isStarted {
+        guard launchState == .idle else {
             return
         }
-        isStarted = true
+        launchState = .starting
         
         delegate?.voiceBroadcastAggregatorDidStartLoading(self)
         
         session.aggregations.referenceEvents(forEvent: voiceBroadcastStartEventId, inRoom: room.roomId, from: nil, limit: -1) { [weak self] response in
             guard let self = self else {
+                self?.launchState = .error
                 return
             }
             
@@ -145,6 +153,7 @@ public class VoiceBroadcastAggregator {
             self.referenceEventsListener = self.room.listen(toEventsOfTypes: eventTypes) { [weak self] event, direction, state in
                 
                 guard let self = self else {
+                    self?.launchState = .error
                     return
                 }
                 
@@ -153,18 +162,17 @@ public class VoiceBroadcastAggregator {
                           let relatedEventId = event.relatesTo?.eventId,
                           relatedEventId == self.voiceBroadcastStartEventId,
                           event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil else {
+                        self.launchState = .error
                         return
                     }
                     
-                    if let chunk = self.voiceBroadcastBuilder.buildChunk(event: event, mediaManager: self.session.mediaManager, voiceBroadcastStartEventId: self.voiceBroadcastStartEventId) {
-                        self.delegate?.voiceBroadcastAggregator(self, didReceiveChunk: chunk)
-                    }
-                    
-                    if !self.events.contains(where: { newEvent in
-                        newEvent.eventId == event.eventId
-                    }) {
+                    if !self.events.contains(where: { $0.eventId == event.eventId }) {
                         self.events.append(event)
                         MXLog.debug("[VoiceBroadcastAggregator] Got a new chunk for broadcast \(relatedEventId). Total: \(self.events.count)")
+                        
+                        if let chunk = self.voiceBroadcastBuilder.buildChunk(event: event, mediaManager: self.session.mediaManager, voiceBroadcastStartEventId: self.voiceBroadcastStartEventId) {
+                            self.delegate?.voiceBroadcastAggregator(self, didReceiveChunk: chunk)
+                        }
                         
                         self.voiceBroadcast = self.voiceBroadcastBuilder.build(mediaManager: self.session.mediaManager,
                                                                                voiceBroadcastStartEventId: self.voiceBroadcastStartEventId,
@@ -177,9 +185,9 @@ public class VoiceBroadcastAggregator {
                 }
             } as Any
             
-            
             self.events.forEach { event in
                 guard let chunk = self.voiceBroadcastBuilder.buildChunk(event: event, mediaManager: self.session.mediaManager, voiceBroadcastStartEventId: self.voiceBroadcastStartEventId) else {
+                    self.launchState = .error
                     return
                 }
                 self.delegate?.voiceBroadcastAggregator(self, didReceiveChunk: chunk)
@@ -195,6 +203,7 @@ public class VoiceBroadcastAggregator {
             
             MXLog.debug("[VoiceBroadcastAggregator] Start aggregation with \(self.voiceBroadcast.chunks.count) chunks for broadcast \(self.voiceBroadcastStartEventId)")
             
+            self.launchState = .loaded
             self.delegate?.voiceBroadcastAggregatorDidEndLoading(self)
             
         } failure: { [weak self] error in
@@ -203,7 +212,7 @@ public class VoiceBroadcastAggregator {
             }
             
             MXLog.error("[VoiceBroadcastAggregator] start failed", context: error)
-            self.isStarted = false
+            self.launchState = .error
             self.delegate?.voiceBroadcastAggregator(self, didFailWithError: error)
         }
     }
