@@ -27,7 +27,6 @@ enum VoiceBroadcastPlaybackState {
     case stopped
     case buffering
     case playing
-    case playingLive
     case paused
     case error
 }
@@ -37,20 +36,15 @@ struct VoiceBroadcastPlaybackDetails {
     let avatarData: AvatarInputProtocol
 }
 
-enum VoiceBroadcastState {
-    case stopped
-    case live
-    case paused
-}
-
 struct VoiceBroadcastPlayingState {
     var duration: Float
     var durationLabel: String?
+    var isLive: Bool
 }
 
 struct VoiceBroadcastPlaybackViewState: BindableState {
     var details: VoiceBroadcastPlaybackDetails
-    var broadcastState: VoiceBroadcastState
+    var broadcastState: VoiceBroadcastInfo.State
     var playbackState: VoiceBroadcastPlaybackState
     var playingState: VoiceBroadcastPlayingState
     var bindings: VoiceBroadcastPlaybackViewStateBindings
