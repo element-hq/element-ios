@@ -99,7 +99,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         if let audioPlayer = audioPlayer {
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: resume")
             audioPlayer.play()
-        } else {
+        } else if voiceBroadcastAggregator.launchState == .loaded {
+            state.playbackState = .buffering
             let chunks = voiceBroadcastAggregator.voiceBroadcast.chunks
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: restart from the beginning: \(chunks.count) chunks")
             
