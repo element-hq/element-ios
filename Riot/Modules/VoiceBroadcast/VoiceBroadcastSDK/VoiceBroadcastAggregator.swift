@@ -136,7 +136,6 @@ public class VoiceBroadcastAggregator {
         
         session.aggregations.referenceEvents(forEvent: voiceBroadcastStartEventId, inRoom: room.roomId, from: nil, limit: -1) { [weak self] response in
             guard let self = self else {
-                self?.launchState = .error
                 return
             }
             
@@ -153,7 +152,6 @@ public class VoiceBroadcastAggregator {
             self.referenceEventsListener = self.room.listen(toEventsOfTypes: eventTypes) { [weak self] event, direction, state in
                 
                 guard let self = self else {
-                    self?.launchState = .error
                     return
                 }
                 
@@ -162,7 +160,6 @@ public class VoiceBroadcastAggregator {
                           let relatedEventId = event.relatesTo?.eventId,
                           relatedEventId == self.voiceBroadcastStartEventId,
                           event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil else {
-                        self.launchState = .error
                         return
                     }
                     
@@ -187,7 +184,6 @@ public class VoiceBroadcastAggregator {
             
             self.events.forEach { event in
                 guard let chunk = self.voiceBroadcastBuilder.buildChunk(event: event, mediaManager: self.session.mediaManager, voiceBroadcastStartEventId: self.voiceBroadcastStartEventId) else {
-                    self.launchState = .error
                     return
                 }
                 self.delegate?.voiceBroadcastAggregator(self, didReceiveChunk: chunk)
