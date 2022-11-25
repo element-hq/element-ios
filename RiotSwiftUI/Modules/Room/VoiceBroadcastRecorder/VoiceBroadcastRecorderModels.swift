@@ -35,9 +35,15 @@ struct VoiceBroadcastRecorderDetails {
     let avatarData: AvatarInputProtocol
 }
 
+struct VoiceBroadcastRecordingState {
+    var remainingTime: UInt
+    var remainingTimeLabel: String
+}
+
 struct VoiceBroadcastRecorderViewState: BindableState {
     var details: VoiceBroadcastRecorderDetails
     var recordingState: VoiceBroadcastRecorderState
+    var currentRecordingState: VoiceBroadcastRecordingState
     var bindings: VoiceBroadcastRecorderViewStateBindings
 }
 

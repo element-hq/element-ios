@@ -2202,6 +2202,7 @@ Tap the + to start adding people.";
 "voice_broadcast_playback_loading_error" = "Unable to play this voice broadcast.";
 "voice_broadcast_live" = "Live";
 "voice_broadcast_tile" = "Voice broadcast";
+"voice_broadcast_time_left" = "%@ left";
 
 // Mark: - Version check
 

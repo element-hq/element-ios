@@ -18,6 +18,7 @@ import Foundation
 
 protocol VoiceBroadcastRecorderServiceDelegate: AnyObject {
     func voiceBroadcastRecorderService(_ service: VoiceBroadcastRecorderServiceProtocol, didUpdateState state: VoiceBroadcastRecorderState)
+    func voiceBroadcastRecorderService(_ service: VoiceBroadcastRecorderServiceProtocol, didUpdateRemainingTime remainingTime: UInt)
 }
 
 protocol VoiceBroadcastRecorderServiceProtocol {
