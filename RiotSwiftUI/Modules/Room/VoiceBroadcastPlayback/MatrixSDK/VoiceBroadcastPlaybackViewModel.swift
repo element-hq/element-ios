@@ -64,6 +64,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         displayLink.add(to: .current, forMode: .common)
         
         self.voiceBroadcastAggregator.delegate = self
+        self.voiceBroadcastAggregator.start()
     }
     
     private func release() {
@@ -95,13 +96,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         displayLink.isPaused = false
         isActuallyPaused = false
         
-        if voiceBroadcastAggregator.isStarted == false {
-            // Start the streaming by fetching broadcast chunks
-            // The audio player will automatically start the playback on incoming chunks
-            MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: Start streaming")
-            state.playbackState = .buffering
-            voiceBroadcastAggregator.start()
-        } else if let audioPlayer = audioPlayer {
+        if let audioPlayer = audioPlayer {
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: resume")
             audioPlayer.play()
         } else {
@@ -109,7 +104,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: restart from the beginning: \(chunks.count) chunks")
             
             // Reinject all the chunks we already have and play them
-            voiceBroadcastChunkQueue.append(contentsOf: chunks)
+            voiceBroadcastChunkQueue = Array(chunks)
             processPendingVoiceBroadcastChunks()
         }
     }
@@ -325,6 +320,16 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     private func isLivePlayback() -> Bool {
         return (!isPlaybackInitialized || isPlayingLastChunk()) && (state.broadcastState == .started || state.broadcastState == .resumed)
     }
+    
+    private func handleWaitingLiveData() {
+        // Handle specifically the case where we were waiting data to start playing a live playback
+        if isLivePlayback(), state.playbackState == .buffering {
+            // Start the playback on the latest one
+            processPendingVoiceBroadcastChunksForLivePlayback()
+        } else {
+            processPendingVoiceBroadcastChunks()
+        }
+    }
 }
 
 // MARK: VoiceBroadcastAggregatorDelegate
@@ -333,6 +338,9 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
     }
     
     func voiceBroadcastAggregatorDidEndLoading(_ aggregator: VoiceBroadcastAggregator) {
+        if state.playbackState != .stopped {
+            handleWaitingLiveData()
+        }
     }
     
     func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didFailWithError: Error) {
@@ -354,12 +362,8 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
         
         updateDuration()
         
-        // Handle specifically the case where we were waiting data to start playing a live playback
-        if isLivePlayback(), state.playbackState == .buffering {
-            // Start the playback on the latest one
-            processPendingVoiceBroadcastChunksForLivePlayback()
-        } else {
-            processPendingVoiceBroadcastChunks()
+        if state.playbackState != .stopped {
+            handleWaitingLiveData()
         }
     }
 }
