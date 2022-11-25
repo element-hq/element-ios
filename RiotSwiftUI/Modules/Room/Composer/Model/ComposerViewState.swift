@@ -20,6 +20,7 @@ struct ComposerViewState: BindableState {
     var eventSenderDisplayName: String?
     var sendMode: ComposerSendMode = .send
     var textFormattingEnabled: Bool
+    var isLandscapePhone: Bool
     var placeholder: String?
     
     var bindings: ComposerBindings
@@ -46,6 +47,10 @@ extension ComposerViewState {
         case .reply: return Asset.Images.inputReplyIcon.name
         default: return nil
         }
+    }
+    
+    var isMinimiseForced: Bool {
+        isLandscapePhone || !textFormattingEnabled
     }
 }
 

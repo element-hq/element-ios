@@ -36,7 +36,6 @@
                 <outlet property="userSuggestionContainerView" destination="oni-F4-X1U" id="0js-Ji-8Mm"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ieV-u7-rXU"/>
                 <outletCollection property="toolbarContainerConstraints" destination="T1Y-r9-bYV" id="wax-9P-KGn"/>
-                <outletCollection property="toolbarContainerConstraints" destination="ave-fu-X1D" id="gBl-7F-srT"/>
                 <outletCollection property="toolbarContainerConstraints" destination="pRw-S0-6WL" id="q4S-0g-sqQ"/>
                 <outletCollection property="toolbarContainerConstraints" destination="QO8-nF-xys" id="aQe-20-4Pq"/>
                 <outletCollection property="toolbarContainerConstraints" destination="acJ-g8-R7x" id="uEo-Ez-seV"/>

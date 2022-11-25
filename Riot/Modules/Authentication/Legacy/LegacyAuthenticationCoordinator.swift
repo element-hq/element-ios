@@ -106,7 +106,8 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
     // MARK: - Private
     
     private func showLoadingAnimation() {
-        let loadingViewController = LaunchLoadingViewController()
+        let syncProgress: MXSessionSyncProgress? = MXSDKOptions.sharedInstance().enableSyncProgress ? session?.syncProgress : nil
+        let loadingViewController = LaunchLoadingViewController(syncProgress: syncProgress)
         loadingViewController.modalPresentationStyle = .fullScreen
         
         // Replace the navigation stack with the loading animation

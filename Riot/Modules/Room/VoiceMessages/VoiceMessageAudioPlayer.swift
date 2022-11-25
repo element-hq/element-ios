@@ -61,7 +61,8 @@ class VoiceMessageAudioPlayer: NSObject {
     }
     
     var currentTime: TimeInterval {
-        return abs(CMTimeGetSeconds(audioPlayer?.currentTime() ?? .zero))
+        let currentTime = abs(CMTimeGetSeconds(audioPlayer?.currentTime() ?? .zero))
+        return currentTime.isFinite ? currentTime : .zero
     }
     
     var playerItems: [AVPlayerItem] {
