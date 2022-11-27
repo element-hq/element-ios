@@ -18,6 +18,7 @@ import Foundation
 
 @objc protocol ComposerCreateActionListBridgePresenterDelegate {
     func composerCreateActionListBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: ComposerCreateActionListBridgePresenter, action: ComposerCreateAction)
+    func composerCreateActionListBridgePresenterDelegateDidToggleTextFormatting(_ coordinatorBridgePresenter: ComposerCreateActionListBridgePresenter, enabled: Bool)
     func composerCreateActionListBridgePresenterDidDismissInteractively(_ coordinatorBridgePresenter: ComposerCreateActionListBridgePresenter)
 }
 
@@ -34,6 +35,8 @@ final class ComposerCreateActionListBridgePresenter: NSObject {
     // MARK: Private
     
     private let actions: [ComposerCreateAction]
+    private let wysiwygEnabled: Bool
+    private let textFormattingEnabled: Bool
     private var coordinator: ComposerCreateActionListCoordinator?
     
     // MARK: Public
@@ -42,10 +45,12 @@ final class ComposerCreateActionListBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(actions: [Int]) {
+    init(actions: [Int], wysiwygEnabled: Bool, textFormattingEnabled: Bool) {
         self.actions = actions.compactMap {
             ComposerCreateAction(rawValue: $0)
         }
+        self.wysiwygEnabled = wysiwygEnabled
+        self.textFormattingEnabled = textFormattingEnabled
         super.init()
     }
     
@@ -57,12 +62,16 @@ final class ComposerCreateActionListBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let composerCreateActionListCoordinator = ComposerCreateActionListCoordinator(actions: actions)
+        let composerCreateActionListCoordinator = ComposerCreateActionListCoordinator(actions: actions,
+                                                                                      wysiwygEnabled: wysiwygEnabled,
+                                                                                      textFormattingEnabled: textFormattingEnabled)
         composerCreateActionListCoordinator.callback = { [weak self] action in
             guard let self = self else { return }
             switch action {
             case .done(let composeAction):
                 self.delegate?.composerCreateActionListBridgePresenterDelegateDidComplete(self, action: composeAction)
+            case .toggleTextFormatting(let enabled):
+                self.delegate?.composerCreateActionListBridgePresenterDelegateDidToggleTextFormatting(self, enabled: enabled)
             case .cancel:
                 self.delegate?.composerCreateActionListBridgePresenterDidDismissInteractively(self)
             }

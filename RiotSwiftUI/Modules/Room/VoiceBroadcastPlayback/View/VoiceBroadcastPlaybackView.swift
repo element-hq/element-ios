@@ -32,7 +32,7 @@ struct VoiceBroadcastPlaybackView: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     private var backgroundColor: Color {
-        if viewModel.viewState.playbackState == .playingLive {
+        if viewModel.viewState.playingState.isLive {
             return theme.colors.alert
         }
         return theme.colors.quarterlyContent
@@ -45,53 +45,58 @@ struct VoiceBroadcastPlaybackView: View {
     var body: some View {
         let details = viewModel.viewState.details
         
-        VStack(alignment: .center, spacing: 16.0) {
+        VStack(alignment: .center) {
             
-            HStack {
-                Text(details.senderDisplayName ?? "")
-                //Text(VectorL10n.voiceBroadcastInTimelineTitle)
-                    .font(theme.fonts.bodySB)
-                    .foregroundColor(theme.colors.primaryContent)
+            HStack (alignment: .top) {
+                AvatarImage(avatarData: viewModel.viewState.details.avatarData, size: .xSmall)
                 
-                if viewModel.viewState.broadcastState == .live {
-                    Button { viewModel.send(viewAction: .playLive) } label:
-                    {
-                        HStack {
-                            Image(uiImage: Asset.Images.voiceBroadcastLive.image)
-                                .renderingMode(.original)
-                            Text("Live")
-                                .font(theme.fonts.bodySB)
-                                .foregroundColor(Color.white)
-                        }
-                        
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(details.avatarData.displayName ?? details.avatarData.matrixItemId)
+                        .font(theme.fonts.bodySB)
+                        .foregroundColor(theme.colors.primaryContent)
+                    Label {
+                        Text(details.senderDisplayName ?? details.avatarData.matrixItemId)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .font(theme.fonts.caption1)
+                    } icon: {
+                        Image(uiImage: Asset.Images.voiceBroadcastTileMic.image)
                     }
-                    .padding(5.0)
-                    .background(RoundedRectangle(cornerRadius: 4, style: .continuous)
-                        .fill(backgroundColor))
-                    .accessibilityIdentifier("liveButton")
+                    Label {
+                        Text(VectorL10n.voiceBroadcastTile)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .font(theme.fonts.caption1)
+                    } icon: {
+                        Image(uiImage: Asset.Images.voiceBroadcastTileLive.image)
+                    }
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                
+                if viewModel.viewState.broadcastState != .stopped {
+                    Label {
+                        Text(VectorL10n.voiceBroadcastLive)
+                            .font(theme.fonts.caption1SB)
+                            .foregroundColor(Color.white)
+                    } icon: {
+                        Image(uiImage: Asset.Images.voiceBroadcastLive.image)
+                    }
+                    .padding(.horizontal, 5)
+                    .background(RoundedRectangle(cornerRadius: 4, style: .continuous).fill(backgroundColor))
+                    .accessibilityIdentifier("liveLabel")
                 }
             }
-    
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
             if viewModel.viewState.playbackState == .error {
                 VoiceBroadcastPlaybackErrorView()
             } else {
                 ZStack {
-                    if viewModel.viewState.playbackState == .playing ||
-                        viewModel.viewState.playbackState == .playingLive {
+                    if viewModel.viewState.playbackState == .playing {
                         Button { viewModel.send(viewAction: .pause) } label: {
                             Image(uiImage: Asset.Images.voiceBroadcastPause.image)
                                 .renderingMode(.original)
                         }
                         .accessibilityIdentifier("pauseButton")
                     } else  {
-                        Button {
-                            if viewModel.viewState.broadcastState == .live &&
-                                viewModel.viewState.playbackState == .stopped {
-                                viewModel.send(viewAction: .playLive)
-                            } else {
-                                viewModel.send(viewAction: .play)
-                            }
-                        } label: {
+                        Button { viewModel.send(viewAction: .play) } label: {
                             Image(uiImage: Asset.Images.voiceBroadcastPlay.image)
                                 .renderingMode(.original)
                         }
@@ -101,13 +106,19 @@ struct VoiceBroadcastPlaybackView: View {
                 }
                 .activityIndicator(show: viewModel.viewState.playbackState == .buffering)
             }
-
+            
+            Slider(value: $viewModel.progress, in: 0...viewModel.viewState.playingState.duration) {
+                Text("Slider")
+            } minimumValueLabel: {
+                Text("")
+            } maximumValueLabel: {
+                Text(viewModel.viewState.playingState.durationLabel ?? "").font(.body)
+            } onEditingChanged: { didChange in
+                viewModel.send(viewAction: .sliderChange(didChange: didChange))
+            }
         }
         .padding([.horizontal, .top], 2.0)
         .padding([.bottom])
-        .alert(item: $viewModel.alertInfo) { info in
-            info.alert
-        }
     }
 }
 

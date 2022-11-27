@@ -19,20 +19,29 @@ import Foundation
 extension VoiceBroadcastInfo {
     // MARK: - Constants
     
-    public enum State: String {
-        case started
-        case paused
-        case resumed
-        case stopped
-    }
-    
     // MARK: - Public
     
     @objc static func isStarted(for name: String) -> Bool {
-        return name == State.started.rawValue
+        return name == VoiceBroadcastInfoState.started.rawValue
     }
     
     @objc static func isStopped(for name: String) -> Bool {
-        return name == State.stopped.rawValue
+        return name == VoiceBroadcastInfoState.stopped.rawValue
+    }
+    
+    @objc static func startedValue() -> String {
+        return VoiceBroadcastInfoState.started.rawValue
+    }
+    
+    @objc static func pausedValue() -> String {
+        return VoiceBroadcastInfoState.paused.rawValue
+    }
+    
+    @objc static func resumedValue() -> String {
+        return VoiceBroadcastInfoState.resumed.rawValue
+    }
+    
+    @objc static func stoppedValue() -> String {
+        return VoiceBroadcastInfoState.stopped.rawValue
     }
 }

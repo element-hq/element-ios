@@ -82,6 +82,24 @@ class UserSessionCardViewDataTests: XCTestCase {
         XCTAssertEqual(verificationStateVerified, .unverified)
         XCTAssertEqual(verificationStateUnverified, .unverified)
     }
+    
+    func testDeviceNotHavingCryptoSupportOnVerifiedDevice() {
+        let mxSession = MockSession(canCrossSign: true)
+        let dataProvider = UserSessionsDataProvider(session: mxSession)
+        
+        let verificationState = dataProvider.verificationState(for: nil)
+        
+        XCTAssertEqual(verificationState, .permanentlyUnverified)
+    }
+    
+    func testDeviceNotHavingCryptoSupportOnUnverifiedDevice() {
+        let mxSession = MockSession(canCrossSign: false)
+        let dataProvider = UserSessionsDataProvider(session: mxSession)
+        
+        let verificationState = dataProvider.verificationState(for: nil)
+        
+        XCTAssertEqual(verificationState, .permanentlyUnverified)
+    }
 }
 
 // MARK: Mocks
@@ -113,7 +131,7 @@ private class MockSession: MXSession {
 /// A mock `MXCrypto` that can override the `canCrossSign` state.
 private class MockCrypto: MXLegacyCrypto {
     let canCrossSign: Bool
-    override var crossSigning: MXCrossSigning! { MockCrossSigning(canCrossSign: canCrossSign) }
+    override var crossSigning: MXCrossSigning { MockCrossSigning(canCrossSign: canCrossSign) }
     
     init(canCrossSign: Bool) {
         self.canCrossSign = canCrossSign

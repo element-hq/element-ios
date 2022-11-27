@@ -19,19 +19,19 @@ import XCTest
 
 class UserSessionOverviewUITests: MockScreenTestCase {
     func test_whenCurrentSessionSelected_correctNavTittleDisplayed() {
-        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.currentSession.title)
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.currentSession(sessionState: .unverified).title)
         let navTitle = VectorL10n.userSessionOverviewCurrentSessionTitle
         XCTAssertTrue(app.navigationBars[navTitle].staticTexts[navTitle].exists)
     }
     
     func test_whenOtherSessionSelected_correctNavTittleDisplayed() {
-        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.otherSession.title)
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.otherSession(sessionState: .verified).title)
         let navTitle = VectorL10n.userSessionOverviewSessionTitle
         XCTAssertTrue(app.navigationBars[navTitle].staticTexts[navTitle].exists)
     }
     
     func test_whenSessionOverviewPresented_sessionDetailsButtonExists() {
-        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.currentSession.title)
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.currentSession(sessionState: .unverified).title)
         XCTAssertTrue(app.buttons[VectorL10n.userSessionOverviewSessionDetailsButtonTitle].exists)
     }
     
@@ -60,5 +60,42 @@ class UserSessionOverviewUITests: MockScreenTestCase {
         XCTAssertFalse(app.switches["UserSessionOverviewToggleCell"].isEnabled)
         XCTAssertTrue(app.staticTexts[VectorL10n.userSessionPushNotifications].exists)
         XCTAssertTrue(app.staticTexts[VectorL10n.userSessionPushNotificationsMessage].exists)
+    }
+    
+    func test_whenSessionSelected_kebabMenuShows() {
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.otherSession(sessionState: .verified).title)
+        let navTitle = VectorL10n.userSessionOverviewSessionTitle
+        let barButton = app.navigationBars[navTitle].buttons["Menu"]
+        XCTAssertTrue(barButton.exists)
+        barButton.tap()
+        XCTAssertTrue(app.buttons[VectorL10n.signOut].exists)
+        XCTAssertTrue(app.buttons[VectorL10n.manageSessionRename].exists)
+    }
+    
+    func test_whenOtherSessionSelected_learnMoreButtonDoesnExist() {
+        let title = MockUserSessionOverviewScreenState.currentSession(sessionState: .verified).title
+        app.goToScreenWithIdentifier(title)
+        let buttonId = "\(VectorL10n.userOtherSessionVerifiedAdditionalInfo) \(VectorL10n.userSessionLearnMore)"
+        let button = app.buttons[buttonId]
+        XCTAssertFalse(button.exists)
+    }
+    
+    func test_whenOtherVerifiedSessionSelected_learnMoreButtonExists() {
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.otherSession(sessionState: .verified).title)
+        let buttonId = "\(VectorL10n.userOtherSessionVerifiedAdditionalInfo) \(VectorL10n.userSessionLearnMore)"
+        let button = app.buttons[buttonId]
+        XCTAssertTrue(button.exists)
+    }
+    
+    func test_whenOtherUnverifiedSessionSelected_learnMoreButtonExists() {
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.otherSession(sessionState: .unverified).title)
+        let buttonId = "\(VectorL10n.userOtherSessionUnverifiedAdditionalInfo) \(VectorL10n.userSessionLearnMore)"
+        let button = app.buttons[buttonId]
+        XCTAssertTrue(button.exists)
+    }
+    
+    func test_whenPermanentlySessionSelected_copyIsCorrect() {
+        app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.otherSession(sessionState: .permanentlyUnverified).title)
+        XCTAssertTrue(app.buttons[VectorL10n.userOtherSessionPermanentlyUnverifiedAdditionalInfo].exists)
     }
 }

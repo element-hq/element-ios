@@ -19,12 +19,16 @@ import Foundation
 struct ComposerViewState: BindableState {
     var eventSenderDisplayName: String?
     var sendMode: ComposerSendMode = .send
+    var textFormattingEnabled: Bool
+    var isLandscapePhone: Bool
     var placeholder: String?
+    
+    var bindings: ComposerBindings
 }
 
 extension ComposerViewState {
     var shouldDisplayContext: Bool {
-        return sendMode == .edit || sendMode == .reply
+        sendMode == .edit || sendMode == .reply
     }
     
     var contextDescription: String? {
@@ -44,4 +48,12 @@ extension ComposerViewState {
         default: return nil
         }
     }
+    
+    var isMinimiseForced: Bool {
+        isLandscapePhone || !textFormattingEnabled
+    }
+}
+
+struct ComposerBindings {
+    var focused: Bool
 }

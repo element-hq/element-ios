@@ -23,6 +23,13 @@ struct VoiceBroadcastRecorderView: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    private var backgroundColor: Color {
+        if viewModel.viewState.recordingState != .paused {
+            return theme.colors.alert
+        }
+        return theme.colors.quarterlyContent
+    }
+    
     // MARK: Public
     
     @ObservedObject var viewModel: VoiceBroadcastRecorderViewModel.Context
@@ -30,10 +37,43 @@ struct VoiceBroadcastRecorderView: View {
     var body: some View {
         let details = viewModel.viewState.details
         
-        VStack(alignment: .leading, spacing: 16.0) {
-            Text(details.senderDisplayName ?? "")
-                .font(theme.fonts.bodySB)
-                .foregroundColor(theme.colors.primaryContent)
+        VStack(alignment: .center) {
+            
+            HStack(alignment: .top) {
+                AvatarImage(avatarData: viewModel.viewState.details.avatarData, size: .xSmall)
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(details.avatarData.displayName ?? details.avatarData.matrixItemId)
+                        .font(theme.fonts.bodySB)
+                        .foregroundColor(theme.colors.primaryContent)
+                    Label {
+                        Text(VectorL10n.voiceBroadcastTile)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .font(theme.fonts.caption1)
+                    } icon: {
+                        Image(uiImage: Asset.Images.voiceBroadcastTileLive.image)
+                    }
+                    
+                    Label {
+                        Text(viewModel.viewState.currentRecordingState.remainingTimeLabel)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .font(theme.fonts.caption1)
+                    } icon: {
+                        Image(uiImage: Asset.Images.voiceBroadcastTimeLeft.image)
+                    }
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                
+                Label {
+                    Text(VectorL10n.voiceBroadcastLive)
+                        .font(theme.fonts.caption1SB)
+                        .foregroundColor(Color.white)
+                } icon: {
+                    Image(uiImage: Asset.Images.voiceBroadcastLive.image)
+                }
+                .padding(.horizontal, 5)
+                .background(RoundedRectangle(cornerRadius: 4, style: .continuous).fill(backgroundColor))
+                .accessibilityIdentifier("liveButton")
+            }
             
             HStack(alignment: .top, spacing: 16.0) {
                 Button {

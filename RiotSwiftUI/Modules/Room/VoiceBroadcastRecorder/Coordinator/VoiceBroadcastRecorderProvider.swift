@@ -23,7 +23,16 @@ import Foundation
     
     // MARK: - Properties
     // MARK: Public
-    var session: MXSession?
+    var session: MXSession? {
+        willSet {
+            guard let currentSession = self.session else { return }
+            
+            if currentSession != newValue {
+                // Clear all stored coordinators on new session
+                coordinatorsForEventIdentifiers.removeAll()
+            }
+        }
+    }
     var coordinatorsForEventIdentifiers = [String: VoiceBroadcastRecorderCoordinator]()
     
     // MARK: Private

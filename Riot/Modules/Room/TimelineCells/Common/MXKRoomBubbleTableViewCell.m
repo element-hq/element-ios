@@ -806,7 +806,7 @@ static BOOL _disableLongPressGestureOnEvent;
             mimetype = bubbleData.attachment.contentInfo[@"mimetype"];
         }
         
-        if ([mimetype isEqualToString:@"image/gif"])
+        if ([mimetype isKindOfClass:[NSString class]] && [mimetype isEqualToString:@"image/gif"])
         {
             if (_isAutoAnimatedGif)
             {

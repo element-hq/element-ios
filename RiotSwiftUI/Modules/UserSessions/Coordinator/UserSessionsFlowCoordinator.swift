@@ -22,7 +22,7 @@ struct UserSessionsFlowCoordinatorParameters {
     let router: NavigationRouterType
 }
 
-final class UserSessionsFlowCoordinator: Coordinator, Presentable {
+final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
     private let parameters: UserSessionsFlowCoordinatorParameters
     private let allSessionsService: UserSessionsOverviewService
     
@@ -76,13 +76,19 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             case let .renameSession(sessionInfo):
                 self.showRenameSessionScreen(for: sessionInfo)
             case let .logoutOfSession(sessionInfo):
-                self.showLogoutConfirmation(for: sessionInfo)
+                if sessionInfo.isCurrent {
+                    self.showLogoutConfirmationForCurrentSession()
+                } else {
+                    self.showLogoutConfirmation(for: [sessionInfo])
+                }
             case let .openSessionOverview(sessionInfo: sessionInfo):
                 self.openSessionOverview(sessionInfo: sessionInfo)
             case let .openOtherSessions(sessionInfos: sessionInfos, filter: filter):
                 self.openOtherSessions(sessionInfos: sessionInfos, filterBy: filter)
             case .linkDevice:
                 self.openQRLoginScreen()
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
+                self.showLogoutConfirmation(for: sessionInfos)
             }
         }
         return coordinator
@@ -114,7 +120,13 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             case let .renameSession(sessionInfo):
                 self.showRenameSessionScreen(for: sessionInfo)
             case let .logoutOfSession(sessionInfo):
-                self.showLogoutConfirmation(for: sessionInfo)
+                if sessionInfo.isCurrent {
+                    self.showLogoutConfirmationForCurrentSession()
+                } else {
+                    self.showLogoutConfirmation(for: [sessionInfo])
+                }
+            case let .showSessionStateInfo(sessionInfo):
+                self.showInfoSheet(parameters: .init(userSessionInfo: sessionInfo, parentSize: self.toPresentable().view.bounds.size))
             }
         }
         pushScreen(with: coordinator)
@@ -152,6 +164,10 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
             switch result {
             case let .openSessionOverview(sessionInfo: session):
                 self.openSessionOverview(sessionInfo: session)
+            case let .logoutFromUserSessions(sessionInfos: sessionInfos):
+                self.showLogoutConfirmation(for: sessionInfos)
+            case let .showSessionStateByFilter(filter):
+                self.showInfoSheet(parameters: .init(filter: filter, parentSize: self.toPresentable().view.bounds.size))
             }
         }
         pushScreen(with: coordinator)
@@ -167,21 +183,35 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     }
     
     /// Shows a confirmation dialog to the user to sign out of a session.
-    private func showLogoutConfirmation(for sessionInfo: UserSessionInfo) {
-        guard !sessionInfo.isCurrent else {
-            showLogoutConfirmationForCurrentSession()
-            return
-        }
-        
+    private func showLogoutConfirmation(for sessionInfos: [UserSessionInfo]) {
         // Use a UIAlertController as we don't have confirmationDialog in SwiftUI on iOS 14.
         let alert = UIAlertController(title: VectorL10n.signOutConfirmationMessage, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: VectorL10n.signOut, style: .destructive) { [weak self] _ in
-            self?.showLogoutAuthentication(for: sessionInfo)
+            self?.showLogoutAuthentication(for: sessionInfos)
         })
         alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel))
         alert.popoverPresentationController?.sourceView = toPresentable().view
         
         navigationRouter.present(alert, animated: true)
+    }
+    
+    private func showInfoSheet(parameters: InfoSheetCoordinatorParameters) {
+        let coordinator = InfoSheetCoordinator(parameters: parameters)
+        
+        coordinator.toPresentable().presentationController?.delegate = self
+        coordinator.completion = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            
+            switch result {
+            case .actionTriggered:
+                self.navigationRouter.dismissModule(animated: true, completion: nil)
+                self.remove(childCoordinator: coordinator)
+            }
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        navigationRouter.present(coordinator, animated: true)
     }
     
     private func showLogoutConfirmationForCurrentSession() {
@@ -192,19 +222,20 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         signOutFlowPresenter = flowPresenter
     }
     
-    /// Prompts the user to authenticate (if necessary) in order to log out of a specific session.
-    private func showLogoutAuthentication(for sessionInfo: UserSessionInfo) {
+    /// Prompts the user to authenticate (if necessary) in order to log out of specific sessions.
+    private func showLogoutAuthentication(for sessionInfos: [UserSessionInfo]) {
         startLoading()
         
-        let deleteDeviceRequest = AuthenticatedEndpointRequest.deleteDevice(sessionInfo.id)
+        let deviceIDs = sessionInfos.map(\.id)
+        let deleteDevicesRequest = AuthenticatedEndpointRequest.deleteDevices(deviceIDs)
         let coordinatorParameters = ReauthenticationCoordinatorParameters(session: parameters.session,
                                                                           presenter: navigationRouter.toPresentable(),
                                                                           title: VectorL10n.deviceDetailsDeletePromptTitle,
                                                                           message: VectorL10n.deviceDetailsDeletePromptMessage,
-                                                                          authenticatedEndpointRequest: deleteDeviceRequest)
+                                                                          authenticatedEndpointRequest: deleteDevicesRequest)
         let presenter = ReauthenticationCoordinatorBridgePresenter()
         presenter.present(with: coordinatorParameters, animated: true) { [weak self] authenticationParameters in
-            self?.finalizeLogout(of: sessionInfo, with: authenticationParameters)
+            self?.finalizeLogout(of: deviceIDs, with: authenticationParameters)
             self?.reauthenticationPresenter = nil
         } cancel: { [weak self] in
             self?.stopLoading()
@@ -218,20 +249,20 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
 
         reauthenticationPresenter = presenter
     }
-    
-    /// Finishes the logout process by deleting the device from the user's account.
+
+    /// Finishes the logout process by deleting the devices from the user's account.
     /// - Parameters:
-    ///   - sessionInfo: The `UserSessionInfo` for the session to be removed.
+    ///   - deviceIDs: IDs for the sessions to be removed.
     ///   - authenticationParameters: The parameters from performing interactive authentication on the `devices` endpoint.
-    private func finalizeLogout(of sessionInfo: UserSessionInfo, with authenticationParameters: [String: Any]?) {
-        parameters.session.matrixRestClient.deleteDevice(sessionInfo.id,
-                                                         authParameters: authenticationParameters ?? [:]) { [weak self] response in
+    private func finalizeLogout(of deviceIDs: [String], with authenticationParameters: [String: Any]?) {
+        parameters.session.matrixRestClient.deleteDevices(deviceIDs,
+                                                          authParameters: authenticationParameters ?? [:]) { [weak self] response in
             guard let self = self else { return }
             
             self.stopLoading()
 
             guard response.isSuccess else {
-                MXLog.debug("[UserSessionsFlowCoordinator] Delete device (\(sessionInfo.id)) failed")
+                MXLog.debug("[UserSessionsFlowCoordinator] Delete devices failed")
                 if let error = response.error {
                     self.errorPresenter.presentError(from: self.toPresentable(), forError: error, animated: true, handler: { })
                 } else {
@@ -267,7 +298,7 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
         let modalRouter = NavigationRouter(navigationController: RiotNavigationController())
         modalRouter.setRootModule(coordinator)
         coordinator.start()
-        
+        modalRouter.toPresentable().presentationController?.delegate = self
         navigationRouter.present(modalRouter, animated: true)
     }
     
@@ -311,7 +342,11 @@ final class UserSessionsFlowCoordinator: Coordinator, Presentable {
     /// Pops back to the root coordinator in the session management flow.
     private func popToSessionsOverview() {
         guard let sessionsOverviewCoordinator = sessionsOverviewCoordinator else { return }
-        navigationRouter.popToModule(sessionsOverviewCoordinator, animated: true)
+        if let coordinator = navigationRouter.modules.last as? UserSessionsOverviewCoordinator {
+            coordinator.refreshData()
+        } else {
+            navigationRouter.popToModule(sessionsOverviewCoordinator, animated: true)
+        }
     }
     
     /// Show an activity indicator whilst loading.
@@ -394,5 +429,87 @@ extension UserSessionsFlowCoordinator: UserVerificationCoordinatorDelegate {
     func userVerificationCoordinatorDidComplete(_ coordinator: UserVerificationCoordinatorType) {
         // The service is listening for changes so there's nothing to do here.
         remove(childCoordinator: coordinator)
+    }
+}
+
+// MARK: UIAdaptivePresentationControllerDelegate
+
+extension UserSessionsFlowCoordinator: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard let coordinator = childCoordinators.last else {
+            return
+        }
+        
+        remove(childCoordinator: coordinator)
+    }
+}
+
+// MARK: Private
+
+private extension InfoSheetCoordinatorParameters {
+    init(userSessionInfo: UserSessionInfo, parentSize: CGSize) {
+        self.init(title: userSessionInfo.bottomSheetTitle,
+                  description: userSessionInfo.bottomSheetDescription,
+                  action: .init(text: VectorL10n.userSessionGotIt, action: { }),
+                  parentSize: parentSize)
+    }
+    
+    init(filter: UserOtherSessionsFilter, parentSize: CGSize) {
+        self.init(title: filter.bottomSheetTitle,
+                  description: filter.bottomSheetDescription,
+                  action: .init(text: VectorL10n.userSessionGotIt, action: { }),
+                  parentSize: parentSize)
+    }
+}
+
+private extension UserSessionInfo {
+    var bottomSheetTitle: String {
+        switch verificationState {
+        case .unverified, .permanentlyUnverified:
+            return VectorL10n.userSessionUnverifiedSessionTitle
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionTitle
+        case .unknown:
+            return ""
+        }
+    }
+
+    var bottomSheetDescription: String {
+        switch verificationState {
+        case .unverified, .permanentlyUnverified:
+            return VectorL10n.userSessionUnverifiedSessionDescription
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionDescription
+        case .unknown:
+            return ""
+        }
+    }
+}
+
+private extension UserOtherSessionsFilter {
+    var bottomSheetTitle: String {
+        switch self {
+        case .unverified:
+            return VectorL10n.userSessionUnverifiedSessionTitle
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionTitle
+        case .inactive:
+            return VectorL10n.userSessionInactiveSessionTitle
+        case .all:
+            return ""
+        }
+    }
+    
+    var bottomSheetDescription: String {
+        switch self {
+        case .unverified:
+            return VectorL10n.userSessionUnverifiedSessionDescription
+        case .verified:
+            return VectorL10n.userSessionVerifiedSessionDescription
+        case .inactive:
+            return VectorL10n.userSessionInactiveSessionDescription
+        case .all:
+            return ""
+        }
     }
 }

@@ -32,6 +32,8 @@ enum UserSessionNameViewModelResult {
     case cancel
     /// Update the session name to the supplied string.
     case updateName(String)
+    /// The user tapped the learn more button.
+    case learnMore
 }
 
 // MARK: View
@@ -59,6 +61,6 @@ enum UserSessionNameViewAction {
     case done
     /// The user tapped the cancel button.
     case cancel
-    /// The user tapped the Learn More link.
+    /// The user tapped the learn more button.
     case learnMore
 }

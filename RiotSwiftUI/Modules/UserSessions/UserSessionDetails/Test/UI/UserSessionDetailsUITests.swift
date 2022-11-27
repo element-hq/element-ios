@@ -18,18 +18,17 @@ import RiotSwiftUI
 import XCTest
 
 class UserSessionDetailsUITests: MockScreenTestCase {
-    func test_longPressDetailsCell_CopiesValueToClipboard() throws {
+    func test_screenWithAllTheContent() throws {
         app.goToScreenWithIdentifier(MockUserSessionDetailsScreenState.allSections.title)
-        
-        UIPasteboard.general.string = ""
-        
-        let tables = app.tables
-        let sessionNameIosCell = tables.cells["Session name, iOS"]
-        sessionNameIosCell.press(forDuration: 0.5)
-        
-        app.buttons["Copy"].tap()
-        
-        let clipboard = try XCTUnwrap(UIPasteboard.general.string)
-        XCTAssertEqual(clipboard, "iOS")
+
+        let rows = app.staticTexts.matching(identifier: "UserSessionDetailsItem.title")
+        XCTAssertEqual(rows.count, 6)
+    }
+    
+    func test_screenWithSessionSectionOnly() throws {
+        app.goToScreenWithIdentifier(MockUserSessionDetailsScreenState.sessionSectionOnly.title)
+
+        let rows = app.staticTexts.matching(identifier: "UserSessionDetailsItem.title")
+        XCTAssertEqual(rows.count, 3)
     }
 }

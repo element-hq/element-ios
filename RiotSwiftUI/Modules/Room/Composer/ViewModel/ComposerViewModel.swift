@@ -35,6 +35,15 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
             state.sendMode = newValue
         }
     }
+
+    var textFormattingEnabled: Bool {
+        get {
+            state.textFormattingEnabled
+        }
+        set {
+            state.textFormattingEnabled = newValue
+        }
+    }
     
     var eventSenderDisplayName: String? {
         get {
@@ -54,6 +63,19 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
         }
     }
     
+    var isLandscapePhone: Bool {
+        get {
+            state.isLandscapePhone
+        }
+        set {
+            state.isLandscapePhone = newValue
+        }
+    }
+    
+    var isFocused: Bool {
+        state.bindings.focused
+    }
+    
     // MARK: - Public
     
     override func process(viewAction: ComposerViewAction) {
@@ -63,5 +85,13 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
         case let .contentDidChange(isEmpty):
             callback?(.contentDidChange(isEmpty: isEmpty))
         }
+    }
+    
+    func dismissKeyboard() {
+        state.bindings.focused = false
+    }
+    
+    func showKeyboard() {
+        state.bindings.focused = true
     }
 }

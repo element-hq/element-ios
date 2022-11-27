@@ -16,17 +16,26 @@
 
 import Foundation
 
-class VoiceBroadcastPlaybackProvider {
-    static let shared = VoiceBroadcastPlaybackProvider()
+@objc class VoiceBroadcastPlaybackProvider: NSObject {
+    @objc static let shared = VoiceBroadcastPlaybackProvider()
     
-    var session: MXSession?
+    var session: MXSession? {
+        willSet {
+            guard let currentSession = self.session else { return }
+            
+            if currentSession != newValue {
+                // Clear all stored coordinators on new session
+                coordinatorsForEventIdentifiers.removeAll()
+            }
+        }
+    }
     var coordinatorsForEventIdentifiers = [String: VoiceBroadcastPlaybackCoordinator]()
     
-    private init() { }
+    private override init() { }
     
     /// Create or retrieve the voiceBroadcast timeline coordinator for this event and return
     /// a view to be displayed in the timeline
-    func buildVoiceBroadcastPlaybackVCForEvent(_ event: MXEvent, senderDisplayName: String?) -> UIViewController? {
+    func buildVoiceBroadcastPlaybackVCForEvent(_ event: MXEvent, senderDisplayName: String?, voiceBroadcastState: String) -> UIViewController? {
         guard let session = session, let room = session.room(withRoomId: event.roomId) else {
             return nil
         }
@@ -35,26 +44,10 @@ class VoiceBroadcastPlaybackProvider {
             return coordinator.toPresentable()
         }
         
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        var voiceBroadcastState = VoiceBroadcastInfo.State.stopped
-        
-        room.state { roomState in
-            if let stateEvent = roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last,
-               stateEvent.stateKey == event.stateKey,
-               let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: stateEvent.content),
-               (stateEvent.eventId == event.eventId || voiceBroadcastInfo.eventId == event.eventId),
-               let state = VoiceBroadcastInfo.State(rawValue: voiceBroadcastInfo.state) {
-                   voiceBroadcastState = state
-               }
-            
-            dispatchGroup.leave()
-        }
-        
         let parameters = VoiceBroadcastPlaybackCoordinatorParameters(session: session,
                                                                      room: room,
                                                                      voiceBroadcastStartEvent: event,
-                                                                     voiceBroadcastState: voiceBroadcastState,
+                                                                     voiceBroadcastState: VoiceBroadcastInfoState(rawValue: voiceBroadcastState) ?? VoiceBroadcastInfoState.stopped,
                                                                      senderDisplayName: senderDisplayName)
         guard let coordinator = try? VoiceBroadcastPlaybackCoordinator(parameters: parameters) else {
             return nil
@@ -69,5 +62,12 @@ class VoiceBroadcastPlaybackProvider {
     /// Retrieve the voiceBroadcast timeline coordinator for the given event or nil if it hasn't been created yet
     func voiceBroadcastPlaybackCoordinatorForEventIdentifier(_ eventIdentifier: String) -> VoiceBroadcastPlaybackCoordinator? {
         coordinatorsForEventIdentifiers[eventIdentifier]
+    }
+    
+    /// Pause current voice broadcast playback.
+    @objc public func pausePlaying() {
+        coordinatorsForEventIdentifiers.forEach { _, coordinator in
+            coordinator.pausePlaying()
+        }
     }
 }

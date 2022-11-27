@@ -21,7 +21,7 @@ platform :ios do
 
   before_all do
     # Ensure used Xcode version
-    xcversion(version: "~> 13.4")
+    xcversion(version: "~> 14.0.1")
   end
 
   #### Public ####
@@ -196,7 +196,7 @@ platform :ios do
     run_tests(
       workspace: "Riot.xcworkspace",
       scheme: "RiotSwiftUITests",
-      device: "iPhone 13",
+      device: "iPhone 14",
       code_coverage: true,
       # Test result configuration
       result_bundle: true,
@@ -220,7 +220,19 @@ platform :ios do
 
   desc "Download App Store or Ad-Hoc provisioning profiles"
   private_lane :build_release do |options|
-    UI.user_error!("'APPLE_ID' environment variable should be set to use this lane") unless !ENV["APPLE_ID"].to_s.empty?
+    if is_ci
+      UI.user_error!("'APPSTORECONNECT_KEY_ID' environment variable should be set to use this lane") unless !ENV["APPSTORECONNECT_KEY_ID"].to_s.empty?
+      UI.user_error!("'APPSTORECONNECT_KEY_ISSUER_ID' environment variable should be set to use this lane") unless !ENV["APPSTORECONNECT_KEY_ISSUER_ID"].to_s.empty?
+      UI.user_error!("'APPSTORECONNECT_KEY_CONTENT' environment variable should be set to use this lane") unless !ENV["APPSTORECONNECT_KEY_CONTENT"].to_s.empty?
+      
+      app_store_connect_api_key(
+        key_id: ENV["APPSTORECONNECT_KEY_ID"],
+        issuer_id: ENV["APPSTORECONNECT_KEY_ISSUER_ID"],
+        key_content: ENV["APPSTORECONNECT_KEY_CONTENT"]
+      )
+    else
+      UI.user_error!("'APPLE_ID' environment variable should be set to use this lane") unless !ENV["APPLE_ID"].to_s.empty?
+    end
 
     build_number = options[:build_number]
     UI.user_error!("'build_number' parameter is missing") unless !build_number.to_s.empty?

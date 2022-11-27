@@ -22,17 +22,26 @@ struct UserOtherSessions: View {
     @ObservedObject var viewModel: UserOtherSessionsViewModel.Context
     
     var body: some View {
-        ScrollView {
-            SwiftUI.Section {
-                if viewModel.viewState.sessionItems.isEmpty {
-                    noItemsView()
-                } else {
-                    itemsView()
+        VStack(spacing: 0) {
+            ScrollView {
+                SwiftUI.Section {
+                    if viewModel.viewState.sessionItems.isEmpty {
+                        noItemsView()
+                    } else {
+                        itemsView()
+                    }
+                } header: {
+                    UserOtherSessionsHeaderView(
+                        viewData: viewModel.viewState.header,
+                        onLearnMoreAction: {
+                            viewModel.send(viewAction: .viewSessionInfo)
+                        }
+                    )
+                    .padding(.top)
                 }
-            } header: {
-                UserOtherSessionsHeaderView(viewData: viewModel.viewState.header)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, 24.0)
+            }
+            if viewModel.isEditModeEnabled {
+                bottomToolbar()
             }
         }
         .onChange(of: viewModel.isEditModeEnabled) { _ in
@@ -47,9 +56,12 @@ struct UserOtherSessions: View {
         .toolbar {
             UserOtherSessionsToolbar(isEditModeEnabled: $viewModel.isEditModeEnabled,
                                      filter: $viewModel.filter,
-                                     allItemsSelected: viewModel.viewState.allItemsSelected) {
-                viewModel.send(viewAction: .toggleAllSelection)
-            }
+                                     isShowLocationEnabled: .init(get: { viewModel.viewState.showLocationInfo },
+                                                                  set: { _ in withAnimation { viewModel.send(viewAction: .showLocationInfo) } }),
+                                     allItemsSelected: viewModel.viewState.allItemsSelected,
+                                     sessionCount: viewModel.viewState.sessionItems.count,
+                                     onToggleSelection: { viewModel.send(viewAction: .toggleAllSelection) },
+                                     onSignOut: { viewModel.send(viewAction: .logoutAllUserSessions) })
         }
         .navigationBarBackButtonHidden(viewModel.isEditModeEnabled)
         .accentColor(theme.colors.accent)
@@ -61,6 +73,7 @@ struct UserOtherSessions: View {
                 .font(theme.fonts.footnote)
                 .foregroundColor(theme.colors.primaryContent)
                 .padding(.bottom, 20)
+                .accessibilityIdentifier("UserOtherSessions.noItemsText")
             Button {
                 viewModel.send(viewAction: .clearFilter)
             } label: {
@@ -75,6 +88,7 @@ struct UserOtherSessions: View {
                 }
                 .background(theme.colors.background)
             }
+            .accessibilityIdentifier("UserOtherSessions.clearFilter")
         }
     }
     
@@ -82,12 +96,32 @@ struct UserOtherSessions: View {
         LazyVStack(spacing: 0) {
             ForEach(viewModel.viewState.sessionItems) { viewData in
                 UserSessionListItem(viewData: viewData,
+                                    showsLocationInfo: viewModel.viewState.showLocationInfo,
+                                    isSeparatorHidden: viewData == viewModel.viewState.sessionItems.last,
                                     isEditModeEnabled: viewModel.isEditModeEnabled,
                                     onBackgroundTap: { sessionId in viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId)) },
                                     onBackgroundLongPress: { _ in viewModel.isEditModeEnabled = true })
             }
         }
         .background(theme.colors.background)
+    }
+    
+    private func bottomToolbar() -> some View {
+        VStack(spacing: 0) {
+            SeparatorLine()
+            HStack {
+                Spacer()
+                Button {
+                    viewModel.send(viewAction: .logoutSelectedUserSessions)
+                } label: {
+                    Text(VectorL10n.signOut)
+                        .foregroundColor(viewModel.viewState.enableSignOutButton ? theme.colors.alert : theme.colors.tertiaryContent)
+                }
+                .padding(.trailing, 16)
+                .padding(.vertical, 12)
+                .disabled(!viewModel.viewState.enableSignOutButton)
+            }
+        }
     }
 }
 

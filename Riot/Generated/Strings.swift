@@ -2923,6 +2923,14 @@ public class VectorL10n: NSObject {
   public static var keyBackupSetupTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_title") 
   }
+  /// Review to ensure your account is safe.
+  public static var keyVerificationAlertBody: String { 
+    return VectorL10n.tr("Vector", "key_verification_alert_body") 
+  }
+  /// You have unverified sessions
+  public static var keyVerificationAlertTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_alert_title") 
+  }
   /// You need to bootstrap cross-signing first.
   public static var keyVerificationBootstrapNotSetupMessage: String { 
     return VectorL10n.tr("Vector", "key_verification_bootstrap_not_setup_message") 
@@ -3006,14 +3014,6 @@ public class VectorL10n: NSObject {
   /// Verify
   public static var keyVerificationSelfVerifyCurrentSessionAlertValidateAction: String { 
     return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_validate_action") 
-  }
-  /// Verify all your sessions to ensure your account & messages are safe.
-  public static var keyVerificationSelfVerifyUnverifiedSessionsAlertMessage: String { 
-    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_message") 
-  }
-  /// Review where you're logged in
-  public static var keyVerificationSelfVerifyUnverifiedSessionsAlertTitle: String { 
-    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_title") 
   }
   /// Review
   public static var keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction: String { 
@@ -3178,6 +3178,18 @@ public class VectorL10n: NSObject {
   /// Later
   public static var later: String { 
     return VectorL10n.tr("Vector", "later") 
+  }
+  /// Processing data\n%@ %%
+  public static func launchLoadingProcessingResponse(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "launch_loading_processing_response", p1)
+  }
+  /// Syncing with the server
+  public static var launchLoadingServerSyncing: String { 
+    return VectorL10n.tr("Vector", "launch_loading_server_syncing") 
+  }
+  /// Syncing with the server\n(%@ attempt)
+  public static func launchLoadingServerSyncingNthAttempt(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "launch_loading_server_syncing_nth_attempt", p1)
   }
   /// Leave
   public static var leave: String { 
@@ -3646,6 +3658,10 @@ public class VectorL10n: NSObject {
   /// Sign out of this session
   public static var manageSessionSignOut: String { 
     return VectorL10n.tr("Vector", "manage_session_sign_out") 
+  }
+  /// Sign out of all other sessions
+  public static var manageSessionSignOutOtherSessions: String { 
+    return VectorL10n.tr("Vector", "manage_session_sign_out_other_sessions") 
   }
   /// Manage session
   public static var manageSessionTitle: String { 
@@ -7543,7 +7559,7 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableVoiceBroadcast: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_voice_broadcast") 
   }
-  /// Try out the rich text editor (plain text mode coming soon)
+  /// Try out the rich text editor
   public static var settingsLabsEnableWysiwygComposer: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_wysiwyg_composer") 
   }
@@ -8679,6 +8695,10 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionMenuSelectSessions: String { 
     return VectorL10n.tr("Vector", "user_other_session_menu_select_sessions") 
   }
+  /// Sign out of %@ sessions
+  public static func userOtherSessionMenuSignOutSessions(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "user_other_session_menu_sign_out_sessions", p1)
+  }
   /// No inactive sessions found.
   public static var userOtherSessionNoInactiveSessions: String { 
     return VectorL10n.tr("Vector", "user_other_session_no_inactive_sessions") 
@@ -8690,6 +8710,10 @@ public class VectorL10n: NSObject {
   /// No verified sessions found.
   public static var userOtherSessionNoVerifiedSessions: String { 
     return VectorL10n.tr("Vector", "user_other_session_no_verified_sessions") 
+  }
+  /// This session cannot be verified because it does not support encryption.
+  public static var userOtherSessionPermanentlyUnverifiedAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_other_session_permanently_unverified_additional_info") 
   }
   /// Security recommendation
   public static var userOtherSessionSecurityRecommendationTitle: String { 
@@ -8779,6 +8803,18 @@ public class VectorL10n: NSObject {
   public static var userSessionDetailsTitle: String { 
     return VectorL10n.tr("Vector", "user_session_details_title") 
   }
+  /// Got it
+  public static var userSessionGotIt: String { 
+    return VectorL10n.tr("Vector", "user_session_got_it") 
+  }
+  /// Inactive sessions are sessions you have not used in some time, but they continue to receive encryption keys.\n\nRemoving inactive sessions improves security and performance, and makes it easier for you to identify if a new session is suspicious.
+  public static var userSessionInactiveSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_inactive_session_description") 
+  }
+  /// Inactive sessions
+  public static var userSessionInactiveSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_inactive_session_title") 
+  }
   /// %1$@ · %2$@
   public static func userSessionItemDetails(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "user_session_item_details", p1, p2)
@@ -8815,6 +8851,14 @@ public class VectorL10n: NSObject {
   public static var userSessionPushNotificationsMessage: String { 
     return VectorL10n.tr("Vector", "user_session_push_notifications_message") 
   }
+  /// Other users in direct messages and rooms that you join are able to view a full list of your sessions.\n\nThis provides them with confidence that they are really speaking to you, but it also means they can see the session name you enter here.
+  public static var userSessionRenameSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_rename_session_description") 
+  }
+  /// Renaming sessions
+  public static var userSessionRenameSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_rename_session_title") 
+  }
   /// Unverified session
   public static var userSessionUnverified: String { 
     return VectorL10n.tr("Vector", "user_session_unverified") 
@@ -8822,6 +8866,14 @@ public class VectorL10n: NSObject {
   /// Verify your current session for enhanced secure messaging.
   public static var userSessionUnverifiedAdditionalInfo: String { 
     return VectorL10n.tr("Vector", "user_session_unverified_additional_info") 
+  }
+  /// Unverified sessions are sessions that have logged in with your credentials but not been cross-verified.\n\nYou should make especially certain that you recognise these sessions as they could represent an unauthorised use of your account.
+  public static var userSessionUnverifiedSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_unverified_session_description") 
+  }
+  /// Unverified session
+  public static var userSessionUnverifiedSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_unverified_session_title") 
   }
   /// Unverified
   public static var userSessionUnverifiedShort: String { 
@@ -8847,6 +8899,14 @@ public class VectorL10n: NSObject {
   public static var userSessionVerifiedAdditionalInfo: String { 
     return VectorL10n.tr("Vector", "user_session_verified_additional_info") 
   }
+  /// Verified sessions are anywhere you are using Element after entering your passphrase or confirming your identity with another verified session.\n\nThis means that you have all the keys needed to unlock your encrypted messages and confirm to other users that you trust this session.
+  public static var userSessionVerifiedSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_verified_session_description") 
+  }
+  /// Verified sessions
+  public static var userSessionVerifiedSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_verified_session_title") 
+  }
   /// Verified
   public static var userSessionVerifiedShort: String { 
     return VectorL10n.tr("Vector", "user_session_verified_short") 
@@ -8862,6 +8922,10 @@ public class VectorL10n: NSObject {
   /// %@ iOS
   public static func userSessionsDefaultSessionDisplayName(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "user_sessions_default_session_display_name", p1)
+  }
+  /// Hide IP address
+  public static var userSessionsHideLocationInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_hide_location_info") 
   }
   /// Current session
   public static var userSessionsOverviewCurrentSessionSectionTitle: String { 
@@ -8910,6 +8974,10 @@ public class VectorL10n: NSObject {
   /// Manage sessions
   public static var userSessionsSettings: String { 
     return VectorL10n.tr("Vector", "user_sessions_settings") 
+  }
+  /// Show IP address
+  public static var userSessionsShowLocationInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_show_location_info") 
   }
   /// View all (%d)
   public static func userSessionsViewAllAction(_ p1: Int) -> String {
@@ -9071,6 +9139,10 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastBlockedBySomeoneElseMessage: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_blocked_by_someone_else_message") 
   }
+  /// Live
+  public static var voiceBroadcastLive: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_live") 
+  }
   /// You don't have the required permissions to start a voice broadcast in this room. Contact a room administrator to upgrade your permissions.
   public static var voiceBroadcastPermissionDeniedMessage: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_permission_denied_message") 
@@ -9078,6 +9150,14 @@ public class VectorL10n: NSObject {
   /// Unable to play this voice broadcast.
   public static var voiceBroadcastPlaybackLoadingError: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_playback_loading_error") 
+  }
+  /// Voice broadcast
+  public static var voiceBroadcastTile: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_tile") 
+  }
+  /// %@ left
+  public static func voiceBroadcastTimeLeft(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "voice_broadcast_time_left", p1)
   }
   /// Can't start a new voice broadcast
   public static var voiceBroadcastUnauthorizedTitle: String { 

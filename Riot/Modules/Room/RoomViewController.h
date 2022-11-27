@@ -46,6 +46,10 @@ extern NSNotificationName const RoomCallTileTappedNotification;
  Notification string used to indicate group call tile tapped in a room. Notification object will be the `RoomBubbleCellData` object.
  */
 extern NSNotificationName const RoomGroupCallTileTappedNotification;
+/**
+ Duration for the composer resize animation.
+ */
+extern NSTimeInterval const kResizeComposerAnimationDuration;
 
 @interface RoomViewController : MXKRoomViewController
 
@@ -68,6 +72,7 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 @property (weak, nonatomic, nullable) IBOutlet UIView *inputBackgroundView;
 @property (weak, nonatomic, nullable) IBOutlet UIButton *scrollToBottomButton;
 @property (weak, nonatomic, nullable) IBOutlet BadgeLabel *scrollToBottomBadgeLabel;
+@property (nonatomic, strong) IBOutlet UIView *overlayContainerView;
 
 // Remove Jitsi widget container
 @property (weak, nonatomic, nullable) IBOutlet UIView *removeJitsiWidgetContainer;
@@ -110,6 +115,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 
 // The voice broadcast service
 @property (nonatomic, nullable) VoiceBroadcastService *voiceBroadcastService;
+
+@property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray<NSLayoutConstraint*> *toolbarContainerConstraints;
+
+@property (strong, nonatomic, nullable) UIView* maximisedToolbarDimmingView;
+
 
 /**
  Retrieve the live data source in cases where the timeline is not live.

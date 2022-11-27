@@ -45,9 +45,11 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
     }
     
     func verificationState(for deviceInfo: MXDeviceInfo?) -> UserSessionInfo.VerificationState {
-        guard let deviceInfo = deviceInfo else { return .unknown }
+        guard let deviceInfo = deviceInfo else {
+            return .permanentlyUnverified
+        }
 
-        guard session.crypto?.crossSigning?.canCrossSign == true else {
+        guard session.crypto?.crossSigning.canCrossSign == true else {
             return deviceInfo.deviceId == session.myDeviceId ? .unverified : .unknown
         }
         

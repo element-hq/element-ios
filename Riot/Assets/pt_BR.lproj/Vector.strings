@@ -1688,7 +1688,7 @@
 "invite_user" = "Convidar Usuária(o) matrix";
 "reset_to_default" = "Resettar para default";
 "resend_message" = "Reenviar a mensagem";
-"select_all" = "Selecionar Todas";
+"select_all" = "Selecionar Todas(os)";
 "cancel_upload" = "Cancelar Upload";
 "cancel_download" = "Cancelar Download";
 "show_details" = "Mostrar Detalhes";
@@ -2605,7 +2605,7 @@
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Por favor esteja ciente que nomes de sessões também são visíveis a pessoas com quem você se comunica. %@";
 "manage_session_name_hint" = "Nomes de sessões personalizados podem ajudar você a reconhecer seus dispositivos mais facilmente.";
-"settings_labs_enable_wysiwyg_composer" = "Experimente o editor de texto rico (modo de texto puro vindo em breve)";
+"settings_labs_enable_wysiwyg_composer" = "Experimente o editor de texto rico";
 "wysiwyg_composer_start_action_voice_broadcast" = "Broadcast de voz";
 "voice_broadcast_playback_loading_error" = "Incapaz de tocar este broadcast de voz.";
 "voice_broadcast_already_in_progress_message" = "Você já está gravando um broadcast de voz. Por favor termine seu broadcast de voz atual para começar um novo.";
@@ -2615,3 +2615,12 @@
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Não dá para começar um novo broadcast de voz";
 "settings_labs_enable_voice_broadcast" = "Broadcast de voz (sob desenvolvimento ativo)";
+"deselect_all" = "Desselecionar Todas(os)";
+"user_other_session_menu_select_sessions" = "Selecionar sessões";
+"user_other_session_selected_count" = "%@ selecionadas";
+"user_other_session_menu_sign_out_sessions" = "Fazer signout de %@ sessões";
+"user_sessions_hide_location_info" = "Esconder endereço de IP";
+"user_sessions_show_location_info" = "Mostrar endereço de IP";
+"manage_session_sign_out_other_sessions" = "Fazer signout de todas as outras sessões";
+"voice_broadcast_tile" = "Broadcast de voz";
+"voice_broadcast_live" = "Ao vivo";

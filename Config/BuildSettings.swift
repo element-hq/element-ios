@@ -409,7 +409,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Voice Broadcast
     static let voiceBroadcastChunkLength: Int = 120
-    static let voiceBroadcastMaxLength: UInt64 = 144000
+    static let voiceBroadcastMaxLength: UInt = 14400 // 240min.
 
     // MARK: - MXKAppSettings
     static let enableBotCreation: Bool = false
@@ -437,4 +437,7 @@ final class BuildSettings: NSObject {
     static let qrLoginEnableDisplayingQRs = false
     
     static let rendezvousServerBaseURL = URL(string: "https://rendezvous.lab.element.dev/")!
+    
+    // MARK: - Alerts
+    static let showUnverifiedSessionsAlert = true
 }

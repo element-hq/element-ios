@@ -395,7 +395,7 @@ const CGFloat kTypingCellHeight = 24;
     id<RoomTimelineCellDecorator> cellDecorator = [RoomTimelineConfiguration shared].currentStyle.cellDecorator;
     
     // Finalize cell view customization here
-    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
     {
         MXKRoomBubbleTableViewCell *bubbleCell = (MXKRoomBubbleTableViewCell*)cell;
         [self resetAccessibilityForCell:bubbleCell];

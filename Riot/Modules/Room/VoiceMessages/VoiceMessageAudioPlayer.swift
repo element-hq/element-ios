@@ -61,7 +61,8 @@ class VoiceMessageAudioPlayer: NSObject {
     }
     
     var currentTime: TimeInterval {
-        return abs(CMTimeGetSeconds(audioPlayer?.currentTime() ?? .zero))
+        let currentTime = abs(CMTimeGetSeconds(audioPlayer?.currentTime() ?? .zero))
+        return currentTime.isFinite ? currentTime : .zero
     }
     
     var playerItems: [AVPlayerItem] {
@@ -70,6 +71,10 @@ class VoiceMessageAudioPlayer: NSObject {
         }
         
         return audioPlayer.items()
+    }
+    
+    var currentUrl: URL? {
+        return (audioPlayer?.currentItem?.asset as? AVURLAsset)?.url
     }
     
     private(set) var isStopped = true

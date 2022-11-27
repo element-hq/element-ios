@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "voice_broadcast_tile_mic.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
