@@ -112,14 +112,16 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         if let audioPlayer = audioPlayer {
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: resume")
             audioPlayer.play()
-        } else if voiceBroadcastAggregator.launchState == .loaded {
+        } else {
             state.playbackState = .buffering
-            let chunks = voiceBroadcastAggregator.voiceBroadcast.chunks
-            MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: restart from the beginning: \(chunks.count) chunks")
-            
-            // Reinject all the chunks we already have and play them
-            voiceBroadcastChunkQueue = Array(chunks)
-            processPendingVoiceBroadcastChunks()
+            if voiceBroadcastAggregator.launchState == .loaded {
+                let chunks = voiceBroadcastAggregator.voiceBroadcast.chunks
+                MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: restart from the beginning: \(chunks.count) chunks")
+                
+                // Reinject all the chunks we already have and play them
+                voiceBroadcastChunkQueue = Array(chunks)
+                handleVoiceBroadcastChunksProcessing()
+            }
         }
     }
     
@@ -322,7 +324,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         state.bindings.progress = Float(progress)
     }
     
-    private func handleWaitingLiveData() {
+    private func handleVoiceBroadcastChunksProcessing() {
         // Handle specifically the case where we were waiting data to start playing a live playback
         if isLivePlayback, state.playbackState == .buffering {
             // Start the playback on the latest one
@@ -339,8 +341,8 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
     }
     
     func voiceBroadcastAggregatorDidEndLoading(_ aggregator: VoiceBroadcastAggregator) {
-        if state.playbackState != .stopped {
-            handleWaitingLiveData()
+        if state.playbackState == .buffering {
+            handleVoiceBroadcastChunksProcessing()
         }
     }
     
@@ -364,7 +366,7 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
         updateDuration()
         
         if state.playbackState != .stopped {
-            handleWaitingLiveData()
+            handleVoiceBroadcastChunksProcessing()
         }
     }
 }
