@@ -77,6 +77,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         displayLink.add(to: .current, forMode: .common)
         
         self.voiceBroadcastAggregator.delegate = self
+        self.voiceBroadcastAggregator.start()
     }
     
     private func release() {
@@ -108,22 +109,19 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         displayLink.isPaused = false
         isActuallyPaused = false
         
-        if voiceBroadcastAggregator.isStarted == false {
-            // Start the streaming by fetching broadcast chunks
-            // The audio player will automatically start the playback on incoming chunks
-            MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: Start streaming")
-            state.playbackState = .buffering
-            voiceBroadcastAggregator.start()
-        } else if let audioPlayer = audioPlayer {
+        if let audioPlayer = audioPlayer {
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: resume")
             audioPlayer.play()
         } else {
-            let chunks = voiceBroadcastAggregator.voiceBroadcast.chunks
-            MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: restart from the beginning: \(chunks.count) chunks")
-            
-            // Reinject all the chunks we already have and play them
-            voiceBroadcastChunkQueue.append(contentsOf: chunks)
-            processPendingVoiceBroadcastChunks()
+            state.playbackState = .buffering
+            if voiceBroadcastAggregator.launchState == .loaded {
+                let chunks = voiceBroadcastAggregator.voiceBroadcast.chunks
+                MXLog.debug("[VoiceBroadcastPlaybackViewModel] play: restart from the beginning: \(chunks.count) chunks")
+                
+                // Reinject all the chunks we already have and play them
+                voiceBroadcastChunkQueue = Array(chunks)
+                handleVoiceBroadcastChunksProcessing()
+            }
         }
     }
     
@@ -195,7 +193,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             return
         }
         
-        if (isActuallyPaused == false && state.playbackState == .paused) || state.playbackState == .stopped {
+        if (isActuallyPaused == false && state.playbackState == .paused) {
             state.playbackState = .buffering
         }
         
@@ -325,6 +323,16 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         
         state.bindings.progress = Float(progress)
     }
+    
+    private func handleVoiceBroadcastChunksProcessing() {
+        // Handle specifically the case where we were waiting data to start playing a live playback
+        if isLivePlayback, state.playbackState == .buffering {
+            // Start the playback on the latest one
+            processPendingVoiceBroadcastChunksForLivePlayback()
+        } else {
+            processPendingVoiceBroadcastChunks()
+        }
+    }
 }
 
 // MARK: VoiceBroadcastAggregatorDelegate
@@ -354,12 +362,8 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
         
         updateDuration()
         
-        // Handle specifically the case where we were waiting data to start playing a live playback
-        if isLivePlayback, state.playbackState == .buffering {
-            // Start the playback on the latest one
-            processPendingVoiceBroadcastChunksForLivePlayback()
-        } else {
-            processPendingVoiceBroadcastChunks()
+        if state.playbackState != .stopped {
+            handleVoiceBroadcastChunksProcessing()
         }
     }
 }
