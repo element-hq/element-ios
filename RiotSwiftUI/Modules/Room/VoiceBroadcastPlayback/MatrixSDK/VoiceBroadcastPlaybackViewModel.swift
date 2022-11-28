@@ -324,7 +324,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     
     private func handleWaitingLiveData() {
         // Handle specifically the case where we were waiting data to start playing a live playback
-        if isLivePlayback(), state.playbackState == .buffering {
+        if isLivePlayback, state.playbackState == .buffering {
             // Start the playback on the latest one
             processPendingVoiceBroadcastChunksForLivePlayback()
         } else {
