@@ -521,15 +521,17 @@ class AllChatsViewController: HomeViewController {
     }()
     
     @objc private func updateBadgeButton() {
-        guard isViewLoaded else {
+        guard isViewLoaded, let session = mainSession else {
             return
         }
         
-        let notificationState = mainSession?.spaceService.notificationCounter.notificationState(forAllSpacesExcept: nil)
-        spacesButton.badgeText = notificationState.map { "\($0.allCount)" }
-        spacesButton.badgeBackgroundColor = notificationState.map {
-            $0.allHighlightCount > 0 ? theme.noticeColor : theme.noticeSecondaryColor
-        } ?? .clear
+        let notificationCount = session.spaceService.missedNotificationsCount
+        let hasSpaceInvite = session.spaceService.hasSpaceInvite
+        let isBadgeHighlighed = session.spaceService.hasHighlightNotification || hasSpaceInvite
+        let badgeValue = (notificationCount == 0 && hasSpaceInvite) ? "!" : String(notificationCount)
+        
+        spacesButton.badgeText = badgeValue
+        spacesButton.badgeBackgroundColor = isBadgeHighlighed ? theme.noticeColor : theme.noticeSecondaryColor
     }
     
     private func updateToolbar(with menu: UIMenu) {
@@ -1097,5 +1099,24 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
         
         // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
         self.refreshCurrentSelectedCell(false)
+    }
+}
+
+private extension MXSpaceService {
+    var hasSpaceInvite: Bool {
+        spaceSummaries.contains(where: { $0.isJoined == false })
+    }
+    
+    var missedNotificationsCount: UInt {
+        let notificationState = notificationCounter.homeNotificationState
+        let groupNotifications = notificationState.groupMissedDiscussionsCount
+        let directNotifications = notificationState.directMissedDiscussionsCount
+        
+        // `notificationState.allCount` returns twice the messages for favourite rooms. Fixing it here.
+        return groupNotifications + directNotifications
+    }
+    
+    var hasHighlightNotification: Bool {
+        notificationCounter.homeNotificationState.allHighlightCount > 0
     }
 }
