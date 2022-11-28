@@ -9155,6 +9155,10 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastTile: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_tile") 
   }
+  /// %@ left
+  public static func voiceBroadcastTimeLeft(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "voice_broadcast_time_left", p1)
+  }
   /// Can't start a new voice broadcast
   public static var voiceBroadcastUnauthorizedTitle: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_unauthorized_title") 

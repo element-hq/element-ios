@@ -47,7 +47,7 @@ import Foundation
         let parameters = VoiceBroadcastPlaybackCoordinatorParameters(session: session,
                                                                      room: room,
                                                                      voiceBroadcastStartEvent: event,
-                                                                     voiceBroadcastState: VoiceBroadcastInfo.State(rawValue: voiceBroadcastState) ?? VoiceBroadcastInfo.State.stopped,
+                                                                     voiceBroadcastState: VoiceBroadcastInfoState(rawValue: voiceBroadcastState) ?? VoiceBroadcastInfoState.stopped,
                                                                      senderDisplayName: senderDisplayName)
         guard let coordinator = try? VoiceBroadcastPlaybackCoordinator(parameters: parameters) else {
             return nil

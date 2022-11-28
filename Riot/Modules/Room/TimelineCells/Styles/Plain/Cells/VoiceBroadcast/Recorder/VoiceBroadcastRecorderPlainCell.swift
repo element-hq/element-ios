@@ -28,7 +28,7 @@ class VoiceBroadcastRecorderPlainCell: SizableBaseRoomCell, RoomCellReactionsDis
               let bubbleData = cellData as? RoomBubbleCellData,
               let event = bubbleData.events.last,
               let voiceBroadcastContent = VoiceBroadcastInfo(fromJSON: event.content),
-              voiceBroadcastContent.state == VoiceBroadcastInfo.State.started.rawValue,
+              voiceBroadcastContent.state == VoiceBroadcastInfoState.started.rawValue,
               let view = VoiceBroadcastRecorderProvider.shared.buildVoiceBroadcastRecorderViewForEvent(event, senderDisplayName: bubbleData.senderDisplayName) else {
             return
         }

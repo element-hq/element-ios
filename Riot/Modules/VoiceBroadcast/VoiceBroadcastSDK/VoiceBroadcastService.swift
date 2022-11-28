@@ -25,13 +25,13 @@ public class VoiceBroadcastService: NSObject {
     
     public let room: MXRoom
     public private(set) var voiceBroadcastId: String?
-    public private(set) var state: VoiceBroadcastInfo.State
+    public private(set) var state: VoiceBroadcastInfoState
     // Mechanism to process one call of sendVoiceBroadcastInfo() at a time
     private let asyncTaskQueue: MXAsyncTaskQueue
     
     // MARK: - Setup
     
-    public init(room: MXRoom, state: VoiceBroadcastInfo.State) {
+    public init(room: MXRoom, state: VoiceBroadcastInfoState) {
         self.room = room
         self.state = state
         self.asyncTaskQueue = MXAsyncTaskQueue(label: "VoiceBroadcastServiceQueueEventSerialQueue-" + MXTools.generateSecret())
@@ -47,7 +47,7 @@ public class VoiceBroadcastService: NSObject {
     /// - Parameters:
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     func startVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) {
-        sendVoiceBroadcastInfo(state: VoiceBroadcastInfo.State.started) { [weak self] response in
+        sendVoiceBroadcastInfo(state: VoiceBroadcastInfoState.started) { [weak self] response in
             guard let self = self else { return }
             
             switch response {
@@ -64,21 +64,21 @@ public class VoiceBroadcastService: NSObject {
     /// - Parameters:
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     func pauseVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) {
-        sendVoiceBroadcastInfo(state: VoiceBroadcastInfo.State.paused, completion: completion)
+        sendVoiceBroadcastInfo(state: VoiceBroadcastInfoState.paused, completion: completion)
     }
     
     /// resume a voice broadcast.
     /// - Parameters:
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     func resumeVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) {
-        sendVoiceBroadcastInfo(state: VoiceBroadcastInfo.State.resumed, completion: completion)
+        sendVoiceBroadcastInfo(state: VoiceBroadcastInfoState.resumed, completion: completion)
     }
     
     /// stop a voice broadcast info.
     /// - Parameters:
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     func stopVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) {
-        sendVoiceBroadcastInfo(state: VoiceBroadcastInfo.State.stopped, completion: completion)
+        sendVoiceBroadcastInfo(state: VoiceBroadcastInfoState.stopped, completion: completion)
     }
     
     func getState() -> String {
@@ -121,7 +121,7 @@ public class VoiceBroadcastService: NSObject {
     
     // MARK: - Private
     
-    private func allowedStates(from state: VoiceBroadcastInfo.State) -> [VoiceBroadcastInfo.State] {
+    private func allowedStates(from state: VoiceBroadcastInfoState) -> [VoiceBroadcastInfoState] {
         switch state {
         case .started:
             return [.paused, .stopped]
@@ -134,7 +134,7 @@ public class VoiceBroadcastService: NSObject {
         }
     }
     
-    private func sendVoiceBroadcastInfo(state: VoiceBroadcastInfo.State, completion: @escaping (MXResponse<String?>) -> Void) {
+    private func sendVoiceBroadcastInfo(state: VoiceBroadcastInfoState, completion: @escaping (MXResponse<String?>) -> Void) {
         guard let userId = self.room.mxSession.myUserId else {
             completion(.failure(VoiceBroadcastServiceError.missingUserId))
             return
@@ -156,7 +156,7 @@ public class VoiceBroadcastService: NSObject {
             
             voiceBroadcastInfo.state = state.rawValue
             
-            if state != VoiceBroadcastInfo.State.started {
+            if state != VoiceBroadcastInfoState.started {
                 guard let voiceBroadcastId = self.voiceBroadcastId else {
                     completion(.failure(VoiceBroadcastServiceError.notStarted))
                     taskCompleted()
