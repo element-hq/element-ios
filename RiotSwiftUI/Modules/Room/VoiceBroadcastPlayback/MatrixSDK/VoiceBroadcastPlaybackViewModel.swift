@@ -383,7 +383,8 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
         
         updateDuration()
         
-        if state.playbackState != .stopped, (state.playbackState != .paused && isActuallyPaused == true) {            handleVoiceBroadcastChunksProcessing()
+        if state.playbackState != .stopped, (state.playbackState != .paused && isActuallyPaused == true) {
+            handleVoiceBroadcastChunksProcessing()
         }
     }
 }
