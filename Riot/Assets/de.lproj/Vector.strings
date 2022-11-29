@@ -2669,3 +2669,11 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Du hast nicht verifizierte Sitzungen";
+"launch_loading_processing_response" = "Verarbeite Daten\n%@ % %";
+"launch_loading_server_syncing_nth_attempt" = "Synchronisiere mit dem Server\n(%@ Versuch)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Synchronisiere mit dem Server";
+"user_other_session_permanently_unverified_additional_info" = "Diese Sitzung kann nicht verifiziert werden, da sie keine Verschlüsselung unterstützt.";
+"voice_broadcast_time_left" = "%@ übrig";
