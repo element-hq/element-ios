@@ -60,7 +60,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
         }
         
         selectedAnswerIdentifiersSubject
-            .debounce(for: 1.0, scheduler: RunLoop.main)
+            .debounce(for: 2.0, scheduler: RunLoop.main)
             .removeDuplicates()
             .sink { [weak self] identifiers in
                 guard let self = self else { return }
