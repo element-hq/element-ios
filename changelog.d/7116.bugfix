@@ -1,1 +1,1 @@
-Rich Text Editor: Fixed the bug that prevent the drag to dismiss the fullscreen mode when there is a lot of text.
+Rich Text Editor: Fixed a bug that prevented the drag gesture to dismiss the fullscreen mode when there is a lot of text.
