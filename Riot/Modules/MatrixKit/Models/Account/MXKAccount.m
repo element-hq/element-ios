@@ -1677,6 +1677,14 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                     NSString *myUserId = self.mxSession.myUser.userId;
                     [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
                 }
+                
+                // If we encounter a fatal sync issue, we do not re-attempt sync as we cannot recover
+                // from this problem, and the user needs to restart / re-install the app
+                NSSet *fatalSyncErrors = [NSSet setWithArray:@[MXCryptoErrorDomain]];
+                if ([fatalSyncErrors containsObject:error.domain])
+                {
+                    return;
+                }
 
                 // Check if it is a network connectivity issue
                 AFNetworkReachabilityManager *networkReachabilityManager = [AFNetworkReachabilityManager sharedManager];
