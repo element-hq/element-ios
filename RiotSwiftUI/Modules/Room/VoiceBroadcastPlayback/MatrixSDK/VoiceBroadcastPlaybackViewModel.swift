@@ -219,7 +219,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             }
             
             self.isProcessingVoiceBroadcastChunk = false
-            if self.reloadVoiceBroadcastChunkQueue, self.seekToChunkTime != nil {
+            if self.reloadVoiceBroadcastChunkQueue {
                 self.reloadVoiceBroadcastChunkQueue = false
                 self.processNextVoiceBroadcastChunk()
                 return
@@ -298,7 +298,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         } else {
             // Flush the chunks queue and the current audio player playlist
             voiceBroadcastChunkQueue = []
-            reloadVoiceBroadcastChunkQueue = true
+            reloadVoiceBroadcastChunkQueue = isProcessingVoiceBroadcastChunk
             audioPlayer?.removeAllPlayerItems()
                         
             let chunks = reorderVoiceBroadcastChunks(chunks: Array(voiceBroadcastAggregator.voiceBroadcast.chunks))
