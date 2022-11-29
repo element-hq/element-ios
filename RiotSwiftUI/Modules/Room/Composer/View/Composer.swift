@@ -214,10 +214,12 @@ struct Composer: View {
             HStack(alignment: .bottom, spacing: 0) {
                 if !viewModel.viewState.textFormattingEnabled {
                     sendMediaButton
+                        .padding(.bottom, 1)
                 }
                 composerContainer
                 if !viewModel.viewState.textFormattingEnabled {
                     sendButton
+                        .padding(.bottom, 1)
                 }
             }
             if viewModel.viewState.textFormattingEnabled {

@@ -217,9 +217,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             keyboardHeight = keyboardRectangle.height
             UIView.performWithoutAnimation {
                 if self.isMaximised {
-                    self.voiceMessageBottomConstraint?.constant = keyboardHeight - (window?.safeAreaInsets.bottom ?? 0) + 4
+                    self.voiceMessageBottomConstraint?.constant = keyboardHeight - (window?.safeAreaInsets.bottom ?? 0) + 2
                 } else {
-                    self.voiceMessageBottomConstraint?.constant = 4
+                    self.voiceMessageBottomConstraint?.constant = 2
                 }
                 self.layoutIfNeeded()
             }
@@ -229,7 +229,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     @objc private func keyboardWillHide(_ notification: Notification) {
         if self.isMaximised {
             UIView.performWithoutAnimation {
-                self.voiceMessageBottomConstraint?.constant = 4
+                self.voiceMessageBottomConstraint?.constant = 2
                 self.layoutIfNeeded()
             }
         }
@@ -361,7 +361,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.deactivate(voiceMessageToolbarView.containersTopConstraints)
             addSubview(voiceMessageToolbarView)
-            let bottomConstraint = hostingViewController.view.bottomAnchor.constraint(equalTo: voiceMessageToolbarView.bottomAnchor, constant: 4)
+            let bottomConstraint = hostingViewController.view.bottomAnchor.constraint(equalTo: voiceMessageToolbarView.bottomAnchor, constant: 2)
             voiceMessageBottomConstraint = bottomConstraint
             NSLayoutConstraint.activate(
                 [
