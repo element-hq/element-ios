@@ -39,6 +39,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     private var isPlaybackInitialized: Bool = false
     private var acceptProgressUpdates: Bool = true
     private var isActuallyPaused: Bool = false
+    private var isProcessingVoiceBroadcastChunk: Bool = false
+    private var reloadVoiceBroadcastChunkQueue: Bool = false
+    private var seekToChunkTime: TimeInterval?
     
     private var isPlayingLastChunk: Bool {
         let chunks = reorderVoiceBroadcastChunks(chunks: Array(voiceBroadcastAggregator.voiceBroadcast.chunks))
@@ -162,9 +165,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     // MARK: - Voice broadcast chunks playback
     
     /// Start the playback from the beginning or push more chunks to it
-    private func processPendingVoiceBroadcastChunks(_ time: TimeInterval? = nil) {
+    private func processPendingVoiceBroadcastChunks() {
         reorderPendingVoiceBroadcastChunks()
-        processNextVoiceBroadcastChunk(time)
+        processNextVoiceBroadcastChunk()
     }
     
     /// Start the playback from the last known chunk
@@ -185,7 +188,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         chunks.sorted(by: {$0.sequence < $1.sequence})
     }
     
-    private func processNextVoiceBroadcastChunk(_ time: TimeInterval? = nil) {
+    private func processNextVoiceBroadcastChunk() {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: \(voiceBroadcastChunkQueue.count) chunks remaining")
         
         guard voiceBroadcastChunkQueue.count > 0 else {
@@ -196,6 +199,13 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         if (isActuallyPaused == false && state.playbackState == .paused) {
             state.playbackState = .buffering
         }
+        
+        guard !isProcessingVoiceBroadcastChunk else {
+            // Chunks caching is already in progress
+            return
+        }
+
+        isProcessingVoiceBroadcastChunk = true
         
         // TODO: Control the download rate to avoid to download all chunk in mass
         // We could synchronise it with the number of chunks in the player playlist (audioPlayer.playerItems)
@@ -208,9 +218,12 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                 return
             }
             
-            // TODO: Make sure there has no new incoming chunk that should be before this attachment
-            // Be careful that this new chunk is not older than the chunk being played by the audio player. Else
-            // we will get an unexecpted rewind.
+            self.isProcessingVoiceBroadcastChunk = false
+            if self.reloadVoiceBroadcastChunkQueue, self.seekToChunkTime != nil {
+                self.reloadVoiceBroadcastChunkQueue = false
+                self.processNextVoiceBroadcastChunk()
+                return
+            }
             
             switch result {
             case .success(let result):
@@ -224,8 +237,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     // Append the chunk to the current playlist
                     audioPlayer.addContentFromURL(result.url)
                     
-                    if let time = time {
+                    if let time = self.seekToChunkTime {
                         audioPlayer.seekToTime(time)
+                        self.seekToChunkTime = nil
                     }
                     
                     // Resume the player. Needed after a buffering
@@ -247,8 +261,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     audioPlayer.loadContentFromURL(result.url, displayName: chunk.attachment.originalFileName)
                     self.displayLink.isPaused = false
                     audioPlayer.play()
-                    if let time = time {
+                    if let time = self.seekToChunkTime {
                         audioPlayer.seekToTime(time)
+                        self.seekToChunkTime = nil
                     }
                     self.audioPlayer = audioPlayer
                 }
@@ -281,7 +296,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             audioPlayer?.pause()
             displayLink.isPaused = true
         } else {
-            // Flush the current audio player playlist
+            // Flush the chunks queue and the current audio player playlist
+            voiceBroadcastChunkQueue = []
+            reloadVoiceBroadcastChunkQueue = true
             audioPlayer?.removeAllPlayerItems()
                         
             let chunks = reorderVoiceBroadcastChunks(chunks: Array(voiceBroadcastAggregator.voiceBroadcast.chunks))
@@ -299,7 +316,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] didSliderChanged: restart to time: \(state.bindings.progress) milliseconds")
             let time = state.bindings.progress - state.playingState.duration + Float(chunksDuration)
-            processPendingVoiceBroadcastChunks(TimeInterval(time / 1000))
+            seekToChunkTime = TimeInterval(time / 1000)
+            processPendingVoiceBroadcastChunks()
         }
     }
     
