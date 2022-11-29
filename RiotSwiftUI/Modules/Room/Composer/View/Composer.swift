@@ -43,11 +43,15 @@ struct Composer: View {
     }
     
     private var cornerRadius: CGFloat {
-        if viewModel.viewState.shouldDisplayContext || wysiwygViewModel.idealHeight > wysiwygViewModel.minHeight {
+        if shouldFixRoundCorner {
             return 14
         } else {
             return borderHeight / 2
         }
+    }
+    
+    private var shouldFixRoundCorner: Bool {
+        viewModel.viewState.shouldDisplayContext || wysiwygViewModel.idealHeight > wysiwygViewModel.minHeight
     }
     
     private var actionButtonAccessibilityIdentifier: String {
@@ -103,7 +107,7 @@ struct Composer: View {
                 .padding(.top, 8)
                 .padding(.horizontal, horizontalPadding)
             }
-            HStack(alignment: .top, spacing: 0) {
+            HStack(alignment: shouldFixRoundCorner ? .top : .center, spacing: 0) {
                 WysiwygComposerView(
                     focused: $viewModel.focused,
                     viewModel: wysiwygViewModel
