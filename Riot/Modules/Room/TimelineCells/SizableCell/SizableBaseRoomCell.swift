@@ -65,6 +65,12 @@ class SizableBaseRoomCell: BaseRoomCell, SizableBaseRoomCellType {
         
         return self.height(for: roomBubbleCellData, fitting: maxWidth)
     }
+    
+    override func prepareForReuse() {
+        cleanContentVC()
+
+        super.prepareForReuse()
+    }
         
     // MARK - SizableBaseRoomCellType
     
@@ -173,10 +179,21 @@ class SizableBaseRoomCell: BaseRoomCell, SizableBaseRoomCellType {
         }
         
         return height
-    }         
-
+    }
+    
+    private func cleanContentVC() {
+        contentVC?.removeFromParent()
+        contentVC?.view.removeFromSuperview()
+        contentVC?.didMove(toParent: nil)
+        contentVC = nil
+    }
+    
+    // MARK: - Public
+    
     func addContentViewController(_ controller: UIViewController, on contentView: UIView) {
         controller.view.invalidateIntrinsicContentSize()
+        
+        cleanContentVC()
 
         let parent = vc_parentViewController
         parent?.addChild(controller)
@@ -184,14 +201,5 @@ class SizableBaseRoomCell: BaseRoomCell, SizableBaseRoomCellType {
         controller.didMove(toParent: parent)
 
         contentVC = controller
-    }
-
-    override func prepareForReuse() {
-        contentVC?.removeFromParent()
-        contentVC?.view.removeFromSuperview()
-        contentVC?.didMove(toParent: nil)
-        contentVC = nil
-
-        super.prepareForReuse()
     }
 }

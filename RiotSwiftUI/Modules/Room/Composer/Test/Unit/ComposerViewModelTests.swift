@@ -23,8 +23,13 @@ final class ComposerViewModelTests: XCTestCase {
     var context: ComposerViewModel.Context!
     
     override func setUpWithError() throws {
-        viewModel = ComposerViewModel(initialViewState: ComposerViewState(textFormattingEnabled: true,
-                                                                          bindings: ComposerBindings(focused: false)))
+        viewModel = ComposerViewModel(
+            initialViewState: ComposerViewState(
+                textFormattingEnabled: true,
+                isLandscapePhone: false,
+                bindings: ComposerBindings(focused: false)
+            )
+        )
         context = viewModel.context
     }
     

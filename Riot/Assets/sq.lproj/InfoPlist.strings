@@ -1,8 +1,8 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "Kamera përdoret për të bërë foto dhe regjistruar video, dhe për të bërë thirrje video.";
-"NSPhotoLibraryUsageDescription" = "Fototeka përdoret për të dërguar foto dhe video.";
+"NSCameraUsageDescription" = "Kamera përdoret për të bërë thirrje video, ose për të bërë dhe ngarkuar diku foto dhe video.";
+"NSPhotoLibraryUsageDescription" = "Që të ngarkohen foto dhe video që nga mediateka juaj, lejoni hyrje te fotot.";
 "NSMicrophoneUsageDescription" = "Element-it i duhet të përdorë mikrofonin tuaj për të bërë dhe marrë thirrje, për të regjistruar video, dhe për të regjistruar mesazhe zanorë.";
-"NSContactsUsageDescription" = "Element-i do të shfaqë kontaktet tuaja, që kështu të mund t’i ftoni për të biseduar.";
+"NSContactsUsageDescription" = "Do t’i jepen shërbyesit tuaj të identiteteve, për ta ndihmuar të gjejë kontakte tuajt në Matrix.";
 "NSCalendarsUsageDescription" = "Shihini te aplikacioni takimet tuaja të planifikuara.";
 "NSFaceIDUsageDescription" = "Face ID përdoret që të hyni në aplikacionin tuaj.";
 "NSLocationWhenInUseUsageDescription" = "Kur ndani vendndodhjen tuaj me persona, Element-i ka nevojë për hyrje në të, që t’u trgojë atyre një hartë.";

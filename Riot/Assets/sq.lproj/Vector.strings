@@ -2552,7 +2552,7 @@
 "all_chats_empty_unreads_placeholder_message" = "Ky është vendi ku do të shfaqen mesazhet tuaj të palexuar, kur të ketë të tillë.";
 "all_chats_empty_view_information" = "Aplikacioni “all-in-one” i fjalosjeve të siguruara, për ekipe, shokë dhe ente. Që t’ia filloni, krijoni një fjalosje, ose hyni në një dhomë ekzistuese.";
 "all_chats_empty_space_information" = "Hapësirat janë një mënyrë e re për të grupuar dhoma dhe persona. Shtoni një dhomë ekzistuese, ose krijoni një të re, duke përdorur butonin poshtë djathtas.";
-"all_chats_empty_view_title" = "%s\nduket paksa si i zbrazët.";
+"all_chats_empty_view_title" = "%@\nduket paksa si i zbrazët.";
 "all_chats_all_filter" = "Krejt";
 "all_chats_edit_layout_alphabetical_order" = "Renditi si A-Z";
 "all_chats_edit_layout_activity_order" = "Renditi sipas veprimtarish";

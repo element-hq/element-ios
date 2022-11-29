@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -35,6 +35,10 @@
                 <outlet property="userSuggestionContainerHeightConstraint" destination="1Cd-cT-gOr" id="au5-3q-r54"/>
                 <outlet property="userSuggestionContainerView" destination="oni-F4-X1U" id="0js-Ji-8Mm"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ieV-u7-rXU"/>
+                <outletCollection property="toolbarContainerConstraints" destination="T1Y-r9-bYV" id="wax-9P-KGn"/>
+                <outletCollection property="toolbarContainerConstraints" destination="pRw-S0-6WL" id="q4S-0g-sqQ"/>
+                <outletCollection property="toolbarContainerConstraints" destination="QO8-nF-xys" id="aQe-20-4Pq"/>
+                <outletCollection property="toolbarContainerConstraints" destination="acJ-g8-R7x" id="uEo-Ez-seV"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

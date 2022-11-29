@@ -34,8 +34,8 @@ struct FormatItem {
 enum FormatType {
     case bold
     case italic
-    case strikethrough
     case underline
+    case strikethrough
 }
 
 extension FormatType: CaseIterable, Identifiable {
