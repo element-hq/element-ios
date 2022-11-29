@@ -2858,3 +2858,11 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Máte neoverené relácie";
+"user_other_session_permanently_unverified_additional_info" = "Túto reláciu nemožno overiť, pretože nepodporuje šifrovanie.";
+"voice_broadcast_time_left" = "%@ ostáva";
+"launch_loading_processing_response" = "Spracovanie údajov\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Synchronizácia so serverom\n(%@ pokus)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Synchronizácia so serverom";
