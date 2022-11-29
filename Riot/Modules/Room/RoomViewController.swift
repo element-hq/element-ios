@@ -169,11 +169,12 @@ extension RoomViewController {
                 return
             }
             var originalRect = roomInputToolbarContainer.convert(roomInputToolbarContainer.frame, to: view)
-            var textView: UITextView?
+            var optionalTextView: UITextView?
             if wysiwygInputToolbar.isFocused {
-                textView = UITextView()
-                self.view.window?.addSubview(textView!)
-                textView?.becomeFirstResponder()
+                let textView = UITextView()
+                optionalTextView = textView
+                self.view.window?.addSubview(textView)
+                optionalTextView?.becomeFirstResponder()
                 originalRect = wysiwygInputToolbar.convert(wysiwygInputToolbar.frame, to: view)
             }
             wysiwygInputToolbar.showKeyboard()
@@ -203,14 +204,15 @@ extension RoomViewController {
             }
             let panGesture = UIPanGestureRecognizer(target: self, action: #selector(didPanRoomToolbarContainer(_ :)))
             roomInputToolbarContainer.addGestureRecognizer(panGesture)
-            textView?.removeFromSuperview()
+            optionalTextView?.removeFromSuperview()
         } else {
             let originalRect = wysiwygInputToolbar.convert(wysiwygInputToolbar.frame, to: view)
-            var textView: UITextView?
+            var optionalTextView: UITextView?
             if wysiwygInputToolbar.isFocused {
-                textView = UITextView()
-                self.view.window?.addSubview(textView!)
-                textView?.becomeFirstResponder()
+                let textView = UITextView()
+                optionalTextView = textView
+                self.view.window?.addSubview(textView)
+                optionalTextView?.becomeFirstResponder()
                 wysiwygInputToolbar.showKeyboard()
             }
             self.roomInputToolbarContainer.removeFromSuperview()
@@ -224,7 +226,7 @@ extension RoomViewController {
                 self.view.layoutIfNeeded()
             }
             roomInputToolbarContainer.gestureRecognizers?.removeAll()
-            textView?.removeFromSuperview()
+            optionalTextView?.removeFromSuperview()
         }
     }
     
@@ -249,23 +251,25 @@ private extension RoomViewController {
         guard let wysiwygInputToolbar = wysiwygInputToolbar else { return }
         switch sender.state {
         case .began:
-            break
+            wysiwygTranslation = wysiwygInputToolbar.maxExpandedHeight
         case .changed:
-            let translation = sender.translation(in: view)
+            let translation = sender.translation(in: view.window)
             let translatedValue = wysiwygInputToolbar.maxExpandedHeight - translation.y
+            wysiwygTranslation = translatedValue
             guard translatedValue <= wysiwygInputToolbar.maxExpandedHeight, translatedValue >= wysiwygInputToolbar.compressedHeight else { return }
             wysiwygInputToolbar.idealHeight = translatedValue
         case .ended:
-            if wysiwygInputToolbar.idealHeight <= wysiwygInputToolbar.maxCompressedHeight {
+            if wysiwygTranslation <= wysiwygInputToolbar.maxCompressedHeight {
                 wysiwygInputToolbar.minimise()
             } else {
+                wysiwygTranslation = wysiwygInputToolbar.maxExpandedHeight
                 wysiwygInputToolbar.idealHeight = wysiwygInputToolbar.maxExpandedHeight
             }
         case .cancelled:
+            wysiwygTranslation = wysiwygInputToolbar.maxExpandedHeight
             wysiwygInputToolbar.idealHeight = wysiwygInputToolbar.maxExpandedHeight
         default:
             break
         }
     }
-
 }

@@ -120,6 +120,8 @@ extern NSTimeInterval const kResizeComposerAnimationDuration;
 
 @property (strong, nonatomic, nullable) UIView* maximisedToolbarDimmingView;
 
+@property (nonatomic) CGFloat wysiwygTranslation;
+
 
 /**
  Retrieve the live data source in cases where the timeline is not live.
