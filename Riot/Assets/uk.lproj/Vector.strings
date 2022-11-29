@@ -2495,7 +2495,7 @@
 "location_sharing_live_list_item_last_update_invalid" = "Час останнього оновлення невідомий";
 "location_sharing_live_list_item_last_update" = "Оновлено %@ тому";
 "location_sharing_live_list_item_sharing_expired" = "Надсилання завершено";
-"location_sharing_live_list_item_time_left" = "%@ виходить";
+"location_sharing_live_list_item_time_left" = "Залишилося %@";
 "location_sharing_live_viewer_title" = "Місце перебування";
 "location_sharing_live_map_callout_title" = "Поділитися місцем перебування";
 "room_access_settings_screen_upgrade_alert_note" = "Зауважте, що оновлення створить нову версію кімнати. Усі поточні повідомлення залишаться в цій архівованій кімнаті.";
@@ -2860,3 +2860,11 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "У вас є не звірені сеанси";
+"user_other_session_permanently_unverified_additional_info" = "Цей сеанс не можна звірити, оскільки він не підтримує шифрування.";
+"voice_broadcast_time_left" = "Залишилося %@";
+"launch_loading_processing_response" = "Обробка даних\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Синхронізація з сервером\n(%@ спроба)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Синхронізація з сервером";
