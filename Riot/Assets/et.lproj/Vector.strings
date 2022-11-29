@@ -2607,3 +2607,11 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Sul on verifitseerimata sessioone";
+"user_other_session_permanently_unverified_additional_info" = "Seda sessiooni ei saa verifitseerida, sest seal puudub krüptimise tugi.";
+"voice_broadcast_time_left" = "aega jäänud %@";
+"launch_loading_processing_response" = "Töötleme andmeid\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Sünkroniseerime andmeid serveriga\n(katse: %@)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Sünkroniseerimine serveriga";
