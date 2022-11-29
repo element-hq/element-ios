@@ -137,6 +137,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         
         if let audioPlayer = audioPlayer, audioPlayer.isPlaying {
             audioPlayer.pause()
+        } else {
+            state.playbackState = .paused
+            state.playingState.isLive = false
         }
     }
     
@@ -380,8 +383,7 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
         
         updateDuration()
         
-        if state.playbackState != .stopped {
-            handleVoiceBroadcastChunksProcessing()
+        if state.playbackState != .stopped, (state.playbackState != .paused && isActuallyPaused == true) {            handleVoiceBroadcastChunksProcessing()
         }
     }
 }
