@@ -34,7 +34,13 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     private var chunkFile: AVAudioFile! = nil
     private var chunkFrames: AVAudioFrameCount = 0
     private var chunkFileNumber: Int = 0
-        
+    
+    private var currentElapsedTime: UInt = 0 // Time in seconds.
+    private var currentRemainingTime: UInt { // Time in seconds.
+        BuildSettings.voiceBroadcastMaxLength - currentElapsedTime
+    }
+    private var elapsedTimeTimer: Timer?
+    
     // MARK: Public
     
     weak var serviceDelegate: VoiceBroadcastRecorderServiceDelegate?
@@ -67,12 +73,14 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             }
 
             try audioEngine.start()
+            startTimer()
 
             // Disable the sleep mode during the recording until we are able to handle it
             UIApplication.shared.isIdleTimerDisabled = true
         } catch {
             MXLog.debug("[VoiceBroadcastRecorderService] startRecordingVoiceBroadcast error", context: error)
             stopRecordingVoiceBroadcast()
+            invalidateTimer()
         }
     }
     
@@ -81,6 +89,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         audioEngine.stop()
         audioEngine.inputNode.removeTap(onBus: audioNodeBus)
         UIApplication.shared.isIdleTimerDisabled = false
+        invalidateTimer()
 
         voiceBroadcastService?.stopVoiceBroadcast(success: { [weak self] _ in
             MXLog.debug("[VoiceBroadcastRecorderService] Stopped")
@@ -110,6 +119,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     func pauseRecordingVoiceBroadcast() {
         audioEngine.pause()
         UIApplication.shared.isIdleTimerDisabled = false
+        invalidateTimer()
         
         voiceBroadcastService?.pauseVoiceBroadcast(success: { [weak self] _ in
             guard let self = self else { return }
@@ -126,6 +136,7 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     
     func resumeRecordingVoiceBroadcast() {
         try? audioEngine.start()
+        startTimer()
         
         voiceBroadcastService?.resumeVoiceBroadcast(success: { [weak self] _ in
             guard let self = self else { return }
@@ -143,18 +154,45 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     private func resetValues() {
         chunkFrames = 0
         chunkFileNumber = 0
+        currentElapsedTime = 0
     }
     
     /// Release the service
     private func tearDownVoiceBroadcastService() {
         resetValues()
         session.tearDownVoiceBroadcastService()
+        invalidateTimer()
         
         do {
             try AVAudioSession.sharedInstance().setActive(false)
         } catch {
             MXLog.error("[VoiceBroadcastRecorderService] tearDownVoiceBroadcastService error", context: error)
         }
+    }
+    
+    /// Start ElapsedTimeTimer.
+    private func startTimer() {
+        elapsedTimeTimer = Timer.scheduledTimer(timeInterval: 1.0,
+                                                target: self,
+                                                selector: #selector(updateCurrentElapsedTimeValue),
+                                                userInfo: nil,
+                                                repeats: true)
+    }
+    
+    /// Invalidate ElapsedTimeTimer.
+    private func invalidateTimer() {
+        elapsedTimeTimer?.invalidate()
+        elapsedTimeTimer = nil
+    }
+    
+    /// Update currentElapsedTime value.
+    @objc private func updateCurrentElapsedTimeValue() {
+        guard currentRemainingTime > 0 else {
+            stopRecordingVoiceBroadcast()
+            return
+        }
+        currentElapsedTime += 1
+        serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateRemainingTime: self.currentRemainingTime)
     }
     
     /// Write audio buffer to chunk file.

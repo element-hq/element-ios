@@ -79,6 +79,12 @@ struct UserSessionInfo: Identifiable {
         case unverified
         /// The session has been verified.
         case verified
+        /// A session which cannot be never verified due to lack of crypto support
+        case permanentlyUnverified
+        
+        var isUnverified: Bool {
+            self == .unverified || self == .permanentlyUnverified
+        }
     }
 }
 

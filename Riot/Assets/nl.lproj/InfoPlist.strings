@@ -16,10 +16,10 @@
 
 // Permissions usage explanations
 "NSCameraUsageDescription" = "De camera wordt gebruikt om te videobellen, of om foto's en video's te maken en te uploaden.";
-"NSPhotoLibraryUsageDescription" = "Geef toegang tot foto's om foto's en video's uit uw bibliotheek te uploaden.";
-"NSMicrophoneUsageDescription" = "Element heeft toegang nodig tot uw microfoon nodig voor oproepen, maken van video's en spraakberichten opnemen.";
-"NSContactsUsageDescription" = "Ze worden gedeeld met uw identiteitsserver om uw contacten op Matrix te vinden.";
-"NSCalendarsUsageDescription" = "Bekijk uw geplande afspraken in de app.";
-"NSFaceIDUsageDescription" = "Face ID wordt gebruikt om toegang te krijgen tot uw app.";
-"NSLocationWhenInUseUsageDescription" = "Wanneer u uw locatie deelt met mensen heeft Element toegang nodig om dit op een kaart te tonen.";
-"NSLocationAlwaysAndWhenInUseUsageDescription" = "Wanneer u locatie met mensen deelt, heeft Element toegang nodig om ze een kaart te laten zien.";
+"NSPhotoLibraryUsageDescription" = "Geef toegang tot foto's om foto's en video's uit je bibliotheek te uploaden.";
+"NSMicrophoneUsageDescription" = "Element heeft toegang nodig tot je microfoon nodig voor oproepen, maken van video's en spraakberichten opnemen.";
+"NSContactsUsageDescription" = "Ze worden gedeeld met je identiteitsserver om je contacten op Matrix te vinden.";
+"NSCalendarsUsageDescription" = "Bekijk jouw geplande afspraken in de app.";
+"NSFaceIDUsageDescription" = "Face ID wordt gebruikt om toegang te krijgen tot je app.";
+"NSLocationWhenInUseUsageDescription" = "Wanneer je jouw locatie deelt met mensen heeft Element toegang nodig om dit op een kaart te tonen.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Wanneer je jouw locatie met mensen deelt, heeft Element toegang nodig om ze een kaart te laten zien.";

@@ -30,12 +30,20 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
     // MARK: - Properties
     
     @IBOutlet private weak var animationView: ElementView!
+    @IBOutlet private weak var statusLabel: UILabel!
+    
     private var animationTimeline: Timeline_1!
+    private let numberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .ordinal
+        return formatter
+    }()
     
     // MARK: - Setup
     
-    static func instantiate() -> LaunchLoadingView {
+    static func instantiate(syncProgress: MXSessionSyncProgress?) -> LaunchLoadingView {
         let view = LaunchLoadingView.loadFromNib()
+        syncProgress?.delegate = view
         return view
     }
     
@@ -45,6 +53,8 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
         let animationTimeline = Timeline_1(view: self.animationView, duration: LaunchAnimation.duration, repeatCount: LaunchAnimation.repeatCount)
         animationTimeline.play()
         self.animationTimeline = animationTimeline
+        
+        self.statusLabel.isHidden = !MXSDKOptions.sharedInstance().enableSyncProgress
     }
     
     // MARK: - Public
@@ -52,5 +62,33 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
     func update(theme: Theme) {
         self.backgroundColor = theme.backgroundColor
         self.animationView.backgroundColor = theme.backgroundColor
+    }
+}
+
+extension LaunchLoadingView: MXSessionSyncProgressDelegate {
+    func sessionDidUpdateSyncState(_ state: MXSessionSyncState) {
+        guard MXSDKOptions.sharedInstance().enableSyncProgress else {
+            return
+        }
+        
+        // Sync may be doing a lot of heavy work on the main thread and the status text
+        // does not update reliably enough without explicitly refreshing
+        CATransaction.begin()
+        statusLabel.text = statusText(for: state)
+        CATransaction.commit()
+    }
+    
+    private func statusText(for state: MXSessionSyncState) -> String {
+        switch state {
+        case .serverSyncing(let attempts):
+            if attempts > 1, let nth = numberFormatter.string(from: NSNumber(value: attempts)) {
+                return VectorL10n.launchLoadingServerSyncingNthAttempt(nth)
+            } else {
+                return VectorL10n.launchLoadingServerSyncing
+            }
+        case .processingResponse(let progress):
+            let percent = Int(floor(progress * 100))
+            return VectorL10n.launchLoadingProcessingResponse("\(percent)")
+        }
     }
 }

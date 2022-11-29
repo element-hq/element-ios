@@ -67,7 +67,7 @@ struct UserSessionListItemViewDataFactory {
         switch sessionInfo.verificationState {
         case .verified:
             sessionStatusText = VectorL10n.userSessionVerifiedShort
-        case .unverified:
+        case .unverified, .permanentlyUnverified:
             sessionStatusText = VectorL10n.userSessionUnverifiedShort
         case .unknown:
             sessionStatusText = nil

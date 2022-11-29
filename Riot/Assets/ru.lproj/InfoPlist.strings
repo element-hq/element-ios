@@ -1,8 +1,8 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "Камера используется для съемки фото и видео, совершения видеозвонков.";
-"NSPhotoLibraryUsageDescription" = "Галерея используется для отправки фото и видео.";
+"NSCameraUsageDescription" = "Камера используется для совершения видеозвонков, съёмки и загрузки фотографий и видео.";
+"NSPhotoLibraryUsageDescription" = "Разрешите доступ к фото для отправки фото и видео из вашей библиотеки.";
 "NSMicrophoneUsageDescription" = "Element необходим доступ к вашему микрофону, чтобы совершать и принимать звонки, снимать видео и записывать голосовые сообщения.";
-"NSContactsUsageDescription" = "Element покажет ваши контакты, чтобы вы могли пригласить их в чат.";
+"NSContactsUsageDescription" = "Они будут переданы вашему серверу идентификации, чтобы помочь найти ваши контакты в Matrix.";
 "NSCalendarsUsageDescription" = "Просматривайте запланированные встречи в приложении.";
 "NSFaceIDUsageDescription" = "Face ID используется для доступа к вашему приложению.";
 "NSLocationWhenInUseUsageDescription" = "Когда вы делитесь с людьми своим местоположением, Element необходим доступ, чтобы показать им карту.";

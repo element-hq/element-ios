@@ -409,7 +409,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Voice Broadcast
     static let voiceBroadcastChunkLength: Int = 120
-    static let voiceBroadcastMaxLength: UInt64 = 144000
+    static let voiceBroadcastMaxLength: UInt = 14400 // 240min.
 
     // MARK: - MXKAppSettings
     static let enableBotCreation: Bool = false

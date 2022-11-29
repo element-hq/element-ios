@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-import DSBottomSheet
 import SwiftUI
 import WysiwygComposer
 
@@ -22,7 +21,6 @@ struct Composer: View {
     // MARK: - Properties
     
     // MARK: Private
-    
     @ObservedObject private var viewModel: ComposerViewModelType.Context
     @ObservedObject private var wysiwygViewModel: WysiwygComposerViewModel
     private let resizeAnimationDuration: Double
@@ -36,9 +34,8 @@ struct Composer: View {
     
     private let horizontalPadding: CGFloat = 12
     private let borderHeight: CGFloat = 40
-    private var minTextViewHeight: CGFloat = 22
     private var verticalPadding: CGFloat {
-        (borderHeight - minTextViewHeight) / 2
+        (borderHeight - wysiwygViewModel.minHeight) / 2
     }
     
     private var topPadding: CGFloat {
@@ -46,7 +43,7 @@ struct Composer: View {
     }
     
     private var cornerRadius: CGFloat {
-        if viewModel.viewState.shouldDisplayContext || wysiwygViewModel.idealHeight > minTextViewHeight {
+        if viewModel.viewState.shouldDisplayContext || wysiwygViewModel.idealHeight > wysiwygViewModel.minHeight {
             return 14
         } else {
             return borderHeight / 2
@@ -78,7 +75,7 @@ struct Composer: View {
             )
         }
     }
-
+    
     private var composerContainer: some View {
         let rect = RoundedRectangle(cornerRadius: cornerRadius)
         return VStack(spacing: 12) {
@@ -119,7 +116,7 @@ struct Composer: View {
                         wysiwygViewModel.setup()
                     }
                 }
-                if viewModel.viewState.textFormattingEnabled {
+                if !viewModel.viewState.isMinimiseForced {
                     Button {
                         wysiwygViewModel.maximised.toggle()
                     } label: {
@@ -147,7 +144,7 @@ struct Composer: View {
             }
         }
     }
-
+    
     private var sendMediaButton: some View {
         return Button {
             showSendMediaActions()
@@ -162,7 +159,7 @@ struct Composer: View {
         .padding(.trailing, 8)
         .accessibilityLabel(VectorL10n.create)
     }
-
+    
     private var sendButton: some View {
         return Button {
             sendMessageAction(wysiwygViewModel.content)
@@ -204,6 +201,12 @@ struct Composer: View {
     
     var body: some View {
         VStack(spacing: 8) {
+            if wysiwygViewModel.maximised {
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(theme.colors.quinaryContent)
+                    .frame(width: 36, height: 5)
+                    .padding(.top, 10)
+            }
             HStack(alignment: .bottom, spacing: 0) {
                 if !viewModel.viewState.textFormattingEnabled {
                     sendMediaButton
@@ -227,6 +230,11 @@ struct Composer: View {
         }
         .padding(.horizontal, horizontalPadding)
         .padding(.bottom, 4)
+        .onChange(of: viewModel.viewState.isMinimiseForced) { newValue in
+            if wysiwygViewModel.maximised && newValue {
+                wysiwygViewModel.maximised = false
+            }
+        }
     }
 }
 

@@ -82,6 +82,24 @@ class UserSessionCardViewDataTests: XCTestCase {
         XCTAssertEqual(verificationStateVerified, .unverified)
         XCTAssertEqual(verificationStateUnverified, .unverified)
     }
+    
+    func testDeviceNotHavingCryptoSupportOnVerifiedDevice() {
+        let mxSession = MockSession(canCrossSign: true)
+        let dataProvider = UserSessionsDataProvider(session: mxSession)
+        
+        let verificationState = dataProvider.verificationState(for: nil)
+        
+        XCTAssertEqual(verificationState, .permanentlyUnverified)
+    }
+    
+    func testDeviceNotHavingCryptoSupportOnUnverifiedDevice() {
+        let mxSession = MockSession(canCrossSign: false)
+        let dataProvider = UserSessionsDataProvider(session: mxSession)
+        
+        let verificationState = dataProvider.verificationState(for: nil)
+        
+        XCTAssertEqual(verificationState, .permanentlyUnverified)
+    }
 }
 
 // MARK: Mocks

@@ -1968,6 +1968,12 @@ Tap the + to start adding people.";
 "call_transfer_error_title" = "Error";
 "call_transfer_error_message" = "Call transfer failed";
 
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Syncing with the server";
+"launch_loading_server_syncing_nth_attempt" = "Syncing with the server\n(%@ attempt)";
+"launch_loading_processing_response" = "Processing data\n%@ %%";
+
 // MARK: - Home
 
 "home_empty_view_title" = "Welcome to %@,\n%@";
@@ -2196,6 +2202,7 @@ Tap the + to start adding people.";
 "voice_broadcast_playback_loading_error" = "Unable to play this voice broadcast.";
 "voice_broadcast_live" = "Live";
 "voice_broadcast_tile" = "Voice broadcast";
+"voice_broadcast_time_left" = "%@ left";
 
 // Mark: - Version check
 
@@ -2444,6 +2451,7 @@ To enable access, tap Settings> Location and select Always";
 "user_session_unverified_additional_info" = "Verify your current session for enhanced secure messaging.";
 "user_session_verification_unknown_additional_info" = "Verify your current session to reveal this session's verification status.";
 "user_other_session_unverified_additional_info" = "Verify or sign out from this session for best security and reliability.";
+"user_other_session_permanently_unverified_additional_info" = "This session cannot be verified because it does not support encryption.";
 "user_other_session_verified_additional_info" = "This session is ready for secure messaging.";
 "user_session_push_notifications" = "Push notifications";
 "user_session_push_notifications_message" = "When turned on, this session will receive push notifications.";

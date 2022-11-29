@@ -39,6 +39,7 @@ enum MockUserSessionOverviewScreenState: MockScreenState, CaseIterable {
          .currentSession(sessionState: .verified),
          .otherSession(sessionState: .verified),
          .otherSession(sessionState: .unverified),
+         .otherSession(sessionState: .permanentlyUnverified),
          .sessionWithPushNotifications(enabled: true),
          .sessionWithPushNotifications(enabled: false),
          .remotelyTogglingPushersNotAvailable]

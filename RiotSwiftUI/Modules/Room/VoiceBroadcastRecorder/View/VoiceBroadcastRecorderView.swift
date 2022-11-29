@@ -53,6 +53,14 @@ struct VoiceBroadcastRecorderView: View {
                     } icon: {
                         Image(uiImage: Asset.Images.voiceBroadcastTileLive.image)
                     }
+                    
+                    Label {
+                        Text(viewModel.viewState.currentRecordingState.remainingTimeLabel)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .font(theme.fonts.caption1)
+                    } icon: {
+                        Image(uiImage: Asset.Images.voiceBroadcastTimeLeft.image)
+                    }
                 }.frame(maxWidth: .infinity, alignment: .leading)
                 
                 Label {

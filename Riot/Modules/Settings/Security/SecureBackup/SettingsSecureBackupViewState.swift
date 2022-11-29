@@ -35,7 +35,7 @@ enum SettingsSecureBackupViewState {
     /// - keyBackupNotTrusted: There is a backup on the homeserver but it is not trusted
     enum KeyBackupState {
         case noKeyBackup
-        case keyBackup(MXKeyBackupVersion, MXKeyBackupVersionTrust, Progress)
+        case keyBackup(MXKeyBackupVersion, MXKeyBackupVersionTrust, Progress?)
         case keyBackupNotTrusted(MXKeyBackupVersion, MXKeyBackupVersionTrust)
     }
 }

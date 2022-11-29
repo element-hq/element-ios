@@ -154,6 +154,87 @@ extension RoomViewController {
         RiotSettings.shared.enableWysiwygTextFormatting.toggle()
         wysiwygInputToolbar?.textFormattingEnabled.toggle()
     }
+    
+    @objc func didChangeMaximisedState(_ isMaximised: Bool) {
+        guard let wysiwygInputToolbar = wysiwygInputToolbar else { return }
+        if isMaximised {
+            var view: UIView!
+            // iPhone
+            if let navView = self.navigationController?.navigationController?.view {
+                view = navView
+            // iPad
+            } else if let navView = self.navigationController?.view {
+                view = navView
+            } else {
+                return
+            }
+            var originalRect = roomInputToolbarContainer.convert(roomInputToolbarContainer.frame, to: view)
+            var optionalTextView: UITextView?
+            if wysiwygInputToolbar.isFocused {
+                let textView = UITextView()
+                optionalTextView = textView
+                self.view.window?.addSubview(textView)
+                optionalTextView?.becomeFirstResponder()
+                originalRect = wysiwygInputToolbar.convert(wysiwygInputToolbar.frame, to: view)
+            }
+            wysiwygInputToolbar.showKeyboard()
+            roomInputToolbarContainer.removeFromSuperview()
+            let dimmingView = UIView()
+            dimmingView.translatesAutoresizingMaskIntoConstraints = false
+            // Same as the system dimming background color
+            dimmingView.backgroundColor = .black.withAlphaComponent(ThemeService.shared().isCurrentThemeDark() ? 0.29 : 0.12)
+            maximisedToolbarDimmingView = dimmingView
+            view.addSubview(dimmingView)
+            dimmingView.frame = view.bounds
+            NSLayoutConstraint.activate(
+                [
+                    dimmingView.topAnchor.constraint(equalTo: view.topAnchor),
+                    dimmingView.leftAnchor.constraint(equalTo: view.leftAnchor),
+                    dimmingView.rightAnchor.constraint(equalTo: view.rightAnchor),
+                    dimmingView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                ]
+            )
+            dimmingView.addSubview(self.roomInputToolbarContainer)
+            roomInputToolbarContainer.frame = originalRect
+            roomInputToolbarContainer.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+            roomInputToolbarContainer.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+            roomInputToolbarContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+            UIView.animate(withDuration: kResizeComposerAnimationDuration, delay: 0, options: [.curveEaseInOut]) {
+                view.layoutIfNeeded()
+            }
+            let panGesture = UIPanGestureRecognizer(target: self, action: #selector(didPanRoomToolbarContainer(_ :)))
+            roomInputToolbarContainer.addGestureRecognizer(panGesture)
+            optionalTextView?.removeFromSuperview()
+        } else {
+            let originalRect = wysiwygInputToolbar.convert(wysiwygInputToolbar.frame, to: view)
+            var optionalTextView: UITextView?
+            if wysiwygInputToolbar.isFocused {
+                let textView = UITextView()
+                optionalTextView = textView
+                self.view.window?.addSubview(textView)
+                optionalTextView?.becomeFirstResponder()
+                wysiwygInputToolbar.showKeyboard()
+            }
+            self.roomInputToolbarContainer.removeFromSuperview()
+            maximisedToolbarDimmingView?.removeFromSuperview()
+            maximisedToolbarDimmingView = nil
+            self.view.insertSubview(self.roomInputToolbarContainer, belowSubview: self.overlayContainerView)
+            roomInputToolbarContainer.frame = originalRect
+            NSLayoutConstraint.activate(self.toolbarContainerConstraints)
+            self.roomInputToolbarContainerBottomConstraint.isActive = true
+            UIView.animate(withDuration: kResizeComposerAnimationDuration, delay: 0, options: [.curveEaseInOut]) {
+                self.view.layoutIfNeeded()
+            }
+            roomInputToolbarContainer.gestureRecognizers?.removeAll()
+            optionalTextView?.removeFromSuperview()
+        }
+    }
+    
+    @objc func setMaximisedToolbarIsHiddenIfNeeded(_ isHidden: Bool) {
+        if wysiwygInputToolbar?.isMaximised == true {
+            roomInputToolbarContainer.superview?.isHidden = isHidden
+        }
+    }
 }
 
 // MARK: - Private Helpers
@@ -164,5 +245,31 @@ private extension RoomViewController {
     
     var wysiwygInputToolbar: WysiwygInputToolbarView? {
         return self.inputToolbarView as? WysiwygInputToolbarView
+    }
+    
+    @objc private func didPanRoomToolbarContainer(_ sender: UIPanGestureRecognizer) {
+        guard let wysiwygInputToolbar = wysiwygInputToolbar else { return }
+        switch sender.state {
+        case .began:
+            wysiwygTranslation = wysiwygInputToolbar.maxExpandedHeight
+        case .changed:
+            let translation = sender.translation(in: view.window)
+            let translatedValue = wysiwygInputToolbar.maxExpandedHeight - translation.y
+            wysiwygTranslation = translatedValue
+            guard translatedValue <= wysiwygInputToolbar.maxExpandedHeight, translatedValue >= wysiwygInputToolbar.compressedHeight else { return }
+            wysiwygInputToolbar.idealHeight = translatedValue
+        case .ended:
+            if wysiwygTranslation <= wysiwygInputToolbar.maxCompressedHeight {
+                wysiwygInputToolbar.minimise()
+            } else {
+                wysiwygTranslation = wysiwygInputToolbar.maxExpandedHeight
+                wysiwygInputToolbar.idealHeight = wysiwygInputToolbar.maxExpandedHeight
+            }
+        case .cancelled:
+            wysiwygTranslation = wysiwygInputToolbar.maxExpandedHeight
+            wysiwygInputToolbar.idealHeight = wysiwygInputToolbar.maxExpandedHeight
+        default:
+            break
+        }
     }
 }

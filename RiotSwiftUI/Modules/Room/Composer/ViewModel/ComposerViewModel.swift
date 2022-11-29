@@ -63,6 +63,19 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
         }
     }
     
+    var isLandscapePhone: Bool {
+        get {
+            state.isLandscapePhone
+        }
+        set {
+            state.isLandscapePhone = newValue
+        }
+    }
+    
+    var isFocused: Bool {
+        state.bindings.focused
+    }
+    
     // MARK: - Public
     
     override func process(viewAction: ComposerViewAction) {
@@ -76,5 +89,9 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
     
     func dismissKeyboard() {
         state.bindings.focused = false
+    }
+    
+    func showKeyboard() {
+        state.bindings.focused = true
     }
 }
