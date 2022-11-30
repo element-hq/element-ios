@@ -218,23 +218,17 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
             keyboardHeight = keyboardRectangle.height
-            UIView.performWithoutAnimation {
-                if self.isMaximised {
-                    self.voiceMessageBottomConstraint?.constant = keyboardHeight - (window?.safeAreaInsets.bottom ?? 0) + 2
-                } else {
-                    self.voiceMessageBottomConstraint?.constant = 2
-                }
-                self.layoutIfNeeded()
+            if self.isMaximised {
+                self.voiceMessageBottomConstraint?.constant = keyboardHeight - (window?.safeAreaInsets.bottom ?? 0) + 2
+            } else {
+                self.voiceMessageBottomConstraint?.constant = 2
             }
         }
     }
     
     @objc private func keyboardWillHide(_ notification: Notification) {
         if self.isMaximised {
-            UIView.performWithoutAnimation {
-                self.voiceMessageBottomConstraint?.constant = 2
-                self.layoutIfNeeded()
-            }
+            self.voiceMessageBottomConstraint?.constant = 2
         }
     }
     
@@ -280,7 +274,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             }
         )
     }
-        
+    
     private func registerThemeServiceDidChangeThemeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
     }
@@ -345,7 +339,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             updateTextViewHeight()
         }
     }
-
+    
     /// Whether text formatting is currently enabled in the composer.
     var textFormattingEnabled: Bool {
         get {
