@@ -199,10 +199,6 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             return
         }
         
-        if (isActuallyPaused == false && state.playbackState == .paused) {
-            state.playbackState = .buffering
-        }
-        
         guard !isProcessingVoiceBroadcastChunk else {
             // Chunks caching is already in progress
             return
@@ -320,6 +316,10 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] didSliderChanged: restart to time: \(state.bindings.progress) milliseconds")
             let time = state.bindings.progress - state.playingState.duration + Float(chunksDuration)
             seekToChunkTime = TimeInterval(time / 1000)
+            // Check the condition to resume the playback when data will be ready (after the chunk process).
+            if state.playbackState != .stopped, isActuallyPaused == false {
+                state.playbackState = .buffering
+            }
             processPendingVoiceBroadcastChunks()
         }
     }
@@ -383,7 +383,7 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
         
         updateDuration()
         
-        if state.playbackState != .stopped, (state.playbackState != .paused && isActuallyPaused == true) {
+        if state.playbackState != .stopped, !isActuallyPaused {
             handleVoiceBroadcastChunksProcessing()
         }
     }
