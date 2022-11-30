@@ -165,6 +165,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                     guard let self = self else { return }
                     self.toolbarViewDelegate?.didChangeMaximisedState(value)
                     self.hostingViewController.view.layer.cornerRadius = value ? 20 : 0
+                    if !value {
+                        self.voiceMessageBottomConstraint?.constant = 2
+                    }
                 }
         ]
         
@@ -215,23 +218,17 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
             keyboardHeight = keyboardRectangle.height
-            UIView.performWithoutAnimation {
-                if self.isMaximised {
-                    self.voiceMessageBottomConstraint?.constant = keyboardHeight - (window?.safeAreaInsets.bottom ?? 0) + 4
-                } else {
-                    self.voiceMessageBottomConstraint?.constant = 4
-                }
-                self.layoutIfNeeded()
+            if self.isMaximised {
+                self.voiceMessageBottomConstraint?.constant = keyboardHeight - (window?.safeAreaInsets.bottom ?? 0) + 2
+            } else {
+                self.voiceMessageBottomConstraint?.constant = 2
             }
         }
     }
     
     @objc private func keyboardWillHide(_ notification: Notification) {
         if self.isMaximised {
-            UIView.performWithoutAnimation {
-                self.voiceMessageBottomConstraint?.constant = 4
-                self.layoutIfNeeded()
-            }
+            self.voiceMessageBottomConstraint?.constant = 2
         }
     }
     
@@ -277,7 +274,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             }
         )
     }
-        
+    
     private func registerThemeServiceDidChangeThemeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
     }
@@ -294,7 +291,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func updateTextViewHeight() {
         let height = UIScreen.main.bounds.height
         let barOffset: CGFloat = 68
-        let toolbarHeight: CGFloat = 96
+        let toolbarHeight: CGFloat = sendMode == .send ? 96 : 110
         let finalHeight = height - keyboardHeight - toolbarHeight - barOffset
         wysiwygViewModel.maxExpandedHeight = finalHeight
         if finalHeight < 200 {
@@ -339,9 +336,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         set {
             viewModel.sendMode = ComposerSendMode(from: newValue)
             updatePlaceholderText()
+            updateTextViewHeight()
         }
     }
-
+    
     /// Whether text formatting is currently enabled in the composer.
     var textFormattingEnabled: Bool {
         get {
@@ -361,7 +359,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.deactivate(voiceMessageToolbarView.containersTopConstraints)
             addSubview(voiceMessageToolbarView)
-            let bottomConstraint = hostingViewController.view.bottomAnchor.constraint(equalTo: voiceMessageToolbarView.bottomAnchor, constant: 4)
+            let bottomConstraint = hostingViewController.view.bottomAnchor.constraint(equalTo: voiceMessageToolbarView.bottomAnchor, constant: 2)
             voiceMessageBottomConstraint = bottomConstraint
             NSLayoutConstraint.activate(
                 [

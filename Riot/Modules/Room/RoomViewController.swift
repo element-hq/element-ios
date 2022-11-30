@@ -177,7 +177,15 @@ extension RoomViewController {
                 optionalTextView?.becomeFirstResponder()
                 originalRect = wysiwygInputToolbar.convert(wysiwygInputToolbar.frame, to: view)
             }
-            wysiwygInputToolbar.showKeyboard()
+            // This tirggers a SwiftUI update that is handled correctly on iOS 16, but needs to be dispatchted async on older versions
+            // Dispatching on iOS 16 instead causes some weird SwiftUI update behaviours
+            if #available(iOS 16, *) {
+                wysiwygInputToolbar.showKeyboard()
+            } else {
+                DispatchQueue.main.async {
+                    wysiwygInputToolbar.showKeyboard()
+                }
+            }
             roomInputToolbarContainer.removeFromSuperview()
             let dimmingView = UIView()
             dimmingView.translatesAutoresizingMaskIntoConstraints = false

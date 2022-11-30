@@ -38,6 +38,7 @@ struct ComposerCreateActionListViewState: BindableState {
     /// The list of composer create actions to display to the user
     let actions: [ComposerCreateAction]
     let wysiwygEnabled: Bool
+    let isScrollingEnabled: Bool
 
     var bindings: ComposerCreateActionListBindings
 }

@@ -41,14 +41,23 @@ final class ComposerCreateActionListCoordinator: NSObject, Coordinator, Presenta
     // MARK: - Setup
     
     init(actions: [ComposerCreateAction], wysiwygEnabled: Bool, textFormattingEnabled: Bool) {
+        let isScrollingEnabled: Bool
+        if #available(iOS 16, *) {
+            isScrollingEnabled = false
+        } else {
+            isScrollingEnabled = true
+        }
         viewModel = ComposerCreateActionListViewModel(initialViewState: ComposerCreateActionListViewState(
             actions: actions,
             wysiwygEnabled: wysiwygEnabled,
+            isScrollingEnabled: isScrollingEnabled,
             bindings: ComposerCreateActionListBindings(textFormattingEnabled: textFormattingEnabled)))
         view = ComposerCreateActionList(viewModel: viewModel.context)
         let hostingVC = VectorHostingController(rootView: view)
+        let height = hostingVC.sizeThatFits(in: CGSize(width: hostingVC.view.frame.width, height: UIView.layoutFittingCompressedSize.height)).height
         hostingVC.bottomSheetPreferences = VectorHostingBottomSheetPreferences(
-            detents: [.custom(height: 470)],
+            // on iOS 15 custom will be replaced by medium which may require some scrolling
+            detents: [.custom(height: height)],
             prefersGrabberVisible: true,
             cornerRadius: 20,
             prefersScrollingExpandsWhenScrolledToEdge: false
@@ -56,6 +65,7 @@ final class ComposerCreateActionListCoordinator: NSObject, Coordinator, Presenta
         hostingController = hostingVC
         super.init()
         hostingVC.presentationController?.delegate = self
+        hostingVC.bottomSheetPreferences?.setup(viewController: hostingVC)
     }
     
     // MARK: - Public
