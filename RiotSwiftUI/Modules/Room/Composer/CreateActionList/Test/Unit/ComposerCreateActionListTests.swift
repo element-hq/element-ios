@@ -27,6 +27,7 @@ class ComposerCreateActionListTests: XCTestCase {
             initialViewState: ComposerCreateActionListViewState(
                 actions: ComposerCreateAction.allCases,
                 wysiwygEnabled: true,
+                isScrollingEnabled: false,
                 bindings: ComposerCreateActionListBindings(textFormattingEnabled: true)
             )
         )

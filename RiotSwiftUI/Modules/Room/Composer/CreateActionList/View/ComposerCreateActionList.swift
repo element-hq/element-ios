@@ -72,6 +72,9 @@ struct ComposerCreateActionList: View {
                         }
                 }
                 .contentShape(Rectangle())
+                .onTapGesture {
+                    viewModel.textFormattingEnabled.toggle()
+                }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
 
