@@ -143,7 +143,9 @@ struct Composer: View {
         .animation(.easeInOut(duration: resizeAnimationDuration), value: wysiwygViewModel.idealHeight)
         .padding(.top, 8)
         .onTapGesture {
-            viewModel.focused = true
+            if viewModel.focused {
+                viewModel.focused = true
+            }
         }
     }
     
