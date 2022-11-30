@@ -32,56 +32,68 @@ struct ComposerCreateActionList: View {
     // MARK: Public
     
     @ObservedObject var viewModel: ComposerCreateActionListViewModel.Context
+    
+    private var internalView: some View {
+        VStack(alignment: .leading) {
+            ForEach(viewModel.viewState.actions) { action in
+                HStack(spacing: 16) {
+                    Image(action.icon)
+                        .renderingMode(.template)
+                        .foregroundColor(theme.colors.accent)
+                    Text(action.title)
+                        .foregroundColor(theme.colors.primaryContent)
+                        .font(theme.fonts.body)
+                        .accessibilityIdentifier(action.accessibilityIdentifier)
+                    Spacer()
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    viewModel.send(viewAction: .selectAction(action))
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+            }
+            if viewModel.viewState.wysiwygEnabled {
+                SeparatorLine()
+                HStack(spacing: 16) {
+                    Image(textFormattingIcon)
+                        .renderingMode(.template)
+                        .foregroundColor(theme.colors.accent)
+                    Text(VectorL10n.wysiwygComposerStartActionTextFormatting)
+                        .foregroundColor(theme.colors.primaryContent)
+                        .font(theme.fonts.body)
+                        .accessibilityIdentifier("textFormatting")
+                    Spacer()
+                    Toggle("", isOn: $viewModel.textFormattingEnabled)
+                        .toggleStyle(ComposerToggleActionStyle())
+                        .labelsHidden()
+                        .onChange(of: viewModel.textFormattingEnabled) { isOn in
+                            viewModel.send(viewAction: .toggleTextFormatting(isOn))
+                        }
+                }
+                .contentShape(Rectangle())
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+
+            }
+        }
+    }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                ForEach(viewModel.viewState.actions) { action in
-                    HStack(spacing: 16) {
-                        Image(action.icon)
-                            .renderingMode(.template)
-                            .foregroundColor(theme.colors.accent)
-                        Text(action.title)
-                            .foregroundColor(theme.colors.primaryContent)
-                            .font(theme.fonts.body)
-                            .accessibilityIdentifier(action.accessibilityIdentifier)
-                        Spacer()
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        viewModel.send(viewAction: .selectAction(action))
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                }
-                if viewModel.viewState.wysiwygEnabled {
-                    SeparatorLine()
-                    HStack(spacing: 16) {
-                        Image(textFormattingIcon)
-                            .renderingMode(.template)
-                            .foregroundColor(theme.colors.accent)
-                        Text(VectorL10n.wysiwygComposerStartActionTextFormatting)
-                            .foregroundColor(theme.colors.primaryContent)
-                            .font(theme.fonts.body)
-                            .accessibilityIdentifier("textFormatting")
-                        Spacer()
-                        Toggle("", isOn: $viewModel.textFormattingEnabled)
-                            .toggleStyle(ComposerToggleActionStyle())
-                            .labelsHidden()
-                            .onChange(of: viewModel.textFormattingEnabled) { isOn in
-                                viewModel.send(viewAction: .toggleTextFormatting(isOn))
-                            }
-                    }
-                    .contentShape(Rectangle())
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-
-                }
+        if viewModel.viewState.isScrollingEnabled {
+            ScrollView {
+                internalView
             }
-            Spacer()
+            .padding(.top, 23)
+            .background(theme.colors.background.ignoresSafeArea())
+        } else {
+            VStack {
+                internalView
+                Spacer()
+            }
+            .padding(.top, 23)
+            .background(theme.colors.background.ignoresSafeArea())
         }
-        .padding(.top, 23)
-        .background(theme.colors.background.ignoresSafeArea())
     }
 }
 
