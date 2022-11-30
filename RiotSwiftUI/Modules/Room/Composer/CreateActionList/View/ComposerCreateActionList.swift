@@ -65,8 +65,8 @@ struct ComposerCreateActionList: View {
                         .accessibilityIdentifier("textFormatting")
                     Spacer()
                     Toggle("", isOn: $viewModel.textFormattingEnabled)
-                        .toggleStyle(ComposerToggleActionStyle())
                         .labelsHidden()
+                        .toggleStyle(SwitchToggleStyle(tint: theme.colors.accent))
                         .onChange(of: viewModel.textFormattingEnabled) { isOn in
                             viewModel.send(viewAction: .toggleTextFormatting(isOn))
                         }
@@ -106,37 +106,5 @@ struct ComposerCreateActionList_Previews: PreviewProvider {
     static let stateRenderer = MockComposerCreateActionListScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
-    }
-}
-
-struct ComposerToggleActionStyle: ToggleStyle {
-    @Environment(\.theme) private var theme
-
-    func makeBody(configuration: Configuration) -> some View {
-        HStack {
-            Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 50, height: 30, alignment: .center)
-                .overlay(
-                    Rectangle()
-                        .foregroundColor(configuration.isOn
-                                         ? theme.colors.accent.opacity(0.5)
-                                         : theme.colors.primaryContent.opacity(0.25))
-                        .cornerRadius(7)
-                        .padding(.all, 8)
-                )
-                .overlay(
-                    Circle()
-                        .foregroundColor(configuration.isOn
-                                         ? theme.colors.accent
-                                         : theme.colors.background)
-                        .padding(.all, 3)
-                        .offset(x: configuration.isOn ? 11 : -11, y: 0)
-                        .shadow(radius: configuration.isOn ? 0.0 : 2.0)
-                        .animation(Animation.linear(duration: 0.1))
-
-                ).cornerRadius(20)
-                .onTapGesture { configuration.isOn.toggle() }
-        }
     }
 }
