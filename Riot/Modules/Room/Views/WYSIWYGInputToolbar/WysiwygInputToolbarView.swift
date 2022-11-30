@@ -165,6 +165,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                     guard let self = self else { return }
                     self.toolbarViewDelegate?.didChangeMaximisedState(value)
                     self.hostingViewController.view.layer.cornerRadius = value ? 20 : 0
+                    if !value {
+                        self.voiceMessageBottomConstraint?.constant = 2
+                    }
                 }
         ]
         
