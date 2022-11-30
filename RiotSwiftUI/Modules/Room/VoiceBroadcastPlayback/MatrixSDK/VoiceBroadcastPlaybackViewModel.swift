@@ -245,12 +245,17 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     self.audioPlayer?.addContentFromURL(result.url)
                 }
                 
+                guard let audioPlayer = self.audioPlayer else {
+                    MXLog.error("[VoiceBroadcastPlaybackViewModel] processVoiceBroadcastChunkQueue: audioPlayer is nil !")
+                    return
+                }
+                
                 // Start or Resume the player. Needed after a buffering
                 if self.state.playbackState == .buffering {
-                    if self.audioPlayer?.isPlaying == false {
+                    if audioPlayer.isPlaying == false {
                         MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: Start or Resume the player")
                         self.displayLink.isPaused = false
-                        self.audioPlayer?.play()
+                        audioPlayer.play()
                     } else {
                         self.state.playbackState = .playing
                         self.state.playingState.isLive = self.isLivePlayback
@@ -258,7 +263,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                 }
                 
                 if let time = self.seekToChunkTime {
-                    self.audioPlayer?.seekToTime(time)
+                    audioPlayer.seekToTime(time)
                     self.seekToChunkTime = nil
                 }
                                 
