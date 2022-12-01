@@ -2615,3 +2615,4 @@
 // MARK: - Launch loading
 
 "launch_loading_server_syncing" = "Sünkroniseerimine serveriga";
+"voice_broadcast_buffering" = "Andmed on puhverdamisel…";
