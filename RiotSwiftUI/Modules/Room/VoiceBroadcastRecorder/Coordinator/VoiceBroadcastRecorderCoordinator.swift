@@ -57,7 +57,6 @@ final class VoiceBroadcastRecorderCoordinator: Coordinator, Presentable {
     
     func toPresentable() -> UIViewController {
         let view = VoiceBroadcastRecorderView(viewModel: voiceBroadcastRecorderViewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         return VectorHostingController(rootView: view)
     }
     
