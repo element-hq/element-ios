@@ -2870,3 +2870,4 @@
 // MARK: - Launch loading
 
 "launch_loading_server_syncing" = "Menyinkron dengan server";
+"voice_broadcast_buffering" = "Memuat…";
