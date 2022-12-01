@@ -30,6 +30,7 @@ struct VoiceBroadcastPlaybackView: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    @State private var bufferingSpinnerRotationValue = 0.0
     
     private var backgroundColor: Color {
         if viewModel.viewState.playingState.isLive {
@@ -61,12 +62,33 @@ struct VoiceBroadcastPlaybackView: View {
                     } icon: {
                         Image(uiImage: Asset.Images.voiceBroadcastTileMic.image)
                     }
-                    Label {
-                        Text(VectorL10n.voiceBroadcastTile)
-                            .foregroundColor(theme.colors.secondaryContent)
-                            .font(theme.fonts.caption1)
-                    } icon: {
-                        Image(uiImage: Asset.Images.voiceBroadcastTileLive.image)
+                    if viewModel.viewState.playbackState != .buffering {
+                        Label {
+                            Text(VectorL10n.voiceBroadcastTile)
+                                .foregroundColor(theme.colors.secondaryContent)
+                                .font(theme.fonts.caption1)
+                        } icon: {
+                            Image(uiImage: Asset.Images.voiceBroadcastTileLive.image)
+                        }
+                    } else {
+                        Label {
+                            Text(VectorL10n.voiceBroadcastBuffering)
+                                .foregroundColor(theme.colors.secondaryContent)
+                                .font(theme.fonts.caption1)
+                        } icon: {
+                            Image(uiImage: Asset.Images.voiceBroadcastSpinner.image)
+                                .frame(width: 16.0, height: 16.0)
+                                .rotationEffect(Angle.degrees(bufferingSpinnerRotationValue))
+                                .onAppear {
+                                    let baseAnimation = Animation.linear(duration: 1.0).repeatForever(autoreverses: false)
+                                    withAnimation(baseAnimation) {
+                                        bufferingSpinnerRotationValue = 360.0
+                                    }
+                                }
+                                .onDisappear {
+                                    bufferingSpinnerRotationValue = 0.0
+                                }
+                        }
                     }
                 }.frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -89,13 +111,13 @@ struct VoiceBroadcastPlaybackView: View {
                 VoiceBroadcastPlaybackErrorView()
             } else {
                 ZStack {
-                    if viewModel.viewState.playbackState == .playing {
+                    if viewModel.viewState.playbackState == .playing || viewModel.viewState.playbackState == .buffering {
                         Button { viewModel.send(viewAction: .pause) } label: {
                             Image(uiImage: Asset.Images.voiceBroadcastPause.image)
                                 .renderingMode(.original)
                         }
                         .accessibilityIdentifier("pauseButton")
-                    } else  {
+                    } else {
                         Button { viewModel.send(viewAction: .play) } label: {
                             Image(uiImage: Asset.Images.voiceBroadcastPlay.image)
                                 .renderingMode(.original)
@@ -104,7 +126,6 @@ struct VoiceBroadcastPlaybackView: View {
                         .accessibilityIdentifier("playButton")
                     }
                 }
-                .activityIndicator(show: viewModel.viewState.playbackState == .buffering)
             }
             
             Slider(value: $viewModel.progress, in: 0...viewModel.viewState.playingState.duration) {

@@ -137,6 +137,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         
         if let audioPlayer = audioPlayer, audioPlayer.isPlaying {
             audioPlayer.pause()
+        } else {
+            state.playbackState = .paused
+            state.playingState.isLive = false
         }
     }
     
@@ -196,10 +199,6 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             return
         }
         
-        if (isActuallyPaused == false && state.playbackState == .paused) {
-            state.playbackState = .buffering
-        }
-        
         guard !isProcessingVoiceBroadcastChunk else {
             // Chunks caching is already in progress
             return
@@ -233,41 +232,41 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                 
                 self.voiceBroadcastAttachmentCacheManagerLoadResults.append(result)
                 
-                if let audioPlayer = self.audioPlayer {
-                    // Append the chunk to the current playlist
-                    audioPlayer.addContentFromURL(result.url)
-                    
-                    if let time = self.seekToChunkTime {
-                        audioPlayer.seekToTime(time)
-                        self.seekToChunkTime = nil
-                    }
-                    
-                    // Resume the player. Needed after a buffering
-                    if self.state.playbackState == .buffering {
-                        if audioPlayer.isPlaying == false {
-                            MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: Resume the player")
-                            self.displayLink.isPaused = false
-                            audioPlayer.play()
-                        } else {
-                            self.state.playbackState = .playing
-                            self.state.playingState.isLive = self.isLivePlayback
-                        }
-                    }
-                } else {
+                // Instanciate audioPlayer if needed.
+                if self.audioPlayer == nil {
                     // Init and start the player on the first chunk
                     let audioPlayer = self.mediaServiceProvider.audioPlayerForIdentifier(result.eventIdentifier)
                     audioPlayer.registerDelegate(self)
                     
                     audioPlayer.loadContentFromURL(result.url, displayName: chunk.attachment.originalFileName)
-                    self.displayLink.isPaused = false
-                    audioPlayer.play()
-                    if let time = self.seekToChunkTime {
-                        audioPlayer.seekToTime(time)
-                        self.seekToChunkTime = nil
-                    }
                     self.audioPlayer = audioPlayer
+                } else {
+                    // Append the chunk to the current playlist
+                    self.audioPlayer?.addContentFromURL(result.url)
                 }
                 
+                guard let audioPlayer = self.audioPlayer else {
+                    MXLog.error("[VoiceBroadcastPlaybackViewModel] processVoiceBroadcastChunkQueue: audioPlayer is nil !")
+                    return
+                }
+                
+                // Start or Resume the player. Needed after a buffering
+                if self.state.playbackState == .buffering {
+                    if audioPlayer.isPlaying == false {
+                        MXLog.debug("[VoiceBroadcastPlaybackViewModel] processNextVoiceBroadcastChunk: Start or Resume the player")
+                        self.displayLink.isPaused = false
+                        audioPlayer.play()
+                    } else {
+                        self.state.playbackState = .playing
+                        self.state.playingState.isLive = self.isLivePlayback
+                    }
+                }
+                
+                if let time = self.seekToChunkTime {
+                    audioPlayer.seekToTime(time)
+                    self.seekToChunkTime = nil
+                }
+                                
             case .failure (let error):
                 MXLog.error("[VoiceBroadcastPlaybackViewModel] processVoiceBroadcastChunkQueue: loadAttachment error", context: error)
                 if self.voiceBroadcastChunkQueue.count == 0 {
@@ -317,6 +316,10 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             MXLog.debug("[VoiceBroadcastPlaybackViewModel] didSliderChanged: restart to time: \(state.bindings.progress) milliseconds")
             let time = state.bindings.progress - state.playingState.duration + Float(chunksDuration)
             seekToChunkTime = TimeInterval(time / 1000)
+            // Check the condition to resume the playback when data will be ready (after the chunk process).
+            if state.playbackState != .stopped, isActuallyPaused == false {
+                state.playbackState = .buffering
+            }
             processPendingVoiceBroadcastChunks()
         }
     }
@@ -380,7 +383,7 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
         
         updateDuration()
         
-        if state.playbackState != .stopped {
+        if state.playbackState != .stopped, !isActuallyPaused {
             handleVoiceBroadcastChunksProcessing()
         }
     }

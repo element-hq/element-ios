@@ -344,6 +344,7 @@ internal class Asset: NSObject {
     internal static let voiceBroadcastPlay = ImageAsset(name: "voice_broadcast_play")
     internal static let voiceBroadcastRecord = ImageAsset(name: "voice_broadcast_record")
     internal static let voiceBroadcastRecordPause = ImageAsset(name: "voice_broadcast_record_pause")
+    internal static let voiceBroadcastSpinner = ImageAsset(name: "voice_broadcast_spinner")
     internal static let voiceBroadcastStop = ImageAsset(name: "voice_broadcast_stop")
     internal static let voiceBroadcastTileLive = ImageAsset(name: "voice_broadcast_tile_live")
     internal static let voiceBroadcastTileMic = ImageAsset(name: "voice_broadcast_tile_mic")

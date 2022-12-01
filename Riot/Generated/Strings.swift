@@ -9139,6 +9139,10 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastBlockedBySomeoneElseMessage: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_blocked_by_someone_else_message") 
   }
+  /// Buffering...
+  public static var voiceBroadcastBuffering: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_buffering") 
+  }
   /// Live
   public static var voiceBroadcastLive: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_live") 
