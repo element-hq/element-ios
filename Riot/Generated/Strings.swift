@@ -9155,6 +9155,18 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastPlaybackLoadingError: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_playback_loading_error") 
   }
+  /// Yes, stop
+  public static var voiceBroadcastStopAlertAgreeButton: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_stop_alert_agree_button") 
+  }
+  /// Are you sure you want to stop your live broadcast? This will end the broadcast, and the full recording will be available in the room.
+  public static var voiceBroadcastStopAlertDescription: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_stop_alert_description") 
+  }
+  /// Stop live broadcasting?
+  public static var voiceBroadcastStopAlertTitle: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_stop_alert_title") 
+  }
   /// Voice broadcast
   public static var voiceBroadcastTile: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_tile") 

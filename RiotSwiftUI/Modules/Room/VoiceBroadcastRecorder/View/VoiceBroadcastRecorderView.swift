@@ -23,6 +23,8 @@ struct VoiceBroadcastRecorderView: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    @State private var showingStopAlert = false
+    
     private var backgroundColor: Color {
         if viewModel.viewState.recordingState != .paused {
             return theme.colors.alert
@@ -97,10 +99,19 @@ struct VoiceBroadcastRecorderView: View {
                 .accessibilityIdentifier("recordButton")
                 
                 Button {
-                    viewModel.send(viewAction: .stop)
+                    showingStopAlert = true
                 } label: {
                     Image("voice_broadcast_stop")
                         .renderingMode(.original)
+                }
+                .alert(isPresented:$showingStopAlert) {
+                    Alert(title: Text(VectorL10n.voiceBroadcastStopAlertTitle),
+                          message: Text(VectorL10n.voiceBroadcastStopAlertDescription),
+                          primaryButton: .cancel(),
+                          secondaryButton: .default(Text(VectorL10n.voiceBroadcastStopAlertAgreeButton),
+                                                    action: {
+                        viewModel.send(viewAction: .stop)
+                    }))
                 }
                 .accessibilityIdentifier("stopButton")
                 .disabled(viewModel.viewState.recordingState == .stopped)
