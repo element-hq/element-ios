@@ -2635,3 +2635,12 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Hai sessioni non verificate";
+"user_other_session_permanently_unverified_additional_info" = "Questa sessione non può essere verificata perché non supporta la crittografia.";
+"voice_broadcast_buffering" = "Buffer...";
+"voice_broadcast_time_left" = "%@ rimasti";
+"launch_loading_processing_response" = "Elaborazione dati\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Sincronizzazione con il server\n(%@ tentativo)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Sincronizzazione con il server";
