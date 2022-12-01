@@ -2866,3 +2866,4 @@
 // MARK: - Launch loading
 
 "launch_loading_server_syncing" = "Synchronizácia so serverom";
+"voice_broadcast_buffering" = "Načítavanie do vyrovnávacej pamäte…";
