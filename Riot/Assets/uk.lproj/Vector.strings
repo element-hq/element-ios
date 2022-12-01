@@ -2868,3 +2868,4 @@
 // MARK: - Launch loading
 
 "launch_loading_server_syncing" = "Синхронізація з сервером";
+"voice_broadcast_buffering" = "Буферизація...";
