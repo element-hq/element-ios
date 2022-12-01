@@ -2677,3 +2677,4 @@
 "launch_loading_server_syncing" = "Synchronisiere mit dem Server";
 "user_other_session_permanently_unverified_additional_info" = "Diese Sitzung kann nicht verifiziert werden, da sie keine Verschlüsselung unterstützt.";
 "voice_broadcast_time_left" = "%@ übrig";
+"voice_broadcast_buffering" = "Puffere …";
