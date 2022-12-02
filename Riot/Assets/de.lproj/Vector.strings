@@ -2678,3 +2678,6 @@
 "user_other_session_permanently_unverified_additional_info" = "Diese Sitzung kann nicht verifiziert werden, da sie keine Verschlüsselung unterstützt.";
 "voice_broadcast_time_left" = "%@ übrig";
 "voice_broadcast_buffering" = "Puffere …";
+"voice_broadcast_stop_alert_agree_button" = "Ja, beende";
+"voice_broadcast_stop_alert_description" = "Bist du sicher, dass du deine Live-Übertragung abbrechen möchtest? Dies wird die Übertragung beenden und die vollständige Aufnahme wird im Raum verfügbar sein.";
+"voice_broadcast_stop_alert_title" = "Live-Übertragung abbrechen?";
