@@ -62,7 +62,7 @@ public class VoiceBroadcastService: NSObject {
     
     /// Pause a voice broadcast.
     /// - Parameters:
-    ///   - lastChunkSequence: The last chunk number.
+    ///   - lastChunkSequence: The last sent chunk number.
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     func pauseVoiceBroadcast(lastChunkSequence: Int, completion: @escaping (MXResponse<String?>) -> Void) {
         sendVoiceBroadcastInfo(lastChunkSequence: lastChunkSequence, state: VoiceBroadcastInfoState.paused, completion: completion)
@@ -77,7 +77,7 @@ public class VoiceBroadcastService: NSObject {
     
     /// stop a voice broadcast info.
     /// - Parameters:
-    ///   - lastChunkSequence: The last chunk number.
+    ///   - lastChunkSequence: The last sent chunk number.
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
     func stopVoiceBroadcast(lastChunkSequence: Int, completion: @escaping (MXResponse<String?>) -> Void) {
         sendVoiceBroadcastInfo(lastChunkSequence: lastChunkSequence, state: VoiceBroadcastInfoState.stopped, completion: completion)
@@ -219,7 +219,7 @@ extension VoiceBroadcastService {
     
     /// Pause a voice broadcast.
     /// - Parameters:
-    ///   - lastChunkSequence: The last chunk number.
+    ///   - lastChunkSequence: The last sent chunk number.
     ///   - success: A closure called when the operation is complete.
     ///   - failure: A closure called  when the operation fails.
     @objc public func pauseVoiceBroadcast(lastChunkSequence: Int,
@@ -252,7 +252,7 @@ extension VoiceBroadcastService {
     
     /// Stop a voice broadcast.
     /// - Parameters:
-    ///   - lastChunkSequence: The last chunk number.
+    ///   - lastChunkSequence: The last sent chunk number.
     ///   - success: A closure called when the operation is complete.
     ///   - failure: A closure called  when the operation fails.
     @objc public func stopVoiceBroadcast(lastChunkSequence: Int,

@@ -69,9 +69,9 @@
         }
     }
     
-    NSInteger lastChunkSequence = -1;
+    NSInteger lastChunkSequence = 0;
     if (JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLastSequence]) {
-        MXJSONModelSetInteger(chunkLength, JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLastSequence]);
+        MXJSONModelSetInteger(lastChunkSequence, JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLastSequence]);
     }
 
     return [[VoiceBroadcastInfo alloc] initWithDeviceId:deviceId state:state chunkLength:chunkLength voiceBroadcastId:voiceBroadcastId lastChunkSequence:lastChunkSequence];
@@ -93,7 +93,7 @@
         JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLength] = @(self.chunkLength);
     }
     
-    if (self.lastChunkSequence > 0) {
+    if (self.lastChunkSequence != 0) {
         JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLastSequence] = @(self.lastChunkSequence);
     }
     
