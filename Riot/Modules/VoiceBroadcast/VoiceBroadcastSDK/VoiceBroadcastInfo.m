@@ -23,6 +23,7 @@
                            state:(NSString *)state
                      chunkLength:(NSInteger)chunkLength
                 voiceBroadcastId:(NSString *)voiceBroadcastId
+               lastChunkSequence:(NSInteger)lastChunkSequence
 {
     if (self = [super init])
     {
@@ -30,6 +31,7 @@
         _state = state;
         _chunkLength = chunkLength;
         _voiceBroadcastId = voiceBroadcastId;
+        _lastChunkSequence = lastChunkSequence;
     }
     
     return self;
@@ -66,8 +68,13 @@
             voiceBroadcastId = relatesTo.eventId;
         }
     }
+    
+    NSInteger lastChunkSequence = -1;
+    if (JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLastSequence]) {
+        MXJSONModelSetInteger(chunkLength, JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLastSequence]);
+    }
 
-    return [[VoiceBroadcastInfo alloc] initWithDeviceId:deviceId state:state chunkLength:chunkLength voiceBroadcastId:voiceBroadcastId];
+    return [[VoiceBroadcastInfo alloc] initWithDeviceId:deviceId state:state chunkLength:chunkLength voiceBroadcastId:voiceBroadcastId lastChunkSequence:lastChunkSequence];
 }
 
 - (NSDictionary *)JSONDictionary
@@ -84,6 +91,10 @@
         JSONDictionary[kMXEventRelationRelatesToKey] = relatesTo.JSONDictionary;
     } else {
         JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLength] = @(self.chunkLength);
+    }
+    
+    if (self.lastChunkSequence > 0) {
+        JSONDictionary[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkLastSequence] = @(self.lastChunkSequence);
     }
     
     return JSONDictionary;
