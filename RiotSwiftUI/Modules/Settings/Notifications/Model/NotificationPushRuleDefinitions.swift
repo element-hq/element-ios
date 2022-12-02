@@ -22,7 +22,7 @@ extension NotificationPushRuleId {
     /// It is defined similarly across Web and Android.
     /// - Parameter index: The notification index for which to get the actions for.
     /// - Returns: The associated `NotificationStandardActions`.
-    func standardActions(for index: NotificationIndex) -> NotificationStandardActions? {
+    func standardActions(for index: NotificationIndex) -> NotificationStandardActions {
         switch self {
         case .containDisplayName:
             switch index {

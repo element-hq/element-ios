@@ -59,8 +59,7 @@ class MXNotificationSettingsService: NotificationSettingsServiceType {
     
     func add(keyword: String, enabled: Bool) {
         let index = NotificationIndex.index(when: enabled)
-        guard let actions = NotificationPushRuleId.keywords.standardActions(for: index)?.actions
-        else {
+        guard let actions = NotificationPushRuleId.keywords.standardActions(for: index).actions else {
             return
         }
         session.notificationCenter.addContentRuleWithRuleId(matchingPattern: keyword, notify: actions.notify, sound: actions.sound, highlight: actions.highlight)

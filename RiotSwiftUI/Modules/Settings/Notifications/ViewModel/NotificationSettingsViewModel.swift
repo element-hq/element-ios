@@ -107,19 +107,19 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     
     func update(ruleID: NotificationPushRuleId, isChecked: Bool) {
         let index = NotificationIndex.index(when: isChecked)
-        if ruleID == .keywords {
-            // Keywords is handled differently to other settings
-            updateKeywords(isChecked: isChecked)
-            return
-        }
-        // Get the static definition and update the actions and enabled state.
-        guard let standardActions = ruleID.standardActions(for: index) else { return }
+        let standardActions = ruleID.standardActions(for: index)
         let enabled = standardActions != .disabled
-        notificationSettingsService.updatePushRuleActions(
-            for: ruleID.rawValue,
-            enabled: enabled,
-            actions: standardActions.actions
-        )
+        
+        switch ruleID {
+        case .keywords: // Keywords is handled differently to other settings
+            updateKeywords(isChecked: isChecked)
+        default:
+            notificationSettingsService.updatePushRuleActions(
+                for: ruleID.rawValue,
+                enabled: enabled,
+                actions: standardActions.actions
+            )
+        }
     }
     
     private func updateKeywords(isChecked: Bool) {
@@ -129,8 +129,9 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         }
         // Get the static definition and update the actions and enabled state for every keyword.
         let index = NotificationIndex.index(when: isChecked)
-        guard let standardActions = NotificationPushRuleId.keywords.standardActions(for: index) else { return }
+        let standardActions = NotificationPushRuleId.keywords.standardActions(for: index)
         let enabled = standardActions != .disabled
+        
         keywordsOrdered.forEach { keyword in
             notificationSettingsService.updatePushRuleActions(
                 for: keyword,
@@ -175,7 +176,9 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     /// - Parameter rule: The push rule type to check.
     /// - Returns: Wether it should be displayed as checked or not checked.
     private func isChecked(rule: NotificationPushRuleType) -> Bool {
-        guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else { return false }
+        guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else {
+            return false
+        }
         
         let firstIndex = NotificationIndex.allCases.first { nextIndex in
             rule.matches(standardActions: ruleId.standardActions(for: nextIndex))
