@@ -2204,6 +2204,9 @@ Tap the + to start adding people.";
 "voice_broadcast_tile" = "Voice broadcast";
 "voice_broadcast_time_left" = "%@ left";
 "voice_broadcast_buffering" = "Buffering...";
+"voice_broadcast_stop_alert_title" = "Stop live broadcasting?";
+"voice_broadcast_stop_alert_description" = "Are you sure you want to stop your live broadcast? This will end the broadcast, and the full recording will be available in the room.";
+"voice_broadcast_stop_alert_agree_button" = "Yes, stop";
 
 // Mark: - Version check
 
