@@ -113,6 +113,10 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         switch ruleID {
         case .keywords: // Keywords is handled differently to other settings
             updateKeywords(isChecked: isChecked)
+        case .oneToOneRoom:
+            updatePushActions(for: [ruleID, .msc3930oneToOnePollStart, .msc3930oneToOnePollEnd], enabled: enabled, standardActions: standardActions)
+        case .allOtherMessages:
+            updatePushActions(for: [ruleID, .msc3930pollStart, .msc3930pollEnd], enabled: enabled, standardActions: standardActions)
         default:
             updatePushActions(for: [ruleID], enabled: enabled, standardActions: standardActions)
         }

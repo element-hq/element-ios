@@ -71,7 +71,10 @@ class MXNotificationSettingsService: NotificationSettingsServiceType {
     }
     
     func updatePushRuleActions(for ruleId: String, enabled: Bool, actions: NotificationActions?) {
-        guard let rule = session.notificationCenter.rule(byId: ruleId) else { return }
+        guard let rule = session.notificationCenter.rule(byId: ruleId) else {
+            return
+        }
+        
         session.notificationCenter.enableRule(rule, isEnabled: enabled)
         
         if let actions = actions {
