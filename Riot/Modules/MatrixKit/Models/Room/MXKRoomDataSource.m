@@ -1373,6 +1373,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             // ignore the event
             return NO;
         }
+        
+        // Ignore voice message related to an actual voice broadcast.
+        if (event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil) {
+            return NO;
+        }
     }
     
     // Check for undecryptable messages that were sent while the user was not in the room and hide them
