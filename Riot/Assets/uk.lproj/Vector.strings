@@ -2869,3 +2869,6 @@
 
 "launch_loading_server_syncing" = "Синхронізація з сервером";
 "voice_broadcast_buffering" = "Буферизація...";
+"voice_broadcast_stop_alert_agree_button" = "Так, припинити";
+"voice_broadcast_stop_alert_description" = "Ви впевнені, що хочете припинити голосову трансляцію? На цьому трансляція завершиться, і повний запис буде доступний у кімнаті.";
+"voice_broadcast_stop_alert_title" = "Припинити голосову трансляцію?";
