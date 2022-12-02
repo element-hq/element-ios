@@ -114,8 +114,14 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         case .keywords: // Keywords is handled differently to other settings
             updateKeywords(isChecked: isChecked)
         default:
+            updatePushActions(for: [ruleID], enabled: enabled, standardActions: standardActions)
+        }
+    }
+    
+    private func updatePushActions(for ids: [NotificationPushRuleId], enabled: Bool, standardActions: NotificationStandardActions) {
+        for id in ids {
             notificationSettingsService.updatePushRuleActions(
-                for: ruleID.rawValue,
+                for: id.rawValue,
                 enabled: enabled,
                 actions: standardActions.actions
             )
