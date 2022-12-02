@@ -42,7 +42,7 @@ extension NotificationPushRuleId {
             case .silent: return .notify
             case .noisy: return .highlight
             }
-        case .oneToOneRoom:
+        case .oneToOneRoom, .msc3930oneToOnePollStart, .msc3930oneToOnePollEnd:
             switch index {
             case .off: return .dontNotify
             case .silent: return .notify
@@ -54,7 +54,7 @@ extension NotificationPushRuleId {
             case .silent: return .notify
             case .noisy: return .notifyDefaultSound
             }
-        case .allOtherMessages:
+        case .allOtherMessages, .msc3930pollStart, .msc3930pollEnd:
             switch index {
             case .off: return .dontNotify
             case .silent: return .notify

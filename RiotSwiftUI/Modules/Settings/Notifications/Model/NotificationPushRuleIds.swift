@@ -29,6 +29,10 @@ enum NotificationPushRuleId: String {
     case oneToOneRoom = ".m.rule.room_one_to_one"
     case allOtherMessages = ".m.rule.message"
     case encrypted = ".m.rule.encrypted"
+    case msc3930pollStart = ".org.matrix.msc3930.rule.poll_start"
+    case msc3930oneToOnePollStart = ".org.matrix.msc3930.rule.poll_start_one_to_one"
+    case msc3930pollEnd = ".org.matrix.msc3930.rule.poll_end"
+    case msc3930oneToOnePollEnd = ".org.matrix.msc3930.rule.poll_end_one_to_one"
     case keywords = "_keywords"
 }
 
@@ -65,6 +69,8 @@ extension NotificationPushRuleId {
             return VectorL10n.settingsEncryptedGroupMessages
         case .keywords:
             return VectorL10n.settingsMessagesContainingKeywords
+        case .msc3930pollStart, .msc3930oneToOnePollStart, .msc3930pollEnd, .msc3930oneToOnePollEnd:
+            return ""
         }
     }
 }
