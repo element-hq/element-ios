@@ -2867,3 +2867,6 @@
 
 "launch_loading_server_syncing" = "Synchronizácia so serverom";
 "voice_broadcast_buffering" = "Načítavanie do vyrovnávacej pamäte…";
+"voice_broadcast_stop_alert_agree_button" = "Áno, zastaviť";
+"voice_broadcast_stop_alert_description" = "Určite chcete zastaviť vysielanie naživo? Tým sa vysielanie ukončí a v miestnosti bude k dispozícii celý záznam.";
+"voice_broadcast_stop_alert_title" = "Zastaviť vysielanie naživo?";
