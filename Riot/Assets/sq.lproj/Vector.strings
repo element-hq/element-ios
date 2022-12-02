@@ -2655,3 +2655,7 @@
 // Unverified sessions
 "key_verification_alert_title" = "Keni sesione të paverifikuar";
 "manage_session_sign_out_other_sessions" = "Dilni prej krejt sesioneve të tjerë";
+"user_other_session_menu_sign_out_sessions" = "Dilni nga %@ sesione";
+"voice_broadcast_stop_alert_agree_button" = "Po, ndaleni";
+"voice_broadcast_stop_alert_description" = "Jeni i sigurt se doni të ndalet transmetimi juaj i drejtpërdrejtë? Kjo do të ndalë transmetimin dhe regjistrimi i plotë do të jetë i passhëm te dhoma.";
+"voice_broadcast_stop_alert_title" = "Të ndalet transmetimi i drejtpërdrejtë?";
