@@ -136,7 +136,7 @@ public class VoiceBroadcastService: NSObject {
         }
     }
     
-    private func sendVoiceBroadcastInfo(lastChunkSequence: Int? = nil,
+    private func sendVoiceBroadcastInfo(lastChunkSequence: Int = 0,
                                         state: VoiceBroadcastInfoState,
                                         completion: @escaping (MXResponse<String?>) -> Void) {
         guard let userId = self.room.mxSession.myUserId else {
@@ -160,9 +160,7 @@ public class VoiceBroadcastService: NSObject {
             
             voiceBroadcastInfo.state = state.rawValue
             
-            if let lastChunkSequence = lastChunkSequence {
-                voiceBroadcastInfo.lastChunkSequence = lastChunkSequence
-            }
+            voiceBroadcastInfo.lastChunkSequence = lastChunkSequence
             
             if state != VoiceBroadcastInfoState.started {
                 guard let voiceBroadcastId = self.voiceBroadcastId else {
