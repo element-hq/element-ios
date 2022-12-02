@@ -2871,3 +2871,6 @@
 
 "launch_loading_server_syncing" = "Menyinkron dengan server";
 "voice_broadcast_buffering" = "Memuat…";
+"voice_broadcast_stop_alert_agree_button" = "Ya, batalkan";
+"voice_broadcast_stop_alert_description" = "Apakah Anda ingin menghentikan siaran langsung Anda? Ini akan mengakhiri siarannya, dan rekamanan lengkap akan tersedia dalam ruangan.";
+"voice_broadcast_stop_alert_title" = "Berhenti menyiarkan langsung?";
