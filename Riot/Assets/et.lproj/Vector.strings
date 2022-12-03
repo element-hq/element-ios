@@ -2616,3 +2616,6 @@
 
 "launch_loading_server_syncing" = "Sünkroniseerimine serveriga";
 "voice_broadcast_buffering" = "Andmed on puhverdamisel…";
+"voice_broadcast_stop_alert_agree_button" = "Jah, lõpetame";
+"voice_broadcast_stop_alert_description" = "Kas sa oled kindel, et soovid otseeetri lõpetada? Sellega ringhäälingukõne salvestamine lõppeb ja salvestis on kättesaadav kõigile jututoas.";
+"voice_broadcast_stop_alert_title" = "Kas lõpetame otseeetri?";
