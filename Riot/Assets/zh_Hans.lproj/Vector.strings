@@ -2215,3 +2215,4 @@
 "authentication_forgot_password_input_message" = "%@将给你发一条验证链接";
 "authentication_forgot_password_input_title" = "输入你的电子邮件";
 "authentication_verify_email_waiting_button" = "重发电子邮件";
+"ignore_user" = "忽略用户";
