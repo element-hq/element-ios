@@ -2644,3 +2644,7 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Você tem sessões não-verificadas";
+"voice_broadcast_stop_alert_agree_button" = "Sim, parar";
+"voice_broadcast_stop_alert_description" = "Tem certeza que você quer parar seu broadcast ao vivo? Isto vai terminar o broadcast, e a gravação completa vai estar disponível na sala.";
+"voice_broadcast_stop_alert_title" = "Parar broadcasting ao vivo?";
+"voice_broadcast_buffering" = "Buffering…";
