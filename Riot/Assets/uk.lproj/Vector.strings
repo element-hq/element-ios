@@ -2872,3 +2872,8 @@
 "voice_broadcast_stop_alert_agree_button" = "Так, припинити";
 "voice_broadcast_stop_alert_description" = "Ви впевнені, що хочете припинити голосову трансляцію? На цьому трансляція завершиться, і повний запис буде доступний у кімнаті.";
 "voice_broadcast_stop_alert_title" = "Припинити голосову трансляцію?";
+"password_policy_pwd_in_dict_error" = "Цей пароль знайдений у словнику і недопустимий.";
+"password_policy_weak_pwd_error" = "Цей пароль занадто слабкий. Він повинен містити щонайменше 8 символів, причому хоча б по одному символу кожного типу: великі букви, малі букви, цифри та спеціальні символи.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Пароль закороткий";
