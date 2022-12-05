@@ -2659,3 +2659,8 @@
 "voice_broadcast_stop_alert_agree_button" = "Po, ndaleni";
 "voice_broadcast_stop_alert_description" = "Jeni i sigurt se doni të ndalet transmetimi juaj i drejtpërdrejtë? Kjo do të ndalë transmetimin dhe regjistrimi i plotë do të jetë i passhëm te dhoma.";
 "voice_broadcast_stop_alert_title" = "Të ndalet transmetimi i drejtpërdrejtë?";
+"password_policy_pwd_in_dict_error" = "Ky fjalëkalim gjendet në një fjalor dhe nuk lejohet.";
+"password_policy_weak_pwd_error" = "Ky fjalëkalim është shumë i shkurtër. Duhet të përmbajë të paktën 8 shenja, me të paktën një shenjë nga çdo lloj: të mëdha, të vogla, shifra dhe shenja speciale.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Fjalëkalim shumë i shkurtër";
