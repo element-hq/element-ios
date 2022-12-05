@@ -2644,3 +2644,11 @@
 // MARK: - Launch loading
 
 "launch_loading_server_syncing" = "Sincronizzazione con il server";
+"voice_broadcast_stop_alert_agree_button" = "Sì, ferma";
+"voice_broadcast_stop_alert_description" = "Vuoi davvero fermare la tua trasmissione in diretta? Verrà terminata la trasmissione e la registrazione completa sarà disponibile nella stanza.";
+"voice_broadcast_stop_alert_title" = "Fermare la trasmissione in diretta?";
+"password_policy_pwd_in_dict_error" = "Questa password è stata trovata in un dizionario, perciò non è permessa.";
+"password_policy_weak_pwd_error" = "Questa password è troppo debole. Deve contenere almeno 8 caratteri, con almeno un carattere di ogni tipo: maiuscole, minuscole, numeri e caratteri speciali.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Password troppo corta";
