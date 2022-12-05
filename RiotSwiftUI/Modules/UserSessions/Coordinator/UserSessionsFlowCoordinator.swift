@@ -476,8 +476,10 @@ private extension UserSessionInfo {
 
     var bottomSheetDescription: String {
         switch verificationState {
-        case .unverified, .permanentlyUnverified:
+        case .unverified:
             return VectorL10n.userSessionUnverifiedSessionDescription
+        case .permanentlyUnverified:
+            return VectorL10n.userSessionPermanentlyUnverifiedSessionDescription
         case .verified:
             return VectorL10n.userSessionVerifiedSessionDescription
         case .unknown:
