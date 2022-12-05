@@ -96,6 +96,7 @@ class UserSessionOverviewUITests: MockScreenTestCase {
     
     func test_whenPermanentlySessionSelected_copyIsCorrect() {
         app.goToScreenWithIdentifier(MockUserSessionOverviewScreenState.otherSession(sessionState: .permanentlyUnverified).title)
-        XCTAssertTrue(app.buttons[VectorL10n.userOtherSessionPermanentlyUnverifiedAdditionalInfo].exists)
+        let buttonId = "\(VectorL10n.userOtherSessionPermanentlyUnverifiedAdditionalInfo) \(VectorL10n.userSessionLearnMore)"
+        XCTAssertTrue(app.buttons[buttonId].exists)
     }
 }
