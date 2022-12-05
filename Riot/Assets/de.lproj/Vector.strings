@@ -2681,3 +2681,8 @@
 "voice_broadcast_stop_alert_agree_button" = "Ja, beende";
 "voice_broadcast_stop_alert_description" = "Bist du sicher, dass du deine Live-Übertragung abbrechen möchtest? Dies wird die Übertragung beenden und die vollständige Aufnahme wird im Raum verfügbar sein.";
 "voice_broadcast_stop_alert_title" = "Live-Übertragung abbrechen?";
+"password_policy_weak_pwd_error" = "Dieses Passwort ist zu schwach. Es muss mindestens 8 Zeichen enthalten, davon mindestens ein Zeichen jeder Art: Großbuchstabe, Kleinbuchstabe, Ziffer und Sonderzeichen.";
+"password_policy_pwd_in_dict_error" = "Dieses Passwort wurde in einem Wörterbuch gefunden und nicht erlaubt.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Zu kurzes Passwort";
