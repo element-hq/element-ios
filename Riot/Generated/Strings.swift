@@ -4603,6 +4603,18 @@ public class VectorL10n: NSObject {
   public static var or: String { 
     return VectorL10n.tr("Vector", "or") 
   }
+  /// This password has been found in a dictionary, and is not allowed.
+  public static var passwordPolicyPwdInDictError: String { 
+    return VectorL10n.tr("Vector", "password_policy_pwd_in_dict_error") 
+  }
+  /// Too short password
+  public static var passwordPolicyTooShortPwdError: String { 
+    return VectorL10n.tr("Vector", "password_policy_too_short_pwd_error") 
+  }
+  /// This password is too weak. It must contain at least 8 characters, with at least one character of each type: uppercase, lowercase, digit and special character.
+  public static var passwordPolicyWeakPwdError: String { 
+    return VectorL10n.tr("Vector", "password_policy_weak_pwd_error") 
+  }
   /// Contain a lower-case letter.
   public static var passwordValidationErrorContainLowercaseLetter: String { 
     return VectorL10n.tr("Vector", "password_validation_error_contain_lowercase_letter") 

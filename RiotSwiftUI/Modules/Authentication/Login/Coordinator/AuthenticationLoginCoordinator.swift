@@ -180,7 +180,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleError(_ error: Error) {
         if let mxError = MXError(nsError: error as NSError) {
-            authenticationLoginViewModel.displayError(.mxError(mxError.error))
+            let message = mxError.authenticationErrorMessage()
+            authenticationLoginViewModel.displayError(.mxError(message))
             return
         }
         

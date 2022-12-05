@@ -138,7 +138,8 @@ final class AuthenticationChoosePasswordCoordinator: Coordinator, Presentable {
             if mxError.errcode == kMXErrCodeStringUnauthorized {
                 authenticationChoosePasswordViewModel.displayError(.emailNotVerified)
             } else {
-                authenticationChoosePasswordViewModel.displayError(.mxError(mxError.error))
+                let message = mxError.authenticationErrorMessage()
+                authenticationChoosePasswordViewModel.displayError(.mxError(message))
             }
             
             return
