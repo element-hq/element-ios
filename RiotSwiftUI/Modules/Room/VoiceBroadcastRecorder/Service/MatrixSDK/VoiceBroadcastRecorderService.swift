@@ -91,7 +91,8 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         UIApplication.shared.isIdleTimerDisabled = false
         invalidateTimer()
 
-        voiceBroadcastService?.stopVoiceBroadcast(success: { [weak self] _ in
+        voiceBroadcastService?.stopVoiceBroadcast(lastChunkSequence: chunkFileNumber,
+                                                  success: { [weak self] _ in
             MXLog.debug("[VoiceBroadcastRecorderService] Stopped")
             
             guard let self = self else { return }
@@ -121,7 +122,8 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         UIApplication.shared.isIdleTimerDisabled = false
         invalidateTimer()
         
-        voiceBroadcastService?.pauseVoiceBroadcast(success: { [weak self] _ in
+        voiceBroadcastService?.pauseVoiceBroadcast(lastChunkSequence: chunkFileNumber,
+                                                   success: { [weak self] _ in
             guard let self = self else { return }
             
             // Send current chunk
