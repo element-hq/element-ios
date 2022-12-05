@@ -2870,3 +2870,8 @@
 "voice_broadcast_stop_alert_agree_button" = "Áno, zastaviť";
 "voice_broadcast_stop_alert_description" = "Určite chcete zastaviť vysielanie naživo? Tým sa vysielanie ukončí a v miestnosti bude k dispozícii celý záznam.";
 "voice_broadcast_stop_alert_title" = "Zastaviť vysielanie naživo?";
+"password_policy_pwd_in_dict_error" = "Toto heslo bolo nájdené v slovníku a nie je povolené.";
+"password_policy_weak_pwd_error" = "Toto heslo je príliš slabé. Musí obsahovať aspoň 8 znakov, pričom musí obsahovať aspoň jeden znak z každého typu: veľké a malé písmená, číslice a špeciálny symbol.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Príliš krátke heslo";
