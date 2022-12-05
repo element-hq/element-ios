@@ -890,6 +890,9 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         MXStrongifyAndReturnIfNil(self);
         self->mxSession = nil;
         
+        NSString *myUserId = self.mxSession.myUser.userId;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+        
         [[NSNotificationCenter defaultCenter] removeObserver:self->sessionStateObserver];
         self->sessionStateObserver = nil;
         
@@ -1678,11 +1681,11 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                     [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
                 }
                 
-                // If we encounter a fatal sync issue, we do not re-attempt sync as we cannot recover
-                // from this problem, and the user needs to restart / re-install the app
-                NSSet *fatalSyncErrors = [NSSet setWithArray:@[MXCryptoErrorDomain]];
-                if ([fatalSyncErrors containsObject:error.domain])
+                // If we cannot resolve this error by retrying, exit early
+                BOOL isRetryableError = [error.domain isEqualToString:NSURLErrorDomain] || [MXHTTPOperation urlResponseFromError:error] != nil;
+                if (!isRetryableError)
                 {
+                    MXLogDebug(@"[MXKAccount] Initial sync will not be retried");
                     return;
                 }
 
