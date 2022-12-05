@@ -2874,3 +2874,8 @@
 "voice_broadcast_stop_alert_agree_button" = "Ya, batalkan";
 "voice_broadcast_stop_alert_description" = "Apakah Anda ingin menghentikan siaran langsung Anda? Ini akan mengakhiri siarannya, dan rekamanan lengkap akan tersedia dalam ruangan.";
 "voice_broadcast_stop_alert_title" = "Berhenti menyiarkan langsung?";
+"password_policy_pwd_in_dict_error" = "Kata sandi ini telah ditemukan dalam sebuah kamus dan tidak diperbolehkan.";
+"password_policy_weak_pwd_error" = "Kata sandi ini terlalu lemah. Kata sandi harus berisi setidaknya 8 karakter, dengan setidaknya satu karakter dari setiap jenis: huruf besar, huruf kecil, angka, dan karakter spesial.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Kata sandi terlalu pendek";
