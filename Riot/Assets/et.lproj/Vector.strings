@@ -2619,3 +2619,8 @@
 "voice_broadcast_stop_alert_agree_button" = "Jah, lõpetame";
 "voice_broadcast_stop_alert_description" = "Kas sa oled kindel, et soovid otseeetri lõpetada? Sellega ringhäälingukõne salvestamine lõppeb ja salvestis on kättesaadav kõigile jututoas.";
 "voice_broadcast_stop_alert_title" = "Kas lõpetame otseeetri?";
+"password_policy_pwd_in_dict_error" = "See salasõna leidub levinud salasõnade sõnastikus ning seda sa ei saa kasutada.";
+"password_policy_weak_pwd_error" = "See salasõna on liiga lihtne. Ta peaks olema vähemalt 8 tähemärki pikk ning seal peaks leiduma vähemalt üks väiketäht, suurtäht, number ja erimärk.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Liiga lühike salasõna";
