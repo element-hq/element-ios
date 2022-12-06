@@ -2862,7 +2862,7 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Anda punya sesi yang belum diverifikasi";
-"user_other_session_permanently_unverified_additional_info" = "Sesi ini tidak dapat diverifikasi karena sesinya tidak mendukung enkripsi.";
+"user_other_session_permanently_unverified_additional_info" = "Sesi ini tidak mendukung enkripsi jadi tidak dapat diverifikasi.";
 "voice_broadcast_time_left" = "Tersisa %@";
 "launch_loading_processing_response" = "Memroses data\n%@ %%";
 "launch_loading_server_syncing_nth_attempt" = "Menyinkron dengan server\n(%@ percobaan)";
@@ -2879,3 +2879,4 @@
 
 // MARK: Password policy errors
 "password_policy_too_short_pwd_error" = "Kata sandi terlalu pendek";
+"user_session_permanently_unverified_session_description" = "Sesi ini tidak mendukung enkripsi, sehingga tidak dapat diverifikasi.\n\nAnda tidak akan dapat berpartisipasi dalan ruangan di mana enkripsi diaktifkan saat menggunakan sesi ini.\n\nUntuk keamanan dan privasi terbaik, disarankan untuk menggunakan klien Matrix yang mendukung enkripsi.";
