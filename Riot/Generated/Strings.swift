@@ -8723,7 +8723,7 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionNoVerifiedSessions: String { 
     return VectorL10n.tr("Vector", "user_other_session_no_verified_sessions") 
   }
-  /// This session cannot be verified because it does not support encryption.
+  /// This session doesn’t support encryption and thus can't be verified.
   public static var userOtherSessionPermanentlyUnverifiedAdditionalInfo: String { 
     return VectorL10n.tr("Vector", "user_other_session_permanently_unverified_additional_info") 
   }
@@ -8854,6 +8854,10 @@ public class VectorL10n: NSObject {
   /// Session
   public static var userSessionOverviewSessionTitle: String { 
     return VectorL10n.tr("Vector", "user_session_overview_session_title") 
+  }
+  /// This session doesn't support encryption, so it can't be verified.\n\nYou won't be able to participate in rooms where encryption is enabled when using this session.\n\nFor best security and privacy, it is recommended to use Matrix clients that support encryption.
+  public static var userSessionPermanentlyUnverifiedSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_permanently_unverified_session_description") 
   }
   /// Push notifications
   public static var userSessionPushNotifications: String { 
