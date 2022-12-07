@@ -226,7 +226,11 @@ struct Composer: View {
                 HStack(alignment: .center, spacing: 0) {
                     sendMediaButton
                     FormattingToolbar(formatItems: formatItems) { type in
-                        wysiwygViewModel.apply(type.action)
+                        if type.action == .link {
+                            sendLinkAction()
+                        } else {
+                            wysiwygViewModel.apply(type.action)
+                        }
                     }
                     .frame(height: 44)
                     Spacer()
@@ -241,6 +245,11 @@ struct Composer: View {
                 wysiwygViewModel.maximised = false
             }
         }
+    }
+    
+    private func sendLinkAction() {
+        let linkAction = wysiwygViewModel.getLinkAction()
+        viewModel.send(viewAction: .linkTapped(linkAction: linkAction))
     }
 }
 

@@ -243,6 +243,11 @@ extension RoomViewController {
             roomInputToolbarContainer.superview?.isHidden = isHidden
         }
     }
+    
+    @objc func didSendLinkAction(_ linkAction: LinkActionWrapper) {
+        composerLinkActionBridgePresenter = ComposerLinkActionBridgePresenter(linkAction: linkAction)
+        composerLinkActionBridgePresenter.delegate = self
+    }
 }
 
 // MARK: - Private Helpers
@@ -280,4 +285,8 @@ private extension RoomViewController {
             break
         }
     }
+}
+
+extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
+    
 }

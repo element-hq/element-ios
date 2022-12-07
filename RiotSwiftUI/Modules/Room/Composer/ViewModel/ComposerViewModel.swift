@@ -84,6 +84,8 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
             callback?(.cancel)
         case let .contentDidChange(isEmpty):
             callback?(.contentDidChange(isEmpty: isEmpty))
+        case let .linkTapped(linkAction):
+            callback?(.linkTapped(LinkAction: linkAction))
         }
     }
     

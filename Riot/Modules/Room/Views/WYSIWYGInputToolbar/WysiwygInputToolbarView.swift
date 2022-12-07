@@ -258,9 +258,11 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func handleViewModelResult(_ result: ComposerViewModelResult) {
         switch result {
         case .cancel:
-            self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
+            toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
         case let .contentDidChange(isEmpty):
             setVoiceMessageToolbarIsHidden(!isEmpty)
+        case let .linkTapped(linkAction):
+            toolbarViewDelegate?.didSendLinkAction(LinkActionWrapper(linkAction))
         }
     }
     
