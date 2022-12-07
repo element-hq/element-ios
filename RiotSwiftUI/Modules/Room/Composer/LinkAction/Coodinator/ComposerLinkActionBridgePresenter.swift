@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import WysiwygComposer
 
 protocol ComposerLinkActionBridgePresenterDelegate: AnyObject {
     
@@ -23,12 +24,20 @@ protocol ComposerLinkActionBridgePresenterDelegate: AnyObject {
 
 final class ComposerLinkActionBridgePresenter: NSObject {
     private var coordinator: ComposerLinkActionCoordinator?
-    private var linkAction: LinkActionWrapper
+    private var linkAction: LinkAction
     
     weak var delegate: ComposerLinkActionBridgePresenterDelegate?
     
     init(linkAction: LinkActionWrapper) {
-        self.linkAction = linkAction
+        self.linkAction = linkAction.linkAction
         super.init()
+    }
+    
+    func present(from viewController: UIViewController, animated: Bool) {
+        let composerLinkActionCoordinator = ComposerLinkActionCoordinator(linkAction: linkAction)
+        let presentable = composerLinkActionCoordinator.toPresentable()
+        viewController.present(presentable, animated: animated, completion: nil)
+        composerLinkActionCoordinator.start()
+        coordinator = composerLinkActionCoordinator
     }
 }

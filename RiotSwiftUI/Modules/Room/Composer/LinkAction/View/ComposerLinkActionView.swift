@@ -14,25 +14,23 @@
 // limitations under the License.
 //
 
-import Foundation
-import WysiwygComposer
+import SwiftUI
 
-final class ComposerLinkActionCoordinator: Coordinator, Presentable {
-    var childCoordinators: [Coordinator] = []
+struct ComposerLinkActionView: View {
+    @ObservedObject private var viewModel: ComposerLinkActionViewModel.Context
     
-    private let hostingController: UIViewController
-    private let viewModel: ComposerLinkActionViewModel
-    
-    init(linkAction: LinkAction) {
-        viewModel = ComposerLinkActionViewModel(initialViewState: .init())
-        hostingController = VectorHostingController(rootView: ComposerLinkActionView(viewModel: viewModel.context))
+    var body: some View {
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
     
-    func start() {
-        
+    init(viewModel: ComposerLinkActionViewModel.Context) {
+        self.viewModel = viewModel
     }
-        
-    func toPresentable() -> UIViewController {
-        hostingController
+}
+
+struct ComposerLinkActionView_Previews: PreviewProvider {
+    static let stateRenderer = MockComposerLinkActionScreenState.stateRenderer
+    static var previews: some View {
+        stateRenderer.screenGroup()
     }
 }

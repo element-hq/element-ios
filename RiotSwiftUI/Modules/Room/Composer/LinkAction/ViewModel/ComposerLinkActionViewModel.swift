@@ -15,24 +15,11 @@
 //
 
 import Foundation
-import WysiwygComposer
 
-final class ComposerLinkActionCoordinator: Coordinator, Presentable {
-    var childCoordinators: [Coordinator] = []
+typealias ComposerLinkActionViewModelType = StateStoreViewModel<ComposerLinkActionViewState, ComposerLinkActionViewAction>
+
+final class ComposerLinkActionViewModel: ComposerLinkActionViewModelType, ComposerLinkActionViewModelProtocol {
     
-    private let hostingController: UIViewController
-    private let viewModel: ComposerLinkActionViewModel
+    var callback: ((ComposerLinkActionViewModelResult) -> Void)?
     
-    init(linkAction: LinkAction) {
-        viewModel = ComposerLinkActionViewModel(initialViewState: .init())
-        hostingController = VectorHostingController(rootView: ComposerLinkActionView(viewModel: viewModel.context))
-    }
-    
-    func start() {
-        
-    }
-        
-    func toPresentable() -> UIViewController {
-        hostingController
-    }
 }

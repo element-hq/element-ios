@@ -247,6 +247,7 @@ extension RoomViewController {
     @objc func didSendLinkAction(_ linkAction: LinkActionWrapper) {
         composerLinkActionBridgePresenter = ComposerLinkActionBridgePresenter(linkAction: linkAction)
         composerLinkActionBridgePresenter.delegate = self
+        composerLinkActionBridgePresenter.present(from: self, animated: true)
     }
 }
 
