@@ -175,9 +175,10 @@ extension UISIAutoReportData: Codable {
                 ]
                 contentMap.setObject(content as NSDictionary, forUser: source.senderUserId, andDevice: source.senderDeviceId)
                 session.matrixRestClient.sendDirectToDevice(
-                    eventType: Self.autoRsRequest,
-                    contentMap: contentMap,
-                    txnId: nil
+                    payload: .init(
+                        eventType: Self.autoRsRequest,
+                        contentMap: contentMap
+                    )
                 ) { response in
                     if response.isFailure {
                         MXLog.warning("failed to send auto-uisi to device")
