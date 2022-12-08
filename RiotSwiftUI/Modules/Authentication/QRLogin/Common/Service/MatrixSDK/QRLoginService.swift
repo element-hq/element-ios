@@ -282,6 +282,18 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
             return
         }
         
+        // explicitly download keys for ourself rather than racing with initial sync which might not complete in time
+        MXLog.debug("[QRLoginService] Downloading device list for self")
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            session.crypto.downloadKeys([session.myUserId], forceDownload: false) { _, _ in
+                MXLog.debug("[QRLoginService] Device list downloaded for self")
+                continuation.resume(returning: ())
+            } failure: { _ in
+                MXLog.error("[QRLoginService] Failed to download the device list for self")
+                continuation.resume(returning: ())
+            }
+        }
+        
         MXLog.debug("[QRLoginService] Wait for cross-signing details")
         guard case let .success(data) = await rendezvousService.receive(),
               let responsePayload = try? JSONDecoder().decode(QRLoginRendezvousPayload.self, from: data),
