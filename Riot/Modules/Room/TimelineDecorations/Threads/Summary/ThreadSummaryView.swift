@@ -114,11 +114,18 @@ class ThreadSummaryView: UIView {
         
         room.state { [weak self] roomState in
             guard let self = self else { return }
-            let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-            let lastMessageText = eventFormatter.attributedString(from: lastMessage.replyStrippedVersion,
+            let lastMessageText: NSAttributedString
+            
+            // Check if the last message is in the thread. If not, this means that it has been deleted
+            if lastMessage.isInThread() {
+                let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
+                lastMessageText = eventFormatter.attributedString(from: lastMessage.replyStrippedVersion,
                                                                   with: roomState,
                                                                   andLatestRoomState: nil,
                                                                   error: formatterError)
+            } else {
+                lastMessageText = eventFormatter.redactedMessageReplacementAttributedString()
+            }
             
             let model = ThreadSummaryModel(numberOfReplies: thread.numberOfReplies,
                                            lastMessageSenderAvatar: avatarViewData,
