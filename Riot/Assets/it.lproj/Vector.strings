@@ -2635,7 +2635,7 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Hai sessioni non verificate";
-"user_other_session_permanently_unverified_additional_info" = "Questa sessione non può essere verificata perché non supporta la crittografia.";
+"user_other_session_permanently_unverified_additional_info" = "Questa sessione non supporta la crittografia, perciò non può essere verificata.";
 "voice_broadcast_buffering" = "Buffer...";
 "voice_broadcast_time_left" = "%@ rimasti";
 "launch_loading_processing_response" = "Elaborazione dati\n%@ %%";
@@ -2652,3 +2652,4 @@
 
 // MARK: Password policy errors
 "password_policy_too_short_pwd_error" = "Password troppo corta";
+"user_session_permanently_unverified_session_description" = "Questa sessione non supporta la crittografia, perciò non può essere verificata.\n\nNon potrai partecipare in stanze dove la crittografia è attiva mentre usi questa sessione.\n\nPer maggiore sicurezza e privacy, è consigliabile usare i client di Matrix che supportano la crittografia.";
