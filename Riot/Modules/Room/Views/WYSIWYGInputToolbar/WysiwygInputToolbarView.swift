@@ -42,7 +42,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var heightConstraint: NSLayoutConstraint!
     private var voiceMessageBottomConstraint: NSLayoutConstraint?
     private var hostingViewController: VectorHostingController!
-    private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
+    private var wysiwygViewModel = WysiwygComposerViewModel(
+        textColor: ThemeService.shared().theme.colors.primaryContent,
+        linkColor: ThemeService.shared().theme.colors.accent
+    )
     private var viewModel: ComposerViewModelProtocol!
     
     private var isLandscapePhone: Bool {
@@ -295,6 +298,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func update(theme: Theme) {
         hostingViewController.view.backgroundColor = theme.colors.background
         wysiwygViewModel.textColor = theme.colors.primaryContent
+        wysiwygViewModel.linkColor = theme.colors.accent
     }
     
     private func updateTextViewHeight() {
