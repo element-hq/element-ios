@@ -4328,6 +4328,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         RiotSettings.shared.showAllRoomsInHomeSpace = YES;
     }
+    
+    if (RiotSettings.shared.forceThreadsEnabled)
+    {
+        RiotSettings.shared.enableThreads = YES;
+        RiotSettings.shared.forceThreadsEnabled = NO;
+    }
 }
 
 #pragma mark - App version management
