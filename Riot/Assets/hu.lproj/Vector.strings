@@ -2655,3 +2655,21 @@
 "voice_broadcast_tile" = "Hang közvetítés";
 "voice_broadcast_live" = "Élő";
 "key_verification_alert_body" = "Tekintsd át, hogy meggyőződj arról, hogy a fiókod biztonságban van.";
+"user_session_permanently_unverified_session_description" = "Ez a munkamenet nem támogatja a titkosítást, így nem lehet ellenőrizni sem.\n\nEzzel a munkamenettel nem tudsz részt venni olyan szobákban ahol a titkosítás be van kapcsolva.\n\nA biztonság és a adatbiztonsági okokból javasolt olyan Matrix kliens használata ami támogatja a titkosítást.";
+"user_other_session_permanently_unverified_additional_info" = "Ez a munkamenet nem támogatja a titkosítást, így nem lehet ellenőrizni sem.";
+"voice_broadcast_stop_alert_agree_button" = "Igen, befejez";
+"voice_broadcast_stop_alert_description" = "Biztos, hogy befejezed az élő közvetítést? Ez befejezi a közvetítést és a felvétel az egész szoba számára elérhető lesz.";
+"voice_broadcast_stop_alert_title" = "Megszakítod az élő közvetítést?";
+"voice_broadcast_buffering" = "Pufferelés…";
+"voice_broadcast_time_left" = "%@ van vissza";
+"launch_loading_processing_response" = "Adat feldolgozása\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Szinkronizálás a szerverrel\n(%@ próbálkozás)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Szinkronizálás a szerverrel";
+"password_policy_pwd_in_dict_error" = "Ez a jelszó megtalálható a szótárban ezért nem engedélyezett.";
+"password_policy_weak_pwd_error" = "Ez a jelszó túl gyenge. Legalább 8 karakternek kell lennie és minden típusból legalább egy: nagybetű, kisbetű, szám és speciális karakter.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "A jelszó túl rövid";
