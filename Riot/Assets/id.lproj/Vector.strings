@@ -1754,7 +1754,7 @@
 "home_context_menu_make_room" = "Pindah ke Ruangan";
 "home_context_menu_make_dm" = "Pindah ke Orang";
 "event_formatter_message_deleted" = "Pesan dihapus";
-"settings_labs_enable_threads" = "Perpesanan utasan";
+"settings_labs_enable_threads" = "Utasan pesan";
 "message_from_a_thread" = "Dari sebuah utasan";
 "threads_empty_show_all_threads" = "Tampilkan semua utasan";
 "threads_empty_tip" = "Tip: Ketuk pada sebuah pesan dan gunakan “Utasan” untuk memulai yang baru.";
