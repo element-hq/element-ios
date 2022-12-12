@@ -562,13 +562,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     else
     {
         MXEvent *stateEvent = [roomState stateEventsWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType].lastObject;
-        if (stateEvent)
+        if (stateEvent && ![VoiceBroadcastInfo isStoppedFor:[VoiceBroadcastInfo modelFromJSON: stateEvent.content].state])
         {
-            VoiceBroadcastInfo *voiceBroadcastInfo = [VoiceBroadcastInfo modelFromJSON: stateEvent.content];
-            if (![VoiceBroadcastInfo isStoppedFor:voiceBroadcastInfo.state])
-            {
-                return [self session:session updateRoomSummary:summary withVoiceBroadcastInfoStateEvent:stateEvent roomState:roomState];
-            }
+            return [self session:session updateRoomSummary:summary withVoiceBroadcastInfoStateEvent:stateEvent roomState:roomState];
         }
     }
     
@@ -609,9 +605,6 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 - (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withVoiceBroadcastInfoStateEvent:(MXEvent *)stateEvent  roomState:(MXRoomState *)roomState
 {
-    // Update last message if we have a voice broadcast in the room.
-    VoiceBroadcastInfo *voiceBroadcastInfo = [VoiceBroadcastInfo modelFromJSON: stateEvent.content];
-    
     [summary updateLastMessage:[[MXRoomLastMessage alloc] initWithEvent:stateEvent]];
     if (summary.lastMessage.others == nil)
     {
@@ -621,7 +614,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     
     NSAttributedString *attachmentString = nil;
     UIColor *textColor;
-    if ([VoiceBroadcastInfo isStoppedFor:voiceBroadcastInfo.state])
+    if ([VoiceBroadcastInfo isStoppedFor:[VoiceBroadcastInfo modelFromJSON: stateEvent.content].state])
     {
         textColor = ThemeService.shared.theme.textSecondaryColor;
         NSString *senderDisplayName;
@@ -648,7 +641,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     }
     
     // Compute the attribute text message
-    NSMutableAttributedString *lastMessage = nil;
+    NSMutableAttributedString *lastMessage;
     if (attachmentString)
     {
         lastMessage = [[NSMutableAttributedString alloc] initWithAttributedString:attachmentString];
