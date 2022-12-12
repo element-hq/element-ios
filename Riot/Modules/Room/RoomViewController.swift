@@ -15,6 +15,7 @@
 //
 
 import UIKit
+import WysiwygComposer
 
 extension RoomViewController {
     // MARK: - Override
@@ -290,17 +291,28 @@ private extension RoomViewController {
 }
 
 extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
+    func didRequestLinkOperation(_ linkOperation: WysiwygLinkOperation) {
+        dismissPresenter { [weak self] in
+            self?.wysiwygInputToolbar?.performLinkOperation(linkOperation)
+        }
+    }
+    
     func didDismissInteractively() {
-        self.cleanup()
+        cleanup()
     }
     
     func didCancel() {
+        dismissPresenter(completion: nil)
+    }
+    
+    private func dismissPresenter(completion: (() -> Void)?) {
         self.composerLinkActionBridgePresenter?.dismiss(animated: true) { [weak self] in
+            completion?()
             self?.cleanup()
         }
     }
     
     private func cleanup() {
-        self.composerLinkActionBridgePresenter = nil
+        composerLinkActionBridgePresenter = nil
     }
 }

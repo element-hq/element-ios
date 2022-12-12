@@ -227,6 +227,7 @@ struct Composer: View {
                     sendMediaButton
                     FormattingToolbar(formatItems: formatItems) { type in
                         if type.action == .link {
+                            storeCurrentSelection()
                             sendLinkAction()
                         } else {
                             wysiwygViewModel.apply(type.action)
@@ -245,6 +246,10 @@ struct Composer: View {
                 wysiwygViewModel.maximised = false
             }
         }
+    }
+    
+    private func storeCurrentSelection() {
+        viewModel.send(viewAction: .storeSelection(selection: wysiwygViewModel.attributedContent.selection))
     }
     
     private func sendLinkAction() {

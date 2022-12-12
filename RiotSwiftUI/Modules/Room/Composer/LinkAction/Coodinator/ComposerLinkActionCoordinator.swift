@@ -20,6 +20,7 @@ import WysiwygComposer
 enum ComposerLinkActionCoordinatorAction {
     case didTapCancel
     case didDismissInteractively
+    case didRequestLinkOperation(_ linkOperation: WysiwygLinkOperation)
 }
 
 final class ComposerLinkActionCoordinator: NSObject, Coordinator, Presentable {
@@ -42,10 +43,12 @@ final class ComposerLinkActionCoordinator: NSObject, Coordinator, Presentable {
             switch result {
             case .cancel:
                 self?.callback?(.didTapCancel)
+            case let .performOperation(linkOperation):
+                self?.callback?(.didRequestLinkOperation(linkOperation))
             }
         }
     }
-        
+    
     func toPresentable() -> UIViewController {
         hostingController
     }

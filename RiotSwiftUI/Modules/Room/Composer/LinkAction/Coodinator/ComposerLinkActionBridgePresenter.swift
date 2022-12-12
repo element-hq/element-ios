@@ -20,6 +20,7 @@ import WysiwygComposer
 protocol ComposerLinkActionBridgePresenterDelegate: AnyObject {
     func didCancel()
     func didDismissInteractively()
+    func didRequestLinkOperation(_ linkOperation: WysiwygLinkOperation)
 }
 
 final class ComposerLinkActionBridgePresenter: NSObject {
@@ -41,6 +42,8 @@ final class ComposerLinkActionBridgePresenter: NSObject {
                 self?.delegate?.didCancel()
             case .didDismissInteractively:
                 self?.delegate?.didDismissInteractively()
+            case let .didRequestLinkOperation(linkOperation):
+                self?.delegate?.didRequestLinkOperation(linkOperation)
             }
         }
         let presentable = composerLinkActionCoordinator.toPresentable()

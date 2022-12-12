@@ -25,6 +25,7 @@ enum ComposerLinkActionViewAction: Equatable {
 
 enum ComposerLinkActionViewModelResult: Equatable {
     case cancel
+    case performOperation(_ linkOperation: WysiwygLinkOperation)
 }
 
 // MARK: View

@@ -142,6 +142,7 @@ enum ComposerViewAction: Equatable {
     case cancel
     case contentDidChange(isEmpty: Bool)
     case linkTapped(linkAction: LinkAction)
+    case storeSelection(selection: NSRange)
 }
 
 enum ComposerViewModelResult: Equatable {

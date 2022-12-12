@@ -212,6 +212,13 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         wysiwygViewModel.maximised = false
     }
     
+    func performLinkOperation(_ linkOperation: WysiwygLinkOperation) {
+        if let selectionToRestore = viewModel.selectionToRestore {
+            wysiwygViewModel.attributedContent.selection = selectionToRestore
+        }
+        wysiwygViewModel.applyLinkOperation(linkOperation)
+    }
+    
     // MARK: - Private
     
     @objc private func keyboardWillShow(_ notification: Notification) {

@@ -21,9 +21,9 @@ typealias ComposerLinkActionViewModelType = StateStoreViewModel<ComposerLinkActi
 
 final class ComposerLinkActionViewModel: ComposerLinkActionViewModelType, ComposerLinkActionViewModelProtocol {
     // MARK: - Properties
-
+    
     // MARK: Private
-
+    
     // MARK: Public
     
     var callback: ((ComposerLinkActionViewModelResult) -> Void)?
@@ -33,10 +33,8 @@ final class ComposerLinkActionViewModel: ComposerLinkActionViewModelType, Compos
     init(from linkAction: LinkAction) {
         let initialViewState: ComposerLinkActionViewState
         let simpleBindings = ComposerLinkActionBindings(text: "", linkUrl: "")
-        // TODO: Add translations
         switch linkAction {
-        case .edit:
-            let link = "https://element.io"
+        case let .edit(link):
             initialViewState = .init(
                 linkAction: .edit(link: link),
                 bindings: .init(
@@ -57,8 +55,26 @@ final class ComposerLinkActionViewModel: ComposerLinkActionViewModelType, Compos
         switch viewAction {
         case .cancel:
             callback?(.cancel)
-        case .save, .remove:
-            break
+        case .remove:
+            callback?(.performOperation(.removeLinks))
+        case .save:
+            switch state.linkAction {
+            case .createWithText:
+                callback?(
+                    .performOperation(
+                        .createLink(
+                            urlString: state.bindings.linkUrl,
+                            text: state.bindings.text
+                        )
+                    )
+                )
+            case .create, .edit:
+                callback?(
+                    .performOperation(
+                        .setLink(urlString: state.bindings.linkUrl)
+                    )
+                )
+            }
         }
     }
 }

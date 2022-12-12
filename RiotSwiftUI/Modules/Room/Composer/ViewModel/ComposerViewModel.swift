@@ -22,7 +22,7 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
     // MARK: - Properties
 
     // MARK: Private
-
+    
     // MARK: Public
     
     var callback: ((ComposerViewModelResult) -> Void)?
@@ -76,6 +76,8 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
         state.bindings.focused
     }
     
+    var selectionToRestore: NSRange?
+    
     // MARK: - Public
     
     override func process(viewAction: ComposerViewAction) {
@@ -86,6 +88,8 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
             callback?(.contentDidChange(isEmpty: isEmpty))
         case let .linkTapped(linkAction):
             callback?(.linkTapped(LinkAction: linkAction))
+        case let .storeSelection(selection):
+            selectionToRestore = selection
         }
     }
     
