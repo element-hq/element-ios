@@ -22,7 +22,7 @@ enum MockComposerLinkActionScreenState: MockScreenState, CaseIterable {
     case create
     
     var screenType: Any.Type {
-        ComposerLinkActionView.self
+        ComposerLinkAction.self
     }
     
     var screenView: ([Any], AnyView) {
@@ -37,7 +37,7 @@ enum MockComposerLinkActionScreenState: MockScreenState, CaseIterable {
         }
         return (
             [viewModel],
-            AnyView(ComposerLinkActionView(viewModel: viewModel.context))
+            AnyView(ComposerLinkAction(viewModel: viewModel.context))
         )
     }
 }

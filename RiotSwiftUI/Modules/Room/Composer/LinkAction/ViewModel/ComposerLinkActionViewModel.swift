@@ -20,7 +20,6 @@ import WysiwygComposer
 typealias ComposerLinkActionViewModelType = StateStoreViewModel<ComposerLinkActionViewState, ComposerLinkActionViewAction>
 
 final class ComposerLinkActionViewModel: ComposerLinkActionViewModelType, ComposerLinkActionViewModelProtocol {
-    
     // MARK: - Properties
 
     // MARK: Private
@@ -33,12 +32,22 @@ final class ComposerLinkActionViewModel: ComposerLinkActionViewModelType, Compos
     
     init(from linkAction: LinkAction) {
         let initialViewState: ComposerLinkActionViewState
+        let simpleBindings = ComposerLinkActionBindings(text: "", linkUrl: "")
         // TODO: Add translations
         switch linkAction {
         case .edit:
-            initialViewState = .init(title: "Edit Link")
-        case .createWithText, .create:
-            initialViewState = .init(title: "Create a Link")
+            let link = "https://element.io"
+            initialViewState = .init(
+                linkAction: .edit(link: link),
+                bindings: .init(
+                    text: "",
+                    linkUrl: link
+                )
+            )
+        case .createWithText:
+            initialViewState = .init(linkAction: .createWithText, bindings: simpleBindings)
+        case .create:
+            initialViewState = .init(linkAction: .create, bindings: simpleBindings)
         }
         
         super.init(initialViewState: initialViewState)
@@ -48,6 +57,8 @@ final class ComposerLinkActionViewModel: ComposerLinkActionViewModelType, Compos
         switch viewAction {
         case .cancel:
             callback?(.cancel)
+        case .save, .remove:
+            break
         }
     }
 }

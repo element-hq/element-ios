@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +15,12 @@
 //
 
 import Foundation
+import WysiwygComposer
 
 enum ComposerLinkActionViewAction: Equatable {
     case cancel
+    case save
+    case remove
 }
 
 enum ComposerLinkActionViewModelResult: Equatable {
@@ -27,5 +30,50 @@ enum ComposerLinkActionViewModelResult: Equatable {
 // MARK: View
 
 struct ComposerLinkActionViewState: BindableState {
-    let title: String
+    let linkAction: LinkAction
+    
+    var bindings: ComposerLinkActionBindings
+}
+
+extension ComposerLinkActionViewState {
+    var title: String {
+        // TODO: Add translations
+        switch linkAction {
+        case .createWithText, .create: return "Create a link"
+        case .edit: return "Edit link"
+        }
+    }
+    
+    var shouldDisplayTextField: Bool {
+        switch linkAction {
+        case .createWithText: return true
+        default: return false
+        }
+    }
+    
+    var shouldDisplayRemoveButton: Bool {
+        switch linkAction {
+        case .edit: return true
+        default: return false
+        }
+    }
+    
+    var isSaveButtonDisabled: Bool {
+        guard isValidLink else { return true }
+        switch linkAction {
+        case .create: return false
+        case .createWithText: return bindings.text.isEmpty
+        case let .edit(originalLink): return bindings.linkUrl == originalLink
+        }
+    }
+    
+    private var isValidLink: Bool {
+        guard let url = URL(string: bindings.linkUrl) else { return false }
+        return UIApplication.shared.canOpenURL(url)
+    }
+}
+
+struct ComposerLinkActionBindings {
+    var text: String
+    var linkUrl: String
 }

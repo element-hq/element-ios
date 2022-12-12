@@ -32,7 +32,7 @@ final class ComposerLinkActionCoordinator: NSObject, Coordinator, Presentable {
     
     init(linkAction: LinkAction) {
         viewModel = ComposerLinkActionViewModel(from: linkAction)
-        hostingController = VectorHostingController(rootView: ComposerLinkActionView(viewModel: viewModel.context))
+        hostingController = VectorHostingController(rootView: ComposerLinkAction(viewModel: viewModel.context))
         super.init()
         hostingController.presentationController?.delegate = self
     }
