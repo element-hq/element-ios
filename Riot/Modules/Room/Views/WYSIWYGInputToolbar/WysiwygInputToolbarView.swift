@@ -214,7 +214,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     func performLinkOperation(_ linkOperation: WysiwygLinkOperation) {
         if let selectionToRestore = viewModel.selectionToRestore {
-            wysiwygViewModel.attributedContent.selection = selectionToRestore
+            wysiwygViewModel.select(range: selectionToRestore)
         }
         wysiwygViewModel.applyLinkOperation(linkOperation)
     }
