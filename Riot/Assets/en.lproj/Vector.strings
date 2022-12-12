@@ -2697,6 +2697,9 @@ To enable access, tap Settings> Location and select Always";
 "notice_crypto_error_unknown_inbound_session_id" = "The sender's session has not sent us the keys for this message.";
 "notice_sticker" = "sticker";
 "notice_in_reply_to" = "In reply to";
+"notice_voice_broadcast_live" = "Live broadcast";
+"notice_voice_broadcast_ended" = "%@ ended a voice broadcast.";
+"notice_voice_broadcast_ended_by_you" = "You ended a voice broadcast.";
 
 // room display name
 "room_displayname_empty_room" = "Empty room";
