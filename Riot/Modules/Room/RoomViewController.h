@@ -123,7 +123,7 @@ extern NSTimeInterval const kResizeComposerAnimationDuration;
 
 @property (nonatomic) CGFloat wysiwygTranslation;
 
-@property (nonatomic, strong) ComposerLinkActionBridgePresenter *composerLinkActionBridgePresenter;
+@property (nonatomic, strong, nullable) ComposerLinkActionBridgePresenter *composerLinkActionBridgePresenter;
 
 
 /**

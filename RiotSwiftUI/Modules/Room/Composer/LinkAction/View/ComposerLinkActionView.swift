@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,31 @@
 import SwiftUI
 
 struct ComposerLinkActionView: View {
+    @Environment(\.theme) private var theme: ThemeSwiftUI
     @ObservedObject private var viewModel: ComposerLinkActionViewModel.Context
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            VStack {}
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(VectorL10n.cancel, action: {
+                            viewModel.send(viewAction: .cancel)
+                        })
+                    }
+                    ToolbarItem(placement: .principal) {
+                        Text(viewModel.viewState.title)
+                            .font(.headline)
+                            .foregroundColor(theme.colors.primaryContent)
+                    }
+                }
+                .navigationBarTitleDisplayMode(.inline)
+                .introspectNavigationController { navigationController in
+                    ThemeService.shared().theme.applyStyle(onNavigationBar: navigationController.navigationBar)
+                }
+        }
+        .accentColor(theme.colors.accent)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     init(viewModel: ComposerLinkActionViewModel.Context) {

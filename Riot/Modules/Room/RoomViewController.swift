@@ -245,9 +245,10 @@ extension RoomViewController {
     }
     
     @objc func didSendLinkAction(_ linkAction: LinkActionWrapper) {
-        composerLinkActionBridgePresenter = ComposerLinkActionBridgePresenter(linkAction: linkAction)
-        composerLinkActionBridgePresenter.delegate = self
-        composerLinkActionBridgePresenter.present(from: self, animated: true)
+        let presenter = ComposerLinkActionBridgePresenter(linkAction: linkAction)
+        presenter.delegate = self
+        composerLinkActionBridgePresenter = presenter
+        presenter.present(from: self, animated: true)
     }
 }
 
@@ -289,5 +290,17 @@ private extension RoomViewController {
 }
 
 extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
+    func didDismissInteractively() {
+        self.cleanup()
+    }
     
+    func didCancel() {
+        self.composerLinkActionBridgePresenter?.dismiss(animated: true) { [weak self] in
+            self?.cleanup()
+        }
+    }
+    
+    private func cleanup() {
+        self.composerLinkActionBridgePresenter = nil
+    }
 }

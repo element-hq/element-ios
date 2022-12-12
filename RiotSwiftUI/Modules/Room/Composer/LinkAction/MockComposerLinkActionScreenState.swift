@@ -16,13 +16,25 @@
 
 import SwiftUI
 
-enum MockComposerLinkActionScreenState: MockScreenState, CaseIterable {    
+enum MockComposerLinkActionScreenState: MockScreenState, CaseIterable {
+    case edit
+    case createWithText
+    case create
+    
     var screenType: Any.Type {
         ComposerLinkActionView.self
     }
     
     var screenView: ([Any], AnyView) {
-        let viewModel = ComposerLinkActionViewModel(initialViewState: .init())
+        let viewModel: ComposerLinkActionViewModel
+        switch self {
+        case .createWithText:
+            viewModel = .init(from: .createWithText)
+        case .create:
+            viewModel = .init(from: .create)
+        case .edit:
+            viewModel = .init(from: .edit(link: "https://element.io"))
+        }
         return (
             [viewModel],
             AnyView(ComposerLinkActionView(viewModel: viewModel.context))

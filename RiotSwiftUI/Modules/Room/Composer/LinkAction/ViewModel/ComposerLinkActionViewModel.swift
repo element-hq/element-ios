@@ -15,11 +15,39 @@
 //
 
 import Foundation
+import WysiwygComposer
 
 typealias ComposerLinkActionViewModelType = StateStoreViewModel<ComposerLinkActionViewState, ComposerLinkActionViewAction>
 
 final class ComposerLinkActionViewModel: ComposerLinkActionViewModelType, ComposerLinkActionViewModelProtocol {
     
+    // MARK: - Properties
+
+    // MARK: Private
+
+    // MARK: Public
+    
     var callback: ((ComposerLinkActionViewModelResult) -> Void)?
     
+    // MARK: - Public
+    
+    init(from linkAction: LinkAction) {
+        let initialViewState: ComposerLinkActionViewState
+        // TODO: Add translations
+        switch linkAction {
+        case .edit:
+            initialViewState = .init(title: "Edit Link")
+        case .createWithText, .create:
+            initialViewState = .init(title: "Create a Link")
+        }
+        
+        super.init(initialViewState: initialViewState)
+    }
+    
+    override func process(viewAction: ComposerLinkActionViewAction) {
+        switch viewAction {
+        case .cancel:
+            callback?(.cancel)
+        }
+    }
 }

@@ -16,13 +16,16 @@
 
 import Foundation
 
-enum ComposerLinkActionViewAction {
+enum ComposerLinkActionViewAction: Equatable {
+    case cancel
 }
 
 enum ComposerLinkActionViewModelResult: Equatable {
+    case cancel
 }
 
 // MARK: View
 
 struct ComposerLinkActionViewState: BindableState {
+    let title: String
 }

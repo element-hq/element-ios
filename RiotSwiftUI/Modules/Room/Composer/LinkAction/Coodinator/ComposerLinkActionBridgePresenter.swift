@@ -18,9 +18,9 @@ import Foundation
 import WysiwygComposer
 
 protocol ComposerLinkActionBridgePresenterDelegate: AnyObject {
-    
+    func didCancel()
+    func didDismissInteractively()
 }
-
 
 final class ComposerLinkActionBridgePresenter: NSObject {
     private var coordinator: ComposerLinkActionCoordinator?
@@ -35,9 +35,28 @@ final class ComposerLinkActionBridgePresenter: NSObject {
     
     func present(from viewController: UIViewController, animated: Bool) {
         let composerLinkActionCoordinator = ComposerLinkActionCoordinator(linkAction: linkAction)
+        composerLinkActionCoordinator.callback = { [weak self] action in
+            switch action {
+            case .didTapCancel:
+                self?.delegate?.didCancel()
+            case .didDismissInteractively:
+                self?.delegate?.didDismissInteractively()
+            }
+        }
         let presentable = composerLinkActionCoordinator.toPresentable()
         viewController.present(presentable, animated: animated, completion: nil)
         composerLinkActionCoordinator.start()
         coordinator = composerLinkActionCoordinator
+    }
+    
+    func dismiss(animated: Bool, completion: (() -> Void)?) {
+        guard let coordinator = coordinator else {
+            return
+        }
+        // Dismiss modal
+        coordinator.toPresentable().dismiss(animated: animated) {
+            self.coordinator = nil
+            completion?()
+        }
     }
 }
