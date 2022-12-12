@@ -7563,7 +7563,7 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
   }
-  /// Threaded messaging
+  /// Threaded messages
   public static var settingsLabsEnableThreads: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
   }
