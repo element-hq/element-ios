@@ -100,4 +100,42 @@ final class ComposerLinkActionViewModelTests: XCTestCase {
         context.send(viewAction: .remove)
         XCTAssertEqual(result, .performOperation(.removeLinks))
     }
+    
+    func testSaveActionForCreate() {
+        setUp(with: .create)
+        var result: ComposerLinkActionViewModelResult!
+        viewModel.callback = { value in
+            result = value
+        }
+        let link = "https://element.io"
+        context.linkUrl = link
+        context.send(viewAction: .save)
+        XCTAssertEqual(result, .performOperation(.setLink(urlString: link)))
+    }
+    
+    func testSaveActionForCreateWithText() {
+        setUp(with: .createWithText)
+        var result: ComposerLinkActionViewModelResult!
+        viewModel.callback = { value in
+            result = value
+        }
+        let link = "https://element.io"
+        context.linkUrl = link
+        let text = "test"
+        context.text = text
+        context.send(viewAction: .save)
+        XCTAssertEqual(result, .performOperation(.createLink(urlString: link, text: text)))
+    }
+    
+    func testSaveActionForEdit() {
+        setUp(with: .edit(link: "https://element.io"))
+        var result: ComposerLinkActionViewModelResult!
+        viewModel.callback = { value in
+            result = value
+        }
+        let link = "https://matrix.org"
+        context.linkUrl = link
+        context.send(viewAction: .save)
+        XCTAssertEqual(result, .performOperation(.setLink(urlString: link)))
+    }
 }
