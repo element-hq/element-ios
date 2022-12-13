@@ -37,7 +37,16 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
     }
     
     func devices(completion: @escaping (MXResponse<[MXDevice]>) -> Void) {
-        session.matrixRestClient.devices(completion: completion)
+        session.matrixRestClient.devices { [weak self] response in
+            switch response {
+            case .success(let devices):
+                self?.deleteAccountDataIfNeeded(deviceList: devices)
+            case .failure:
+                break
+            }
+            
+            completion(response)
+        }
     }
     
     func device(withDeviceId deviceId: String, ofUser userId: String) -> MXDeviceInfo? {
@@ -64,5 +73,24 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
         let service = QRLoginService(client: session.matrixRestClient,
                                      mode: .authenticated)
         return try await service.isServiceAvailable()
+    }
+}
+
+private extension UserSessionsDataProvider {
+    func deleteAccountDataIfNeeded(deviceList: [MXDevice]) {
+        let deviceAccountDataKeys = Set(
+            session
+                .accountData
+                .allAccountDataEvents()
+                .map(\.key)
+                .filter { $0.hasPrefix(kMXAccountDataTypeClientInformation) }
+        )
+        
+        let expectedDeviceAccountDataKeys = Set(deviceList.map { "\(kMXAccountDataTypeClientInformation).\($0.deviceId)" })
+        let obsoletedDeviceAccountDataKeys = deviceAccountDataKeys.subtracting(expectedDeviceAccountDataKeys)
+        
+        for accountDataKey in obsoletedDeviceAccountDataKeys {
+            session.deleteAccountData(withType: accountDataKey, success: {}, failure: { _ in })
+        }
     }
 }
