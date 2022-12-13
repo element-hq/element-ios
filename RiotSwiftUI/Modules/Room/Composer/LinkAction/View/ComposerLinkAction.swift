@@ -51,10 +51,10 @@ struct ComposerLinkAction: View {
                                     selectedField = edit ? .text : nil
                                 }
                             )
-                                .textFieldStyle(BorderedInputFieldStyle(isEditing: isTextFocused))
-                                .autocapitalization(.none)
-                                .accessibilityIdentifier("textTextField")
-                                .accessibilityLabel(VectorL10n.wysiwygComposerLinkActionText)
+                            .textFieldStyle(BorderedInputFieldStyle(isEditing: isTextFocused))
+                            .autocapitalization(.none)
+                            .accessibilityIdentifier("textTextField")
+                            .accessibilityLabel(VectorL10n.wysiwygComposerLinkActionText)
                         }
                     }
                     VStack(alignment: .leading, spacing: 8.0) {
@@ -68,11 +68,11 @@ struct ComposerLinkAction: View {
                                 selectedField = edit ? .link : nil
                             }
                         )
-                            .keyboardType(.URL)
-                            .autocapitalization(.none)
-                            .textFieldStyle(BorderedInputFieldStyle(isEditing: isLinkFocused))
-                            .accessibilityIdentifier("linkTextField")
-                            .accessibilityLabel(VectorL10n.wysiwygComposerLinkActionLink)
+                        .keyboardType(.URL)
+                        .autocapitalization(.none)
+                        .textFieldStyle(BorderedInputFieldStyle(isEditing: isLinkFocused))
+                        .accessibilityIdentifier("linkTextField")
+                        .accessibilityLabel(VectorL10n.wysiwygComposerLinkActionLink)
                     }
                 }
                 Spacer()
