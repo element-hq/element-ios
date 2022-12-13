@@ -17,8 +17,23 @@
 import SwiftUI
 
 struct ComposerLinkAction: View {
+    enum Field {
+        case text
+        case link
+    }
+    
     @Environment(\.theme) private var theme: ThemeSwiftUI
     @ObservedObject private var viewModel: ComposerLinkActionViewModel.Context
+    
+    @State private var selectedField: Field?
+    
+    private var isTextFocused: Bool {
+        selectedField == .text
+    }
+    
+    private var isLinkFocused: Bool {
+        selectedField == .link
+    }
     
     var body: some View {
         NavigationView {
@@ -29,8 +44,14 @@ struct ComposerLinkAction: View {
                             Text(VectorL10n.wysiwygComposerLinkActionText)
                                 .font(theme.fonts.subheadline)
                                 .foregroundColor(theme.colors.secondaryContent)
-                            TextField("", text: $viewModel.text)
-                                .textFieldStyle(BorderedInputFieldStyle())
+                            TextField(
+                                "",
+                                text: $viewModel.text,
+                                onEditingChanged: { edit in
+                                    selectedField = edit ? .text : nil
+                                }
+                            )
+                                .textFieldStyle(BorderedInputFieldStyle(isEditing: isTextFocused))
                                 .autocapitalization(.none)
                                 .accessibilityIdentifier("textTextField")
                                 .accessibilityLabel(VectorL10n.wysiwygComposerLinkActionText)
@@ -40,10 +61,16 @@ struct ComposerLinkAction: View {
                         Text(VectorL10n.wysiwygComposerLinkActionLink)
                             .font(theme.fonts.subheadline)
                             .foregroundColor(theme.colors.secondaryContent)
-                        TextField("", text: $viewModel.linkUrl)
+                        TextField(
+                            "",
+                            text: $viewModel.linkUrl,
+                            onEditingChanged: { edit in
+                                selectedField = edit ? .link : nil
+                            }
+                        )
                             .keyboardType(.URL)
                             .autocapitalization(.none)
-                            .textFieldStyle(BorderedInputFieldStyle())
+                            .textFieldStyle(BorderedInputFieldStyle(isEditing: isLinkFocused))
                             .accessibilityIdentifier("linkTextField")
                             .accessibilityLabel(VectorL10n.wysiwygComposerLinkActionLink)
                     }
