@@ -38,10 +38,9 @@ struct ComposerLinkActionViewState: BindableState {
 
 extension ComposerLinkActionViewState {
     var title: String {
-        // TODO: Add translations
         switch linkAction {
-        case .createWithText, .create: return "Create a link"
-        case .edit: return "Edit link"
+        case .createWithText, .create: return VectorL10n.wysiwygComposerLinkActionCreateTitle
+        case .edit: return VectorL10n.wysiwygComposerLinkActionEditTitle
         }
     }
     

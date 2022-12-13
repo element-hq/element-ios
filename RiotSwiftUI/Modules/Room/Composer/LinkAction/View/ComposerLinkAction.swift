@@ -26,22 +26,24 @@ struct ComposerLinkAction: View {
                 VStack(alignment: .leading, spacing: 24) {
                     if viewModel.viewState.shouldDisplayTextField {
                         VStack(alignment: .leading, spacing: 8.0) {
-                            // TODO: Add Translation
-                            Text("Text")
+                            Text(VectorL10n.wysiwygComposerLinkActionText)
                                 .font(theme.fonts.subheadline)
                                 .foregroundColor(theme.colors.secondaryContent)
                             TextField("", text: $viewModel.text)
                                 .textFieldStyle(BorderedInputFieldStyle())
+                                .accessibilityIdentifier("textTextField")
+                                .accessibilityLabel(VectorL10n.wysiwygComposerLinkActionText)
                         }
                     }
                     VStack(alignment: .leading, spacing: 8.0) {
-                        // TODO: Add Translation
-                        Text("Link")
+                        Text(VectorL10n.wysiwygComposerLinkActionLink)
                             .font(theme.fonts.subheadline)
                             .foregroundColor(theme.colors.secondaryContent)
                         TextField("", text: $viewModel.linkUrl)
                             .keyboardType(.URL)
                             .textFieldStyle(BorderedInputFieldStyle())
+                            .accessibilityIdentifier("linkTextField")
+                            .accessibilityLabel(VectorL10n.wysiwygComposerLinkActionLink)
                     }
                 }
                 Spacer()

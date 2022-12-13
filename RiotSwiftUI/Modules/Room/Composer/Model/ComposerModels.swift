@@ -90,8 +90,7 @@ extension FormatItem {
         case .underline:
             return VectorL10n.wysiwygComposerFormatActionUnderline
         case .link:
-            // TODO: Add link accessibility label translation
-            return "link"
+            return VectorL10n.wysiwygComposerFormatActionLink
         }
     }
 }
