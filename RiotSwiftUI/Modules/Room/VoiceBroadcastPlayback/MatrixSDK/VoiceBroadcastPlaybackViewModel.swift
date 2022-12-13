@@ -173,22 +173,16 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     /// Backward (30sec) a voice broadcast
     private func backward() {
         let newProgressValue = context.progress - VoiceBroadcastPlaybackViewModel.defaultBackwardForwardValue
-        seekTo(newProgressValue > 0 ? newProgressValue : 0)
-        
-        state.bindings.progress = newProgressValue
-        updateBackwardForwardButtons()
+        seek(to: max(newProgressValue, 0.0))
     }
 
     /// Forward (30sec) a voice broadcast
     private func forward() {
         let newProgressValue = context.progress + VoiceBroadcastPlaybackViewModel.defaultBackwardForwardValue
-        seekTo(newProgressValue < state.playingState.duration ? newProgressValue : state.playingState.duration)
-
-        state.bindings.progress = newProgressValue
-        updateBackwardForwardButtons()
+        seek(to: min(newProgressValue, state.playingState.duration))
     }
     
-    private func seekTo(_ seekTime: Float) {
+    private func seek(to seekTime: Float) {
         // Flush the chunks queue and the current audio player playlist
         voiceBroadcastChunkQueue = []
         reloadVoiceBroadcastChunkQueue = isProcessingVoiceBroadcastChunk
@@ -215,6 +209,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             state.playbackState = .buffering
         }
         processPendingVoiceBroadcastChunks()
+        
+        state.bindings.progress = seekTime
+        updateUI()
     }
     
     // MARK: - Voice broadcast chunks playback
@@ -347,16 +344,11 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             audioPlayer?.pause()
             displayLink.isPaused = true
         } else {
-            seekTo(state.bindings.progress)
-            updateBackwardForwardButtons()
+            seek(to: state.bindings.progress)
         }
     }
     
     @objc private func handleDisplayLinkTick() {
-        updateUI()
-    }
-    
-    private func updateUI() {
         guard let playingEventId = voiceBroadcastAttachmentCacheManagerLoadResults.first(where: { result in
                   result.url == audioPlayer?.currentUrl
               })?.eventIdentifier,
@@ -372,10 +364,10 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         
         state.bindings.progress = Float(progress)
         
-        updateBackwardForwardButtons()
+        updateUI()
     }
     
-    private func updateBackwardForwardButtons() {
+    private func updateUI() {
         state.playingState.canMoveBackward = state.bindings.progress > 0
         state.playingState.canMoveForward = state.bindings.progress < state.playingState.duration
     }
