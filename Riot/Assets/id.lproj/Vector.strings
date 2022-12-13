@@ -2205,8 +2205,8 @@
 "room_no_power_to_create_conference_call" = "Anda membutuhkan izin untuk mengundang untuk memulai konferensi di ruangan ini";
 "room_left_for_dm" = "Anda keluar";
 "room_left" = "Anda meninggalkan ruangan ini";
-"room_error_timeline_event_not_found" = "Aplikasi ini sedang mencoba untuk memuat titik tertenu di linimasa ruangan ini tetapi tidak dapat menemukannya";
-"room_error_timeline_event_not_found_title" = "Gagal untuk memuat posisi linimasa";
+"room_error_timeline_event_not_found" = "Aplikasi ini sedang mencoba untuk memuat titik tertentu di lini masa ruangan ini tetapi tidak dapat menemukannya";
+"room_error_timeline_event_not_found_title" = "Gagal memuat posisi lini masa";
 "room_error_cannot_load_timeline" = "Gagal untuk memuat linimasa";
 "room_error_topic_edition_not_authorized" = "Anda tidak diizinkan untuk mengubah topik ruangan ini";
 "room_error_name_edition_not_authorized" = "Anda tidak diizinkan untuk mengubah nama ruangan ini";
