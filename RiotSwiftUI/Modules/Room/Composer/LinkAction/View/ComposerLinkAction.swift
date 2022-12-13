@@ -31,6 +31,7 @@ struct ComposerLinkAction: View {
                                 .foregroundColor(theme.colors.secondaryContent)
                             TextField("", text: $viewModel.text)
                                 .textFieldStyle(BorderedInputFieldStyle())
+                                .autocapitalization(.none)
                                 .accessibilityIdentifier("textTextField")
                                 .accessibilityLabel(VectorL10n.wysiwygComposerLinkActionText)
                         }
@@ -41,6 +42,7 @@ struct ComposerLinkAction: View {
                             .foregroundColor(theme.colors.secondaryContent)
                         TextField("", text: $viewModel.linkUrl)
                             .keyboardType(.URL)
+                            .autocapitalization(.none)
                             .textFieldStyle(BorderedInputFieldStyle())
                             .accessibilityIdentifier("linkTextField")
                             .accessibilityLabel(VectorL10n.wysiwygComposerLinkActionLink)
@@ -53,6 +55,7 @@ struct ComposerLinkAction: View {
                     }
                     .buttonStyle(PrimaryActionButtonStyle())
                     .disabled(viewModel.viewState.isSaveButtonDisabled)
+                    .animation(.easeInOut(duration: 0.15), value: viewModel.viewState.isSaveButtonDisabled)
                     if viewModel.viewState.shouldDisplayRemoveButton {
                         Button(VectorL10n.remove) {
                             viewModel.send(viewAction: .remove)
