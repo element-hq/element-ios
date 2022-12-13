@@ -1,3 +1,35 @@
+## Changes in 1.9.14 (2022-12-13)
+
+🙌 Improvements
+
+- Add badge for messages in spaces button. ([#7088](https://github.com/vector-im/element-ios/pull/7088))
+- Session: Do not retry initial sync on fatal errors ([#7115](https://github.com/vector-im/element-ios/pull/7115))
+- Labs: VoiceBroadcast: Be able to pause the playback when it is buffering ([#7125](https://github.com/vector-im/element-ios/pull/7125))
+- Rich Text Editor: Design Improvements. ([#7127](https://github.com/vector-im/element-ios/pull/7127))
+- Add localization for authentication errors. ([#7131](https://github.com/vector-im/element-ios/pull/7131))
+- Labs: VoiceBroadcast: Prompt the user before ending a voice broadcast ([#7132](https://github.com/vector-im/element-ios/pull/7132))
+- Update unverifiable sessions copies in the Device Manager. ([#7138](https://github.com/vector-im/element-ios/pull/7138))
+- Refine badge for messages logic on spaces button. ([#7140](https://github.com/vector-im/element-ios/pull/7140))
+- Add message id for to-device events ([#7141](https://github.com/vector-im/element-ios/pull/7141))
+- Upgrade MatrixSDK version ([v0.24.6](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.24.6)).
+- Turn on Threads for all users ([#7156](https://github.com/vector-im/element-ios/issues/7156))
+
+🐛 Bugfixes
+
+- Labs: VoiceBroadcast: Remove the voice broadcast chunks from the attachments list ([#7133](https://github.com/vector-im/element-ios/pull/7133))
+- Labs: VoiceBroadcast: Add the last sequence number in the paused/stopped state event ([#7136](https://github.com/vector-im/element-ios/pull/7136))
+- Fix E2EE set up failure whilst signing in using QR code ([#7142](https://github.com/vector-im/element-ios/pull/7142))
+- Rich Text Editor: Fixed a bug that prevented fullscreen mode to work on iOS 15. ([#7118](https://github.com/vector-im/element-ios/issues/7118))
+- Rich Text Editor: Fixed a bug that did not resize the composer after a change of orientation. ([#7124](https://github.com/vector-im/element-ios/issues/7124))
+- Rich Text Composer: Fix for fullscreen mode breaking sometimes when opening it when keyboard is not showing. ([#7130](https://github.com/vector-im/element-ios/issues/7130))
+- Threads: Use cross-platform consistent naming for threads in labs ([#7147](https://github.com/vector-im/element-ios/issues/7147))
+- Threads: Thread preview doesn't update in main timeline ([#7151](https://github.com/vector-im/element-ios/issues/7151))
+
+🧱 Build
+
+- Update Ruby gems. ([#7148](https://github.com/vector-im/element-ios/pull/7148))
+
+
 ## Changes in 1.9.13 (2022-11-29)
 
 ✨ Features
