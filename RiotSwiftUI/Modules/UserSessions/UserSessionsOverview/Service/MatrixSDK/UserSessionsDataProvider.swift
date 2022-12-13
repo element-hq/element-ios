@@ -76,18 +76,25 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
     }
 }
 
-private extension UserSessionsDataProvider {
-    func deleteAccountDataIfNeeded(deviceList: [MXDevice]) {
+extension UserSessionsDataProvider {
+    // internal just to facilitate tests
+    func obsoletedDeviceAccountData(deviceList: [MXDevice], accountDataEvents: [String: Any]) -> Set<String> {
         let deviceAccountDataKeys = Set(
-            session
-                .accountData
-                .allAccountDataEvents()
+                accountDataEvents
                 .map(\.key)
                 .filter { $0.hasPrefix(kMXAccountDataTypeClientInformation) }
         )
         
-        let expectedDeviceAccountDataKeys = Set(deviceList.map { "\(kMXAccountDataTypeClientInformation).\($0.deviceId)" })
-        let obsoletedDeviceAccountDataKeys = deviceAccountDataKeys.subtracting(expectedDeviceAccountDataKeys)
+        let expectedDeviceAccountDataKeys = Set(deviceList.map {
+            "\(kMXAccountDataTypeClientInformation).\($0.deviceId)"
+        })
+        
+        return deviceAccountDataKeys.subtracting(expectedDeviceAccountDataKeys)
+    }
+    
+    private func deleteAccountDataIfNeeded(deviceList: [MXDevice]) {
+        let obsoletedDeviceAccountDataKeys = obsoletedDeviceAccountData(deviceList: deviceList,
+                                                                        accountDataEvents: session.accountData.allAccountDataEvents())
         
         for accountDataKey in obsoletedDeviceAccountDataKeys {
             session.deleteAccountData(withType: accountDataKey, success: {}, failure: { _ in })
