@@ -27,7 +27,6 @@ protocol AllChatsViewControllerDelegate: AnyObject {
 }
 
 class AllChatsViewController: HomeViewController {
-    
     // MARK: - Class methods
     
     static override func nib() -> UINib! {
@@ -528,7 +527,16 @@ class AllChatsViewController: HomeViewController {
         let notificationCount = session.spaceService.missedNotificationsCount
         let hasSpaceInvite = session.spaceService.hasSpaceInvite
         let isBadgeHighlighed = session.spaceService.hasHighlightNotification || hasSpaceInvite
-        let badgeValue = (notificationCount == 0 && hasSpaceInvite) ? "!" : String(notificationCount)
+        let badgeValue: String
+        
+        switch notificationCount {
+        case 0:
+            badgeValue = hasSpaceInvite ? "!" : "0"
+        case (1 ... Constants.spacesButtonMaxCount):
+            badgeValue = "\(notificationCount)"
+        default:
+            badgeValue = "\(Constants.spacesButtonMaxCount)+"
+        }
         
         spacesButton.badgeText = badgeValue
         spacesButton.badgeBackgroundColor = isBadgeHighlighed ? theme.noticeColor : theme.noticeSecondaryColor
@@ -682,6 +690,12 @@ class AllChatsViewController: HomeViewController {
     }
 }
 
+private extension AllChatsViewController {
+    enum Constants {
+        static let spacesButtonMaxCount: UInt = 999
+    }
+}
+
 // MARK: - SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate
 extension AllChatsViewController: SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate {
     
@@ -718,7 +732,6 @@ extension AllChatsViewController: SpaceSelectorBottomSheetCoordinatorBridgePrese
 
 // MARK: - UISearchResultsUpdating
 extension AllChatsViewController: UISearchResultsUpdating {
-    
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
             self.dataSource.search(withPatterns: nil)
@@ -727,7 +740,6 @@ extension AllChatsViewController: UISearchResultsUpdating {
         
         self.dataSource.search(withPatterns: [searchText])
     }
-
 }
 
 // MARK: - UISearchControllerDelegate
