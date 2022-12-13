@@ -34,10 +34,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// The event id of the started voice broadcast info state event.
 @property (nonatomic, strong, nullable) NSString* voiceBroadcastId;
 
+/// The voice broadcast last chunk sequence number.
+@property (nonatomic) NSInteger lastChunkSequence;
+
 - (instancetype)initWithDeviceId:(NSString *)deviceId
                            state:(NSString *)state
                      chunkLength:(NSInteger)chunkLength
-                voiceBroadcastId:(NSString *)voiceBroadcastId;
+                voiceBroadcastId:(NSString *)voiceBroadcastId
+               lastChunkSequence:(NSInteger)lastChunkSequence;
 
 @end
 

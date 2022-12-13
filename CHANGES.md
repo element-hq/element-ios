@@ -1,3 +1,35 @@
+## Changes in 1.9.14 (2022-12-13)
+
+🙌 Improvements
+
+- Add badge for messages in spaces button. ([#7088](https://github.com/vector-im/element-ios/pull/7088))
+- Session: Do not retry initial sync on fatal errors ([#7115](https://github.com/vector-im/element-ios/pull/7115))
+- Labs: VoiceBroadcast: Be able to pause the playback when it is buffering ([#7125](https://github.com/vector-im/element-ios/pull/7125))
+- Rich Text Editor: Design Improvements. ([#7127](https://github.com/vector-im/element-ios/pull/7127))
+- Add localization for authentication errors. ([#7131](https://github.com/vector-im/element-ios/pull/7131))
+- Labs: VoiceBroadcast: Prompt the user before ending a voice broadcast ([#7132](https://github.com/vector-im/element-ios/pull/7132))
+- Update unverifiable sessions copies in the Device Manager. ([#7138](https://github.com/vector-im/element-ios/pull/7138))
+- Refine badge for messages logic on spaces button. ([#7140](https://github.com/vector-im/element-ios/pull/7140))
+- Add message id for to-device events ([#7141](https://github.com/vector-im/element-ios/pull/7141))
+- Upgrade MatrixSDK version ([v0.24.6](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.24.6)).
+- Turn on Threads for all users ([#7156](https://github.com/vector-im/element-ios/issues/7156))
+
+🐛 Bugfixes
+
+- Labs: VoiceBroadcast: Remove the voice broadcast chunks from the attachments list ([#7133](https://github.com/vector-im/element-ios/pull/7133))
+- Labs: VoiceBroadcast: Add the last sequence number in the paused/stopped state event ([#7136](https://github.com/vector-im/element-ios/pull/7136))
+- Fix E2EE set up failure whilst signing in using QR code ([#7142](https://github.com/vector-im/element-ios/pull/7142))
+- Rich Text Editor: Fixed a bug that prevented fullscreen mode to work on iOS 15. ([#7118](https://github.com/vector-im/element-ios/issues/7118))
+- Rich Text Editor: Fixed a bug that did not resize the composer after a change of orientation. ([#7124](https://github.com/vector-im/element-ios/issues/7124))
+- Rich Text Composer: Fix for fullscreen mode breaking sometimes when opening it when keyboard is not showing. ([#7130](https://github.com/vector-im/element-ios/issues/7130))
+- Threads: Use cross-platform consistent naming for threads in labs ([#7147](https://github.com/vector-im/element-ios/issues/7147))
+- Threads: Thread preview doesn't update in main timeline ([#7151](https://github.com/vector-im/element-ios/issues/7151))
+
+🧱 Build
+
+- Update Ruby gems. ([#7148](https://github.com/vector-im/element-ios/pull/7148))
+
+
 ## Changes in 1.9.13 (2022-11-29)
 
 ✨ Features
@@ -31,6 +63,50 @@
 🚧 In development 🚧
 
 - Labs: VoiceBroadcast - Add the Voice Broadcast option in the room functionalities ([#6721](https://github.com/vector-im/element-ios/issues/6721))
+
+
+## Changes in 1.9.12 (2022-11-15)
+
+✨ Features
+
+- Threads: added support to read receipts (MSC3771) ([#6663](https://github.com/vector-im/element-ios/issues/6663))
+- Threads: added support to notifications count (MSC3773) ([#6664](https://github.com/vector-im/element-ios/issues/6664))
+- Threads: added support to labs flag for read receipts ([#7029](https://github.com/vector-im/element-ios/issues/7029))
+- Threads: notification count in main timeline including un participated threads ([#7038](https://github.com/vector-im/element-ios/issues/7038))
+- Unverified sessions alert. ([#7056](https://github.com/vector-im/element-ios/issues/7056))
+- Labs: Rich-text editor: enable translations between Markdown and HTML when toggling text formatting ([#7061](https://github.com/vector-im/element-ios/issues/7061))
+
+🙌 Improvements
+
+- Add informational sheets for user's session states. ([#6992](https://github.com/vector-im/element-ios/pull/6992))
+- Add the sign out option in the menu in the session overview. ([#7001](https://github.com/vector-im/element-ios/pull/7001))
+- Add show/hide sessions' ip address in the new session manager. ([#7028](https://github.com/vector-im/element-ios/pull/7028))
+- Updated GBDeviceInfo pod. ([#7051](https://github.com/vector-im/element-ios/pull/7051))
+- Improve device manager code coverage. ([#7065](https://github.com/vector-im/element-ios/pull/7065))
+- Initial sync: Remove 10s wait on failed initial sync ([#7068](https://github.com/vector-im/element-ios/pull/7068))
+- Labs: Rich text-editor - Add support for plain text mode ([#6980](https://github.com/vector-im/element-ios/issues/6980))
+
+🐛 Bugfixes
+
+- Prevent autolayout crashes when showing toast notifications ([#7046](https://github.com/vector-im/element-ios/pull/7046))
+- Fixed timeline layout issues for reactions and attachments ([#7064](https://github.com/vector-im/element-ios/pull/7064))
+- Rich Text Composer: Voice Dictation is supported (only plain text can be dictated). ([#6945](https://github.com/vector-im/element-ios/issues/6945))
+- Rich Text Composer dismisses the keyboard when sending custom iOS emojis as images, like the normal composer. ([#6946](https://github.com/vector-im/element-ios/issues/6946))
+- Fixed IRC-style message and commands support in Rich text editor ([#6962](https://github.com/vector-im/element-ios/issues/6962))
+- Fixed the missing keystrokes issue on the Rich Text Editor ([#7005](https://github.com/vector-im/element-ios/issues/7005))
+- Fixed the long press deleting issue skipping some text on the Rich Text Editor ([#7006](https://github.com/vector-im/element-ios/issues/7006))
+- Hide push toggles for http pushers when there is no server support. ([#7022](https://github.com/vector-im/element-ios/issues/7022))
+- Synchronise composer and toolbar resizing animation duration for smoother height updates. ([#7025](https://github.com/vector-im/element-ios/issues/7025))
+- Device Manager: Session list item is not tappable everywhere. ([#7035](https://github.com/vector-im/element-ios/issues/7035))
+- Labs: Rich-text editor - Fix text formatting enabled inconsistent state ([#7052](https://github.com/vector-im/element-ios/issues/7052))
+- Labs: Rich-text editor - Fix text formatting switch losing the current content of the composer ([#7054](https://github.com/vector-im/element-ios/issues/7054))
+- Threads: removed "unread_thread_notifications" from sync filters for server that doesn't support MSC3773 ([#7066](https://github.com/vector-im/element-ios/issues/7066))
+- Poll not usable after logging out and back in. ([#7070](https://github.com/vector-im/element-ios/issues/7070))
+- Threads: Display number of unread messages above threads button ([#7076](https://github.com/vector-im/element-ios/issues/7076))
+
+🚧 In development 🚧
+
+- Device Manager: Multi-session sign out. ([#6963](https://github.com/vector-im/element-ios/issues/6963))
 
 
 ## Changes in 1.9.12 (2022-11-15)

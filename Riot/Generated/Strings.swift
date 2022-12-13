@@ -4603,6 +4603,18 @@ public class VectorL10n: NSObject {
   public static var or: String { 
     return VectorL10n.tr("Vector", "or") 
   }
+  /// This password has been found in a dictionary, and is not allowed.
+  public static var passwordPolicyPwdInDictError: String { 
+    return VectorL10n.tr("Vector", "password_policy_pwd_in_dict_error") 
+  }
+  /// Too short password
+  public static var passwordPolicyTooShortPwdError: String { 
+    return VectorL10n.tr("Vector", "password_policy_too_short_pwd_error") 
+  }
+  /// This password is too weak. It must contain at least 8 characters, with at least one character of each type: uppercase, lowercase, digit and special character.
+  public static var passwordPolicyWeakPwdError: String { 
+    return VectorL10n.tr("Vector", "password_policy_weak_pwd_error") 
+  }
   /// Contain a lower-case letter.
   public static var passwordValidationErrorContainLowercaseLetter: String { 
     return VectorL10n.tr("Vector", "password_validation_error_contain_lowercase_letter") 
@@ -7551,7 +7563,7 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
   }
-  /// Threaded messaging
+  /// Threaded messages
   public static var settingsLabsEnableThreads: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
   }
@@ -8711,7 +8723,7 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionNoVerifiedSessions: String { 
     return VectorL10n.tr("Vector", "user_other_session_no_verified_sessions") 
   }
-  /// This session cannot be verified because it does not support encryption.
+  /// This session doesn’t support encryption and thus can't be verified.
   public static var userOtherSessionPermanentlyUnverifiedAdditionalInfo: String { 
     return VectorL10n.tr("Vector", "user_other_session_permanently_unverified_additional_info") 
   }
@@ -8842,6 +8854,10 @@ public class VectorL10n: NSObject {
   /// Session
   public static var userSessionOverviewSessionTitle: String { 
     return VectorL10n.tr("Vector", "user_session_overview_session_title") 
+  }
+  /// This session doesn't support encryption, so it can't be verified.\n\nYou won't be able to participate in rooms where encryption is enabled when using this session.\n\nFor best security and privacy, it is recommended to use Matrix clients that support encryption.
+  public static var userSessionPermanentlyUnverifiedSessionDescription: String { 
+    return VectorL10n.tr("Vector", "user_session_permanently_unverified_session_description") 
   }
   /// Push notifications
   public static var userSessionPushNotifications: String { 
@@ -9139,6 +9155,10 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastBlockedBySomeoneElseMessage: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_blocked_by_someone_else_message") 
   }
+  /// Buffering...
+  public static var voiceBroadcastBuffering: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_buffering") 
+  }
   /// Live
   public static var voiceBroadcastLive: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_live") 
@@ -9150,6 +9170,18 @@ public class VectorL10n: NSObject {
   /// Unable to play this voice broadcast.
   public static var voiceBroadcastPlaybackLoadingError: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_playback_loading_error") 
+  }
+  /// Yes, stop
+  public static var voiceBroadcastStopAlertAgreeButton: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_stop_alert_agree_button") 
+  }
+  /// Are you sure you want to stop your live broadcast? This will end the broadcast, and the full recording will be available in the room.
+  public static var voiceBroadcastStopAlertDescription: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_stop_alert_description") 
+  }
+  /// Stop live broadcasting?
+  public static var voiceBroadcastStopAlertTitle: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_stop_alert_title") 
   }
   /// Voice broadcast
   public static var voiceBroadcastTile: String { 

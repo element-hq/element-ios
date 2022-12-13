@@ -62,9 +62,10 @@ public class VoiceBroadcastService: NSObject {
     
     /// Pause a voice broadcast.
     /// - Parameters:
+    ///   - lastChunkSequence: The last sent chunk number.
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
-    func pauseVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) {
-        sendVoiceBroadcastInfo(state: VoiceBroadcastInfoState.paused, completion: completion)
+    func pauseVoiceBroadcast(lastChunkSequence: Int, completion: @escaping (MXResponse<String?>) -> Void) {
+        sendVoiceBroadcastInfo(lastChunkSequence: lastChunkSequence, state: VoiceBroadcastInfoState.paused, completion: completion)
     }
     
     /// resume a voice broadcast.
@@ -76,9 +77,10 @@ public class VoiceBroadcastService: NSObject {
     
     /// stop a voice broadcast info.
     /// - Parameters:
+    ///   - lastChunkSequence: The last sent chunk number.
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
-    func stopVoiceBroadcast(completion: @escaping (MXResponse<String?>) -> Void) {
-        sendVoiceBroadcastInfo(state: VoiceBroadcastInfoState.stopped, completion: completion)
+    func stopVoiceBroadcast(lastChunkSequence: Int, completion: @escaping (MXResponse<String?>) -> Void) {
+        sendVoiceBroadcastInfo(lastChunkSequence: lastChunkSequence, state: VoiceBroadcastInfoState.stopped, completion: completion)
     }
     
     func getState() -> String {
@@ -134,7 +136,9 @@ public class VoiceBroadcastService: NSObject {
         }
     }
     
-    private func sendVoiceBroadcastInfo(state: VoiceBroadcastInfoState, completion: @escaping (MXResponse<String?>) -> Void) {
+    private func sendVoiceBroadcastInfo(lastChunkSequence: Int = 0,
+                                        state: VoiceBroadcastInfoState,
+                                        completion: @escaping (MXResponse<String?>) -> Void) {
         guard let userId = self.room.mxSession.myUserId else {
             completion(.failure(VoiceBroadcastServiceError.missingUserId))
             return
@@ -155,6 +159,8 @@ public class VoiceBroadcastService: NSObject {
             voiceBroadcastInfo.deviceId = self.room.mxSession.myDeviceId
             
             voiceBroadcastInfo.state = state.rawValue
+            
+            voiceBroadcastInfo.lastChunkSequence = lastChunkSequence
             
             if state != VoiceBroadcastInfoState.started {
                 guard let voiceBroadcastId = self.voiceBroadcastId else {
@@ -211,10 +217,13 @@ extension VoiceBroadcastService {
     
     /// Pause a voice broadcast.
     /// - Parameters:
+    ///   - lastChunkSequence: The last sent chunk number.
     ///   - success: A closure called when the operation is complete.
     ///   - failure: A closure called  when the operation fails.
-    @objc public func pauseVoiceBroadcast(success: @escaping (String?) -> Void, failure: @escaping (Error) -> Void) {
-        self.pauseVoiceBroadcast { response in
+    @objc public func pauseVoiceBroadcast(lastChunkSequence: Int,
+                                          success: @escaping (String?) -> Void,
+                                          failure: @escaping (Error) -> Void) {
+        self.pauseVoiceBroadcast(lastChunkSequence: lastChunkSequence) { response in
             switch response {
             case .success(let object):
                 success(object)
@@ -241,10 +250,13 @@ extension VoiceBroadcastService {
     
     /// Stop a voice broadcast.
     /// - Parameters:
+    ///   - lastChunkSequence: The last sent chunk number.
     ///   - success: A closure called when the operation is complete.
     ///   - failure: A closure called  when the operation fails.
-    @objc public func stopVoiceBroadcast(success: @escaping (String?) -> Void, failure: @escaping (Error) -> Void) {
-        self.stopVoiceBroadcast { response in
+    @objc public func stopVoiceBroadcast(lastChunkSequence: Int,
+                                         success: @escaping (String?) -> Void,
+                                         failure: @escaping (Error) -> Void) {
+        self.stopVoiceBroadcast(lastChunkSequence: lastChunkSequence) { response in
             switch response {
             case .success(let object):
                 success(object)

@@ -153,6 +153,10 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "enableThreads", defaultValue: false, storage: defaults)
     var enableThreads
     
+    /// Indicates if threads should be forced enabled in the timeline.
+    @UserDefault(key: "forceThreadsEnabled", defaultValue: true, storage: defaults)
+    var forceThreadsEnabled
+
     /// Indicates if auto reporting of decryption errors is enabled
     @UserDefault(key: UserDefaultsKeys.enableUISIAutoReporting, defaultValue: BuildSettings.cryptoUISIAutoReportingEnabled, storage: defaults)
     var enableUISIAutoReporting

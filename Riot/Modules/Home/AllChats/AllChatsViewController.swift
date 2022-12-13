@@ -27,7 +27,6 @@ protocol AllChatsViewControllerDelegate: AnyObject {
 }
 
 class AllChatsViewController: HomeViewController {
-    
     // MARK: - Class methods
     
     static override func nib() -> UINib! {
@@ -72,6 +71,10 @@ class AllChatsViewController: HomeViewController {
     private var isOnboardingCoordinatorPreparing: Bool = false
 
     private var allChatsOnboardingCoordinatorBridgePresenter: AllChatsOnboardingCoordinatorBridgePresenter?
+    
+    private var theme: Theme {
+        ThemeService.shared().theme
+    }
 
     @IBOutlet private var toolbar: UIToolbar!
     private var isToolbarHidden: Bool = false {
@@ -137,12 +140,13 @@ class AllChatsViewController: HomeViewController {
         searchController.delegate = self
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.setupEditOptions), name: AllChatsLayoutSettingsManager.didUpdateSettings, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateBadgeButton), name: MXSpaceNotificationCounter.didUpdateNotificationCount, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.toolbar.tintColor = ThemeService.shared().theme.colors.accent
+        self.toolbar.tintColor = theme.colors.accent
         if self.navigationItem.searchController == nil {
             self.navigationItem.searchController = searchController
         }
@@ -460,7 +464,7 @@ class AllChatsViewController: HomeViewController {
             return
         }
         
-        self.update(with: ThemeService.shared().theme)
+        self.update(with: theme)
     }
     
     private func update(with theme: Theme) {
@@ -500,10 +504,42 @@ class AllChatsViewController: HomeViewController {
             self?.updateToolbar(with: menu)
         }))
         updateEmptyView()
+        updateBadgeButton()
     }
     
     private func updateRightNavigationItem(with menu: UIMenu) {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: menu)
+    }
+    
+    private lazy var spacesButton: BadgedBarButtonItem = {
+        let innerButton = UIButton(type: .system)
+        innerButton.accessibilityLabel = VectorL10n.spaceSelectorTitle
+        innerButton.addTarget(self, action: #selector(self.showSpaceSelectorAction(sender:)), for: .touchUpInside)
+        innerButton.setImage(Asset.Images.allChatsSpacesIcon.image, for: .normal)
+        return BadgedBarButtonItem(withBaseButton: innerButton, theme: theme)
+    }()
+    
+    @objc private func updateBadgeButton() {
+        guard isViewLoaded, let session = mainSession else {
+            return
+        }
+        
+        let notificationCount = session.spaceService.missedNotificationsCount
+        let hasSpaceInvite = session.spaceService.hasSpaceInvite
+        let isBadgeHighlighed = session.spaceService.hasHighlightNotification || hasSpaceInvite
+        let badgeValue: String
+        
+        switch notificationCount {
+        case 0:
+            badgeValue = hasSpaceInvite ? "!" : "0"
+        case (1 ... Constants.spacesButtonMaxCount):
+            badgeValue = "\(notificationCount)"
+        default:
+            badgeValue = "\(Constants.spacesButtonMaxCount)+"
+        }
+        
+        spacesButton.badgeText = badgeValue
+        spacesButton.badgeBackgroundColor = isBadgeHighlighed ? theme.noticeColor : theme.noticeSecondaryColor
     }
     
     private func updateToolbar(with menu: UIMenu) {
@@ -512,10 +548,7 @@ class AllChatsViewController: HomeViewController {
         }
         
         self.isToolbarHidden = false
-        self.update(with: ThemeService.shared().theme)
-        
-        let spacesButton = UIBarButtonItem(image: Asset.Images.allChatsSpacesIcon.image, style: .done, target: self, action: #selector(self.showSpaceSelectorAction(sender: )))
-        spacesButton.accessibilityLabel = VectorL10n.spaceSelectorTitle
+        self.update(with: theme)
         
         self.toolbar.items = [
             spacesButton,
@@ -657,6 +690,12 @@ class AllChatsViewController: HomeViewController {
     }
 }
 
+private extension AllChatsViewController {
+    enum Constants {
+        static let spacesButtonMaxCount: UInt = 999
+    }
+}
+
 // MARK: - SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate
 extension AllChatsViewController: SpaceSelectorBottomSheetCoordinatorBridgePresenterDelegate {
     
@@ -693,7 +732,6 @@ extension AllChatsViewController: SpaceSelectorBottomSheetCoordinatorBridgePrese
 
 // MARK: - UISearchResultsUpdating
 extension AllChatsViewController: UISearchResultsUpdating {
-    
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
             self.dataSource.search(withPatterns: nil)
@@ -702,7 +740,6 @@ extension AllChatsViewController: UISearchResultsUpdating {
         
         self.dataSource.search(withPatterns: [searchText])
     }
-
 }
 
 // MARK: - UISearchControllerDelegate
@@ -1074,5 +1111,24 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
         
         // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
         self.refreshCurrentSelectedCell(false)
+    }
+}
+
+private extension MXSpaceService {
+    var hasSpaceInvite: Bool {
+        spaceSummaries.contains(where: { $0.isJoined == false })
+    }
+    
+    var missedNotificationsCount: UInt {
+        let notificationState = notificationCounter.homeNotificationState
+        let groupNotifications = notificationState.groupMissedDiscussionsCount
+        let directNotifications = notificationState.directMissedDiscussionsCount
+        
+        // `notificationState.allCount` returns twice the messages for favourite rooms. Fixing it here.
+        return groupNotifications + directNotifications
+    }
+    
+    var hasHighlightNotification: Bool {
+        notificationCounter.homeNotificationState.allHighlightCount > 0
     }
 }

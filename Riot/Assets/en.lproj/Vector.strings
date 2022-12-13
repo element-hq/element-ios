@@ -255,6 +255,10 @@
 "password_validation_error_contain_number" = "Contain a number.";
 "password_validation_error_contain_symbol" = "Contain a symbol.";
 
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Too short password";
+"password_policy_weak_pwd_error" = "This password is too weak. It must contain at least 8 characters, with at least one character of each type: uppercase, lowercase, digit and special character.";
+"password_policy_pwd_in_dict_error" = "This password has been found in a dictionary, and is not allowed.";
 
 // MARK: Legacy Authentication
 "auth_login" = "Log in";
@@ -790,7 +794,7 @@ Tap the + to start adding people.";
 "settings_labs_message_reaction" = "React to messages with emoji";
 "settings_labs_enable_ringing_for_group_calls" = "Ring for group calls";
 "settings_labs_enabled_polls" = "Polls";
-"settings_labs_enable_threads" = "Threaded messaging";
+"settings_labs_enable_threads" = "Threaded messages";
 "settings_labs_enable_auto_report_decryption_errors" = "Auto Report Decryption Errors";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Show latest avatar and name for users in message history";
 "settings_labs_enable_live_location_sharing" = "Live location sharing - share current location (active development, and temporarily, locations persist in room history)";
@@ -2203,6 +2207,10 @@ Tap the + to start adding people.";
 "voice_broadcast_live" = "Live";
 "voice_broadcast_tile" = "Voice broadcast";
 "voice_broadcast_time_left" = "%@ left";
+"voice_broadcast_buffering" = "Buffering...";
+"voice_broadcast_stop_alert_title" = "Stop live broadcasting?";
+"voice_broadcast_stop_alert_description" = "Are you sure you want to stop your live broadcast? This will end the broadcast, and the full recording will be available in the room.";
+"voice_broadcast_stop_alert_agree_button" = "Yes, stop";
 
 // Mark: - Version check
 
@@ -2451,7 +2459,7 @@ To enable access, tap Settings> Location and select Always";
 "user_session_unverified_additional_info" = "Verify your current session for enhanced secure messaging.";
 "user_session_verification_unknown_additional_info" = "Verify your current session to reveal this session's verification status.";
 "user_other_session_unverified_additional_info" = "Verify or sign out from this session for best security and reliability.";
-"user_other_session_permanently_unverified_additional_info" = "This session cannot be verified because it does not support encryption.";
+"user_other_session_permanently_unverified_additional_info" = "This session doesn’t support encryption and thus can't be verified.";
 "user_other_session_verified_additional_info" = "This session is ready for secure messaging.";
 "user_session_push_notifications" = "Push notifications";
 "user_session_push_notifications_message" = "When turned on, this session will receive push notifications.";
@@ -2460,6 +2468,7 @@ To enable access, tap Settings> Location and select Always";
 "user_session_verified_session_description" = "Verified sessions are anywhere you are using Element after entering your passphrase or confirming your identity with another verified session.\n\nThis means that you have all the keys needed to unlock your encrypted messages and confirm to other users that you trust this session.";
 "user_session_unverified_session_title" = "Unverified session";
 "user_session_unverified_session_description" = "Unverified sessions are sessions that have logged in with your credentials but not been cross-verified.\n\nYou should make especially certain that you recognise these sessions as they could represent an unauthorised use of your account.";
+"user_session_permanently_unverified_session_description" = "This session doesn't support encryption, so it can't be verified.\n\nYou won't be able to participate in rooms where encryption is enabled when using this session.\n\nFor best security and privacy, it is recommended to use Matrix clients that support encryption.";
 "user_session_inactive_session_title" = "Inactive sessions";
 "user_session_inactive_session_description" = "Inactive sessions are sessions you have not used in some time, but they continue to receive encryption keys.\n\nRemoving inactive sessions improves security and performance, and makes it easier for you to identify if a new session is suspicious.";
 "user_session_rename_session_title" = "Renaming sessions";

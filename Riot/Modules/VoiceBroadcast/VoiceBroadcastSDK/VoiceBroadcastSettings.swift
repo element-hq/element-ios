@@ -26,4 +26,5 @@ final class VoiceBroadcastSettings: NSObject {
     static let voiceBroadcastContentKeyChunkLength = "chunk_length"
     static let voiceBroadcastContentKeyChunkType = "io.element.voice_broadcast_chunk"
     static let voiceBroadcastContentKeyChunkSequence = "sequence"
+    static let voiceBroadcastContentKeyChunkLastSequence = "last_chunk_sequence"
 }

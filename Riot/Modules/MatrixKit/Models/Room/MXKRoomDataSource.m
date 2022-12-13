@@ -985,8 +985,19 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                 else if (nil == localEcho)
                 {
                     // Process here incoming events, and outgoing events sent from another device.
-                    [self queueEventForProcessing:event withRoomState:roomState direction:MXTimelineDirectionForwards];
-                    [self processQueuedEvents:nil];
+                    if (self.threadId == nil && event.isInThread)
+                    {
+                        NSInteger index = [self indexOfCellDataWithEventId:event.relatesTo.eventId];
+                        if (index != NSNotFound)
+                        {
+                            [self reloadNotifying:NO];
+                        }
+                    }
+                    else
+                    {
+                        [self queueEventForProcessing:event withRoomState:roomState direction:MXTimelineDirectionForwards];
+                        [self processQueuedEvents:nil];
+                    }
                 }
             }
         }];
@@ -1371,6 +1382,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         if (!event.getMediaURLs.count)
         {
             // ignore the event
+            return NO;
+        }
+        
+        // Ignore voice message related to an actual voice broadcast.
+        if (event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil) {
             return NO;
         }
     }
