@@ -106,7 +106,8 @@ class UserSessionCardViewDataTests: XCTestCase {
         let dataProvider = UserSessionsDataProvider(session: mxSession)
         
         let accountDataEvents: [String: Any] = [
-            "io.element.matrix_client_information.D": ""
+            "io.element.matrix_client_information.D": "",
+            "foo": ""
         ]
         
         let expectedObsoletedEvents: Set = [
@@ -123,7 +124,8 @@ class UserSessionCardViewDataTests: XCTestCase {
         let dataProvider = UserSessionsDataProvider(session: mxSession)
         
         let accountDataEvents: [String: Any] = [
-            "io.element.matrix_client_information.C": ""
+            "io.element.matrix_client_information.C": "",
+            "foo": ""
         ]
         
         let expectedObsoletedEvents: Set<String> = []
@@ -138,7 +140,7 @@ class UserSessionCardViewDataTests: XCTestCase {
         
         let expectedObsoletedEvents = Set(["D", "E", "F"].map { "io.element.matrix_client_information.\($0)"})
         
-        let accountDataEvents: [String: Any] = expectedObsoletedEvents.reduce(into: [:]) { partialResult, value in
+        let accountDataEvents: [String: Any] = expectedObsoletedEvents.reduce(into: ["foo": ""]) { partialResult, value in
             partialResult[value] = ""
         }
         

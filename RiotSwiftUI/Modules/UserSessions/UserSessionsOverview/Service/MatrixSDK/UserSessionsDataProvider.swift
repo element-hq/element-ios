@@ -77,6 +77,15 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
 }
 
 extension UserSessionsDataProvider {
+    private func deleteAccountDataIfNeeded(deviceList: [MXDevice]) {
+        let obsoletedDeviceAccountDataKeys = obsoletedDeviceAccountData(deviceList: deviceList,
+                                                                        accountDataEvents: session.accountData.allAccountDataEvents())
+        
+        for accountDataKey in obsoletedDeviceAccountDataKeys {
+            session.deleteAccountData(withType: accountDataKey, success: {}, failure: { _ in })
+        }
+    }
+    
     // internal just to facilitate tests
     func obsoletedDeviceAccountData(deviceList: [MXDevice], accountDataEvents: [String: Any]) -> Set<String> {
         let deviceAccountDataKeys = Set(
@@ -90,14 +99,5 @@ extension UserSessionsDataProvider {
         })
         
         return deviceAccountDataKeys.subtracting(expectedDeviceAccountDataKeys)
-    }
-    
-    private func deleteAccountDataIfNeeded(deviceList: [MXDevice]) {
-        let obsoletedDeviceAccountDataKeys = obsoletedDeviceAccountData(deviceList: deviceList,
-                                                                        accountDataEvents: session.accountData.allAccountDataEvents())
-        
-        for accountDataKey in obsoletedDeviceAccountDataKeys {
-            session.deleteAccountData(withType: accountDataKey, success: {}, failure: { _ in })
-        }
     }
 }
