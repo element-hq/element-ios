@@ -61,9 +61,8 @@ extension ComposerLinkActionViewState {
     var isSaveButtonDisabled: Bool {
         guard isValidLink else { return true }
         switch linkAction {
-        case .create: return false
         case .createWithText: return bindings.text.isEmpty
-        case let .edit(originalLink): return bindings.linkUrl == originalLink
+        default: return false
         }
     }
     
