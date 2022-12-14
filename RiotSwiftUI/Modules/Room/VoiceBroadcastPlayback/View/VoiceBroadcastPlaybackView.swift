@@ -152,14 +152,22 @@ struct VoiceBroadcastPlaybackView: View {
                 }
             }
             
-            Slider(value: $viewModel.progress, in: 0...viewModel.viewState.playingState.duration) {
-                Text("Slider")
-            } minimumValueLabel: {
-                Text("")
-            } maximumValueLabel: {
-                Text(viewModel.viewState.playingState.durationLabel ?? "").font(.body)
-            } onEditingChanged: { didChange in
+            VoiceBroadcastSlider(value: $viewModel.progress,
+                       minValue: 0.0,
+                       maxValue: viewModel.viewState.playingState.duration) { didChange in
                 viewModel.send(viewAction: .sliderChange(didChange: didChange))
+            }
+            
+            HStack {
+                Text(viewModel.viewState.playingState.elapsedTimeLabel ?? "")
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .font(theme.fonts.caption1)
+                    .padding(EdgeInsets(top: -4.0, leading: 4.0, bottom: 0.0, trailing: 0.0))
+                Spacer()
+                Text(viewModel.viewState.playingState.remainingTimeLabel ?? "")
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .font(theme.fonts.caption1)
+                    .padding(EdgeInsets(top: -4.0, leading: 0.0, bottom: 0.0, trailing: 4.0))
             }
         }
         .padding([.horizontal, .top], 2.0)
