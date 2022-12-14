@@ -49,7 +49,7 @@ struct VoiceBroadcastPlaybackView: View {
         VStack(alignment: .center) {
             
             HStack (alignment: .top) {
-                AvatarImage(avatarData: viewModel.viewState.details.avatarData, size: .xSmall)
+                AvatarImage(avatarData: viewModel.viewState.details.avatarData, size: .small)
                 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(details.avatarData.displayName ?? details.avatarData.matrixItemId)
