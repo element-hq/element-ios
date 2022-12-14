@@ -100,9 +100,68 @@ class UserSessionCardViewDataTests: XCTestCase {
         
         XCTAssertEqual(verificationState, .permanentlyUnverified)
     }
+    
+    func testObsoletedDeviceInformation_someMatch() {
+        let mxSession = MockSession(canCrossSign: true)
+        let dataProvider = UserSessionsDataProvider(session: mxSession)
+        
+        let accountDataEvents: [String: Any] = [
+            "io.element.matrix_client_information.D": "",
+            "foo": ""
+        ]
+        
+        let expectedObsoletedEvents: Set = [
+            "io.element.matrix_client_information.D"
+        ]
+        
+        let obsoletedEvents = dataProvider.obsoletedDeviceAccountData(deviceList: .mockDevices, accountDataEvents: accountDataEvents)
+        
+        XCTAssertEqual(obsoletedEvents, expectedObsoletedEvents)
+    }
+    
+    func testObsoletedDeviceInformation_noMatch() {
+        let mxSession = MockSession(canCrossSign: true)
+        let dataProvider = UserSessionsDataProvider(session: mxSession)
+        
+        let accountDataEvents: [String: Any] = [
+            "io.element.matrix_client_information.C": "",
+            "foo": ""
+        ]
+        
+        let expectedObsoletedEvents: Set<String> = []
+        let obsoletedEvents = dataProvider.obsoletedDeviceAccountData(deviceList: .mockDevices, accountDataEvents: accountDataEvents)
+        
+        XCTAssertEqual(obsoletedEvents, expectedObsoletedEvents)
+    }
+    
+    func testObsoletedDeviceInformation_allMatch() {
+        let mxSession = MockSession(canCrossSign: true)
+        let dataProvider = UserSessionsDataProvider(session: mxSession)
+        
+        let expectedObsoletedEvents = Set(["D", "E", "F"].map { "io.element.matrix_client_information.\($0)"})
+        
+        let accountDataEvents: [String: Any] = expectedObsoletedEvents.reduce(into: ["foo": ""]) { partialResult, value in
+            partialResult[value] = ""
+        }
+        
+        let obsoletedEvents = dataProvider.obsoletedDeviceAccountData(deviceList: .mockDevices, accountDataEvents: accountDataEvents)
+        
+        XCTAssertEqual(obsoletedEvents, expectedObsoletedEvents)
+    }
 }
 
 // MARK: Mocks
+
+private extension Array where Element == MXDevice {
+    static let mockDevices: [MXDevice] = {
+        ["A", "B", "C"]
+            .map {
+                let device = MXDevice()
+                device.deviceId = $0
+                return device
+            }
+    }()
+}
 
 // Device ID constants.
 private extension String {

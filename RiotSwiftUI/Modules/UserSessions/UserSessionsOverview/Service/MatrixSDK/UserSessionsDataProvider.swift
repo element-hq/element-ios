@@ -37,7 +37,16 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
     }
     
     func devices(completion: @escaping (MXResponse<[MXDevice]>) -> Void) {
-        session.matrixRestClient.devices(completion: completion)
+        session.matrixRestClient.devices { [weak self] response in
+            switch response {
+            case .success(let devices):
+                self?.deleteAccountDataIfNeeded(deviceList: devices)
+            case .failure:
+                break
+            }
+            
+            completion(response)
+        }
     }
     
     func device(withDeviceId deviceId: String, ofUser userId: String) -> MXDeviceInfo? {
@@ -64,5 +73,31 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
         let service = QRLoginService(client: session.matrixRestClient,
                                      mode: .authenticated)
         return try await service.isServiceAvailable()
+    }
+}
+
+extension UserSessionsDataProvider {
+    private func deleteAccountDataIfNeeded(deviceList: [MXDevice]) {
+        let obsoletedDeviceAccountDataKeys = obsoletedDeviceAccountData(deviceList: deviceList,
+                                                                        accountDataEvents: session.accountData.allAccountDataEvents())
+        
+        for accountDataKey in obsoletedDeviceAccountDataKeys {
+            session.deleteAccountData(withType: accountDataKey, success: {}, failure: { _ in })
+        }
+    }
+    
+    // internal just to facilitate tests
+    func obsoletedDeviceAccountData(deviceList: [MXDevice], accountDataEvents: [String: Any]) -> Set<String> {
+        let deviceAccountDataKeys = Set(
+                accountDataEvents
+                .map(\.key)
+                .filter { $0.hasPrefix(kMXAccountDataTypeClientInformation) }
+        )
+        
+        let expectedDeviceAccountDataKeys = Set(deviceList.map {
+            "\(kMXAccountDataTypeClientInformation).\($0.deviceId)"
+        })
+        
+        return deviceAccountDataKeys.subtracting(expectedDeviceAccountDataKeys)
     }
 }
