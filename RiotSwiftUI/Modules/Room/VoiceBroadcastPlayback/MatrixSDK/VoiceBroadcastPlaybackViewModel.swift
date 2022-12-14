@@ -56,6 +56,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         return (!isPlaybackInitialized || isPlayingLastChunk) && (state.broadcastState == .started || state.broadcastState == .resumed)
     }
     
+    private static let defaultBackwardForwardValue: Float = 30000.0 // 30sec in ms
+    
     // MARK: Public
     
     // MARK: - Setup
@@ -71,7 +73,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         let viewState = VoiceBroadcastPlaybackViewState(details: details,
                                                         broadcastState: voiceBroadcastAggregator.voiceBroadcastState,
                                                         playbackState: .stopped,
-                                                        playingState: VoiceBroadcastPlayingState(duration: Float(voiceBroadcastAggregator.voiceBroadcast.duration), isLive: false),
+                                                        playingState: VoiceBroadcastPlayingState(duration: Float(voiceBroadcastAggregator.voiceBroadcast.duration), isLive: false, canMoveForward: false, canMoveBackward: false),
                                                         bindings: VoiceBroadcastPlaybackViewStateBindings(progress: 0))
         super.init(initialViewState: viewState)
         
@@ -101,6 +103,10 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             pause()
         case .sliderChange(let didChange):
             didSliderChanged(didChange)
+        case .backward:
+            backward()
+        case .forward:
+            forward()
         }
     }
     
@@ -164,6 +170,49 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         audioPlayer?.stop()
     }
     
+    /// Backward (30sec) a voice broadcast
+    private func backward() {
+        let newProgressValue = context.progress - VoiceBroadcastPlaybackViewModel.defaultBackwardForwardValue
+        seek(to: max(newProgressValue, 0.0))
+    }
+
+    /// Forward (30sec) a voice broadcast
+    private func forward() {
+        let newProgressValue = context.progress + VoiceBroadcastPlaybackViewModel.defaultBackwardForwardValue
+        seek(to: min(newProgressValue, state.playingState.duration))
+    }
+    
+    private func seek(to seekTime: Float) {
+        // Flush the chunks queue and the current audio player playlist
+        voiceBroadcastChunkQueue = []
+        reloadVoiceBroadcastChunkQueue = isProcessingVoiceBroadcastChunk
+        audioPlayer?.removeAllPlayerItems()
+        
+        let chunks = reorderVoiceBroadcastChunks(chunks: Array(voiceBroadcastAggregator.voiceBroadcast.chunks))
+        
+        // Reinject the chunks we need and play them
+        let remainingTime = state.playingState.duration - seekTime
+        var chunksDuration: UInt = 0
+        for chunk in chunks.reversed() {
+            chunksDuration += chunk.duration
+            voiceBroadcastChunkQueue.append(chunk)
+            if Float(chunksDuration) >= remainingTime {
+                break
+            }
+        }
+        
+        MXLog.debug("[VoiceBroadcastPlaybackViewModel] seekTo: restart to time: \(seekTime) milliseconds")
+        let time = seekTime - state.playingState.duration + Float(chunksDuration)
+        seekToChunkTime = TimeInterval(time / 1000)
+        // Check the condition to resume the playback when data will be ready (after the chunk process).
+        if state.playbackState != .stopped, isActuallyPaused == false {
+            state.playbackState = .buffering
+        }
+        processPendingVoiceBroadcastChunks()
+        
+        state.bindings.progress = seekTime
+        updateUI()
+    }
     
     // MARK: - Voice broadcast chunks playback
     
@@ -295,40 +344,11 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             audioPlayer?.pause()
             displayLink.isPaused = true
         } else {
-            // Flush the chunks queue and the current audio player playlist
-            voiceBroadcastChunkQueue = []
-            reloadVoiceBroadcastChunkQueue = isProcessingVoiceBroadcastChunk
-            audioPlayer?.removeAllPlayerItems()
-                        
-            let chunks = reorderVoiceBroadcastChunks(chunks: Array(voiceBroadcastAggregator.voiceBroadcast.chunks))
-            
-            // Reinject the chunks we need and play them
-            let remainingTime = state.playingState.duration - state.bindings.progress
-            var chunksDuration: UInt = 0
-            for chunk in chunks.reversed() {
-                chunksDuration += chunk.duration
-                voiceBroadcastChunkQueue.append(chunk)
-                if Float(chunksDuration) >= remainingTime {
-                    break
-                }
-            }
-            
-            MXLog.debug("[VoiceBroadcastPlaybackViewModel] didSliderChanged: restart to time: \(state.bindings.progress) milliseconds")
-            let time = state.bindings.progress - state.playingState.duration + Float(chunksDuration)
-            seekToChunkTime = TimeInterval(time / 1000)
-            // Check the condition to resume the playback when data will be ready (after the chunk process).
-            if state.playbackState != .stopped, isActuallyPaused == false {
-                state.playbackState = .buffering
-            }
-            processPendingVoiceBroadcastChunks()
+            seek(to: state.bindings.progress)
         }
     }
     
     @objc private func handleDisplayLinkTick() {
-        updateUI()
-    }
-    
-    private func updateUI() {
         guard let playingEventId = voiceBroadcastAttachmentCacheManagerLoadResults.first(where: { result in
                   result.url == audioPlayer?.currentUrl
               })?.eventIdentifier,
@@ -343,6 +363,13 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         }.reduce(0) { $0 + $1.duration}) + (audioPlayer?.currentTime.rounded() ?? 0) * 1000
         
         state.bindings.progress = Float(progress)
+        
+        updateUI()
+    }
+    
+    private func updateUI() {
+        state.playingState.canMoveBackward = state.bindings.progress > 0
+        state.playingState.canMoveForward = state.bindings.progress < state.playingState.duration
     }
     
     private func handleVoiceBroadcastChunksProcessing() {

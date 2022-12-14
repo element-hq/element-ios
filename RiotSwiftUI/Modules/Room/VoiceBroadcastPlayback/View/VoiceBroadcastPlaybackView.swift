@@ -110,7 +110,19 @@ struct VoiceBroadcastPlaybackView: View {
             if viewModel.viewState.playbackState == .error {
                 VoiceBroadcastPlaybackErrorView()
             } else {
-                ZStack {
+                HStack (spacing: 17.0) {
+                    if viewModel.viewState.playingState.canMoveBackward {
+                        Button {
+                            viewModel.send(viewAction: .backward)
+                        } label: {
+                            Image(uiImage: Asset.Images.voiceBroadcastBackward30s.image)
+                                .renderingMode(.original)
+                        }
+                        .accessibilityIdentifier("backwardButton")
+                    } else {
+                        Spacer().frame(width: 25.0)
+                    }
+                    
                     if viewModel.viewState.playbackState == .playing || viewModel.viewState.playbackState == .buffering {
                         Button { viewModel.send(viewAction: .pause) } label: {
                             Image(uiImage: Asset.Images.voiceBroadcastPause.image)
@@ -124,6 +136,18 @@ struct VoiceBroadcastPlaybackView: View {
                         }
                         .disabled(viewModel.viewState.playbackState == .buffering)
                         .accessibilityIdentifier("playButton")
+                    }
+                    
+                    if viewModel.viewState.playingState.canMoveForward {
+                        Button {
+                            viewModel.send(viewAction: .forward)
+                        } label: {
+                            Image(uiImage: Asset.Images.voiceBroadcastForward30s.image)
+                                .renderingMode(.original)
+                        }
+                        .accessibilityIdentifier("forwardButton")
+                    } else {
+                        Spacer().frame(width: 25.0)
                     }
                 }
             }
