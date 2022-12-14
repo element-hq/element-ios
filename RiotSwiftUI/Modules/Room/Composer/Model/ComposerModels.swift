@@ -36,6 +36,7 @@ enum FormatType {
     case italic
     case underline
     case strikethrough
+    case inlineCode
     case link
 }
 
@@ -61,6 +62,8 @@ extension FormatItem {
             return Asset.Images.underlined.name
         case .link:
             return Asset.Images.link.name
+        case .inlineCode:
+            return Asset.Images.code.name
         }
     }
     
@@ -76,6 +79,8 @@ extension FormatItem {
             return "underlineButton"
         case .link:
             return "linkButton"
+        case .inlineCode:
+            return "inlineCodeButton"
         }
     }
     
@@ -91,6 +96,8 @@ extension FormatItem {
             return VectorL10n.wysiwygComposerFormatActionUnderline
         case .link:
             return VectorL10n.wysiwygComposerFormatActionLink
+        case .inlineCode:
+            return VectorL10n.wysiwygComposerFormatActionInlineCode
         }
     }
 }
@@ -109,6 +116,8 @@ extension FormatType {
             return .underline
         case .link:
             return .link
+        case .inlineCode:
+            return .inlineCode
         }
     }
     
@@ -126,6 +135,8 @@ extension FormatType {
             return .underline
         case .link:
             return .link
+        case .inlineCode:
+            return .inlineCode
         }
     }
 }
