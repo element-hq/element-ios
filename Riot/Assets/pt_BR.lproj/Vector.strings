@@ -1604,7 +1604,7 @@
 "home_context_menu_make_room" = "Mover para Salas";
 "home_context_menu_make_dm" = "Mover para Pessoas";
 "event_formatter_message_deleted" = "Mensagem deletada";
-"settings_labs_enable_threads" = "Mensageria com threads";
+"settings_labs_enable_threads" = "Mensagens com threads";
 "message_from_a_thread" = "De uma thread";
 "threads_empty_show_all_threads" = "Mostrar todas as threads";
 "threads_empty_tip" = "Dica: Toque numa mensagem e use “Thread” para começar uma.";
@@ -2632,7 +2632,7 @@
 "user_session_verified_session_description" = "Sessões verificadas são onde quer que você esteja usando Element depois de entrar sua frasepasse ou confirmar sua identidade com uma outra sessões verificada.\n\nIsto significa que você tem todas as chaves necessárias para destrancar suas mensagens encriptadas e confirmar a outras(os) usuárias(os) que você confia nesta sessão.";
 "user_session_verified_session_title" = "Sessões verificadas";
 "user_session_got_it" = "Entendido";
-"user_other_session_permanently_unverified_additional_info" = "Esta sessão não pode ser verificada porque ela não suporta encriptação.";
+"user_other_session_permanently_unverified_additional_info" = "Esta sessão não suporta encriptação e assim não pode ser verificada.";
 "voice_broadcast_time_left" = "%@ restando";
 "launch_loading_processing_response" = "Processando dados\n%@ %%";
 "launch_loading_server_syncing_nth_attempt" = "Sincando com o servidor\n(%@ tentativa)";
@@ -2648,3 +2648,9 @@
 "voice_broadcast_stop_alert_description" = "Tem certeza que você quer parar seu broadcast ao vivo? Isto vai terminar o broadcast, e a gravação completa vai estar disponível na sala.";
 "voice_broadcast_stop_alert_title" = "Parar broadcasting ao vivo?";
 "voice_broadcast_buffering" = "Buffering…";
+"user_session_permanently_unverified_session_description" = "Esta sessão não suporta encriptação, então ela não pode ser verificada.\n\nVocê não vai ser capaz de participar em salas onde encriptação é habilitada quando usando esta sessão.\n\nPara a melhor segurança e privacidade, é recomendado usar clientes Matrix que suportam encriptação.";
+"password_policy_pwd_in_dict_error" = "Esta senha tem sido encontrada em um dicionário, e não é permitida.";
+"password_policy_weak_pwd_error" = "Esta senha é fraca demais. Ela deve conter ao menos 8 caracteres, com ao menos um caractere de cada tipo: caractere maiúsculo, minúsculo, dígito, e especial.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Senha curta demais";
