@@ -51,7 +51,7 @@ struct VoiceBroadcastPlaybackView: View {
             HStack (alignment: .top) {
                 AvatarImage(avatarData: viewModel.viewState.details.avatarData, size: .xSmall)
                 
-                VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 3) {
                     Text(details.avatarData.displayName ?? details.avatarData.matrixItemId)
                         .font(theme.fonts.bodySB)
                         .foregroundColor(theme.colors.primaryContent)
@@ -106,11 +106,12 @@ struct VoiceBroadcastPlaybackView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(EdgeInsets(top: 0.0, leading: 0.0, bottom: 4.0, trailing: 0.0))
             
             if viewModel.viewState.playbackState == .error {
                 VoiceBroadcastPlaybackErrorView()
             } else {
-                HStack (spacing: 17.0) {
+                HStack (spacing: 34.0) {
                     if viewModel.viewState.playingState.canMoveBackward {
                         Button {
                             viewModel.send(viewAction: .backward)
@@ -150,6 +151,7 @@ struct VoiceBroadcastPlaybackView: View {
                         Spacer().frame(width: 25.0)
                     }
                 }
+                .padding(EdgeInsets(top: 10.0, leading: 0.0, bottom: 10.0, trailing: 0.0))
             }
             
             VoiceBroadcastSlider(value: $viewModel.progress,
@@ -162,16 +164,15 @@ struct VoiceBroadcastPlaybackView: View {
                 Text(viewModel.viewState.playingState.elapsedTimeLabel ?? "")
                     .foregroundColor(theme.colors.secondaryContent)
                     .font(theme.fonts.caption1)
-                    .padding(EdgeInsets(top: -4.0, leading: 4.0, bottom: 0.0, trailing: 0.0))
+                    .padding(EdgeInsets(top: -8.0, leading: 4.0, bottom: 0.0, trailing: 0.0))
                 Spacer()
                 Text(viewModel.viewState.playingState.remainingTimeLabel ?? "")
                     .foregroundColor(theme.colors.secondaryContent)
                     .font(theme.fonts.caption1)
-                    .padding(EdgeInsets(top: -4.0, leading: 0.0, bottom: 0.0, trailing: 4.0))
+                    .padding(EdgeInsets(top: -8.0, leading: 0.0, bottom: 0.0, trailing: 4.0))
             }
         }
-        .padding([.horizontal, .top], 2.0)
-        .padding([.bottom])
+        .padding(EdgeInsets(top: 12.0, leading: 4.0, bottom: 12.0, trailing: 4.0))
     }
 }
 
