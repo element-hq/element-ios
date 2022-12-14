@@ -2876,3 +2876,10 @@
 // MARK: Password policy errors
 "password_policy_too_short_pwd_error" = "Príliš krátke heslo";
 "user_session_permanently_unverified_session_description" = "Táto relácia nepodporuje šifrovanie, takže ju nemožno overiť.\n\nPri používaní tejto relácie sa nebudete môcť zúčastňovať konverzácií v miestnostiach, kde je zapnuté šifrovanie.\n\nNa dosiahnutie čo najlepšieho zabezpečenia a súkromia sa odporúča používať Matrix klientov, ktoré podporujú šifrovanie.";
+"wysiwyg_composer_link_action_edit_title" = "Upraviť odkaz";
+"wysiwyg_composer_link_action_create_title" = "Vytvoriť odkaz";
+"wysiwyg_composer_link_action_link" = "Odkaz";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Text";
+"wysiwyg_composer_format_action_link" = "Použiť formát odkazu";
