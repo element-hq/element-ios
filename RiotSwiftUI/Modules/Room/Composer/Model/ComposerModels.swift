@@ -24,10 +24,8 @@ import WysiwygComposer
 struct FormatItem {
     /// The type of the item
     let type: FormatType
-    /// Whether it is active(highlighted)
-    let active: Bool
-    /// Whether it is disabled or enabled
-    let disabled: Bool
+    /// The state of the item
+    let state: ActionState
 }
 
 /// The types of formatting actions
