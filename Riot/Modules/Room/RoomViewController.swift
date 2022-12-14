@@ -15,6 +15,7 @@
 //
 
 import UIKit
+import WysiwygComposer
 
 extension RoomViewController {
     // MARK: - Override
@@ -243,6 +244,13 @@ extension RoomViewController {
             roomInputToolbarContainer.superview?.isHidden = isHidden
         }
     }
+    
+    @objc func didSendLinkAction(_ linkAction: LinkActionWrapper) {
+        let presenter = ComposerLinkActionBridgePresenter(linkAction: linkAction)
+        presenter.delegate = self
+        composerLinkActionBridgePresenter = presenter
+        presenter.present(from: self, animated: true)
+    }
 }
 
 // MARK: - Private Helpers
@@ -279,5 +287,32 @@ private extension RoomViewController {
         default:
             break
         }
+    }
+}
+
+extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
+    func didRequestLinkOperation(_ linkOperation: WysiwygLinkOperation) {
+        dismissPresenter { [weak self] in
+            self?.wysiwygInputToolbar?.performLinkOperation(linkOperation)
+        }
+    }
+    
+    func didDismissInteractively() {
+        cleanup()
+    }
+    
+    func didCancel() {
+        dismissPresenter(completion: nil)
+    }
+    
+    private func dismissPresenter(completion: (() -> Void)?) {
+        self.composerLinkActionBridgePresenter?.dismiss(animated: true) { [weak self] in
+            completion?()
+            self?.cleanup()
+        }
+    }
+    
+    private func cleanup() {
+        composerLinkActionBridgePresenter = nil
     }
 }

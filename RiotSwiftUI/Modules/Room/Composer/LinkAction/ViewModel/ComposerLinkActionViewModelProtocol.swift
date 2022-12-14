@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,17 +16,7 @@
 
 import Foundation
 
-protocol ComposerViewModelProtocol {
-    var context: ComposerViewModelType.Context { get }
-    var callback: ((ComposerViewModelResult) -> Void)? { get set }
-    var sendMode: ComposerSendMode { get set }
-    var textFormattingEnabled: Bool { get set }
-    var eventSenderDisplayName: String? { get set }
-    var placeholder: String? { get set }
-    var isFocused: Bool { get }
-    var isLandscapePhone: Bool { get set }
-    var selectionToRestore: NSRange? { get }
-    
-    func dismissKeyboard()
-    func showKeyboard()
+protocol ComposerLinkActionViewModelProtocol {
+    var context: ComposerLinkActionViewModelType.Context { get }
+    var callback: ((ComposerLinkActionViewModelResult) -> Void)? { get set }
 }

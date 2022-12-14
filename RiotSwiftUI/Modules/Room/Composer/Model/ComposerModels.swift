@@ -36,6 +36,7 @@ enum FormatType {
     case italic
     case underline
     case strikethrough
+    case link
 }
 
 extension FormatType: CaseIterable, Identifiable {
@@ -58,6 +59,8 @@ extension FormatItem {
             return Asset.Images.strikethrough.name
         case .underline:
             return Asset.Images.underlined.name
+        case .link:
+            return Asset.Images.link.name
         }
     }
     
@@ -71,6 +74,8 @@ extension FormatItem {
             return "strikethroughButton"
         case .underline:
             return "underlineButton"
+        case .link:
+            return "linkButton"
         }
     }
     
@@ -84,6 +89,8 @@ extension FormatItem {
             return VectorL10n.wysiwygComposerFormatActionStrikethrough
         case .underline:
             return VectorL10n.wysiwygComposerFormatActionUnderline
+        case .link:
+            return VectorL10n.wysiwygComposerFormatActionLink
         }
     }
 }
@@ -100,11 +107,12 @@ extension FormatType {
             return .strikeThrough
         case .underline:
             return .underline
+        case .link:
+            return .link
         }
     }
     
     // TODO: We probably don't need to expose this, clean up.
-    
     /// Convenience method to map it to the external rust binging action
     var composerAction: ComposerAction {
         switch self {
@@ -116,6 +124,8 @@ extension FormatType {
             return .strikeThrough
         case .underline:
             return .underline
+        case .link:
+            return .link
         }
     }
 }
@@ -130,11 +140,23 @@ enum ComposerSendMode: Equatable {
 enum ComposerViewAction: Equatable {
     case cancel
     case contentDidChange(isEmpty: Bool)
+    case linkTapped(linkAction: LinkAction)
+    case storeSelection(selection: NSRange)
 }
 
 enum ComposerViewModelResult: Equatable {
     case cancel
     case contentDidChange(isEmpty: Bool)
+    case linkTapped(LinkAction: LinkAction)
+}
+
+final class LinkActionWrapper: NSObject {
+    let linkAction: LinkAction
+    
+    init(_ linkAction: LinkAction) {
+        self.linkAction = linkAction
+        super.init()
+    }
 }
 
 

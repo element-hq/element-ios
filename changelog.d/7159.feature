@@ -1,0 +1,1 @@
+Rich Text Composer: added link creation/editing feature.
