@@ -391,16 +391,13 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         let formatter = dateFormatter(for: time)
         
         let currentProgress = TimeInterval(state.bindings.progress / 1000)
-        state.playingState.elapsedTimeLabel = formatter.string(from: currentProgress)
-        if let remainingTimeString = formatter.string(from: time-currentProgress) {
-            if time-currentProgress < 1.0 {
-                state.playingState.remainingTimeLabel = remainingTimeString
-            } else {
-                state.playingState.remainingTimeLabel = "-" + remainingTimeString
-            }
-        } else {
-            state.playingState.remainingTimeLabel = ""
+        let remainingTime = time-currentProgress
+        var label = ""
+        if let remainingTimeString = formatter.string(from: remainingTime) {
+            label = Int(remainingTime) == 0 ? remainingTimeString : "-" + remainingTimeString
         }
+        state.playingState.elapsedTimeLabel = formatter.string(from: currentProgress)
+        state.playingState.remainingTimeLabel = label
         
         state.playingState.canMoveBackward = state.bindings.progress > 0
         state.playingState.canMoveForward = state.bindings.progress < state.playingState.duration
