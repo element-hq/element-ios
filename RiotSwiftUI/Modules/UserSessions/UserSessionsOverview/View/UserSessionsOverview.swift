@@ -96,7 +96,7 @@ struct UserSessionsOverview: View {
                     viewModel.send(viewAction: .verifyCurrentSession)
                 }, onViewDetailsAction: { _ in
                     viewModel.send(viewAction: .viewCurrentSessionDetails)
-                }, showLocationInformations: viewModel.viewState.showLocationInfo)
+                }, showLocationInformations: viewModel.viewState.showLocationInfo, displayMode: .compact)
             } header: {
                 HStack(alignment: .firstTextBaseline) {
                     Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
