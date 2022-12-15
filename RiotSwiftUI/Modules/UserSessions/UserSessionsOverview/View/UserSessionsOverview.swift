@@ -24,22 +24,19 @@ struct UserSessionsOverview: View {
     private let maxOtherSessionsToDisplay = 5
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            ScrollView {
-                if hasSecurityRecommendations {
-                    securityRecommendationsSection
-                }
-                
-                currentSessionsSection
-                
-                if !viewModel.viewState.otherSessionsViewData.isEmpty {
-                    otherSessionsSection
-                }
+        ScrollView {
+            if hasSecurityRecommendations {
+                securityRecommendationsSection
             }
-            .frame(maxWidth: .infinity)
+            
+            currentSessionsSection
+            
+            if !viewModel.viewState.otherSessionsViewData.isEmpty {
+                otherSessionsSection
+            }
         }
         .background(theme.colors.system.ignoresSafeArea())
-        .frame(maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle(VectorL10n.userSessionsOverviewTitle)
         .navigationBarTitleDisplayMode(.inline)
         .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
@@ -51,17 +48,19 @@ struct UserSessionsOverview: View {
     
     private var securityRecommendationsSection: some View {
         SwiftUI.Section {
-            if !viewModel.viewState.unverifiedSessionsViewData.isEmpty {
-                SecurityRecommendationCard(style: .unverified,
-                                           sessionCount: viewModel.viewState.unverifiedSessionsViewData.count) {
-                    viewModel.send(viewAction: .viewAllUnverifiedSessions)
+            VStack(spacing: 16) {
+                if !viewModel.viewState.unverifiedSessionsViewData.isEmpty {
+                    SecurityRecommendationCard(style: .unverified,
+                                               sessionCount: viewModel.viewState.unverifiedSessionsViewData.count) {
+                        viewModel.send(viewAction: .viewAllUnverifiedSessions)
+                    }
                 }
-            }
-            
-            if !viewModel.viewState.inactiveSessionsViewData.isEmpty {
-                SecurityRecommendationCard(style: .inactive,
-                                           sessionCount: viewModel.viewState.inactiveSessionsViewData.count) {
-                    viewModel.send(viewAction: .viewAllInactiveSessions)
+                
+                if !viewModel.viewState.inactiveSessionsViewData.isEmpty {
+                    SecurityRecommendationCard(style: .inactive,
+                                               sessionCount: viewModel.viewState.inactiveSessionsViewData.count) {
+                        viewModel.send(viewAction: .viewAllInactiveSessions)
+                    }
                 }
             }
         } header: {
