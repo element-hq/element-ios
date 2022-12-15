@@ -51,10 +51,6 @@ class HTMLFormatter: NSObject {
             DTDefaultFontName: font.fontName,
             DTDefaultFontSize: font.pointSize,
             DTDefaultLinkDecoration: false,
-            /* This fixes the issue where links are displayed in black
-             on DTCoreText 1.6.26, the provided value does not matter
-             the tintColor of the UI element will be used for links */
-            DTDefaultLinkColor: "",
             DTWillFlushBlockCallBack: sanitizeCallback
         ]
         options.merge(extraOptions) { (_, new) in new }
@@ -66,7 +62,11 @@ class HTMLFormatter: NSObject {
         let mutableString = NSMutableAttributedString(attributedString: string)
         MXKTools.removeDTCoreTextArtifacts(mutableString)
         postFormatOperations?(mutableString)
-
+        
+        // Remove CTForegroundColorFromContext attribute to fix the iOS 16 black link color issue
+        // REF: https://github.com/Cocoanetics/DTCoreText/issues/792
+        mutableString.removeAttribute(NSAttributedString.Key("CTForegroundColorFromContext"), range: NSRange(location: 0, length: mutableString.length))
+        
         return mutableString
     }
 
