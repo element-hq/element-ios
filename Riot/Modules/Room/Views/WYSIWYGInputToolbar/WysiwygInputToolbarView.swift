@@ -115,7 +115,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         wysiwygViewModel.plainTextMode = !RiotSettings.shared.enableWysiwygTextFormatting
         
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
-        wysiwygViewModel.textView.inputAccessoryView = inputAccessoryView
+        wysiwygViewModel.textView.inputAccessoryView = inputAccessoryViewForKeyboard
         wysiwygViewModel.textView.linkTextAttributes[.underlineStyle] = 0
         
         let composer = Composer(
