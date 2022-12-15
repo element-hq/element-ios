@@ -100,7 +100,7 @@ struct UserOtherSessions: View {
                                     isSeparatorHidden: viewData == viewModel.viewState.sessionItems.last,
                                     isEditModeEnabled: viewModel.isEditModeEnabled,
                                     onBackgroundTap: { sessionId in viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId)) },
-                                    onBackgroundLongPress: { _ in viewModel.isEditModeEnabled = true })
+                                    onBackgroundLongPress: { _ in })
             }
         }
         .background(theme.colors.background)
