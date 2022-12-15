@@ -792,7 +792,7 @@
 "bug_crash_report_description" = "Jelaskan apa yang Anda lakukan sebelum crashnya:";
 "directory_server_type_homeserver" = "Ketik sebuah homeserver untuk menampilkan daftar ruangan publik";
 "room_details_access_section_anyone_apart_from_guest" = "Siapa saja yang tahu tautan ruangan, selain dari tamu";
-"security_settings_complete_security_alert_message" = "Anda seharusnya menyelesaikan keamanan di sesi Anda saat ini dulu.";
+"security_settings_complete_security_alert_message" = "Anda seharusnya menyelesaikan keamanan di sesi Anda saat ini dahulu.";
 "key_verification_scan_confirmation_scanned_device_information" = "Apakah perangkat yang lain menampilkan perisai yang sama?";
 "key_verification_verify_qr_code_information" = "Pindai kodenya untuk memverifikasi dengan sesama dengan aman.";
 "error_not_supported_on_mobile" = "Anda tidak melakukannya dari %@ mobile.";
@@ -848,7 +848,7 @@
 "key_verification_scan_confirmation_scanned_user_information" = "Apakah %@ menampilkan perisai yang sama?";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "Kode QR berhasil divalidasi.";
 "key_verification_verify_qr_code_information_other_device" = "Pindai kode di bawah untuk memverifikasi:";
-"key_verification_bootstrap_not_setup_message" = "Anda harus mem-bootstrap penandatanganan-silang dulu.";
+"key_verification_bootstrap_not_setup_message" = "Anda harus mem-bootstrap penandatanganan silang dahulu.";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Memeriksa untuk kemampuan verifikasi lain ...";
 "key_verification_self_verify_current_session_alert_message" = "Pengguna yang lain mungkin tidak mempercayainya.";
 "device_verification_cancelled" = "Pengguna yang lain membatalkan verifikasinya.";
@@ -1549,7 +1549,7 @@
 "settings_discovery_three_pids_management_information_part1" = "Kelola alamat email atau nomor telepon apa saja yang pengguna lain dapat menggunakan untuk menemukan Anda dan menggunakannya untuk mengundang Anda ke ruangan. Tambahkan atau hapus alamat email atau nomor telepon dari daftar ini di ";
 "room_preview_unlinked_email_warning" = "Undangan ini telah dikirim ke %@, yang tidak diasosiasikan dengan akun ini. Anda mungkin ingin masuk ke akun yang lain, atau tambahkan email ini ke akun Anda.";
 "unknown_devices_alert" = "Ruangan ini berisi sesi tidak dikenal yang belum diverifikasi.\nIni berarti tidak ada jaminan bahwa sesi tersebut adalah milik pengguna yang mereka klaim.\nKami menyarankan Anda memverifikasinya untuk setiap sesi sebelum melanjutkan, tetapi Anda dapat mengirim ulang pesan tanpa memverifikasi jika Anda ingin.";
-"room_warning_about_encryption" = "Enkripsi ujung ke ujung masih dalam beta dan mungkin tidak dapat diandalkan.\n\nAnda seharusnya tidak mempercayainya dulu untuk mengamankan data.\n\nPerangkat masih belum dapat mendekripsi riwayat sebelum mereka bergabung ke ruangannya.\n\nPesan terenkripsi masih belum terlihat di klien yang belum mengimplementasikan enkripsi.";
+"room_warning_about_encryption" = "Enkripsi ujung ke ujung masih dalam beta dan mungkin tidak dapat diandalkan.\n\nAnda seharusnya tidak mempercayainya dahulu untuk mengamankan data.\n\nPerangkat masih belum dapat mendekripsi riwayat sebelum mereka bergabung ke ruangannya.\n\nPesan terenkripsi masih belum terlihat di klien yang belum mengimplementasikan enkripsi.";
 "auth_add_email_and_phone_warning" = "Pendaftaran dengan email dan nomor telepon sekaligus belum didukung sampai API-nya sudah ada. Hanya nomor telepon yang akan diperhitungkan. Anda dapat menambahkan email Anda di profil Anda di pengaturan.";
 "auth_reset_password_success_message" = "Kata sandi akun Matrix Anda telah diatur ulang.\n\nAnda telah dikeluarkan dari semua sesi dan tidak akan menerima lagi notifikasi push. Untuk mengaktifkan ulang notifikasi, masuk ulang di setiap perangkat.";
 "spaces_add_rooms_coming_soon_title" = "Penambahan ruangan akan segera datang";
