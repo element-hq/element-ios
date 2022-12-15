@@ -1909,8 +1909,15 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
             MXRoomSummary *summary = room.summary;
             if (summary)
             {
+                NSString *eventId = summary.lastMessage.eventId;
+                if (!eventId)
+                {
+                    MXLogFailure(@"[MXKAccount] onDateTimeFormatUpdate: Missing event id");
+                    continue;
+                }
+                
                 dispatch_group_enter(dispatchGroup);
-                [summary.mxSession eventWithEventId:summary.lastMessage.eventId
+                [summary.mxSession eventWithEventId:eventId
                                              inRoom:summary.roomId
                                             success:^(MXEvent *event) {
                     
