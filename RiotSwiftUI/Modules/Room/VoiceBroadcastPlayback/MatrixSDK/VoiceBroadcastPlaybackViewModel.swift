@@ -58,6 +58,21 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     
     private static let defaultBackwardForwardValue: Float = 30000.0 // 30sec in ms
     
+    private var fullDateFormatter: DateComponentsFormatter {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.allowedUnits = [.hour, .minute, .second]
+        return formatter
+    }
+    
+    private var shortDateFormatter: DateComponentsFormatter {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.zeroFormattingBehavior = .pad
+        formatter.allowedUnits = [.minute, .second]
+        return formatter
+    }
+    
     // MARK: Public
     
     // MARK: - Setup
@@ -330,12 +345,16 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     
     private func updateDuration() {
         let duration = voiceBroadcastAggregator.voiceBroadcast.duration
-        let time = TimeInterval(duration / 1000)
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .abbreviated
-        
         state.playingState.duration = Float(duration)
-        state.playingState.durationLabel = formatter.string(from: time)
+        updateUI()
+    }
+    
+    private func dateFormatter(for time: TimeInterval) -> DateComponentsFormatter {
+        if time >= 3600 {
+            return self.fullDateFormatter
+        } else {
+            return self.shortDateFormatter
+        }
     }
     
     private func didSliderChanged(_ didChange: Bool) {
@@ -368,6 +387,18 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     }
     
     private func updateUI() {
+        let time = TimeInterval(state.playingState.duration / 1000)
+        let formatter = dateFormatter(for: time)
+        
+        let currentProgress = TimeInterval(state.bindings.progress / 1000)
+        let remainingTime = time-currentProgress
+        var label = ""
+        if let remainingTimeString = formatter.string(from: remainingTime) {
+            label = Int(remainingTime) == 0 ? remainingTimeString : "-" + remainingTimeString
+        }
+        state.playingState.elapsedTimeLabel = formatter.string(from: currentProgress)
+        state.playingState.remainingTimeLabel = label
+        
         state.playingState.canMoveBackward = state.bindings.progress > 0
         state.playingState.canMoveForward = state.bindings.progress < state.playingState.duration
     }
