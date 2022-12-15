@@ -648,7 +648,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         // Change base line
         [lastMessage addAttribute:NSBaselineOffsetAttributeName value:@(-3.0f) range:NSMakeRange(0, attachmentString.length)];
         
-        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:summary.lastMessage.text];
+        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", summary.lastMessage.text]];
         [lastMessage appendAttributedString:attributedText];
         [lastMessage addAttribute:NSFontAttributeName value:self.defaultTextFont range:NSMakeRange(0, lastMessage.length)];
     }
