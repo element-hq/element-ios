@@ -67,7 +67,6 @@ class HTMLFormatter: NSObject {
         MXKTools.removeDTCoreTextArtifacts(mutableString)
         postFormatOperations?(mutableString)
 
-
         return mutableString
     }
 
