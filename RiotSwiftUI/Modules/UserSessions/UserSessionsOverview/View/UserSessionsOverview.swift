@@ -36,7 +36,7 @@ struct UserSessionsOverview: View {
                     otherSessionsSection
                 }
             }
-            .readableFrame()
+            .frame(maxWidth: .infinity)
         }
         .background(theme.colors.system.ignoresSafeArea())
         .frame(maxHeight: .infinity)
