@@ -51,6 +51,10 @@ class HTMLFormatter: NSObject {
             DTDefaultFontName: font.fontName,
             DTDefaultFontSize: font.pointSize,
             DTDefaultLinkDecoration: false,
+            /* This fixes the issue where links are displayed in black
+             on DTCoreText 1.6.26, the provided value does not matter
+             the tintColor of the UI element will be used for links */
+            DTDefaultLinkColor: "",
             DTWillFlushBlockCallBack: sanitizeCallback
         ]
         options.merge(extraOptions) { (_, new) in new }
