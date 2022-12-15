@@ -51,9 +51,9 @@ class HTMLFormatter: NSObject {
             DTDefaultFontName: font.fontName,
             DTDefaultFontSize: font.pointSize,
             DTDefaultLinkDecoration: false,
-            // This fixes the issue where links are displayed in black
-            // However doesn't matter the value provided the color doesn't change
-            // From the default accent one
+            /* This fixes the issue where links are displayed in black
+             but no matter the value provided, the color never changes
+             from the default green one */
             DTDefaultLinkColor: "",
             DTWillFlushBlockCallBack: sanitizeCallback
         ]
