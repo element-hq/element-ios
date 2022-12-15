@@ -92,7 +92,7 @@ struct UserSessionOverview: View {
                     .accessibilityIdentifier(VectorL10n.signOut)
                 } label: {
                     Image(systemName: "ellipsis")
-                        .foregroundColor(theme.colors.secondaryContent)
+                        .foregroundColor(theme.colors.accent)
                         .padding(.horizontal, 4)
                         .padding(.vertical, 12)
                 }
