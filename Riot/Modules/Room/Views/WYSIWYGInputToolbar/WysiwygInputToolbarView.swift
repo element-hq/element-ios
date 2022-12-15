@@ -115,6 +115,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         wysiwygViewModel.plainTextMode = !RiotSettings.shared.enableWysiwygTextFormatting
         
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
+        wysiwygViewModel.textView.inputAccessoryView = inputAccessoryView
+        wysiwygViewModel.textView.linkTextAttributes[.underlineStyle] = 0
         
         let composer = Composer(
             viewModel: viewModel.context,
@@ -126,10 +128,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }, showSendMediaActions: { [weak self]  in
             guard let self = self else { return }
             self.showSendMediaActions()
-        }).introspectTextView { [weak self] textView in
-            guard let self = self else { return }
-            textView.inputAccessoryView = self.inputAccessoryViewForKeyboard
-        }
+        })
         
         hostingViewController = VectorHostingController(rootView: composer)
         hostingViewController.publishHeightChanges = true
