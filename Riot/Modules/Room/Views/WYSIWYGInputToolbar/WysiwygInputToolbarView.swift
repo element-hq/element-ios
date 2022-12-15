@@ -44,7 +44,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var hostingViewController: VectorHostingController!
     private var wysiwygViewModel = WysiwygComposerViewModel(
         textColor: ThemeService.shared().theme.colors.primaryContent,
-        linkColor: ThemeService.shared().theme.colors.accent
+        linkColor: ThemeService.shared().theme.colors.accent,
+        codeBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor
     )
     private var viewModel: ComposerViewModelProtocol!
     
@@ -299,6 +300,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         hostingViewController.view.backgroundColor = theme.colors.background
         wysiwygViewModel.textColor = theme.colors.primaryContent
         wysiwygViewModel.linkColor = theme.colors.accent
+        wysiwygViewModel.codeBackgroundColor = theme.selectedBackgroundColor
     }
     
     private func updateTextViewHeight() {
