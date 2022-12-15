@@ -43,7 +43,7 @@ struct DeviceAvatarView: View {
             // Verification badge
             Image(viewData.verificationImageName)
                 .frame(maxWidth: CGFloat(badgeSize), maxHeight: CGFloat(badgeSize))
-                .shapedBorder(color: theme.colors.system, borderWidth: 1, shape: Circle())
+                .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1, shape: Circle())
                 .background(theme.colors.background)
                 .clipShape(Circle())
                 .offset(x: 10, y: 8)
