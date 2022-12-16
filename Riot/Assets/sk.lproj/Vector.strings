@@ -2883,3 +2883,4 @@
 // Links
 "wysiwyg_composer_link_action_text" = "Text";
 "wysiwyg_composer_format_action_link" = "Použiť formát odkazu";
+"wysiwyg_composer_format_action_inline_code" = "Použiť formát riadkového kódu";
