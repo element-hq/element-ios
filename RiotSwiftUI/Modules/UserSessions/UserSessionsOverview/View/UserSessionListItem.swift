@@ -43,6 +43,7 @@ struct UserSessionListItem: View {
                     DeviceAvatarView(viewData: viewData.deviceAvatarViewData, isSelected: viewData.isSelected)
                     VStack(alignment: .leading, spacing: 0) {
                         Text(viewData.sessionName)
+                            .lineLimit(1)
                             .font(theme.fonts.calloutSB)
                             .foregroundColor(theme.colors.primaryContent)
                             .multilineTextAlignment(.leading)
