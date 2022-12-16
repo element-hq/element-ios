@@ -33,7 +33,7 @@ struct VoiceBroadcastPlaybackView: View {
     @State private var bufferingSpinnerRotationValue = 0.0
     
     private var backgroundColor: Color {
-        if viewModel.viewState.playingState.isLive {
+        if viewModel.viewState.broadcastState != .paused {
             return theme.colors.alert
         }
         return theme.colors.quarterlyContent
