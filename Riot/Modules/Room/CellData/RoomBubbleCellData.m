@@ -295,6 +295,13 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     {
         [self updateBeaconInfoSummaryWithId:eventId andEvent:event];
     }
+    
+    // Hide voice broadcast chunk
+    if (event.eventType == MXEventTypeRoomMessage && event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType]) {
+        self.tag = RoomBubbleCellDataTagVoiceBroadcastNoDisplay;
+        self.collapsable = NO;
+        self.collapsed = NO;
+    }
 
     return retVal;
 }
