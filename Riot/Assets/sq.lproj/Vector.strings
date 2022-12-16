@@ -2640,7 +2640,7 @@
 "user_session_unverified_session_title" = "Sesione të paverifikuar";
 "user_session_verified_session_title" = "Sesione të verifikuar";
 "user_session_got_it" = "E mora vesh";
-"user_other_session_permanently_unverified_additional_info" = "Ky sesion s’mund të verifikohet, ngaqë nuk mbulon fshehtëzim.";
+"user_other_session_permanently_unverified_additional_info" = "Ky sesion s’mbulon fshehtëzim, ndaj s’mund të verifikohet.";
 "user_sessions_hide_location_info" = "Fshihe adresën IP";
 "user_sessions_show_location_info" = "Shfaq adresë IP";
 "voice_broadcast_time_left" = "Edhe %@";
@@ -2664,3 +2664,12 @@
 
 // MARK: Password policy errors
 "password_policy_too_short_pwd_error" = "Fjalëkalim shumë i shkurtër";
+"user_session_permanently_unverified_session_description" = "Ky sesion nuk mbulon fshehtëzim, ndaj s’mund të verifikohet.\n\nS’do të jeni në gjendje të merrni pjesë në dhoma ku fshehtëzimi është i aktivizuar, kur përdorni këtë sesion.\n\nPër sigurinë dhe privatësinë më të mirë, rekomandohet të përdorni klientë Matrix që mbulojnë fshehtëzimin.";
+"wysiwyg_composer_link_action_edit_title" = "Përpunoni një lidhje";
+"wysiwyg_composer_link_action_create_title" = "Krijoni një lidhje";
+"wysiwyg_composer_link_action_link" = "Lidhje";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Tekst";
+"wysiwyg_composer_format_action_inline_code" = "Apliko formatim kodi brendazi";
+"wysiwyg_composer_format_action_link" = "Apliko formatim lidhjeje";
