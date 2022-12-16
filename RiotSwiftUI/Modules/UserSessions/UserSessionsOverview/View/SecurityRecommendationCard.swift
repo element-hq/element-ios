@@ -52,7 +52,7 @@ struct SecurityRecommendationCard: View {
         .padding(16)
         .background(theme.colors.background)
         .clipShape(backgroundShape)
-        .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1.0, shape: backgroundShape)
+        .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 0.5, shape: backgroundShape)
         .onTapGesture {
             action()
         }

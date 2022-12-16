@@ -67,7 +67,7 @@ struct UserSessionListItem: View {
                         }
                         .padding(.bottom, 16)
                         .padding(.trailing, 16)
-                        SeparatorLine()
+                        SeparatorLine(height: 0.5)
                             .isHidden(isSeparatorHidden)
                     }
                     .padding(.leading, 7)
