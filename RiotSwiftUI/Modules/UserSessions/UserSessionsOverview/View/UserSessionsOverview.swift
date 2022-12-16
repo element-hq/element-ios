@@ -169,6 +169,7 @@ struct UserSessionsOverview: View {
     private var otherSessionsSection: some View {
         SwiftUI.Section {
             LazyVStack(spacing: 0) {
+                SeparatorLine(height: 0.5)
                 ForEach(viewModel.viewState.otherSessionsViewData.prefix(maxOtherSessionsToDisplay)) { viewData in
                     UserSessionListItem(viewData: viewData,
                                         showsLocationInfo: viewModel.viewState.showLocationInfo,
@@ -180,6 +181,7 @@ struct UserSessionsOverview: View {
                         viewModel.send(viewAction: .viewAllOtherSessions)
                     }
                 }
+                SeparatorLine(height: 0.5)
             }
             .background(theme.colors.background)
         } header: {

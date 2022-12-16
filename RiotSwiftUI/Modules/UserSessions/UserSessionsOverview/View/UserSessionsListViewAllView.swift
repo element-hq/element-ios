@@ -38,7 +38,6 @@ struct UserSessionsListViewAllView: View {
                     }
                     .padding(.vertical, 15)
                     .padding(.trailing, 20)
-                    SeparatorLine()
                 }
                 .background(theme.colors.background)
                 .padding(.leading, 72)
