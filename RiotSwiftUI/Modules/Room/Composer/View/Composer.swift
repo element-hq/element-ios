@@ -74,8 +74,7 @@ struct Composer: View {
         FormatType.allCases.map { type in
             FormatItem(
                 type: type,
-                active: wysiwygViewModel.actionStates[type.composerAction] == .reversed,
-                disabled: wysiwygViewModel.actionStates[type.composerAction] == .disabled
+                state: wysiwygViewModel.actionStates[type.composerAction] ?? .disabled
             )
         }
     }

@@ -9311,6 +9311,10 @@ public class VectorL10n: NSObject {
   public static var wysiwygComposerFormatActionBold: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_bold") 
   }
+  /// Apply inline code format
+  public static var wysiwygComposerFormatActionInlineCode: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_inline_code") 
+  }
   /// Apply italic format
   public static var wysiwygComposerFormatActionItalic: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_italic") 
