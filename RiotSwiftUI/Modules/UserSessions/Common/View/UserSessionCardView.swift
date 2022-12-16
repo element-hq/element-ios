@@ -52,10 +52,16 @@ struct UserSessionCardView: View {
                 .foregroundColor(theme.colors.primaryContent)
                 .multilineTextAlignment(.center)
             
-            Label(viewData.verificationStatusText, image: viewData.verificationStatusImageName)
-                .font(theme.fonts.subheadline)
-                .foregroundColor(theme.colors[keyPath: viewData.verificationStatusColor])
-                .multilineTextAlignment(.center)
+            Label {
+                Text(viewData.verificationStatusText)
+                    .font(theme.fonts.subheadline)
+                    .foregroundColor(theme.colors[keyPath: viewData.verificationStatusColor])
+                    .multilineTextAlignment(.center)
+            } icon: {
+                Image(viewData.verificationStatusImageName)
+                    .resizable()
+                    .frame(width: 16, height: 16)
+            }
             
             InlineTextButton(viewData.verificationStatusAdditionalInfoText, tappableText: VectorL10n.userSessionLearnMore, alwaysCallAction: false) {
                 onLearnMoreAction?()
