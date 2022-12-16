@@ -30,7 +30,7 @@ struct SecurityRecommendationCard: View {
     let action: () -> Void
     
     var body: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .top, spacing: 16.0) {
             Image(iconName)
             VStack(alignment: .leading, spacing: 16.0) {
                 VStack(alignment: .leading, spacing: 8.0) {
