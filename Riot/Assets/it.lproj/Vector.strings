@@ -2653,3 +2653,10 @@
 // MARK: Password policy errors
 "password_policy_too_short_pwd_error" = "Password troppo corta";
 "user_session_permanently_unverified_session_description" = "Questa sessione non supporta la crittografia, perciò non può essere verificata.\n\nNon potrai partecipare in stanze dove la crittografia è attiva mentre usi questa sessione.\n\nPer maggiore sicurezza e privacy, è consigliabile usare i client di Matrix che supportano la crittografia.";
+"wysiwyg_composer_link_action_edit_title" = "Modifica collegamento";
+"wysiwyg_composer_link_action_create_title" = "Crea un collegamento";
+"wysiwyg_composer_link_action_link" = "Collegamento";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Testo";
+"wysiwyg_composer_format_action_link" = "Applica formato collegamento";
