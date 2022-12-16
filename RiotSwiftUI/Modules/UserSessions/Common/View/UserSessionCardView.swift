@@ -100,11 +100,12 @@ struct UserSessionCardView: View {
                 .accessibilityIdentifier("userSessionCardVerifyButton")
             }
             
-            if viewData.isCurrentSessionDisplayMode && displayMode == .compact {
+            if viewData.isCurrentSessionDisplayMode, displayMode == .compact {
                 Text(VectorL10n.userSessionViewDetails)
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.accent)
                     .accessibilityIdentifier("userSessionCardViewDetails")
+                    .padding(.top, 8)
             }
         }
         .padding(24)
