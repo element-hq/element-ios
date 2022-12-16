@@ -40,16 +40,18 @@ struct UserSessionOverview: View {
             .padding(16)
             
             SwiftUI.Section {
-                UserSessionOverviewItem(title: VectorL10n.userSessionOverviewSessionDetailsButtonTitle,
-                                        showsChevron: true) {
-                    viewModel.send(viewAction: .viewSessionDetails)
-                }
-                
-                if let enabled = viewModel.viewState.isPusherEnabled {
-                    UserSessionOverviewToggleCell(title: VectorL10n.userSessionPushNotifications,
-                                                  message: VectorL10n.userSessionPushNotificationsMessage,
-                                                  isOn: enabled, isEnabled: viewModel.viewState.remotelyTogglingPushersAvailable) {
-                        viewModel.send(viewAction: .togglePushNotifications)
+                VStack(spacing: 24) {
+                    UserSessionOverviewItem(title: VectorL10n.userSessionOverviewSessionDetailsButtonTitle,
+                                            showsChevron: true) {
+                        viewModel.send(viewAction: .viewSessionDetails)
+                    }
+                    
+                    if let enabled = viewModel.viewState.isPusherEnabled{
+                        UserSessionOverviewToggleCell(title: VectorL10n.userSessionPushNotifications,
+                                                      message: VectorL10n.userSessionPushNotificationsMessage,
+                                                      isOn: enabled, isEnabled: viewModel.viewState.remotelyTogglingPushersAvailable) {
+                            viewModel.send(viewAction: .togglePushNotifications)
+                        }
                     }
                 }
             }

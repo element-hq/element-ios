@@ -41,7 +41,7 @@ struct UserSessionOverviewToggleCell: View {
                     }
                     .disabled(!isEnabled)
                     .allowsHitTesting(false)
-                    .padding(.vertical, 10)
+                    .padding(.vertical, 5.5)
                     .padding(.horizontal, 16)
                     .accessibilityIdentifier("UserSessionOverviewToggleCell")
                     SeparatorLine()

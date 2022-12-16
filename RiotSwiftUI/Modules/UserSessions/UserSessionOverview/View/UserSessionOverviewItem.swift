@@ -39,7 +39,7 @@ struct UserSessionOverviewItem: View {
                         Image(Asset.Images.chevron.name)
                     }
                 }
-                .padding(.vertical, 15)
+                .padding(.vertical, 11)
                 .padding(.horizontal, 16)
                 SeparatorLine()
             }
