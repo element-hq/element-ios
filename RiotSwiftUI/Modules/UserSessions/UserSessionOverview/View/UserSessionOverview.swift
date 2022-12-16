@@ -46,7 +46,7 @@ struct UserSessionOverview: View {
                         viewModel.send(viewAction: .viewSessionDetails)
                     }
                     
-                    if let enabled = viewModel.viewState.isPusherEnabled{
+                    if let enabled = viewModel.viewState.isPusherEnabled {
                         UserSessionOverviewToggleCell(title: VectorL10n.userSessionPushNotifications,
                                                       message: VectorL10n.userSessionPushNotificationsMessage,
                                                       isOn: enabled, isEnabled: viewModel.viewState.remotelyTogglingPushersAvailable) {
