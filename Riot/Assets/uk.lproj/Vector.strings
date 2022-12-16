@@ -2885,3 +2885,4 @@
 // Links
 "wysiwyg_composer_link_action_text" = "Текст";
 "wysiwyg_composer_format_action_link" = "Застосувати формат посилання";
+"wysiwyg_composer_format_action_inline_code" = "Застосовувати вбудований формат коду";
