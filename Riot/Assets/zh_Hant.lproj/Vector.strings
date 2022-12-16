@@ -1142,4 +1142,4 @@
 "stop" = "停止";
 "joining" = "正在加入";
 "enable" = "啓用";
-"service_terms_modal_policy_checkbox_accessibility_hint" = "確認接受 %@";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "剔選複選框以接受 %@";
