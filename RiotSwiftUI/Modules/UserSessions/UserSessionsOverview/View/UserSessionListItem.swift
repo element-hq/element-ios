@@ -49,7 +49,7 @@ struct UserSessionListItem: View {
                             .padding(.top, 16)
                             .padding(.bottom, 2)
                             .padding(.trailing, 16)
-                        HStack {
+                        HStack(alignment: .top) {
                             if let sessionDetailsIcon = viewData.sessionDetailsIcon {
                                 Image(sessionDetailsIcon)
                                     .padding(.leading, 2)
