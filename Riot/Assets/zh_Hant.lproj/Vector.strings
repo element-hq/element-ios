@@ -88,7 +88,7 @@
 "bug_report_send" = "傳送";
 "room_event_action_resend" = "重新傳送";
 "room_event_action_view_source" = "檢視來源";
-"room_event_action_permalink" = "永久連結";
+"room_event_action_permalink" = "複製訊息永久連結";
 "room_event_action_quote" = "引用";
 "room_participants_online" = "線上";
 "room_details_favourite_tag" = "我的最愛";
@@ -164,9 +164,9 @@
 "e2e_room_key_request_title" = "加密金鑰請求";
 "e2e_room_key_request_share_without_verifying" = "不驗證就分享";
 "e2e_room_key_request_ignore_request" = "忽略請求";
-"auth_reset_password_message" = "要重設您的密碼，輸入連結到您的帳號的電子郵件地址：";
+"auth_reset_password_message" = "為了重設密碼，請輸入您的電子郵件地址：";
 "auth_reset_password_email_validation_message" = "電子郵件已傳送至 %@。您必須跟隨其中包含了連結，點按下面的連結。";
-"auth_reset_password_success_message" = "您的密碼已重設。\n\n您已在所有工作階段上登出，並且不會再收到推送通知。要重新啟用通知，再次於每個裝置上登入。";
+"auth_reset_password_success_message" = "您的密碼已重設。\n\n您已登出所有工作階段，並且不會再收到推送通知。如要重新啟用通知，請於每個裝置重新登入。";
 "auth_add_email_and_phone_warning" = "直到 API 存在之前，尚不支援同時使用電子郵件地址和電話號碼註冊，因此只有電話號碼會被採用，但您可以在基本資料中新增電子郵件地址。";
 // Chat creation
 "room_creation_title" = "新的聊天";
@@ -601,10 +601,10 @@
 "auth_softlogout_signed_out" = "你已登出";
 "auth_autodiscover_invalid_response" = "無效的自家伺服器發現回應";
 "auth_accept_policies" = "請查看並接受此自家伺服器的策略：";
-"auth_reset_password_error_is_required" = "未配置身份伺服器：在伺服器選項中添加一個以便日後重置密碼。";
-"auth_forgot_password_error_no_configured_identity_server" = "未配置身份伺服器：添加一台以便重置密碼。";
-"auth_phone_is_required" = "沒有配置身份伺服器，因此您無法添加電話號碼以便將來重設密碼。";
-"auth_email_is_required" = "沒有配置身份伺服器，因此您無法添加電子郵件地址以便將來重設密碼。";
+"auth_reset_password_error_is_required" = "未設置身份伺服器：在伺服器選項中新增一個來重置密碼。";
+"auth_forgot_password_error_no_configured_identity_server" = "未設置身份伺服器：新增設置來重置密碼。";
+"auth_phone_is_required" = "沒有設置身份伺服器，因此無法新增電話號碼以便將來重設密碼。";
+"auth_email_is_required" = "沒有設置身份伺服器，因此無法新增電子郵件地址以便將來重設密碼。";
 "auth_add_email_phone_message_2" = "設置一個電子郵件以便日後恢復帳戶和使以後可以由認識您的人發現你。";
 "auth_add_email_message_2" = "設置一個電子郵件以便日後恢復帳戶和使以後可以由認識您的人發現你。";
 "auth_add_phone_message_2" = "設置一個電話號碼，以後可以由認識您的人發現你。";
@@ -687,7 +687,7 @@
 // MARK: - Call Transfer
 "call_transfer_title" = "傳輸";
 "room_info_list_section_other" = "其他";
-"create_room_placeholder_topic" = "主題";
+"create_room_placeholder_topic" = "聊天室主題為何？";
 "create_room_placeholder_name" = "名稱";
 "biometrics_cant_unlocked_alert_message_retry" = "重試";
 "pin_protection_reset_alert_action_reset" = "重設";
@@ -1142,3 +1142,4 @@
 "stop" = "停止";
 "joining" = "正在加入";
 "enable" = "啓用";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "確認接受 %@";
