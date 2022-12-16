@@ -2748,7 +2748,6 @@
 "user_inactive_session_item_with_date" = "Neaktívna viac ako 90 dní (%@)";
 "user_inactive_session_item" = "Neaktívna viac ako 90 dní";
 "user_other_session_unverified_sessions_header_subtitle" = "Overte si relácie pre vylepšené bezpečné zasielanie správ alebo sa odhláste z tých, ktoré už nepoznáte alebo nepoužívate.";
-"user_other_session_security_recommendation_title" = "Bezpečnostné odporúčania";
 "user_sessions_overview_link_device" = "Prepojiť zariadenie";
 
 // MARK: User sessions management

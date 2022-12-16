@@ -2526,7 +2526,6 @@
 "user_inactive_session_item_with_date" = "Inativa por 90+ dias (%@)";
 "user_inactive_session_item" = "Inativa por 90+ dias";
 "user_other_session_unverified_sessions_header_subtitle" = "Verifique suas sessões para mensageria de segurança melhorada ou faça signout daquelas que você não reconhece ou usa mais.";
-"user_other_session_security_recommendation_title" = "Recomendação de segurança";
 "user_sessions_overview_link_device" = "Linkar um dispositivo";
 
 // MARK: User sessions management

@@ -2486,7 +2486,6 @@
 "user_other_session_verified_sessions_header_subtitle" = "Për sigurinë më të mirë, dilni nga çfarëdo sesioni që nuk e njihni apo përdorni më.";
 "user_other_session_current_session_details" = "Sesioni juaj i tanishëm";
 "user_other_session_unverified_sessions_header_subtitle" = "Verifikoni sesionet tuaj, për shkëmbim më të sigurt mesazhesh, ose dilni prej atyre që nuk i njihni, apo përdorni më.";
-"user_other_session_security_recommendation_title" = "Rekomandim sigurie";
 "user_session_push_notifications_message" = "Kur aktivizohet, ky sesion do të marrë njoftime push.";
 "user_session_push_notifications" = "Njoftime Push";
 "user_other_session_verified_additional_info" = "Ky sesion është gati për shkëmbim të sigurt mesazhesh.";

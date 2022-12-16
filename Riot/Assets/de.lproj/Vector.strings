@@ -2571,7 +2571,6 @@
 "user_inactive_session_item_with_date" = "Inaktiv seit 90+ Tagen (%@)";
 "user_inactive_session_item" = "Inaktiv seit 90+ Tagen";
 "user_other_session_unverified_sessions_header_subtitle" = "Für besonders sichere Kommunikation verifiziere deine Sitzungen oder melde dich von ihnen ab, falls du sie nicht mehr identifizieren kannst.";
-"user_other_session_security_recommendation_title" = "Sicherheitsempfehlung";
 "user_sessions_overview_link_device" = "Verbinde ein Gerät";
 
 // MARK: User sessions management

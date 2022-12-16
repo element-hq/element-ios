@@ -2752,7 +2752,6 @@
 "user_inactive_session_item_with_date" = "Tidak aktif selama 90+ hari (%@)";
 "user_inactive_session_item" = "Tidak aktif selama 90+ hari";
 "user_other_session_unverified_sessions_header_subtitle" = "Verifikasi sesi Anda untuk perpesanan aman yang terbaik atau keluarkan sesi yang Anda tidak kenal atau gunakan lagi.";
-"user_other_session_security_recommendation_title" = "Saran keamanan";
 "user_sessions_overview_link_device" = "Tautkan sebuah perangkat";
 
 // MARK: User sessions management

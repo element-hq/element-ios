@@ -2565,7 +2565,6 @@
 "user_other_session_verified_sessions_header_subtitle" = "A legjobb biztonság érdekében jelentkezz ki minden olyan munkamenetből, melyet már nem ismersz fel vagy nem használsz.";
 "user_other_session_current_session_details" = "Jelenlegi munkamenet";
 "user_other_session_unverified_sessions_header_subtitle" = "Erősítse meg a munkameneteit a még biztonságosabb csevegéshez vagy jelentkezzen ki ezekből, ha nem ismeri fel vagy már nem használja őket.";
-"user_other_session_security_recommendation_title" = "Biztonsági javaslat";
 "user_session_push_notifications_message" = "Ha be van kapcsolva az eszközre Push értesítések lesznek küldve.";
 "user_session_push_notifications" = "Push értesítések";
 "user_other_session_verified_additional_info" = "Ez a munkamenet beállítva a biztonságos üzenetküldéshez.";

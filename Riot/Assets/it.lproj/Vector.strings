@@ -2525,7 +2525,6 @@
 "user_inactive_session_item" = "Inattiva da 90+ giorni";
 "user_inactive_session_item_with_date" = "Inattiva da 90+ giorni (%@)";
 "user_other_session_unverified_sessions_header_subtitle" = "Verifica le tue sessioni per avere conversazioni più sicure o disconnetti quelle che non riconosci o che non usi più.";
-"user_other_session_security_recommendation_title" = "Consiglio di sicurezza";
 "user_sessions_overview_link_device" = "Collega un dispositivo";
 
 // MARK: User sessions management
