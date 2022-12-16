@@ -74,10 +74,10 @@ struct UserSessionsOverview: View {
                 Text(VectorL10n.userSessionsOverviewSecurityRecommendationsSectionInfo)
                     .font(theme.fonts.footnote)
                     .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.bottom, 12.0)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.top, 24)
+            .padding(.bottom, 8.0)
         }
         .padding(.horizontal, 16)
         .accessibilityIdentifier("userSessionsOverviewSecurityRecommendationsSection")
@@ -103,11 +103,11 @@ struct UserSessionsOverview: View {
                         .font(theme.fonts.footnote)
                         .foregroundColor(theme.colors.secondaryContent)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.bottom, 12.0)
                         .padding(.top, 24.0)
                     
                     currentSessionMenu
                 }
+                .padding(.bottom, 8.0)
             }
             .padding(.horizontal, 16)
         }
@@ -197,11 +197,11 @@ struct UserSessionsOverview: View {
                 Text(VectorL10n.userSessionsOverviewOtherSessionsSectionInfo)
                     .font(theme.fonts.footnote)
                     .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.bottom, 12.0)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16.0)
             .padding(.top, 24.0)
+            .padding(.bottom, 8.0)
         }
         .accessibilityIdentifier("userSessionsOverviewOtherSection")
     }
