@@ -2887,3 +2887,4 @@
 // Links
 "wysiwyg_composer_link_action_text" = "Teks";
 "wysiwyg_composer_format_action_link" = "Terapkan format tautan";
+"wysiwyg_composer_format_action_inline_code" = "Terapkan format kode dalam baris";
