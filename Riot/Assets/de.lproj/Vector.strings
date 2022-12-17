@@ -922,7 +922,7 @@
 "manage_session_trusted" = "Von dir vertraut";
 "manage_session_not_trusted" = "Nicht vertraut";
 "manage_session_sign_out" = "Von dieser Sitzung abmelden";
-"widget_picker_manage_integrations" = "Integrationen verwalten…";
+"widget_picker_manage_integrations" = "Integrationen verwalten …";
 // Room widget permissions
 "room_widget_permission_title" = "Widget laden";
 "room_widget_permission_creator_info_title" = "Dieses Widget wurde hinzugefügt von:";
@@ -2694,3 +2694,4 @@
 "wysiwyg_composer_link_action_edit_title" = "Link bearbeiten";
 "wysiwyg_composer_link_action_create_title" = "Link erstellen";
 "wysiwyg_composer_link_action_link" = "Link";
+"wysiwyg_composer_format_action_inline_code" = "Als Inline-Code formatieren";
