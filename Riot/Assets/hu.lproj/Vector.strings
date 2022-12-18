@@ -2680,3 +2680,4 @@
 // Links
 "wysiwyg_composer_link_action_text" = "Szöveg";
 "wysiwyg_composer_format_action_link" = "Hivatkozás";
+"wysiwyg_composer_format_action_inline_code" = "Beágyazott kód formátum alkalmazása";
