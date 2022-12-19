@@ -35,7 +35,7 @@ struct SecurityRecommendationCard: View {
             VStack(alignment: .leading, spacing: 16.0) {
                 VStack(alignment: .leading, spacing: 8.0) {
                     Text(title)
-                        .font(theme.fonts.calloutSB)
+                        .font(theme.fonts.headline)
                         .foregroundColor(theme.colors.primaryContent)
                     
                     Text(subtitle)

@@ -44,7 +44,7 @@ struct UserSessionListItem: View {
                     VStack(alignment: .leading, spacing: 0) {
                         Text(viewData.sessionName)
                             .lineLimit(1)
-                            .font(theme.fonts.calloutSB)
+                            .font(theme.fonts.headline)
                             .foregroundColor(theme.colors.primaryContent)
                             .multilineTextAlignment(.leading)
                             .padding(.top, 16)
