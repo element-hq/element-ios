@@ -2886,3 +2886,7 @@
 "wysiwyg_composer_link_action_text" = "Текст";
 "wysiwyg_composer_format_action_link" = "Застосувати формат посилання";
 "wysiwyg_composer_format_action_inline_code" = "Застосовувати вбудований формат коду";
+"notice_voice_broadcast_ended_by_you" = "Ви завершили голосову трансляцію.";
+"notice_voice_broadcast_ended" = "%@ завершує голосову трансляцію.";
+"notice_voice_broadcast_live" = "Трансляція наживо";
+"user_other_session_security_recommendation_title" = "Інші сеанси";
