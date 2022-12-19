@@ -36,7 +36,7 @@ struct UserSessionOverviewItem: View {
                         .frame(maxWidth: .infinity, alignment: alignment)
                     
                     if showsChevron {
-                        Image(systemName: "chevron.right")
+                        Image(Asset.Images.disclosureIcon.name)
                             .foregroundColor(theme.colors.tertiaryContent)
                     }
                 }
