@@ -4323,6 +4323,18 @@ public class VectorL10n: NSObject {
   public static var noticeVideoAttachment: String { 
     return VectorL10n.tr("Vector", "notice_video_attachment") 
   }
+  /// %@ ended a voice broadcast.
+  public static func noticeVoiceBroadcastEnded(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "notice_voice_broadcast_ended", p1)
+  }
+  /// You ended a voice broadcast.
+  public static var noticeVoiceBroadcastEndedByYou: String { 
+    return VectorL10n.tr("Vector", "notice_voice_broadcast_ended_by_you") 
+  }
+  /// Live broadcast
+  public static var noticeVoiceBroadcastLive: String { 
+    return VectorL10n.tr("Vector", "notice_voice_broadcast_live") 
+  }
   /// Always notify
   public static var notificationSettingsAlwaysNotify: String { 
     return VectorL10n.tr("Vector", "notification_settings_always_notify") 

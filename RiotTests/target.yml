@@ -72,4 +72,4 @@ targets:
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
     - path: ../Riot/Modules/Room/EventMenu/EventMenuBuilder.swift
     - path: ../Riot/Modules/Room/EventMenu/EventMenuItemType.swift
-    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/VoiceBroadcastSettings.swift
+    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/MatrixSDK/VoiceBroadcastSettings.swift
