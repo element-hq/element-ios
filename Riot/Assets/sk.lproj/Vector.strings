@@ -2884,3 +2884,7 @@
 "wysiwyg_composer_link_action_text" = "Text";
 "wysiwyg_composer_format_action_link" = "Použiť formát odkazu";
 "wysiwyg_composer_format_action_inline_code" = "Použiť formát riadkového kódu";
+"notice_voice_broadcast_ended_by_you" = "Ukončili ste hlasové vysielanie.";
+"notice_voice_broadcast_ended" = "%@ ukončil/a hlasové vysielanie.";
+"notice_voice_broadcast_live" = "Živé vysielanie";
+"user_other_session_security_recommendation_title" = "Iné relácie";
