@@ -2888,3 +2888,7 @@
 "wysiwyg_composer_link_action_text" = "Teks";
 "wysiwyg_composer_format_action_link" = "Terapkan format tautan";
 "wysiwyg_composer_format_action_inline_code" = "Terapkan format kode dalam baris";
+"notice_voice_broadcast_ended_by_you" = "Anda mengakhiri sebuah siaran suara.";
+"notice_voice_broadcast_ended" = "%@ mengakhiri sebuah siaran suara.";
+"notice_voice_broadcast_live" = "Siaran langsung";
+"user_other_session_security_recommendation_title" = "Sesi lainnya";
