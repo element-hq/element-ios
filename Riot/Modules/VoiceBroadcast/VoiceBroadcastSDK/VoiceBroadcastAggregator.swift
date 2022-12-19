@@ -126,10 +126,15 @@ public class VoiceBroadcastAggregator {
     }
     
     private func handleEvent(event: MXEvent, direction: MXTimelineDirection? = nil, roomState: MXRoomState? = nil) {
-        if event.eventType == .roomMessage {
+        switch event.eventType {
+        case .roomMessage:
             self.updateVoiceBroadcast(event: event)
-        } else {
-            self.updateState()
+        case .custom:
+            if event.type == VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType {
+                self.updateState()
+            }
+        default:
+            break
         }
     }
     
