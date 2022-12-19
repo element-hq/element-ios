@@ -316,3 +316,32 @@ extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
         composerLinkActionBridgePresenter = nil
     }
 }
+
+// MARK: - VoiceBroadcast
+extension RoomViewController {
+    @objc func cancelCurrentVoiceBroadcastRecordingIfNeeded() {
+        self.roomDataSource.room.state { roomState in
+            guard let event = roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last,
+                  event.stateKey == self.mainSession.myUserId,
+                  let eventDeviceId = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyDeviceId] as? String,
+                  self.mainSession.myDeviceId == eventDeviceId,
+                  let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
+                  let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state),
+                  state != .stopped else {
+                return
+            }
+
+            VoiceBroadcastServiceProvider.shared.getOrCreateVoiceBroadcastService(for: self.roomDataSource.room) { service in
+                guard let vbService = service else {
+                    return
+                }
+                if vbService.getState() == VoiceBroadcastInfo.stoppedValue() {
+                    vbService.stopVoiceBroadcast(lastChunkSequence: 0,
+                                                 voiceBroadcastId: event.eventId) { response in
+                        MXLog.debug("[RoomViewController] cancelCurrentVoiceBroadcastRecordingIfNeeded stopVoiceBroadcast with response : \(response)")
+                    }
+                }
+            }
+        }
+    }
+}
