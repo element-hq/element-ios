@@ -2750,7 +2750,6 @@
 "user_inactive_session_item_with_date" = "Неактивний понад 90 днів (%@)";
 "user_inactive_session_item" = "Неактивний понад 90 днів";
 "user_other_session_unverified_sessions_header_subtitle" = "Перевірте свої сеанси для посилення безпеки обміну повідомленнями або вийдіть з тих, які ви більше не розпізнаєте або не використовуєте.";
-"user_other_session_security_recommendation_title" = "Поради з безпеки";
 "user_sessions_overview_link_device" = "Пов'язати пристрій";
 
 // MARK: User sessions management

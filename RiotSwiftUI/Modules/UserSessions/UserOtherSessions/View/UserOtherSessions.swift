@@ -22,8 +22,8 @@ struct UserOtherSessions: View {
     @ObservedObject var viewModel: UserOtherSessionsViewModel.Context
     
     var body: some View {
-        VStack(spacing: 0) {
-            ScrollView {
+        ScrollView {
+            VStack(spacing: 0) {
                 SwiftUI.Section {
                     if viewModel.viewState.sessionItems.isEmpty {
                         noItemsView()
@@ -37,7 +37,7 @@ struct UserOtherSessions: View {
                             viewModel.send(viewAction: .viewSessionInfo)
                         }
                     )
-                    .padding(.top)
+                    .padding(.vertical, 24)
                 }
             }
             if viewModel.isEditModeEnabled {
@@ -100,7 +100,7 @@ struct UserOtherSessions: View {
                                     isSeparatorHidden: viewData == viewModel.viewState.sessionItems.last,
                                     isEditModeEnabled: viewModel.isEditModeEnabled,
                                     onBackgroundTap: { sessionId in viewModel.send(viewAction: .userOtherSessionSelected(sessionId: sessionId)) },
-                                    onBackgroundLongPress: { _ in viewModel.isEditModeEnabled = true })
+                                    onBackgroundLongPress: { _ in })
             }
         }
         .background(theme.colors.background)

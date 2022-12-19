@@ -107,5 +107,6 @@ struct UserOtherSessionsToolbar: ToolbarContent {
                     .padding(.vertical, 12)
             }
         }
+        .accessibilityIdentifier("More")
     }
 }

@@ -2545,7 +2545,6 @@
 "user_other_session_verified_sessions_header_subtitle" = "Parima turvalisuse nimel logi välja neist sessioonidest, mida sa enam ei kasuta või ei tunne ära.";
 "user_other_session_current_session_details" = "Sinu praegune sessioon";
 "user_other_session_unverified_sessions_header_subtitle" = "Turvalise sõnumvahetuse nimel verifitseeri kõik oma sessioonid ning logi neist välja, mida sa enam ei kasuta või ei tunne enam ära.";
-"user_other_session_security_recommendation_title" = "Turvalisusega seotud soovitused";
 "user_other_session_verified_additional_info" = "See sessioon on valmis turvaliseks sõnumivahetuseks.";
 "user_other_session_unverified_additional_info" = "Parima turvalisuse ja töökindluse nimel verifitseeri see sessioon või logi ta võrgust välja.";
 "user_session_verification_unknown_additional_info" = "Selle sessiooni olekut ei saa tuvastada enne kui oled ta verifitseerinud.";

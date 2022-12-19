@@ -36,10 +36,11 @@ struct UserSessionOverviewItem: View {
                         .frame(maxWidth: .infinity, alignment: alignment)
                     
                     if showsChevron {
-                        Image(Asset.Images.chevron.name)
+                        Image(Asset.Images.disclosureIcon.name)
+                            .foregroundColor(theme.colors.tertiaryContent)
                     }
                 }
-                .padding(.vertical, 15)
+                .padding(.vertical, 11)
                 .padding(.horizontal, 16)
                 SeparatorLine()
             }

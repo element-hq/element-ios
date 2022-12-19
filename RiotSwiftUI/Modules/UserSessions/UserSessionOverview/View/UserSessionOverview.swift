@@ -34,21 +34,24 @@ struct UserSessionOverview: View {
                 onLearnMoreAction: {
                     viewModel.send(viewAction: .viewSessionInfo)
                 },
-                showLocationInformations: viewModel.viewState.showLocationInfo
+                showLocationInformations: viewModel.viewState.showLocationInfo,
+                displayMode: .extended
             )
             .padding(16)
             
             SwiftUI.Section {
-                UserSessionOverviewItem(title: VectorL10n.userSessionOverviewSessionDetailsButtonTitle,
-                                        showsChevron: true) {
-                    viewModel.send(viewAction: .viewSessionDetails)
-                }
-                
-                if let enabled = viewModel.viewState.isPusherEnabled {
-                    UserSessionOverviewToggleCell(title: VectorL10n.userSessionPushNotifications,
-                                                  message: VectorL10n.userSessionPushNotificationsMessage,
-                                                  isOn: enabled, isEnabled: viewModel.viewState.remotelyTogglingPushersAvailable) {
-                        viewModel.send(viewAction: .togglePushNotifications)
+                VStack(spacing: 24) {
+                    UserSessionOverviewItem(title: VectorL10n.userSessionOverviewSessionDetailsButtonTitle,
+                                            showsChevron: true) {
+                        viewModel.send(viewAction: .viewSessionDetails)
+                    }
+                    
+                    if let enabled = viewModel.viewState.isPusherEnabled {
+                        UserSessionOverviewToggleCell(title: VectorL10n.userSessionPushNotifications,
+                                                      message: VectorL10n.userSessionPushNotificationsMessage,
+                                                      isOn: enabled, isEnabled: viewModel.viewState.remotelyTogglingPushersAvailable) {
+                            viewModel.send(viewAction: .togglePushNotifications)
+                        }
                     }
                 }
             }
@@ -77,12 +80,10 @@ struct UserSessionOverview: View {
                         }
                         .accessibilityIdentifier(VectorL10n.manageSessionRename)
                         
-                        if viewModel.viewState.isCurrentSession == false {
-                            Button {
-                                viewModel.send(viewAction: .showLocationInfo)
-                            } label: {
-                                Label(showLocationInfo: viewModel.viewState.showLocationInfo)
-                            }
+                        Button {
+                            viewModel.send(viewAction: .showLocationInfo)
+                        } label: {
+                            Label(showLocationInfo: viewModel.viewState.showLocationInfo)
                         }
                     }
                     DestructiveButton {
@@ -93,7 +94,7 @@ struct UserSessionOverview: View {
                     .accessibilityIdentifier(VectorL10n.signOut)
                 } label: {
                     Image(systemName: "ellipsis")
-                        .foregroundColor(theme.colors.secondaryContent)
+                        .foregroundColor(theme.colors.accent)
                         .padding(.horizontal, 4)
                         .padding(.vertical, 12)
                 }

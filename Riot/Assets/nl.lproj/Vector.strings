@@ -2724,7 +2724,6 @@
 "user_other_session_verified_sessions_header_subtitle" = "Voor de beste beveiliging log je uit bij elke sessie die je niet meer herkent of gebruikt.";
 "user_other_session_current_session_details" = "Jouw huidige sessie";
 "user_other_session_unverified_sessions_header_subtitle" = "Verifieer je sessies voor verbeterde beveiligde berichtenuitwisseling of meld je af bij sessies die je niet meer herkent of gebruikt.";
-"user_other_session_security_recommendation_title" = "Beveiligingsaanbeveling";
 "user_session_push_notifications_message" = "Indien ingeschakeld, ontvangt deze sessie pushmeldingen.";
 "user_session_push_notifications" = "Pushmeldingen";
 "user_other_session_verified_additional_info" = "Deze sessie is klaar voor beveiligde berichtenuitwisseling.";

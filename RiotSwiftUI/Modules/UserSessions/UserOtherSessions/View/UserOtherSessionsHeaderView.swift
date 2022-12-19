@@ -54,7 +54,6 @@ struct UserOtherSessionsHeaderView: View {
                 }
                 .font(theme.fonts.footnote)
                 .foregroundColor(theme.colors.secondaryContent)
-                .padding(.bottom, 20.0)
             })
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -23,6 +23,7 @@ struct DeviceAvatarView: View {
     
     var viewData: DeviceAvatarViewData
     var isSelected: Bool
+    var showVerificationBadge: Bool = true
 
     var avatarSize: CGFloat = 40
     var badgeSize: CGFloat = 24
@@ -40,13 +41,14 @@ struct DeviceAvatarView: View {
             .background(isSelected ? theme.colors.primaryContent : theme.colors.system)
             .clipShape(Circle())
             
-            // Verification badge
-            Image(viewData.verificationImageName)
-                .frame(maxWidth: CGFloat(badgeSize), maxHeight: CGFloat(badgeSize))
-                .shapedBorder(color: theme.colors.system, borderWidth: 1, shape: Circle())
-                .background(theme.colors.background)
-                .clipShape(Circle())
-                .offset(x: 10, y: 8)
+            if showVerificationBadge {
+                Image(viewData.verificationImageName)
+                    .frame(maxWidth: CGFloat(badgeSize), maxHeight: CGFloat(badgeSize))
+                    .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1, shape: Circle())
+                    .background(theme.colors.background)
+                    .clipShape(Circle())
+                    .offset(x: 10, y: 8)
+            }
         }
         .frame(maxWidth: CGFloat(avatarSize), maxHeight: CGFloat(avatarSize))
     }

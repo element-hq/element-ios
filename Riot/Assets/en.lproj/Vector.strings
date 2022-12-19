@@ -2474,7 +2474,7 @@ To enable access, tap Settings> Location and select Always";
 "user_session_rename_session_title" = "Renaming sessions";
 "user_session_rename_session_description" = "Other users in direct messages and rooms that you join are able to view a full list of your sessions.\n\nThis provides them with confidence that they are really speaking to you, but it also means they can see the session name you enter here.";
 
-"user_other_session_security_recommendation_title" = "Security recommendation";
+"user_other_session_security_recommendation_title" = "Other sessions";
 "user_other_session_unverified_sessions_header_subtitle" = "Verify your sessions for enhanced secure messaging or sign out from those you don’t recognize or use anymore.";
 "user_other_session_current_session_details" =  "Your current session";
 "user_other_session_verified_sessions_header_subtitle" = "For best security, sign out from any session that you don’t recognize or use anymore.";

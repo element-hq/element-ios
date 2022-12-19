@@ -30,14 +30,21 @@ struct UserSessionCardView: View {
         RoundedRectangle(cornerRadius: 8)
     }
     
+    enum DisplayMode {
+        case compact
+        case extended
+    }
+    
     let showLocationInformations: Bool
+    let displayMode: DisplayMode
+    
     private var showExtraInformations: Bool {
-        viewData.isCurrentSessionDisplayMode == false && (viewData.lastActivityDateString.isEmptyOrNil == false || ipText.isEmptyOrNil == false)
+        displayMode == .extended && (viewData.lastActivityDateString.isEmptyOrNil == false || ipText.isEmptyOrNil == false)
     }
     
     var body: some View {
         VStack(alignment: .center, spacing: 12) {
-            DeviceAvatarView(viewData: viewData.deviceAvatarViewData, isSelected: false)
+            DeviceAvatarView(viewData: viewData.deviceAvatarViewData, isSelected: false, showVerificationBadge: false)
                 .accessibilityHidden(true)
             
             Text(viewData.sessionName)
@@ -45,10 +52,16 @@ struct UserSessionCardView: View {
                 .foregroundColor(theme.colors.primaryContent)
                 .multilineTextAlignment(.center)
             
-            Label(viewData.verificationStatusText, image: viewData.verificationStatusImageName)
-                .font(theme.fonts.subheadline)
-                .foregroundColor(theme.colors[keyPath: viewData.verificationStatusColor])
-                .multilineTextAlignment(.center)
+            Label {
+                Text(viewData.verificationStatusText)
+                    .font(theme.fonts.subheadline)
+                    .foregroundColor(theme.colors[keyPath: viewData.verificationStatusColor])
+                    .multilineTextAlignment(.center)
+            } icon: {
+                Image(viewData.verificationStatusImageName)
+                    .resizable()
+                    .frame(width: 16, height: 16)
+            }
             
             InlineTextButton(viewData.verificationStatusAdditionalInfoText, tappableText: VectorL10n.userSessionLearnMore, alwaysCallAction: false) {
                 onLearnMoreAction?()
@@ -93,18 +106,19 @@ struct UserSessionCardView: View {
                 .accessibilityIdentifier("userSessionCardVerifyButton")
             }
             
-            if viewData.isCurrentSessionDisplayMode {
+            if viewData.isCurrentSessionDisplayMode, displayMode == .compact {
                 Text(VectorL10n.userSessionViewDetails)
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.accent)
                     .accessibilityIdentifier("userSessionCardViewDetails")
+                    .padding(.top, 8)
             }
         }
         .padding(24)
         .frame(maxWidth: .infinity)
         .background(theme.colors.background)
         .clipShape(backgroundShape)
-        .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1.0, shape: backgroundShape)
+        .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 0.5, shape: backgroundShape)
         .onTapGesture {
             if viewData.isCurrentSessionDisplayMode {
                 onViewDetailsAction?(viewData.sessionId)
@@ -124,8 +138,9 @@ struct UserSessionCardViewPreview: View {
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     let viewData: UserSessionCardViewData
+    let displayMode: UserSessionCardView.DisplayMode
 
-    init(isCurrent: Bool = false, verificationState: UserSessionInfo.VerificationState = .unverified) {
+    init(isCurrent: Bool = false, verificationState: UserSessionInfo.VerificationState = .unverified, displayMode: UserSessionCardView.DisplayMode = .extended) {
         let sessionInfo = UserSessionInfo(id: "alice",
                                           name: "iOS",
                                           deviceType: .mobile,
@@ -143,11 +158,12 @@ struct UserSessionCardViewPreview: View {
                                           isActive: true,
                                           isCurrent: isCurrent)
         viewData = UserSessionCardViewData(sessionInfo: sessionInfo)
+        self.displayMode = displayMode
     }
     
     var body: some View {
         VStack {
-            UserSessionCardView(viewData: viewData, showLocationInformations: true)
+            UserSessionCardView(viewData: viewData, showLocationInformations: true, displayMode: displayMode)
         }
         .frame(maxWidth: .infinity)
         .background(theme.colors.system)
@@ -158,7 +174,8 @@ struct UserSessionCardViewPreview: View {
 struct UserSessionCardView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            UserSessionCardViewPreview(isCurrent: true).theme(.light).preferredColorScheme(.light)
+            UserSessionCardViewPreview(isCurrent: true, displayMode: .compact).theme(.light).preferredColorScheme(.light)
+            UserSessionCardViewPreview(isCurrent: true, displayMode: .extended).theme(.light).preferredColorScheme(.light)
             UserSessionCardViewPreview(isCurrent: true).theme(.dark).preferredColorScheme(.dark)
             UserSessionCardViewPreview().theme(.light).preferredColorScheme(.light)
             UserSessionCardViewPreview().theme(.dark).preferredColorScheme(.dark)
