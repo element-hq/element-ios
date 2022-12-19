@@ -295,6 +295,14 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     {
         [self updateBeaconInfoSummaryWithId:eventId andEvent:event];
     }
+    
+    // Handle here the case where an audio chunk of a voice broadcast have been decrypted with delay
+    // We take the opportunity of this update to disable the display of this chunk in the room timeline
+    if (event.eventType == MXEventTypeRoomMessage && event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType]) {
+        self.tag = RoomBubbleCellDataTagVoiceBroadcastNoDisplay;
+        self.collapsable = NO;
+        self.collapsed = NO;
+    }
 
     return retVal;
 }
