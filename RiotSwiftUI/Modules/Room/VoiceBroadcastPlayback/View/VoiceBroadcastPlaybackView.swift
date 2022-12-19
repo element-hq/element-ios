@@ -97,11 +97,12 @@ struct VoiceBroadcastPlaybackView: View {
                         Text(VectorL10n.voiceBroadcastLive)
                             .font(theme.fonts.caption1SB)
                             .foregroundColor(Color.white)
+                            .padding(.leading, -4)
                     } icon: {
                         Image(uiImage: Asset.Images.voiceBroadcastLive.image)
                     }
-                    .padding(.horizontal, 5)
-                    .background(RoundedRectangle(cornerRadius: 4, style: .continuous).fill(backgroundColor))
+                    .padding(EdgeInsets(top: 2.0, leading: 4.0, bottom: 2.0, trailing: 4.0))
+                    .background(RoundedRectangle(cornerRadius: 2, style: .continuous).fill(backgroundColor))
                     .accessibilityIdentifier("liveLabel")
                 }
             }
