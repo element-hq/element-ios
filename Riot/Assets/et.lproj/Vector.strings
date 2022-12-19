@@ -2632,3 +2632,4 @@
 "wysiwyg_composer_link_action_link" = "Link";
 "wysiwyg_composer_link_action_edit_title" = "Muuda linki";
 "wysiwyg_composer_link_action_create_title" = "Loo link";
+"wysiwyg_composer_format_action_inline_code" = "Kasuta lõimitud koodi vormingut";
