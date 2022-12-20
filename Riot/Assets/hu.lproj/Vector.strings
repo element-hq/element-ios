@@ -2681,3 +2681,7 @@
 "wysiwyg_composer_link_action_text" = "Szöveg";
 "wysiwyg_composer_format_action_link" = "Hivatkozás";
 "wysiwyg_composer_format_action_inline_code" = "Beágyazott kód formátum alkalmazása";
+"notice_voice_broadcast_ended_by_you" = "A hang közvetítést befejezted.";
+"notice_voice_broadcast_ended" = "%@ befejezte a hang közvetítést.";
+"notice_voice_broadcast_live" = "Élő közvetítés";
+"user_other_session_security_recommendation_title" = "További munkamenetek";
