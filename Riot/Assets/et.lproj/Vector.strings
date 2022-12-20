@@ -2633,3 +2633,7 @@
 "wysiwyg_composer_link_action_edit_title" = "Muuda linki";
 "wysiwyg_composer_link_action_create_title" = "Loo link";
 "wysiwyg_composer_format_action_inline_code" = "Kasuta lõimitud koodi vormingut";
+"notice_voice_broadcast_ended_by_you" = "Sa lõpetasid ringhäälingukõne.";
+"notice_voice_broadcast_ended" = "%@ lõpetas ringhäälingukõne.";
+"notice_voice_broadcast_live" = "Ringhäälingukõne on eetris";
+"user_other_session_security_recommendation_title" = "Muud sessioonid";
