@@ -2673,3 +2673,7 @@
 "wysiwyg_composer_link_action_text" = "Tekst";
 "wysiwyg_composer_format_action_inline_code" = "Apliko formatim kodi brendazi";
 "wysiwyg_composer_format_action_link" = "Apliko formatim lidhjeje";
+"notice_voice_broadcast_ended_by_you" = "Përfunduar një transmetim zanor.";
+"notice_voice_broadcast_ended" = "%@ përfundoi një transmetim zanor.";
+"notice_voice_broadcast_live" = "Transmetim i drejtëpërdrejtë";
+"user_other_session_security_recommendation_title" = "Sesione të tjerë";
