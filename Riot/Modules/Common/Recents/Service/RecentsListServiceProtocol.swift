@@ -110,4 +110,7 @@ public protocol RecentsListServiceProtocol {
     
     /// Remove all delegates
     func removeAllDelegates()
+    
+    /// Cancel a VoiceBroadcast recording in case of application unexpected end before the end of the recording.
+    func cancelCurrentVoiceBroadcastRecordingIfNeeded(for listData: MXRoomListData?)
 }

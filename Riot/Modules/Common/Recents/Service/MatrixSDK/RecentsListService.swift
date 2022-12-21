@@ -784,6 +784,23 @@ extension RecentsListService: MXRoomListDataFetcherDelegate {
     
 }
 
+// MARK: - VoiceBroadcast
+extension RecentsListService {
+    @objc public func cancelCurrentVoiceBroadcastRecordingIfNeeded(for listData: MXRoomListData?) {
+        listData?.rooms.forEach({ roomSummary in
+            guard let roomSummary = roomSummary as? MXRoomSummary,
+                  let room = roomSummary.room else {
+                return
+            }
+            
+            room.state({ roomState in
+                guard let session = self.session else { return }
+                roomState?.cancelCurrentVoiceBroadcastRecordingIfNeeded(for: room, session: session)
+            })
+        })
+    }
+}
+
 //  MARK: - FetcherTypes
 
 private struct FetcherTypes: OptionSet {
