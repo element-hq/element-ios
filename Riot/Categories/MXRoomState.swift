@@ -18,8 +18,8 @@ import MatrixSDK
 
 extension MXRoomState {
     func cancelCurrentVoiceBroadcastRecordingIfNeeded(for room: MXRoom, session: MXSession) {
-        /// Detection of a potential unfinished VoiceBroadcast
-        /// Check whether a VoiceBroadcast is in progress on the current session for this room whereas no VoiceBroadcast Service is available.
+        // Detection of a potential unfinished VoiceBroadcast
+        // Check whether a VoiceBroadcast is in progress on the current session for this room whereas no VoiceBroadcast Service is available.
         guard let event = self.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last,
               event.stateKey == session.myUserId,
               let eventDeviceId = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyDeviceId] as? String,
