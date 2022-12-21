@@ -2660,3 +2660,8 @@
 // Links
 "wysiwyg_composer_link_action_text" = "Testo";
 "wysiwyg_composer_format_action_link" = "Applica formato collegamento";
+"notice_voice_broadcast_ended_by_you" = "Hai terminato una trasmissione vocale.";
+"notice_voice_broadcast_ended" = "%@ ha terminato una trasmissione vocale.";
+"notice_voice_broadcast_live" = "Trasmissione in diretta";
+"wysiwyg_composer_format_action_inline_code" = "Applica formato codice interlinea";
+"user_other_session_security_recommendation_title" = "Altre sessioni";
