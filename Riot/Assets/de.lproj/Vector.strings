@@ -438,7 +438,7 @@
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "Du musst Benutzer einladen dürfen, um dies zu tun.";
 "widget_integration_unable_to_create" = "Erstellen des Widgets nicht möglich.";
-"widget_integration_failed_to_send_request" = "Senden der Anfrage fehlgeschlagen.";
+"widget_integration_failed_to_send_request" = "Übertragung der Anfrage fehlgeschlagen.";
 "widget_integration_room_not_recognised" = "Dieser Raum wurde nicht erkannt.";
 "widget_integration_positive_power_level" = "Berechtigungslevel muss eine positive Zahl sein.";
 "widget_integration_must_be_in_room" = "Du bist nicht in diesem Raum.";
@@ -2679,8 +2679,8 @@
 "voice_broadcast_time_left" = "%@ übrig";
 "voice_broadcast_buffering" = "Puffere …";
 "voice_broadcast_stop_alert_agree_button" = "Ja, beende";
-"voice_broadcast_stop_alert_description" = "Bist du sicher, dass du deine Live-Übertragung abbrechen möchtest? Dies wird die Übertragung beenden und die vollständige Aufnahme wird im Raum verfügbar sein.";
-"voice_broadcast_stop_alert_title" = "Live-Übertragung abbrechen?";
+"voice_broadcast_stop_alert_description" = "Möchtest du die Übertragung wirklich beenden? Dies wird die Übertragung beenden und die vollständige Aufnahme im Raum bereitstellen.";
+"voice_broadcast_stop_alert_title" = "Live-Übertragung beenden?";
 "password_policy_weak_pwd_error" = "Dieses Passwort ist zu schwach. Es muss mindestens 8 Zeichen enthalten, davon mindestens ein Zeichen jeder Art: Großbuchstabe, Kleinbuchstabe, Ziffer und Sonderzeichen.";
 "password_policy_pwd_in_dict_error" = "Dieses Passwort wurde in einem Wörterbuch gefunden und nicht erlaubt.";
 
@@ -2695,3 +2695,7 @@
 "wysiwyg_composer_link_action_create_title" = "Link erstellen";
 "wysiwyg_composer_link_action_link" = "Link";
 "wysiwyg_composer_format_action_inline_code" = "Als Inline-Code formatieren";
+"notice_voice_broadcast_ended_by_you" = "Du hast eine Sprachübertragung beendet.";
+"notice_voice_broadcast_ended" = "%@ beendete eine Sprachübertragung.";
+"notice_voice_broadcast_live" = "Echtzeitübertragung";
+"user_other_session_security_recommendation_title" = "Andere Sitzungen";
