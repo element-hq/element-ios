@@ -319,9 +319,9 @@ extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
 
 // MARK: - VoiceBroadcast
 extension RoomViewController {
-    @objc func cancelCurrentVoiceBroadcastRecordingIfNeeded() {
+    @objc func stopUncompletedVoiceBroadcastIfNeeded() {
         self.roomDataSource.room.state { roomState in
-            roomState?.cancelCurrentVoiceBroadcastRecordingIfNeeded(for: self.roomDataSource.room)
+            roomState?.stopUncompletedVoiceBroadcastIfNeeded(for: self.roomDataSource.room)
         }
     }
 }

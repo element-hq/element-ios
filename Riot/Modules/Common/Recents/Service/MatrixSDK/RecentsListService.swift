@@ -753,7 +753,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     private func notifyDataChange(on fetcher: MXRoomListDataFetcher, totalCountsChanged: Bool) {
         if let section = section(forFetcher: fetcher) {
-            cancelCurrentVoiceBroadcastRecordingIfNeeded(for: section)
+            stopUncompletedVoiceBroadcastIfNeeded(for: section)
             multicastDelegate.invoke { $0.recentsListServiceDidChangeData?(self,
                                                                            forSection: section,
                                                                            totalCountsChanged: totalCountsChanged) }
@@ -787,7 +787,7 @@ extension RecentsListService: MXRoomListDataFetcherDelegate {
 
 // MARK: - VoiceBroadcast
 extension RecentsListService {
-    private func cancelCurrentVoiceBroadcastRecordingIfNeeded(for section: RecentsListServiceSection) {
+    private func stopUncompletedVoiceBroadcastIfNeeded(for section: RecentsListServiceSection) {
         fetcher(forSection: section)?.data?.rooms.forEach({ roomSummary in
             guard let roomSummary = roomSummary as? MXRoomSummary,
                   let room = roomSummary.room else {
@@ -795,7 +795,7 @@ extension RecentsListService {
             }
             
             room.state({ roomState in
-                roomState?.cancelCurrentVoiceBroadcastRecordingIfNeeded(for: room)
+                roomState?.stopUncompletedVoiceBroadcastIfNeeded(for: room)
             })
         })
     }

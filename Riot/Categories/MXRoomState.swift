@@ -17,7 +17,7 @@
 import MatrixSDK
 
 extension MXRoomState {
-    func cancelCurrentVoiceBroadcastRecordingIfNeeded(for room: MXRoom) {
+    func stopUncompletedVoiceBroadcastIfNeeded(for room: MXRoom) {
         // Detection of a potential unfinished VoiceBroadcast
         // Check whether a VoiceBroadcast is in progress on the current session for this room whereas no VoiceBroadcast Service is available.
         guard let voiceBroadcastInfo = room.infoForVBRecordingInProgress(roomState: self,
@@ -34,7 +34,7 @@ extension MXRoomState {
             
             vbService.stopVoiceBroadcast(lastChunkSequence: 0,
                                          voiceBroadcastId: voiceBroadcastInfo.voiceBroadcastId) { response in
-                MXLog.debug("[MXRoomState] cancelCurrentVoiceBroadcastRecordingIfNeeded stopVoiceBroadcast with response : \(response)")
+                MXLog.debug("[MXRoomState] stopUncompletedVoiceBroadcastIfNeeded stopVoiceBroadcast with response : \(response)")
                 room.mxSession.tearDownVoiceBroadcastService()
             }
         }

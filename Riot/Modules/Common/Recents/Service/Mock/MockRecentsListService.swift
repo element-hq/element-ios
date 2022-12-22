@@ -229,7 +229,7 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
         multicastDelegate.invoke({ $0.recentsListServiceDidChangeData?(self, totalCountsChanged: true) })
     }
     
-    public func cancelCurrentVoiceBroadcastRecordingIfNeeded(for listData: MatrixSDK.MXRoomListData?) {
+    public func stopUncompletedVoiceBroadcastIfNeeded(for listData: MatrixSDK.MXRoomListData?) {
         // nothing here
     }
 }

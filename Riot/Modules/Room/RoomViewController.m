@@ -1083,7 +1083,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     [self updateTopBanners];
     
-    [self cancelCurrentVoiceBroadcastRecordingIfNeeded];
+    [self stopUncompletedVoiceBroadcastIfNeeded];
 }
 
 - (void)onRoomDataSourceReady
