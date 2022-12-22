@@ -794,9 +794,7 @@ extension RecentsListService {
                 return
             }
             
-            room.state({ roomState in
-                roomState?.stopUncompletedVoiceBroadcastIfNeeded(for: room)
-            })
+            room.stopUncompletedVoiceBroadcastIfNeeded()
         })
     }
 }

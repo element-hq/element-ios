@@ -17,82 +17,39 @@
 import MatrixSDK
 
 extension MXRoom {
-    @objc public func isVoiceBroadcastRecordingInProgressFromMyDevice(completion: @escaping (Bool) -> Void) {
-        isVoiceBroadcastRecordingInProgress(fromMyDevice: true, completion: completion)
-    }
     
-    @objc public func isVoiceBroadcastRecordingInProgressFromMyAccount(completion: @escaping (Bool) -> Void) {
-        isVoiceBroadcastRecordingInProgress(fromMyDevice: false, completion: completion)
-    }
-    
-    @objc public func infoForVBRecordingInProgress(roomState: MXRoomState,
-                                                   stateKey: String?,
-                                                   startEventId: String?,
-                                                   fromMyDevice: Bool) -> VoiceBroadcastInfo? {
-        guard let event = validatedEvent(from: roomState, stateKey: stateKey),
-              let eventDeviceId = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyDeviceId] as? String,
-              mxSession.voiceBroadcastService == nil,
-              let vbInfo = validatedVoiceBroadcastInfo(from: event, startEventId: startEventId) else {
-            return nil
-        }
-        
-        if fromMyDevice, mxSession.myDeviceId != eventDeviceId {
-            return nil
-        }
-        
-        if vbInfo.voiceBroadcastId == nil {
-            vbInfo.voiceBroadcastId = event.eventId
-        }
-        
-        return vbInfo
-    }
-}
-
-private extension MXRoom {
-    @objc func isVoiceBroadcastRecordingInProgress(fromMyDevice: Bool,
-                                                          completion: @escaping (Bool) -> Void) {
-        self.state { [weak self] roomState in
-            guard let self = self,
-                  let roomState = roomState,
-                  let vbInfo = self.infoForVBRecordingInProgress(roomState: roomState,
-                                                                 stateKey: nil,
-                                                                 startEventId: nil,
-                                                                 fromMyDevice: fromMyDevice) else {
-                completion(false)
+    func stopUncompletedVoiceBroadcastIfNeeded() {
+        // Detection of a potential uncompleted VoiceBroadcast
+        // Check whether a VoiceBroadcast is in progress on the current session for this room whereas no VoiceBroadcast Service is available.
+        self.lastVoiceBroadcastStateEvent { event in
+            guard let event = event,
+                  event.stateKey == self.mxSession.myUserId,
+                  let eventDeviceId = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyDeviceId] as? String,
+                  eventDeviceId == self.mxSession.myDeviceId,
+                  let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
+                  let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state),
+                  state != .stopped,
+                  self.mxSession.voiceBroadcastService == nil else {
                 return
             }
-            completion(true)
+            
+            self.mxSession.getOrCreateVoiceBroadcastService(for: self) { service in
+                guard let service = service else {
+                    return
+                }
+                
+                service.stopVoiceBroadcast(lastChunkSequence: 0,
+                                             voiceBroadcastId: voiceBroadcastInfo.voiceBroadcastId ?? event.eventId) { response in
+                    MXLog.debug("[MXRoom] stopUncompletedVoiceBroadcastIfNeeded stopVoiceBroadcast with response : \(response)")
+                    self.mxSession.tearDownVoiceBroadcastService()
+                }
+            }
         }
     }
     
-    func validatedEvent(from roomState: MXRoomState, stateKey: String?) -> MXEvent? {
-        guard let event = lastVoiceBroadcastStateEvent(from: roomState) else {
-            return nil
+    func lastVoiceBroadcastStateEvent(completion: @escaping (MXEvent?) -> Void) {
+        self.state { roomState in
+            completion(roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last)
         }
-        
-        if stateKey != nil, event.stateKey != stateKey {
-            return nil
-        }
-        
-        return event
-    }
-    
-    func validatedVoiceBroadcastInfo(from event: MXEvent, startEventId: String?) -> VoiceBroadcastInfo? {
-        guard let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
-              let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state),
-              state != .stopped else {
-            return nil
-        }
-        
-        if startEventId != nil,
-            (event.eventId == startEventId || voiceBroadcastInfo.voiceBroadcastId == startEventId) {
-            return nil
-        }
-
-        return voiceBroadcastInfo
-    }
-    
-    func lastVoiceBroadcastStateEvent(from roomState: MXRoomState) -> MXEvent? {
-        return roomState.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last
     }
 }
