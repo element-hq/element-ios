@@ -58,7 +58,7 @@ extension MXSession {
         guard let event = validatedEvent(from: roomState, stateKey: stateKey),
               let eventDeviceId = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyDeviceId] as? String,
               self.voiceBroadcastService == nil,
-              let vbInfo = voiceBroadcastInfo(from: event, startEventId: startEventId) else {
+              let vbInfo = validatedVoiceBroadcastInfo(from: event, startEventId: startEventId) else {
             return nil
         }
         
@@ -72,8 +72,10 @@ extension MXSession {
         
         return vbInfo
     }
-    
-    private func validatedEvent(from roomState: MXRoomState, stateKey: String) -> MXEvent? {
+}
+
+private extension MXSession {
+    func validatedEvent(from roomState: MXRoomState, stateKey: String) -> MXEvent? {
         guard let event = lastVoiceBroadcastStateEvent(from: roomState),
               event.stateKey == stateKey else {
             return nil
@@ -81,7 +83,7 @@ extension MXSession {
         return event
     }
     
-    private func voiceBroadcastInfo(from event: MXEvent, startEventId: String?) -> VoiceBroadcastInfo? {
+    func validatedVoiceBroadcastInfo(from event: MXEvent, startEventId: String?) -> VoiceBroadcastInfo? {
         guard let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
               let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state),
               state != .stopped else {
@@ -96,7 +98,7 @@ extension MXSession {
         return voiceBroadcastInfo
     }
     
-    private func lastVoiceBroadcastStateEvent(from roomState: MXRoomState) -> MXEvent? {
+    func lastVoiceBroadcastStateEvent(from roomState: MXRoomState) -> MXEvent? {
         return roomState.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last
     }
 }
