@@ -83,9 +83,13 @@ extension MXSession {
     
     private func voiceBroadcastInfo(from event: MXEvent, startEventId: String?) -> VoiceBroadcastInfo? {
         guard let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
-              (event.eventId == startEventId || voiceBroadcastInfo.voiceBroadcastId == startEventId),
               let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state),
               state != .stopped else {
+            return nil
+        }
+        
+        if startEventId != nil,
+            (event.eventId == startEventId || voiceBroadcastInfo.voiceBroadcastId == startEventId) {
             return nil
         }
 
