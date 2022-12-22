@@ -115,10 +115,10 @@ public class VoiceBroadcastAggregator {
     private func updateState() {
         self.room.state { roomState in
             guard let roomState = roomState,
-                  let voiceBroadcastInfo = self.session.infoForVBRecordingInProgress(roomState: roomState,
-                                                                                     stateKey: self.voiceBroadcastSenderId,
-                                                                                     startEventId: self.voiceBroadcastStartEventId,
-                                                                                     fromMyDevice: false),
+                  let voiceBroadcastInfo = self.room.infoForVBRecordingInProgress(roomState: roomState,
+                                                                                  stateKey: self.voiceBroadcastSenderId,
+                                                                                  startEventId: self.voiceBroadcastStartEventId,
+                                                                                  fromMyDevice: false),
                   let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state) else {
                 return
             }
