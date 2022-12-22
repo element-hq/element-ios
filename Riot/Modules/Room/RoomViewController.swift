@@ -321,7 +321,7 @@ extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
 extension RoomViewController {
     @objc func cancelCurrentVoiceBroadcastRecordingIfNeeded() {
         self.roomDataSource.room.state { roomState in
-            roomState?.cancelCurrentVoiceBroadcastRecordingIfNeeded(for: self.roomDataSource.room, session: self.mainSession)
+            roomState?.cancelCurrentVoiceBroadcastRecordingIfNeeded(for: self.roomDataSource.room)
         }
     }
 }

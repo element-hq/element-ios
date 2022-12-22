@@ -795,8 +795,7 @@ extension RecentsListService {
             }
             
             room.state({ roomState in
-                guard let session = self.session else { return }
-                roomState?.cancelCurrentVoiceBroadcastRecordingIfNeeded(for: room, session: session)
+                roomState?.cancelCurrentVoiceBroadcastRecordingIfNeeded(for: room)
             })
         })
     }
