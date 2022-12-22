@@ -1760,12 +1760,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:(NSUInteger)sectionIndex];
         [self.delegate dataSource:self didCellChange:indexPath];
     }
-    
-    if (section == RecentsListServiceSectionBreadcrumbs) {
-        [self.recentsListService cancelCurrentVoiceBroadcastRecordingIfNeededFor:self.recentsListService.breadcrumbsRoomListData];
-    } else if (section == RecentsListServiceSectionAllChats) {
-        [self.recentsListService cancelCurrentVoiceBroadcastRecordingIfNeededFor:self.recentsListService.allChatsRoomListData];
-    }
 }
 
 - (RecentsDataSourceSectionType)sectionTypeForServiceSection:(RecentsListServiceSection)serviceSection
