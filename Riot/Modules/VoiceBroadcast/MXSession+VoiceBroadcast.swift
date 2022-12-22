@@ -32,4 +32,67 @@ extension MXSession {
     @objc public func tearDownVoiceBroadcastService() {
         VoiceBroadcastServiceProvider.shared.tearDownVoiceBroadcastService()
     }
+    
+    public func isVBRecordingInProgressFromMyAccount(roomState: MXRoomState,
+                                                     stateKey: String,
+                                                     startEventId: String?) -> Bool {
+        return infoForVBRecordingInProgress(roomState: roomState,
+                                            stateKey: stateKey,
+                                            startEventId: startEventId,
+                                            fromMyDevice: false) != nil
+    }
+    
+    public func isVBRecordingInProgressFromMyDevice(roomState: MXRoomState,
+                                                    stateKey: String,
+                                                    startEventId: String?) -> Bool {
+        return infoForVBRecordingInProgress(roomState: roomState,
+                                            stateKey: stateKey,
+                                            startEventId: startEventId,
+                                            fromMyDevice: true) != nil
+    }
+    
+    public func infoForVBRecordingInProgress(roomState: MXRoomState,
+                                             stateKey: String,
+                                             startEventId: String?,
+                                             fromMyDevice: Bool) -> VoiceBroadcastInfo? {
+        guard let event = validatedEvent(from: roomState, stateKey: stateKey),
+              let eventDeviceId = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyDeviceId] as? String,
+              self.voiceBroadcastService == nil,
+              let vbInfo = voiceBroadcastInfo(from: event, startEventId: startEventId) else {
+            return nil
+        }
+        
+        if fromMyDevice, self.myDeviceId != eventDeviceId {
+            return nil
+        }
+        
+        if vbInfo.voiceBroadcastId == nil {
+            vbInfo.voiceBroadcastId = event.eventId
+        }
+        
+        return vbInfo
+    }
+    
+    private func validatedEvent(from roomState: MXRoomState, stateKey: String) -> MXEvent? {
+        guard let event = lastVoiceBroadcastStateEvent(from: roomState),
+              event.stateKey == stateKey else {
+            return nil
+        }
+        return event
+    }
+    
+    private func voiceBroadcastInfo(from event: MXEvent, startEventId: String?) -> VoiceBroadcastInfo? {
+        guard let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
+              (event.eventId == startEventId || voiceBroadcastInfo.voiceBroadcastId == startEventId),
+              let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state),
+              state != .stopped else {
+            return nil
+        }
+
+        return voiceBroadcastInfo
+    }
+    
+    private func lastVoiceBroadcastStateEvent(from roomState: MXRoomState) -> MXEvent? {
+        return roomState.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last
+    }
 }

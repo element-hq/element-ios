@@ -20,14 +20,10 @@ extension MXRoomState {
     func cancelCurrentVoiceBroadcastRecordingIfNeeded(for room: MXRoom, session: MXSession) {
         // Detection of a potential unfinished VoiceBroadcast
         // Check whether a VoiceBroadcast is in progress on the current session for this room whereas no VoiceBroadcast Service is available.
-        guard let event = self.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last,
-              event.stateKey == session.myUserId,
-              let eventDeviceId = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyDeviceId] as? String,
-              session.myDeviceId == eventDeviceId,
-              let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
-              let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state),
-              state != .stopped,
-              session.voiceBroadcastService == nil else {
+        guard let voiceBroadcastInfo = session.infoForVBRecordingInProgress(roomState: self,
+                                                                            stateKey: session.myUserId,
+                                                                            startEventId: nil,
+                                                                            fromMyDevice: true) else {
             return
         }
         
@@ -37,7 +33,7 @@ extension MXRoomState {
             }
 
             vbService.stopVoiceBroadcast(lastChunkSequence: 0,
-                                         voiceBroadcastId: event.eventId) { response in
+                                         voiceBroadcastId: voiceBroadcastInfo.voiceBroadcastId) { response in
                 MXLog.debug("[MXRoomState] cancelCurrentVoiceBroadcastRecordingIfNeeded stopVoiceBroadcast with response : \(response)")
                 session.tearDownVoiceBroadcastService()
             }

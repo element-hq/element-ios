@@ -114,14 +114,15 @@ public class VoiceBroadcastAggregator {
     
     private func updateState() {
         self.room.state { roomState in
-            guard let event = roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last,
-                  event.stateKey == self.voiceBroadcastSenderId,
-                  let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
-                  (event.eventId == self.voiceBroadcastStartEventId || voiceBroadcastInfo.voiceBroadcastId == self.voiceBroadcastStartEventId),
+            guard let roomState = roomState,
+                  let voiceBroadcastInfo = self.session.infoForVBRecordingInProgress(roomState: roomState,
+                                                                                     stateKey: self.voiceBroadcastSenderId,
+                                                                                     startEventId: self.voiceBroadcastStartEventId,
+                                                                                     fromMyDevice: false),
                   let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state) else {
                 return
             }
-        
+            
             self.delegate?.voiceBroadcastAggregator(self, didReceiveState: state)
         }
     }
