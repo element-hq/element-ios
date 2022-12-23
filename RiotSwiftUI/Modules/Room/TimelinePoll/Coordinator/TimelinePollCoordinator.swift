@@ -83,6 +83,10 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
 
     func start() { }
     
+    func handleErroredRelatedEventsIds(_ ids: Set<String>?, to parentEvent: String) {
+        pollAggregator.handleErroredRelatedEventsIds(ids, to: parentEvent)
+    }
+    
     func toPresentable() -> UIViewController {
         VectorHostingController(rootView: TimelinePollView(viewModel: viewModel.context))
     }
@@ -132,7 +136,8 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
                                    totalAnswerCount: poll.totalAnswerCount,
                                    type: pollKindToTimelinePollType(poll.kind),
                                    maxAllowedSelections: poll.maxAllowedSelections,
-                                   hasBeenEdited: poll.hasBeenEdited)
+                                   hasBeenEdited: poll.hasBeenEdited,
+                                   hasDecryptionError: poll.hasDecryptionError)
     }
     
     private func pollKindToTimelinePollType(_ kind: PollKind) -> TimelinePollType {

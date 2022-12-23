@@ -20,17 +20,20 @@ import Foundation
 class TimelinePollProvider: NSObject {
     static let shared = TimelinePollProvider()
     
+    private var decryptionErrorsObserver: NSObjectProtocol?
+    
     var session: MXSession? {
         willSet {
-            guard let currentSession = self.session else { return }
-            
-            if currentSession != newValue {
-                // Clear all stored coordinators on new session
-                coordinatorsForEventIdentifiers.removeAll()
+            guard newValue != session else {
+                return
             }
+            
+            reset()
+            updateDecryptionErrorsObserver(newSession: newValue)
         }
     }
     var coordinatorsForEventIdentifiers = [String: TimelinePollCoordinator]()
+    var erroredEventIdsByRelatedEvent = [String: Set<String>]()
     
     /// Create or retrieve the poll timeline coordinator for this event and return
     /// a view to be displayed in the timeline
@@ -39,16 +42,20 @@ class TimelinePollProvider: NSObject {
             return nil
         }
         
-        if let coordinator = coordinatorsForEventIdentifiers[event.eventId] {
-            return coordinator.toPresentable()
+        let coordinator: TimelinePollCoordinator
+        
+        if let cachedCoordinator = coordinatorsForEventIdentifiers[event.eventId] {
+            coordinator = cachedCoordinator
+        } else {
+            let parameters = TimelinePollCoordinatorParameters(session: session, room: room, pollStartEvent: event)
+            guard let newCoordinator = try? TimelinePollCoordinator(parameters: parameters) else {
+                return nil
+            }
+            coordinator = newCoordinator
+            coordinatorsForEventIdentifiers[event.eventId] = newCoordinator
         }
         
-        let parameters = TimelinePollCoordinatorParameters(session: session, room: room, pollStartEvent: event)
-        guard let coordinator = try? TimelinePollCoordinator(parameters: parameters) else {
-            return nil
-        }
-        
-        coordinatorsForEventIdentifiers[event.eventId] = coordinator
+        coordinator.handleErroredRelatedEventsIds(erroredEventIdsByRelatedEvent[event.eventId], to: event.eventId)
         
         return coordinator.toPresentable()
     }
@@ -60,5 +67,48 @@ class TimelinePollProvider: NSObject {
     
     func reset() {
         coordinatorsForEventIdentifiers.removeAll()
+        erroredEventIdsByRelatedEvent.removeAll()
+        removeObserverIfNeeded()
+    }
+}
+
+private extension TimelinePollProvider {
+    func updateDecryptionErrorsObserver(newSession: MXSession?) {
+        removeObserverIfNeeded()
+        
+        guard let session = newSession else {
+            return
+        }
+        
+        decryptionErrorsObserver = NotificationCenter.default.addObserver(forName: .mxSessionDidFailToDecryptEvents, object: session, queue: .main) { [weak self] notification in
+            guard
+                let self = self,
+                notification.object as? MXSession == session,
+                let failedEvents = notification.userInfo?[kMXSessionNotificationEventsArrayKey] as? [MXEvent]
+            else {
+                return
+            }
+            
+            self.storeErroredEvents(failedEvents)
+        }
+    }
+    
+    func removeObserverIfNeeded() {
+        decryptionErrorsObserver.map(NotificationCenter.default.removeObserver(_:))
+    }
+    
+    func storeErroredEvents(_ events: [MXEvent]) {
+        let groupedByParentEvents = events.group(by: \.relatesTo?.eventId)
+        
+        for (parentEvent, childrenEvents) in groupedByParentEvents {
+            guard let parentEvent = parentEvent else {
+                continue
+            }
+            
+            let currentEvents = erroredEventIdsByRelatedEvent[parentEvent] ?? []
+            let updatedEvents = currentEvents.union(childrenEvents.map(\.eventId))
+            self.erroredEventIdsByRelatedEvent[parentEvent] = updatedEvents
+            coordinatorsForEventIdentifiers[parentEvent]?.handleErroredRelatedEventsIds(updatedEvents, to: parentEvent)
+        }
     }
 }
