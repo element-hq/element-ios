@@ -4839,6 +4839,10 @@ public class VectorL10n: NSObject {
   public static var pollEditFormUpdateFailureTitle: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_update_failure_title") 
   }
+  /// Due to decryption errors, some votes may not be counted
+  public static var pollTimelineDecryptionError: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_decryption_error") 
+  }
   /// Please try again
   public static var pollTimelineNotClosedSubtitle: String { 
     return VectorL10n.tr("Vector", "poll_timeline_not_closed_subtitle") 

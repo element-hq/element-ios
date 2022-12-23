@@ -64,13 +64,15 @@ struct TimelinePollDetails {
     var type: TimelinePollType
     var maxAllowedSelections: UInt
     var hasBeenEdited = true
+    var hasDecryptionError: Bool
     
     init(question: String, answerOptions: [TimelinePollAnswerOption],
          closed: Bool,
          totalAnswerCount: UInt,
          type: TimelinePollType,
          maxAllowedSelections: UInt,
-         hasBeenEdited: Bool) {
+         hasBeenEdited: Bool,
+         hasDecryptionError: Bool) {
         self.question = question
         self.answerOptions = answerOptions
         self.closed = closed
@@ -78,6 +80,7 @@ struct TimelinePollDetails {
         self.type = type
         self.maxAllowedSelections = maxAllowedSelections
         self.hasBeenEdited = hasBeenEdited
+        self.hasDecryptionError = hasDecryptionError
     }
     
     var hasCurrentUserVoted: Bool {

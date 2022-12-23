@@ -152,7 +152,8 @@ struct TimelinePollAnswerOptionButton_Previews: PreviewProvider {
                             totalAnswerCount: 100,
                             type: type,
                             maxAllowedSelections: 1,
-                            hasBeenEdited: false)
+                            hasBeenEdited: false,
+                            hasDecryptionError: false)
     }
     
     static func buildAnswerOption(text: String = "Test", selected: Bool, winner: Bool = false) -> TimelinePollAnswerOption {
