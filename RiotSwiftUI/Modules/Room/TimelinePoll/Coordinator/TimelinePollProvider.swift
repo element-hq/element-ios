@@ -76,20 +76,19 @@ private extension TimelinePollProvider {
     func updateDecryptionErrorsObserver(newSession: MXSession?) {
         removeObserverIfNeeded()
         
-        guard let session = newSession else {
+        guard let newSession = newSession else {
             return
         }
         
-        decryptionErrorsObserver = NotificationCenter.default.addObserver(forName: .mxSessionDidFailToDecryptEvents, object: session, queue: .main) { [weak self] notification in
+        decryptionErrorsObserver = NotificationCenter.default.addObserver(forName: .mxSessionDidFailToDecryptEvents, object: newSession, queue: .main) { [weak self] notification in
             guard
-                let self = self,
-                notification.object as? MXSession == session,
+                notification.object as? MXSession == newSession,
                 let failedEvents = notification.userInfo?[kMXSessionNotificationEventsArrayKey] as? [MXEvent]
             else {
                 return
             }
             
-            self.storeErroredEvents(failedEvents)
+            self?.storeErroredEvents(failedEvents)
         }
     }
     
