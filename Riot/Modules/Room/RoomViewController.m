@@ -1082,6 +1082,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self setupUserSuggestionViewIfNeeded];
     
     [self updateTopBanners];
+    
+    [self stopUncompletedVoiceBroadcastIfNeeded];
 }
 
 - (void)onRoomDataSourceReady

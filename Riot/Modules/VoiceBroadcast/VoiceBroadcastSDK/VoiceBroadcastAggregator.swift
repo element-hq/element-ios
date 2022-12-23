@@ -163,15 +163,17 @@ public class VoiceBroadcastAggregator {
     }
     
     private func updateState() {
-        self.room.state { roomState in
-            guard let event = roomState?.stateEvents(with: .custom(VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType))?.last,
+        // This update is useful only in case of a live broadcast (The aggregator considers the broadcast stopped by default)
+        // We will consider here only the most recent voice broadcast state event
+        self.room.lastVoiceBroadcastStateEvent { event in
+            guard let event = event,
                   event.stateKey == self.voiceBroadcastSenderId,
                   let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
                   (event.eventId == self.voiceBroadcastStartEventId || voiceBroadcastInfo.voiceBroadcastId == self.voiceBroadcastStartEventId),
                   let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state) else {
                 return
             }
-        
+
             self.delegate?.voiceBroadcastAggregator(self, didReceiveState: state)
         }
     }
