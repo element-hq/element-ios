@@ -27,8 +27,7 @@ extension MXRoom {
                   let eventDeviceId = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyDeviceId] as? String,
                   eventDeviceId == self.mxSession.myDeviceId,
                   let voiceBroadcastInfo = VoiceBroadcastInfo(fromJSON: event.content),
-                  let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state),
-                  state != .stopped,
+                  voiceBroadcastInfo.state != VoiceBroadcastInfoState.stopped.rawValue,
                   self.mxSession.voiceBroadcastService == nil else {
                 return
             }
