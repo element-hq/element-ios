@@ -30,6 +30,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     public private(set) var query: String?
     public private(set) var space: MXSpace?
     private var fetchersCreated: Bool = false
+    private var uncompletedVoiceBroadcastCleaningDone: Bool = false
     
     //  MARK: - Fetchers
     
@@ -753,11 +754,11 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     private func notifyDataChange(on fetcher: MXRoomListDataFetcher, totalCountsChanged: Bool) {
         if let section = section(forFetcher: fetcher) {
-            stopUncompletedVoiceBroadcastIfNeeded(for: section)
             multicastDelegate.invoke { $0.recentsListServiceDidChangeData?(self,
                                                                            forSection: section,
                                                                            totalCountsChanged: totalCountsChanged) }
         } else {
+            stopUncompletedVoiceBroadcastIfNeeded()
             multicastDelegate.invoke { $0.recentsListServiceDidChangeData?(self,
                                                                            totalCountsChanged: totalCountsChanged) }
         }
@@ -787,8 +788,19 @@ extension RecentsListService: MXRoomListDataFetcherDelegate {
 
 // MARK: - VoiceBroadcast
 extension RecentsListService {
-    private func stopUncompletedVoiceBroadcastIfNeeded(for section: RecentsListServiceSection) {
-        fetcher(forSection: section)?.data?.rooms.forEach({ roomSummary in
+    
+    private func stopUncompletedVoiceBroadcastIfNeeded() {
+        guard uncompletedVoiceBroadcastCleaningDone == false,
+              let breadcrumbsFetcher = breadcrumbsRoomListDataFetcher else {
+            return
+        }
+        // We limit for the moment the uncompleted voice broadcast cleaning to the breadcrumbs rooms list
+        stopUncompletedVoiceBroadcastIfNeeded(for: breadcrumbsFetcher)
+        uncompletedVoiceBroadcastCleaningDone = true
+    }
+    
+    private func stopUncompletedVoiceBroadcastIfNeeded(for fetcher: MXRoomListDataFetcher) {
+        fetcher.data?.rooms.forEach({ roomSummary in
             guard let roomSummary = roomSummary as? MXRoomSummary,
                   let room = roomSummary.room else {
                 return
