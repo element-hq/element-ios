@@ -690,7 +690,7 @@
 "identity_server_settings_description" = "Anda saat ini menggunakan %@ untuk menemukan dan dapat ditemukan oleh kontak yang Anda tahu.";
 
 // AuthenticatedSessionViewControllerFactory
-"authenticated_session_flow_not_supported" = "Aplikasi ini tidak mendukung mekanisme otentikasi di homeserver Anda.";
+"authenticated_session_flow_not_supported" = "Aplikasi ini tidak mendukung mekanisme autentikasi di homeserver Anda.";
 "security_settings_coming_soon" = "Maaf. Aksi ini belum tersedia di %@ iOS. Mohon gunakan klien Matrix yang lain untuk menyiapkannya. %@ iOS akan menggunakannya.";
 "security_settings_blacklist_unverified_devices_description" = "Verifikasi semua sesi pengguna untuk menandainya sebagai terpercaya dan kirim pesan ke mereka.";
 "security_settings_crosssigning_info_exists" = "Akun Anda memiliki identitas penandatanganan silang, tetapi belum dipercayai oleh sesi ini. Selesaikan keamanan sesi ini.";
@@ -765,7 +765,7 @@
 "room_intro_cell_information_dm_sentence1_part1" = "Ini adalah awal dari pesan langsung Anda dengan ";
 "room_intro_cell_information_room_without_topic_sentence2_part2" = " supaya orang tahu tentang ruangan ini.";
 "invite_friends_share_text" = "Hai, bicara kepada saya di %@: %@";
-"biometrics_usage_reason" = "Otentikasi diperlukan untuk mengakses aplikasi ini";
+"biometrics_usage_reason" = "Autentikasi diperlukan untuk mengakses aplikasi ini";
 "pin_protection_kick_user_alert_message" = "Terlalu banyak kesalahan, Anda telah dikeluarkan";
 "secrets_setup_recovery_passphrase_confirm_information" = "Masukkan Frasa Keamanan Anda untuk mengkonfirmasi.";
 "secrets_recovery_with_key_information_verify_device" = "Gunakan Kunci Keamanan Anda untuk memverifikasi perangkat ini.";
@@ -1873,7 +1873,7 @@
 "login_error_forbidden" = "Nama pengguna/kata sandi tidak absah";
 "login_error_registration_is_not_supported" = "Pendaftaran saat ini tidak didukung";
 "login_error_do_not_support_login_flows" = "Saat ini kami tidak mendukung salah satu atau semua alur masuk yang ditentukan oleh homeserver ini";
-"login_error_no_login_flow" = "Kami gagal untuk menerima informasi otentikasi dari homeserver ini";
+"login_error_no_login_flow" = "Kami gagal untuk menerima informasi autentikasi dari homeserver ini";
 "login_error_title" = "Login Gagal";
 "login_prompt_email_token" = "Harap masukkan token validasi email Anda:";
 "login_email_placeholder" = "Alamat email";
@@ -2270,8 +2270,8 @@
 
 // Encryption information
 "room_event_encryption_info_title" = "Informasi enkripsi ujung-ke-ujung\n\n";
-"device_details_delete_prompt_message" = "Operasi ini membutuhkan otentikasi tambahan.\nUntuk melanjutkan, silakan masukkan kata sandi Anda.";
-"device_details_delete_prompt_title" = "Otentikasi";
+"device_details_delete_prompt_message" = "Operasi ini membutuhkan autentikasi tambahan.\nUntuk melanjutkan, silakan masukkan kata sandi Anda.";
+"device_details_delete_prompt_title" = "Autentikasi";
 "device_details_rename_prompt_message" = "Nama publik sesi dapat dilihat oleh orang yang berkomunikasi dengan Anda";
 "device_details_rename_prompt_title" = "Nama Sesi";
 "device_details_last_seen_format" = "%@ @ %@\n";
