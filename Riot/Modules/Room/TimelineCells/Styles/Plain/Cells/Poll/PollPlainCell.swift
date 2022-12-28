@@ -19,15 +19,18 @@ import Foundation
 class PollPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCellReadMarkerDisplayable {
 
     private var event: MXEvent?
+    private var supportedEventTypes: Set<__MXEventType> = [.pollStart, .pollEnd]
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        guard let contentView = roomCellContentView?.innerContentView,
-              let bubbleData = cellData as? RoomBubbleCellData,
-              let event = bubbleData.events.last,
-              event.eventType == __MXEventType.pollStart,
-              let controller = TimelinePollProvider.shared.buildTimelinePollVCForEvent(event) else {
+        guard
+            let contentView = roomCellContentView?.innerContentView,
+            let bubbleData = cellData as? RoomBubbleCellData,
+            let event = bubbleData.events.last,
+            supportedEventTypes.contains(event.eventType),
+            let controller = TimelinePollProvider.shared.buildTimelinePollVCForEvent(event)
+        else {
             return
         }
         
