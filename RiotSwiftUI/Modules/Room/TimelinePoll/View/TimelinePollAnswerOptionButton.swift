@@ -151,6 +151,7 @@ struct TimelinePollAnswerOptionButton_Previews: PreviewProvider {
                             closed: closed,
                             totalAnswerCount: 100,
                             type: type,
+                            eventType: .started,
                             maxAllowedSelections: 1,
                             hasBeenEdited: false,
                             hasDecryptionError: false)

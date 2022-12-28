@@ -4843,6 +4843,10 @@ public class VectorL10n: NSObject {
   public static var pollTimelineDecryptionError: String { 
     return VectorL10n.tr("Vector", "poll_timeline_decryption_error") 
   }
+  /// Ended the poll
+  public static var pollTimelineEndedText: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_ended_text") 
+  }
   /// Please try again
   public static var pollTimelineNotClosedSubtitle: String { 
     return VectorL10n.tr("Vector", "poll_timeline_not_closed_subtitle") 

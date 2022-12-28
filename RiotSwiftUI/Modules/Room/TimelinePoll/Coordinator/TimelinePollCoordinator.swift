@@ -131,6 +131,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
                                    closed: poll.isClosed,
                                    totalAnswerCount: poll.totalAnswerCount,
                                    type: pollKindToTimelinePollType(poll.kind),
+                                   eventType: parameters.pollEvent.eventType == .pollStart ? .started : .ended,
                                    maxAllowedSelections: poll.maxAllowedSelections,
                                    hasBeenEdited: poll.hasBeenEdited,
                                    hasDecryptionError: poll.hasDecryptionError)
