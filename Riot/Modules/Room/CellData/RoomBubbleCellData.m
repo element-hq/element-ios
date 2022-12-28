@@ -152,6 +152,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 break;
             }
             case MXEventTypePollStart:
+            case MXEventTypePollEnd:
             {
                 self.tag = RoomBubbleCellDataTagPoll;
                 self.collapsable = NO;
