@@ -2885,6 +2885,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         return YES;
     }
     
+    if (event.eventType == MXEventTypePollEnd) {
+        return YES;
+    }
+    
     // Specific case for voice broadcast event
     if (event.eventType == MXEventTypeCustom &&
         [event.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]) {

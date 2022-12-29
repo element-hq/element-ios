@@ -636,7 +636,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     __block NSInteger firstVisibleComponentIndex = NSNotFound;
     
     MXEvent *firstEvent = self.events.firstObject;
-    BOOL isPoll = (firstEvent.eventType == MXEventTypePollStart);
+    BOOL isPoll = (self.events.firstObject.eventType == MXEventTypePollStart || self.events.firstObject.eventType == MXEventTypePollEnd);
     BOOL isVoiceBroadcast = (firstEvent.eventType == MXEventTypeCustom && [firstEvent.type isEqualToString: VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]);
     
     if ((isPoll || self.attachment || isVoiceBroadcast) && self.bubbleComponents.count)
