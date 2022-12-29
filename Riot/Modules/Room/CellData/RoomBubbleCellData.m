@@ -1194,6 +1194,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 shouldAddEvent = NO;
                 break;
             case MXEventTypePollStart:
+            case MXEventTypePollEnd:
                 shouldAddEvent = NO;
                 break;
             case MXEventTypeBeaconInfo:
