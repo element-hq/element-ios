@@ -2194,3 +2194,9 @@
 "authentication_qr_login_start_display_qr" = "Показать QR-код на этом устройстве";
 "authentication_qr_login_start_need_alternative" = "Нуждаетесь в альтернативном методе?";
 "authentication_qr_login_start_step4" = "Выберите «Показать QR-код на этом устройстве»";
+"password_policy_pwd_in_dict_error" = "Этот пароль был найден в словаре и не разрешен.";
+"password_policy_weak_pwd_error" = "Этот пароль слишком слаб. Он должен содержать не менее 8 символов, по крайней мере по одному символу каждого типа: прописные, строчные, цифры и специальные символы.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Очень короткий пароль";
+"settings_enable_room_message_bubbles" = "Сообщения пузырями";
