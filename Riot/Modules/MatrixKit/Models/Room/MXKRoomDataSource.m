@@ -2881,11 +2881,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         return NO;
     }
     
-    if (event.eventType == MXEventTypePollStart) {
-        return YES;
-    }
-    
-    if (event.eventType == MXEventTypePollEnd) {
+    if (event.isTimelinePollEvent) {
         return YES;
     }
     
