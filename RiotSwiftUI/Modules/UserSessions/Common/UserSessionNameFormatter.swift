@@ -19,7 +19,7 @@ import Foundation
 /// Enables to build user session name
 enum UserSessionNameFormatter {
     /// Session name with client name and session display name
-    static func sessionName(deviceType: DeviceType, sessionDisplayName: String?) -> String {
-        sessionDisplayName?.vc_nilIfEmpty() ?? deviceType.name
+    static func sessionName(sessionId: String, sessionDisplayName: String?) -> String {
+        sessionDisplayName?.vc_nilIfEmpty() ?? sessionId
     }
 }
