@@ -568,6 +568,7 @@ class NotificationService: UNNotificationServiceExtension {
                         
                         case .pollEnd:
                             notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                            #warning("alfogrillo: TBC")
                             notificationBody = VectorL10n.pollTimelineEndedText
                         
                         default:
