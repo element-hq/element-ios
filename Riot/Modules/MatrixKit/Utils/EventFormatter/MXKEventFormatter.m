@@ -1606,6 +1606,16 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
             }
             break;
         }
+        case MXEventTypePollEnd:
+        {
+            if (event.isEditEvent)
+            {
+                return nil;
+            }
+            
+            displayText = [VectorL10n pollTimelineEndedText];
+            break;
+        }
         case MXEventTypePollStart:
         {
             if (event.isEditEvent)
