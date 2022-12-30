@@ -544,7 +544,7 @@ class NotificationService: UNNotificationServiceExtension {
                                 // Otherwise show a generic reaction.
                                 notificationBody = NotificationService.localizedString(forKey: "GENERIC_REACTION_FROM_USER", eventSenderName)
                             }
-                            
+
                         case .custom:
                             if (event.type == kWidgetMatrixEventTypeString || event.type == kWidgetModularEventTypeString),
                                let type = event.content?["type"] as? String,
@@ -561,13 +561,18 @@ class NotificationService: UNNotificationServiceExtension {
                                     additionalUserInfo = [Constants.userInfoKeyPresentNotificationOnForeground: true]
                                 }
                             }
+
                         case .pollStart:
                             notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                             notificationBody = MXEventContentPollStart(fromJSON: event.content)?.question
+                        
+                        case .pollEnd:
+                            notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                            notificationBody = VectorL10n.pollTimelineEndedText
+                        
                         default:
                             break
                     }
-                    
                     
                     self.validateNotificationContentAndComplete(
                         notificationTitle: notificationTitle,
