@@ -1992,11 +1992,6 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
         html = [html stringByReplacingCharactersInRange:inReplyToTextRange withString:[VectorL10n noticeInReplyTo]];
     }
     
-    if (inReplyToLinkRange.location != NSNotFound)
-    {
-        html = [html stringByReplacingCharactersInRange:inReplyToLinkRange withString:@"#"];
-    }
-    
     return html;
 }
 
