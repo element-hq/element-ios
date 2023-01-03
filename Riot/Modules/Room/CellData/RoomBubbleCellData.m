@@ -1193,6 +1193,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             case MXEventTypePollStart:
                 shouldAddEvent = NO;
                 break;
+            case MXEventTypeBeaconInfo:
+                shouldAddEvent = NO;
+                break;
             case MXEventTypeCustom:
             {
                 if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
