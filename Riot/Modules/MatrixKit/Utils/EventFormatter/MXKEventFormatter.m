@@ -1983,8 +1983,8 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     }
     
     // Replace <mx-reply><blockquote><a href=\"__permalink__\">In reply to</a>
-    // By <mx-reply><blockquote><a href=\"#\">['In reply to' from resources]</a>
-    // To disable the link and to localize the "In reply to" string
+    // By <mx-reply><blockquote><a href=\"__permalink__\">['In reply to' from resources]</a>
+    // To localize the "In reply to" string
     // This link is the first <a> HTML node of the html string
     
     if (inReplyToTextRange.location != NSNotFound)
