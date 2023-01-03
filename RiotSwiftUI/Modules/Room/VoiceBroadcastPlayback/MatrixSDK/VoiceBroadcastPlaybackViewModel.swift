@@ -102,10 +102,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     
     private func release() {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] release")
-        if let audioPlayer = audioPlayer {
-            audioPlayer.deregisterDelegate(self)
-            self.audioPlayer = nil
-        }
+        self.stop()
+        self.voiceBroadcastAggregator.delegate = nil
+        self.voiceBroadcastAggregator.stop()
     }
     
     // MARK: - Public
@@ -116,6 +115,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             play()
         case .pause:
             pause()
+        case .redact:
+            release()
         case .sliderChange(let didChange):
             didSliderChanged(didChange)
         case .backward:
@@ -468,7 +469,8 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] audioPlayerDidStopPlaying")
         state.playbackState = .stopped
         state.playingState.isLive = false
-        release()
+        audioPlayer.deregisterDelegate(self)
+        self.audioPlayer = nil
     }
     
     func audioPlayer(_ audioPlayer: VoiceMessageAudioPlayer, didFailWithError error: Error) {

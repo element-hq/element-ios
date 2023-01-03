@@ -68,12 +68,7 @@ public class VoiceBroadcastAggregator {
     public var delegate: VoiceBroadcastAggregatorDelegate?
     
     deinit {
-        if let referenceEventsListener = referenceEventsListener {
-            room.removeListener(referenceEventsListener)
-        }
-        
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxEventDidDecrypt, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxRoomDidFlushData, object: nil)
+        self.stop()
     }
     
     public init(session: MXSession, room: MXRoom, voiceBroadcastStartEventId: String, voiceBroadcastState: VoiceBroadcastInfoState) throws {
@@ -233,5 +228,14 @@ public class VoiceBroadcastAggregator {
             self.launchState = .error
             self.delegate?.voiceBroadcastAggregator(self, didFailWithError: error)
         }
+    }
+    
+    func stop() {
+        if let referenceEventsListener = referenceEventsListener {
+            room.removeListener(referenceEventsListener)
+        }
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxEventDidDecrypt, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxRoomDidFlushData, object: nil)
     }
 }

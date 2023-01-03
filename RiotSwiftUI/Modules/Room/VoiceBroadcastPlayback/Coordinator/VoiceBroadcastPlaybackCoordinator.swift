@@ -56,6 +56,10 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
 
     }
     
+    deinit {
+        viewModel.context.send(viewAction: .redact)
+    }
+    
     // MARK: - Public
 
     func start() { }
