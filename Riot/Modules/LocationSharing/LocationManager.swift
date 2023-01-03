@@ -177,9 +177,6 @@ class LocationManager: NSObject {
         
         return status
     }
-    
-    private func checkShouldCompleteAuthorizationCheck(with status: CLAuthorizationStatus) {
-    }
         
     private func authorizationAlwaysRequestDidComplete(with status: CLAuthorizationStatus) {
         guard let authorizationHandler = self.authorizationHandler else {
