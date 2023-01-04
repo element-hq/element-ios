@@ -2837,7 +2837,7 @@
 
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Не вдалося розпочати нову голосову трансляцію";
-"settings_labs_enable_voice_broadcast" = "Голосові трансляції (в активній розробці)";
+"settings_labs_enable_voice_broadcast" = "Голосові трансляції";
 "deselect_all" = "Скасувати вибір усіх";
 "user_other_session_menu_select_sessions" = "Вибрати сеанси";
 "user_other_session_selected_count" = "Вибрано %@";
