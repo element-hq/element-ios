@@ -50,6 +50,10 @@ final class VoiceBroadcastRecorderCoordinator: Coordinator, Presentable {
                                                         recorderService: voiceBroadcastRecorderService)
         voiceBroadcastRecorderViewModel = viewModel
     }
+    
+    deinit {
+        voiceBroadcastRecorderService.cancelRecordingVoiceBroadcast()
+    }
 
     // MARK: - Public
 
