@@ -774,6 +774,11 @@ class NotificationService: UNNotificationServiceExtension {
             return Constants.callInviteNotificationCategoryIdentifier
         }
         
+        // Ignore voice broadcast chunk event
+        if event.eventType == .roomMessage && event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil {
+            return Constants.toBeRemovedNotificationCategoryIdentifier
+        }
+        
         guard event.eventType == .roomMessage || event.eventType == .roomEncrypted else {
             return Constants.toBeRemovedNotificationCategoryIdentifier
         }
