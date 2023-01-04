@@ -1613,7 +1613,14 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
                 return nil;
             }
             
-            displayText = [VectorL10n pollTimelineEndedText];
+            MXEvent* pollStartedEvent = [self->mxSession.store eventWithEventId:event.relatesTo.eventId inRoom:event.roomId];
+            
+            if (pollStartedEvent) {
+                displayText = [MXEventContentPollStart modelFromJSON:pollStartedEvent.content].question;
+            } else {
+                displayText = [VectorL10n pollTimelineEndedText];
+            }
+            
             break;
         }
         case MXEventTypePollStart:
