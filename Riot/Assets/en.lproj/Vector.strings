@@ -802,7 +802,7 @@ Tap the + to start adding people.";
 "settings_labs_enable_new_client_info_feature" = "Record the client name, version, and url to recognise sessions more easily in session manager";
 "settings_labs_enable_new_app_layout" = "New Application Layout";
 "settings_labs_enable_wysiwyg_composer" = "Try out the rich text editor";
-"settings_labs_enable_voice_broadcast" = "Voice broadcast (under active development)";
+"settings_labs_enable_voice_broadcast" = "Voice broadcast";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
