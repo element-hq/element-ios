@@ -2839,7 +2839,7 @@
 
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Tidak dapat memulai sebuah siaran suara baru";
-"settings_labs_enable_voice_broadcast" = "Siaran suara (dalam pengembangan aktif)";
+"settings_labs_enable_voice_broadcast" = "Siaran suara";
 "deselect_all" = "Batalkan Semua Pilihan";
 "user_other_session_menu_select_sessions" = "Pilih sesi";
 "user_other_session_selected_count" = "%@ dipilih";
