@@ -32,7 +32,6 @@ struct TimelinePollView: View {
         
         VStack(alignment: .leading, spacing: 16.0) {
             if poll.representsPollEndedEvent {
-                #warning("alfogrillo: TBC")
                 Text(VectorL10n.pollTimelineEndedText)
                     .font(theme.fonts.footnote)
                     .foregroundColor(theme.colors.tertiaryContent)
