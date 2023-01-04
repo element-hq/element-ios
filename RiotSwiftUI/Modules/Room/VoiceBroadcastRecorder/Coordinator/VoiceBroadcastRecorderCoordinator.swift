@@ -68,6 +68,10 @@ final class VoiceBroadcastRecorderCoordinator: Coordinator, Presentable {
     func pauseRecording() {
         voiceBroadcastRecorderViewModel.context.send(viewAction: .pause)
     }
+    
+    func isVoiceBroadcastRecording() -> Bool {
+        return voiceBroadcastRecorderService.isRecording
+    }
 
     // MARK: - Private
 }
