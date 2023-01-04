@@ -19,7 +19,7 @@ import Foundation
 struct UserSessionListItemViewDataFactory {
     func create(from sessionInfo: UserSessionInfo,
                 isSelected: Bool = false) -> UserSessionListItemViewData {
-        let sessionName = UserSessionNameFormatter.sessionName(deviceType: sessionInfo.deviceType,
+        let sessionName = UserSessionNameFormatter.sessionName(sessionId: sessionInfo.id,
                                                                sessionDisplayName: sessionInfo.name)
         let sessionDetails = buildSessionDetails(sessionInfo: sessionInfo)
         let deviceAvatarViewData = DeviceAvatarViewData(deviceType: sessionInfo.deviceType,
