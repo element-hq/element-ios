@@ -2613,7 +2613,7 @@
 
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Não dá para começar um novo broadcast de voz";
-"settings_labs_enable_voice_broadcast" = "Broadcast de voz (sob desenvolvimento ativo)";
+"settings_labs_enable_voice_broadcast" = "Broadcast de voz";
 "deselect_all" = "Desselecionar Todas(os)";
 "user_other_session_menu_select_sessions" = "Selecionar sessões";
 "user_other_session_selected_count" = "%@ selecionadas";
