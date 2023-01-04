@@ -471,7 +471,10 @@ class NotificationService: UNNotificationServiceExtension {
                                 notificationBody = NotificationService.localizedString(forKey: "VIDEO_FROM_USER", eventSenderName)
                             case kMXMessageTypeAudio:
                                 if event.isVoiceMessage() {
-                                    notificationBody = NotificationService.localizedString(forKey: "VOICE_MESSAGE_FROM_USER", eventSenderName)
+                                    // Ignore voice broadcast chunk event
+                                    if event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] == nil {
+                                        notificationBody = NotificationService.localizedString(forKey: "VOICE_MESSAGE_FROM_USER", eventSenderName)
+                                    }
                                 } else {
                                     notificationBody = NotificationService.localizedString(forKey: "AUDIO_FROM_USER", eventSenderName, messageContent)
                                 }
@@ -772,11 +775,6 @@ class NotificationService: UNNotificationServiceExtension {
         
         if event.eventType == .callInvite {
             return Constants.callInviteNotificationCategoryIdentifier
-        }
-        
-        // Ignore voice broadcast chunk event
-        if event.eventType == .roomMessage && event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil {
-            return Constants.toBeRemovedNotificationCategoryIdentifier
         }
         
         guard event.eventType == .roomMessage || event.eventType == .roomEncrypted else {
