@@ -2573,7 +2573,7 @@
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Palun arvesta, et sessioonide nimed on näha ka kõikidele osapooltele, kellega sa suhtled. %@";
 "manage_session_name_hint" = "Sinu enda kirjutatud sessiooninimede alusel on sul oma seadmeid lihtsam ära tunda.";
-"settings_labs_enable_voice_broadcast" = "Ringhäälingukõne (aktiivses arenduses)";
+"settings_labs_enable_voice_broadcast" = "Ringhäälingukõne";
 "settings_labs_enable_wysiwyg_composer" = "Proovi vormindatud teksti alusel töötavat tekstitoimetit";
 "authentication_qr_login_failure_retry" = "Proovi uuesti";
 "authentication_qr_login_failure_request_timed_out" = "Sidumine ei lõppenud etteantud aja jooksul.";
