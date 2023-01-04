@@ -70,12 +70,7 @@ import Foundation
         return coordinator.toPresentable()
 
     }
-    
-    /// Retrieve the voiceBroadcast timeline coordinator for the given event or nil if it hasn't been created yet
-    private func voiceBroadcastPlaybackCoordinatorForEventIdentifier(_ eventIdentifier: String) -> VoiceBroadcastPlaybackCoordinator? {
-        coordinatorsForEventIdentifiers[eventIdentifier]
-    }
-    
+        
     /// Pause current voice broadcast playback.
     @objc public func pausePlaying() {
         coordinatorsForEventIdentifiers.forEach { _, coordinator in
