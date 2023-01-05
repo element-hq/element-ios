@@ -95,3 +95,60 @@
 
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ ได้โพสต์ใน %@";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (การโทรแบบกลุ่ม)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "เริ่มการโทรแบบกลุ่มแล้ว";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ ได้อัพเดตรูปโปรไฟล์";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ เปลี่ยนอวาตาร์ของเขา";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ เปลี่ยนชื่อของเขา";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ เปลี่ยนชื่อเป็น %@";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ ส่งความรู้สึก";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ รู้สึก %@";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ แบ่งปันตำแหน่งของเขา";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ ส่งไฟล์ %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ ส่งข้อความเสียง";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ ส่งไฟล์เสียง %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ ส่งวีดีโอ";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ ส่งรูปภาพ";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ ตอบกลับใน %@";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ ตอบกลับ";
+/** General **/
+
+"Notification" = "การแจ้งเตือน";
