@@ -364,7 +364,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     private func deleteRecordingAtURL(_ url: URL?) {
-        guard let url = url, FileManager.default.fileExists(atPath: url.absoluteString) else {
+        // Fix: use url.path instead of url.absoluteString when using FileManager otherwise the url seems to be percent encoded and the file is not found.
+        guard let url = url, FileManager.default.fileExists(atPath: url.path) else {
             return
         }
         
