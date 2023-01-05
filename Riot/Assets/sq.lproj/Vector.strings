@@ -2594,7 +2594,7 @@
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Ju lutemi, kini parasysh se emrat e sesioneve janë të dukshëm edhe për personat me të cilët komunikoni.%@";
 "manage_session_name_hint" = "Emra vetjakë sesionesh mund t’ju ndihmojnë të njihni më kollaj pajisjet tuaja.";
-"settings_labs_enable_voice_broadcast" = "Aktivizoni transmetim zanor (nën zhvillim aktiv)";
+"settings_labs_enable_voice_broadcast" = "Aktivizoni transmetim zanor";
 "settings_labs_enable_wysiwyg_composer" = "Provoni përpunuesin e teksteve të pasur";
 "settings_labs_enable_new_app_layout" = "Skemë e Re Aplikacioni";
 "settings_labs_enable_new_client_info_feature" = "Regjistro emrin, versionin dhe URL-në e klientit, për të dalluar më kollaj sesionit te përgjegjës sesionesh";
