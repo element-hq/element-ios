@@ -9359,6 +9359,10 @@ public class VectorL10n: NSObject {
   public static var wysiwygComposerFormatActionLink: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_link") 
   }
+  /// Toggle numbered list
+  public static var wysiwygComposerFormatActionOrderedList: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_ordered_list") 
+  }
   /// Apply underline format
   public static var wysiwygComposerFormatActionStrikethrough: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_strikethrough") 
@@ -9366,6 +9370,10 @@ public class VectorL10n: NSObject {
   /// Apply strikethrough format
   public static var wysiwygComposerFormatActionUnderline: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_underline") 
+  }
+  /// Toggle bulleted list
+  public static var wysiwygComposerFormatActionUnorderedList: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_unordered_list") 
   }
   /// Create a link
   public static var wysiwygComposerLinkActionCreateTitle: String { 

@@ -35,6 +35,8 @@ enum FormatType {
     case underline
     case strikethrough
     case inlineCode
+    case unorderedList
+    case orderedList
     case link
 }
 
@@ -54,14 +56,18 @@ extension FormatItem {
             return Asset.Images.bold.name
         case .italic:
             return Asset.Images.italic.name
-        case .strikethrough:
-            return Asset.Images.strikethrough.name
         case .underline:
             return Asset.Images.underlined.name
-        case .link:
-            return Asset.Images.link.name
+        case .strikethrough:
+            return Asset.Images.strikethrough.name
         case .inlineCode:
             return Asset.Images.code.name
+        case .unorderedList:
+            return Asset.Images.bulletList.name
+        case .orderedList:
+            return Asset.Images.numberedList.name
+        case .link:
+            return Asset.Images.link.name
         }
     }
     
@@ -71,14 +77,18 @@ extension FormatItem {
             return "boldButton"
         case .italic:
             return "italicButton"
-        case .strikethrough:
-            return "strikethroughButton"
         case .underline:
             return "underlineButton"
-        case .link:
-            return "linkButton"
+        case .strikethrough:
+            return "strikethroughButton"
         case .inlineCode:
             return "inlineCodeButton"
+        case .unorderedList:
+            return "unorderedListButton"
+        case .orderedList:
+            return "orderedListButton"
+        case .link:
+            return "linkButton"
         }
     }
     
@@ -88,14 +98,18 @@ extension FormatItem {
             return VectorL10n.wysiwygComposerFormatActionBold
         case .italic:
             return VectorL10n.wysiwygComposerFormatActionItalic
-        case .strikethrough:
-            return VectorL10n.wysiwygComposerFormatActionStrikethrough
         case .underline:
             return VectorL10n.wysiwygComposerFormatActionUnderline
-        case .link:
-            return VectorL10n.wysiwygComposerFormatActionLink
+        case .strikethrough:
+            return VectorL10n.wysiwygComposerFormatActionStrikethrough
         case .inlineCode:
             return VectorL10n.wysiwygComposerFormatActionInlineCode
+        case .unorderedList:
+            return VectorL10n.wysiwygComposerFormatActionUnorderedList
+        case .orderedList:
+            return VectorL10n.wysiwygComposerFormatActionOrderedList
+        case .link:
+            return VectorL10n.wysiwygComposerFormatActionLink
         }
     }
 }
@@ -108,14 +122,18 @@ extension FormatType {
             return .bold
         case .italic:
             return .italic
-        case .strikethrough:
-            return .strikeThrough
         case .underline:
             return .underline
-        case .link:
-            return .link
+        case .strikethrough:
+            return .strikeThrough
         case .inlineCode:
             return .inlineCode
+        case .unorderedList:
+            return .unorderedList
+        case .orderedList:
+            return .orderedList
+        case .link:
+            return .link
         }
     }
     
@@ -127,14 +145,18 @@ extension FormatType {
             return .bold
         case .italic:
             return .italic
-        case .strikethrough:
-            return .strikeThrough
         case .underline:
             return .underline
-        case .link:
-            return .link
+        case .strikethrough:
+            return .strikeThrough
+        case .unorderedList:
+            return .unorderedList
+        case .orderedList:
+            return .orderedList
         case .inlineCode:
             return .inlineCode
+        case .link:
+            return .link
         }
     }
 }

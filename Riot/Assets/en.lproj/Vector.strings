@@ -2559,6 +2559,8 @@ To enable access, tap Settings> Location and select Always";
 "wysiwyg_composer_format_action_strikethrough" = "Apply underline format";
 "wysiwyg_composer_format_action_link" = "Apply link format";
 "wysiwyg_composer_format_action_inline_code" = "Apply inline code format";
+"wysiwyg_composer_format_action_unordered_list" = "Toggle bulleted list";
+"wysiwyg_composer_format_action_ordered_list" = "Toggle numbered list";
 
 // Links
 "wysiwyg_composer_link_action_text" = "Text";
