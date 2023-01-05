@@ -1064,6 +1064,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         // Set room title view
         [self refreshRoomTitle];
+        
+        // Stop any pending voice broadcast if needed
+        [self stopUncompletedVoiceBroadcastIfNeeded];
     }
     else
     {
@@ -1082,8 +1085,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self setupUserSuggestionViewIfNeeded];
     
     [self updateTopBanners];
-    
-    [self stopUncompletedVoiceBroadcastIfNeeded];
 }
 
 - (void)onRoomDataSourceReady
