@@ -4,6 +4,6 @@
 "NSCalendarsUsageDescription" = "Vidu viajn planitajn renkontiĝojn en la aplikaĵo.";
 "NSContactsUsageDescription" = "Por trovi kontaktojn, kiuj jam estas ĉe Matrix, Element povas sendi retpoŝtadresojn kaj telefonnumerojn el via adresaro al via elektita identigila servilo de Matrix. Kiam eblas, personaj datumoj estas haketitaj antaŭ forsendo – bonvolu kontroli la politikon pri privateco de via identiga servilo por pliaj detaloj.";
 "NSMicrophoneUsageDescription" = "La mikrofono estas uzata por filmi, kaj ankaŭ por voki.";
-"NSPhotoLibraryUsageDescription" = "La fotujo estas uzata por sendi fotojn kaj filmojn.";
+"NSPhotoLibraryUsageDescription" = "Permesu aliron al fotoj por alŝuti fotojn kaj filmetojn el via biblioteko.";
 // Permissions usage explanations
-"NSCameraUsageDescription" = "La filmilo estas uzata por foti kaj filmi, kaj ankaŭ por vidvoki.";
+"NSCameraUsageDescription" = "La filmilo estas uzata por fari vidvokojn, aŭ preni kaj alŝuti fotojn kaj filmetojn.";
