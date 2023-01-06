@@ -33,7 +33,19 @@ import Foundation
             }
         }
     }
-    var coordinatorsForEventIdentifiers = [String: VoiceBroadcastRecorderCoordinator]()
+    private var coordinatorsForEventIdentifiers = [String: VoiceBroadcastRecorderCoordinator]() {
+        didSet {
+            if !self.coordinatorsForEventIdentifiers.isEmpty && self.redactionsListener == nil {
+                redactionsListener = session?.listenToEvents([MXEventType(identifier: kMXEventTypeStringRoomRedaction)], self.handleRedactedEvent)
+            }
+
+            if self.coordinatorsForEventIdentifiers.isEmpty && self.redactionsListener != nil {
+                session?.removeListener(self.redactionsListener)
+                self.redactionsListener = nil
+            }
+        }
+    }
+    private var redactionsListener: Any?
     
     // MARK: Private
     private var currentEventIdentifier: String?
@@ -82,5 +94,18 @@ import Foundation
         }
 
         return coordinatorsForEventIdentifiers[currentEventIdentifier]
+    }
+    
+    private func handleRedactedEvent(event: MXEvent, direction: MXTimelineDirection, customObject: Any?) {
+        if direction == .backwards {
+            //  ignore backwards events
+            return
+        }
+
+        var coordinator = coordinatorsForEventIdentifiers.removeValue(forKey: event.redacts)
+
+        coordinator?.toPresentable().dismiss(animated: false) {
+           coordinator = nil
+        }
     }
 }
