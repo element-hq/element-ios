@@ -36,7 +36,7 @@ import Foundation
     private var coordinatorsForEventIdentifiers = [String: VoiceBroadcastRecorderCoordinator]() {
         didSet {
             if !self.coordinatorsForEventIdentifiers.isEmpty && self.redactionsListener == nil {
-                redactionsListener = session?.listenToEvents([MXEventType(identifier: kMXEventTypeStringRoomRedaction)], self.handleEvent)
+                redactionsListener = session?.listenToEvents([MXEventType(identifier: kMXEventTypeStringRoomRedaction)], self.handleRedactedEvent)
             }
 
             if self.coordinatorsForEventIdentifiers.isEmpty && self.redactionsListener != nil {
@@ -96,7 +96,7 @@ import Foundation
         return coordinatorsForEventIdentifiers[currentEventIdentifier]
     }
     
-    private func handleEvent(event: MXEvent, direction: MXTimelineDirection, customObject: Any?) {
+    private func handleRedactedEvent(event: MXEvent, direction: MXTimelineDirection, customObject: Any?) {
         if direction == .backwards {
             //  ignore backwards events
             return
