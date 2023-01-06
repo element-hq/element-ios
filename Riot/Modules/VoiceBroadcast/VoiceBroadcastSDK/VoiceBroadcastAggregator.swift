@@ -196,7 +196,9 @@ public class VoiceBroadcastAggregator {
             self.events.append(contentsOf: filteredChunk)
             
             let eventTypes = [VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType, kMXEventTypeStringRoomMessage]
-            self.referenceEventsListener = self.room.listen(toEventsOfTypes: eventTypes, onEvent: self.handleEvent) as Any
+            self.referenceEventsListener = self.room.listen(toEventsOfTypes: eventTypes, onEvent: { [weak self] event, direction, roomState in
+                self?.handleEvent(event: event, direction: direction, roomState: roomState)
+            }) as Any
             self.registerEventDidDecryptNotification()
             
             self.events.forEach { event in
