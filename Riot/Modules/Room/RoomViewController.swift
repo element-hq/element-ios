@@ -320,6 +320,6 @@ extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
 // MARK: - VoiceBroadcast
 extension RoomViewController {
     @objc func stopUncompletedVoiceBroadcastIfNeeded() {
-        self.roomDataSource.room.stopUncompletedVoiceBroadcastIfNeeded()
+        self.roomDataSource?.room.stopUncompletedVoiceBroadcastIfNeeded()
     }
 }
