@@ -2888,3 +2888,6 @@
 "notice_voice_broadcast_ended" = "%@ ukončil/a hlasové vysielanie.";
 "notice_voice_broadcast_live" = "Živé vysielanie";
 "user_other_session_security_recommendation_title" = "Iné relácie";
+"poll_timeline_decryption_error" = "Z dôvodu chýb v dešifrovaní sa niektoré hlasy nemusia započítať";
+"voice_message_broadcast_in_progress_message" = "Nemôžete spustiť hlasovú správu, pretože práve nahrávate živé vysielanie. Ukončite prosím živé vysielanie, aby ste mohli začať nahrávať hlasovú správu";
+"voice_message_broadcast_in_progress_title" = "Nemožno spustiť hlasovú správu";
