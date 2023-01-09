@@ -589,7 +589,7 @@
 "create_room_section_footer_encryption" = "Ne eblas malŝalti ĉifradon poste.";
 "create_room_enable_encryption" = "Ŝalti ĉifradon";
 "create_room_section_header_encryption" = "Ĉifrado de ĉambro";
-"create_room_placeholder_topic" = "Temo";
+"create_room_placeholder_topic" = "Pri kio temas ĉi tiu ĉambro?";
 "create_room_section_header_topic" = "Temo de ĉambro (nedeviga)";
 "create_room_placeholder_name" = "Nomo";
 "create_room_section_header_name" = "Nomo de ĉambro";
@@ -2032,3 +2032,4 @@
 "login_error_resource_limit_exceeded_message_default" = "Ĉi tiu hejmservilo atingis unu el siaj rimedaj limoj.";
 "login_error_resource_limit_exceeded_title" = "Rimeda limo estas atingita";
 "login_error_forgot_password_is_not_supported" = "Forgesado de pasvorto nun ne estas subtenata";
+"identity_server_settings_alert_change" = "Ĉu malkonektu de identiga servilo %1$@ kaj anstataŭe konektu al %2$@?";
