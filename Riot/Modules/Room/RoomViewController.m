@@ -2451,6 +2451,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         return;
     }
     
+    // Prevents listening a VB when recording a new one
+    [VoiceBroadcastPlaybackProvider.shared pausePlaying];
+    
     // Request the voice broadcast service to start recording - No service is returned if someone else is already broadcasting in the room
     [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
         if (voiceBroadcastService) {
