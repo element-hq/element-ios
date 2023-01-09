@@ -2890,3 +2890,6 @@
 "notice_voice_broadcast_ended" = "%@ завершує голосову трансляцію.";
 "notice_voice_broadcast_live" = "Трансляція наживо";
 "user_other_session_security_recommendation_title" = "Інші сеанси";
+"poll_timeline_decryption_error" = "Через помилки під час розшифрування деякі голоси можуть бути не враховані";
+"voice_message_broadcast_in_progress_title" = "Неможливо розпочати запис голосового повідомлення";
+"voice_message_broadcast_in_progress_message" = "Ви не можете розпочати запис голосового повідомлення, оскільки зараз триває запис трансляції наживо. Будь ласка, завершіть трансляцію, щоб розпочати запис голосового повідомлення";
