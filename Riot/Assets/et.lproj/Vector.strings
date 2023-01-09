@@ -2637,3 +2637,6 @@
 "notice_voice_broadcast_ended" = "%@ lõpetas ringhäälingukõne.";
 "notice_voice_broadcast_live" = "Ringhäälingukõne on eetris";
 "user_other_session_security_recommendation_title" = "Muud sessioonid";
+"poll_timeline_decryption_error" = "Krüptimisvigade tõttu jääb osa hääli lugemata";
+"voice_message_broadcast_in_progress_title" = "Häälsõnumi salvestamine või esitamine ei õnnestu";
+"voice_message_broadcast_in_progress_message" = "Kuna sa hetkel salvestad ringhäälingukõnet, siis häälsõnumi salvestamine või esitamine ei õnnestu. Selleks palun lõpeta ringhäälingukõne";
