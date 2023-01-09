@@ -2685,3 +2685,6 @@
 "notice_voice_broadcast_ended" = "%@ befejezte a hang közvetítést.";
 "notice_voice_broadcast_live" = "Élő közvetítés";
 "user_other_session_security_recommendation_title" = "További munkamenetek";
+"poll_timeline_decryption_error" = "Visszafejtési hibák miatt néhány szavazat nem kerül beszámításra";
+"voice_message_broadcast_in_progress_message" = "Nem lehet hang üzenetet indítani élő közvetítés felvétele közben. Az élő közvetítés bejezése szükséges a hang üzenet indításához";
+"voice_message_broadcast_in_progress_title" = "Hang üzenetet nem lehet elindítani";
