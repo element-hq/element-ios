@@ -55,6 +55,14 @@ class VoiceBroadcastPlaybackPlainCell: SizableBaseRoomCell, RoomCellReactionsDis
         
         delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnContentView, userInfo: [kMXKRoomBubbleCellEventKey: event])
     }
+    
+    // The normal flow for long press on cell content views doesn't work for bubbles without attributed strings
+    override func onLongPressGesture(_ longPressGestureRecognizer: UILongPressGestureRecognizer!) {
+        guard let event = self.event else {
+            return
+        }
+        delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellLongPressOnEvent, userInfo: [kMXKRoomBubbleCellEventKey: event])
+    }
 }
 
 extension VoiceBroadcastPlaybackPlainCell: RoomCellThreadSummaryDisplayable {}
