@@ -2892,3 +2892,6 @@
 "notice_voice_broadcast_ended" = "%@ mengakhiri sebuah siaran suara.";
 "notice_voice_broadcast_live" = "Siaran langsung";
 "user_other_session_security_recommendation_title" = "Sesi lainnya";
+"poll_timeline_decryption_error" = "Karena kesalahan enkripsi, beberapa suara mungkin tidak terhitung";
+"voice_message_broadcast_in_progress_message" = "Anda tidak dapat memulai sebuah pesan suara selagi Anda merekam sebuah siaran langsung. Silakan mengakhiri siaran langsung Anda untuk memulai merekam sebuah pesan suara";
+"voice_message_broadcast_in_progress_title" = "Tidak dapat memulai pesan suara";
