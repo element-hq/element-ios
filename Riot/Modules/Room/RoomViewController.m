@@ -7887,6 +7887,20 @@ static CGSize kThreadListBarButtonItemImageSize;
     }];
 }
 
+- (BOOL)voiceMessageControllerDidRequestRecording:(VoiceMessageController *)voiceMessageController
+{
+    MXSession* session = self.roomDataSource.mxSession;
+    // Check whether the user is not already broadcasting here or in another room
+    if (session.voiceBroadcastService)
+    {
+        [self showAlertWithTitle:[VectorL10n voiceMessageBroadcastInProgressTitle] message:[VectorL10n voiceMessageBroadcastInProgressMessage]];
+
+        return NO;
+    }
+
+    return YES;
+}
+
 - (void)voiceMessageController:(VoiceMessageController *)voiceMessageController
     didRequestSendForFileAtURL:(NSURL *)url
                       duration:(NSUInteger)duration

@@ -20,6 +20,7 @@ import DSWaveformImage
 
 @objc public protocol VoiceMessageControllerDelegate: AnyObject {
     func voiceMessageControllerDidRequestMicrophonePermission(_ voiceMessageController: VoiceMessageController)
+    func voiceMessageControllerDidRequestRecording(_ voiceMessageController: VoiceMessageController) -> Bool
     func voiceMessageController(_ voiceMessageController: VoiceMessageController, didRequestSendForFileAtURL url: URL, duration: UInt, samples: [Float]?, completion: @escaping (Bool) -> Void)
 }
 
@@ -106,6 +107,13 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         guard let temporaryFileURL = temporaryFileURL else {
              return
         }
+        
+        // Ask our delegate if we can start recording
+        let canStartRecording = delegate?.voiceMessageControllerDidRequestRecording(self) ?? true
+        guard canStartRecording else {
+            return
+        }
+        
         guard AVAudioSession.sharedInstance().recordPermission == .granted else {
             delegate?.voiceMessageControllerDidRequestMicrophonePermission(self)
             return

@@ -2197,6 +2197,8 @@ Tap the + to start adding people.";
 "voice_message_remaining_recording_time" = "%@s left";
 "voice_message_stop_locked_mode_recording" = "Tap on your recording to stop or listen";
 "voice_message_lock_screen_placeholder" = "Voice message";
+"voice_message_broadcast_in_progress_title" = "Can't start voice message";
+"voice_message_broadcast_in_progress_message" = "You can't start a voice message as you are currently recording a live broadcast. Please end your live broadcast in order to start recording a voice message";
 
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Can't start a new voice broadcast";
