@@ -132,7 +132,8 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
                                    totalAnswerCount: poll.totalAnswerCount,
                                    type: pollKindToTimelinePollType(poll.kind),
                                    maxAllowedSelections: poll.maxAllowedSelections,
-                                   hasBeenEdited: poll.hasBeenEdited)
+                                   hasBeenEdited: poll.hasBeenEdited,
+                                   hasDecryptionError: poll.hasDecryptionError)
     }
     
     private func pollKindToTimelinePollType(_ kind: PollKind) -> TimelinePollType {

@@ -38,7 +38,8 @@ enum MockTimelinePollScreenState: MockScreenState, CaseIterable {
                                        totalAnswerCount: 20,
                                        type: self == .closedDisclosed || self == .openDisclosed ? .disclosed : .undisclosed,
                                        maxAllowedSelections: 1,
-                                       hasBeenEdited: false)
+                                       hasBeenEdited: false,
+                                       hasDecryptionError: false)
         
         let viewModel = TimelinePollViewModel(timelinePollDetails: poll)
         

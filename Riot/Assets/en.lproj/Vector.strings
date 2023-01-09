@@ -2349,6 +2349,8 @@ Tap the + to start adding people.";
 
 "poll_timeline_not_closed_subtitle" = "Please try again";
 
+"poll_timeline_decryption_error" = "Due to decryption errors, some votes may not be counted";
+
 // MARK: - Location sharing
 
 "location_sharing_title" = "Location";
