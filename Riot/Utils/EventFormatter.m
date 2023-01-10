@@ -557,14 +557,43 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     // Update last message if we have a voice broadcast in the room.
     if ([event.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
     {
-        return [self session:session updateRoomSummary:summary withVoiceBroadcastInfoStateEvent:event roomState:roomState];
+        VoiceBroadcastInfo *info = [VoiceBroadcastInfo modelFromJSON: event.content];
+        if ([VoiceBroadcastInfo isStartedFor:info.state] && !event.isRedactedEvent)
+        {
+            return [self session:session updateRoomSummary:summary withVoiceBroadcastInfoStateEvent:event roomState:roomState];
+        }
+        else
+        {
+            MXEvent *checkedEvent = [self checkRedactedEventWithId:info.voiceBroadcastId roomId:summary.roomId session:session];
+            
+            if (checkedEvent.isRedactedEvent == NO) {
+                return [self session:session updateRoomSummary:summary withVoiceBroadcastInfoStateEvent:event roomState:roomState];
+            }
+        }
     }
     else
     {
         MXEvent *stateEvent = [roomState stateEventsWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType].lastObject;
-        if (stateEvent && ![VoiceBroadcastInfo isStoppedFor:[VoiceBroadcastInfo modelFromJSON: stateEvent.content].state])
-        {
-            return [self session:session updateRoomSummary:summary withVoiceBroadcastInfoStateEvent:stateEvent roomState:roomState];
+        if (stateEvent) {
+            VoiceBroadcastInfo *info = [VoiceBroadcastInfo modelFromJSON: stateEvent.content];
+            if ([VoiceBroadcastInfo isStartedFor:info.state])
+            {
+                if (![event.eventId isEqualToString:event.redacts] && !stateEvent.isRedactedEvent) {
+                    return [self session:session updateRoomSummary:summary withVoiceBroadcastInfoStateEvent:stateEvent roomState:roomState];
+                } else {
+                    [summary updateLastMessage:[[MXRoomLastMessage alloc] initWithEvent:event]];
+                }
+            }
+            else
+            {
+                MXEvent *checkedEvent = [self checkRedactedEventWithId:info.voiceBroadcastId roomId:summary.roomId session:session];
+                
+                if (checkedEvent.isRedactedEvent == NO) {
+                    return [self session:session updateRoomSummary:summary withVoiceBroadcastInfoStateEvent:stateEvent roomState:roomState];
+                } else if ([checkedEvent.eventId isEqualToString:event.redacts]) {
+                    [summary updateLastMessage:[[MXRoomLastMessage alloc] initWithEvent:checkedEvent]];
+                }
+            }
         }
     }
     
@@ -578,6 +607,24 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     }
     
     return updated;
+}
+
+- (MXEvent *)checkRedactedEventWithId:(NSString *)eventId roomId:(NSString *)roomId session:(MXSession *)session {
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_enter(group);
+    
+    __block MXEvent* voiceBroadcastStartedEvent;
+    [session eventWithEventId:eventId inRoom:roomId success:^(MXEvent *resultEvent) {
+        voiceBroadcastStartedEvent = resultEvent;
+        dispatch_group_leave(group);
+    } failure:^(NSError *error) {
+        MXLogErrorDetails(@"[EventFormatter] Fetch eventWithEventId with error = %@", error.description);
+        dispatch_group_leave(group);
+    }];
+    
+    dispatch_group_wait(group, 2.0);
+    
+    return voiceBroadcastStartedEvent;
 }
 
 - (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
