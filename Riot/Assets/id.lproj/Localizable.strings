@@ -174,4 +174,4 @@
 "MSGS_FROM_TWO_PLUS_USERS" = "%@ pesan baru dari %@, %@ dan lainnya";
 
 /* New voice broadcast from a specific person, not referencing a room. */
-"VOICE_BROADCAST_FROM_USER" = "%# memulai sebuah siaran suara";
+"VOICE_BROADCAST_FROM_USER" = "%@ memulai sebuah siaran suara";

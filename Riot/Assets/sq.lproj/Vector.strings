@@ -2629,7 +2629,6 @@
 "invite_to" = "Ftojeni te %@";
 "all_chats_empty_list_placeholder_title" = "S’ka gjë tjetër për të parë.";
 "all_chats_edit_layout_add_filters_message" = "Filtroni automatikisht mesazhet tuaj në kategori që caktoni vetë";
-"device_name_desktop" = "";
 "user_session_rename_session_description" = "Përdorues të tjerë në mesazhe të drejtpërdrejtë dhe dhoma ku jeni në gjendje të shihni një listë të plotë të sesioneve tuaja.\n\nKjo u jep besim atyre se po flasin vërtet me ju, por do të thotë edhe se mund të shohin emrin e sesionit që jepni këtu.";
 "user_session_inactive_session_description" = "Sesione jo aktive janë sesione që keni ca kohë që s’i keni përdorur, por që vazhdojnë të marrin kyçe fshehtëzimi.\n\nHeqja e sesioneve jo aktive përmirëson sigurinë dhe punimin dhe e bëjnë të lehtë për ju të identifikoni, nëse një sesion i ri është i dyshimtë.";
 "user_session_unverified_session_description" = "Sesione të paverifikuar janë sesione ku keni bërë hyrjen me kredencialet tuaja, por që nuk janë ndër-verifikuar.\n\nDuhet ta bëni veçanërisht të qartë se i njihni këto sesione, ngaqë mund të përfaqësojnë përdorim të paautorizuar të llogarisë tuaj.";
