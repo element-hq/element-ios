@@ -2640,3 +2640,6 @@
 "poll_timeline_decryption_error" = "Krüptimisvigade tõttu jääb osa hääli lugemata";
 "voice_message_broadcast_in_progress_title" = "Häälsõnumi salvestamine või esitamine ei õnnestu";
 "voice_message_broadcast_in_progress_message" = "Kuna sa hetkel salvestad ringhäälingukõnet, siis häälsõnumi salvestamine või esitamine ei õnnestu. Selleks palun lõpeta ringhäälingukõne";
+"poll_timeline_ended_text" = "Küsitlus on lõppenud";
+"voice_broadcast_voip_cannot_start_description" = "Kuna sa hetkel salvestad ringhäälingukõnet, siis tavakõne algatamine ei õnnestu. Kõne alustamiseks palun lõpeta ringhäälingukõne.";
+"voice_broadcast_voip_cannot_start_title" = "Kõne algatamine ei õnnestu";
