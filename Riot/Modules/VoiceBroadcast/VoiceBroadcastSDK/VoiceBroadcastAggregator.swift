@@ -68,12 +68,7 @@ public class VoiceBroadcastAggregator {
     public var delegate: VoiceBroadcastAggregatorDelegate?
     
     deinit {
-        if let referenceEventsListener = referenceEventsListener {
-            room.removeListener(referenceEventsListener)
-        }
-        
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxEventDidDecrypt, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxRoomDidFlushData, object: nil)
+        self.stop()
     }
     
     public init(session: MXSession, room: MXRoom, voiceBroadcastStartEventId: String, voiceBroadcastState: VoiceBroadcastInfoState) throws {
@@ -201,7 +196,9 @@ public class VoiceBroadcastAggregator {
             self.events.append(contentsOf: filteredChunk)
             
             let eventTypes = [VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType, kMXEventTypeStringRoomMessage]
-            self.referenceEventsListener = self.room.listen(toEventsOfTypes: eventTypes, onEvent: self.handleEvent) as Any
+            self.referenceEventsListener = self.room.listen(toEventsOfTypes: eventTypes, onEvent: { [weak self] event, direction, roomState in
+                self?.handleEvent(event: event, direction: direction, roomState: roomState)
+            }) as Any
             self.registerEventDidDecryptNotification()
             
             self.events.forEach { event in
@@ -233,5 +230,14 @@ public class VoiceBroadcastAggregator {
             self.launchState = .error
             self.delegate?.voiceBroadcastAggregator(self, didFailWithError: error)
         }
+    }
+    
+    func stop() {
+        if let referenceEventsListener = referenceEventsListener {
+            room.removeListener(referenceEventsListener)
+        }
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxEventDidDecrypt, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxRoomDidFlushData, object: nil)
     }
 }
