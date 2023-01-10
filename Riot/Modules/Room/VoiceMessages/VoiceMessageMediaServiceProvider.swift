@@ -28,6 +28,7 @@ import MediaPlayer
     private var roomAvatarLoader: MXMediaLoader?
     private let audioPlayers: NSMapTable<NSString, VoiceMessageAudioPlayer>
     private let audioRecorders: NSHashTable<VoiceMessageAudioRecorder>
+    private let nowPlayingInfoProviders: NSMapTable<VoiceMessageAudioPlayer, VoiceMessageNowPlayingInfoProvider>
     
     private var displayLink: CADisplayLink!
     
@@ -93,6 +94,7 @@ import MediaPlayer
     private override init() {
         audioPlayers = NSMapTable<NSString, VoiceMessageAudioPlayer>(valueOptions: .weakMemory)
         audioRecorders = NSHashTable<VoiceMessageAudioRecorder>(options: .weakMemory)
+        nowPlayingInfoProviders = NSMapTable<VoiceMessageAudioPlayer, VoiceMessageNowPlayingInfoProvider>(valueOptions: .weakMemory)
         activeAudioPlayers = Set<VoiceMessageAudioPlayer>()
         super.init()
         
@@ -121,6 +123,10 @@ import MediaPlayer
     
     @objc func pauseAllServices() {
         pauseAllServicesExcept(nil)
+    }
+    
+    func setNowPlayingInfoProvider(_ provider: VoiceMessageNowPlayingInfoProvider, forPlayer player: VoiceMessageAudioPlayer) {
+        nowPlayingInfoProviders.setObject(provider, forKey: player)
     }
     
     // MARK: - VoiceMessageAudioPlayerDelegate
@@ -256,9 +262,14 @@ import MediaPlayer
             return
         }
         
-        let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
-        nowPlayingInfoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: VectorL10n.voiceMessageLockScreenPlaceholder,
-                                               MPMediaItemPropertyPlaybackDuration: audioPlayer.duration as Any,
-                                               MPNowPlayingInfoPropertyElapsedPlaybackTime: audioPlayer.currentTime as Any]
+        // If we have a NowPlayingInfoProvider for this player
+        if let nowPlayingInfoProvider = nowPlayingInfoProviders.object(forKey: audioPlayer) {
+            nowPlayingInfoProvider.updatePlayingInfoCenter(forPlayer: audioPlayer)
+        } else {
+            let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+            nowPlayingInfoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: VectorL10n.voiceMessageLockScreenPlaceholder,
+                                        MPMediaItemPropertyPlaybackDuration: audioPlayer.duration as Any,
+                                MPNowPlayingInfoPropertyElapsedPlaybackTime: audioPlayer.currentTime as Any]
+        }
     }
 }

@@ -9191,6 +9191,10 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastPlaybackLoadingError: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_playback_loading_error") 
   }
+  /// Voice broadcast
+  public static var voiceBroadcastPlaybackLockScreenPlaceholder: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_playback_lock_screen_placeholder") 
+  }
   /// Yes, stop
   public static var voiceBroadcastStopAlertAgreeButton: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_stop_alert_agree_button") 

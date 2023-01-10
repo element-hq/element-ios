@@ -16,6 +16,7 @@
 
 import Combine
 import SwiftUI
+import MediaPlayer
 
 // TODO: VoiceBroadcastPlaybackViewModel must be revisited in order to not depend on MatrixSDK
 // We need a VoiceBroadcastPlaybackServiceProtocol and VoiceBroadcastAggregatorProtocol
@@ -302,6 +303,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     // Init and start the player on the first chunk
                     let audioPlayer = self.mediaServiceProvider.audioPlayerForIdentifier(result.eventIdentifier)
                     audioPlayer.registerDelegate(self)
+                    self.mediaServiceProvider.setNowPlayingInfoProvider(self, forPlayer: audioPlayer)
                     
                     audioPlayer.loadContentFromURL(result.url, displayName: chunk.attachment.originalFileName)
                     self.audioPlayer = audioPlayer
@@ -480,5 +482,21 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] audioPlayerDidFinishPlaying: \(audioPlayer.playerItems.count)")
         stopIfVoiceBroadcastOver()
+    }
+}
+
+// MARK: - NowPlayingInfoProvider
+
+extension VoiceBroadcastPlaybackViewModel: VoiceMessageNowPlayingInfoProvider {
+    func updatePlayingInfoCenter(forPlayer player: VoiceMessageAudioPlayer) {
+        guard audioPlayer != nil, audioPlayer === player else {
+            return
+        }
+        
+        let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+        nowPlayingInfoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: VectorL10n.voiceBroadcastPlaybackLockScreenPlaceholder,
+                                    MPMediaItemPropertyPlaybackDuration: (state.playingState.duration / 1000.0) as Any,
+                            MPNowPlayingInfoPropertyElapsedPlaybackTime: (state.bindings.progress / 1000.0) as Any,
+                                   MPNowPlayingInfoPropertyPlaybackRate: state.playbackState == .playing ? 1 : 0]
     }
 }
