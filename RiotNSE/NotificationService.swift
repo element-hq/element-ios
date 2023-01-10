@@ -471,7 +471,14 @@ class NotificationService: UNNotificationServiceExtension {
                                 notificationBody = NotificationService.localizedString(forKey: "VIDEO_FROM_USER", eventSenderName)
                             case kMXMessageTypeAudio:
                                 if event.isVoiceMessage() {
-                                    notificationBody = NotificationService.localizedString(forKey: "VOICE_MESSAGE_FROM_USER", eventSenderName)
+                                    // Ignore voice broadcast chunk event except the first one.
+                                    if let chunkInfo = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] as? [String: UInt] {
+                                        if chunkInfo[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkSequence] == 1 {
+                                            notificationBody = NotificationService.localizedString(forKey: "VOICE_BROADCAST_FROM_USER", eventSenderName)
+                                        }
+                                    } else {
+                                        notificationBody = NotificationService.localizedString(forKey: "VOICE_MESSAGE_FROM_USER", eventSenderName)
+                                    }
                                 } else {
                                     notificationBody = NotificationService.localizedString(forKey: "AUDIO_FROM_USER", eventSenderName, messageContent)
                                 }
