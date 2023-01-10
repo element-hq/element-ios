@@ -2774,7 +2774,7 @@
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Houd er rekening mee dat sessienamen ook zichtbaar zijn voor mensen met wie je communiceert. %@";
 "manage_session_name_hint" = "Met aangepaste sessienamen kan je jouw apparaten gemakkelijker herkennen.";
-"settings_labs_enable_voice_broadcast" = "Voice-uitzending (in actieve ontwikkeling)";
+"settings_labs_enable_voice_broadcast" = "Voice-uitzending";
 "settings_labs_enable_wysiwyg_composer" = "Probeer de rich-text-editor (platte tekst-modus komt binnenkort)";
 "settings_labs_enable_new_session_manager" = "Nieuwe sessiemanager";
 "room_first_message_placeholder" = "Stuur je eerste bericht…";

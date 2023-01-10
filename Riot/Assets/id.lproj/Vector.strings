@@ -690,7 +690,7 @@
 "identity_server_settings_description" = "Anda saat ini menggunakan %@ untuk menemukan dan dapat ditemukan oleh kontak yang Anda tahu.";
 
 // AuthenticatedSessionViewControllerFactory
-"authenticated_session_flow_not_supported" = "Aplikasi ini tidak mendukung mekanisme otentikasi di homeserver Anda.";
+"authenticated_session_flow_not_supported" = "Aplikasi ini tidak mendukung mekanisme autentikasi di homeserver Anda.";
 "security_settings_coming_soon" = "Maaf. Aksi ini belum tersedia di %@ iOS. Mohon gunakan klien Matrix yang lain untuk menyiapkannya. %@ iOS akan menggunakannya.";
 "security_settings_blacklist_unverified_devices_description" = "Verifikasi semua sesi pengguna untuk menandainya sebagai terpercaya dan kirim pesan ke mereka.";
 "security_settings_crosssigning_info_exists" = "Akun Anda memiliki identitas penandatanganan silang, tetapi belum dipercayai oleh sesi ini. Selesaikan keamanan sesi ini.";
@@ -765,7 +765,7 @@
 "room_intro_cell_information_dm_sentence1_part1" = "Ini adalah awal dari pesan langsung Anda dengan ";
 "room_intro_cell_information_room_without_topic_sentence2_part2" = " supaya orang tahu tentang ruangan ini.";
 "invite_friends_share_text" = "Hai, bicara kepada saya di %@: %@";
-"biometrics_usage_reason" = "Otentikasi diperlukan untuk mengakses aplikasi ini";
+"biometrics_usage_reason" = "Autentikasi diperlukan untuk mengakses aplikasi ini";
 "pin_protection_kick_user_alert_message" = "Terlalu banyak kesalahan, Anda telah dikeluarkan";
 "secrets_setup_recovery_passphrase_confirm_information" = "Masukkan Frasa Keamanan Anda untuk mengkonfirmasi.";
 "secrets_recovery_with_key_information_verify_device" = "Gunakan Kunci Keamanan Anda untuk memverifikasi perangkat ini.";
@@ -792,7 +792,7 @@
 "bug_crash_report_description" = "Jelaskan apa yang Anda lakukan sebelum crashnya:";
 "directory_server_type_homeserver" = "Ketik sebuah homeserver untuk menampilkan daftar ruangan publik";
 "room_details_access_section_anyone_apart_from_guest" = "Siapa saja yang tahu tautan ruangan, selain dari tamu";
-"security_settings_complete_security_alert_message" = "Anda seharusnya menyelesaikan keamanan di sesi Anda saat ini dulu.";
+"security_settings_complete_security_alert_message" = "Anda seharusnya menyelesaikan keamanan di sesi Anda saat ini dahulu.";
 "key_verification_scan_confirmation_scanned_device_information" = "Apakah perangkat yang lain menampilkan perisai yang sama?";
 "key_verification_verify_qr_code_information" = "Pindai kodenya untuk memverifikasi dengan sesama dengan aman.";
 "error_not_supported_on_mobile" = "Anda tidak melakukannya dari %@ mobile.";
@@ -848,7 +848,7 @@
 "key_verification_scan_confirmation_scanned_user_information" = "Apakah %@ menampilkan perisai yang sama?";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "Kode QR berhasil divalidasi.";
 "key_verification_verify_qr_code_information_other_device" = "Pindai kode di bawah untuk memverifikasi:";
-"key_verification_bootstrap_not_setup_message" = "Anda harus mem-bootstrap penandatanganan-silang dulu.";
+"key_verification_bootstrap_not_setup_message" = "Anda harus mem-bootstrap penandatanganan silang dahulu.";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Memeriksa untuk kemampuan verifikasi lain ...";
 "key_verification_self_verify_current_session_alert_message" = "Pengguna yang lain mungkin tidak mempercayainya.";
 "device_verification_cancelled" = "Pengguna yang lain membatalkan verifikasinya.";
@@ -1549,7 +1549,7 @@
 "settings_discovery_three_pids_management_information_part1" = "Kelola alamat email atau nomor telepon apa saja yang pengguna lain dapat menggunakan untuk menemukan Anda dan menggunakannya untuk mengundang Anda ke ruangan. Tambahkan atau hapus alamat email atau nomor telepon dari daftar ini di ";
 "room_preview_unlinked_email_warning" = "Undangan ini telah dikirim ke %@, yang tidak diasosiasikan dengan akun ini. Anda mungkin ingin masuk ke akun yang lain, atau tambahkan email ini ke akun Anda.";
 "unknown_devices_alert" = "Ruangan ini berisi sesi tidak dikenal yang belum diverifikasi.\nIni berarti tidak ada jaminan bahwa sesi tersebut adalah milik pengguna yang mereka klaim.\nKami menyarankan Anda memverifikasinya untuk setiap sesi sebelum melanjutkan, tetapi Anda dapat mengirim ulang pesan tanpa memverifikasi jika Anda ingin.";
-"room_warning_about_encryption" = "Enkripsi ujung ke ujung masih dalam beta dan mungkin tidak dapat diandalkan.\n\nAnda seharusnya tidak mempercayainya dulu untuk mengamankan data.\n\nPerangkat masih belum dapat mendekripsi riwayat sebelum mereka bergabung ke ruangannya.\n\nPesan terenkripsi masih belum terlihat di klien yang belum mengimplementasikan enkripsi.";
+"room_warning_about_encryption" = "Enkripsi ujung ke ujung masih dalam beta dan mungkin tidak dapat diandalkan.\n\nAnda seharusnya tidak mempercayainya dahulu untuk mengamankan data.\n\nPerangkat masih belum dapat mendekripsi riwayat sebelum mereka bergabung ke ruangannya.\n\nPesan terenkripsi masih belum terlihat di klien yang belum mengimplementasikan enkripsi.";
 "auth_add_email_and_phone_warning" = "Pendaftaran dengan email dan nomor telepon sekaligus belum didukung sampai API-nya sudah ada. Hanya nomor telepon yang akan diperhitungkan. Anda dapat menambahkan email Anda di profil Anda di pengaturan.";
 "auth_reset_password_success_message" = "Kata sandi akun Matrix Anda telah diatur ulang.\n\nAnda telah dikeluarkan dari semua sesi dan tidak akan menerima lagi notifikasi push. Untuk mengaktifkan ulang notifikasi, masuk ulang di setiap perangkat.";
 "spaces_add_rooms_coming_soon_title" = "Penambahan ruangan akan segera datang";
@@ -1754,7 +1754,7 @@
 "home_context_menu_make_room" = "Pindah ke Ruangan";
 "home_context_menu_make_dm" = "Pindah ke Orang";
 "event_formatter_message_deleted" = "Pesan dihapus";
-"settings_labs_enable_threads" = "Perpesanan utasan";
+"settings_labs_enable_threads" = "Utasan pesan";
 "message_from_a_thread" = "Dari sebuah utasan";
 "threads_empty_show_all_threads" = "Tampilkan semua utasan";
 "threads_empty_tip" = "Tip: Ketuk pada sebuah pesan dan gunakan “Utasan” untuk memulai yang baru.";
@@ -1873,7 +1873,7 @@
 "login_error_forbidden" = "Nama pengguna/kata sandi tidak absah";
 "login_error_registration_is_not_supported" = "Pendaftaran saat ini tidak didukung";
 "login_error_do_not_support_login_flows" = "Saat ini kami tidak mendukung salah satu atau semua alur masuk yang ditentukan oleh homeserver ini";
-"login_error_no_login_flow" = "Kami gagal untuk menerima informasi otentikasi dari homeserver ini";
+"login_error_no_login_flow" = "Kami gagal untuk menerima informasi autentikasi dari homeserver ini";
 "login_error_title" = "Login Gagal";
 "login_prompt_email_token" = "Harap masukkan token validasi email Anda:";
 "login_email_placeholder" = "Alamat email";
@@ -2205,8 +2205,8 @@
 "room_no_power_to_create_conference_call" = "Anda membutuhkan izin untuk mengundang untuk memulai konferensi di ruangan ini";
 "room_left_for_dm" = "Anda keluar";
 "room_left" = "Anda meninggalkan ruangan ini";
-"room_error_timeline_event_not_found" = "Aplikasi ini sedang mencoba untuk memuat titik tertenu di linimasa ruangan ini tetapi tidak dapat menemukannya";
-"room_error_timeline_event_not_found_title" = "Gagal untuk memuat posisi linimasa";
+"room_error_timeline_event_not_found" = "Aplikasi ini sedang mencoba untuk memuat titik tertentu di lini masa ruangan ini tetapi tidak dapat menemukannya";
+"room_error_timeline_event_not_found_title" = "Gagal memuat posisi lini masa";
 "room_error_cannot_load_timeline" = "Gagal untuk memuat linimasa";
 "room_error_topic_edition_not_authorized" = "Anda tidak diizinkan untuk mengubah topik ruangan ini";
 "room_error_name_edition_not_authorized" = "Anda tidak diizinkan untuk mengubah nama ruangan ini";
@@ -2270,8 +2270,8 @@
 
 // Encryption information
 "room_event_encryption_info_title" = "Informasi enkripsi ujung-ke-ujung\n\n";
-"device_details_delete_prompt_message" = "Operasi ini membutuhkan otentikasi tambahan.\nUntuk melanjutkan, silakan masukkan kata sandi Anda.";
-"device_details_delete_prompt_title" = "Otentikasi";
+"device_details_delete_prompt_message" = "Operasi ini membutuhkan autentikasi tambahan.\nUntuk melanjutkan, silakan masukkan kata sandi Anda.";
+"device_details_delete_prompt_title" = "Autentikasi";
 "device_details_rename_prompt_message" = "Nama publik sesi dapat dilihat oleh orang yang berkomunikasi dengan Anda";
 "device_details_rename_prompt_title" = "Nama Sesi";
 "device_details_last_seen_format" = "%@ @ %@\n";
@@ -2839,7 +2839,7 @@
 
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Tidak dapat memulai sebuah siaran suara baru";
-"settings_labs_enable_voice_broadcast" = "Siaran suara (dalam pengembangan aktif)";
+"settings_labs_enable_voice_broadcast" = "Siaran suara";
 "deselect_all" = "Batalkan Semua Pilihan";
 "user_other_session_menu_select_sessions" = "Pilih sesi";
 "user_other_session_selected_count" = "%@ dipilih";
@@ -2862,3 +2862,36 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Anda punya sesi yang belum diverifikasi";
+"user_other_session_permanently_unverified_additional_info" = "Sesi ini tidak mendukung enkripsi jadi tidak dapat diverifikasi.";
+"voice_broadcast_time_left" = "Tersisa %@";
+"launch_loading_processing_response" = "Memroses data\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Menyinkron dengan server\n(%@ percobaan)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Menyinkron dengan server";
+"voice_broadcast_buffering" = "Memuat…";
+"voice_broadcast_stop_alert_agree_button" = "Ya, batalkan";
+"voice_broadcast_stop_alert_description" = "Apakah Anda ingin menghentikan siaran langsung Anda? Ini akan mengakhiri siarannya, dan rekamanan lengkap akan tersedia dalam ruangan.";
+"voice_broadcast_stop_alert_title" = "Berhenti menyiarkan langsung?";
+"password_policy_pwd_in_dict_error" = "Kata sandi ini telah ditemukan dalam sebuah kamus dan tidak diperbolehkan.";
+"password_policy_weak_pwd_error" = "Kata sandi ini terlalu lemah. Kata sandi harus berisi setidaknya 8 karakter, dengan setidaknya satu karakter dari setiap jenis: huruf besar, huruf kecil, angka, dan karakter spesial.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Kata sandi terlalu pendek";
+"user_session_permanently_unverified_session_description" = "Sesi ini tidak mendukung enkripsi, sehingga tidak dapat diverifikasi.\n\nAnda tidak akan dapat berpartisipasi dalan ruangan di mana enkripsi diaktifkan saat menggunakan sesi ini.\n\nUntuk keamanan dan privasi terbaik, disarankan untuk menggunakan klien Matrix yang mendukung enkripsi.";
+"wysiwyg_composer_link_action_edit_title" = "Suntiing tautan";
+"wysiwyg_composer_link_action_create_title" = "Buat sebuah tautan";
+"wysiwyg_composer_link_action_link" = "Tautan";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Teks";
+"wysiwyg_composer_format_action_link" = "Terapkan format tautan";
+"wysiwyg_composer_format_action_inline_code" = "Terapkan format kode dalam baris";
+"notice_voice_broadcast_ended_by_you" = "Anda mengakhiri sebuah siaran suara.";
+"notice_voice_broadcast_ended" = "%@ mengakhiri sebuah siaran suara.";
+"notice_voice_broadcast_live" = "Siaran langsung";
+"user_other_session_security_recommendation_title" = "Sesi lainnya";
+"poll_timeline_decryption_error" = "Karena kesalahan enkripsi, beberapa suara mungkin tidak terhitung";
+"voice_message_broadcast_in_progress_message" = "Anda tidak dapat memulai sebuah pesan suara selagi Anda merekam sebuah siaran langsung. Silakan mengakhiri siaran langsung Anda untuk memulai merekam sebuah pesan suara";
+"voice_message_broadcast_in_progress_title" = "Tidak dapat memulai pesan suara";

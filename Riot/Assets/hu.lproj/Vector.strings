@@ -2493,7 +2493,7 @@
 
 // First item is client name and second item is session display name
 "user_session_name" = "%@: %@";
-"user_session_unverified_additional_info" = "Az aktuális munkamenet készen áll a biztonságos üzenetküldésre.";
+"user_session_unverified_additional_info" = "Ellenőrizd az aktuális munkamenetet a biztonságos üzenetküldéshez.";
 "user_session_verified_additional_info" = "Az aktuális munkamenet készen áll a biztonságos üzenetküldésre.";
 "user_session_learn_more" = "Tudj meg többet";
 "user_session_view_details" = "Részletek megtekintése";
@@ -2624,7 +2624,7 @@
 "authentication_qr_login_start_subtitle" = "Használd a kamerát ezen az eszközön a másik eszközödön megjelenő QR kód beolvasására:";
 "authentication_qr_login_start_title" = "QR kód beolvasása";
 "authentication_login_with_qr" = "Belépés QR kóddal";
-"settings_labs_enable_voice_broadcast" = "Hang közvetítés (aktív fejlesztés alatt)";
+"settings_labs_enable_voice_broadcast" = "Hang közvetítés";
 "wysiwyg_composer_start_action_voice_broadcast" = "Hang közvetítés";
 "voice_broadcast_playback_loading_error" = "A hang közvetítés nem játszható le.";
 "voice_broadcast_already_in_progress_message" = "Egy hang közvetítés már folyamatban van. Először fejezd be a jelenlegi közvetítést egy új indításához.";
@@ -2655,3 +2655,36 @@
 "voice_broadcast_tile" = "Hang közvetítés";
 "voice_broadcast_live" = "Élő";
 "key_verification_alert_body" = "Tekintsd át, hogy meggyőződj arról, hogy a fiókod biztonságban van.";
+"user_session_permanently_unverified_session_description" = "Ez a munkamenet nem támogatja a titkosítást, így nem lehet ellenőrizni sem.\n\nEzzel a munkamenettel nem tudsz részt venni olyan szobákban ahol a titkosítás be van kapcsolva.\n\nA biztonság és a adatbiztonsági okokból javasolt olyan Matrix kliens használata ami támogatja a titkosítást.";
+"user_other_session_permanently_unverified_additional_info" = "Ez a munkamenet nem támogatja a titkosítást, így nem lehet ellenőrizni sem.";
+"voice_broadcast_stop_alert_agree_button" = "Igen, befejez";
+"voice_broadcast_stop_alert_description" = "Biztos, hogy befejezed az élő közvetítést? Ez befejezi a közvetítést és a felvétel az egész szoba számára elérhető lesz.";
+"voice_broadcast_stop_alert_title" = "Megszakítod az élő közvetítést?";
+"voice_broadcast_buffering" = "Pufferelés…";
+"voice_broadcast_time_left" = "%@ van vissza";
+"launch_loading_processing_response" = "Adat feldolgozása\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Szinkronizálás a szerverrel\n(%@ próbálkozás)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Szinkronizálás a szerverrel";
+"password_policy_pwd_in_dict_error" = "Ez a jelszó megtalálható a szótárban ezért nem engedélyezett.";
+"password_policy_weak_pwd_error" = "Ez a jelszó túl gyenge. Legalább 8 karakternek kell lennie és minden típusból legalább egy: nagybetű, kisbetű, szám és speciális karakter.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "A jelszó túl rövid";
+"wysiwyg_composer_link_action_edit_title" = "Hivatkozás szerkesztése";
+"wysiwyg_composer_link_action_create_title" = "Hivatkozás készítése";
+"wysiwyg_composer_link_action_link" = "Hivatkozás";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Szöveg";
+"wysiwyg_composer_format_action_link" = "Hivatkozás";
+"wysiwyg_composer_format_action_inline_code" = "Beágyazott kód formátum alkalmazása";
+"notice_voice_broadcast_ended_by_you" = "A hang közvetítést befejezted.";
+"notice_voice_broadcast_ended" = "%@ befejezte a hang közvetítést.";
+"notice_voice_broadcast_live" = "Élő közvetítés";
+"user_other_session_security_recommendation_title" = "További munkamenetek";
+"poll_timeline_decryption_error" = "Visszafejtési hibák miatt néhány szavazat nem kerül beszámításra";
+"voice_message_broadcast_in_progress_message" = "Nem lehet hang üzenetet indítani élő közvetítés felvétele közben. Az élő közvetítés bejezése szükséges a hang üzenet indításához";
+"voice_message_broadcast_in_progress_title" = "Hang üzenetet nem lehet elindítani";

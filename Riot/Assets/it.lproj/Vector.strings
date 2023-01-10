@@ -2604,7 +2604,7 @@
 "manage_session_name_info" = "Ricorda che i nomi di sessione sono anche visibili alle persone con cui comunichi. %@";
 "manage_session_name_hint" = "I nomi di sessione personalizzati possono aiutarti a riconoscere i tuoi dispositivi più facilmente.";
 "settings_labs_enable_wysiwyg_composer" = "Prova l'editor in rich text";
-"settings_labs_enable_voice_broadcast" = "Trasmissione vocale (in sviluppo attivo)";
+"settings_labs_enable_voice_broadcast" = "Trasmissione vocale";
 "wysiwyg_composer_start_action_voice_broadcast" = "Trasmissione vocale";
 "voice_broadcast_playback_loading_error" = "Impossibile avviare questa trasmissione vocale.";
 "voice_broadcast_already_in_progress_message" = "Stai già registrando una trasmissione vocale. Termina quella in corso per iniziarne una nuova.";
@@ -2635,3 +2635,33 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Hai sessioni non verificate";
+"user_other_session_permanently_unverified_additional_info" = "Questa sessione non supporta la crittografia, perciò non può essere verificata.";
+"voice_broadcast_buffering" = "Buffer...";
+"voice_broadcast_time_left" = "%@ rimasti";
+"launch_loading_processing_response" = "Elaborazione dati\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Sincronizzazione con il server\n(%@ tentativo)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Sincronizzazione con il server";
+"voice_broadcast_stop_alert_agree_button" = "Sì, ferma";
+"voice_broadcast_stop_alert_description" = "Vuoi davvero fermare la tua trasmissione in diretta? Verrà terminata la trasmissione e la registrazione completa sarà disponibile nella stanza.";
+"voice_broadcast_stop_alert_title" = "Fermare la trasmissione in diretta?";
+"password_policy_pwd_in_dict_error" = "Questa password è stata trovata in un dizionario, perciò non è permessa.";
+"password_policy_weak_pwd_error" = "Questa password è troppo debole. Deve contenere almeno 8 caratteri, con almeno un carattere di ogni tipo: maiuscole, minuscole, numeri e caratteri speciali.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Password troppo corta";
+"user_session_permanently_unverified_session_description" = "Questa sessione non supporta la crittografia, perciò non può essere verificata.\n\nNon potrai partecipare in stanze dove la crittografia è attiva mentre usi questa sessione.\n\nPer maggiore sicurezza e privacy, è consigliabile usare i client di Matrix che supportano la crittografia.";
+"wysiwyg_composer_link_action_edit_title" = "Modifica collegamento";
+"wysiwyg_composer_link_action_create_title" = "Crea un collegamento";
+"wysiwyg_composer_link_action_link" = "Collegamento";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Testo";
+"wysiwyg_composer_format_action_link" = "Applica formato collegamento";
+"notice_voice_broadcast_ended_by_you" = "Hai terminato una trasmissione vocale.";
+"notice_voice_broadcast_ended" = "%@ ha terminato una trasmissione vocale.";
+"notice_voice_broadcast_live" = "Trasmissione in diretta";
+"wysiwyg_composer_format_action_inline_code" = "Applica formato codice interlinea";
+"user_other_session_security_recommendation_title" = "Altre sessioni";

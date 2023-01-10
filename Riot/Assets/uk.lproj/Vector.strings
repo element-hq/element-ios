@@ -2495,7 +2495,7 @@
 "location_sharing_live_list_item_last_update_invalid" = "Час останнього оновлення невідомий";
 "location_sharing_live_list_item_last_update" = "Оновлено %@ тому";
 "location_sharing_live_list_item_sharing_expired" = "Надсилання завершено";
-"location_sharing_live_list_item_time_left" = "%@ виходить";
+"location_sharing_live_list_item_time_left" = "Залишилося %@";
 "location_sharing_live_viewer_title" = "Місце перебування";
 "location_sharing_live_map_callout_title" = "Поділитися місцем перебування";
 "room_access_settings_screen_upgrade_alert_note" = "Зауважте, що оновлення створить нову версію кімнати. Усі поточні повідомлення залишаться в цій архівованій кімнаті.";
@@ -2837,7 +2837,7 @@
 
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Не вдалося розпочати нову голосову трансляцію";
-"settings_labs_enable_voice_broadcast" = "Голосові трансляції (в активній розробці)";
+"settings_labs_enable_voice_broadcast" = "Голосові трансляції";
 "deselect_all" = "Скасувати вибір усіх";
 "user_other_session_menu_select_sessions" = "Вибрати сеанси";
 "user_other_session_selected_count" = "Вибрано %@";
@@ -2860,3 +2860,36 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "У вас є не звірені сеанси";
+"user_other_session_permanently_unverified_additional_info" = "Цей сеанс не підтримує шифрування, і його не можна звірити.";
+"voice_broadcast_time_left" = "Залишилося %@";
+"launch_loading_processing_response" = "Обробка даних\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Синхронізація з сервером\n(%@ спроба)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Синхронізація з сервером";
+"voice_broadcast_buffering" = "Буферизація...";
+"voice_broadcast_stop_alert_agree_button" = "Так, припинити";
+"voice_broadcast_stop_alert_description" = "Ви впевнені, що хочете припинити голосову трансляцію? На цьому трансляція завершиться, і повний запис буде доступний у кімнаті.";
+"voice_broadcast_stop_alert_title" = "Припинити голосову трансляцію?";
+"password_policy_pwd_in_dict_error" = "Цей пароль знайдений у словнику і недопустимий.";
+"password_policy_weak_pwd_error" = "Цей пароль занадто слабкий. Він повинен містити щонайменше 8 символів, причому хоча б по одному символу кожного типу: великі букви, малі букви, цифри та спеціальні символи.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Пароль закороткий";
+"user_session_permanently_unverified_session_description" = "Цей сеанс не підтримує шифрування, тому його неможливо звірити.\n\nПід час користування цим сеансом ви не зможете брати участь у кімнатах, в яких увімкнено шифрування.\n\nДля найкращої безпеки та приватності радимо користуватися клієнтами Matrix, які підтримують шифрування.";
+"wysiwyg_composer_link_action_edit_title" = "Змінити посилання";
+"wysiwyg_composer_link_action_create_title" = "Створити посилання";
+"wysiwyg_composer_link_action_link" = "Посилання";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Текст";
+"wysiwyg_composer_format_action_link" = "Застосувати формат посилання";
+"wysiwyg_composer_format_action_inline_code" = "Застосовувати вбудований формат коду";
+"notice_voice_broadcast_ended_by_you" = "Ви завершили голосову трансляцію.";
+"notice_voice_broadcast_ended" = "%@ завершує голосову трансляцію.";
+"notice_voice_broadcast_live" = "Трансляція наживо";
+"user_other_session_security_recommendation_title" = "Інші сеанси";
+"poll_timeline_decryption_error" = "Через помилки під час розшифрування деякі голоси можуть бути не враховані";
+"voice_message_broadcast_in_progress_title" = "Неможливо розпочати запис голосового повідомлення";
+"voice_message_broadcast_in_progress_message" = "Ви не можете розпочати запис голосового повідомлення, оскільки зараз триває запис трансляції наживо. Будь ласка, завершіть трансляцію, щоб розпочати запис голосового повідомлення";
