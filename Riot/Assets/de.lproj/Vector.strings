@@ -438,7 +438,7 @@
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "Du musst Benutzer einladen dürfen, um dies zu tun.";
 "widget_integration_unable_to_create" = "Erstellen des Widgets nicht möglich.";
-"widget_integration_failed_to_send_request" = "Senden der Anfrage fehlgeschlagen.";
+"widget_integration_failed_to_send_request" = "Übertragung der Anfrage fehlgeschlagen.";
 "widget_integration_room_not_recognised" = "Dieser Raum wurde nicht erkannt.";
 "widget_integration_positive_power_level" = "Berechtigungslevel muss eine positive Zahl sein.";
 "widget_integration_must_be_in_room" = "Du bist nicht in diesem Raum.";
@@ -922,7 +922,7 @@
 "manage_session_trusted" = "Von dir vertraut";
 "manage_session_not_trusted" = "Nicht vertraut";
 "manage_session_sign_out" = "Von dieser Sitzung abmelden";
-"widget_picker_manage_integrations" = "Integrationen verwalten…";
+"widget_picker_manage_integrations" = "Integrationen verwalten …";
 // Room widget permissions
 "room_widget_permission_title" = "Widget laden";
 "room_widget_permission_creator_info_title" = "Dieses Widget wurde hinzugefügt von:";
@@ -1506,12 +1506,12 @@
 "poll_edit_form_add_option" = "Option hinzufügen";
 "poll_edit_form_option_number" = "Option %lu";
 "poll_edit_form_question_or_topic" = "Frage oder Thematik";
-"room_event_action_end_poll" = "Abstimmung beenden";
-"room_event_action_remove_poll" = "Abstimmung entfernen";
+"room_event_action_end_poll" = "Umfrage beenden";
+"room_event_action_remove_poll" = "Umfrage entfernen";
 
 // Mark: - Polls
 
-"poll_edit_form_create_poll" = "Abstimmung erstellen";
+"poll_edit_form_create_poll" = "Umfrage erstellen";
 "settings_labs_enabled_polls" = "Umfragen";
 "share_extension_send_now" = "Jetzt senden";
 "accessibility_button_label" = "Knopf";
@@ -1538,7 +1538,7 @@
 "poll_edit_form_poll_question_or_topic" = "Frage oder Thema der Umfrage";
 "poll_edit_form_input_placeholder" = "Schreib etwas";
 "analytics_prompt_terms_link_upgrade" = "hier";
-"poll_timeline_not_closed_title" = "Beenden der Abstimmung fehlgeschlagen";
+"poll_timeline_not_closed_title" = "Beenden der Umfrage fehlgeschlagen";
 "poll_timeline_vote_not_registered_subtitle" = "Wir konnten deine Stimme leider nicht erfassen. Versuche es bitte erneut";
 "poll_timeline_total_final_results" = "Es wurden %lu Stimmen abgegeben";
 "poll_timeline_total_final_results_one_vote" = "Es wurde 1 Stimme abgegeben";
@@ -1547,7 +1547,7 @@
 "poll_timeline_not_closed_subtitle" = "Versuche es bitte erneut";
 "poll_timeline_vote_not_registered_title" = "Stimme nicht erfasst";
 "poll_edit_form_post_failure_subtitle" = "Versuche es bitte erneut";
-"poll_edit_form_post_failure_title" = "Absenden der Abstimmung fehlgeschlagen";
+"poll_edit_form_post_failure_title" = "Absenden der Umfrage fehlgeschlagen";
 "share_extension_low_quality_video_message" = "Für eine bessere Qualität sende es in %@ oder sende es in niedriger Qualität.";
 "share_extension_low_quality_video_title" = "Das Video wird in niedriger Qualität gesendet werden";
 "analytics_prompt_stop" = "Teilen beenden";
@@ -1590,9 +1590,9 @@
 "poll_edit_form_update_failure_subtitle" = "Bitte erneut versuchen";
 "poll_edit_form_poll_type" = "Abstimmungsart";
 "poll_edit_form_poll_type_closed_description" = "Die Ergebnisse werden erst sichtbar, sobald du die Umfrage beendest";
-"poll_edit_form_poll_type_closed" = "Abgeschlossene Abstimmung";
+"poll_edit_form_poll_type_closed" = "Versteckte Umfrage";
 "poll_edit_form_poll_type_open_description" = "Abstimmende können die Ergebnisse nach Stimmabgabe sehen";
-"poll_edit_form_poll_type_open" = "Laufende Abstimmung";
+"poll_edit_form_poll_type_open" = "Offene Umfrage";
 "poll_edit_form_update_failure_title" = "Aktualisierung der Umfrage fehlgeschlagen";
 "threads_empty_tip" = "Hinweis: Tippe auf eine Nachricht und wähle „Thread“ um einen neuen zu starten.";
 "threads_empty_info_my" = "Antworte auf einen laufenden Thread oder tippe auf eine Nachricht und wähle „Thread“ um einen neuen zu starten.";
@@ -2645,7 +2645,7 @@
 
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Sprachübertragung kann nicht gestartet werden";
-"settings_labs_enable_voice_broadcast" = "Sprachübertragung (in aktiver Entwicklung)";
+"settings_labs_enable_voice_broadcast" = "Sprachübertragung";
 "voice_broadcast_playback_loading_error" = "Wiedergabe der Sprachübertragung nicht möglich.";
 "deselect_all" = "Alle abwählen";
 "user_other_session_menu_select_sessions" = "Sitzungen auswählen";
@@ -2669,3 +2669,36 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Du hast nicht verifizierte Sitzungen";
+"launch_loading_processing_response" = "Verarbeite Daten\n%@ % %";
+"launch_loading_server_syncing_nth_attempt" = "Synchronisiere mit dem Server\n(%@ Versuch)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Synchronisiere mit dem Server";
+"user_other_session_permanently_unverified_additional_info" = "Diese Sitzung unterstützt keine Verschlüsselung und kann deshalb nicht verifiziert werden.";
+"voice_broadcast_time_left" = "%@ übrig";
+"voice_broadcast_buffering" = "Puffere …";
+"voice_broadcast_stop_alert_agree_button" = "Ja, beende";
+"voice_broadcast_stop_alert_description" = "Möchtest du die Übertragung wirklich beenden? Dies wird die Übertragung beenden und die vollständige Aufnahme im Raum bereitstellen.";
+"voice_broadcast_stop_alert_title" = "Live-Übertragung beenden?";
+"password_policy_weak_pwd_error" = "Dieses Passwort ist zu schwach. Es muss mindestens 8 Zeichen enthalten, davon mindestens ein Zeichen jeder Art: Großbuchstabe, Kleinbuchstabe, Ziffer und Sonderzeichen.";
+"password_policy_pwd_in_dict_error" = "Dieses Passwort wurde in einem Wörterbuch gefunden und nicht erlaubt.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Zu kurzes Passwort";
+"user_session_permanently_unverified_session_description" = "Diese Sitzung unterstützt keine Verschlüsselung, weshalb sie nicht verifiziert werden kann.\n\nDu wirst dich mit dieser Sitzung nicht an Unterhaltungen in Räumen mit aktivierter Verschlüsselung beteiligen können.\n\nAus Sicherheits- und Datenschutzgründen, wird die Nutzung von verschlüsselungsfähigen Matrix-Anwendungen empfohlen.";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Text";
+"wysiwyg_composer_format_action_link" = "Als Link formatieren";
+"wysiwyg_composer_link_action_edit_title" = "Link bearbeiten";
+"wysiwyg_composer_link_action_create_title" = "Link erstellen";
+"wysiwyg_composer_link_action_link" = "Link";
+"wysiwyg_composer_format_action_inline_code" = "Als Inline-Code formatieren";
+"notice_voice_broadcast_ended_by_you" = "Du hast eine Sprachübertragung beendet.";
+"notice_voice_broadcast_ended" = "%@ beendete eine Sprachübertragung.";
+"notice_voice_broadcast_live" = "Echtzeitübertragung";
+"user_other_session_security_recommendation_title" = "Andere Sitzungen";
+"voice_message_broadcast_in_progress_title" = "Kann Sprachnachricht nicht beginnen";
+"poll_timeline_decryption_error" = "Aufgrund von Entschlüsselungsfehlern könnten einige Stimmen nicht gezählt werden";
+"voice_message_broadcast_in_progress_message" = "Du kannst kein Gespräch beginnen, da du im Moment eine Sprachübertragung aufzeichnest. Bitte beende deine Sprachübertragung, um ein Gespräch zu beginnen";

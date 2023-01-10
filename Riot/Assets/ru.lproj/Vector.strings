@@ -44,7 +44,7 @@
 "auth_optional_phone_placeholder" = "Номер телефона (не обязательно)";
 "auth_phone_placeholder" = "Номер телефона";
 "auth_repeat_password_placeholder" = "Повторите пароль";
-"auth_repeat_new_password_placeholder" = "Подтвердите свой новый пароль";
+"auth_repeat_new_password_placeholder" = "Подтвердите свой новый пароль учётной записи Matrix";
 "auth_invalid_login_param" = "Неверное имя пользователя и/или пароль";
 "auth_invalid_user_name" = "Имена пользователей могут содержать только буквы, цифры, точки, дефисы и символы подчеркивания";
 "auth_invalid_password" = "Пароль слишком короткий (мин. 6 символов)";
@@ -65,7 +65,7 @@
 "auth_untrusted_id_server" = "Этот сервер идентификации не является доверенным";
 "auth_password_dont_match" = "Пароли не совпадают";
 "auth_username_in_use" = "Имя пользователя занято";
-"auth_forgot_password" = "Забыли пароль?";
+"auth_forgot_password" = "Забыли пароль учётной записи Matrix?";
 "auth_email_not_found" = "Не удалось отправить email: этот адрес электронной почты не найден";
 "auth_use_server_options" = "Использовать пользовательские параметры сервера (дополнительно)";
 "auth_email_validation_message" = "Проверьте электронную почту, чтобы продолжить регистрацию";
@@ -73,14 +73,14 @@
 "auth_msisdn_validation_message" = "Мы отправили SMS с кодом активации. Введите этот код ниже.";
 "auth_msisdn_validation_error" = "Не удалось проверить номер телефона.";
 "auth_recaptcha_message" = "Этот домашний сервер хочет проверить, что вы не робот";
-"auth_reset_password_message" = "Чтобы сбросить пароль, введите адрес электронной почты, связанный с вашей учетной записью:";
+"auth_reset_password_message" = "Чтобы сбросить пароль учётной записи Matrix, введите адрес электронной почты, связанный с вашей учетной записью:";
 "auth_reset_password_missing_email" = "Необходимо ввести адрес электронной почты, связанный с вашей учетной записью.";
 "auth_reset_password_missing_password" = "Необходимо ввести новый пароль.";
 "auth_reset_password_email_validation_message" = "Письмо было отправлено на %@. После перехода по ссылке из письма, нажмите ниже.";
 "auth_reset_password_next_step_button" = "Я подтвердил свой адрес электронной почты";
 "auth_reset_password_error_unauthorized" = "Не удалось проверить адрес электронной почты: убедитесь, что вы нажали на ссылку в письме";
 "auth_reset_password_error_not_found" = "Ваш адрес электронной почты, кажется, не связан с Matrix ID на этом домашнем сервере.";
-"auth_reset_password_success_message" = "Ваш пароль был сброшен.\n\nВы вышли со всех сессий и больше не будете получать push-уведомления. Чтобы вновь активировать уведомления, заново авторизуйтесь на каждом устройстве.";
+"auth_reset_password_success_message" = "Ваш пароль учётной записи Matrix был сброшен.\n\nВы вышли со всех сессий и больше не будете получать push-уведомления. Чтобы вновь активировать уведомления, заново авторизуйтесь на каждом устройстве.";
 "auth_add_email_and_phone_warning" = "Регистрация с электронной почтой и номером телефона одновременно не поддерживается до тех пор, пока не появится API. Будет учитываться только номер телефона. Вы можете добавить свою электронную почту в свой профиль в настройках.";
 // Chat creation
 "room_creation_title" = "Новый чат";
@@ -166,8 +166,8 @@
 "room_creation_appearance" = "Внешний вид";
 "directory_cell_description" = "%tu комнат";
 "directory_search_results_title" = "Просмотр результатов поиска";
-"directory_search_results" = "%tu результатов поиска для %@";
-"directory_search_results_more_than" = ">%tu результатов поиска для %@";
+"directory_search_results" = "%1$tu результатов поиска для %2$@";
+"directory_search_results_more_than" = ">%1$tu результатов поиска для %2$@";
 "room_participants_invite_malformed_id" = "Неверный идентификатор. Должен быть адрес электронной почты или идентификатор Matrix, например '@thomas:matrix.org'";
 "room_participants_now" = "сейчас";
 "room_participants_ago" = "назад";
@@ -196,7 +196,7 @@
 "room_event_action_redact" = "Удалить";
 "room_event_action_more" = "Больше";
 "room_event_action_share" = "Поделиться";
-"room_event_action_permalink" = "Постоянная ссылка";
+"room_event_action_permalink" = "Скопировать ссылку на сообщение";
 "room_event_action_view_source" = "Посмотреть источник";
 "room_event_action_report" = "Сообщить о недопустимом контенте";
 "room_event_action_report_prompt_reason" = "Причина сообщениея о недопустимом контенте";
@@ -504,7 +504,7 @@
 "room_do_not_have_permission_to_post" = "У вас нет разрешения на публикацию в этой комнате";
 "settings_flair" = "Покажите настроение, где это разрешено";
 "room_details_flair_section" = "Показать настроение для сообществ";
-"room_event_action_kick_prompt_reason" = "Причина по которой этот пользователь будет выкинут";
+"room_event_action_kick_prompt_reason" = "Причина исключения пользователя";
 "room_event_action_ban_prompt_reason" = "Причина по которой этот пользователь будет забанен";
 // GDPR
 "gdpr_consent_not_given_alert_message" = "Для продолжения использования сервера %@ вы должны принять условия и положения.";
@@ -675,7 +675,7 @@
 "settings_labs_message_reaction" = "Реагировать на сообщения с Emoji";
 "settings_key_backup_button_connect" = "Подключите этот сеанс к резервному копированию ключей";
 "close" = "Закрыть";
-"auth_forgot_password_error_no_configured_identity_server" = "Сервер идентификации не настроен: добавьте один для сброса пароля.";
+"auth_forgot_password_error_no_configured_identity_server" = "Сервер идентификации не настроен: добавьте один для сброса пароля учётной записи Matrix.";
 "auth_softlogout_signed_out" = "Вы вышли";
 "auth_softlogout_sign_in" = "Войти";
 "auth_softlogout_clear_data" = "Очистить личные данные";
@@ -820,9 +820,9 @@
 "auth_add_email_message_2" = "Установите адрес электронной почты для восстановления учетной записи, а затем ее можно будет найти людям, которые вас знают.";
 "auth_add_phone_message_2" = "Задайте телефон, и позже его могут найти люди, которые вас знают.";
 "auth_add_email_phone_message_2" = "Установка адреса электронной почты для восстановления учетной записи. Используйте позже электронную почту или телефон, чтобы люди, которые вас знают, могли их по желанию найти.";
-"auth_email_is_required" = "Сервер идентификации не настроен, поэтому вы не можете добавить адрес электронной почты, чтобы в будущем сбросить пароль.";
-"auth_phone_is_required" = "Сервер идентификации не настроен, поэтому вы не можете добавить номер телефона, чтобы в будущем сбросить пароль.";
-"auth_reset_password_error_is_required" = "Сервер идентификации не настроен: добавьте ID-Сервер в параметры сервера для сброса пароля.";
+"auth_email_is_required" = "Сервер идентификации не настроен, поэтому вы не можете добавить адрес электронной почты, чтобы в будущем сбросить пароль учётной записи Matrix.";
+"auth_phone_is_required" = "Сервер идентификации не настроен, поэтому вы не можете добавить номер телефона, чтобы в будущем сбросить пароль учётной записи Matrix.";
+"auth_reset_password_error_is_required" = "Сервер идентификации не настроен: добавьте ID-Сервер в параметры сервера для сброса пароля учётной записи Matrix.";
 "room_accessiblity_scroll_to_bottom" = "Прокрутить вниз";
 "room_accessibility_search" = "Поиск";
 "room_accessibility_integrations" = "Интеграция";
@@ -2168,3 +2168,35 @@
 "authentication_qr_login_start_subtitle" = "Используйте камеру на этом устройстве, чтобы сканировать QR-код, отображённый на вашем другом устройстве:";
 "authentication_qr_login_start_title" = "Сканировать QR-код";
 "authentication_terms_policy_url_error" = "Не получилось найти выбранные правила. Пожалуйста, попробуйте снова позже.";
+"threads_empty_tip" = "Подсказка: Нажмите на сообщение и используйте «Поток», чтобы начать переписку.";
+"threads_empty_info_my" = "Ответьте в действующий поток, или нажмите на «Поток», чтобы начать новый.";
+"threads_empty_info_all" = "Потоки помогают придерживаться темы разговора и легко отслеживаются.";
+"threads_empty_title" = "Организуйте свои обсуждения при помощи потоков";
+"room_first_message_placeholder" = "Отправьте своё первое сообщение…";
+"room_participants_leave_processing" = "Выход";
+"authentication_qr_login_failure_retry" = "Попробовать снова";
+"authentication_qr_login_failure_request_timed_out" = "Привязка не была совершена за нужное время.";
+"authentication_qr_login_failure_request_denied" = "Запрос был отклонён на другом устройстве.";
+"authentication_qr_login_failure_invalid_qr" = "Недействительный QR-код.";
+"authentication_qr_login_failure_title" = "Не удалось привязать";
+"authentication_qr_login_loading_signed_in" = "Вы вошли с другого устройства.";
+"authentication_qr_login_loading_waiting_signin" = "Ожидание входа устройства.";
+"authentication_qr_login_loading_connecting_device" = "Соединение с устройством";
+"authentication_qr_login_confirm_alert" = "Пожалуйста убедитесь в том, что вы знаете о происхождении этого кода. Привязав устройства, вы дадите кому-то полный доступ к вашей учётной записи.";
+"authentication_qr_login_confirm_subtitle" = "Убедитесь, что код снизу совпадает с кодом на вашем другом устройстве:";
+"authentication_qr_login_confirm_title" = "Безопасное соединение установлено";
+"authentication_qr_login_scan_subtitle" = "Разместите QR-код в квадрате снизу";
+"authentication_qr_login_scan_title" = "Сканировать QR-код";
+"authentication_qr_login_display_step2" = "Виберите «Войти при помощи QR-кода»";
+"authentication_qr_login_display_step1" = "Откройте Element на вашем другом устройстве";
+"authentication_qr_login_display_subtitle" = "Сканируйте QR-код снизу со своего устройства, с которого вы вышли.";
+"authentication_qr_login_display_title" = "Привязать устройство";
+"authentication_qr_login_start_display_qr" = "Показать QR-код на этом устройстве";
+"authentication_qr_login_start_need_alternative" = "Нуждаетесь в альтернативном методе?";
+"authentication_qr_login_start_step4" = "Выберите «Показать QR-код на этом устройстве»";
+"password_policy_pwd_in_dict_error" = "Этот пароль был найден в словаре и не разрешен.";
+"password_policy_weak_pwd_error" = "Этот пароль слишком слаб. Он должен содержать не менее 8 символов, по крайней мере по одному символу каждого типа: прописные, строчные, цифры и специальные символы.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Очень короткий пароль";
+"settings_enable_room_message_bubbles" = "Сообщения пузырями";

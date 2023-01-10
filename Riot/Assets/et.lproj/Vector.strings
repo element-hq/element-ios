@@ -2573,7 +2573,7 @@
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Palun arvesta, et sessioonide nimed on näha ka kõikidele osapooltele, kellega sa suhtled. %@";
 "manage_session_name_hint" = "Sinu enda kirjutatud sessiooninimede alusel on sul oma seadmeid lihtsam ära tunda.";
-"settings_labs_enable_voice_broadcast" = "Ringhäälingukõne (aktiivses arenduses)";
+"settings_labs_enable_voice_broadcast" = "Ringhäälingukõne";
 "settings_labs_enable_wysiwyg_composer" = "Proovi vormindatud teksti alusel töötavat tekstitoimetit";
 "authentication_qr_login_failure_retry" = "Proovi uuesti";
 "authentication_qr_login_failure_request_timed_out" = "Sidumine ei lõppenud etteantud aja jooksul.";
@@ -2607,3 +2607,36 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Sul on verifitseerimata sessioone";
+"user_other_session_permanently_unverified_additional_info" = "Seda sessiooni ei saa verifitseerida, sest seal puudub krüptimise tugi.";
+"voice_broadcast_time_left" = "aega jäänud %@";
+"launch_loading_processing_response" = "Töötleme andmeid\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Sünkroniseerime andmeid serveriga\n(katse: %@)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Sünkroniseerimine serveriga";
+"voice_broadcast_buffering" = "Andmed on puhverdamisel…";
+"voice_broadcast_stop_alert_agree_button" = "Jah, lõpetame";
+"voice_broadcast_stop_alert_description" = "Kas sa oled kindel, et soovid otseeetri lõpetada? Sellega ringhäälingukõne salvestamine lõppeb ja salvestis on kättesaadav kõigile jututoas.";
+"voice_broadcast_stop_alert_title" = "Kas lõpetame otseeetri?";
+"password_policy_pwd_in_dict_error" = "See salasõna leidub levinud salasõnade sõnastikus ning seda sa ei saa kasutada.";
+"password_policy_weak_pwd_error" = "See salasõna on liiga lihtne. Ta peaks olema vähemalt 8 tähemärki pikk ning seal peaks leiduma vähemalt üks väiketäht, suurtäht, number ja erimärk.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Liiga lühike salasõna";
+"user_session_permanently_unverified_session_description" = "Seda sessiooni ei saa verifitseerida, sest seal puudub krüptimise tugi.\n\nSelle sessiooniga ei saa sa osaleda krüptitud jututubades.\n\nParima turvalisuse ja privaatsuse nimel palun kasuta selliseid Matrix'i kliente, mis toetavad krüptimist.";
+"wysiwyg_composer_format_action_link" = "Muuda lingi vormingut";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Tekst";
+"wysiwyg_composer_link_action_link" = "Link";
+"wysiwyg_composer_link_action_edit_title" = "Muuda linki";
+"wysiwyg_composer_link_action_create_title" = "Loo link";
+"wysiwyg_composer_format_action_inline_code" = "Kasuta lõimitud koodi vormingut";
+"notice_voice_broadcast_ended_by_you" = "Sa lõpetasid ringhäälingukõne.";
+"notice_voice_broadcast_ended" = "%@ lõpetas ringhäälingukõne.";
+"notice_voice_broadcast_live" = "Ringhäälingukõne on eetris";
+"user_other_session_security_recommendation_title" = "Muud sessioonid";
+"poll_timeline_decryption_error" = "Krüptimisvigade tõttu jääb osa hääli lugemata";
+"voice_message_broadcast_in_progress_title" = "Häälsõnumi salvestamine või esitamine ei õnnestu";
+"voice_message_broadcast_in_progress_message" = "Kuna sa hetkel salvestad ringhäälingukõnet, siis häälsõnumi salvestamine või esitamine ei õnnestu. Selleks palun lõpeta ringhäälingukõne";

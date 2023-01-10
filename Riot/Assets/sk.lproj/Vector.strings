@@ -2834,7 +2834,7 @@
 
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Nie je možné spustiť nové hlasové vysielanie";
-"settings_labs_enable_voice_broadcast" = "Hlasové vysielanie (v štádiu aktívneho vývoja)";
+"settings_labs_enable_voice_broadcast" = "Hlasové vysielanie";
 "voice_broadcast_playback_loading_error" = "Toto hlasové vysielanie nie je možné prehrať.";
 "deselect_all" = "Zrušiť výber všetkých";
 "user_other_session_selected_count" = "%@ vybratých";
@@ -2858,3 +2858,36 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Máte neoverené relácie";
+"user_other_session_permanently_unverified_additional_info" = "Táto relácia nepodporuje šifrovanie, a preto ju nemožno overiť.";
+"voice_broadcast_time_left" = "%@ ostáva";
+"launch_loading_processing_response" = "Spracovanie údajov\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Synchronizácia so serverom\n(%@ pokus)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Synchronizácia so serverom";
+"voice_broadcast_buffering" = "Načítavanie do vyrovnávacej pamäte…";
+"voice_broadcast_stop_alert_agree_button" = "Áno, zastaviť";
+"voice_broadcast_stop_alert_description" = "Určite chcete zastaviť vysielanie naživo? Tým sa vysielanie ukončí a v miestnosti bude k dispozícii celý záznam.";
+"voice_broadcast_stop_alert_title" = "Zastaviť vysielanie naživo?";
+"password_policy_pwd_in_dict_error" = "Toto heslo bolo nájdené v slovníku a nie je povolené.";
+"password_policy_weak_pwd_error" = "Toto heslo je príliš slabé. Musí obsahovať aspoň 8 znakov, pričom musí obsahovať aspoň jeden znak z každého typu: veľké a malé písmená, číslice a špeciálny symbol.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Príliš krátke heslo";
+"user_session_permanently_unverified_session_description" = "Táto relácia nepodporuje šifrovanie, takže ju nemožno overiť.\n\nPri používaní tejto relácie sa nebudete môcť zúčastňovať konverzácií v miestnostiach, kde je zapnuté šifrovanie.\n\nNa dosiahnutie čo najlepšieho zabezpečenia a súkromia sa odporúča používať Matrix klientov, ktoré podporujú šifrovanie.";
+"wysiwyg_composer_link_action_edit_title" = "Upraviť odkaz";
+"wysiwyg_composer_link_action_create_title" = "Vytvoriť odkaz";
+"wysiwyg_composer_link_action_link" = "Odkaz";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Text";
+"wysiwyg_composer_format_action_link" = "Použiť formát odkazu";
+"wysiwyg_composer_format_action_inline_code" = "Použiť formát riadkového kódu";
+"notice_voice_broadcast_ended_by_you" = "Ukončili ste hlasové vysielanie.";
+"notice_voice_broadcast_ended" = "%@ ukončil/a hlasové vysielanie.";
+"notice_voice_broadcast_live" = "Živé vysielanie";
+"user_other_session_security_recommendation_title" = "Iné relácie";
+"poll_timeline_decryption_error" = "Z dôvodu chýb v dešifrovaní sa niektoré hlasy nemusia započítať";
+"voice_message_broadcast_in_progress_message" = "Nemôžete spustiť hlasovú správu, pretože práve nahrávate živé vysielanie. Ukončite prosím živé vysielanie, aby ste mohli začať nahrávať hlasovú správu";
+"voice_message_broadcast_in_progress_title" = "Nemožno spustiť hlasovú správu";

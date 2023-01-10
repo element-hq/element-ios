@@ -88,7 +88,7 @@
 "bug_report_send" = "傳送";
 "room_event_action_resend" = "重新傳送";
 "room_event_action_view_source" = "檢視來源";
-"room_event_action_permalink" = "永久連結";
+"room_event_action_permalink" = "複製訊息永久連結";
 "room_event_action_quote" = "引用";
 "room_participants_online" = "線上";
 "room_details_favourite_tag" = "我的最愛";
@@ -164,9 +164,9 @@
 "e2e_room_key_request_title" = "加密金鑰請求";
 "e2e_room_key_request_share_without_verifying" = "不驗證就分享";
 "e2e_room_key_request_ignore_request" = "忽略請求";
-"auth_reset_password_message" = "要重設您的密碼，輸入連結到您的帳號的電子郵件地址：";
+"auth_reset_password_message" = "為了重設密碼，請輸入您的電子郵件地址：";
 "auth_reset_password_email_validation_message" = "電子郵件已傳送至 %@。您必須跟隨其中包含了連結，點按下面的連結。";
-"auth_reset_password_success_message" = "您的密碼已重設。\n\n您已在所有工作階段上登出，並且不會再收到推送通知。要重新啟用通知，再次於每個裝置上登入。";
+"auth_reset_password_success_message" = "您的密碼已重設。\n\n您已登出所有工作階段，並且不會再收到推送通知。如要重新啟用通知，請於每個裝置重新登入。";
 "auth_add_email_and_phone_warning" = "直到 API 存在之前，尚不支援同時使用電子郵件地址和電話號碼註冊，因此只有電話號碼會被採用，但您可以在基本資料中新增電子郵件地址。";
 // Chat creation
 "room_creation_title" = "新的聊天";
@@ -298,7 +298,7 @@
 // Room Preview
 "room_preview_invitation_format" = "您已經透過 %@ 的邀請而加入聊天室";
 "room_preview_subtitle" = "這是該聊天室的預覽。聊天室互動已被禁用。";
-"room_preview_unlinked_email_warning" = "該邀請已傳送至  %@， 但和此帳號沒有關聯。你或許會希望使用其他帳號登入，或把該電子郵件加入到你的帳戶。";
+"room_preview_unlinked_email_warning" = "該邀請已傳送至 %@， 但和此帳號沒有關聯。你或許會希望使用其他帳號登入，或把該電子郵件加入到你的帳戶。";
 // Settings
 "settings_title" = "設定";
 "room_preview_try_join_an_unknown_room" = "你正在嘗試訪問%@。您要加入已參加討論嗎?";
@@ -437,7 +437,7 @@
 "group_participants_remove_prompt_title" = "確認";
 "group_participants_remove_prompt_msg" = "您確定要從該群組移除 %@ 嗎?";
 "group_participants_invite_prompt_title" = "確認";
-"group_participants_invite_prompt_msg" = "您確定要邀請  %@ 加入此群組嗎?";
+"group_participants_invite_prompt_msg" = "您確定要邀請 %@ 加入此群組嗎？";
 "group_participants_invite_another_user" = "使用使用者 ID 或名稱搜尋/邀請使用者";
 "group_participants_invite_malformed_id_title" = "邀請錯誤";
 "group_participants_invite_malformed_id" = "ID 格式錯誤。一個 Matrix ID 看起來應該像 '@localpart:domain'";
@@ -472,7 +472,7 @@
 "camera_access_not_granted" = "%@ 沒有使用相機的權限，請修改隱私權設定";
 "large_badge_value_k_format" = "%.1fK";
 // Call
-"call_incoming_voice_prompt" = "來自  %@ 的語音通話";
+"call_incoming_voice_prompt" = "來自 %@ 的語音通話";
 "call_incoming_video_prompt" = "來自 %@ 的視訊通話";
 "call_incoming_voice" = "收到來電…";
 "call_incoming_video" = "收到視訊來電…";
@@ -500,8 +500,8 @@
 "bug_crash_report_description" = "請描述您在崩潰前做了什麼:";
 "bug_report_logs_description" = "為了診斷問題，此用戶端的記錄檔將會隨此錯誤報告送出。 如果您只想傳送上面的文字，請取消:";
 "widget_integration_missing_room_id" = "在請求中遺失 room_id 。";
-"widget_integration_missing_user_id" = "在請求中遺失  user_id 。";
-"widget_integration_room_not_visible" = "%@  聊天室不可見。";
+"widget_integration_missing_user_id" = "在請求中遺失 user_id 。";
+"widget_integration_room_not_visible" = "%@ 聊天室為隱藏。";
 // Share extension
 "share_extension_auth_prompt" = "登入主應用程式以分享內容";
 "share_extension_failed_to_encrypt" = "傳送失敗。 檢查主應用程式對此聊天室的加密設定";
@@ -601,10 +601,10 @@
 "auth_softlogout_signed_out" = "你已登出";
 "auth_autodiscover_invalid_response" = "無效的自家伺服器發現回應";
 "auth_accept_policies" = "請查看並接受此自家伺服器的策略：";
-"auth_reset_password_error_is_required" = "未配置身份伺服器：在伺服器選項中添加一個以便日後重置密碼。";
-"auth_forgot_password_error_no_configured_identity_server" = "未配置身份伺服器：添加一台以便重置密碼。";
-"auth_phone_is_required" = "沒有配置身份伺服器，因此您無法添加電話號碼以便將來重設密碼。";
-"auth_email_is_required" = "沒有配置身份伺服器，因此您無法添加電子郵件地址以便將來重設密碼。";
+"auth_reset_password_error_is_required" = "未設置身份伺服器：在伺服器選項中新增一個來重置密碼。";
+"auth_forgot_password_error_no_configured_identity_server" = "未設置身份伺服器：新增設置來重置密碼。";
+"auth_phone_is_required" = "沒有設置身份伺服器，因此無法新增電話號碼以便將來重設密碼。";
+"auth_email_is_required" = "沒有設置身份伺服器，因此無法新增電子郵件地址以便將來重設密碼。";
 "auth_add_email_phone_message_2" = "設置一個電子郵件以便日後恢復帳戶和使以後可以由認識您的人發現你。";
 "auth_add_email_message_2" = "設置一個電子郵件以便日後恢復帳戶和使以後可以由認識您的人發現你。";
 "auth_add_phone_message_2" = "設置一個電話號碼，以後可以由認識您的人發現你。";
@@ -687,7 +687,7 @@
 // MARK: - Call Transfer
 "call_transfer_title" = "傳輸";
 "room_info_list_section_other" = "其他";
-"create_room_placeholder_topic" = "主題";
+"create_room_placeholder_topic" = "聊天室主題為何？";
 "create_room_placeholder_name" = "名稱";
 "biometrics_cant_unlocked_alert_message_retry" = "重試";
 "pin_protection_reset_alert_action_reset" = "重設";
@@ -944,7 +944,7 @@
 "room_event_encryption_info_block" = "黑名單";
 "room_event_encryption_info_unblock" = "解除黑名單";
 "room_event_encryption_verify_title" = "驗證裝置\n\n";
-"room_event_encryption_verify_message" = "若要檢查這個裝置是可被信任的，請透過其他方法聯絡所有者（例如面對面或是在電話中），並詢問在其使用者設定中以下金鑰是否是一致的：\n\n\n\t裝置名稱：%@\n\t裝置 ID：%@\n\t裝置金鑰：%@\n\n若相同，請點選下面的「驗證確認」按鈕。如果不相同，表示有人從中攔截這個裝置，您可能要點選「黑名單」按鈕。\n\n未來驗證手續會更加簡單，若有不便敬請見諒。";
+"room_event_encryption_verify_message" = "若要檢查這個裝置是可被信任的，請透過其他方法聯絡所有者（例如面對面或是在電話中），並詢問在其使用者設定中以下金鑰是否是一致的：\n\n\t裝置名稱：%@\n\t裝置 ID：%@\n\t裝置金鑰：%@\n\n若相同，請點選下面的「驗證確認」按鈕。如果不相同，表示有人從中攔截這個裝置，您可能要點選「黑名單」按鈕。\n\n未來驗證手續會更加簡單，若有不便敬請見諒。";
 "room_event_encryption_verify_ok" = "驗證確認";
 // Account
 "account_save_changes" = "儲存修改";
@@ -976,7 +976,7 @@
 "microphone_access_not_granted_for_call" = "電話需要使用麥克風權限，但是 %@ 沒有存取權限";
 "local_contacts_access_not_granted" = "從本機的聯絡資訊探索使用者，需要存取聯絡資訊的權限，但是 %@ 沒有存取權限";
 "local_contacts_access_discovery_warning_title" = "使用者探索";
-"local_contacts_access_discovery_warning" = "%@ 要從您的聯絡資訊上傳電子郵件位址跟電話號碼來探索使用者";
+"local_contacts_access_discovery_warning" = "為了找查您的通訊錄中是否已有 Matrix 帳號的聯絡人，%@ 將會從您的通訊錄中傳送電子郵件與電話號碼到您所選擇的身分伺服器中。個人資料會在傳送前雜湊內容（無法解讀的內容），若需要更多細節，請查閱您的身分伺服器的隱私權政策。";
 // Country picker
 "country_picker_title" = "選擇國家";
 // Language picker
@@ -997,8 +997,8 @@
 "notice_display_name_set" = "%@ 設定了自己的顯示名稱為 %@";
 "notice_display_name_changed_from" = "%@ 將自己的顯示名稱從 %@ 改為 %@";
 "notice_display_name_removed" = "%@ 移除了自己的顯示名稱";
-"notice_topic_changed" = "%@ 已經變更主題為：%@";
-"notice_room_name_changed" = "%@ 將房間名稱變更為 %@";
+"notice_topic_changed" = "%@ 已變更主題為 %@。";
+"notice_room_name_changed" = "%@ 將聊天室名稱變更為 %@。";
 "notice_placed_voice_call" = "%@ 開始了語音通話";
 "notice_placed_video_call" = "%@ 開始了視訊通話";
 "notice_answered_video_call" = "%@ 接聽了通話";
@@ -1099,7 +1099,7 @@
 "notice_event_redacted_by" = " 由 %@";
 "notice_event_redacted_reason" = " [理由：%@]";
 "notice_profile_change_redacted" = "%@ 已更新他的個人檔案 %@";
-"notice_room_created" = "%@ 創建了該聊天室";
+"notice_room_created" = "%@ 已建立與設定此聊天室。";
 "notice_room_join_rule" = "加入規則: %@";
 "notice_room_power_level_intro" = "聊天室成員們的權限级别是：";
 "notice_event_redacted" = "<撤回%@>";
@@ -1122,7 +1122,7 @@
 "device_details_name" = "名稱\n";
 "device_details_identifier" = "裝置代碼\n";
 "device_details_last_seen" = "上次使用\n";
-"device_details_rename_prompt_message" = "裝置名稱：";
+"device_details_rename_prompt_message" = "公開名稱可見於與您聊天的對象";
 "login_error_resource_limit_exceeded_title" = "超過資源限制";
 "login_error_resource_limit_exceeded_message_default" = "此家伺服器已經超過其中一項資源限制。";
 "login_error_resource_limit_exceeded_message_monthly_active_user" = "此家伺服器已經達到其每月活躍使用者限制。";
@@ -1142,3 +1142,131 @@
 "stop" = "停止";
 "joining" = "正在加入";
 "enable" = "啓用";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "確認接受 %@";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "請閱讀 %@ 的條款與政策";
+"authentication_terms_title" = "隱私權政策";
+"authentication_verify_msisdn_invalid_phone_number" = "無效的電話號碼或格式";
+"authentication_verify_msisdn_waiting_button" = "重新傳送驗證碼";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "驗證碼已傳送到 %@";
+"authentication_verify_msisdn_waiting_title" = "確認與驗證您的電話號碼";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "驗證碼";
+"authentication_verify_msisdn_text_field_placeholder" = "電話號碼";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ 需要驗證您的帳號";
+"authentication_verify_msisdn_input_title" = "輸入您的電話號碼";
+"authentication_choose_password_not_verified_message" = "檢查您的郵件收件夾";
+"authentication_choose_password_not_verified_title" = "郵件信箱尚未確認與驗證";
+"authentication_choose_password_submit_button" = "重新設定密碼";
+"authentication_choose_password_signout_all_devices" = "登出所有裝置";
+"authentication_choose_password_text_field_placeholder" = "新密碼";
+"authentication_choose_password_input_message" = "確認至少 8 字元或更多";
+"authentication_choose_password_input_title" = "選擇新密碼";
+"authentication_forgot_password_waiting_button" = "重新寄送";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "依照指示已寄送到 %@";
+"authentication_forgot_password_waiting_title" = "檢查或確認您的郵件信箱。";
+"authentication_forgot_password_text_field_placeholder" = "郵件信箱";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@ 將會傳送驗證連結給您";
+"authentication_forgot_password_input_title" = "輸入您的電子郵件信箱";
+"authentication_verify_email_waiting_button" = "重新寄送";
+"authentication_verify_email_waiting_hint" = "還未收到信件？";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "依照指示已寄送到 %@";
+"authentication_verify_email_waiting_title" = "驗證您的郵件信箱。";
+"authentication_verify_email_text_field_placeholder" = "郵件信箱";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ 需要驗證您的帳號";
+"authentication_verify_email_input_title" = "輸入您的電子郵件信箱";
+"authentication_cancel_flow_confirmation_message" = "您的帳號尚未建立完成，確定要退出註冊過程？";
+"authentication_server_selection_generic_error" = "這個 URL 無法找到伺服器，請確認它是否正確。";
+"authentication_server_selection_server_url" = "主伺服器 URL";
+"authentication_server_selection_register_message" = "屬於您伺服器的位置為何？是存放您所有資訊的主要地方";
+"authentication_server_selection_register_title" = "選擇您的主伺服器";
+"authentication_server_selection_login_message" = "屬於您伺服器的位置為何？";
+"authentication_server_selection_login_title" = "連線到主伺服器";
+"authentication_login_with_qr" = "透過 QR code 登入";
+"authentication_server_info_title_login" = "您的對話訊息將會被保存的位置";
+"authentication_login_forgot_password" = "忘記密碼";
+"authentication_login_username" = "使用者帳號 / 電子郵件 / 電話號碼";
+"authentication_login_title" = "歡迎回來！";
+"authentication_server_info_title" = "您的對話訊息將會被保存的位置";
+"authentication_registration_password_footer" = "至少 8 字元或更多";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "其他人可以找到您 %@";
+"authentication_registration_username_footer" = "選定後就無法在之後變更修改";
+"authentication_registration_username" = "使用者帳號";
+
+// MARK: Authentication
+"authentication_registration_title" = "建立您的帳號";
+"onboarding_celebration_button" = "開始吧";
+"onboarding_celebration_message" = "隨時都可更新您的個人簡介";
+"onboarding_celebration_title" = "看起來不錯喔！";
+"onboarding_avatar_accessibility_label" = "簡介圖片";
+"onboarding_avatar_message" = "是時候將名字與臉孔聯繫在一起了";
+"onboarding_avatar_title" = "新增簡介圖片";
+"onboarding_display_name_max_length" = "您的顯示名稱必須小於 256 字元";
+"onboarding_display_name_hint" = "您可以之後再變更";
+"onboarding_display_name_placeholder" = "顯示名稱";
+"onboarding_display_name_message" = "當您傳送訊息這將會被顯示。";
+"onboarding_display_name_title" = "選擇顯示名稱";
+"onboarding_personalization_skip" = "略過此步驟";
+"onboarding_personalization_save" = "儲存並繼續";
+"onboarding_congratulations_home_button" = "帶我回家";
+"onboarding_congratulations_personalize_button" = "個人簡介";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "您的帳號 %@ 已建立了";
+"onboarding_congratulations_title" = "恭喜！";
+"onboarding_use_case_existing_server_button" = "連線到伺服器";
+"onboarding_use_case_existing_server_message" = "尋找加入一個存在的伺服器？";
+"onboarding_use_case_skip_button" = "略過這個問題";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "還不確定？ %@";
+"onboarding_use_case_community_messaging" = "社群";
+"onboarding_use_case_work_messaging" = "團隊";
+"onboarding_use_case_personal_messaging" = "朋友與家人";
+"onboarding_use_case_message" = "我們會協助您連線";
+"onboarding_use_case_title" = "您最常聊天的對象是誰？";
+"onboarding_splash_page_4_message" = "Element 也非常適合工作場域使用。它受到世界上最安全的組織所信任。";
+"onboarding_splash_page_4_title_no_pun" = "與您的團隊通訊。";
+"onboarding_splash_page_3_message" = "端到端加密與不需要電話號碼。無廣告或資料蒐集。";
+"onboarding_splash_page_1_message" = "為您提供與在家中面對面交談時相同的隱私等級、安全且獨立的通訊。";
+"onboarding_splash_page_3_title" = "安全通訊中。";
+"onboarding_splash_page_2_message" = "選擇您的對話將保存在哪裡，一切將由您獨立掌控。透過 Matrix 連線。";
+"onboarding_splash_page_2_title" = "一切都在您的掌控之中。";
+"onboarding_splash_page_1_title" = "掌握您的對話。";
+"onboarding_splash_login_button_title" = "我已經有帳號了";
+
+// MARK: Onboarding
+"onboarding_splash_register_button_title" = "建立帳號";
+"accessibility_button_label" = "按鈕";
+"callbar_only_single_active_group" = "點擊加入群組通話 (%@)";
+"callbar_only_multiple_paused" = "%@ 通暫停通話";
+"callbar_only_single_paused" = "暫停通話";
+"callbar_active_and_multiple_paused" = "1 個正在進行通話 (%@) · %@ 個暫停的通話";
+"callbar_active_and_single_paused" = "1 個正在進行通話 (%@) · 1 個暫停的通話";
+
+// Call Bar
+"callbar_only_single_active" = "點擊返回通話 (%@)";
+"saving" = "儲存中";
+
+// Activities
+"loading" = "讀取中";
+"invite_to" = "邀請到 %@";
+"confirm" = "確認";
+"edit" = "編輯";
+"suggest" = "建議";
+"add" = "新增";
+"existing" = "已存在";
+"new_word" = "新增";
+
+// GDPR
+"gdpr_consent_not_given_alert_message" = "如要繼續使用 %@ 服務伺服器，您必須檢視與同意條款與條件。";
+"settings_callkit_info" = "在鎖定畫面接聽來電。顯示您的 %@ 通話於系統通話紀錄。若啟用 iCloud，通話紀錄將被分享給 Apple。";
+"room_many_users_are_typing" = "%@, %@ 與其他人正在輸入 …";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. Note the > at the start indicates "more than 20 results". */
+"directory_search_results_more_than" = ">%1$tu 個搜尋結果關於 %2$@";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. */
+"directory_search_results" = "%1$tu 個搜尋結果關於 %2$@";
