@@ -3974,7 +3974,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
 
-        if (!isJitsiCallEvent && selectedEvent.eventType != MXEventTypePollStart &&
+        if (!isJitsiCallEvent && !selectedEvent.isTimelinePollEvent &&
             selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeQuote
@@ -3995,7 +3995,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         
         if (selectedEvent.sentState == MXEventSentStateSent &&
-            selectedEvent.eventType != MXEventTypePollStart &&
+            !selectedEvent.isTimelinePollEvent &&
             // Forwarding of live-location shares still to be implemented
             selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
@@ -4011,7 +4011,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
         
-        if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare && selectedEvent.eventType != MXEventTypePollStart &&
+        if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare && !selectedEvent.isTimelinePollEvent &&
             selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeShare
@@ -7150,6 +7150,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             case MXEventTypeKeyVerificationDone:
             case MXEventTypeKeyVerificationCancel:
             case MXEventTypePollStart:
+            case MXEventTypePollEnd:
             case MXEventTypeBeaconInfo:
                 result = NO;
                 break;

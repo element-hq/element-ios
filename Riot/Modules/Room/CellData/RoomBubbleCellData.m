@@ -152,6 +152,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 break;
             }
             case MXEventTypePollStart:
+            case MXEventTypePollEnd:
             {
                 self.tag = RoomBubbleCellDataTagPoll;
                 self.collapsable = NO;
@@ -635,7 +636,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     __block NSInteger firstVisibleComponentIndex = NSNotFound;
     
     MXEvent *firstEvent = self.events.firstObject;
-    BOOL isPoll = (firstEvent.eventType == MXEventTypePollStart);
+    BOOL isPoll = firstEvent.isTimelinePollEvent;
     BOOL isVoiceBroadcast = (firstEvent.eventType == MXEventTypeCustom && [firstEvent.type isEqualToString: VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]);
     
     if ((isPoll || self.attachment || isVoiceBroadcast) && self.bubbleComponents.count)
@@ -1193,6 +1194,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 shouldAddEvent = NO;
                 break;
             case MXEventTypePollStart:
+            case MXEventTypePollEnd:
                 shouldAddEvent = NO;
                 break;
             case MXEventTypeBeaconInfo:

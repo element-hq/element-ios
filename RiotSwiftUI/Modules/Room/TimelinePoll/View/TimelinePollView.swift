@@ -31,6 +31,12 @@ struct TimelinePollView: View {
         let poll = viewModel.viewState.poll
         
         VStack(alignment: .leading, spacing: 16.0) {
+            if poll.representsPollEndedEvent {
+                Text(VectorL10n.pollTimelineEndedText)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(theme.colors.tertiaryContent)
+            }
+            
             Text(poll.question)
                 .font(theme.fonts.bodySB)
                 .foregroundColor(theme.colors.primaryContent) +

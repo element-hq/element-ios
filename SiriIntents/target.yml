@@ -42,6 +42,7 @@ targets:
     sources:
     - path: .
     - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Categories/MXEvent.swift
     - path: ../Config/CommonConfiguration.swift
     - path: ../Config/BuildSettings.swift
     - path: ../Config/Configurable.swift
