@@ -2699,3 +2699,6 @@
 "notice_voice_broadcast_ended" = "%@ beendete eine Sprachübertragung.";
 "notice_voice_broadcast_live" = "Echtzeitübertragung";
 "user_other_session_security_recommendation_title" = "Andere Sitzungen";
+"voice_message_broadcast_in_progress_title" = "Kann Sprachnachricht nicht beginnen";
+"poll_timeline_decryption_error" = "Aufgrund von Entschlüsselungsfehlern könnten einige Stimmen nicht gezählt werden";
+"voice_message_broadcast_in_progress_message" = "Du kannst kein Gespräch beginnen, da du im Moment eine Sprachübertragung aufzeichnest. Bitte beende deine Sprachübertragung, um ein Gespräch zu beginnen";
