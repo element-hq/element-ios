@@ -44,6 +44,9 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     // MARK: Public
     
     weak var serviceDelegate: VoiceBroadcastRecorderServiceDelegate?
+    var isRecording: Bool {
+        return audioEngine.isRunning
+    }
 
     // MARK: - Setup
     
