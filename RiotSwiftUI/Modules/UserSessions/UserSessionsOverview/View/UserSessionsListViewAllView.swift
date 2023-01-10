@@ -34,11 +34,11 @@ struct UserSessionsListViewAllView: View {
                             .font(theme.fonts.body)
                             .foregroundColor(theme.colors.accent)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        Image(Asset.Images.chevron.name)
+                        Image(Asset.Images.disclosureIcon.name)
+                            .foregroundColor(theme.colors.tertiaryContent)
                     }
                     .padding(.vertical, 15)
                     .padding(.trailing, 20)
-                    SeparatorLine()
                 }
                 .background(theme.colors.background)
                 .padding(.leading, 72)

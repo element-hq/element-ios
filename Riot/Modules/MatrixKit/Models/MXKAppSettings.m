@@ -148,6 +148,8 @@ static NSString *const kMXAppGroupID = @"group.org.matrix";
             kMXEventTypeStringKeyVerificationDone,
             kMXEventTypeStringPollStart,
             kMXEventTypeStringPollStartMSC3381,
+            kMXEventTypeStringPollEnd,
+            kMXEventTypeStringPollEndMSC3381,
             kMXEventTypeStringBeaconInfo,
             kMXEventTypeStringBeaconInfoMSC3672
         ].mutableCopy;
@@ -181,6 +183,8 @@ static NSString *const kMXAppGroupID = @"group.org.matrix";
             kMXEventTypeStringKeyVerificationDone,
             kMXEventTypeStringPollStart,
             kMXEventTypeStringPollStartMSC3381,
+            kMXEventTypeStringPollEnd,
+            kMXEventTypeStringPollEndMSC3381,
             kMXEventTypeStringBeaconInfo,
             kMXEventTypeStringBeaconInfoMSC3672
         ].mutableCopy;

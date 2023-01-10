@@ -23,11 +23,13 @@ class PollPlainCell: SizableBaseRoomCell, RoomCellReactionsDisplayable, RoomCell
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        guard let contentView = roomCellContentView?.innerContentView,
-              let bubbleData = cellData as? RoomBubbleCellData,
-              let event = bubbleData.events.last,
-              event.eventType == __MXEventType.pollStart,
-              let controller = TimelinePollProvider.shared.buildTimelinePollVCForEvent(event) else {
+        guard
+            let contentView = roomCellContentView?.innerContentView,
+            let bubbleData = cellData as? RoomBubbleCellData,
+            let event = bubbleData.events.last,
+            event.isTimelinePollEvent,
+            let controller = TimelinePollProvider.shared.buildTimelinePollVCForEvent(event)
+        else {
             return
         }
         

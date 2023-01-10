@@ -22,6 +22,7 @@ enum MockTimelinePollScreenState: MockScreenState, CaseIterable {
     case closedDisclosed
     case openUndisclosed
     case closedUndisclosed
+    case closedPollEnded
     
     var screenType: Any.Type {
         TimelinePollDetails.self
@@ -37,8 +38,10 @@ enum MockTimelinePollScreenState: MockScreenState, CaseIterable {
                                        closed: self == .closedDisclosed || self == .closedUndisclosed ? true : false,
                                        totalAnswerCount: 20,
                                        type: self == .closedDisclosed || self == .openDisclosed ? .disclosed : .undisclosed,
+                                       eventType: self == .closedPollEnded ? .ended : .started,
                                        maxAllowedSelections: 1,
-                                       hasBeenEdited: false)
+                                       hasBeenEdited: false,
+                                       hasDecryptionError: false)
         
         let viewModel = TimelinePollViewModel(timelinePollDetails: poll)
         

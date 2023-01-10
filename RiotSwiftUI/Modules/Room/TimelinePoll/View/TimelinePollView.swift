@@ -31,6 +31,12 @@ struct TimelinePollView: View {
         let poll = viewModel.viewState.poll
         
         VStack(alignment: .leading, spacing: 16.0) {
+            if poll.representsPollEndedEvent {
+                Text(VectorL10n.pollTimelineEndedText)
+                    .font(theme.fonts.footnote)
+                    .foregroundColor(theme.colors.tertiaryContent)
+            }
+            
             Text(poll.question)
                 .font(theme.fonts.bodySB)
                 .foregroundColor(theme.colors.primaryContent) +
@@ -49,6 +55,7 @@ struct TimelinePollView: View {
             .fixedSize(horizontal: false, vertical: true)
             
             Text(totalVotesString)
+                .lineLimit(2)
                 .font(theme.fonts.footnote)
                 .foregroundColor(theme.colors.tertiaryContent)
         }
@@ -61,6 +68,10 @@ struct TimelinePollView: View {
     
     private var totalVotesString: String {
         let poll = viewModel.viewState.poll
+        
+        if poll.hasDecryptionError, poll.totalAnswerCount > 0 {
+            return VectorL10n.pollTimelineDecryptionError
+        }
         
         if poll.closed {
             if poll.totalAnswerCount == 1 {

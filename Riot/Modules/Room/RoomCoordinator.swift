@@ -138,9 +138,9 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         // Add `roomViewController` to the NavigationRouter, only if it has been explicitly set as parameter
         if let navigationRouter = self.parameters.navigationRouter {
             if navigationRouter.modules.isEmpty == false {
-                navigationRouter.push(self.roomViewController, animated: true, popCompletion: nil)
+                navigationRouter.push(self, animated: true, popCompletion: nil)
             } else {
-                navigationRouter.setRootModule(self.roomViewController, popCompletion: nil)
+                navigationRouter.setRootModule(self, popCompletion: nil)
             }
         }
     }

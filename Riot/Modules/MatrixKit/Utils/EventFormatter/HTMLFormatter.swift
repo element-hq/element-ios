@@ -62,7 +62,11 @@ class HTMLFormatter: NSObject {
         let mutableString = NSMutableAttributedString(attributedString: string)
         MXKTools.removeDTCoreTextArtifacts(mutableString)
         postFormatOperations?(mutableString)
-
+        
+        // Remove CTForegroundColorFromContext attribute to fix the iOS 16 black link color issue
+        // REF: https://github.com/Cocoanetics/DTCoreText/issues/792
+        mutableString.removeAttribute(NSAttributedString.Key("CTForegroundColorFromContext"), range: NSRange(location: 0, length: mutableString.length))
+        
         return mutableString
     }
 

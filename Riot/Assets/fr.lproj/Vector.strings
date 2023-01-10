@@ -2542,7 +2542,6 @@
 // First item is client name and second item is session display name
 "user_session_name" = "%@ : %@";
 "user_other_session_unverified_sessions_header_subtitle" = "Vérifiez vos sessions pour renforcer la sécurité de votre messagerie, ou déconnectez celles que vous ne reconnaissez ou utilisez plus.";
-"user_other_session_security_recommendation_title" = "Recommandations de sécurité";
 "user_session_push_notifications_message" = "Lorsqu’activé, cette session recevra des notifications push.";
 "user_session_push_notifications" = "Notifications push";
 "user_sessions_overview_current_session_section_title" = "Session courante";

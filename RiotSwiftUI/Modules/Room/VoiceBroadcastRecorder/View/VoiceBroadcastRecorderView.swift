@@ -42,9 +42,9 @@ struct VoiceBroadcastRecorderView: View {
         VStack(alignment: .center) {
             
             HStack(alignment: .top) {
-                AvatarImage(avatarData: viewModel.viewState.details.avatarData, size: .xSmall)
+                AvatarImage(avatarData: viewModel.viewState.details.avatarData, size: .small)
                 
-                VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 3) {
                     Text(details.avatarData.displayName ?? details.avatarData.matrixItemId)
                         .font(theme.fonts.bodySB)
                         .foregroundColor(theme.colors.primaryContent)
@@ -69,15 +69,16 @@ struct VoiceBroadcastRecorderView: View {
                     Text(VectorL10n.voiceBroadcastLive)
                         .font(theme.fonts.caption1SB)
                         .foregroundColor(Color.white)
+                        .padding(.leading, -4)
                 } icon: {
                     Image(uiImage: Asset.Images.voiceBroadcastLive.image)
                 }
-                .padding(.horizontal, 5)
-                .background(RoundedRectangle(cornerRadius: 4, style: .continuous).fill(backgroundColor))
+                .padding(EdgeInsets(top: 2.0, leading: 4.0, bottom: 2.0, trailing: 4.0))
+                .background(RoundedRectangle(cornerRadius: 2, style: .continuous).fill(backgroundColor))
                 .accessibilityIdentifier("liveButton")
             }
             
-            HStack(alignment: .top, spacing: 16.0) {
+            HStack(alignment: .top, spacing: 34.0) {
                 Button {
                     switch viewModel.viewState.recordingState {
                     case .started, .resumed:
@@ -117,9 +118,9 @@ struct VoiceBroadcastRecorderView: View {
                 .disabled(viewModel.viewState.recordingState == .stopped)
                 .mask(Color.black.opacity(viewModel.viewState.recordingState == .stopped ? 0.3 : 1.0))
             }
+            .padding(EdgeInsets(top: 10.0, leading: 0.0, bottom: 10.0, trailing: 0.0))
         }
-        .padding([.horizontal, .top], 2.0)
-        .padding([.bottom])
+        .padding(EdgeInsets(top: 12.0, leading: 4.0, bottom: 12.0, trailing: 4.0))
     }
 }
 

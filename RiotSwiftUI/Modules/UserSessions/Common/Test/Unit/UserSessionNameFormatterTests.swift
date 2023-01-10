@@ -20,14 +20,14 @@ import XCTest
 
 class UserSessionNameFormatterTests: XCTestCase {
     func testSessionDisplayNameTrumpsDeviceTypeName() {
-        XCTAssertEqual("Johnny's iPhone", UserSessionNameFormatter.sessionName(deviceType: .mobile, sessionDisplayName: "Johnny's iPhone"))
+        XCTAssertEqual("Johnny's iPhone", UserSessionNameFormatter.sessionName(sessionId: "sessionId", sessionDisplayName: "Johnny's iPhone"))
     }
     
     func testEmptySessionDisplayNameFallsBackToDeviceTypeName() {
-        XCTAssertEqual(DeviceType.mobile.name, UserSessionNameFormatter.sessionName(deviceType: .mobile, sessionDisplayName: ""))
+        XCTAssertEqual("sessionId", UserSessionNameFormatter.sessionName(sessionId: "sessionId", sessionDisplayName: ""))
     }
 
     func testNilSessionDisplayNameFallsBackToDeviceTypeName() {
-        XCTAssertEqual(DeviceType.mobile.name, UserSessionNameFormatter.sessionName(deviceType: .mobile, sessionDisplayName: nil))
+        XCTAssertEqual("sessionId", UserSessionNameFormatter.sessionName(sessionId: "sessionId", sessionDisplayName: nil))
     }
 }

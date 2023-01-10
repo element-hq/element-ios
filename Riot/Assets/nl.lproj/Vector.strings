@@ -2724,7 +2724,6 @@
 "user_other_session_verified_sessions_header_subtitle" = "Voor de beste beveiliging log je uit bij elke sessie die je niet meer herkent of gebruikt.";
 "user_other_session_current_session_details" = "Jouw huidige sessie";
 "user_other_session_unverified_sessions_header_subtitle" = "Verifieer je sessies voor verbeterde beveiligde berichtenuitwisseling of meld je af bij sessies die je niet meer herkent of gebruikt.";
-"user_other_session_security_recommendation_title" = "Beveiligingsaanbeveling";
 "user_session_push_notifications_message" = "Indien ingeschakeld, ontvangt deze sessie pushmeldingen.";
 "user_session_push_notifications" = "Pushmeldingen";
 "user_other_session_verified_additional_info" = "Deze sessie is klaar voor beveiligde berichtenuitwisseling.";
@@ -2775,7 +2774,7 @@
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Houd er rekening mee dat sessienamen ook zichtbaar zijn voor mensen met wie je communiceert. %@";
 "manage_session_name_hint" = "Met aangepaste sessienamen kan je jouw apparaten gemakkelijker herkennen.";
-"settings_labs_enable_voice_broadcast" = "Voice-uitzending (in actieve ontwikkeling)";
+"settings_labs_enable_voice_broadcast" = "Voice-uitzending";
 "settings_labs_enable_wysiwyg_composer" = "Probeer de rich-text-editor (platte tekst-modus komt binnenkort)";
 "settings_labs_enable_new_session_manager" = "Nieuwe sessiemanager";
 "room_first_message_placeholder" = "Stuur je eerste bericht…";

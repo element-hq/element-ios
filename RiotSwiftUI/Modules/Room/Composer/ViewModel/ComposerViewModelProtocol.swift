@@ -25,6 +25,7 @@ protocol ComposerViewModelProtocol {
     var placeholder: String? { get set }
     var isFocused: Bool { get }
     var isLandscapePhone: Bool { get set }
+    var selectionToRestore: NSRange? { get }
     
     func dismissKeyboard()
     func showKeyboard()

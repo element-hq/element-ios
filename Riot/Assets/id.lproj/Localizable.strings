@@ -172,3 +172,6 @@
 
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
 "MSGS_FROM_TWO_PLUS_USERS" = "%@ pesan baru dari %@, %@ dan lainnya";
+
+/* New voice broadcast from a specific person, not referencing a room. */
+"VOICE_BROADCAST_FROM_USER" = "%@ memulai sebuah siaran suara";

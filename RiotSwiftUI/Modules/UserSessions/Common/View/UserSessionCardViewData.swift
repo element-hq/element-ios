@@ -102,7 +102,7 @@ struct UserSessionCardViewData {
          isCurrentSessionDisplayMode: Bool = false,
          isActive: Bool) {
         self.sessionId = sessionId
-        sessionName = UserSessionNameFormatter.sessionName(deviceType: deviceType, sessionDisplayName: sessionDisplayName)
+        sessionName = UserSessionNameFormatter.sessionName(sessionId: sessionId, sessionDisplayName: sessionDisplayName)
         self.verificationState = verificationState
         
         var lastActivityDateString: String?

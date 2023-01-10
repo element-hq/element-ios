@@ -80,10 +80,7 @@
         // Manage lastEventAttributedTextMessage optional property
         if (!roomCellData.roomSummary.spaceChildInfo && [roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
         {
-            // Force the default text color for the last message (cancel highlighted message color)
-            NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:roomCellData.lastEventAttributedTextMessage];
-            [lastEventDescription addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.textSecondaryColor range:NSMakeRange(0, lastEventDescription.length)];
-            self.lastEventDescription.attributedText = lastEventDescription;
+            self.lastEventDescription.attributedText = roomCellData.lastEventAttributedTextMessage;
         }
         else
         {

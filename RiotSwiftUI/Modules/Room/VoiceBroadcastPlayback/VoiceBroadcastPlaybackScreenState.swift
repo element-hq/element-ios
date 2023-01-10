@@ -18,7 +18,7 @@ import Foundation
 import SwiftUI
 
 typealias MockVoiceBroadcastPlaybackViewModelType = StateStoreViewModel<VoiceBroadcastPlaybackViewState, VoiceBroadcastPlaybackViewAction>
-class MockVoiceBroadcastPlaybackViewModel: MockVoiceBroadcastPlaybackViewModelType, VoiceBroadcastPlaybackViewModelProtocol {    
+class MockVoiceBroadcastPlaybackViewModel: MockVoiceBroadcastPlaybackViewModelType, VoiceBroadcastPlaybackViewModelProtocol {
 }
 
 /// Using an enum for the screen allows you define the different state cases with
@@ -43,7 +43,7 @@ enum MockVoiceBroadcastPlaybackScreenState: MockScreenState, CaseIterable {
     var screenView: ([Any], AnyView) {
         
         let details = VoiceBroadcastPlaybackDetails(senderDisplayName: "Alice", avatarData: AvatarInput(mxContentUri: "", matrixItemId: "!fakeroomid:matrix.org", displayName: "The name of the room"))
-        let viewModel = MockVoiceBroadcastPlaybackViewModel(initialViewState: VoiceBroadcastPlaybackViewState(details: details, broadcastState: .started,  playbackState: .stopped, playingState: VoiceBroadcastPlayingState(duration: 10.0, isLive: true), bindings: VoiceBroadcastPlaybackViewStateBindings(progress: 0)))
+        let viewModel = MockVoiceBroadcastPlaybackViewModel(initialViewState: VoiceBroadcastPlaybackViewState(details: details, broadcastState: .started,  playbackState: .stopped, playingState: VoiceBroadcastPlayingState(duration: 10.0, isLive: true, canMoveForward: false, canMoveBackward: false), bindings: VoiceBroadcastPlaybackViewStateBindings(progress: 0)))
         
         return (
             [false, viewModel],

@@ -54,6 +54,7 @@ struct UserSessionDetails: View {
             }
         }
         .listStyle(.grouped)
+        .listBackgroundColor(theme.colors.system)
         .navigationBarTitle(VectorL10n.userSessionDetailsTitle)
     }
 }

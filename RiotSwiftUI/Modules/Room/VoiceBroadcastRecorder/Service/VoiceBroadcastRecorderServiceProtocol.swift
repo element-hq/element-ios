@@ -36,4 +36,7 @@ protocol VoiceBroadcastRecorderServiceProtocol {
 
     /// Resume voice broadcast recording after paused it.
     func resumeRecordingVoiceBroadcast()
+    
+    /// Cancel voice broadcast recording after redacted it.
+    func cancelRecordingVoiceBroadcast()
 }

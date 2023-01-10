@@ -78,8 +78,14 @@ public class VoiceBroadcastService: NSObject {
     /// stop a voice broadcast info.
     /// - Parameters:
     ///   - lastChunkSequence: The last sent chunk number.
+    ///   - voiceBroadcastId: The VoiceBroadcast identifier to stop. Use it only to force stop a specific VoiceBroadcast.
     ///   - completion: A closure called when the operation completes. Provides the event id of the event generated on the home server on success.
-    func stopVoiceBroadcast(lastChunkSequence: Int, completion: @escaping (MXResponse<String?>) -> Void) {
+    func stopVoiceBroadcast(lastChunkSequence: Int,
+                            voiceBroadcastId: String? = nil,
+                            completion: @escaping (MXResponse<String?>) -> Void) {
+        if let voiceBroadcastId = voiceBroadcastId {
+            self.voiceBroadcastId = voiceBroadcastId
+        }
         sendVoiceBroadcastInfo(lastChunkSequence: lastChunkSequence, state: VoiceBroadcastInfoState.stopped, completion: completion)
     }
     
@@ -132,7 +138,7 @@ public class VoiceBroadcastService: NSObject {
         case .resumed:
             return [.paused, .stopped]
         case .stopped:
-            return [.started]
+            return [.started, .stopped]
         }
     }
     

@@ -162,7 +162,7 @@ final class ThreadListViewController: UIViewController {
     
     private func renderLoading() {
         emptyView.isHidden = true
-        threadsTableView.isHidden = true
+        threadsTableView.isHidden = viewModel.numberOfThreads == 0
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
@@ -352,6 +352,10 @@ extension ThreadListViewController: UITableViewDelegate {
         cell.backgroundColor = theme.backgroundColor
         cell.selectedBackgroundView = UIView()
         cell.selectedBackgroundView?.backgroundColor = theme.selectedBackgroundColor
+        
+        if indexPath.row == viewModel.numberOfThreads - 1 {
+            viewModel.process(viewAction: .loadData)
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

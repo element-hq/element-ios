@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "從 %@ 來的訊息";
+"MSG_FROM_USER" = "%@ 傳來的訊息";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ 在 %@ 貼文";
 /* New message from a specific person, not referencing a room. Content included. */
@@ -51,3 +51,81 @@
 "SINGLE_UNREAD" = "您收到了一則訊息";
 /* Message title for a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ 從 %@";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ 在 %@ 已回覆";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ 已回覆";
+/** General **/
+
+"Notification" = "通知";
+
+/** Key verification **/
+
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ 請求驗證";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ （群組通話）";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "群組通話開始";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ 更新了簡介";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ 變更名稱";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ 變更名稱為 %@";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ 變更頭像";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ 送出一個反應";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ 覺得 %@";
+
+/* New message with hidden content due to PIN enabled */
+"MESSAGE_PROTECTED" = "新訊息";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "在 %@ 的訊息";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "來自 %@ 的訊息";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "訊息";
+
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ 戳你一下";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ 已分享他的位置";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ 傳送一個檔案 %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ 傳送一個語音訊息";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ 傳送一個音訊檔案 %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ 傳送一個影片";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ 傳送一張圖片";

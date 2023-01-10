@@ -151,6 +151,21 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         })
     }
     
+    func cancelRecordingVoiceBroadcast() {
+        MXLog.debug("[VoiceBroadcastRecorderService] Cancel recording voice broadcast")
+        audioEngine.stop()
+        audioEngine.inputNode.removeTap(onBus: audioNodeBus)
+        UIApplication.shared.isIdleTimerDisabled = false
+        
+        // Remove current chunk
+        if self.chunkFile != nil {
+            self.deleteRecording(at: self.chunkFile.url)
+            self.chunkFile = nil
+        }
+        
+        self.tearDownVoiceBroadcastService()
+    }
+    
     // MARK: - Private
     /// Reset chunk values.
     private func resetValues() {

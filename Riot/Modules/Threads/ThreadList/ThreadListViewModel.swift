@@ -29,7 +29,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     private var threads: [MXThreadProtocol] = []
     private var eventFormatter: MXKEventFormatter?
     private var roomState: MXRoomState?
-    
+    private var nextBatch: String?
     private var currentOperation: MXHTTPOperation?
     private var longPressedThread: MXThreadProtocol?
     
@@ -71,6 +71,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             viewState = .showingFilterTypes
         case .selectFilterType(let type):
             selectedFilterType = type
+            resetData()
             loadData()
         case .selectThread(let index):
             selectThread(index)
@@ -230,7 +231,15 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         )
     }
     
+    private func resetData() {
+        nextBatch = nil
+        threads = []
+    }
+    
     private func loadData(showLoading: Bool = true) {
+        guard threads.isEmpty || nextBatch != nil else {
+            return
+        }
 
         if showLoading {
             viewState = .loading
@@ -245,12 +254,12 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             onlyParticipated = true
         }
         
-        session.threadingService.allThreads(inRoom: roomId,
-                                            onlyParticipated: onlyParticipated) { [weak self] response in
+        session.threadingService.allThreads(inRoom: roomId, from: nextBatch, onlyParticipated: onlyParticipated) { [weak self] response in
             guard let self = self else { return }
             switch response {
-            case .success(let threads):
-                self.threads = threads
+            case .success(let value):
+                self.threads = self.threads + value.threads
+                self.nextBatch = value.nextBatch
                 self.threadsLoaded()
             case .failure(let error):
                 MXLog.error("[ThreadListViewModel] loadData", context: error)

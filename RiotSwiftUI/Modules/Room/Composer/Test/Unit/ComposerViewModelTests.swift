@@ -81,4 +81,24 @@ final class ComposerViewModelTests: XCTestCase {
         viewModel.dismissKeyboard()
         XCTAssert(context.viewState.bindings.focused == false)
     }
+    
+    func testSelectionToRestore() {
+        XCTAssertEqual(viewModel.selectionToRestore, nil)
+        let testRange = NSRange(location: 0, length: 10)
+        context.send(viewAction: .storeSelection(selection: testRange))
+        XCTAssertEqual(viewModel.selectionToRestore, testRange)
+    }
+    
+    func testLinkAction() {
+        var result: ComposerViewModelResult!
+        viewModel.callback = { value in
+            result = value
+        }
+        context.send(viewAction: .linkTapped(linkAction: .createWithText))
+        XCTAssertEqual(result, .linkTapped(LinkAction: .createWithText))
+        context.send(viewAction: .linkTapped(linkAction: .create))
+        XCTAssertEqual(result, .linkTapped(LinkAction: .create))
+        context.send(viewAction: .linkTapped(linkAction: .edit(link: "https://element.io")))
+        XCTAssertEqual(result, .linkTapped(LinkAction: .edit(link: "https://element.io")))
+    }
 }

@@ -74,8 +74,7 @@ struct Composer: View {
         FormatType.allCases.map { type in
             FormatItem(
                 type: type,
-                active: wysiwygViewModel.actionStates[type.composerAction] == .reversed,
-                disabled: wysiwygViewModel.actionStates[type.composerAction] == .disabled
+                state: wysiwygViewModel.actionStates[type.composerAction] ?? .disabled
             )
         }
     }
@@ -226,7 +225,12 @@ struct Composer: View {
                 HStack(alignment: .center, spacing: 0) {
                     sendMediaButton
                     FormattingToolbar(formatItems: formatItems) { type in
-                        wysiwygViewModel.apply(type.action)
+                        if type.action == .link {
+                            storeCurrentSelection()
+                            sendLinkAction()
+                        } else {
+                            wysiwygViewModel.apply(type.action)
+                        }
                     }
                     .frame(height: 44)
                     Spacer()
@@ -241,6 +245,15 @@ struct Composer: View {
                 wysiwygViewModel.maximised = false
             }
         }
+    }
+    
+    private func storeCurrentSelection() {
+        viewModel.send(viewAction: .storeSelection(selection: wysiwygViewModel.attributedContent.selection))
+    }
+    
+    private func sendLinkAction() {
+        let linkAction = wysiwygViewModel.getLinkAction()
+        viewModel.send(viewAction: .linkTapped(linkAction: linkAction))
     }
 }
 

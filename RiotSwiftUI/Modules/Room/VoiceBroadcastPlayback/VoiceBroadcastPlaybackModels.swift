@@ -21,6 +21,9 @@ enum VoiceBroadcastPlaybackViewAction {
     case play
     case pause
     case sliderChange(didChange: Bool)
+    case backward
+    case forward
+    case redact
 }
 
 enum VoiceBroadcastPlaybackState {
@@ -38,8 +41,11 @@ struct VoiceBroadcastPlaybackDetails {
 
 struct VoiceBroadcastPlayingState {
     var duration: Float
-    var durationLabel: String?
+    var elapsedTimeLabel: String?
+    var remainingTimeLabel: String?
     var isLive: Bool
+    var canMoveForward: Bool
+    var canMoveBackward: Bool
 }
 
 struct VoiceBroadcastPlaybackViewState: BindableState {

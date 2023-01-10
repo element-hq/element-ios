@@ -43,13 +43,14 @@ struct UserSessionListItem: View {
                     DeviceAvatarView(viewData: viewData.deviceAvatarViewData, isSelected: viewData.isSelected)
                     VStack(alignment: .leading, spacing: 0) {
                         Text(viewData.sessionName)
-                            .font(theme.fonts.bodySB)
+                            .lineLimit(1)
+                            .font(theme.fonts.headline)
                             .foregroundColor(theme.colors.primaryContent)
                             .multilineTextAlignment(.leading)
                             .padding(.top, 16)
                             .padding(.bottom, 2)
                             .padding(.trailing, 16)
-                        HStack {
+                        HStack(alignment: .top) {
                             if let sessionDetailsIcon = viewData.sessionDetailsIcon {
                                 Image(sessionDetailsIcon)
                                     .padding(.leading, 2)
@@ -67,7 +68,7 @@ struct UserSessionListItem: View {
                         }
                         .padding(.bottom, 16)
                         .padding(.trailing, 16)
-                        SeparatorLine()
+                        SeparatorLine(height: 0.5)
                             .isHidden(isSeparatorHidden)
                     }
                     .padding(.leading, 7)

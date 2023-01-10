@@ -1,3 +1,43 @@
+## Changes in 1.9.15 (2023-01-10)
+
+✨ Features
+
+- Threads: Load the thread list using server-side sorting and pagination ([#6059](https://github.com/vector-im/element-ios/issues/6059))
+- Rich Text Composer: added link creation/editing feature. ([#7159](https://github.com/vector-im/element-ios/issues/7159))
+- Rich Text Composer: added inline code formatting feature. ([#7177](https://github.com/vector-im/element-ios/issues/7177))
+- Voice Broadcast: allow to react on Voice Broadcast. ([#7179](https://github.com/vector-im/element-ios/issues/7179))
+
+🙌 Improvements
+
+- Labs: VoiceBroadcast: Add backward and forward buttons for playback ([#7146](https://github.com/vector-im/element-ios/pull/7146))
+- Update the room description in the rooms list in case of live broadcast (incoming or outgoing) ([#7160](https://github.com/vector-im/element-ios/pull/7160))
+- Labs: VoiceBroadcast: Link the live icon color to the recording state ([#7163](https://github.com/vector-im/element-ios/pull/7163))
+- Add old device data from user's account data events. ([#7164](https://github.com/vector-im/element-ios/pull/7164))
+- Labs: VoiceBroadcast: Replace the player timeline ([#7165](https://github.com/vector-im/element-ios/pull/7165))
+- Labs: VoiceBroadcast: Update Voice Broadcast recorder cell by adjusting some padding values ([#7175](https://github.com/vector-im/element-ios/pull/7175))
+- Labs: VoiceBroadcast: Update live badge layout for recorder and player cells ([#7178](https://github.com/vector-im/element-ios/pull/7178))
+- Updates on the UI/UX to conform the device manager to the design. ([#7180](https://github.com/vector-im/element-ios/pull/7180))
+- Labs: VoiceBroadcast: Handle potential crash whereas a voice broadcast is in progress ([#7188](https://github.com/vector-im/element-ios/pull/7188))
+- Polls: show decryption errors in timeline during aggregations. ([#7206](https://github.com/vector-im/element-ios/pull/7206))
+- Device Manager: change fallback display name for sessions. ([#7214](https://github.com/vector-im/element-ios/pull/7214))
+- Ignore the voice broadcast chunks at the notifications level ([#7230](https://github.com/vector-im/element-ios/pull/7230))
+- Polls: render the poll ended event in the timeline. ([#7231](https://github.com/vector-im/element-ios/pull/7231))
+- Upgrade MatrixSDK version ([v0.24.7](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.24.7)).
+- Updated fastlane script to use Xcode v 14.2. ([#7182](https://github.com/vector-im/element-ios/issues/7182))
+
+🐛 Bugfixes
+
+- Labs: Crash on new voice broadcast if the room has avatar ([#7173](https://github.com/vector-im/element-ios/pull/7173))
+- Fix hidden live location timeline tiles after text messages ([#7220](https://github.com/vector-im/element-ios/pull/7220))
+- Fix an issue preventing temporary audio files to be deleted. ([#7244](https://github.com/vector-im/element-ios/pull/7244))
+- App Layout: wrap Space names to 1 line only in the bottom sheet ([#6579](https://github.com/vector-im/element-ios/issues/6579))
+- Timeline: fixed navigation back from replies. ([#7003](https://github.com/vector-im/element-ios/issues/7003))
+- Timeline: fixed an issue where formatted links appeared in black. ([#7109](https://github.com/vector-im/element-ios/issues/7109))
+- Voice Broadcast: Pause voice broadcast listening on new voice broadcast recording ([#7192](https://github.com/vector-im/element-ios/issues/7192))
+- Direct Message: fixed a crash when a new DM room is created ([#7232](https://github.com/vector-im/element-ios/issues/7232))
+- Voice Broadcast: Prevent sending voice message during a voice broadcast recording ([#7235](https://github.com/vector-im/element-ios/issues/7235))
+
+
 ## Changes in 1.9.14 (2022-12-13)
 
 🙌 Improvements
