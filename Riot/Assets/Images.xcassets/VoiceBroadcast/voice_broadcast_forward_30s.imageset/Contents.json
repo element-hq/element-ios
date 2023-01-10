@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "voice_broadcast_forward_30s.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -24,10 +24,8 @@ import WysiwygComposer
 struct FormatItem {
     /// The type of the item
     let type: FormatType
-    /// Whether it is active(highlighted)
-    let active: Bool
-    /// Whether it is disabled or enabled
-    let disabled: Bool
+    /// The state of the item
+    let state: ActionState
 }
 
 /// The types of formatting actions
@@ -36,6 +34,8 @@ enum FormatType {
     case italic
     case underline
     case strikethrough
+    case inlineCode
+    case link
 }
 
 extension FormatType: CaseIterable, Identifiable {
@@ -58,6 +58,10 @@ extension FormatItem {
             return Asset.Images.strikethrough.name
         case .underline:
             return Asset.Images.underlined.name
+        case .link:
+            return Asset.Images.link.name
+        case .inlineCode:
+            return Asset.Images.code.name
         }
     }
     
@@ -71,6 +75,10 @@ extension FormatItem {
             return "strikethroughButton"
         case .underline:
             return "underlineButton"
+        case .link:
+            return "linkButton"
+        case .inlineCode:
+            return "inlineCodeButton"
         }
     }
     
@@ -84,6 +92,10 @@ extension FormatItem {
             return VectorL10n.wysiwygComposerFormatActionStrikethrough
         case .underline:
             return VectorL10n.wysiwygComposerFormatActionUnderline
+        case .link:
+            return VectorL10n.wysiwygComposerFormatActionLink
+        case .inlineCode:
+            return VectorL10n.wysiwygComposerFormatActionInlineCode
         }
     }
 }
@@ -100,11 +112,14 @@ extension FormatType {
             return .strikeThrough
         case .underline:
             return .underline
+        case .link:
+            return .link
+        case .inlineCode:
+            return .inlineCode
         }
     }
     
     // TODO: We probably don't need to expose this, clean up.
-    
     /// Convenience method to map it to the external rust binging action
     var composerAction: ComposerAction {
         switch self {
@@ -116,6 +131,10 @@ extension FormatType {
             return .strikeThrough
         case .underline:
             return .underline
+        case .link:
+            return .link
+        case .inlineCode:
+            return .inlineCode
         }
     }
 }
@@ -130,11 +149,23 @@ enum ComposerSendMode: Equatable {
 enum ComposerViewAction: Equatable {
     case cancel
     case contentDidChange(isEmpty: Bool)
+    case linkTapped(linkAction: LinkAction)
+    case storeSelection(selection: NSRange)
 }
 
 enum ComposerViewModelResult: Equatable {
     case cancel
     case contentDidChange(isEmpty: Bool)
+    case linkTapped(LinkAction: LinkAction)
+}
+
+final class LinkActionWrapper: NSObject {
+    let linkAction: LinkAction
+    
+    init(_ linkAction: LinkAction) {
+        self.linkAction = linkAction
+        super.init()
+    }
 }
 
 

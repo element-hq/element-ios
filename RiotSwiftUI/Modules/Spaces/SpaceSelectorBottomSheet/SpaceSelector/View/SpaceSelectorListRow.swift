@@ -57,6 +57,7 @@ struct SpaceSelectorListRow: View {
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
                     Text(displayName ?? "")
+                        .lineLimit(1)
                         .foregroundColor(theme.colors.primaryContent)
                         .font(theme.fonts.bodySB)
                         .accessibility(identifier: "itemName")

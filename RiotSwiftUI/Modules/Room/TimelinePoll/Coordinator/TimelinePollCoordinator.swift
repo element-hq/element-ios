@@ -21,7 +21,7 @@ import SwiftUI
 struct TimelinePollCoordinatorParameters {
     let session: MXSession
     let room: MXRoom
-    let pollStartEvent: MXEvent
+    let pollEvent: MXEvent
 }
 
 final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDelegate {
@@ -46,7 +46,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     init(parameters: TimelinePollCoordinatorParameters) throws {
         self.parameters = parameters
         
-        try pollAggregator = PollAggregator(session: parameters.session, room: parameters.room, pollStartEventId: parameters.pollStartEvent.eventId)
+        try pollAggregator = PollAggregator(session: parameters.session, room: parameters.room, pollEvent: parameters.pollEvent)
         pollAggregator.delegate = self
         
         viewModel = TimelinePollViewModel(timelinePollDetails: buildTimelinePollFrom(pollAggregator.poll))
@@ -65,7 +65,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
             .sink { [weak self] identifiers in
                 guard let self = self else { return }
 
-                self.parameters.room.sendPollResponse(for: parameters.pollStartEvent,
+                self.parameters.room.sendPollResponse(for: parameters.pollEvent,
                                                       withAnswerIdentifiers: identifiers,
                                                       threadId: nil,
                                                       localEcho: nil, success: nil) { [weak self] error in
@@ -96,7 +96,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     }
     
     func endPoll() {
-        parameters.room.sendPollEnd(for: parameters.pollStartEvent, threadId: nil, localEcho: nil, success: nil) { [weak self] _ in
+        parameters.room.sendPollEnd(for: parameters.pollEvent, threadId: nil, localEcho: nil, success: nil) { [weak self] _ in
             self?.viewModel.showClosingFailure()
         }
     }
@@ -131,8 +131,10 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
                                    closed: poll.isClosed,
                                    totalAnswerCount: poll.totalAnswerCount,
                                    type: pollKindToTimelinePollType(poll.kind),
+                                   eventType: parameters.pollEvent.eventType == .pollStart ? .started : .ended,
                                    maxAllowedSelections: poll.maxAllowedSelections,
-                                   hasBeenEdited: poll.hasBeenEdited)
+                                   hasBeenEdited: poll.hasBeenEdited,
+                                   hasDecryptionError: poll.hasDecryptionError)
     }
     
     private func pollKindToTimelinePollType(_ kind: PollKind) -> TimelinePollType {

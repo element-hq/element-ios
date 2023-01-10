@@ -33,11 +33,16 @@ enum MockComposerCreateActionListScreenState: MockScreenState, CaseIterable {
         case .fullList:
             actions = ComposerCreateAction.allCases
         }
-        let viewModel = ComposerCreateActionListViewModel(initialViewState: ComposerCreateActionListViewState(
-            actions: actions,
-            wysiwygEnabled: true,
-            isScrollingEnabled: false,
-            bindings: ComposerCreateActionListBindings(textFormattingEnabled: true)))
+        let viewModel = ComposerCreateActionListViewModel(
+            initialViewState: ComposerCreateActionListViewState(
+                actions: actions,
+                wysiwygEnabled: true,
+                isScrollingEnabled: false,
+                bindings: ComposerCreateActionListBindings(
+                    textFormattingEnabled: true
+                )
+            )
+        )
         
         return (
             [viewModel],

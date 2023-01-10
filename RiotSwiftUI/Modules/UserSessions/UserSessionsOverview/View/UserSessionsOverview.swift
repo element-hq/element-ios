@@ -24,22 +24,19 @@ struct UserSessionsOverview: View {
     private let maxOtherSessionsToDisplay = 5
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            ScrollView {
-                if hasSecurityRecommendations {
-                    securityRecommendationsSection
-                }
-                
-                currentSessionsSection
-                
-                if !viewModel.viewState.otherSessionsViewData.isEmpty {
-                    otherSessionsSection
-                }
+        ScrollView {
+            if hasSecurityRecommendations {
+                securityRecommendationsSection
             }
-            .readableFrame()
+            
+            currentSessionsSection
+            
+            if !viewModel.viewState.otherSessionsViewData.isEmpty {
+                otherSessionsSection
+            }
         }
         .background(theme.colors.system.ignoresSafeArea())
-        .frame(maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle(VectorL10n.userSessionsOverviewTitle)
         .navigationBarTitleDisplayMode(.inline)
         .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
@@ -51,17 +48,19 @@ struct UserSessionsOverview: View {
     
     private var securityRecommendationsSection: some View {
         SwiftUI.Section {
-            if !viewModel.viewState.unverifiedSessionsViewData.isEmpty {
-                SecurityRecommendationCard(style: .unverified,
-                                           sessionCount: viewModel.viewState.unverifiedSessionsViewData.count) {
-                    viewModel.send(viewAction: .viewAllUnverifiedSessions)
+            VStack(spacing: 16) {
+                if !viewModel.viewState.unverifiedSessionsViewData.isEmpty {
+                    SecurityRecommendationCard(style: .unverified,
+                                               sessionCount: viewModel.viewState.unverifiedSessionsViewData.count) {
+                        viewModel.send(viewAction: .viewAllUnverifiedSessions)
+                    }
                 }
-            }
-            
-            if !viewModel.viewState.inactiveSessionsViewData.isEmpty {
-                SecurityRecommendationCard(style: .inactive,
-                                           sessionCount: viewModel.viewState.inactiveSessionsViewData.count) {
-                    viewModel.send(viewAction: .viewAllInactiveSessions)
+                
+                if !viewModel.viewState.inactiveSessionsViewData.isEmpty {
+                    SecurityRecommendationCard(style: .inactive,
+                                               sessionCount: viewModel.viewState.inactiveSessionsViewData.count) {
+                        viewModel.send(viewAction: .viewAllInactiveSessions)
+                    }
                 }
             }
         } header: {
@@ -75,10 +74,10 @@ struct UserSessionsOverview: View {
                 Text(VectorL10n.userSessionsOverviewSecurityRecommendationsSectionInfo)
                     .font(theme.fonts.footnote)
                     .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.bottom, 12.0)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.top, 24)
+            .padding(.bottom, 8.0)
         }
         .padding(.horizontal, 16)
         .accessibilityIdentifier("userSessionsOverviewSecurityRecommendationsSection")
@@ -96,7 +95,7 @@ struct UserSessionsOverview: View {
                     viewModel.send(viewAction: .verifyCurrentSession)
                 }, onViewDetailsAction: { _ in
                     viewModel.send(viewAction: .viewCurrentSessionDetails)
-                }, showLocationInformations: viewModel.viewState.showLocationInfo)
+                }, showLocationInformations: viewModel.viewState.showLocationInfo, displayMode: .compact)
             } header: {
                 HStack(alignment: .firstTextBaseline) {
                     Text(VectorL10n.userSessionsOverviewCurrentSessionSectionTitle)
@@ -104,11 +103,11 @@ struct UserSessionsOverview: View {
                         .font(theme.fonts.footnote)
                         .foregroundColor(theme.colors.secondaryContent)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.bottom, 12.0)
                         .padding(.top, 24.0)
                     
                     currentSessionMenu
                 }
+                .padding(.bottom, 8.0)
             }
             .padding(.horizontal, 16)
         }
@@ -170,6 +169,7 @@ struct UserSessionsOverview: View {
     private var otherSessionsSection: some View {
         SwiftUI.Section {
             LazyVStack(spacing: 0) {
+                SeparatorLine(height: 0.5)
                 ForEach(viewModel.viewState.otherSessionsViewData.prefix(maxOtherSessionsToDisplay)) { viewData in
                     UserSessionListItem(viewData: viewData,
                                         showsLocationInfo: viewModel.viewState.showLocationInfo,
@@ -181,6 +181,7 @@ struct UserSessionsOverview: View {
                         viewModel.send(viewAction: .viewAllOtherSessions)
                     }
                 }
+                SeparatorLine(height: 0.5)
             }
             .background(theme.colors.background)
         } header: {
@@ -198,11 +199,11 @@ struct UserSessionsOverview: View {
                 Text(VectorL10n.userSessionsOverviewOtherSessionsSectionInfo)
                     .font(theme.fonts.footnote)
                     .foregroundColor(theme.colors.secondaryContent)
-                    .padding(.bottom, 12.0)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16.0)
             .padding(.top, 24.0)
+            .padding(.bottom, 8.0)
         }
         .accessibilityIdentifier("userSessionsOverviewOtherSection")
     }

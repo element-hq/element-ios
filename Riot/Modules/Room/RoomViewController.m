@@ -1064,6 +1064,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         // Set room title view
         [self refreshRoomTitle];
+        
+        // Stop any pending voice broadcast if needed
+        [self stopUncompletedVoiceBroadcastIfNeeded];
     }
     else
     {
@@ -2447,6 +2450,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         [self showAlertWithTitle:[VectorL10n voiceBroadcastUnauthorizedTitle] message:[VectorL10n voiceBroadcastAlreadyInProgressMessage]];
         return;
     }
+    
+    // Prevents listening a VB when recording a new one
+    [VoiceBroadcastPlaybackProvider.shared pausePlaying];
     
     // Request the voice broadcast service to start recording - No service is returned if someone else is already broadcasting in the room
     [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
@@ -3968,7 +3974,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
 
-        if (!isJitsiCallEvent && selectedEvent.eventType != MXEventTypePollStart &&
+        if (!isJitsiCallEvent && !selectedEvent.isTimelinePollEvent &&
             selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeQuote
@@ -3989,7 +3995,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         
         if (selectedEvent.sentState == MXEventSentStateSent &&
-            selectedEvent.eventType != MXEventTypePollStart &&
+            !selectedEvent.isTimelinePollEvent &&
             // Forwarding of live-location shares still to be implemented
             selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
@@ -4005,7 +4011,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
         
-        if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare && selectedEvent.eventType != MXEventTypePollStart &&
+        if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare && !selectedEvent.isTimelinePollEvent &&
             selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeShare
@@ -7144,6 +7150,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             case MXEventTypeKeyVerificationDone:
             case MXEventTypeKeyVerificationCancel:
             case MXEventTypePollStart:
+            case MXEventTypePollEnd:
             case MXEventTypeBeaconInfo:
                 result = NO;
                 break;
@@ -7882,6 +7889,20 @@ static CGSize kThreadListBarButtonItemImageSize;
             showPopUpInViewController:self completionHandler:^(BOOL granted) {
         
     }];
+}
+
+- (BOOL)voiceMessageControllerDidRequestRecording:(VoiceMessageController *)voiceMessageController
+{
+    MXSession* session = self.roomDataSource.mxSession;
+    // Check whether the user is not already broadcasting here or in another room
+    if (session.voiceBroadcastService)
+    {
+        [self showAlertWithTitle:[VectorL10n voiceMessageBroadcastInProgressTitle] message:[VectorL10n voiceMessageBroadcastInProgressMessage]];
+
+        return NO;
+    }
+
+    return YES;
 }
 
 - (void)voiceMessageController:(VoiceMessageController *)voiceMessageController

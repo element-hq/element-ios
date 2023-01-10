@@ -83,6 +83,9 @@
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ sent a sticker";
 
+/* New voice broadcast from a specific person, not referencing a room. */
+"VOICE_BROADCAST_FROM_USER" = "%@ started a voice broadcast";
+
 /** Notification messages **/
 
 /* New message indicator on unknown room */

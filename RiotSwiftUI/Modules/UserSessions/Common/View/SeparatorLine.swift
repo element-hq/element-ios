@@ -19,10 +19,12 @@ import SwiftUI
 struct SeparatorLine: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    var height: CGFloat = 1.0
+    
     var body: some View {
         Rectangle()
             .fill(theme.colors.quinaryContent)
             .frame(maxWidth: .infinity)
-            .frame(height: 1.0)
+            .frame(height: height)
     }
 }

@@ -4323,6 +4323,18 @@ public class VectorL10n: NSObject {
   public static var noticeVideoAttachment: String { 
     return VectorL10n.tr("Vector", "notice_video_attachment") 
   }
+  /// %@ ended a voice broadcast.
+  public static func noticeVoiceBroadcastEnded(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "notice_voice_broadcast_ended", p1)
+  }
+  /// You ended a voice broadcast.
+  public static var noticeVoiceBroadcastEndedByYou: String { 
+    return VectorL10n.tr("Vector", "notice_voice_broadcast_ended_by_you") 
+  }
+  /// Live broadcast
+  public static var noticeVoiceBroadcastLive: String { 
+    return VectorL10n.tr("Vector", "notice_voice_broadcast_live") 
+  }
   /// Always notify
   public static var notificationSettingsAlwaysNotify: String { 
     return VectorL10n.tr("Vector", "notification_settings_always_notify") 
@@ -4826,6 +4838,14 @@ public class VectorL10n: NSObject {
   /// Failed to update poll
   public static var pollEditFormUpdateFailureTitle: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_update_failure_title") 
+  }
+  /// Due to decryption errors, some votes may not be counted
+  public static var pollTimelineDecryptionError: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_decryption_error") 
+  }
+  /// Ended the poll
+  public static var pollTimelineEndedText: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_ended_text") 
   }
   /// Please try again
   public static var pollTimelineNotClosedSubtitle: String { 
@@ -7567,7 +7587,7 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableThreads: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
   }
-  /// Voice broadcast (under active development)
+  /// Voice broadcast
   public static var settingsLabsEnableVoiceBroadcast: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_voice_broadcast") 
   }
@@ -8727,7 +8747,7 @@ public class VectorL10n: NSObject {
   public static var userOtherSessionPermanentlyUnverifiedAdditionalInfo: String { 
     return VectorL10n.tr("Vector", "user_other_session_permanently_unverified_additional_info") 
   }
-  /// Security recommendation
+  /// Other sessions
   public static var userOtherSessionSecurityRecommendationTitle: String { 
     return VectorL10n.tr("Vector", "user_other_session_security_recommendation_title") 
   }
@@ -9195,6 +9215,14 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastUnauthorizedTitle: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_unauthorized_title") 
   }
+  /// You can't start a voice message as you are currently recording a live broadcast. Please end your live broadcast in order to start recording a voice message
+  public static var voiceMessageBroadcastInProgressMessage: String { 
+    return VectorL10n.tr("Vector", "voice_message_broadcast_in_progress_message") 
+  }
+  /// Can't start voice message
+  public static var voiceMessageBroadcastInProgressTitle: String { 
+    return VectorL10n.tr("Vector", "voice_message_broadcast_in_progress_title") 
+  }
   /// Voice message
   public static var voiceMessageLockScreenPlaceholder: String { 
     return VectorL10n.tr("Vector", "voice_message_lock_screen_placeholder") 
@@ -9311,9 +9339,17 @@ public class VectorL10n: NSObject {
   public static var wysiwygComposerFormatActionBold: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_bold") 
   }
+  /// Apply inline code format
+  public static var wysiwygComposerFormatActionInlineCode: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_inline_code") 
+  }
   /// Apply italic format
   public static var wysiwygComposerFormatActionItalic: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_italic") 
+  }
+  /// Apply link format
+  public static var wysiwygComposerFormatActionLink: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_link") 
   }
   /// Apply underline format
   public static var wysiwygComposerFormatActionStrikethrough: String { 
@@ -9322,6 +9358,22 @@ public class VectorL10n: NSObject {
   /// Apply strikethrough format
   public static var wysiwygComposerFormatActionUnderline: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_underline") 
+  }
+  /// Create a link
+  public static var wysiwygComposerLinkActionCreateTitle: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_link_action_create_title") 
+  }
+  /// Edit link
+  public static var wysiwygComposerLinkActionEditTitle: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_link_action_edit_title") 
+  }
+  /// Link
+  public static var wysiwygComposerLinkActionLink: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_link_action_link") 
+  }
+  /// Text
+  public static var wysiwygComposerLinkActionText: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_link_action_text") 
   }
   /// Attachments
   public static var wysiwygComposerStartActionAttachments: String { 

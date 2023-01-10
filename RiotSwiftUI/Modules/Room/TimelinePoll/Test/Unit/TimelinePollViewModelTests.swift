@@ -34,8 +34,10 @@ class TimelinePollViewModelTests: XCTestCase {
                                                closed: false,
                                                totalAnswerCount: 3,
                                                type: .disclosed,
+                                               eventType: .started,
                                                maxAllowedSelections: 1,
-                                               hasBeenEdited: false)
+                                               hasBeenEdited: false,
+                                               hasDecryptionError: false)
         
         viewModel = TimelinePollViewModel(timelinePollDetails: timelinePoll)
         context = viewModel.context

@@ -33,7 +33,7 @@ struct VoiceBroadcastPlaybackView: View {
     @State private var bufferingSpinnerRotationValue = 0.0
     
     private var backgroundColor: Color {
-        if viewModel.viewState.playingState.isLive {
+        if viewModel.viewState.broadcastState != .paused {
             return theme.colors.alert
         }
         return theme.colors.quarterlyContent
@@ -49,9 +49,9 @@ struct VoiceBroadcastPlaybackView: View {
         VStack(alignment: .center) {
             
             HStack (alignment: .top) {
-                AvatarImage(avatarData: viewModel.viewState.details.avatarData, size: .xSmall)
+                AvatarImage(avatarData: viewModel.viewState.details.avatarData, size: .small)
                 
-                VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 3) {
                     Text(details.avatarData.displayName ?? details.avatarData.matrixItemId)
                         .font(theme.fonts.bodySB)
                         .foregroundColor(theme.colors.primaryContent)
@@ -97,20 +97,34 @@ struct VoiceBroadcastPlaybackView: View {
                         Text(VectorL10n.voiceBroadcastLive)
                             .font(theme.fonts.caption1SB)
                             .foregroundColor(Color.white)
+                            .padding(.leading, -4)
                     } icon: {
                         Image(uiImage: Asset.Images.voiceBroadcastLive.image)
                     }
-                    .padding(.horizontal, 5)
-                    .background(RoundedRectangle(cornerRadius: 4, style: .continuous).fill(backgroundColor))
+                    .padding(EdgeInsets(top: 2.0, leading: 4.0, bottom: 2.0, trailing: 4.0))
+                    .background(RoundedRectangle(cornerRadius: 2, style: .continuous).fill(backgroundColor))
                     .accessibilityIdentifier("liveLabel")
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(EdgeInsets(top: 0.0, leading: 0.0, bottom: 4.0, trailing: 0.0))
             
             if viewModel.viewState.playbackState == .error {
                 VoiceBroadcastPlaybackErrorView()
             } else {
-                ZStack {
+                HStack (spacing: 34.0) {
+                    if viewModel.viewState.playingState.canMoveBackward {
+                        Button {
+                            viewModel.send(viewAction: .backward)
+                        } label: {
+                            Image(uiImage: Asset.Images.voiceBroadcastBackward30s.image)
+                                .renderingMode(.original)
+                        }
+                        .accessibilityIdentifier("backwardButton")
+                    } else {
+                        Spacer().frame(width: 25.0)
+                    }
+                    
                     if viewModel.viewState.playbackState == .playing || viewModel.viewState.playbackState == .buffering {
                         Button { viewModel.send(viewAction: .pause) } label: {
                             Image(uiImage: Asset.Images.voiceBroadcastPause.image)
@@ -125,21 +139,41 @@ struct VoiceBroadcastPlaybackView: View {
                         .disabled(viewModel.viewState.playbackState == .buffering)
                         .accessibilityIdentifier("playButton")
                     }
+                    
+                    if viewModel.viewState.playingState.canMoveForward {
+                        Button {
+                            viewModel.send(viewAction: .forward)
+                        } label: {
+                            Image(uiImage: Asset.Images.voiceBroadcastForward30s.image)
+                                .renderingMode(.original)
+                        }
+                        .accessibilityIdentifier("forwardButton")
+                    } else {
+                        Spacer().frame(width: 25.0)
+                    }
                 }
+                .padding(EdgeInsets(top: 10.0, leading: 0.0, bottom: 10.0, trailing: 0.0))
             }
             
-            Slider(value: $viewModel.progress, in: 0...viewModel.viewState.playingState.duration) {
-                Text("Slider")
-            } minimumValueLabel: {
-                Text("")
-            } maximumValueLabel: {
-                Text(viewModel.viewState.playingState.durationLabel ?? "").font(.body)
-            } onEditingChanged: { didChange in
+            VoiceBroadcastSlider(value: $viewModel.progress,
+                       minValue: 0.0,
+                       maxValue: viewModel.viewState.playingState.duration) { didChange in
                 viewModel.send(viewAction: .sliderChange(didChange: didChange))
             }
+            
+            HStack {
+                Text(viewModel.viewState.playingState.elapsedTimeLabel ?? "")
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .font(theme.fonts.caption1)
+                    .padding(EdgeInsets(top: -8.0, leading: 4.0, bottom: 0.0, trailing: 0.0))
+                Spacer()
+                Text(viewModel.viewState.playingState.remainingTimeLabel ?? "")
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .font(theme.fonts.caption1)
+                    .padding(EdgeInsets(top: -8.0, leading: 0.0, bottom: 0.0, trailing: 4.0))
+            }
         }
-        .padding([.horizontal, .top], 2.0)
-        .padding([.bottom])
+        .padding(EdgeInsets(top: 12.0, leading: 4.0, bottom: 12.0, trailing: 4.0))
     }
 }
 

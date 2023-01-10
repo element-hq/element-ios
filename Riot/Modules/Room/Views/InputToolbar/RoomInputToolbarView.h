@@ -20,6 +20,7 @@
 
 @class RoomActionsBar;
 @class RoomInputToolbarView;
+@class LinkActionWrapper;
 
 /**
  Destination of the message in the composer
@@ -76,6 +77,8 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage;
 
 - (void)didChangeMaximisedState: (BOOL) isMaximised;
+
+- (void)didSendLinkAction: (LinkActionWrapper *)linkAction;
 
 @end
 

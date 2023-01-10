@@ -43,7 +43,7 @@ class TimelinePollProvider: NSObject {
             return coordinator.toPresentable()
         }
         
-        let parameters = TimelinePollCoordinatorParameters(session: session, room: room, pollStartEvent: event)
+        let parameters = TimelinePollCoordinatorParameters(session: session, room: room, pollEvent: event)
         guard let coordinator = try? TimelinePollCoordinator(parameters: parameters) else {
             return nil
         }

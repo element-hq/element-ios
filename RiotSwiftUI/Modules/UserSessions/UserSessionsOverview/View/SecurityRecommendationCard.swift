@@ -30,12 +30,12 @@ struct SecurityRecommendationCard: View {
     let action: () -> Void
     
     var body: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .top, spacing: 16.0) {
             Image(iconName)
             VStack(alignment: .leading, spacing: 16.0) {
                 VStack(alignment: .leading, spacing: 8.0) {
                     Text(title)
-                        .font(theme.fonts.calloutSB)
+                        .font(theme.fonts.headline)
                         .foregroundColor(theme.colors.primaryContent)
                     
                     Text(subtitle)
@@ -43,20 +43,19 @@ struct SecurityRecommendationCard: View {
                         .foregroundColor(theme.colors.secondaryContent)
                 }
                 
-                Button {
-                    action()
-                } label: {
-                    Text(buttonTitle)
-                        .font(theme.fonts.body)
-                }
-                .foregroundColor(theme.colors.accent)
+                Text(buttonTitle)
+                    .font(theme.fonts.body)
+                    .foregroundColor(theme.colors.accent)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(16)
         .background(theme.colors.background)
         .clipShape(backgroundShape)
-        .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 1.0, shape: backgroundShape)
+        .shapedBorder(color: theme.colors.quinaryContent, borderWidth: 0.5, shape: backgroundShape)
+        .onTapGesture {
+            action()
+        }
     }
     
     private var backgroundShape: RoundedRectangle {

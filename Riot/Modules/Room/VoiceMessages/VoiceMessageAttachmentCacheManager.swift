@@ -137,10 +137,12 @@ class VoiceMessageAttachmentCacheManager {
         durations.removeAll()
         finalURLs.removeAll()
         
-        do {
-            try FileManager.default.removeItem(at: temporaryFilesFolderURL)
-        } catch {
-            MXLog.error("[VoiceMessageAttachmentCacheManager] Failed clearing cached disk files", context: error)
+        if FileManager.default.fileExists(atPath: temporaryFilesFolderURL.path) {
+            do {
+                try FileManager.default.removeItem(at: temporaryFilesFolderURL)
+            } catch {
+                MXLog.error("[VoiceMessageAttachmentCacheManager] Failed clearing cached disk files", context: error)
+            }
         }
     }
     

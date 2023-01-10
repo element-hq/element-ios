@@ -152,6 +152,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 break;
             }
             case MXEventTypePollStart:
+            case MXEventTypePollEnd:
             {
                 self.tag = RoomBubbleCellDataTagPoll;
                 self.collapsable = NO;
@@ -294,6 +295,14 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     if (self.tag == RoomBubbleCellDataTagLiveLocation)
     {
         [self updateBeaconInfoSummaryWithId:eventId andEvent:event];
+    }
+    
+    // Handle here the case where an audio chunk of a voice broadcast have been decrypted with delay
+    // We take the opportunity of this update to disable the display of this chunk in the room timeline
+    if (event.eventType == MXEventTypeRoomMessage && event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType]) {
+        self.tag = RoomBubbleCellDataTagVoiceBroadcastNoDisplay;
+        self.collapsable = NO;
+        self.collapsed = NO;
     }
 
     return retVal;
@@ -626,9 +635,11 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     __block NSInteger firstVisibleComponentIndex = NSNotFound;
     
-    BOOL isPoll = (self.events.firstObject.eventType == MXEventTypePollStart);
+    MXEvent *firstEvent = self.events.firstObject;
+    BOOL isPoll = firstEvent.isTimelinePollEvent;
+    BOOL isVoiceBroadcast = (firstEvent.eventType == MXEventTypeCustom && [firstEvent.type isEqualToString: VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]);
     
-    if ((isPoll || self.attachment) && self.bubbleComponents.count)
+    if ((isPoll || self.attachment || isVoiceBroadcast) && self.bubbleComponents.count)
     {
         firstVisibleComponentIndex = 0;
     }
@@ -1183,6 +1194,10 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 shouldAddEvent = NO;
                 break;
             case MXEventTypePollStart:
+            case MXEventTypePollEnd:
+                shouldAddEvent = NO;
+                break;
+            case MXEventTypeBeaconInfo:
                 shouldAddEvent = NO;
                 break;
             case MXEventTypeCustom:

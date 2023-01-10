@@ -1604,7 +1604,7 @@
 "home_context_menu_make_room" = "Mover para Salas";
 "home_context_menu_make_dm" = "Mover para Pessoas";
 "event_formatter_message_deleted" = "Mensagem deletada";
-"settings_labs_enable_threads" = "Mensageria com threads";
+"settings_labs_enable_threads" = "Mensagens com threads";
 "message_from_a_thread" = "De uma thread";
 "threads_empty_show_all_threads" = "Mostrar todas as threads";
 "threads_empty_tip" = "Dica: Toque numa mensagem e use “Thread” para começar uma.";
@@ -2526,7 +2526,6 @@
 "user_inactive_session_item_with_date" = "Inativa por 90+ dias (%@)";
 "user_inactive_session_item" = "Inativa por 90+ dias";
 "user_other_session_unverified_sessions_header_subtitle" = "Verifique suas sessões para mensageria de segurança melhorada ou faça signout daquelas que você não reconhece ou usa mais.";
-"user_other_session_security_recommendation_title" = "Recomendação de segurança";
 "user_sessions_overview_link_device" = "Linkar um dispositivo";
 
 // MARK: User sessions management
@@ -2614,7 +2613,7 @@
 
 // Mark: - Voice broadcast
 "voice_broadcast_unauthorized_title" = "Não dá para começar um novo broadcast de voz";
-"settings_labs_enable_voice_broadcast" = "Broadcast de voz (sob desenvolvimento ativo)";
+"settings_labs_enable_voice_broadcast" = "Broadcast de voz";
 "deselect_all" = "Desselecionar Todas(os)";
 "user_other_session_menu_select_sessions" = "Selecionar sessões";
 "user_other_session_selected_count" = "%@ selecionadas";
@@ -2624,3 +2623,46 @@
 "manage_session_sign_out_other_sessions" = "Fazer signout de todas as outras sessões";
 "voice_broadcast_tile" = "Broadcast de voz";
 "voice_broadcast_live" = "Ao vivo";
+"user_session_rename_session_description" = "Outras(os) usuárias(os) em mensagens diretas e salas a que você se junta são capazes de visualizar uma lista completa de suas sessões.\n\nIsto as/os provê com confiança que elas(es) são estão realmente falando com você, mas também significa que elas(es) veem o nome da sessão que você entrar aqui.";
+"user_session_rename_session_title" = "Renomear sessões";
+"user_session_inactive_session_description" = "Sessões inativas são sessões que você não tem usado em algum tempo, mas elas continuam a receber chaves de encriptação.\n\nRemover sessões inativas melhora segurança e performance, e torna mais fácil para você identificar se uma nova sessão é suspeita.";
+"user_session_inactive_session_title" = "Sessões inativas";
+"user_session_unverified_session_description" = "Sessões não-verificadas são sessões que você tem feito login com suas credenciais mas não têm sido verificadas cruzado.\n\nVocê devia especialmente se certificar que você reconhece estas sessões já que elas podiam representar um uso não-autorizado de sua conta.";
+"user_session_unverified_session_title" = "Sessão não-verificada";
+"user_session_verified_session_description" = "Sessões verificadas são onde quer que você esteja usando Element depois de entrar sua frasepasse ou confirmar sua identidade com uma outra sessões verificada.\n\nIsto significa que você tem todas as chaves necessárias para destrancar suas mensagens encriptadas e confirmar a outras(os) usuárias(os) que você confia nesta sessão.";
+"user_session_verified_session_title" = "Sessões verificadas";
+"user_session_got_it" = "Entendido";
+"user_other_session_permanently_unverified_additional_info" = "Esta sessão não suporta encriptação e assim não pode ser verificada.";
+"voice_broadcast_time_left" = "%@ restando";
+"launch_loading_processing_response" = "Processando dados\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Sincando com o servidor\n(%@ tentativa)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Sincando com o servidor";
+"key_verification_alert_body" = "Revise para assegurar que sua conta está segura.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Você tem sessões não-verificadas";
+"voice_broadcast_stop_alert_agree_button" = "Sim, parar";
+"voice_broadcast_stop_alert_description" = "Tem certeza que você quer parar seu broadcast ao vivo? Isto vai terminar o broadcast, e a gravação completa vai estar disponível na sala.";
+"voice_broadcast_stop_alert_title" = "Parar broadcasting ao vivo?";
+"voice_broadcast_buffering" = "Buffering…";
+"user_session_permanently_unverified_session_description" = "Esta sessão não suporta encriptação, então ela não pode ser verificada.\n\nVocê não vai ser capaz de participar em salas onde encriptação é habilitada quando usando esta sessão.\n\nPara a melhor segurança e privacidade, é recomendado usar clientes Matrix que suportam encriptação.";
+"password_policy_pwd_in_dict_error" = "Esta senha tem sido encontrada em um dicionário, e não é permitida.";
+"password_policy_weak_pwd_error" = "Esta senha é fraca demais. Ela deve conter ao menos 8 caracteres, com ao menos um caractere de cada tipo: caractere maiúsculo, minúsculo, dígito, e especial.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Senha curta demais";
+"notice_voice_broadcast_ended_by_you" = "Você terminou um broadcast de voz.";
+"notice_voice_broadcast_ended" = "%@ terminou um broadcast de voz.";
+"notice_voice_broadcast_live" = "Broadcast ao vivo";
+"wysiwyg_composer_link_action_edit_title" = "Editar link";
+"wysiwyg_composer_link_action_create_title" = "Criar um link";
+"wysiwyg_composer_link_action_link" = "Link";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Texto";
+"wysiwyg_composer_format_action_inline_code" = "Aplicar formato de código inline";
+"wysiwyg_composer_format_action_link" = "Aplicar formato de link";
+"user_other_session_security_recommendation_title" = "Outras sessões";

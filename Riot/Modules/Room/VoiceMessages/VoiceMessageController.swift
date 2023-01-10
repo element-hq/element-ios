@@ -20,6 +20,7 @@ import DSWaveformImage
 
 @objc public protocol VoiceMessageControllerDelegate: AnyObject {
     func voiceMessageControllerDidRequestMicrophonePermission(_ voiceMessageController: VoiceMessageController)
+    func voiceMessageControllerDidRequestRecording(_ voiceMessageController: VoiceMessageController) -> Bool
     func voiceMessageController(_ voiceMessageController: VoiceMessageController, didRequestSendForFileAtURL url: URL, duration: UInt, samples: [Float]?, completion: @escaping (Bool) -> Void)
 }
 
@@ -106,6 +107,13 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         guard let temporaryFileURL = temporaryFileURL else {
              return
         }
+        
+        // Ask our delegate if we can start recording
+        let canStartRecording = delegate?.voiceMessageControllerDidRequestRecording(self) ?? true
+        guard canStartRecording else {
+            return
+        }
+        
         guard AVAudioSession.sharedInstance().recordPermission == .granted else {
             delegate?.voiceMessageControllerDidRequestMicrophonePermission(self)
             return
@@ -364,7 +372,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     private func deleteRecordingAtURL(_ url: URL?) {
-        guard let url = url else {
+        // Fix: use url.path instead of url.absoluteString when using FileManager otherwise the url seems to be percent encoded and the file is not found.
+        guard let url = url, FileManager.default.fileExists(atPath: url.path) else {
             return
         }
         

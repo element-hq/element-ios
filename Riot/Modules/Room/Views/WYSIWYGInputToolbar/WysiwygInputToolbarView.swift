@@ -42,7 +42,11 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var heightConstraint: NSLayoutConstraint!
     private var voiceMessageBottomConstraint: NSLayoutConstraint?
     private var hostingViewController: VectorHostingController!
-    private var wysiwygViewModel = WysiwygComposerViewModel(textColor: ThemeService.shared().theme.colors.primaryContent)
+    private var wysiwygViewModel = WysiwygComposerViewModel(
+        textColor: ThemeService.shared().theme.colors.primaryContent,
+        linkColor: ThemeService.shared().theme.colors.accent,
+        codeBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor
+    )
     private var viewModel: ComposerViewModelProtocol!
     
     private var isLandscapePhone: Bool {
@@ -212,6 +216,13 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         wysiwygViewModel.maximised = false
     }
     
+    func performLinkOperation(_ linkOperation: WysiwygLinkOperation) {
+        if let selectionToRestore = viewModel.selectionToRestore {
+            wysiwygViewModel.select(range: selectionToRestore)
+        }
+        wysiwygViewModel.applyLinkOperation(linkOperation)
+    }
+    
     // MARK: - Private
     
     @objc private func keyboardWillShow(_ notification: Notification) {
@@ -258,9 +269,11 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func handleViewModelResult(_ result: ComposerViewModelResult) {
         switch result {
         case .cancel:
-            self.toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
+            toolbarViewDelegate?.roomInputToolbarViewDidTapCancel(self)
         case let .contentDidChange(isEmpty):
             setVoiceMessageToolbarIsHidden(!isEmpty)
+        case let .linkTapped(linkAction):
+            toolbarViewDelegate?.didSendLinkAction(LinkActionWrapper(linkAction))
         }
     }
     
@@ -286,6 +299,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func update(theme: Theme) {
         hostingViewController.view.backgroundColor = theme.colors.background
         wysiwygViewModel.textColor = theme.colors.primaryContent
+        wysiwygViewModel.linkColor = theme.colors.accent
+        wysiwygViewModel.codeBackgroundColor = theme.selectedBackgroundColor
     }
     
     private func updateTextViewHeight() {
