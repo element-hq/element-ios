@@ -5187,7 +5187,14 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (IBAction)onVoiceCallPressed:(id)sender
 {
-    if (self.isCallActive)
+    // Manage case of a Voice broadcast listening -> Pause Voice broadcast playback
+    [VoiceBroadcastPlaybackProvider.shared pausePlaying];
+    
+    if (VoiceBroadcastRecorderProvider.shared.isVoiceBroadcastRecording) {
+        [[AppDelegate theDelegate] showAlertWithTitle:VectorL10n.voiceBroadcastVoipCannotStartTitle
+                                              message:VectorL10n.voiceBroadcastVoipCannotStartDescription];
+    }
+    else if (self.isCallActive)
     {
         [self hangupCall];
     }
@@ -5199,7 +5206,15 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (IBAction)onVideoCallPressed:(id)sender
 {
-    [self placeCallWithVideo:YES];
+    // Manage case of a Voice broadcast listening -> Pause Voice broadcast playback
+    [VoiceBroadcastPlaybackProvider.shared pausePlaying];
+
+    if (VoiceBroadcastRecorderProvider.shared.isVoiceBroadcastRecording) {
+        [[AppDelegate theDelegate] showAlertWithTitle:VectorL10n.voiceBroadcastVoipCannotStartTitle
+                                              message:VectorL10n.voiceBroadcastVoipCannotStartDescription];
+    } else {
+        [self placeCallWithVideo:YES];
+    }
 }
 
 - (IBAction)onThreadListTapped:(id)sender

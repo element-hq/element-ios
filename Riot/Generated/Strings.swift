@@ -9215,6 +9215,14 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastUnauthorizedTitle: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_unauthorized_title") 
   }
+  /// You can’t start a call as you are currently recording a live broadcast. Please end your live broadcast in order to start a call.
+  public static var voiceBroadcastVoipCannotStartDescription: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_voip_cannot_start_description") 
+  }
+  /// Can’t start a call
+  public static var voiceBroadcastVoipCannotStartTitle: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_voip_cannot_start_title") 
+  }
   /// You can't start a voice message as you are currently recording a live broadcast. Please end your live broadcast in order to start recording a voice message
   public static var voiceMessageBroadcastInProgressMessage: String { 
     return VectorL10n.tr("Vector", "voice_message_broadcast_in_progress_message") 

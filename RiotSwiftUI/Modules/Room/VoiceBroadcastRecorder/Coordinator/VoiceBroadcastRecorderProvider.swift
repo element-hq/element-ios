@@ -85,6 +85,14 @@ import Foundation
         voiceBroadcastRecorderCoordinatorForCurrentEvent()?.pauseRecording()
     }
     
+    @objc public func isVoiceBroadcastRecording() -> Bool {
+        guard let coordinator = voiceBroadcastRecorderCoordinatorForCurrentEvent() else {
+            return false
+        }
+        
+        return coordinator.isVoiceBroadcastRecording()
+    }
+    
     // MARK: - Private
     
     /// Retrieve the voiceBroadcast recorder coordinator for the current event or nil if it hasn't been created yet
