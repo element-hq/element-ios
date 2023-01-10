@@ -370,6 +370,11 @@
     [self.roomDataSource.room.summary markAllAsReadLocally];
     
     [self updateCurrentEventIdAtTableBottom:YES];
+    
+    if (!self.isContextPreview)
+    {
+        [self.roomDataSource.room unmarkAsUnread];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
