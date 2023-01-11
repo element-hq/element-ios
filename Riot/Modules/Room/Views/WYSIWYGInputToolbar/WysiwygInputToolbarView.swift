@@ -298,7 +298,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func update(theme: Theme) {
         hostingViewController.view.backgroundColor = theme.colors.background
         wysiwygViewModel.textColor = theme.colors.primaryContent
-        wysiwygViewModel.linkColor = .link
         wysiwygViewModel.codeBackgroundColor = theme.selectedBackgroundColor
     }
     

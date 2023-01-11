@@ -384,8 +384,6 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
          [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", [VectorL10n eventFormatterMessageEditedMention]]
                                          attributes:@{
                                                       NSLinkAttributeName: linkActionString,
-                                                      // NOTE: Color is curretly overidden by UIText.tintColor as we use `NSLinkAttributeName`.
-                                                      // If we use UITextView.linkTextAttributes to set link color we will also have the issue that color will be the same for all kind of links.
                                                       NSForegroundColorAttributeName: self.editionMentionTextColor,
                                                       NSFontAttributeName: self.editionMentionTextFont
                                                       }]];

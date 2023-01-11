@@ -1083,6 +1083,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
                 // If the match is fully in the link, skip it
                 if (NSIntersectionRange(match.range, linkMatch.range).length == match.range.length)
                 {
+                    [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor linkColor] range:linkMatch.range];
                     hasAlreadyLink = YES;
                     break;
                 }
@@ -1097,6 +1098,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
             NSString *link = [mutableAttributedString.string substringWithRange:match.range];
             link = [link stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
             [mutableAttributedString addAttribute:NSLinkAttributeName value:link range:match.range];
+            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor linkColor] range:match.range];
         }
     }];
 }

@@ -1749,6 +1749,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
                 if (url.URL)
                 {
                     [str addAttribute:NSLinkAttributeName value:url.URL range:matchRange];
+                    [str addAttribute:NSForegroundColorAttributeName value:[UIColor linkColor] range:matchRange];
                 }
             }
         }

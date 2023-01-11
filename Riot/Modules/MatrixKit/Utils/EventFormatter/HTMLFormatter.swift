@@ -51,6 +51,7 @@ class HTMLFormatter: NSObject {
             DTDefaultFontName: font.fontName,
             DTDefaultFontSize: font.pointSize,
             DTDefaultLinkDecoration: false,
+            DTDefaultLinkColor: UIColor.link,
             DTWillFlushBlockCallBack: sanitizeCallback
         ]
         options.merge(extraOptions) { (_, new) in new }
