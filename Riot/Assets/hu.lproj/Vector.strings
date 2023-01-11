@@ -2689,3 +2689,5 @@
 "voice_message_broadcast_in_progress_message" = "Nem lehet hang üzenetet indítani élő közvetítés felvétele közben. Az élő közvetítés bejezése szükséges a hang üzenet indításához";
 "voice_message_broadcast_in_progress_title" = "Hang üzenetet nem lehet elindítani";
 "poll_timeline_ended_text" = "Szavazás vége";
+"voice_broadcast_voip_cannot_start_description" = "Nem lehet hívást kezdeményezni élő közvetítés felvétele közben. Az élő közvetítés bejezése szükséges a hívás indításához.";
+"voice_broadcast_voip_cannot_start_title" = "Nem sikerült hívást indítani";
