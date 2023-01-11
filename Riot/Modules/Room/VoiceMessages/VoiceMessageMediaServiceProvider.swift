@@ -28,7 +28,7 @@ import MediaPlayer
     private var roomAvatarLoader: MXMediaLoader?
     private let audioPlayers: NSMapTable<NSString, VoiceMessageAudioPlayer>
     private let audioRecorders: NSHashTable<VoiceMessageAudioRecorder>
-    private let nowPlayingInfoProviders: NSMapTable<VoiceMessageAudioPlayer, VoiceMessageNowPlayingInfoProvider>
+    private let nowPlayingInfoDelegates: NSMapTable<VoiceMessageAudioPlayer, VoiceMessageNowPlayingInfoDelegate>
     
     private var displayLink: CADisplayLink!
     
@@ -94,7 +94,7 @@ import MediaPlayer
     private override init() {
         audioPlayers = NSMapTable<NSString, VoiceMessageAudioPlayer>(valueOptions: .weakMemory)
         audioRecorders = NSHashTable<VoiceMessageAudioRecorder>(options: .weakMemory)
-        nowPlayingInfoProviders = NSMapTable<VoiceMessageAudioPlayer, VoiceMessageNowPlayingInfoProvider>(valueOptions: .weakMemory)
+        nowPlayingInfoDelegates = NSMapTable<VoiceMessageAudioPlayer, VoiceMessageNowPlayingInfoDelegate>(valueOptions: .weakMemory)
         activeAudioPlayers = Set<VoiceMessageAudioPlayer>()
         super.init()
         
@@ -125,8 +125,12 @@ import MediaPlayer
         pauseAllServicesExcept(nil)
     }
     
-    func setNowPlayingInfoProvider(_ provider: VoiceMessageNowPlayingInfoProvider, forPlayer player: VoiceMessageAudioPlayer) {
-        nowPlayingInfoProviders.setObject(provider, forKey: player)
+    func registerNowPlayingInfoDelegate(_ delegate: VoiceMessageNowPlayingInfoDelegate, forPlayer player: VoiceMessageAudioPlayer) {
+        nowPlayingInfoDelegates.setObject(delegate, forKey: player)
+    }
+    
+    func deregisterNowPlayingInfoDelegate(forPlayer player: VoiceMessageAudioPlayer) {
+        nowPlayingInfoDelegates.removeObject(forKey: player)
     }
     
     // MARK: - VoiceMessageAudioPlayerDelegate
@@ -140,16 +144,28 @@ import MediaPlayer
     
     func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         if currentlyPlayingAudioPlayer == audioPlayer {
-            currentlyPlayingAudioPlayer = nil
-            tearDownRemoteCommandCenter()
+            // If we have a NowPlayingInfoDelegate for this player
+            let nowPlayingInfoDelegate = nowPlayingInfoDelegates.object(forKey: audioPlayer)
+
+            // ask the delegate if we should disconnect from NowPlayingInfoCenter (if there's no delegate, we consider it safe to disconnect it)
+            if nowPlayingInfoDelegate?.shouldDisconnectFromNowPlayingInfoCenter(audioPlayer: audioPlayer) ?? true {
+                currentlyPlayingAudioPlayer = nil
+                tearDownRemoteCommandCenter(for: audioPlayer)
+            }
         }
         activeAudioPlayers.remove(audioPlayer)
     }
     
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         if currentlyPlayingAudioPlayer == audioPlayer {
-            currentlyPlayingAudioPlayer = nil
-            tearDownRemoteCommandCenter()
+            // If we have a NowPlayingInfoDelegate for this player
+            let nowPlayingInfoDelegate = nowPlayingInfoDelegates.object(forKey: audioPlayer)
+
+            // ask the delegate if we should disconnect from NowPlayingInfoCenter (if there's no delegate, we consider it safe to disconnect it)
+            if nowPlayingInfoDelegate?.shouldDisconnectFromNowPlayingInfoCenter(audioPlayer: audioPlayer) ?? true {
+                currentlyPlayingAudioPlayer = nil
+                tearDownRemoteCommandCenter(for: audioPlayer)
+            }
         }
         activeAudioPlayers.remove(audioPlayer)
     }
@@ -248,7 +264,7 @@ import MediaPlayer
         }
     }
     
-    private func tearDownRemoteCommandCenter() {
+    private func tearDownRemoteCommandCenter(for audioPlayer: VoiceMessageAudioPlayer) {
         displayLink.isPaused = true
         
         UIApplication.shared.endReceivingRemoteControlEvents()
@@ -262,9 +278,9 @@ import MediaPlayer
             return
         }
         
-        // If we have a NowPlayingInfoProvider for this player
-        if let nowPlayingInfoProvider = nowPlayingInfoProviders.object(forKey: audioPlayer) {
-            nowPlayingInfoProvider.updatePlayingInfoCenter(forPlayer: audioPlayer)
+        // Checks if we have a delegate for this player, or if we should update the NowPlayingInfoCenter ourselves
+        if let nowPlayingInfoDelegate = nowPlayingInfoDelegates.object(forKey: audioPlayer) {
+            nowPlayingInfoDelegate.updateNowPlayingInfoCenter(forPlayer: audioPlayer)
         } else {
             let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
             nowPlayingInfoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: VectorL10n.voiceMessageLockScreenPlaceholder,

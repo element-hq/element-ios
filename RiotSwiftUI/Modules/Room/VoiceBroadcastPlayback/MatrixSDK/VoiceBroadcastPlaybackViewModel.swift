@@ -303,7 +303,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     // Init and start the player on the first chunk
                     let audioPlayer = self.mediaServiceProvider.audioPlayerForIdentifier(result.eventIdentifier)
                     audioPlayer.registerDelegate(self)
-                    self.mediaServiceProvider.setNowPlayingInfoProvider(self, forPlayer: audioPlayer)
+                    self.mediaServiceProvider.registerNowPlayingInfoDelegate(self, forPlayer: audioPlayer)
                     
                     audioPlayer.loadContentFromURL(result.url, displayName: chunk.attachment.originalFileName)
                     self.audioPlayer = audioPlayer
@@ -472,6 +472,7 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
         state.playbackState = .stopped
         state.playingState.isLive = false
         audioPlayer.deregisterDelegate(self)
+        self.mediaServiceProvider.deregisterNowPlayingInfoDelegate(forPlayer: audioPlayer)
         self.audioPlayer = nil
     }
     
@@ -485,18 +486,33 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
     }
 }
 
-// MARK: - NowPlayingInfoProvider
+// MARK: - VoiceMessageNowPlayingInfoDelegate
 
-extension VoiceBroadcastPlaybackViewModel: VoiceMessageNowPlayingInfoProvider {
-    func updatePlayingInfoCenter(forPlayer player: VoiceMessageAudioPlayer) {
+extension VoiceBroadcastPlaybackViewModel: VoiceMessageNowPlayingInfoDelegate {
+    
+    func shouldDisconnectFromNowPlayingInfoCenter(audioPlayer player: VoiceMessageAudioPlayer) -> Bool {
+        guard BuildSettings.allowBackgroundAudioMessagePlayback, audioPlayer != nil, audioPlayer === player else {
+            return true
+        }
+        
+        return state.broadcastState == .stopped
+    }
+    
+    func updateNowPlayingInfoCenter(forPlayer player: VoiceMessageAudioPlayer) {
         guard audioPlayer != nil, audioPlayer === player else {
             return
         }
         
         let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
-        nowPlayingInfoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: VectorL10n.voiceBroadcastPlaybackLockScreenPlaceholder,
-                                    MPMediaItemPropertyPlaybackDuration: (state.playingState.duration / 1000.0) as Any,
-                            MPNowPlayingInfoPropertyElapsedPlaybackTime: (state.bindings.progress / 1000.0) as Any,
-                                   MPNowPlayingInfoPropertyPlaybackRate: state.playbackState == .playing ? 1 : 0]
+        nowPlayingInfoCenter.nowPlayingInfo = [
+            // Title
+            MPMediaItemPropertyTitle: VectorL10n.voiceBroadcastPlaybackLockScreenPlaceholder,
+            // Buffering status (using the "artist" property to display it under the title)
+            MPMediaItemPropertyArtist: state.playbackState == .buffering ? VectorL10n.voiceBroadcastBuffering : "",
+            // Duration
+            MPMediaItemPropertyPlaybackDuration: (state.playingState.duration / 1000.0) as Any,
+            // Elapsed time
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: (state.bindings.progress / 1000.0) as Any,
+        ]
     }
 }

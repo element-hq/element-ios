@@ -16,6 +16,9 @@
 
 import Foundation
 
-@objc protocol VoiceMessageNowPlayingInfoProvider {
-    func updatePlayingInfoCenter(forPlayer player: VoiceMessageAudioPlayer)
+@objc protocol VoiceMessageNowPlayingInfoDelegate {
+    
+    func updateNowPlayingInfoCenter(forPlayer player: VoiceMessageAudioPlayer)
+    
+    func shouldDisconnectFromNowPlayingInfoCenter(audioPlayer: VoiceMessageAudioPlayer) -> Bool
 }
