@@ -5503,6 +5503,10 @@ public class VectorL10n: NSObject {
   public static var roomDetailsPhotoForDm: String { 
     return VectorL10n.tr("Vector", "room_details_photo_for_dm") 
   }
+  /// Poll history
+  public static var roomDetailsPolls: String { 
+    return VectorL10n.tr("Vector", "room_details_polls") 
+  }
   /// Suggest to space members
   public static var roomDetailsPromoteRoomSuggestTitle: String { 
     return VectorL10n.tr("Vector", "room_details_promote_room_suggest_title") 

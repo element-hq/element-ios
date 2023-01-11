@@ -982,6 +982,7 @@ Tap the + to start adding people.";
 "room_details_title_for_dm" = "Details";
 "room_details_people" = "Members";
 "room_details_files" = "Uploads";
+"room_details_polls" = "Poll history";
 "room_details_search" = "Search room";
 "room_details_integrations" = "Integrations";
 "room_details_settings" = "Settings";
