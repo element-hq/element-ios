@@ -51,14 +51,6 @@ class TextMessageBaseBubbleCell: SizableBaseRoomCell, RoomCellURLPreviewDisplaya
     override func setupMessageTextViewLongPressGesture() {
         // Do nothing, otherwise default setup prevent link tap
     }
-    
-    override func update(theme: Theme) {
-        super.update(theme: theme)
-        
-        if let messageTextView = self.messageTextView {
-            messageTextView.tintColor = theme.tintColor
-        }
-    }
 }
 
 // MARK: - RoomCellTimestampDisplayable
