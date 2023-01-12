@@ -21,22 +21,13 @@ typealias PollHistoryViewModelType = StateStoreViewModel<PollHistoryViewState, P
 class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModelProtocol {
     var completion: ((PollHistoryViewModelResult) -> Void)?
 
-    init(promptType: PollHistoryPromptType, initialCount: Int = 0) {
-        super.init(initialViewState: PollHistoryViewState(promptType: promptType, count: 0))
+    init(mode: PollHistoryMode) {
+        super.init(initialViewState: PollHistoryViewState(mode: mode))
     }
 
     // MARK: - Public
 
     override func process(viewAction: PollHistoryViewAction) {
-        switch viewAction {
-        case .accept:
-            completion?(.accept)
-        case .cancel:
-            completion?(.cancel)
-        case .incrementCount:
-            state.count += 1
-        case .decrementCount:
-            state.count -= 1
-        }
+
     }
 }

@@ -14,54 +14,31 @@
 // limitations under the License.
 //
 
-import Foundation
-
-// MARK: - Coordinator
-
-enum PollHistoryPromptType {
-    case regular
-    case upgrade
-}
-
-extension PollHistoryPromptType: Identifiable, CaseIterable {
-    var id: Self { self }
-    
-    var title: String {
-        switch self {
-        case .regular:
-            return VectorL10n.roomCreationMakePublicPromptTitle
-        case .upgrade:
-            return VectorL10n.roomDetailsHistorySectionPromptTitle
-        }
-    }
-    
-    var image: ImageAsset {
-        switch self {
-        case .regular:
-            return Asset.Images.appSymbol
-        case .upgrade:
-            return Asset.Images.keyVerificationSuccessShield
-        }
-    }
-}
-
 // MARK: View model
 
-enum PollHistoryViewModelResult {
-    case accept
-    case cancel
+enum PollHistoryViewModelResult: Equatable {
+    #warning("e.g. show poll detail")
 }
 
 // MARK: View
 
+enum PollHistoryMode {
+    case active
+    case past
+}
+
+struct PollHistoryViewBindings {
+    var mode: PollHistoryMode
+}
+
 struct PollHistoryViewState: BindableState {
-    var promptType: PollHistoryPromptType
-    var count: Int
+    init(mode: PollHistoryMode) {
+        self.bindings = .init(mode: mode)
+    }
+    
+    var bindings: PollHistoryViewBindings
 }
 
 enum PollHistoryViewAction {
-    case incrementCount
-    case decrementCount
-    case accept
-    case cancel
+    #warning("e.g. show poll detail")
 }

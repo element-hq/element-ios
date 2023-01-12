@@ -18,7 +18,7 @@ import CommonKit
 import SwiftUI
 
 struct PollHistoryCoordinatorParameters {
-    let promptType: PollHistoryPromptType
+    let mode: PollHistoryMode
 }
 
 final class PollHistoryCoordinator: Coordinator, Presentable {
@@ -31,12 +31,12 @@ final class PollHistoryCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: ((PollHistoryViewModelResult) -> Void)?
+    var completion: (() -> Void)?
     
     init(parameters: PollHistoryCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = PollHistoryViewModel(promptType: parameters.promptType)
+        let viewModel = PollHistoryViewModel(mode: parameters.mode)
         let view = PollHistory(viewModel: viewModel.context)
         pollHistoryViewModel = viewModel
         pollHistoryHostingController = VectorHostingController(rootView: view)
@@ -49,9 +49,7 @@ final class PollHistoryCoordinator: Coordinator, Presentable {
     func start() {
         MXLog.debug("[PollHistoryCoordinator] did start.")
         pollHistoryViewModel.completion = { [weak self] result in
-            guard let self = self else { return }
-            MXLog.debug("[PollHistoryCoordinator] PollHistoryViewModel did complete with result: \(result).")
-            self.completion?(result)
+            self?.completion?()
         }
     }
     

@@ -23,32 +23,31 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-    case promptType(PollHistoryPromptType)
+    case active
+    case past
     
     /// The associated screen
     var screenType: Any.Type {
         PollHistory.self
     }
     
-    /// A list of screen state definitions
-    static var allCases: [MockPollHistoryScreenState] {
-        // Each of the presence statuses
-        PollHistoryPromptType.allCases.map(MockPollHistoryScreenState.promptType)
-    }
-    
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        let promptType: PollHistoryPromptType
+        let pollHistoryMode: PollHistoryMode
+        
         switch self {
-        case .promptType(let type):
-            promptType = type
+        case .active:
+            pollHistoryMode = .active
+        case .past:
+            pollHistoryMode = .past
         }
-        let viewModel = PollHistoryViewModel(promptType: promptType)
+        
+        let viewModel = PollHistoryViewModel(mode: pollHistoryMode)
         
         // can simulate service and viewModel actions here if needs be.
         
         return (
-            [promptType, viewModel],
+            [pollHistoryMode, viewModel],
             AnyView(PollHistory(viewModel: viewModel.context)
                 .addDependency(MockAvatarService.example))
         )

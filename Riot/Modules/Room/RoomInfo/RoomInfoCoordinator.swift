@@ -157,10 +157,6 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         return coordinator
     }
     
-    private func pollHistoryCoordinator() -> PollHistoryCoordinator {
-        return PollHistoryCoordinator(parameters: .init(promptType: .regular))
-    }
-    
     private func showRoomDetails(with target: RoomInfoListTarget, animated: Bool) {
         switch target {
         case .integrations:
@@ -180,7 +176,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
             coordinator.start()
             push(coordinator: coordinator)
         case .pollHistory:
-            let coordinator = pollHistoryCoordinator()
+            let coordinator: PollHistoryCoordinator = .init(parameters: .init(mode: .active))
             coordinator.start()
             push(coordinator: coordinator)
         default:
