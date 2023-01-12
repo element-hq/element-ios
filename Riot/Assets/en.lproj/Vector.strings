@@ -2292,6 +2292,12 @@ Tap the + to start adding people.";
 "space_detail_nav_title" = "Space detail";
 "space_invite_nav_title" = "Space invite";
 
+// MARK: - Polls history
+
+"poll_history_title" = "Poll history";
+"poll_history_active_segment_title" = "Active polls";
+"poll_history_past_segment_title" = "Past polls";
+
 // MARK: - Polls
 
 "poll_edit_form_create_poll" = "Create poll";

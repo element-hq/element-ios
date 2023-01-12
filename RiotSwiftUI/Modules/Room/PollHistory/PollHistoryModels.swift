@@ -22,7 +22,7 @@ enum PollHistoryViewModelResult: Equatable {
 
 // MARK: View
 
-enum PollHistoryMode {
+enum PollHistoryMode: CaseIterable {
     case active
     case past
 }

@@ -4839,6 +4839,18 @@ public class VectorL10n: NSObject {
   public static var pollEditFormUpdateFailureTitle: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_update_failure_title") 
   }
+  /// Active polls
+  public static var pollHistoryActiveSegmentTitle: String { 
+    return VectorL10n.tr("Vector", "poll_history_active_segment_title") 
+  }
+  /// Past polls
+  public static var pollHistoryPastSegmentTitle: String { 
+    return VectorL10n.tr("Vector", "poll_history_past_segment_title") 
+  }
+  /// Poll history
+  public static var pollHistoryTitle: String { 
+    return VectorL10n.tr("Vector", "poll_history_title") 
+  }
   /// Due to decryption errors, some votes may not be counted
   public static var pollTimelineDecryptionError: String { 
     return VectorL10n.tr("Vector", "poll_timeline_decryption_error") 

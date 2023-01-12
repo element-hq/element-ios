@@ -29,10 +29,7 @@ struct PollHistory: View {
         VStack {
             HStack {
                 SegmentedPicker(
-                    segments: [
-                        ("Active Polls", PollHistoryMode.active),
-                        ("Past Pools", PollHistoryMode.past)
-                    ],
+                    segments: PollHistoryMode.allCases.map { ($0.segmentTitle, $0) },
                     selection: $viewModel.mode,
                     interSegmentSpacing: 14
                 )
@@ -62,6 +59,18 @@ struct PollHistory: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(theme.colors.background.ignoresSafeArea())
         .accentColor(theme.colors.accent)
+        .navigationTitle(VectorL10n.pollHistoryTitle)
+    }
+}
+
+extension PollHistoryMode {
+    var segmentTitle: String {
+        switch self {
+        case .active:
+            return VectorL10n.pollHistoryActiveSegmentTitle
+        case .past:
+            return VectorL10n.pollHistoryPastSegmentTitle
+        }
     }
 }
 
