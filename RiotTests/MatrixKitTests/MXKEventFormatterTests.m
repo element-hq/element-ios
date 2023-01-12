@@ -414,7 +414,7 @@
     NSString *s = @"Matrix HQ room is at https://matrix.to/#/room/#matrix:matrix.org.";
     NSAttributedString *as = [eventFormatter renderString:s forEvent:anEvent];
 
-    __block bool hasLink = false;
+    __block BOOL hasLink = false;
 
     [as enumerateAttributesInRange:NSMakeRange(0, as.length) options:(0) usingBlock:^(NSDictionary<NSString *,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
         if (attrs[NSLinkAttributeName]) {
