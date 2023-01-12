@@ -116,7 +116,7 @@ class RoomActionProvider: RoomActionProviderProtocol {
     private var markAsUnreadAction: UIAction {
         return UIAction(
             title: VectorL10n.homeContextMenuMarkAsUnread,
-            image: UIImage(systemName: "envelope")) { [weak self] action in
+            image: UIImage(systemName: "envelope.badge")) { [weak self] action in
                 guard let self = self else { return }
                 self.service.markAsUnread()
         }
