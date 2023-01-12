@@ -486,6 +486,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.bingTextColor = ThemeService.shared.theme.noticeColor;
         self.encryptingTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.sendingTextColor = ThemeService.shared.theme.textPrimaryColor;
+        self.linksColor = ThemeService.shared.theme.colors.links;
         self.errorTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.showEditionMention = YES;
         self.editionMentionTextColor = ThemeService.shared.theme.textSecondaryColor;

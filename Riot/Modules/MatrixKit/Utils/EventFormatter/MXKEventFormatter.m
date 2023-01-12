@@ -89,6 +89,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
         _encryptingTextColor = [UIColor lightGrayColor];
         _sendingTextColor = [UIColor lightGrayColor];
         _errorTextColor = [UIColor redColor];
+        _linksColor = [UIColor linkColor];
         _htmlBlockquoteBorderColor = [MXKTools colorWithRGBValue:0xDDDDDD];
         
         _defaultTextFont = [UIFont systemFontOfSize:14];
@@ -1749,7 +1750,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
                 if (url.URL)
                 {
                     [str addAttribute:NSLinkAttributeName value:url.URL range:matchRange];
-                    [str addAttribute:NSForegroundColorAttributeName value:[UIColor linkColor] range:matchRange];
+                    [str addAttribute:NSForegroundColorAttributeName value:self.linksColor range:matchRange];
                 }
             }
         }
