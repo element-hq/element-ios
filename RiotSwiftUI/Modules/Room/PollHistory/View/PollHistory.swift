@@ -38,11 +38,12 @@ struct PollHistory: View {
                 )
                 Spacer()
             }
+            .padding(.horizontal, 16)
             
             ScrollView {
                 LazyVStack(spacing: 32) {
                     ForEach(0..<10) { index in
-                        Text("Active poll number: \(index)")
+                        PollListItem(data: .init(startDate: Date(), question: "Poll question number \(index)"))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     
@@ -53,11 +54,11 @@ struct PollHistory: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .padding(.horizontal, 16)
                 .padding(.top, 32)
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 32)
+        .padding(.top, 32)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(theme.colors.background.ignoresSafeArea())
         .accentColor(theme.colors.accent)
@@ -68,6 +69,7 @@ struct PollHistory: View {
 
 struct PollHistory_Previews: PreviewProvider {
     static let stateRenderer = MockPollHistoryScreenState.stateRenderer
+    
     static var previews: some View {
         stateRenderer.screenGroup()
     }
