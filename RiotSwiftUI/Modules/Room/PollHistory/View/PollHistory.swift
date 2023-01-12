@@ -27,28 +27,38 @@ struct PollHistory: View {
     
     var body: some View {
         VStack {
-            Picker("abc", selection: .constant(PollHistoryMode.active)) {
-                Text("Active Polls")
-                    .tag(PollHistoryMode.active)
-                
-                Text("Past Polls")
-                    .tag(PollHistoryMode.past)
+            HStack {
+                SegmentedPicker(
+                    segments: [
+                        ("Active Polls", PollHistoryMode.active),
+                        ("Past Pools", PollHistoryMode.past)
+                    ],
+                    selection: $viewModel.mode,
+                    interSegmentSpacing: 14
+                )
+                Spacer()
             }
-            .pickerStyle(SegmentedPickerStyle())
             
             ScrollView {
-                ForEach(0..<10) { index in
-                    Text("Active poll number: \(index)")
+                LazyVStack(spacing: 32) {
+                    ForEach(0..<10) { index in
+                        Text("Active poll number: \(index)")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Button {
+                        #warning("handle action")
+                    } label: {
+                        Text("Load more polls")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                
-                Button {
-                    #warning("handle action")
-                } label: {
-                    Text("Load more polls")
-                }
+                .padding(.top, 32)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 32)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(theme.colors.background.ignoresSafeArea())
         .accentColor(theme.colors.accent)
     }
