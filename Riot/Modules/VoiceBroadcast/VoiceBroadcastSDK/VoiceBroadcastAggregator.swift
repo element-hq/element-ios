@@ -53,6 +53,8 @@ public class VoiceBroadcastAggregator {
     private var voiceBroadcastInfoStartEventContent: VoiceBroadcastInfo!
     private var voiceBroadcastSenderId: String!
     
+    public private(set) var voiceBroadcastLastChunkSequence: Int = 0
+    
     private var referenceEventsListener: Any?
     
     private var events: [MXEvent] = []
@@ -168,7 +170,10 @@ public class VoiceBroadcastAggregator {
                   let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state) else {
                 return
             }
-
+            // For .pause and .stopped, if there is a lastChunkSequence (ie its value is > 0), we store it
+            if [.stopped, .paused].contains(state), voiceBroadcastInfo.lastChunkSequence > 0 {
+                self.voiceBroadcastLastChunkSequence = voiceBroadcastInfo.lastChunkSequence
+            }
             self.delegate?.voiceBroadcastAggregator(self, didReceiveState: state)
         }
     }
@@ -187,6 +192,7 @@ public class VoiceBroadcastAggregator {
             }
             
             self.events.removeAll()
+            self.voiceBroadcastLastChunkSequence = 0
             
             let filteredChunk = response.chunk.filter { event in
                 event.sender == self.voiceBroadcastSenderId &&
