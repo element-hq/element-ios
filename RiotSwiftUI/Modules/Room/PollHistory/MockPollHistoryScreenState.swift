@@ -42,7 +42,7 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
             pollHistoryMode = .past
         }
         
-        let viewModel = PollHistoryViewModel(mode: pollHistoryMode)
+        let viewModel = PollHistoryViewModel(mode: pollHistoryMode, pollService: MockPollHistoryService())
         
         // can simulate service and viewModel actions here if needs be.
         

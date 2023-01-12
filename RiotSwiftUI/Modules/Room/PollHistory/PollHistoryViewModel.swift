@@ -18,16 +18,43 @@ import SwiftUI
 
 typealias PollHistoryViewModelType = StateStoreViewModel<PollHistoryViewState, PollHistoryViewAction>
 
-class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModelProtocol {
+final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModelProtocol {
+    private let pollService: PollHistoryServiceProtocol
+    private var fetchingTask: Task<Void, Error>? {
+        didSet {
+            oldValue?.cancel()
+        }
+    }
+    
     var completion: ((PollHistoryViewModelResult) -> Void)?
 
-    init(mode: PollHistoryMode) {
+    init(mode: PollHistoryMode, pollService: PollHistoryServiceProtocol) {
+        self.pollService = pollService
         super.init(initialViewState: PollHistoryViewState(mode: mode))
     }
 
     // MARK: - Public
 
     override func process(viewAction: PollHistoryViewAction) {
+        switch viewAction {
+        case .viewAppeared:
+            fetchingTask = fetchPolls()
+        }
+    }
+}
 
+private extension PollHistoryViewModel {
+    func fetchPolls() -> Task<Void, Error> {
+        Task {
+            let polls = try await pollService.fetchHistory()
+            
+            guard Task.isCancelled == false else {
+                return
+            }
+            
+            await MainActor.run {
+                state.polls = polls
+            }
+        }
     }
 }

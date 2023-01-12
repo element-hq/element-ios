@@ -39,8 +39,10 @@ struct PollHistory: View {
             
             ScrollView {
                 LazyVStack(spacing: 32) {
-                    ForEach(0..<10) { index in
-                        PollListItem(data: .init(startDate: Date(), question: "Poll question number \(index)"))
+                    let enumeratedPolls = Array(viewModel.viewState.polls.enumerated())
+                    
+                    ForEach(enumeratedPolls, id: \.offset) { _, pollData in
+                        PollListItem(pollData: pollData)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     
@@ -60,10 +62,13 @@ struct PollHistory: View {
         .background(theme.colors.background.ignoresSafeArea())
         .accentColor(theme.colors.accent)
         .navigationTitle(VectorL10n.pollHistoryTitle)
+        .onAppear {
+            viewModel.send(viewAction: .viewAppeared)
+        }
     }
 }
 
-extension PollHistoryMode {
+private extension PollHistoryMode {
     var segmentTitle: String {
         switch self {
         case .active:

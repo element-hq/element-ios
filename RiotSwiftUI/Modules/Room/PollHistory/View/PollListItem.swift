@@ -24,33 +24,52 @@ struct PollListData {
 struct PollListItem: View {
     @Environment(\.theme) private var theme
     
-    private let data: PollListData
+    private let pollData: PollListData
     
-    init(data: PollListData) {
-        self.data = data
+    init(pollData: PollListData) {
+        self.pollData = pollData
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(data.startDate.description)
+            Text(pollData.formattedDate)
                 .foregroundColor(theme.colors.tertiaryContent)
                 .font(theme.fonts.caption1)
 
-            HStack(spacing: 8) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
                 Image(uiImage: Asset.Images.pollHistory.image)
                     .resizable()
                     .frame(width: 16, height: 16)
 
-                Text(data.question)
+                Text(pollData.question)
                     .foregroundColor(theme.colors.primaryContent)
                     .font(theme.fonts.body)
+                    .lineLimit(2)
             }
         }
     }
 }
 
+private extension PollListData {
+    var formattedDate: String {
+        DateFormatter.shortDateFormatter.string(from: startDate)
+    }
+}
+
+private extension DateFormatter {
+    static let shortDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .none
+        formatter.dateStyle = .short
+        formatter.timeZone = .init(identifier: "UTC")
+        return formatter
+    }()
+}
+
+// MARK: - Previews
+
 struct PollListItem_Previews: PreviewProvider {
     static var previews: some View {
-        PollListItem(data: .init(startDate: .init(), question: "Did you like this poll?"))
+        PollListItem(pollData: .init(startDate: .init(), question: "Did you like this poll?"))
     }
 }

@@ -1,5 +1,5 @@
-//
-// Copyright 2021 New Vector Ltd
+// 
+// Copyright 2023 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,32 +14,11 @@
 // limitations under the License.
 //
 
-// MARK: View model
+import MatrixSDK
+import Foundation
 
-enum PollHistoryViewModelResult: Equatable {
-    #warning("e.g. show poll detail")
-}
-
-// MARK: View
-
-enum PollHistoryMode: CaseIterable {
-    case active
-    case past
-}
-
-struct PollHistoryViewBindings {
-    var mode: PollHistoryMode
-}
-
-struct PollHistoryViewState: BindableState {
-    init(mode: PollHistoryMode) {
-        self.bindings = .init(mode: mode)
+final class PollHistoryService: PollHistoryServiceProtocol {
+    func fetchHistory() async throws -> [PollListData] {
+        []
     }
-    
-    var bindings: PollHistoryViewBindings
-    var polls: [PollListData] = []
-}
-
-enum PollHistoryViewAction {
-    case viewAppeared
 }
