@@ -2231,3 +2231,44 @@
 "onboarding_congratulations_home_button" = "带我到主页";
 "onboarding_use_case_message" = "我们将帮助你连接";
 "invite_to" = "邀请到%@";
+"threads_empty_title" = "保持讨论的有条理性";
+"threads_action_my_threads" = "我的线程";
+"threads_action_all_threads" = "所有线程";
+"threads_title" = "线程";
+"thread_copy_link_to_thread" = "将链接复制到线程";
+
+// MARK: Threads
+"room_thread_title" = "线程";
+"room_accessibility_record_voice_message_hint" = "双击并保持录音。";
+"room_accessibility_record_voice_message" = "录制语音消息";
+"room_accessibility_thread_more" = "更多";
+"room_accessibility_threads" = "线程";
+"room_event_copy_link_info" = "链接复制到剪贴板。";
+"room_event_action_reply_in_thread" = "线程";
+"room_event_action_view_in_room" = "在房间浏览";
+"room_first_message_placeholder" = "发送您的第一条消息……";
+"room_participants_invite_prompt_to_msg" = "您确定要邀请%@ 到 %@吗？";
+"room_participants_leave_success" = "离开房间";
+"room_participants_leave_processing" = "离开";
+"search_filter_placeholder" = "过滤";
+"password_policy_pwd_in_dict_error" = "此密码已在字典中找到，不允许使用。";
+"password_policy_weak_pwd_error" = "此密码太弱了。它必须包含至少8个字符，每种类型至少有一个字符: 大写、小写、数字和特殊字符。";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "密码过短";
+"authentication_qr_login_failure_retry" = "再试一次";
+"authentication_qr_login_failure_request_timed_out" = "连接没有在规定的时间内完成。";
+"authentication_qr_login_failure_request_denied" = "请求在另一个设备上被拒绝。";
+"authentication_qr_login_failure_invalid_qr" = "二维码无效。";
+"authentication_qr_login_failure_title" = "连接失败";
+"authentication_qr_login_loading_signed_in" = "您现在已经登录到另一个设备上。";
+"authentication_qr_login_loading_waiting_signin" = "等待设备登录。";
+"authentication_qr_login_loading_connecting_device" = "连接到设备";
+"authentication_qr_login_confirm_alert" = "请确保您知道此代码的来源。通过连接设备，您将为某人提供对您帐户的完全访问权限。";
+"authentication_qr_login_confirm_subtitle" = "确认下面的代码与您的其他设备匹配:";
+"authentication_qr_login_confirm_title" = "建立安全连接";
+"authentication_qr_login_scan_subtitle" = "将二维码放置在下面的方框中";
+"authentication_qr_login_scan_title" = "扫描二维码";
+"authentication_qr_login_display_step2" = "选择“以二维码登入”";
+"authentication_qr_login_display_step1" = "在您的其它设备中打开Element";
+"onboarding_splash_page_4_title_no_pun" = "为您的团队发送消息。";
