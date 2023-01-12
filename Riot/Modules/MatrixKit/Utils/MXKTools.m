@@ -1043,7 +1043,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
     // This allows to check for normal url based links (like https://element.io)
     // And set back the default link color
     NSArray *matches = [linkDetector matchesInString: [mutableAttributedString string] options:0 range: NSMakeRange(0,mutableAttributedString.length)];
-    if (matches && matches.count > 0)
+    if (matches)
     {
         for (NSTextCheckingResult *match in matches)
         {
