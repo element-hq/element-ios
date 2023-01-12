@@ -94,7 +94,7 @@ import MediaPlayer
     private override init() {
         audioPlayers = NSMapTable<NSString, VoiceMessageAudioPlayer>(valueOptions: .weakMemory)
         audioRecorders = NSHashTable<VoiceMessageAudioRecorder>(options: .weakMemory)
-        nowPlayingInfoDelegates = NSMapTable<VoiceMessageAudioPlayer, VoiceMessageNowPlayingInfoDelegate>(valueOptions: .weakMemory)
+        nowPlayingInfoDelegates = NSMapTable<VoiceMessageAudioPlayer, VoiceMessageNowPlayingInfoDelegate>(keyOptions: .weakMemory, valueOptions: .weakMemory)
         activeAudioPlayers = Set<VoiceMessageAudioPlayer>()
         super.init()
         
