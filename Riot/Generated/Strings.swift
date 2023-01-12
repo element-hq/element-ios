@@ -4843,6 +4843,14 @@ public class VectorL10n: NSObject {
   public static var pollHistoryActiveSegmentTitle: String { 
     return VectorL10n.tr("Vector", "poll_history_active_segment_title") 
   }
+  /// There are no active polls in this room
+  public static var pollHistoryNoActivePollText: String { 
+    return VectorL10n.tr("Vector", "poll_history_no_active_poll_text") 
+  }
+  /// There are no past polls in this room
+  public static var pollHistoryNoPastPollText: String { 
+    return VectorL10n.tr("Vector", "poll_history_no_past_poll_text") 
+  }
   /// Past polls
   public static var pollHistoryPastSegmentTitle: String { 
     return VectorL10n.tr("Vector", "poll_history_past_segment_title") 

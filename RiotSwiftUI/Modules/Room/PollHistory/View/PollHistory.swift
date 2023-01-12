@@ -37,24 +37,10 @@ struct PollHistory: View {
             }
             .padding(.horizontal, 16)
             
-            ScrollView {
-                LazyVStack(spacing: 32) {
-                    let enumeratedPolls = Array(viewModel.viewState.polls.enumerated())
-                    
-                    ForEach(enumeratedPolls, id: \.offset) { _, pollData in
-                        PollListItem(pollData: pollData)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    Button {
-                        #warning("handle action")
-                    } label: {
-                        Text("Load more polls")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding(.horizontal, 16)
-                .padding(.top, 32)
+            if viewModel.viewState.polls.isEmpty {
+                noPollsView
+            } else {
+                pollListView
             }
         }
         .padding(.top, 32)
@@ -65,6 +51,36 @@ struct PollHistory: View {
         .onAppear {
             viewModel.send(viewAction: .viewAppeared)
         }
+    }
+    
+    private var pollListView: some View {
+        ScrollView {
+            LazyVStack(spacing: 32) {
+                let enumeratedPolls = Array(viewModel.viewState.polls.enumerated())
+                
+                ForEach(enumeratedPolls, id: \.offset) { _, pollData in
+                    PollListItem(pollData: pollData)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Button {
+                    #warning("handle action")
+                } label: {
+                    Text("Load more polls")
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(.top, 32)
+            .padding(.horizontal, 16)
+        }
+    }
+    
+    private var noPollsView: some View {
+        Text(viewModel.mode == .active ? VectorL10n.pollHistoryNoActivePollText : VectorL10n.pollHistoryNoPastPollText)
+            .font(theme.fonts.body)
+            .foregroundColor(theme.colors.secondaryContent)
+            .frame(maxHeight: .infinity)
+            .padding(.horizontal, 16)
     }
 }
 

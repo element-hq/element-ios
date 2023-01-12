@@ -25,6 +25,8 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     // mock that screen.
     case active
     case past
+    case activeEmpty
+    case pastEmpty
     
     /// The associated screen
     var screenType: Any.Type {
@@ -34,15 +36,22 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
         let pollHistoryMode: PollHistoryMode
+        let pollService = MockPollHistoryService()
         
         switch self {
         case .active:
             pollHistoryMode = .active
         case .past:
             pollHistoryMode = .past
+        case .activeEmpty:
+            pollHistoryMode = .active
+            pollService.pollListData = []
+        case .pastEmpty:
+            pollHistoryMode = .past
+            pollService.pollListData = []
         }
         
-        let viewModel = PollHistoryViewModel(mode: pollHistoryMode, pollService: MockPollHistoryService())
+        let viewModel = PollHistoryViewModel(mode: pollHistoryMode, pollService: pollService)
         
         // can simulate service and viewModel actions here if needs be.
         
