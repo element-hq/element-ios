@@ -2185,10 +2185,32 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             [self removeEventWithEventId:eventId];
             
             if (event.isVoiceMessage) {
-                NSNumber *duration = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioDuration];
-                NSArray<NSNumber *> *samples = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioWaveform];
-                
-                [self sendVoiceMessage:localFileURL mimeType:mimetype duration:duration.doubleValue samples:samples success:success failure:failure];
+                // Check if it is an actual voice message or a voicebroadcast chunk
+                if (event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil) {
+                    // VoiceBroadcast chunk
+                    NSNumber *duration = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioDuration];
+                    NSDictionary* additionalContentParams = @{
+                        kMXEventRelationRelatesToKey: event.content[kMXEventRelationRelatesToKey],
+                        VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType: event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType]
+                    };
+                    [_room sendVoiceMessage:localFileURL
+                    additionalContentParams:additionalContentParams
+                                   mimeType:mimetype
+                                   duration:duration.doubleValue
+                                    samples:nil
+                                   threadId:self.threadId
+                                  localEcho:nil
+                                    success:success
+                                    failure:failure
+                         keepActualFilename:false];
+                    
+                } else {
+                    // Voice message
+                    NSNumber *duration = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioDuration];
+                    NSArray<NSNumber *> *samples = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioWaveform];
+                    
+                    [self sendVoiceMessage:localFileURL mimeType:mimetype duration:duration.doubleValue samples:samples success:success failure:failure];
+                }
             } else {
                 [self sendAudioFile:localFileURL mimeType:mimetype success:success failure:failure];
             }
