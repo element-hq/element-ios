@@ -1052,7 +1052,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
             NSURLComponents *url = [[NSURLComponents new] initWithURL:matchUrl resolvingAgainstBaseURL:NO];
             if (url.URL)
             {
-                [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor linkColor] range:matchRange];
+                [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.colors.links range:matchRange];
             }
         }
     }
@@ -1103,7 +1103,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
                 if (NSIntersectionRange(match.range, linkMatch.range).length == match.range.length)
                 {
                     // but before we set the right color
-                    [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor linkColor] range:linkMatch.range];
+                    [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.colors.links range:linkMatch.range];
                     hasAlreadyLink = YES;
                     break;
                 }
@@ -1118,7 +1118,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
             NSString *link = [mutableAttributedString.string substringWithRange:match.range];
             link = [link stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
             [mutableAttributedString addAttribute:NSLinkAttributeName value:link range:match.range];
-            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor linkColor] range:match.range];
+            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.colors.links range:match.range];
         }
     }];
 }
