@@ -359,7 +359,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                              attributes:@{
                                                           NSLinkAttributeName: linkActionString,
                                                           NSForegroundColorAttributeName: self.sendingTextColor,
-                                                          NSFontAttributeName: self.encryptedMessagesTextFont
+                                                          NSFontAttributeName: self.encryptedMessagesTextFont,
+                                                          NSUnderlineStyleAttributeName: [NSNumber numberWithInt:NSUnderlineStyleSingle] 
                                                           }]];
 
             [attributedStringWithRerequestMessage appendAttributedString:
