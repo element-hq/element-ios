@@ -21,10 +21,36 @@ struct PollHistory: View {
     
     @ObservedObject var viewModel: PollHistoryViewModel.Context
     
+    var bindings: PollHistoryViewBindings {
+        viewModel.viewState.bindings
+    }
+    
     var body: some View {
-        Text("Hello world")
-            .background(theme.colors.background.ignoresSafeArea())
-            .accentColor(theme.colors.accent)
+        VStack {
+            Picker("abc", selection: .constant(PollHistoryMode.active)) {
+                Text("Active Polls")
+                    .tag(PollHistoryMode.active)
+                
+                Text("Past Polls")
+                    .tag(PollHistoryMode.past)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            
+            ScrollView {
+                ForEach(0..<10) { index in
+                    Text("Active poll number: \(index)")
+                }
+                
+                Button {
+                    #warning("handle action")
+                } label: {
+                    Text("Load more polls")
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .background(theme.colors.background.ignoresSafeArea())
+        .accentColor(theme.colors.accent)
     }
 }
 
