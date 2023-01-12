@@ -157,6 +157,10 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         return coordinator
     }
     
+    private func pollHistoryCoordinator() -> PollHistoryCoordinator {
+        return PollHistoryCoordinator(parameters: .init(promptType: .regular))
+    }
+    
     private func showRoomDetails(with target: RoomInfoListTarget, animated: Bool) {
         switch target {
         case .integrations:
@@ -174,8 +178,11 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         case .notifications:
             let coordinator = createRoomNotificationSettingsCoordinator()
             coordinator.start()
-            self.add(childCoordinator: coordinator)
-            self.navigationRouter.push(coordinator, animated: true, popCompletion: nil)
+            push(coordinator: coordinator)
+        case .pollHistory:
+            let coordinator = pollHistoryCoordinator()
+            coordinator.start()
+            push(coordinator: coordinator)
         default:
             guard let tabIndex = target.tabIndex else {
                 fatalError("No settings tab index for this target.")
@@ -187,6 +194,14 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
             }
             
             navigationRouter.push(segmentedViewController, animated: animated, popCompletion: nil)
+        }
+    }
+    
+    private func push(coordinator: Coordinator & Presentable, animated: Bool = true) {
+        coordinator.start()
+        self.add(childCoordinator: coordinator)
+        navigationRouter.push(coordinator, animated: animated) {
+            self.remove(childCoordinator: coordinator)
         }
     }
 }

@@ -176,7 +176,7 @@ final class RoomInfoListViewController: UIViewController {
         }
         
         let rowPollHistory = Row(type: .default, icon: Asset.Images.pollHistory.image, text: VectorL10n.roomDetailsPolls, accessoryType: .disclosureIndicator) {
-            #warning("Add action")
+            self.viewModel.process(viewAction: .navigate(target: .pollHistory))
         }
         
         let rowUploads = Row(type: .default, icon: Asset.Images.scrollup.image, text: VectorL10n.roomDetailsFiles, accessoryType: .disclosureIndicator) {
