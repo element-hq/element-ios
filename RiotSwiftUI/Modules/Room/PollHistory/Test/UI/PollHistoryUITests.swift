@@ -18,21 +18,23 @@ import RiotSwiftUI
 import XCTest
 
 class PollHistoryUITests: MockScreenTestCase {
-    func testPollHistoryPromptRegular() {
-        let promptType = PollHistoryPromptType.regular
-        app.goToScreenWithIdentifier(MockPollHistoryScreenState.promptType(promptType).title)
-        
-        let title = app.staticTexts["title"]
-        XCTAssert(title.exists)
-        XCTAssertEqual(title.label, promptType.title)
+    func testPollHistoryHasContent() {
+        app.goToScreenWithIdentifier(MockPollHistoryScreenState.active.title)
+        let title = app.navigationBars.firstMatch.identifier
+        let emptyText = app.staticTexts["PollHistory.emptyText"]
+        let items = app.staticTexts["PollListItem.title"]
+        XCTAssertEqual(title, VectorL10n.pollHistoryTitle)
+        XCTAssertTrue(items.exists)
+        XCTAssertFalse(emptyText.exists)
     }
     
-    func testPollHistoryPromptUpgrade() {
-        let promptType = PollHistoryPromptType.upgrade
-        app.goToScreenWithIdentifier(MockPollHistoryScreenState.promptType(promptType).title)
-        
-        let title = app.staticTexts["title"]
-        XCTAssert(title.exists)
-        XCTAssertEqual(title.label, promptType.title)
+    func testPollHistoryShowsEmptyScreen() {
+        app.goToScreenWithIdentifier(MockPollHistoryScreenState.activeEmpty.title)
+        let title = app.navigationBars.firstMatch.identifier
+        let emptyText = app.staticTexts["PollHistory.emptyText"]
+        let items = app.staticTexts["PollListItem.title"]
+        XCTAssertEqual(title, VectorL10n.pollHistoryTitle)
+        XCTAssertFalse(items.exists)
+        XCTAssertTrue(emptyText.exists)
     }
 }

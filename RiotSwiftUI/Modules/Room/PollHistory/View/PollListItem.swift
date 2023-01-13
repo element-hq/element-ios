@@ -45,6 +45,7 @@ struct PollListItem: View {
                     .foregroundColor(theme.colors.primaryContent)
                     .font(theme.fonts.body)
                     .lineLimit(2)
+                    .accessibilityLabel("PollListItem.title")
             }
         }
     }

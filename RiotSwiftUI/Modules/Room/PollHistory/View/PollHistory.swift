@@ -81,6 +81,7 @@ struct PollHistory: View {
             .foregroundColor(theme.colors.secondaryContent)
             .frame(maxHeight: .infinity)
             .padding(.horizontal, 16)
+            .accessibilityLabel("PollHistory.emptyText")
     }
 }
 
