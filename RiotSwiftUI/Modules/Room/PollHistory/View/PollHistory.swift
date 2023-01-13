@@ -23,14 +23,12 @@ struct PollHistory: View {
     
     var body: some View {
         VStack {
-            HStack {
-                SegmentedPicker(
-                    segments: PollHistoryMode.allCases.map { ($0.segmentTitle, $0) },
-                    selection: $viewModel.mode,
-                    interSegmentSpacing: 14
-                )
-                Spacer()
-            }
+            SegmentedPicker(
+                segments: PollHistoryMode.allCases.map { ($0.segmentTitle, $0) },
+                selection: $viewModel.mode,
+                interSegmentSpacing: 14
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             
             if viewModel.viewState.polls.isEmpty {
