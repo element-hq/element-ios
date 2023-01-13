@@ -7547,9 +7547,17 @@ public class VectorL10n: NSObject {
   public static var settingsLabs: String { 
     return VectorL10n.tr("Vector", "settings_labs") 
   }
+  /// This action cannot be undone
+  public static var settingsLabsConfirmCryptoSdk: String { 
+    return VectorL10n.tr("Vector", "settings_labs_confirm_crypto_sdk") 
+  }
   /// Create conference calls with jitsi
   public static var settingsLabsCreateConferenceWithJitsi: String { 
     return VectorL10n.tr("Vector", "settings_labs_create_conference_with_jitsi") 
+  }
+  /// Crypto SDK is enabled. To disable please reinstall the app
+  public static var settingsLabsDisableCryptoSdk: String { 
+    return VectorL10n.tr("Vector", "settings_labs_disable_crypto_sdk") 
   }
   /// End-to-End Encryption
   public static var settingsLabsE2eEncryption: String { 
@@ -7562,6 +7570,10 @@ public class VectorL10n: NSObject {
   /// Auto Report Decryption Errors
   public static var settingsLabsEnableAutoReportDecryptionErrors: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_auto_report_decryption_errors") 
+  }
+  /// Enable new rust-based Crypto SDK
+  public static var settingsLabsEnableCryptoSdk: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_crypto_sdk") 
   }
   /// Live location sharing - share current location (active development, and temporarily, locations persist in room history)
   public static var settingsLabsEnableLiveLocationSharing: String { 
