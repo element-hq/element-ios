@@ -55,6 +55,6 @@ struct UserSuggestionListItem: View {
 struct UserSuggestionHeader_Previews: PreviewProvider {
     static var previews: some View {
         UserSuggestionListItem(avatar: MockAvatarInput.example, displayName: "Alice", userId: "@alice:matrix.org")
-            .addDependency(MockAvatarService.example)
+            .environmentObject(AvatarViewModel.withMockedServices())
     }
 }

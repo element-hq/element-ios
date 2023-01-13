@@ -70,6 +70,6 @@ struct MatrixItemChooserListRow: View {
 struct MatrixItemChooserListRow_Previews: PreviewProvider {
     static var previews: some View {
         TemplateRoomListRow(avatar: MockAvatarInput.example, displayName: "Alice")
-            .addDependency(MockAvatarService.example)
+            .environmentObject(AvatarViewModel.withMockedServices())
     }
 }

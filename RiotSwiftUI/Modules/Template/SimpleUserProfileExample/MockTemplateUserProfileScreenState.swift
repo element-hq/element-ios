@@ -55,7 +55,7 @@ enum MockTemplateUserProfileScreenState: MockScreenState, CaseIterable {
         return (
             [service, viewModel],
             AnyView(TemplateUserProfile(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

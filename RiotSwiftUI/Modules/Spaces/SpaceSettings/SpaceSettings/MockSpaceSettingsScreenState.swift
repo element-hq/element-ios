@@ -79,7 +79,7 @@ enum MockSpaceSettingsScreenState: MockScreenState, CaseIterable {
         return (
             [service, viewModel],
             AnyView(SpaceSettings(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

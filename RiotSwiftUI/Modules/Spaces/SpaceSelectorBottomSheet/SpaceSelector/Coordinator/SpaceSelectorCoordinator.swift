@@ -62,7 +62,7 @@ final class SpaceSelectorCoordinator: Coordinator, Presentable {
         let service = SpaceSelectorService(session: parameters.session, parentSpaceId: parameters.parentSpaceId, showHomeSpace: parameters.showHomeSpace, selectedSpaceId: parameters.selectedSpaceId)
         let viewModel = SpaceSelectorViewModel.makeViewModel(service: service, showCancel: parameters.showCancel)
         let view = SpaceSelector(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
         self.viewModel = viewModel
         let hostingViewController = VectorHostingController(rootView: view)
         hostingViewController.hidesBackTitleWhenPushed = true

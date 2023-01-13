@@ -66,7 +66,7 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
     
     func toPresentable() -> UIViewController {
         let view = VoiceBroadcastPlaybackView(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
         return VectorHostingController(rootView: view)
     }
     

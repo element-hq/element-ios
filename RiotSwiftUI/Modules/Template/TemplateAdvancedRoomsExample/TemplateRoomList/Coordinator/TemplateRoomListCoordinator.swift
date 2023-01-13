@@ -33,7 +33,7 @@ final class TemplateRoomListCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         let viewModel = TemplateRoomListViewModel(templateRoomListService: TemplateRoomListService(session: parameters.session))
         let view = TemplateRoomList(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
         templateRoomListViewModel = viewModel
         templateRoomListHostingController = VectorHostingController(rootView: view)
     }

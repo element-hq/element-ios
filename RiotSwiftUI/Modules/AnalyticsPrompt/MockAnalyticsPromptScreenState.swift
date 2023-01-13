@@ -47,7 +47,7 @@ enum MockAnalyticsPromptScreenState: MockScreenState, CaseIterable {
         return (
             [promptType, viewModel],
             AnyView(AnalyticsPrompt(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

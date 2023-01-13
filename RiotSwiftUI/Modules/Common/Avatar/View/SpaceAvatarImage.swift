@@ -20,7 +20,7 @@ import SwiftUI
 struct SpaceAvatarImage: View {
     @Environment(\.theme) var theme: ThemeSwiftUI
     @Environment(\.dependencies) var dependencies: DependencyContainer
-    @StateObject var viewModel = AvatarViewModel()
+    @EnvironmentObject var viewModel: AvatarViewModel
     
     var mxContentUri: String?
     var matrixItemId: String
@@ -99,7 +99,7 @@ struct LiveAvatarImage_Previews: PreviewProvider {
                     SpaceAvatarImage(mxContentUri: nil, matrixItemId: name, displayName: name, size: .xLarge)
                 }
             }
-            .addDependency(MockAvatarService.example)
+            .environmentObject(AvatarViewModel.withMockedServices())
         }
     }
 }

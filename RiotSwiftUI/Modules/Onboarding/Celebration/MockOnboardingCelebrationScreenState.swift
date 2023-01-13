@@ -39,7 +39,7 @@ enum MockOnboardingCelebrationScreenState: MockScreenState, CaseIterable {
         return (
             [self, viewModel],
             AnyView(OnboardingCelebrationScreen(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }
