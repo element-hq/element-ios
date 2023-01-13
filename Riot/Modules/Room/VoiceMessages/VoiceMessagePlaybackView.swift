@@ -136,7 +136,8 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
             return
         }
         
-        self.backgroundColor = theme.colors.background
+//        self.backgroundColor = theme.colors.background
+        self.backgroundColor = theme.backgroundColor
         playButton.backgroundColor = theme.roomCellIncomingBubbleBackgroundColor
         playButton.tintColor = theme.colors.secondaryContent
         

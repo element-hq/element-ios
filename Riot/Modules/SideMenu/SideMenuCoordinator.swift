@@ -192,6 +192,13 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.sideMenuNavigationViewController.pushViewController(viewController, animated: true)
     }
     
+    private func showWebView(urlString: String) {
+         let viewController = SideMenuWebView()
+         viewController.urlString = urlString
+         // Push view controller and dismiss side menu
+         self.sideMenuNavigationViewController.pushViewController(viewController, animated: true)
+     }
+    
     private func showBugReport() {
         let bugReportViewController = BugReportViewController()
         
@@ -380,12 +387,18 @@ extension SideMenuCoordinator: SideMenuViewModelCoordinatorDelegate {
         case .inviteFriends:
             self.showInviteFriends(from: sourceView)
         case .settings:
-            self.showSettings()
-        case .help:
-            self.showHelp()
-        case .feedback:
-            self.showBugReport()
-        }
+             self.showSettings()
+         case .help:
+             self.showHelp()
+         case .profile:
+             self.showWebView(urlString: "https://jobs.holedo.im/?u=\(self.parameters.userSessionsService.mainUserSession?.userId ?? "")")
+         case .news:
+             self.showWebView(urlString: "https://news.holedo.im/?u=\(self.parameters.userSessionsService.mainUserSession?.userId ?? "")")
+         case .jobs:
+             self.showWebView(urlString: " https://profile.holedo.im/\(self.parameters.userSessionsService.mainUserSession?.userId ?? "")")
+         case .about:
+             self.showWebView(urlString: "https://about.holedo.im/?u=\(self.parameters.userSessionsService.mainUserSession?.userId ?? "")")
+         }
         
         self.delegate?.sideMenuCoordinator(self, didTapMenuItem: menuItem, fromSourceView: sourceView)
     }

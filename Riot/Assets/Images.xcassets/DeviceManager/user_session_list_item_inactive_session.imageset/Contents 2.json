@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "user_session_list_item_inactive_session.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

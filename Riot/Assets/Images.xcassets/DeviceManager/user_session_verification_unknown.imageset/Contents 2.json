@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "user_session_verification_unknown.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

@@ -24,36 +24,36 @@ class DefaultTheme: NSObject, Theme {
 
     var identifier: String = ThemeIdentifier.light.rawValue
     
-    var backgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
+    var backgroundColor: UIColor = UIColor(rgb: 0xF7F8FB)
 
     var baseColor: UIColor {
-        BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0xFFFFFF) : UIColor(rgb: 0xF5F7FA)
+        BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0xF7F8FB) : UIColor(rgb: 0xF5F7FA)
     }
-    var baseIconPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
+    var baseIconPrimaryColor: UIColor = UIColor(rgb: 0x272E41)
+    var baseTextPrimaryColor: UIColor = UIColor(rgb: 0x272E41)
     var baseTextSecondaryColor: UIColor = UIColor(rgb: 0x8F97A3)
 
-    var searchBackgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    var searchPlaceholderColor: UIColor = UIColor(rgb: 0x8F97A3)
+    var searchBackgroundColor: UIColor = UIColor(rgb: 0xF7F8FB)
+    var searchPlaceholderColor: UIColor = UIColor(rgb: 0x272E41)
     var searchResultHighlightColor: UIColor = UIColor(rgb: 0xFCC639).withAlphaComponent(0.2)
 
     var headerBackgroundColor: UIColor {
-        BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0xFFFFFF) : UIColor(rgb: 0xF5F7FA)
+        BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0xedeff1) : UIColor(rgb: 0xF5F7FA)
     }
-    var headerBorderColor: UIColor  = UIColor(rgb: 0xE9EDF1)
-    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x17191C)
-    var headerTextSecondaryColor: UIColor = UIColor(rgb: 0x737D8C)
+    var headerBorderColor: UIColor  = UIColor(rgb: 0xF7F8FB)
+    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x272E41)
+    var headerTextSecondaryColor: UIColor = UIColor(rgb: 0x272E41)
 
-    var textPrimaryColor: UIColor = UIColor(rgb: 0x17191C)
-    var textSecondaryColor: UIColor = UIColor(rgb: 0x737D8C)
-    var textTertiaryColor: UIColor = UIColor(rgb: 0x8D99A5)
-    var textQuinaryColor: UIColor = UIColor(rgb: 0xE3E8F0)
+    var textPrimaryColor: UIColor = UIColor(rgb: 0x272E41)
+    var textSecondaryColor: UIColor = UIColor(rgb: 0x272E41)
+    var textTertiaryColor: UIColor = UIColor(rgb: 0x272E41)
+    var textQuinaryColor: UIColor = UIColor(rgb: 0x272E41)
 
-    var tintColor: UIColor = UIColor(rgb: 0x0DBD8B)
-    var tintBackgroundColor: UIColor = UIColor(rgb: 0xe9fff9)
+    var tintColor: UIColor = UIColor(rgb: 0x32A3FD)
+    var tintBackgroundColor: UIColor = UIColor(rgb: 0x32A3FD)
     var tabBarUnselectedItemTintColor: UIColor = UIColor(rgb: 0xC1C6CD)
-    var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
-    var lineBreakColor: UIColor = UIColor(rgb: 0xDDE4EE)        
+    var unreadRoomIndentColor: UIColor = UIColor(rgb: 0xF7F8FB)
+    var lineBreakColor: UIColor = UIColor(rgb: 0xF7F8FB)
     
     var noticeColor: UIColor = UIColor(rgb: 0xFF4B55)
     var noticeSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
@@ -63,9 +63,15 @@ class DefaultTheme: NSObject, Theme {
     var roomInputTextBorder: UIColor = UIColor(rgb: 0xE3E8F0)
 
     var avatarColors: [UIColor] = [
-        UIColor(rgb: 0x03B381),
-        UIColor(rgb: 0x368BD6),
-        UIColor(rgb: 0xAC3BA8)]
+        UIColor(rgb: 0x4974A5),
+        UIColor(rgb: 0x7A49A5),
+        UIColor(rgb: 0x359394),
+        UIColor(rgb: 0xA13755),
+        UIColor(rgb: 0xE57428),
+        UIColor(rgb: 0x2DC2C5),
+        UIColor(rgb: 0x5D5BC5),
+        UIColor(rgb: 0xC2C52D)
+    ]
     
     var userNameColors: [UIColor] = [
         UIColor(rgb: 0x368BD6),
@@ -105,9 +111,9 @@ class DefaultTheme: NSObject, Theme {
     
     var shadowColor: UIColor = UIColor(rgb: 0x000000)
     
-    var roomCellIncomingBubbleBackgroundColor: UIColor = UIColor(rgb: 0xE8EDF4)
+    var roomCellIncomingBubbleBackgroundColor: UIColor = UIColor(rgb: 0x32A3FD)
     
-    var roomCellOutgoingBubbleBackgroundColor: UIColor = UIColor(rgb: 0xE7F8F3)
+    var roomCellOutgoingBubbleBackgroundColor: UIColor = UIColor(rgb: 0xCDE8FD)
     
     var roomCellLocalisationIconStartedColor: UIColor = UIColor(rgb: 0x5C56F5)
     

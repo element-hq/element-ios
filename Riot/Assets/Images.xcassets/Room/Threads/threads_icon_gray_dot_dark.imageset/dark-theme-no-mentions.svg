@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 28 28"><circle cx="23" cy="5" r="5" fill="#A9B2BC"/><path fill="#0DBD8B" fill-rule="evenodd" d="M16.07 6A7.004 7.004 0 0 0 22 11.93V21a3 3 0 0 1-3 3H7.667a1 1 0 0 0-.6.2L3.6 26.8A1 1 0 0 1 2 26V9a3 3 0 0 1 3-3h11.07ZM6 12a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2H6Zm-1 5a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Z" clip-rule="evenodd"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <circle cx="23" cy="5" r="5" style="fill:rgb(169,178,188);"/>
+    <path d="M16.07,6C16.513,9.064 18.936,11.487 22,11.93L22,21C22,22.646 20.646,24 19,24L7.667,24C7.451,24 7.24,24.07 7.067,24.2L3.6,26.8C3.427,26.93 3.216,27 3,27C2.451,27 2,26.549 2,26L2,9C2,7.354 3.354,6 5,6L16.07,6ZM6,12C5.451,12 5,12.451 5,13C5,13.549 5.451,14 6,14L18,14C18.549,14 19,13.549 19,13C19,12.451 18.549,12 18,12L6,12ZM5,17C5,16.451 5.451,16 6,16L12,16C12.549,16 13,16.451 13,17C13,17.549 12.549,18 12,18L6,18C5.451,18 5,17.549 5,17Z" style="fill:rgb(50,163,253);"/>
+</svg>

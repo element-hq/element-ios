@@ -24,6 +24,7 @@ struct OnboardingSplashScreen: View {
     
     @Environment(\.theme) private var theme
     @Environment(\.layoutDirection) private var layoutDirection
+    @Environment(\.colorScheme) var colorScheme
     
     private var isLeftToRight: Bool { layoutDirection == .leftToRight }
     private var pageCount: Int { viewModel.viewState.content.count }

@@ -101,15 +101,22 @@ final class SideMenuViewModel: SideMenuViewModelType {
         
         var sideMenuItems: [SideMenuItem] = []
         
+        sideMenuItems += [
+               .about
+           ]
+
         if BuildSettings.sideMenuShowInviteFriends {
             sideMenuItems += [.inviteFriends]
         }
-        
+
         sideMenuItems += [
+            .news,
+            .jobs,
+            .profile,
             .settings,
-            .feedback
+            .help
         ]
-        
+    
         // Hide app version
         let appVersion: String? = nil
         

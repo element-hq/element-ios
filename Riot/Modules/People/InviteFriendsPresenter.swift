@@ -60,8 +60,10 @@ final class InviteFriendsPresenter: NSObject {
     }
     
     private func buildShareText(with userId: String) -> String {
-        let userMatrixToLink: String = MXTools.permalinkToUser(withUserId: userId)
-        return VectorL10n.inviteFriendsShareText(AppInfo.current.displayName, userMatrixToLink)
+        // let userMatrixToLink: String = MXTools.permalinkToUser(withUserId: userId)
+        let userMatrixToLink: String = "https://holedo.im/#/\(userId)"
+//        return VectorL10n.inviteFriendsShareText(AppInfo.current.displayName, userMatrixToLink)
+        return VectorL10n.inviteFriendsShareText("Holedo", userMatrixToLink)
     }
     
     private func present(_ viewController: UIViewController, animated: Bool) {

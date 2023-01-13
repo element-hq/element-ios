@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "onboarding_use_case_personal_dark.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

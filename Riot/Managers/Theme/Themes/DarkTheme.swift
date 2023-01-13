@@ -24,36 +24,37 @@ class DarkTheme: NSObject, Theme {
     
     var identifier: String = ThemeIdentifier.dark.rawValue
 
-    var backgroundColor: UIColor = UIColor(rgb: 0x15191E)
+    var backgroundColor: UIColor = UIColor(rgb: 0x272E41)
 
     var baseColor: UIColor {
-        BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0x15191E) : UIColor(rgb: 0x21262C)
+        BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0x272E41) : UIColor(rgb: 0x21262C)
     }
-    var baseIconPrimaryColor: UIColor = UIColor(rgb: 0xEDF3FF)
-    var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    var baseTextSecondaryColor: UIColor = UIColor(rgb: 0xA9B2BC)
+    var baseIconPrimaryColor: UIColor = UIColor(rgb: 0xF7F8FB)
+    var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xF7F8FB)
+    var baseTextSecondaryColor: UIColor = UIColor(rgb: 0xF7F8FB)
 
-    var searchBackgroundColor: UIColor = UIColor(rgb: 0x15191E)
-    var searchPlaceholderColor: UIColor = UIColor(rgb: 0xA9B2BC)
+    var searchBackgroundColor: UIColor = UIColor(rgb: 0x272E41)
+    var searchPlaceholderColor: UIColor = UIColor(rgb: 0xF7F8FB)
     var searchResultHighlightColor: UIColor = UIColor(rgb: 0xFCC639).withAlphaComponent(0.3)
 
     var headerBackgroundColor: UIColor {
-        BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0x15191E) : UIColor(rgb: 0x21262C)
+        BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0x15181D) : UIColor(rgb: 0x21262C)
     }
-    var headerBorderColor: UIColor  = UIColor(rgb: 0x15191E)
-    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xA9B2BC)
+    var headerBorderColor: UIColor  = UIColor(rgb: 0x272E41)
+    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0xF7F8FB)
+    var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xF7F8FB)
 
-    var textPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    var textSecondaryColor: UIColor = UIColor(rgb: 0xA9B2BC)
-    var textTertiaryColor: UIColor = UIColor(rgb: 0x8E99A4)
-    var textQuinaryColor: UIColor = UIColor(rgb: 0x394049)
+    var textPrimaryColor: UIColor = UIColor(rgb: 0xF7F8FB)
+    var textSecondaryColor: UIColor = UIColor(rgb: 0xF7F8FB)
+    var textTertiaryColor: UIColor = UIColor(rgb: 0xF7F8FB)
+    var textQuinaryColor: UIColor = UIColor(rgb: 0x272E41)
 
-    var tintColor: UIColor = UIColor(rgb: 0x0DBD8B)
-    var tintBackgroundColor: UIColor = UIColor(rgb: 0x1F6954)
-    var tabBarUnselectedItemTintColor: UIColor = UIColor(rgb: 0x8E99A4)
-    var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
-    var lineBreakColor: UIColor = UIColor(rgb: 0x363D49)
+
+    var tintColor: UIColor = UIColor(rgb: 0x9CA7BE)
+    var tintBackgroundColor: UIColor = UIColor(rgb: 0x9CA7BE)
+    var tabBarUnselectedItemTintColor: UIColor = UIColor(rgb: 0xF7F8FB)
+    var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x272E41)
+    var lineBreakColor: UIColor = UIColor(rgb: 0x272E41)
     
     var noticeColor: UIColor = UIColor(rgb: 0xFF4B55)
     var noticeSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
@@ -63,19 +64,19 @@ class DarkTheme: NSObject, Theme {
     var roomInputTextBorder: UIColor = UIColor(rgb: 0x8D97A5).withAlphaComponent(0.2)
 
     var avatarColors: [UIColor] = [
-        UIColor(rgb: 0x03B381),
+        UIColor(rgb: 0x9CA7BE),
         UIColor(rgb: 0x368BD6),
         UIColor(rgb: 0xAC3BA8)]
     
     var userNameColors: [UIColor] = [
-        UIColor(rgb: 0x368BD6),
-        UIColor(rgb: 0xAC3BA8),
-        UIColor(rgb: 0x03B381),
-        UIColor(rgb: 0xE64F7A),
-        UIColor(rgb: 0xFF812D),
+        UIColor(rgb: 0x4974A5),
+        UIColor(rgb: 0x7A49A5),
+        UIColor(rgb: 0x359394),
+        UIColor(rgb: 0xA13755),
+        UIColor(rgb: 0xE57428),
         UIColor(rgb: 0x2DC2C5),
-        UIColor(rgb: 0x5C56F5),
-        UIColor(rgb: 0x74D12C)
+        UIColor(rgb: 0x5D5BC5),
+        UIColor(rgb: 0xC2C52D)
     ]
 
     var statusBarStyle: UIStatusBarStyle = .lightContent

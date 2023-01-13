@@ -80,7 +80,8 @@ struct OnboardingSplashScreenViewState: BindableState, CustomDebugStringConverti
                                               image: Asset.Images.onboardingSplashScreenPage3,
                                               darkImage: Asset.Images.onboardingSplashScreenPage3Dark),
             OnboardingSplashScreenPageContent(title: page4Title,
-                                              message: VectorL10n.onboardingSplashPage4Message,
+//                                              message: VectorL10n.onboardingSplashPage4Message,
+                                              message: "Holedo is also great for the workplace. It’s trusted by the world’s most secure organisations.",
                                               image: Asset.Images.onboardingSplashScreenPage4,
                                               darkImage: Asset.Images.onboardingSplashScreenPage4Dark)
         ]

@@ -1,6 +1,8 @@
-<svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="1" y="1" width="7" height="7" rx="1" stroke="#0DBD8B" stroke-width="2"/>
-<rect x="1" y="12.1113" width="7" height="7" rx="1" stroke="#0DBD8B" stroke-width="2"/>
-<rect x="12.1113" y="1" width="7" height="7" rx="1" stroke="#0DBD8B" stroke-width="2"/>
-<rect x="12.1113" y="12.1113" width="7" height="7" rx="3.5" stroke="#0DBD8B" stroke-width="2"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;">
+    <path d="M8,2C8,1.448 7.552,1 7,1L2,1C1.448,1 1,1.448 1,2L1,7C1,7.552 1.448,8 2,8L7,8C7.552,8 8,7.552 8,7L8,2Z" style="fill:none;stroke:rgb(50,163,253);stroke-width:2px;"/>
+    <path d="M8,13.111C8,12.559 7.552,12.111 7,12.111L2,12.111C1.448,12.111 1,12.559 1,13.111L1,18.111C1,18.663 1.448,19.111 2,19.111L7,19.111C7.552,19.111 8,18.663 8,18.111L8,13.111Z" style="fill:none;stroke:rgb(50,163,253);stroke-width:2px;"/>
+    <path d="M19.111,2C19.111,1.448 18.663,1 18.111,1L13.111,1C12.559,1 12.111,1.448 12.111,2L12.111,7C12.111,7.552 12.559,8 13.111,8L18.111,8C18.663,8 19.111,7.552 19.111,7L19.111,2Z" style="fill:none;stroke:rgb(50,163,253);stroke-width:2px;"/>
+    <path d="M19.111,15.611C19.111,13.68 17.543,12.111 15.611,12.111C13.68,12.111 12.111,13.68 12.111,15.611C12.111,17.543 13.68,19.111 15.611,19.111C17.543,19.111 19.111,17.543 19.111,15.611Z" style="fill:none;stroke:rgb(50,163,253);stroke-width:2px;"/>
 </svg>
