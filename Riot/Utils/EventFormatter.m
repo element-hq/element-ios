@@ -627,7 +627,7 @@ withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
         dispatch_group_t group = dispatch_group_create();
         dispatch_group_enter(group);
         
-        __block MXEvent* voiceBroadcastInfoStartedEvent;
+        __block MXEvent *voiceBroadcastInfoStartedEvent;
         
         [session eventWithEventId:voiceBroadcastInfo.voiceBroadcastId inRoom:roomId success:^(MXEvent *resultEvent) {
             voiceBroadcastInfoStartedEvent = resultEvent;
@@ -637,7 +637,7 @@ withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
             dispatch_group_leave(group);
         }];
         
-        dispatch_group_wait(group, 2.0);
+        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
         
         return voiceBroadcastInfoStartedEvent;
     }
