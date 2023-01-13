@@ -42,6 +42,7 @@ struct SegmentedPicker<Tag: Hashable>: View {
                         .underline(isSelectedSegment)
                 }
                 .accentColor(isSelectedSegment ? theme.colors.accent : theme.colors.primaryContent)
+                .accessibilityLabel(text + (isSelectedSegment ? "-selected" : ""))
             }
         }
     }
