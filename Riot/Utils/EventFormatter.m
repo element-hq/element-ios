@@ -546,8 +546,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 }
 
 #pragma mark - MXRoomSummaryUpdating
-- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withLastEvent:(MXEvent *)event eventState:(MXRoomState *)eventState roomState:(MXRoomState *)roomState {
-    
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withLastEvent:(MXEvent *)event eventState:(MXRoomState *)eventState roomState:(MXRoomState *)roomState
+{
     // Do not display voice broadcast chunk in last message.
     if (event.eventType == MXEventTypeRoomMessage && event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType])
     {
@@ -555,8 +555,41 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     }
     
     // Update last message if we have a voice broadcast in the room.
-    MXEvent *voiceBroadcastInfoEvent;
-    VoiceBroadcastInfo *info;
+    MXEvent *lastVoiceBroadcastInfoEvent = [self lastVoiceBroadcastInfoEventWithEvent:event roomState:roomState];
+    if (lastVoiceBroadcastInfoEvent != nil)
+    {
+        MXEvent *voiceBroadcastInfoStartedEvent = [self voiceBroadcastInfoStartedEventWithEvent:lastVoiceBroadcastInfoEvent
+                                                                                         roomId:summary.roomId
+                                                                                        session:session];
+        if (voiceBroadcastInfoStartedEvent != nil
+            && !(voiceBroadcastInfoStartedEvent.isRedactedEvent || [voiceBroadcastInfoStartedEvent.eventId isEqualToString:event.redacts]))
+        {
+            return [self session:session
+               updateRoomSummary:summary
+withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
+  voiceBroadcastInfoStartedEvent:voiceBroadcastInfoStartedEvent roomState:roomState];
+        }
+    }
+    
+    BOOL updated = [super session:session updateRoomSummary:summary withLastEvent:event eventState:eventState roomState:roomState];
+    
+    if (updated)
+    {
+        // Force the default text color for the last message (cancel highlighted message color)
+        NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:summary.lastMessage.attributedText];
+        [lastEventDescription addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.textSecondaryColor
+                                     range:NSMakeRange(0, lastEventDescription.length)];
+        summary.lastMessage.attributedText = lastEventDescription;
+    }
+    
+    return updated;
+}
+
+
+- (MXEvent *)lastVoiceBroadcastInfoEventWithEvent:(MXEvent *)event roomState:(MXRoomState *)roomState
+{
+    MXEvent *voiceBroadcastInfoEvent = nil;
+    VoiceBroadcastInfo *info = nil;
     if ([event.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
     {
         info = [VoiceBroadcastInfo modelFromJSON: event.content];
@@ -568,45 +601,22 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     }
     else
     {
-        MXEvent *lastVoiceBroadcastInfoEvent = [roomState stateEventsWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType].lastObject;
-        if (lastVoiceBroadcastInfoEvent != nil)
+        MXEvent *stateEvent = [roomState stateEventsWithType:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType].lastObject;
+        if (stateEvent != nil)
         {
-            info = [VoiceBroadcastInfo modelFromJSON: lastVoiceBroadcastInfoEvent.content];
+            info = [VoiceBroadcastInfo modelFromJSON: stateEvent.content];
             if (info != nil && ![VoiceBroadcastInfo isStoppedFor:info.state])
             {
-                voiceBroadcastInfoEvent = lastVoiceBroadcastInfoEvent;
+                voiceBroadcastInfoEvent = stateEvent;
             }
         }
     }
-    if (voiceBroadcastInfoEvent != nil)
-    {
-        MXEvent *voiceBroadcastInfoStartedEvent = [self voiceBroadcastInfoStartedEventWithEvent:voiceBroadcastInfoEvent
-                                                                                         roomId:summary.roomId
-                                                                                        session:session];
-        if (voiceBroadcastInfoStartedEvent != nil
-            && !(voiceBroadcastInfoStartedEvent.isRedactedEvent || [voiceBroadcastInfoStartedEvent.eventId isEqualToString:event.redacts]))
-        {
-            return [self session:session
-               updateRoomSummary:summary
-withVoiceBroadcastInfoStateEvent:voiceBroadcastInfoEvent
-  voiceBroadcastInfoStartedEvent:voiceBroadcastInfoStartedEvent roomState:roomState];
-        }
-    }
     
-    BOOL updated = [super session:session updateRoomSummary:summary withLastEvent:event eventState:eventState roomState:roomState];
-    
-    if (updated) {
-        // Force the default text color for the last message (cancel highlighted message color)
-        NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:summary.lastMessage.attributedText];
-        [lastEventDescription addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.textSecondaryColor
-                                     range:NSMakeRange(0, lastEventDescription.length)];
-        summary.lastMessage.attributedText = lastEventDescription;
-    }
-    
-    return updated;
+    return voiceBroadcastInfoEvent;
 }
 
-- (MXEvent *)voiceBroadcastInfoStartedEventWithEvent:(MXEvent *)voiceBroadcastInfoEvent roomId:(NSString *)roomId session:(MXSession *)session {
+- (MXEvent *)voiceBroadcastInfoStartedEventWithEvent:(MXEvent *)voiceBroadcastInfoEvent roomId:(NSString *)roomId session:(MXSession *)session
+{
     VoiceBroadcastInfo *voiceBroadcastInfo = [VoiceBroadcastInfo modelFromJSON: voiceBroadcastInfoEvent.content];
     if ([VoiceBroadcastInfo isStartedFor:voiceBroadcastInfo.state])
     {
