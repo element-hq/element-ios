@@ -19,7 +19,6 @@ import SwiftUI
 
 struct SpaceAvatarImage: View {
     @Environment(\.theme) var theme: ThemeSwiftUI
-    @Environment(\.dependencies) var dependencies: DependencyContainer
     @EnvironmentObject var viewModel: AvatarViewModel
     
     var mxContentUri: String?
@@ -59,7 +58,6 @@ struct SpaceAvatarImage: View {
             )
         })
         .onAppear {
-            viewModel.inject(dependencies: dependencies)
             viewModel.loadAvatar(
                 mxContentUri: mxContentUri,
                 matrixItemId: matrixItemId,

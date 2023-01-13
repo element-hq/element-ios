@@ -19,7 +19,6 @@ import SwiftUI
 
 struct AvatarImage: View {
     @Environment(\.theme) var theme: ThemeSwiftUI
-    @Environment(\.dependencies) var dependencies: DependencyContainer
     @EnvironmentObject var viewModel: AvatarViewModel
     
     var mxContentUri: String?
@@ -43,7 +42,6 @@ struct AvatarImage: View {
         .frame(maxWidth: CGFloat(size.rawValue), maxHeight: CGFloat(size.rawValue))
         .clipShape(Circle())
         .onAppear {
-            viewModel.inject(dependencies: dependencies)
             viewModel.loadAvatar(
                 mxContentUri: mxContentUri,
                 matrixItemId: matrixItemId,
