@@ -7926,7 +7926,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                        samples:(NSArray<NSNumber *> *)samples
                     completion:(void (^)(BOOL))completion
 {
-    [self.roomDataSource sendVoiceMessage:url mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
+    [self.roomDataSource sendVoiceMessage:url additionalContentParams:nil mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
         MXLogDebug(@"Success with event id %@", eventId);
         completion(YES);
     } failure:^(NSError *error) {

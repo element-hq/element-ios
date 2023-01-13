@@ -1998,6 +1998,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 }
 
 - (void)sendVoiceMessage:(NSURL *)audioFileLocalURL
+ additionalContentParams:(NSDictionary *)additionalContentParams
                 mimeType:mimeType
                 duration:(NSUInteger)duration
                  samples:(NSArray<NSNumber *> *)samples
@@ -2006,7 +2007,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     __block MXEvent *localEchoEvent = nil;
     
-    [_room sendVoiceMessage:audioFileLocalURL mimeType:mimeType duration:duration samples:samples threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure keepActualFilename:YES];
+    [_room sendVoiceMessage:audioFileLocalURL additionalContentParams:additionalContentParams mimeType:mimeType duration:duration samples:samples threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure keepActualFilename:YES];
     
     if (localEchoEvent)
     {
@@ -2185,32 +2186,20 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             [self removeEventWithEventId:eventId];
             
             if (event.isVoiceMessage) {
-                // Check if it is an actual voice message or a voicebroadcast chunk
-                if (event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil) {
-                    // VoiceBroadcast chunk
-                    NSNumber *duration = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioDuration];
-                    NSDictionary* additionalContentParams = @{
+                // Voice message
+                NSNumber *duration = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioDuration];
+                NSArray<NSNumber *> *samples = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioWaveform];
+
+                // Additional content params in case it is a voicebroacast chunk
+                NSDictionary* additionalContentParams = nil;
+                if (event.content[kMXEventRelationRelatesToKey] != nil && event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil) {
+                    additionalContentParams = @{
                         kMXEventRelationRelatesToKey: event.content[kMXEventRelationRelatesToKey],
                         VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType: event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType]
                     };
-                    [_room sendVoiceMessage:localFileURL
-                    additionalContentParams:additionalContentParams
-                                   mimeType:mimetype
-                                   duration:duration.doubleValue
-                                    samples:nil
-                                   threadId:self.threadId
-                                  localEcho:nil
-                                    success:success
-                                    failure:failure
-                         keepActualFilename:false];
-                    
-                } else {
-                    // Voice message
-                    NSNumber *duration = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioDuration];
-                    NSArray<NSNumber *> *samples = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioWaveform];
-                    
-                    [self sendVoiceMessage:localFileURL mimeType:mimetype duration:duration.doubleValue samples:samples success:success failure:failure];
                 }
+
+                [self sendVoiceMessage:localFileURL additionalContentParams:additionalContentParams mimeType:mimetype duration:duration.doubleValue samples:samples success:success failure:failure];
             } else {
                 [self sendAudioFile:localFileURL mimeType:mimetype success:success failure:failure];
             }

@@ -572,6 +572,7 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  Once complete, this local echo will be replaced by the event saved by the homeserver.
 
  @param audioFileLocalURL the local filesystem path of the audio file to send.
+ @param additionalContentParams (optional) the additional parameters to the content.
  @param mimeType (optional) the mime type of the file. Defaults to `audio/ogg`
  @param duration the length of the voice message in milliseconds
  @param samples an array of floating point values normalized to [0, 1], boxed within NSNumbers
@@ -580,6 +581,7 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  @param failure A block object called when the operation fails.
  */
 - (void)sendVoiceMessage:(NSURL *)audioFileLocalURL
+ additionalContentParams:(NSDictionary*)additionalContentParams
                 mimeType:mimeType
                 duration:(NSUInteger)duration
                  samples:(NSArray<NSNumber *> *)samples
