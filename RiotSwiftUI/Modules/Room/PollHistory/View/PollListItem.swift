@@ -25,6 +25,7 @@ struct PollListItem: View {
     @Environment(\.theme) private var theme
     
     private let pollData: PollListData
+    @ScaledMetric private var imageSize = 16
     
     init(pollData: PollListData) {
         self.pollData = pollData
@@ -39,7 +40,7 @@ struct PollListItem: View {
             HStack(alignment: .firstTextBaseline, spacing: 8) {
                 Image(uiImage: Asset.Images.pollHistory.image)
                     .resizable()
-                    .frame(width: 16, height: 16)
+                    .frame(width: imageSize, height: imageSize)
 
                 Text(pollData.question)
                     .foregroundColor(theme.colors.primaryContent)
