@@ -16,14 +16,14 @@
 
 import SwiftUI
 
-struct SegmentedPicker<Tag: Hashable>: View {
-    private let segments: [(String, Tag)]
-    private let selection: Binding<Tag>
+struct SegmentedPicker<Segment: Hashable & CustomStringConvertible>: View {
+    private let segments: [Segment]
+    private let selection: Binding<Segment>
     private let interSegmentSpacing: CGFloat
     
     @Environment(\.theme) private var theme
     
-    init(segments: [(String, Tag)], selection: Binding<Tag>, interSegmentSpacing: CGFloat) {
+    init(segments: [Segment], selection: Binding<Segment>, interSegmentSpacing: CGFloat) {
         self.segments = segments
         self.selection = selection
         self.interSegmentSpacing = interSegmentSpacing
@@ -31,18 +31,18 @@ struct SegmentedPicker<Tag: Hashable>: View {
     
     var body: some View {
         HStack(spacing: interSegmentSpacing) {
-            ForEach(segments, id: \.1) { text, tag in
-                let isSelectedSegment = tag == selection.wrappedValue
+            ForEach(segments, id: \.hashValue) { segment in
+                let isSelectedSegment = segment == selection.wrappedValue
                 
                 Button {
-                    selection.wrappedValue = tag
+                    selection.wrappedValue = segment
                 } label: {
-                    Text(text)
+                    Text(segment.description)
                         .font(isSelectedSegment ? theme.fonts.headline : theme.fonts.body)
                         .underline(isSelectedSegment)
                 }
                 .accentColor(isSelectedSegment ? theme.colors.accent : theme.colors.primaryContent)
-                .accessibilityLabel(text + (isSelectedSegment ? "-selected" : ""))
+                .accessibilityLabel(segment.description + (isSelectedSegment ? "-selected" : ""))
             }
         }
     }
@@ -52,10 +52,19 @@ struct SegmentedPicker_Previews: PreviewProvider {
     static var previews: some View {
         SegmentedPicker(
             segments: [
-                ("Segment 1", "1"),
-                ("Segment 2", "2")
+                "Segment 1",
+                "Segment 2"
             ],
-            selection: .constant("1"),
+            selection: .constant("Segment 1"),
+            interSegmentSpacing: 14
+        )
+        
+        SegmentedPicker(
+            segments: [
+                "Segment 1",
+                "Segment 2"
+            ],
+            selection: .constant("Segment 2"),
             interSegmentSpacing: 14
         )
     }

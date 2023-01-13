@@ -24,7 +24,7 @@ struct PollHistory: View {
     var body: some View {
         VStack {
             SegmentedPicker(
-                segments: PollHistoryMode.allCases.map { ($0.segmentTitle, $0) },
+                segments: PollHistoryMode.allCases,
                 selection: $viewModel.mode,
                 interSegmentSpacing: 14
             )
@@ -79,8 +79,8 @@ struct PollHistory: View {
     }
 }
 
-private extension PollHistoryMode {
-    var segmentTitle: String {
+extension PollHistoryMode: CustomStringConvertible {
+    var description: String {
         switch self {
         case .active:
             return VectorL10n.pollHistoryActiveSegmentTitle
