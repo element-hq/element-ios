@@ -21,10 +21,6 @@ struct PollHistory: View {
     
     @ObservedObject var viewModel: PollHistoryViewModel.Context
     
-    var bindings: PollHistoryViewBindings {
-        viewModel.viewState.bindings
-    }
-    
     var body: some View {
         VStack {
             HStack {
