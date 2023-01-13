@@ -2665,3 +2665,9 @@
 "notice_voice_broadcast_live" = "Trasmissione in diretta";
 "wysiwyg_composer_format_action_inline_code" = "Applica formato codice interlinea";
 "user_other_session_security_recommendation_title" = "Altre sessioni";
+"poll_timeline_ended_text" = "Sondaggio terminato";
+"poll_timeline_decryption_error" = "A causa di errori di decifrazione, alcuni voti potrebbero non venire contati";
+"voice_broadcast_voip_cannot_start_description" = "Non puoi avviare una chiamata perché stai registrando una trasmissione in diretta. Termina la trasmissione per potere iniziare una chiamata.";
+"voice_broadcast_voip_cannot_start_title" = "Impossibile avviare una chiamata";
+"voice_message_broadcast_in_progress_title" = "Impossibile iniziare il messaggio vocale";
+"voice_message_broadcast_in_progress_message" = "Non puoi iniziare un messaggio vocale perché stai registrando una trasmissione in diretta. Termina la trasmissione per potere iniziare un messaggio vocale";
