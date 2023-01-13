@@ -34,6 +34,7 @@ public class DarkColors {
         navigation: UIColor(rgb:0x21262C),
         background: UIColor(rgb:0x15191E),
         ems: UIColor(rgb: 0x7E69FF),
+        links: UIColor(rgb: 0x0086E6),
         namesAndAvatars: [
             UIColor(rgb:0x368BD6),
             UIColor(rgb:0xAC3BA8),

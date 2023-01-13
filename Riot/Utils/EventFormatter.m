@@ -359,7 +359,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                              attributes:@{
                                                           NSLinkAttributeName: linkActionString,
                                                           NSForegroundColorAttributeName: self.sendingTextColor,
-                                                          NSFontAttributeName: self.encryptedMessagesTextFont
+                                                          NSFontAttributeName: self.encryptedMessagesTextFont,
+                                                          NSUnderlineStyleAttributeName: [NSNumber numberWithInt:NSUnderlineStyleSingle] 
                                                           }]];
 
             [attributedStringWithRerequestMessage appendAttributedString:
@@ -384,8 +385,6 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
          [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", [VectorL10n eventFormatterMessageEditedMention]]
                                          attributes:@{
                                                       NSLinkAttributeName: linkActionString,
-                                                      // NOTE: Color is curretly overidden by UIText.tintColor as we use `NSLinkAttributeName`.
-                                                      // If we use UITextView.linkTextAttributes to set link color we will also have the issue that color will be the same for all kind of links.
                                                       NSForegroundColorAttributeName: self.editionMentionTextColor,
                                                       NSFontAttributeName: self.editionMentionTextFont
                                                       }]];
@@ -487,6 +486,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.bingTextColor = ThemeService.shared.theme.noticeColor;
         self.encryptingTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.sendingTextColor = ThemeService.shared.theme.textPrimaryColor;
+        self.linksColor = ThemeService.shared.theme.colors.links;
         self.errorTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.showEditionMention = YES;
         self.editionMentionTextColor = ThemeService.shared.theme.textSecondaryColor;

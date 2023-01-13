@@ -45,6 +45,8 @@ import UIKit
     public let navigation: UIColor
 
     public let background: UIColor
+    
+    public let links: UIColor
 
     public let namesAndAvatars: [UIColor]
     
@@ -61,6 +63,7 @@ import UIKit
         tile = values.tile
         navigation = values.navigation
         background = values.background
+        links = values.links
         namesAndAvatars = values.namesAndAvatars
     }
 }
