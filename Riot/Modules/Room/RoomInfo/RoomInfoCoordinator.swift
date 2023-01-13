@@ -194,7 +194,6 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     }
     
     private func push(coordinator: Coordinator & Presentable, animated: Bool = true) {
-        coordinator.start()
         self.add(childCoordinator: coordinator)
         navigationRouter.push(coordinator, animated: animated) {
             self.remove(childCoordinator: coordinator)
