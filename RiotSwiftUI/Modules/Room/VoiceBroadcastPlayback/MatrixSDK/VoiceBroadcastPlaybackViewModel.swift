@@ -43,7 +43,14 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     private var reloadVoiceBroadcastChunkQueue: Bool = false
     private var seekToChunkTime: TimeInterval?
     
+    private var lastChunkAddedToPlayer: UInt = 0
+    
     private var isPlayingLastChunk: Bool {
+        // We can't play the last chunk if the brodcast is not stopped
+        guard state.broadcastState == .stopped else {
+            return false
+        }
+        
         let chunks = reorderVoiceBroadcastChunks(chunks: Array(voiceBroadcastAggregator.voiceBroadcast.chunks))
         guard let chunkDuration = chunks.last?.duration else {
             return false
@@ -168,11 +175,24 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     private func stopIfVoiceBroadcastOver() {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] stopIfVoiceBroadcastOver")
         
+        var shouldStop = false
+        
         // Check if the broadcast is over before stopping everything
-        // If not, the player should not stopped. The view state must be move to buffering
-        if state.broadcastState == .stopped, isPlayingLastChunk {
+        if state.broadcastState == .stopped {
+            // If we known the last chunk sequence, use it to check if we need to stop
+            // Note: it's possible to be in .stopped state and to still have a last chunk sequence at 0 (old versions or a crash during recording). In this case, we use isPlayingLastChunk as a fallback solution
+            if voiceBroadcastAggregator.voiceBroadcastLastChunkSequence > 0 {
+                // we should stop only if we have already added the last chunk to the player
+                shouldStop = (lastChunkAddedToPlayer == voiceBroadcastAggregator.voiceBroadcastLastChunkSequence)
+            } else {
+                shouldStop = isPlayingLastChunk
+            }
+        }
+        
+        if shouldStop {
             stop()
         } else {
+            // If not, the player should not stopped. The view state must be move to buffering
             state.playbackState = .buffering
         }
     }
@@ -200,6 +220,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     
     private func seek(to seekTime: Float) {
         // Flush the chunks queue and the current audio player playlist
+        lastChunkAddedToPlayer = 0
         voiceBroadcastChunkQueue = []
         reloadVoiceBroadcastChunkQueue = isProcessingVoiceBroadcastChunk
         audioPlayer?.removeAllPlayerItems()
@@ -294,7 +315,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                 guard result.eventIdentifier == chunk.attachment.eventId else {
                     return
                 }
-                
+                self.lastChunkAddedToPlayer = max(self.lastChunkAddedToPlayer, chunk.sequence)
                 self.voiceBroadcastAttachmentCacheManagerLoadResults.append(result)
                 
                 // Instanciate audioPlayer if needed.
@@ -436,6 +457,11 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
         
         // Handle the live icon appearance
         state.playingState.isLive = isLivePlayback
+        
+        // Handle the case where the playback state is .buffering and the new broadcast state is .stopped
+        if didReceiveState == .stopped, self.state.playbackState == .buffering {
+            stopIfVoiceBroadcastOver()
+        }
     }
     
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {
