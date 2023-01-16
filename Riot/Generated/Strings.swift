@@ -9347,6 +9347,10 @@ public class VectorL10n: NSObject {
   public static var wysiwygComposerFormatActionBold: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_bold") 
   }
+  /// Toggle code block
+  public static var wysiwygComposerFormatActionCodeBlock: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_code_block") 
+  }
   /// Apply inline code format
   public static var wysiwygComposerFormatActionInlineCode: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_inline_code") 
@@ -9362,6 +9366,10 @@ public class VectorL10n: NSObject {
   /// Toggle numbered list
   public static var wysiwygComposerFormatActionOrderedList: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_ordered_list") 
+  }
+  /// Toggle quote
+  public static var wysiwygComposerFormatActionQuote: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_quote") 
   }
   /// Apply underline format
   public static var wysiwygComposerFormatActionStrikethrough: String { 
