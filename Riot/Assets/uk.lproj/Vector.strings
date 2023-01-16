@@ -2896,3 +2896,13 @@
 "poll_timeline_ended_text" = "Опитування завершено";
 "voice_broadcast_voip_cannot_start_description" = "Ви не можете розпочати виклик, оскільки зараз відбувається запис трансляції наживо. Завершіть трансляцію, щоб розпочати виклик.";
 "voice_broadcast_voip_cannot_start_title" = "Неможливо розпочати виклик";
+"poll_history_no_past_poll_text" = "У цій кімнаті немає минулих опитувань";
+"poll_history_no_active_poll_text" = "У цій кімнаті немає активних опитувань";
+"poll_history_past_segment_title" = "Минулі опитування";
+"poll_history_active_segment_title" = "Активні опитування";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Історія опитувань";
+"room_details_polls" = "Історія опитувань";
+"accessibility_selected" = "вибрано";
