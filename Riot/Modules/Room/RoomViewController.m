@@ -2454,13 +2454,18 @@ static CGSize kThreadListBarButtonItemImageSize;
     // Prevents listening a VB when recording a new one
     [VoiceBroadcastPlaybackProvider.shared pausePlaying];
     
+    // Check connectivity
+    if ([AppDelegate theDelegate].isOffline)
+    {
+        [self showAlertWithTitle:[VectorL10n voiceBroadcastConnectionErrorTitle] message:[VectorL10n voiceBroadcastConnectionErrorMessage]];
+        return;
+    }
+    
     // Request the voice broadcast service to start recording - No service is returned if someone else is already broadcasting in the room
     [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
         if (voiceBroadcastService) {
-            [voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
-            
-            } failure:^(NSError * _Nonnull error) {
-                
+            [voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) { } failure:^(NSError * _Nonnull error) {
+                [self showAlertWithTitle:[VectorL10n voiceBroadcastConnectionErrorTitle] message:[VectorL10n voiceBroadcastConnectionErrorMessage]];
             }];
         }
         else
