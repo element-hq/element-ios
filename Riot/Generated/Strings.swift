@@ -27,6 +27,10 @@ public class VectorL10n: NSObject {
   public static var accessibilityCheckboxLabel: String { 
     return VectorL10n.tr("Vector", "accessibility_checkbox_label") 
   }
+  /// selected
+  public static var accessibilitySelected: String { 
+    return VectorL10n.tr("Vector", "accessibility_selected") 
+  }
   /// Unable to verify email address. Please check your email and click on the link it contains. Once this is done, click continue
   public static var accountEmailValidationError: String { 
     return VectorL10n.tr("Vector", "account_email_validation_error") 

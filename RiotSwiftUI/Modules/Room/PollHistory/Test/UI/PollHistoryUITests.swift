@@ -23,11 +23,12 @@ class PollHistoryUITests: MockScreenTestCase {
         let title = app.navigationBars.firstMatch.identifier
         let emptyText = app.staticTexts["PollHistory.emptyText"]
         let items = app.staticTexts["PollListItem.title"]
-        let selectedSegment = app.buttons["\(VectorL10n.pollHistoryActiveSegmentTitle)-selected"]
+        let selectedSegment = app.buttons[VectorL10n.pollHistoryActiveSegmentTitle]
         XCTAssertEqual(title, VectorL10n.pollHistoryTitle)
         XCTAssertTrue(items.exists)
         XCTAssertFalse(emptyText.exists)
         XCTAssertTrue(selectedSegment.exists)
+        XCTAssertEqual(selectedSegment.value as? String, VectorL10n.accessibilitySelected)
     }
     
     func testPollHistoryShowsEmptyScreen() {
@@ -35,10 +36,11 @@ class PollHistoryUITests: MockScreenTestCase {
         let title = app.navigationBars.firstMatch.identifier
         let emptyText = app.staticTexts["PollHistory.emptyText"]
         let items = app.staticTexts["PollListItem.title"]
-        let selectedSegment = app.buttons["\(VectorL10n.pollHistoryPastSegmentTitle)-selected"]
+        let selectedSegment = app.buttons[VectorL10n.pollHistoryPastSegmentTitle]
         XCTAssertEqual(title, VectorL10n.pollHistoryTitle)
         XCTAssertFalse(items.exists)
         XCTAssertTrue(emptyText.exists)
         XCTAssertTrue(selectedSegment.exists)
+        XCTAssertEqual(selectedSegment.value as? String, VectorL10n.accessibilitySelected)
     }
 }
