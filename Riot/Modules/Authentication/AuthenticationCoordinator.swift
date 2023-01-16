@@ -613,8 +613,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     
     /// Replace the contents of the navigation router with a loading animation.
     private func showLoadingAnimation() {
-        let syncProgress: MXSessionSyncProgress? = MXSDKOptions.sharedInstance().enableSyncProgress ? session?.syncProgress : nil
-        let loadingViewController = LaunchLoadingViewController(syncProgress: syncProgress)
+        let startupProgress: MXSessionStartupProgress? = MXSDKOptions.sharedInstance().enableStartupProgress ? session?.startupProgress : nil
+        let loadingViewController = LaunchLoadingViewController(startupProgress: startupProgress)
         loadingViewController.modalPresentationStyle = .fullScreen
         
         // Replace the navigation stack with the loading animation
