@@ -2705,3 +2705,13 @@
 "poll_timeline_ended_text" = "Umfrage beendet";
 "voice_broadcast_voip_cannot_start_description" = "Du kannst keinen Anruf beginnen, da du im Moment eine Sprachübertragung aufzeichnest. Bitte beende deine Sprachübertragung, um ein Gespräch zu beginnen.";
 "voice_broadcast_voip_cannot_start_title" = "Kann keinen Anruf beginnen";
+"poll_history_no_past_poll_text" = "In diesem Raum gibt es keine abgeschlossenen Umfragen";
+"poll_history_no_active_poll_text" = "In diesem Raum gibt es keine aktiven Umfragen";
+"poll_history_past_segment_title" = "Vergangene Umfragen";
+"poll_history_active_segment_title" = "Aktive Umfragen";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Umfrageverlauf";
+"room_details_polls" = "Umfrageverlauf";
+"accessibility_selected" = "ausgewählt";
