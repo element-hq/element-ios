@@ -2691,3 +2691,13 @@
 "poll_timeline_ended_text" = "Szavazás vége";
 "voice_broadcast_voip_cannot_start_description" = "Nem lehet hívást kezdeményezni élő közvetítés felvétele közben. Az élő közvetítés bejezése szükséges a hívás indításához.";
 "voice_broadcast_voip_cannot_start_title" = "Nem sikerült hívást indítani";
+"poll_history_no_past_poll_text" = "Nincsenek régi szavazások ebben a szobában";
+"poll_history_no_active_poll_text" = "Nincsenek aktív szavazások ebben a szobában";
+"poll_history_past_segment_title" = "Régi szavazások";
+"poll_history_active_segment_title" = "Aktív szavazások";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Szavazás alakulása";
+"room_details_polls" = "Szavazás alakulása";
+"accessibility_selected" = "kiválasztva";
