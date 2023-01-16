@@ -2894,3 +2894,13 @@
 "poll_timeline_ended_text" = "Ukončil anketu";
 "voice_broadcast_voip_cannot_start_description" = "Nemôžete spustiť hovor, pretože práve nahrávate živé vysielanie. Ukončite živé vysielanie, aby ste mohli začať hovor.";
 "voice_broadcast_voip_cannot_start_title" = "Nie je možné začať hovor";
+"poll_history_no_past_poll_text" = "V tejto miestnosti nie sú žiadne predchádzajúce ankety";
+"poll_history_no_active_poll_text" = "V tejto miestnosti nie sú žiadne aktívne ankety";
+"poll_history_past_segment_title" = "Predchádzajúce ankety";
+"poll_history_active_segment_title" = "Aktívne ankety";
+
+// MARK: - Polls history
+
+"poll_history_title" = "História ankety";
+"room_details_polls" = "História ankety";
+"accessibility_selected" = "vybrané";
