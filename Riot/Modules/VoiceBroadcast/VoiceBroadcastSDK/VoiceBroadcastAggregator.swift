@@ -170,8 +170,8 @@ public class VoiceBroadcastAggregator {
                   let state = VoiceBroadcastInfoState(rawValue: voiceBroadcastInfo.state) else {
                 return
             }
-            // For .pause and .stopped, if there is a lastChunkSequence (ie its value is > 0), we store it
-            if [.stopped, .paused].contains(state), voiceBroadcastInfo.lastChunkSequence > 0 {
+            // For .pause and .stopped, update the last chunk sequence
+            if [.stopped, .paused].contains(state) {
                 self.voiceBroadcastLastChunkSequence = voiceBroadcastInfo.lastChunkSequence
             }
             self.delegate?.voiceBroadcastAggregator(self, didReceiveState: state)
