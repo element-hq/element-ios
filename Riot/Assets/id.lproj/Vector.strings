@@ -2898,3 +2898,13 @@
 "poll_timeline_ended_text" = "Mengakhiri pemungutan suara";
 "voice_broadcast_voip_cannot_start_description" = "Anda tidak dapat memulai sebuah panggilan karena Anda saat ini merekam sebuah siaran langsung. Mohon akhiri siaran langsung Anda untuk memulai sebuah panggilan.";
 "voice_broadcast_voip_cannot_start_title" = "Tidak dapat memulai sebuah panggilan";
+"poll_history_no_past_poll_text" = "Tidak ada pemungutan suara masa lalu di ruangan ini";
+"poll_history_no_active_poll_text" = "Tidak ada pemungutan suara yang aktifk di ruangan ini";
+"poll_history_past_segment_title" = "Pemungutan suara sebelumnya";
+"poll_history_active_segment_title" = "Pemungutan suara aktif";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Riwayat pemungutan suara";
+"room_details_polls" = "Riwayat pemungutan suara";
+"accessibility_selected" = "dipilih";
