@@ -138,7 +138,14 @@ import MediaPlayer
     func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         currentlyPlayingAudioPlayer = audioPlayer
         activeAudioPlayers.insert(audioPlayer)
-        setUpRemoteCommandCenter()
+        
+        let shouldSetupRemoteCommandCenter = nowPlayingInfoDelegates.object(forKey: audioPlayer)?.shouldSetupRemoteCommandCenter(audioPlayer: audioPlayer) ?? true
+        if shouldSetupRemoteCommandCenter {
+            setUpRemoteCommandCenter()
+        } else {
+            // clean up the remote command center
+            tearDownRemoteCommandCenter()
+        }
         pauseAllServicesExcept(audioPlayer)
     }
     
@@ -150,7 +157,7 @@ import MediaPlayer
             // ask the delegate if we should disconnect from NowPlayingInfoCenter (if there's no delegate, we consider it safe to disconnect it)
             if nowPlayingInfoDelegate?.shouldDisconnectFromNowPlayingInfoCenter(audioPlayer: audioPlayer) ?? true {
                 currentlyPlayingAudioPlayer = nil
-                tearDownRemoteCommandCenter(for: audioPlayer)
+                tearDownRemoteCommandCenter()
             }
         }
         activeAudioPlayers.remove(audioPlayer)
@@ -164,7 +171,7 @@ import MediaPlayer
             // ask the delegate if we should disconnect from NowPlayingInfoCenter (if there's no delegate, we consider it safe to disconnect it)
             if nowPlayingInfoDelegate?.shouldDisconnectFromNowPlayingInfoCenter(audioPlayer: audioPlayer) ?? true {
                 currentlyPlayingAudioPlayer = nil
-                tearDownRemoteCommandCenter(for: audioPlayer)
+                tearDownRemoteCommandCenter()
             }
         }
         activeAudioPlayers.remove(audioPlayer)
@@ -264,13 +271,24 @@ import MediaPlayer
         }
     }
     
-    private func tearDownRemoteCommandCenter(for audioPlayer: VoiceMessageAudioPlayer) {
+    private func tearDownRemoteCommandCenter() {
         displayLink.isPaused = true
         
         UIApplication.shared.endReceivingRemoteControlEvents()
         
         let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
         nowPlayingInfoCenter.nowPlayingInfo = nil
+        nowPlayingInfoCenter.playbackState = .stopped
+        
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.playCommand.isEnabled = false
+        commandCenter.playCommand.removeTarget(nil)
+        commandCenter.pauseCommand.isEnabled = false
+        commandCenter.pauseCommand.removeTarget(nil)
+        commandCenter.skipForwardCommand.isEnabled = false
+        commandCenter.skipForwardCommand.removeTarget(nil)
+        commandCenter.skipBackwardCommand.isEnabled = false
+        commandCenter.skipBackwardCommand.removeTarget(nil)
     }
     
     private func updateNowPlayingInfoCenter() {

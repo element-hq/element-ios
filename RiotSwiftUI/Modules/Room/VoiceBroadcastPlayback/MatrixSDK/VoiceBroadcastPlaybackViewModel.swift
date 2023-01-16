@@ -490,12 +490,22 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
 
 extension VoiceBroadcastPlaybackViewModel: VoiceMessageNowPlayingInfoDelegate {
     
+    func shouldSetupRemoteCommandCenter(audioPlayer player: VoiceMessageAudioPlayer) -> Bool {
+        guard BuildSettings.allowBackgroundAudioMessagePlayback, audioPlayer != nil, audioPlayer === player else {
+            return false
+        }
+        
+        // we should setup the remote command center only for ended voice broadcast because we won't get new chunk if the app is in background.
+        return state.broadcastState == .stopped
+    }
+    
     func shouldDisconnectFromNowPlayingInfoCenter(audioPlayer player: VoiceMessageAudioPlayer) -> Bool {
         guard BuildSettings.allowBackgroundAudioMessagePlayback, audioPlayer != nil, audioPlayer === player else {
             return true
         }
         
-        return state.broadcastState == .stopped
+        // we should disconnect from the now playing info center if the playback is stopped or if the broadcast is in progress
+        return state.playbackState == .stopped || state.broadcastState != .stopped
     }
     
     func updateNowPlayingInfoCenter(forPlayer player: VoiceMessageAudioPlayer) {
@@ -503,12 +513,16 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageNowPlayingInfoDelegate {
             return
         }
         
+        // Don't update the NowPlayingInfoCenter for live broadcasts
+        guard state.broadcastState == .stopped else {
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+            return
+        }
+        
         let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
         nowPlayingInfoCenter.nowPlayingInfo = [
             // Title
             MPMediaItemPropertyTitle: VectorL10n.voiceBroadcastPlaybackLockScreenPlaceholder,
-            // Buffering status (using the "artist" property to display it under the title)
-            MPMediaItemPropertyArtist: state.playbackState == .buffering ? VectorL10n.voiceBroadcastBuffering : "",
             // Duration
             MPMediaItemPropertyPlaybackDuration: (state.playingState.duration / 1000.0) as Any,
             // Elapsed time

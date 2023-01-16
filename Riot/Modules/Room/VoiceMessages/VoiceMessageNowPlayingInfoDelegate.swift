@@ -20,5 +20,7 @@ import Foundation
     
     func updateNowPlayingInfoCenter(forPlayer player: VoiceMessageAudioPlayer)
     
+    func shouldSetupRemoteCommandCenter(audioPlayer player: VoiceMessageAudioPlayer) -> Bool
+    
     func shouldDisconnectFromNowPlayingInfoCenter(audioPlayer: VoiceMessageAudioPlayer) -> Bool
 }
