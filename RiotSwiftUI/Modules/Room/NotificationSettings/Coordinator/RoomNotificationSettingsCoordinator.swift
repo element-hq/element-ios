@@ -51,7 +51,7 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
         )
         let avatarService: AvatarServiceProtocol = AvatarService(mediaManager: room.mxSession.mediaManager)
         let view = RoomNotificationSettings(viewModel: viewModel, presentedModally: presentedModally)
-            .addDependency(avatarService)
+            .environmentObject(AvatarViewModel(avatarService: avatarService))
         let viewController = VectorHostingController(rootView: view)
         roomNotificationSettingsViewModel = viewModel
         roomNotificationSettingsViewController = viewController

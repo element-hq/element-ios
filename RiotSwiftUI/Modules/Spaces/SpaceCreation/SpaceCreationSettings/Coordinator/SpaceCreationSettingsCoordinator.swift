@@ -48,7 +48,7 @@ final class SpaceCreationSettingsCoordinator: Coordinator, Presentable {
         let service = SpaceCreationSettingsService(roomName: parameters.creationParameters.name ?? "", userDefinedAddress: parameters.creationParameters.userDefinedAddress, session: parameters.session)
         let viewModel = SpaceCreationSettingsViewModel(spaceCreationSettingsService: service, creationParameters: parameters.creationParameters)
         let view = SpaceCreationSettings(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
         spaceCreationSettingsViewModel = viewModel
         let hostingController = VectorHostingController(rootView: view)
         hostingController.isNavigationBarHidden = true

@@ -70,11 +70,12 @@ final class MatrixItemChooserCoordinator: Coordinator, Presentable {
         let viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: MatrixItemChooserService(session: parameters.session, selectedItemIds: parameters.selectedItemsIds, itemsProcessor: parameters.itemsProcessor), title: parameters.title, detail: parameters.detail, selectionHeader: parameters.selectionHeader)
         matrixItemChooserViewModel = viewModel
         if let viewProvider = parameters.viewProvider {
-            let view = viewProvider.view(with: viewModel.context).addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            let view = viewProvider.view(with: viewModel.context)
+                .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
             matrixItemChooserHostingController = VectorHostingController(rootView: view)
         } else {
             let view = MatrixItemChooser(viewModel: viewModel.context, listBottomPadding: nil)
-                .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+                .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
             matrixItemChooserHostingController = VectorHostingController(rootView: view)
         }
     }

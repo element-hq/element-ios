@@ -32,10 +32,6 @@ class AvatarService: AvatarServiceProtocol {
     
     private let mediaManager: MXMediaManager
     
-    static func instantiate(mediaManager: MXMediaManager) -> AvatarServiceProtocol {
-        AvatarService(mediaManager: mediaManager)
-    }
-    
     init(mediaManager: MXMediaManager) {
         self.mediaManager = mediaManager
     }

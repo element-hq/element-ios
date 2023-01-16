@@ -64,7 +64,7 @@ enum MockSpaceCreationEmailInvitesScreenState: MockScreenState, CaseIterable {
         return (
             [viewModel],
             AnyView(SpaceCreationEmailInvites(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

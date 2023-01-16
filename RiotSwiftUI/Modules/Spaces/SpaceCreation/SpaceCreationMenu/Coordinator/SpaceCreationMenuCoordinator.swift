@@ -41,7 +41,7 @@ final class SpaceCreationMenuCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         let viewModel = SpaceCreationMenuViewModel(navTitle: parameters.navTitle, creationParams: parameters.creationParams, title: parameters.title, detail: parameters.detail, options: parameters.options)
         let view = SpaceCreationMenu(viewModel: viewModel.context, showBackButton: parameters.showBackButton)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
         spaceCreationMenuViewModel = viewModel
         let hostingController = VectorHostingController(rootView: view)
         hostingController.isNavigationBarHidden = true

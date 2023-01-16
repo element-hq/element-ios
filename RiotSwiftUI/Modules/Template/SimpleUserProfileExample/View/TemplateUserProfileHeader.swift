@@ -46,6 +46,6 @@ struct TemplateUserProfileHeader: View {
 struct TemplateUserProfileHeader_Previews: PreviewProvider {
     static var previews: some View {
         TemplateUserProfileHeader(avatar: MockAvatarInput.example, displayName: "Alice", presence: .online)
-            .addDependency(MockAvatarService.example)
+            .environmentObject(AvatarViewModel.withMockedServices())
     }
 }
