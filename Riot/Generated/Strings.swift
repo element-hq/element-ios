@@ -9207,6 +9207,14 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastBuffering: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_buffering") 
   }
+  /// Unfortunately we’re unable to start a recording right now. Please try again later.
+  public static var voiceBroadcastConnectionErrorMessage: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_connection_error_message") 
+  }
+  /// Connection error
+  public static var voiceBroadcastConnectionErrorTitle: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_connection_error_title") 
+  }
   /// Live
   public static var voiceBroadcastLive: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_live") 

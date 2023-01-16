@@ -2208,6 +2208,7 @@ Tap the + to start adding people.";
 "voice_broadcast_blocked_by_someone_else_message" = "Someone else is already recording a voice broadcast. Wait for their voice broadcast to end to start a new one.";
 "voice_broadcast_already_in_progress_message" = "You are already recording a voice broadcast. Please end your current voice broadcast to start a new one.";
 "voice_broadcast_playback_loading_error" = "Unable to play this voice broadcast.";
+"voice_broadcast_playback_lock_screen_placeholder" = "Voice broadcast";
 "voice_broadcast_live" = "Live";
 "voice_broadcast_tile" = "Voice broadcast";
 "voice_broadcast_time_left" = "%@ left";
@@ -2217,7 +2218,8 @@ Tap the + to start adding people.";
 "voice_broadcast_stop_alert_agree_button" = "Yes, stop";
 "voice_broadcast_voip_cannot_start_title" = "Can’t start a call";
 "voice_broadcast_voip_cannot_start_description" = "You can’t start a call as you are currently recording a live broadcast. Please end your live broadcast in order to start a call.";
-"voice_broadcast_playback_lock_screen_placeholder" = "Voice broadcast";
+"voice_broadcast_connection_error_title" = "Connection error";
+"voice_broadcast_connection_error_message" = "Unfortunately we’re unable to start a recording right now. Please try again later.";
 
 // MARK: - Version check
 
