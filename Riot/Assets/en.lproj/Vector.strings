@@ -96,6 +96,7 @@
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
 "accessibility_button_label" = "button";
+"accessibility_selected" = "selected";
 
 // MARK: Onboarding
 "onboarding_splash_register_button_title" = "Create account";
@@ -982,6 +983,7 @@ Tap the + to start adding people.";
 "room_details_title_for_dm" = "Details";
 "room_details_people" = "Members";
 "room_details_files" = "Uploads";
+"room_details_polls" = "Poll history";
 "room_details_search" = "Search room";
 "room_details_integrations" = "Integrations";
 "room_details_settings" = "Settings";
@@ -2290,6 +2292,14 @@ Tap the + to start adding people.";
 
 "space_detail_nav_title" = "Space detail";
 "space_invite_nav_title" = "Space invite";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Poll history";
+"poll_history_active_segment_title" = "Active polls";
+"poll_history_past_segment_title" = "Past polls";
+"poll_history_no_active_poll_text" = "There are no active polls in this room";
+"poll_history_no_past_poll_text" = "There are no past polls in this room";
 
 // MARK: - Polls
 
