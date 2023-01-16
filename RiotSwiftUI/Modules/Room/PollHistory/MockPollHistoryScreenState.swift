@@ -58,7 +58,7 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
         return (
             [pollHistoryMode, viewModel],
             AnyView(PollHistory(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }
