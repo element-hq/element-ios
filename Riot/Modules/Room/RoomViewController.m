@@ -2466,6 +2466,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         if (voiceBroadcastService) {
             [voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) { } failure:^(NSError * _Nonnull error) {
                 [self showAlertWithTitle:[VectorL10n voiceBroadcastConnectionErrorTitle] message:[VectorL10n voiceBroadcastConnectionErrorMessage]];
+                [session tearDownVoiceBroadcastService];
             }];
         }
         else
