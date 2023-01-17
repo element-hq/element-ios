@@ -2716,3 +2716,5 @@
 "room_details_polls" = "Umfrageverlauf";
 "accessibility_selected" = "ausgewählt";
 "voice_broadcast_playback_lock_screen_placeholder" = "Sprachübertragung";
+"voice_broadcast_connection_error_message" = "Leider ist es aktuell nicht möglich, eine Aufnahme zu beginnen. Bitte versuche es später erneut.";
+"voice_broadcast_connection_error_title" = "Verbindungsfehler";
