@@ -20,6 +20,7 @@ typealias PollHistoryViewModelType = StateStoreViewModel<PollHistoryViewState, P
 
 final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModelProtocol {
     private let pollService: PollHistoryServiceProtocol
+    private var polls: [PollListData] = []
     private var fetchingTask: Task<Void, Error>? {
         didSet {
             oldValue?.cancel()
@@ -39,6 +40,8 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
         switch viewAction {
         case .viewAppeared:
             fetchingTask = fetchPolls()
+        case .segmentDidChange:
+            updatePolls()
         }
     }
 }
@@ -53,8 +56,22 @@ private extension PollHistoryViewModel {
             }
             
             await MainActor.run {
-                state.polls = polls
+                self.polls = polls
+                updatePolls()
             }
         }
+    }
+    
+    func updatePolls() {
+        let renderedPolls: [PollListData]
+        
+        switch context.mode {
+        case .active:
+            renderedPolls = polls.filter { $0.winningOption == nil }
+        case .past:
+            renderedPolls = polls.filter { $0.winningOption != nil }
+        }
+        
+        state.polls = renderedPolls
     }
 }

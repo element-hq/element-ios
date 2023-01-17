@@ -15,15 +15,30 @@
 //
 
 final class MockPollHistoryService: PollHistoryServiceProtocol {
-    var pollListData: [PollListData] = (1..<10)
+    var activePollsData: [PollListData] = (1..<10)
         .map { index in
-            PollListData(startDate: .init().addingTimeInterval(-CGFloat(index) * 3600), question: "Do you like the poll number \(index)?")
-        }
-        .sorted { poll1, poll2 in
-            poll1.startDate > poll2.startDate
+            PollListData(
+                startDate: .init().addingTimeInterval(-CGFloat(index) * 3600),
+                question: "Do you like the active poll number \(index)?",
+                numberOfVotes: 30,
+                winningOption: nil
+            )
         }
     
+    var pastPollsData: [PollListData] = (1..<10)
+        .map { index in
+            PollListData(
+                startDate: .init().addingTimeInterval(-CGFloat(index) * 3600),
+                question: "Do you like the past poll number \(index)?",
+                numberOfVotes: 30,
+                winningOption: .init(id: "id", text: "Yes, of course!", count: 20, winner: true, selected: true)
+            )
+        }
+
     func fetchHistory() async throws -> [PollListData] {
-        pollListData
+        (activePollsData + pastPollsData)
+            .sorted { poll1, poll2 in
+                poll1.startDate > poll2.startDate
+            }
     }
 }

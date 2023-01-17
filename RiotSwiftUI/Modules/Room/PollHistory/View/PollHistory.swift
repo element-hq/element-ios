@@ -45,6 +45,9 @@ struct PollHistory: View {
         .onAppear {
             viewModel.send(viewAction: .viewAppeared)
         }
+        .onChange(of: viewModel.mode) { newValue in
+            viewModel.send(viewAction: .segmentDidChange)
+        }
     }
     
     private var pollListView: some View {

@@ -45,10 +45,10 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
             pollHistoryMode = .past
         case .activeEmpty:
             pollHistoryMode = .active
-            pollService.pollListData = []
+            pollService.activePollsData = []
         case .pastEmpty:
             pollHistoryMode = .past
-            pollService.pollListData = []
+            pollService.pastPollsData = []
         }
         
         let viewModel = PollHistoryViewModel(mode: pollHistoryMode, pollService: pollService)
