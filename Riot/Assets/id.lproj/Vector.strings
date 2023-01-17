@@ -2908,3 +2908,4 @@
 "poll_history_title" = "Riwayat pemungutan suara";
 "room_details_polls" = "Riwayat pemungutan suara";
 "accessibility_selected" = "dipilih";
+"voice_broadcast_playback_lock_screen_placeholder" = "Siaran suara";
