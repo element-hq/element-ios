@@ -2217,6 +2217,7 @@ Tap the + to start adding people.";
 "voice_broadcast_stop_alert_agree_button" = "Yes, stop";
 "voice_broadcast_voip_cannot_start_title" = "Can’t start a call";
 "voice_broadcast_voip_cannot_start_description" = "You can’t start a call as you are currently recording a live broadcast. Please end your live broadcast in order to start a call.";
+"voice_broadcast_playback_lock_screen_placeholder" = "Voice broadcast";
 
 // MARK: - Version check
 

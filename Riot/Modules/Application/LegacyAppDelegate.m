@@ -618,6 +618,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Pause Voice Broadcast recording if needed
     [VoiceBroadcastRecorderProvider.shared pauseRecording];
+    
+    // Pause Voice Broadcast playing if needed
+    [VoiceBroadcastPlaybackProvider.shared pausePlayingInProgressVoiceBroadcast];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

@@ -16,6 +16,7 @@
 
 import Combine
 import SwiftUI
+import MediaPlayer
 
 // TODO: VoiceBroadcastPlaybackViewModel must be revisited in order to not depend on MatrixSDK
 // We need a VoiceBroadcastPlaybackServiceProtocol and VoiceBroadcastAggregatorProtocol
@@ -323,6 +324,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     // Init and start the player on the first chunk
                     let audioPlayer = self.mediaServiceProvider.audioPlayerForIdentifier(result.eventIdentifier)
                     audioPlayer.registerDelegate(self)
+                    self.mediaServiceProvider.registerNowPlayingInfoDelegate(self, forPlayer: audioPlayer)
                     
                     audioPlayer.loadContentFromURL(result.url, displayName: chunk.attachment.originalFileName)
                     self.audioPlayer = audioPlayer
@@ -496,6 +498,7 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
         state.playbackState = .stopped
         state.playingState.isLive = false
         audioPlayer.deregisterDelegate(self)
+        self.mediaServiceProvider.deregisterNowPlayingInfoDelegate(forPlayer: audioPlayer)
         self.audioPlayer = nil
     }
     
@@ -506,5 +509,50 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] audioPlayerDidFinishPlaying: \(audioPlayer.playerItems.count)")
         stopIfVoiceBroadcastOver()
+    }
+}
+
+// MARK: - VoiceMessageNowPlayingInfoDelegate
+
+extension VoiceBroadcastPlaybackViewModel: VoiceMessageNowPlayingInfoDelegate {
+    
+    func shouldSetupRemoteCommandCenter(audioPlayer player: VoiceMessageAudioPlayer) -> Bool {
+        guard BuildSettings.allowBackgroundAudioMessagePlayback, audioPlayer != nil, audioPlayer === player else {
+            return false
+        }
+        
+        // we should setup the remote command center only for ended voice broadcast because we won't get new chunk if the app is in background.
+        return state.broadcastState == .stopped
+    }
+    
+    func shouldDisconnectFromNowPlayingInfoCenter(audioPlayer player: VoiceMessageAudioPlayer) -> Bool {
+        guard BuildSettings.allowBackgroundAudioMessagePlayback, audioPlayer != nil, audioPlayer === player else {
+            return true
+        }
+        
+        // we should disconnect from the now playing info center if the playback is stopped or if the broadcast is in progress
+        return state.playbackState == .stopped || state.broadcastState != .stopped
+    }
+    
+    func updateNowPlayingInfoCenter(forPlayer player: VoiceMessageAudioPlayer) {
+        guard audioPlayer != nil, audioPlayer === player else {
+            return
+        }
+        
+        // Don't update the NowPlayingInfoCenter for live broadcasts
+        guard state.broadcastState == .stopped else {
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+            return
+        }
+        
+        let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+        nowPlayingInfoCenter.nowPlayingInfo = [
+            // Title
+            MPMediaItemPropertyTitle: VectorL10n.voiceBroadcastPlaybackLockScreenPlaceholder,
+            // Duration
+            MPMediaItemPropertyPlaybackDuration: (state.playingState.duration / 1000.0) as Any,
+            // Elapsed time
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: (state.bindings.progress / 1000.0) as Any,
+        ]
     }
 }
