@@ -2653,3 +2653,4 @@
 "poll_history_title" = "Küsitluste ajalugu";
 "room_details_polls" = "Küsitluste ajalugu";
 "accessibility_selected" = "valitud";
+"voice_broadcast_playback_lock_screen_placeholder" = "Ringhäälingukõne";
