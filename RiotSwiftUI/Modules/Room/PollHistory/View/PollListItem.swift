@@ -52,7 +52,10 @@ struct PollListItem: View {
             }
             
             if pollData.winningOption != nil {
-                optionView(winningOption: pollData.winningOption!)
+                VStack(alignment: .leading, spacing: 12) {
+                    optionView(winningOption: pollData.winningOption!)
+                    resultView
+                }
             }
         }
     }
@@ -95,6 +98,14 @@ struct PollListItem: View {
         } icon: {
             Image(uiImage: Asset.Images.pollWinnerIcon.image)
         }
+    }
+    
+    private var resultView: some View {
+        let text = pollData.numberOfVotes == 1 ? VectorL10n.pollTimelineTotalFinalResultsOneVote : VectorL10n.pollTimelineTotalFinalResults(Int(pollData.numberOfVotes))
+        
+        return Text(text)
+            .font(theme.fonts.footnote)
+            .foregroundColor(theme.colors.tertiaryContent)
     }
 }
 
