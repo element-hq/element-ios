@@ -2715,3 +2715,4 @@
 "poll_history_title" = "Umfrageverlauf";
 "room_details_polls" = "Umfrageverlauf";
 "accessibility_selected" = "ausgewählt";
+"voice_broadcast_playback_lock_screen_placeholder" = "Sprachübertragung";
