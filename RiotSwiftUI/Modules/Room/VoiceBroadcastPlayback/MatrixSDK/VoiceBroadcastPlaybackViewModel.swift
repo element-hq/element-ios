@@ -60,6 +60,20 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         return state.bindings.progress + 1000 >= state.playingState.duration - Float(chunkDuration)
     }
     
+    private var playingChunk: VoiceBroadcastChunk? {
+        guard let currentAudioPlayerUrl = audioPlayer?.currentUrl,
+              let playingEventId = voiceBroadcastAttachmentCacheManagerLoadResults.first(where: { result in
+                  result.url == currentAudioPlayerUrl
+              })?.eventIdentifier else {
+            return nil
+        }
+        
+        let playingChunk = voiceBroadcastAggregator.voiceBroadcast.chunks.first(where: { chunk in
+            chunk.attachment.eventId == playingEventId
+        })
+        return playingChunk
+    }
+    
     private var isLivePlayback: Bool {
         return (!isPlaybackInitialized || isPlayingLastChunk) && (state.broadcastState == .started || state.broadcastState == .resumed)
     }
@@ -392,20 +406,19 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     }
     
     @objc private func handleDisplayLinkTick() {
-        guard let playingEventId = voiceBroadcastAttachmentCacheManagerLoadResults.first(where: { result in
-                  result.url == audioPlayer?.currentUrl
-              })?.eventIdentifier,
-              let playingSequence = voiceBroadcastAggregator.voiceBroadcast.chunks.first(where: { chunk in
-                  chunk.attachment.eventId == playingEventId
-              })?.sequence else {
+        guard let playingSequence = self.playingChunk?.sequence else {
             return
         }
-        
-        let progress = Double(voiceBroadcastAggregator.voiceBroadcast.chunks.filter { chunk in
-            chunk.sequence < playingSequence
-        }.reduce(0) { $0 + $1.duration}) + (audioPlayer?.currentTime.rounded() ?? 0) * 1000
-        
-        state.bindings.progress = Float(progress)
+
+        // Get the audioPlayer current time, which is the elapsed time in the currently playing media item.
+        // Note: if the audioPlayer is not ready (eg. after a seek), its currentTime will be 0 and we shouldn't update the progress to avoid visual glitches.
+        let currentTime = audioPlayer?.currentTime ?? .zero
+        if currentTime > 0 {
+            let progress = Double(voiceBroadcastAggregator.voiceBroadcast.chunks.filter { chunk in
+                chunk.sequence < playingSequence
+            }.reduce(0) { $0 + $1.duration}) + currentTime * 1000
+            state.bindings.progress = Float(progress)
+        }
         
         updateUI()
     }
@@ -467,7 +480,6 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
     }
     
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator) {
-        
         updateDuration()
         
         if state.playbackState != .stopped, !isActuallyPaused {
@@ -486,11 +498,13 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
         state.playbackState = .playing
         state.playingState.isLive = isLivePlayback
         isPlaybackInitialized = true
+        displayLink.isPaused = false
     }
     
     func audioPlayerDidPausePlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         state.playbackState = .paused
         state.playingState.isLive = false
+        displayLink.isPaused = true
     }
     
     func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
@@ -500,6 +514,7 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
         audioPlayer.deregisterDelegate(self)
         self.mediaServiceProvider.deregisterNowPlayingInfoDelegate(forPlayer: audioPlayer)
         self.audioPlayer = nil
+        displayLink.isPaused = true
     }
     
     func audioPlayer(_ audioPlayer: VoiceMessageAudioPlayer, didFailWithError error: Error) {
