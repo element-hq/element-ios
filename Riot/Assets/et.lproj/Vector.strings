@@ -2654,3 +2654,5 @@
 "room_details_polls" = "Küsitluste ajalugu";
 "accessibility_selected" = "valitud";
 "voice_broadcast_playback_lock_screen_placeholder" = "Ringhäälingukõne";
+"voice_broadcast_connection_error_message" = "Kahjuks me ei saa hetkel salvestamist alustada. Palun proovi hiljem uuesti.";
+"voice_broadcast_connection_error_title" = "Ühenduse viga";
