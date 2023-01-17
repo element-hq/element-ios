@@ -29,9 +29,7 @@ final class ComposerLinkActionUITests: MockScreenTestCase {
         let linkTextField = app.textFields["linkTextField"]
         XCTAssertTrue(linkTextField.exists)
         linkTextField.tap()
-        linkTextField.typeText("invalid url")
-        XCTAssertFalse(saveButton.isEnabled)
-        linkTextField.clearAndTypeText("https://element.io")
+        linkTextField.clearAndTypeText("element.io")
         XCTAssertTrue(saveButton.isEnabled)
     }
     
@@ -47,7 +45,7 @@ final class ComposerLinkActionUITests: MockScreenTestCase {
         let linkTextField = app.textFields["linkTextField"]
         XCTAssertTrue(linkTextField.exists)
         linkTextField.tap()
-        linkTextField.typeText("https://element.io")
+        linkTextField.typeText("element.io")
         XCTAssertFalse(saveButton.isEnabled)
         textTextField.tap()
         textTextField.typeText("test")
@@ -60,13 +58,15 @@ final class ComposerLinkActionUITests: MockScreenTestCase {
         XCTAssertTrue(app.buttons[VectorL10n.cancel].exists)
         let saveButton = app.buttons[VectorL10n.save]
         XCTAssertTrue(saveButton.exists)
-        XCTAssertTrue(saveButton.isEnabled)
+        XCTAssertFalse(saveButton.isEnabled)
         XCTAssertFalse(app.textFields["textTextField"].exists)
         let linkTextField = app.textFields["linkTextField"]
         XCTAssertTrue(linkTextField.exists)
         let value = linkTextField.value as? String
         XCTAssertEqual(value, "https://element.io")
-        linkTextField.clearAndTypeText("invalid url")
+        linkTextField.clearAndTypeText("")
         XCTAssertFalse(saveButton.isEnabled)
+        linkTextField.clearAndTypeText("matrix.org")
+        XCTAssertTrue(saveButton.isEnabled)
     }
 }
