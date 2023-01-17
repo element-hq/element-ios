@@ -2671,3 +2671,14 @@
 "voice_broadcast_voip_cannot_start_title" = "Impossibile avviare una chiamata";
 "voice_message_broadcast_in_progress_title" = "Impossibile iniziare il messaggio vocale";
 "voice_message_broadcast_in_progress_message" = "Non puoi iniziare un messaggio vocale perché stai registrando una trasmissione in diretta. Termina la trasmissione per potere iniziare un messaggio vocale";
+"poll_history_no_past_poll_text" = "In questa stanza non ci sono sondaggi passati";
+"poll_history_no_active_poll_text" = "In questa stanza non ci sono sondaggi attivi";
+"poll_history_past_segment_title" = "Sondaggi passati";
+"poll_history_active_segment_title" = "Sondaggi attivi";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Cronologia sondaggi";
+"voice_broadcast_playback_lock_screen_placeholder" = "Trasmissione vocale";
+"room_details_polls" = "Cronologia sondaggi";
+"accessibility_selected" = "selezionato";
