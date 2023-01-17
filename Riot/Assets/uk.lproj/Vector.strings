@@ -2906,3 +2906,4 @@
 "poll_history_title" = "Історія опитувань";
 "room_details_polls" = "Історія опитувань";
 "accessibility_selected" = "вибрано";
+"voice_broadcast_playback_lock_screen_placeholder" = "Голосові трансляції";
