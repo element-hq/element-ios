@@ -2643,3 +2643,13 @@
 "poll_timeline_ended_text" = "Küsitlus on lõppenud";
 "voice_broadcast_voip_cannot_start_description" = "Kuna sa hetkel salvestad ringhäälingukõnet, siis tavakõne algatamine ei õnnestu. Kõne alustamiseks palun lõpeta ringhäälingukõne.";
 "voice_broadcast_voip_cannot_start_title" = "Kõne algatamine ei õnnestu";
+"poll_history_no_past_poll_text" = "Selles jututoas pole varasemaid küsitlusi";
+"poll_history_no_active_poll_text" = "Selles jututoas pole käimasolevaid küsitlusi";
+"poll_history_past_segment_title" = "Varasemad küsitlused";
+"poll_history_active_segment_title" = "Käimasolevad küsitlused";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Küsitluste ajalugu";
+"room_details_polls" = "Küsitluste ajalugu";
+"accessibility_selected" = "valitud";
