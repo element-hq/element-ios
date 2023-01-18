@@ -2907,3 +2907,7 @@
 "voice_broadcast_connection_error_message" = "Bohužiaľ teraz nemôžeme spustiť nahrávanie. Skúste to prosím neskôr.";
 "voice_broadcast_connection_error_title" = "Chyba pripojenia";
 "voice_broadcast_playback_lock_screen_placeholder" = "Hlasové vysielanie";
+"wysiwyg_composer_format_action_quote" = "Prepínanie citácie";
+"wysiwyg_composer_format_action_code_block" = "Prepnutie bloku kódu";
+"wysiwyg_composer_format_action_ordered_list" = "Prepínanie číslovaného zoznamu";
+"wysiwyg_composer_format_action_unordered_list" = "Prepnúť zoznam s odrážkami";
