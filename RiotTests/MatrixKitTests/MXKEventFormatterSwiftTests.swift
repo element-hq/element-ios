@@ -35,17 +35,10 @@ private enum Constants {
 class MXKEventFormatterSwiftTests: XCTestCase {
     func testBuildHTMLString() {
         let formatter = MXKEventFormatter()
-        let repliedEvent = MXEvent()
+        let repliedEvent: MXEvent = .mockEvent(eventType: kMXEventTypeStringRoomMessage)
         let event = MXEvent()
         func buildHTML() -> String? { return formatter.buildHTMLString(for: event, inReplyTo: repliedEvent) }
 
-        // Initial setup.
-        repliedEvent.sender = "alice"
-        repliedEvent.roomId = Constants.roomId
-        repliedEvent.eventId = Constants.repliedEventId
-        repliedEvent.wireType = kMXEventTypeStringRoomMessage
-        repliedEvent.wireContent = [kMXMessageTypeKey: kMXMessageTypeText,
-                                    kMXMessageBodyKey: Constants.repliedEventBody]
         event.sender = "bob"
         event.wireType = kMXEventTypeStringRoomMessage
         event.wireContent = [
