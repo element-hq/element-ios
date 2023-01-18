@@ -2909,3 +2909,7 @@
 "voice_broadcast_playback_lock_screen_placeholder" = "Голосові трансляції";
 "voice_broadcast_connection_error_message" = "На жаль, ми не можемо розпочати запис прямо зараз. Повторіть спробу пізніше.";
 "voice_broadcast_connection_error_title" = "Помилка з'єднання";
+"wysiwyg_composer_format_action_quote" = "Перемкнути цитування";
+"wysiwyg_composer_format_action_code_block" = "Перемкнути блок коду";
+"wysiwyg_composer_format_action_ordered_list" = "Перемкнути на нумерований список";
+"wysiwyg_composer_format_action_unordered_list" = "Перемкнути на маркований список";
