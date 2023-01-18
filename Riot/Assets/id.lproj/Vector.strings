@@ -2909,3 +2909,9 @@
 "room_details_polls" = "Riwayat pemungutan suara";
 "accessibility_selected" = "dipilih";
 "voice_broadcast_playback_lock_screen_placeholder" = "Siaran suara";
+"wysiwyg_composer_format_action_quote" = "Saklar kutipan";
+"wysiwyg_composer_format_action_code_block" = "Saklar blok kode";
+"wysiwyg_composer_format_action_ordered_list" = "Saklar daftar bernomor";
+"wysiwyg_composer_format_action_unordered_list" = "Saklar daftar bulat";
+"voice_broadcast_connection_error_message" = "Sayangnya kami tidak dapat memulai sebuah rekaman saat ini. Silakan coba lagi nanti.";
+"voice_broadcast_connection_error_title" = "Kesalahan koneksi";
