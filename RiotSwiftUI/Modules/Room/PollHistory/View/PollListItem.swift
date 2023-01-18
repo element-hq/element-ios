@@ -70,7 +70,7 @@ struct PollListItem: View {
                 Text(pollData.winningOption!.text)
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.primaryContent)
-                    .accessibilityLabel("PollListData.winningOption")
+                    .accessibilityIdentifier("PollListData.winningOption")
                 
                 Spacer()
                 
