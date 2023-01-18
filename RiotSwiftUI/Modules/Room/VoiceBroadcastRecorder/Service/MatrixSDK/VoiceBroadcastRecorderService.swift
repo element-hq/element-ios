@@ -329,9 +329,6 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                         completion?()
                     } failure: { error in
                         MXLog.error("[VoiceBroadcastRecorderService] Failed to send voice broadcast chunk.", context: error)
-                        if error is VoiceBroadcastServiceError == false {
-                            AppDelegate.theDelegate().showError(asAlert: error)
-                        }
                         // Do not delete the file to be sent if request failed, the retry flow will need it
                         // There's no manual mechanism to clean it up afterwards but the tmp folder
                         // they live in will eventually be deleted by the system
