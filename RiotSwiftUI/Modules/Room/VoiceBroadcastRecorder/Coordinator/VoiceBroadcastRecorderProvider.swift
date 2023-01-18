@@ -28,27 +28,28 @@ import Foundation
             guard let currentSession = self.session else { return }
             
             if currentSession != newValue {
-                // Clear all stored coordinators on new session
-                coordinatorsForEventIdentifiers.removeAll()
+                // Clear stored recorder coordinator on new session
+                self.voiceBroadcastRecorderCoordinator = nil
+                self.currentEventIdentifier = nil
             }
         }
     }
-    private var coordinatorsForEventIdentifiers = [String: VoiceBroadcastRecorderCoordinator]() {
+    
+    // MARK: Private
+    private var currentEventIdentifier: String?
+    private var redactionsListener: Any?
+    private var voiceBroadcastRecorderCoordinator: VoiceBroadcastRecorderCoordinator? {
         didSet {
-            if !self.coordinatorsForEventIdentifiers.isEmpty && self.redactionsListener == nil {
+            if self.voiceBroadcastRecorderCoordinator != nil && self.redactionsListener == nil {
                 redactionsListener = session?.listenToEvents([MXEventType(identifier: kMXEventTypeStringRoomRedaction)], self.handleRedactedEvent)
             }
 
-            if self.coordinatorsForEventIdentifiers.isEmpty && self.redactionsListener != nil {
+            if self.voiceBroadcastRecorderCoordinator == nil && self.redactionsListener != nil {
                 session?.removeListener(self.redactionsListener)
                 self.redactionsListener = nil
             }
         }
     }
-    private var redactionsListener: Any?
-    
-    // MARK: Private
-    private var currentEventIdentifier: String?
 
     // MARK: - Setup
     private override init() { }
@@ -63,9 +64,7 @@ import Foundation
             return nil
         }
         
-        self.currentEventIdentifier = event.eventId
-        
-        if let coordinator = coordinatorsForEventIdentifiers[event.eventId] {
+        if self.currentEventIdentifier == event.eventId, let coordinator = voiceBroadcastRecorderCoordinator {
             return coordinator.toPresentable().view
         }
         
@@ -75,18 +74,24 @@ import Foundation
                                                                      senderDisplayName: senderDisplayName)
         let coordinator = VoiceBroadcastRecorderCoordinator(parameters: parameters)
         
-        coordinatorsForEventIdentifiers[event.eventId] = coordinator
+        self.voiceBroadcastRecorderCoordinator = coordinator
+        self.currentEventIdentifier = event.eventId
         
         return coordinator.toPresentable().view
     }
     
     /// Pause current voice broadcast recording.
     @objc public func pauseRecording() {
-        voiceBroadcastRecorderCoordinatorForCurrentEvent()?.pauseRecording()
+        voiceBroadcastRecorderCoordinator?.pauseRecording()
+    }
+    
+    /// Pause current voice broadcast recording without sending pending events.
+    @objc public func pauseRecordingOnError() {
+        voiceBroadcastRecorderCoordinator?.pauseRecordingOnError()
     }
     
     @objc public func isVoiceBroadcastRecording() -> Bool {
-        guard let coordinator = voiceBroadcastRecorderCoordinatorForCurrentEvent() else {
+        guard let coordinator = self.voiceBroadcastRecorderCoordinator else {
             return false
         }
         
@@ -95,25 +100,14 @@ import Foundation
     
     // MARK: - Private
     
-    /// Retrieve the voiceBroadcast recorder coordinator for the current event or nil if it hasn't been created yet
-    private func voiceBroadcastRecorderCoordinatorForCurrentEvent() -> VoiceBroadcastRecorderCoordinator? {
-        guard let currentEventIdentifier = currentEventIdentifier else {
-            return nil
-        }
-
-        return coordinatorsForEventIdentifiers[currentEventIdentifier]
-    }
-    
     private func handleRedactedEvent(event: MXEvent, direction: MXTimelineDirection, customObject: Any?) {
-        if direction == .backwards {
-            //  ignore backwards events
+        if self.currentEventIdentifier != event.redacts, direction == .backwards {
             return
         }
-
-        var coordinator = coordinatorsForEventIdentifiers.removeValue(forKey: event.redacts)
-
-        coordinator?.toPresentable().dismiss(animated: false) {
-           coordinator = nil
+        
+        self.voiceBroadcastRecorderCoordinator?.toPresentable().dismiss(animated: false) {
+            self.voiceBroadcastRecorderCoordinator = nil
+            self.currentEventIdentifier = nil
         }
     }
 }

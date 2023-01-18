@@ -100,8 +100,14 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
 
             if AppDelegate.theDelegate().isOffline {
                 self.splitViewCoordinator?.showAppStateIndicator(with: VectorL10n.networkOfflineTitle, icon: UIImage(systemName: "wifi.slash"))
+                
+                // Pause voice broadcast recording without sending pending events.
+                VoiceBroadcastRecorderProvider.shared.pauseRecordingOnError()
             } else {
                 self.splitViewCoordinator?.hideAppStateIndicator()
+                
+                // Send pause voice broadcast event.
+                VoiceBroadcastRecorderProvider.shared.pauseRecording()
             }
         }
         

@@ -70,6 +70,10 @@ final class VoiceBroadcastRecorderCoordinator: Coordinator, Presentable {
         voiceBroadcastRecorderViewModel.context.send(viewAction: .pause)
     }
     
+    func pauseRecordingOnError() {
+        voiceBroadcastRecorderViewModel.context.send(viewAction: .pauseOnError)
+    }
+    
     func isVoiceBroadcastRecording() -> Bool {
         return voiceBroadcastRecorderService.isRecording
     }

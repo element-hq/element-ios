@@ -134,8 +134,11 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                 self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
                 self.chunkFile = nil
             }
-        }, failure: { error in
+        }, failure: { [weak self] (error) in
+            guard let self = self else { return }
+            
             MXLog.error("[VoiceBroadcastRecorderService] Failed to pause voice broadcast", context: error)
+            self.pauseOnErrorRecordingVoiceBroadcast()
         })
     }
     
@@ -149,8 +152,11 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             // Update state
             self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .resumed)
             UIApplication.shared.isIdleTimerDisabled = true
-        }, failure: { error in
+        }, failure: { [weak self] (error) in
+            guard let self = self else { return }
+            
             MXLog.error("[VoiceBroadcastRecorderService] Failed to resume voice broadcast", context: error)
+            self.pauseOnErrorRecordingVoiceBroadcast()
         })
     }
     
@@ -167,6 +173,15 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
         }
         
         self.tearDownVoiceBroadcastService()
+    }
+    
+    func pauseOnErrorRecordingVoiceBroadcast() {
+        audioEngine.pause()
+        UIApplication.shared.isIdleTimerDisabled = false
+        invalidateTimer()
+        
+        // Update state
+        self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .error)
     }
     
     // MARK: - Private

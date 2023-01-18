@@ -78,47 +78,53 @@ struct VoiceBroadcastRecorderView: View {
                 .accessibilityIdentifier("liveButton")
             }
             
-            HStack(alignment: .top, spacing: 34.0) {
-                Button {
-                    switch viewModel.viewState.recordingState {
-                    case .started, .resumed:
-                        viewModel.send(viewAction: .pause)
-                    case .stopped:
-                        viewModel.send(viewAction: .start)
-                    case .paused:
-                        viewModel.send(viewAction: .resume)
+            if viewModel.viewState.recordingState == .error {
+                VoiceBroadcastRecorderConnectionErrorView()
+            } else {
+                HStack(alignment: .top, spacing: 34.0) {
+                    Button {
+                        switch viewModel.viewState.recordingState {
+                        case .started, .resumed:
+                            viewModel.send(viewAction: .pause)
+                        case .stopped:
+                            viewModel.send(viewAction: .start)
+                        case .paused:
+                            viewModel.send(viewAction: .resume)
+                        case .error:
+                            break
+                        }
+                    } label: {
+                        if viewModel.viewState.recordingState == .started || viewModel.viewState.recordingState == .resumed {
+                            Image("voice_broadcast_record_pause")
+                                .renderingMode(.original)
+                        } else {
+                            Image("voice_broadcast_record")
+                                .renderingMode(.original)
+                        }
                     }
-                } label: {
-                    if viewModel.viewState.recordingState == .started || viewModel.viewState.recordingState == .resumed {
-                        Image("voice_broadcast_record_pause")
-                            .renderingMode(.original)
-                    } else {
-                        Image("voice_broadcast_record")
+                    .accessibilityIdentifier("recordButton")
+                    
+                    Button {
+                        showingStopAlert = true
+                    } label: {
+                        Image("voice_broadcast_stop")
                             .renderingMode(.original)
                     }
+                    .alert(isPresented:$showingStopAlert) {
+                        Alert(title: Text(VectorL10n.voiceBroadcastStopAlertTitle),
+                              message: Text(VectorL10n.voiceBroadcastStopAlertDescription),
+                              primaryButton: .cancel(),
+                              secondaryButton: .default(Text(VectorL10n.voiceBroadcastStopAlertAgreeButton),
+                                                        action: {
+                            viewModel.send(viewAction: .stop)
+                        }))
+                    }
+                    .accessibilityIdentifier("stopButton")
+                    .disabled(viewModel.viewState.recordingState == .stopped)
+                    .mask(Color.black.opacity(viewModel.viewState.recordingState == .stopped ? 0.3 : 1.0))
                 }
-                .accessibilityIdentifier("recordButton")
-                
-                Button {
-                    showingStopAlert = true
-                } label: {
-                    Image("voice_broadcast_stop")
-                        .renderingMode(.original)
-                }
-                .alert(isPresented:$showingStopAlert) {
-                    Alert(title: Text(VectorL10n.voiceBroadcastStopAlertTitle),
-                          message: Text(VectorL10n.voiceBroadcastStopAlertDescription),
-                          primaryButton: .cancel(),
-                          secondaryButton: .default(Text(VectorL10n.voiceBroadcastStopAlertAgreeButton),
-                                                    action: {
-                        viewModel.send(viewAction: .stop)
-                    }))
-                }
-                .accessibilityIdentifier("stopButton")
-                .disabled(viewModel.viewState.recordingState == .stopped)
-                .mask(Color.black.opacity(viewModel.viewState.recordingState == .stopped ? 0.3 : 1.0))
+                .padding(EdgeInsets(top: 10.0, leading: 0.0, bottom: 10.0, trailing: 0.0))
             }
-            .padding(EdgeInsets(top: 10.0, leading: 0.0, bottom: 10.0, trailing: 0.0))
         }
         .padding(EdgeInsets(top: 12.0, leading: 4.0, bottom: 12.0, trailing: 4.0))
     }
