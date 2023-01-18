@@ -2911,3 +2911,4 @@
 "wysiwyg_composer_format_action_code_block" = "Prepnutie bloku kódu";
 "wysiwyg_composer_format_action_ordered_list" = "Prepínanie číslovaného zoznamu";
 "wysiwyg_composer_format_action_unordered_list" = "Prepnúť zoznam s odrážkami";
+"voice_broadcast_recorder_connection_error" = "Chyba pripojenia - nahrávanie pozastavené";
