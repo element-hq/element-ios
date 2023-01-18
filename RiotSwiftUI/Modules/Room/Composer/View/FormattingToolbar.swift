@@ -32,21 +32,23 @@ struct FormattingToolbar: View {
     var formatAction: (FormatType) -> Void
     
     var body: some View {
-        HStack(spacing: 4) {
-            ForEach(formatItems) { item in
-                Button {
-                    formatAction(item.type)
-                } label: {
-                    Image(item.icon)
-                        .renderingMode(.template)
-                        .foregroundColor(getForegroundColor(for: item))
+        ScrollView(.horizontal) {
+            HStack(spacing: 4) {
+                ForEach(formatItems) { item in
+                    Button {
+                        formatAction(item.type)
+                    } label: {
+                        Image(item.icon)
+                            .renderingMode(.template)
+                            .foregroundColor(getForegroundColor(for: item))
+                    }
+                    .disabled(item.state == .disabled)
+                    .frame(width: 44, height: 44)
+                    .background(getBackgroundColor(for: item))
+                    .cornerRadius(8)
+                    .accessibilityIdentifier(item.accessibilityIdentifier)
+                    .accessibilityLabel(item.accessibilityLabel)
                 }
-                .disabled(item.state == .disabled)
-                .frame(width: 44, height: 44)
-                .background(getBackgroundColor(for: item))
-                .cornerRadius(8)
-                .accessibilityIdentifier(item.accessibilityIdentifier)
-                .accessibilityLabel(item.accessibilityLabel)
             }
         }
     }
