@@ -2024,8 +2024,13 @@ static NSString *const kEndedPollPattern = @"<mx-reply>.*<blockquote>.*<br>(.*)<
         endedPollRegex = [NSRegularExpression regularExpressionWithPattern:kEndedPollPattern options:NSRegularExpressionCaseInsensitive error:nil];
     });
     
-    NSTextCheckingResult* match = [endedPollRegex firstMatchInString:htmlString options:0 range:NSMakeRange(0, htmlString.length)];
     NSString* finalString = htmlString;
+    
+    if (repliedEvent.eventType != MXEventTypePollEnd) {
+        return finalString;
+    }
+    
+    NSTextCheckingResult* match = [endedPollRegex firstMatchInString:htmlString options:0 range:NSMakeRange(0, htmlString.length)];
     
     if (!(match && match.numberOfRanges > 1)) {
         // no useful match found
