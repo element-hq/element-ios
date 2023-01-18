@@ -31,7 +31,7 @@
 #import "GeneratedInterface-Swift.h"
 
 static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>([^<]*)</a>";
-static NSString *const kEndedPollPattern = @"<mx-reply>.*<blockquote>.*<br>(.*)</blockquote></mx-reply>";
+static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*)</blockquote></mx-reply>";
 
 @interface MXKEventFormatter ()
 {
@@ -2027,7 +2027,7 @@ static NSString *const kEndedPollPattern = @"<mx-reply>.*<blockquote>.*<br>(.*)<
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
-        endedPollRegex = [NSRegularExpression regularExpressionWithPattern:kEndedPollPattern options:NSRegularExpressionCaseInsensitive error:nil];
+        endedPollRegex = [NSRegularExpression regularExpressionWithPattern:kRepliedTextPattern options:NSRegularExpressionCaseInsensitive error:nil];
     });
     
     NSString* finalString = htmlString;
