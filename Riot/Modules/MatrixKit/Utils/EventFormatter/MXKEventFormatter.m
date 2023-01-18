@@ -31,6 +31,7 @@
 #import "GeneratedInterface-Swift.h"
 
 static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>([^<]*)</a>";
+static NSString *const kEndedPollPattern = @"<mx-reply>.*<blockquote>.*<br>(.*)</blockquote></mx-reply>";
 
 @interface MXKEventFormatter ()
 {
@@ -1808,6 +1809,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
         }
 
         html = [self renderReplyTo:html withRoomState:roomState];
+        html = [self renderPollEndedReplyTo:html repliedEvent:repliedEvent];
     }
 
     // Apply the css style that corresponds to the event state
@@ -2012,6 +2014,39 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     }
     
     return html;
+}
+
+- (NSString*)renderPollEndedReplyTo:(NSString*)htmlString repliedEvent:(MXEvent*)repliedEvent {
+    static NSRegularExpression *endedPollRegex;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        endedPollRegex = [NSRegularExpression regularExpressionWithPattern:kEndedPollPattern options:NSRegularExpressionCaseInsensitive error:nil];
+    });
+    
+    NSTextCheckingResult* match = [endedPollRegex firstMatchInString:htmlString options:0 range:NSMakeRange(0, htmlString.length)];
+    NSString* finalString = htmlString;
+    
+    if (!(match && match.numberOfRanges > 1)) {
+        // no useful match found
+        return finalString;
+    }
+    
+    NSRange groupRange = [match rangeAtIndex:1];
+    NSString* replacementText;
+    
+    if (repliedEvent) {
+        MXEvent* pollStartedEvent = [mxSession.store eventWithEventId:repliedEvent.relatesTo.eventId inRoom:repliedEvent.roomId];
+        replacementText = [MXEventContentPollStart modelFromJSON:pollStartedEvent.content].question;
+    }
+    
+    if (replacementText == nil) {
+        replacementText = VectorL10n.pollTimelineReplyEndedPoll;
+    }
+    
+    finalString = [htmlString stringByReplacingCharactersInRange:groupRange withString:replacementText];
+    
+    return finalString;
 }
 
 - (void)postFormatMutableAttributedString:(NSMutableAttributedString*)mutableAttributedString
