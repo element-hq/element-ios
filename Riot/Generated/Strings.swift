@@ -4883,6 +4883,10 @@ public class VectorL10n: NSObject {
   public static var pollTimelineOneVote: String { 
     return VectorL10n.tr("Vector", "poll_timeline_one_vote") 
   }
+  /// Ended poll
+  public static var pollTimelineReplyEndedPoll: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_reply_ended_poll") 
+  }
   /// Final results based on %lu votes
   public static func pollTimelineTotalFinalResults(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "poll_timeline_total_final_results", p1)

@@ -18,34 +18,38 @@ import Foundation
 
 class MXKSendReplyEventStringLocalizer: NSObject, MXSendReplyEventStringLocalizerProtocol {
     func senderSentAnImage() -> String {
-        return VectorL10n.messageReplyToSenderSentAnImage
+        VectorL10n.messageReplyToSenderSentAnImage
     }
 
     func senderSentAVideo() -> String {
-        return VectorL10n.messageReplyToSenderSentAVideo
+        VectorL10n.messageReplyToSenderSentAVideo
     }
 
     func senderSentAnAudioFile() -> String {
-        return VectorL10n.messageReplyToSenderSentAnAudioFile
+        VectorL10n.messageReplyToSenderSentAnAudioFile
     }
 
     func senderSentAVoiceMessage() -> String {
-        return VectorL10n.messageReplyToSenderSentAVoiceMessage
+        VectorL10n.messageReplyToSenderSentAVoiceMessage
     }
 
     func senderSentAFile() -> String {
-        return VectorL10n.messageReplyToSenderSentAFile
+        VectorL10n.messageReplyToSenderSentAFile
     }
 
     func senderSentTheirLocation() -> String {
-        return VectorL10n.messageReplyToSenderSentTheirLocation
+        VectorL10n.messageReplyToSenderSentTheirLocation
     }
     
     func senderSentTheirLiveLocation() -> String {
-        return VectorL10n.messageReplyToSenderSentTheirLiveLocation
+        VectorL10n.messageReplyToSenderSentTheirLiveLocation
     }
 
     func messageToReplyToPrefix() -> String {
-        return VectorL10n.messageReplyToMessageToReplyToPrefix
+        VectorL10n.messageReplyToMessageToReplyToPrefix
+    }
+    
+    func replyToEndedPoll() -> String {
+        VectorL10n.pollTimelineReplyEndedPoll
     }
 }

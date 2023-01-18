@@ -2368,6 +2368,8 @@ Tap the + to start adding people.";
 
 "poll_timeline_ended_text" = "Ended the poll";
 
+"poll_timeline_reply_ended_poll" = "Ended poll";
+
 // MARK: - Location sharing
 
 "location_sharing_title" = "Location";
