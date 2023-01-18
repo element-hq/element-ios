@@ -18,29 +18,51 @@ import RiotSwiftUI
 import XCTest
 
 class PollHistoryUITests: MockScreenTestCase {
-    func testPollHistoryHasContent() {
+    func testActivePollHistoryHasContent() {
         app.goToScreenWithIdentifier(MockPollHistoryScreenState.active.title)
         let title = app.navigationBars.firstMatch.identifier
         let emptyText = app.staticTexts["PollHistory.emptyText"]
         let items = app.staticTexts["PollListItem.title"]
         let selectedSegment = app.buttons[VectorL10n.pollHistoryActiveSegmentTitle]
+        let winningOption = app.staticTexts["PollListData.winningOption"]
+        
         XCTAssertEqual(title, VectorL10n.pollHistoryTitle)
         XCTAssertTrue(items.exists)
         XCTAssertFalse(emptyText.exists)
         XCTAssertTrue(selectedSegment.exists)
         XCTAssertEqual(selectedSegment.value as? String, VectorL10n.accessibilitySelected)
+        XCTAssertFalse(winningOption.exists)
     }
     
-    func testPollHistoryShowsEmptyScreen() {
+    func testPastPollHistoryHasContent() {
+        app.goToScreenWithIdentifier(MockPollHistoryScreenState.past.title)
+        let title = app.navigationBars.firstMatch.identifier
+        let emptyText = app.staticTexts["PollHistory.emptyText"]
+        let items = app.staticTexts["PollListItem.title"]
+        let selectedSegment = app.buttons[VectorL10n.pollHistoryPastSegmentTitle]
+        let winningOption = app.staticTexts["PollListData.winningOption"]
+        
+        XCTAssertEqual(title, VectorL10n.pollHistoryTitle)
+        XCTAssertTrue(items.exists)
+        XCTAssertFalse(emptyText.exists)
+        XCTAssertTrue(selectedSegment.exists)
+        XCTAssertEqual(selectedSegment.value as? String, VectorL10n.accessibilitySelected)
+        XCTAssertTrue(winningOption.exists)
+    }
+    
+    func testPastPollHistoryIsEmpty() {
         app.goToScreenWithIdentifier(MockPollHistoryScreenState.pastEmpty.title)
         let title = app.navigationBars.firstMatch.identifier
         let emptyText = app.staticTexts["PollHistory.emptyText"]
         let items = app.staticTexts["PollListItem.title"]
         let selectedSegment = app.buttons[VectorL10n.pollHistoryPastSegmentTitle]
+        let winningOption = app.staticTexts["PollListData.winningOption"]
+        
         XCTAssertEqual(title, VectorL10n.pollHistoryTitle)
         XCTAssertFalse(items.exists)
         XCTAssertTrue(emptyText.exists)
         XCTAssertTrue(selectedSegment.exists)
         XCTAssertEqual(selectedSegment.value as? String, VectorL10n.accessibilitySelected)
+        XCTAssertFalse(winningOption.exists)
     }
 }

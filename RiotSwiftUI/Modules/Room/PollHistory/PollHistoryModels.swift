@@ -33,7 +33,7 @@ struct PollHistoryViewBindings {
 
 struct PollHistoryViewState: BindableState {
     init(mode: PollHistoryMode) {
-        self.bindings = .init(mode: mode)
+        bindings = .init(mode: mode)
     }
     
     var bindings: PollHistoryViewBindings
@@ -42,4 +42,5 @@ struct PollHistoryViewState: BindableState {
 
 enum PollHistoryViewAction {
     case viewAppeared
+    case segmentDidChange
 }

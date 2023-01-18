@@ -19,6 +19,8 @@ import SwiftUI
 struct PollListData {
     let startDate: Date
     let question: String
+    let numberOfVotes: UInt
+    let winningOption: TimelinePollAnswerOption?
 }
 
 struct PollListItem: View {
@@ -36,19 +38,75 @@ struct PollListItem: View {
             Text(pollData.formattedDate)
                 .foregroundColor(theme.colors.tertiaryContent)
                 .font(theme.fonts.caption1)
-
+            
             HStack(alignment: .firstTextBaseline, spacing: 8) {
                 Image(uiImage: Asset.Images.pollHistory.image)
                     .resizable()
                     .frame(width: imageSize, height: imageSize)
-
+                
                 Text(pollData.question)
                     .foregroundColor(theme.colors.primaryContent)
                     .font(theme.fonts.body)
                     .lineLimit(2)
                     .accessibilityLabel("PollListItem.title")
             }
+            
+            if pollData.winningOption != nil {
+                VStack(alignment: .leading, spacing: 12) {
+                    optionView(winningOption: pollData.winningOption!)
+                    resultView
+                }
+            }
         }
+    }
+    
+    private var clipShape: some Shape {
+        RoundedRectangle(cornerRadius: 4.0)
+    }
+
+    private func optionView(winningOption: TimelinePollAnswerOption) -> some View {
+        VStack(alignment: .leading, spacing: 12.0) {
+            HStack(alignment: .top, spacing: 8.0) {
+                Text(pollData.winningOption!.text)
+                    .font(theme.fonts.body)
+                    .foregroundColor(theme.colors.primaryContent)
+                    .accessibilityIdentifier("PollListData.winningOption")
+                
+                Spacer()
+                
+                votesText(winningOption: winningOption)
+            }
+            
+            ProgressView(value: Double(winningOption.count),
+                         total: Double(pollData.numberOfVotes))
+                .progressViewStyle(LinearProgressViewStyle())
+                .scaleEffect(x: 1.0, y: 1.2, anchor: .center)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 8.0)
+        .padding(.top, 12.0)
+        .padding(.bottom, 12.0)
+        .clipShape(clipShape)
+        .overlay(clipShape.stroke(theme.colors.accent, lineWidth: 1.0))
+        .accentColor(theme.colors.accent)
+    }
+    
+    private func votesText(winningOption: TimelinePollAnswerOption) -> some View {
+        Label {
+            Text(winningOption.count == 1 ? VectorL10n.pollTimelineOneVote : VectorL10n.pollTimelineVotesCount(Int(winningOption.count)))
+                .font(theme.fonts.footnote)
+                .foregroundColor(theme.colors.accent)
+        } icon: {
+            Image(uiImage: Asset.Images.pollWinnerIcon.image)
+        }
+    }
+    
+    private var resultView: some View {
+        let text = pollData.numberOfVotes == 1 ? VectorL10n.pollTimelineTotalFinalResultsOneVote : VectorL10n.pollTimelineTotalFinalResults(Int(pollData.numberOfVotes))
+        
+        return Text(text)
+            .font(theme.fonts.footnote)
+            .foregroundColor(theme.colors.tertiaryContent)
     }
 }
 
@@ -72,6 +130,24 @@ private extension DateFormatter {
 
 struct PollListItem_Previews: PreviewProvider {
     static var previews: some View {
-        PollListItem(pollData: .init(startDate: .init(), question: "Did you like this poll?"))
+        Group {
+            let pollData1 = PollListData(
+                startDate: .init(),
+                question: "Do you like polls?",
+                numberOfVotes: 30,
+                winningOption: .init(id: "id", text: "Yes, of course!", count: 18, winner: true, selected: true)
+            )
+            
+            PollListItem(pollData: pollData1)
+            
+            let pollData2 = PollListData(
+                startDate: .init(),
+                question: "Do you like polls?",
+                numberOfVotes: 30,
+                winningOption: nil)
+            
+            PollListItem(pollData: pollData2)
+        }
+        .padding()
     }
 }
