@@ -1882,6 +1882,12 @@ static NSString *const kEndedPollPattern = @"<mx-reply>.*<blockquote>.*<br>(.*)<
             {
                 MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageBodyKey]);
             }
+            if (!repliedEventContent && repliedEvent.eventType == MXEventTypePollStart) {
+                repliedEventContent = [MXEventContentPollStart modelFromJSON:repliedEvent.content].question;
+            }
+            if (!repliedEventContent && repliedEvent.eventType == MXEventTypePollEnd) {
+                repliedEventContent = MXSendReplyEventDefaultStringLocalizer.new.replyToEndedPoll;
+            }
         }
 
         // No message content in a non-redacted event. Formatter should use fallback.
