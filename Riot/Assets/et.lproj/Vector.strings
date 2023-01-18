@@ -2660,3 +2660,4 @@
 "wysiwyg_composer_format_action_code_block" = "Lülita koodiblokk sisse/välja";
 "wysiwyg_composer_format_action_ordered_list" = "Lülita nummerdatud loend sisse/välja";
 "wysiwyg_composer_format_action_unordered_list" = "Lülita täpploend sisse/välja";
+"voice_broadcast_recorder_connection_error" = "Viga võrguühenduses - salvestamine on peatatud";
