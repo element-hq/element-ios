@@ -110,6 +110,7 @@ internal class Asset: NSObject {
     internal static let strikethrough = ImageAsset(name: "Strikethrough")
     internal static let underlined = ImageAsset(name: "Underlined")
     internal static let bulletList = ImageAsset(name: "bullet_list")
+    internal static let codeBlock = ImageAsset(name: "code_block")
     internal static let indentDecrease = ImageAsset(name: "indent_decrease")
     internal static let maximiseComposer = ImageAsset(name: "maximise_composer")
     internal static let minimiseComposer = ImageAsset(name: "minimise_composer")

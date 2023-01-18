@@ -34,7 +34,11 @@ enum FormatType {
     case italic
     case underline
     case strikethrough
+    case unorderedList
+    case orderedList
     case inlineCode
+    case codeBlock
+    case quote
     case link
 }
 
@@ -54,14 +58,22 @@ extension FormatItem {
             return Asset.Images.bold.name
         case .italic:
             return Asset.Images.italic.name
-        case .strikethrough:
-            return Asset.Images.strikethrough.name
         case .underline:
             return Asset.Images.underlined.name
-        case .link:
-            return Asset.Images.link.name
+        case .strikethrough:
+            return Asset.Images.strikethrough.name
+        case .unorderedList:
+            return Asset.Images.bulletList.name
+        case .orderedList:
+            return Asset.Images.numberedList.name
         case .inlineCode:
             return Asset.Images.code.name
+        case .codeBlock:
+            return Asset.Images.codeBlock.name
+        case .quote:
+            return Asset.Images.quote.name
+        case .link:
+            return Asset.Images.link.name
         }
     }
     
@@ -71,14 +83,22 @@ extension FormatItem {
             return "boldButton"
         case .italic:
             return "italicButton"
-        case .strikethrough:
-            return "strikethroughButton"
         case .underline:
             return "underlineButton"
-        case .link:
-            return "linkButton"
+        case .strikethrough:
+            return "strikethroughButton"
+        case .unorderedList:
+            return "unorderedListButton"
+        case .orderedList:
+            return "orderedListButton"
         case .inlineCode:
             return "inlineCodeButton"
+        case .codeBlock:
+            return "codeBlockButton"
+        case .quote:
+            return "quoteButton"
+        case .link:
+            return "linkButton"
         }
     }
     
@@ -88,14 +108,22 @@ extension FormatItem {
             return VectorL10n.wysiwygComposerFormatActionBold
         case .italic:
             return VectorL10n.wysiwygComposerFormatActionItalic
-        case .strikethrough:
-            return VectorL10n.wysiwygComposerFormatActionStrikethrough
         case .underline:
             return VectorL10n.wysiwygComposerFormatActionUnderline
-        case .link:
-            return VectorL10n.wysiwygComposerFormatActionLink
+        case .strikethrough:
+            return VectorL10n.wysiwygComposerFormatActionStrikethrough
+        case .unorderedList:
+            return VectorL10n.wysiwygComposerFormatActionUnorderedList
+        case .orderedList:
+            return VectorL10n.wysiwygComposerFormatActionOrderedList
         case .inlineCode:
             return VectorL10n.wysiwygComposerFormatActionInlineCode
+        case .codeBlock:
+            return VectorL10n.wysiwygComposerFormatActionCodeBlock
+        case .quote:
+            return VectorL10n.wysiwygComposerFormatActionQuote
+        case .link:
+            return VectorL10n.wysiwygComposerFormatActionLink
         }
     }
 }
@@ -108,14 +136,22 @@ extension FormatType {
             return .bold
         case .italic:
             return .italic
-        case .strikethrough:
-            return .strikeThrough
         case .underline:
             return .underline
-        case .link:
-            return .link
+        case .strikethrough:
+            return .strikeThrough
+        case .unorderedList:
+            return .unorderedList
+        case .orderedList:
+            return .orderedList
         case .inlineCode:
             return .inlineCode
+        case .codeBlock:
+            return .codeBlock
+        case .quote:
+            return .quote
+        case .link:
+            return .link
         }
     }
     
@@ -127,14 +163,22 @@ extension FormatType {
             return .bold
         case .italic:
             return .italic
-        case .strikethrough:
-            return .strikeThrough
         case .underline:
             return .underline
-        case .link:
-            return .link
+        case .strikethrough:
+            return .strikeThrough
+        case .unorderedList:
+            return .unorderedList
+        case .orderedList:
+            return .orderedList
         case .inlineCode:
             return .inlineCode
+        case .codeBlock:
+            return .codeBlock
+        case .quote:
+            return .quote
+        case .link:
+            return .link
         }
     }
 }
@@ -167,5 +211,3 @@ final class LinkActionWrapper: NSObject {
         super.init()
     }
 }
-
-
