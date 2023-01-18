@@ -116,6 +116,8 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             // Discard the service on VoiceBroadcastService error. We keep the service in case of other error type
             if error as? VoiceBroadcastServiceError != nil {
                 self.tearDownVoiceBroadcastService()
+            } else {
+                AppDelegate.theDelegate().showError(asAlert: error)
             }
         })
     }
@@ -134,11 +136,12 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                 self.sendChunkFile(at: self.chunkFile.url, sequence: self.chunkFileNumber)
                 self.chunkFile = nil
             }
-        }, failure: { [weak self] (error) in
-            guard let self = self else { return }
-            
+        }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to pause voice broadcast", context: error)
-            self.pauseOnErrorRecordingVoiceBroadcast()
+            // Pause voice broadcast recording without sending pending events.
+            if error is VoiceBroadcastServiceError == false {
+                AppDelegate.theDelegate().showError(asAlert: error)
+            }
         })
     }
     
@@ -152,11 +155,11 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             // Update state
             self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .resumed)
             UIApplication.shared.isIdleTimerDisabled = true
-        }, failure: { [weak self] (error) in
-            guard let self = self else { return }
-            
+        }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to resume voice broadcast", context: error)
-            self.pauseOnErrorRecordingVoiceBroadcast()
+            if error is VoiceBroadcastServiceError == false {
+                AppDelegate.theDelegate().showError(asAlert: error)
+            }
         })
     }
     
@@ -326,6 +329,9 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                         completion?()
                     } failure: { error in
                         MXLog.error("[VoiceBroadcastRecorderService] Failed to send voice broadcast chunk.", context: error)
+                        if error is VoiceBroadcastServiceError == false {
+                            AppDelegate.theDelegate().showError(asAlert: error)
+                        }
                         // Do not delete the file to be sent if request failed, the retry flow will need it
                         // There's no manual mechanism to clean it up afterwards but the tmp folder
                         // they live in will eventually be deleted by the system

@@ -29,18 +29,16 @@ struct VoiceBroadcastPlaybackErrorView: View {
     
     var body: some View {
         ZStack {
-            VStack {
+            HStack {
                 Image(uiImage: Asset.Images.errorIcon.image)
                     .frame(width: 40, height: 40)
                 Text(VectorL10n.voiceBroadcastPlaybackLoadingError)
                     .multilineTextAlignment(.center)
                     .font(theme.fonts.caption1)
-                    .foregroundColor(theme.colors.primaryContent)
+                    .foregroundColor(theme.colors.alert)
             }
-            .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(theme.colors.system.ignoresSafeArea())
     }
 }
 

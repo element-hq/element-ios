@@ -37,10 +37,8 @@ struct VoiceBroadcastRecorderConnectionErrorView: View {
                     .font(theme.fonts.caption1)
                     .foregroundColor(theme.colors.alert)
             }
-            .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(theme.colors.system.ignoresSafeArea())
     }
 }
 

@@ -26,7 +26,7 @@ struct VoiceBroadcastRecorderView: View {
     @State private var showingStopAlert = false
     
     private var backgroundColor: Color {
-        if viewModel.viewState.recordingState != .paused {
+        if viewModel.viewState.recordingState != .paused, viewModel.viewState.recordingState != .error {
             return theme.colors.alert
         }
         return theme.colors.quarterlyContent
