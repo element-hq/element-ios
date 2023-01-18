@@ -1,5 +1,5 @@
 // 
-// Copyright 2022 New Vector Ltd
+// Copyright 2023 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct VoiceBroadcastPlaybackErrorView: View {
+struct VoiceBroadcastRecorderConnectionErrorView: View {
     // MARK: - Properties
     
     // MARK: Private
@@ -29,10 +29,10 @@ struct VoiceBroadcastPlaybackErrorView: View {
     
     var body: some View {
         ZStack {
-            HStack {
+            HStack(spacing: 0) {
                 Image(uiImage: Asset.Images.errorIcon.image)
                     .frame(width: 40, height: 40)
-                Text(VectorL10n.voiceBroadcastPlaybackLoadingError)
+                Text(VectorL10n.voiceBroadcastRecorderConnectionError)
                     .multilineTextAlignment(.center)
                     .font(theme.fonts.caption1)
                     .foregroundColor(theme.colors.alert)
@@ -42,8 +42,8 @@ struct VoiceBroadcastPlaybackErrorView: View {
     }
 }
 
-struct VoiceBroadcastPlaybackErrorView_Previews: PreviewProvider {
+struct VoiceBroadcastRecorderConnectionErrorView_Previews: PreviewProvider {
     static var previews: some View {
-        VoiceBroadcastPlaybackErrorView()
+        VoiceBroadcastRecorderConnectionErrorView()
     }
 }

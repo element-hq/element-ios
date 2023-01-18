@@ -42,4 +42,7 @@ protocol VoiceBroadcastRecorderServiceProtocol {
     
     /// Cancel voice broadcast recording after redacted it.
     func cancelRecordingVoiceBroadcast()
+    
+    /// Pause voice broadcast recording without sending pending events.
+    func pauseOnErrorRecordingVoiceBroadcast()
 }

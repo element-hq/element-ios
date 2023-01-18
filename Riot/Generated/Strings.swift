@@ -9231,6 +9231,10 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastPlaybackLockScreenPlaceholder: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_playback_lock_screen_placeholder") 
   }
+  /// Connection error - Recording paused
+  public static var voiceBroadcastRecorderConnectionError: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_recorder_connection_error") 
+  }
   /// Yes, stop
   public static var voiceBroadcastStopAlertAgreeButton: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_stop_alert_agree_button") 

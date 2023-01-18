@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ import Foundation
             if !self.coordinatorsForEventIdentifiers.isEmpty && self.redactionsListener == nil {
                 redactionsListener = session?.listenToEvents([MXEventType(identifier: kMXEventTypeStringRoomRedaction)], self.handleRedactedEvent)
             }
-
+            
             if self.coordinatorsForEventIdentifiers.isEmpty && self.redactionsListener != nil {
                 session?.removeListener(self.redactionsListener)
                 self.redactionsListener = nil
@@ -49,7 +49,7 @@ import Foundation
     
     // MARK: Private
     private var currentEventIdentifier: String?
-
+    
     // MARK: - Setup
     private override init() { }
     
@@ -85,6 +85,11 @@ import Foundation
         voiceBroadcastRecorderCoordinatorForCurrentEvent()?.pauseRecording()
     }
     
+    /// Pause current voice broadcast recording without sending pending events.
+    @objc public func pauseRecordingOnError() {
+        voiceBroadcastRecorderCoordinatorForCurrentEvent()?.pauseRecordingOnError()
+    }
+    
     @objc public func isVoiceBroadcastRecording() -> Bool {
         guard let coordinator = voiceBroadcastRecorderCoordinatorForCurrentEvent() else {
             return false
@@ -100,7 +105,7 @@ import Foundation
         guard let currentEventIdentifier = currentEventIdentifier else {
             return nil
         }
-
+        
         return coordinatorsForEventIdentifiers[currentEventIdentifier]
     }
     
@@ -109,11 +114,11 @@ import Foundation
             //  ignore backwards events
             return
         }
-
+        
         var coordinator = coordinatorsForEventIdentifiers.removeValue(forKey: event.redacts)
-
+        
         coordinator?.toPresentable().dismiss(animated: false) {
-           coordinator = nil
+            coordinator = nil
         }
     }
 }
