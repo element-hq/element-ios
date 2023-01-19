@@ -2916,3 +2916,4 @@
 "voice_broadcast_connection_error_message" = "Sayangnya kami tidak dapat memulai sebuah rekaman saat ini. Silakan coba lagi nanti.";
 "voice_broadcast_connection_error_title" = "Kesalahan koneksi";
 "voice_broadcast_recorder_connection_error" = "Kesalahan koneksi - Perekaman dijeda";
+"poll_timeline_reply_ended_poll" = "Pemungutan suara berakhir";
