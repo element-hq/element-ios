@@ -77,6 +77,9 @@ private extension PollHistoryService {
             return
         }
         
+        #warning("to be removed probably?")
+        timeline.resetPagination()
+        
         timeline.paginate(Constants.pageSize,
                           direction: .backwards,
                           onlyFromStore: false) { response in
