@@ -176,7 +176,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
             coordinator.start()
             push(coordinator: coordinator)
         case .pollHistory:
-            let coordinator: PollHistoryCoordinator = .init(parameters: .init(mode: .active, room: self.room))
+            let coordinator: PollHistoryCoordinator = .init(parameters: .init(mode: .active, session: session, room: room, navigationRouter: navigationRouter))
             coordinator.start()
             push(coordinator: coordinator)
         default:

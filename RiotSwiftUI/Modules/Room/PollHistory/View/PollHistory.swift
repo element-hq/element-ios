@@ -62,6 +62,9 @@ struct PollHistory: View {
             LazyVStack(spacing: 32) {
                 ForEach(viewModel.viewState.polls ?? []) { pollData in
                     PollListItem(pollData: pollData)
+                        .onTapGesture {
+                            viewModel.send(viewAction: .showPollDetail(poll: pollData))
+                        }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 

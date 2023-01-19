@@ -20,8 +20,8 @@ enum PollHistoryConstants {
     static let chunkSizeInDays: UInt = 30
 }
 
-enum PollHistoryViewModelResult: Equatable {
-    #warning("e.g. show poll detail")
+enum PollHistoryViewModelResult {
+    case showPollDetail(poll: PollListData)
 }
 
 // MARK: View
@@ -49,4 +49,5 @@ struct PollHistoryViewState: BindableState {
 enum PollHistoryViewAction {
     case viewAppeared
     case segmentDidChange
+    case showPollDetail(poll: PollListData)
 }

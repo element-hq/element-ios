@@ -15,17 +15,21 @@
 //
 
 import CommonKit
+import MatrixSDK
 import SwiftUI
 
 struct PollHistoryCoordinatorParameters {
     let mode: PollHistoryMode
+    let session: MXSession
     let room: MXRoom
+    let navigationRouter: NavigationRouterType
 }
 
-final class PollHistoryCoordinator: Coordinator, Presentable {
+final class PollHistoryCoordinator: NSObject, Coordinator, Presentable {
     private let parameters: PollHistoryCoordinatorParameters
     private let pollHistoryHostingController: UIViewController
     private var pollHistoryViewModel: PollHistoryViewModelProtocol
+    private let navigationRouter: NavigationRouterType
     
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
@@ -37,6 +41,7 @@ final class PollHistoryCoordinator: Coordinator, Presentable {
         let view = PollHistory(viewModel: viewModel.context)
         pollHistoryViewModel = viewModel
         pollHistoryHostingController = VectorHostingController(rootView: view)
+        navigationRouter = parameters.navigationRouter
     }
     
     // MARK: - Public
@@ -44,11 +49,44 @@ final class PollHistoryCoordinator: Coordinator, Presentable {
     func start() {
         MXLog.debug("[PollHistoryCoordinator] did start.")
         pollHistoryViewModel.completion = { [weak self] result in
-            self?.completion?()
+            switch result {
+            case .showPollDetail(let poll):
+                self?.showPollDetail(poll)
+            }
         }
+    }
+    
+    func showPollDetail(_ poll: PollListData) {
+        let detailCoordinator: PollHistoryDetailCoordinator = .init(parameters: .init(pollHistoryDetails: .dummy, session: parameters.session, room: parameters.room))
+        detailCoordinator.toPresentable().presentationController?.delegate = self
+        detailCoordinator.completion = { [weak self, weak detailCoordinator] result in
+            guard let self = self, let coordinator = detailCoordinator else { return }
+            switch result {
+            case .dismiss:
+                self.toPresentable().dismiss(animated: true)
+                self.remove(childCoordinator: coordinator)
+            default:
+                break
+            }
+        }
+        
+        add(childCoordinator: detailCoordinator)
+        detailCoordinator.start()
+        toPresentable().present(detailCoordinator.toPresentable(), animated: true)
     }
     
     func toPresentable() -> UIViewController {
         pollHistoryHostingController
+    }
+}
+
+// MARK: UIAdaptivePresentationControllerDelegate
+
+extension PollHistoryCoordinator: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard let coordinator = childCoordinators.last else {
+            return
+        }
+        remove(childCoordinator: coordinator)
     }
 }
