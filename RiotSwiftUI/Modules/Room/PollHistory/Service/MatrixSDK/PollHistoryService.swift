@@ -16,9 +16,99 @@
 
 import MatrixSDK
 import Foundation
+import Combine
 
 final class PollHistoryService: PollHistoryServiceProtocol {
+    private let room: MXRoom
+    private let livePolls: PassthroughSubject<TimelinePollDetails, Never> = .init()
+    
+    private var listner: Any?
+    private var timeline: MXEventTimeline?
+    private var pollAggregators: [String: PollAggregator] = [:]
+    
+    init(room: MXRoom) {
+        self.room = room
+    }
+    
     func fetchHistory() async throws -> [PollListData] {
-        []
+        guard timeline == nil else {
+            paginate()
+            return []
+        }
+        
+        room.liveTimeline { [weak self] timeline in
+            guard
+                let self = self,
+                let timeline = timeline
+            else {
+                #warning("Handle error")
+                return
+            }
+            
+            self.setup(timeline: timeline)
+            self.paginate()
+        }
+        
+        return []
+    }
+}
+
+private extension PollHistoryService {
+    enum Constants {
+        static let pageSize: UInt = 250
+    }
+    
+    func setup(timeline: MXEventTimeline) {
+        self.timeline = timeline
+        listner = timeline.listenToEvents([MXEventType.pollStart]) { [weak self] event, direction, roomState in
+            self?.aggregatePoll(pollStartEvent: event)
+        }
+    }
+    
+    func paginate() {
+        guard let timeline = timeline else  {
+            return
+        }
+        
+        timeline.paginate(Constants.pageSize,
+                          direction: .backwards,
+                          onlyFromStore: false) { response in
+            switch response {
+            case .success:
+                break
+            case .failure(let error):
+                #warning("Handle error")
+                break
+            }
+        }
+    }
+    
+    func aggregatePoll(pollStartEvent: MXEvent) {
+        guard pollAggregators[pollStartEvent.eventId] == nil else {
+            return
+        }
+        
+        guard let aggregator = try? PollAggregator(session: room.mxSession, room: room, pollEvent: pollStartEvent, delegate: self) else {
+            return
+        }
+        
+        pollAggregators[pollStartEvent.eventId] = aggregator
+    }
+}
+
+// MARK: - PollAggregatorDelegate
+
+extension PollHistoryService: PollAggregatorDelegate {
+    func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) {
+    }
+    
+    func pollAggregatorDidEndLoading(_ aggregator: PollAggregator) {
+    }
+    
+    func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) {
+    }
+    
+    func pollAggregatorDidUpdateData(_ aggregator: PollAggregator) {
+        
     }
 }
