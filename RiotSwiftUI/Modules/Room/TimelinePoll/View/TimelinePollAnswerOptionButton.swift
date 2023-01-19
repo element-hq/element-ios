@@ -149,6 +149,7 @@ struct TimelinePollAnswerOptionButton_Previews: PreviewProvider {
         TimelinePollDetails(question: "",
                             answerOptions: [],
                             closed: closed,
+                            startDate: .init(),
                             totalAnswerCount: 100,
                             type: type,
                             eventType: .started,

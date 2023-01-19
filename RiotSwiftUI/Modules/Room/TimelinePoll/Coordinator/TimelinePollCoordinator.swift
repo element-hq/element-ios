@@ -136,6 +136,7 @@ extension TimelinePollDetails {
         self.init(question: poll.text,
                   answerOptions: answerOptions,
                   closed: poll.isClosed,
+                  startDate: poll.startDate,
                   totalAnswerCount: poll.totalAnswerCount,
                   type: Self.pollKindToTimelinePollType(poll.kind),
                   eventType: eventType,

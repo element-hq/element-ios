@@ -36,6 +36,7 @@ enum MockTimelinePollScreenState: MockScreenState, CaseIterable {
         let poll = TimelinePollDetails(question: "Question",
                                        answerOptions: answerOptions,
                                        closed: self == .closedDisclosed || self == .closedUndisclosed ? true : false,
+                                       startDate: .init(),
                                        totalAnswerCount: 20,
                                        type: self == .closedDisclosed || self == .openDisclosed ? .disclosed : .undisclosed,
                                        eventType: self == .closedPollEnded ? .ended : .started,

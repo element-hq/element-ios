@@ -65,6 +65,7 @@ struct TimelinePollDetails {
     var question: String
     var answerOptions: [TimelinePollAnswerOption]
     var closed: Bool
+    var startDate: Date
     var totalAnswerCount: UInt
     var type: TimelinePollType
     var eventType: TimelinePollEventType
@@ -72,8 +73,10 @@ struct TimelinePollDetails {
     var hasBeenEdited = true
     var hasDecryptionError: Bool
     
-    init(question: String, answerOptions: [TimelinePollAnswerOption],
+    init(question: String,
+         answerOptions: [TimelinePollAnswerOption],
          closed: Bool,
+         startDate: Date,
          totalAnswerCount: UInt,
          type: TimelinePollType,
          eventType: TimelinePollEventType,
@@ -83,6 +86,7 @@ struct TimelinePollDetails {
         self.question = question
         self.answerOptions = answerOptions
         self.closed = closed
+        self.startDate = startDate
         self.totalAnswerCount = totalAnswerCount
         self.type = type
         self.eventType = eventType

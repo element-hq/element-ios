@@ -28,8 +28,7 @@ struct PollListItem: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            #warning("fix me")
-            Text(DateFormatter.shortDateFormatter.string(from: .init()))
+            Text(DateFormatter.shortDateFormatter.string(from: pollData.startDate))
                 .foregroundColor(theme.colors.tertiaryContent)
                 .font(theme.fonts.caption1)
             
@@ -126,6 +125,7 @@ struct PollListItem_Previews: PreviewProvider {
             let pollData1 = TimelinePollDetails(question: "Do you like polls?",
                                                 answerOptions: [.init(id: "id", text: "Yes, of course!", count: 18, winner: true, selected: true)],
                                                 closed: true,
+                                                startDate: .init(),
                                                 totalAnswerCount: 30,
                                                 type: .disclosed,
                                                 eventType: .started,
@@ -137,6 +137,7 @@ struct PollListItem_Previews: PreviewProvider {
             let pollData2 = TimelinePollDetails(question: "Do you like polls?",
                                                 answerOptions: [.init(id: "id", text: "Yes, of course!", count: 18, winner: true, selected: true)],
                                                 closed: false,
+                                                startDate: .init(),
                                                 totalAnswerCount: 30,
                                                 type: .disclosed,
                                                 eventType: .started,
@@ -150,6 +151,7 @@ struct PollListItem_Previews: PreviewProvider {
                                                     .init(id: "id2", text: "No, I don't :-(", count: 15, winner: true, selected: true)
                                                 ],
                                                 closed: true,
+                                                startDate: .init(),
                                                 totalAnswerCount: 30,
                                                 type: .disclosed,
                                                 eventType: .started,
