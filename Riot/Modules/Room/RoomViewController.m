@@ -4302,18 +4302,36 @@ static CGSize kThreadListBarButtonItemImageSize;
                 
                 [self startActivityIndicator];
                 
-                MXWeakify(self);
-                [self.roomDataSource.room redactEvent:selectedEvent.eventId reason:nil success:^{
-                    MXStrongifyAndReturnIfNil(self);
-                    [self stopActivityIndicator];
-                } failure:^(NSError *error) {
-                    MXStrongifyAndReturnIfNil(self);
-                    [self stopActivityIndicator];
-                    
-                    MXLogDebug(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
-                    //Alert user
-                    [self showError:error];
-                }];
+                // If it's a voice broadcast, delete the selected event and all related events (only if this feature is supported).
+                BOOL supportsRedactionWithRelations = self.mainSession.store.supportedMatrixVersions.supportsRedactionWithRelations || self.mainSession.store.supportedMatrixVersions.supportsRedactionWithRelationsUnstable;
+                if (supportsRedactionWithRelations && selectedEvent.eventType == MXEventTypeCustom && [selectedEvent.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]) {
+                    MXWeakify(self);
+                    [self.roomDataSource.room redactEvent:selectedEvent.eventId withRelations:@[MXEventRelationTypeReference] reason:nil success:^{
+                        MXStrongifyAndReturnIfNil(self);
+                        [self stopActivityIndicator];
+                    } failure:^(NSError *error) {
+                        MXStrongifyAndReturnIfNil(self);
+                        [self stopActivityIndicator];
+                        
+                        MXLogDebug(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
+                        //Alert user
+                        [self showError:error];
+                    }];
+
+                } else {
+                    MXWeakify(self);
+                    [self.roomDataSource.room redactEvent:selectedEvent.eventId reason:nil success:^{
+                        MXStrongifyAndReturnIfNil(self);
+                        [self stopActivityIndicator];
+                    } failure:^(NSError *error) {
+                        MXStrongifyAndReturnIfNil(self);
+                        [self stopActivityIndicator];
+                        
+                        MXLogDebug(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
+                        //Alert user
+                        [self showError:error];
+                    }];
+                }
             }]];
         }
         
