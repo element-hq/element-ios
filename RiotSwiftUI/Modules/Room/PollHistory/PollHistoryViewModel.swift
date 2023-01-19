@@ -14,18 +14,15 @@
 // limitations under the License.
 //
 
+import Combine
 import SwiftUI
 
 typealias PollHistoryViewModelType = StateStoreViewModel<PollHistoryViewState, PollHistoryViewAction>
 
 final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModelProtocol {
     private let pollService: PollHistoryServiceProtocol
-    private var polls: [PollListData] = []
-    private var fetchingTask: Task<Void, Error>? {
-        didSet {
-            oldValue?.cancel()
-        }
-    }
+    private var polls: [TimelinePollDetails] = []
+    private var subcriptions: Set<AnyCancellable> = .init()
     
     var completion: ((PollHistoryViewModelResult) -> Void)?
 
@@ -39,7 +36,8 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
     override func process(viewAction: PollHistoryViewAction) {
         switch viewAction {
         case .viewAppeared:
-            fetchingTask = fetchPolls()
+            setupSubscriptions()
+            pollService.startFetching()
         case .segmentDidChange:
             updatePolls()
         }
@@ -47,29 +45,33 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
 }
 
 private extension PollHistoryViewModel {
-    func fetchPolls() -> Task<Void, Error> {
-        Task {
-            let polls = try await pollService.fetchHistory()
-            
-            guard Task.isCancelled == false else {
-                return
+    func setupSubscriptions() {
+        subcriptions.removeAll()
+        
+        pollService
+            .pollHistory
+            .sink { [weak self] detail in
+                self?.polls.append(detail)
+                self?.updatePolls()
             }
-            
-            await MainActor.run {
-                self.polls = polls
-                updatePolls()
+            .store(in: &subcriptions)
+        
+        pollService
+            .error
+            .sink { detail in
+                #warning("Handle errors")
             }
-        }
+            .store(in: &subcriptions)
     }
     
     func updatePolls() {
-        let renderedPolls: [PollListData]
+        let renderedPolls: [TimelinePollDetails]
         
         switch context.mode {
         case .active:
-            renderedPolls = polls.filter { $0.winningOption == nil }
+            renderedPolls = polls.filter { $0.closed == false }
         case .past:
-            renderedPolls = polls.filter { $0.winningOption != nil }
+            renderedPolls = polls.filter { $0.closed == true }
         }
         
         state.polls = renderedPolls

@@ -14,6 +14,11 @@
 // limitations under the License.
 //
 
+import Combine
+
 protocol PollHistoryServiceProtocol {
-    func fetchHistory() async throws -> [PollListData]
+    var pollHistory: AnyPublisher<TimelinePollDetails, Never> { get }
+    var error: AnyPublisher<Error, Never> { get }
+    
+    func startFetching()
 }

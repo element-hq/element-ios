@@ -20,20 +20,29 @@ import Combine
 
 final class PollHistoryService: PollHistoryServiceProtocol {
     private let room: MXRoom
-    private let livePolls: PassthroughSubject<TimelinePollDetails, Never> = .init()
+    private let pollsSubject: PassthroughSubject<TimelinePollDetails, Never> = .init()
+    private let errorSubject: PassthroughSubject<Error, Never> = .init()
     
     private var listner: Any?
     private var timeline: MXEventTimeline?
     private var pollAggregators: [String: PollAggregator] = [:]
     
+    var pollHistory: AnyPublisher<TimelinePollDetails, Never> {
+        pollsSubject.eraseToAnyPublisher()
+    }
+    
+    var error: AnyPublisher<Error, Never> {
+        errorSubject.eraseToAnyPublisher()
+    }
+    
     init(room: MXRoom) {
         self.room = room
     }
     
-    func fetchHistory() async throws -> [PollListData] {
+    func startFetching() {
         guard timeline == nil else {
             paginate()
-            return []
+            return
         }
         
         room.liveTimeline { [weak self] timeline in
@@ -48,8 +57,6 @@ final class PollHistoryService: PollHistoryServiceProtocol {
             self.setup(timeline: timeline)
             self.paginate()
         }
-        
-        return []
     }
 }
 
@@ -75,6 +82,7 @@ private extension PollHistoryService {
                           onlyFromStore: false) { response in
             switch response {
             case .success:
+                #warning("Go on with pagination...")
                 break
             case .failure(let error):
                 #warning("Handle error")
@@ -103,6 +111,7 @@ extension PollHistoryService: PollAggregatorDelegate {
     }
     
     func pollAggregatorDidEndLoading(_ aggregator: PollAggregator) {
+        pollsSubject.send(.init(poll: aggregator.poll, represent: .started))
     }
     
     func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) {

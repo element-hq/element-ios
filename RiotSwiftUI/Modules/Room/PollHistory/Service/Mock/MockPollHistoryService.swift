@@ -14,31 +14,48 @@
 // limitations under the License.
 //
 
+import Combine
+
 final class MockPollHistoryService: PollHistoryServiceProtocol {
-    var activePollsData: [PollListData] = (1..<10)
+    private let polls: PassthroughSubject<TimelinePollDetails, Never> = .init()
+    
+    var pollHistory: AnyPublisher<TimelinePollDetails, Never> {
+        polls.eraseToAnyPublisher()
+    }
+    
+    var error: AnyPublisher<Error, Never> {
+        Empty().eraseToAnyPublisher()
+    }
+
+    func startFetching() {
+        for poll in activePollsData + pastPollsData {
+            polls.send(poll)
+        }
+    }
+
+    var activePollsData: [TimelinePollDetails] = (1..<10)
         .map { index in
-            PollListData(
-                startDate: .init().addingTimeInterval(-CGFloat(index) * 3600),
-                question: "Do you like the active poll number \(index)?",
-                numberOfVotes: 30,
-                winningOption: nil
-            )
+            TimelinePollDetails(question: "Do you like the active poll number \(index)?",
+                                answerOptions: [],
+                                closed: false,
+                                totalAnswerCount: 30,
+                                type: .disclosed,
+                                eventType: .started,
+                                maxAllowedSelections: 1,
+                                hasBeenEdited: false,
+                                hasDecryptionError: false)
         }
     
-    var pastPollsData: [PollListData] = (1..<10)
+    var pastPollsData: [TimelinePollDetails] = (1..<10)
         .map { index in
-            PollListData(
-                startDate: .init().addingTimeInterval(-CGFloat(index) * 3600),
-                question: "Do you like the past poll number \(index)?",
-                numberOfVotes: 30,
-                winningOption: .init(id: "id", text: "Yes, of course!", count: 20, winner: true, selected: true)
-            )
+            TimelinePollDetails(question: "Do you like the active poll number \(index)?",
+                                answerOptions: [.init(id: "id", text: "Yes, of course!", count: 20, winner: true, selected: true)],
+                                closed: true,
+                                totalAnswerCount: 30,
+                                type: .disclosed,
+                                eventType: .started,
+                                maxAllowedSelections: 1,
+                                hasBeenEdited: false,
+                                hasDecryptionError: false)
         }
-
-    func fetchHistory() async throws -> [PollListData] {
-        (activePollsData + pastPollsData)
-            .sorted { poll1, poll2 in
-                poll1.startDate > poll2.startDate
-            }
-    }
 }

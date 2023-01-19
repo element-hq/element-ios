@@ -37,7 +37,7 @@ struct PollHistoryViewState: BindableState {
     }
     
     var bindings: PollHistoryViewBindings
-    var polls: [PollListData] = []
+    var polls: [TimelinePollDetails] = []
 }
 
 enum PollHistoryViewAction {

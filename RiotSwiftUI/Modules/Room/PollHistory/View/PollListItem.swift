@@ -16,26 +16,20 @@
 
 import SwiftUI
 
-struct PollListData {
-    let startDate: Date
-    let question: String
-    let numberOfVotes: UInt
-    let winningOption: TimelinePollAnswerOption?
-}
-
 struct PollListItem: View {
     @Environment(\.theme) private var theme
     
-    private let pollData: PollListData
+    private let pollData: TimelinePollDetails
     @ScaledMetric private var imageSize = 16
     
-    init(pollData: PollListData) {
+    init(pollData: TimelinePollDetails) {
         self.pollData = pollData
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(pollData.formattedDate)
+            #warning("fix me")
+            Text(DateFormatter.shortDateFormatter.string(from: .init()))
                 .foregroundColor(theme.colors.tertiaryContent)
                 .font(theme.fonts.caption1)
             
@@ -50,10 +44,14 @@ struct PollListItem: View {
                     .lineLimit(2)
                     .accessibilityLabel("PollListItem.title")
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             
-            if pollData.winningOption != nil {
+            if pollData.closed {
                 VStack(alignment: .leading, spacing: 12) {
-                    optionView(winningOption: pollData.winningOption!)
+                    let winningOptions = pollData.answerOptions.filter(\.winner)
+                    ForEach(winningOptions) {
+                        optionView(winningOption: $0)
+                    }
                     resultView
                 }
             }
@@ -67,7 +65,7 @@ struct PollListItem: View {
     private func optionView(winningOption: TimelinePollAnswerOption) -> some View {
         VStack(alignment: .leading, spacing: 12.0) {
             HStack(alignment: .top, spacing: 8.0) {
-                Text(pollData.winningOption!.text)
+                Text(winningOption.text)
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.primaryContent)
                     .accessibilityIdentifier("PollListData.winningOption")
@@ -78,7 +76,7 @@ struct PollListItem: View {
             }
             
             ProgressView(value: Double(winningOption.count),
-                         total: Double(pollData.numberOfVotes))
+                         total: Double(pollData.totalAnswerCount))
                 .progressViewStyle(LinearProgressViewStyle())
                 .scaleEffect(x: 1.0, y: 1.2, anchor: .center)
         }
@@ -102,17 +100,11 @@ struct PollListItem: View {
     }
     
     private var resultView: some View {
-        let text = pollData.numberOfVotes == 1 ? VectorL10n.pollTimelineTotalFinalResultsOneVote : VectorL10n.pollTimelineTotalFinalResults(Int(pollData.numberOfVotes))
+        let text = pollData.totalAnswerCount == 1 ? VectorL10n.pollTimelineTotalFinalResultsOneVote : VectorL10n.pollTimelineTotalFinalResults(Int(pollData.totalAnswerCount))
         
         return Text(text)
             .font(theme.fonts.footnote)
             .foregroundColor(theme.colors.tertiaryContent)
-    }
-}
-
-private extension PollListData {
-    var formattedDate: String {
-        DateFormatter.shortDateFormatter.string(from: startDate)
     }
 }
 
@@ -131,22 +123,45 @@ private extension DateFormatter {
 struct PollListItem_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            let pollData1 = PollListData(
-                startDate: .init(),
-                question: "Do you like polls?",
-                numberOfVotes: 30,
-                winningOption: .init(id: "id", text: "Yes, of course!", count: 18, winner: true, selected: true)
-            )
+            let pollData1 = TimelinePollDetails(question: "Do you like polls?",
+                                                answerOptions: [.init(id: "id", text: "Yes, of course!", count: 18, winner: true, selected: true)],
+                                                closed: true,
+                                                totalAnswerCount: 30,
+                                                type: .disclosed,
+                                                eventType: .started,
+                                                maxAllowedSelections: 1,
+                                                hasBeenEdited: false,
+                                                hasDecryptionError: false)
             
-            PollListItem(pollData: pollData1)
             
-            let pollData2 = PollListData(
-                startDate: .init(),
-                question: "Do you like polls?",
-                numberOfVotes: 30,
-                winningOption: nil)
+            let pollData2 = TimelinePollDetails(question: "Do you like polls?",
+                                                answerOptions: [.init(id: "id", text: "Yes, of course!", count: 18, winner: true, selected: true)],
+                                                closed: false,
+                                                totalAnswerCount: 30,
+                                                type: .disclosed,
+                                                eventType: .started,
+                                                maxAllowedSelections: 1,
+                                                hasBeenEdited: false,
+                                                hasDecryptionError: false)
             
-            PollListItem(pollData: pollData2)
+            let pollData3 = TimelinePollDetails(question: "Do you like polls?",
+                                                answerOptions: [
+                                                    .init(id: "id1", text: "Yes, of course!", count: 15, winner: true, selected: true),
+                                                    .init(id: "id2", text: "No, I don't :-(", count: 15, winner: true, selected: true)
+                                                ],
+                                                closed: true,
+                                                totalAnswerCount: 30,
+                                                type: .disclosed,
+                                                eventType: .started,
+                                                maxAllowedSelections: 1,
+                                                hasBeenEdited: false,
+                                                hasDecryptionError: false)
+            
+            
+            let allPollData = Array([pollData1, pollData2, pollData3].enumerated())
+            ForEach(allPollData, id: \.offset) { _, poll in
+                PollListItem(pollData: poll)
+            }
         }
         .padding()
     }
