@@ -2914,3 +2914,4 @@
 "wysiwyg_composer_format_action_ordered_list" = "Перемкнути на нумерований список";
 "wysiwyg_composer_format_action_unordered_list" = "Перемкнути на маркований список";
 "voice_broadcast_recorder_connection_error" = "Помилка з'єднання - Запис призупинено";
+"poll_timeline_reply_ended_poll" = "Завершене опитування";
