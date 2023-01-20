@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+import Combine
 import Foundation
 import SwiftUI
 
@@ -28,6 +29,7 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     case activeEmpty
     case pastEmpty
     case loading
+    case loadingWithContent
     
     /// The associated screen
     var screenType: Any.Type {
@@ -52,7 +54,10 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
             pollService.pastPollsData = []
         case .loading:
             pollHistoryMode = .active
-            pollService.fetchState = true
+            pollService.isLoadingPublisher = Just(true).eraseToAnyPublisher()
+        case .loadingWithContent:
+            pollHistoryMode = .active
+            pollService.isLoadingPublisher = [false, true].publisher.eraseToAnyPublisher()
         }
         
         let viewModel = PollHistoryViewModel(mode: pollHistoryMode, pollService: pollService)

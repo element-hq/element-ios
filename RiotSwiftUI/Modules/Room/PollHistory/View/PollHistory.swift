@@ -76,8 +76,7 @@ struct PollHistory: View {
     private var loadMoreButton: some View {
         HStack(spacing: 8) {
             if viewModel.viewState.isLoading {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
+                spinner
             }
             
             Button {
@@ -86,6 +85,12 @@ struct PollHistory: View {
                 Text("Load more polls")
             }
         }
+    }
+    
+    @ViewBuilder
+    private var spinner: some View {
+        ProgressView()
+            .progressViewStyle(CircularProgressViewStyle())
     }
     
     @ViewBuilder
@@ -116,8 +121,7 @@ struct PollHistory: View {
     
     private var loadingView: some View {
         HStack(spacing: 8) {
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle())
+            spinner
             
             Text(VectorL10n.pollHistoryLoadingText)
                 .font(theme.fonts.body)

@@ -33,9 +33,9 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
         }
     }
 
-    var fetchState: Bool = false
+    var isLoadingPublisher: AnyPublisher = Just(false).eraseToAnyPublisher()
     var isFetching: AnyPublisher<Bool, Never> {
-        Just(fetchState).eraseToAnyPublisher()
+        isLoadingPublisher
     }
 
     var activePollsData: [TimelinePollDetails] = (1..<10)
