@@ -28,7 +28,7 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
 
     init(mode: PollHistoryMode, pollService: PollHistoryServiceProtocol) {
         self.pollService = pollService
-        super.init(initialViewState: PollHistoryViewState(mode: mode))
+        super.init(initialViewState: PollHistoryViewState(mode: mode, loadingState: .loading(firstLoad: true)))
     }
 
     // MARK: - Public
@@ -37,7 +37,7 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
         switch viewAction {
         case .viewAppeared:
             setupSubscriptions()
-            pollService.startFetching()
+            pollService.next()
         case .segmentDidChange:
             updatePolls()
         }
@@ -60,6 +60,22 @@ private extension PollHistoryViewModel {
             .error
             .sink { detail in
                 #warning("Handle errors")
+            }
+            .store(in: &subcriptions)
+
+        pollService
+            .isFetching
+            .filter { $0 }
+            .first()
+            .sink { isFetching in
+                self.state.loadingState = .loading(firstLoad: true)
+            }
+            .store(in: &subcriptions)
+
+        pollService
+            .isFetching
+            .sink { isFetching in
+                self.state.loadingState = isFetching ? .loading(firstLoad: false) : .idle
             }
             .store(in: &subcriptions)
     }

@@ -2304,6 +2304,7 @@ Tap the + to start adding people.";
 // MARK: - Polls history
 
 "poll_history_title" = "Poll history";
+"poll_history_loading_text" = "Displaying polls";
 "poll_history_active_segment_title" = "Active polls";
 "poll_history_past_segment_title" = "Past polls";
 "poll_history_no_active_poll_text" = "There are no active polls in this room";

@@ -31,8 +31,8 @@ struct PollHistory: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             
-            if viewModel.viewState.polls.isEmpty {
-                noPollsView
+            if viewModel.viewState.loadingState.isLoadingOnLanding {
+                loadingView
             } else {
                 pollListView
             }
@@ -76,7 +76,21 @@ struct PollHistory: View {
             .foregroundColor(theme.colors.secondaryContent)
             .frame(maxHeight: .infinity)
             .padding(.horizontal, 16)
-            .accessibilityLabel("PollHistory.emptyText")
+            .accessibilityIdentifier("PollHistory.emptyText")
+    }
+    
+    private var loadingView: some View {
+        HStack(spacing: 8) {
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle())
+            
+            Text(VectorL10n.pollHistoryLoadingText)
+                .font(theme.fonts.body)
+                .foregroundColor(theme.colors.secondaryContent)
+                .frame(maxHeight: .infinity)
+                .accessibilityIdentifier("PollHistory.loadingText")
+        }
+        .padding(.horizontal, 16)
     }
 }
 

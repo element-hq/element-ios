@@ -17,8 +17,17 @@
 import Combine
 
 protocol PollHistoryServiceProtocol {
+    /// Publishes poll data as soon they are found in the timeline.
+    /// Updates are also published here, so clients needs to address duplicates.
     var pollHistory: AnyPublisher<TimelinePollDetails, Never> { get }
+    
+    /// Publishes whatever errors produced during the sync.
     var error: AnyPublisher<Error, Never> { get }
     
-    func startFetching()
+    /// Ask to fetch the next batch of polls.
+    /// Concrete implementations can decide what a batch is.
+    func next()
+    
+    /// Inform the whenever a new batch of polls starts or ends.
+    var isFetching: AnyPublisher<Bool, Never> { get }
 }

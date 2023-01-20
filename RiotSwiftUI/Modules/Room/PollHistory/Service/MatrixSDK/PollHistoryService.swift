@@ -22,6 +22,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     private let room: MXRoom
     private let pollsSubject: PassthroughSubject<TimelinePollDetails, Never> = .init()
     private let errorSubject: PassthroughSubject<Error, Never> = .init()
+    private let isFetchingSubject: PassthroughSubject<Bool, Never> = .init()
     
     private var listner: Any?
     private var timeline: MXEventTimeline?
@@ -36,12 +37,16 @@ final class PollHistoryService: PollHistoryServiceProtocol {
         errorSubject.eraseToAnyPublisher()
     }
     
+    var isFetching: AnyPublisher<Bool, Never> {
+        isFetchingSubject.eraseToAnyPublisher()
+    }
+    
     init(room: MXRoom) {
         self.room = room
         self.targetTimestamp = Date().addingTimeInterval(-TimeInterval(Constants.daysToSync) * Constants.oneDayInSeconds)
     }
     
-    func startFetching() {
+    func next() {
         guard timeline == nil else {
             paginate()
             return
@@ -81,12 +86,14 @@ private extension PollHistoryService {
             return
         }
         
-        #warning("to be removed probably?")
         timeline.resetPagination()
         
+        isFetchingSubject.send(true)
         timeline.paginate(Constants.pageSize,
                           direction: .backwards,
-                          onlyFromStore: false) { response in
+                          onlyFromStore: false) { [weak self] response in
+            self?.isFetchingSubject.send(false)
+            
             switch response {
             case .success:
                 #warning("Go on with pagination...")

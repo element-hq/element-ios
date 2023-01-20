@@ -27,10 +27,14 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
         Empty().eraseToAnyPublisher()
     }
 
-    func startFetching() {
+    func next() {
         for poll in activePollsData + pastPollsData {
             polls.send(poll)
         }
+    }
+    
+    var isFetching: AnyPublisher<Bool, Never> {
+        Just(false).eraseToAnyPublisher()
     }
 
     var activePollsData: [TimelinePollDetails] = (1..<10)
