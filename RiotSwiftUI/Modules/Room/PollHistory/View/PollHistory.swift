@@ -84,6 +84,7 @@ struct PollHistory: View {
             } label: {
                 Text("Load more polls")
             }
+            .disabled(viewModel.viewState.isLoading)
         }
     }
     

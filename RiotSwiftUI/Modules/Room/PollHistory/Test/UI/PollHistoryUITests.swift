@@ -53,7 +53,7 @@ class PollHistoryUITests: MockScreenTestCase {
     func testPastPollHistoryIsEmpty() {
         app.goToScreenWithIdentifier(MockPollHistoryScreenState.pastEmpty.title)
         let title = app.navigationBars.firstMatch.identifier
-        let emptyText = app.staticTexts["PollHistory.emptyText"]
+        let emptyText = app.staticTexts["PollHistory.emptyLoadMoreText"]
         let items = app.staticTexts["PollListItem.title"]
         let selectedSegment = app.buttons[VectorL10n.pollHistoryPastSegmentTitle]
         let winningOption = app.staticTexts["PollListData.winningOption"]
