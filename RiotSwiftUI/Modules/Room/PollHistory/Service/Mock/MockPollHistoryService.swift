@@ -23,7 +23,7 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
         polls.eraseToAnyPublisher()
     }
     
-    var error: AnyPublisher<Error, Never> {
+    var error: AnyPublisher<PollHistoryError, Never> {
         Empty().eraseToAnyPublisher()
     }
 

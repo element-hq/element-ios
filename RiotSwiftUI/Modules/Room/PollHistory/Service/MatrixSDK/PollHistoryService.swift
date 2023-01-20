@@ -22,7 +22,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     private let room: MXRoom
     private let chunkSizeInDays: UInt
     private let pollsSubject: PassthroughSubject<TimelinePollDetails, Never> = .init()
-    private let errorSubject: PassthroughSubject<Error, Never> = .init()
+    private let errorSubject: PassthroughSubject<PollHistoryError, Never> = .init()
     private let isFetchingSubject: PassthroughSubject<Bool, Never> = .init()
     
     private var listner: Any?
@@ -35,7 +35,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
         pollsSubject.eraseToAnyPublisher()
     }
     
-    var error: AnyPublisher<Error, Never> {
+    var error: AnyPublisher<PollHistoryError, Never> {
         errorSubject.eraseToAnyPublisher()
     }
     
@@ -60,7 +60,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
                 let self = self,
                 let timeline = timeline
             else {
-                #warning("Handle error")
+                self?.errorSubject.send(.timelineUnavailable)
                 return
             }
             
@@ -122,7 +122,7 @@ private extension PollHistoryService {
                     self.isFetchingSubject.send(false)
                 }
             case .failure(let error):
-                #warning("Handle error")
+                self.errorSubject.send(.paginationFailed(error))
                 self.isFetchingSubject.send(false)
             }
         }
@@ -155,7 +155,7 @@ extension PollHistoryService: PollAggregatorDelegate {
     }
     
     func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) {
-        #warning("Handle error")
+        errorSubject.send(.pollAggregationFailed(didFailWithError))
     }
     
     func pollAggregatorDidUpdateData(_ aggregator: PollAggregator) {

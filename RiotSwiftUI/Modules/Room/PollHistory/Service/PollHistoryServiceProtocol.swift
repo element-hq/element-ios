@@ -22,12 +22,18 @@ protocol PollHistoryServiceProtocol {
     var pollHistory: AnyPublisher<TimelinePollDetails, Never> { get }
     
     /// Publishes whatever errors produced during the sync.
-    var error: AnyPublisher<Error, Never> { get }
+    var error: AnyPublisher<PollHistoryError, Never> { get }
     
     /// Ask to fetch the next batch of polls.
     /// Concrete implementations can decide what a batch is.
     func next()
     
-    /// Inform the whenever a new batch of polls starts or ends.
+    /// Inform whenever the fetch of a new batch of polls starts or ends.
     var isFetching: AnyPublisher<Bool, Never> { get }
+}
+
+enum PollHistoryError: Error {
+    case paginationFailed(Error)
+    case timelineUnavailable
+    case pollAggregationFailed(Error)
 }
