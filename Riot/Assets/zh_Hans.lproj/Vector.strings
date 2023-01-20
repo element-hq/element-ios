@@ -196,7 +196,7 @@
 "room_event_action_copy" = "复制";
 "room_event_action_quote" = "引用";
 "room_event_action_redact" = "移除";
-"room_event_action_more" = "移动";
+"room_event_action_more" = "更多";
 "room_event_action_share" = "分享";
 "room_event_action_permalink" = "复制消息的链接";
 "room_event_action_view_source" = "查看源数据";
@@ -2272,3 +2272,6 @@
 "authentication_qr_login_display_step2" = "选择“以二维码登入”";
 "authentication_qr_login_display_step1" = "在您的其它设备中打开Element";
 "onboarding_splash_page_4_title_no_pun" = "为您的团队发送消息。";
+"user_session_learn_more" = "了解更多";
+"manage_session_name_info_link" = "了解更多";
+"threads_beta_information_link" = "了解更多";
