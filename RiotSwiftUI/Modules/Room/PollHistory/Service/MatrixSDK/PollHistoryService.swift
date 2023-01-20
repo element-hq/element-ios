@@ -26,6 +26,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     private var listner: Any?
     private var timeline: MXEventTimeline?
     private var pollAggregators: [String: PollAggregator] = [:]
+    private var targetTimestamp: Date
     
     var pollHistory: AnyPublisher<TimelinePollDetails, Never> {
         pollsSubject.eraseToAnyPublisher()
@@ -37,6 +38,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     
     init(room: MXRoom) {
         self.room = room
+        self.targetTimestamp = Date().addingTimeInterval(-TimeInterval(Constants.daysToSync) * Constants.oneDayInSeconds)
     }
     
     func startFetching() {
@@ -63,6 +65,8 @@ final class PollHistoryService: PollHistoryServiceProtocol {
 private extension PollHistoryService {
     enum Constants {
         static let pageSize: UInt = 250
+        static let daysToSync: UInt = 30
+        static let oneDayInSeconds: TimeInterval = 8.6 * 10e3
     }
     
     func setup(timeline: MXEventTimeline) {
