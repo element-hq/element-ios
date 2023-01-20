@@ -14,12 +14,13 @@
 // limitations under the License.
 //
 
-import MatrixSDK
-import Foundation
 import Combine
+import Foundation
+import MatrixSDK
 
 final class PollHistoryService: PollHistoryServiceProtocol {
     private let room: MXRoom
+    private let chunkSizeInDays: UInt
     private let pollsSubject: PassthroughSubject<TimelinePollDetails, Never> = .init()
     private let errorSubject: PassthroughSubject<Error, Never> = .init()
     private let isFetchingSubject: PassthroughSubject<Bool, Never> = .init()
@@ -42,9 +43,10 @@ final class PollHistoryService: PollHistoryServiceProtocol {
         isFetchingSubject.eraseToAnyPublisher()
     }
     
-    init(room: MXRoom) {
+    init(room: MXRoom, chunkSizeInDays: UInt) {
         self.room = room
-        self.targetTimestamp = Date().addingTimeInterval(-TimeInterval(Constants.daysToSync) * Constants.oneDayInSeconds)
+        self.chunkSizeInDays = chunkSizeInDays
+        targetTimestamp = Date().addingTimeInterval(-TimeInterval(chunkSizeInDays) * Constants.oneDayInSeconds)
     }
     
     func next() {
@@ -71,14 +73,13 @@ final class PollHistoryService: PollHistoryServiceProtocol {
 private extension PollHistoryService {
     enum Constants {
         static let pageSize: UInt = 250
-        static let daysToSync: UInt = 30
         static let oneDayInSeconds: TimeInterval = 8.6 * 10e3
     }
     
     func setup(timeline: MXEventTimeline) {
         self.timeline = timeline
         
-        listner = timeline.listenToEvents([MXEventType.pollStart, MXEventType.roomMessage, MXEventType.roomEncrypted]) { [weak self] event, direction, roomState in
+        listner = timeline.listenToEvents([MXEventType.pollStart, MXEventType.roomMessage, MXEventType.roomEncrypted]) { [weak self] event, _, _ in
             if event.eventType == .pollStart {
                 self?.aggregatePoll(pollStartEvent: event)
             }
@@ -95,7 +96,7 @@ private extension PollHistoryService {
     func startPagination() {
         isFetchingSubject.send(true)
         
-        guard let timeline = timeline else  {
+        guard let timeline = timeline else {
             isFetchingSubject.send(false)
             return
         }
@@ -123,7 +124,6 @@ private extension PollHistoryService {
             case .failure(let error):
                 #warning("Handle error")
                 self.isFetchingSubject.send(false)
-                break
             }
         }
     }

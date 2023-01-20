@@ -31,13 +31,7 @@ struct PollHistory: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             
-            if viewModel.viewState.polls == nil {
-                loadingView
-            } else if viewModel.viewState.polls?.isEmpty == true {
-                noPollsView
-            } else {
-                pollListView
-            }
+            content
         }
         .padding(.top, 32)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -52,6 +46,17 @@ struct PollHistory: View {
         }
     }
     
+    @ViewBuilder
+    private var content: some View {
+        if viewModel.viewState.polls == nil {
+            loadingView
+        } else if viewModel.viewState.polls?.isEmpty == true {
+            noPollsView
+        } else {
+            pollListView
+        }
+    }
+    
     private var pollListView: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
@@ -59,8 +64,9 @@ struct PollHistory: View {
                     PollListItem(pollData: pollData)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-        
+
                 loadMoreButton
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.top, 32)
             .padding(.horizontal, 16)
@@ -80,16 +86,32 @@ struct PollHistory: View {
                 Text("Load more polls")
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
     
+    @ViewBuilder
     private var noPollsView: some View {
-        Text(viewModel.mode == .active ? VectorL10n.pollHistoryNoActivePollText : VectorL10n.pollHistoryNoPastPollText)
-            .font(theme.fonts.body)
-            .foregroundColor(theme.colors.secondaryContent)
+        if viewModel.viewState.canLoadMoreContent {
+            let days = PollHistoryConstants.chunkSizeInDays
+            
+            VStack(spacing: 32) {
+                Text(viewModel.mode == .active ? VectorL10n.pollHistoryNoActivePollPeriodText("\(days)") : VectorL10n.pollHistoryNoPastPollPeriodText("\(days)"))
+                    .font(theme.fonts.body)
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 16)
+                    .accessibilityIdentifier("PollHistory.emptyLoadMoreText")
+    
+                loadMoreButton
+            }
             .frame(maxHeight: .infinity)
-            .padding(.horizontal, 16)
-            .accessibilityIdentifier("PollHistory.emptyText")
+        } else {
+            Text(viewModel.mode == .active ? VectorL10n.pollHistoryNoActivePollText : VectorL10n.pollHistoryNoPastPollText)
+                .font(theme.fonts.body)
+                .foregroundColor(theme.colors.secondaryContent)
+                .frame(maxHeight: .infinity)
+                .padding(.horizontal, 16)
+                .accessibilityIdentifier("PollHistory.emptyText")
+        }
     }
     
     private var loadingView: some View {

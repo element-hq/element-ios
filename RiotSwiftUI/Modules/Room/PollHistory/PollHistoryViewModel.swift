@@ -23,7 +23,7 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
     private let pollService: PollHistoryServiceProtocol
     private var polls: [TimelinePollDetails] = []
     private var subcriptions: Set<AnyCancellable> = .init()
-    private var hasLoadedFirstGroup: Bool = false
+    private var hasLoadedFirstGroup = false
     
     var completion: ((PollHistoryViewModelResult) -> Void)?
 
@@ -87,6 +87,7 @@ private extension PollHistoryViewModel {
             polls[matchIndex] = poll
         } else {
             polls.append(poll)
+            polls.sort(by: { $0.startDate > $1.startDate })
         }
     }
     

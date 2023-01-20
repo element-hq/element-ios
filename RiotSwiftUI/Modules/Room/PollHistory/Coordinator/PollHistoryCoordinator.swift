@@ -33,7 +33,7 @@ final class PollHistoryCoordinator: Coordinator, Presentable {
     
     init(parameters: PollHistoryCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = PollHistoryViewModel(mode: parameters.mode, pollService: PollHistoryService(room: parameters.room) )
+        let viewModel = PollHistoryViewModel(mode: parameters.mode, pollService: PollHistoryService(room: parameters.room, chunkSizeInDays: PollHistoryConstants.chunkSizeInDays))
         let view = PollHistory(viewModel: viewModel.context)
         pollHistoryViewModel = viewModel
         pollHistoryHostingController = VectorHostingController(rootView: view)
