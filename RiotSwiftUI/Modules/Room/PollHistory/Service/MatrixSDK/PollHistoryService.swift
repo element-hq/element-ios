@@ -28,6 +28,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     private var timeline: MXEventTimeline?
     private var pollAggregators: [String: PollAggregator] = [:]
     private var targetTimestamp: Date
+    private var oldestEventDate: Date = .distantFuture
     
     var pollHistory: AnyPublisher<TimelinePollDetails, Never> {
         pollsSubject.eraseToAnyPublisher()
@@ -48,7 +49,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     
     func next() {
         guard timeline == nil else {
-            paginate()
+            startPagination()
             return
         }
         
@@ -62,7 +63,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
             }
             
             self.setup(timeline: timeline)
-            self.paginate()
+            self.startPagination()
         }
     }
 }
@@ -76,30 +77,52 @@ private extension PollHistoryService {
     
     func setup(timeline: MXEventTimeline) {
         self.timeline = timeline
-        listner = timeline.listenToEvents([MXEventType.pollStart]) { [weak self] event, direction, roomState in
-            self?.aggregatePoll(pollStartEvent: event)
+        
+        listner = timeline.listenToEvents([MXEventType.pollStart, MXEventType.roomMessage, MXEventType.roomEncrypted]) { [weak self] event, direction, roomState in
+            if event.eventType == .pollStart {
+                self?.aggregatePoll(pollStartEvent: event)
+            }
+           
+            self?.updateTimestamp(event: event)
         }
     }
     
-    func paginate() {
+    func updateTimestamp(event: MXEvent) {
+        let eventDate = Date(timeIntervalSince1970: Double(event.originServerTs) / 1000)
+        oldestEventDate = min(eventDate, oldestEventDate)
+    }
+    
+    func startPagination() {
+        isFetchingSubject.send(true)
+        
         guard let timeline = timeline else  {
+            isFetchingSubject.send(false)
             return
         }
         
         timeline.resetPagination()
-        
-        isFetchingSubject.send(true)
+        paginate(timeline: timeline)
+    }
+    
+    func paginate(timeline: MXEventTimeline) {
         timeline.paginate(Constants.pageSize,
                           direction: .backwards,
                           onlyFromStore: false) { [weak self] response in
-            self?.isFetchingSubject.send(false)
+            
+            guard let self = self else {
+                return
+            }
             
             switch response {
             case .success:
-                #warning("Go on with pagination...")
-                break
+                if timeline.canPaginate(.backwards), self.timestampTargetReached == false {
+                    self.paginate(timeline: timeline)
+                } else {
+                    self.isFetchingSubject.send(false)
+                }
             case .failure(let error):
                 #warning("Handle error")
+                self.isFetchingSubject.send(false)
                 break
             }
         }
@@ -115,6 +138,10 @@ private extension PollHistoryService {
         }
         
         pollAggregators[pollStartEvent.eventId] = aggregator
+    }
+    
+    var timestampTargetReached: Bool {
+        oldestEventDate <= targetTimestamp
     }
 }
 
