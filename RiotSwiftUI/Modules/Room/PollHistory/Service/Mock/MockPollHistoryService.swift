@@ -32,9 +32,10 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
             polls.send(poll)
         }
     }
-    
+
+    var fetchState: Bool = false
     var isFetching: AnyPublisher<Bool, Never> {
-        Just(false).eraseToAnyPublisher()
+        Just(fetchState).eraseToAnyPublisher()
     }
 
     var activePollsData: [TimelinePollDetails] = (1..<10)

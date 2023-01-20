@@ -27,6 +27,7 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     case past
     case activeEmpty
     case pastEmpty
+    case loading
     
     /// The associated screen
     var screenType: Any.Type {
@@ -49,6 +50,9 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
         case .pastEmpty:
             pollHistoryMode = .past
             pollService.pastPollsData = []
+        case .loading:
+            pollHistoryMode = .active
+            pollService.fetchState = true
         }
         
         let viewModel = PollHistoryViewModel(mode: pollHistoryMode, pollService: pollService)

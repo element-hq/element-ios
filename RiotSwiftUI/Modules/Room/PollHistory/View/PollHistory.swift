@@ -33,6 +33,8 @@ struct PollHistory: View {
             
             if viewModel.viewState.loadingState.isLoadingOnLanding {
                 loadingView
+            } else if viewModel.viewState.loadingState.isLoading == false, viewModel.viewState.polls.isEmpty {
+                noPollsView
             } else {
                 pollListView
             }
@@ -57,17 +59,28 @@ struct PollHistory: View {
                     PollListItem(pollData: pollData)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                
-                Button {
-                    #warning("handle action")
-                } label: {
-                    Text("Load more polls")
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
+        
+                loadMoreButton
             }
             .padding(.top, 32)
             .padding(.horizontal, 16)
         }
+    }
+    
+    private var loadMoreButton: some View {
+        HStack(spacing: 8) {
+            if viewModel.viewState.loadingState.isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+            }
+            
+            Button {
+                #warning("handle action")
+            } label: {
+                Text("Load more polls")
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     private var noPollsView: some View {

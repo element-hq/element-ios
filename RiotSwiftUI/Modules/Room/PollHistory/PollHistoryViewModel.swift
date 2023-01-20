@@ -65,15 +65,15 @@ private extension PollHistoryViewModel {
 
         pollService
             .isFetching
-            .filter { $0 }
             .first()
             .sink { isFetching in
-                self.state.loadingState = .loading(firstLoad: true)
+                self.state.loadingState = isFetching ? .loading(firstLoad: true) : .idle
             }
             .store(in: &subcriptions)
 
         pollService
             .isFetching
+            .dropFirst()
             .sink { isFetching in
                 self.state.loadingState = isFetching ? .loading(firstLoad: false) : .idle
             }
