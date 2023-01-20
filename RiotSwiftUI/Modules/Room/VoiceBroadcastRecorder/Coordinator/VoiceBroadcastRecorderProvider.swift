@@ -32,6 +32,9 @@ import Foundation
                 coordinatorsForEventIdentifiers.removeAll()
             }
         }
+        didSet {
+            sessionState = session?.state
+        }
     }
     private var coordinatorsForEventIdentifiers = [String: VoiceBroadcastRecorderCoordinator]() {
         didSet {
@@ -49,9 +52,19 @@ import Foundation
     
     // MARK: Private
     private var currentEventIdentifier: String?
+    private var sessionState: MXSessionState?
+    
+    private var sessionStateDidChangeObserver: Any?
     
     // MARK: - Setup
-    private override init() { }
+    private override init() {
+        super.init()
+        self.registerNotificationObservers()
+    }
+    
+    deinit {
+        unregisterNotificationObservers()
+    }
     
     // MARK: - Public
     
@@ -119,6 +132,38 @@ import Foundation
         
         coordinator?.toPresentable().dismiss(animated: false) {
             coordinator = nil
+        }
+    }
+    
+    // MARK: - Notification handling
+    
+    private func registerNotificationObservers() {
+        self.sessionStateDidChangeObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name.mxSessionStateDidChange, object: session, queue: nil) { [weak self] notification in
+            guard let self else { return }
+            guard let concernedSession = notification.object as? MXSession, self.session === concernedSession  else { return }
+            
+            self.update(sessionState: concernedSession.state)
+        }
+    }
+    
+    private func unregisterNotificationObservers() {
+        if let observer = self.sessionStateDidChangeObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+    
+    // MARK: - Session state
+    private func update(sessionState: MXSessionState) {
+        let oldState = self.sessionState
+        self.sessionState = sessionState
+        
+        switch (oldState, sessionState) {
+        case (_, .homeserverNotReachable):
+            pauseRecordingOnError()
+        case (_, .running):
+            pauseRecording()
+        default:
+            break
         }
     }
 }
