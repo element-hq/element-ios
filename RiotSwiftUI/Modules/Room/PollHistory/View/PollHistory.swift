@@ -31,9 +31,9 @@ struct PollHistory: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             
-            if viewModel.viewState.loadingState.isLoadingOnLanding {
+            if viewModel.viewState.polls == nil {
                 loadingView
-            } else if viewModel.viewState.loadingState.isLoading == false, viewModel.viewState.polls.isEmpty {
+            } else if viewModel.viewState.polls?.isEmpty == true {
                 noPollsView
             } else {
                 pollListView
@@ -55,7 +55,7 @@ struct PollHistory: View {
     private var pollListView: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
-                ForEach(viewModel.viewState.polls) { pollData in
+                ForEach(viewModel.viewState.polls ?? []) { pollData in
                     PollListItem(pollData: pollData)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -69,7 +69,7 @@ struct PollHistory: View {
     
     private var loadMoreButton: some View {
         HStack(spacing: 8) {
-            if viewModel.viewState.loadingState.isLoading {
+            if viewModel.viewState.isLoading {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
             }

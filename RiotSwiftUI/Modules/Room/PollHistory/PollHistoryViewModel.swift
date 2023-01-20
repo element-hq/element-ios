@@ -23,12 +23,13 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
     private let pollService: PollHistoryServiceProtocol
     private var polls: [TimelinePollDetails] = []
     private var subcriptions: Set<AnyCancellable> = .init()
+    private var hasLoadedFirstGroup: Bool = false
     
     var completion: ((PollHistoryViewModelResult) -> Void)?
 
     init(mode: PollHistoryMode, pollService: PollHistoryServiceProtocol) {
         self.pollService = pollService
-        super.init(initialViewState: PollHistoryViewState(mode: mode, loadingState: .loading(firstLoad: true)))
+        super.init(initialViewState: PollHistoryViewState(mode: mode))
     }
 
     // MARK: - Public
@@ -39,7 +40,7 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
             setupSubscriptions()
             pollService.next()
         case .segmentDidChange:
-            updateState()
+            updateViewState()
         }
     }
 }
@@ -52,7 +53,7 @@ private extension PollHistoryViewModel {
             .pollHistory
             .sink { [weak self] detail in
                 self?.updatePolls(with: detail)
-                self?.updateState()
+                self?.updateViewState()
             }
             .store(in: &subcriptions)
         
@@ -63,20 +64,21 @@ private extension PollHistoryViewModel {
             }
             .store(in: &subcriptions)
 
-        pollService
+        let didCompleteFirstFetch = pollService
             .isFetching
+            .filter { $0 == false }
             .first()
+
+        didCompleteFirstFetch
             .sink { isFetching in
-                self.state.loadingState = isFetching ? .loading(firstLoad: true) : .idle
+                self.hasLoadedFirstGroup = true
+                self.updateViewState()
             }
             .store(in: &subcriptions)
 
         pollService
             .isFetching
-            .dropFirst()
-            .sink { isFetching in
-                self.state.loadingState = isFetching ? .loading(firstLoad: false) : .idle
-            }
+            .weakAssign(to: \.state.isLoading, on: self)
             .store(in: &subcriptions)
     }
     
@@ -88,7 +90,11 @@ private extension PollHistoryViewModel {
         }
     }
     
-    func updateState() {
+    func updateViewState() {
+        guard hasLoadedFirstGroup else {
+            return
+        }
+        
         let renderedPolls: [TimelinePollDetails]
         
         switch context.mode {

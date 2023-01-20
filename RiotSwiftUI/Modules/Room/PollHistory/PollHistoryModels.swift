@@ -27,44 +27,18 @@ enum PollHistoryMode: CaseIterable {
     case past
 }
 
-enum PollHistoryLoadingState {
-    case idle
-    case loading(firstLoad: Bool)
-}
-
-extension PollHistoryLoadingState {
-    var isLoadingOnLanding: Bool {
-        switch self {
-        case .idle:
-            return false
-        case .loading(let firstLoad):
-            return firstLoad
-        }
-    }
-    
-    var isLoading: Bool {
-        switch self {
-        case .idle:
-            return false
-        case .loading:
-            return true
-        }
-    }
-}
-
 struct PollHistoryViewBindings {
     var mode: PollHistoryMode
 }
 
 struct PollHistoryViewState: BindableState {
-    init(mode: PollHistoryMode, loadingState: PollHistoryLoadingState) {
+    init(mode: PollHistoryMode) {
         bindings = .init(mode: mode)
-        self.loadingState = loadingState
     }
     
     var bindings: PollHistoryViewBindings
-    var loadingState: PollHistoryLoadingState
-    var polls: [TimelinePollDetails] = []
+    var isLoading = false
+    var polls: [TimelinePollDetails]?
 }
 
 enum PollHistoryViewAction {
