@@ -58,7 +58,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
 
 private extension PollHistoryService {
     enum Constants {
-        static let pageSize: UInt = 250
+        static let pageSize: UInt = 500
         static let oneDayInSeconds: TimeInterval = 8.6 * 10e3
     }
     
