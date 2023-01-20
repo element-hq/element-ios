@@ -148,17 +148,17 @@ private extension PollHistoryService {
 // MARK: - PollAggregatorDelegate
 
 extension PollHistoryService: PollAggregatorDelegate {
-    func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) {
-    }
+    func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) {}
     
     func pollAggregatorDidEndLoading(_ aggregator: PollAggregator) {
         pollsSubject.send(.init(poll: aggregator.poll, represent: .started))
     }
     
     func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) {
+        #warning("Handle error")
     }
     
     func pollAggregatorDidUpdateData(_ aggregator: PollAggregator) {
-        
+        pollsSubject.send(.init(poll: aggregator.poll, represent: .started))
     }
 }

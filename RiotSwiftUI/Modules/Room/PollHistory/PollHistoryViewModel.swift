@@ -39,7 +39,7 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
             setupSubscriptions()
             pollService.next()
         case .segmentDidChange:
-            updatePolls()
+            updateState()
         }
     }
 }
@@ -51,8 +51,8 @@ private extension PollHistoryViewModel {
         pollService
             .pollHistory
             .sink { [weak self] detail in
-                self?.polls.append(detail)
-                self?.updatePolls()
+                self?.updatePolls(with: detail)
+                self?.updateState()
             }
             .store(in: &subcriptions)
         
@@ -80,7 +80,15 @@ private extension PollHistoryViewModel {
             .store(in: &subcriptions)
     }
     
-    func updatePolls() {
+    func updatePolls(with poll: TimelinePollDetails) {
+        if let matchIndex = polls.firstIndex(where: { $0.id == poll.id }) {
+            polls[matchIndex] = poll
+        } else {
+            polls.append(poll)
+        }
+    }
+    
+    func updateState() {
         let renderedPolls: [TimelinePollDetails]
         
         switch context.mode {
