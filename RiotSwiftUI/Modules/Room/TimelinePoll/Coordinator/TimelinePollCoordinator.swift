@@ -133,7 +133,8 @@ extension TimelinePollDetails {
                                      selected: pollAnswerOption.isCurrentUserSelection)
         }
         
-        self.init(question: poll.text,
+        self.init(id: poll.id,
+                  question: poll.text,
                   answerOptions: answerOptions,
                   closed: poll.isClosed,
                   startDate: poll.startDate,

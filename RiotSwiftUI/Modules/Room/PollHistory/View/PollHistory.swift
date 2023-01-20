@@ -53,9 +53,7 @@ struct PollHistory: View {
     private var pollListView: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
-                let enumeratedPolls = Array(viewModel.viewState.polls.enumerated())
-                
-                ForEach(enumeratedPolls, id: \.offset) { _, pollData in
+                ForEach(viewModel.viewState.polls) { pollData in
                     PollListItem(pollData: pollData)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

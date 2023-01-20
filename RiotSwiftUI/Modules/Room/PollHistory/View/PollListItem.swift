@@ -122,7 +122,8 @@ private extension DateFormatter {
 struct PollListItem_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            let pollData1 = TimelinePollDetails(question: "Do you like polls?",
+            let pollData1 = TimelinePollDetails(id: UUID().uuidString,
+                                                question: "Do you like polls?",
                                                 answerOptions: [.init(id: "id", text: "Yes, of course!", count: 18, winner: true, selected: true)],
                                                 closed: true,
                                                 startDate: .init(),
@@ -134,7 +135,8 @@ struct PollListItem_Previews: PreviewProvider {
                                                 hasDecryptionError: false)
             
             
-            let pollData2 = TimelinePollDetails(question: "Do you like polls?",
+            let pollData2 = TimelinePollDetails(id: UUID().uuidString,
+                                                question: "Do you like polls?",
                                                 answerOptions: [.init(id: "id", text: "Yes, of course!", count: 18, winner: true, selected: true)],
                                                 closed: false,
                                                 startDate: .init(),
@@ -145,7 +147,8 @@ struct PollListItem_Previews: PreviewProvider {
                                                 hasBeenEdited: false,
                                                 hasDecryptionError: false)
             
-            let pollData3 = TimelinePollDetails(question: "Do you like polls?",
+            let pollData3 = TimelinePollDetails(id: UUID().uuidString,
+                                                question: "Do you like polls?",
                                                 answerOptions: [
                                                     .init(id: "id1", text: "Yes, of course!", count: 15, winner: true, selected: true),
                                                     .init(id: "id2", text: "No, I don't :-(", count: 15, winner: true, selected: true)
@@ -158,10 +161,8 @@ struct PollListItem_Previews: PreviewProvider {
                                                 maxAllowedSelections: 1,
                                                 hasBeenEdited: false,
                                                 hasDecryptionError: false)
-            
-            
-            let allPollData = Array([pollData1, pollData2, pollData3].enumerated())
-            ForEach(allPollData, id: \.offset) { _, poll in
+
+            ForEach([pollData1, pollData2, pollData3]) { poll in
                 PollListItem(pollData: poll)
             }
         }

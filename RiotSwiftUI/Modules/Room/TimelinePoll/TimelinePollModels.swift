@@ -62,6 +62,7 @@ extension MutableCollection where Element == TimelinePollAnswerOption {
 }
 
 struct TimelinePollDetails {
+    var id: String
     var question: String
     var answerOptions: [TimelinePollAnswerOption]
     var closed: Bool
@@ -73,7 +74,8 @@ struct TimelinePollDetails {
     var hasBeenEdited = true
     var hasDecryptionError: Bool
     
-    init(question: String,
+    init(id: String,
+         question: String,
          answerOptions: [TimelinePollAnswerOption],
          closed: Bool,
          startDate: Date,
@@ -83,6 +85,7 @@ struct TimelinePollDetails {
          maxAllowedSelections: UInt,
          hasBeenEdited: Bool,
          hasDecryptionError: Bool) {
+        self.id = id
         self.question = question
         self.answerOptions = answerOptions
         self.closed = closed
@@ -96,7 +99,7 @@ struct TimelinePollDetails {
     }
     
     var hasCurrentUserVoted: Bool {
-        answerOptions.filter { $0.selected == true }.count > 0
+        answerOptions.contains(where: \.selected)
     }
     
     var shouldDiscloseResults: Bool {
@@ -111,6 +114,8 @@ struct TimelinePollDetails {
         eventType == .ended
     }
 }
+
+extension TimelinePollDetails: Identifiable { }
 
 struct TimelinePollViewState: BindableState {
     var poll: TimelinePollDetails

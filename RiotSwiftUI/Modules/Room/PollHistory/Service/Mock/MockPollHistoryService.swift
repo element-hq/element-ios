@@ -35,7 +35,8 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
 
     var activePollsData: [TimelinePollDetails] = (1..<10)
         .map { index in
-            TimelinePollDetails(question: "Do you like the active poll number \(index)?",
+            TimelinePollDetails(id: "a\(index)",
+                                question: "Do you like the active poll number \(index)?",
                                 answerOptions: [],
                                 closed: false,
                                 startDate: .init(),
@@ -49,7 +50,8 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
     
     var pastPollsData: [TimelinePollDetails] = (1..<10)
         .map { index in
-            TimelinePollDetails(question: "Do you like the active poll number \(index)?",
+            TimelinePollDetails(id: "p\(index)",
+                                question: "Do you like the active poll number \(index)?",
                                 answerOptions: [.init(id: "id", text: "Yes, of course!", count: 20, winner: true, selected: true)],
                                 closed: true,
                                 startDate: .init(),

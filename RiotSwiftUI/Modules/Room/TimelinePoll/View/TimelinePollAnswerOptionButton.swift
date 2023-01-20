@@ -146,7 +146,8 @@ struct TimelinePollAnswerOptionButton_Previews: PreviewProvider {
     }
     
     static func buildPoll(closed: Bool, type: TimelinePollType) -> TimelinePollDetails {
-        TimelinePollDetails(question: "",
+        TimelinePollDetails(id: UUID().uuidString,
+                            question: "",
                             answerOptions: [],
                             closed: closed,
                             startDate: .init(),
