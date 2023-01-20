@@ -26,7 +26,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     private let errorSubject: PassthroughSubject<PollHistoryError, Never> = .init()
     private let isFetchingSubject: PassthroughSubject<Bool, Never> = .init()
     
-    private var listner: Any?
+    private var timelineListener: Any?
     private var pollAggregators: [String: PollAggregator] = [:]
     private var targetTimestamp: Date
     private var oldestEventDate: Date = .distantFuture
@@ -63,18 +63,17 @@ private extension PollHistoryService {
     }
     
     func setup(timeline: MXEventTimeline) {
-        listner = timeline.listenToEvents([MXEventType.pollStart, MXEventType.roomMessage, MXEventType.roomEncrypted]) { [weak self] event, _, _ in
+        timelineListener = timeline.listenToEvents { [weak self] event, _, _ in
+            guard let self = self else {
+                return
+            }
+            
             if event.eventType == .pollStart {
-                self?.aggregatePoll(pollStartEvent: event)
+                self.aggregatePoll(pollStartEvent: event)
             }
            
-            self?.updateTimestamp(event: event)
+            self.oldestEventDate = min(event.originServerDate, self.oldestEventDate)
         }
-    }
-    
-    func updateTimestamp(event: MXEvent) {
-        let eventDate = Date(timeIntervalSince1970: Double(event.originServerTs) / 1000)
-        oldestEventDate = min(eventDate, oldestEventDate)
     }
     
     func startPagination() {
@@ -84,10 +83,7 @@ private extension PollHistoryService {
     }
     
     func paginate(timeline: MXEventTimeline) {
-        timeline.paginate(Constants.pageSize,
-                          direction: .backwards,
-                          onlyFromStore: false) { [weak self] response in
-            
+        timeline.paginate(Constants.pageSize, direction: .backwards, onlyFromStore: false) { [weak self] response in
             guard let self = self else {
                 return
             }
@@ -120,6 +116,12 @@ private extension PollHistoryService {
     
     var timestampTargetReached: Bool {
         oldestEventDate <= targetTimestamp
+    }
+}
+
+private extension MXEvent {
+    var originServerDate: Date {
+        .init(timeIntervalSince1970: Double(originServerTs) / 1000)
     }
 }
 
