@@ -34,6 +34,5 @@ protocol PollHistoryServiceProtocol {
 
 enum PollHistoryError: Error {
     case paginationFailed(Error)
-    case timelineUnavailable
     case pollAggregationFailed(Error)
 }

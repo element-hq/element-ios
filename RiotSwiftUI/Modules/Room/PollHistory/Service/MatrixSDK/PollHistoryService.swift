@@ -20,13 +20,13 @@ import MatrixSDK
 
 final class PollHistoryService: PollHistoryServiceProtocol {
     private let room: MXRoom
+    private let timeline: MXEventTimeline
     private let chunkSizeInDays: UInt
     private let pollsSubject: PassthroughSubject<TimelinePollDetails, Never> = .init()
     private let errorSubject: PassthroughSubject<PollHistoryError, Never> = .init()
     private let isFetchingSubject: PassthroughSubject<Bool, Never> = .init()
     
     private var listner: Any?
-    private var timeline: MXEventTimeline?
     private var pollAggregators: [String: PollAggregator] = [:]
     private var targetTimestamp: Date
     private var oldestEventDate: Date = .distantFuture
@@ -46,27 +46,13 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     init(room: MXRoom, chunkSizeInDays: UInt) {
         self.room = room
         self.chunkSizeInDays = chunkSizeInDays
+        self.timeline = MXRoomEventTimeline(room: room, andInitialEventId: nil)
         targetTimestamp = Date().addingTimeInterval(-TimeInterval(chunkSizeInDays) * Constants.oneDayInSeconds)
+        setup(timeline: timeline)
     }
     
     func next() {
-        guard timeline == nil else {
-            startPagination()
-            return
-        }
-        
-        room.liveTimeline { [weak self] timeline in
-            guard
-                let self = self,
-                let timeline = timeline
-            else {
-                self?.errorSubject.send(.timelineUnavailable)
-                return
-            }
-            
-            self.setup(timeline: timeline)
-            self.startPagination()
-        }
+        startPagination()
     }
 }
 
@@ -77,8 +63,6 @@ private extension PollHistoryService {
     }
     
     func setup(timeline: MXEventTimeline) {
-        self.timeline = timeline
-        
         listner = timeline.listenToEvents([MXEventType.pollStart, MXEventType.roomMessage, MXEventType.roomEncrypted]) { [weak self] event, _, _ in
             if event.eventType == .pollStart {
                 self?.aggregatePoll(pollStartEvent: event)
@@ -95,12 +79,6 @@ private extension PollHistoryService {
     
     func startPagination() {
         isFetchingSubject.send(true)
-        
-        guard let timeline = timeline else {
-            isFetchingSubject.send(false)
-            return
-        }
-        
         timeline.resetPagination()
         paginate(timeline: timeline)
     }
