@@ -2682,3 +2682,11 @@
 "voice_broadcast_playback_lock_screen_placeholder" = "Trasmissione vocale";
 "room_details_polls" = "Cronologia sondaggi";
 "accessibility_selected" = "selezionato";
+"wysiwyg_composer_format_action_quote" = "Attiva/disattiva citazione";
+"wysiwyg_composer_format_action_code_block" = "Attiva/disattiva blocco di codice";
+"wysiwyg_composer_format_action_ordered_list" = "Attiva/disattiva elenco numerato";
+"wysiwyg_composer_format_action_unordered_list" = "Attiva/disattiva elenco puntato";
+"poll_timeline_reply_ended_poll" = "Sondaggio terminato";
+"voice_broadcast_recorder_connection_error" = "Errore di connessione - Registrazione in pausa";
+"voice_broadcast_connection_error_message" = "Sfortunatamente non riusciamo ad iniziare una registrazione al momento. Riprova più tardi.";
+"voice_broadcast_connection_error_title" = "Errore di connessione";
