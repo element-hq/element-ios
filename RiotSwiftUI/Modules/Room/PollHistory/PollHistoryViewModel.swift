@@ -45,7 +45,7 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
 }
 
 private extension PollHistoryViewModel {
-    private func fetchFirstBatch() {
+    func fetchFirstBatch() {
         state.isLoading = true
         
         pollService
