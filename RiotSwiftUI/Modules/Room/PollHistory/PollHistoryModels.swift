@@ -21,7 +21,7 @@ enum PollHistoryConstants {
 }
 
 enum PollHistoryViewModelResult {
-    case showPollDetail(poll: PollListData)
+    case showPollDetail(poll: TimelinePollDetails)
 }
 
 // MARK: View
@@ -49,5 +49,5 @@ struct PollHistoryViewState: BindableState {
 enum PollHistoryViewAction {
     case viewAppeared
     case segmentDidChange
-    case showPollDetail(poll: PollListData)
+    case showPollDetail(poll: TimelinePollDetails)
 }
