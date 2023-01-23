@@ -1720,7 +1720,7 @@
 "pin_protection_reset_alert_action_reset" = "リセット";
 "authentication_recaptcha_title" = "あなたは人間ですか？";
 "authentication_verify_msisdn_waiting_button" = "コードを再送信";
-"authentication_choose_password_submit_button" = "パスワードをリセット";
+"authentication_choose_password_submit_button" = "パスワードを再設定";
 "authentication_choose_password_signout_all_devices" = "全ての端末からサインアウト";
 "authentication_choose_password_text_field_placeholder" = "新しいパスワード";
 "authentication_terms_title" = "プライバシーポリシー";
