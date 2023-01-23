@@ -3179,6 +3179,10 @@ public class VectorL10n: NSObject {
   public static var later: String { 
     return VectorL10n.tr("Vector", "later") 
   }
+  /// Migrating data\n%@ %%
+  public static func launchLoadingMigratingData(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "launch_loading_migrating_data", p1)
+  }
   /// Processing data\n%@ %%
   public static func launchLoadingProcessingResponse(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "launch_loading_processing_response", p1)

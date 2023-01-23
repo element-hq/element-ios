@@ -41,9 +41,9 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
     
     // MARK: - Setup
     
-    static func instantiate(syncProgress: MXSessionSyncProgress?) -> LaunchLoadingView {
+    static func instantiate(startupProgress: MXSessionStartupProgress?) -> LaunchLoadingView {
         let view = LaunchLoadingView.loadFromNib()
-        syncProgress?.delegate = view
+        startupProgress?.delegate = view
         return view
     }
     
@@ -54,7 +54,7 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
         animationTimeline.play()
         self.animationTimeline = animationTimeline
         
-        self.statusLabel.isHidden = !MXSDKOptions.sharedInstance().enableSyncProgress
+        self.statusLabel.isHidden = !MXSDKOptions.sharedInstance().enableStartupProgress
     }
     
     // MARK: - Public
@@ -65,21 +65,35 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
     }
 }
 
-extension LaunchLoadingView: MXSessionSyncProgressDelegate {
-    func sessionDidUpdateSyncState(_ state: MXSessionSyncState) {
-        guard MXSDKOptions.sharedInstance().enableSyncProgress else {
+extension LaunchLoadingView: MXSessionStartupProgressDelegate {
+    func sessionDidUpdateStartupStage(_ stage: MXSessionStartupStage) {
+        guard MXSDKOptions.sharedInstance().enableStartupProgress else {
+            return
+        }
+        updateStatusText(for: stage)
+
+    }
+    
+    private func updateStatusText(for stage: MXSessionStartupStage) {
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { [weak self] in
+                self?.updateStatusText(for: stage)
+            }
             return
         }
         
         // Sync may be doing a lot of heavy work on the main thread and the status text
         // does not update reliably enough without explicitly refreshing
         CATransaction.begin()
-        statusLabel.text = statusText(for: state)
+        statusLabel.text = statusText(for: stage)
         CATransaction.commit()
     }
     
-    private func statusText(for state: MXSessionSyncState) -> String {
-        switch state {
+    private func statusText(for stage: MXSessionStartupStage) -> String {
+        switch stage {
+        case .migratingData(let progress):
+            let percent = Int(floor(progress * 100))
+            return VectorL10n.launchLoadingMigratingData("\(percent)")
         case .serverSyncing(let attempts):
             if attempts > 1, let nth = numberFormatter.string(from: NSNumber(value: attempts)) {
                 return VectorL10n.launchLoadingServerSyncingNthAttempt(nth)
