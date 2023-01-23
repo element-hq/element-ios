@@ -2225,6 +2225,7 @@ Tap the + to start adding people.";
 "voice_broadcast_connection_error_title" = "Connection error";
 "voice_broadcast_connection_error_message" = "Unfortunately we’re unable to start a recording right now. Please try again later.";
 "voice_broadcast_recorder_connection_error" = "Connection error - Recording paused";
+"voice_broadcast_playback_unable_to_decrypt" = "Unable to decrypt this voice broadcast.";
 
 // MARK: - Version check
 

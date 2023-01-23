@@ -35,6 +35,7 @@ public protocol VoiceBroadcastAggregatorDelegate: AnyObject {
     func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveChunk: VoiceBroadcastChunk)
     func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didReceiveState: VoiceBroadcastInfoState)
     func voiceBroadcastAggregatorDidUpdateData(_ aggregator: VoiceBroadcastAggregator)
+    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didUpdateUndecryptableEventList events: Set<MXEvent>)
 }
 
 /**
@@ -58,6 +59,7 @@ public class VoiceBroadcastAggregator {
     private var referenceEventsListener: Any?
     
     private var events: [MXEvent] = []
+    private var undecryptableEvents: Set<MXEvent> = []
     
     public private(set) var voiceBroadcast: VoiceBroadcast! {
         didSet {
@@ -84,7 +86,7 @@ public class VoiceBroadcastAggregator {
 
         try buildVoiceBroadcastStartContent()
     }
-    
+        
     private func buildVoiceBroadcastStartContent() throws {
         guard let event = session.store.event(withEventId: voiceBroadcastStartEventId, inRoom: room.roomId),
               let eventContent = VoiceBroadcastInfo(fromJSON: event.content),
@@ -118,7 +120,11 @@ public class VoiceBroadcastAggregator {
     
     @objc private func eventDidDecrypt(sender: Notification) {
         guard let event = sender.object as? MXEvent else { return }
-        
+
+        if undecryptableEvents.remove(event) != nil {
+            delegate?.voiceBroadcastAggregator(self, didUpdateUndecryptableEventList: undecryptableEvents)
+        }
+
         self.handleEvent(event: event)
     }
     
@@ -138,8 +144,19 @@ public class VoiceBroadcastAggregator {
     private func updateVoiceBroadcast(event: MXEvent) {
         guard event.sender == self.voiceBroadcastSenderId,
               let relatedEventId = event.relatesTo?.eventId,
-              relatedEventId == self.voiceBroadcastStartEventId,
-              event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil else {
+              relatedEventId == self.voiceBroadcastStartEventId else {
+            return
+        }
+        
+        // Handle decryption errors
+        if event.decryptionError != nil {
+            self.undecryptableEvents.insert(event)
+            self.delegate?.voiceBroadcastAggregator(self, didUpdateUndecryptableEventList: self.undecryptableEvents)
+            
+            return
+        }
+        
+        guard event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil else {
             return
         }
         
@@ -192,15 +209,22 @@ public class VoiceBroadcastAggregator {
             }
             
             self.events.removeAll()
+            self.undecryptableEvents.removeAll()
             self.voiceBroadcastLastChunkSequence = 0
             
             let filteredChunk = response.chunk.filter { event in
                 event.sender == self.voiceBroadcastSenderId &&
                 event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil
             }
-            
             self.events.append(contentsOf: filteredChunk)
-            
+
+            let decryptionFailure = response.chunk.filter { event in
+                event.sender == self.voiceBroadcastSenderId &&
+                event.decryptionError != nil
+            }
+            self.undecryptableEvents.formUnion(decryptionFailure)
+            self.delegate?.voiceBroadcastAggregator(self, didUpdateUndecryptableEventList: self.undecryptableEvents)
+                        
             let eventTypes = [VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType, kMXEventTypeStringRoomMessage]
             self.referenceEventsListener = self.room.listen(toEventsOfTypes: eventTypes, onEvent: { [weak self] event, direction, roomState in
                 self?.handleEvent(event: event, direction: direction, roomState: roomState)

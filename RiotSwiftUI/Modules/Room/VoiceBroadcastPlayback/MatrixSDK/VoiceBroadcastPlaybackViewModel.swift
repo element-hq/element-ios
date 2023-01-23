@@ -111,7 +111,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                                                         broadcastState: voiceBroadcastAggregator.voiceBroadcastState,
                                                         playbackState: .stopped,
                                                         playingState: VoiceBroadcastPlayingState(duration: Float(voiceBroadcastAggregator.voiceBroadcast.duration), isLive: false, canMoveForward: false, canMoveBackward: false),
-                                                        bindings: VoiceBroadcastPlaybackViewStateBindings(progress: 0))
+                                                        bindings: VoiceBroadcastPlaybackViewStateBindings(progress: 0),
+                                                        decryptionState: VoiceBroadcastPlaybackDecryptionState(errorCount: 0))
         super.init(initialViewState: viewState)
         
         displayLink = CADisplayLink(target: WeakTarget(self, selector: #selector(handleDisplayLinkTick)), selector: WeakTarget.triggerSelector)
@@ -484,6 +485,17 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
         
         if state.playbackState != .stopped, !isActuallyPaused {
             handleVoiceBroadcastChunksProcessing()
+        }
+    }
+    
+    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didUpdateUndecryptableEventList events: Set<MXEvent>) {
+        state.decryptionState.errorCount = events.count
+        if events.count > 0 {
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] voice broadcast decryption error count: \(events.count)/\(aggregator.voiceBroadcast.chunks.count)")
+            
+            if [.playing, .buffering].contains(state.playbackState) {
+                pause()
+            }
         }
     }
 }

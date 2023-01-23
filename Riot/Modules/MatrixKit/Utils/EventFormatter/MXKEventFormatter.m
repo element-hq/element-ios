@@ -1053,8 +1053,13 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
                     else if ([event.decryptionError.domain isEqualToString:MXDecryptingErrorDomain]
                         && event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)
                     {
-                        // Make the unknown inbound session id error description more user friendly
-                        errorDescription = [VectorL10n noticeCryptoErrorUnknownInboundSessionId];
+                        // Hide the decryption error for event related to another one (like voicebroadcast chunks)
+                        if ([event.relatesTo.relationType isEqualToString:MXEventRelationTypeReference]) {
+                            displayText = nil;
+                        } else {
+                            // Make the unknown inbound session id error description more user friendly
+                            errorDescription = [VectorL10n noticeCryptoErrorUnknownInboundSessionId];
+                        }
                     }
                     else if ([event.decryptionError.domain isEqualToString:MXDecryptingErrorDomain]
                            && event.decryptionError.code == MXDecryptingErrorDuplicateMessageIndexCode)
