@@ -53,7 +53,7 @@ final class PollHistoryViewModelTests: XCTestCase {
         viewModel.process(viewAction: .viewAppeared)
         
         var firstPoll = try XCTUnwrap(try polls.first)
-        XCTAssertEqual(firstPoll.question, "Do you like the active poll number 9?")
+        XCTAssertEqual(firstPoll.question, "Do you like the active poll number 1?")
         firstPoll.question = "foo"
         
         mockUpdates.send(firstPoll)
