@@ -32,7 +32,7 @@ enum PollHistoryDetailViewModelResult {
 
 struct PollHistoryDetailViewState: BindableState {
     var poll: TimelinePollDetails
-    var timelineViewModel: TimelinePollViewModel
+    var timelineViewModel: TimelinePollViewModelProtocol
 }
 
 enum PollHistoryDetailViewAction {

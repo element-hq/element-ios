@@ -57,20 +57,30 @@ final class PollHistoryCoordinator: NSObject, Coordinator, Presentable {
     }
     
     func showPollDetail(_ poll: TimelinePollDetails) {
-        let detailCoordinator: PollHistoryDetailCoordinator = .init(parameters: .init(pollHistoryDetails: MockPollHistoryDetailScreenState.openUndisclosed.poll, session: parameters.session, room: parameters.room))
-        detailCoordinator.toPresentable().presentationController?.delegate = self
-        detailCoordinator.completion = { [weak self, weak detailCoordinator] result in
-            guard let self = self, let coordinator = detailCoordinator else { return }
-            switch result {
-            case .dismiss:
-                self.toPresentable().dismiss(animated: true)
-                self.remove(childCoordinator: coordinator)
+        
+        parameters.session.event(withEventId: poll.id, inRoom: parameters.room.roomId) { [weak self] response in
+            guard let self else { return }
+            if let event = response.value,
+               let detailCoordinator: PollHistoryDetailCoordinator = try? .init(parameters: .init(pollHistoryDetails: MockPollHistoryDetailScreenState.openUndisclosed.poll, event: event, session: self.parameters.session, room: self.parameters.room)) {
+                detailCoordinator.toPresentable().presentationController?.delegate = self
+                detailCoordinator.completion = { [weak self, weak detailCoordinator] result in
+                    guard let self = self, let coordinator = detailCoordinator else { return }
+                    switch result {
+                    case .dismiss:
+                        self.toPresentable().dismiss(animated: true)
+                        self.remove(childCoordinator: coordinator)
+                    }
+                }
+                
+                self.add(childCoordinator: detailCoordinator)
+                detailCoordinator.start()
+                self.toPresentable().present(detailCoordinator.toPresentable(), animated: true)
+            } else {
+                // TODO: manage error
             }
         }
         
-        add(childCoordinator: detailCoordinator)
-        detailCoordinator.start()
-        toPresentable().present(detailCoordinator.toPresentable(), animated: true)
+
     }
     
     func toPresentable() -> UIViewController {

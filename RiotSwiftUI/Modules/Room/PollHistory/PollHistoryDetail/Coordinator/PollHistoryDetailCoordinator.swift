@@ -21,6 +21,7 @@ import MatrixSDK
 
 struct PollHistoryDetailCoordinatorParameters {
     let pollHistoryDetails: TimelinePollDetails
+    let event: MXEvent
     let session: MXSession
     let room: MXRoom
 }
@@ -37,19 +38,13 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
     var childCoordinators: [Coordinator] = []
     var completion: ((PollHistoryDetailViewModelResult) -> Void)?
     
-    init(parameters: PollHistoryDetailCoordinatorParameters) {
+    init(parameters: PollHistoryDetailCoordinatorParameters) throws {
         self.parameters = parameters
-        
-//        let event: MXEvent = .init()
-//        do {
-//            let timelinePollCoordinator = try TimelinePollCoordinator(parameters: .init(session: parameters.session, room: parameters.room, pollEvent: event))
-//        } catch {
-//            MXLog.debug("[PollHistoryDetailCoordinator] initKeys: Failed to init TimelinePollCoordinator with event: \(error.localizedDescription)")
-//        }
-        let viewModel = PollHistoryDetailViewModel(pollHistoryDetails: parameters.pollHistoryDetails)
+        let timelinePollCoordinator = try TimelinePollCoordinator(parameters: .init(session: parameters.session, room: parameters.room, pollEvent: parameters.event))
+        let viewModel = PollHistoryDetailViewModel(pollHistoryDetails: parameters.pollHistoryDetails, timelineViewModel: timelinePollCoordinator.viewModel)
         let view = PollHistoryDetail(viewModel: viewModel.context)
         pollHistoryDetailViewModel = viewModel
-
+        
         pollHistoryDetailHostingController = VectorHostingController(rootView: view)
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: pollHistoryDetailHostingController)
