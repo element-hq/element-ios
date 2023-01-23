@@ -804,6 +804,9 @@ Tap the + to start adding people.";
 "settings_labs_enable_new_app_layout" = "New Application Layout";
 "settings_labs_enable_wysiwyg_composer" = "Try out the rich text editor";
 "settings_labs_enable_voice_broadcast" = "Voice broadcast";
+"settings_labs_enable_crypto_sdk" = "Enable new rust-based Crypto SDK";
+"settings_labs_confirm_crypto_sdk" = "This action cannot be undone";
+"settings_labs_disable_crypto_sdk" = "Crypto SDK is enabled. To disable please reinstall the app";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -1976,6 +1979,7 @@ Tap the + to start adding people.";
 
 // MARK: - Launch loading
 
+"launch_loading_migrating_data" = "Migrating data\n%@ %%";
 "launch_loading_server_syncing" = "Syncing with the server";
 "launch_loading_server_syncing_nth_attempt" = "Syncing with the server\n(%@ attempt)";
 "launch_loading_processing_response" = "Processing data\n%@ %%";
