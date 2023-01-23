@@ -17,54 +17,56 @@
 import Combine
 
 final class MockPollHistoryService: PollHistoryServiceProtocol {
-    private let polls: PassthroughSubject<TimelinePollDetails, Never> = .init()
-    
-    var pollHistory: AnyPublisher<TimelinePollDetails, Never> {
-        polls.eraseToAnyPublisher()
-    }
-    
-    var error: AnyPublisher<PollHistoryError, Never> {
+    var updates: AnyPublisher<TimelinePollDetails, Never> {
         Empty().eraseToAnyPublisher()
     }
-
-    func next() {
-        for poll in activePollsData + pastPollsData {
-            polls.send(poll)
-        }
-    }
-
-    var isLoadingPublisher: AnyPublisher = Just(false).eraseToAnyPublisher()
-    var isFetching: AnyPublisher<Bool, Never> {
-        isLoadingPublisher
-    }
-
-    var activePollsData: [TimelinePollDetails] = (1..<10)
-        .map { index in
-            TimelinePollDetails(id: "a\(index)",
-                                question: "Do you like the active poll number \(index)?",
-                                answerOptions: [],
-                                closed: false,
-                                startDate: .init(),
-                                totalAnswerCount: 30,
-                                type: .disclosed,
-                                eventType: .started,
-                                maxAllowedSelections: 1,
-                                hasBeenEdited: false,
-                                hasDecryptionError: false)
-        }
     
-    var pastPollsData: [TimelinePollDetails] = (1..<10)
-        .map { index in
-            TimelinePollDetails(id: "p\(index)",
-                                question: "Do you like the active poll number \(index)?",
-                                answerOptions: [.init(id: "id", text: "Yes, of course!", count: 20, winner: true, selected: true)],
-                                closed: true,
-                                startDate: .init(),
-                                totalAnswerCount: 30,
-                                type: .disclosed,
-                                eventType: .started,
-                                maxAllowedSelections: 1,
-                                hasBeenEdited: false,
-                                hasDecryptionError: false)
-        }
+    var updatesErrors: AnyPublisher<Error, Never> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    lazy var nextPublisher: AnyPublisher<TimelinePollDetails, Error> = (activePollsData + pastPollsData)
+        .publisher
+        .setFailureType(to: Error.self)
+        .eraseToAnyPublisher()
+    
+    func next() -> AnyPublisher<TimelinePollDetails, Error> {
+        nextPublisher
+    }
+}
+
+private extension MockPollHistoryService {
+    var activePollsData: [TimelinePollDetails] {
+        (1..<10)
+            .map { index in
+                TimelinePollDetails(id: "a\(index)",
+                                    question: "Do you like the active poll number \(index)?",
+                                    answerOptions: [],
+                                    closed: false,
+                                    startDate: .init(),
+                                    totalAnswerCount: 30,
+                                    type: .disclosed,
+                                    eventType: .started,
+                                    maxAllowedSelections: 1,
+                                    hasBeenEdited: false,
+                                    hasDecryptionError: false)
+            }
+    }
+    
+    var pastPollsData: [TimelinePollDetails] {
+        (1..<10)
+            .map { index in
+                TimelinePollDetails(id: "p\(index)",
+                                    question: "Do you like the active poll number \(index)?",
+                                    answerOptions: [.init(id: "id", text: "Yes, of course!", count: 20, winner: true, selected: true)],
+                                    closed: true,
+                                    startDate: .init(),
+                                    totalAnswerCount: 30,
+                                    type: .disclosed,
+                                    eventType: .started,
+                                    maxAllowedSelections: 1,
+                                    hasBeenEdited: false,
+                                    hasDecryptionError: false)
+            }
+    }
 }

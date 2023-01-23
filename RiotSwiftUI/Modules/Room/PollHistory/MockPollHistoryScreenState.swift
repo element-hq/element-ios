@@ -29,7 +29,6 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     case activeEmpty
     case pastEmpty
     case loading
-    case loadingWithContent
     
     /// The associated screen
     var screenType: Any.Type {
@@ -48,16 +47,19 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
             pollHistoryMode = .past
         case .activeEmpty:
             pollHistoryMode = .active
-            pollService.activePollsData = []
+            pollService.nextPublisher = Empty(completeImmediately: true,
+                                              outputType: TimelinePollDetails.self,
+                                              failureType: Error.self).eraseToAnyPublisher()
         case .pastEmpty:
             pollHistoryMode = .past
-            pollService.pastPollsData = []
+            pollService.nextPublisher = Empty(completeImmediately: true,
+                                              outputType: TimelinePollDetails.self,
+                                              failureType: Error.self).eraseToAnyPublisher()
         case .loading:
             pollHistoryMode = .active
-            pollService.isLoadingPublisher = Just(true).eraseToAnyPublisher()
-        case .loadingWithContent:
-            pollHistoryMode = .active
-            pollService.isLoadingPublisher = [false, true].publisher.eraseToAnyPublisher()
+            pollService.nextPublisher = Empty(completeImmediately: false,
+                                              outputType: TimelinePollDetails.self,
+                                              failureType: Error.self).eraseToAnyPublisher()
         }
         
         let viewModel = PollHistoryViewModel(mode: pollHistoryMode, pollService: pollService)

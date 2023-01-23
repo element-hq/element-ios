@@ -21,9 +21,8 @@ typealias PollHistoryViewModelType = StateStoreViewModel<PollHistoryViewState, P
 
 final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModelProtocol {
     private let pollService: PollHistoryServiceProtocol
-    private var polls: [TimelinePollDetails] = []
+    private var polls: [TimelinePollDetails]?
     private var subcriptions: Set<AnyCancellable> = .init()
-    private var hasLoadedFirstGroup = false
     
     var completion: ((PollHistoryViewModelResult) -> Void)?
 
@@ -37,8 +36,8 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
     override func process(viewAction: PollHistoryViewAction) {
         switch viewAction {
         case .viewAppeared:
-            setupSubscriptions()
-            pollService.next()
+            setupUpdateSubscriptions()
+            fetchFirstBatch()
         case .segmentDidChange:
             updateViewState()
         }
@@ -46,11 +45,27 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
 }
 
 private extension PollHistoryViewModel {
-    func setupSubscriptions() {
+    private func fetchFirstBatch() {
+        state.isLoading = true
+        
+        pollService
+            .next()
+            .collect()
+            .sink { [weak self] _ in
+                #warning("Handle errors")
+                self?.state.isLoading = false
+            } receiveValue: { [weak self] polls in
+                self?.polls = polls
+                self?.updateViewState()
+            }
+            .store(in: &subcriptions)
+    }
+    
+    func setupUpdateSubscriptions() {
         subcriptions.removeAll()
         
         pollService
-            .pollHistory
+            .updates
             .sink { [weak self] detail in
                 self?.updatePolls(with: detail)
                 self?.updateViewState()
@@ -58,53 +73,31 @@ private extension PollHistoryViewModel {
             .store(in: &subcriptions)
         
         pollService
-            .error
+            .updatesErrors
             .sink { detail in
                 #warning("Handle errors")
             }
             .store(in: &subcriptions)
-
-        let didCompleteFirstFetch = pollService
-            .isFetching
-            .filter { $0 == false }
-            .first()
-
-        didCompleteFirstFetch
-            .sink { isFetching in
-                self.hasLoadedFirstGroup = true
-                self.updateViewState()
-            }
-            .store(in: &subcriptions)
-
-        pollService
-            .isFetching
-            .weakAssign(to: \.state.isLoading, on: self)
-            .store(in: &subcriptions)
     }
     
     func updatePolls(with poll: TimelinePollDetails) {
-        if let matchIndex = polls.firstIndex(where: { $0.id == poll.id }) {
-            polls[matchIndex] = poll
+        if let matchIndex = polls?.firstIndex(where: { $0.id == poll.id }) {
+            polls?[matchIndex] = poll
         } else {
-            polls.append(poll)
-            polls.sort(by: { $0.startDate > $1.startDate })
+            polls?.append(poll)
         }
     }
     
     func updateViewState() {
-        guard hasLoadedFirstGroup else {
-            return
-        }
-        
-        let renderedPolls: [TimelinePollDetails]
+        let renderedPolls: [TimelinePollDetails]?
         
         switch context.mode {
         case .active:
-            renderedPolls = polls.filter { $0.closed == false }
+            renderedPolls = polls?.filter { $0.closed == false }
         case .past:
-            renderedPolls = polls.filter { $0.closed == true }
+            renderedPolls = polls?.filter { $0.closed == true }
         }
         
-        state.polls = renderedPolls
+        state.polls = renderedPolls?.sorted(by: { $0.startDate > $1.startDate })
     }
 }
