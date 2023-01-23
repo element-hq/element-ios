@@ -36,7 +36,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
         updatesSubject.eraseToAnyPublisher()
     }
     
-    var updatesErrors: AnyPublisher<Error, Never> {
+    var pollErrors: AnyPublisher<Error, Never> {
         updatesErrorsSubject.eraseToAnyPublisher()
     }
     

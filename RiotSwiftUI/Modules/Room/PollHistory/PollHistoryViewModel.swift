@@ -73,7 +73,7 @@ private extension PollHistoryViewModel {
             .store(in: &subcriptions)
         
         pollService
-            .updatesErrors
+            .pollErrors
             .sink { detail in
                 #warning("Handle errors")
             }

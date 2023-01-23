@@ -22,9 +22,9 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
         updatesPublisher
     }
     
-    var updatesErrorsPublisher: AnyPublisher<Error, Never> = Empty().eraseToAnyPublisher()
-    var updatesErrors: AnyPublisher<Error, Never> {
-        updatesErrorsPublisher
+    var pollErrorPublisher: AnyPublisher<Error, Never> = Empty().eraseToAnyPublisher()
+    var pollErrors: AnyPublisher<Error, Never> {
+        pollErrorPublisher
     }
     
     lazy var nextPublisher: AnyPublisher<TimelinePollDetails, Error> = (activePollsData + pastPollsData)
