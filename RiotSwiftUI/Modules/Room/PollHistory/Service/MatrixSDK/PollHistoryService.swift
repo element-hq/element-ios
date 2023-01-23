@@ -25,7 +25,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     private var timelineListener: Any?
    
     private let updatesSubject: PassthroughSubject<TimelinePollDetails, Never> = .init()
-    private let updatesErrorsSubject: PassthroughSubject<Error, Never> = .init()
+    private let pollErrorsSubject: PassthroughSubject<Error, Never> = .init()
     
     private var pollAggregators: [String: PollAggregator] = [:]
     private var targetTimestamp: Date
@@ -37,7 +37,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     }
     
     var pollErrors: AnyPublisher<Error, Never> {
-        updatesErrorsSubject.eraseToAnyPublisher()
+        pollErrorsSubject.eraseToAnyPublisher()
     }
     
     init(room: MXRoom, chunkSizeInDays: UInt) {
@@ -145,7 +145,7 @@ extension PollHistoryService: PollAggregatorDelegate {
     }
     
     func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) {
-        updatesErrorsSubject.send(didFailWithError)
+        pollErrorsSubject.send(didFailWithError)
     }
     
     func pollAggregatorDidUpdateData(_ aggregator: PollAggregator) {
