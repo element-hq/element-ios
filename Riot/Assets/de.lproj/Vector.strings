@@ -2724,3 +2724,10 @@
 "wysiwyg_composer_format_action_unordered_list" = "Unsortierte Liste umschalten";
 "voice_broadcast_recorder_connection_error" = "Verbindungsfehler – Aufzeichnung pausiert";
 "poll_timeline_reply_ended_poll" = "Beendete Umfrage";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Migriere Daten\n%@ %%";
+"settings_labs_disable_crypto_sdk" = "Krypto-SDK ist aktiviert. Zum Deaktivieren, bitte die App neu installieren";
+"settings_labs_confirm_crypto_sdk" = "Dies kann nicht rückgängig gemacht werden";
+"settings_labs_enable_crypto_sdk" = "Rust-basiertes Krypto-SDK aktivieren";
