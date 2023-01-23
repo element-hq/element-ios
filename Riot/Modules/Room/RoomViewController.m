@@ -4303,12 +4303,9 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self startActivityIndicator];
                 
                 NSArray<NSString *>* relationTypes = nil;
-                // If it's a voice broadcast, delete the selected event and all related events (only if this feature is supported).
+                // If it's a voice broadcast, delete the selected event and all related events.
                 if (selectedEvent.eventType == MXEventTypeCustom && [selectedEvent.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]) {
-                    // Check if the homeserver supports redaction with relations
-                    if (self.mainSession.store.supportedMatrixVersions.supportsRedactionWithRelations || self.mainSession.store.supportedMatrixVersions.supportsRedactionWithRelationsUnstable) {
-                        relationTypes = @[MXEventRelationTypeReference];
-                    }
+                    relationTypes = @[MXEventRelationTypeReference];
                 }
                 
                 MXWeakify(self);
