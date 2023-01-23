@@ -2232,19 +2232,19 @@
 "onboarding_use_case_message" = "我们将帮助你连接";
 "invite_to" = "邀请到%@";
 "threads_empty_title" = "保持讨论的有条理性";
-"threads_action_my_threads" = "我的线程";
-"threads_action_all_threads" = "所有线程";
-"threads_title" = "线程";
-"thread_copy_link_to_thread" = "将链接复制到线程";
+"threads_action_my_threads" = "我的消息列";
+"threads_action_all_threads" = "所有消息列";
+"threads_title" = "消息列";
+"thread_copy_link_to_thread" = "将链接复制到消息列";
 
 // MARK: Threads
-"room_thread_title" = "线程";
+"room_thread_title" = "消息列";
 "room_accessibility_record_voice_message_hint" = "双击并保持录音。";
 "room_accessibility_record_voice_message" = "录制语音消息";
 "room_accessibility_thread_more" = "更多";
-"room_accessibility_threads" = "线程";
-"room_event_copy_link_info" = "链接复制到剪贴板。";
-"room_event_action_reply_in_thread" = "线程";
+"room_accessibility_threads" = "消息列";
+"room_event_copy_link_info" = "链接已复制到剪贴板。";
+"room_event_action_reply_in_thread" = "消息列";
 "room_event_action_view_in_room" = "在房间浏览";
 "room_first_message_placeholder" = "发送您的第一条消息……";
 "room_participants_invite_prompt_to_msg" = "您确定要邀请%@ 到 %@吗？";
