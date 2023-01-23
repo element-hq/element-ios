@@ -80,7 +80,7 @@ struct PollHistory: View {
             }
             
             Button {
-                #warning("handle action")
+                #warning("handle action in next ticket")
             } label: {
                 Text("Load more polls")
             }

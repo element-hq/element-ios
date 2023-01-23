@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2023 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,14 @@
 import Combine
 
 final class MockPollHistoryService: PollHistoryServiceProtocol {
+    var updatesPublisher: AnyPublisher<TimelinePollDetails, Never> = Empty().eraseToAnyPublisher()
     var updates: AnyPublisher<TimelinePollDetails, Never> {
-        Empty().eraseToAnyPublisher()
+        updatesPublisher
     }
     
+    var updatesErrorsPublisher: AnyPublisher<Error, Never> = Empty().eraseToAnyPublisher()
     var updatesErrors: AnyPublisher<Error, Never> {
-        Empty().eraseToAnyPublisher()
+        updatesErrorsPublisher
     }
     
     lazy var nextPublisher: AnyPublisher<TimelinePollDetails, Error> = (activePollsData + pastPollsData)
@@ -37,13 +39,13 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
 
 private extension MockPollHistoryService {
     var activePollsData: [TimelinePollDetails] {
-        (1..<10)
+        (1...10)
             .map { index in
                 TimelinePollDetails(id: "a\(index)",
                                     question: "Do you like the active poll number \(index)?",
                                     answerOptions: [],
                                     closed: false,
-                                    startDate: .init(),
+                                    startDate: .init().addingTimeInterval(TimeInterval(-index) * 3600 * 24),
                                     totalAnswerCount: 30,
                                     type: .disclosed,
                                     eventType: .started,
@@ -54,13 +56,13 @@ private extension MockPollHistoryService {
     }
     
     var pastPollsData: [TimelinePollDetails] {
-        (1..<10)
+        (1...10)
             .map { index in
                 TimelinePollDetails(id: "p\(index)",
                                     question: "Do you like the active poll number \(index)?",
                                     answerOptions: [.init(id: "id", text: "Yes, of course!", count: 20, winner: true, selected: true)],
                                     closed: true,
-                                    startDate: .init(),
+                                    startDate: .init().addingTimeInterval(TimeInterval(-index) * 3600 * 24),
                                     totalAnswerCount: 30,
                                     type: .disclosed,
                                     eventType: .started,

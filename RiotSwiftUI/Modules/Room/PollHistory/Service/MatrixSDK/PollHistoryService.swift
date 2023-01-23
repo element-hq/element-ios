@@ -43,7 +43,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     init(room: MXRoom, chunkSizeInDays: UInt) {
         self.room = room
         self.chunkSizeInDays = chunkSizeInDays
-        self.timeline = MXRoomEventTimeline(room: room, andInitialEventId: nil)
+        timeline = MXRoomEventTimeline(room: room, andInitialEventId: nil)
         targetTimestamp = Date().addingTimeInterval(-TimeInterval(chunkSizeInDays) * Constants.oneDayInSeconds)
         setup(timeline: timeline)
     }
