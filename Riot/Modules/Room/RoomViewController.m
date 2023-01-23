@@ -4302,36 +4302,27 @@ static CGSize kThreadListBarButtonItemImageSize;
                 
                 [self startActivityIndicator];
                 
+                NSArray<NSString *>* relationTypes = nil;
                 // If it's a voice broadcast, delete the selected event and all related events (only if this feature is supported).
-                BOOL supportsRedactionWithRelations = self.mainSession.store.supportedMatrixVersions.supportsRedactionWithRelations || self.mainSession.store.supportedMatrixVersions.supportsRedactionWithRelationsUnstable;
-                if (supportsRedactionWithRelations && selectedEvent.eventType == MXEventTypeCustom && [selectedEvent.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]) {
-                    MXWeakify(self);
-                    [self.roomDataSource.room redactEvent:selectedEvent.eventId withRelations:@[MXEventRelationTypeReference] reason:nil success:^{
-                        MXStrongifyAndReturnIfNil(self);
-                        [self stopActivityIndicator];
-                    } failure:^(NSError *error) {
-                        MXStrongifyAndReturnIfNil(self);
-                        [self stopActivityIndicator];
-                        
-                        MXLogDebug(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
-                        //Alert user
-                        [self showError:error];
-                    }];
-
-                } else {
-                    MXWeakify(self);
-                    [self.roomDataSource.room redactEvent:selectedEvent.eventId reason:nil success:^{
-                        MXStrongifyAndReturnIfNil(self);
-                        [self stopActivityIndicator];
-                    } failure:^(NSError *error) {
-                        MXStrongifyAndReturnIfNil(self);
-                        [self stopActivityIndicator];
-                        
-                        MXLogDebug(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
-                        //Alert user
-                        [self showError:error];
-                    }];
+                if (selectedEvent.eventType == MXEventTypeCustom && [selectedEvent.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]) {
+                    // Check if the homeserver supports redaction with relations
+                    if (self.mainSession.store.supportedMatrixVersions.supportsRedactionWithRelations || self.mainSession.store.supportedMatrixVersions.supportsRedactionWithRelationsUnstable) {
+                        relationTypes = @[MXEventRelationTypeReference];
+                    }
                 }
+                
+                MXWeakify(self);
+                [self.roomDataSource.room redactEvent:selectedEvent.eventId withRelations:relationTypes reason:nil success:^{
+                    MXStrongifyAndReturnIfNil(self);
+                    [self stopActivityIndicator];
+                } failure:^(NSError *error) {
+                    MXStrongifyAndReturnIfNil(self);
+                    [self stopActivityIndicator];
+                    
+                    MXLogDebug(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
+                    //Alert user
+                    [self showError:error];
+                }];
             }]];
         }
         
