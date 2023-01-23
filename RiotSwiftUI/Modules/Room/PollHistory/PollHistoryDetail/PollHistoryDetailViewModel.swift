@@ -25,91 +25,24 @@ class PollHistoryDetailViewModel: PollHistoryDetailViewModelType, PollHistoryDet
     // MARK: Private
     
     // MARK: Public
-
     var completion: PollHistoryDetailViewModelCallback?
     
     // MARK: - Setup
     
-    init(pollHistoryDetails: PollHistoryDetails) {
-        super.init(initialViewState: PollHistoryDetailViewState(poll: pollHistoryDetails))
-
+    init(pollHistoryDetails: TimelinePollDetails) {
+        super.init(initialViewState: PollHistoryDetailViewState(poll: pollHistoryDetails, timelineViewModel: TimelinePollViewModel(timelinePollDetails: pollHistoryDetails)))
     }
     
     // MARK: - Public
     
     override func process(viewAction: PollHistoryDetailViewAction) {
         switch viewAction {
-        case .selectAnswerOptionWithIdentifier(let identifier):
-            guard !state.poll.closed else {
-                return
-            }
-            
-            if state.poll.maxAllowedSelections == 1 {
-                updateSingleSelectPollLocalState(selectedAnswerIdentifier: identifier, callback: completion)
-            } else {
-                updateMultiSelectPollLocalState(&state, selectedAnswerIdentifier: identifier, callback: completion)
-            }
+        case .dismiss:
+            completion?(.dismiss)
         }
     }
 
     
     // MARK: - TimelinePollViewModelProtocol
-    
-    func updateWithPollDetails(_ pollDetails: PollHistoryDetails) {
-        state.poll = pollDetails
-    }
-    
-    func updateSingleSelectPollLocalState(selectedAnswerIdentifier: String, callback: PollHistoryDetailViewModelCallback?) {
-        state.poll.answerOptions.updateEach { answerOption in
-            if answerOption.selected {
-                answerOption.selected = false
-                answerOption.count = UInt(max(0, Int(answerOption.count) - 1))
-                state.poll.totalAnswerCount = UInt(max(0, Int(state.poll.totalAnswerCount) - 1))
-            }
-            
-            if answerOption.id == selectedAnswerIdentifier {
-                answerOption.selected = true
-                answerOption.count += 1
-                state.poll.totalAnswerCount += 1
-            }
-        }
-        
-        informCoordinatorOfSelectionUpdate(state: state, callback: callback)
-    }
-    
-    func updateMultiSelectPollLocalState(_ state: inout PollHistoryDetailViewState, selectedAnswerIdentifier: String, callback: PollHistoryDetailViewModelCallback?) {
-        let selectedAnswerOptions = state.poll.answerOptions.filter { $0.selected == true }
-        
-        let isDeselecting = selectedAnswerOptions.filter { $0.id == selectedAnswerIdentifier }.count > 0
-        
-        if !isDeselecting, selectedAnswerOptions.count >= state.poll.maxAllowedSelections {
-            return
-        }
-        
-        state.poll.answerOptions.updateEach { answerOption in
-            if answerOption.id != selectedAnswerIdentifier {
-                return
-            }
-            
-            if answerOption.selected {
-                answerOption.selected = false
-                answerOption.count = UInt(max(0, Int(answerOption.count) - 1))
-                state.poll.totalAnswerCount = UInt(max(0, Int(state.poll.totalAnswerCount) - 1))
-            } else {
-                answerOption.selected = true
-                answerOption.count += 1
-                state.poll.totalAnswerCount += 1
-            }
-        }
-        
-        informCoordinatorOfSelectionUpdate(state: state, callback: callback)
-    }
-    
-    func informCoordinatorOfSelectionUpdate(state: PollHistoryDetailViewState, callback: PollHistoryDetailViewModelCallback?) {
-        let selectedIdentifiers = state.poll.answerOptions.compactMap { answerOption in
-            answerOption.selected ? answerOption.id : nil
-        }
-        
-        callback?(.selectedAnswerOptionsWithIdentifiers(selectedIdentifiers))
-    }
+
 }

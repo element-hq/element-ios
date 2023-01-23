@@ -21,68 +21,20 @@ import Foundation
 typealias PollHistoryDetailViewModelCallback = (PollHistoryDetailViewModelResult) -> Void
 
 enum PollHistoryDetailViewModelResult {
-    case selectedAnswerOptionsWithIdentifiers([String])
     case dismiss
 }
 
 // MARK: View model
 
-struct PollHistoryDetails {
-    
-    public static let dummy: PollHistoryDetails = MockPollHistoryDetailScreenState.openUndisclosed.poll
-    
-    var question: String
-    var answerOptions: [TimelinePollAnswerOption]
-    var closed: Bool
-    var totalAnswerCount: UInt
-    var type: TimelinePollType
-    var eventType: TimelinePollEventType
-    var maxAllowedSelections: UInt
-    var hasBeenEdited = true
-    var hasDecryptionError: Bool
-    
-    init(question: String, answerOptions: [TimelinePollAnswerOption],
-         closed: Bool,
-         totalAnswerCount: UInt,
-         type: TimelinePollType,
-         eventType: TimelinePollEventType,
-         maxAllowedSelections: UInt,
-         hasBeenEdited: Bool,
-         hasDecryptionError: Bool) {
-        self.question = question
-        self.answerOptions = answerOptions
-        self.closed = closed
-        self.totalAnswerCount = totalAnswerCount
-        self.type = type
-        self.eventType = eventType
-        self.maxAllowedSelections = maxAllowedSelections
-        self.hasBeenEdited = hasBeenEdited
-        self.hasDecryptionError = hasDecryptionError
-    }
-    
-    var hasCurrentUserVoted: Bool {
-        answerOptions.filter { $0.selected == true }.count > 0
-    }
-    
-    var shouldDiscloseResults: Bool {
-        if closed {
-            return totalAnswerCount > 0
-        } else {
-            return type == .disclosed && totalAnswerCount > 0 && hasCurrentUserVoted
-        }
-    }
-    
-    var representsPollEndedEvent: Bool {
-        eventType == .ended
-    }
-}
+
 
 // MARK: View
 
 struct PollHistoryDetailViewState: BindableState {
-    var poll: PollHistoryDetails
+    var poll: TimelinePollDetails
+    var timelineViewModel: TimelinePollViewModel
 }
 
 enum PollHistoryDetailViewAction {
-    case selectAnswerOptionWithIdentifier(String)
+    case dismiss
 }

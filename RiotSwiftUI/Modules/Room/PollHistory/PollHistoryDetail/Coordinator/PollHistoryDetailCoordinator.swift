@@ -17,9 +17,10 @@
 import CommonKit
 import SwiftUI
 import Combine
+import MatrixSDK
 
 struct PollHistoryDetailCoordinatorParameters {
-    let pollHistoryDetails: PollHistoryDetails
+    let pollHistoryDetails: TimelinePollDetails
     let session: MXSession
     let room: MXRoom
 }
@@ -28,7 +29,6 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
     private let parameters: PollHistoryDetailCoordinatorParameters
     private let pollHistoryDetailHostingController: UIViewController
     private var pollHistoryDetailViewModel: PollHistoryDetailViewModelProtocol
-    private let selectedAnswerIdentifiersSubject = PassthroughSubject<[String], Never>()
     private var cancellables = Set<AnyCancellable>()
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
@@ -40,6 +40,12 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
     init(parameters: PollHistoryDetailCoordinatorParameters) {
         self.parameters = parameters
         
+//        let event: MXEvent = .init()
+//        do {
+//            let timelinePollCoordinator = try TimelinePollCoordinator(parameters: .init(session: parameters.session, room: parameters.room, pollEvent: event))
+//        } catch {
+//            MXLog.debug("[PollHistoryDetailCoordinator] initKeys: Failed to init TimelinePollCoordinator with event: \(error.localizedDescription)")
+//        }
         let viewModel = PollHistoryDetailViewModel(pollHistoryDetails: parameters.pollHistoryDetails)
         let view = PollHistoryDetail(viewModel: viewModel.context)
         pollHistoryDetailViewModel = viewModel
@@ -51,30 +57,10 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
         viewModel.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .selectedAnswerOptionsWithIdentifiers(let identifiers):
-                self.selectedAnswerIdentifiersSubject.send(identifiers)
             case .dismiss:
                 self.completion?(.dismiss)
             }
         }
-        selectedAnswerIdentifiersSubject
-            .debounce(for: 2.0, scheduler: RunLoop.main)
-            .removeDuplicates()
-            .sink { [weak self] identifiers in
-                guard let self = self else { return }
-
-//                self.parameters.room.sendPollResponse(for: parameters.pollEvent,
-//                                                      withAnswerIdentifiers: identifiers,
-//                                                      threadId: nil,
-//                                                      localEcho: nil, success: nil) { [weak self] error in
-//                    guard let self = self else { return }
-//
-//                    MXLog.error("[TimelinePollCoordinator]] Failed submitting response", context: error)
-//
-//                    self.viewModel.showAnsweringFailure()
-//                }
-            }
-            .store(in: &cancellables)
     }
     
     // MARK: - Public

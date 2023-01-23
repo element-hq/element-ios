@@ -57,7 +57,7 @@ final class PollHistoryCoordinator: NSObject, Coordinator, Presentable {
     }
     
     func showPollDetail(_ poll: PollListData) {
-        let detailCoordinator: PollHistoryDetailCoordinator = .init(parameters: .init(pollHistoryDetails: .dummy, session: parameters.session, room: parameters.room))
+        let detailCoordinator: PollHistoryDetailCoordinator = .init(parameters: .init(pollHistoryDetails: MockPollHistoryDetailScreenState.openUndisclosed.poll, session: parameters.session, room: parameters.room))
         detailCoordinator.toPresentable().presentationController?.delegate = self
         detailCoordinator.completion = { [weak self, weak detailCoordinator] result in
             guard let self = self, let coordinator = detailCoordinator else { return }

@@ -25,15 +25,15 @@ enum MockPollHistoryDetailScreenState: MockScreenState, CaseIterable {
     case closedPollEnded
     
     var screenType: Any.Type {
-        PollHistoryDetails.self
+        TimelinePollDetails.self
     }
     
-    var poll: PollHistoryDetails {
+    var poll: TimelinePollDetails {
         let answerOptions = [TimelinePollAnswerOption(id: "1", text: "First", count: 10, winner: false, selected: false),
                              TimelinePollAnswerOption(id: "2", text: "Second", count: 5, winner: false, selected: true),
                              TimelinePollAnswerOption(id: "3", text: "Third", count: 15, winner: true, selected: false)]
         
-        let poll = PollHistoryDetails(question: "Question",
+        let poll = TimelinePollDetails(question: "Question",
                                        answerOptions: answerOptions,
                                        closed: self == .closedDisclosed || self == .closedUndisclosed ? true : false,
                                        totalAnswerCount: 20,
@@ -47,7 +47,6 @@ enum MockPollHistoryDetailScreenState: MockScreenState, CaseIterable {
     
     var screenView: ([Any], AnyView) {
 
-        
         let viewModel = PollHistoryDetailViewModel(pollHistoryDetails: poll)
         
         return ([viewModel], AnyView(PollHistoryDetail(viewModel: viewModel.context)))
