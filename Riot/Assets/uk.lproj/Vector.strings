@@ -2915,3 +2915,10 @@
 "wysiwyg_composer_format_action_unordered_list" = "Перемкнути на маркований список";
 "voice_broadcast_recorder_connection_error" = "Помилка з'єднання - Запис призупинено";
 "poll_timeline_reply_ended_poll" = "Завершене опитування";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Перенесення даних\n%@ %%";
+"settings_labs_disable_crypto_sdk" = "Crypto SDK увімкнено. Щоб вимкнути, перевстановіть застосунок";
+"settings_labs_confirm_crypto_sdk" = "Дію не можна скасувати";
+"settings_labs_enable_crypto_sdk" = "Увімкнути новий заснований на rust Crypto SDK";
