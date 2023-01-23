@@ -81,11 +81,11 @@ private extension PollHistoryViewModel {
     }
     
     func updatePolls(with poll: TimelinePollDetails) {
-        if let matchIndex = polls?.firstIndex(where: { $0.id == poll.id }) {
-            polls?[matchIndex] = poll
-        } else {
-            polls?.append(poll)
+        guard let pollIndex = polls?.firstIndex(where: { $0.id == poll.id }) else {
+            return
         }
+            
+        polls?[pollIndex] = poll
     }
     
     func updateViewState() {
