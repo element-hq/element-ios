@@ -17,7 +17,7 @@
 import RiotSwiftUI
 import XCTest
 
-class PollHistoryUITests: MockScreenTestCase {
+final class PollHistoryUITests: MockScreenTestCase {
     func testActivePollHistoryHasContent() {
         app.goToScreenWithIdentifier(MockPollHistoryScreenState.active.title)
         let title = app.navigationBars.firstMatch.identifier
@@ -40,7 +40,7 @@ class PollHistoryUITests: MockScreenTestCase {
         let emptyText = app.staticTexts["PollHistory.emptyText"]
         let items = app.staticTexts["PollListItem.title"]
         let selectedSegment = app.buttons[VectorL10n.pollHistoryPastSegmentTitle]
-        let winningOption = app.staticTexts["PollListData.winningOption"]
+        let winningOption = app.buttons["PollAnswerOption0"]
         
         XCTAssertEqual(title, VectorL10n.pollHistoryTitle)
         XCTAssertTrue(items.exists)
@@ -64,5 +64,16 @@ class PollHistoryUITests: MockScreenTestCase {
         XCTAssertTrue(selectedSegment.exists)
         XCTAssertEqual(selectedSegment.value as? String, VectorL10n.accessibilitySelected)
         XCTAssertFalse(winningOption.exists)
+    }
+    
+    func testLoaderIsShowing() {
+        app.goToScreenWithIdentifier(MockPollHistoryScreenState.loading.title)
+        let title = app.navigationBars.firstMatch.identifier
+        let loadingText = app.staticTexts["PollHistory.loadingText"]
+        let items = app.staticTexts["PollListItem.title"]
+        
+        XCTAssertEqual(title, VectorL10n.pollHistoryTitle)
+        XCTAssertFalse(items.exists)
+        XCTAssertTrue(loadingText.exists)
     }
 }

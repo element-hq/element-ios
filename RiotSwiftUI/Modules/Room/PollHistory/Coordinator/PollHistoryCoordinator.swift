@@ -19,6 +19,7 @@ import SwiftUI
 
 struct PollHistoryCoordinatorParameters {
     let mode: PollHistoryMode
+    let room: MXRoom
 }
 
 final class PollHistoryCoordinator: Coordinator, Presentable {
@@ -32,9 +33,7 @@ final class PollHistoryCoordinator: Coordinator, Presentable {
     
     init(parameters: PollHistoryCoordinatorParameters) {
         self.parameters = parameters
-        
-        #warning("replace with the real service after that it's done")
-        let viewModel = PollHistoryViewModel(mode: parameters.mode, pollService: MockPollHistoryService())
+        let viewModel = PollHistoryViewModel(mode: parameters.mode, pollService: PollHistoryService(room: parameters.room, chunkSizeInDays: PollHistoryConstants.chunkSizeInDays))
         let view = PollHistory(viewModel: viewModel.context)
         pollHistoryViewModel = viewModel
         pollHistoryHostingController = VectorHostingController(rootView: view)

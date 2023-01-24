@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+import Combine
 import Foundation
 import SwiftUI
 
@@ -27,6 +28,7 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     case past
     case activeEmpty
     case pastEmpty
+    case loading
     
     /// The associated screen
     var screenType: Any.Type {
@@ -45,10 +47,19 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
             pollHistoryMode = .past
         case .activeEmpty:
             pollHistoryMode = .active
-            pollService.activePollsData = []
+            pollService.nextBatchPublisher = Empty(completeImmediately: true,
+                                              outputType: TimelinePollDetails.self,
+                                              failureType: Error.self).eraseToAnyPublisher()
         case .pastEmpty:
             pollHistoryMode = .past
-            pollService.pastPollsData = []
+            pollService.nextBatchPublisher = Empty(completeImmediately: true,
+                                              outputType: TimelinePollDetails.self,
+                                              failureType: Error.self).eraseToAnyPublisher()
+        case .loading:
+            pollHistoryMode = .active
+            pollService.nextBatchPublisher = Empty(completeImmediately: false,
+                                              outputType: TimelinePollDetails.self,
+                                              failureType: Error.self).eraseToAnyPublisher()
         }
         
         let viewModel = PollHistoryViewModel(mode: pollHistoryMode, pollService: pollService)

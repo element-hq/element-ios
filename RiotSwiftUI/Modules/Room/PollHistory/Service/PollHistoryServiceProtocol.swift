@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2023 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +14,17 @@
 // limitations under the License.
 //
 
+import Combine
+
 protocol PollHistoryServiceProtocol {
-    func fetchHistory() async throws -> [PollListData]
+    /// Returns a Publisher publishing the polls in the next batch.
+    /// Implementations should return the same publisher if `nextBatch()` is called again before the previous publisher completes.
+    func nextBatch() -> AnyPublisher<TimelinePollDetails, Error>
+    
+    /// Publishes updates for the polls previously pusblished by the `nextBatch()` publishers.
+    var updates: AnyPublisher<TimelinePollDetails, Never> { get }
+    
+    /// Publishes errors regarding poll aggregations.
+    /// Note: `nextBatch()` will continue to publish new polls even if some poll isn't being aggregated correctly.
+    var pollErrors: AnyPublisher<Error, Never> { get }
 }

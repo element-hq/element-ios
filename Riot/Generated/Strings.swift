@@ -4851,9 +4851,25 @@ public class VectorL10n: NSObject {
   public static var pollHistoryActiveSegmentTitle: String { 
     return VectorL10n.tr("Vector", "poll_history_active_segment_title") 
   }
+  /// Load more polls
+  public static var pollHistoryLoadMore: String { 
+    return VectorL10n.tr("Vector", "poll_history_load_more") 
+  }
+  /// Displaying polls
+  public static var pollHistoryLoadingText: String { 
+    return VectorL10n.tr("Vector", "poll_history_loading_text") 
+  }
+  /// There are no active polls for the past %@ days. Load more polls to view polls for previous months
+  public static func pollHistoryNoActivePollPeriodText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "poll_history_no_active_poll_period_text", p1)
+  }
   /// There are no active polls in this room
   public static var pollHistoryNoActivePollText: String { 
     return VectorL10n.tr("Vector", "poll_history_no_active_poll_text") 
+  }
+  /// There are no past polls for the past %@ days. Load more polls to view polls for previous months
+  public static func pollHistoryNoPastPollPeriodText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "poll_history_no_past_poll_period_text", p1)
   }
   /// There are no past polls in this room
   public static var pollHistoryNoPastPollText: String { 

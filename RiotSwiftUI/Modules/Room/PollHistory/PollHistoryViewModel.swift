@@ -14,18 +14,15 @@
 // limitations under the License.
 //
 
+import Combine
 import SwiftUI
 
 typealias PollHistoryViewModelType = StateStoreViewModel<PollHistoryViewState, PollHistoryViewAction>
 
 final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModelProtocol {
     private let pollService: PollHistoryServiceProtocol
-    private var polls: [PollListData] = []
-    private var fetchingTask: Task<Void, Error>? {
-        didSet {
-            oldValue?.cancel()
-        }
-    }
+    private var polls: [TimelinePollDetails]?
+    private var subcriptions: Set<AnyCancellable> = .init()
     
     var completion: ((PollHistoryViewModelResult) -> Void)?
 
@@ -39,39 +36,85 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
     override func process(viewAction: PollHistoryViewAction) {
         switch viewAction {
         case .viewAppeared:
-            fetchingTask = fetchPolls()
+            setupUpdateSubscriptions()
+            fetchFirstBatch()
         case .segmentDidChange:
-            updatePolls()
+            updateViewState()
         }
     }
 }
 
 private extension PollHistoryViewModel {
-    func fetchPolls() -> Task<Void, Error> {
-        Task {
-            let polls = try await pollService.fetchHistory()
-            
-            guard Task.isCancelled == false else {
-                return
+    func fetchFirstBatch() {
+        state.isLoading = true
+        
+        pollService
+            .nextBatch()
+            .collect()
+            .sink { [weak self] _ in
+                #warning("Handle errors")
+                self?.state.isLoading = false
+            } receiveValue: { [weak self] polls in
+                self?.polls = polls
+                self?.updateViewState()
             }
-            
-            await MainActor.run {
-                self.polls = polls
-                updatePolls()
-            }
-        }
+            .store(in: &subcriptions)
     }
     
-    func updatePolls() {
-        let renderedPolls: [PollListData]
+    func setupUpdateSubscriptions() {
+        subcriptions.removeAll()
+        
+        pollService
+            .updates
+            .sink { [weak self] detail in
+                self?.update(poll: detail)
+                self?.updateViewState()
+            }
+            .store(in: &subcriptions)
+        
+        pollService
+            .pollErrors
+            .sink { detail in
+                #warning("Handle errors")
+            }
+            .store(in: &subcriptions)
+    }
+    
+    func update(poll: TimelinePollDetails) {
+        guard let pollIndex = polls?.firstIndex(where: { $0.id == poll.id }) else {
+            return
+        }
+            
+        polls?[pollIndex] = poll
+    }
+    
+    func updateViewState() {
+        let renderedPolls: [TimelinePollDetails]?
         
         switch context.mode {
         case .active:
-            renderedPolls = polls.filter { $0.winningOption == nil }
+            renderedPolls = polls?.filter { $0.closed == false }
         case .past:
-            renderedPolls = polls.filter { $0.winningOption != nil }
+            renderedPolls = polls?.filter { $0.closed == true }
         }
         
-        state.polls = renderedPolls
+        state.polls = renderedPolls?.sorted(by: { $0.startDate > $1.startDate })
+    }
+}
+
+extension PollHistoryViewModel.Context {
+    var emptyPollsText: String {
+        let days = PollHistoryConstants.chunkSizeInDays
+        
+        switch (viewState.bindings.mode, viewState.canLoadMoreContent) {
+        case (.active, true):
+            return VectorL10n.pollHistoryNoActivePollPeriodText("\(days)")
+        case (.active, false):
+            return VectorL10n.pollHistoryNoActivePollText
+        case (.past, true):
+            return VectorL10n.pollHistoryNoPastPollPeriodText("\(days)")
+        case (.past, false):
+            return VectorL10n.pollHistoryNoPastPollText
+        }
     }
 }
