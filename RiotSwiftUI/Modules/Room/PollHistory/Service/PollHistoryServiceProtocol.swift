@@ -1,5 +1,5 @@
-//
-// Copyright 2021 New Vector Ltd
+// 
+// Copyright 2023 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,17 +14,6 @@
 // limitations under the License.
 //
 
-import Foundation
-
-/// A protocol for classes that can be injected with a dependency container
-protocol Injectable: AnyObject {
-    var dependencies: DependencyContainer! { get set }
-}
-
-extension Injectable {
-    /// Used to inject the dependency container into an Injectable.
-    /// - Parameter dependencies: The `DependencyContainer` to inject.
-    func inject(dependencies: DependencyContainer) {
-        self.dependencies = dependencies
-    }
+protocol PollHistoryServiceProtocol {
+    func fetchHistory() async throws -> [PollListData]
 }

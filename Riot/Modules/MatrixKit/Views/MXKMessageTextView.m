@@ -67,6 +67,7 @@
 
 - (void)setAttributedText:(NSAttributedString *)attributedText
 {
+    self.linkTextAttributes = @{};
     if (@available(iOS 15.0, *)) {
         [self flushPills];
     }

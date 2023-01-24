@@ -24,13 +24,6 @@
 
 @implementation RoomOutgoingAttachmentWithoutSenderInfoBubbleCell
 
-- (void)customizeTableViewCellRendering
-{
-    [super customizeTableViewCellRendering];
-    
-    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
-}
-
 - (void)render:(MXKCellData *)cellData
 {
     [super render:cellData];

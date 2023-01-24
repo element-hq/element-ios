@@ -61,7 +61,7 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
         
         let viewModel = UserSuggestionViewModel(userSuggestionService: userSuggestionService)
         let view = UserSuggestionList(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.mediaManager)))
         
         userSuggestionViewModel = viewModel
         userSuggestionHostingController = VectorHostingController(rootView: view)
@@ -105,7 +105,7 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     private func calculateViewHeight() -> CGFloat {
         let viewModel = UserSuggestionViewModel(userSuggestionService: userSuggestionService)
         let view = UserSuggestionList(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.mediaManager)))
 
         let controller = VectorHostingController(rootView: view)
         guard let view = controller.view else {

@@ -58,6 +58,6 @@ struct TemplateRoomChatBubbleView_Previews: PreviewProvider {
     )
     static var previews: some View {
         TemplateRoomChatBubbleView(bubble: bubble)
-            .addDependency(MockAvatarService.example)
+            .environmentObject(AvatarViewModel.withMockedServices())
     }
 }

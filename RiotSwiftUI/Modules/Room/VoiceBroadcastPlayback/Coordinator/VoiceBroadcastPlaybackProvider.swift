@@ -78,6 +78,12 @@ import Foundation
         }
     }
     
+    @objc public func pausePlayingInProgressVoiceBroadcast() {
+        coordinatorsForEventIdentifiers.forEach { _, coordinator in
+            coordinator.pausePlayingInProgressVoiceBroadcast()
+        }
+    }
+    
     private func handleEvent(event: MXEvent, direction: MXTimelineDirection, customObject: Any?) {
         if direction == .backwards {
             //  ignore backwards events

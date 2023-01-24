@@ -45,7 +45,7 @@ final class RoomUpgradeCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         let viewModel = RoomUpgradeViewModel.makeRoomUpgradeViewModel(roomUpgradeService: RoomUpgradeService(session: parameters.session, roomId: parameters.roomId, parentSpaceId: parameters.parentSpaceId, versionOverride: parameters.versionOverride))
         let view = RoomUpgrade(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
         roomUpgradeViewModel = viewModel
         roomUpgradeHostingController = VectorHostingController(rootView: view)
         roomUpgradeHostingController.view.backgroundColor = .clear

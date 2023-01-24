@@ -53,29 +53,20 @@ final class ComposerLinkActionViewModelTests: XCTestCase {
     }
     
     func testEditDefaultState() {
-        let link = "https://element.io"
+        let link = "element.io"
         setUp(with: .edit(link: link))
         XCTAssertEqual(context.viewState.bindings.text, "")
         XCTAssertEqual(context.viewState.bindings.linkUrl, link)
-        XCTAssertFalse(context.viewState.isSaveButtonDisabled)
+        XCTAssertTrue(context.viewState.isSaveButtonDisabled)
         XCTAssertTrue(context.viewState.shouldDisplayRemoveButton)
         XCTAssertFalse(context.viewState.shouldDisplayTextField)
         XCTAssertEqual(context.viewState.title, VectorL10n.wysiwygComposerLinkActionEditTitle)
     }
     
-    func testUrlValidityCheck() {
-        setUp(with: .create)
-        XCTAssertTrue(context.viewState.isSaveButtonDisabled)
-        context.linkUrl = "invalid url"
-        XCTAssertTrue(context.viewState.isSaveButtonDisabled)
-        context.linkUrl = "https://element.io"
-        XCTAssertFalse(context.viewState.isSaveButtonDisabled)
-    }
-    
     func testTextNotEmptyCheck() {
         setUp(with: .createWithText)
         XCTAssertTrue(context.viewState.isSaveButtonDisabled)
-        context.linkUrl = "https://element.io"
+        context.linkUrl = "element.io"
         XCTAssertTrue(context.viewState.isSaveButtonDisabled)
         context.text = "text"
         XCTAssertFalse(context.viewState.isSaveButtonDisabled)
@@ -92,7 +83,7 @@ final class ComposerLinkActionViewModelTests: XCTestCase {
     }
     
     func testRemoveAction() {
-        setUp(with: .edit(link: "https://element.io"))
+        setUp(with: .edit(link: "element.io"))
         var result: ComposerLinkActionViewModelResult!
         viewModel.callback = { value in
             result = value
@@ -107,7 +98,7 @@ final class ComposerLinkActionViewModelTests: XCTestCase {
         viewModel.callback = { value in
             result = value
         }
-        let link = "https://element.io"
+        let link = "element.io"
         context.linkUrl = link
         context.send(viewAction: .save)
         XCTAssertEqual(result, .performOperation(.setLink(urlString: link)))
@@ -119,7 +110,7 @@ final class ComposerLinkActionViewModelTests: XCTestCase {
         viewModel.callback = { value in
             result = value
         }
-        let link = "https://element.io"
+        let link = "element.io"
         context.linkUrl = link
         let text = "test"
         context.text = text
@@ -128,13 +119,15 @@ final class ComposerLinkActionViewModelTests: XCTestCase {
     }
     
     func testSaveActionForEdit() {
-        setUp(with: .edit(link: "https://element.io"))
+        setUp(with: .edit(link: "element.io"))
         var result: ComposerLinkActionViewModelResult!
         viewModel.callback = { value in
             result = value
         }
-        let link = "https://matrix.org"
+        XCTAssertTrue(context.viewState.isSaveButtonDisabled)
+        let link = "matrix.org"
         context.linkUrl = link
+        XCTAssertFalse(context.viewState.isSaveButtonDisabled)
         context.send(viewAction: .save)
         XCTAssertEqual(result, .performOperation(.setLink(urlString: link)))
     }

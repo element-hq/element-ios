@@ -43,6 +43,7 @@ class LocationManager: NSObject {
     
     private let locationManager: CLLocationManager
     private var authorizationHandler: LocationAuthorizationHandler?
+    private var authorizationReturnedSinceRequestingAlways = false
     
     // MARK: Public
     
@@ -144,14 +145,16 @@ class LocationManager: NSObject {
     // See https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization?changes=_6_6
     private func tryToRequestAlwaysAuthorization(handler: @escaping LocationAuthorizationHandler) {
         self.authorizationHandler = handler
+        self.authorizationReturnedSinceRequestingAlways = false
+        self.locationManager.delegate = self
         self.locationManager.requestAlwaysAuthorization()
         
         Timer.scheduledTimer(withTimeInterval: Constants.waitForAuthorizationStatusDelay, repeats: false) { [weak self] _ in
-            guard let self = self else {
+            guard let self = self, !self.authorizationReturnedSinceRequestingAlways else {
                 return
             }
             
-            self.authorizationRequestDidComplete(with: self.locationManager.authorizationStatus)
+            self.authorizationAlwaysRequestDidComplete(with: self.locationManager.authorizationStatus)
         }
     }
     
@@ -174,8 +177,7 @@ class LocationManager: NSObject {
         
         return status
     }
-    
-    private func authorizationRequestDidComplete(with status: CLAuthorizationStatus) {
+    private func authorizationAlwaysRequestDidComplete(with status: CLAuthorizationStatus) {
         guard let authorizationHandler = self.authorizationHandler else {
             return
         }
@@ -191,7 +193,14 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         
         let status = self.locationManager.authorizationStatus
-        self.authorizationRequestDidComplete(with: status)
+        authorizationReturnedSinceRequestingAlways = true
+        if status == .authorizedAlways {
+            // LocationManager can call locationManagerDidChangeAuthorization multiple times.
+            // For example it calls it at initialisation of LocationManager manager and we are also seeing it called
+            // after requestAlwaysAuthorization but before the user has actually selected on option on the prompt.
+            // Therefore we should only call `authorizationAlwaysRequestDidComplete` once on the success of authorizedAlways being granted.
+            self.authorizationAlwaysRequestDidComplete(with: status)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

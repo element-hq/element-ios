@@ -49,7 +49,7 @@ enum MockRoomUpgradeScreenState: MockScreenState, CaseIterable {
         return (
             [service, viewModel],
             AnyView(RoomUpgrade(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

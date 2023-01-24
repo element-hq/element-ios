@@ -2893,3 +2893,32 @@
 "poll_timeline_decryption_error" = "Через помилки під час розшифрування деякі голоси можуть бути не враховані";
 "voice_message_broadcast_in_progress_title" = "Неможливо розпочати запис голосового повідомлення";
 "voice_message_broadcast_in_progress_message" = "Ви не можете розпочати запис голосового повідомлення, оскільки зараз триває запис трансляції наживо. Будь ласка, завершіть трансляцію, щоб розпочати запис голосового повідомлення";
+"poll_timeline_ended_text" = "Опитування завершено";
+"voice_broadcast_voip_cannot_start_description" = "Ви не можете розпочати виклик, оскільки зараз відбувається запис трансляції наживо. Завершіть трансляцію, щоб розпочати виклик.";
+"voice_broadcast_voip_cannot_start_title" = "Неможливо розпочати виклик";
+"poll_history_no_past_poll_text" = "У цій кімнаті немає минулих опитувань";
+"poll_history_no_active_poll_text" = "У цій кімнаті немає активних опитувань";
+"poll_history_past_segment_title" = "Минулі опитування";
+"poll_history_active_segment_title" = "Активні опитування";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Історія опитувань";
+"room_details_polls" = "Історія опитувань";
+"accessibility_selected" = "вибрано";
+"voice_broadcast_playback_lock_screen_placeholder" = "Голосові трансляції";
+"voice_broadcast_connection_error_message" = "На жаль, ми не можемо розпочати запис прямо зараз. Повторіть спробу пізніше.";
+"voice_broadcast_connection_error_title" = "Помилка з'єднання";
+"wysiwyg_composer_format_action_quote" = "Перемкнути цитування";
+"wysiwyg_composer_format_action_code_block" = "Перемкнути блок коду";
+"wysiwyg_composer_format_action_ordered_list" = "Перемкнути на нумерований список";
+"wysiwyg_composer_format_action_unordered_list" = "Перемкнути на маркований список";
+"voice_broadcast_recorder_connection_error" = "Помилка з'єднання - Запис призупинено";
+"poll_timeline_reply_ended_poll" = "Завершене опитування";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Перенесення даних\n%@ %%";
+"settings_labs_disable_crypto_sdk" = "Crypto SDK увімкнено. Щоб вимкнути, перевстановіть застосунок";
+"settings_labs_confirm_crypto_sdk" = "Дію не можна скасувати";
+"settings_labs_enable_crypto_sdk" = "Увімкнути новий заснований на rust Crypto SDK";

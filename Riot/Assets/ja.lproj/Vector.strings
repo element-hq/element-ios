@@ -1720,7 +1720,7 @@
 "pin_protection_reset_alert_action_reset" = "リセット";
 "authentication_recaptcha_title" = "あなたは人間ですか？";
 "authentication_verify_msisdn_waiting_button" = "コードを再送信";
-"authentication_choose_password_submit_button" = "パスワードをリセット";
+"authentication_choose_password_submit_button" = "パスワードを再設定";
 "authentication_choose_password_signout_all_devices" = "全ての端末からサインアウト";
 "authentication_choose_password_text_field_placeholder" = "新しいパスワード";
 "authentication_terms_title" = "プライバシーポリシー";
@@ -1763,13 +1763,13 @@
 "home_context_menu_favourite" = "お気に入り";
 "all_chats_user_menu_settings" = "ユーザー設定";
 "all_chats_edit_layout_show_filters" = "フィルターを表示";
-"all_chats_edit_layout_show_recents" = "最近使用したものを表示";
+"all_chats_edit_layout_show_recents" = "最近の履歴を表示";
 "all_chats_edit_layout_alphabetical_order" = "アルファベット順で並び替え";
 "all_chats_edit_layout_activity_order" = "アクティビティで並び替え";
 "space_selector_create_space" = "スペースを作成";
-"space_selector_empty_view_information" = "スペースは、ルームや連絡先をグループ化する方法です。以下からスペースを作成できます。";
+"space_selector_empty_view_information" = "スペースは、ルームと連絡先をまとめる方法です。はじめに、スペースを作成しましょう。";
 "all_chats_all_filter" = "全て";
-"all_chats_edit_layout_recents" = "最近";
+"all_chats_edit_layout_recents" = "履歴";
 "all_chats_edit_layout_unreads" = "未読";
 "all_chats_section_title" = "チャット";
 
@@ -1799,3 +1799,5 @@
 "service_terms_modal_information_title_identity_server" = "IDサーバー";
 "location_sharing_invalid_power_level_message" = "位置情報（ライブ）の共有には適切な権限が必要です。";
 "location_sharing_live_error" = "位置情報（ライブ）のエラー";
+"all_chats_onboarding_page_title3" = "フィードバックを送信";
+"all_chats_edit_layout" = "レイアウトの設定";

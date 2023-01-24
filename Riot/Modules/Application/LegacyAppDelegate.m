@@ -618,6 +618,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Pause Voice Broadcast recording if needed
     [VoiceBroadcastRecorderProvider.shared pauseRecording];
+    
+    // Pause Voice Broadcast playing if needed
+    [VoiceBroadcastPlaybackProvider.shared pausePlayingInProgressVoiceBroadcast];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -2395,14 +2398,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         MXLogDebug(@"[AppDelegate] showLaunchAnimation");
         
         LaunchLoadingView *launchLoadingView;
-        if (MXSDKOptions.sharedInstance.enableSyncProgress)
+        if (MXSDKOptions.sharedInstance.enableStartupProgress)
         {
             MXSession *mainSession = self.mxSessions.firstObject;
-            launchLoadingView = [LaunchLoadingView instantiateWithSyncProgress:mainSession.syncProgress];
+            launchLoadingView = [LaunchLoadingView instantiateWithStartupProgress:mainSession.startupProgress];
         }
         else
         {
-            launchLoadingView = [LaunchLoadingView instantiateWithSyncProgress:nil];
+            launchLoadingView = [LaunchLoadingView instantiateWithStartupProgress:nil];
         }
                 
         launchLoadingView.frame = window.bounds;

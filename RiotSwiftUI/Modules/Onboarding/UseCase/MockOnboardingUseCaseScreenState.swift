@@ -45,7 +45,7 @@ enum MockOnboardingUseCaseSelectionScreenState: MockScreenState, CaseIterable {
         return (
             [self, viewModel],
             AnyView(OnboardingUseCaseSelectionScreen(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

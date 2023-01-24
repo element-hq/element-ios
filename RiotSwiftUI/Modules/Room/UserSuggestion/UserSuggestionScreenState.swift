@@ -37,7 +37,7 @@ enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
         return (
             [service, listViewModel],
             AnyView(UserSuggestionListWithInput(viewModel: viewModel)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

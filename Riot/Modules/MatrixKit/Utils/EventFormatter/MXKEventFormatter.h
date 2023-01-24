@@ -367,6 +367,12 @@ typedef enum : NSUInteger {
 @property (nonatomic) UIColor *sendingTextColor;
 
 /**
+ Color used to display links and hyperlinks contentt.
+ Default is [UIColor linkColor].
+ */
+@property (nonatomic) UIColor *linksColor;
+
+/**
  Color used to display error text.
  Default is red.
  */

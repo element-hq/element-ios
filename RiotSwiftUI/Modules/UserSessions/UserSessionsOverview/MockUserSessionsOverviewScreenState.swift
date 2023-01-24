@@ -56,7 +56,7 @@ enum MockUserSessionsOverviewScreenState: MockScreenState, CaseIterable {
         return (
             [service, viewModel],
             AnyView(UserSessionsOverview(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

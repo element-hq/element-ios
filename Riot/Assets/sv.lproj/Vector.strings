@@ -2310,7 +2310,7 @@
 "authentication_terms_policy_url_error" = "Kan inte hitta den valda policyn. Vänligen pröva igen senare.";
 /* The placeholder will show the homeserver's domain */
 "authentication_terms_message" = "Vänligen läs villkor och policyer för %@";
-"authentication_terms_title" = "Serverpolicyer";
+"authentication_terms_title" = "Sekretesspolicyer";
 "authentication_verify_msisdn_invalid_phone_number" = "Ogiltigt telefonnummer";
 "authentication_verify_msisdn_waiting_button" = "Skicka kod igen";
 /* The placeholder will show the phone number that was entered. */
@@ -2363,3 +2363,112 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Skapa ditt konto";
+"voice_broadcast_time_left" = "%@ kvar";
+"all_chats_empty_list_placeholder_title" = "Du är ikapp.";
+"all_chats_empty_view_information" = "Den säkra allt-i-ett-chattappen för lag, vänner och organisationer. Skapa en chatt, eller gå med i ett existerande rum, för att komma igång.";
+"all_chats_empty_space_information" = "Utrymmen är ett nytt sätt att gruppera rum och personer. Lägg till ett existerande rum, eller skapa ett nytt, med knappen nere till höger.";
+"all_chats_empty_view_title" = "%@\nser lite tom ut.";
+"all_chats_all_filter" = "Alla";
+"all_chats_edit_layout_alphabetical_order" = "Sortera A-Ö";
+"all_chats_edit_layout_activity_order" = "Sortera efter aktivitet";
+"all_chats_edit_layout_show_filters" = "Visa filter";
+"all_chats_edit_layout_show_recents" = "Visa nyliga";
+"all_chats_edit_layout_sorting_options_title" = "Sortera meddelanden efter";
+"all_chats_edit_layout_pin_spaces_title" = "Fäst dina utrymmen";
+"all_chats_edit_layout_add_filters_message" = "Filtrera automatiskt dina meddelanden i valfria kategorier";
+"all_chats_edit_layout_add_filters_title" = "Filtrera dina meddelanden";
+"all_chats_edit_layout_add_section_message" = "Fäst sektioner till hem för enkel åtkomst";
+"all_chats_edit_layout_add_section_title" = "Lägg till sektion i hem";
+"all_chats_edit_layout_unreads" = "Olästa";
+"all_chats_edit_layout_recents" = "Nyliga";
+"all_chats_edit_layout" = "Layoutalternativ";
+"all_chats_section_title" = "Chattar";
+
+// MARK: - All Chats
+
+"all_chats_title" = "Alla chattar";
+"voice_broadcast_voip_cannot_start_description" = "Du kan inte starta ett samtal eftersom att du för närvarande spelar in en direktsändning. Vänligen avsluta din direktsändning för att starta ett samtal.";
+"voice_broadcast_voip_cannot_start_title" = "Kan inte starta ett samtal";
+"voice_broadcast_stop_alert_agree_button" = "Ja, avsluta";
+"voice_broadcast_stop_alert_description" = "Är du säker på att du vill avsluta din direktsändning? Det här kommer att avsluta sändningen, och den fulla inspelningen kommer att bli tillgänglig i rummet.";
+"voice_broadcast_stop_alert_title" = "Avsluta direktsändning?";
+"voice_broadcast_buffering" = "Buffrar…";
+"voice_broadcast_tile" = "Röstsändning";
+"voice_broadcast_live" = "Live";
+"voice_broadcast_playback_loading_error" = "Kunde inte spela den här röstsändningen.";
+"voice_broadcast_already_in_progress_message" = "Du spelar redan in en röstsändning. Vänligen avsluta din nuvarande röstsändning för att starta en ny.";
+"voice_broadcast_blocked_by_someone_else_message" = "Någon annan spelar redan in en röstsändning. Vänta på att deras röstsändning avslutas för att starta en ny.";
+"voice_broadcast_permission_denied_message" = "Du har inte behörigheten som krävs för att starta en röstsändning i det här rummet. Kontakta en rumsadministratör för att uppgradera din behörighet.";
+
+// MARK: - Voice Broadcast
+"voice_broadcast_unauthorized_title" = "Du kan inte starta en ny röstsändning";
+"voice_message_broadcast_in_progress_message" = "Du kan inte starta ett röstmeddelande eftersom att du för närvarande spelar in en direktsändning. Vänligen avsluta din direktsändning för att börja spela in ett röstmeddelande";
+"voice_message_broadcast_in_progress_title" = "Kan inte starta röstmeddelande";
+"spaces_subspace_creation_visibility_message" = "Det skapade utrymmet kommer att läggas till i %@.";
+"spaces_subspace_creation_visibility_title" = "Vad för sorts utrymme vill du skapa?";
+"spaces_explore_rooms_format" = "Utforska %@";
+"spaces_create_subspace_title" = "Skapa ett underutrymme";
+"spaces_add_subspace_title" = "Skapa utrymme inuti %@";
+"launch_loading_processing_response" = "Hanterar data\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Synkar med servern\n(%@ försök)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Synkar med servern";
+"key_verification_alert_body" = "Granska för att försäkra att ditt konto är säkert.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Du har overifierade sessioner";
+"sign_out_confirmation_message" = "Är du säker på att du vill logga ut?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Logga ut";
+// User sessions management
+"user_sessions_settings" = "Hantera sessioner";
+"manage_session_sign_out_other_sessions" = "Logga ut ur alla andra sessioner";
+"manage_session_rename" = "Döp om session";
+"manage_session_name_info_link" = "Läs mer";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Observera att sessionsnamn också är synliga för personer du pratar med. %@";
+"manage_session_name_hint" = "Anpassade sessionsnamn kan hjälpa dig att känna igen dina enheter lättare.";
+"settings_labs_enable_voice_broadcast" = "Röstsändning";
+"settings_labs_enable_wysiwyg_composer" = "Pröva den nya riktextredigeraren";
+"settings_labs_enable_new_app_layout" = "Ny applikationslayout";
+"settings_labs_enable_new_client_info_feature" = "Spara klientens namn, version och URL för att lättare känna igen sessioner i sessionshanteraren";
+"settings_labs_enable_new_session_manager" = "My sessionshanterare";
+"room_first_message_placeholder" = "Skicka ditt första meddelande…";
+"password_policy_pwd_in_dict_error" = "Det här lösenordet har hittats i en ordlista, och tillåts inte.";
+"password_policy_weak_pwd_error" = "Det här lösenordet är för svagt. Det måste innehålla minst 8 tecken, och minst ett tecken av varje typ: stor bokstav, liten bokstav, siffra och specialtecken.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "För kort lösenord";
+"authentication_qr_login_failure_retry" = "Pröva igen";
+"authentication_qr_login_failure_request_timed_out" = "Länkningen slutfördes inte inom den krävda tiden.";
+"authentication_qr_login_failure_request_denied" = "Förfrågan nekades på en andra enheten.";
+"authentication_qr_login_failure_invalid_qr" = "QR-kod är ogiltig.";
+"authentication_qr_login_failure_title" = "Länkning misslyckades";
+"authentication_qr_login_loading_signed_in" = "Du är nu inloggad på din andra enhet.";
+"authentication_qr_login_loading_waiting_signin" = "Väntar på att enheten loggar in.";
+"authentication_qr_login_loading_connecting_device" = "Ansluter till enhet";
+"authentication_qr_login_confirm_alert" = "Vänligen försäkra att du känner till källan till den här koden. Genom att länka enheter så ger du någon full åtkomst till ditt konto.";
+"authentication_qr_login_confirm_subtitle" = "Bekräfta att koden nedan matchar den andra enheten:";
+"authentication_qr_login_confirm_title" = "Säker kommunikation etablerad";
+"authentication_qr_login_scan_subtitle" = "Placera QR-koden i rutan nedan";
+"authentication_qr_login_scan_title" = "Skanna QR-kod";
+"authentication_qr_login_display_step2" = "Välj 'Logga in med QR-kod'";
+"authentication_qr_login_display_step1" = "Öppna Element på din andra enhet";
+"authentication_qr_login_display_subtitle" = "Skanna QR-koden nedan med din enhet som är utloggad.";
+"authentication_qr_login_display_title" = "Länka en enhet";
+"authentication_qr_login_start_display_qr" = "Visa QR-kod på den här enheten";
+"authentication_qr_login_start_need_alternative" = "Behöver du en alternativ metod?";
+"authentication_qr_login_start_step4" = "Välj 'Visa QR-kod på den här enheten'";
+"authentication_qr_login_start_step3" = "Välj 'Länka en enhet'";
+"authentication_qr_login_start_step2" = "Gå till Inställningar -> Säkerhet & sekretess";
+"authentication_qr_login_start_step1" = "Öppna Element på den andra enheten";
+"authentication_qr_login_start_subtitle" = "Använd kameran på den här enheten för att skanna QR-koden som visas på den andra enheten:";
+"authentication_qr_login_start_title" = "Skanna QR-kod";
+"authentication_choose_password_not_verified_message" = "Kolla din inkorg";
+"authentication_choose_password_not_verified_title" = "E-post inte verifierad";
+"authentication_login_with_qr" = "Logga in med QR-kod";
+"invite_to" = "Bjud in till %@";

@@ -54,7 +54,7 @@ enum MockSpaceCreationPostProcessScreenState: MockScreenState {
         return (
             [service, viewModel],
             AnyView(SpaceCreationPostProcess(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

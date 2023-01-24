@@ -61,12 +61,21 @@ final class VoiceBroadcastRecorderCoordinator: Coordinator, Presentable {
     
     func toPresentable() -> UIViewController {
         let view = VoiceBroadcastRecorderView(viewModel: voiceBroadcastRecorderViewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
+
         return VectorHostingController(rootView: view)
     }
     
     func pauseRecording() {
         voiceBroadcastRecorderViewModel.context.send(viewAction: .pause)
+    }
+    
+    func pauseRecordingOnError() {
+        voiceBroadcastRecorderViewModel.context.send(viewAction: .pauseOnError)
+    }
+    
+    func isVoiceBroadcastRecording() -> Bool {
+        return voiceBroadcastRecorderService.isRecording
     }
 
     // MARK: - Private

@@ -28,9 +28,7 @@
     [super customizeTableViewCellRendering];
     
     self.roomNameLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
-    
-    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
-    
+        
     [self updateUserNameColor];
 }
 

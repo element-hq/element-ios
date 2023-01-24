@@ -23,4 +23,6 @@
 
 #import "BuildInfo.h"
 
+#import "ThemeService.h"
+
 #endif /* RiotNSE_Bridging_Header_h */

@@ -26,8 +26,6 @@
 - (void)customizeTableViewCellRendering
 {
     [super customizeTableViewCellRendering];
-
-    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 @end

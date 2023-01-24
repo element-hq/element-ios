@@ -43,6 +43,6 @@ struct RoomNotificationSettingsHeader_Previews: PreviewProvider {
     static let name = "Element"
     static var previews: some View {
         RoomNotificationSettingsHeader(avatarData: MockAvatarInput.example, displayName: name)
-            .addDependency(MockAvatarService.example)
+            .environmentObject(AvatarViewModel.withMockedServices())
     }
 }

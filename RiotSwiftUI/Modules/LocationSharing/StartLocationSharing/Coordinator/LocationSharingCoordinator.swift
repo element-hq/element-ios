@@ -86,7 +86,7 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
         )
         
         let view = LocationSharingView(context: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.mediaManager)))
         
         locationSharingViewModel = viewModel
         locationSharingHostingController = VectorHostingController(rootView: view)
