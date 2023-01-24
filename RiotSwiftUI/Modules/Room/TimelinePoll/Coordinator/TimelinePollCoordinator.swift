@@ -139,17 +139,21 @@ extension TimelinePollDetails {
                   closed: poll.isClosed,
                   startDate: poll.startDate,
                   totalAnswerCount: poll.totalAnswerCount,
-                  type: Self.pollKindToTimelinePollType(poll.kind),
+                  type: poll.kind.timelinePollType,
                   eventType: eventType,
                   maxAllowedSelections: poll.maxAllowedSelections,
                   hasBeenEdited: poll.hasBeenEdited,
                   hasDecryptionError: poll.hasDecryptionError)
     }
-    
-    private static func pollKindToTimelinePollType(_ kind: PollKind) -> TimelinePollType {
-        let mapping = [PollKind.disclosed: TimelinePollType.disclosed,
-                       PollKind.undisclosed: TimelinePollType.undisclosed]
-        
-        return mapping[kind] ?? .disclosed
+}
+
+private extension PollKind {
+    var timelinePollType: TimelinePollType {
+        switch self {
+        case .disclosed:
+            return .disclosed
+        case .undisclosed:
+            return .undisclosed
+        }
     }
 }
