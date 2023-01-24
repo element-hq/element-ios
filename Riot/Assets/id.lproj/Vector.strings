@@ -2916,3 +2916,7 @@
 "settings_labs_disable_crypto_sdk" = "SDK Kripto diaktifkan. Untuk menonaktifkan, mohon memasang ulang aplikasi";
 "settings_labs_confirm_crypto_sdk" = "Tindakan ini tidak dapat diurungkan";
 "settings_labs_enable_crypto_sdk" = "Aktifkan SDK Kripto baru berbasis Rust";
+"poll_history_load_more" = "Muat lebih banyak pemungutan suara";
+"poll_history_no_active_poll_period_text" = "Tidak ada pemungutan suara terakhir untuk %@ hari sebelumnya. Muat lebih banyak pemungutan suara untuk bulan sebelumnya";
+"poll_history_no_past_poll_period_text" = "Tidak ada pemungutan suara untuk %@ hari sebelumnya. Muat lebih banyak pemungutan suara untuk melihat pemungutan suara untuk bulan sebelumnya";
+"poll_history_loading_text" = "Menampilkan pemungutan suara";
