@@ -101,3 +101,20 @@ private extension PollHistoryViewModel {
         state.polls = renderedPolls?.sorted(by: { $0.startDate > $1.startDate })
     }
 }
+
+extension PollHistoryViewModel.Context {
+    var emptyPollsText: String {
+        let days = PollHistoryConstants.chunkSizeInDays
+        
+        switch (viewState.bindings.mode, viewState.canLoadMoreContent) {
+        case (.active, true):
+            return VectorL10n.pollHistoryNoActivePollPeriodText("\(days)")
+        case (.active, false):
+            return VectorL10n.pollHistoryNoActivePollText
+        case (.past, true):
+            return VectorL10n.pollHistoryNoPastPollPeriodText("\(days)")
+        case (.past, false):
+            return VectorL10n.pollHistoryNoPastPollText
+        }
+    }
+}

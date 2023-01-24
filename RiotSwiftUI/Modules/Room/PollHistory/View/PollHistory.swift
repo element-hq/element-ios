@@ -94,30 +94,20 @@ struct PollHistory: View {
             .progressViewStyle(CircularProgressViewStyle())
     }
     
-    @ViewBuilder
     private var noPollsView: some View {
-        if viewModel.viewState.canLoadMoreContent {
-            let days = PollHistoryConstants.chunkSizeInDays
-            
-            VStack(spacing: 32) {
-                Text(viewModel.mode == .active ? VectorL10n.pollHistoryNoActivePollPeriodText("\(days)") : VectorL10n.pollHistoryNoPastPollPeriodText("\(days)"))
-                    .font(theme.fonts.body)
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 16)
-                    .accessibilityIdentifier("PollHistory.emptyLoadMoreText")
-    
-                loadMoreButton
-            }
-            .frame(maxHeight: .infinity)
-        } else {
-            Text(viewModel.mode == .active ? VectorL10n.pollHistoryNoActivePollText : VectorL10n.pollHistoryNoPastPollText)
+        VStack(spacing: 32) {
+            Text(viewModel.emptyPollsText)
                 .font(theme.fonts.body)
+                .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
-                .frame(maxHeight: .infinity)
                 .padding(.horizontal, 16)
                 .accessibilityIdentifier("PollHistory.emptyText")
+
+            if viewModel.viewState.canLoadMoreContent {
+                loadMoreButton
+            }
         }
+        .frame(maxHeight: .infinity)
     }
     
     private var loadingView: some View {
