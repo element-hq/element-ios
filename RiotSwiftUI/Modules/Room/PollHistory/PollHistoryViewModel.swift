@@ -49,7 +49,7 @@ private extension PollHistoryViewModel {
         state.isLoading = true
         
         pollService
-            .next()
+            .nextBatch()
             .collect()
             .sink { [weak self] _ in
                 #warning("Handle errors")

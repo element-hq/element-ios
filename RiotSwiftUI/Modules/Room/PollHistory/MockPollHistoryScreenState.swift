@@ -47,17 +47,17 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
             pollHistoryMode = .past
         case .activeEmpty:
             pollHistoryMode = .active
-            pollService.nextPublisher = Empty(completeImmediately: true,
+            pollService.nextBatchPublisher = Empty(completeImmediately: true,
                                               outputType: TimelinePollDetails.self,
                                               failureType: Error.self).eraseToAnyPublisher()
         case .pastEmpty:
             pollHistoryMode = .past
-            pollService.nextPublisher = Empty(completeImmediately: true,
+            pollService.nextBatchPublisher = Empty(completeImmediately: true,
                                               outputType: TimelinePollDetails.self,
                                               failureType: Error.self).eraseToAnyPublisher()
         case .loading:
             pollHistoryMode = .active
-            pollService.nextPublisher = Empty(completeImmediately: false,
+            pollService.nextBatchPublisher = Empty(completeImmediately: false,
                                               outputType: TimelinePollDetails.self,
                                               failureType: Error.self).eraseToAnyPublisher()
         }
