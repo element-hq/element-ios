@@ -746,6 +746,10 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
                 fetcher.fetchOptions.filterOptions.dataTypes = [.favorited]
                 return
             }
+            if settingsManager.activeFilters.contains(.custom) {
+                fetcher.fetchOptions.filterOptions.dataTypes = [.custom]
+                return
+            }
             fetcher.fetchOptions.filterOptions.dataTypes = []
         default:
             break

@@ -27,7 +27,8 @@ typedef NS_OPTIONS(NSUInteger, AllChatsLayoutFilterType) {
     AllChatsLayoutFilterTypePeople       = 1 << 1,
     AllChatsLayoutFilterTypeRooms        = 1 << 2,
     AllChatsLayoutFilterTypeFavourites   = 1 << 3,
-    AllChatsLayoutFilterTypeUnreads      = 1 << 4
+    AllChatsLayoutFilterTypeUnreads      = 1 << 4,
+    AllChatsLayoutFilterTypeCustom       = 1 << 5
 };
 
 typedef NS_ENUM(NSUInteger, AllChatsLayoutSortingType) {

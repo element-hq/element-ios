@@ -62,6 +62,7 @@ class AllChatsFilterOptions: NSObject {
     func update(filterOptionListView: AllChatsFilterOptionListView, unreadsCount: Int, favouritesCount: Int, directRoomsCount: Int) {
         let options = options.filter { option in
             switch option.type {
+            case .custom: return true
             case .all: return true
             case .unreads: return unreadsCount > 0
             case .favourites: return favouritesCount > 0
@@ -72,6 +73,7 @@ class AllChatsFilterOptions: NSObject {
             }
         }
         var filterOptions: [AllChatsFilterOptionListView.Option] = [
+            AllChatsFilterOptionListView.Option(type: .custom, name: "Custom"),
             AllChatsFilterOptionListView.Option(type: .all, name: VectorL10n.allChatsAllFilter)
         ]
         filterOptions.append(contentsOf: options)
