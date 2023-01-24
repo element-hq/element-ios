@@ -57,7 +57,8 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
     }
     
     deinit {
-        viewModel.context.send(viewAction: .redact)
+        // If init has failed, our viewmodel will be nil.
+        viewModel?.context.send(viewAction: .redact)
     }
     
     // MARK: - Public
