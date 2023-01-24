@@ -53,7 +53,7 @@ final class LiveLocationSharingViewerCoordinator: Coordinator, Presentable {
             service: service
         )
         let view = LiveLocationSharingViewer(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
         liveLocationSharingViewerViewModel = viewModel
         liveLocationSharingViewerHostingController = VectorHostingController(rootView: view)
         

@@ -174,6 +174,11 @@ final class RoomInfoListViewController: UIViewController {
         let rowMembers = Row(type: .default, icon: Asset.Images.userIcon.image, text: text, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .members))
         }
+        
+        let rowPollHistory = Row(type: .default, icon: Asset.Images.pollHistory.image, text: VectorL10n.roomDetailsPolls, accessoryType: .disclosureIndicator) {
+            self.viewModel.process(viewAction: .navigate(target: .pollHistory))
+        }
+        
         let rowUploads = Row(type: .default, icon: Asset.Images.scrollup.image, text: VectorL10n.roomDetailsFiles, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .uploads))
         }
@@ -193,6 +198,11 @@ final class RoomInfoListViewController: UIViewController {
             rows.append(rowIntegrations)
         }
         rows.append(rowMembers)
+        
+        if BuildSettings.pollsHistoryEnabled {
+            rows.append(rowPollHistory)
+        }
+        
         rows.append(rowUploads)
         if !viewData.isEncrypted {
             rows.append(rowSearch)

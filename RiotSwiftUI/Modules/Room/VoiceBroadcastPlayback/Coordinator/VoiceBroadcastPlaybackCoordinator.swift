@@ -57,7 +57,8 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
     }
     
     deinit {
-        viewModel.context.send(viewAction: .redact)
+        // If init has failed, our viewmodel will be nil.
+        viewModel?.context.send(viewAction: .redact)
     }
     
     // MARK: - Public
@@ -66,7 +67,7 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
     
     func toPresentable() -> UIViewController {
         let view = VoiceBroadcastPlaybackView(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
         return VectorHostingController(rootView: view)
     }
     
@@ -80,8 +81,15 @@ final class VoiceBroadcastPlaybackCoordinator: Coordinator, Presentable {
     }
     
     func endVoiceBroadcast() {}
-    
+        
     func pausePlaying() {
         viewModel.context.send(viewAction: .pause)
+    }
+    
+    func pausePlayingInProgressVoiceBroadcast() {
+        // Pause the playback if we are playing a live voice broadcast (or waiting for more chunks) 
+        if [.playing, .buffering].contains(viewModel.context.viewState.playbackState), viewModel.context.viewState.broadcastState != .stopped {
+            viewModel.context.send(viewAction: .pause)
+        }
     }
 }

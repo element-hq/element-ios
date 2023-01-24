@@ -51,7 +51,7 @@ enum MockInfoSheetScreenState: MockScreenState, CaseIterable {
         return (
             [model, viewModel],
             AnyView(InfoSheet(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

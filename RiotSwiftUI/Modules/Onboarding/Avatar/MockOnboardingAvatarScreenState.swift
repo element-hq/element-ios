@@ -57,7 +57,7 @@ enum MockOnboardingAvatarScreenState: MockScreenState, CaseIterable {
         return (
             [self, viewModel],
             AnyView(OnboardingAvatarScreen(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

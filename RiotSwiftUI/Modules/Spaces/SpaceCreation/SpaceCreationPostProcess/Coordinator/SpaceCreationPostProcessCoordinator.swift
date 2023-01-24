@@ -41,7 +41,7 @@ final class SpaceCreationPostProcessCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         let viewModel = SpaceCreationPostProcessViewModel.makeSpaceCreationPostProcessViewModel(spaceCreationPostProcessService: SpaceCreationPostProcessService(session: parameters.session, parentSpaceId: parameters.parentSpaceId, creationParams: parameters.creationParams))
         let view = SpaceCreationPostProcess(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
         spaceCreationPostProcessViewModel = viewModel
         let hostingController = VectorHostingController(rootView: view)
         hostingController.isNavigationBarHidden = true

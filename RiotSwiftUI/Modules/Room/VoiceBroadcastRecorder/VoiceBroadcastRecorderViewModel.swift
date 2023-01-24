@@ -56,6 +56,8 @@ class VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderViewModelType, Voic
             pause()
         case .resume:
             resume()
+        case .pauseOnError:
+            pauseOnError()
         }
     }
     
@@ -78,6 +80,10 @@ class VoiceBroadcastRecorderViewModel: VoiceBroadcastRecorderViewModelType, Voic
     private func resume() {
         self.state.recordingState = .resumed
         voiceBroadcastRecorderService.resumeRecordingVoiceBroadcast()
+    }
+    
+    private func pauseOnError() {
+        voiceBroadcastRecorderService.pauseOnErrorRecordingVoiceBroadcast()
     }
     
     private func updateRemainingTime(_ remainingTime: UInt) {

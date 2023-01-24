@@ -42,7 +42,7 @@ final class SpaceCreationEmailInvitesCoordinator: Coordinator, Presentable {
         let service = SpaceCreationEmailInvitesService(session: parameters.session)
         let viewModel = SpaceCreationEmailInvitesViewModel(creationParameters: parameters.creationParams, service: service)
         let view = SpaceCreationEmailInvites(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
         spaceCreationEmailInvitesViewModel = viewModel
         let hostingController = VectorHostingController(rootView: view)
         hostingController.isNavigationBarHidden = true

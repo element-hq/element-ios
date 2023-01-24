@@ -67,6 +67,10 @@ public protocol Colors {
     /// Global color: The EMS brand's purple colour.
     var ems: ColorType { get }
     
+    /// - Links
+    /// - Hyperlinks
+    var links: ColorType { get }
+    
     /// - Names in chat timeline
     /// - Avatars default states that include first name letter
     var namesAndAvatars: [ColorType] { get }

@@ -52,8 +52,7 @@ enum
     ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC,
     ROOM_SETTINGS_MAIN_SECTION_ROW_TAG,
     ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT,
-    ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS,
-    ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE
+    ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS
 };
 
 enum
@@ -515,7 +514,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS];
     }
-    [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE];
     [tmpSections addObject:sectionMain];
     
     if (RiotSettings.shared.roomSettingsScreenAllowChangingAccessSettings)
@@ -2325,22 +2323,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 cell = favoriteCell;
             }
         }
-        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE)
-        {
-            MXKTableViewCellWithButton *leaveCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
-            
-            NSString* title = [VectorL10n leave];
-            
-            [leaveCell.mxkButton setTitle:title forState:UIControlStateNormal];
-            [leaveCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
-            [leaveCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
-            leaveCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
-            
-            [leaveCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [leaveCell.mxkButton addTarget:self action:@selector(onLeave:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = leaveCell;
-        }
     }
     else if (section == SECTION_TAG_ACCESS)
     {
@@ -3195,76 +3177,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 }
 
 #pragma mark - actions
-
-- (void)onLeave:(id)sender
-{
-    // Prompt user before leaving the room
-    __weak typeof(self) weakSelf = self;
-    
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    
-    NSString *title, *message;
-    if ([self.mainSession roomWithRoomId:self.roomId].isDirect)
-    {
-        title = [VectorL10n roomParticipantsLeavePromptTitleForDm];
-        message = [VectorL10n roomParticipantsLeavePromptMsgForDm];
-    }
-    else
-    {
-        title = [VectorL10n roomParticipantsLeavePromptTitle];
-        message = [VectorL10n roomParticipantsLeavePromptMsg];
-    }
-    
-    currentAlert = [UIAlertController alertControllerWithTitle:title
-                                                       message:message
-                                                preferredStyle:UIAlertControllerStyleAlert];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                           
-                                                           [self startActivityIndicator];
-                                                           [self->mxRoom leave:^{
-                                                               
-                                                               if (self.delegate) {
-                                                                   [self.delegate roomSettingsViewControllerDidLeaveRoom:self];
-                                                               } else {
-                                                                   [[LegacyAppDelegate theDelegate] restoreInitialDisplay:nil];
-                                                               }
-                                                               
-                                                           } failure:^(NSError *error) {
-                                                               
-                                                               [self stopActivityIndicator];
-                                                               
-                                                               MXLogDebug(@"[RoomSettingsViewController] Leave room failed");
-                                                               // Alert user
-                                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                               
-                                                           }];
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert mxk_setAccessibilityIdentifier:@"RoomSettingsVCLeaveAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
-}
 
 - (void)onRoomAvatarTap:(UITapGestureRecognizer *)recognizer
 {

@@ -51,7 +51,7 @@ enum MockRoomAccessTypeChooserScreenState: MockScreenState, CaseIterable {
         return (
             [service, viewModel],
             AnyView(RoomAccessTypeChooser(viewModel: viewModel.context, roomName: "Room Name")
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

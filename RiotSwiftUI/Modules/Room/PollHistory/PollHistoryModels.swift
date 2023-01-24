@@ -14,9 +14,33 @@
 // limitations under the License.
 //
 
-import Foundation
+// MARK: View model
 
-/// Class that can be extended that supports injection and the `@Inject` property wrapper.
-open class InjectableObject: Injectable {
-    var dependencies: DependencyContainer!
+enum PollHistoryViewModelResult: Equatable {
+    #warning("e.g. show poll detail")
+}
+
+// MARK: View
+
+enum PollHistoryMode: CaseIterable {
+    case active
+    case past
+}
+
+struct PollHistoryViewBindings {
+    var mode: PollHistoryMode
+}
+
+struct PollHistoryViewState: BindableState {
+    init(mode: PollHistoryMode) {
+        bindings = .init(mode: mode)
+    }
+    
+    var bindings: PollHistoryViewBindings
+    var polls: [PollListData] = []
+}
+
+enum PollHistoryViewAction {
+    case viewAppeared
+    case segmentDidChange
 }

@@ -455,7 +455,7 @@
 "sign_up" = "الاِشتِراك";
 "dismiss" = "إبعَاد";
 "discard" = "اِستِبعاد";
-"abort" = "إِجهَاض";
+"abort" = "إنهاء";
 "yes" = "نَعَم";
 
 // Action
@@ -1078,3 +1078,8 @@
 /* The placeholder will show the email address that was entered. */
 "authentication_verify_email_waiting_message" = "اتبع التعليمات المرسلة إلى %@";
 "invite_to" = "الدعوة إلى %@";
+"password_policy_pwd_in_dict_error" = "تم العثور على كلمة المرور هذه في القاموس لدينا، وهي كلمة مرور غير مسموح في استخدامها.";
+
+// Others
+"or" = "أو";
+"accessibility_selected" = "تم تحديده";

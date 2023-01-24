@@ -19,10 +19,14 @@ import DesignKit
 import Foundation
 
 /// Simple ViewModel that supports loading an avatar image
-class AvatarViewModel: InjectableObject, ObservableObject {
-    @Inject var avatarService: AvatarServiceProtocol
+final class AvatarViewModel: ObservableObject {
+    private let avatarService: AvatarServiceProtocol
     
     @Published private(set) var viewState = AvatarViewState.empty
+    
+    init(avatarService: AvatarServiceProtocol) {
+        self.avatarService = avatarService
+    }
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -56,5 +60,11 @@ class AvatarViewModel: InjectableObject, ObservableObject {
                 self.viewState = .avatar(image)
             }
             .store(in: &cancellables)
+    }
+}
+
+extension AvatarViewModel {
+    static func withMockedServices() -> AvatarViewModel {
+        .init(avatarService: MockAvatarService.example)
     }
 }

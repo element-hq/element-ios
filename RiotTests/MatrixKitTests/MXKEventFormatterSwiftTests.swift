@@ -29,22 +29,16 @@ private enum Constants {
     static let expectedEditedHTML = "<mx-reply><blockquote><a href=\"https://matrix.to/#/someRoomId/repliedEventId\">In reply to</a> <a href=\"https://matrix.to/#/alice\">alice</a><br>Edited message</blockquote></mx-reply>Reply"
     static let expectedEditedHTMLWithNewContent = "<mx-reply><blockquote><a href=\"https://matrix.to/#/someRoomId/repliedEventId\">In reply to</a> <a href=\"https://matrix.to/#/alice\">alice</a><br>New content</blockquote></mx-reply>Reply"
     static let expectedEditedHTMLWithParsedItalic = "<mx-reply><blockquote><a href=\"https://matrix.to/#/someRoomId/repliedEventId\">In reply to</a> <a href=\"https://matrix.to/#/alice\">alice</a><br>New content</blockquote></mx-reply><em>Reply</em>"
+    static let expectedReplyToPollEndedEvent = "<mx-reply><blockquote><a href=\"https://matrix.to/#/someRoomId/repliedEventId\">In reply to</a> <a href=\"https://matrix.to/#/alice\">alice</a><br>Ended poll</blockquote></mx-reply>Reply"
 }
 
-class MXKEventFormatterTests: XCTestCase {
+class MXKEventFormatterSwiftTests: XCTestCase {
     func testBuildHTMLString() {
         let formatter = MXKEventFormatter()
-        let repliedEvent = MXEvent()
+        let repliedEvent: MXEvent = .mockEvent(eventType: kMXEventTypeStringRoomMessage)
         let event = MXEvent()
         func buildHTML() -> String? { return formatter.buildHTMLString(for: event, inReplyTo: repliedEvent) }
 
-        // Initial setup.
-        repliedEvent.sender = "alice"
-        repliedEvent.roomId = Constants.roomId
-        repliedEvent.eventId = Constants.repliedEventId
-        repliedEvent.wireType = kMXEventTypeStringRoomMessage
-        repliedEvent.wireContent = [kMXMessageTypeKey: kMXMessageTypeText,
-                                    kMXMessageBodyKey: Constants.repliedEventBody]
         event.sender = "bob"
         event.wireType = kMXEventTypeStringRoomMessage
         event.wireContent = [
@@ -72,5 +66,40 @@ class MXKEventFormatterTests: XCTestCase {
         repliedEvent.wireContent[kMXMessageBodyKey] = nil
         repliedEvent.wireContent[kMXMessageContentKeyNewContent] = nil
         XCTAssertNil(buildHTML())
+    }
+    
+    func testBuildHTMLStringWithPollEndedReply() {
+        let formatter = MXKEventFormatter()
+        let repliedEvent: MXEvent = .mockEvent(eventType: kMXEventTypeStringPollEnd, body: nil)
+        
+        let event = MXEvent()
+        event.sender = "bob"
+        event.wireType = kMXEventTypeStringRoomMessage
+        event.wireContent = [
+            kMXMessageTypeKey: kMXMessageTypeText,
+            kMXMessageBodyKey: Constants.replyBody,
+            kMXEventRelationRelatesToKey: [kMXEventContentRelatesToKeyInReplyTo: ["event_id": Constants.repliedEventId]]
+        ]
+        
+        let formattedText = formatter.buildHTMLString(for: event, inReplyTo: repliedEvent)
+        
+        XCTAssertEqual(formattedText, Constants.expectedReplyToPollEndedEvent)
+    }
+}
+
+private extension MXEvent {
+    static func mockEvent(eventType: String, body: String? = Constants.repliedEventBody) -> MXEvent {
+        let repliedEvent = MXEvent()
+        repliedEvent.sender = "alice"
+        repliedEvent.roomId = Constants.roomId
+        repliedEvent.eventId = Constants.repliedEventId
+        repliedEvent.wireType = eventType
+        repliedEvent.wireContent = [kMXMessageTypeKey: kMXMessageTypeText]
+        
+        if let body = body {
+            repliedEvent.wireContent[kMXMessageBodyKey] = body
+        }
+        
+        return repliedEvent
     }
 }
