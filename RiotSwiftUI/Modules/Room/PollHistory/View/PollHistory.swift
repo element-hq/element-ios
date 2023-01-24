@@ -89,7 +89,6 @@ struct PollHistory: View {
         }
     }
     
-    @ViewBuilder
     private var spinner: some View {
         ProgressView()
             .progressViewStyle(CircularProgressViewStyle())
