@@ -170,3 +170,6 @@
 
 /* Look, stuff's happened, alright? Just open the app. */
 "MSGS_IN_TWO_PLUS_ROOMS" = "%@ ný skilaboð í %@, %@ og fleirum";
+
+/* New voice broadcast from a specific person, not referencing a room. */
+"VOICE_BROADCAST_FROM_USER" = "%@ byrjaði talútsendingu";
