@@ -2457,9 +2457,7 @@
 "all_chats_all_filter" = "Alle";
 "all_chats_edit_layout_show_filters" = "Filter anzeigen";
 "all_chats_edit_menu_leave_space" = "%@ verlassen";
-"all_chats_onboarding_page_title3" = "Rückmeldung geben";
 "room_invites_empty_view_information" = "Hier erscheinen deine Einladungen.";
-"all_chats_onboarding_try_it" = "Probiere es aus";
 "threads_discourage_information_1" = "Dein Heimserver unterstützt aktuell keine Threads, weshalb diese Funktion unzuverlässig sein könnte. Manche Thread-Nachrichten könnten nicht zuverlässig verfügbar sein. ";
 "all_chats_nothing_found_placeholder_title" = "Nichts gefunden.";
 "spaces_create_subspace_title" = "Sub-Space erstellen";
@@ -2475,16 +2473,10 @@
 "room_access_settings_screen_private_message" = "Nur sichtbar und betretbar für eingeladene Personen.";
 "location_sharing_allow_background_location_message" = "Wenn du deinen Echtzeit-Standort freigeben möchtest, benötigt Element den Standortzugriff auch im Hintergrund. Um den Zugriff zu gewähren, tippe auf Einstellungen > Standort und wähle „Immer“";
 "space_selector_empty_view_information" = "Spaces sind eine neue Möglichkeit, Räume und Personen zu gruppieren. Erstelle einen Space, um zu beginnen.";
-"all_chats_onboarding_title" = "Was ist neu";
-"all_chats_onboarding_page_message3" = "Drücke auf dein Profil um uns Wissen zu lassen, was du denkst.";
-"all_chats_onboarding_page_message2" = "Greife auf deine Spaces (unten links) schneller und einfacher denn je zu.";
-"all_chats_onboarding_page_title2" = "Auf Spaces zugreifen";
-"all_chats_onboarding_page_message1" = "Um dein Element zu vereinfachen, sind Tabs nun optional. Verwalte sie mit dem Menü oben rechts.";
 "all_chats_empty_view_information" = "Die Komplettlösung für sichere Kommunikation unter Freunden, in Gruppen oder in Organisationen. Erstelle eine Unterhaltung oder trete einem bestehenden Raum bei, um loszulegen.";
 "all_chats_empty_space_information" = "Spaces sind eine neue Möglichkeit, Räume und Personen zu gruppieren. Füge einen bestehenden Raum hinzu oder erstelle einen neuen mit der Schaltfläche unten rechts.";
 "all_chats_edit_layout_sorting_options_title" = "Sortiere deine Nachrichten nach";
 "space_detail_nav_title" = "Space-Details";
-"all_chats_onboarding_page_title1" = "Willkommen in einer neuen Übersicht!";
 "all_chats_edit_menu_space_settings" = "Space-Einstellungen";
 "all_chats_user_menu_settings" = "Nutzereinstellungen";
 "room_recents_recently_viewed_section" = "Kürzlich angesehen";

@@ -2668,14 +2668,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Nič nové.";
-"all_chats_onboarding_try_it" = "Vyskúšajte si to";
-"all_chats_onboarding_title" = "Čo je nové";
-"all_chats_onboarding_page_message3" = "Ťuknite na svoj profil a dajte nám vedieť, čo si myslíte.";
-"all_chats_onboarding_page_title3" = "Poskytnite spätnú väzbu";
-"all_chats_onboarding_page_title2" = "Prístup k priestorom";
-"all_chats_onboarding_page_message2" = "Získajte prístup k svojim priestorom (vľavo dole) rýchlejšie a jednoduchšie ako kedykoľvek predtým.";
-"all_chats_onboarding_page_message1" = "Pre zjednodušenie vašej aplikácie Element, sú teraz karty voliteľné. Spravujte ich pomocou ponuky vpravo hore.";
-"all_chats_onboarding_page_title1" = "Vitajte v novom zobrazení!";
 "all_chats_nothing_found_placeholder_message" = "Skúste upraviť svoje hľadanie.";
 "all_chats_nothing_found_placeholder_title" = "Nič sa nenašlo.";
 "all_chats_empty_unreads_placeholder_message" = "Tu sa zobrazia neprečítané správy, ak nejaké máte.";

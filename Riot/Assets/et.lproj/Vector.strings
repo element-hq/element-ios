@@ -2417,14 +2417,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Uut teavet ei leidu.";
-"all_chats_onboarding_try_it" = "Proovi nüüd";
-"all_chats_onboarding_title" = "Mida on meil uut";
-"all_chats_onboarding_page_message3" = "Kui soovid meile teada anda oma arvamustest, siis klõpsi oma profiili ikooni.";
-"all_chats_onboarding_page_title3" = "Jaga tagasisidet";
-"all_chats_onboarding_page_message2" = "Kogukonnad leiad alt vasakult kiiremini ja lihtsamini, kui varem.";
-"all_chats_onboarding_page_title2" = "Ligipääs kogukondadele";
-"all_chats_onboarding_page_message1" = "Et Element'i kasutamine oleks lihtsam, siis kaardid on nüüd valikulised. Neid saad hallata ülal paremal avanevast menüüst.";
-"all_chats_onboarding_page_title1" = "Meie liidesel on nüüd uus vaade!";
 "all_chats_nothing_found_placeholder_message" = "Proovi muuta oma otsingut.";
 "all_chats_nothing_found_placeholder_title" = "Mitte midagi ei leidu.";
 "all_chats_empty_unreads_placeholder_message" = "Kui sul on lugemata sõnumeid, siis nad on siit leitavad.";

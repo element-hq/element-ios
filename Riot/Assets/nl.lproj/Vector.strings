@@ -2605,14 +2605,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Niets nieuws.";
-"all_chats_onboarding_try_it" = "Probeer het uit";
-"all_chats_onboarding_title" = "Wat is nieuw";
-"all_chats_onboarding_page_message3" = "Tik op je profiel om ons te laten weten wat je ervan vindt.";
-"all_chats_onboarding_page_title3" = "Geef feedback";
-"all_chats_onboarding_page_message2" = "Krijg sneller en gemakkelijker toegang tot je Spaces (linksonder) dan ooit tevoren.";
-"all_chats_onboarding_page_title2" = "Toegang tot spaces";
-"all_chats_onboarding_page_message1" = "Om je Element te vereenvoudigen, zijn tabbladen nu optioneel. Beheer ze met behulp van het menu rechtsboven.";
-"all_chats_onboarding_page_title1" = "Welkom bij de nieuwe weergave!";
 "all_chats_edit_menu_space_settings" = "Space instellingen";
 "all_chats_edit_menu_leave_space" = "Verlaat %@";
 "all_chats_user_menu_settings" = "Gebruikersinstellingen";

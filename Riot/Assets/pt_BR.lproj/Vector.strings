@@ -2446,14 +2446,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Nada novo.";
-"all_chats_onboarding_try_it" = "Experimentar";
-"all_chats_onboarding_title" = "O que tem de novo";
-"all_chats_onboarding_page_message3" = "Toque em seu perfil para nos deixar sabendo do que você acha.";
-"all_chats_onboarding_page_title3" = "Dê Feedback";
-"all_chats_onboarding_page_message2" = "Acesse seus Espaços (esquerda fundo) mais rápido e fácil que jamais antes.";
-"all_chats_onboarding_page_title2" = "Acesse Espaços";
-"all_chats_onboarding_page_message1" = "Para simplificar seu Element, abas são agora opcionais. Gerencie-as usando o menu direito topo.";
-"all_chats_onboarding_page_title1" = "Boas vindas a uma nova visão!";
 "all_chats_nothing_found_placeholder_message" = "Tente ajustar sua pesquisa.";
 "all_chats_nothing_found_placeholder_title" = "Nada encontrado.";
 "all_chats_empty_unreads_placeholder_message" = "Isto é onde suas mensagens não-lidas vão aparecer, quando você tiver algumas.";

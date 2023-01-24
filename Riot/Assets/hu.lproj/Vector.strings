@@ -2467,14 +2467,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Semmi új.";
-"all_chats_onboarding_try_it" = "Próbáld ki";
-"all_chats_onboarding_title" = "Újdonságok";
-"all_chats_onboarding_page_message3" = "Koppints a profilodra és mond el mit gondolsz.";
-"all_chats_onboarding_page_title3" = "Visszajelzés adása";
-"all_chats_onboarding_page_message2" = "A terekhez való hozzáférés (balra lent) gyorsabb és egyszerűbb mint valaha.";
-"all_chats_onboarding_page_title2" = "Hozzáférés a terekhez";
-"all_chats_onboarding_page_message1" = "Element egyszerűsítéséhez a lapok mostantól választhatók. Beállítani a jobb felső menüből lehet.";
-"all_chats_onboarding_page_title1" = "Üdv az új kinézetben!";
 "all_chats_nothing_found_placeholder_message" = "Próbáld meg a keresést módosítani.";
 "all_chats_nothing_found_placeholder_title" = "Nincs találat.";
 "all_chats_empty_unreads_placeholder_message" = "Ez az a hely ahol az olvasatlan üzeneteid megjelennek, ha lesznek.";

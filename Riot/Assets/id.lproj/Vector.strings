@@ -2672,14 +2672,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Belum ada yang baru.";
-"all_chats_onboarding_try_it" = "Coba";
-"all_chats_onboarding_title" = "Apa yang baru";
-"all_chats_onboarding_page_message3" = "Ketuk profil Anda untuk memberi tahu kami bagaimana menurut Anda.";
-"all_chats_onboarding_page_title3" = "Berikan Masukan";
-"all_chats_onboarding_page_message2" = "Akses Space Anda (di kiri bawah) dengan lebih cepat dan lebih mudah dari sebelumnya.";
-"all_chats_onboarding_page_title2" = "Akses Space";
-"all_chats_onboarding_page_message1" = "Untuk membuat Element Anda lebih sederhana, fitur tab sekarang opsional. Kelola menggunakan menu kanan atas.";
-"all_chats_onboarding_page_title1" = "Selamat datang di tampilan yang baru!";
 "all_chats_nothing_found_placeholder_message" = "Coba atur pencarian Anda.";
 "all_chats_nothing_found_placeholder_title" = "Tidak ada yang ditemukan.";
 "all_chats_empty_unreads_placeholder_message" = "Ini di mana pesan Anda yang belum dibaca akan ditampilkan, ketika Anda menerimanya.";
