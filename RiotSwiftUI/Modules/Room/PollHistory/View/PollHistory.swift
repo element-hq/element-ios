@@ -82,7 +82,8 @@ struct PollHistory: View {
             Button {
                 #warning("handle action in next ticket")
             } label: {
-                Text("Load more polls")
+                Text(VectorL10n.pollHistoryLoadMore)
+                    .font(theme.fonts.body)
             }
             .disabled(viewModel.viewState.isLoading)
         }

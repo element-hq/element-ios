@@ -4851,6 +4851,10 @@ public class VectorL10n: NSObject {
   public static var pollHistoryActiveSegmentTitle: String { 
     return VectorL10n.tr("Vector", "poll_history_active_segment_title") 
   }
+  /// Load more polls
+  public static var pollHistoryLoadMore: String { 
+    return VectorL10n.tr("Vector", "poll_history_load_more") 
+  }
   /// Displaying polls
   public static var pollHistoryLoadingText: String { 
     return VectorL10n.tr("Vector", "poll_history_loading_text") 
