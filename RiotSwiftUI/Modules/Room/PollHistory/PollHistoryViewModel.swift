@@ -67,7 +67,7 @@ private extension PollHistoryViewModel {
         pollService
             .updates
             .sink { [weak self] detail in
-                self?.updatePolls(with: detail)
+                self?.update(poll: detail)
                 self?.updateViewState()
             }
             .store(in: &subcriptions)
@@ -80,7 +80,7 @@ private extension PollHistoryViewModel {
             .store(in: &subcriptions)
     }
     
-    func updatePolls(with poll: TimelinePollDetails) {
+    func update(poll: TimelinePollDetails) {
         guard let pollIndex = polls?.firstIndex(where: { $0.id == poll.id }) else {
             return
         }
