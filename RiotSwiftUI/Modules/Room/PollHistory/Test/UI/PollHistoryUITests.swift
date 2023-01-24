@@ -40,7 +40,7 @@ final class PollHistoryUITests: MockScreenTestCase {
         let emptyText = app.staticTexts["PollHistory.emptyText"]
         let items = app.staticTexts["PollListItem.title"]
         let selectedSegment = app.buttons[VectorL10n.pollHistoryPastSegmentTitle]
-        let winningOption = app.staticTexts["PollListData.winningOption"]
+        let winningOption = app.buttons["PollAnswerOption0"]
         
         XCTAssertEqual(title, VectorL10n.pollHistoryTitle)
         XCTAssertTrue(items.exists)
