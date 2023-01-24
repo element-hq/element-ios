@@ -2700,5 +2700,34 @@
 "notice_voice_broadcast_live" = "Echtzeitübertragung";
 "user_other_session_security_recommendation_title" = "Andere Sitzungen";
 "voice_message_broadcast_in_progress_title" = "Kann Sprachnachricht nicht beginnen";
-"poll_timeline_decryption_error" = "Aufgrund von Entschlüsselungsfehlern könnten einige Stimmen nicht gezählt werden";
-"voice_message_broadcast_in_progress_message" = "Du kannst kein Gespräch beginnen, da du im Moment eine Sprachübertragung aufzeichnest. Bitte beende deine Sprachübertragung, um ein Gespräch zu beginnen";
+"poll_timeline_decryption_error" = "Evtl. werden infolge von Entschlüsselungsfehlern einige Stimmen nicht gezählt";
+"voice_message_broadcast_in_progress_message" = "Du kannst keine Sprachnachricht beginnen, da du im Moment eine Echtzeitübertragung aufzeichnest. Bitte beende deine Sprachübertragung, um ein Gespräch zu beginnen";
+"poll_timeline_ended_text" = "Umfrage beendet";
+"voice_broadcast_voip_cannot_start_description" = "Du kannst keinen Anruf beginnen, da du im Moment eine Sprachübertragung aufzeichnest. Bitte beende deine Sprachübertragung, um ein Gespräch zu beginnen.";
+"voice_broadcast_voip_cannot_start_title" = "Kann keinen Anruf beginnen";
+"poll_history_no_past_poll_text" = "In diesem Raum gibt es keine abgeschlossenen Umfragen";
+"poll_history_no_active_poll_text" = "In diesem Raum gibt es keine aktiven Umfragen";
+"poll_history_past_segment_title" = "Vergangene Umfragen";
+"poll_history_active_segment_title" = "Aktive Umfragen";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Umfrageverlauf";
+"room_details_polls" = "Umfrageverlauf";
+"accessibility_selected" = "ausgewählt";
+"voice_broadcast_playback_lock_screen_placeholder" = "Sprachübertragung";
+"voice_broadcast_connection_error_message" = "Leider ist es aktuell nicht möglich, eine Aufnahme zu beginnen. Bitte versuche es später erneut.";
+"voice_broadcast_connection_error_title" = "Verbindungsfehler";
+"wysiwyg_composer_format_action_code_block" = "Quelltextblock umschalten";
+"wysiwyg_composer_format_action_quote" = "Zitat umschalten";
+"wysiwyg_composer_format_action_ordered_list" = "Nummerierte Liste umschalten";
+"wysiwyg_composer_format_action_unordered_list" = "Unsortierte Liste umschalten";
+"voice_broadcast_recorder_connection_error" = "Verbindungsfehler – Aufzeichnung pausiert";
+"poll_timeline_reply_ended_poll" = "Beendete Umfrage";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Migriere Daten\n%@ %%";
+"settings_labs_disable_crypto_sdk" = "Krypto-SDK ist aktiviert. Zum Deaktivieren, bitte die App neu installieren";
+"settings_labs_confirm_crypto_sdk" = "Dies kann nicht rückgängig gemacht werden";
+"settings_labs_enable_crypto_sdk" = "Rust-basiertes Krypto-SDK aktivieren";
