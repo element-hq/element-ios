@@ -36,7 +36,7 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
         pollErrorPublisher
     }
     
-    var hasNextBatch: Bool = true
+    var hasNextBatch = true
     
     var fetchedUpToPublisher: AnyPublisher<Date, Never> = Just(.init()).eraseToAnyPublisher()
     var fetchedUpTo: AnyPublisher<Date, Never> {
@@ -51,7 +51,7 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
 
 private extension MockPollHistoryService {
     var activePollsData: [TimelinePollDetails] {
-        (1...10)
+        (1...3)
             .map { index in
                 TimelinePollDetails(id: "a\(index)",
                                     question: "Do you like the active poll number \(index)?",
@@ -68,7 +68,7 @@ private extension MockPollHistoryService {
     }
     
     var pastPollsData: [TimelinePollDetails] {
-        (1...10)
+        (1...3)
             .map { index in
                 TimelinePollDetails(id: "p\(index)",
                                     question: "Do you like the active poll number \(index)?",

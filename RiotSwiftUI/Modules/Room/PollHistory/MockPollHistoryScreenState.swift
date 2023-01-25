@@ -26,8 +26,8 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     // mock that screen.
     case active
     case past
-    case activeEmpty
-    case pastEmpty
+    case empty
+    case emptyNoMoreContent
     case loading
     
     /// The associated screen
@@ -37,7 +37,7 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        let pollHistoryMode: PollHistoryMode
+        var pollHistoryMode: PollHistoryMode = .active
         let pollService = MockPollHistoryService()
         
         switch self {
@@ -45,21 +45,20 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
             pollHistoryMode = .active
         case .past:
             pollHistoryMode = .past
-        case .activeEmpty:
+        case .empty:
             pollHistoryMode = .active
             pollService.nextBatchPublisher = Empty(completeImmediately: true,
-                                              outputType: TimelinePollDetails.self,
-                                              failureType: Error.self).eraseToAnyPublisher()
-        case .pastEmpty:
-            pollHistoryMode = .past
+                                                   outputType: TimelinePollDetails.self,
+                                                   failureType: Error.self).eraseToAnyPublisher()
+        case .emptyNoMoreContent:
+            pollService.hasNextBatch = false
             pollService.nextBatchPublisher = Empty(completeImmediately: true,
-                                              outputType: TimelinePollDetails.self,
-                                              failureType: Error.self).eraseToAnyPublisher()
+                                                   outputType: TimelinePollDetails.self,
+                                                   failureType: Error.self).eraseToAnyPublisher()
         case .loading:
-            pollHistoryMode = .active
             pollService.nextBatchPublisher = Empty(completeImmediately: false,
-                                              outputType: TimelinePollDetails.self,
-                                              failureType: Error.self).eraseToAnyPublisher()
+                                                   outputType: TimelinePollDetails.self,
+                                                   failureType: Error.self).eraseToAnyPublisher()
         }
         
         let viewModel = PollHistoryViewModel(mode: pollHistoryMode, pollService: pollService)
