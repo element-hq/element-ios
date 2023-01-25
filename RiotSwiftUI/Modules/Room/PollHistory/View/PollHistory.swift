@@ -73,19 +73,22 @@ struct PollHistory: View {
         }
     }
     
+    @ViewBuilder
     private var loadMoreButton: some View {
-        HStack(spacing: 8) {
-            if viewModel.viewState.isLoading {
-                spinner
+        if viewModel.viewState.canLoadMoreContent {
+            HStack(spacing: 8) {
+                if viewModel.viewState.isLoading {
+                    spinner
+                }
+                
+                Button {
+                    viewModel.send(viewAction: .loadMoreContent)
+                } label: {
+                    Text(VectorL10n.pollHistoryLoadMore)
+                        .font(theme.fonts.body)
+                }
+                .disabled(viewModel.viewState.isLoading)
             }
-            
-            Button {
-                viewModel.send(viewAction: .loadMoreContent)
-            } label: {
-                Text(VectorL10n.pollHistoryLoadMore)
-                    .font(theme.fonts.body)
-            }
-            .disabled(viewModel.viewState.isLoading || !viewModel.viewState.canLoadMoreContent)
         }
     }
     
