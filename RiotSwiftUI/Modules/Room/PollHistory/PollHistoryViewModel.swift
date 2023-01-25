@@ -38,17 +38,17 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
         switch viewAction {
         case .viewAppeared:
             setupUpdateSubscriptions()
-            fetchFirstBatch()
+            fetchContent()
         case .segmentDidChange:
             updateViewState()
         case .loadMoreContent:
-            fetchMoreContent()
+            fetchContent()
         }
     }
 }
 
 private extension PollHistoryViewModel {
-    func fetchFirstBatch() {
+    func fetchContent() {
         state.isLoading = true
         
         pollService
@@ -57,21 +57,7 @@ private extension PollHistoryViewModel {
             .sink { [weak self] completion in
                 self?.handleBatchEnded(completion: completion)
             } receiveValue: { [weak self] polls in
-                self?.polls = polls
-                self?.updateViewState()
-            }
-            .store(in: &subcriptions)
-    }
-    
-    func fetchMoreContent() {
-        state.isLoading = true
-        
-        pollService
-            .nextBatch()
-            .sink { [weak self] completion in
-                self?.handleBatchEnded(completion: completion)
-            } receiveValue: { [weak self] poll in
-                self?.add(poll: poll)
+                self?.add(polls: polls)
                 self?.updateViewState()
             }
             .store(in: &subcriptions)
@@ -121,8 +107,8 @@ private extension PollHistoryViewModel {
         polls?[pollIndex] = poll
     }
     
-    func add(poll: TimelinePollDetails) {
-        polls?.append(poll)
+    func add(polls: [TimelinePollDetails]) {
+        self.polls = (self.polls ?? []) + polls
     }
     
     func updateViewState() {
