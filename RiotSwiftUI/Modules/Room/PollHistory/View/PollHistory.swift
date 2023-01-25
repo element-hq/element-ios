@@ -87,6 +87,7 @@ struct PollHistory: View {
                     Text(VectorL10n.pollHistoryLoadMore)
                         .font(theme.fonts.body)
                 }
+                .accessibilityIdentifier("PollHistory.loadMore")
                 .disabled(viewModel.viewState.isLoading)
             }
         }

@@ -25,8 +25,8 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     // with specific, minimal associated data that will allow you
     // mock that screen.
     case active
-    case activeNoMoreContent
     case past
+    case activeNoMoreContent
     case contentLoading
     case empty
     case emptyLoading
