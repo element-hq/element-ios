@@ -27,9 +27,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     private var roomListener: Any?
     
     // polls aggregation
-    private var pollAggregators: [String: PollAggregator] = [:]
-    private var livePollsIDs: Set<String> = .init()
-    private var publishedPollsIDs: Set<String> = .init()
+    private var pollAggregationContexts: [String: PollAggregationContext] = [:]
     
     // polls
     private var currentBatchSubject: PassthroughSubject<TimelinePollDetails, Error>?
@@ -81,6 +79,18 @@ final class PollHistoryService: PollHistoryServiceProtocol {
         }
         room.removeListener(roomListener)
     }
+    
+    class PollAggregationContext {
+        var pollAggregator: PollAggregator?
+        let isLivePoll: Bool
+        var published: Bool = false
+        
+        init(pollAggregator: PollAggregator? = nil, isLivePoll: Bool, published: Bool = false) {
+            self.pollAggregator = pollAggregator
+            self.isLivePoll = isLivePoll
+            self.published = published
+        }
+    }
 }
 
 private extension PollHistoryService {
@@ -93,7 +103,7 @@ private extension PollHistoryService {
         
         timelineListener = timeline.listenToEvents { [weak self] event, _, _ in
             if event.eventType == .pollStart {
-                self?.aggregatePoll(pollStartEvent: event)
+                self?.aggregatePoll(pollStartEvent: event, isLivePoll: false)
             }
            
             self?.updateTimestamp(event: event)
@@ -103,8 +113,7 @@ private extension PollHistoryService {
     func setupLiveUpdates() {
         roomListener = room.listen(toEventsOfTypes: [kMXEventTypeStringPollStart, kMXEventTypeStringPollStartMSC3381]) { [weak self] event, _, _ in
             if event.eventType == .pollStart {
-                self?.livePollsIDs.insert(event.eventId)
-                self?.aggregatePoll(pollStartEvent: event)
+                self?.aggregatePoll(pollStartEvent: event, isLivePoll: true)
             }
         }
     }
@@ -154,16 +163,21 @@ private extension PollHistoryService {
         currentBatchSubject = nil
     }
     
-    func aggregatePoll(pollStartEvent: MXEvent) {
-        guard pollAggregators[pollStartEvent.eventId] == nil else {
+    func aggregatePoll(pollStartEvent: MXEvent, isLivePoll: Bool) {
+        let eventId: String = pollStartEvent.eventId
+        
+        guard pollAggregationContexts[eventId] == nil else {
             return
         }
         
-        guard let aggregator = try? PollAggregator(session: room.mxSession, room: room, pollEvent: pollStartEvent, delegate: self) else {
-            return
-        }
+        let newContext: PollAggregationContext = .init(isLivePoll: isLivePoll)
+        pollAggregationContexts[eventId] = newContext
         
-        pollAggregators[pollStartEvent.eventId] = aggregator
+        do {
+            newContext.pollAggregator = try PollAggregator(session: room.mxSession, room: room, pollEvent: pollStartEvent, delegate: self)
+        } catch {
+            pollAggregationContexts.removeValue(forKey: eventId)
+        }
     }
     
     var timestampTargetReached: Bool {
@@ -201,17 +215,15 @@ extension PollHistoryService: PollAggregatorDelegate {
     func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) {}
     
     func pollAggregatorDidEndLoading(_ aggregator: PollAggregator) {
-        let pollID = aggregator.poll.id
-        
-        guard publishedPollsIDs.contains(pollID) == false else {
+        guard let context = pollAggregationContexts[aggregator.poll.id], !context.published else {
             return
         }
         
-        publishedPollsIDs.insert(pollID)
+        context.published = true
         
         let newPoll: TimelinePollDetails = .init(poll: aggregator.poll, represent: .started)
         
-        if livePollsIDs.contains(newPoll.id) {
+        if context.isLivePoll {
             livePollsSubject.send(newPoll)
         } else {
             currentBatchSubject?.send(newPoll)
