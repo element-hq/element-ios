@@ -49,4 +49,5 @@ struct PollHistoryViewState: BindableState {
 enum PollHistoryViewAction {
     case viewAppeared
     case segmentDidChange
+    case loadMoreContent
 }

@@ -80,7 +80,7 @@ struct PollHistory: View {
             }
             
             Button {
-                #warning("handle action in next ticket")
+                viewModel.send(viewAction: .loadMoreContent)
             } label: {
                 Text(VectorL10n.pollHistoryLoadMore)
                     .font(theme.fonts.body)

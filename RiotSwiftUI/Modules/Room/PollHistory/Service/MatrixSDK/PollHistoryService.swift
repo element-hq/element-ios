@@ -28,7 +28,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     private let pollErrorsSubject: PassthroughSubject<Error, Never> = .init()
     
     private var pollAggregators: [String: PollAggregator] = [:]
-    private var targetTimestamp: Date
+    private var targetTimestamp: Date?
     private var oldestEventDate: Date = .distantFuture
     private var currentBatchSubject: PassthroughSubject<TimelinePollDetails, Error>?
     
@@ -44,7 +44,6 @@ final class PollHistoryService: PollHistoryServiceProtocol {
         self.room = room
         self.chunkSizeInDays = chunkSizeInDays
         timeline = MXRoomEventTimeline(room: room, andInitialEventId: nil)
-        targetTimestamp = Date().addingTimeInterval(-TimeInterval(chunkSizeInDays) * Constants.oneDayInSeconds)
         setup(timeline: timeline)
     }
     
@@ -56,7 +55,6 @@ final class PollHistoryService: PollHistoryServiceProtocol {
 private extension PollHistoryService {
     enum Constants {
         static let pageSize: UInt = 500
-        static let oneDayInSeconds: TimeInterval = 8.6 * 10e3
     }
     
     func setup(timeline: MXEventTimeline) {
@@ -74,6 +72,9 @@ private extension PollHistoryService {
     }
     
     func startPagination() -> AnyPublisher<TimelinePollDetails, Error> {
+        let startingTimestamp = targetTimestamp ?? .init()
+        targetTimestamp = startingTimestamp.subtractingDays(chunkSizeInDays)
+        
         let batchSubject = PassthroughSubject<TimelinePollDetails, Error>()
         currentBatchSubject = batchSubject
        
@@ -125,7 +126,18 @@ private extension PollHistoryService {
     }
     
     var timestampTargetReached: Bool {
-        oldestEventDate <= targetTimestamp
+        guard let targetTimestamp = targetTimestamp else {
+            return true
+        }
+        return oldestEventDate <= targetTimestamp
+    }
+}
+
+private extension Date {
+    private static let oneDayInSeconds: TimeInterval = 8.6 * 10e3
+    
+    func subtractingDays(_ days: UInt) -> Date {
+        addingTimeInterval(-TimeInterval(days) * Self.oneDayInSeconds)
     }
 }
 
