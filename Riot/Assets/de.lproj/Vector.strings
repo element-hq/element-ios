@@ -2714,7 +2714,7 @@
 "wysiwyg_composer_format_action_quote" = "Zitat umschalten";
 "wysiwyg_composer_format_action_ordered_list" = "Nummerierte Liste umschalten";
 "wysiwyg_composer_format_action_unordered_list" = "Unsortierte Liste umschalten";
-"voice_broadcast_recorder_connection_error" = "Verbindungsfehler – Aufzeichnung pausiert";
+"voice_broadcast_recorder_connection_error" = "Verbindungsfehler − Aufnahme pausiert";
 "poll_timeline_reply_ended_poll" = "Beendete Umfrage";
 
 // MARK: - Launch loading
