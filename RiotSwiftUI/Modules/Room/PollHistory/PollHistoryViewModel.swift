@@ -70,8 +70,8 @@ private extension PollHistoryViewModel {
         switch completion {
         case .finished:
             break
-        case .failure(_):
-            #warning("Handle errors")
+        case .failure:
+            self.completion?(.genericError)
         }
     }
     
@@ -83,13 +83,6 @@ private extension PollHistoryViewModel {
             .sink { [weak self] detail in
                 self?.update(poll: detail)
                 self?.updateViewState()
-            }
-            .store(in: &subcriptions)
-        
-        pollService
-            .pollErrors
-            .sink { detail in
-                #warning("Handle errors")
             }
             .store(in: &subcriptions)
         

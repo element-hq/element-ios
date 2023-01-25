@@ -44,11 +44,26 @@ final class PollHistoryCoordinator: Coordinator, Presentable {
     func start() {
         MXLog.debug("[PollHistoryCoordinator] did start.")
         pollHistoryViewModel.completion = { [weak self] result in
-            self?.completion?()
+            switch result {
+            case .genericError:
+                self?.showErrorAlert()
+            }
         }
     }
     
     func toPresentable() -> UIViewController {
         pollHistoryHostingController
+    }
+}
+
+private extension PollHistoryCoordinator {
+    func showErrorAlert() {
+        let alert = UIAlertController(title: VectorL10n.pollHistoryFetchingError,
+                                      message: nil,
+                                      preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: VectorL10n.ok, style: .cancel)
+        alert.addAction(cancelAction)
+        pollHistoryHostingController.present(alert, animated: true, completion: nil)
     }
 }

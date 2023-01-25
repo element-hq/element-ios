@@ -22,7 +22,7 @@ enum PollHistoryConstants {
 }
 
 enum PollHistoryViewModelResult: Equatable {
-    #warning("e.g. show poll detail")
+    case genericError
 }
 
 // MARK: View
