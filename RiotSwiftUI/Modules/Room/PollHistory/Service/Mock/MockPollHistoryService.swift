@@ -17,13 +17,15 @@
 import Combine
 
 final class MockPollHistoryService: PollHistoryServiceProtocol {
-    lazy var nextBatchPublisher: AnyPublisher<TimelinePollDetails, Error> = (activePollsData + pastPollsData)
-        .publisher
-        .setFailureType(to: Error.self)
-        .eraseToAnyPublisher()
+    lazy var nextBatchPublishers: [AnyPublisher<TimelinePollDetails, Error>] = [
+        (activePollsData + pastPollsData)
+            .publisher
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    ]
     
     func nextBatch() -> AnyPublisher<TimelinePollDetails, Error> {
-        nextBatchPublisher
+        nextBatchPublishers.isEmpty ? Empty().eraseToAnyPublisher() : nextBatchPublishers.removeFirst()
     }
     
     var updatesPublisher: AnyPublisher<TimelinePollDetails, Never> = Empty().eraseToAnyPublisher()
