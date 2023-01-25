@@ -69,6 +69,10 @@ final class PollHistoryCoordinator: NSObject, Coordinator, Presentable {
                     case .dismiss:
                         self.toPresentable().dismiss(animated: true)
                         self.remove(childCoordinator: coordinator)
+                    case .viewInTimeline:
+                        self.toPresentable().dismiss(animated: true)
+                        self.remove(childCoordinator: coordinator)
+                        // TODO: go back in timeline
                     }
                 }
                 

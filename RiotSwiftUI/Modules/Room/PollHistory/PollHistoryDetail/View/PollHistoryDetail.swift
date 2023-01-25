@@ -47,21 +47,35 @@ struct PollHistoryDetail: View {
     }
     private var content: some View {
         let timelineViewModel = viewModel.viewState.timelineViewModel
-        return TimelinePollView(viewModel: timelineViewModel.context)
-            .navigationTitle(navigationTitle)
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: btnBack)
+        return VStack {
+            TimelinePollView(viewModel: timelineViewModel.context)
+                .navigationTitle(navigationTitle)
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: btnBack)
+            viewInTimeline
+        }
     }
     
-    private var btnBack : some View { Button(action: {
-        viewModel.send(viewAction: .dismiss)
+    private var btnBack : some View {
+        Button(action: {
+            viewModel.send(viewAction: .dismiss)
         }) {
-            HStack {
             Image(systemName: "xmark") //"chevron.left"
                 .aspectRatio(contentMode: .fit)
                 .foregroundColor(theme.colors.accent)
+        }
+    }
+    
+    private var viewInTimeline: some View {
+        HStack {
+            Button {
+                viewModel.send(viewAction: .viewInTimeline)
+            } label: {
+                Text(VectorL10n.pollHistoryDetailViewInTimeline)
             }
+            .accentColor(theme.colors.accent)
+            Spacer()
         }
     }
     

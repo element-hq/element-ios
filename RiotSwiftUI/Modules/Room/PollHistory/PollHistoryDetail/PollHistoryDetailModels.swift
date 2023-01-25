@@ -22,6 +22,7 @@ typealias PollHistoryDetailViewModelCallback = (PollHistoryDetailViewModelResult
 
 enum PollHistoryDetailViewModelResult {
     case dismiss
+    case viewInTimeline
 }
 
 // MARK: View model
@@ -37,4 +38,5 @@ struct PollHistoryDetailViewState: BindableState {
 
 enum PollHistoryDetailViewAction {
     case dismiss
+    case viewInTimeline
 }

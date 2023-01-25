@@ -41,6 +41,7 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
     init(parameters: PollHistoryDetailCoordinatorParameters) throws {
         self.parameters = parameters
         let timelinePollCoordinator = try TimelinePollCoordinator(parameters: .init(session: parameters.session, room: parameters.room, pollEvent: parameters.event))
+        
         let viewModel = PollHistoryDetailViewModel(pollHistoryDetails: parameters.pollHistoryDetails, timelineViewModel: timelinePollCoordinator.viewModel)
         let view = PollHistoryDetail(viewModel: viewModel.context)
         pollHistoryDetailViewModel = viewModel
@@ -48,12 +49,14 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
         pollHistoryDetailHostingController = VectorHostingController(rootView: view)
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: pollHistoryDetailHostingController)
-        
+        self.add(childCoordinator: timelinePollCoordinator)
         viewModel.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .dismiss:
                 self.completion?(.dismiss)
+            case .viewInTimeline:
+                self.completion?(.viewInTimeline)
             }
         }
     }

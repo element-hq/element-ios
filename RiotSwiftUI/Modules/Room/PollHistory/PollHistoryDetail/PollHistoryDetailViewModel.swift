@@ -39,6 +39,8 @@ class PollHistoryDetailViewModel: PollHistoryDetailViewModelType, PollHistoryDet
         switch viewAction {
         case .dismiss:
             completion?(.dismiss)
+        case .viewInTimeline:
+            completion?(.viewInTimeline)
         }
     }
 
