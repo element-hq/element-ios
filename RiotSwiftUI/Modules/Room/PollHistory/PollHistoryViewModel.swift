@@ -83,7 +83,7 @@ private extension PollHistoryViewModel {
         
         switch completion {
         case .finished:
-            state.numberOfFetchedBatches += 1
+            break
         case .failure(_):
             #warning("Handle errors")
         }
@@ -105,6 +105,11 @@ private extension PollHistoryViewModel {
             .sink { detail in
                 #warning("Handle errors")
             }
+            .store(in: &subcriptions)
+        
+        pollService
+            .fetchedUpTo
+            .weakAssign(to: \.state.syncedUpTo, on: self)
             .store(in: &subcriptions)
     }
     
@@ -136,17 +141,20 @@ private extension PollHistoryViewModel {
 
 extension PollHistoryViewModel.Context {
     var emptyPollsText: String {
-        let days = PollHistoryConstants.chunkSizeInDays * viewState.numberOfFetchedBatches
-        
         switch (viewState.bindings.mode, viewState.canLoadMoreContent) {
         case (.active, true):
-            return VectorL10n.pollHistoryNoActivePollPeriodText("\(days)")
+            return VectorL10n.pollHistoryNoActivePollPeriodText("\(syncedPastDays)")
         case (.active, false):
             return VectorL10n.pollHistoryNoActivePollText
         case (.past, true):
-            return VectorL10n.pollHistoryNoPastPollPeriodText("\(days)")
+            return VectorL10n.pollHistoryNoPastPollPeriodText("\(syncedPastDays)")
         case (.past, false):
             return VectorL10n.pollHistoryNoPastPollText
         }
+    }
+    
+    var syncedPastDays: UInt {
+        let timeDelta = max(viewState.syncStartDate.timeIntervalSince(viewState.syncedUpTo), 0)
+        return UInt((timeDelta / PollHistoryConstants.oneDayInSeconds).rounded())
     }
 }

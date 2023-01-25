@@ -17,7 +17,8 @@
 // MARK: View model
 
 enum PollHistoryConstants {
-    static let chunkSizeInDays: UInt = 30
+    static let chunkSizeInDays: UInt = 10
+    static let oneDayInSeconds: TimeInterval = 8.6 * 10e3
 }
 
 enum PollHistoryViewModelResult: Equatable {
@@ -44,7 +45,8 @@ struct PollHistoryViewState: BindableState {
     var isLoading = false
     var canLoadMoreContent = true
     var polls: [TimelinePollDetails]?
-    var numberOfFetchedBatches: UInt = 0
+    var syncStartDate: Date = .init()
+    var syncedUpTo: Date = .distantFuture
 }
 
 enum PollHistoryViewAction {

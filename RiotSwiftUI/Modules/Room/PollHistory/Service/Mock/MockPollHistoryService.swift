@@ -37,6 +37,11 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
     }
     
     var hasNextBatch: Bool = true
+    
+    var fetchedUpToPublisher: AnyPublisher<Date, Never> = Just(.init()).eraseToAnyPublisher()
+    var fetchedUpTo: AnyPublisher<Date, Never> {
+        fetchedUpToPublisher
+    }
 }
 
 private extension MockPollHistoryService {

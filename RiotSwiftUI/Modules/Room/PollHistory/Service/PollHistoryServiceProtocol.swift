@@ -31,4 +31,8 @@ protocol PollHistoryServiceProtocol {
     /// Returns true every time the service can fetch another batch.
     /// There is no guarantee the `nextBatch()` returned publisher will publish something anyway.
     var hasNextBatch: Bool { get }
+    
+    /// Publishes the date up to the service is synced (in the past).
+    /// This date doesn't need to be related with any poll event.
+    var fetchedUpTo: AnyPublisher<Date, Never> { get }
 }

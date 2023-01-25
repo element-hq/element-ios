@@ -29,7 +29,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     
     private var pollAggregators: [String: PollAggregator] = [:]
     private var targetTimestamp: Date?
-    private var oldestEventDate: Date = .distantFuture
+    private var oldestEventDateSubject: CurrentValueSubject<Date, Never> = .init(Date.distantFuture)
     private var currentBatchSubject: PassthroughSubject<TimelinePollDetails, Error>?
     
     var updates: AnyPublisher<TimelinePollDetails, Never> {
@@ -53,6 +53,10 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     
     var hasNextBatch: Bool {
         timeline.canPaginate(.backwards)
+    }
+    
+    var fetchedUpTo: AnyPublisher<Date, Never> {
+        oldestEventDateSubject.eraseToAnyPublisher()
     }
 }
 
@@ -135,13 +139,20 @@ private extension PollHistoryService {
         }
         return oldestEventDate <= targetTimestamp
     }
+    
+    var oldestEventDate: Date {
+        get {
+            oldestEventDateSubject.value
+        }
+        set {
+            oldestEventDateSubject.send(newValue)
+        }
+    }
 }
 
 private extension Date {
-    private static let oneDayInSeconds: TimeInterval = 8.6 * 10e3
-    
     func subtractingDays(_ days: UInt) -> Date {
-        addingTimeInterval(-TimeInterval(days) * Self.oneDayInSeconds)
+        addingTimeInterval(-TimeInterval(days) * PollHistoryConstants.oneDayInSeconds)
     }
 }
 
