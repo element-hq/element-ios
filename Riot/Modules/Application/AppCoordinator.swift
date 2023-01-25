@@ -101,7 +101,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             if AppDelegate.theDelegate().isOffline {
                 self.splitViewCoordinator?.showAppStateIndicator(with: VectorL10n.networkOfflineTitle, icon: UIImage(systemName: "wifi.slash"))
             } else {
-                self.splitViewCoordinator?.hideAppStateIndicator()
+                self.splitViewCoordinator?.hideAppStateIndicator()                
             }
         }
         

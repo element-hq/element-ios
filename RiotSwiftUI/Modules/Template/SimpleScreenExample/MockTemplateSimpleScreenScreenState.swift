@@ -50,7 +50,7 @@ enum MockTemplateSimpleScreenScreenState: MockScreenState, CaseIterable {
         return (
             [promptType, viewModel],
             AnyView(TemplateSimpleScreen(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+                .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }

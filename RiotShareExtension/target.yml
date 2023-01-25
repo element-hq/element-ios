@@ -42,6 +42,7 @@ targets:
     - path: .
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
     - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Categories/MXEvent.swift
     - path: ../Riot/Managers/Theme/
     - path: ../Riot/Utils/AvatarGenerator.m
     - path: ../Config/BuildSettings.swift

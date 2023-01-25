@@ -1064,6 +1064,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         // Set room title view
         [self refreshRoomTitle];
+        
+        // Stop any pending voice broadcast if needed
+        [self stopUncompletedVoiceBroadcastIfNeeded];
     }
     else
     {
@@ -1082,8 +1085,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self setupUserSuggestionViewIfNeeded];
     
     [self updateTopBanners];
-    
-    [self stopUncompletedVoiceBroadcastIfNeeded];
 }
 
 - (void)onRoomDataSourceReady
@@ -2450,13 +2451,22 @@ static CGSize kThreadListBarButtonItemImageSize;
         return;
     }
     
+    // Prevents listening a VB when recording a new one
+    [VoiceBroadcastPlaybackProvider.shared pausePlaying];
+    
+    // Check connectivity
+    if ([AppDelegate theDelegate].isOffline)
+    {
+        [self showAlertWithTitle:[VectorL10n voiceBroadcastConnectionErrorTitle] message:[VectorL10n voiceBroadcastConnectionErrorMessage]];
+        return;
+    }
+    
     // Request the voice broadcast service to start recording - No service is returned if someone else is already broadcasting in the room
     [session getOrCreateVoiceBroadcastServiceFor:self.roomDataSource.room completion:^(VoiceBroadcastService *voiceBroadcastService) {
         if (voiceBroadcastService) {
-            [voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) {
-            
-            } failure:^(NSError * _Nonnull error) {
-                
+            [voiceBroadcastService startVoiceBroadcastWithSuccess:^(NSString * _Nullable success) { } failure:^(NSError * _Nonnull error) {
+                [self showAlertWithTitle:[VectorL10n voiceBroadcastConnectionErrorTitle] message:[VectorL10n voiceBroadcastConnectionErrorMessage]];
+                [session tearDownVoiceBroadcastService];
             }];
         }
         else
@@ -3970,7 +3980,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
 
-        if (!isJitsiCallEvent && selectedEvent.eventType != MXEventTypePollStart &&
+        if (!isJitsiCallEvent && !selectedEvent.isTimelinePollEvent &&
             selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeQuote
@@ -3991,7 +4001,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         
         if (selectedEvent.sentState == MXEventSentStateSent &&
-            selectedEvent.eventType != MXEventTypePollStart &&
+            !selectedEvent.isTimelinePollEvent &&
             // Forwarding of live-location shares still to be implemented
             selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
@@ -4007,7 +4017,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
         
-        if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare && selectedEvent.eventType != MXEventTypePollStart &&
+        if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare && !selectedEvent.isTimelinePollEvent &&
             selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeShare
@@ -4292,8 +4302,14 @@ static CGSize kThreadListBarButtonItemImageSize;
                 
                 [self startActivityIndicator];
                 
+                NSArray<NSString *>* relationTypes = nil;
+                // If it's a voice broadcast, delete the selected event and all related events.
+                if (selectedEvent.eventType == MXEventTypeCustom && [selectedEvent.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]) {
+                    relationTypes = @[MXEventRelationTypeReference];
+                }
+                
                 MXWeakify(self);
-                [self.roomDataSource.room redactEvent:selectedEvent.eventId reason:nil success:^{
+                [self.roomDataSource.room redactEvent:selectedEvent.eventId withRelations:relationTypes reason:nil success:^{
                     MXStrongifyAndReturnIfNil(self);
                     [self stopActivityIndicator];
                 } failure:^(NSError *error) {
@@ -5183,7 +5199,14 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (IBAction)onVoiceCallPressed:(id)sender
 {
-    if (self.isCallActive)
+    // Manage case of a Voice broadcast listening -> Pause Voice broadcast playback
+    [VoiceBroadcastPlaybackProvider.shared pausePlaying];
+    
+    if (VoiceBroadcastRecorderProvider.shared.isVoiceBroadcastRecording) {
+        [[AppDelegate theDelegate] showAlertWithTitle:VectorL10n.voiceBroadcastVoipCannotStartTitle
+                                              message:VectorL10n.voiceBroadcastVoipCannotStartDescription];
+    }
+    else if (self.isCallActive)
     {
         [self hangupCall];
     }
@@ -5195,7 +5218,15 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (IBAction)onVideoCallPressed:(id)sender
 {
-    [self placeCallWithVideo:YES];
+    // Manage case of a Voice broadcast listening -> Pause Voice broadcast playback
+    [VoiceBroadcastPlaybackProvider.shared pausePlaying];
+
+    if (VoiceBroadcastRecorderProvider.shared.isVoiceBroadcastRecording) {
+        [[AppDelegate theDelegate] showAlertWithTitle:VectorL10n.voiceBroadcastVoipCannotStartTitle
+                                              message:VectorL10n.voiceBroadcastVoipCannotStartDescription];
+    } else {
+        [self placeCallWithVideo:YES];
+    }
 }
 
 - (IBAction)onThreadListTapped:(id)sender
@@ -7146,6 +7177,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             case MXEventTypeKeyVerificationDone:
             case MXEventTypeKeyVerificationCancel:
             case MXEventTypePollStart:
+            case MXEventTypePollEnd:
             case MXEventTypeBeaconInfo:
                 result = NO;
                 break;
@@ -7886,13 +7918,27 @@ static CGSize kThreadListBarButtonItemImageSize;
     }];
 }
 
+- (BOOL)voiceMessageControllerDidRequestRecording:(VoiceMessageController *)voiceMessageController
+{
+    MXSession* session = self.roomDataSource.mxSession;
+    // Check whether the user is not already broadcasting here or in another room
+    if (session.voiceBroadcastService)
+    {
+        [self showAlertWithTitle:[VectorL10n voiceMessageBroadcastInProgressTitle] message:[VectorL10n voiceMessageBroadcastInProgressMessage]];
+
+        return NO;
+    }
+
+    return YES;
+}
+
 - (void)voiceMessageController:(VoiceMessageController *)voiceMessageController
     didRequestSendForFileAtURL:(NSURL *)url
                       duration:(NSUInteger)duration
                        samples:(NSArray<NSNumber *> *)samples
                     completion:(void (^)(BOOL))completion
 {
-    [self.roomDataSource sendVoiceMessage:url mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
+    [self.roomDataSource sendVoiceMessage:url additionalContentParams:nil mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
         MXLogDebug(@"Success with event id %@", eventId);
         completion(YES);
     } failure:^(NSError *error) {

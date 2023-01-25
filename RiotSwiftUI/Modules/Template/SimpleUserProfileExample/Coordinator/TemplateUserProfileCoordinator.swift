@@ -37,7 +37,7 @@ final class TemplateUserProfileCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         let viewModel = TemplateUserProfileViewModel.makeTemplateUserProfileViewModel(templateUserProfileService: TemplateUserProfileService(session: parameters.session))
         let view = TemplateUserProfile(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.session.mediaManager)))
         templateUserProfileViewModel = viewModel
         templateUserProfileHostingController = VectorHostingController(rootView: view)
         

@@ -22,9 +22,6 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 internal class Asset: NSObject {
   @objcMembers
   @objc(AssetImages) internal class Images: NSObject {
-    internal static let allChatsOnboarding1 = ImageAsset(name: "all_chats_onboarding1")
-    internal static let allChatsOnboarding2 = ImageAsset(name: "all_chats_onboarding2")
-    internal static let allChatsOnboarding3 = ImageAsset(name: "all_chats_onboarding3")
     internal static let analyticsCheckmark = ImageAsset(name: "AnalyticsCheckmark")
     internal static let analyticsLogo = ImageAsset(name: "AnalyticsLogo")
     internal static let socialLoginButtonApple = ImageAsset(name: "social_login_button_apple")
@@ -110,6 +107,7 @@ internal class Asset: NSObject {
     internal static let strikethrough = ImageAsset(name: "Strikethrough")
     internal static let underlined = ImageAsset(name: "Underlined")
     internal static let bulletList = ImageAsset(name: "bullet_list")
+    internal static let codeBlock = ImageAsset(name: "code_block")
     internal static let indentDecrease = ImageAsset(name: "indent_decrease")
     internal static let maximiseComposer = ImageAsset(name: "maximise_composer")
     internal static let minimiseComposer = ImageAsset(name: "minimise_composer")
@@ -285,6 +283,7 @@ internal class Asset: NSObject {
     internal static let modIcon = ImageAsset(name: "mod_icon")
     internal static let moreReactions = ImageAsset(name: "more_reactions")
     internal static let notifications = ImageAsset(name: "notifications")
+    internal static let pollHistory = ImageAsset(name: "pollHistory")
     internal static let reactionsMoreAction = ImageAsset(name: "reactions_more_action")
     internal static let roomAccessInfoHeaderIcon = ImageAsset(name: "room_access_info_header_icon")
     internal static let scrollup = ImageAsset(name: "scrollup")

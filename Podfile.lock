@@ -55,9 +55,9 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatrixSDK (0.24.5):
-    - MatrixSDK/Core (= 0.24.5)
-  - MatrixSDK/Core (0.24.5):
+  - MatrixSDK (0.24.8):
+    - MatrixSDK/Core (= 0.24.8)
+  - MatrixSDK/Core (0.24.8):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
@@ -65,12 +65,12 @@ PODS:
     - OLMKit (~> 3.2.5)
     - Realm (= 10.27.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/CryptoSDK (0.24.5):
-    - MatrixSDKCrypto (= 0.1.5)
-  - MatrixSDK/JingleCallStack (0.24.5):
+  - MatrixSDK/CryptoSDK (0.24.8):
+    - MatrixSDKCrypto (= 0.1.8)
+  - MatrixSDK/JingleCallStack (0.24.8):
     - JitsiMeetSDK (= 5.0.2)
     - MatrixSDK/Core
-  - MatrixSDKCrypto (0.1.5)
+  - MatrixSDKCrypto (0.1.8)
   - OLMKit (3.2.12):
     - OLMKit/olmc (= 3.2.12)
     - OLMKit/olmcpp (= 3.2.12)
@@ -122,8 +122,8 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - libPhoneNumber-iOS (~> 0.9.13)
-  - MatrixSDK (= 0.24.5)
-  - MatrixSDK/JingleCallStack (= 0.24.5)
+  - MatrixSDK (= 0.24.8)
+  - MatrixSDK/JingleCallStack (= 0.24.8)
   - OLMKit
   - PostHog (~> 1.4.4)
   - ReadMoreTextView (~> 3.0.1)
@@ -197,7 +197,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/matrix-org/matrix-analytics-events.git
 
 SPEC CHECKSUMS:
-  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
   AnalyticsEvents: 0cc8cf52da2fd464a2f39b788a295988151116ce
   BlueCryptor: b0aee3d9b8f367b49b30de11cda90e1735571c24
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
@@ -220,8 +220,8 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: 1557b3ed0a211db43a865cfdad93f07c2be92c9e
-  MatrixSDKCrypto: dcab554bc7157cad31c01fc1137cf5acb01959a4
+  MatrixSDK: cf1c1b2a9742f7f4fad21e94bd94cd8f13c47369
+  MatrixSDKCrypto: 862d9b4dbb6861da030943f5a18c39258ed7345b
   OLMKit: da115f16582e47626616874e20f7bb92222c7a51
   PostHog: 4b6321b521569092d4ef3a02238d9435dbaeb99f
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
@@ -241,6 +241,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: c93b326deaf9de3916d42a49d39d737612ab1d94
+PODFILE CHECKSUM: 079b57b800c666ad864e1f059ae69e150a98a4f0
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

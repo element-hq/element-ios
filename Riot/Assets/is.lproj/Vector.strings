@@ -1283,7 +1283,7 @@
 "settings_add_3pid_invalid_password_message" = "Ógild auðkenni";
 "settings_add_3pid_password_title_msidsn" = "Bæta við símanúmeri";
 "settings_add_3pid_password_title_email" = "Bæta við tölvupóstfangi";
-"settings_labs_enable_threads" = "Skilaboð í spjallþráðum";
+"settings_labs_enable_threads" = "Spjallþræðir skilaboða";
 "settings_labs_enabled_polls" = "Kannanir";
 "settings_integrations_allow_button" = "Sýsla með samþættingar";
 "settings_new_keyword" = "Bæta við nýju stikkorði";
@@ -2132,7 +2132,6 @@
 
 "user_sessions_overview_title" = "Setur";
 "space_selector_create_space" = "Búa til svæði";
-"all_chats_onboarding_try_it" = "Prófaðu það";
 "all_chats_edit_menu_space_settings" = "Stillingar svæðis";
 "all_chats_edit_menu_leave_space" = "Yfirgefa %@";
 "room_recents_recently_viewed_section" = "Nýlega skoðað";
@@ -2234,7 +2233,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Ekkert nýtt.";
-"all_chats_onboarding_page_title1" = "Velkomin í nýja sýn!";
 "all_chats_nothing_found_placeholder_message" = "Reyndu að aðlaga leitina þína.";
 "all_chats_edit_layout_alphabetical_order" = "Raða A-Ö";
 "all_chats_edit_layout_activity_order" = "Raða eftir virkni";
@@ -2317,7 +2315,7 @@
 "device_name_mobile" = "%@ fyrir farsíma";
 "device_name_web" = "%@ á vefnum";
 "device_name_desktop" = "%@ fyrir einkatölvur";
-"user_session_item_details" = "%@ · Síðasta virkni %@";
+"user_session_item_details" = "%1$@ · %2$@";
 "location_sharing_live_loading" = "Hleð inn rauntímastaðsetningu...";
 "location_sharing_live_list_item_time_left" = "%@ fór";
 "location_sharing_map_credits_title" = "© Höfundarréttur";
@@ -2330,9 +2328,6 @@
 // Mark: - Space Selector
 
 "space_selector_title" = "Svæðin mín";
-"all_chats_onboarding_title" = "Hvað er nýtt";
-"all_chats_onboarding_page_title3" = "Gefðu umsögn";
-"all_chats_onboarding_page_title2" = "Aðgangur að svæðum";
 "all_chats_user_menu_settings" = "Notandastillingar";
 "all_chats_edit_layout_pin_spaces_title" = "Festu svæðin þín";
 
@@ -2368,3 +2363,119 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Búðu til aðganginn þinn";
+"notice_voice_broadcast_ended_by_you" = "Þú endaðir talútsendingu.";
+"notice_voice_broadcast_ended" = "%@ endaði talútsendingu.";
+"notice_voice_broadcast_live" = "Bein útsending";
+"deselect_all" = "Afvelja allt";
+"wysiwyg_composer_link_action_edit_title" = "Breyta tengli";
+"wysiwyg_composer_link_action_create_title" = "Búa til tengil";
+"wysiwyg_composer_link_action_link" = "Tengill";
+
+
+
+// Links
+"wysiwyg_composer_link_action_text" = "Texti";
+"wysiwyg_composer_start_action_voice_broadcast" = "Útvörpun tals";
+"wysiwyg_composer_start_action_text_formatting" = "Sníðing texta";
+"wysiwyg_composer_start_action_camera" = "Myndavél";
+"wysiwyg_composer_start_action_location" = "Staðsetning";
+"wysiwyg_composer_start_action_polls" = "Kannanir";
+"wysiwyg_composer_start_action_attachments" = "Viðhengi";
+"wysiwyg_composer_start_action_stickers" = "Límmerki";
+
+
+// MARK: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Ljósmyndasafn";
+"user_session_overview_session_details_button_title" = "Nánar um setuna";
+"user_session_overview_session_title" = "Seta";
+"user_session_overview_current_session_title" = "Núverandi seta";
+"user_session_details_application_url" = "Slóð (URL)";
+"user_session_details_application_version" = "Útgáfa";
+"user_session_details_application_name" = "Heiti";
+"user_session_details_device_os" = "Stýrikerfi";
+"user_session_details_device_browser" = "Vafri";
+"user_session_details_device_model" = "Gerð";
+"user_session_details_device_ip_location" = "Staðsetning IP-vistfangs";
+"user_session_details_device_ip_address" = "IP-vistfang";
+"user_session_details_last_activity" = "Síðasta virkni";
+"user_session_details_session_id" = "Auðkenni setu";
+"user_session_details_session_name" = "Nafn á setu";
+"user_session_details_device_section_header" = "Tæki";
+"user_session_details_application_section_header" = "Forrit";
+"user_session_details_session_section_header" = "Seta";
+"user_session_details_title" = "Nánar um setuna";
+"device_type_name_unknown" = "Óþekkt";
+"device_type_name_mobile" = "Farsími";
+"device_type_name_web" = "Vefur";
+"device_type_name_desktop" = "Borðtölva";
+"user_other_session_selected_count" = "%@ valið";
+"user_other_session_clear_filter" = "Hreinsa síu";
+"user_other_session_no_unverified_sessions" = "Engar óstaðfestar setur fundust.";
+"user_other_session_no_verified_sessions" = "Engar staðfestar setur fundust.";
+"user_other_session_no_inactive_sessions" = "Engar óvirkar setur fundust.";
+"user_other_session_filter_menu_inactive" = "Óvirkt";
+"user_other_session_filter_menu_unverified" = "Óstaðfestar";
+"user_other_session_filter_menu_verified" = "Staðfestar";
+"user_other_session_filter_menu_all" = "Allar setur";
+"user_other_session_filter" = "Sía";
+"user_other_session_security_recommendation_title" = "Aðrar setur";
+"user_session_inactive_session_title" = "Óvirkar setur";
+"user_session_unverified_session_title" = "Óstaðfest seta";
+"user_session_verified_session_title" = "Sannreyndar setur";
+"user_session_got_it" = "Náði því";
+"user_session_push_notifications" = "Ýti-tilkynningar";
+"user_session_verification_unknown_short" = "Óþekkt";
+"user_session_verification_unknown" = "Óþekkt staða sannvottunar";
+"user_sessions_view_all_action" = "Skoða öll (%d)";
+"user_sessions_overview_link_device" = "Tengja tæki";
+"user_sessions_overview_current_session_section_title" = "Núverandi seta";
+"user_sessions_hide_location_info" = "Fela IP-vistfang";
+"user_sessions_show_location_info" = "Birta IP-vistfang";
+"user_sessions_overview_other_sessions_section_title" = "Aðrar setur";
+"user_sessions_overview_security_recommendations_inactive_title" = "Óvirkar setur";
+"user_sessions_overview_security_recommendations_unverified_title" = "Óstaðfestar setur";
+"user_sessions_overview_security_recommendations_section_title" = "Ráðleggingar varðandi öryggi";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"location_sharing_live_lab_promotion_activation" = "Virkja deilingu rauntímastaðsetninga";
+"location_sharing_live_timer_incoming" = "Í beinni til %@";
+"poll_timeline_reply_ended_poll" = "Lauk könnun";
+"poll_timeline_ended_text" = "Lauk könnuninni";
+"poll_history_past_segment_title" = "Fyrri kannanir";
+"poll_history_active_segment_title" = "Virkar kannanir";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Breytingaskrá könnunar";
+"all_chats_user_menu_accessibility_label" = "Valmynd notandans";
+"voice_broadcast_connection_error_title" = "Villa í tengingu";
+"voice_broadcast_voip_cannot_start_title" = "Get ekki hafið símtal";
+"voice_broadcast_stop_alert_agree_button" = "Já, stöðva";
+"voice_broadcast_buffering" = "Hleð í biðminni...";
+"voice_broadcast_time_left" = "%@ eftir";
+"voice_broadcast_tile" = "Útvörpun tals";
+"voice_broadcast_live" = "Beint";
+"voice_broadcast_playback_lock_screen_placeholder" = "Útvörpun tals";
+
+// Unverified sessions
+"key_verification_alert_title" = "Þú ert með óstaðfestar setur";
+"sign_out_confirmation_message" = "Ertu viss um að þú viljir skrá þig út?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Skrá út";
+"secure_key_backup_setup_cancel_alert_message" = "Ef þú hættir við núna, geturðu tapað dulrituðum skilaboðum og gögnum ef þú missir aðgang að innskráningum þínum.\n\nÞú getur víka sett upp örugga afritun og sýslað með dulritunarlyklana þína í stillingunum.";
+"room_details_polls" = "Breytingaskrá könnunar";
+"manage_session_sign_out_other_sessions" = "Skrá út úr öllum öðrum setum";
+"manage_session_rename" = "Endurnefna setu";
+"settings_labs_enable_voice_broadcast" = "Útvörpun tals";
+"authentication_qr_login_failure_retry" = "Reyna aftur";
+"authentication_qr_login_loading_connecting_device" = "Tengist við tæki";
+"authentication_qr_login_scan_title" = "Skanna QR-kóða";
+"authentication_qr_login_start_title" = "Skanna QR-kóða";
+"authentication_login_with_qr" = "Skrá inn með QR-kóða";

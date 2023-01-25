@@ -18,7 +18,7 @@ import Foundation
 import SwiftUI
 
 typealias MockVoiceBroadcastPlaybackViewModelType = StateStoreViewModel<VoiceBroadcastPlaybackViewState, VoiceBroadcastPlaybackViewAction>
-class MockVoiceBroadcastPlaybackViewModel: MockVoiceBroadcastPlaybackViewModelType, VoiceBroadcastPlaybackViewModelProtocol {    
+class MockVoiceBroadcastPlaybackViewModel: MockVoiceBroadcastPlaybackViewModelType, VoiceBroadcastPlaybackViewModelProtocol {
 }
 
 /// Using an enum for the screen allows you define the different state cases with

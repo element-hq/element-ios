@@ -414,14 +414,16 @@
     NSString *s = @"Matrix HQ room is at https://matrix.to/#/room/#matrix:matrix.org.";
     NSAttributedString *as = [eventFormatter renderString:s forEvent:anEvent];
 
-    __block NSUInteger ranges = 0;
+    __block BOOL hasLink = false;
 
     [as enumerateAttributesInRange:NSMakeRange(0, as.length) options:(0) usingBlock:^(NSDictionary<NSString *,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
-
-        ranges++;
+        if (attrs[NSLinkAttributeName]) {
+            hasLink = true;
+            *stop = true;
+        }
     }];
 
-    XCTAssertEqual(ranges, 1, @"There should be no link in this case. We let the UI manage the link");
+    XCTAssertEqual(hasLink, false, @"There should be no link in this case. We let the UI manage the link");
 }
 
 #pragma mark - Event sender/target info

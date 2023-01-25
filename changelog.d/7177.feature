@@ -1,1 +1,0 @@
-Rich Text Composer: added inline code formatting feature.

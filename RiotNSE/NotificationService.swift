@@ -471,7 +471,14 @@ class NotificationService: UNNotificationServiceExtension {
                                 notificationBody = NotificationService.localizedString(forKey: "VIDEO_FROM_USER", eventSenderName)
                             case kMXMessageTypeAudio:
                                 if event.isVoiceMessage() {
-                                    notificationBody = NotificationService.localizedString(forKey: "VOICE_MESSAGE_FROM_USER", eventSenderName)
+                                    // Ignore voice broadcast chunk event except the first one.
+                                    if let chunkInfo = event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] as? [String: UInt] {
+                                        if chunkInfo[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkSequence] == 1 {
+                                            notificationBody = NotificationService.localizedString(forKey: "VOICE_BROADCAST_FROM_USER", eventSenderName)
+                                        }
+                                    } else {
+                                        notificationBody = NotificationService.localizedString(forKey: "VOICE_MESSAGE_FROM_USER", eventSenderName)
+                                    }
                                 } else {
                                     notificationBody = NotificationService.localizedString(forKey: "AUDIO_FROM_USER", eventSenderName, messageContent)
                                 }
@@ -544,7 +551,7 @@ class NotificationService: UNNotificationServiceExtension {
                                 // Otherwise show a generic reaction.
                                 notificationBody = NotificationService.localizedString(forKey: "GENERIC_REACTION_FROM_USER", eventSenderName)
                             }
-                            
+
                         case .custom:
                             if (event.type == kWidgetMatrixEventTypeString || event.type == kWidgetModularEventTypeString),
                                let type = event.content?["type"] as? String,
@@ -561,13 +568,18 @@ class NotificationService: UNNotificationServiceExtension {
                                     additionalUserInfo = [Constants.userInfoKeyPresentNotificationOnForeground: true]
                                 }
                             }
+
                         case .pollStart:
                             notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                             notificationBody = MXEventContentPollStart(fromJSON: event.content)?.question
+                        
+                        case .pollEnd:
+                            notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                            notificationBody = VectorL10n.pollTimelineEndedText
+                        
                         default:
                             break
                     }
-                    
                     
                     self.validateNotificationContentAndComplete(
                         notificationTitle: notificationTitle,

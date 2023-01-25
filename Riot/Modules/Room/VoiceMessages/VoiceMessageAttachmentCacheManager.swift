@@ -137,7 +137,7 @@ class VoiceMessageAttachmentCacheManager {
         durations.removeAll()
         finalURLs.removeAll()
         
-        if FileManager.default.fileExists(atPath: temporaryFilesFolderURL.absoluteString) {
+        if FileManager.default.fileExists(atPath: temporaryFilesFolderURL.path) {
             do {
                 try FileManager.default.removeItem(at: temporaryFilesFolderURL)
             } catch {

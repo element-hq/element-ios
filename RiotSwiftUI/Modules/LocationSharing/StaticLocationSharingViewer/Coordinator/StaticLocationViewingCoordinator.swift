@@ -56,7 +56,8 @@ final class StaticLocationViewingCoordinator: Coordinator, Presentable {
             coordinateType: parameters.coordinateType
         )
         let view = StaticLocationView(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.mediaManager)))
+
         staticLocationViewingViewModel = viewModel
         staticLocationViewingHostingController = VectorHostingController(rootView: view)
     }

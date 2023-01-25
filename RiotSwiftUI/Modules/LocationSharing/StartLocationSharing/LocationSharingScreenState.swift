@@ -34,6 +34,6 @@ enum MockLocationSharingScreenState: MockScreenState, CaseIterable {
                                                  isLiveLocationSharingEnabled: true, service: locationSharingService)
         return ([viewModel],
                 AnyView(LocationSharingView(context: viewModel.context)
-                    .addDependency(MockAvatarService.example)))
+                    .environmentObject(AvatarViewModel.withMockedServices())))
     }
 }

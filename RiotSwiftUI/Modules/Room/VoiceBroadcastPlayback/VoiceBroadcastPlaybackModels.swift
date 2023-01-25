@@ -23,6 +23,7 @@ enum VoiceBroadcastPlaybackViewAction {
     case sliderChange(didChange: Bool)
     case backward
     case forward
+    case redact
 }
 
 enum VoiceBroadcastPlaybackState {

@@ -2440,7 +2440,6 @@
 "room_access_space_chooser_other_spaces_section_info" = "Ce sont probablement des choses auxquelles les autres admins de %@ participent.";
 "authentication_choose_password_not_verified_message" = "Vérifiez votre boîte de réception";
 "authentication_choose_password_not_verified_title" = "Email non vérifié";
-"all_chats_onboarding_page_title3" = "Donner mon avis";
 
 // MARK: User sessions management
 
@@ -2460,13 +2459,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Rien de neuf.";
-"all_chats_onboarding_try_it" = "Essayez";
-"all_chats_onboarding_title" = "Quoi de neuf";
-"all_chats_onboarding_page_message3" = "Appuyez sur votre profil pour nous faire vos retours.";
-"all_chats_onboarding_page_message2" = "Accédez à vos espaces (en bas à gauche) plus rapidement et facilement qu’avant.";
-"all_chats_onboarding_page_title2" = "Accéder aux espaces";
-"all_chats_onboarding_page_message1" = "Pour simplifier Element, les onglets sont désormais facultatifs. Gérez les depuis le menu en haut à droite.";
-"all_chats_onboarding_page_title1" = "Bienvenu dans une nouvelle vue !";
 "all_chats_edit_menu_space_settings" = "Paramètres de l’espace";
 "all_chats_edit_menu_leave_space" = "Quitter %@";
 "all_chats_user_menu_settings" = "Paramètres utilisateur";

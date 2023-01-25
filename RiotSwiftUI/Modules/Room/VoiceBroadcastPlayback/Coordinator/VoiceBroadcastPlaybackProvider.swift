@@ -29,7 +29,19 @@ import Foundation
             }
         }
     }
-    var coordinatorsForEventIdentifiers = [String: VoiceBroadcastPlaybackCoordinator]()
+    private var coordinatorsForEventIdentifiers = [String: VoiceBroadcastPlaybackCoordinator]() {
+        didSet {
+            if !self.coordinatorsForEventIdentifiers.isEmpty && self.redactionsListener == nil {
+                redactionsListener = session?.listenToEvents([MXEventType(identifier: kMXEventTypeStringRoomRedaction)], self.handleEvent)
+            }
+            
+            if self.coordinatorsForEventIdentifiers.isEmpty && self.redactionsListener != nil {
+                session?.removeListener(self.redactionsListener)
+                self.redactionsListener = nil
+            }
+        }
+    }
+    private var redactionsListener: Any?
     
     private override init() { }
     
@@ -58,16 +70,30 @@ import Foundation
         return coordinator.toPresentable()
 
     }
-    
-    /// Retrieve the voiceBroadcast timeline coordinator for the given event or nil if it hasn't been created yet
-    func voiceBroadcastPlaybackCoordinatorForEventIdentifier(_ eventIdentifier: String) -> VoiceBroadcastPlaybackCoordinator? {
-        coordinatorsForEventIdentifiers[eventIdentifier]
-    }
-    
+        
     /// Pause current voice broadcast playback.
     @objc public func pausePlaying() {
         coordinatorsForEventIdentifiers.forEach { _, coordinator in
             coordinator.pausePlaying()
+        }
+    }
+    
+    @objc public func pausePlayingInProgressVoiceBroadcast() {
+        coordinatorsForEventIdentifiers.forEach { _, coordinator in
+            coordinator.pausePlayingInProgressVoiceBroadcast()
+        }
+    }
+    
+    private func handleEvent(event: MXEvent, direction: MXTimelineDirection, customObject: Any?) {
+        if direction == .backwards {
+            //  ignore backwards events
+            return
+        }
+        
+        var coordinator = coordinatorsForEventIdentifiers.removeValue(forKey: event.redacts)
+        
+        coordinator?.toPresentable().dismiss(animated: false) {
+           coordinator = nil
         }
     }
 }

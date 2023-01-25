@@ -2417,14 +2417,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Uut teavet ei leidu.";
-"all_chats_onboarding_try_it" = "Proovi nüüd";
-"all_chats_onboarding_title" = "Mida on meil uut";
-"all_chats_onboarding_page_message3" = "Kui soovid meile teada anda oma arvamustest, siis klõpsi oma profiili ikooni.";
-"all_chats_onboarding_page_title3" = "Jaga tagasisidet";
-"all_chats_onboarding_page_message2" = "Kogukonnad leiad alt vasakult kiiremini ja lihtsamini, kui varem.";
-"all_chats_onboarding_page_title2" = "Ligipääs kogukondadele";
-"all_chats_onboarding_page_message1" = "Et Element'i kasutamine oleks lihtsam, siis kaardid on nüüd valikulised. Neid saad hallata ülal paremal avanevast menüüst.";
-"all_chats_onboarding_page_title1" = "Meie liidesel on nüüd uus vaade!";
 "all_chats_nothing_found_placeholder_message" = "Proovi muuta oma otsingut.";
 "all_chats_nothing_found_placeholder_title" = "Mitte midagi ei leidu.";
 "all_chats_empty_unreads_placeholder_message" = "Kui sul on lugemata sõnumeid, siis nad on siit leitavad.";
@@ -2573,7 +2565,7 @@
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Palun arvesta, et sessioonide nimed on näha ka kõikidele osapooltele, kellega sa suhtled. %@";
 "manage_session_name_hint" = "Sinu enda kirjutatud sessiooninimede alusel on sul oma seadmeid lihtsam ära tunda.";
-"settings_labs_enable_voice_broadcast" = "Ringhäälingukõne (aktiivses arenduses)";
+"settings_labs_enable_voice_broadcast" = "Ringhäälingukõne";
 "settings_labs_enable_wysiwyg_composer" = "Proovi vormindatud teksti alusel töötavat tekstitoimetit";
 "authentication_qr_login_failure_retry" = "Proovi uuesti";
 "authentication_qr_login_failure_request_timed_out" = "Sidumine ei lõppenud etteantud aja jooksul.";
@@ -2607,3 +2599,65 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Sul on verifitseerimata sessioone";
+"user_other_session_permanently_unverified_additional_info" = "Seda sessiooni ei saa verifitseerida, sest seal puudub krüptimise tugi.";
+"voice_broadcast_time_left" = "aega jäänud %@";
+"launch_loading_processing_response" = "Töötleme andmeid\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Sünkroniseerime andmeid serveriga\n(katse: %@)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Sünkroniseerimine serveriga";
+"voice_broadcast_buffering" = "Andmed on puhverdamisel…";
+"voice_broadcast_stop_alert_agree_button" = "Jah, lõpetame";
+"voice_broadcast_stop_alert_description" = "Kas sa oled kindel, et soovid otseeetri lõpetada? Sellega ringhäälingukõne salvestamine lõppeb ja salvestis on kättesaadav kõigile jututoas.";
+"voice_broadcast_stop_alert_title" = "Kas lõpetame otseeetri?";
+"password_policy_pwd_in_dict_error" = "See salasõna leidub levinud salasõnade sõnastikus ning seda sa ei saa kasutada.";
+"password_policy_weak_pwd_error" = "See salasõna on liiga lihtne. Ta peaks olema vähemalt 8 tähemärki pikk ning seal peaks leiduma vähemalt üks väiketäht, suurtäht, number ja erimärk.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Liiga lühike salasõna";
+"user_session_permanently_unverified_session_description" = "Seda sessiooni ei saa verifitseerida, sest seal puudub krüptimise tugi.\n\nSelle sessiooniga ei saa sa osaleda krüptitud jututubades.\n\nParima turvalisuse ja privaatsuse nimel palun kasuta selliseid Matrix'i kliente, mis toetavad krüptimist.";
+"wysiwyg_composer_format_action_link" = "Muuda lingi vormingut";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Tekst";
+"wysiwyg_composer_link_action_link" = "Link";
+"wysiwyg_composer_link_action_edit_title" = "Muuda linki";
+"wysiwyg_composer_link_action_create_title" = "Loo link";
+"wysiwyg_composer_format_action_inline_code" = "Kasuta lõimitud koodi vormingut";
+"notice_voice_broadcast_ended_by_you" = "Sa lõpetasid ringhäälingukõne.";
+"notice_voice_broadcast_ended" = "%@ lõpetas ringhäälingukõne.";
+"notice_voice_broadcast_live" = "Ringhäälingukõne on eetris";
+"user_other_session_security_recommendation_title" = "Muud sessioonid";
+"poll_timeline_decryption_error" = "Krüptimisvigade tõttu jääb osa hääli lugemata";
+"voice_message_broadcast_in_progress_title" = "Häälsõnumi salvestamine või esitamine ei õnnestu";
+"voice_message_broadcast_in_progress_message" = "Kuna sa hetkel salvestad ringhäälingukõnet, siis häälsõnumi salvestamine või esitamine ei õnnestu. Selleks palun lõpeta ringhäälingukõne";
+"poll_timeline_ended_text" = "Küsitlus on lõppenud";
+"voice_broadcast_voip_cannot_start_description" = "Kuna sa hetkel salvestad ringhäälingukõnet, siis tavakõne algatamine ei õnnestu. Kõne alustamiseks palun lõpeta ringhäälingukõne.";
+"voice_broadcast_voip_cannot_start_title" = "Kõne algatamine ei õnnestu";
+"poll_history_no_past_poll_text" = "Selles jututoas pole varasemaid küsitlusi";
+"poll_history_no_active_poll_text" = "Selles jututoas pole käimasolevaid küsitlusi";
+"poll_history_past_segment_title" = "Varasemad küsitlused";
+"poll_history_active_segment_title" = "Käimasolevad küsitlused";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Küsitluste ajalugu";
+"room_details_polls" = "Küsitluste ajalugu";
+"accessibility_selected" = "valitud";
+"voice_broadcast_playback_lock_screen_placeholder" = "Ringhäälingukõne";
+"voice_broadcast_connection_error_message" = "Kahjuks me ei saa hetkel salvestamist alustada. Palun proovi hiljem uuesti.";
+"voice_broadcast_connection_error_title" = "Ühenduse viga";
+"wysiwyg_composer_format_action_quote" = "Lülita tsiteerimine sisse/välja";
+"wysiwyg_composer_format_action_code_block" = "Lülita koodiblokk sisse/välja";
+"wysiwyg_composer_format_action_ordered_list" = "Lülita nummerdatud loend sisse/välja";
+"wysiwyg_composer_format_action_unordered_list" = "Lülita täpploend sisse/välja";
+"voice_broadcast_recorder_connection_error" = "Viga võrguühenduses - salvestamine on peatatud";
+"poll_timeline_reply_ended_poll" = "Lõppenud küsitlus";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Tõstame andmeid ümber\n%@ %%";
+"settings_labs_disable_crypto_sdk" = "Uus Crypto SDK on kasutusel. Tema väljalülitamiseks palun paigalda rakendus uuesti";
+"settings_labs_confirm_crypto_sdk" = "Seda toimingut ei saa tagasi pöörata";
+"settings_labs_enable_crypto_sdk" = "Võta kasutusele uus Rust-keelel põhinev Crypto SDK";

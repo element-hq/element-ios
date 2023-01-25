@@ -46,6 +46,7 @@ static NSRegularExpression *eventIdRegex;
 static NSRegularExpression *httpLinksRegex;
 // A regex to find all HTML tags
 static NSRegularExpression *htmlTagsRegex;
+static NSDataDetector *linkDetector;
 
 @implementation MXKTools
 
@@ -60,7 +61,8 @@ static NSRegularExpression *htmlTagsRegex;
         eventIdRegex = [NSRegularExpression regularExpressionWithPattern:kMXToolsRegexStringForMatrixEventIdentifier options:NSRegularExpressionCaseInsensitive error:nil];
         
         httpLinksRegex = [NSRegularExpression regularExpressionWithPattern:@"(?i)\\b(https?://\\S*)\\b" options:NSRegularExpressionCaseInsensitive error:nil];
-        htmlTagsRegex  = [NSRegularExpression regularExpressionWithPattern:@"<(\\w+)[^>]*>" options:NSRegularExpressionCaseInsensitive error:nil];        
+        htmlTagsRegex  = [NSRegularExpression regularExpressionWithPattern:@"<(\\w+)[^>]*>" options:NSRegularExpressionCaseInsensitive error:nil];
+        linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
     });
 }
 
@@ -1037,6 +1039,23 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
     {
         [MXKTools createLinksInMutableAttributedString:mutableAttributedString matchingRegex:eventIdRegex];
     }
+    
+    // This allows to check for normal url based links (like https://element.io)
+    // And set back the default link color
+    NSArray *matches = [linkDetector matchesInString: [mutableAttributedString string] options:0 range: NSMakeRange(0,mutableAttributedString.length)];
+    if (matches)
+    {
+        for (NSTextCheckingResult *match in matches)
+        {
+            NSRange matchRange = [match range];
+            NSURL *matchUrl = [match URL];
+            NSURLComponents *url = [[NSURLComponents new] initWithURL:matchUrl resolvingAgainstBaseURL:NO];
+            if (url.URL)
+            {
+                [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.colors.links range:matchRange];
+            }
+        }
+    }
 }
 
 + (void)createLinksInMutableAttributedString:(NSMutableAttributedString*)mutableAttributedString matchingRegex:(NSRegularExpression*)regex
@@ -1083,6 +1102,8 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
                 // If the match is fully in the link, skip it
                 if (NSIntersectionRange(match.range, linkMatch.range).length == match.range.length)
                 {
+                    // but before we set the right color
+                    [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.colors.links range:linkMatch.range];
                     hasAlreadyLink = YES;
                     break;
                 }
@@ -1097,6 +1118,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
             NSString *link = [mutableAttributedString.string substringWithRange:match.range];
             link = [link stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
             [mutableAttributedString addAttribute:NSLinkAttributeName value:link range:match.range];
+            [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.colors.links range:match.range];
         }
     }];
 }

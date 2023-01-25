@@ -20,7 +20,7 @@
 "cancel" = "取消";
 "save" = "保存";
 "join" = "加入";
-"decline" = "取消";
+"decline" = "拒绝";
 "accept" = "接受";
 "preview" = "预览";
 "camera" = "摄像头";
@@ -196,7 +196,7 @@
 "room_event_action_copy" = "复制";
 "room_event_action_quote" = "引用";
 "room_event_action_redact" = "移除";
-"room_event_action_more" = "移动";
+"room_event_action_more" = "更多";
 "room_event_action_share" = "分享";
 "room_event_action_permalink" = "复制消息的链接";
 "room_event_action_view_source" = "查看源数据";
@@ -522,7 +522,7 @@
 "room_resource_usage_limit_reached_message_contact_3" = " 以提高限制。";
 // String for App Store
 "store_short_description" = "安全、去中心化的聊天及 VoIP 应用";
-"store_full_description" = "Element 是一种新型的通讯与协作应用：\n\n1. 使您可以掌控您的隐私\n2. 使您与 Matrix 网络中的任何人交流，甚至可以通过集成功能与如 Slack 之类的其他应用通讯\n3. 保护您免受广告，大数据挖掘和封闭服务的侵害\n4. 通过端到端加密保证安全，通过交叉签名验证其他人\n\nElement 与其他通讯与协作应用完全不同，因为它是去中心化且开源的。\n\nElement 允许您自托管——或者选择托管商——因此，您能拥有数据和会话的隐私权，所有权和控制权。它允许您访问开放网络；因此，您可以与 Element 用户以外的人交流。并且它非常安全。\n\nElement 之所以可以做到这些，是因为它在 Matrix 上运行——开放，去中心化通讯的标准。\n\n通过让您选择由谁来托管您的会话，Element 让您掌控一切。在 Element 应用中，您可以选择不同的托管方式：\n\n1. 在由 Matrix 开发者托管的 matrix.org 公共服务器上获取免费账户，或从志愿者托管的上千个公共服务器中选择\n2. 在您自己的硬件上运行服务器，自托管您的会话\n3. 通过订阅 Element Matrix Services 托管平台，简单地在自定义服务器上注册账户\n\n为什么选择 Element？\n\n掌控您的数据：您来决定存放您的数据和消息的位置。拥有并控制它的是您，而不是挖掘您的数据或与第三方分享的巨型企业。\n\n开放通讯与协作：您可以与 Matrix 网络中的任何人聊天，不论他们使用 Element 还是其他 Matrix 应用，甚至/即使他们在使用不同的通讯系统，例如 Slack，IRC 或 XMPP。\n\n超级安全：支持真正的端到端加密（仅有会话中的人可以解密消息），还有能够验证会话参与方的设备的交叉签名。\n\n完善的通讯方式：消息，语音和视频通话，文件共享，屏幕共享和大量集成功能，机器人和挂件。建立房间与社区，保持联系并完成工作。\n\n随时随地：消息历史可在您的全部设备和 https://app.element.io 网页端之间完全同步，无论您在哪里，都可以保持联系。";
+"store_full_description" = "Element 是一种新型的通讯与协作应用：\n\n1. 使您可以掌控您的隐私\n2. 使您与 Matrix 网络中的任何人交流，甚至可以通过集成功能与如 Slack 之类的其他应用通讯\n3. 保护您免受广告，大数据挖掘和封闭服务的侵害\n4. 通过端到端加密保证安全，通过交叉签名验证其他人\n\nElement 与其他通讯与协作应用完全不同，因为它是去中心化且开源的。\n\nElement 允许您自托管——或者选择托管商——因此，您能拥有数据和会话的隐私权，所有权和控制权。它允许您访问开放网络；因此，您可以与 Element 用户以外的人交流。并且它非常安全。\n\nElement 之所以可以做到这些，是因为它在 Matrix 上运行——开放，去中心化通讯的标准。\n\n通过让您选择由谁来托管您的会话，Element 让您掌控一切。在 Element 应用中，您可以选择不同的托管方式：\n\n1. 在由 Matrix 开发者托管的 matrix.org 公共服务器上获取免费账户，或从志愿者托管的上千个公共服务器中选择\n2. 在您自己的硬件上运行服务器，自托管您的会话\n3. 通过订阅 Element Matrix Services 托管平台，简单地在自定义服务器上注册账户\n\n为什么选择 Element？\n\n掌控您的数据：您来决定存放您的数据和消息的位置。拥有并控制它的是您，而不是挖掘您的数据或与第三方分享的巨型企业。\n\n开放通讯与协作：您可以与 Matrix 网络中的任何人聊天，不论他们使用 Element 还是其他 Matrix 应用，甚至/即使他们在使用不同的通讯系统，例如 Slack、IRC 或 XMPP。\n\n超级安全：支持真正的端到端加密（仅有会话中的人可以解密消息），还有能够验证会话参与方的设备的交叉签名。\n\n完善的通讯方式：消息，语音和视频通话，文件共享，屏幕共享和大量集成功能，机器人和挂件。建立房间与社区，保持联系并完成工作。\n\n随时随地：消息历史可在您的全部设备和 https://app.element.io 网页端之间完全同步，无论您在哪里，都可以保持联系。";
 "auth_accept_policies" = "请查看并接受此主页服务器的服务条款：";
 "room_replacement_information" = "这个房间已被替换，不再有效。";
 "settings_flair" = "在允许的地方显示个性徽章";
@@ -1090,7 +1090,7 @@
 "more" = "更多";
 "switch" = "开关";
 "joined" = "已加入";
-"store_promotional_text" = "在开放网络上保护隐私的聊天和协作应用程序。分散权力让你掌控一切。没有数据挖掘，没有后门，也没有第三方访问。";
+"store_promotional_text" = "在开放网络上保护隐私的聊天和协作应用程序。去中心化让你掌控一切。没有数据挖掘，没有后门，也没有第三方访问。";
 "social_login_button_title_sign_up" = "使用 %@ 注册";
 "social_login_button_title_sign_in" = "使用 %@ 登录";
 "social_login_button_title_continue" = "使用 %@ 继续";
@@ -2215,3 +2215,63 @@
 "authentication_forgot_password_input_message" = "%@将给你发一条验证链接";
 "authentication_forgot_password_input_title" = "输入你的电子邮件";
 "authentication_verify_email_waiting_button" = "重发电子邮件";
+"ignore_user" = "忽略用户";
+"authentication_qr_login_start_need_alternative" = "需要替代方法？";
+"authentication_qr_login_start_step4" = "选择“在此设备显示QR码”";
+"authentication_qr_login_start_display_qr" = "在此设备显示QR码";
+"user_sessions_overview_link_device" = "关联设备";
+"authentication_qr_login_display_title" = "关联设备";
+"authentication_qr_login_start_step3" = "选择“关联设备”";
+"authentication_qr_login_start_step2" = "前往设置->安全与隐私";
+"authentication_qr_login_start_step1" = "打开你的其他设备上的Element";
+"authentication_qr_login_start_subtitle" = "用此设备的相机扫描显示在你的其他设备上的QR码：";
+"authentication_qr_login_start_title" = "扫描QR码";
+"authentication_choose_password_signout_all_devices" = "登出全部设备";
+"authentication_login_with_qr" = "用QR码登录";
+"onboarding_congratulations_home_button" = "带我到主页";
+"onboarding_use_case_message" = "我们将帮助你连接";
+"invite_to" = "邀请到%@";
+"threads_empty_title" = "保持讨论的有条理性";
+"threads_action_my_threads" = "我的消息列";
+"threads_action_all_threads" = "所有消息列";
+"threads_title" = "消息列";
+"thread_copy_link_to_thread" = "将链接复制到消息列";
+
+// MARK: Threads
+"room_thread_title" = "消息列";
+"room_accessibility_record_voice_message_hint" = "双击并保持录音。";
+"room_accessibility_record_voice_message" = "录制语音消息";
+"room_accessibility_thread_more" = "更多";
+"room_accessibility_threads" = "消息列";
+"room_event_copy_link_info" = "链接已复制到剪贴板。";
+"room_event_action_reply_in_thread" = "消息列";
+"room_event_action_view_in_room" = "在房间浏览";
+"room_first_message_placeholder" = "发送您的第一条消息……";
+"room_participants_invite_prompt_to_msg" = "您确定要邀请%@ 到 %@吗？";
+"room_participants_leave_success" = "离开房间";
+"room_participants_leave_processing" = "离开";
+"search_filter_placeholder" = "过滤";
+"password_policy_pwd_in_dict_error" = "此密码已在字典中找到，不允许使用。";
+"password_policy_weak_pwd_error" = "此密码太弱了。它必须包含至少8个字符，每种类型至少有一个字符: 大写、小写、数字和特殊字符。";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "密码过短";
+"authentication_qr_login_failure_retry" = "再试一次";
+"authentication_qr_login_failure_request_timed_out" = "连接没有在规定的时间内完成。";
+"authentication_qr_login_failure_request_denied" = "请求在另一个设备上被拒绝。";
+"authentication_qr_login_failure_invalid_qr" = "二维码无效。";
+"authentication_qr_login_failure_title" = "连接失败";
+"authentication_qr_login_loading_signed_in" = "您现在已经登录到另一个设备上。";
+"authentication_qr_login_loading_waiting_signin" = "等待设备登录。";
+"authentication_qr_login_loading_connecting_device" = "连接到设备";
+"authentication_qr_login_confirm_alert" = "请确保您知道此代码的来源。通过连接设备，您将为某人提供对您帐户的完全访问权限。";
+"authentication_qr_login_confirm_subtitle" = "确认下面的代码与您的其他设备匹配:";
+"authentication_qr_login_confirm_title" = "建立安全连接";
+"authentication_qr_login_scan_subtitle" = "将二维码放置在下面的方框中";
+"authentication_qr_login_scan_title" = "扫描二维码";
+"authentication_qr_login_display_step2" = "选择“以二维码登入”";
+"authentication_qr_login_display_step1" = "在您的其它设备中打开Element";
+"onboarding_splash_page_4_title_no_pun" = "为您的团队发送消息。";
+"user_session_learn_more" = "了解更多";
+"manage_session_name_info_link" = "了解更多";
+"threads_beta_information_link" = "了解更多";

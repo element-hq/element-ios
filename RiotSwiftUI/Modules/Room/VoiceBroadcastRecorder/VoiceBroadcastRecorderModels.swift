@@ -21,6 +21,7 @@ enum VoiceBroadcastRecorderViewAction {
     case stop
     case pause
     case resume
+    case pauseOnError
 }
 
 enum VoiceBroadcastRecorderState {
@@ -28,6 +29,7 @@ enum VoiceBroadcastRecorderState {
     case stopped
     case paused
     case resumed
+    case error
 }
 
 struct VoiceBroadcastRecorderDetails {

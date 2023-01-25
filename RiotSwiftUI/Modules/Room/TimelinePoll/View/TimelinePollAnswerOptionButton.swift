@@ -25,23 +25,26 @@ struct TimelinePollAnswerOptionButton: View {
     
     let poll: TimelinePollDetails
     let answerOption: TimelinePollAnswerOption
-    let action: () -> Void
+    let action: (() -> Void)?
     
     // MARK: Public
     
     var body: some View {
-        Button(action: action) {
+        Button {
+            action?()
+        } label: {
             let rect = RoundedRectangle(cornerRadius: 4.0)
             answerOptionLabel
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 8.0)
                 .padding(.top, 12.0)
-                .padding(.bottom, 12.0)
+                .padding(.bottom, 8.0)
                 .clipShape(rect)
                 .overlay(rect.stroke(borderAccentColor, lineWidth: 1.0))
                 .accentColor(progressViewAccentColor)
         }
         .accessibilityIdentifier("PollAnswerOption\(optionIndex)")
+        .disabled(action == nil)
     }
     
     var answerOptionLabel: some View {
@@ -60,23 +63,20 @@ struct TimelinePollAnswerOptionButton: View {
                     Spacer()
                     Image(uiImage: Asset.Images.pollWinnerIcon.image)
                 }
+                
+                if poll.shouldDiscloseResults {
+                    Text(answerOption.count == 1 ? VectorL10n.pollTimelineOneVote : VectorL10n.pollTimelineVotesCount(Int(answerOption.count)))
+                        .font(theme.fonts.footnote)
+                        .foregroundColor(poll.closed && answerOption.winner ? theme.colors.accent : theme.colors.secondaryContent)
+                        .accessibilityIdentifier("PollAnswerOption\(optionIndex)Count")
+                }
             }
             
             if poll.type == .disclosed || poll.closed {
-                HStack {
-                    ProgressView(value: Double(poll.shouldDiscloseResults ? answerOption.count : 0),
-                                 total: Double(poll.totalAnswerCount))
-                        .progressViewStyle(LinearProgressViewStyle())
-                        .scaleEffect(x: 1.0, y: 1.2, anchor: .center)
-                        .accessibilityIdentifier("PollAnswerOption\(optionIndex)Progress")
-                    
-                    if poll.shouldDiscloseResults {
-                        Text(answerOption.count == 1 ? VectorL10n.pollTimelineOneVote : VectorL10n.pollTimelineVotesCount(Int(answerOption.count)))
-                            .font(theme.fonts.footnote)
-                            .foregroundColor(poll.closed && answerOption.winner ? theme.colors.accent : theme.colors.secondaryContent)
-                            .accessibilityIdentifier("PollAnswerOption\(optionIndex)Count")
-                    }
-                }
+                ProgressView(value: Double(poll.shouldDiscloseResults ? answerOption.count : 0), total: Double(poll.totalAnswerCount))
+                    .progressViewStyle(LinearProgressViewStyle.linear)
+                    .scaleEffect(x: 1.0, y: 1.2, anchor: .center)
+                    .accessibilityIdentifier("PollAnswerOption\(optionIndex)Progress")
             }
         }
     }
@@ -143,16 +143,21 @@ struct TimelinePollAnswerOptionButton_Previews: PreviewProvider {
                 }
             }
         }
+        .padding()
     }
     
     static func buildPoll(closed: Bool, type: TimelinePollType) -> TimelinePollDetails {
-        TimelinePollDetails(question: "",
+        TimelinePollDetails(id: UUID().uuidString,
+                            question: "",
                             answerOptions: [],
                             closed: closed,
+                            startDate: .init(),
                             totalAnswerCount: 100,
                             type: type,
+                            eventType: .started,
                             maxAllowedSelections: 1,
-                            hasBeenEdited: false)
+                            hasBeenEdited: false,
+                            hasDecryptionError: false)
     }
     
     static func buildAnswerOption(text: String = "Test", selected: Bool, winner: Bool = false) -> TimelinePollAnswerOption {

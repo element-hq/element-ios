@@ -29,13 +29,17 @@ class TimelinePollViewModelTests: XCTestCase {
                              TimelinePollAnswerOption(id: "2", text: "2", count: 1, winner: false, selected: false),
                              TimelinePollAnswerOption(id: "3", text: "3", count: 1, winner: false, selected: false)]
         
-        let timelinePoll = TimelinePollDetails(question: "Question",
+        let timelinePoll = TimelinePollDetails(id: "poll-id",
+                                               question: "Question",
                                                answerOptions: answerOptions,
                                                closed: false,
+                                               startDate: .init(),
                                                totalAnswerCount: 3,
                                                type: .disclosed,
+                                               eventType: .started,
                                                maxAllowedSelections: 1,
-                                               hasBeenEdited: false)
+                                               hasBeenEdited: false,
+                                               hasDecryptionError: false)
         
         viewModel = TimelinePollViewModel(timelinePollDetails: timelinePoll)
         context = viewModel.context

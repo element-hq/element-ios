@@ -28,6 +28,7 @@ import MediaPlayer
     private var roomAvatarLoader: MXMediaLoader?
     private let audioPlayers: NSMapTable<NSString, VoiceMessageAudioPlayer>
     private let audioRecorders: NSHashTable<VoiceMessageAudioRecorder>
+    private let nowPlayingInfoDelegates: NSMapTable<VoiceMessageAudioPlayer, VoiceMessageNowPlayingInfoDelegate>
     
     private var displayLink: CADisplayLink!
     
@@ -93,6 +94,7 @@ import MediaPlayer
     private override init() {
         audioPlayers = NSMapTable<NSString, VoiceMessageAudioPlayer>(valueOptions: .weakMemory)
         audioRecorders = NSHashTable<VoiceMessageAudioRecorder>(options: .weakMemory)
+        nowPlayingInfoDelegates = NSMapTable<VoiceMessageAudioPlayer, VoiceMessageNowPlayingInfoDelegate>(keyOptions: .weakMemory, valueOptions: .weakMemory)
         activeAudioPlayers = Set<VoiceMessageAudioPlayer>()
         super.init()
         
@@ -123,27 +125,54 @@ import MediaPlayer
         pauseAllServicesExcept(nil)
     }
     
+    func registerNowPlayingInfoDelegate(_ delegate: VoiceMessageNowPlayingInfoDelegate, forPlayer player: VoiceMessageAudioPlayer) {
+        nowPlayingInfoDelegates.setObject(delegate, forKey: player)
+    }
+    
+    func deregisterNowPlayingInfoDelegate(forPlayer player: VoiceMessageAudioPlayer) {
+        nowPlayingInfoDelegates.removeObject(forKey: player)
+    }
+    
     // MARK: - VoiceMessageAudioPlayerDelegate
     
     func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         currentlyPlayingAudioPlayer = audioPlayer
         activeAudioPlayers.insert(audioPlayer)
-        setUpRemoteCommandCenter()
+        
+        let shouldSetupRemoteCommandCenter = nowPlayingInfoDelegates.object(forKey: audioPlayer)?.shouldSetupRemoteCommandCenter(audioPlayer: audioPlayer) ?? true
+        if shouldSetupRemoteCommandCenter {
+            setUpRemoteCommandCenter()
+        } else {
+            // clean up the remote command center
+            tearDownRemoteCommandCenter()
+        }
         pauseAllServicesExcept(audioPlayer)
     }
     
     func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         if currentlyPlayingAudioPlayer == audioPlayer {
-            currentlyPlayingAudioPlayer = nil
-            tearDownRemoteCommandCenter()
+            // If we have a NowPlayingInfoDelegate for this player
+            let nowPlayingInfoDelegate = nowPlayingInfoDelegates.object(forKey: audioPlayer)
+
+            // ask the delegate if we should disconnect from NowPlayingInfoCenter (if there's no delegate, we consider it safe to disconnect it)
+            if nowPlayingInfoDelegate?.shouldDisconnectFromNowPlayingInfoCenter(audioPlayer: audioPlayer) ?? true {
+                currentlyPlayingAudioPlayer = nil
+                tearDownRemoteCommandCenter()
+            }
         }
         activeAudioPlayers.remove(audioPlayer)
     }
     
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         if currentlyPlayingAudioPlayer == audioPlayer {
-            currentlyPlayingAudioPlayer = nil
-            tearDownRemoteCommandCenter()
+            // If we have a NowPlayingInfoDelegate for this player
+            let nowPlayingInfoDelegate = nowPlayingInfoDelegates.object(forKey: audioPlayer)
+
+            // ask the delegate if we should disconnect from NowPlayingInfoCenter (if there's no delegate, we consider it safe to disconnect it)
+            if nowPlayingInfoDelegate?.shouldDisconnectFromNowPlayingInfoCenter(audioPlayer: audioPlayer) ?? true {
+                currentlyPlayingAudioPlayer = nil
+                tearDownRemoteCommandCenter()
+            }
         }
         activeAudioPlayers.remove(audioPlayer)
     }
@@ -249,6 +278,17 @@ import MediaPlayer
         
         let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
         nowPlayingInfoCenter.nowPlayingInfo = nil
+        nowPlayingInfoCenter.playbackState = .stopped
+        
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.playCommand.isEnabled = false
+        commandCenter.playCommand.removeTarget(nil)
+        commandCenter.pauseCommand.isEnabled = false
+        commandCenter.pauseCommand.removeTarget(nil)
+        commandCenter.skipForwardCommand.isEnabled = false
+        commandCenter.skipForwardCommand.removeTarget(nil)
+        commandCenter.skipBackwardCommand.isEnabled = false
+        commandCenter.skipBackwardCommand.removeTarget(nil)
     }
     
     private func updateNowPlayingInfoCenter() {
@@ -256,9 +296,14 @@ import MediaPlayer
             return
         }
         
-        let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
-        nowPlayingInfoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: VectorL10n.voiceMessageLockScreenPlaceholder,
-                                               MPMediaItemPropertyPlaybackDuration: audioPlayer.duration as Any,
-                                               MPNowPlayingInfoPropertyElapsedPlaybackTime: audioPlayer.currentTime as Any]
+        // Checks if we have a delegate for this player, or if we should update the NowPlayingInfoCenter ourselves
+        if let nowPlayingInfoDelegate = nowPlayingInfoDelegates.object(forKey: audioPlayer) {
+            nowPlayingInfoDelegate.updateNowPlayingInfoCenter(forPlayer: audioPlayer)
+        } else {
+            let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+            nowPlayingInfoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: VectorL10n.voiceMessageLockScreenPlaceholder,
+                                        MPMediaItemPropertyPlaybackDuration: audioPlayer.duration as Any,
+                                MPNowPlayingInfoPropertyElapsedPlaybackTime: audioPlayer.currentTime as Any]
+        }
     }
 }

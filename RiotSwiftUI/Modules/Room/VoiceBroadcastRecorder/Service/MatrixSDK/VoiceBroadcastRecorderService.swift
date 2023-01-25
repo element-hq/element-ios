@@ -44,6 +44,9 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     // MARK: Public
     
     weak var serviceDelegate: VoiceBroadcastRecorderServiceDelegate?
+    var isRecording: Bool {
+        return audioEngine.isRunning
+    }
 
     // MARK: - Setup
     
@@ -113,6 +116,8 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             // Discard the service on VoiceBroadcastService error. We keep the service in case of other error type
             if error as? VoiceBroadcastServiceError != nil {
                 self.tearDownVoiceBroadcastService()
+            } else {
+                AppDelegate.theDelegate().showError(asAlert: error)
             }
         })
     }
@@ -133,6 +138,10 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             }
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to pause voice broadcast", context: error)
+            // Pause voice broadcast recording without sending pending events.
+            if error is VoiceBroadcastServiceError == false {
+                AppDelegate.theDelegate().showError(asAlert: error)
+            }
         })
     }
     
@@ -148,7 +157,34 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
             UIApplication.shared.isIdleTimerDisabled = true
         }, failure: { error in
             MXLog.error("[VoiceBroadcastRecorderService] Failed to resume voice broadcast", context: error)
+            if error is VoiceBroadcastServiceError == false {
+                AppDelegate.theDelegate().showError(asAlert: error)
+            }
         })
+    }
+    
+    func cancelRecordingVoiceBroadcast() {
+        MXLog.debug("[VoiceBroadcastRecorderService] Cancel recording voice broadcast")
+        audioEngine.stop()
+        audioEngine.inputNode.removeTap(onBus: audioNodeBus)
+        UIApplication.shared.isIdleTimerDisabled = false
+        
+        // Remove current chunk
+        if self.chunkFile != nil {
+            self.deleteRecording(at: self.chunkFile.url)
+            self.chunkFile = nil
+        }
+        
+        self.tearDownVoiceBroadcastService()
+    }
+    
+    func pauseOnErrorRecordingVoiceBroadcast() {
+        audioEngine.pause()
+        UIApplication.shared.isIdleTimerDisabled = false
+        invalidateTimer()
+        
+        // Update state
+        self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .error)
     }
     
     // MARK: - Private

@@ -33,7 +33,8 @@ final class TemplateRoomChatCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         let viewModel = TemplateRoomChatViewModel(templateRoomChatService: TemplateRoomChatService(room: parameters.room))
         let view = TemplateRoomChat(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.room.mxSession.mediaManager))
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.room.mxSession.mediaManager)))
+
         templateRoomChatViewModel = viewModel
         templateRoomChatHostingController = VectorHostingController(rootView: view)
     }

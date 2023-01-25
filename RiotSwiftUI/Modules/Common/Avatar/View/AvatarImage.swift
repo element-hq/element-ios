@@ -19,8 +19,7 @@ import SwiftUI
 
 struct AvatarImage: View {
     @Environment(\.theme) var theme: ThemeSwiftUI
-    @Environment(\.dependencies) var dependencies: DependencyContainer
-    @StateObject var viewModel = AvatarViewModel()
+    @EnvironmentObject var viewModel: AvatarViewModel
     
     var mxContentUri: String?
     var matrixItemId: String
@@ -43,7 +42,6 @@ struct AvatarImage: View {
         .frame(maxWidth: CGFloat(size.rawValue), maxHeight: CGFloat(size.rawValue))
         .clipShape(Circle())
         .onAppear {
-            viewModel.inject(dependencies: dependencies)
             viewModel.loadAvatar(
                 mxContentUri: mxContentUri,
                 matrixItemId: matrixItemId,
@@ -95,7 +93,7 @@ struct AvatarImage_Previews: PreviewProvider {
                     AvatarImage(mxContentUri: nil, matrixItemId: name, displayName: name, size: .xLarge)
                 }
             }
-            .addDependency(MockAvatarService.example)
+            .environmentObject(AvatarViewModel.withMockedServices())
         }
     }
 }

@@ -2445,14 +2445,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Niente di nuovo.";
-"all_chats_onboarding_try_it" = "Provalo";
-"all_chats_onboarding_title" = "Novità";
-"all_chats_onboarding_page_message3" = "Tocca il tuo profilo per farci sapere cosa ne pensi.";
-"all_chats_onboarding_page_title3" = "Invia un feedback";
-"all_chats_onboarding_page_message2" = "Accedi ai tuoi spazi (in basso a sinistra) più velocemente e più facilmente che mai.";
-"all_chats_onboarding_page_title2" = "Accedi agli spazi";
-"all_chats_onboarding_page_message1" = "Per semplificare Element, le schede ora sono opzionali. Gestiscile usando il menu in alto a destra.";
-"all_chats_onboarding_page_title1" = "Benvenuti ad una nuova panoramica!";
 "all_chats_nothing_found_placeholder_message" = "Prova a cambiare la tua ricerca.";
 "all_chats_nothing_found_placeholder_title" = "Non è stato trovato niente.";
 "all_chats_empty_unreads_placeholder_message" = "Qui è dove verranno mostrati i messaggi non letti, quando ne avrai qualcuno.";
@@ -2604,7 +2596,7 @@
 "manage_session_name_info" = "Ricorda che i nomi di sessione sono anche visibili alle persone con cui comunichi. %@";
 "manage_session_name_hint" = "I nomi di sessione personalizzati possono aiutarti a riconoscere i tuoi dispositivi più facilmente.";
 "settings_labs_enable_wysiwyg_composer" = "Prova l'editor in rich text";
-"settings_labs_enable_voice_broadcast" = "Trasmissione vocale (in sviluppo attivo)";
+"settings_labs_enable_voice_broadcast" = "Trasmissione vocale";
 "wysiwyg_composer_start_action_voice_broadcast" = "Trasmissione vocale";
 "voice_broadcast_playback_loading_error" = "Impossibile avviare questa trasmissione vocale.";
 "voice_broadcast_already_in_progress_message" = "Stai già registrando una trasmissione vocale. Termina quella in corso per iniziarne una nuova.";
@@ -2635,3 +2627,58 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Hai sessioni non verificate";
+"user_other_session_permanently_unverified_additional_info" = "Questa sessione non supporta la crittografia, perciò non può essere verificata.";
+"voice_broadcast_buffering" = "Buffer...";
+"voice_broadcast_time_left" = "%@ rimasti";
+"launch_loading_processing_response" = "Elaborazione dati\n%@ %%";
+"launch_loading_server_syncing_nth_attempt" = "Sincronizzazione con il server\n(%@ tentativo)";
+
+// MARK: - Launch loading
+
+"launch_loading_server_syncing" = "Sincronizzazione con il server";
+"voice_broadcast_stop_alert_agree_button" = "Sì, ferma";
+"voice_broadcast_stop_alert_description" = "Vuoi davvero fermare la tua trasmissione in diretta? Verrà terminata la trasmissione e la registrazione completa sarà disponibile nella stanza.";
+"voice_broadcast_stop_alert_title" = "Fermare la trasmissione in diretta?";
+"password_policy_pwd_in_dict_error" = "Questa password è stata trovata in un dizionario, perciò non è permessa.";
+"password_policy_weak_pwd_error" = "Questa password è troppo debole. Deve contenere almeno 8 caratteri, con almeno un carattere di ogni tipo: maiuscole, minuscole, numeri e caratteri speciali.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Password troppo corta";
+"user_session_permanently_unverified_session_description" = "Questa sessione non supporta la crittografia, perciò non può essere verificata.\n\nNon potrai partecipare in stanze dove la crittografia è attiva mentre usi questa sessione.\n\nPer maggiore sicurezza e privacy, è consigliabile usare i client di Matrix che supportano la crittografia.";
+"wysiwyg_composer_link_action_edit_title" = "Modifica collegamento";
+"wysiwyg_composer_link_action_create_title" = "Crea un collegamento";
+"wysiwyg_composer_link_action_link" = "Collegamento";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Testo";
+"wysiwyg_composer_format_action_link" = "Applica formato collegamento";
+"notice_voice_broadcast_ended_by_you" = "Hai terminato una trasmissione vocale.";
+"notice_voice_broadcast_ended" = "%@ ha terminato una trasmissione vocale.";
+"notice_voice_broadcast_live" = "Trasmissione in diretta";
+"wysiwyg_composer_format_action_inline_code" = "Applica formato codice interlinea";
+"user_other_session_security_recommendation_title" = "Altre sessioni";
+"poll_timeline_ended_text" = "Sondaggio terminato";
+"poll_timeline_decryption_error" = "A causa di errori di decifrazione, alcuni voti potrebbero non venire contati";
+"voice_broadcast_voip_cannot_start_description" = "Non puoi avviare una chiamata perché stai registrando una trasmissione in diretta. Termina la trasmissione per potere iniziare una chiamata.";
+"voice_broadcast_voip_cannot_start_title" = "Impossibile avviare una chiamata";
+"voice_message_broadcast_in_progress_title" = "Impossibile iniziare il messaggio vocale";
+"voice_message_broadcast_in_progress_message" = "Non puoi iniziare un messaggio vocale perché stai registrando una trasmissione in diretta. Termina la trasmissione per potere iniziare un messaggio vocale";
+"poll_history_no_past_poll_text" = "In questa stanza non ci sono sondaggi passati";
+"poll_history_no_active_poll_text" = "In questa stanza non ci sono sondaggi attivi";
+"poll_history_past_segment_title" = "Sondaggi passati";
+"poll_history_active_segment_title" = "Sondaggi attivi";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Cronologia sondaggi";
+"voice_broadcast_playback_lock_screen_placeholder" = "Trasmissione vocale";
+"room_details_polls" = "Cronologia sondaggi";
+"accessibility_selected" = "selezionato";
+"wysiwyg_composer_format_action_quote" = "Attiva/disattiva citazione";
+"wysiwyg_composer_format_action_code_block" = "Attiva/disattiva blocco di codice";
+"wysiwyg_composer_format_action_ordered_list" = "Attiva/disattiva elenco numerato";
+"wysiwyg_composer_format_action_unordered_list" = "Attiva/disattiva elenco puntato";
+"poll_timeline_reply_ended_poll" = "Sondaggio terminato";
+"voice_broadcast_recorder_connection_error" = "Errore di connessione - Registrazione in pausa";
+"voice_broadcast_connection_error_message" = "Sfortunatamente non riusciamo ad iniziare una registrazione al momento. Riprova più tardi.";
+"voice_broadcast_connection_error_title" = "Errore di connessione";

@@ -44,7 +44,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var hostingViewController: VectorHostingController!
     private var wysiwygViewModel = WysiwygComposerViewModel(
         textColor: ThemeService.shared().theme.colors.primaryContent,
-        linkColor: ThemeService.shared().theme.colors.accent,
+        linkColor: ThemeService.shared().theme.colors.links,
         codeBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor
     )
     private var viewModel: ComposerViewModelProtocol!
@@ -299,7 +299,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func update(theme: Theme) {
         hostingViewController.view.backgroundColor = theme.colors.background
         wysiwygViewModel.textColor = theme.colors.primaryContent
-        wysiwygViewModel.linkColor = theme.colors.accent
+        wysiwygViewModel.linkColor = theme.colors.links
         wysiwygViewModel.codeBackgroundColor = theme.selectedBackgroundColor
     }
     

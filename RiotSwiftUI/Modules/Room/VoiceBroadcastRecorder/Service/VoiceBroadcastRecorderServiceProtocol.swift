@@ -25,6 +25,9 @@ protocol VoiceBroadcastRecorderServiceProtocol {
     /// Service delegate
     var serviceDelegate: VoiceBroadcastRecorderServiceDelegate? { get set }
     
+    /// Returns if a voice broadcast is currently recording.
+    var isRecording: Bool { get }
+
     /// Start voice broadcast recording.
     func startRecordingVoiceBroadcast()
 
@@ -36,4 +39,10 @@ protocol VoiceBroadcastRecorderServiceProtocol {
 
     /// Resume voice broadcast recording after paused it.
     func resumeRecordingVoiceBroadcast()
+    
+    /// Cancel voice broadcast recording after redacted it.
+    func cancelRecordingVoiceBroadcast()
+    
+    /// Pause voice broadcast recording without sending pending events.
+    func pauseOnErrorRecordingVoiceBroadcast()
 }

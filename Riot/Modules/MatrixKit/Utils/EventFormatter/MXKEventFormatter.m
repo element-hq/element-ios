@@ -31,6 +31,7 @@
 #import "GeneratedInterface-Swift.h"
 
 static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>([^<]*)</a>";
+static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*)</blockquote></mx-reply>";
 
 @interface MXKEventFormatter ()
 {
@@ -89,6 +90,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
         _encryptingTextColor = [UIColor lightGrayColor];
         _sendingTextColor = [UIColor lightGrayColor];
         _errorTextColor = [UIColor redColor];
+        _linksColor = [UIColor linkColor];
         _htmlBlockquoteBorderColor = [MXKTools colorWithRGBValue:0xDDDDDD];
         
         _defaultTextFont = [UIFont systemFontOfSize:14];
@@ -1606,6 +1608,23 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
             }
             break;
         }
+        case MXEventTypePollEnd:
+        {
+            if (event.isEditEvent)
+            {
+                return nil;
+            }
+            
+            MXEvent* pollStartedEvent = [self->mxSession.store eventWithEventId:event.relatesTo.eventId inRoom:event.roomId];
+            
+            if (pollStartedEvent) {
+                displayText = [MXEventContentPollStart modelFromJSON:pollStartedEvent.content].question;
+            } else {
+                displayText = [VectorL10n pollTimelineEndedText];
+            }
+            
+            break;
+        }
         case MXEventTypePollStart:
         {
             if (event.isEditEvent)
@@ -1732,6 +1751,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
                 if (url.URL)
                 {
                     [str addAttribute:NSLinkAttributeName value:url.URL range:matchRange];
+                    [str addAttribute:NSForegroundColorAttributeName value:self.linksColor range:matchRange];
                 }
             }
         }
@@ -1789,6 +1809,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
         }
 
         html = [self renderReplyTo:html withRoomState:roomState];
+        html = [self renderPollEndedReplyTo:html repliedEvent:repliedEvent];
     }
 
     // Apply the css style that corresponds to the event state
@@ -1860,6 +1881,12 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
             if (!repliedEventContent)
             {
                 MXJSONModelSetString(repliedEventContent, repliedEvent.content[kMXMessageBodyKey]);
+            }
+            if (!repliedEventContent && repliedEvent.eventType == MXEventTypePollStart) {
+                repliedEventContent = [MXEventContentPollStart modelFromJSON:repliedEvent.content].question;
+            }
+            if (!repliedEventContent && repliedEvent.eventType == MXEventTypePollEnd) {
+                repliedEventContent = MXSendReplyEventDefaultStringLocalizer.new.replyToEndedPoll;
             }
         }
 
@@ -1983,8 +2010,8 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
     }
     
     // Replace <mx-reply><blockquote><a href=\"__permalink__\">In reply to</a>
-    // By <mx-reply><blockquote><a href=\"#\">['In reply to' from resources]</a>
-    // To disable the link and to localize the "In reply to" string
+    // By <mx-reply><blockquote><a href=\"__permalink__\">['In reply to' from resources]</a>
+    // To localize the "In reply to" string
     // This link is the first <a> HTML node of the html string
     
     if (inReplyToTextRange.location != NSNotFound)
@@ -1992,12 +2019,45 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=(?:'|\")(.*?)(?:'|\")>(
         html = [html stringByReplacingCharactersInRange:inReplyToTextRange withString:[VectorL10n noticeInReplyTo]];
     }
     
-    if (inReplyToLinkRange.location != NSNotFound)
-    {
-        html = [html stringByReplacingCharactersInRange:inReplyToLinkRange withString:@"#"];
+    return html;
+}
+
+- (NSString*)renderPollEndedReplyTo:(NSString*)htmlString repliedEvent:(MXEvent*)repliedEvent {
+    static NSRegularExpression *endedPollRegex;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        endedPollRegex = [NSRegularExpression regularExpressionWithPattern:kRepliedTextPattern options:NSRegularExpressionCaseInsensitive error:nil];
+    });
+    
+    NSString* finalString = htmlString;
+    
+    if (repliedEvent.eventType != MXEventTypePollEnd) {
+        return finalString;
     }
     
-    return html;
+    NSTextCheckingResult* match = [endedPollRegex firstMatchInString:htmlString options:0 range:NSMakeRange(0, htmlString.length)];
+    
+    if (!(match && match.numberOfRanges > 1)) {
+        // no useful match found
+        return finalString;
+    }
+    
+    NSRange groupRange = [match rangeAtIndex:1];
+    NSString* replacementText;
+    
+    if (repliedEvent) {
+        MXEvent* pollStartedEvent = [mxSession.store eventWithEventId:repliedEvent.relatesTo.eventId inRoom:repliedEvent.roomId];
+        replacementText = [MXEventContentPollStart modelFromJSON:pollStartedEvent.content].question;
+    }
+    
+    if (replacementText == nil) {
+        replacementText = VectorL10n.pollTimelineReplyEndedPoll;
+    }
+    
+    finalString = [htmlString stringByReplacingCharactersInRange:groupRange withString:replacementText];
+    
+    return finalString;
 }
 
 - (void)postFormatMutableAttributedString:(NSMutableAttributedString*)mutableAttributedString

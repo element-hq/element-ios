@@ -21,7 +21,7 @@ import SwiftUI
 struct TimelinePollCoordinatorParameters {
     let session: MXSession
     let room: MXRoom
-    let pollStartEvent: MXEvent
+    let pollEvent: MXEvent
 }
 
 final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDelegate {
@@ -46,7 +46,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     init(parameters: TimelinePollCoordinatorParameters) throws {
         self.parameters = parameters
         
-        try pollAggregator = PollAggregator(session: parameters.session, room: parameters.room, pollStartEventId: parameters.pollStartEvent.eventId)
+        try pollAggregator = PollAggregator(session: parameters.session, room: parameters.room, pollEvent: parameters.pollEvent)
         pollAggregator.delegate = self
         
         viewModel = TimelinePollViewModel(timelinePollDetails: buildTimelinePollFrom(pollAggregator.poll))
@@ -65,7 +65,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
             .sink { [weak self] identifiers in
                 guard let self = self else { return }
 
-                self.parameters.room.sendPollResponse(for: parameters.pollStartEvent,
+                self.parameters.room.sendPollResponse(for: parameters.pollEvent,
                                                       withAnswerIdentifiers: identifiers,
                                                       threadId: nil,
                                                       localEcho: nil, success: nil) { [weak self] error in
@@ -96,7 +96,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     }
     
     func endPoll() {
-        parameters.room.sendPollEnd(for: parameters.pollStartEvent, threadId: nil, localEcho: nil, success: nil) { [weak self] _ in
+        parameters.room.sendPollEnd(for: parameters.pollEvent, threadId: nil, localEcho: nil, success: nil) { [weak self] _ in
             self?.viewModel.showClosingFailure()
         }
     }
@@ -114,10 +114,17 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) { }
     
     // MARK: - Private
-    
-    // PollProtocol is intentionally not available in the SwiftUI target as we don't want
-    // to add the SDK as a dependency to it. We need to translate from one to the other on this level.
+
     func buildTimelinePollFrom(_ poll: PollProtocol) -> TimelinePollDetails {
+        let representedType: TimelinePollEventType = parameters.pollEvent.eventType == .pollStart ? .started : .ended
+        return .init(poll: poll, represent: representedType)
+    }
+}
+
+// PollProtocol is intentionally not available in the SwiftUI target as we don't want
+// to add the SDK as a dependency to it. We need to translate from one to the other on this level.
+extension TimelinePollDetails {
+    init(poll: PollProtocol, represent eventType: TimelinePollEventType) {
         let answerOptions = poll.answerOptions.map { pollAnswerOption in
             TimelinePollAnswerOption(id: pollAnswerOption.id,
                                      text: pollAnswerOption.text,
@@ -126,19 +133,27 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
                                      selected: pollAnswerOption.isCurrentUserSelection)
         }
         
-        return TimelinePollDetails(question: poll.text,
-                                   answerOptions: answerOptions,
-                                   closed: poll.isClosed,
-                                   totalAnswerCount: poll.totalAnswerCount,
-                                   type: pollKindToTimelinePollType(poll.kind),
-                                   maxAllowedSelections: poll.maxAllowedSelections,
-                                   hasBeenEdited: poll.hasBeenEdited)
+        self.init(id: poll.id,
+                  question: poll.text,
+                  answerOptions: answerOptions,
+                  closed: poll.isClosed,
+                  startDate: poll.startDate,
+                  totalAnswerCount: poll.totalAnswerCount,
+                  type: poll.kind.timelinePollType,
+                  eventType: eventType,
+                  maxAllowedSelections: poll.maxAllowedSelections,
+                  hasBeenEdited: poll.hasBeenEdited,
+                  hasDecryptionError: poll.hasDecryptionError)
     }
-    
-    private func pollKindToTimelinePollType(_ kind: PollKind) -> TimelinePollType {
-        let mapping = [PollKind.disclosed: TimelinePollType.disclosed,
-                       PollKind.undisclosed: TimelinePollType.undisclosed]
-        
-        return mapping[kind] ?? .disclosed
+}
+
+private extension PollKind {
+    var timelinePollType: TimelinePollType {
+        switch self {
+        case .disclosed:
+            return .disclosed
+        case .undisclosed:
+            return .undisclosed
+        }
     }
 }

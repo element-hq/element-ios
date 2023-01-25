@@ -50,6 +50,6 @@ enum MockStaticLocationViewingScreenState: MockScreenState, CaseIterable {
         
         return ([viewModel],
                 AnyView(StaticLocationView(viewModel: viewModel.context)
-                    .addDependency(MockAvatarService.example)))
+                    .environmentObject(AvatarViewModel.withMockedServices())))
     }
 }

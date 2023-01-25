@@ -16,3 +16,4 @@
 
 #import "MatrixKit-Bridging-Header.h"
 #import "BuildInfo.h"
+#import "ThemeService.h"
