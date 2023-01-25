@@ -44,7 +44,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
         self.room = room
         self.chunkSizeInDays = chunkSizeInDays
         timeline = MXRoomEventTimeline(room: room, andInitialEventId: nil)
-        setup(timeline: timeline)
+        setupTimeline()
     }
     
     func nextBatch() -> AnyPublisher<TimelinePollDetails, Error> {
@@ -65,7 +65,9 @@ private extension PollHistoryService {
         static let pageSize: UInt = 250
     }
     
-    func setup(timeline: MXEventTimeline) {
+    func setupTimeline() {
+        timeline.resetPagination()
+        
         timelineListener = timeline.listenToEvents { [weak self] event, _, _ in
             if event.eventType == .pollStart {
                 self?.aggregatePoll(pollStartEvent: event)
@@ -90,14 +92,13 @@ private extension PollHistoryService {
             guard let self = self else {
                 return
             }
-            self.timeline.resetPagination()
-            self.paginate(timeline: self.timeline)
+            self.paginate()
         }
        
         return batchSubject.eraseToAnyPublisher()
     }
     
-    func paginate(timeline: MXEventTimeline) {
+    func paginate() {
         timeline.paginate(Constants.pageSize, direction: .backwards, onlyFromStore: false) { [weak self] response in
             guard let self = self else {
                 return
@@ -105,8 +106,8 @@ private extension PollHistoryService {
             
             switch response {
             case .success:
-                if timeline.canPaginate(.backwards), self.timestampTargetReached == false {
-                    self.paginate(timeline: timeline)
+                if self.timeline.canPaginate(.backwards), self.timestampTargetReached == false {
+                    self.paginate()
                 } else {
                     self.completeBatch(completion: .finished)
                 }
