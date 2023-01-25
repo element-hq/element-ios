@@ -58,17 +58,19 @@ struct TimelinePollAnswerOptionButton: View {
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.primaryContent)
                     .accessibilityIdentifier("PollAnswerOption\(optionIndex)Label")
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 
-                if poll.closed, answerOption.winner {
-                    Spacer()
-                    Image(uiImage: Asset.Images.pollWinnerIcon.image)
-                }
-                
-                if poll.shouldDiscloseResults {
-                    Text(answerOption.count == 1 ? VectorL10n.pollTimelineOneVote : VectorL10n.pollTimelineVotesCount(Int(answerOption.count)))
-                        .font(theme.fonts.footnote)
-                        .foregroundColor(poll.closed && answerOption.winner ? theme.colors.accent : theme.colors.secondaryContent)
-                        .accessibilityIdentifier("PollAnswerOption\(optionIndex)Count")
+                HStack(spacing: 6) {
+                    if poll.closed, answerOption.winner {
+                        Image(uiImage: Asset.Images.pollWinnerIcon.image)
+                    }
+                    
+                    if poll.shouldDiscloseResults {
+                        Text(answerOption.count == 1 ? VectorL10n.pollTimelineOneVote : VectorL10n.pollTimelineVotesCount(Int(answerOption.count)))
+                            .font(theme.fonts.footnote)
+                            .foregroundColor(poll.closed && answerOption.winner ? theme.colors.accent : theme.colors.secondaryContent)
+                            .accessibilityIdentifier("PollAnswerOption\(optionIndex)Count")
+                    }
                 }
             }
             
