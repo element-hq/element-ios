@@ -1799,5 +1799,4 @@
 "service_terms_modal_information_title_identity_server" = "IDサーバー";
 "location_sharing_invalid_power_level_message" = "位置情報（ライブ）の共有には適切な権限が必要です。";
 "location_sharing_live_error" = "位置情報（ライブ）のエラー";
-"all_chats_onboarding_page_title3" = "フィードバックを送信";
 "all_chats_edit_layout" = "レイアウトの設定";

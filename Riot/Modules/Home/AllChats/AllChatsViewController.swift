@@ -70,8 +70,6 @@ class AllChatsViewController: HomeViewController {
     
     private var isOnboardingCoordinatorPreparing: Bool = false
 
-    private var allChatsOnboardingCoordinatorBridgePresenter: AllChatsOnboardingCoordinatorBridgePresenter?
-    
     private var theme: Theme {
         ThemeService.shared().theme
     }
@@ -181,10 +179,6 @@ class AllChatsViewController: HomeViewController {
         }
 
         AppDelegate.theDelegate().checkAppVersion()
-
-        if BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed {
-            self.showAllChatsOnboardingScreen()
-        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -674,20 +668,6 @@ class AllChatsViewController: HomeViewController {
         self.navigationController?.pushViewController(invitesViewController, animated: true)
     }
     
-    private func showAllChatsOnboardingScreen() {
-        let allChatsOnboardingCoordinatorBridgePresenter = AllChatsOnboardingCoordinatorBridgePresenter()
-        allChatsOnboardingCoordinatorBridgePresenter.completion = { [weak self] in
-            RiotSettings.shared.allChatsOnboardingHasBeenDisplayed = true
-            
-            guard let self = self else { return }
-            self.allChatsOnboardingCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
-                self.allChatsOnboardingCoordinatorBridgePresenter = nil
-            })
-        }
-        
-        allChatsOnboardingCoordinatorBridgePresenter.present(from: self, animated: true)
-        self.allChatsOnboardingCoordinatorBridgePresenter = allChatsOnboardingCoordinatorBridgePresenter
-    }
 }
 
 private extension AllChatsViewController {

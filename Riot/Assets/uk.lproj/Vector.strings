@@ -2670,14 +2670,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Нічого нового.";
-"all_chats_onboarding_try_it" = "Спробувати";
-"all_chats_onboarding_title" = "Що нового";
-"all_chats_onboarding_page_message3" = "Торкніться свого профілю, щоб розповісти нам свою думку.";
-"all_chats_onboarding_page_title3" = "Напишіть відгук";
-"all_chats_onboarding_page_message2" = "Отримуйте доступ до своїх просторів (унизу ліворуч) швидше та легше, ніж раніше.";
-"all_chats_onboarding_page_title2" = "Доступ до просторів";
-"all_chats_onboarding_page_message1" = "Щоб спростити ваш Element, вкладки тепер необов’язкові. Керуйте ними у верхньому правому меню.";
-"all_chats_onboarding_page_title1" = "Вітаємо в новому вигляді!";
 "all_chats_nothing_found_placeholder_message" = "Спробуйте налаштувати пошук.";
 "all_chats_nothing_found_placeholder_title" = "Нічого не знайдено.";
 "all_chats_empty_unreads_placeholder_message" = "Тут з'являтимуться ваші непрочитані повідомлення, якщо вони є.";

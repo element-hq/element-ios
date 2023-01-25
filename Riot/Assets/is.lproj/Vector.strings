@@ -2132,7 +2132,6 @@
 
 "user_sessions_overview_title" = "Setur";
 "space_selector_create_space" = "Búa til svæði";
-"all_chats_onboarding_try_it" = "Prófaðu það";
 "all_chats_edit_menu_space_settings" = "Stillingar svæðis";
 "all_chats_edit_menu_leave_space" = "Yfirgefa %@";
 "room_recents_recently_viewed_section" = "Nýlega skoðað";
@@ -2234,7 +2233,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Ekkert nýtt.";
-"all_chats_onboarding_page_title1" = "Velkomin í nýja sýn!";
 "all_chats_nothing_found_placeholder_message" = "Reyndu að aðlaga leitina þína.";
 "all_chats_edit_layout_alphabetical_order" = "Raða A-Ö";
 "all_chats_edit_layout_activity_order" = "Raða eftir virkni";
@@ -2330,9 +2328,6 @@
 // Mark: - Space Selector
 
 "space_selector_title" = "Svæðin mín";
-"all_chats_onboarding_title" = "Hvað er nýtt";
-"all_chats_onboarding_page_title3" = "Gefðu umsögn";
-"all_chats_onboarding_page_title2" = "Aðgangur að svæðum";
 "all_chats_user_menu_settings" = "Notandastillingar";
 "all_chats_edit_layout_pin_spaces_title" = "Festu svæðin þín";
 

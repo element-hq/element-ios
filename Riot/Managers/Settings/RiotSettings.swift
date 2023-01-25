@@ -408,11 +408,6 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "lastNumberOfTrackedSpaces", defaultValue: nil, storage: defaults)
     var lastNumberOfTrackedSpaces: Int?
     
-    // MARK: - All Chats Onboarding
-    
-    @UserDefault(key: "allChatsOnboardingHasBeenDisplayed", defaultValue: false, storage: defaults)
-    var allChatsOnboardingHasBeenDisplayed
-    
 }
 
 // MARK: - RiotSettings notification constants
