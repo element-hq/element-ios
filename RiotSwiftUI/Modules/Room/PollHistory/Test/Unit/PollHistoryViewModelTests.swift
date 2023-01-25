@@ -42,9 +42,11 @@ final class PollHistoryViewModelTests: XCTestCase {
     
     func testLoadingStateIsTrueWhileLoading() {
         XCTAssertFalse(viewModel.state.isLoading)
-        pollHistoryService.nextBatchPublisher = Empty(completeImmediately: false, outputType: TimelinePollDetails.self, failureType: Error.self).eraseToAnyPublisher()
+        pollHistoryService.nextBatchPublishers = [loadingPublisher, emptyPublisher]
         viewModel.process(viewAction: .viewAppeared)
         XCTAssertTrue(viewModel.state.isLoading)
+        viewModel.process(viewAction: .viewAppeared)
+        XCTAssertFalse(viewModel.state.isLoading)
     }
     
     func testUpdatesAreHandled() throws {
@@ -79,6 +81,14 @@ final class PollHistoryViewModelTests: XCTestCase {
         let pollDates = try polls.map(\.startDate)
         XCTAssertEqual(pollDates, pollDates.sorted(by: { $0 > $1 }))
     }
+    
+    func testLivePollsAreHandled() throws {
+        pollHistoryService.nextBatchPublishers = [emptyPublisher]
+        pollHistoryService.livePollsPublisher = Just(mockPoll).eraseToAnyPublisher()
+        viewModel.process(viewAction: .viewAppeared)
+        XCTAssertEqual(viewModel.state.polls?.count, 1)
+        XCTAssertEqual(viewModel.state.polls?.first?.id, "id")
+    }
 }
 
 private extension PollHistoryViewModelTests {
@@ -86,5 +96,27 @@ private extension PollHistoryViewModelTests {
         get throws {
             try XCTUnwrap(viewModel.state.polls)
         }
+    }
+    
+    var loadingPublisher: AnyPublisher<TimelinePollDetails, Error> {
+        Empty(completeImmediately: false, outputType: TimelinePollDetails.self, failureType: Error.self).eraseToAnyPublisher()
+    }
+    
+    var emptyPublisher: AnyPublisher<TimelinePollDetails, Error> {
+        Empty(completeImmediately: true, outputType: TimelinePollDetails.self, failureType: Error.self).eraseToAnyPublisher()
+    }
+    
+    var mockPoll: TimelinePollDetails {
+        .init(id: "id",
+              question: "Do you like polls?",
+              answerOptions: [],
+              closed: false,
+              startDate: .init(),
+              totalAnswerCount: 3,
+              type: .undisclosed,
+              eventType: .started,
+              maxAllowedSelections: 1,
+              hasBeenEdited: false,
+              hasDecryptionError: false)
     }
 }
