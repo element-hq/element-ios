@@ -62,7 +62,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
 
 private extension PollHistoryService {
     enum Constants {
-        static let pageSize: UInt = 500
+        static let pageSize: UInt = 250
     }
     
     func setup(timeline: MXEventTimeline) {
