@@ -392,6 +392,12 @@
     {
         return [self.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
+    
+    NSInteger customIndex = [recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypeCustom];
+    if (indexPath.section == customIndex) {
+        // create your cell here
+        return UITableViewCell.new;
+    }
 
     RecentsDataSourceSectionType sectionType = [recentsDataSource.sections sectionTypeForSectionIndex:indexPath.section];
     if ((sectionType == RecentsDataSourceSectionTypeConversation && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
@@ -583,6 +589,10 @@
     else if (sectionType == RecentsDataSourceSectionTypeAllChats)
     {
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
+    else if (sectionType == RecentsDataSourceSectionTypeCustom) {
+        // decide if it makes sense to navigate here or in the superclass MXKRecentListViewController
+        NSLog(@"*** did tap custom cell");
     }
 }
 

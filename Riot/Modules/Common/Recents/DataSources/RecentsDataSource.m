@@ -229,6 +229,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         [types addObject:@(RecentsDataSourceSectionTypeConversation)];
     }
+    
+    [types addObject:@(RecentsDataSourceSectionTypeCustom)];
 
     if (self.allChatsRoomCellDataArray.count > 0 || _recentsDataSourceMode == RecentsDataSourceModeAllChats)
     {
@@ -592,7 +594,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     NSUInteger count = 0;
 
     RecentsDataSourceSectionType sectionType = [self.sections sectionTypeForSectionIndex:section];
-    if (sectionType == RecentsDataSourceSectionTypeCrossSigningBanner && self.crossSigningBannerDisplay != CrossSigningBannerDisplayNone)
+    if (sectionType == RecentsDataSourceSectionTypeCustom) {
+        count = 1;
+    }
+    else if (sectionType == RecentsDataSourceSectionTypeCrossSigningBanner && self.crossSigningBannerDisplay != CrossSigningBannerDisplayNone)
     {
         count = 1;
     }

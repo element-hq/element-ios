@@ -31,4 +31,5 @@ import Foundation
     case searchedRoom
     case allChats
     case unknown
+    case custom
 }
