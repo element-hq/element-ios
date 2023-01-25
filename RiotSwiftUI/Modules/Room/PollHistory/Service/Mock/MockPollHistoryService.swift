@@ -42,6 +42,11 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
     var fetchedUpTo: AnyPublisher<Date, Never> {
         fetchedUpToPublisher
     }
+    
+    var livePollsPublisher: AnyPublisher<TimelinePollDetails, Never> = Empty().eraseToAnyPublisher()
+    var livePolls: AnyPublisher<TimelinePollDetails, Never> {
+        livePollsPublisher
+    }
 }
 
 private extension MockPollHistoryService {

@@ -97,6 +97,14 @@ private extension PollHistoryViewModel {
             .fetchedUpTo
             .weakAssign(to: \.state.syncedUpTo, on: self)
             .store(in: &subcriptions)
+        
+        pollService
+            .livePolls
+            .sink { [weak self] livePoll in
+                self?.add(polls: [livePoll])
+                self?.updateViewState()
+            }
+            .store(in: &subcriptions)
     }
     
     func update(poll: TimelinePollDetails) {
