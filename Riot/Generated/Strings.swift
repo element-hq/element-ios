@@ -4822,6 +4822,7 @@ public class VectorL10n: NSObject {
   /// View poll in timeline
   public static var pollHistoryDetailViewInTimeline: String { 
     return VectorL10n.tr("Vector", "poll_history_detail_view_in_timeline") 
+  }
   /// Load more polls
   public static var pollHistoryLoadMore: String { 
     return VectorL10n.tr("Vector", "poll_history_load_more") 
