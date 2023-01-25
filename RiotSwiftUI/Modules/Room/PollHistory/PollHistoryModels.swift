@@ -44,6 +44,7 @@ struct PollHistoryViewState: BindableState {
     var isLoading = false
     var canLoadMoreContent = true
     var polls: [TimelinePollDetails]?
+    var numberOfFetchedBatches: UInt = 0
 }
 
 enum PollHistoryViewAction {

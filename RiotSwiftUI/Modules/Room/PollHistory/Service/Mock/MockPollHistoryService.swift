@@ -17,6 +17,15 @@
 import Combine
 
 final class MockPollHistoryService: PollHistoryServiceProtocol {
+    lazy var nextBatchPublisher: AnyPublisher<TimelinePollDetails, Error> = (activePollsData + pastPollsData)
+        .publisher
+        .setFailureType(to: Error.self)
+        .eraseToAnyPublisher()
+    
+    func nextBatch() -> AnyPublisher<TimelinePollDetails, Error> {
+        nextBatchPublisher
+    }
+    
     var updatesPublisher: AnyPublisher<TimelinePollDetails, Never> = Empty().eraseToAnyPublisher()
     var updates: AnyPublisher<TimelinePollDetails, Never> {
         updatesPublisher
@@ -27,14 +36,7 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
         pollErrorPublisher
     }
     
-    lazy var nextBatchPublisher: AnyPublisher<TimelinePollDetails, Error> = (activePollsData + pastPollsData)
-        .publisher
-        .setFailureType(to: Error.self)
-        .eraseToAnyPublisher()
-    
-    func nextBatch() -> AnyPublisher<TimelinePollDetails, Error> {
-        nextBatchPublisher
-    }
+    var hasNextBatch: Bool = true
 }
 
 private extension MockPollHistoryService {

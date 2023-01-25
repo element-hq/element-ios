@@ -50,6 +50,10 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     func nextBatch() -> AnyPublisher<TimelinePollDetails, Error> {
         currentBatchSubject?.eraseToAnyPublisher() ?? startPagination()
     }
+    
+    var hasNextBatch: Bool {
+        timeline.canPaginate(.backwards)
+    }
 }
 
 private extension PollHistoryService {

@@ -29,6 +29,7 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
     init(mode: PollHistoryMode, pollService: PollHistoryServiceProtocol) {
         self.pollService = pollService
         super.init(initialViewState: PollHistoryViewState(mode: mode))
+        state.canLoadMoreContent = pollService.hasNextBatch
     }
 
     // MARK: - Public
@@ -53,9 +54,8 @@ private extension PollHistoryViewModel {
         pollService
             .nextBatch()
             .collect()
-            .sink { [weak self] _ in
-                #warning("Handle errors")
-                self?.state.isLoading = false
+            .sink { [weak self] completion in
+                self?.handleBatchEnded(completion: completion)
             } receiveValue: { [weak self] polls in
                 self?.polls = polls
                 self?.updateViewState()
@@ -68,14 +68,25 @@ private extension PollHistoryViewModel {
         
         pollService
             .nextBatch()
-            .sink { [weak self] _ in
-                #warning("Handle errors")
-                self?.state.isLoading = false
+            .sink { [weak self] completion in
+                self?.handleBatchEnded(completion: completion)
             } receiveValue: { [weak self] poll in
                 self?.add(poll: poll)
                 self?.updateViewState()
             }
             .store(in: &subcriptions)
+    }
+    
+    func handleBatchEnded(completion: Subscribers.Completion<Error>) {
+        state.isLoading = false
+        state.canLoadMoreContent = pollService.hasNextBatch
+        
+        switch completion {
+        case .finished:
+            state.numberOfFetchedBatches += 1
+        case .failure(_):
+            #warning("Handle errors")
+        }
     }
     
     func setupUpdateSubscriptions() {
@@ -125,7 +136,7 @@ private extension PollHistoryViewModel {
 
 extension PollHistoryViewModel.Context {
     var emptyPollsText: String {
-        let days = PollHistoryConstants.chunkSizeInDays
+        let days = PollHistoryConstants.chunkSizeInDays * viewState.numberOfFetchedBatches
         
         switch (viewState.bindings.mode, viewState.canLoadMoreContent) {
         case (.active, true):

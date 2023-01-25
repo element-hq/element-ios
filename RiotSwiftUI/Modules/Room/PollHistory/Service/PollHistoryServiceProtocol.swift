@@ -27,4 +27,8 @@ protocol PollHistoryServiceProtocol {
     /// Publishes errors regarding poll aggregations.
     /// Note: `nextBatch()` will continue to publish new polls even if some poll isn't being aggregated correctly.
     var pollErrors: AnyPublisher<Error, Never> { get }
+    
+    /// Returns true every time the service can fetch another batch.
+    /// There is no guarantee the `nextBatch()` returned publisher will publish something anyway.
+    var hasNextBatch: Bool { get }
 }
