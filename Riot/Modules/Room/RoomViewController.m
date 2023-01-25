@@ -4302,8 +4302,14 @@ static CGSize kThreadListBarButtonItemImageSize;
                 
                 [self startActivityIndicator];
                 
+                NSArray<NSString *>* relationTypes = nil;
+                // If it's a voice broadcast, delete the selected event and all related events.
+                if (selectedEvent.eventType == MXEventTypeCustom && [selectedEvent.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]) {
+                    relationTypes = @[MXEventRelationTypeReference];
+                }
+                
                 MXWeakify(self);
-                [self.roomDataSource.room redactEvent:selectedEvent.eventId reason:nil success:^{
+                [self.roomDataSource.room redactEvent:selectedEvent.eventId withRelations:relationTypes reason:nil success:^{
                     MXStrongifyAndReturnIfNil(self);
                     [self stopActivityIndicator];
                 } failure:^(NSError *error) {

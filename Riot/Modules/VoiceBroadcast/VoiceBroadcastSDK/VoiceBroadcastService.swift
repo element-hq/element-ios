@@ -298,7 +298,7 @@ extension MXRoom {
                                                                threadId: String? = nil,
                                                                sequence: UInt,
                                                                success: @escaping ((String?) -> Void),
-                                                               failure: @escaping ((Error?) -> Void)) -> MXHTTPOperation? {
+                                                               failure: @escaping ((Swift.Error?) -> Void)) -> MXHTTPOperation? {
         guard let relatesTo = MXEventContentRelatesTo(relationType: MXEventRelationTypeReference,
                                                       eventId: voiceBroadcastId).jsonDictionary() as? [String: Any] else {
             failure(VoiceBroadcastServiceError.unknown)

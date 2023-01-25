@@ -2672,14 +2672,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Belum ada yang baru.";
-"all_chats_onboarding_try_it" = "Coba";
-"all_chats_onboarding_title" = "Apa yang baru";
-"all_chats_onboarding_page_message3" = "Ketuk profil Anda untuk memberi tahu kami bagaimana menurut Anda.";
-"all_chats_onboarding_page_title3" = "Berikan Masukan";
-"all_chats_onboarding_page_message2" = "Akses Space Anda (di kiri bawah) dengan lebih cepat dan lebih mudah dari sebelumnya.";
-"all_chats_onboarding_page_title2" = "Akses Space";
-"all_chats_onboarding_page_message1" = "Untuk membuat Element Anda lebih sederhana, fitur tab sekarang opsional. Kelola menggunakan menu kanan atas.";
-"all_chats_onboarding_page_title1" = "Selamat datang di tampilan yang baru!";
 "all_chats_nothing_found_placeholder_message" = "Coba atur pencarian Anda.";
 "all_chats_nothing_found_placeholder_title" = "Tidak ada yang ditemukan.";
 "all_chats_empty_unreads_placeholder_message" = "Ini di mana pesan Anda yang belum dibaca akan ditampilkan, ketika Anda menerimanya.";
@@ -2893,5 +2885,34 @@
 "notice_voice_broadcast_live" = "Siaran langsung";
 "user_other_session_security_recommendation_title" = "Sesi lainnya";
 "poll_timeline_decryption_error" = "Karena kesalahan enkripsi, beberapa suara mungkin tidak terhitung";
-"voice_message_broadcast_in_progress_message" = "Anda tidak dapat memulai sebuah pesan suara selagi Anda merekam sebuah siaran langsung. Silakan mengakhiri siaran langsung Anda untuk memulai merekam sebuah pesan suara";
+"voice_message_broadcast_in_progress_message" = "Anda tidak dapat memulai sebuah pesan suara karena Anda saat ini merekam sebuah siaran langsung. Silakan mengakhiri siaran langsung Anda untuk memulai merekam sebuah pesan suara";
 "voice_message_broadcast_in_progress_title" = "Tidak dapat memulai pesan suara";
+"poll_timeline_ended_text" = "Mengakhiri pemungutan suara";
+"voice_broadcast_voip_cannot_start_description" = "Anda tidak dapat memulai sebuah panggilan karena Anda saat ini merekam sebuah siaran langsung. Mohon akhiri siaran langsung Anda untuk memulai sebuah panggilan.";
+"voice_broadcast_voip_cannot_start_title" = "Tidak dapat memulai sebuah panggilan";
+"poll_history_no_past_poll_text" = "Tidak ada pemungutan suara masa lalu di ruangan ini";
+"poll_history_no_active_poll_text" = "Tidak ada pemungutan suara yang aktifk di ruangan ini";
+"poll_history_past_segment_title" = "Pemungutan suara sebelumnya";
+"poll_history_active_segment_title" = "Pemungutan suara aktif";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Riwayat pemungutan suara";
+"room_details_polls" = "Riwayat pemungutan suara";
+"accessibility_selected" = "dipilih";
+"voice_broadcast_playback_lock_screen_placeholder" = "Siaran suara";
+"wysiwyg_composer_format_action_quote" = "Saklar kutipan";
+"wysiwyg_composer_format_action_code_block" = "Saklar blok kode";
+"wysiwyg_composer_format_action_ordered_list" = "Saklar daftar bernomor";
+"wysiwyg_composer_format_action_unordered_list" = "Saklar daftar bulat";
+"voice_broadcast_connection_error_message" = "Sayangnya kami tidak dapat memulai sebuah rekaman saat ini. Silakan coba lagi nanti.";
+"voice_broadcast_connection_error_title" = "Kesalahan koneksi";
+"voice_broadcast_recorder_connection_error" = "Kesalahan koneksi - Perekaman dijeda";
+"poll_timeline_reply_ended_poll" = "Pemungutan suara berakhir";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Memigrasikan data\n%@ %%";
+"settings_labs_disable_crypto_sdk" = "SDK Kripto diaktifkan. Untuk menonaktifkan, mohon memasang ulang aplikasi";
+"settings_labs_confirm_crypto_sdk" = "Tindakan ini tidak dapat diurungkan";
+"settings_labs_enable_crypto_sdk" = "Aktifkan SDK Kripto baru berbasis Rust";

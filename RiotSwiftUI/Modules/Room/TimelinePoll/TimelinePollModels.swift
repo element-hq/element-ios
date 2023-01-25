@@ -71,32 +71,8 @@ struct TimelinePollDetails {
     var type: TimelinePollType
     var eventType: TimelinePollEventType
     var maxAllowedSelections: UInt
-    var hasBeenEdited = true
+    var hasBeenEdited: Bool
     var hasDecryptionError: Bool
-    
-    init(id: String,
-         question: String,
-         answerOptions: [TimelinePollAnswerOption],
-         closed: Bool,
-         startDate: Date,
-         totalAnswerCount: UInt,
-         type: TimelinePollType,
-         eventType: TimelinePollEventType,
-         maxAllowedSelections: UInt,
-         hasBeenEdited: Bool,
-         hasDecryptionError: Bool) {
-        self.id = id
-        self.question = question
-        self.answerOptions = answerOptions
-        self.closed = closed
-        self.startDate = startDate
-        self.totalAnswerCount = totalAnswerCount
-        self.type = type
-        self.eventType = eventType
-        self.maxAllowedSelections = maxAllowedSelections
-        self.hasBeenEdited = hasBeenEdited
-        self.hasDecryptionError = hasDecryptionError
-    }
     
     var hasCurrentUserVoted: Bool {
         answerOptions.contains(where: \.selected)

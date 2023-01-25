@@ -51,7 +51,7 @@ private extension PollHistoryViewModel {
         state.isLoading = true
         
         pollService
-            .next()
+            .nextBatch()
             .collect()
             .sink { [weak self] _ in
                 #warning("Handle errors")
@@ -69,7 +69,7 @@ private extension PollHistoryViewModel {
         pollService
             .updates
             .sink { [weak self] detail in
-                self?.updatePolls(with: detail)
+                self?.update(poll: detail)
                 self?.updateViewState()
             }
             .store(in: &subcriptions)
@@ -82,7 +82,7 @@ private extension PollHistoryViewModel {
             .store(in: &subcriptions)
     }
     
-    func updatePolls(with poll: TimelinePollDetails) {
+    func update(poll: TimelinePollDetails) {
         guard let pollIndex = polls?.firstIndex(where: { $0.id == poll.id }) else {
             return
         }
@@ -101,5 +101,22 @@ private extension PollHistoryViewModel {
         }
         
         state.polls = renderedPolls?.sorted(by: { $0.startDate > $1.startDate })
+    }
+}
+
+extension PollHistoryViewModel.Context {
+    var emptyPollsText: String {
+        let days = PollHistoryConstants.chunkSizeInDays
+        
+        switch (viewState.bindings.mode, viewState.canLoadMoreContent) {
+        case (.active, true):
+            return VectorL10n.pollHistoryNoActivePollPeriodText("\(days)")
+        case (.active, false):
+            return VectorL10n.pollHistoryNoActivePollText
+        case (.past, true):
+            return VectorL10n.pollHistoryNoPastPollPeriodText("\(days)")
+        case (.past, false):
+            return VectorL10n.pollHistoryNoPastPollText
+        }
     }
 }

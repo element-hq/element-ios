@@ -120,3 +120,6 @@
 
 /* New video message from a specific person, not referencing a room. */
 "VIDEO_FROM_USER" = "%@ videót küldött";
+
+/* New voice broadcast from a specific person, not referencing a room. */
+"VOICE_BROADCAST_FROM_USER" = "%@ hang közvetítést indított";

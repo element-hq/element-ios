@@ -42,7 +42,7 @@ final class PollHistoryViewModelTests: XCTestCase {
     
     func testLoadingStateIsTrueWhileLoading() {
         XCTAssertFalse(viewModel.state.isLoading)
-        pollHistoryService.nextPublisher = Empty(completeImmediately: false, outputType: TimelinePollDetails.self, failureType: Error.self).eraseToAnyPublisher()
+        pollHistoryService.nextBatchPublisher = Empty(completeImmediately: false, outputType: TimelinePollDetails.self, failureType: Error.self).eraseToAnyPublisher()
         viewModel.process(viewAction: .viewAppeared)
         XCTAssertTrue(viewModel.state.isLoading)
     }
@@ -53,7 +53,7 @@ final class PollHistoryViewModelTests: XCTestCase {
         viewModel.process(viewAction: .viewAppeared)
         
         var firstPoll = try XCTUnwrap(try polls.first)
-        XCTAssertEqual(firstPoll.question, "Do you like the active poll number 9?")
+        XCTAssertEqual(firstPoll.question, "Do you like the active poll number 1?")
         firstPoll.question = "foo"
         
         mockUpdates.send(firstPoll)

@@ -2533,13 +2533,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Nic nowego.";
-"all_chats_onboarding_try_it" = "Wypróbuj";
-"all_chats_onboarding_title" = "Co nowego";
-"all_chats_onboarding_page_message3" = "Dotknij swojego profilu by poinformować nas, co o tym sądzisz.";
-"all_chats_onboarding_page_title3" = "Prześlij opinię";
-"all_chats_onboarding_page_message2" = "Uzyskaj dostęp do twoich przestrzeni (lewy dolny róg) szybciej i prościej niż kiedykolwiek.";
-"all_chats_onboarding_page_message1" = "Aby uprościć korzystanie z Element, karty są teraz opcjonalne. Możesz nimi zarządzać w menu w prawym górnym rogu.";
-"all_chats_onboarding_page_title1" = "Witaj w nowym widoku!";
 "all_chats_edit_menu_space_settings" = "Ustawienia przestrzeni";
 "all_chats_edit_menu_leave_space" = "Opuść %@";
 "all_chats_user_menu_settings" = "Ustawienia użytkownika";

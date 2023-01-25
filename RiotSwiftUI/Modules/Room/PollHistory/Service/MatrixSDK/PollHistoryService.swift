@@ -48,7 +48,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
         setup(timeline: timeline)
     }
     
-    func next() -> AnyPublisher<TimelinePollDetails, Error> {
+    func nextBatch() -> AnyPublisher<TimelinePollDetails, Error> {
         currentBatchSubject?.eraseToAnyPublisher() ?? startPagination()
     }
 }

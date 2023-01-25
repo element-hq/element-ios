@@ -2417,7 +2417,6 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Krijoni llogarinë tuaj";
-"all_chats_onboarding_page_message3" = "Prekni profilin tuaj që të na bëni të ditur se ç’mendoni.";
 "all_chats_edit_layout_add_section_message" = "Fiksoni ndarje te kreu, për hyrje të lehtë në ta";
 "room_event_encryption_info_key_authenticity_not_guaranteed" = "S’mund të garantohet mirëfilltësia e këtij mesazhi të fshehtëzuar në këtë pajisje.";
 "deselect_all" = "Shpërzgjidhi Krejt";
@@ -2534,13 +2533,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "S’ka gjë të re.";
-"all_chats_onboarding_try_it" = "Provojeni";
-"all_chats_onboarding_title" = "Ç’ka të re";
-"all_chats_onboarding_page_title3" = "Jepni Përshtypje";
-"all_chats_onboarding_page_message2" = "Hyni në Hapësirat tuaja (poshtë djathtas) më shpejt dhe më kollaj se kurrë më parë.";
-"all_chats_onboarding_page_title2" = "Hyni Në Hapësira";
-"all_chats_onboarding_page_message1" = "Që të thjeshtohet Element-i juaj, skedat tanimë janë opsionale. Administrojini duke përdorur menunë djathtas në krye.";
-"all_chats_onboarding_page_title1" = "Mirë se vini te një pamje e re!";
 "all_chats_edit_menu_space_settings" = "Rregullime hapësire";
 "all_chats_edit_menu_leave_space" = "Braktise %@";
 "all_chats_user_menu_settings" = "Rregullime përdoruesi";
@@ -2676,3 +2668,14 @@
 "notice_voice_broadcast_ended" = "%@ përfundoi një transmetim zanor.";
 "notice_voice_broadcast_live" = "Transmetim i drejtëpërdrejtë";
 "user_other_session_security_recommendation_title" = "Sesione të tjerë";
+"poll_timeline_ended_text" = "Përfundoi pyetësori";
+"poll_timeline_decryption_error" = "Për shkak gabimesh shfshehtëzimi, mund të mos jenë numëruar disa vota";
+"poll_history_no_past_poll_text" = "Në këtë dhomë s’ka pyetësorë të dikurshëm";
+"poll_history_no_active_poll_text" = "Në këtë dhomë s’ka pyetësorë aktivë";
+"poll_history_past_segment_title" = "Pyetësorë të dikurshëm";
+"poll_history_active_segment_title" = "Pyetësorë aktivë";
+"voice_broadcast_playback_lock_screen_placeholder" = "Transmetim zanor";
+"voice_broadcast_voip_cannot_start_description" = "S’mund të niset thirrje, ngaqë aktualisht po regjistroni një transmetim të drejtpërdrejtë. Ju lutemi, përfundoni transmetimin e drejtpërdrejtë, që të mund të nisni një thirrje.";
+"voice_broadcast_voip_cannot_start_title" = "S’niset dot një thirrje";
+"voice_message_broadcast_in_progress_message" = "S’mund të niset mesazh zanor, ngaqë aktualisht po regjistroni një transmetim të drejtpërdrejtë. Ju lutemi, përfundoni transmetimin e drejtpërdrejtë, që të mund të nisni regjistrimin e një mesazhi zanor";
+"voice_message_broadcast_in_progress_title" = "S’niset dot mesazh zanor";

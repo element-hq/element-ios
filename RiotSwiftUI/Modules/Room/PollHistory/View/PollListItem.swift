@@ -48,53 +48,14 @@ struct PollListItem: View {
             if pollData.closed {
                 VStack(alignment: .leading, spacing: 12) {
                     let winningOptions = pollData.answerOptions.filter(\.winner)
+                    
                     ForEach(winningOptions) {
-                        optionView(winningOption: $0)
+                        TimelinePollAnswerOptionButton(poll: pollData, answerOption: $0, action: nil)
                     }
+                    
                     resultView
                 }
             }
-        }
-    }
-    
-    private var clipShape: some Shape {
-        RoundedRectangle(cornerRadius: 4.0)
-    }
-
-    private func optionView(winningOption: TimelinePollAnswerOption) -> some View {
-        VStack(alignment: .leading, spacing: 12.0) {
-            HStack(alignment: .top, spacing: 8.0) {
-                Text(winningOption.text)
-                    .font(theme.fonts.body)
-                    .foregroundColor(theme.colors.primaryContent)
-                    .accessibilityIdentifier("PollListData.winningOption")
-                
-                Spacer()
-                
-                votesText(winningOption: winningOption)
-            }
-            
-            ProgressView(value: Double(winningOption.count),
-                         total: Double(pollData.totalAnswerCount))
-                .progressViewStyle(LinearProgressViewStyle())
-                .scaleEffect(x: 1.0, y: 1.2, anchor: .center)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 8.0)
-        .padding(.top, 12.0)
-        .padding(.bottom, 12.0)
-        .clipShape(clipShape)
-        .overlay(clipShape.stroke(theme.colors.accent, lineWidth: 1.0))
-        .accentColor(theme.colors.accent)
-    }
-    
-    private func votesText(winningOption: TimelinePollAnswerOption) -> some View {
-        Label {
-            Text(winningOption.count == 1 ? VectorL10n.pollTimelineOneVote : VectorL10n.pollTimelineVotesCount(Int(winningOption.count)))
-                .font(theme.fonts.footnote)
-                .foregroundColor(theme.colors.accent)
-        } icon: {
-            Image(uiImage: Asset.Images.pollWinnerIcon.image)
         }
     }
     
@@ -133,8 +94,7 @@ struct PollListItem_Previews: PreviewProvider {
                                                 maxAllowedSelections: 1,
                                                 hasBeenEdited: false,
                                                 hasDecryptionError: false)
-            
-            
+
             let pollData2 = TimelinePollDetails(id: UUID().uuidString,
                                                 question: "Do you like polls?",
                                                 answerOptions: [.init(id: "id", text: "Yes, of course!", count: 18, winner: true, selected: true)],

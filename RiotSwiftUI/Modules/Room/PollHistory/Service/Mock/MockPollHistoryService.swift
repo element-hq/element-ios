@@ -27,13 +27,13 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
         pollErrorPublisher
     }
     
-    lazy var nextPublisher: AnyPublisher<TimelinePollDetails, Error> = (activePollsData + pastPollsData)
+    lazy var nextBatchPublisher: AnyPublisher<TimelinePollDetails, Error> = (activePollsData + pastPollsData)
         .publisher
         .setFailureType(to: Error.self)
         .eraseToAnyPublisher()
     
-    func next() -> AnyPublisher<TimelinePollDetails, Error> {
-        nextPublisher
+    func nextBatch() -> AnyPublisher<TimelinePollDetails, Error> {
+        nextBatchPublisher
     }
 }
 
