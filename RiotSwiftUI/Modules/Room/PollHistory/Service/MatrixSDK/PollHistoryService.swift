@@ -38,8 +38,8 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     private let pollErrorsSubject: PassthroughSubject<Error, Never> = .init()
    
     // timestamps
-    private var targetTimestamp: Date?
-    private var oldestEventDateSubject: CurrentValueSubject<Date, Never> = .init(Date.distantFuture)
+    private var targetTimestamp: Date = .init()
+    private var oldestEventDateSubject: CurrentValueSubject<Date, Never> = .init(.init())
     
     var updates: AnyPublisher<TimelinePollDetails, Never> {
         updatesSubject.eraseToAnyPublisher()
@@ -83,7 +83,7 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     class PollAggregationContext {
         var pollAggregator: PollAggregator?
         let isLivePoll: Bool
-        var published: Bool = false
+        var published: Bool
         
         init(pollAggregator: PollAggregator? = nil, isLivePoll: Bool, published: Bool = false) {
             self.pollAggregator = pollAggregator
@@ -123,7 +123,7 @@ private extension PollHistoryService {
     }
     
     func startPagination() -> AnyPublisher<TimelinePollDetails, Error> {
-        let startingTimestamp = targetTimestamp ?? .init()
+        let startingTimestamp = oldestEventDate
         targetTimestamp = startingTimestamp.subtractingDays(chunkSizeInDays)
         
         let batchSubject = PassthroughSubject<TimelinePollDetails, Error>()
@@ -181,10 +181,7 @@ private extension PollHistoryService {
     }
     
     var timestampTargetReached: Bool {
-        guard let targetTimestamp = targetTimestamp else {
-            return true
-        }
-        return oldestEventDate <= targetTimestamp
+        oldestEventDate <= targetTimestamp
     }
     
     var oldestEventDate: Date {
@@ -212,7 +209,7 @@ private extension MXEvent {
 // MARK: - PollAggregatorDelegate
 
 extension PollHistoryService: PollAggregatorDelegate {
-    func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) {}
+    func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) { }
     
     func pollAggregatorDidEndLoading(_ aggregator: PollAggregator) {
         guard let context = pollAggregationContexts[aggregator.poll.id], !context.published else {
