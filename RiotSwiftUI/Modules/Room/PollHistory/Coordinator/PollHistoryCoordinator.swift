@@ -43,8 +43,8 @@ final class PollHistoryCoordinator: Coordinator, Presentable {
     
     func start() {
         MXLog.debug("[PollHistoryCoordinator] did start.")
-        pollHistoryViewModel.completion = { [weak self] result in
-            self?.completion?()
+        pollHistoryViewModel.completion = { _ in
+            
         }
     }
     

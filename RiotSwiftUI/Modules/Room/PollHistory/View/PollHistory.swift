@@ -44,6 +44,9 @@ struct PollHistory: View {
         .onChange(of: viewModel.mode) { _ in
             viewModel.send(viewAction: .segmentDidChange)
         }
+        .alert(item: $viewModel.alertInfo) {
+            $0.alert
+        }
     }
     
     @ViewBuilder
@@ -73,19 +76,23 @@ struct PollHistory: View {
         }
     }
     
+    @ViewBuilder
     private var loadMoreButton: some View {
-        HStack(spacing: 8) {
-            if viewModel.viewState.isLoading {
-                spinner
+        if viewModel.viewState.canLoadMoreContent {
+            HStack(spacing: 8) {
+                if viewModel.viewState.isLoading {
+                    spinner
+                }
+                
+                Button {
+                    viewModel.send(viewAction: .loadMoreContent)
+                } label: {
+                    Text(VectorL10n.pollHistoryLoadMore)
+                        .font(theme.fonts.body)
+                }
+                .accessibilityIdentifier("PollHistory.loadMore")
+                .disabled(viewModel.viewState.isLoading)
             }
-            
-            Button {
-                #warning("handle action in next ticket")
-            } label: {
-                Text(VectorL10n.pollHistoryLoadMore)
-                    .font(theme.fonts.body)
-            }
-            .disabled(viewModel.viewState.isLoading)
         }
     }
     

@@ -4819,6 +4819,10 @@ public class VectorL10n: NSObject {
   public static var pollHistoryActiveSegmentTitle: String { 
     return VectorL10n.tr("Vector", "poll_history_active_segment_title") 
   }
+  /// Error fetching polls.
+  public static var pollHistoryFetchingError: String { 
+    return VectorL10n.tr("Vector", "poll_history_fetching_error") 
+  }
   /// Load more polls
   public static var pollHistoryLoadMore: String { 
     return VectorL10n.tr("Vector", "poll_history_load_more") 
