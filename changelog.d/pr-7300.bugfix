@@ -1,1 +1,0 @@
-Fix a deadlock when updating the summary of a room that has a voice broadcast.
