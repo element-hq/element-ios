@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2023 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -104,18 +104,11 @@ final class PollHistoryViewModelTests: XCTestCase {
     }
     
     func testAfterFailureCompletionIsCalled() throws {
-        let expectation = expectation(description: #function)
-        
         pollHistoryService.nextBatchPublishers = [MockPollPublisher.failure]
-        viewModel.completion = { event in
-            XCTAssertEqual(event, .genericError)
-            expectation.fulfill()
-        }
         viewModel.process(viewAction: .viewAppeared)
         XCTAssertFalse(viewModel.state.isLoading)
         XCTAssertNotNil(viewModel.state.polls)
-        
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertNotNil(viewModel.state.bindings.alertInfo)
     }
 }
 

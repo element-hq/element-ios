@@ -44,6 +44,9 @@ struct PollHistory: View {
         .onChange(of: viewModel.mode) { _ in
             viewModel.send(viewAction: .segmentDidChange)
         }
+        .alert(item: $viewModel.alertInfo) {
+            $0.alert
+        }
     }
     
     @ViewBuilder

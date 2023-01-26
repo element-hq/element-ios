@@ -22,7 +22,7 @@ enum PollHistoryConstants {
 }
 
 enum PollHistoryViewModelResult: Equatable {
-    case genericError
+
 }
 
 // MARK: View
@@ -34,6 +34,7 @@ enum PollHistoryMode: CaseIterable {
 
 struct PollHistoryViewBindings {
     var mode: PollHistoryMode
+    var alertInfo: AlertInfo<Bool>?
 }
 
 struct PollHistoryViewState: BindableState {

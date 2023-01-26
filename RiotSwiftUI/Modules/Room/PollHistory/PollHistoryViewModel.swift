@@ -71,7 +71,7 @@ private extension PollHistoryViewModel {
             break
         case .failure:
             polls = polls ?? []
-            self.completion?(.genericError)
+            state.bindings.alertInfo = .init(id: true, title: VectorL10n.pollHistoryFetchingError)
         }
         
         updateViewState()
