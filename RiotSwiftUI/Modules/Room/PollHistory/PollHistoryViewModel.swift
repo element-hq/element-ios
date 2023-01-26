@@ -142,8 +142,10 @@ extension PollHistoryViewModel.Context {
         }
     }
     
-    var syncedPastDays: UInt {
-        let timeDelta = max(viewState.syncStartDate.timeIntervalSince(viewState.syncedUpTo), 0)
-        return UInt((timeDelta / PollHistoryConstants.oneDayInSeconds).rounded())
+    var syncedPastDays: Int {
+        guard let days = Calendar.current.dateComponents([.day], from: viewState.syncedUpTo, to: viewState.syncStartDate).day else {
+            return 0
+        }
+        return max(0, days)
     }
 }

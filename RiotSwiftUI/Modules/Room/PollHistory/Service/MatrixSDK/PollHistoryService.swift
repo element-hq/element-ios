@@ -119,7 +119,7 @@ private extension PollHistoryService {
     
     func startPagination() -> AnyPublisher<TimelinePollDetails, Error> {
         let startingTimestamp = oldestEventDate
-        targetTimestamp = startingTimestamp.subtractingDays(chunkSizeInDays)
+        targetTimestamp = startingTimestamp.subtractingDays(chunkSizeInDays) ?? startingTimestamp
         
         let batchSubject = PassthroughSubject<TimelinePollDetails, Error>()
         currentBatchSubject = batchSubject
@@ -190,8 +190,8 @@ private extension PollHistoryService {
 }
 
 private extension Date {
-    func subtractingDays(_ days: UInt) -> Date {
-        addingTimeInterval(-TimeInterval(days) * PollHistoryConstants.oneDayInSeconds)
+    func subtractingDays(_ days: UInt) -> Date? {
+        Calendar.current.date(byAdding: DateComponents(day: -Int(days)), to: self)
     }
 }
 

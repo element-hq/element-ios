@@ -18,7 +18,6 @@
 
 enum PollHistoryConstants {
     static let chunkSizeInDays: UInt = 30
-    static let oneDayInSeconds: TimeInterval = 8.6 * 10e3
 }
 
 enum PollHistoryViewModelResult: Equatable {
