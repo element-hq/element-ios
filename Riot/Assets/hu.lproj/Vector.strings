@@ -2702,3 +2702,14 @@
 "voice_broadcast_connection_error_message" = "Sajnos most nem lehet elindítani a felvételt. Próbálja meg később.";
 "voice_broadcast_connection_error_title" = "Kapcsolat hiba";
 "voice_broadcast_playback_lock_screen_placeholder" = "Hang közvetítés";
+"poll_history_load_more" = "Még több szavazás betöltése";
+"poll_history_no_past_poll_period_text" = "%@ napja nincs aktív szavazás. További szavazások betöltése az előző havi szavazások megjelenítéséhez";
+"poll_history_no_active_poll_period_text" = "%@ napja nincs aktív szavazás. További szavazások betöltése az előző havi szavazások megjelenítéséhez";
+"poll_history_loading_text" = "Szavazások megjelenítése";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Adatok migrálása\n%@ %%";
+"settings_labs_disable_crypto_sdk" = "Titkosítási SDK engedélyezve. A kikapcsolásához az alkalmazást újra kell telepíteni";
+"settings_labs_confirm_crypto_sdk" = "Ezt a műveletet nem lehet visszavonni";
+"settings_labs_enable_crypto_sdk" = "Az új Rust alapú Titkosítási SDK engedélyezése";
