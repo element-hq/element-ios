@@ -52,17 +52,17 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
         case .past:
             pollHistoryMode = .past
         case .contentLoading:
-            pollService.nextBatchPublishers.append(loadingPolls)
+            pollService.nextBatchPublishers.append(MockPollPublisher.loadingPolls)
         case .empty:
             pollHistoryMode = .active
-            pollService.nextBatchPublishers = [noPolls]
+            pollService.nextBatchPublishers = [MockPollPublisher.emptyPolls]
         case .emptyLoading:
-            pollService.nextBatchPublishers = [noPolls, loadingPolls]
+            pollService.nextBatchPublishers = [MockPollPublisher.emptyPolls, MockPollPublisher.loadingPolls]
         case .emptyNoMoreContent:
             pollService.hasNextBatch = false
-            pollService.nextBatchPublishers = [noPolls]
+            pollService.nextBatchPublishers = [MockPollPublisher.emptyPolls]
         case .loading:
-            pollService.nextBatchPublishers = [loadingPolls]
+            pollService.nextBatchPublishers = [MockPollPublisher.loadingPolls]
         }
         
         let viewModel = PollHistoryViewModel(mode: pollHistoryMode, pollService: pollService)
@@ -83,12 +83,16 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     }
 }
 
-private extension MockPollHistoryScreenState {
-    var noPolls: AnyPublisher<TimelinePollDetails, Error> {
+enum MockPollPublisher {
+    static var emptyPolls: AnyPublisher<TimelinePollDetails, Error> {
         Empty<TimelinePollDetails, Error>(completeImmediately: true).eraseToAnyPublisher()
     }
     
-    var loadingPolls: AnyPublisher<TimelinePollDetails, Error> {
+    static var loadingPolls: AnyPublisher<TimelinePollDetails, Error> {
         Empty<TimelinePollDetails, Error>(completeImmediately: false).eraseToAnyPublisher()
+    }
+    
+    static var failure: AnyPublisher<TimelinePollDetails, Error> {
+        Fail(error: NSError(domain: "fake", code: 1)).eraseToAnyPublisher()
     }
 }

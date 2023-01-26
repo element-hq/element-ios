@@ -42,7 +42,7 @@ final class PollHistoryViewModelTests: XCTestCase {
     
     func testLoadingStateIsTrueWhileLoading() {
         XCTAssertFalse(viewModel.state.isLoading)
-        pollHistoryService.nextBatchPublishers = [loadingPublisher, emptyPublisher]
+        pollHistoryService.nextBatchPublishers = [MockPollPublisher.loadingPolls, MockPollPublisher.emptyPolls]
         viewModel.process(viewAction: .viewAppeared)
         XCTAssertTrue(viewModel.state.isLoading)
         viewModel.process(viewAction: .viewAppeared)
@@ -83,11 +83,39 @@ final class PollHistoryViewModelTests: XCTestCase {
     }
     
     func testLivePollsAreHandled() throws {
-        pollHistoryService.nextBatchPublishers = [emptyPublisher]
+        pollHistoryService.nextBatchPublishers = [MockPollPublisher.emptyPolls]
         pollHistoryService.livePollsPublisher = Just(mockPoll).eraseToAnyPublisher()
         viewModel.process(viewAction: .viewAppeared)
         XCTAssertEqual(viewModel.state.polls?.count, 1)
         XCTAssertEqual(viewModel.state.polls?.first?.id, "id")
+    }
+    
+    func testLivePollsDontChangeLoadingState() throws {
+        let livePolls = PassthroughSubject<TimelinePollDetails, Never>()
+        pollHistoryService.nextBatchPublishers = [MockPollPublisher.loadingPolls]
+        pollHistoryService.livePollsPublisher = livePolls.eraseToAnyPublisher()
+        viewModel.process(viewAction: .viewAppeared)
+        XCTAssertTrue(viewModel.state.isLoading)
+        XCTAssertNil(viewModel.state.polls)
+        livePolls.send(mockPoll)
+        XCTAssertTrue(viewModel.state.isLoading)
+        XCTAssertNotNil(viewModel.state.polls)
+        XCTAssertEqual(viewModel.state.polls?.count, 1)
+    }
+    
+    func testAfterFailureCompletionIsCalled() throws {
+        let expectation = expectation(description: #function)
+        
+        pollHistoryService.nextBatchPublishers = [MockPollPublisher.failure]
+        viewModel.completion = { event in
+            XCTAssertEqual(event, .genericError)
+            expectation.fulfill()
+        }
+        viewModel.process(viewAction: .viewAppeared)
+        XCTAssertFalse(viewModel.state.isLoading)
+        XCTAssertNotNil(viewModel.state.polls)
+        
+        wait(for: [expectation], timeout: 1.0)
     }
 }
 
@@ -96,14 +124,6 @@ private extension PollHistoryViewModelTests {
         get throws {
             try XCTUnwrap(viewModel.state.polls)
         }
-    }
-    
-    var loadingPublisher: AnyPublisher<TimelinePollDetails, Error> {
-        Empty(completeImmediately: false, outputType: TimelinePollDetails.self, failureType: Error.self).eraseToAnyPublisher()
-    }
-    
-    var emptyPublisher: AnyPublisher<TimelinePollDetails, Error> {
-        Empty(completeImmediately: true, outputType: TimelinePollDetails.self, failureType: Error.self).eraseToAnyPublisher()
     }
     
     var mockPoll: TimelinePollDetails {
