@@ -58,7 +58,6 @@ private extension PollHistoryViewModel {
                 self?.handleBatchEnded(completion: completion)
             } receiveValue: { [weak self] polls in
                 self?.add(polls: polls)
-                self?.updateViewState()
             }
             .store(in: &subcriptions)
     }
@@ -71,8 +70,11 @@ private extension PollHistoryViewModel {
         case .finished:
             break
         case .failure:
+            polls = polls ?? []
             self.completion?(.genericError)
         }
+        
+        updateViewState()
     }
     
     func setupUpdateSubscriptions() {
