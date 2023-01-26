@@ -22,13 +22,21 @@ import Foundation
 final class AvatarViewModel: ObservableObject {
     private let avatarService: AvatarServiceProtocol
     
-    @Published private(set) var viewState = AvatarViewState.empty
-    
     init(avatarService: AvatarServiceProtocol) {
         self.avatarService = avatarService
     }
     
     private var cancellables = Set<AnyCancellable>()
+    
+    func placeholderAvatar(matrixItemId: String,
+                     displayName: String?,
+                     colorCount: Int) -> AvatarViewState {
+        let placeholderViewModel = PlaceholderAvatarViewModel(displayName: displayName,
+                                                              matrixItemId: matrixItemId,
+                                                              colorCount: colorCount)
+        
+        return .placeholder(placeholderViewModel.firstCharacterCapitalized, placeholderViewModel.stableColorIndex)
+    }
     
     /// Load an avatar
     /// - Parameters:
@@ -41,14 +49,10 @@ final class AvatarViewModel: ObservableObject {
                     matrixItemId: String,
                     displayName: String?,
                     colorCount: Int,
-                    avatarSize: AvatarSize) {
-        let placeholderViewModel = PlaceholderAvatarViewModel(displayName: displayName,
-                                                              matrixItemId: matrixItemId,
-                                                              colorCount: colorCount)
-        
-        viewState = .placeholder(placeholderViewModel.firstCharacterCapitalized, placeholderViewModel.stableColorIndex)
-        
+                    avatarSize: AvatarSize,
+                    avatarCompletion: @escaping (AvatarViewState) -> Void) {
         guard let mxContentUri = mxContentUri, mxContentUri.count > 0 else {
+            avatarCompletion(placeholderAvatar(matrixItemId: matrixItemId, displayName: displayName, colorCount: colorCount))
             return
         }
         
@@ -56,8 +60,9 @@ final class AvatarViewModel: ObservableObject {
             .sink { completion in
                 guard case let .failure(error) = completion else { return }
                 UILog.error("[AvatarService] Failed to retrieve avatar", context: error)
+                // No need to call the completion, there's nothing we can do and the error is logged.
             } receiveValue: { image in
-                self.viewState = .avatar(image)
+                avatarCompletion(.avatar(image))
             }
             .store(in: &cancellables)
     }
