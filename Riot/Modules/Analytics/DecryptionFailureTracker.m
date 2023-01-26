@@ -105,12 +105,9 @@ NSString *const kDecryptionFailureTrackerAnalyticsCategory = @"e2e.failure";
             reason = DecryptionFailureReasonOlmIndexError;
             break;
 
-        case MXDecryptingErrorEncryptionNotEnabledCode:
-        case MXDecryptingErrorUnableToDecryptCode:
-            reason = DecryptionFailureReasonUnexpected;
-            break;
-
         default:
+            // All other error codes will be tracked as `OlmUnspecifiedError` and will include `context` containing
+            // the actual error code and localized description
             reason = DecryptionFailureReasonUnspecified;
             break;
     }
