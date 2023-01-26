@@ -2665,3 +2665,4 @@
 "poll_history_no_active_poll_period_text" = "Möödunud %@ päeva jooksul polnud ühtegi toimumas olnud küsitlust. Varasemate kuude vaatamiseks laadi veel küsitlusi";
 "poll_history_no_past_poll_period_text" = "Möödunud %@ päeva jooksul polnud ühtegi lõppenud küsitlust. Varasemate kuude vaatamiseks laadi veel küsitlusi";
 "poll_history_loading_text" = "Küsitluste kuvamise ootel";
+"poll_history_fetching_error" = "Viga küsitluste laadimisel.";
