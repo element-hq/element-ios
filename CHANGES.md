@@ -1,3 +1,15 @@
+## Changes in 1.9.17 (2023-01-26)
+
+🙌 Improvements
+
+- Analytics: Ensure E2EE never tracks UnknownError ([#7304](https://github.com/vector-im/element-ios/pull/7304))
+
+🐛 Bugfixes
+
+- Fix a deadlock when updating the summary of a room that has a voice broadcast. ([#7300](https://github.com/vector-im/element-ios/pull/7300))
+- Space Switcher: Fix a bug where the avatars would all be the same. ([#7305](https://github.com/vector-im/element-ios/issues/7305))
+
+
 ## Changes in 1.9.16 (2023-01-24)
 
 ✨ Features

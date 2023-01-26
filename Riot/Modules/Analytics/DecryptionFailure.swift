@@ -16,12 +16,10 @@
 
 import AnalyticsEvents
 
-/// Failure reasons as defined in https://docs.google.com/document/d/1es7cTCeJEXXfRCTRgZerAM2Wg5ZerHjvlpfTW-gsOfI.
 @objc enum DecryptionFailureReason: Int {
     case unspecified
     case olmKeysNotSent
     case olmIndexError
-    case unexpected
     
     var errorName: AnalyticsEvent.Error.Name {
         switch self {
@@ -31,8 +29,6 @@ import AnalyticsEvents
             return .OlmKeysNotSentError
         case .olmIndexError:
             return .OlmIndexError
-        case .unexpected:
-            return .UnknownError
         }
     }
 }
