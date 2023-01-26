@@ -35,7 +35,6 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     
     // polls updates
     private let updatesSubject: PassthroughSubject<TimelinePollDetails, Never> = .init()
-    private let pollErrorsSubject: PassthroughSubject<Error, Never> = .init()
    
     // timestamps
     private var targetTimestamp: Date = .init()
@@ -43,10 +42,6 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     
     var updates: AnyPublisher<TimelinePollDetails, Never> {
         updatesSubject.eraseToAnyPublisher()
-    }
-    
-    var pollErrors: AnyPublisher<Error, Never> {
-        pollErrorsSubject.eraseToAnyPublisher()
     }
     
     init(room: MXRoom, chunkSizeInDays: UInt) {
@@ -211,8 +206,10 @@ private extension MXEvent {
 extension PollHistoryService: PollAggregatorDelegate {
     func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) { }
     
+    func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) { }
+    
     func pollAggregatorDidEndLoading(_ aggregator: PollAggregator) {
-        guard let context = pollAggregationContexts[aggregator.poll.id], !context.published else {
+        guard let context = pollAggregationContexts[aggregator.poll.id], context.published == false else {
             return
         }
         
@@ -227,11 +224,10 @@ extension PollHistoryService: PollAggregatorDelegate {
         }
     }
     
-    func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) {
-        pollErrorsSubject.send(didFailWithError)
-    }
-    
     func pollAggregatorDidUpdateData(_ aggregator: PollAggregator) {
+        guard let context = pollAggregationContexts[aggregator.poll.id], context.published else {
+            return
+        }
         updatesSubject.send(.init(poll: aggregator.poll, represent: .started))
     }
 }

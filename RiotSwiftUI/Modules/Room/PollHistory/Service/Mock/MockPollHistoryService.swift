@@ -33,11 +33,6 @@ final class MockPollHistoryService: PollHistoryServiceProtocol {
         updatesPublisher
     }
     
-    var pollErrorPublisher: AnyPublisher<Error, Never> = Empty().eraseToAnyPublisher()
-    var pollErrors: AnyPublisher<Error, Never> {
-        pollErrorPublisher
-    }
-    
     var hasNextBatch = true
     
     var fetchedUpToPublisher: AnyPublisher<Date, Never> = Just(.init()).eraseToAnyPublisher()
