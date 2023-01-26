@@ -26,9 +26,11 @@ struct SpaceAvatarImage: View {
     var displayName: String?
     var size: AvatarSize
     
+    @State private var avatar: AvatarViewState = .empty
+    
     var body: some View {
         Group {
-            switch viewModel.viewState {
+            switch avatar {
             case .empty:
                 ProgressView()
             case .placeholder(let firstCharacter, let colorIndex):
@@ -48,23 +50,27 @@ struct SpaceAvatarImage: View {
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             }
         }
-        .onChange(of: displayName, perform: { value in
-            viewModel.loadAvatar(
-                mxContentUri: mxContentUri,
-                matrixItemId: matrixItemId,
-                displayName: value,
-                colorCount: theme.colors.namesAndAvatars.count,
-                avatarSize: size
-            )
-        })
+        .onChange(of: displayName) { value in
+            guard case .placeholder = avatar else { return }
+            viewModel.loadAvatar(mxContentUri: mxContentUri,
+                                 matrixItemId: matrixItemId,
+                                 displayName: value,
+                                 colorCount: theme.colors.namesAndAvatars.count,
+                                 avatarSize: size) { newState in
+                avatar = newState
+            }
+        }
         .onAppear {
-            viewModel.loadAvatar(
-                mxContentUri: mxContentUri,
-                matrixItemId: matrixItemId,
-                displayName: displayName,
-                colorCount: theme.colors.namesAndAvatars.count,
-                avatarSize: size
-            )
+            avatar = viewModel.placeholderAvatar(matrixItemId: matrixItemId,
+                                                    displayName: displayName,
+                                                    colorCount: theme.colors.namesAndAvatars.count)
+            viewModel.loadAvatar(mxContentUri: mxContentUri,
+                                 matrixItemId: matrixItemId,
+                                 displayName: displayName,
+                                 colorCount: theme.colors.namesAndAvatars.count,
+                                 avatarSize: size) { newState in
+                avatar = newState
+            }
         }
     }
 }
