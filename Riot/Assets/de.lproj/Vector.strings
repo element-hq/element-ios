@@ -2727,3 +2727,4 @@
 "poll_history_no_active_poll_period_text" = "Für die vergangenen %@ Tage sind keine aktiven Umfragen verfügbar. Lade weitere Umfragen, um die der vorherigen Monate zu sehen";
 "poll_history_load_more" = "Weitere Umfragen laden";
 "poll_history_loading_text" = "Zeige Umfragen an";
+"poll_history_fetching_error" = "Fehler beim Laden der Umfragen.";
