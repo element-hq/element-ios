@@ -122,18 +122,23 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         }
     }
     
-    private func updatePushActions(for ids: [NotificationPushRuleId], enabled: Bool, standardActions: NotificationStandardActions) {
-        for id in ids {
-            notificationSettingsService.updatePushRuleActions(
-                for: id.rawValue,
-                enabled: enabled,
-                actions: standardActions.actions,
-                completion: nil
-            )
+    func add(keyword: String) {
+        if !keywordsOrdered.contains(keyword) {
+            keywordsOrdered.append(keyword)
         }
+        notificationSettingsService.add(keyword: keyword, enabled: true)
     }
     
-    private func updateKeywords(isChecked: Bool) {
+    func remove(keyword: String) {
+        keywordsOrdered = keywordsOrdered.filter { $0 != keyword }
+        notificationSettingsService.remove(keyword: keyword)
+    }
+}
+
+// MARK: - Private
+
+private extension NotificationSettingsViewModel {
+    func updateKeywords(isChecked: Bool) {
         guard !keywordsOrdered.isEmpty else {
             viewState.selectionState[.keywords]?.toggle()
             return
@@ -153,21 +158,18 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         }
     }
     
-    func add(keyword: String) {
-        if !keywordsOrdered.contains(keyword) {
-            keywordsOrdered.append(keyword)
+    func updatePushActions(for ids: [NotificationPushRuleId], enabled: Bool, standardActions: NotificationStandardActions) {
+        for id in ids {
+            notificationSettingsService.updatePushRuleActions(
+                for: id.rawValue,
+                enabled: enabled,
+                actions: standardActions.actions,
+                completion: nil
+            )
         }
-        notificationSettingsService.add(keyword: keyword, enabled: true)
     }
     
-    func remove(keyword: String) {
-        keywordsOrdered = keywordsOrdered.filter { $0 != keyword }
-        notificationSettingsService.remove(keyword: keyword)
-    }
-    
-    // MARK: - Private
-
-    private func rulesUpdated(newRules: [NotificationPushRuleType]) {
+    func rulesUpdated(newRules: [NotificationPushRuleType]) {
         for rule in newRules {
             guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
                   ruleIds.contains(ruleId) else { continue }
@@ -175,7 +177,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         }
     }
     
-    private func keywordRuleUpdated(anyEnabled: Bool) {
+    func keywordRuleUpdated(anyEnabled: Bool) {
         if !keywordsOrdered.isEmpty {
             viewState.selectionState[.keywords] = anyEnabled
         }
@@ -187,7 +189,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     /// The same logic is used on android.
     /// - Parameter rule: The push rule type to check.
     /// - Returns: Wether it should be displayed as checked or not checked.
-    private func isChecked(rule: NotificationPushRuleType) -> Bool {
+    func isChecked(rule: NotificationPushRuleType) -> Bool {
         guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else {
             return false
         }
