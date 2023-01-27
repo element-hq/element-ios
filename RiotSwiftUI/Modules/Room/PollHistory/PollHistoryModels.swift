@@ -33,6 +33,7 @@ enum PollHistoryMode: CaseIterable {
 
 struct PollHistoryViewBindings {
     var mode: PollHistoryMode
+    var alertInfo: AlertInfo<Bool>?
 }
 
 struct PollHistoryViewState: BindableState {
@@ -44,10 +45,13 @@ struct PollHistoryViewState: BindableState {
     var isLoading = false
     var canLoadMoreContent = true
     var polls: [TimelinePollDetails]?
+    var syncStartDate: Date = .init()
+    var syncedUpTo: Date = .distantFuture
 }
 
 enum PollHistoryViewAction {
     case viewAppeared
     case segmentDidChange
     case showPollDetail(poll: TimelinePollDetails)
+    case loadMoreContent
 }

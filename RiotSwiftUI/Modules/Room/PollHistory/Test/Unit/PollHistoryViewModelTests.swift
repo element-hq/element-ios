@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2023 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,9 +42,11 @@ final class PollHistoryViewModelTests: XCTestCase {
     
     func testLoadingStateIsTrueWhileLoading() {
         XCTAssertFalse(viewModel.state.isLoading)
-        pollHistoryService.nextBatchPublisher = Empty(completeImmediately: false, outputType: TimelinePollDetails.self, failureType: Error.self).eraseToAnyPublisher()
+        pollHistoryService.nextBatchPublishers = [MockPollPublisher.loadingPolls, MockPollPublisher.emptyPolls]
         viewModel.process(viewAction: .viewAppeared)
         XCTAssertTrue(viewModel.state.isLoading)
+        viewModel.process(viewAction: .viewAppeared)
+        XCTAssertFalse(viewModel.state.isLoading)
     }
     
     func testUpdatesAreHandled() throws {
@@ -79,6 +81,35 @@ final class PollHistoryViewModelTests: XCTestCase {
         let pollDates = try polls.map(\.startDate)
         XCTAssertEqual(pollDates, pollDates.sorted(by: { $0 > $1 }))
     }
+    
+    func testLivePollsAreHandled() throws {
+        pollHistoryService.nextBatchPublishers = [MockPollPublisher.emptyPolls]
+        pollHistoryService.livePollsPublisher = Just(mockPoll).eraseToAnyPublisher()
+        viewModel.process(viewAction: .viewAppeared)
+        XCTAssertEqual(viewModel.state.polls?.count, 1)
+        XCTAssertEqual(viewModel.state.polls?.first?.id, "id")
+    }
+    
+    func testLivePollsDontChangeLoadingState() throws {
+        let livePolls = PassthroughSubject<TimelinePollDetails, Never>()
+        pollHistoryService.nextBatchPublishers = [MockPollPublisher.loadingPolls]
+        pollHistoryService.livePollsPublisher = livePolls.eraseToAnyPublisher()
+        viewModel.process(viewAction: .viewAppeared)
+        XCTAssertTrue(viewModel.state.isLoading)
+        XCTAssertNil(viewModel.state.polls)
+        livePolls.send(mockPoll)
+        XCTAssertTrue(viewModel.state.isLoading)
+        XCTAssertNotNil(viewModel.state.polls)
+        XCTAssertEqual(viewModel.state.polls?.count, 1)
+    }
+    
+    func testAfterFailureCompletionIsCalled() throws {
+        pollHistoryService.nextBatchPublishers = [MockPollPublisher.failure]
+        viewModel.process(viewAction: .viewAppeared)
+        XCTAssertFalse(viewModel.state.isLoading)
+        XCTAssertNotNil(viewModel.state.polls)
+        XCTAssertNotNil(viewModel.state.bindings.alertInfo)
+    }
 }
 
 private extension PollHistoryViewModelTests {
@@ -86,5 +117,19 @@ private extension PollHistoryViewModelTests {
         get throws {
             try XCTUnwrap(viewModel.state.polls)
         }
+    }
+    
+    var mockPoll: TimelinePollDetails {
+        .init(id: "id",
+              question: "Do you like polls?",
+              answerOptions: [],
+              closed: false,
+              startDate: .init(),
+              totalAnswerCount: 3,
+              type: .undisclosed,
+              eventType: .started,
+              maxAllowedSelections: 1,
+              hasBeenEdited: false,
+              hasDecryptionError: false)
     }
 }

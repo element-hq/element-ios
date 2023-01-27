@@ -17,29 +17,38 @@
 import Combine
 
 final class MockPollHistoryService: PollHistoryServiceProtocol {
+    lazy var nextBatchPublishers: [AnyPublisher<TimelinePollDetails, Error>] = [
+        (activePollsData + pastPollsData)
+            .publisher
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    ]
+    
+    func nextBatch() -> AnyPublisher<TimelinePollDetails, Error> {
+        nextBatchPublishers.isEmpty ? Empty().eraseToAnyPublisher() : nextBatchPublishers.removeFirst()
+    }
+    
     var updatesPublisher: AnyPublisher<TimelinePollDetails, Never> = Empty().eraseToAnyPublisher()
     var updates: AnyPublisher<TimelinePollDetails, Never> {
         updatesPublisher
     }
     
-    var pollErrorPublisher: AnyPublisher<Error, Never> = Empty().eraseToAnyPublisher()
-    var pollErrors: AnyPublisher<Error, Never> {
-        pollErrorPublisher
+    var hasNextBatch = true
+    
+    var fetchedUpToPublisher: AnyPublisher<Date, Never> = Just(.init()).eraseToAnyPublisher()
+    var fetchedUpTo: AnyPublisher<Date, Never> {
+        fetchedUpToPublisher
     }
     
-    lazy var nextBatchPublisher: AnyPublisher<TimelinePollDetails, Error> = (activePollsData + pastPollsData)
-        .publisher
-        .setFailureType(to: Error.self)
-        .eraseToAnyPublisher()
-    
-    func nextBatch() -> AnyPublisher<TimelinePollDetails, Error> {
-        nextBatchPublisher
+    var livePollsPublisher: AnyPublisher<TimelinePollDetails, Never> = Empty().eraseToAnyPublisher()
+    var livePolls: AnyPublisher<TimelinePollDetails, Never> {
+        livePollsPublisher
     }
 }
 
 private extension MockPollHistoryService {
     var activePollsData: [TimelinePollDetails] {
-        (1...10)
+        (1...3)
             .map { index in
                 TimelinePollDetails(id: "a\(index)",
                                     question: "Do you like the active poll number \(index)?",
@@ -56,7 +65,7 @@ private extension MockPollHistoryService {
     }
     
     var pastPollsData: [TimelinePollDetails] {
-        (1...10)
+        (1...3)
             .map { index in
                 TimelinePollDetails(id: "p\(index)",
                                     question: "Do you like the active poll number \(index)?",

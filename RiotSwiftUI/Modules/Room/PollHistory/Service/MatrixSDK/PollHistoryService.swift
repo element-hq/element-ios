@@ -22,50 +22,94 @@ final class PollHistoryService: PollHistoryServiceProtocol {
     private let room: MXRoom
     private let timeline: MXEventTimeline
     private let chunkSizeInDays: UInt
-    private var timelineListener: Any?
    
-    private let updatesSubject: PassthroughSubject<TimelinePollDetails, Never> = .init()
-    private let pollErrorsSubject: PassthroughSubject<Error, Never> = .init()
+    private var timelineListener: Any?
+    private var roomListener: Any?
     
-    private var pollAggregators: [String: PollAggregator] = [:]
-    private var targetTimestamp: Date
-    private var oldestEventDate: Date = .distantFuture
+    // polls aggregation
+    private var pollAggregationContexts: [String: PollAggregationContext] = [:]
+    
+    // polls
     private var currentBatchSubject: PassthroughSubject<TimelinePollDetails, Error>?
+    private var livePollsSubject: PassthroughSubject<TimelinePollDetails, Never> = .init()
+    
+    // polls updates
+    private let updatesSubject: PassthroughSubject<TimelinePollDetails, Never> = .init()
+   
+    // timestamps
+    private var targetTimestamp: Date = .init()
+    private var oldestEventDateSubject: CurrentValueSubject<Date, Never> = .init(.init())
     
     var updates: AnyPublisher<TimelinePollDetails, Never> {
         updatesSubject.eraseToAnyPublisher()
-    }
-    
-    var pollErrors: AnyPublisher<Error, Never> {
-        pollErrorsSubject.eraseToAnyPublisher()
     }
     
     init(room: MXRoom, chunkSizeInDays: UInt) {
         self.room = room
         self.chunkSizeInDays = chunkSizeInDays
         timeline = MXRoomEventTimeline(room: room, andInitialEventId: nil)
-        targetTimestamp = Date().addingTimeInterval(-TimeInterval(chunkSizeInDays) * Constants.oneDayInSeconds)
-        setup(timeline: timeline)
+        setupTimeline()
+        setupLiveUpdates()
     }
     
     func nextBatch() -> AnyPublisher<TimelinePollDetails, Error> {
         currentBatchSubject?.eraseToAnyPublisher() ?? startPagination()
     }
+    
+    var hasNextBatch: Bool {
+        timeline.canPaginate(.backwards)
+    }
+    
+    var fetchedUpTo: AnyPublisher<Date, Never> {
+        oldestEventDateSubject.eraseToAnyPublisher()
+    }
+    
+    var livePolls: AnyPublisher<TimelinePollDetails, Never> {
+        livePollsSubject.eraseToAnyPublisher()
+    }
+    
+    deinit {
+        guard let roomListener = roomListener else {
+            return
+        }
+        room.removeListener(roomListener)
+    }
+    
+    class PollAggregationContext {
+        var pollAggregator: PollAggregator?
+        let isLivePoll: Bool
+        var published: Bool
+        
+        init(pollAggregator: PollAggregator? = nil, isLivePoll: Bool, published: Bool = false) {
+            self.pollAggregator = pollAggregator
+            self.isLivePoll = isLivePoll
+            self.published = published
+        }
+    }
 }
 
 private extension PollHistoryService {
     enum Constants {
-        static let pageSize: UInt = 500
-        static let oneDayInSeconds: TimeInterval = 8.6 * 10e3
+        static let pageSize: UInt = 250
     }
     
-    func setup(timeline: MXEventTimeline) {
+    func setupTimeline() {
+        timeline.resetPagination()
+        
         timelineListener = timeline.listenToEvents { [weak self] event, _, _ in
             if event.eventType == .pollStart {
-                self?.aggregatePoll(pollStartEvent: event)
+                self?.aggregatePoll(pollStartEvent: event, isLivePoll: false)
             }
            
             self?.updateTimestamp(event: event)
+        }
+    }
+    
+    func setupLiveUpdates() {
+        roomListener = room.listen(toEventsOfTypes: [kMXEventTypeStringPollStart, kMXEventTypeStringPollStartMSC3381]) { [weak self] event, _, _ in
+            if event.eventType == .pollStart {
+                self?.aggregatePoll(pollStartEvent: event, isLivePoll: true)
+            }
         }
     }
     
@@ -74,6 +118,9 @@ private extension PollHistoryService {
     }
     
     func startPagination() -> AnyPublisher<TimelinePollDetails, Error> {
+        let startingTimestamp = oldestEventDate
+        targetTimestamp = startingTimestamp.subtractingDays(chunkSizeInDays) ?? startingTimestamp
+        
         let batchSubject = PassthroughSubject<TimelinePollDetails, Error>()
         currentBatchSubject = batchSubject
        
@@ -81,14 +128,13 @@ private extension PollHistoryService {
             guard let self = self else {
                 return
             }
-            self.timeline.resetPagination()
-            self.paginate(timeline: self.timeline)
+            self.paginate()
         }
        
         return batchSubject.eraseToAnyPublisher()
     }
     
-    func paginate(timeline: MXEventTimeline) {
+    func paginate() {
         timeline.paginate(Constants.pageSize, direction: .backwards, onlyFromStore: false) { [weak self] response in
             guard let self = self else {
                 return
@@ -96,8 +142,8 @@ private extension PollHistoryService {
             
             switch response {
             case .success:
-                if timeline.canPaginate(.backwards), self.timestampTargetReached == false {
-                    self.paginate(timeline: timeline)
+                if self.timeline.canPaginate(.backwards), self.timestampTargetReached == false {
+                    self.paginate()
                 } else {
                     self.completeBatch(completion: .finished)
                 }
@@ -112,20 +158,40 @@ private extension PollHistoryService {
         currentBatchSubject = nil
     }
     
-    func aggregatePoll(pollStartEvent: MXEvent) {
-        guard pollAggregators[pollStartEvent.eventId] == nil else {
+    func aggregatePoll(pollStartEvent: MXEvent, isLivePoll: Bool) {
+        let eventId: String = pollStartEvent.eventId
+        
+        guard pollAggregationContexts[eventId] == nil else {
             return
         }
         
-        guard let aggregator = try? PollAggregator(session: room.mxSession, room: room, pollEvent: pollStartEvent, delegate: self) else {
-            return
-        }
+        let newContext: PollAggregationContext = .init(isLivePoll: isLivePoll)
+        pollAggregationContexts[eventId] = newContext
         
-        pollAggregators[pollStartEvent.eventId] = aggregator
+        do {
+            newContext.pollAggregator = try PollAggregator(session: room.mxSession, room: room, pollEvent: pollStartEvent, delegate: self)
+        } catch {
+            pollAggregationContexts.removeValue(forKey: eventId)
+        }
     }
     
     var timestampTargetReached: Bool {
         oldestEventDate <= targetTimestamp
+    }
+    
+    var oldestEventDate: Date {
+        get {
+            oldestEventDateSubject.value
+        }
+        set {
+            oldestEventDateSubject.send(newValue)
+        }
+    }
+}
+
+private extension Date {
+    func subtractingDays(_ days: UInt) -> Date? {
+        Calendar.current.date(byAdding: DateComponents(day: -Int(days)), to: self)
     }
 }
 
@@ -138,17 +204,30 @@ private extension MXEvent {
 // MARK: - PollAggregatorDelegate
 
 extension PollHistoryService: PollAggregatorDelegate {
-    func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) {}
+    func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) { }
+    
+    func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) { }
     
     func pollAggregatorDidEndLoading(_ aggregator: PollAggregator) {
-        currentBatchSubject?.send(.init(poll: aggregator.poll, represent: .started))
-    }
-    
-    func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) {
-        pollErrorsSubject.send(didFailWithError)
+        guard let context = pollAggregationContexts[aggregator.poll.id], context.published == false else {
+            return
+        }
+        
+        context.published = true
+        
+        let newPoll: TimelinePollDetails = .init(poll: aggregator.poll, represent: .started)
+        
+        if context.isLivePoll {
+            livePollsSubject.send(newPoll)
+        } else {
+            currentBatchSubject?.send(newPoll)
+        }
     }
     
     func pollAggregatorDidUpdateData(_ aggregator: PollAggregator) {
+        guard let context = pollAggregationContexts[aggregator.poll.id], context.published else {
+            return
+        }
         updatesSubject.send(.init(poll: aggregator.poll, represent: .started))
     }
 }

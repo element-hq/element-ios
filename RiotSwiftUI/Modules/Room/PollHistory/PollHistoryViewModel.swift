@@ -29,6 +29,7 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
     init(mode: PollHistoryMode, pollService: PollHistoryServiceProtocol) {
         self.pollService = pollService
         super.init(initialViewState: PollHistoryViewState(mode: mode))
+        state.canLoadMoreContent = pollService.hasNextBatch
     }
 
     // MARK: - Public
@@ -37,30 +38,45 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
         switch viewAction {
         case .viewAppeared:
             setupUpdateSubscriptions()
-            fetchFirstBatch()
+            fetchContent()
         case .segmentDidChange:
             updateViewState()
         case .showPollDetail(let poll):
             completion?(.showPollDetail(poll: poll))
+        case .loadMoreContent:
+            fetchContent()
         }
     }
 }
 
 private extension PollHistoryViewModel {
-    func fetchFirstBatch() {
+    func fetchContent() {
         state.isLoading = true
         
         pollService
             .nextBatch()
             .collect()
-            .sink { [weak self] _ in
-                #warning("Handle errors")
-                self?.state.isLoading = false
+            .sink { [weak self] completion in
+                self?.handleBatchEnded(completion: completion)
             } receiveValue: { [weak self] polls in
-                self?.polls = polls
-                self?.updateViewState()
+                self?.add(polls: polls)
             }
             .store(in: &subcriptions)
+    }
+    
+    func handleBatchEnded(completion: Subscribers.Completion<Error>) {
+        state.isLoading = false
+        state.canLoadMoreContent = pollService.hasNextBatch
+        
+        switch completion {
+        case .finished:
+            break
+        case .failure:
+            polls = polls ?? []
+            state.bindings.alertInfo = .init(id: true, title: VectorL10n.pollHistoryFetchingError)
+        }
+        
+        updateViewState()
     }
     
     func setupUpdateSubscriptions() {
@@ -75,9 +91,15 @@ private extension PollHistoryViewModel {
             .store(in: &subcriptions)
         
         pollService
-            .pollErrors
-            .sink { detail in
-                #warning("Handle errors")
+            .fetchedUpTo
+            .weakAssign(to: \.state.syncedUpTo, on: self)
+            .store(in: &subcriptions)
+        
+        pollService
+            .livePolls
+            .sink { [weak self] livePoll in
+                self?.add(polls: [livePoll])
+                self?.updateViewState()
             }
             .store(in: &subcriptions)
     }
@@ -88,6 +110,10 @@ private extension PollHistoryViewModel {
         }
             
         polls?[pollIndex] = poll
+    }
+    
+    func add(polls: [TimelinePollDetails]) {
+        self.polls = (self.polls ?? []) + polls
     }
     
     func updateViewState() {
@@ -106,17 +132,22 @@ private extension PollHistoryViewModel {
 
 extension PollHistoryViewModel.Context {
     var emptyPollsText: String {
-        let days = PollHistoryConstants.chunkSizeInDays
-        
         switch (viewState.bindings.mode, viewState.canLoadMoreContent) {
         case (.active, true):
-            return VectorL10n.pollHistoryNoActivePollPeriodText("\(days)")
+            return VectorL10n.pollHistoryNoActivePollPeriodText("\(syncedPastDays)")
         case (.active, false):
             return VectorL10n.pollHistoryNoActivePollText
         case (.past, true):
-            return VectorL10n.pollHistoryNoPastPollPeriodText("\(days)")
+            return VectorL10n.pollHistoryNoPastPollPeriodText("\(syncedPastDays)")
         case (.past, false):
             return VectorL10n.pollHistoryNoPastPollText
         }
+    }
+    
+    var syncedPastDays: Int {
+        guard let days = Calendar.current.dateComponents([.day], from: viewState.syncedUpTo, to: viewState.syncStartDate).day else {
+            return 0
+        }
+        return max(0, days)
     }
 }
