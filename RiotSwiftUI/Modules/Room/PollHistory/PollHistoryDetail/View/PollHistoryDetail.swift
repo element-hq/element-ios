@@ -53,6 +53,7 @@ struct PollHistoryDetail: View {
                     .foregroundColor(theme.colors.tertiaryContent)
                     .font(theme.fonts.caption1)
                     .padding([.top])
+                    .accessibilityIdentifier("PollHistoryDetail.date")
                 TimelinePollView(viewModel: timelineViewModel.context)
                     .navigationTitle(navigationTitle)
                     .navigationBarTitleDisplayMode(.inline)
@@ -88,6 +89,7 @@ struct PollHistoryDetail: View {
             Text(VectorL10n.pollHistoryDetailViewInTimeline)
         }
         .accentColor(theme.colors.accent)
+        .accessibilityIdentifier("PollHistoryDetail.viewInTimeLineButton")
     }
     
     private var navigationTitle: String {

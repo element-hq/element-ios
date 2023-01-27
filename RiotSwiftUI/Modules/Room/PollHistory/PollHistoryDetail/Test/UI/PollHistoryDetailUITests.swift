@@ -20,15 +20,17 @@ import XCTest
 class PollHistoryDetailUITests: MockScreenTestCase {
     func testPollHistoryDetailOpenPoll() {
         app.goToScreenWithIdentifier(MockPollHistoryDetailScreenState.openDisclosed.title)
-        XCTAssert(app.staticTexts["Active polls"].exists)
-        XCTAssert(app.staticTexts["1/1/01"].exists)
-        XCTAssert(app.buttons["View poll in timeline"].exists)
+        let title = app.navigationBars.staticTexts.firstMatch.label
+        XCTAssertEqual(title, VectorL10n.pollHistoryActiveSegmentTitle)
+        XCTAssertEqual(app.staticTexts["PollHistoryDetail.date"].label, "1/1/01")
+        XCTAssertEqual(app.buttons["PollHistoryDetail.viewInTimeLineButton"].label, VectorL10n.pollHistoryDetailViewInTimeline)
     }
     
     func testPollHistoryDetailClosedPoll() {
         app.goToScreenWithIdentifier(MockPollHistoryDetailScreenState.closedDisclosed.title)
-        XCTAssert(app.staticTexts["Past polls"].exists)
-        XCTAssert(app.staticTexts["1/1/01"].exists)
-        XCTAssert(app.buttons["View poll in timeline"].exists)
+        let title = app.navigationBars.staticTexts.firstMatch.label
+        XCTAssertEqual(title, VectorL10n.pollHistoryPastSegmentTitle)
+        XCTAssertEqual(app.staticTexts["PollHistoryDetail.date"].label, "1/1/01")
+        XCTAssertEqual(app.buttons["PollHistoryDetail.viewInTimeLineButton"].label, VectorL10n.pollHistoryDetailViewInTimeline)
     }
 }

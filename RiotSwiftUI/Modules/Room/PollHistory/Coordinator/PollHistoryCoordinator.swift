@@ -57,35 +57,35 @@ final class PollHistoryCoordinator: NSObject, Coordinator, Presentable {
     
     func showPollDetail(_ poll: TimelinePollDetails) {
         
-        if let event = parameters.room.mxSession.store.event(withEventId: poll.id, inRoom: parameters.room.roomId),
-           let detailCoordinator: PollHistoryDetailCoordinator = try? .init(parameters: .init(event: event, room: self.parameters.room)) {
-            detailCoordinator.toPresentable().presentationController?.delegate = self
-            detailCoordinator.completion = { [weak self, weak detailCoordinator] result in
-                guard let self = self, let coordinator = detailCoordinator else { return }
-                switch result {
-                case .dismiss:
-                    self.toPresentable().dismiss(animated: true)
-                    self.remove(childCoordinator: coordinator)
-                case .viewInTimeline:
-                    self.toPresentable().dismiss(animated: false)
-                    self.remove(childCoordinator: coordinator)
-                    var event = event
-                    if poll.closed {
-                        let room = self.parameters.room
-                        let relatedEvents = room.mxSession.store.relations(forEvent: event.eventId, inRoom: room.roomId, relationType: MXEventRelationTypeReference)
-                        let pollEndedEvent = relatedEvents.first(where: { $0.eventType == .pollEnd })
-                        event = pollEndedEvent ?? event
-                    }
-                    self.completion?(event)
-                }
-            }
-            
-            self.add(childCoordinator: detailCoordinator)
-            detailCoordinator.start()
-            self.toPresentable().present(detailCoordinator.toPresentable(), animated: true)
-        } else {
-            // TODO: #1040 manage error
+        guard let event = parameters.room.mxSession.store.event(withEventId: poll.id, inRoom: parameters.room.roomId),
+              let detailCoordinator: PollHistoryDetailCoordinator = try? .init(parameters: .init(event: event, room: self.parameters.room)) else {
+            pollHistoryViewModel.context.alertInfo = .init(id: true, title: VectorL10n.settingsDiscoveryErrorMessage)
+            return
         }
+        detailCoordinator.toPresentable().presentationController?.delegate = self
+        detailCoordinator.completion = { [weak self, weak detailCoordinator] result in
+            guard let self = self, let coordinator = detailCoordinator else { return }
+            switch result {
+            case .dismiss:
+                self.toPresentable().dismiss(animated: true)
+                self.remove(childCoordinator: coordinator)
+            case .viewInTimeline:
+                self.toPresentable().dismiss(animated: false)
+                self.remove(childCoordinator: coordinator)
+                var event = event
+                if poll.closed {
+                    let room = self.parameters.room
+                    let relatedEvents = room.mxSession.store.relations(forEvent: event.eventId, inRoom: room.roomId, relationType: MXEventRelationTypeReference)
+                    let pollEndedEvent = relatedEvents.first(where: { $0.eventType == .pollEnd })
+                    event = pollEndedEvent ?? event
+                }
+                self.completion?(event)
+            }
+        }
+        
+        self.add(childCoordinator: detailCoordinator)
+        detailCoordinator.start()
+        self.toPresentable().present(detailCoordinator.toPresentable(), animated: true)
     }
     
     func toPresentable() -> UIViewController {

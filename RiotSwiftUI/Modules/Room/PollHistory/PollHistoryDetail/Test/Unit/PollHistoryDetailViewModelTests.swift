@@ -51,4 +51,5 @@ class PollHistoryDetailViewModelTests: XCTestCase {
     func testInitialState() {
         XCTAssertFalse(context.viewState.isPollClosed)
     }
+    
 }
