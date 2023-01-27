@@ -70,6 +70,7 @@ extension NotificationPushRuleId {
         case .keywords:
             return VectorL10n.settingsMessagesContainingKeywords
         case .msc3930pollStart, .msc3930oneToOnePollStart, .msc3930pollEnd, .msc3930oneToOnePollEnd:
+            // They don't need to be rendered on the UI
             return ""
         }
     }
