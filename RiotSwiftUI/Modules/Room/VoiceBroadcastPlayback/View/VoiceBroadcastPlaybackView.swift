@@ -114,7 +114,7 @@ struct VoiceBroadcastPlaybackView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier("decryptionErrorView")
             }
-            else if viewModel.viewState.playbackState == .error {
+            else if viewModel.viewState.showPlaybackError {
                 VoiceBroadcastPlaybackErrorView()
             } else {
                 HStack (spacing: 34.0) {

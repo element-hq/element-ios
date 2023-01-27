@@ -59,6 +59,7 @@ struct VoiceBroadcastPlaybackViewState: BindableState {
     var playingState: VoiceBroadcastPlayingState
     var bindings: VoiceBroadcastPlaybackViewStateBindings
     var decryptionState: VoiceBroadcastPlaybackDecryptionState
+    var showPlaybackError: Bool
 }
 
 struct VoiceBroadcastPlaybackViewStateBindings {
