@@ -17,12 +17,14 @@
  */
 
 import Foundation
+import MatrixSDK
 
 protocol RoomInfoCoordinatorDelegate: AnyObject {
     func roomInfoCoordinatorDidComplete(_ coordinator: RoomInfoCoordinatorType)
     func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didRequestMentionForMember member: MXRoomMember)
     func roomInfoCoordinatorDidLeaveRoom(_ coordinator: RoomInfoCoordinatorType)
     func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didReplaceRoomWithReplacementId roomId: String)
+    func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, viewEventInTimeline event: MXEvent)
 }
 
 /// `RoomInfoCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.

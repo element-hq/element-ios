@@ -25,7 +25,7 @@ enum MockPollHistoryDetailScreenState: MockScreenState, CaseIterable {
     case closedPollEnded
     
     var screenType: Any.Type {
-        TimelinePollDetails.self
+        PollHistoryDetail.self
     }
     
     var poll: TimelinePollDetails {
@@ -37,7 +37,7 @@ enum MockPollHistoryDetailScreenState: MockScreenState, CaseIterable {
                                        question: "Question",
                                        answerOptions: answerOptions,
                                        closed: self == .closedDisclosed || self == .closedUndisclosed ? true : false,
-                                       startDate: .init(),
+                                       startDate: .init(timeIntervalSinceReferenceDate: 0),
                                        totalAnswerCount: 20,
                                        type: self == .closedDisclosed || self == .openDisclosed ? .disclosed : .undisclosed,
                                        eventType: self == .closedPollEnded ? .ended : .started,
@@ -49,7 +49,7 @@ enum MockPollHistoryDetailScreenState: MockScreenState, CaseIterable {
     
     var screenView: ([Any], AnyView) {
 
-        let viewModel = PollHistoryDetailViewModel(pollHistoryDetails: poll, timelineViewModel: TimelinePollViewModel(timelinePollDetails: poll))
+        let viewModel = PollHistoryDetailViewModel(timelineViewModel: TimelinePollViewModel(timelinePollDetails: poll))
         
         return ([viewModel], AnyView(PollHistoryDetail(viewModel: viewModel.context)))
     }

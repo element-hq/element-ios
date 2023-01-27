@@ -176,9 +176,13 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
             coordinator.start()
             push(coordinator: coordinator)
         case .pollHistory:
-            let coordinator: PollHistoryCoordinator = .init(parameters: .init(mode: .active, session: session, room: room, navigationRouter: navigationRouter))
+            let coordinator: PollHistoryCoordinator = .init(parameters: .init(mode: .active, room: room, navigationRouter: navigationRouter))
             coordinator.start()
             push(coordinator: coordinator)
+            coordinator.completion = { [weak self] event in
+                guard let self else { return }
+                self.delegate?.roomInfoCoordinator(self, viewEventInTimeline: event)
+            }
         default:
             guard let tabIndex = target.tabIndex else {
                 fatalError("No settings tab index for this target.")

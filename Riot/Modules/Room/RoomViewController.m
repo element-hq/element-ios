@@ -7871,6 +7871,29 @@ static CGSize kThreadListBarButtonItemImageSize;
         [[AppDelegate theDelegate] showRoomWithParameters:parameters];
     }
 }
+- (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinator
+                       viewEventInTimeline:(MXEvent *)event
+{
+    [self.navigationController popToViewController:self animated:true];
+    // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
+    MXWeakify(self);
+    [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                  initialEventId:event.eventId
+                                        threadId:event.threadId
+                                andMatrixSession:self.mainSession
+                                      onComplete:^(id roomDataSource) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [roomDataSource finalizeInitialization];
+        
+        // Center the bubbles table content on the bottom of the read marker event in order to display correctly the read marker view.
+        self.centerBubblesTableViewContentOnTheInitialEventBottom = YES;
+        [self displayRoom:roomDataSource];
+        
+        // Give the data source ownership to the room view controller.
+        self.hasRoomDataSourceOwnership = YES;
+    }];
+}
 
 #pragma mark - RemoveJitsiWidgetViewDelegate
 

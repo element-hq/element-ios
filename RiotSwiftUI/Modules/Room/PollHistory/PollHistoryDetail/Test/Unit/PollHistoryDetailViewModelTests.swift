@@ -27,22 +27,28 @@ class PollHistoryDetailViewModelTests: XCTestCase {
     var context: PollHistoryDetailViewModelType.Context!
     
     override func setUpWithError() throws {
-        viewModel = PollHistoryDetailViewModel(promptType: .regular, initialCount: Constants.counterInitialValue)
+        
+        let answerOptions = [TimelinePollAnswerOption(id: "1", text: "1", count: 1, winner: false, selected: false),
+                             TimelinePollAnswerOption(id: "2", text: "2", count: 1, winner: false, selected: false),
+                             TimelinePollAnswerOption(id: "3", text: "3", count: 1, winner: false, selected: false)]
+        
+        let timelinePoll = TimelinePollDetails(id: "poll-id",
+                                               question: "Question",
+                                               answerOptions: answerOptions,
+                                               closed: false,
+                                               startDate: .init(),
+                                               totalAnswerCount: 3,
+                                               type: .disclosed,
+                                               eventType: .started,
+                                               maxAllowedSelections: 1,
+                                               hasBeenEdited: false,
+                                               hasDecryptionError: false)
+        
+        viewModel = PollHistoryDetailViewModel(timelineViewModel: TimelinePollViewModel(timelinePollDetails: timelinePoll))
         context = viewModel.context
     }
 
     func testInitialState() {
-        XCTAssertEqual(context.viewState.count, Constants.counterInitialValue)
-    }
-
-    func testCounter() throws {
-        context.send(viewAction: .incrementCount)
-        XCTAssertEqual(context.viewState.count, 1)
-        
-        context.send(viewAction: .incrementCount)
-        XCTAssertEqual(context.viewState.count, 2)
-        
-        context.send(viewAction: .decrementCount)
-        XCTAssertEqual(context.viewState.count, 1)
+        XCTAssertFalse(context.viewState.isPollClosed)
     }
 }

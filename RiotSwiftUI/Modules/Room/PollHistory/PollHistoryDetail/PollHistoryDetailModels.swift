@@ -32,8 +32,13 @@ enum PollHistoryDetailViewModelResult {
 // MARK: View
 
 struct PollHistoryDetailViewState: BindableState {
-    var poll: TimelinePollDetails
     var timelineViewModel: TimelinePollViewModelProtocol
+    var pollStartDate: Date {
+        timelineViewModel.context.viewState.poll.startDate
+    }
+    var isPollClosed: Bool {
+        timelineViewModel.context.viewState.poll.closed
+    }
 }
 
 enum PollHistoryDetailViewAction {

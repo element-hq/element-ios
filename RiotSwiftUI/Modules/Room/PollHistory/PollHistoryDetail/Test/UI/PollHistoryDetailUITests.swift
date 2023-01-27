@@ -18,21 +18,17 @@ import RiotSwiftUI
 import XCTest
 
 class PollHistoryDetailUITests: MockScreenTestCase {
-    func testPollHistoryDetailPromptRegular() {
-        let promptType = PollHistoryDetailPromptType.regular
-        app.goToScreenWithIdentifier(MockPollHistoryDetailScreenState.promptType(promptType).title)
-        
-        let title = app.staticTexts["title"]
-        XCTAssert(title.exists)
-        XCTAssertEqual(title.label, promptType.title)
+    func testPollHistoryDetailOpenPoll() {
+        app.goToScreenWithIdentifier(MockPollHistoryDetailScreenState.openDisclosed.title)
+        XCTAssert(app.staticTexts["Active polls"].exists)
+        XCTAssert(app.staticTexts["1/1/01"].exists)
+        XCTAssert(app.buttons["View poll in timeline"].exists)
     }
     
-    func testPollHistoryDetailPromptUpgrade() {
-        let promptType = PollHistoryDetailPromptType.upgrade
-        app.goToScreenWithIdentifier(MockPollHistoryDetailScreenState.promptType(promptType).title)
-        
-        let title = app.staticTexts["title"]
-        XCTAssert(title.exists)
-        XCTAssertEqual(title.label, promptType.title)
+    func testPollHistoryDetailClosedPoll() {
+        app.goToScreenWithIdentifier(MockPollHistoryDetailScreenState.closedDisclosed.title)
+        XCTAssert(app.staticTexts["Past polls"].exists)
+        XCTAssert(app.staticTexts["1/1/01"].exists)
+        XCTAssert(app.buttons["View poll in timeline"].exists)
     }
 }

@@ -47,41 +47,51 @@ struct PollHistoryDetail: View {
     }
     private var content: some View {
         let timelineViewModel = viewModel.viewState.timelineViewModel
-        return VStack {
-            TimelinePollView(viewModel: timelineViewModel.context)
-                .navigationTitle(navigationTitle)
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: btnBack)
-            viewInTimeline
+        return ScrollView {
+            VStack(alignment: .leading) {
+                Text(DateFormatter.pollShortDateFormatter.string(from: viewModel.viewState.pollStartDate))
+                    .foregroundColor(theme.colors.tertiaryContent)
+                    .font(theme.fonts.caption1)
+                    .padding([.top])
+                TimelinePollView(viewModel: timelineViewModel.context)
+                    .navigationTitle(navigationTitle)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarBackButtonHidden(true)
+                    .navigationBarItems(leading: btnBack, trailing: btnDone)
+                viewInTimeline
+            }
         }
     }
     
-    private var btnBack : some View {
+    private var btnBack: some View {
         Button(action: {
             viewModel.send(viewAction: .dismiss)
         }) {
-            Image(systemName: "xmark") //"chevron.left"
+            Image(systemName: "chevron.left")
                 .aspectRatio(contentMode: .fit)
                 .foregroundColor(theme.colors.accent)
         }
     }
+    private var btnDone: some View {
+        Button {
+            viewModel.send(viewAction: .dismiss)
+        } label: {
+            Text(VectorL10n.done)
+        }
+        .accentColor(theme.colors.accent)
+    }
     
     private var viewInTimeline: some View {
-        HStack {
-            Button {
-                viewModel.send(viewAction: .viewInTimeline)
-            } label: {
-                Text(VectorL10n.pollHistoryDetailViewInTimeline)
-            }
-            .accentColor(theme.colors.accent)
-            Spacer()
+        Button {
+            viewModel.send(viewAction: .viewInTimeline)
+        } label: {
+            Text(VectorL10n.pollHistoryDetailViewInTimeline)
         }
+        .accentColor(theme.colors.accent)
     }
     
     private var navigationTitle: String {
-        let poll = viewModel.viewState.poll
-        if poll.closed {
+        if viewModel.viewState.isPollClosed {
             return VectorL10n.pollHistoryPastSegmentTitle
         } else {
             return VectorL10n.pollHistoryActiveSegmentTitle

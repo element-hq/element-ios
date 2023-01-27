@@ -20,9 +20,7 @@ import Combine
 import MatrixSDK
 
 struct PollHistoryDetailCoordinatorParameters {
-    let pollHistoryDetails: TimelinePollDetails
     let event: MXEvent
-    let session: MXSession
     let room: MXRoom
 }
 
@@ -30,7 +28,6 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
     private let parameters: PollHistoryDetailCoordinatorParameters
     private let pollHistoryDetailHostingController: UIViewController
     private var pollHistoryDetailViewModel: PollHistoryDetailViewModelProtocol
-    private var cancellables = Set<AnyCancellable>()
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
 
@@ -40,9 +37,9 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
     
     init(parameters: PollHistoryDetailCoordinatorParameters) throws {
         self.parameters = parameters
-        let timelinePollCoordinator = try TimelinePollCoordinator(parameters: .init(session: parameters.session, room: parameters.room, pollEvent: parameters.event))
+        let timelinePollCoordinator = try TimelinePollCoordinator(parameters: .init(session: parameters.room.mxSession, room: parameters.room, pollEvent: parameters.event))
         
-        let viewModel = PollHistoryDetailViewModel(pollHistoryDetails: parameters.pollHistoryDetails, timelineViewModel: timelinePollCoordinator.viewModel)
+        let viewModel = PollHistoryDetailViewModel(timelineViewModel: timelinePollCoordinator.viewModel)
         let view = PollHistoryDetail(viewModel: viewModel.context)
         pollHistoryDetailViewModel = viewModel
         
