@@ -108,11 +108,11 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
     
     func markAsRead() {
         room.markAllAsRead()
-        self.delegate?.roomContextActionServiceDidMarkedRoom(self)
+        self.delegate?.roomContextActionServiceDidMarkRoom(self)
     }
     func markAsUnread() {
         room.markAsUnread()
-        self.delegate?.roomContextActionServiceDidMarkedRoom(self)
+        self.delegate?.roomContextActionServiceDidMarkRoom(self)
     }
     
     // MARK: - Private

@@ -2471,7 +2471,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     editedRoomId = nil;
 }
 
--(void)roomContextActionServiceDidMarkedRoom:(id<RoomContextActionServiceProtocol>)service
+-(void)roomContextActionServiceDidMarkRoom:(id<RoomContextActionServiceProtocol>)service
 {
     [self refreshRecentsTable];
 }
