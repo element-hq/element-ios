@@ -21,6 +21,8 @@ struct ThemableTextEditor: UIViewRepresentable {
     
     @Binding var text: String
     @State var configuration = UIKitTextInputConfiguration()
+    var defaultAccessibilityLabel: String?
+    var accessibilityHint: String?
     var onEditingChanged: ((_ edit: Bool) -> Void)?
 
     // MARK: Private
@@ -33,10 +35,14 @@ struct ThemableTextEditor: UIViewRepresentable {
     // MARK: Setup
     
     init(text: Binding<String>,
+         defaultAccessibilityLabel: String?,
+         accessibilityHint: String?,
          configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration(),
          onEditingChanged: ((_ edit: Bool) -> Void)? = nil) {
         _text = text
         _configuration = State(initialValue: configuration)
+        self.defaultAccessibilityLabel = defaultAccessibilityLabel
+        self.accessibilityHint = accessibilityHint
         self.onEditingChanged = onEditingChanged
         
         ResponderManager.register(view: textView)
@@ -51,6 +57,9 @@ struct ThemableTextEditor: UIViewRepresentable {
         if internalParams.isFirstResponder {
             textView.becomeFirstResponder()
         }
+        
+        textView.accessibilityLabel = defaultAccessibilityLabel
+        textView.accessibilityHint = accessibilityHint
 
         return textView
     }
@@ -64,6 +73,9 @@ struct ThemableTextEditor: UIViewRepresentable {
         if uiView.text != text {
             uiView.text = text
         }
+        
+        uiView.accessibilityLabel = defaultAccessibilityLabel
+        uiView.accessibilityHint = accessibilityHint
 
         uiView.keyboardType = configuration.keyboardType
         uiView.returnKeyType = configuration.returnKeyType

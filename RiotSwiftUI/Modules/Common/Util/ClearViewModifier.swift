@@ -52,6 +52,8 @@ struct ClearViewModifier: ViewModifier {
                 .padding(.top, alignment == .top ? 8 : 0)
                 .padding(.bottom, alignment == .bottom ? 8 : 0)
                 .padding(.trailing, 12)
+                .accessibilityLabel("clear")
+                .accessibilityHint("Clears \(text)")
             }
         }
     }

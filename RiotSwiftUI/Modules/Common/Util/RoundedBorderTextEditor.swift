@@ -45,6 +45,7 @@ struct RoundedBorderTextEditor: View {
                     .font(theme.fonts.subheadline)
                     .multilineTextAlignment(.leading)
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
+                    .accessibilityHidden(true)
             }
             ZStack(alignment: .topLeading) {
                 if text.isEmpty {
@@ -53,9 +54,13 @@ struct RoundedBorderTextEditor: View {
                         .font(theme.fonts.callout)
                         .foregroundColor(theme.colors.tertiaryContent)
                         .allowsHitTesting(false)
+                        .accessibilityHidden(true)
                 }
                 if isEnabled {
-                    ThemableTextEditor(text: $text, onEditingChanged: { edit in
+                    ThemableTextEditor(text: $text,
+                                       defaultAccessibilityLabel: title ?? placeHolder,
+                                       accessibilityHint: self.error,
+                                       onEditingChanged: { edit in
                         self.editing = edit
                         onEditingChanged?(edit)
                     })
@@ -67,7 +72,10 @@ struct RoundedBorderTextEditor: View {
                         onTextChanged?(newText)
                     })
                 } else {
-                    ThemableTextEditor(text: $text, onEditingChanged: { edit in
+                    ThemableTextEditor(text: $text,
+                                       defaultAccessibilityLabel: title ?? placeHolder,
+                                       accessibilityHint: self.error,
+                                       onEditingChanged: { edit in
                         self.editing = edit
                         onEditingChanged?(edit)
                     })

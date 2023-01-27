@@ -72,11 +72,11 @@ struct MatrixItemChooser: View {
                                 type: item.type,
                                 displayName: item.displayName,
                                 detailText: item.detailText,
-                                isSelected: viewModel.viewState.selectedItemIds.contains(item.id)
+                                isSelected: viewModel.viewState.selectedItemIds.contains(item.id),
+                                tapAction: {
+                                    viewModel.send(viewAction: .itemTapped(item.id))
+                                }
                             )
-                            .onTapGesture {
-                                viewModel.send(viewAction: .itemTapped(item.id))
-                            }
                         }
                     }
                 }

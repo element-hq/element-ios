@@ -47,6 +47,7 @@ struct SearchBar: View {
                         .renderingMode(.template)
                         .foregroundColor(theme.colors.quarterlyContent)
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        .accessibilityHidden(true)
              
                     if isEditing, !text.isEmpty {
                         Button(action: {

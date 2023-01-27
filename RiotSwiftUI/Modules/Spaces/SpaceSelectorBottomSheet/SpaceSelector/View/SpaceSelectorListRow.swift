@@ -33,7 +33,16 @@ struct SpaceSelectorListRow: View {
     let isSelected: Bool
     let notificationCount: UInt
     let highlightedNotificationCount: UInt
+    let selectionAction: (() -> Void)?
     let disclosureAction: (() -> Void)?
+    
+    private var name: String {
+        return displayName ?? ""
+    }
+    
+    private var acessibilityName: String {
+        return notificationCount > 0 ? "\(name)\n\(VectorL10n.spaceSelectorListRowAccessibilityUnreadMessages("\(notificationCount)"))" : name
+    }
     
     @ViewBuilder
     var body: some View {
@@ -45,30 +54,42 @@ struct SpaceSelectorListRow: View {
             }
             VStack {
                 HStack {
-                    if let avatar = avatar {
-                        SpaceAvatarImage(avatarData: avatar, size: .xSmall)
-                    }
-                    if let icon = icon {
-                        Image(uiImage: icon)
-                            .renderingMode(.template)
+                    HStack {
+                        if let avatar = avatar {
+                            SpaceAvatarImage(avatarData: avatar, size: .xSmall)
+                        }
+                        if let icon = icon {
+                            Image(uiImage: icon)
+                                .renderingMode(.template)
+                                .foregroundColor(theme.colors.primaryContent)
+                                .frame(width: 32, height: 32)
+                                .background(theme.colors.quinaryContent)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                        }
+                        Text(name)
                             .foregroundColor(theme.colors.primaryContent)
-                            .frame(width: 32, height: 32)
-                            .background(theme.colors.quinaryContent)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .font(theme.fonts.bodySB)
+                            .accessibility(identifier: "itemName")
+                        Spacer()
+                        if notificationCount > 0 {
+                            badge(with: "\(notificationCount)", color: highlightedNotificationCount > 0 ? theme.colors.alert : theme.colors.secondaryContent)
+                        }
+                        if !isJoined {
+                            badge(with: "! ", color: theme.colors.alert)
+                                .accessibilityHidden(true)
+                            Image(systemName: "chevron.right")
+                                .renderingMode(.template)
+                                .foregroundColor(theme.colors.secondaryContent)
+                        }
                     }
-                    Text(displayName ?? "")
-                        .foregroundColor(theme.colors.primaryContent)
-                        .font(theme.fonts.bodySB)
-                        .accessibility(identifier: "itemName")
-                    Spacer()
-                    if notificationCount > 0 {
-                        badge(with: "\(notificationCount)", color: highlightedNotificationCount > 0 ? theme.colors.alert : theme.colors.secondaryContent)
-                    }
-                    if !isJoined {
-                        badge(with: "! ", color: theme.colors.alert)
-                        Image(systemName: "chevron.right")
-                            .renderingMode(.template)
-                            .foregroundColor(theme.colors.secondaryContent)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityAddTraits(.isButton)
+                    .accessibilityLabel(isJoined ? acessibilityName : "invite to \(name)")
+                    .accessibilityHint(isJoined ? (isSelected ? VectorL10n.spaceSelectorListRowAccessibilitySelectedSpace : VectorL10n.spaceSelectorListRowAccessibilitySwitchesTo(name)) : VectorL10n.spaceSelectorListRowAccessibilityInviteHint)
+                    .accessibilityAction {
+                        if !isSelected {
+                            selectionAction?()
+                        }
                     }
                     if hasSubItems, isJoined {
                         Button {
@@ -79,6 +100,8 @@ struct SpaceSelectorListRow: View {
                                 .foregroundColor(theme.colors.accent)
                         }
                         .accessibility(identifier: "disclosureButton")
+                        .accessibilityLabel(VectorL10n.spaceSelectorListRowAccessibilityDisclosureLabel(name))
+                        .accessibilityHint(VectorL10n.spaceSelectorListRowAccessibilityDisclosureHint(name))
                     }
                 }
                 .padding(.vertical, 8)
@@ -86,8 +109,10 @@ struct SpaceSelectorListRow: View {
             .padding(.horizontal)
         }
         .padding(.horizontal, 8)
-        .frame(maxWidth: .infinity)
         .background(theme.colors.background)
+        .onTapGesture {
+            selectionAction?()
+        }
     }
 
     private func badge(with text: String, color: Color) -> some View {
@@ -113,11 +138,11 @@ struct SpaceSelectorListRow_Previews: PreviewProvider {
     
     static var sampleView: some View {
         VStack(spacing: 8) {
-            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: false, isJoined: true, isSelected: false, notificationCount: 0, highlightedNotificationCount: 0, disclosureAction: nil)
-            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: true, isJoined: true, isSelected: false, notificationCount: 0, highlightedNotificationCount: 0, disclosureAction: nil)
-            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: true, isJoined: true, isSelected: false, notificationCount: 99, highlightedNotificationCount: 0, disclosureAction: nil)
-            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: false, isJoined: true, isSelected: false, notificationCount: 99, highlightedNotificationCount: 1, disclosureAction: nil)
-            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: true, isJoined: true, isSelected: true, notificationCount: 99, highlightedNotificationCount: 1, disclosureAction: nil)
+            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: false, isJoined: true, isSelected: false, notificationCount: 0, highlightedNotificationCount: 0, selectionAction: nil, disclosureAction: nil)
+            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: true, isJoined: true, isSelected: false, notificationCount: 0, highlightedNotificationCount: 0, selectionAction: nil, disclosureAction: nil)
+            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: true, isJoined: true, isSelected: false, notificationCount: 99, highlightedNotificationCount: 0, selectionAction: nil, disclosureAction: nil)
+            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: false, isJoined: true, isSelected: false, notificationCount: 99, highlightedNotificationCount: 1, selectionAction: nil, disclosureAction: nil)
+            SpaceSelectorListRow(avatar: nil, icon: UIImage(systemName: "house"), displayName: "Space name", hasSubItems: true, isJoined: true, isSelected: true, notificationCount: 99, highlightedNotificationCount: 1, selectionAction: nil, disclosureAction: nil)
         }
     }
 }

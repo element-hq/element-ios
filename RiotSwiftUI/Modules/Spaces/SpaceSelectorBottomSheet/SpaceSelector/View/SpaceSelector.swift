@@ -51,12 +51,12 @@ struct SpaceSelector: View {
                                          isSelected: item.id == viewModel.viewState.selectedSpaceId,
                                          notificationCount: item.notificationCount,
                                          highlightedNotificationCount: item.highlightedNotificationCount,
+                                         selectionAction:  {
+                                            viewModel.send(viewAction: .spaceSelected(item))
+                                         },
                                          disclosureAction: {
                                              viewModel.send(viewAction: .spaceDisclosure(item))
                                          })
-                                         .onTapGesture {
-                                             viewModel.send(viewAction: .spaceSelected(item))
-                                         }
                 }
             }
         }
@@ -67,6 +67,7 @@ struct SpaceSelector: View {
                 Button(VectorL10n.create) {
                     viewModel.send(viewAction: .createSpace)
                 }
+                .accessibilityHint("starts space creation flow")
             }
             ToolbarItem(placement: .cancellationAction) {
                 if viewModel.viewState.showCancel {

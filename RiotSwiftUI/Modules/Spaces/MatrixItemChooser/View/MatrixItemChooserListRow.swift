@@ -30,6 +30,11 @@ struct MatrixItemChooserListRow: View {
     let displayName: String?
     let detailText: String?
     let isSelected: Bool
+    let tapAction: (() -> Void)?
+    
+    private var accessibilityLabel: String {
+        return "\(displayName ?? "")\n\(detailText ?? "")\n\(isSelected ? "item selected" : "")"
+    }
     
     @ViewBuilder
     var body: some View {
@@ -62,6 +67,16 @@ struct MatrixItemChooserListRow: View {
         .padding(.horizontal)
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .ignore)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAction {
+            tapAction?()
+        }
+        .accessibilityLabel(accessibilityLabel)
+        .accessibilityHint("\(isSelected ? "unselects the item" : "selects the item")")
+        .onTapGesture {
+            tapAction?()
+        }
     }
 }
 

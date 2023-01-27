@@ -20,6 +20,7 @@ import Combine
 import SwiftUI
 
 struct SpaceCreationSettings: View {
+    
     // MARK: - Properties
     
     @ObservedObject var viewModel: SpaceCreationSettingsViewModel.Context
@@ -27,6 +28,16 @@ struct SpaceCreationSettings: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    private var nextButtonHint: String {
+        if let error = viewModel.viewState.roomNameError {
+            return "\(VectorL10n.spacesCreationSettingsNextHintError)\n\(error)"
+        }
+        if viewModel.viewState.showRoomAddress, !viewModel.viewState.isAddressValid, let error = viewModel.viewState.addressMessage {
+            return "\(VectorL10n.spacesCreationSettingsNextHintError)\n\(error)"
+        }
+        return VectorL10n.spacesCreationSettingsNextHint
+    }
     
     // MARK: Public
     
@@ -82,6 +93,10 @@ struct SpaceCreationSettings: View {
                         ResponderManager.resignFirstResponder()
                         viewModel.send(viewAction: .pickImage(reader.frame(in: .global)))
                     })
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityAddTraits(.isButton)
+                    .accessibilityLabel(VectorL10n.spacesCreationSettingsAccessibilityAvatarLabel)
+                    .accessibilityHint(VectorL10n.spacesCreationSettingsAccessibilityAvatarHint)
             }
             Image(uiImage: Asset.Images.spaceCreationCamera.image)
                 .renderingMode(.template)
@@ -89,6 +104,7 @@ struct SpaceCreationSettings: View {
                 .frame(width: 32, height: 32, alignment: .center)
                 .background(theme.colors.background)
                 .clipShape(Circle())
+                .accessibilityHidden(true)
         }.frame(width: 104, height: 104)
     }
     
@@ -143,6 +159,7 @@ struct SpaceCreationSettings: View {
             ResponderManager.resignFirstResponder()
             viewModel.send(viewAction: .done)
         }
+        .accessibilityLabel("\(VectorL10n.next)\n\(nextButtonHint)")
     }
     
     private func scrollDown(reader: ScrollViewProxy) {

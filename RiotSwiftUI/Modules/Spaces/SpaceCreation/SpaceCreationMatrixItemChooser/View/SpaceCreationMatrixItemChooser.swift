@@ -24,7 +24,15 @@ struct SpaceCreationMatrixItemChooser: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    private var hasSelectedItems: Bool {
+        return !viewModel.viewState.selectedItemIds.isEmpty
+    }
 
+    private var nextButtonHint: String {
+        return hasSelectedItems ? "Continues and processes all \(viewModel.viewState.selectedItemIds.count) items" : "Continues without processing any item"
+    }
+    
     // MARK: Public
 
     @ViewBuilder
@@ -53,11 +61,12 @@ struct SpaceCreationMatrixItemChooser: View {
     
     @ViewBuilder
     private var footerView: some View {
-        ThemableButton(icon: nil, title: viewModel.viewState.selectedItemIds.isEmpty ? VectorL10n.skip : VectorL10n.next) {
+        ThemableButton(icon: nil, title: hasSelectedItems ? VectorL10n.next : VectorL10n.skip) {
             viewModel.send(viewAction: .done)
         }
         .accessibility(identifier: "doneButton")
         .padding(.horizontal, 24)
         .padding(.bottom)
+        .accessibilityHint(nextButtonHint)
     }
 }

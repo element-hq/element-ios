@@ -2119,14 +2119,14 @@ Tap the + to start adding people.";
 "spaces_creation_cancel_message" = "Your progress will be lost.";
 
 "spaces_creation_new_rooms_title" = "What are some discussions you’ll have?";
-"spaces_creation_new_rooms_message" = "We’ll create a room for each one.";
+"spaces_creation_new_rooms_message" = "We'll create a room for each one. You can create up to three rooms for this step.";
 "spaces_creation_new_rooms_room_name_title" = "Room name";
 "spaces_creation_new_rooms_general" = "General";
 "spaces_creation_new_rooms_random" = "Random";
 "spaces_creation_new_rooms_support" = "Support";
 
 "spaces_creation_email_invites_title" = "Invite your team";
-"spaces_creation_email_invites_message" = "You can invite them later too.";
+"spaces_creation_email_invites_message" = "You can invite your team members by email or by username.";
 "spaces_creation_email_invites_email_title" = "Email";
 
 "spaces_creation_sharing_type_title" = "Who are you working with?";
@@ -2157,6 +2157,15 @@ Tap the + to start adding people.";
 "spaces_creation_in_one_space" = "in 1 space";
 
 "spaces_add_room_missing_permission_message" = "You do not have permissions to add rooms to this space.";
+
+"spaces_creation_settings_next_hint_error" = "error found";
+"spaces_creation_settings_next_hint" = "applies settings and takes you to the next step";
+"spaces_creation_settings_accessibility_avatar_label" = "space avatar";
+"spaces_creation_settings_accessibility_avatar_hint" = "takes you to the image picker for this space";
+
+"spaces_creation_rooms_next_hint" = "Next and creates";
+"spaces_creation_email_invites_next_hint_invalid_emails" = "invalid emails %@";
+"spaces_creation_invite_by_username_accessibility_hint" = "takes you to a list of team members you can invite.";
 
 // Mark: Leave space
 
@@ -2286,6 +2295,14 @@ Tap the + to start adding people.";
 
 "space_detail_nav_title" = "Space detail";
 "space_invite_nav_title" = "Space invite";
+
+"space_selector_list_row_accessibility_unread_messages" = " %@ unread messages";
+"space_selector_list_row_accessibility_selected_space" = "currently selected space";
+"space_selector_list_row_accessibility_switches_to" = "switches to %@";
+"space_selector_list_row_accessibility_invite_hint" = "takes you to space summary and options";
+"space_selector_list_row_accessibility_invite" = "takes you to space summary and options";
+"space_selector_list_row_accessibility_disclosure_label" = "Content of %@";
+"space_selector_list_row_accessibility_disclosure_hint" = "takes you to sub-spaces of %@";
 
 // Mark: - Polls
 

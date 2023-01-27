@@ -219,6 +219,7 @@ final class SpaceCreationCoordinator: Coordinator {
             itemsProcessor: SpaceCreationInviteUsersItemsProcessor(creationParams: parameters.creationParameters)
         )
         let coordinator = MatrixItemChooserCoordinator(parameters: parameters)
+        coordinator.isNavigationBarHidden = true
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -243,6 +244,7 @@ final class SpaceCreationCoordinator: Coordinator {
             itemsProcessor: SpaceCreationAddRoomsItemsProcessor(creationParams: parameters.creationParameters)
         )
         let coordinator = MatrixItemChooserCoordinator(parameters: parameters)
+        coordinator.isNavigationBarHidden = true
         coordinator.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {

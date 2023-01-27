@@ -29,6 +29,19 @@ struct SpaceCreationRooms: View {
     
     @ObservedObject var viewModel: SpaceCreationRoomsViewModel.Context
     
+    private var nextAccessibilityHint: String {
+        var roomsCreated = ""
+        for room in viewModel.rooms {
+            roomsCreated = "\n" + room.name
+        }
+        
+        if roomsCreated.isEmpty {
+            return ""
+        }
+        
+        return "\(VectorL10n.spacesCreationRoomsNextHint) \(roomsCreated)"
+    }
+    
     var body: some View {
         VStack {
             ThemableNavigationBar(title: nil, showBackButton: true) {
@@ -61,7 +74,10 @@ struct SpaceCreationRooms: View {
                                 .foregroundColor(theme.colors.secondaryContent)
                             Spacer()
                             ForEach(viewModel.rooms.indices, id: \.self) { index in
-                                RoundedBorderTextField(title: VectorL10n.spacesCreationNewRoomsRoomNameTitle, placeHolder: viewModel.rooms[index].defaultName, text: $viewModel.rooms[index].name, configuration: UIKitTextInputConfiguration(returnKeyType: index < viewModel.rooms.endIndex - 1 ? .next : .done))
+                                RoundedBorderTextField(title: "\(VectorL10n.spacesCreationNewRoomsRoomNameTitle) \(index + 1)",
+                                                       placeHolder: viewModel.rooms[index].defaultName,
+                                                       text: $viewModel.rooms[index].name,
+                                                       configuration: UIKitTextInputConfiguration(returnKeyType: index < viewModel.rooms.endIndex - 1 ? .next : .done))
                                     .accessibility(identifier: "roomTextField")
                             }
                         }
@@ -75,6 +91,7 @@ struct SpaceCreationRooms: View {
                 ResponderManager.resignFirstResponder()
                 viewModel.send(viewAction: .done)
             }
+            .accessibilityHint(nextAccessibilityHint)
         }
         .padding(EdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16))
     }

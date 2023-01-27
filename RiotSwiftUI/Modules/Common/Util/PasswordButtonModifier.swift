@@ -35,6 +35,7 @@ struct PasswordButtonModifier: ViewModifier {
     public func body(content: Content) -> some View {
         HStack(alignment: .center) {
             content
+                .accessibilitySortPriority(1)
             
             if !text.isEmpty {
                 Button { isSecureTextVisible.toggle() } label: {
@@ -47,6 +48,9 @@ struct PasswordButtonModifier: ViewModifier {
                 .padding(.top, alignment == .top ? 8 : 0)
                 .padding(.bottom, alignment == .bottom ? 8 : 0)
                 .padding(.trailing, 12)
+                .accessibilitySortPriority(0)
+                .accessibilityLabel("Text visibility toggler")
+                .accessibilityHint(isSecureTextVisible ? "hide text" : "show text")
             }
         }
     }

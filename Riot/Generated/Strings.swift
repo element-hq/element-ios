@@ -8119,6 +8119,34 @@ public class VectorL10n: NSObject {
   public static var spaceSelectorEmptyViewTitle: String { 
     return VectorL10n.tr("Vector", "space_selector_empty_view_title") 
   }
+  /// takes you to sub-spaces of %@
+  public static func spaceSelectorListRowAccessibilityDisclosureHint(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "space_selector_list_row_accessibility_disclosure_hint", p1)
+  }
+  /// Content of %@
+  public static func spaceSelectorListRowAccessibilityDisclosureLabel(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "space_selector_list_row_accessibility_disclosure_label", p1)
+  }
+  /// takes you to space summary and options
+  public static var spaceSelectorListRowAccessibilityInvite: String { 
+    return VectorL10n.tr("Vector", "space_selector_list_row_accessibility_invite") 
+  }
+  /// takes you to space summary and options
+  public static var spaceSelectorListRowAccessibilityInviteHint: String { 
+    return VectorL10n.tr("Vector", "space_selector_list_row_accessibility_invite_hint") 
+  }
+  /// currently selected space
+  public static var spaceSelectorListRowAccessibilitySelectedSpace: String { 
+    return VectorL10n.tr("Vector", "space_selector_list_row_accessibility_selected_space") 
+  }
+  /// switches to %@
+  public static func spaceSelectorListRowAccessibilitySwitchesTo(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "space_selector_list_row_accessibility_switches_to", p1)
+  }
+  ///  %@ unread messages
+  public static func spaceSelectorListRowAccessibilityUnreadMessages(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "space_selector_list_row_accessibility_unread_messages", p1)
+  }
   /// My spaces
   public static var spaceSelectorTitle: String { 
     return VectorL10n.tr("Vector", "space_selector_title") 
@@ -8219,9 +8247,13 @@ public class VectorL10n: NSObject {
   public static var spacesCreationEmailInvitesEmailTitle: String { 
     return VectorL10n.tr("Vector", "spaces_creation_email_invites_email_title") 
   }
-  /// You can invite them later too.
+  /// You can invite your team members by email or by username.
   public static var spacesCreationEmailInvitesMessage: String { 
     return VectorL10n.tr("Vector", "spaces_creation_email_invites_message") 
+  }
+  /// invalid emails %@
+  public static func spacesCreationEmailInvitesNextHintInvalidEmails(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_email_invites_next_hint_invalid_emails", p1)
   }
   /// Invite your team
   public static var spacesCreationEmailInvitesTitle: String { 
@@ -8263,6 +8295,10 @@ public class VectorL10n: NSObject {
   public static var spacesCreationInviteByUsername: String { 
     return VectorL10n.tr("Vector", "spaces_creation_invite_by_username") 
   }
+  /// takes you to a list of team members you can invite.
+  public static var spacesCreationInviteByUsernameAccessibilityHine: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_invite_by_username_accessibility_hine") 
+  }
   /// You can invite them later too.
   public static var spacesCreationInviteByUsernameMessage: String { 
     return VectorL10n.tr("Vector", "spaces_creation_invite_by_username_message") 
@@ -8275,7 +8311,7 @@ public class VectorL10n: NSObject {
   public static var spacesCreationNewRoomsGeneral: String { 
     return VectorL10n.tr("Vector", "spaces_creation_new_rooms_general") 
   }
-  /// We’ll create a room for each one.
+  /// We'll create a room for each one. You can create up to three rooms for this step.
   public static var spacesCreationNewRoomsMessage: String { 
     return VectorL10n.tr("Vector", "spaces_creation_new_rooms_message") 
   }
@@ -8327,9 +8363,29 @@ public class VectorL10n: NSObject {
   public static var spacesCreationPublicSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_creation_public_space_title") 
   }
+  /// Next and creates
+  public static var spacesCreationRoomsNextHint: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_rooms_next_hint") 
+  }
+  /// takes you to the image picker for this space
+  public static var spacesCreationSettingsAccessibilityAvatarHint: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_settings_accessibility_avatar_hint") 
+  }
+  /// space avatar
+  public static var spacesCreationSettingsAccessibilityAvatarLabel: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_settings_accessibility_avatar_label") 
+  }
   /// Add some details to help it stand out. You can change these at any point.
   public static var spacesCreationSettingsMessage: String { 
     return VectorL10n.tr("Vector", "spaces_creation_settings_message") 
+  }
+  /// applies settings and takes you to the next step
+  public static var spacesCreationSettingsNextHint: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_settings_next_hint") 
+  }
+  /// error found
+  public static var spacesCreationSettingsNextHintError: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_settings_next_hint_error") 
   }
   /// A private space to organise your rooms
   public static var spacesCreationSharingTypeJustMeDetail: String { 

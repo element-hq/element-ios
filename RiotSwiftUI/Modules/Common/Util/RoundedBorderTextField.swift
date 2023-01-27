@@ -50,6 +50,7 @@ struct RoundedBorderTextField: View {
                     .font(theme.fonts.subheadline)
                     .multilineTextAlignment(.leading)
                     .padding(.bottom, 8)
+                    .accessibilityHidden(true)
             }
             
             ZStack(alignment: .leading) {
@@ -63,6 +64,8 @@ struct RoundedBorderTextField: View {
                 
                 ThemableTextField(placeholder: "",
                                   text: $text,
+                                  defaultAccessibilityLabel: title ?? placeHolder,
+                                  accessibilityHint: self.footerText,
                                   configuration: configuration,
                                   isSecureTextVisible: $isSecureTextVisible) { isEditing in
                     self.isEditing = isEditing
@@ -78,7 +81,6 @@ struct RoundedBorderTextField: View {
                 .frame(height: 30)
                 .allowsHitTesting(isEnabled)
                 .opacity(isEnabled ? 1 : 0.5)
-                .accessibilityLabel(text.isEmpty ? placeHolder : "")
             }
             .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: text.isEmpty ? 8 : 0))
             .background(RoundedRectangle(cornerRadius: 8).fill(theme.colors.background))
@@ -91,6 +93,7 @@ struct RoundedBorderTextField: View {
                     .multilineTextAlignment(.leading)
                     .padding(.top, 8)
                     .transition(.opacity)
+                    .accessibilityHidden(true)
             }
         }
         .animation(.easeOut(duration: 0.2))

@@ -25,6 +25,15 @@ struct SpaceCreationPostProcess: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    private var tasksAccessibilityValue: String {
+        return viewModel.viewState.tasks.reduce("") { result, task in
+            guard task.state == .started else {
+                return result
+            }
+            return result + "\n\(task.title)"
+        }
+    }
+    
     // MARK: Public
     
     @ObservedObject var viewModel: SpaceCreationPostProcessViewModel.Context
@@ -32,9 +41,15 @@ struct SpaceCreationPostProcess: View {
     var body: some View {
         VStack {
             Spacer()
-            headerView
-            Spacer()
-            tasksList
+            VStack {
+                headerView
+                Spacer()
+                tasksList
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityAddTraits(.updatesFrequently)
+            .accessibilityLabel(VectorL10n.spacesCreationPostProcessCreatingSpace)
+            .accessibilityValue(tasksAccessibilityValue)
             Spacer()
             buttonsPanel
         }

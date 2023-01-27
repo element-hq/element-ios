@@ -39,6 +39,7 @@ struct ThemableNavigationBar: View {
                 Image(uiImage: Asset.Images.spacesModalBack.image)
                     .renderingMode(.template)
                     .foregroundColor(theme.colors.secondaryContent)
+                    .accessibilityLabel(VectorL10n.back)
             }
             .isHidden(!showBackButton)
             Spacer()
@@ -51,6 +52,7 @@ struct ThemableNavigationBar: View {
                 Image(uiImage: Asset.Images.spacesModalClose.image)
                     .renderingMode(.template)
                     .foregroundColor(theme.colors.secondaryContent)
+                    .accessibilityLabel(VectorL10n.close)
             }
         }
         .padding(.horizontal)

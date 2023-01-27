@@ -133,6 +133,7 @@ class SpaceDetailViewController: UIViewController {
         self.view.backgroundColor = theme.colors.background
         
         self.inviterAvatarView.update(theme: theme)
+        self.inviterAvatarView.accessibilityElementsHidden = true
         self.inviterTitleLabel.textColor = theme.colors.secondaryContent
         self.inviterTitleLabel.font = theme.fonts.calloutSB
         self.inviterIdLabel.textColor = theme.colors.secondaryContent
@@ -144,6 +145,7 @@ class SpaceDetailViewController: UIViewController {
         self.closeButton.backgroundColor = theme.roomInputTextBorder
         self.closeButton.tintColor = theme.noticeSecondaryColor
         self.avatarView.update(theme: theme)
+        self.avatarView.accessibilityElementsHidden = true
 
         self.spaceTypeIconView.tintColor = theme.colors.tertiaryContent
         self.spaceTypeLabel.font = theme.fonts.callout

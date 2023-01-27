@@ -62,6 +62,14 @@ final class MatrixItemChooserCoordinator: Coordinator, Presentable {
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     var completion: ((MatrixItemChooserViewModelResult) -> Void)?
+    var isNavigationBarHidden: Bool {
+        get {
+            return matrixItemChooserHostingController.isNavigationBarHidden
+        }
+        set {
+            matrixItemChooserHostingController.isNavigationBarHidden = newValue
+        }
+    }
     
     // MARK: - Setup
     

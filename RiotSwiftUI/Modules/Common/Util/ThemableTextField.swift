@@ -31,6 +31,8 @@ struct ThemableTextField: UIViewRepresentable {
     @Binding var text: String
     @State var configuration = UIKitTextInputConfiguration()
     @Binding var isSecureTextVisible: Bool
+    var defaultAccessibilityLabel: String?
+    var accessibilityHint: String?
     var onEditingChanged: ((_ edit: Bool) -> Void)?
     var onCommit: (() -> Void)?
 
@@ -45,6 +47,8 @@ struct ThemableTextField: UIViewRepresentable {
     
     init(placeholder: String? = nil,
          text: Binding<String>,
+         defaultAccessibilityLabel: String?,
+         accessibilityHint: String?,
          configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration(),
          isSecureTextVisible: Binding<Bool> = .constant(false),
          onEditingChanged: ((_ edit: Bool) -> Void)? = nil,
@@ -53,6 +57,8 @@ struct ThemableTextField: UIViewRepresentable {
         _placeholder = State(initialValue: placeholder)
         _configuration = State(initialValue: configuration)
         _isSecureTextVisible = isSecureTextVisible
+        self.defaultAccessibilityLabel = defaultAccessibilityLabel
+        self.accessibilityHint = accessibilityHint
         self.onEditingChanged = onEditingChanged
         self.onCommit = onCommit
 
@@ -67,6 +73,8 @@ struct ThemableTextField: UIViewRepresentable {
         textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         textField.text = text
+        textField.accessibilityLabel = defaultAccessibilityLabel
+        textField.accessibilityHint = accessibilityHint
         
         textField.addTarget(context.coordinator, action: #selector(Coordinator.textFieldEditingChanged(sender:)), for: .editingChanged)
                 
@@ -88,6 +96,9 @@ struct ThemableTextField: UIViewRepresentable {
         }
         uiView.placeholder = placeholder
         
+        uiView.accessibilityLabel = defaultAccessibilityLabel
+        uiView.accessibilityHint = accessibilityHint
+
         uiView.keyboardType = configuration.keyboardType
         uiView.returnKeyType = configuration.returnKeyType
         uiView.isSecureTextEntry = configuration.isSecureTextEntry ? !isSecureTextVisible : false

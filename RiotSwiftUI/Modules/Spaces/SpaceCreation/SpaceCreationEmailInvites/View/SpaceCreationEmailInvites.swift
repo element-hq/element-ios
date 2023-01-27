@@ -27,6 +27,29 @@ struct SpaceCreationEmailInvites: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    private var nextAccessibilityHint: String {
+        var invalidEmails = ""
+        var invites = ""
+        for (index, invite) in viewModel.emailInvites.enumerated() {
+            if !viewModel.viewState.emailAddressesValid[index] {
+                invalidEmails = "\n" + invite
+            }
+            if !invite.isEmpty {
+                invites = "\n" + invite
+            }
+        }
+        
+        guard invalidEmails.isEmpty else {
+            return VectorL10n.spacesCreationEmailInvitesNextHintInvalidEmails(invalidEmails)
+        }
+        
+        if invites.isEmpty {
+            return ""
+        }
+        
+        return "\(VectorL10n.peopleInvitesSection) \(invites)"
+    }
+    
     // MARK: - Public
     
     @ViewBuilder
@@ -85,7 +108,7 @@ struct SpaceCreationEmailInvites: View {
         VStack {
             VStack(spacing: 20) {
                 ForEach(viewModel.emailInvites.indices, id: \.self) { index in
-                    RoundedBorderTextField(title: VectorL10n.spacesCreationEmailInvitesEmailTitle, placeHolder: VectorL10n.spacesCreationEmailInvitesEmailTitle, text: $viewModel.emailInvites[index], footerText: viewModel.viewState.emailAddressesValid[index] ? nil : VectorL10n.authInvalidEmail, isError: !viewModel.viewState.emailAddressesValid[index], configuration: UIKitTextInputConfiguration(keyboardType: .emailAddress, returnKeyType: index < viewModel.emailInvites.endIndex - 1 ? .next : .done, autocapitalizationType: .none, autocorrectionType: .no))
+                    RoundedBorderTextField(title: "\(VectorL10n.spacesCreationEmailInvitesEmailTitle) \(index + 1)", placeHolder: VectorL10n.spacesCreationEmailInvitesEmailTitle, text: $viewModel.emailInvites[index], footerText: viewModel.viewState.emailAddressesValid[index] ? nil : VectorL10n.authInvalidEmail, isError: !viewModel.viewState.emailAddressesValid[index], configuration: UIKitTextInputConfiguration(keyboardType: .emailAddress, returnKeyType: index < viewModel.emailInvites.endIndex - 1 ? .next : .done, autocapitalizationType: .none, autocorrectionType: .no))
                         .accessibility(identifier: "emailTextField")
                 }
             }
@@ -95,10 +118,12 @@ struct SpaceCreationEmailInvites: View {
                 .font(theme.fonts.caption1)
                 .foregroundColor(theme.colors.secondaryContent)
                 .padding(.bottom)
+                .accessibilityHidden(true)
             OptionButton(icon: Asset.Images.spacesInviteUsers.image, title: VectorL10n.spacesCreationInviteByUsername, detailMessage: nil) {
                 viewModel.send(viewAction: .inviteByUsername)
             }
             .padding(.bottom)
+            .accessibilityHint(VectorL10n.spacesCreationInviteByUsernameAccessibilityHint)
         }
     }
     
@@ -107,6 +132,7 @@ struct SpaceCreationEmailInvites: View {
         ThemableButton(icon: nil, title: VectorL10n.next) {
             viewModel.send(viewAction: .done)
         }
+        .accessibilityLabel("\(VectorL10n.next)\n\(nextAccessibilityHint)")
     }
 }
 
