@@ -127,7 +127,8 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
             notificationSettingsService.updatePushRuleActions(
                 for: id.rawValue,
                 enabled: enabled,
-                actions: standardActions.actions
+                actions: standardActions.actions,
+                completion: nil
             )
         }
     }
@@ -146,7 +147,8 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
             notificationSettingsService.updatePushRuleActions(
                 for: keyword,
                 enabled: enabled,
-                actions: standardActions.actions
+                actions: standardActions.actions,
+                completion: nil
             )
         }
     }

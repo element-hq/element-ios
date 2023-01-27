@@ -70,12 +70,15 @@ class MXNotificationSettingsService: NotificationSettingsServiceType {
         session.notificationCenter.removeRule(rule)
     }
     
-    func updatePushRuleActions(for ruleId: String, enabled: Bool, actions: NotificationActions?) {
+    func updatePushRuleActions(for ruleId: String, enabled: Bool, actions: NotificationActions?, completion: ((Result<Void, Error>) -> Void)?) {
         guard let rule = session.notificationCenter.rule(byId: ruleId) else {
             return
         }
         
-        session.notificationCenter.enableRule(rule, isEnabled: enabled)
+        session.notificationCenter.enableRule(rule, isEnabled: enabled) { error in
+            #warning("complete here")
+            print("*** enable error: \(error)")
+        }
         
         if let actions = actions {
             session.notificationCenter.updatePushRuleActions(ruleId,
