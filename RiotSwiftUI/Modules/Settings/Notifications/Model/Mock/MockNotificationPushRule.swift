@@ -19,7 +19,9 @@ import Foundation
 struct MockNotificationPushRule: NotificationPushRuleType {
     var ruleId: String!
     var enabled: Bool
+    var actions: NotificationActions? = NotificationStandardActions.notifyDefaultSound.actions
+    
     func matches(standardActions: NotificationStandardActions?) -> Bool {
-        false
+        standardActions?.actions == actions
     }
 }

@@ -44,5 +44,15 @@ class MockNotificationSettingsService: NotificationSettingsServiceType, Observab
         keywords.remove(keyword)
     }
     
-    func updatePushRuleActions(for ruleId: String, enabled: Bool, actions: NotificationActions?, completion: ((Result<Void, Error>) -> Void)?) { }
+    func updatePushRuleActions(for ruleId: String, enabled: Bool, actions: NotificationActions?, completion: ((Result<Void, Error>) -> Void)?) {
+        guard let ruleIndex = rules.firstIndex(where: { $0.ruleId == ruleId }) else {
+            completion?(.failure(NSError(domain: "fake", code: 0)))
+            return
+        }
+        
+        rules[ruleIndex] = MockNotificationPushRule(ruleId: ruleId,
+                                                    enabled: enabled,
+                                                    actions: actions)
+        completion?(.success(()))
+    }
 }

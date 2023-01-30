@@ -172,7 +172,7 @@ private extension NotificationSettingsViewModel {
                           enabled: Bool,
                           standardActions: NotificationStandardActions,
                           then rules: [NotificationPushRuleId]) {
-        
+
         viewState.saving = true
         
         Task {
@@ -189,8 +189,7 @@ private extension NotificationSettingsViewModel {
                     try await group.waitForAll()
                     await completeUpdate(error: nil)
                 }
-            }
-            catch {
+            } catch {
                 await completeUpdate(error: error)
             }
         }
