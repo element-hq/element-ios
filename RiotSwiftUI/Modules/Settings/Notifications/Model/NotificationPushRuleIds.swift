@@ -82,4 +82,15 @@ extension NotificationPushRuleId {
             return ""
         }
     }
+    
+    var syncedRules: [NotificationPushRuleId] {
+        switch self {
+        case .oneToOneRoom:
+            return [.oneToOnePollStart, .msc3930oneToOnePollStart, .oneToOnePollEnd, .msc3930oneToOnePollEnd]
+        case .allOtherMessages:
+            return [.pollStart, .msc3930pollStart, .pollEnd, .msc3930pollEnd]
+        default:
+            return []
+        }
+    }
 }

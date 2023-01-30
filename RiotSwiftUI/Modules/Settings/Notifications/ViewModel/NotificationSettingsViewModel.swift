@@ -114,20 +114,12 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         case .keywords: // Keywords is handled differently to other settings
             updateKeywords(isChecked: isChecked)
 
-        case .oneToOneRoom:
+        case .oneToOneRoom, .allOtherMessages:
             updatePushAction(
                 id: ruleID,
                 enabled: enabled,
                 standardActions: standardActions,
-                then: [.oneToOnePollStart, .msc3930oneToOnePollStart, .oneToOnePollEnd, .msc3930oneToOnePollEnd]
-            )
-            
-        case .allOtherMessages:
-            updatePushAction(
-                id: ruleID,
-                enabled: enabled,
-                standardActions: standardActions,
-                then: [.pollStart, .msc3930pollStart, .pollEnd, .msc3930pollEnd]
+                then: ruleID.syncedRules
             )
 
         default:
@@ -212,8 +204,12 @@ private extension NotificationSettingsViewModel {
     
     func rulesUpdated(newRules: [NotificationPushRuleType]) {
         for rule in newRules {
-            guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
-                  ruleIds.contains(ruleId) else { continue }
+            guard
+                let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
+                ruleIds.contains(ruleId)
+            else {
+                continue
+            }
             viewState.selectionState[ruleId] = isChecked(rule: rule)
         }
     }
