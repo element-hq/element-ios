@@ -27,6 +27,7 @@ final class KeyBackupRecoverFromPrivateKeyViewModel: KeyBackupRecoverFromPrivate
     private let keyBackup: MXKeyBackup
     private var currentHTTPOperation: MXHTTPOperation?
     private let keyBackupVersion: MXKeyBackupVersion
+    private var progressUpdateTimer: Timer?
     
     // MARK: Public
 
@@ -56,7 +57,14 @@ final class KeyBackupRecoverFromPrivateKeyViewModel: KeyBackupRecoverFromPrivate
     
     private func recoverWithPrivateKey() {
 
-        self.update(viewState: .loading)
+        self.update(viewState: .loading(0))
+        
+        // Update loading progress every second until no longer loading
+        progressUpdateTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            if let progress = self?.keyBackup.importProgress {
+                self?.update(viewState: .loading(progress.fractionCompleted))
+            }
+        }
         
         self.currentHTTPOperation = keyBackup.restore(usingPrivateKeyKeyBackup: keyBackupVersion, room: nil, session: nil, success: { [weak self] (_, _) in
             guard let self = self else {
@@ -91,6 +99,11 @@ final class KeyBackupRecoverFromPrivateKeyViewModel: KeyBackupRecoverFromPrivate
     }
     
     private func update(viewState: KeyBackupRecoverFromPrivateKeyViewState) {
+        if case .loading = viewState {} else {
+            progressUpdateTimer?.invalidate()
+            progressUpdateTimer = nil
+        }
+        
         self.viewDelegate?.keyBackupRecoverFromPrivateKeyViewModel(self, didUpdateViewState: viewState)
     }
 }

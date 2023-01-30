@@ -2723,6 +2723,10 @@ public class VectorL10n: NSObject {
   public static var keyBackupRecoverFromPrivateKeyInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_private_key_info") 
   }
+  /// %@%% Complete
+  public static func keyBackupRecoverFromPrivateKeyProgress(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "key_backup_recover_from_private_key_progress", p1)
+  }
   /// Use your Security Key to unlock your secure message history
   public static var keyBackupRecoverFromRecoveryKeyInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_info") 
