@@ -2039,3 +2039,7 @@
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "バックアップを復元する…";
 "key_backup_recover_invalid_recovery_key" = "この鍵ではバックアップを復号化できませんでした。正しいセキュリティーキーを入力したことを確認してください。";
+
+// Recover from passphrase
+
+"key_backup_recover_from_passphrase_info" = "リカバリー・パスフレーズを使ってメッセージ履歴を解除する";
