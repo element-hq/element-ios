@@ -40,6 +40,7 @@ struct NotificationSettings<BottomSection: View>: View {
             bottomSection
         }
         .activityIndicator(show: viewModel.viewState.saving)
+        .disabled(viewModel.viewState.saving)
     }
 }
 

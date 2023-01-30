@@ -119,8 +119,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
                 id: ruleID,
                 enabled: enabled,
                 standardActions: standardActions,
-                then: [.oneToOnePollStart, .msc3930oneToOnePollStart, .oneToOnePollEnd, .msc3930oneToOnePollEnd],
-                completion: nil
+                then: [.oneToOnePollStart, .msc3930oneToOnePollStart, .oneToOnePollEnd, .msc3930oneToOnePollEnd]
             )
             
         case .allOtherMessages:
@@ -128,8 +127,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
                 id: ruleID,
                 enabled: enabled,
                 standardActions: standardActions,
-                then: [.pollStart, .msc3930pollStart, .pollEnd, .msc3930pollEnd],
-                completion: nil
+                then: [.pollStart, .msc3930pollStart, .pollEnd, .msc3930pollEnd]
             )
 
         default:
@@ -181,34 +179,35 @@ private extension NotificationSettingsViewModel {
     func updatePushAction(id: NotificationPushRuleId,
                           enabled: Bool,
                           standardActions: NotificationStandardActions,
-                          then rules: [NotificationPushRuleId],
-                          completion: ((Result<Void, Error>) -> Void)?) {
+                          then rules: [NotificationPushRuleId]) {
         
-        notificationSettingsService.updatePushRuleActions(
-            for: id.rawValue,
-            enabled: enabled,
-            actions: standardActions.actions
-        ) { [weak self] result in
-            switch result {
-            case .success:
-                #warning("TODO: sync the update of these rules with the completion")
-                self?.updatePushActions(for: rules, enabled: enabled, standardActions: standardActions)
-                completion?(.success(()))
-            case .failure(let error):
-                completion?(.failure(error))
+        viewState.saving = true
+        
+        Task {
+            do {
+                try await notificationSettingsService.updatePushRuleActions(for: id.rawValue, enabled: enabled, actions: standardActions.actions)
+                
+                try await withThrowingTaskGroup(of: Void.self) { group in
+                    for ruleId in rules {
+                        group.addTask {
+                            try await self.notificationSettingsService.updatePushRuleActions(for: ruleId.rawValue, enabled: enabled, actions: standardActions.actions)
+                        }
+                    }
+
+                    try await group.waitForAll()
+                    await completeUpdate(error: nil)
+                }
+            }
+            catch {
+                await completeUpdate(error: error)
             }
         }
     }
     
-    func updatePushActions(for ids: [NotificationPushRuleId], enabled: Bool, standardActions: NotificationStandardActions) {
-        for id in ids {
-            notificationSettingsService.updatePushRuleActions(
-                for: id.rawValue,
-                enabled: enabled,
-                actions: standardActions.actions,
-                completion: nil
-            )
-        }
+    @MainActor
+    func completeUpdate(error: Error?) {
+        #warning("Handle error here in the next ticket")
+        viewState.saving = false
     }
     
     func rulesUpdated(newRules: [NotificationPushRuleType]) {
