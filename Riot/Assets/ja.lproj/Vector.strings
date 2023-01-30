@@ -2015,7 +2015,7 @@
 "room_widget_permission_information_title" = "これを使用するとデータが%@と共有される可能性があります：\n";
 "room_widget_permission_webview_information_title" = "これを使用すると、クッキーが設定され、データが%@と共有される可能性があります：\n";
 "room_widget_permission_creator_info_title" = "ウィジェットを追加した人：";
-"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "パスフレーズを確認する";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "パスフレーズを確認";
 "key_backup_setup_passphrase_confirm_passphrase_title" = "確認";
 "key_backup_setup_passphrase_set_passphrase_action" = "パスフレーズを設定してください";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "パスフレーズが一致しません";
