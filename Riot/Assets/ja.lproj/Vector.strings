@@ -1965,7 +1965,7 @@
 "accessibility_selected" = "選択済";
 "invite_to" = "%@に招待";
 "joining" = "参加しています";
-"key_backup_setup_passphrase_passphrase_placeholder" = "パスフレーズを入力する";
+"key_backup_setup_passphrase_passphrase_placeholder" = "パスフレーズを入力";
 "key_backup_setup_passphrase_passphrase_title" = "入力";
 "key_backup_setup_passphrase_info" = "鍵のコピーを暗号化してサーバーに保存します。バックアップを保護するためにパスフレーズを設定してください。\n\n最大限のセキュリティーを確保するために、Matrixのアカウントのパスワードと異なるものに設定することが大切です。";
 
