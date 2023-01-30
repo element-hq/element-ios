@@ -2024,5 +2024,12 @@
 
 // Success
 
-"key_backup_setup_success_title" = "成功しました!";
+"key_backup_setup_success_title" = "成功しました！";
 "key_backup_recover_invalid_passphrase_title" = "リカバリーパスフレーズが正しくありません";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "鍵をバックアップしています。";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "セキュリティーキーを保存";
+
+// Success from passphrase
+"key_backup_setup_success_from_passphrase_info" = "あなたの鍵はバックアップされています。\n\nセキュリティーキーはセーフティーネットとなります。パスフレーズを忘れた場合でも、セキュリティーキーを使えば、暗号化されたメッセージにアクセスすることができます。\n\nセキュリティーキーは、パスワードマネージャー（もしくは金庫）のような、非常に安全な場所で保管してください。";
