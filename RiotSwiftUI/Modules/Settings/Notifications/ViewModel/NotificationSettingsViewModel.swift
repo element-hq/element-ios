@@ -252,7 +252,7 @@ private extension NotificationSettingsViewModel {
         case .oneToOneRoom, .allOtherMessages:
             let ruleIsChecked = defaultIsChecked(rule: rule)
             let someSyncedRuleIsChecked = syncedRules.contains(where: { defaultIsChecked(rule: $0) })
-            
+            // The "loudest" rule will be applied when there is a clash between a rule and its dependent rules.
             return ruleIsChecked || someSyncedRuleIsChecked
         default:
             return defaultIsChecked(rule: rule)
