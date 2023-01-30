@@ -1965,3 +1965,4 @@
 "accessibility_selected" = "選択済";
 "invite_to" = "%@に招待";
 "joining" = "参加しています";
+"key_backup_setup_passphrase_passphrase_placeholder" = "パスフレーズを入力する";
