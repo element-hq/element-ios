@@ -2720,9 +2720,9 @@
 // MARK: - Launch loading
 
 "launch_loading_migrating_data" = "Migriere Daten\n%@ %%";
-"settings_labs_disable_crypto_sdk" = "Krypto-SDK ist aktiviert. Zum Deaktivieren, bitte die App neu installieren";
-"settings_labs_confirm_crypto_sdk" = "Dies kann nicht rückgängig gemacht werden";
-"settings_labs_enable_crypto_sdk" = "Rust-basiertes Krypto-SDK aktivieren";
+"settings_labs_disable_crypto_sdk" = "Ende-zu-Ende-Verschlüsselung 2.0 (zum Deaktivieren abmelden)";
+"settings_labs_confirm_crypto_sdk" = "Diese Option wird eine neue, schnellere und zuverlässigere Ende-zu-Ende-Verschlüsselungs-Engine aktivieren, die in Rust geschrieben wurde. Einmal aktiviert, wirst du dich abmelden müssen, um sie zu deaktivieren. Möchtest du fortfahren?";
+"settings_labs_enable_crypto_sdk" = "Ende-zu-Ende-Verschlüsselung 2.0";
 "poll_history_no_past_poll_period_text" = "Für die vergangenen %@ Tage sind keine beendeten Umfragen verfügbar. Lade weitere Umfragen, um die der vorherigen Monate zu sehen";
 "poll_history_no_active_poll_period_text" = "Für die vergangenen %@ Tage sind keine aktiven Umfragen verfügbar. Lade weitere Umfragen, um die der vorherigen Monate zu sehen";
 "poll_history_load_more" = "Weitere Umfragen laden";
