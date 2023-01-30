@@ -2909,9 +2909,9 @@
 // MARK: - Launch loading
 
 "launch_loading_migrating_data" = "Migrácia údajov\n%@ %%";
-"settings_labs_disable_crypto_sdk" = "Crypto SDK je povolené. Ak to chcete vypnúť, preinštalujte prosím aplikáciu";
-"settings_labs_confirm_crypto_sdk" = "Túto akciu nemožno vrátiť späť";
-"settings_labs_enable_crypto_sdk" = "Zapnúť nové Crypto SDK využívajúce Rust";
+"settings_labs_disable_crypto_sdk" = "End-to-end šifrovanie 2.0 (odhláste sa, aby ste ho vypli)";
+"settings_labs_confirm_crypto_sdk" = "Táto možnosť umožní použitie nového, rýchlejšieho a spoľahlivejšieho nástroja na end-to-end šifrovanie napísaného v jazyku Rust. Po jeho zapnutí sa budete musieť odhlásiť, aby ste ho mohli vypnúť. Chcete pokračovať?";
+"settings_labs_enable_crypto_sdk" = "End-to-end šifrovanie 2.0";
 "poll_history_load_more" = "Načítať ďalšie ankety";
 "poll_history_no_past_poll_period_text" = "Za posledných %@ dní nie sú aktívne žiadne ankety. Načítaním ďalších ankiet zobrazíte ankety za predchádzajúce mesiace";
 "poll_history_no_active_poll_period_text" = "Za posledných %@ dní nie sú aktívne žiadne ankety. Načítaním ďalších ankiet zobrazíte ankety za predchádzajúce mesiace";
