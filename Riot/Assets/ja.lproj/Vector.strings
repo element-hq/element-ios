@@ -2043,3 +2043,5 @@
 // Recover from passphrase
 
 "key_backup_recover_from_passphrase_info" = "リカバリー・パスフレーズを使ってメッセージ履歴を解除する";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "リカバリー・パスフレーズがわかりませんか？そんなときは ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = "。";
