@@ -37,7 +37,7 @@
 "auth_login" = "ログイン";
 "auth_register" = "利用者登録";
 "auth_submit" = "受諾";
-"auth_skip" = "省く";
+"auth_skip" = "スキップ";
 "auth_send_reset_email" = "初期化メール送信";
 "auth_return_to_login" = "ログイン画面へ戻る";
 "auth_user_id_placeholder" = "ユーザー名または電子メール";
@@ -266,7 +266,7 @@
 "settings_devices" = "セッション";
 "settings_cryptography" = "暗号化";
 "settings_sign_out" = "サインアウト";
-"settings_sign_out_confirmation" = "本当によろしいですか？";
+"settings_sign_out_confirmation" = "よろしいですか？";
 "settings_sign_out_e2e_warn" = "あなたはエンドツーエンド暗号鍵を失ってしまいます。この端末で暗号化されたルームの昔の発言を読むことができなくなります。";
 "settings_profile_picture" = "プロフィール画像";
 "settings_display_name" = "表示名";
@@ -354,8 +354,8 @@
 "room_details_addresses_disable_main_address_prompt_title" = "メインアドレスの警告";
 "room_details_addresses_disable_main_address_prompt_msg" = "メインアドレスが設定されていません。このルームのメインアドレスは無作為に選択、設定されます";
 "room_details_banned_users_section" = "ブロックされたユーザー";
-"room_details_advanced_section" = "拡張設定";
-"room_details_advanced_room_id" = "ルームの固有ID:";
+"room_details_advanced_section" = "高度な設定";
+"room_details_advanced_room_id" = "ルームID：";
 "room_details_advanced_enable_e2e_encryption" = "暗号化を有効にする（警告: 有効後にこれを無効にすることはできません！)";
 "room_details_advanced_e2e_encryption_enabled" = "このルームの発言は暗号化されています";
 "room_details_advanced_e2e_encryption_disabled" = "このルームの発言は暗号化されていません。";
@@ -554,7 +554,7 @@
 "close" = "閉じる";
 // Accessibility
 "accessibility_checkbox_label" = "チェックボックス";
-"auth_login_single_sign_on" = "シングルサインオン(SSO)でサインイン";
+"auth_login_single_sign_on" = "サインイン";
 "auth_softlogout_clear_data_sign_out" = "サインアウト";
 "room_message_unable_open_link_error_message" = "リンクを開くことができません。";
 "user_verification_session_details_verify_action_other_user" = "手動で確認";
@@ -624,7 +624,7 @@
 // Widget Picker
 "widget_picker_title" = "インテグレーションマネージャー";
 "widget_integration_manager_disabled" = "設定でインテグレーションマネージャーを有効にする必要があります";
-"widget_menu_remove" = "全て取り除く";
+"widget_menu_remove" = "全員から削除";
 "widget_menu_revoke_permission" = "アクセスを取り消す";
 "widget_menu_open_outside" = "ブラウザーで開く";
 "widget_menu_refresh" = "リフレッシュ";
@@ -669,7 +669,7 @@
 "media_picker_title" = "メディアライブラリ";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "ここは暗号化が有効ではありません。";
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "ここは暗号化が有効です";
-"room_details_advanced_room_id_for_dm" = "ID:";
+"room_details_advanced_room_id_for_dm" = "ID：";
 "room_details_no_local_addresses_for_dm" = "ここにはローカルアドレスがありません";
 "room_details_access_section_directory_toggle_for_dm" = "ルーム一覧に掲載";
 "room_details_access_section_anyone_apart_from_guest_for_dm" = "リンクを知っている人なら誰でも（ゲストユーザーを除く）";
@@ -761,7 +761,7 @@
 
 "social_login_list_title_continue" = "続きはこちら";
 "auth_softlogout_clear_data_sign_out_msg" = "この端末に現在保存されている全てのデータを消去してよろしいですか？再びサインインするとアカウントデータやメッセージにアクセスできます。";
-"auth_softlogout_clear_data_sign_out_title" = "続行してよろしいですか？";
+"auth_softlogout_clear_data_sign_out_title" = "よろしいですか？";
 "auth_softlogout_clear_data_button" = "全てのデータをクリア";
 "auth_softlogout_clear_data_message_2" = "この端末の使用を終了する場合や、別のアカウントにサインインしたい場合は、クリアしてください。";
 "auth_softlogout_clear_data_message_1" = "警告：個人データ（暗号鍵を含む）がこの端末にまだ保存されています。";
@@ -1669,7 +1669,7 @@
 
 "sign_out_existing_key_backup_alert_title" = "サインアウトしてよろしいですか？";
 "find_your_contacts_message" = "%@ であなたの連絡先を表示し、知人とのチャットを素早く始めます。";
-"find_your_contacts_footer" = "この設定はいつでも無効にできます";
+"find_your_contacts_footer" = "この設定はいつでも無効にできます。";
 "find_your_contacts_button_title" = "連絡先を検索";
 "find_your_contacts_title" = "連絡先をリストアップ";
 
@@ -1802,7 +1802,7 @@
 "all_chats_edit_layout" = "レイアウトの設定";
 
 // Crypto
-"e2e_enabling_on_app_update" = "Elementはエンドツーエンドの暗号化に対応しましたが、有効にするには再度ログインする必要があります。\n\nアプリケーションの設定から今すぐ、もしくは後で行うことができます。";
+"e2e_enabling_on_app_update" = "%@はエンドツーエンドの暗号化に対応しましたが、有効にするには再度ログインする必要があります。\n\nアプリケーションの設定から今すぐ、もしくは後で行うことができます。";
 "analytics_prompt_stop" = "共有を停止";
 "analytics_prompt_not_now" = "後で";
 "analytics_prompt_point_3" = "これはいつでも設定から無効にできます";
@@ -1966,3 +1966,52 @@
 "invite_to" = "%@に招待";
 "joining" = "参加しています";
 "key_backup_setup_passphrase_passphrase_placeholder" = "パスフレーズを入力する";
+"key_backup_setup_passphrase_passphrase_title" = "入力";
+"key_backup_setup_passphrase_info" = "鍵のコピーを暗号化してサーバーに保存します。バックアップを保護するためにパスフレーズを設定してください。\n\n最大限のセキュリティーを確保するために、Matrixのアカウントのパスワードと異なるものに設定することが大切です。";
+
+// Passphrase
+
+"key_backup_setup_passphrase_title" = "バックアップをセキュリティーフレーズで保護";
+"key_backup_setup_intro_manual_export_action" = "手動で鍵をエクスポート";
+"key_backup_setup_intro_manual_export_info" = "（高度）";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "このセッションを鍵のバックアップに接続";
+"key_backup_setup_intro_info" = "暗号化されたメッセージは、エンドツーエンドの暗号化によって保護されています。これらの暗号化されたメッセージを読むための鍵を持っているのは、あなたと受信者だけです。\n\n鍵を失くさないよう、鍵を安全にバックアップしてください。";
+
+// Intro
+
+"key_backup_setup_intro_title" = "暗号化されたメッセージを決して失わないために";
+"key_backup_setup_skip_alert_skip_action" = "スキップ";
+"key_backup_setup_skip_alert_message" = "ログアウトしたりこの端末を失くしたりすると、メッセージにアクセスできなくなる可能性があります。";
+"key_backup_setup_skip_alert_title" = "よろしいですか？";
+
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "鍵のバックアップ";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "セキュアバックアップ";
+"secure_key_backup_setup_cancel_alert_message" = "いまキャンセルすると、ログインできなくなった際に、暗号化されたメッセージとデータを失ってしまう可能性があります。\n\nまた、設定から、安全なバックアップの設定や鍵の管理を行うことができます。";
+
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "よろしいですか？";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "削除";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "ロックを解除";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "あなただけが知っている秘密のパスワードを入力してください。バックアップ用にセキュリティーキーを生成します。";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "セキュリティーフレーズを使用";
+"service_terms_modal_table_header_integration_manager" = "インテグレーションマネージャーの利用規約";
+"service_terms_modal_table_header_identity_server" = "IDサーバーの利用規約";
+"service_terms_modal_footer" = "この設定はいつでも無効にできます。";
+"share_extension_send_now" = "送信";
+"room_widget_permission_room_id_permission" = "ルームID";
+"room_widget_permission_widget_id_permission" = "ウィジェットID";
+"room_widget_permission_theme_permission" = "あなたのテーマ";
+"room_widget_permission_user_id_permission" = "あなたのユーザーID";
+"room_widget_permission_avatar_url_permission" = "あなたのアバターのURL";
+"room_widget_permission_display_name_permission" = "あなたの表示名";
+"room_widget_permission_information_title" = "これを使用するとデータが%@と共有される可能性があります：\n";
+"room_widget_permission_webview_information_title" = "これを使用すると、クッキーが設定され、データが%@と共有される可能性があります：\n";
+"room_widget_permission_creator_info_title" = "ウィジェットを追加した人：";
