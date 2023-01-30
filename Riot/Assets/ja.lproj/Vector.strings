@@ -2021,3 +2021,7 @@
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "パスフレーズが一致しません";
 "key_backup_setup_passphrase_setup_recovery_key_info" = "または、リカバリーキーでバックアップを確保し、安全な場所に保存してください。";
 "key_backup_setup_passphrase_setup_recovery_key_action" = "(上級者向け) リカバリーキーを設定する";
+
+// Success
+
+"key_backup_setup_success_title" = "成功しました!";
