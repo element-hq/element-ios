@@ -210,7 +210,8 @@ private extension NotificationSettingsViewModel {
             else {
                 continue
             }
-            viewState.selectionState[ruleId] = isChecked(rule: rule)
+
+            viewState.selectionState[ruleId] = isChecked(rule: rule, syncedRules: ruleId.syncedRules(in: newRules))
         }
     }
     
@@ -226,7 +227,7 @@ private extension NotificationSettingsViewModel {
     /// The same logic is used on android.
     /// - Parameter rule: The push rule type to check.
     /// - Returns: Wether it should be displayed as checked or not checked.
-    func isChecked(rule: NotificationPushRuleType) -> Bool {
+    func defaultIsChecked(rule: NotificationPushRuleType) -> Bool {
         guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else {
             return false
         }
@@ -240,5 +241,32 @@ private extension NotificationSettingsViewModel {
         }
         
         return index.enabled
+    }
+    
+    func isChecked(rule: NotificationPushRuleType, syncedRules: [NotificationPushRuleType]) -> Bool {
+        guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else {
+            return false
+        }
+        
+        switch ruleId {
+        case .oneToOneRoom, .allOtherMessages:
+            let ruleIsChecked = defaultIsChecked(rule: rule)
+            let someSyncedRuleIsChecked = syncedRules.contains(where: { defaultIsChecked(rule: $0) })
+            
+            return ruleIsChecked || someSyncedRuleIsChecked
+        default:
+            return defaultIsChecked(rule: rule)
+        }
+    }
+}
+
+private extension NotificationPushRuleId {
+    func syncedRules(in rules: [NotificationPushRuleType]) -> [NotificationPushRuleType] {
+        rules.filter {
+            guard let ruleId = NotificationPushRuleId(rawValue: $0.ruleId) else {
+                return false
+            }
+            return syncedRules.contains(ruleId)
+        }
     }
 }
