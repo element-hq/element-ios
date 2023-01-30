@@ -2025,7 +2025,7 @@
 // Success
 
 "key_backup_setup_success_title" = "成功しました！";
-"key_backup_recover_invalid_passphrase_title" = "リカバリーパスフレーズが正しくありません";
+"key_backup_recover_invalid_passphrase_title" = "セキュリティーフレーズが正しくありません";
 
 // Success from secure backup
 "key_backup_setup_success_from_secure_backup_info" = "鍵をバックアップしています。";
