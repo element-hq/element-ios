@@ -1053,8 +1053,17 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
                     else if ([event.decryptionError.domain isEqualToString:MXDecryptingErrorDomain]
                         && event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)
                     {
-                        // Hide the decryption error for event related to another one (like voicebroadcast chunks)
+                        // Hide the decryption error for VoiceBroadcast chunks
+                        BOOL isVoiceBroadcastChunk = NO;
                         if ([event.relatesTo.relationType isEqualToString:MXEventRelationTypeReference]) {
+                            MXEvent *startEvent = [mxSession.store eventWithEventId:event.relatesTo.eventId
+                                                                             inRoom:event.roomId];
+
+                            if (startEvent) {
+                                isVoiceBroadcastChunk = (startEvent.eventType == MXEventTypeCustom && [startEvent.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]);
+                            }
+                        }
+                        if (isVoiceBroadcastChunk) {
                             displayText = nil;
                         } else {
                             // Make the unknown inbound session id error description more user friendly
