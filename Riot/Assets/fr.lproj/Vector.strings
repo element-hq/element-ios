@@ -103,7 +103,7 @@
 "room_recents_no_conversation" = "Aucun salon";
 "room_recents_low_priority_section" = "PRIORITÉ BASSE";
 "room_recents_invites_section" = "INVITATIONS";
-"room_recents_start_chat_with" = "Commencer une discussion";
+"room_recents_start_chat_with" = "Nouveau message direct";
 "room_recents_create_empty_room" = "Créer un salon";
 "room_recents_join_room" = "Rejoindre le salon";
 "room_recents_join_room_title" = "Rejoindre un salon";
@@ -113,7 +113,7 @@
 "people_conversation_section" = "DISCUSSIONS";
 "people_no_conversation" = "Aucune discussion";
 // Rooms tab
-"room_directory_no_public_room" = "Aucun salon public disponible";
+"room_directory_no_public_room" = "Aucun forum disponible";
 // Groups tab
 "group_invite_section" = "INVITATIONS";
 "group_section" = "COMMUNAUTÉS";
@@ -166,20 +166,20 @@
 "room_participants_now" = "maintenant";
 "room_participants_ago" = "d’inactivité";
 "room_participants_action_section_admin_tools" = "Outils d’administration";
-"room_participants_action_section_direct_chats" = "Conversations privées";
+"room_participants_action_section_direct_chats" = "Messages directs";
 "room_participants_action_section_devices" = "Sessions";
 "room_participants_action_section_other" = "Options";
 "room_participants_action_invite" = "Inviter";
 "room_participants_action_leave" = "Quitter ce salon";
 "room_participants_action_remove" = "Exclure de ce salon";
-"room_participants_action_ban" = "Bannir de ce salon";
+"room_participants_action_ban" = "Interdire l’accès au salon (définitif)";
 "room_participants_action_unban" = "Révoquer le bannissement";
 "room_participants_action_ignore" = "Masquer tous les messages de cet utilisateur";
 "room_participants_action_unignore" = "Afficher tous les messages de cet utilisateur";
 "room_participants_action_set_default_power_level" = "Rétrograder en utilisateur normal";
 "room_participants_action_set_moderator" = "Nommer modérateur";
 "room_participants_action_set_admin" = "Nommer administrateur";
-"room_participants_action_start_new_chat" = "Commencer une nouvelle discussion";
+"room_participants_action_start_new_chat" = "Nouveau message direct";
 "room_participants_action_start_voice_call" = "Commencer un appel audio";
 "room_participants_action_start_video_call" = "Commencer un appel vidéo";
 "room_participants_action_mention" = "Mentionner";
@@ -399,7 +399,7 @@
 "directory_server_picker_title" = "Sélectionner un répertoire";
 "directory_server_all_rooms" = "Tous les salons sur le serveur %@";
 "directory_server_all_native_rooms" = "Tous les salons Matrix natifs";
-"directory_server_type_homeserver" = "Saisir un serveur d’accueil pour lister ses salons publics";
+"directory_server_type_homeserver" = "Saisir un serveur d’accueil pour lister ses forums";
 "directory_server_placeholder" = "matrix.org";
 // Others
 "or" = "ou";
@@ -407,7 +407,7 @@
 "today" = "Aujourd’hui";
 "yesterday" = "Hier";
 "network_offline_prompt" = "La connexion Internet semble être hors-ligne.";
-"public_room_section_title" = "Salons publics (sur %@) :";
+"public_room_section_title" = "Forums (sur %@) :";
 "bug_report_prompt" = "L’application s’est arrêtée brusquement la dernière fois. Voulez-vous envoyer un rapport d’anomalie ?";
 "rage_shake_prompt" = "Vous semblez secouer le téléphone avec frustration. Souhaitez-vous soumettre un rapport d’anomalie ?";
 "do_not_ask_again" = "Ne plus demander";
@@ -1211,8 +1211,8 @@
 "create_room_section_header_address" = "ADRESSE";
 "create_room_show_in_directory" = "Afficher le salon dans le répertoire";
 "create_room_section_footer_type" = "Les personnes ne rejoignent un salon privé que sur invitation.";
-"create_room_type_public" = "Salon public (tout le monde)";
-"create_room_type_private" = "Salon privé (seulement sur invitation)";
+"create_room_type_public" = "Forum (tout le monde)";
+"create_room_type_private" = "Salon (seulement sur invitation)";
 "create_room_section_header_type" = "QUI PEUT Y ACCÉDER";
 "create_room_section_footer_encryption" = "Le chiffrement ne peut pas être désactivé ensuite.";
 "create_room_enable_encryption" = "Activer le chiffrement";
@@ -1317,7 +1317,7 @@
 "room_details_room_name_for_dm" = "Nom";
 "room_details_photo_for_dm" = "Photo";
 "room_details_title_for_dm" = "Détails";
-"settings_show_NSFW_public_rooms" = "Afficher les salons publics au contenu choquant";
+"settings_show_NSFW_public_rooms" = "Afficher les forums au contenu choquant";
 "external_link_confirmation_message" = "Le lien %@ vous emmène vers un autre site : %@\n\nÊtes vous sûr de vouloir poursuivre ?";
 "external_link_confirmation_title" = "Inspectez ce lien";
 "room_open_dialpad" = "Pavé de numérotation";
@@ -1494,7 +1494,7 @@
 "spaces_empty_space_title" = "Cet espace n’a pas (encore) de salon";
 "space_tag" = "espace";
 "spaces_suggested_room" = "Recommandé";
-"spaces_explore_rooms" = "Parcourir les salons";
+"spaces_explore_rooms" = "Rejoindre un forum";
 "leave_space_and_all_rooms_action" = "Quitter tous les salons et espaces";
 "leave_space_only_action" = "Ne quitter aucun salon";
 "leave_space_message_admin_warning" = "Vous êtes administrateur de cet espace. Assurez-vous d’avoir transmis les droits d’administration à un autre membre avant de partir.";
@@ -1723,7 +1723,7 @@
 "set_default_power_level" = "Réinitialiser le rang";
 "set_moderator" = "Nommer modérateur";
 "set_admin" = "Nommer administrateur";
-"start_chat" = "Nouvelle conversation privée";
+"start_chat" = "Nouveau message direct";
 "start_voice_call" = "Commencer un appel audio";
 "start_video_call" = "Commencer un appel vidéo";
 "mention" = "Mentionner";
@@ -1959,8 +1959,8 @@
 "membership_ban" = "Banni";
 "num_members_one" = "%@ utilisateur";
 "num_members_other" = "%@ utilisateurs";
-"kick" = "Expulser";
-"ban" = "Bannir";
+"kick" = "Retirer du salon (réversible)";
+"ban" = "Interdire l’accès au salon (définitif)";
 "unban" = "Révoquer le bannissement";
 "message_unsaved_changes" = "Il y a des modifications non enregistrées. Quitter les annulera.";
 // Login Screen 
@@ -2465,7 +2465,7 @@
 "room_recents_recently_viewed_section" = "Récemment vus";
 "all_chats_nothing_found_placeholder_message" = "Essayez d’affiner votre recherche.";
 "all_chats_nothing_found_placeholder_title" = "Aucun résultat.";
-"all_chats_empty_unreads_placeholder_message" = "C'est ici que vos messages non-lus s’afficheront lorsque vous en aurez.";
+"all_chats_empty_unreads_placeholder_message" = "C'est ici que vos messages non lus s’afficheront lorsque vous en aurez.";
 "all_chats_empty_list_placeholder_title" = "Plus rien à voir.";
 "all_chats_empty_view_information" = "La messagerie sécurisée tout en un pour les équipes, les amis, et les organisations. Créez une discussion ou rejoignez un salon pour démarrer.";
 "all_chats_empty_space_information" = "Les espaces sont un nouveau moyen de grouper les salons et les gens. Ajoutez un salon, ou créez en un nouveau à l’aide du bouton en bas à droite.";
@@ -2481,14 +2481,14 @@
 "all_chats_edit_layout_add_filters_title" = "Filtrez vos messages";
 "all_chats_edit_layout_add_section_message" = "Épinglez des sections à l’accueil pour y accéder plus rapidement";
 "all_chats_edit_layout_add_section_title" = "Ajouter une section à l’accueil";
-"all_chats_edit_layout_unreads" = "Non-lus";
+"all_chats_edit_layout_unreads" = "Non lus";
 "all_chats_edit_layout_recents" = "Récents";
 "all_chats_edit_layout" = "Préférences d’agencement";
 "all_chats_section_title" = "Discussions";
 
 // Mark: - All Chats
 
-"all_chats_title" = "Tous mes chats";
+"all_chats_title" = "Accueil";
 "spaces_subspace_creation_visibility_message" = "L’espace créé sera ajouté à %@.";
 "spaces_subspace_creation_visibility_title" = "Quel type de sous-espace voulez-vous créer ?";
 "spaces_explore_rooms_format" = "Parcourir %@";
