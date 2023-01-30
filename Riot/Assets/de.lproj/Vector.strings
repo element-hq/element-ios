@@ -2728,3 +2728,4 @@
 "poll_history_load_more" = "Weitere Umfragen laden";
 "poll_history_loading_text" = "Zeige Umfragen an";
 "poll_history_fetching_error" = "Fehler beim Laden der Umfragen.";
+"key_backup_recover_from_private_key_progress" = "%@% % abgeschlossen";
