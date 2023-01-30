@@ -1800,3 +1800,6 @@
 "location_sharing_invalid_power_level_message" = "位置情報（ライブ）の共有には適切な権限が必要です。";
 "location_sharing_live_error" = "位置情報（ライブ）のエラー";
 "all_chats_edit_layout" = "レイアウトの設定";
+
+// Crypto
+"e2e_enabling_on_app_update" = "Elementはエンドツーエンドの暗号化に対応しましたが、有効にするには再度ログインする必要があります。\n\nアプリケーションの設定から今すぐ、もしくは後で行うことができます。";
