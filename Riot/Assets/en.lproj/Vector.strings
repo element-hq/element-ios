@@ -1469,6 +1469,7 @@ Tap the + to start adding people.";
 
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Restoring backup…";
+"key_backup_recover_from_private_key_progress" = "%@%% Complete";
 
 // Recover from passphrase
 
