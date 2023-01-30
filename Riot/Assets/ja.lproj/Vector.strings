@@ -2017,6 +2017,6 @@
 "room_widget_permission_creator_info_title" = "ウィジェットを追加した人：";
 "key_backup_setup_passphrase_confirm_passphrase_placeholder" = "パスフレーズを確認";
 "key_backup_setup_passphrase_confirm_passphrase_title" = "確認";
-"key_backup_setup_passphrase_set_passphrase_action" = "パスフレーズを設定してください";
+"key_backup_setup_passphrase_set_passphrase_action" = "パスフレーズを設定";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "パスフレーズが一致しません";
 "key_backup_setup_passphrase_setup_recovery_key_info" = "または、リカバリーキーでバックアップを確保し、安全な場所に保存します。";
