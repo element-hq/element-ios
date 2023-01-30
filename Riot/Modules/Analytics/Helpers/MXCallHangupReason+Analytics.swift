@@ -21,6 +21,9 @@ extension __MXCallHangupReason {
         switch self {
         case .userHangup:
             return .VoipUserHangup
+        case .userBusy:
+            // There is no dedicated analytics event for `userBusy` error
+            return .UnknownError
         case .inviteTimeout:
             return .VoipInviteTimeout
         case .iceFailed:
@@ -32,6 +35,9 @@ extension __MXCallHangupReason {
         case .unknownError:
             return .UnknownError
         default:
+            MXLog.failure("Unknown or unhandled hangup reason", context: [
+                "reason": rawValue
+            ])
             return .UnknownError
         }
     }

@@ -26,8 +26,11 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     // mock that screen.
     case active
     case past
-    case activeEmpty
-    case pastEmpty
+    case activeNoMoreContent
+    case contentLoading
+    case empty
+    case emptyLoading
+    case emptyNoMoreContent
     case loading
     
     /// The associated screen
@@ -37,39 +40,59 @@ enum MockPollHistoryScreenState: MockScreenState, CaseIterable {
     
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView) {
-        let pollHistoryMode: PollHistoryMode
+        var pollHistoryMode: PollHistoryMode = .active
         let pollService = MockPollHistoryService()
         
         switch self {
         case .active:
             pollHistoryMode = .active
+        case .activeNoMoreContent:
+            pollHistoryMode = .active
+            pollService.hasNextBatch = false
         case .past:
             pollHistoryMode = .past
-        case .activeEmpty:
+        case .contentLoading:
+            pollService.nextBatchPublishers.append(MockPollPublisher.loadingPolls)
+        case .empty:
             pollHistoryMode = .active
-            pollService.nextBatchPublisher = Empty(completeImmediately: true,
-                                              outputType: TimelinePollDetails.self,
-                                              failureType: Error.self).eraseToAnyPublisher()
-        case .pastEmpty:
-            pollHistoryMode = .past
-            pollService.nextBatchPublisher = Empty(completeImmediately: true,
-                                              outputType: TimelinePollDetails.self,
-                                              failureType: Error.self).eraseToAnyPublisher()
+            pollService.nextBatchPublishers = [MockPollPublisher.emptyPolls]
+        case .emptyLoading:
+            pollService.nextBatchPublishers = [MockPollPublisher.emptyPolls, MockPollPublisher.loadingPolls]
+        case .emptyNoMoreContent:
+            pollService.hasNextBatch = false
+            pollService.nextBatchPublishers = [MockPollPublisher.emptyPolls]
         case .loading:
-            pollHistoryMode = .active
-            pollService.nextBatchPublisher = Empty(completeImmediately: false,
-                                              outputType: TimelinePollDetails.self,
-                                              failureType: Error.self).eraseToAnyPublisher()
+            pollService.nextBatchPublishers = [MockPollPublisher.loadingPolls]
         }
         
         let viewModel = PollHistoryViewModel(mode: pollHistoryMode, pollService: pollService)
         
         // can simulate service and viewModel actions here if needs be.
+        switch self {
+        case .contentLoading, .emptyLoading:
+            viewModel.process(viewAction: .loadMoreContent)
+        default:
+            break
+        }
         
         return (
             [pollHistoryMode, viewModel],
             AnyView(PollHistory(viewModel: viewModel.context)
                 .environmentObject(AvatarViewModel.withMockedServices()))
         )
+    }
+}
+
+enum MockPollPublisher {
+    static var emptyPolls: AnyPublisher<TimelinePollDetails, Error> {
+        Empty<TimelinePollDetails, Error>(completeImmediately: true).eraseToAnyPublisher()
+    }
+    
+    static var loadingPolls: AnyPublisher<TimelinePollDetails, Error> {
+        Empty<TimelinePollDetails, Error>(completeImmediately: false).eraseToAnyPublisher()
+    }
+    
+    static var failure: AnyPublisher<TimelinePollDetails, Error> {
+        Fail(error: NSError(domain: "fake", code: 1)).eraseToAnyPublisher()
     }
 }

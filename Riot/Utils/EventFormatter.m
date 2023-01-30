@@ -567,7 +567,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             return [self session:session
                updateRoomSummary:summary
 withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
-  voiceBroadcastInfoStartedEvent:voiceBroadcastInfoStartedEvent roomState:roomState];
+  voiceBroadcastInfoStartedEvent:voiceBroadcastInfoStartedEvent
+                       roomState:roomState];
         }
     }
     
@@ -624,22 +625,8 @@ withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
     }
     else
     {
-        dispatch_group_t group = dispatch_group_create();
-        dispatch_group_enter(group);
-        
-        __block MXEvent *voiceBroadcastInfoStartedEvent;
-        
-        [session eventWithEventId:voiceBroadcastInfo.voiceBroadcastId inRoom:roomId success:^(MXEvent *resultEvent) {
-            voiceBroadcastInfoStartedEvent = resultEvent;
-            dispatch_group_leave(group);
-        } failure:^(NSError *error) {
-            MXLogErrorDetails(@"[EventFormatter] Fetch eventWithEventId with error = %@", error.description);
-            dispatch_group_leave(group);
-        }];
-        
-        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-        
-        return voiceBroadcastInfoStartedEvent;
+        // Search for the event only in the store to avoid network calls while updating the room summary (this a synchronous process and we cannot delay it).
+        return [mxSession.store eventWithEventId:voiceBroadcastInfo.voiceBroadcastId inRoom:roomId];
     }
 }
 
