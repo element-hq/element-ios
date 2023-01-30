@@ -43,3 +43,13 @@ protocol NotificationSettingsServiceType {
     ///   - completion: The completion of the operation.
     func updatePushRuleActions(for ruleId: String, enabled: Bool, actions: NotificationActions?, completion: ((Result<Void, Error>) -> Void)?)
 }
+
+extension NotificationSettingsServiceType {
+    func updatePushRuleActions(for ruleId: String, enabled: Bool, actions: NotificationActions?) async throws {
+        try await withCheckedThrowingContinuation { continuation in
+            updatePushRuleActions(for: ruleId, enabled: enabled, actions: actions) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+}

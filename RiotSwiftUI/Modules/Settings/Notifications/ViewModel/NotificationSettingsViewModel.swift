@@ -187,16 +187,17 @@ private extension NotificationSettingsViewModel {
         notificationSettingsService.updatePushRuleActions(
             for: id.rawValue,
             enabled: enabled,
-            actions: standardActions.actions) { [weak self] result in
-                switch result {
-                case .success:
-                    #warning("TODO: sync the update of these rules with the completion")
-                    self?.updatePushActions(for: rules, enabled: enabled, standardActions: standardActions)
-                    completion?(.success(()))
-                case .failure(let error):
-                    completion?(.failure(error))
-                }
+            actions: standardActions.actions
+        ) { [weak self] result in
+            switch result {
+            case .success:
+                #warning("TODO: sync the update of these rules with the completion")
+                self?.updatePushActions(for: rules, enabled: enabled, standardActions: standardActions)
+                completion?(.success(()))
+            case .failure(let error):
+                completion?(.failure(error))
             }
+        }
     }
     
     func updatePushActions(for ids: [NotificationPushRuleId], enabled: Bool, standardActions: NotificationStandardActions) {
