@@ -111,7 +111,7 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
         self.delegate?.roomContextActionServiceDidMarkRoom(self)
     }
     func markAsUnread() {
-        room.markAsUnread()
+        room.setUnread()
         self.delegate?.roomContextActionServiceDidMarkRoom(self)
     }
     

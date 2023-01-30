@@ -373,7 +373,7 @@
     
     if (!self.isContextPreview)
     {
-        [self.roomDataSource.room unmarkAsUnread];
+        [self.roomDataSource.room resetUnread];
     }
 }
 
