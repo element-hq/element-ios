@@ -34,6 +34,7 @@ targets:
     dependencies:
     - sdk: Intents.framework
     - package: DeviceKit
+    - package: DTCoreText
 
     configFiles:
       Debug: Debug.xcconfig
