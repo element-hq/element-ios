@@ -1,6 +1,6 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "カメラは、ビデオ通話や写真撮影、動画撮影に使用されます。";
-"NSPhotoLibraryUsageDescription" = "フォトライブラリは、写真や動画の送信に使用されます。";
+"NSCameraUsageDescription" = "カメラは、ビデオ通話や写真、動画の撮影とアップロードに使用されます。";
+"NSPhotoLibraryUsageDescription" = "フォトライブラリーは、写真や動画のアップロードに使用されます。";
 "NSMicrophoneUsageDescription" = "Elementは通話、動画撮影、ボイスメッセージの録音にマイクへのアクセスを必要としています。";
 "NSContactsUsageDescription" = "Elementは、あなたが連絡先をチャットに招待できるように、連絡先を表示します。";
 "NSCalendarsUsageDescription" = "予定されているミーティングをアプリで確認することができます。";
