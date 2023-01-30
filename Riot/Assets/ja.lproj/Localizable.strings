@@ -1,9 +1,9 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "%@ さんからメッセージ";
+"MSG_FROM_USER" = "%@さんがメッセージを送信しました";
 /* New message from a specific person in a named room */
-"MSG_FROM_USER_IN_ROOM" = "%@ さんが %@ へ発言";
+"MSG_FROM_USER_IN_ROOM" = "%@さんが%@に投稿しました";
 /* New message from a specific person, not referencing a room. Content included. */
-"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+"MSG_FROM_USER_WITH_CONTENT" = "%@：%@";
 /* New message from a specific person in a named room. Content included. */
 "MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ in %@: %@";
 /* New action message from a specific person, not referencing a room. */
@@ -12,62 +12,62 @@
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 /* New action message from a specific person, not referencing a room. */
 /* New action message from a specific person in a named room. */
-"IMAGE_FROM_USER_IN_ROOM" = "%@ さんが写真を投稿 %@ in %@";
+"IMAGE_FROM_USER_IN_ROOM" = "%@さんが写真%@を%@に投稿しました";
 /* Multiple unread messages in a room */
-"UNREAD_IN_ROOM" = "%@ 新しいメッセージ in %@";
+"UNREAD_IN_ROOM" = "%@件の新しいメッセージが%@にあります";
 /* Multiple unread messages from a specific person, not referencing a room */
-"MSGS_FROM_USER" = "%@ 新しいメッセージ in %@";
+"MSGS_FROM_USER" = "%@件の新しいメッセージが%@にあります";
 /* Multiple unread messages from two people */
-"MSGS_FROM_TWO_USERS" = "%@ 新しいメッセージ from %@ and %@";
+"MSGS_FROM_TWO_USERS" = "%@件の新しいメッセージを%@と%@から受信しました";
 /* Multiple unread messages from three people */
-"MSGS_FROM_THREE_USERS" = "%@ 新しいメッセージ from %@, %@ and %@";
+"MSGS_FROM_THREE_USERS" = "%@件の新しいメッセージを%@、%@、%@から受信しました";
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
-"MSGS_FROM_TWO_PLUS_USERS" = "%@ 新しいメッセージ from %@, %@ 他";
+"MSGS_FROM_TWO_PLUS_USERS" = "%@件の新しいメッセージを%@、%@、ほか数人から受信しました";
 /* Multiple messages in two rooms */
-"MSGS_IN_TWO_ROOMS" = "%@ 新しいメッセージ in %@ and %@";
+"MSGS_IN_TWO_ROOMS" = "%@件の新しいメッセージが%@と%@にあります";
 /* Look, stuff's happened, alright? Just open the app. */
-"MSGS_IN_TWO_PLUS_ROOMS" = "%@ 新しいメッセージ in %@, %@ 他";
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@件の新しいメッセージが%@、%@などにあります";
 /* A user has invited you to a chat */
-"USER_INVITE_TO_CHAT" = "%@ さんがあなたを対話に招待しました";
+"USER_INVITE_TO_CHAT" = "%@さんがあなたをチャットに招待しました";
 /* A user has invited you to an (unamed) group chat */
-"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ さんがあなたをルームへ招待しました";
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@さんがあなたをグループチャットに招待しました";
 /* A user has invited you to a named room */
-"USER_INVITE_TO_NAMED_ROOM" = "%@ さんがルーム %@ へ招待しました";
+"USER_INVITE_TO_NAMED_ROOM" = "%@さんがルーム %@ に招待しました";
 /* Incoming one-to-one voice call */
-"VOICE_CALL_FROM_USER" = "%@ さんから通話着信";
+"VOICE_CALL_FROM_USER" = "%@さんから通話着信";
 /* Incoming one-to-one video call */
-"VIDEO_CALL_FROM_USER" = "%@ さんから映像つき通話着信";
+"VIDEO_CALL_FROM_USER" = "%@さんからビデオ通話の着信";
 /* Incoming unnamed voice conference invite from a specific person */
-"VOICE_CONF_FROM_USER" = "%@ さんから会議通話の着信";
+"VOICE_CONF_FROM_USER" = "%@さんからグループ通話の着信";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "%@ さんから映像つき会議通話の着信";
+"VIDEO_CONF_FROM_USER" = "%@さんからビデオグループ通話の着信";
 /* Incoming named voice conference invite from a specific person */
-"VOICE_CONF_NAMED_FROM_USER" = "会議通話の着信 from %@: '%@'";
+"VOICE_CONF_NAMED_FROM_USER" = "%@さんからグループ通話の着信：'%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "映像つき会議通話の着信 from %@: '%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "%@さんからビデオグループ通話の着信：'%@'";
 /* A single unread message in a room */
-"SINGLE_UNREAD_IN_ROOM" = "%@にメッセージを受け取りました";
+"SINGLE_UNREAD_IN_ROOM" = "%@でメッセージを受信しました";
 /* A single unread message */
-"SINGLE_UNREAD" = "あなたはメッセージを受け取りました";
+"SINGLE_UNREAD" = "メッセージを受信しました";
 
 /** Key verification **/
 
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@は認証を要求しています";
 
 /* New message indicator on a room */
-"MESSAGE_IN_X" = "%@ 内のメッセージ";
+"MESSAGE_IN_X" = "%@内のメッセージ";
 
 /* Sticker from a specific person, not referencing a room. */
-"STICKER_FROM_USER" = "%@ さんからのスタンプ";
+"STICKER_FROM_USER" = "%@さんがステッカーを送信しました";
 /* Message title for a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@（%@ から）";
 
 /* Group call from user, CallKit caller name */
-"GROUP_CALL_FROM_USER" = "%@ (グループ通話)";
+"GROUP_CALL_FROM_USER" = "%@（グループ通話）";
 "MESSAGE_PROTECTED" = "新しいメッセージ";
 
 /* New message indicator from a DM */
-"MESSAGE_FROM_X" = "%@ からのメッセージ";
+"MESSAGE_FROM_X" = "%@さんからのメッセージ";
 
 /** Notification messages **/
 
@@ -78,52 +78,55 @@
 "Notification" = "通知";
 
 /* New message reply from a specific person in a named room. */
-"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ さんが %@ で返信";
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@さんが%@で返信しました";
 
 /* New message reply from a specific person, not referencing a room. */
-"REPLY_FROM_USER_TITLE" = "%@ さんが返信";
+"REPLY_FROM_USER_TITLE" = "%@さんが返信しました";
 
 /** Reactions **/
 
 /* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
-"REACTION_FROM_USER" = "%@ さんが %@ とリアクション";
+"REACTION_FROM_USER" = "%@さんが%@でリアクションしました";
 
 /* A user has reacted to a message, but the reaction content is unknown */
-"GENERIC_REACTION_FROM_USER" = "%@ さんがリアクション";
+"GENERIC_REACTION_FROM_USER" = "%@さんがリアクションを送信しました";
 
 /* New file message from a specific person, not referencing a room. */
-"LOCATION_FROM_USER" = "%@ さんが位置情報を共有";
+"LOCATION_FROM_USER" = "%@さんが位置情報を共有しました";
 
 /* New voice message from a specific person, not referencing a room. */
-"VOICE_MESSAGE_FROM_USER" = "%@ さんが音声メッセージを送信";
+"VOICE_MESSAGE_FROM_USER" = "%@さんが音声メッセージを送信しました";
 
 /* New video message from a specific person, not referencing a room. */
-"VIDEO_FROM_USER" = "%@ さんが動画を送信";
+"VIDEO_FROM_USER" = "%@さんが動画を送信しました";
 
 /** Media Messages **/
 
 /* New image message from a specific person, not referencing a room. */
-"PICTURE_FROM_USER" = "%@ さんが写真を送信";
+"PICTURE_FROM_USER" = "%@さんが写真を送信しました";
 
 /* A user added a Jitsi call to a room */
-"GROUP_CALL_STARTED" = "グループ通話が開始されました";
+"GROUP_CALL_STARTED" = "グループ通話を開始しました";
 
 /* A user's membership has updated in an unknown way */
-"USER_MEMBERSHIP_UPDATED" = "%@ がプロフィールを更新しました";
+"USER_MEMBERSHIP_UPDATED" = "%@さんがプロフィールを更新しました";
 
 /* A user has change their avatar */
-"USER_UPDATED_AVATAR" = "%@ がアバター画像を変更しました";
+"USER_UPDATED_AVATAR" = "%@さんがアバターを変更しました";
 
 /* A user has change their name to a new name which we don't know */
-"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ が名前を変更しました";
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@さんが名前を変更しました";
 
 /** Membership Updates **/
 
 /* A user has change their name to a new name */
-"USER_UPDATED_DISPLAYNAME" = "%@ が名前を %@ に変更しました";
+"USER_UPDATED_DISPLAYNAME" = "%@さんが名前を%@に変更しました";
 
 /* New file message from a specific person, not referencing a room. */
-"FILE_FROM_USER" = "%@ がファイルを送信しました: %@";
+"FILE_FROM_USER" = "%@がファイルを送信しました：%@";
 
 /* New audio message from a specific person, not referencing a room. */
-"AUDIO_FROM_USER" = "%@ が音声ファイルを送信しました: %@";
+"AUDIO_FROM_USER" = "%@が音声ファイルを送信しました：%@";
+
+/* New voice broadcast from a specific person, not referencing a room. */
+"VOICE_BROADCAST_FROM_USER" = "%@さんが音声配信を開始しました";
