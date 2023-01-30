@@ -45,9 +45,12 @@ final class NotificationSettingsViewModelTests: XCTestCase {
         let expectation = expectation(description: #function)
         setupWithPollRules()
         
-        viewModel.update(ruleID: .oneToOneRoom, isChecked: false)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        viewModel.update(ruleID: .oneToOneRoom, isChecked: false) { result in
+            guard case .success = result else {
+                XCTFail()
+                return
+            }
+            
             XCTAssertEqual(self.viewModel.viewState.selectionState.count, 8)
             XCTAssertEqual(self.viewModel.viewState.selectionState[.oneToOneRoom], false)
             XCTAssertEqual(self.viewModel.viewState.selectionState[.oneToOnePollStart], false)
@@ -68,9 +71,12 @@ final class NotificationSettingsViewModelTests: XCTestCase {
         let expectation = expectation(description: #function)
         setupWithPollRules()
         
-        viewModel.update(ruleID: .allOtherMessages, isChecked: false)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        viewModel.update(ruleID: .allOtherMessages, isChecked: false) { result in
+            guard case .success = result else {
+                XCTFail()
+                return
+            }
+            
             XCTAssertEqual(self.viewModel.viewState.selectionState.count, 8)
             XCTAssertEqual(self.viewModel.viewState.selectionState[.allOtherMessages], false)
             XCTAssertEqual(self.viewModel.viewState.selectionState[.pollStart], false)
@@ -91,9 +97,12 @@ final class NotificationSettingsViewModelTests: XCTestCase {
         let expectation = expectation(description: #function)
         setupWithPollRules()
         
-        viewModel.update(ruleID: .allOtherMessages, isChecked: false)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        viewModel.update(ruleID: .allOtherMessages, isChecked: false) { result in
+            guard case .success = result else {
+                XCTFail()
+                return
+            }
+            
             // simulating a "mismatch" on the poll started rule
             self.viewModel.update(ruleID: .pollStart, isChecked: true)
             
@@ -112,9 +121,12 @@ final class NotificationSettingsViewModelTests: XCTestCase {
         let expectation = expectation(description: #function)
         setupWithPollRules()
         
-        viewModel.update(ruleID: .oneToOneRoom, isChecked: false)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        viewModel.update(ruleID: .oneToOneRoom, isChecked: false) { result in
+            guard case .success = result else {
+                XCTFail()
+                return
+            }
+            
             // simulating a "mismatch" on the one to one poll started rule
             self.viewModel.update(ruleID: .oneToOnePollStart, isChecked: true)
             

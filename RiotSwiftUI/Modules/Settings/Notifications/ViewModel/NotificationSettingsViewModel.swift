@@ -105,7 +105,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     
     // MARK: - Public
     
-    func update(ruleID: NotificationPushRuleId, isChecked: Bool) {
+    func update(ruleID: NotificationPushRuleId, isChecked: Bool, completion: ((Result<Void, Error>) -> Void)? = nil) {
         let index = NotificationIndex.index(when: isChecked)
         let standardActions = ruleID.standardActions(for: index)
         let enabled = standardActions != .disabled
@@ -119,7 +119,8 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
                 id: ruleID,
                 enabled: enabled,
                 standardActions: standardActions,
-                then: ruleID.syncedRules
+                then: ruleID.syncedRules,
+                completion: completion
             )
 
         default:
@@ -127,7 +128,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
                 for: ruleID.rawValue,
                 enabled: enabled,
                 actions: standardActions.actions,
-                completion: nil
+                completion: completion
             )
         }
     }
@@ -171,8 +172,8 @@ private extension NotificationSettingsViewModel {
     func updatePushAction(id: NotificationPushRuleId,
                           enabled: Bool,
                           standardActions: NotificationStandardActions,
-                          then rules: [NotificationPushRuleId]) {
-
+                          then rules: [NotificationPushRuleId],
+                          completion: ((Result<Void, Error>) -> Void)?) {
         viewState.saving = true
         
         Task {
@@ -187,18 +188,19 @@ private extension NotificationSettingsViewModel {
                     }
 
                     try await group.waitForAll()
-                    await completeUpdate(error: nil)
+                    await completeUpdate(completion: completion, result: .success(()))
                 }
             } catch {
-                await completeUpdate(error: error)
+                await completeUpdate(completion: completion, result: .failure(error))
             }
         }
     }
     
     @MainActor
-    func completeUpdate(error: Error?) {
+    func completeUpdate(completion: ((Result<Void, Error>) -> Void)?, result: Result<Void, Error>) {
         #warning("Handle error here in the next ticket")
         viewState.saving = false
+        completion?(result)
     }
     
     func rulesUpdated(newRules: [NotificationPushRuleType]) {
