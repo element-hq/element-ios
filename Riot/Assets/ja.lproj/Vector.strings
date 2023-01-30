@@ -2034,7 +2034,8 @@
 // Success from passphrase
 "key_backup_setup_success_from_passphrase_info" = "あなたの鍵はバックアップされています。\n\nセキュリティーキーはセーフティーネットとなります。パスフレーズを忘れた場合でも、セキュリティーキーを使えば、暗号化されたメッセージにアクセスすることができます。\n\nセキュリティーキーは、パスワードマネージャー（もしくは金庫）のような、非常に安全な場所で保管してください。";
 "key_backup_recover_invalid_passphrase" = "このパスフレーズではバックアップを復号化できませんでした。正しいセキュリティーフレーズを入力したことを確認してください。";
-"key_backup_recover_invalid_recovery_key_title" = "リカバリーキーが一致しません";
+"key_backup_recover_invalid_recovery_key_title" = "セキュリティーキーが一致しません";
 
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "バックアップを復元する…";
+"key_backup_recover_invalid_recovery_key" = "この鍵ではバックアップを復号化できませんでした。正しいセキュリティーキーを入力したことを確認してください。";
