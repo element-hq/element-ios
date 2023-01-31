@@ -2921,3 +2921,4 @@
 "poll_history_fetching_error" = "Помилка отримання опитувань.";
 "key_backup_recover_from_private_key_progress" = "%@%% виконано";
 "voice_broadcast_playback_unable_to_decrypt" = "Неможливо розшифрувати цю голосову трансляцію.";
+"home_context_menu_mark_as_unread" = "Позначити непрочитаним";
