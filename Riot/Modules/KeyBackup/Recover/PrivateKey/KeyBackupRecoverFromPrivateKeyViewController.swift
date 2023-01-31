@@ -29,6 +29,7 @@ final class KeyBackupRecoverFromPrivateKeyViewController: UIViewController {
     @IBOutlet private weak var shieldImageView: UIImageView!
     
     @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private weak var progressLabel: UILabel!
     
     // MARK: Private
 
@@ -118,8 +119,8 @@ final class KeyBackupRecoverFromPrivateKeyViewController: UIViewController {
 
     private func render(viewState: KeyBackupRecoverFromPrivateKeyViewState) {
         switch viewState {
-        case .loading:
-            self.renderLoading()
+        case .loading(let progress):
+            self.renderLoading(progress: progress)
         case .loaded:
             self.renderLoaded()
         case .error(let error):
@@ -127,8 +128,11 @@ final class KeyBackupRecoverFromPrivateKeyViewController: UIViewController {
         }
     }
     
-    private func renderLoading() {
+    private func renderLoading(progress: Double) {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        
+        let percent = Int(round(progress * 100))
+        self.progressLabel.text = VectorL10n.keyBackupRecoverFromPrivateKeyProgress("\(percent)")
     }
     
     private func renderLoaded() {

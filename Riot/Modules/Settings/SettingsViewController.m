@@ -3386,7 +3386,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     MXWeakify(self);
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    UIAlertController *confirmationAlert = [UIAlertController alertControllerWithTitle:nil
+    UIAlertController *confirmationAlert = [UIAlertController alertControllerWithTitle:VectorL10n.settingsLabsEnableCryptoSdk
                                                                              message:VectorL10n.settingsLabsConfirmCryptoSdk
                                                                       preferredStyle:UIAlertControllerStyleAlert];
 

@@ -20,7 +20,7 @@ import Foundation
 
 /// KeyBackupRecoverFromPrivateKeyViewController view state
 enum KeyBackupRecoverFromPrivateKeyViewState {
-    case loading
+    case loading(Double)
     case loaded
     case error(Error)
 }
