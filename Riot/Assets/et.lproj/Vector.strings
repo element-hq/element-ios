@@ -2667,3 +2667,5 @@
 "poll_history_loading_text" = "Küsitluste kuvamise ootel";
 "poll_history_fetching_error" = "Viga küsitluste laadimisel.";
 "key_backup_recover_from_private_key_progress" = "%@%% tehtud";
+"voice_broadcast_playback_unable_to_decrypt" = "Selle ringhäälingukõne dekrüptimine ei õnnestu.";
+"home_context_menu_mark_as_unread" = "Märgi mitteloetuks";
