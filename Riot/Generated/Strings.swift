@@ -9243,6 +9243,10 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastPlaybackLockScreenPlaceholder: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_playback_lock_screen_placeholder") 
   }
+  /// Unable to decrypt this voice broadcast.
+  public static var voiceBroadcastPlaybackUnableToDecrypt: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_playback_unable_to_decrypt") 
+  }
   /// Connection error - Recording paused
   public static var voiceBroadcastRecorderConnectionError: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_recorder_connection_error") 
