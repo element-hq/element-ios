@@ -24,6 +24,9 @@ class AppConfiguration: CommonConfiguration {
     override func setupSettings() {
         super.setupSettings()
         setupAppSettings()
+#if DEBUG
+        CryptoSDKConfiguration.shared.setup()
+#endif
     }
     
     private func setupAppSettings() {

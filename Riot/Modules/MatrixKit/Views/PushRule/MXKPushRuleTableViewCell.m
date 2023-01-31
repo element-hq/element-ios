@@ -163,7 +163,7 @@
     if (sender == _controlButton)
     {
         // Swap enable state
-        [_mxSession.notificationCenter enableRule:_mxPushRule isEnabled:!_mxPushRule.enabled];
+        [_mxSession.notificationCenter enableRule:_mxPushRule isEnabled:!_mxPushRule.enabled completion:nil];
     }
     else if (sender == _deleteButton)
     {
