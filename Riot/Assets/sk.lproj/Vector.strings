@@ -2917,3 +2917,6 @@
 "poll_history_no_active_poll_period_text" = "Za posledných %@ dní nie sú aktívne žiadne ankety. Načítaním ďalších ankiet zobrazíte ankety za predchádzajúce mesiace";
 "poll_history_loading_text" = "Zobrazenie ankiet";
 "poll_history_fetching_error" = "Chyba pri načítavaní ankiet.";
+"voice_broadcast_playback_unable_to_decrypt" = "Toto hlasové vysielanie sa nedá dešifrovať.";
+"home_context_menu_mark_as_unread" = "Označiť ako neprečítané";
+"key_backup_recover_from_private_key_progress" = "%@%% Dokončené";
