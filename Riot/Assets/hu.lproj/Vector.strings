@@ -2710,6 +2710,10 @@
 // MARK: - Launch loading
 
 "launch_loading_migrating_data" = "Adatok migrálása\n%@ %%";
-"settings_labs_disable_crypto_sdk" = "Titkosítási SDK engedélyezve. A kikapcsolásához az alkalmazást újra kell telepíteni";
-"settings_labs_confirm_crypto_sdk" = "Ezt a műveletet nem lehet visszavonni";
+"settings_labs_disable_crypto_sdk" = "Végpontok közötti titkosítás 2.0 (kikapcsoláshoz kijelentkezés szükséges)";
+"settings_labs_confirm_crypto_sdk" = "Ezzel az opcióval egy gyorsabb és megbízhatóbb végponttól végponting titkosító motor kerül engedélyezésre ami Rustban lett megírva. Bekapcsolás után a kikapcsolásához ki kell jelentkezni. Folytatod?";
 "settings_labs_enable_crypto_sdk" = "Az új Rust alapú Titkosítási SDK engedélyezése";
+"home_context_menu_mark_as_unread" = "Olvasatlannak jelöl";
+"poll_history_fetching_error" = "Szavazás betöltési hiba.";
+"voice_broadcast_playback_unable_to_decrypt" = "A hang közvetítés nem fejthető vissza.";
+"key_backup_recover_from_private_key_progress" = "%@%% kész";
