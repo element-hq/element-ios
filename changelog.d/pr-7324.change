@@ -1,0 +1,1 @@
+Polls: add error handling when syncing push rules with the ones of normal messages.
