@@ -2515,6 +2515,10 @@ public class VectorL10n: NSObject {
   public static var homeContextMenuMarkAsRead: String { 
     return VectorL10n.tr("Vector", "home_context_menu_mark_as_read") 
   }
+  /// Mark as unread
+  public static var homeContextMenuMarkAsUnread: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_mark_as_unread") 
+  }
   /// Mute
   public static var homeContextMenuMute: String { 
     return VectorL10n.tr("Vector", "home_context_menu_mute") 
@@ -9246,6 +9250,10 @@ public class VectorL10n: NSObject {
   /// Voice broadcast
   public static var voiceBroadcastPlaybackLockScreenPlaceholder: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_playback_lock_screen_placeholder") 
+  }
+  /// Unable to decrypt this voice broadcast.
+  public static var voiceBroadcastPlaybackUnableToDecrypt: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_playback_unable_to_decrypt") 
   }
   /// Connection error - Recording paused
   public static var voiceBroadcastRecorderConnectionError: String { 

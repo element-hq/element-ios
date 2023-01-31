@@ -38,7 +38,7 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
         self.room = room
         self.delegate = delegate
         self.isRoomJoined = room.summary?.isJoined ?? false
-        self.hasUnread = room.summary?.hasAnyUnread ?? false
+        self.hasUnread = (room.summary?.hasAnyUnread ?? false) || room.isMarkedAsUnread
         self.roomMembership = room.summary?.membership ?? .unknown
         self.session = room.mxSession
         self.unownedRoomService = UnownedRoomContextActionService(roomId: room.roomId, canonicalAlias: room.summary?.aliases?.first, session: self.session, delegate: delegate)
@@ -108,6 +108,11 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
     
     func markAsRead() {
         room.markAllAsRead()
+        self.delegate?.roomContextActionServiceDidMarkRoom(self)
+    }
+    func markAsUnread() {
+        room.setUnread()
+        self.delegate?.roomContextActionServiceDidMarkRoom(self)
     }
     
     // MARK: - Private
