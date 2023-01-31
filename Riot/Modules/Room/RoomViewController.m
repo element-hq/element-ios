@@ -7863,7 +7863,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 }
 
 -(void)reloadRoomWihtEventId:(NSString *)eventId
-                  threadId:(NSString *)threadId
+                    threadId:(NSString *)threadId
 {
     // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
     MXWeakify(self);
