@@ -2515,6 +2515,10 @@ public class VectorL10n: NSObject {
   public static var homeContextMenuMarkAsRead: String { 
     return VectorL10n.tr("Vector", "home_context_menu_mark_as_read") 
   }
+  /// Mark as unread
+  public static var homeContextMenuMarkAsUnread: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_mark_as_unread") 
+  }
   /// Mute
   public static var homeContextMenuMute: String { 
     return VectorL10n.tr("Vector", "home_context_menu_mute") 
