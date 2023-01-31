@@ -2679,3 +2679,31 @@
 "voice_broadcast_voip_cannot_start_title" = "S’niset dot një thirrje";
 "voice_message_broadcast_in_progress_message" = "S’mund të niset mesazh zanor, ngaqë aktualisht po regjistroni një transmetim të drejtpërdrejtë. Ju lutemi, përfundoni transmetimin e drejtpërdrejtë, që të mund të nisni regjistrimin e një mesazhi zanor";
 "voice_message_broadcast_in_progress_title" = "S’niset dot mesazh zanor";
+"wysiwyg_composer_format_action_quote" = "Shfaq/fshih citim";
+"wysiwyg_composer_format_action_code_block" = "Shfaq/fshih bllok kodi";
+"wysiwyg_composer_format_action_ordered_list" = "Shfaq/fshih listë të numërtuar";
+"wysiwyg_composer_format_action_unordered_list" = "Shfaq/fshih listë me toptha";
+"poll_timeline_reply_ended_poll" = "Pyetësor i përfunduar";
+"poll_history_fetching_error" = "Gabim në sjelle pyetësorë.";
+"poll_history_load_more" = "Ngarko më tepër pyetësorë";
+"poll_history_no_past_poll_period_text" = "S’ka pyetësorë të kaluar për %@ ditët e shkuara. Që të shihni pyetësorë nga muajt e kaluar, ngarkoni më tepër pyetësorë";
+"poll_history_no_active_poll_period_text" = "S’ka pyetësorë aktivë për %@ ditët e shkuara. Që të shihni pyetësorë nga muajt e kaluar, ngarkoni më tepër pyetësorë";
+"poll_history_loading_text" = "Shfaqje pyetësorësh";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Historik pyetësorësh";
+"voice_broadcast_playback_unable_to_decrypt" = "S’arrihet të shfshehtëzohet ky transmetim zanor.";
+"voice_broadcast_recorder_connection_error" = "Gabim lidhjeje - Incizimi u ndal";
+"voice_broadcast_connection_error_message" = "Mjerisht, s’jemi në gjendje të nisim një incizim mu tani. Ju lutemi, riprovoni më vonë.";
+"voice_broadcast_connection_error_title" = "Gabim lidhjeje";
+"home_context_menu_mark_as_unread" = "Vëri shenjë si i palexuar";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Po migrohen të dhëna\n%@ %%";
+"key_backup_recover_from_private_key_progress" = "Plotësuar %@%%";
+"room_details_polls" = "Historik pyetësorësh";
+"settings_labs_disable_crypto_sdk" = "Fshehtëzim skaj-më-skaj 2.0 (që ta çaktivizoni, dilni)";
+"settings_labs_confirm_crypto_sdk" = "Kjo mundësi do të aktivizojë për fshhehtëzim skaj-më-skaj një motor të ri, më të shpejtë dhe më të qëndrueshëm, të shkruar në Rust. Pasi të aktivizohet, do t’ju duhet të bëni daljen nga llogaria, që ta çaktivizoni. Doni të vazhdohet?";
+"settings_labs_enable_crypto_sdk" = "Fshehtëzim skaj-më-skaj 2.0";
