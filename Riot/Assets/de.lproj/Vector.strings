@@ -2729,3 +2729,4 @@
 "poll_history_loading_text" = "Zeige Umfragen an";
 "poll_history_fetching_error" = "Fehler beim Laden der Umfragen.";
 "key_backup_recover_from_private_key_progress" = "%@% % abgeschlossen";
+"voice_broadcast_playback_unable_to_decrypt" = "Entschlüsseln der Sprachübertragung nicht möglich.";
