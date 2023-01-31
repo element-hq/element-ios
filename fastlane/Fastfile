@@ -259,6 +259,7 @@ platform :ios do
     # Generate xcodebuild additional arguments
     xcargs_hash = {
       "GCC_PREPROCESSOR_DEFINITIONS" => "$(GCC_PREPROCESSOR_DEFINITIONS) #{additional_preprocessor_definitions}",
+      # Fix XCode 14 code signing issues for Swift packages containing resources bundles.
       "CODE_SIGN_STYLE" => "Manual",
     }
 
