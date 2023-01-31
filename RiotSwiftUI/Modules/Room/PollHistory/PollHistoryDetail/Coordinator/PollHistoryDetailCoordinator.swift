@@ -14,10 +14,10 @@
 // limitations under the License.
 //
 
-import CommonKit
-import SwiftUI
 import Combine
+import CommonKit
 import MatrixSDK
+import SwiftUI
 
 struct PollHistoryDetailCoordinatorParameters {
     let event: MXEvent
@@ -28,8 +28,6 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
     private let parameters: PollHistoryDetailCoordinatorParameters
     private let pollHistoryDetailHostingController: UIViewController
     private var pollHistoryDetailViewModel: PollHistoryDetailViewModelProtocol
-    private var indicatorPresenter: UserIndicatorTypePresenterProtocol
-    private var loadingIndicator: UserIndicator?
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
@@ -42,12 +40,15 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
         let viewModel = PollHistoryDetailViewModel(timelineViewModel: timelinePollCoordinator.viewModel)
         let view = PollHistoryDetail(viewModel: viewModel.context)
         pollHistoryDetailViewModel = viewModel
-        
         pollHistoryDetailHostingController = VectorHostingController(rootView: view)
-        
-        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: pollHistoryDetailHostingController)
-        self.add(childCoordinator: timelinePollCoordinator)
-        viewModel.completion = { [weak self] result in
+        add(childCoordinator: timelinePollCoordinator)
+    }
+    
+    // MARK: - Public
+    
+    func start() {
+        MXLog.debug("[PollHistoryDetailCoordinator] did start.")
+        pollHistoryDetailViewModel.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .dismiss:
@@ -58,29 +59,7 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
         }
     }
     
-    // MARK: - Public
-    
-    func start() {
-        MXLog.debug("[PollHistoryDetailCoordinator] did start.")
-
-    }
-    
     func toPresentable() -> UIViewController {
         pollHistoryDetailHostingController
-    }
-    
-    // MARK: - Private
-    
-    /// Show an activity indicator whilst loading.
-    /// - Parameters:
-    ///   - label: The label to show on the indicator.
-    ///   - isInteractionBlocking: Whether the indicator should block any user interaction.
-    private func startLoading(label: String = VectorL10n.loading, isInteractionBlocking: Bool = true) {
-        loadingIndicator = indicatorPresenter.present(.loading(label: label, isInteractionBlocking: isInteractionBlocking))
-    }
-    
-    /// Hide the currently displayed activity indicator.
-    private func stopLoading() {
-        loadingIndicator = nil
     }
 }

@@ -23,11 +23,10 @@ class PollHistoryDetailViewModelTests: XCTestCase {
         static let counterInitialValue = 0
     }
     
-    var viewModel: PollHistoryDetailViewModelProtocol!
+    var viewModel: PollHistoryDetailViewModel!
     var context: PollHistoryDetailViewModelType.Context!
     
     override func setUpWithError() throws {
-        
         let answerOptions = [TimelinePollAnswerOption(id: "1", text: "1", count: 1, winner: false, selected: false),
                              TimelinePollAnswerOption(id: "2", text: "2", count: 1, winner: false, selected: false),
                              TimelinePollAnswerOption(id: "3", text: "3", count: 1, winner: false, selected: false)]
@@ -51,5 +50,18 @@ class PollHistoryDetailViewModelTests: XCTestCase {
     func testInitialState() {
         XCTAssertFalse(context.viewState.isPollClosed)
     }
-    
+
+    func testProcessAction() {
+        viewModel.completion = { result in
+            XCTAssertEqual(result, .viewInTimeline)
+        }
+        viewModel.process(viewAction: .viewInTimeline)
+    }
+
+    func testProcessDismiss() {
+        viewModel.completion = { result in
+            XCTAssertEqual(result, .dismiss)
+        }
+        viewModel.process(viewAction: .dismiss)
+    }
 }

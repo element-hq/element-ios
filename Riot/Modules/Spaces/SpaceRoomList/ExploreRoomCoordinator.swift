@@ -521,7 +521,7 @@ extension ExploreRoomCoordinator: RoomInfoCoordinatorDelegate {
         }
     }
     func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, viewEventInTimeline event: MXEvent) {
-        self.navigationRouter.popToModule(self.toPresentable(), animated: true)
+        
     }
     
 }

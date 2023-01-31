@@ -20,17 +20,14 @@ import SwiftUI
 typealias PollHistoryDetailViewModelType = StateStoreViewModel<PollHistoryDetailViewState, PollHistoryDetailViewAction>
 
 class PollHistoryDetailViewModel: PollHistoryDetailViewModelType, PollHistoryDetailViewModelProtocol {
-    // MARK: - Properties
-
-    // MARK: Private
-    
     // MARK: Public
+
     var completion: PollHistoryDetailViewModelCallback?
     
     // MARK: - Setup
     
     init(timelineViewModel: TimelinePollViewModelProtocol) {
-        super.init(initialViewState: PollHistoryDetailViewState(timelineViewModel: timelineViewModel))
+        super.init(initialViewState: PollHistoryDetailViewState(timelineViewModel: timelineViewModel.context))
     }
     
     // MARK: - Public
@@ -43,8 +40,4 @@ class PollHistoryDetailViewModel: PollHistoryDetailViewModelType, PollHistoryDet
             completion?(.viewInTimeline)
         }
     }
-
-    
-    // MARK: - TimelinePollViewModelProtocol
-
 }

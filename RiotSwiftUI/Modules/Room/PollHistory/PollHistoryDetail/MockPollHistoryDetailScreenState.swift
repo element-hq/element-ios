@@ -48,7 +48,6 @@ enum MockPollHistoryDetailScreenState: MockScreenState, CaseIterable {
     }
     
     var screenView: ([Any], AnyView) {
-
         let viewModel = PollHistoryDetailViewModel(timelineViewModel: TimelinePollViewModel(timelinePollDetails: poll))
         
         return ([viewModel], AnyView(PollHistoryDetail(viewModel: viewModel.context)))

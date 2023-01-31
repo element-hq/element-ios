@@ -17,5 +17,6 @@
 import Foundation
 
 protocol PollHistoryDetailViewModelProtocol {
+    var completion: PollHistoryDetailViewModelCallback? { get set }
     var context: PollHistoryDetailViewModelType.Context { get }
 }

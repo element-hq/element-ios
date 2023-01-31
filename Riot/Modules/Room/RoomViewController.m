@@ -5257,25 +5257,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         // Dismiss potential keyboard.
         [self dismissKeyboard];
-        
-        // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
-        MXWeakify(self);
-        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
-                                      initialEventId:self.roomDataSource.room.accountData.readMarkerEventId
-                                            threadId:self.roomDataSource.threadId
-                                    andMatrixSession:self.mainSession
-                                          onComplete:^(id roomDataSource) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            [roomDataSource finalizeInitialization];
-            
-            // Center the bubbles table content on the bottom of the read marker event in order to display correctly the read marker view.
-            self.centerBubblesTableViewContentOnTheInitialEventBottom = YES;
-            [self displayRoom:roomDataSource];
-            
-            // Give the data source ownership to the room view controller.
-            self.hasRoomDataSourceOwnership = YES;
-        }];
+        NSString *eventId = self.roomDataSource.room.accountData.readMarkerEventId;
+        NSString *threadId = self.roomDataSource.threadId;
+        [self reloadRoomWihtEventId:eventId threadId:threadId];
     }
     else if (sender == self.resetReadMarkerButton)
     {
@@ -7875,11 +7859,17 @@ static CGSize kThreadListBarButtonItemImageSize;
                        viewEventInTimeline:(MXEvent *)event
 {
     [self.navigationController popToViewController:self animated:true];
+    [self reloadRoomWihtEventId:event.eventId threadId:event.threadId];
+}
+
+-(void)reloadRoomWihtEventId:(NSString *)eventId
+                  threadId:(NSString *)threadId
+{
     // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
     MXWeakify(self);
     [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
-                                  initialEventId:event.eventId
-                                        threadId:event.threadId
+                                  initialEventId:eventId
+                                        threadId:threadId
                                 andMatrixSession:self.mainSession
                                       onComplete:^(id roomDataSource) {
         MXStrongifyAndReturnIfNil(self);

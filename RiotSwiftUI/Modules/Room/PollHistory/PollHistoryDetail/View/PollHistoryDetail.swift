@@ -17,8 +17,6 @@
 import SwiftUI
 
 struct PollHistoryDetail: View {
-    // MARK: - Properties
-    
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
@@ -29,9 +27,6 @@ struct PollHistoryDetail: View {
     
     var body: some View {
         navigation
-            .padding([.horizontal], 16)
-            .padding([.top, .bottom])
-            .background(theme.colors.background.ignoresSafeArea())
     }
     
     private var navigation: some View {
@@ -45,6 +40,7 @@ struct PollHistoryDetail: View {
             }
         }
     }
+
     private var content: some View {
         let timelineViewModel = viewModel.viewState.timelineViewModel
         return ScrollView {
@@ -54,17 +50,20 @@ struct PollHistoryDetail: View {
                     .font(theme.fonts.caption1)
                     .padding([.top])
                     .accessibilityIdentifier("PollHistoryDetail.date")
-                TimelinePollView(viewModel: timelineViewModel.context)
+                TimelinePollView(viewModel: timelineViewModel)
                     .navigationTitle(navigationTitle)
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationBarBackButtonHidden(true)
-                    .navigationBarItems(leading: btnBack, trailing: btnDone)
+                    .navigationBarItems(leading: backButton, trailing: doneButton)
                 viewInTimeline
             }
         }
+        .padding([.horizontal], 16)
+        .padding([.top, .bottom])
+        .background(theme.colors.background.ignoresSafeArea())
     }
     
-    private var btnBack: some View {
+    private var backButton: some View {
         Button(action: {
             viewModel.send(viewAction: .dismiss)
         }) {
@@ -73,7 +72,8 @@ struct PollHistoryDetail: View {
                 .foregroundColor(theme.colors.accent)
         }
     }
-    private var btnDone: some View {
+
+    private var doneButton: some View {
         Button {
             viewModel.send(viewAction: .dismiss)
         } label: {
