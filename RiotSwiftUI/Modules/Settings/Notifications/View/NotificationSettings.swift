@@ -33,13 +33,16 @@ struct NotificationSettings<BottomSection: View>: View {
                 ForEach(viewModel.viewState.ruleIds) { ruleId in
                     let checked = viewModel.viewState.selectionState[ruleId] ?? false
                     FormPickerItem(title: ruleId.title, selected: checked) {
-                        viewModel.update(ruleID: ruleId, isChecked: !checked)
+                        Task {
+                            await viewModel.update(ruleID: ruleId, isChecked: !checked)
+                        }
                     }
                 }
             }
             bottomSection
         }
         .activityIndicator(show: viewModel.viewState.saving)
+        .disabled(viewModel.viewState.saving)
     }
 }
 

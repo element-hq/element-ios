@@ -40,5 +40,5 @@ protocol NotificationSettingsServiceType {
     ///   - ruleId: The id of the rule.
     ///   - enabled: Whether the rule should be enabled or disabled.
     ///   - actions: The actions to update with.
-    func updatePushRuleActions(for ruleId: String, enabled: Bool, actions: NotificationActions?)
+    func updatePushRuleActions(for ruleId: String, enabled: Bool, actions: NotificationActions?) async throws
 }
