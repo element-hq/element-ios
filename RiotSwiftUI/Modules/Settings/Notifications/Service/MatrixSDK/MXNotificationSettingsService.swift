@@ -44,7 +44,9 @@ class MXNotificationSettingsService: NotificationSettingsServiceType {
         
         // Observe future updates to content rules
         rulesUpdated
-            .compactMap { _ in self.session.notificationCenter.rules.global.content as? [MXPushRule] }
+            .compactMap { [weak self] _ in
+                self?.session.notificationCenter.rules.global.content as? [MXPushRule]
+            }
             .assign(to: &$contentRules)
         
         // Set initial value of rules
@@ -53,7 +55,9 @@ class MXNotificationSettingsService: NotificationSettingsServiceType {
         }
         // Observe future updates to rules
         rulesUpdated
-            .compactMap { _ in self.session.notificationCenter.flatRules as? [MXPushRule] }
+            .compactMap { [weak self] _ in
+                self?.session.notificationCenter.flatRules as? [MXPushRule]
+            }
             .assign(to: &$rules)
     }
     
@@ -72,52 +76,50 @@ class MXNotificationSettingsService: NotificationSettingsServiceType {
     
     func updatePushRuleActions(for ruleId: String,
                                enabled: Bool,
-                               actions: NotificationActions?,
-                               completion: ((Result<Void, Error>) -> Void)?) {
+                               actions: NotificationActions?) async throws {
         
         guard let rule = session.notificationCenter.rule(byId: ruleId) else {
-            completion?(.success)
             return
         }
         
         guard let actions = actions else {
-            enableRule(rule: rule, enabled: enabled, completion: completion)
+            try await session.notificationCenter.enableRule(pushRule: rule, isEnabled: enabled)
             return
         }
         
         // Updating the actions before enabling the rule allows the homeserver to triggers just one sync update
-        session.notificationCenter.updatePushRuleActions(ruleId,
+        try await session.notificationCenter.updatePushRuleActions(ruleId,
                                                          kind: rule.kind,
                                                          notify: actions.notify,
                                                          soundName: actions.sound,
-                                                         highlight: actions.highlight) { [weak self] error in
-            switch error.result {
-            case .success:
-                self?.enableRule(rule: rule, enabled: enabled, completion: completion)
-            case .failure:
-                completion?(error.result)
+                                                         highlight: actions.highlight)
+        
+        try await session.notificationCenter.enableRule(pushRule: rule, isEnabled: enabled)
+    }
+}
+
+private extension MXNotificationCenter {
+    func enableRule(pushRule: MXPushRule, isEnabled: Bool) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            enableRule(pushRule, isEnabled: isEnabled) { error in
+                if let error = error {
+                    continuation.resume(with: .failure(error))
+                } else {
+                    continuation.resume()
+                }
+            }
+        }
+    }
+    
+    func updatePushRuleActions(ruleId: String, kind: __MXPushRuleKind, notify: Bool, soundName: String, highlight: Bool) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            updatePushRuleActions(ruleId, kind: kind, notify: notify, soundName: soundName, highlight: highlight) { error in
+                if let error = error {
+                    continuation.resume(with: .failure(error))
+                } else {
+                    continuation.resume()
+                }
             }
         }
     }
 }
-
-private extension MXNotificationSettingsService {
-    func enableRule(rule: MXPushRule, enabled: Bool, completion: ((Result<Void, Error>) -> Void)?) {
-        session.notificationCenter.enableRule(rule, isEnabled: enabled) { error in
-            completion?(error.result)
-        }
-    }
-}
-
-private extension Result where Success == Void {
-    static var success: Self {
-        .success(())
-    }
-}
-
-private extension Optional where Wrapped == Error {
-    var result: Result<Void, Error> {
-        map { .failure($0) } ?? .success
-    }
-}
-

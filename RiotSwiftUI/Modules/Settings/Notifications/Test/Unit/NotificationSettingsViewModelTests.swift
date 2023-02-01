@@ -32,113 +32,71 @@ final class NotificationSettingsViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.viewState.selectionState.values.allSatisfy { $0 })
     }
     
-    func testUpdateRule() throws {
+    func testUpdateRule() async {
         viewModel = .init(notificationSettingsService: notificationService, ruleIds: .default)
         notificationService.rules = [MockNotificationPushRule].default
         
-        viewModel.update(ruleID: .encrypted, isChecked: false)
+        await viewModel.update(ruleID: .encrypted, isChecked: false)
         XCTAssertEqual(viewModel.viewState.selectionState.count, 4)
         XCTAssertEqual(viewModel.viewState.selectionState[.encrypted], false)
     }
     
-    func testUpdateOneToOneRuleAlsoUpdatesPollRules() {
-        let expectation = expectation(description: #function)
+    func testUpdateOneToOneRuleAlsoUpdatesPollRules() async {
         setupWithPollRules()
         
-        viewModel.update(ruleID: .oneToOneRoom, isChecked: false) { result in
-            guard case .success = result else {
-                XCTFail()
-                return
-            }
-            
-            XCTAssertEqual(self.viewModel.viewState.selectionState.count, 8)
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.oneToOneRoom], false)
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.oneToOnePollStart], false)
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.oneToOnePollEnd], false)
-            
-            // unrelated poll rules stay the same
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.allOtherMessages], true)
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.pollStart], true)
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.pollEnd], true)
-            
-            expectation.fulfill()
-        }
+        await viewModel.update(ruleID: .oneToOneRoom, isChecked: false)
+
+        XCTAssertEqual(viewModel.viewState.selectionState.count, 8)
+        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOneRoom], false)
+        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOnePollStart], false)
+        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOnePollEnd], false)
         
-        waitForExpectations(timeout: 1.0)
+        // unrelated poll rules stay the same
+        XCTAssertEqual(viewModel.viewState.selectionState[.allOtherMessages], true)
+        XCTAssertEqual(viewModel.viewState.selectionState[.pollStart], true)
+        XCTAssertEqual(viewModel.viewState.selectionState[.pollEnd], true)
     }
     
-    func testUpdateMessageRuleAlsoUpdatesPollRules() {
-        let expectation = expectation(description: #function)
+    func testUpdateMessageRuleAlsoUpdatesPollRules() async {
         setupWithPollRules()
         
-        viewModel.update(ruleID: .allOtherMessages, isChecked: false) { result in
-            guard case .success = result else {
-                XCTFail()
-                return
-            }
-            
-            XCTAssertEqual(self.viewModel.viewState.selectionState.count, 8)
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.allOtherMessages], false)
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.pollStart], false)
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.pollEnd], false)
-            
-            // unrelated poll rules stay the same
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.oneToOneRoom], true)
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.oneToOnePollStart], true)
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.oneToOnePollEnd], true)
-            
-            expectation.fulfill()
-        }
+        await viewModel.update(ruleID: .allOtherMessages, isChecked: false)
+        XCTAssertEqual(viewModel.viewState.selectionState.count, 8)
+        XCTAssertEqual(viewModel.viewState.selectionState[.allOtherMessages], false)
+        XCTAssertEqual(viewModel.viewState.selectionState[.pollStart], false)
+        XCTAssertEqual(viewModel.viewState.selectionState[.pollEnd], false)
         
-        waitForExpectations(timeout: 1.0)
+        // unrelated poll rules stay the same
+        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOneRoom], true)
+        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOnePollStart], true)
+        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOnePollEnd], true)
     }
     
-    func testMismatchingRulesAreHandled() {
-        let expectation = expectation(description: #function)
+    func testMismatchingRulesAreHandled() async {
         setupWithPollRules()
         
-        viewModel.update(ruleID: .allOtherMessages, isChecked: false) { result in
-            guard case .success = result else {
-                XCTFail()
-                return
-            }
-            
-            // simulating a "mismatch" on the poll started rule
-            self.viewModel.update(ruleID: .pollStart, isChecked: true)
-            
-            XCTAssertEqual(self.viewModel.viewState.selectionState.count, 8)
-            
-            // The other messages rule ui flag should match the loudest related poll rule
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.allOtherMessages], true)
-            
-            expectation.fulfill()
-        }
+        await viewModel.update(ruleID: .allOtherMessages, isChecked: false)
         
-        waitForExpectations(timeout: 1.0)
+        // simulating a "mismatch" on the poll started rule
+        await viewModel.update(ruleID: .pollStart, isChecked: true)
+        
+        XCTAssertEqual(viewModel.viewState.selectionState.count, 8)
+        
+        // The other messages rule ui flag should match the loudest related poll rule
+        XCTAssertEqual(viewModel.viewState.selectionState[.allOtherMessages], true)
     }
     
-    func testMismatchingOneToOneRulesAreHandled() {
-        let expectation = expectation(description: #function)
+    func testMismatchingOneToOneRulesAreHandled() async {
         setupWithPollRules()
         
-        viewModel.update(ruleID: .oneToOneRoom, isChecked: false) { result in
-            guard case .success = result else {
-                XCTFail()
-                return
-            }
-            
-            // simulating a "mismatch" on the one to one poll started rule
-            self.viewModel.update(ruleID: .oneToOnePollStart, isChecked: true)
-            
-            XCTAssertEqual(self.viewModel.viewState.selectionState.count, 8)
-            
-            // The one to one room rule ui flag should match the loudest related poll rule
-            XCTAssertEqual(self.viewModel.viewState.selectionState[.oneToOneRoom], true)
-            
-            expectation.fulfill()
-        }
+        await viewModel.update(ruleID: .oneToOneRoom, isChecked: false)
+        // simulating a "mismatch" on the one to one poll started rule
+        await viewModel.update(ruleID: .oneToOnePollStart, isChecked: true)
         
-        waitForExpectations(timeout: 1.0)
+        XCTAssertEqual(viewModel.viewState.selectionState.count, 8)
+        
+        // The one to one room rule ui flag should match the loudest related poll rule
+        XCTAssertEqual(viewModel.viewState.selectionState[.oneToOneRoom], true)
     }
 }
 

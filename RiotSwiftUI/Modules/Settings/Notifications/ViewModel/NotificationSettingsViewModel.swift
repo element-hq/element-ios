@@ -49,7 +49,9 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         
         // Observe when the rules are updated, to subsequently update the state of the settings.
         notificationSettingsService.rulesPublisher
-            .sink(receiveValue: rulesUpdated(newRules:))
+            .sink { [weak self] newRules in
+                self?.rulesUpdated(newRules: newRules)
+            }
             .store(in: &cancellables)
         
         // Only observe keywords if the current settings view displays it.
@@ -88,7 +90,9 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
             // Keyword rules were updates, check if we need to update the setting.
             keywordsRules
                 .map { $0.contains { $0.enabled } }
-                .sink(receiveValue: keywordRuleUpdated(anyEnabled:))
+                .sink { [weak self] in
+                    self?.keywordRuleUpdated(anyEnabled: $0)
+                }
                 .store(in: &cancellables)
             
             // Update the viewState with the final keywords to be displayed.
@@ -105,30 +109,29 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     
     // MARK: - Public
     
-    func update(ruleID: NotificationPushRuleId, isChecked: Bool, completion: ((Result<Void, Error>) -> Void)? = nil) {
+    @MainActor
+    func update(ruleID: NotificationPushRuleId, isChecked: Bool) async {
         let index = NotificationIndex.index(when: isChecked)
         let standardActions = ruleID.standardActions(for: index)
         let enabled = standardActions != .disabled
         
         switch ruleID {
         case .keywords: // Keywords is handled differently to other settings
-            updateKeywords(isChecked: isChecked)
+            await updateKeywords(isChecked: isChecked)
 
         case .oneToOneRoom, .allOtherMessages:
-            updatePushAction(
+            await updatePushAction(
                 id: ruleID,
                 enabled: enabled,
                 standardActions: standardActions,
-                then: ruleID.syncedRules,
-                completion: completion
+                then: ruleID.syncedRules
             )
 
         default:
-            notificationSettingsService.updatePushRuleActions(
+            try? await notificationSettingsService.updatePushRuleActions(
                 for: ruleID.rawValue,
                 enabled: enabled,
-                actions: standardActions.actions,
-                completion: completion
+                actions: standardActions.actions
             )
         }
     }
@@ -149,58 +152,63 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
 // MARK: - Private
 
 private extension NotificationSettingsViewModel {
-    func updateKeywords(isChecked: Bool) {
+    @MainActor
+    func updateKeywords(isChecked: Bool) async {
         guard !keywordsOrdered.isEmpty else {
             viewState.selectionState[.keywords]?.toggle()
             return
         }
+        
         // Get the static definition and update the actions and enabled state for every keyword.
         let index = NotificationIndex.index(when: isChecked)
         let standardActions = NotificationPushRuleId.keywords.standardActions(for: index)
         let enabled = standardActions != .disabled
+        let keywordsToUpdate = keywordsOrdered
         
-        keywordsOrdered.forEach { keyword in
-            notificationSettingsService.updatePushRuleActions(
-                for: keyword,
-                enabled: enabled,
-                actions: standardActions.actions,
-                completion: nil
-            )
+        await withThrowingTaskGroup(of: Void.self) { group in
+            for keyword in keywordsToUpdate {
+                group.addTask {
+                    try await self.notificationSettingsService.updatePushRuleActions(
+                        for: keyword,
+                        enabled: enabled,
+                        actions: standardActions.actions
+                    )
+                }
+            }
         }
     }
 
     func updatePushAction(id: NotificationPushRuleId,
                           enabled: Bool,
                           standardActions: NotificationStandardActions,
-                          then rules: [NotificationPushRuleId],
-                          completion: ((Result<Void, Error>) -> Void)?) {
-        viewState.saving = true
+                          then rules: [NotificationPushRuleId]) async {
+        await MainActor.run {
+            viewState.saving = true
+        }
         
-        Task {
-            do {
-                try await notificationSettingsService.updatePushRuleActions(for: id.rawValue, enabled: enabled, actions: standardActions.actions)
-                
-                try await withThrowingTaskGroup(of: Void.self) { group in
-                    for ruleId in rules {
-                        group.addTask {
-                            try await self.notificationSettingsService.updatePushRuleActions(for: ruleId.rawValue, enabled: enabled, actions: standardActions.actions)
-                        }
+        do {
+            // update the 'parent rule' first
+            try await notificationSettingsService.updatePushRuleActions(for: id.rawValue, enabled: enabled, actions: standardActions.actions)
+            
+            // synchronize all the 'children rules' with the parent rule
+            try await withThrowingTaskGroup(of: Void.self) { group in
+                for ruleId in rules {
+                    group.addTask {
+                        try await self.notificationSettingsService.updatePushRuleActions(for: ruleId.rawValue, enabled: enabled, actions: standardActions.actions)
                     }
-
-                    try await group.waitForAll()
-                    await completeUpdate(completion: completion, result: .success(()))
                 }
-            } catch {
-                await completeUpdate(completion: completion, result: .failure(error))
+                try await group.waitForAll()
             }
+            await completeUpdate()
+        } catch {
+            await completeUpdate()
         }
     }
     
     @MainActor
-    func completeUpdate(completion: ((Result<Void, Error>) -> Void)?, result: Result<Void, Error>) {
+    func completeUpdate() {
         #warning("Handle error here in the next ticket")
         viewState.saving = false
-        completion?(result)
     }
     
     func rulesUpdated(newRules: [NotificationPushRuleType]) {
