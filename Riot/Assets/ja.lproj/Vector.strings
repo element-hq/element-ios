@@ -2610,3 +2610,4 @@
 "key_backup_recover_from_private_key_progress" = "%@%%完了";
 "voice_broadcast_playback_unable_to_decrypt" = "この音声配信を復号化できません。";
 "home_context_menu_mark_as_unread" = "未読にする";
+"key_backup_setup_passphrase_passphrase_valid" = "いいですね!";
