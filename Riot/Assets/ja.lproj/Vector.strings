@@ -2616,5 +2616,11 @@
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "いいですね！";
 "room_avatar_view_accessibility_hint" = "ルームのアバターを変更";
 "room_intro_cell_information_dm_sentence2" = "この会話はお二人だけで、他の人は参加できません。";
-"favourites_empty_view_information" = "お気に入り登録にはいくつかの方法がありますが、一番手っ取り早いのは、長押しすることです。星マークをタップすると、自動的にここに表示され、大切に保管されます。";
+"favourites_empty_view_information" = "お気に入り登録にはいくつかの方法がありますが、一番手っ取り早いのは、長押しすることです。星マークをタップすると、自動的にここに表示され、保管されます。";
 "room_intro_cell_information_multiple_dm_sentence2" = "誰かを招待しない限り、この会話に参加しているのはあなただけです。";
+"analytics_prompt_message_new_user" = "%@の改善と課題抽出のために、匿名の使用状況データの送信をお願いします。複数の端末での使用を分析するために、あなたの全端末共通のランダムな識別子を生成します。";
+
+// Analytics
+"analytics_prompt_title" = "%@の改善を手伝う";
+"event_formatter_call_active_video" = "実行中のビデオ通話";
+"event_formatter_call_active_voice" = "実行中の音声通話";
