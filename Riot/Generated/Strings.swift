@@ -7767,6 +7767,10 @@ public class VectorL10n: NSObject {
   public static var settingsProfilePicture: String { 
     return VectorL10n.tr("Vector", "settings_profile_picture") 
   }
+  /// An error occurred when updating your notification preferences. Please try to toggle your option again.
+  public static var settingsPushRulesError: String { 
+    return VectorL10n.tr("Vector", "settings_push_rules_error") 
+  }
   /// Are you sure you want to remove the email address %@?
   public static func settingsRemoveEmailPromptMsg(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_remove_email_prompt_msg", p1)

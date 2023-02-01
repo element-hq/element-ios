@@ -97,6 +97,10 @@ final class NotificationSettingsViewModelTests: XCTestCase {
         
         // The one to one room rule ui flag should match the loudest related poll rule
         XCTAssertEqual(viewModel.viewState.selectionState[.oneToOneRoom], true)
+
+        // the oneToOneRoom rule should be flagged as "out of sync"
+        XCTAssertTrue(viewModel.isRuleOutOfSync(.oneToOneRoom))
+        XCTAssertFalse(viewModel.isRuleOutOfSync(.allOtherMessages))
     }
 }
 

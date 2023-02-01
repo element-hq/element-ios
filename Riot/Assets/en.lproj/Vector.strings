@@ -759,6 +759,7 @@ Tap the + to start adding people.";
 "settings_your_keywords" = "Your Keywords";
 "settings_new_keyword" = "Add new Keyword";
 "settings_mentions_and_keywords_encryption_notice" = "You won’t get notifications for mentions & keywords in encrypted rooms on mobile.";
+"settings_push_rules_error" = "An error occurred when updating your notification preferences. Please try to toggle your option again.";
 
 "settings_enable_callkit" = "Integrated calling";
 "settings_callkit_info" = "Receive incoming calls on your lock screen. See your %@ calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";

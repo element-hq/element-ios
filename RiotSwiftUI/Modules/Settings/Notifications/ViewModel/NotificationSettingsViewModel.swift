@@ -147,6 +147,10 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         keywordsOrdered = keywordsOrdered.filter { $0 != keyword }
         notificationSettingsService.remove(keyword: keyword)
     }
+    
+    func isRuleOutOfSync(_ ruleId: NotificationPushRuleId) -> Bool {
+        viewState.outOfSyncRules.contains(ruleId) && viewState.saving == false
+    }
 }
 
 // MARK: - Private
@@ -206,11 +210,12 @@ private extension NotificationSettingsViewModel {
     
     @MainActor
     func completeUpdate() {
-        #warning("Handle error here in the next ticket")
         viewState.saving = false
     }
     
     func rulesUpdated(newRules: [NotificationPushRuleType]) {
+        var outOfSyncRules: Set<NotificationPushRuleId> = .init()
+        
         for rule in newRules {
             guard
                 let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
@@ -219,8 +224,15 @@ private extension NotificationSettingsViewModel {
                 continue
             }
 
-            viewState.selectionState[ruleId] = isChecked(rule: rule, syncedRules: ruleId.syncedRules(in: newRules))
+            let relatedSyncedRules = ruleId.syncedRules(in: newRules)
+            viewState.selectionState[ruleId] = isChecked(rule: rule, syncedRules: relatedSyncedRules)
+            
+            if isOutOfSync(rule: rule, syncedRules: relatedSyncedRules) {
+                outOfSyncRules.insert(ruleId)
+            }
         }
+        
+        viewState.outOfSyncRules = outOfSyncRules
     }
     
     func keywordRuleUpdated(anyEnabled: Bool) {
@@ -264,6 +276,20 @@ private extension NotificationSettingsViewModel {
             return ruleIsChecked || someSyncedRuleIsChecked
         default:
             return defaultIsChecked(rule: rule)
+        }
+    }
+    
+    func isOutOfSync(rule: NotificationPushRuleType, syncedRules: [NotificationPushRuleType]) -> Bool {
+        guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else {
+            return false
+        }
+        
+        switch ruleId {
+        case .oneToOneRoom, .allOtherMessages:
+            let ruleIsChecked = defaultIsChecked(rule: rule)
+            return syncedRules.contains(where: { defaultIsChecked(rule: $0) != ruleIsChecked })
+        default:
+            return false
         }
     }
 }
