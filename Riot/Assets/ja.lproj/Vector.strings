@@ -2612,3 +2612,4 @@
 "home_context_menu_mark_as_unread" = "未読にする";
 "key_backup_setup_passphrase_passphrase_valid" = "いいですね！";
 "key_backup_setup_passphrase_passphrase_invalid" = "ワードを追加してみる";
+"biometrics_cant_unlocked_alert_title" = "アプリのロック解除に失敗しました";
