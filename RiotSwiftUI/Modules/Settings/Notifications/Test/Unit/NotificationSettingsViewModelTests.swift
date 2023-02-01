@@ -99,8 +99,8 @@ final class NotificationSettingsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.viewState.selectionState[.oneToOneRoom], true)
 
         // the oneToOneRoom rule should be flagged as "out of sync"
-        XCTAssertTrue(self.viewModel.isRuleOutOfSync(.oneToOneRoom))
-        XCTAssertFalse(self.viewModel.isRuleOutOfSync(.allOtherMessages))
+        XCTAssertTrue(viewModel.isRuleOutOfSync(.oneToOneRoom))
+        XCTAssertFalse(viewModel.isRuleOutOfSync(.allOtherMessages))
     }
 }
 

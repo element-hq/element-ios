@@ -35,7 +35,9 @@ struct NotificationSettings<BottomSection: View>: View {
                     VStack(alignment: .leading, spacing: 4) {
                         let checked = viewModel.viewState.selectionState[ruleId] ?? false
                         FormPickerItem(title: ruleId.title, selected: checked) {
-                            viewModel.update(ruleID: ruleId, isChecked: !checked)
+                            Task {
+                                await viewModel.update(ruleID: ruleId, isChecked: !checked)
+                            }
                         }
                         
                         if viewModel.isRuleOutOfSync(ruleId) {
