@@ -2669,3 +2669,5 @@
 "key_backup_recover_from_private_key_progress" = "%@%% tehtud";
 "voice_broadcast_playback_unable_to_decrypt" = "Selle ringhäälingukõne dekrüptimine ei õnnestu.";
 "home_context_menu_mark_as_unread" = "Märgi mitteloetuks";
+"wysiwyg_composer_format_action_un_indent" = "Vähenda taandrida";
+"wysiwyg_composer_format_action_indent" = "Suurenda taandrida";
