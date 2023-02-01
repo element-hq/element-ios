@@ -22,17 +22,6 @@ import Foundation
 @objcMembers class CryptoSDKConfiguration: NSObject {
     static let shared = CryptoSDKConfiguration()
     
-    func setup() {
-        guard MXSDKOptions.sharedInstance().isCryptoSDKAvailable else {
-            return
-        }
-        
-        let isEnabled = RiotSettings.shared.enableCryptoSDK
-        MXSDKOptions.sharedInstance().enableCryptoSDK = isEnabled
-        
-        MXLog.debug("[CryptoSDKConfiguration] setup: Crypto SDK is \(isEnabled ? "enabled" : "disabled")")
-    }
-    
     func enable() {
         guard MXSDKOptions.sharedInstance().isCryptoSDKAvailable else {
             return
