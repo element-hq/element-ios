@@ -193,8 +193,8 @@
 "room_two_users_are_typing" = "%@さん、%@さんが入力しています…";
 "room_many_users_are_typing" = "%@さん、%@さん他が入力しています…";
 "room_message_placeholder" = "返信を送る（未暗号化）…";
-"encrypted_room_message_placeholder" = "暗号文を送信…";
-"room_message_short_placeholder" = "ここに送信文を入力…";
+"encrypted_room_message_placeholder" = "暗号化されたメッセージを送信…";
+"room_message_short_placeholder" = "メッセージを送信…";
 "room_offline_notification" = "サーバーとの接続が失われました。";
 "room_unsent_messages_notification" = "メッセージを送信できませんでした。";
 "room_unsent_messages_unknown_devices_notification" = "未知のセッションが存在するために文章が送信されませんでした。";
@@ -203,13 +203,13 @@
 "room_ongoing_conference_call_close" = "閉じる";
 "room_conference_call_no_power" = "このルームで会議通話を管理する権限が必要です";
 "room_prompt_resend" = "全て再送信";
-"room_prompt_cancel" = "全て中止";
-"room_resend_unsent_messages" = "未送信の文を再送信";
-"room_delete_unsent_messages" = "未送信の文を削除";
+"room_prompt_cancel" = "全てキャンセル";
+"room_resend_unsent_messages" = "未送信のメッセージを再送信";
+"room_delete_unsent_messages" = "未送信のメッセージを削除";
 "room_event_action_copy" = "コピー";
 "room_event_action_quote" = "引用";
 "room_event_action_redact" = "削除";
-"room_event_action_more" = "さらに";
+"room_event_action_more" = "その他";
 "room_event_action_share" = "共有";
 "room_event_action_permalink" = "メッセージへのリンクをコピー";
 "room_event_action_view_source" = "ソースを表示";
@@ -262,12 +262,12 @@
 "settings_contacts" = "端末の電話帳";
 "settings_advanced" = "拡張設定";
 "settings_other" = "その他";
-"settings_labs" = "実験的";
+"settings_labs" = "ラボ";
 "settings_devices" = "セッション";
 "settings_cryptography" = "暗号化";
 "settings_sign_out" = "サインアウト";
 "settings_sign_out_confirmation" = "よろしいですか？";
-"settings_sign_out_e2e_warn" = "あなたはエンドツーエンド暗号鍵を失ってしまいます。この端末で暗号化されたルームの昔の発言を読むことができなくなります。";
+"settings_sign_out_e2e_warn" = "エンドツーエンド暗号鍵が消去されます。この端末では、暗号化されたルームの過去の発言を読むことができなくなってしまいます。";
 "settings_profile_picture" = "プロフィール画像";
 "settings_display_name" = "表示名";
 "settings_first_name" = "名";
@@ -464,7 +464,7 @@
 "group_section" = "コミュニティー";
 "room_message_reply_to_placeholder" = "返信を送る（暗号化されていない）…";
 "room_do_not_have_permission_to_post" = "このルームに投稿する権限がありません";
-"encrypted_room_message_reply_to_placeholder" = "暗号化された返信を送信…";
+"encrypted_room_message_reply_to_placeholder" = "暗号化された返信を送る…";
 "room_message_reply_to_short_placeholder" = "返信を送る…";
 "room_event_action_view_decrypted_source" = "復号化されたソースを見る";
 "room_event_action_kick_prompt_reason" = "このユーザーを追放する理由";
@@ -648,8 +648,8 @@
 "photo_library_access_not_granted" = "%@はフォトライブラリにアクセスする権限がありません";
 "camera_unavailable" = "お使いの端末ではカメラを利用できません";
 "event_formatter_widget_removed_by_you" = "ウィジェットを削除しました：%@";
-"event_formatter_jitsi_widget_removed_by_you" = "VoIPカンファレンスを削除しました";
-"event_formatter_jitsi_widget_added_by_you" = "VoIPカンファレンスを追加しました";
+"event_formatter_jitsi_widget_removed_by_you" = "VoIP会議を削除しました";
+"event_formatter_jitsi_widget_added_by_you" = "VoIP会議を追加しました";
 
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "ウィジェットを追加しました：%@";
@@ -1127,7 +1127,7 @@
 "home_empty_view_title" = "%@へようこそ、\n%@";
 "threads_empty_tip" = "ヒント：メッセージをタップして「スレッド」を選択し、開始。";
 "threads_empty_info_all" = "スレッドを用いると、会話のテーマを保ったり、会話を追跡したりするのが容易になります。";
-"threads_empty_title" = "スレッドでディスカッションを整理して管理";
+"threads_empty_title" = "スレッド機能を使って、会話をまとめましょう";
 "secure_key_backup_setup_intro_use_security_key_title" = "セキュリティーキーを使用";
 
 // MARK: Secure backup setup
@@ -1338,13 +1338,13 @@
 "message_reply_to_message_to_reply_to_prefix" = "返信先";
 // Room members
 "room_member_ignore_prompt" = "このユーザーからの全てのメッセージを非表示にしますか？";
-"room_member_power_level_prompt" = "この変更を元に戻すことはできません。ユーザーが自分と同じレベルの権限を持つように促しますが、よろしいですか?";
+"room_member_power_level_prompt" = "このユーザーにあなたと同じ権限レベルを与えようとしています。この変更は取り消せません。\nよろしいですか？";
 // Attachment
-"attachment_size_prompt" = "次のように送信しますか:";
-"attachment_original" = "実際のサイズ: %@";
-"attachment_small" = "小: %@";
-"attachment_medium" = "中: %@";
-"attachment_large" = "大: %@";
+"attachment_size_prompt" = "次のように送信しますか：";
+"attachment_original" = "実際のサイズ：%@";
+"attachment_small" = "小：%@";
+"attachment_medium" = "中：%@";
+"attachment_large" = "大：%@";
 "attachment_cancel_download" = "ダウンロードをキャンセルしますか?";
 "attachment_cancel_upload" = "アップロードをキャンセルしますか?";
 "attachment_multiselection_size_prompt" = "画像を次のように送信しますか:";
@@ -1847,7 +1847,7 @@
 "settings_presence_offline_mode" = "オフラインモード";
 "settings_enable_room_message_bubbles" = "吹き出しでメッセージを表示";
 "settings_discovery_accept_terms" = "IDサーバーの利用規約を承諾";
-"settings_labs_confirm_crypto_sdk" = "この操作は取り消せません";
+"settings_labs_confirm_crypto_sdk" = "このオプションは、新しく、より高速で安定性のあるエンドツーエンド暗号化（Rustで記述）を有効にします。無効にするにはログアウトが必要となります。続行してよろしいですか？";
 "settings_labs_enable_voice_broadcast" = "音声配信";
 "settings_labs_enable_new_app_layout" = "アプリケーションの新しいレイアウト";
 "settings_labs_enable_new_client_info_feature" = "クライアントの名称、バージョン、URLを記録し、セッションマネージャーでより容易にセッションを認識できるよう設定";
@@ -2518,7 +2518,95 @@
 "authentication_qr_login_start_subtitle" = "この端末のカメラを使用して、他の端末に表示されているQRコードをスキャンしてください：";
 "authentication_choose_password_not_verified_title" = "電子メールは認証されていません";
 "authentication_server_selection_generic_error" = "このURLでサーバーを発見できません。URLが正しいことを確認してください。";
-"authentication_server_selection_register_title" = "あなたのホームサーバーを選択";
+"authentication_server_selection_register_title" = "あなたのホームサーバーを選択してください";
 "authentication_server_selection_login_message" = "ホームサーバーのアドレスを入力してください";
 "authentication_server_selection_login_title" = "ホームサーバーに接続";
 "authentication_login_forgot_password" = "パスワードを忘れた場合";
+"event_formatter_call_answer" = "出る";
+"event_formatter_call_incoming_video" = "着信中のビデオ通話";
+"event_formatter_call_incoming_voice" = "着信中の音声通話";
+"event_formatter_call_has_ended_with_time" = "通話を終了しました・%@";
+"room_access_space_chooser_other_spaces_section" = "その他のスペースまたはルーム";
+"room_access_settings_screen_setting_room_access" = "ルームのアクセスの設定";
+"settings_labs_enable_wysiwyg_composer" = "リッチテキストエディターを試してみる";
+"settings_labs_enable_ringing_for_group_calls" = "グループ通話で呼び出す";
+"settings_notifications_disabled_alert_message" = "通知を有効にするには、端末の設定画面を開いてください。";
+"room_accessibility_record_voice_message_hint" = "2回続けてタップし長押しすると録音。";
+"room_preview_decline_invitation_options" = "招待を拒否するか、このユーザーを無視しますか？";
+"threads_beta_information" = "スレッド機能を使って、会話をまとめましょう。\n\nスレッドを用いると、会話のテーマを保ったり、会話を追跡したりするのが容易になります。 ";
+"threads_notice_information" = "実験期間中に作成されたスレッドは<b>通常の返信として表示されます</b>。<br/><br/>スレッドはMatrixの仕様の一部になったため、これは一度限りの変更です。";
+"threads_empty_info_my" = "既存のスレッドに返信するか、メッセージをタップし「スレッド」から新しいスレッドを開始。";
+"room_accessibility_thread_more" = "その他";
+"room_first_message_placeholder" = "最初のメッセージを送信…";
+
+// MARK: - Chat
+
+"room_slide_to_end_group_call" = "スライドすると全員の通話を終了";
+"authentication_qr_login_failure_request_timed_out" = "時間内にリンクが完了しませんでした。";
+"authentication_qr_login_failure_title" = "リンクに失敗しました";
+"authentication_qr_login_start_step2" = "設定から「セキュリティーとプライバシー」を開いてください";
+"authentication_qr_login_confirm_alert" = "このコードの出所を知っていることを確認してください。端末をリンクすると、あなたのアカウントに制限なくアクセスできるようになります。";
+"authentication_qr_login_scan_subtitle" = "QRコードを以下の四角に合わせてください";
+"authentication_qr_login_display_step2" = "「QRコードでサインイン」を選択してください";
+"authentication_qr_login_start_step4" = "「この端末でQRコードを表示」を選択してください";
+"authentication_qr_login_start_step3" = "「端末をリンク」を選択してください";
+"authentication_qr_login_display_title" = "端末をリンク";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "他の人は %@ であなたを見つけることができます";
+"authentication_server_selection_register_message" = "あなたのサーバーのアドレスを入力してください。ここにあなたの全てのデータがホストされます";
+"authentication_server_info_title_login" = "会話が実施される場所";
+"authentication_server_info_title" = "会話が実施される場所";
+"onboarding_avatar_message" = "表示名にプロフィール画像を追加しましょう";
+"all_chats_edit_layout_add_filters_message" = "自動的にメッセージをあなたが選択したカテゴリーにフィルタリング";
+"all_chats_empty_view_information" = "チーム、友達、組織向けのオールインワンの安全なチャットアプリです。はじめに、チャットを作成するか既存のルームに参加しましょう。";
+"home_empty_view_information" = "チーム、友達、組織向けのオールインワンの安全なチャットアプリです。以下の+ボタンを押すと、連絡先とルームを追加できます。";
+"all_chats_empty_view_title" = "%@\nは空です。";
+"all_chats_nothing_found_placeholder_message" = "検索を調整してみてください。";
+"all_chats_nothing_found_placeholder_title" = "何も見つかりませんでした。";
+"all_chats_edit_layout_pin_spaces_title" = "スペースをピン止め";
+"all_chats_edit_layout_add_section_message" = "セクションをホームにピン止めすると簡単にアクセスできます";
+"all_chats_edit_layout_add_section_title" = "セクションをホームに追加";
+"version_check_banner_subtitle_deprecated" = "%@のサポートはiOS %@で終了しました。%@の使用を継続する場合は、iOSのバージョンをアップグレードしてください。";
+"version_check_banner_subtitle_supported" = "%@のサポートはiOS %@で近日中に終了します。%@の使用を継続する場合は、iOSのバージョンをアップグレードしてください。";
+"version_check_modal_action_title_deprecated" = "方法を確認";
+"version_check_modal_title_supported" = "iOS %@のサポートは近日中に終了します";
+
+// MARK: - Version check
+
+"version_check_banner_title_supported" = "iOS %@のサポートは近日中に終了します";
+"version_check_banner_title_deprecated" = "iOS %@のサポートは終了しました";
+"version_check_modal_title_deprecated" = "iOS %@のサポートは終了しました";
+"attachment_size_prompt_title" = "送信するサイズを確認";
+"attachment_small_with_resolution" = "小：%@（~%@）";
+"attachment_medium_with_resolution" = "中：%@（~%@）";
+"attachment_large_with_resolution" = "大：%@（~%@）";
+"e2e_passphrase_too_short" = "パスフレーズが短すぎます（%d文字以上にしてください）";
+"notice_room_third_party_revoked_invite_for_dm" = "%@が%@の招待を取り消しました";
+"notice_room_third_party_revoked_invite_by_you_for_dm" = "%@の招待を取り消しました";
+"notice_room_name_changed_by_you_for_dm" = "名前を%@に変更しました。";
+"call_remote_holded" = "%@が通話を保留しました";
+"call_holded" = "通話を保留しました";
+"call_more_actions_unhold" = "再開";
+"user_session_rename_session_description" = "あなたが参加するダイレクトメッセージとルームの他のユーザーは、あなたのセッションの一覧を閲覧できます。\n\n相手はあなたとやり取りしていることを確かめることができますが、あなたがここに入力するセッション名は相手に対して表示されます。";
+"user_session_unverified_session_description" = "未認証のセッションは、アカウント情報でログインされていますが、クロス認証されていないセッションです。\n\nこれらのセッションは、アカウントの不正使用を示している可能性があるため、注意して確認してください。";
+"user_session_verified_session_description" = "認証済のセッションは、パスフレーズの入力、または他の認証済のセッションで本人確認を行ったセッションです。\n\n認証済のセッションには、暗号化されたメッセージを復号化する際に使用する全ての鍵が備わっています。また、他のユーザーに対しては、あなたがこのセッションを信頼していることが表示されます。";
+"user_session_push_notifications_message" = "有効にすると、このセッションはプッシュ通知を受信します。";
+"launch_loading_server_syncing" = "サーバーと同期しています";
+"launch_loading_processing_response" = "データを処理しています\n%@ %%";
+"wysiwyg_composer_format_action_link" = "リンクの装飾を適用";
+"wysiwyg_composer_format_action_inline_code" = "インラインコードの装飾を適用";
+"wysiwyg_composer_format_action_unordered_list" = "箇条書きリストの表示を切り替える";
+"wysiwyg_composer_format_action_ordered_list" = "番号付きリストの表示を切り替える";
+"wysiwyg_composer_format_action_code_block" = "コードブロックの表示を切り替える";
+"wysiwyg_composer_format_action_quote" = "引用の表示を切り替える";
+"poll_timeline_reply_ended_poll" = "終了したアンケート";
+"settings_labs_enable_crypto_sdk" = "エンドツーエンド暗号化2.0";
+"settings_labs_disable_crypto_sdk" = "エンドツーエンド暗号化2.0（無効にするにはログアウトしてください）";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "データを移行しています\n%@ %%";
+"poll_history_load_more" = "他のアンケートを読み込む";
+"key_backup_recover_from_private_key_progress" = "%@%%完了";
+"voice_broadcast_playback_unable_to_decrypt" = "この音声配信を復号化できません。";
+"home_context_menu_mark_as_unread" = "未読にする";
