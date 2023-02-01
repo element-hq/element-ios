@@ -2616,3 +2616,5 @@
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "いいですね！";
 "room_avatar_view_accessibility_hint" = "ルームのアバターを変更";
 "room_intro_cell_information_dm_sentence2" = "この会話はお二人だけで、他の人は参加できません。";
+"favourites_empty_view_information" = "お気に入り登録にはいくつかの方法がありますが、一番手っ取り早いのは、長押しすることです。星マークをタップすると、自動的にここに表示され、大切に保管されます。";
+"room_intro_cell_information_multiple_dm_sentence2" = "誰かを招待しない限り、この会話に参加しているのはあなただけです。";
