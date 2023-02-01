@@ -2733,3 +2733,4 @@
 "home_context_menu_mark_as_unread" = "Als ungelesen markieren";
 "wysiwyg_composer_format_action_un_indent" = "Einrückung verringern";
 "wysiwyg_composer_format_action_indent" = "Einrückung erhöhen";
+"settings_push_rules_error" = "Ein Fehler ist während der Aktualisierung deiner Benachrichtigungseinstellungen aufgetreten. Bitte versuche die Option erneut umzuschalten.";
