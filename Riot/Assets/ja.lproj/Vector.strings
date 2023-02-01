@@ -743,17 +743,17 @@
 "room_participants_leave_prompt_msg_for_dm" = "退出してよろしいですか？";
 "room_participants_leave_prompt_title_for_dm" = "退出";
 "contacts_address_book_no_identity_server" = "IDサーバーが設定されていません";
-"rooms_empty_view_information" = "ルームは非公開でも公開でも、あらゆるグループチャットに最適です。+をタップすると、既にあるルームを見つけたり、新しいルームを作ったりすることができます。";
+"rooms_empty_view_information" = "ルームは非公開でも公開でも、あらゆるグループチャットに最適です。＋をタップすると、既にあるルームを見つけたり、新しいルームを作ったりすることができます。";
 "rooms_empty_view_title" = "ルーム";
 "people_empty_view_information" = "誰とでも安全にチャットできます。＋をタップすると連絡先を追加できます。";
 "people_empty_view_title" = "連絡先";
 "room_creation_error_invite_user_by_email_without_identity_server" = "IDサーバーが設定されていないため、メールで参加者を追加することができません。";
 
 // Errors
-"error_user_already_logged_in" = "他のホームサーバーに接続しようとしているようですね。サインアウトしますか？";
+"error_user_already_logged_in" = "他のホームサーバーに接続しようとしているようです。サインアウトしますか？";
 "social_login_button_title_sign_up" = "%@でサインアップ";
 "social_login_button_title_sign_in" = "%@でサインイン";
-"social_login_button_title_continue" = "%@ で続ける";
+"social_login_button_title_continue" = "%@で続行";
 "social_login_list_title_sign_up" = "もしくは";
 "social_login_list_title_sign_in" = "もしくは";
 
@@ -2559,7 +2559,7 @@
 "onboarding_avatar_message" = "表示名にプロフィール画像を追加しましょう";
 "all_chats_edit_layout_add_filters_message" = "自動的にメッセージをあなたが選択したカテゴリーにフィルタリング";
 "all_chats_empty_view_information" = "チーム、友達、組織向けのオールインワンの安全なチャットアプリです。はじめに、チャットを作成するか既存のルームに参加しましょう。";
-"home_empty_view_information" = "チーム、友達、組織向けのオールインワンの安全なチャットアプリです。以下の+ボタンを押すと、連絡先とルームを追加できます。";
+"home_empty_view_information" = "チーム、友達、組織向けのオールインワンの安全なチャットアプリです。以下の＋ボタンを押すと、連絡先とルームを追加できます。";
 "all_chats_empty_view_title" = "%@\nは空です。";
 "all_chats_nothing_found_placeholder_message" = "検索を調整してみてください。";
 "all_chats_nothing_found_placeholder_title" = "何も見つかりませんでした。";
