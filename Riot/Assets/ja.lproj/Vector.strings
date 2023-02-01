@@ -765,7 +765,7 @@
 "auth_softlogout_clear_data_button" = "全てのデータをクリア";
 "auth_softlogout_clear_data_message_2" = "この端末の使用を終了する場合や、別のアカウントにサインインしたい場合は、クリアしてください。";
 "auth_softlogout_clear_data_message_1" = "警告：個人データ（暗号鍵を含む）がこの端末にまだ保存されています。";
-"callbar_return" = "折り返し";
+"callbar_return" = "折り返す";
 "callbar_active_and_multiple_paused" = "1件のアクティブな通話（%@）・%@件の一時停止された通話";
 "callbar_only_multiple_paused" = "一時停止した%@件の通話";
 "callbar_only_single_paused" = "一時停止した通話";
@@ -775,12 +775,12 @@
 "auth_softlogout_reason" = "あなたのホームサーバー (%1$@) 管理者があなたをアカウント %2$@ (%3$@) からサインアウトさせました。";
 "auth_softlogout_sign_in" = "サインイン";
 "auth_softlogout_signed_out" = "サインアウトしました";
-"auth_autodiscover_invalid_response" = "無効なホームサーバー発見レスポンス";
-"auth_accept_policies" = "このホームサーバーのポリシーを確認して同意してください:";
-"auth_reset_password_error_is_required" = "IDサーバーが設定されていません：パスワードをリセットするためにサーバーオプションに追加してください。";
-"auth_forgot_password_error_no_configured_identity_server" = "IDサーバーが設定されていません：パスワードをリセットするためにIDサーバーを追加してください。";
-"auth_phone_is_required" = "IDサーバーが設定されていないので、パスワードをリセットするために電話番号を追加することはできません。";
-"auth_email_is_required" = "IDサーバーが設定されていないので、パスワードをリセットするためにメールアドレスを追加することはできません。";
+"auth_autodiscover_invalid_response" = "ホームサーバーのディスカバリー（発見）に関する不正な応答です";
+"auth_accept_policies" = "このホームサーバーの運営方針を確認して承諾してください：";
+"auth_reset_password_error_is_required" = "IDサーバーが設定されていません：Matrixのアカウントのパスワードを再設定するためにサーバーオプションに追加してください。";
+"auth_forgot_password_error_no_configured_identity_server" = "IDサーバーが設定されていません：パスワードを再設定するためにIDサーバーを追加してください。";
+"auth_phone_is_required" = "IDサーバーが設定されていないため、Matrixアカウントのパスワードの再設定に使用する電話番号を追加することができません。";
+"auth_email_is_required" = "IDサーバーが設定されていないため、Matrixアカウントのパスワードの再設定に使用するメールアドレスを追加することができません。";
 "auth_add_email_phone_message_2" = "アカウント復旧用のメールアドレスを設定します。後からオプションでメールアドレスや電話番号を使用して知人に見つけてもらえるようにできます。";
 "auth_add_phone_message_2" = "電話番号を設定します。後からオプションで知人に見つけてもらえるようにできます。";
 "auth_add_email_message_2" = "アカウント復旧用のメールアドレスを設定します。後からオプションで知人に見つけてもらえるようにできます。";
