@@ -737,7 +737,7 @@
 "room_participants_action_security_status_verify" = "認証";
 "room_participants_action_security_status_verified" = "認証済";
 "room_participants_action_section_security" = "セキュリティー";
-"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "IDサーバーが設定されていないため、メールアドレスを使って連絡先とチャットを開始することができません。";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "IDサーバーが設定されていないため、メールアドレスを使用して連絡先とチャットを開始することはできません。";
 "room_participants_filter_room_members_for_dm" = "メンバーを検索";
 "room_participants_remove_third_party_invite_prompt_msg" = "招待を取り消してよろしいですか？";
 "room_participants_leave_prompt_msg_for_dm" = "退出してよろしいですか？";
