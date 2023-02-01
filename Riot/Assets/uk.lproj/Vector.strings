@@ -2924,3 +2924,4 @@
 "home_context_menu_mark_as_unread" = "Позначити непрочитаним";
 "wysiwyg_composer_format_action_un_indent" = "Зменшити відступ";
 "wysiwyg_composer_format_action_indent" = "Збільшити відступ";
+"settings_push_rules_error" = "Сталася помилка під час оновлення налаштувань сповіщень. Спробуйте змінити налаштування ще раз.";
