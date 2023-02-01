@@ -43,7 +43,7 @@ class PollHistoryDetailViewModelTests: XCTestCase {
                                                hasBeenEdited: false,
                                                hasDecryptionError: false)
         
-        viewModel = PollHistoryDetailViewModel(timelineViewModel: TimelinePollViewModel(timelinePollDetails: timelinePoll))
+        viewModel = PollHistoryDetailViewModel(poll: timelinePoll)
         context = viewModel.context
     }
 

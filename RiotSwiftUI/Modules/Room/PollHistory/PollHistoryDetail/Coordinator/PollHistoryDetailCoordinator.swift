@@ -38,8 +38,8 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         let timelinePollCoordinator = try TimelinePollCoordinator(parameters: .init(session: parameters.room.mxSession, room: parameters.room, pollEvent: parameters.event))
         
-        let viewModel = PollHistoryDetailViewModel(timelinePollView: timelinePollCoordinator.toView(), poll: parameters.poll)
-        let view = PollHistoryDetail(viewModel: viewModel.context)
+        let viewModel = PollHistoryDetailViewModel(poll: parameters.poll)
+        let view = PollHistoryDetail(viewModel: viewModel.context, contentPoll: timelinePollCoordinator.toView())
         pollHistoryDetailViewModel = viewModel
         pollHistoryDetailHostingController = VectorHostingController(rootView: view)
         add(childCoordinator: timelinePollCoordinator)

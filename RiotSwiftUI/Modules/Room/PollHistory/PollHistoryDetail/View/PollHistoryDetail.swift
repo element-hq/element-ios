@@ -24,6 +24,7 @@ struct PollHistoryDetail: View {
     // MARK: Public
     
     @ObservedObject var viewModel: PollHistoryDetailViewModel.Context
+    var contentPoll: any View
     
     var body: some View {
         navigation
@@ -49,7 +50,7 @@ struct PollHistoryDetail: View {
                     .font(theme.fonts.caption1)
                     .padding([.top])
                     .accessibilityIdentifier("PollHistoryDetail.date")
-                AnyView(viewModel.viewState.timelinePollView)
+                AnyView(contentPoll)
                     .navigationTitle(navigationTitle)
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationBarBackButtonHidden(true)

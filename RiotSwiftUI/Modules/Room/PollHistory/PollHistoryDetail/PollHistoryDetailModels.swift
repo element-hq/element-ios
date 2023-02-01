@@ -29,7 +29,6 @@ enum PollHistoryDetailViewModelResult {
 // MARK: View
 
 struct PollHistoryDetailViewState: BindableState {
-    var timelinePollView: any View
     var poll: TimelinePollDetails
     var pollStartDate: Date {
         poll.startDate
