@@ -2615,3 +2615,4 @@
 "biometrics_cant_unlocked_alert_title" = "アプリのロックを解除できません";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "いいですね！";
 "room_avatar_view_accessibility_hint" = "部屋のアバターを変更する";
+"room_intro_cell_information_dm_sentence2" = "この会話はお二人だけで、他の人は参加できません。";
