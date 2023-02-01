@@ -191,13 +191,12 @@ private extension NotificationSettingsViewModel {
             try await notificationSettingsService.updatePushRuleActions(for: id.rawValue, enabled: enabled, actions: standardActions.actions)
             
             // synchronize all the 'children rules' with the parent rule
-            try await withThrowingTaskGroup(of: Void.self) { group in
+            await withThrowingTaskGroup(of: Void.self) { group in
                 for ruleId in rules {
                     group.addTask {
                         try await self.notificationSettingsService.updatePushRuleActions(for: ruleId.rawValue, enabled: enabled, actions: standardActions.actions)
                     }
                 }
-                try await group.waitForAll()
             }
             await completeUpdate()
         } catch {
