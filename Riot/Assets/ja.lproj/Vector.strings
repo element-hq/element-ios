@@ -1679,7 +1679,7 @@
 
 // MARK: - Invite friends
 
-"invite_friends_action" = "友だちを %@ に招待";
+"invite_friends_action" = "友達を %@ に招待する";
 "call_transfer_error_title" = "エラー";
 "home_context_menu_mark_as_read" = "既読にする";
 "home_context_menu_normal_priority" = "通常優先度";
