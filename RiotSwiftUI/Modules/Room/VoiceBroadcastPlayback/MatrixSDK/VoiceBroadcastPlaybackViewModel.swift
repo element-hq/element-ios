@@ -579,7 +579,7 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
     
     func audioPlayer(_ audioPlayer: VoiceMessageAudioPlayer, didFailWithError error: Error) {
         state.playbackState = .error
-        self.updateErrorState()
+        updateErrorState()
     }
     
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
