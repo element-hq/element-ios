@@ -2920,3 +2920,5 @@
 "voice_broadcast_playback_unable_to_decrypt" = "Toto hlasové vysielanie sa nedá dešifrovať.";
 "home_context_menu_mark_as_unread" = "Označiť ako neprečítané";
 "key_backup_recover_from_private_key_progress" = "%@%% Dokončené";
+"wysiwyg_composer_format_action_indent" = "Zväčšenie odsadenia";
+"wysiwyg_composer_format_action_un_indent" = "Zmenšenie odsadenia";
