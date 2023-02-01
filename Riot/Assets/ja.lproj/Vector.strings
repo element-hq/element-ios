@@ -766,10 +766,10 @@
 "auth_softlogout_clear_data_message_2" = "この端末の使用を終了する場合や、別のアカウントにサインインしたい場合は、クリアしてください。";
 "auth_softlogout_clear_data_message_1" = "警告：個人データ（暗号鍵を含む）がこの端末にまだ保存されています。";
 "callbar_return" = "折り返し";
-"callbar_active_and_multiple_paused" = "アクティブな通話（%@）· %@の一時停止された通話";
+"callbar_active_and_multiple_paused" = "1件のアクティブな通話（%@）・%@件の一時停止された通話";
 "callbar_only_multiple_paused" = "一時停止した%@件の通話";
 "callbar_only_single_paused" = "一時停止した通話";
-"store_promotional_text" = "オープンネットワーク上でプライバシーを保護してチャットできるアプリ。非中央集権型のため、あなた自身で制御できます。データ収集、バックドア、第三者によるアクセスはありません。";
+"store_promotional_text" = "オープンなネットワーク上でプライバシーを保護したチャット・コラボレーションアプリ。あなた自身でコントロールできるように非中央集権化（分散化）されています。データマイニング、バックドア、第三者によるアクセスはありません。";
 "auth_softlogout_clear_data" = "個人データを消去";
 "auth_softlogout_recover_encryption_keys" = "暗号化されたメッセージがどの端末でも読めるように、サインインしてこの端末にのみ保存されている暗号鍵を取り戻してください。";
 "auth_softlogout_reason" = "ホームサーバー(%1$@)の管理者が%2$@(%3$@)からサインアウトさせました。";
