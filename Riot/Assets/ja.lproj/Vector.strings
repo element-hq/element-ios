@@ -242,7 +242,7 @@
 // Room Preview
 "room_preview_invitation_format" = "あなたは%@さんに呼ばれてこのルームへ参加しました";
 "room_preview_subtitle" = "現在表示しているのはルームのプレビューです。メッセージの送信などは行えません。";
-"room_preview_unlinked_email_warning" = "このアカウントに関連付けられていない%@宛に招待が送信されました。別のアカウントでログインするか、メールアドレスをこのアカウントに追加することができます。";
+"room_preview_unlinked_email_warning" = "この招待は、このアカウントに関連付けられていない %@ に送信されました。別のアカウントでログインするか、このメールアドレスを自分のアカウントに追加してください。";
 "room_preview_try_join_an_unknown_room" = "%@ に参加しますか？";
 "room_preview_try_join_an_unknown_room_default" = "ルーム";
 // Settings
@@ -718,7 +718,7 @@
 "settings_discovery_settings" = "ディスカバリー";
 "room_multiple_typing_notification" = "%@とその他のユーザーが入力中です";
 "external_link_confirmation_message" = "リンク %@ は別のサイトに移動します：%@\n\n続行してよろしいですか？";
-"room_event_action_delete_confirmation_title" = "未送信メッセージを削除";
+"room_event_action_delete_confirmation_title" = "未送信のメッセージを削除";
 "room_unsent_messages_cancel_message" = "このルームにある未送信のメッセージを全て削除してもよろしいですか？";
 "room_unsent_messages_cancel_title" = "未送信のメッセージを削除";
 "room_message_replying_to" = "%@に返信中";
