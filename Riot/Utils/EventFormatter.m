@@ -25,7 +25,6 @@
 #import "MXDecryptionResult.h"
 #import "DecryptionFailureTracker.h"
 
-#import "EventFormatter+DTCoreTextFix.h"
 #import <MatrixSDK/MatrixSDK.h>
 
 #pragma mark - Constants definitions
@@ -49,11 +48,6 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 @end
 
 @implementation EventFormatter
-
-+ (void)load
-{
-    [self fixDTCoreTextFont];
-}
 
 - (void)initDateTimeFormatters
 {
