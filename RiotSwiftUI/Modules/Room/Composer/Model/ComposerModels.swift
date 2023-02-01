@@ -36,6 +36,8 @@ enum FormatType {
     case strikethrough
     case unorderedList
     case orderedList
+    case indent
+    case unIndent
     case inlineCode
     case codeBlock
     case quote
@@ -66,6 +68,10 @@ extension FormatItem {
             return Asset.Images.bulletList.name
         case .orderedList:
             return Asset.Images.numberedList.name
+        case .indent:
+            return Asset.Images.indentIncrease.name
+        case .unIndent:
+            return Asset.Images.indentDecrease.name
         case .inlineCode:
             return Asset.Images.code.name
         case .codeBlock:
@@ -91,6 +97,10 @@ extension FormatItem {
             return "unorderedListButton"
         case .orderedList:
             return "orderedListButton"
+        case .indent:
+            return "indentListButton"
+        case .unIndent:
+            return "unIndentButton"
         case .inlineCode:
             return "inlineCodeButton"
         case .codeBlock:
@@ -116,6 +126,10 @@ extension FormatItem {
             return VectorL10n.wysiwygComposerFormatActionUnorderedList
         case .orderedList:
             return VectorL10n.wysiwygComposerFormatActionOrderedList
+        case .indent:
+            return VectorL10n.wysiwygComposerFormatActionIndent
+        case .unIndent:
+            return VectorL10n.wysiwygComposerFormatActionUnIndent
         case .inlineCode:
             return VectorL10n.wysiwygComposerFormatActionInlineCode
         case .codeBlock:
@@ -144,6 +158,10 @@ extension FormatType {
             return .unorderedList
         case .orderedList:
             return .orderedList
+        case .indent:
+            return .indent
+        case .unIndent:
+            return .unIndent
         case .inlineCode:
             return .inlineCode
         case .codeBlock:
@@ -171,6 +189,10 @@ extension FormatType {
             return .unorderedList
         case .orderedList:
             return .orderedList
+        case .indent:
+            return .indent
+        case .unIndent:
+            return .unIndent
         case .inlineCode:
             return .inlineCode
         case .codeBlock:
