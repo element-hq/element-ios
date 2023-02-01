@@ -1586,7 +1586,7 @@
 "biometrics_cant_unlocked_alert_message_retry" = "再試行";
 "biometrics_usage_reason" = "アプリを開くには認証が必要です";
 "settings_sending_media" = "画像と動画の送信";
-"invite_friends_share_text" = "こちらでお話ししましょう %@: %@";
+"invite_friends_share_text" = "%@でお話ししましょう：%@";
 "side_menu_action_invite_friends" = "友だちを招待";
 "call_more_actions_change_audio_device" = "オーディオデバイスを変更";
 "call_more_actions_dialpad" = "ダイヤルパッド";
