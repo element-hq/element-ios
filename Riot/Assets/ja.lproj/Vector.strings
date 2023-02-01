@@ -522,7 +522,7 @@
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "今すぐ追加しますか？";
 // Room key request dialog
 "e2e_room_key_request_title" = "暗号鍵の要求";
-"e2e_room_key_request_message_new_device" = "暗号鍵を要求している新しい端末 '%@' を追加しました。";
+"e2e_room_key_request_message_new_device" = "暗号化キーを要求している新しいセッション'%@'を追加しました。";
 "e2e_room_key_request_message" = "認証されていない端末 '%@' が暗号鍵を要求しています。";
 "e2e_room_key_request_start_verification" = "認証を始めます…";
 "e2e_room_key_request_share_without_verifying" = "認証せずに共有";
@@ -668,7 +668,7 @@
 // Media picker
 "media_picker_title" = "メディアライブラリ";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "ここは暗号化が有効ではありません。";
-"room_details_advanced_e2e_encryption_enabled_for_dm" = "ここでは暗号化が有効です";
+"room_details_advanced_e2e_encryption_enabled_for_dm" = "ここでは暗号化が有効になっています";
 "room_details_advanced_room_id_for_dm" = "ID：";
 "room_details_no_local_addresses_for_dm" = "ここにはローカルアドレスがありません";
 "room_details_access_section_directory_toggle_for_dm" = "ルーム一覧に掲載";
