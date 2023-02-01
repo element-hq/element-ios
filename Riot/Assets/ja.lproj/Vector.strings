@@ -2614,3 +2614,4 @@
 "key_backup_setup_passphrase_passphrase_invalid" = "語を追加してみる";
 "biometrics_cant_unlocked_alert_title" = "アプリのロックを解除できません";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "いいですね！";
+"room_avatar_view_accessibility_hint" = "部屋のアバターを変更する";
