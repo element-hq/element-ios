@@ -667,7 +667,7 @@
 
 // Media picker
 "media_picker_title" = "メディアライブラリ";
-"room_details_advanced_e2e_encryption_disabled_for_dm" = "ここは暗号化が有効ではありません。";
+"room_details_advanced_e2e_encryption_disabled_for_dm" = "ここでは暗号化が有効ではありません。";
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "ここでは暗号化が有効になっています";
 "room_details_advanced_room_id_for_dm" = "ID：";
 "room_details_no_local_addresses_for_dm" = "ここにはローカルアドレスがありません";
