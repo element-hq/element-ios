@@ -2529,7 +2529,7 @@
 "device_name_desktop" = "%@ Bureau";
 "user_inactive_session_item_with_date" = "Inactif depuis 90 jours ou plus (%@)";
 "user_inactive_session_item" = "Inactif depuis 90 jours ou plus";
-"user_session_item_details" = "%@ · Dernière activité %@";
+"user_session_item_details" = "%1$@ · %2$@";
 
 // First item is client name and second item is session display name
 "user_session_name" = "%@ : %@";
@@ -2606,3 +2606,136 @@
 "manage_session_name_info" = "Gardez en tête que les noms des sessions sont aussi visibles par les personnes avec qui vous communiquez. %@";
 "manage_session_name_hint" = "Personnaliser les noms des sessions peut vous aider à reconnaître vos appareils plus facilement.";
 "settings_labs_enable_wysiwyg_composer" = "Essayez le compositeur de messages visuel";
+"settings_labs_enable_voice_broadcast" = "Diffusion vocale";
+"wysiwyg_composer_format_action_un_indent" = "Diminuer le retrait";
+"wysiwyg_composer_format_action_indent" = "Augmenter le retrait";
+"wysiwyg_composer_format_action_code_block" = "Bloc de code";
+"wysiwyg_composer_start_action_stickers" = "Autocollants";
+"user_session_rename_session_title" = "Renommer les sessions";
+"user_session_verified_session_description" = "Les sessions vérifiées sont toutes celles où vous vous êtes connecté à Element grâce à vos identifiants ou celles pour lesquelles vous avez confirmé votre identité à l'aide d'une autre session.\n\nCela signifie que vous êtes en possession de toutes les clés requises pour déchiffrer vos messages et montrer aux autres utilisateurs que vous faites confiance à cette session.";
+"poll_history_loading_text" = "Afficher les sondages";
+"voice_message_broadcast_in_progress_title" = "Impossible de démarrer l'enregistrement vocal";
+"home_context_menu_mark_as_unread" = "Marquer comme non lu";
+"launch_loading_processing_response" = "Traitement des données\n%@ %%";
+"notice_voice_broadcast_ended_by_you" = "Vous avez terminé une diffusion vocale.";
+"notice_voice_broadcast_ended" = "%@ a terminé une diffusion vocale.";
+"notice_voice_broadcast_live" = "Diffusion en direct";
+"deselect_all" = "Tout désélectionner";
+"wysiwyg_composer_link_action_edit_title" = "Modifier le lien";
+"wysiwyg_composer_link_action_create_title" = "Créer un lien";
+"wysiwyg_composer_link_action_link" = "Lien";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Texte";
+"wysiwyg_composer_format_action_quote" = "Citation";
+"wysiwyg_composer_format_action_ordered_list" = "Liste numérique";
+"wysiwyg_composer_format_action_unordered_list" = "Liste à puces";
+"wysiwyg_composer_format_action_inline_code" = "Formater comme code informatique";
+"wysiwyg_composer_format_action_link" = "Formater comme lien";
+"wysiwyg_composer_format_action_strikethrough" = "Souligner";
+"wysiwyg_composer_format_action_underline" = "Barrer";
+"wysiwyg_composer_format_action_italic" = "Mettre en italique";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Mettre en caractères gras";
+"wysiwyg_composer_start_action_voice_broadcast" = "Diffusion vocale";
+"wysiwyg_composer_start_action_text_formatting" = "Formatage du texte";
+"wysiwyg_composer_start_action_camera" = "Appareil photo";
+"wysiwyg_composer_start_action_location" = "Position";
+"wysiwyg_composer_start_action_polls" = "Sondages";
+"wysiwyg_composer_start_action_attachments" = "Pièces jointes";
+
+
+// MARK: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Galerie photo";
+"user_session_details_last_activity" = "Dernière activité";
+"user_session_item_details_last_activity" = "Dernière activité %@";
+"user_other_session_menu_sign_out_sessions" = "Déconnecter %@ sessions";
+"user_other_session_selected_count" = "%@ sélectionnées";
+"user_other_session_menu_select_sessions" = "Sélectionnez des sessions";
+"user_other_session_clear_filter" = "Effacer les filtres";
+"user_other_session_no_unverified_sessions" = "Aucune session non vérifiée trouvée.";
+"user_other_session_no_verified_sessions" = "Aucune session vérifiée trouvée.";
+"user_other_session_no_inactive_sessions" = "Aucune session inactive trouvée.";
+"user_other_session_filter_menu_inactive" = "Inactives";
+"user_other_session_filter_menu_unverified" = "Non vérifiées";
+"user_other_session_filter_menu_verified" = "Vérifiées";
+"user_other_session_filter_menu_all" = "Toutes les sessions";
+"user_other_session_filter" = "Filtrer";
+"user_other_session_verified_sessions_header_subtitle" = "Pour augmenter la sécurité, veuillez déconnecter toutes les sessions qui vous semblent inconnues ou que vous n'utilisez plus.";
+"user_other_session_current_session_details" = "Votre session actuelle";
+"user_other_session_security_recommendation_title" = "Autres sessions";
+"user_session_rename_session_description" = "D'autres utilisateurs des conversations et salons que vous rejoignez peuvent consulter la liste complète de vos session.\n\nCela leur permet de confirmer qu'ils communiquent bien avec vous, mais cela signifie également qu'ils verront le nom que vous donnez à vos sessions.";
+"user_session_inactive_session_description" = "Les sessions inactives sont celles qui n'ont pas été utilisées depuis un certain temps, mais qui continuent de recevoir des clés de chiffrement.\n\nÉliminer ces sessions inactives augmente la sécurité et les performances, et facilite l'identification de nouvelles connexions suspectes.";
+"user_session_inactive_session_title" = "Sessions inactives";
+"user_session_permanently_unverified_session_description" = "Cette session de prend pas en charge le chiffrement et ne peut donc être vérifiée.\n\nVous ne pourrez pas intervenir dans les salons où le chiffrement est activé en utilisant cette session.\n\nPour une sécurité et confidentialité optimale, il est recommandé d'utiliser des clients Matrix qui prennent en charge le chiffrement.";
+"user_session_unverified_session_description" = "Les sessions non vérifiez sont celles qui sont connectées avec vos identifiants, mais qui n'ont pas passé les vérifications croisées.\n\nVous devriez passer en revue ces sessions car elles pourraient témoigner d'un usage malicieux de votre compte.";
+"user_session_unverified_session_title" = "Session non vérifiée";
+"user_session_verified_session_title" = "Sessions vérifiées";
+"user_session_got_it" = "Entendu";
+"user_other_session_verified_additional_info" = "Cette session est prête à l'échange de messages.";
+"user_other_session_permanently_unverified_additional_info" = "Cette session ne prend pas en charge le chiffrement et ne peut donc être vérifiée.";
+"user_other_session_unverified_additional_info" = "Vérifier ou déconnecter cette session pour une sécurité et une fiabilité accrue.";
+"user_session_verification_unknown_additional_info" = "Vérifier la session actuelle pour révéler l'état de vérification de cette session.";
+"user_session_verification_unknown_short" = "Inconnu";
+"user_session_verification_unknown" = "État de vérification inconnu";
+"user_sessions_hide_location_info" = "Masquer l'adresse IP";
+"user_sessions_show_location_info" = "Montrer l'adresse IP";
+"poll_timeline_reply_ended_poll" = "Sondage terminé";
+"poll_timeline_ended_text" = "Sondage clos";
+"poll_timeline_decryption_error" = "Des erreurs de déchiffrement pourrait empêcher certains votes d'être comptabilisés";
+"poll_history_fetching_error" = "Erreur au cours de la récupération des sondages.";
+"poll_history_load_more" = "Charger plus de sondages";
+"poll_history_no_past_poll_period_text" = "Il n'y a pas eu de sondages les %@ derniers jours. Veuillez charger plus de sondages pour consulter les sondages des mois antérieurs";
+"poll_history_no_active_poll_period_text" = "Il n'y a pas eu de sondages depuis %@ jours. Veuillez charger plus de sondages pour consulter les sondages des mois antérieurs";
+"poll_history_detail_view_in_timeline" = "Consulter la chronologie des sondages";
+"poll_history_no_past_poll_text" = "Il n'y a pas de sondage précédent dans ce salon";
+"poll_history_no_active_poll_text" = "Il n'y a aucun sondage en cours dans ce salon";
+"poll_history_past_segment_title" = "Sondages précédents";
+"poll_history_active_segment_title" = "Sondages en cours";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Historique des sondages";
+"voice_broadcast_playback_unable_to_decrypt" = "Impossible de déchiffrer cette diffusion vocale.";
+"voice_broadcast_recorder_connection_error" = "Erreur de connexion - Enregistrement interrompu";
+"voice_broadcast_connection_error_message" = "Nous sommes malheureusement dans l'impossibilité de démarrer un enregistrement maintenant. Veuillez réessayer plus tard.";
+"voice_broadcast_connection_error_title" = "Erreur de connexion";
+"voice_broadcast_voip_cannot_start_description" = "Vous ne pouvez pas démarrer d'appel car vous enregistrez déjà une diffusion en direct. Veuillez interrompre votre diffusion pour lancer un appel.";
+"voice_broadcast_voip_cannot_start_title" = "Impossible de démarrer l'appel";
+"voice_broadcast_stop_alert_agree_button" = "Oui, terminer";
+"voice_broadcast_stop_alert_description" = "Êtes vous sûr de vouloir interrompre votre diffusion vocale ? Cela mettra fin à la diffusion et rendra l'enregistrement disponible dans le salon.";
+"voice_broadcast_stop_alert_title" = "Arrêter la diffusion vocale ?";
+"voice_broadcast_buffering" = "Mise en mémoire tampon...";
+"voice_broadcast_time_left" = "%@ restant";
+"voice_broadcast_tile" = "Diffusion vocale";
+"voice_broadcast_live" = "En direct";
+"voice_broadcast_playback_lock_screen_placeholder" = "Diffusion vocale";
+"voice_broadcast_playback_loading_error" = "Impossible de lire cette diffusion vocale.";
+"voice_broadcast_blocked_by_someone_else_message" = "Quelqu'un d'autre est déjà en train d'enregistrer une diffusion vocale. Veuillez attendre la fin de la leur pour en démarrer une nouvelle.";
+"voice_broadcast_already_in_progress_message" = "Vous êtes déjà en train d'enregistrer une diffusion vocale. Veuillez y mettre fin avant d'en démarrer une nouvelle.";
+"voice_broadcast_permission_denied_message" = "Vous n'avez pas les autorisations nécessaires pour démarrer une diffusion vocal dans ce salon. Contactez un administrateur pour qu'il vous octroie la permission.";
+
+// MARK: - Voice Broadcast
+"voice_broadcast_unauthorized_title" = "Impossible de démarrer une nouvelle diffusion vocale";
+"voice_message_broadcast_in_progress_message" = "Vous ne pouvez pas démarrer d'enregistrement vocal car vous diffusez en direct. Veuillez interrompre votre diffusion pour démarrer l'enregistrement vocal";
+"launch_loading_server_syncing_nth_attempt" = "Synchronisation avec le serveur\n(%@ tentatives)";
+"launch_loading_server_syncing" = "Synchronisation avec le serveur";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Migration des données\n%@ %%";
+"key_backup_recover_from_private_key_progress" = "%@%% Fini";
+"room_details_polls" = "Historique des sondages";
+"settings_labs_disable_crypto_sdk" = "Chiffrement de bout en bout 2.0 (se déconnecter pour désactiver)";
+"settings_labs_confirm_crypto_sdk" = "Cette option activera un nouvel engin pour le chiffrement de bout en bout, plus rapide et plus fiable, écrit en Rust. Une fois activé vous devrez vous déconnecter pour le désactiver. Voulez-vous continuer?";
+"settings_labs_enable_crypto_sdk" = "Chiffrement de bout en bout 2.0";
+"settings_push_rules_error" = "Nous avons rencontré une erreur lors de la mise à jours de vos préférences de notification. Veuillez réactiver l'option.";
+"password_policy_pwd_in_dict_error" = "Ce mot de passe a été trouvé dans un dictionnaire, et son usage n'est donc pas autorisé.";
+"password_policy_weak_pwd_error" = "Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, dont au moins une majuscule, une minuscule, un chiffre et un caractère spécial.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Mot de passe trop court";
+"accessibility_selected" = "sélectionné";
