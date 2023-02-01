@@ -2926,3 +2926,5 @@
 "home_context_menu_mark_as_unread" = "Tandai sebagai belum dibaca";
 "wysiwyg_composer_format_action_un_indent" = "Kurangi indentasi";
 "wysiwyg_composer_format_action_indent" = "Tambahkan indentasi";
+"poll_history_detail_view_in_timeline" = "Tampilkan pemungutan suara dalam lini masa";
+"settings_push_rules_error" = "Sebuah kesalahan terjadi ketika memperbarui preferensi notifikasi Anda. Silakan alih ulang opsi Anda.";
