@@ -242,7 +242,7 @@
 // Room Preview
 "room_preview_invitation_format" = "あなたは%@さんに呼ばれてこのルームへ参加しました";
 "room_preview_subtitle" = "現在表示しているのはルームのプレビューです。メッセージの送信などは行えません。";
-"room_preview_unlinked_email_warning" = "この招待は、このアカウントに関連付けられていない %@ に送信されました。別のアカウントでログインするか、このメールアドレスを自分のアカウントに追加してください。";
+"room_preview_unlinked_email_warning" = "この招待は、このアカウントに関連付けられていない%@に送信されました。別のアカウントでログインするか、このメールアドレスを自分のアカウントに追加してください。";
 "room_preview_try_join_an_unknown_room" = "%@ に参加しますか？";
 "room_preview_try_join_an_unknown_room_default" = "ルーム";
 // Settings
@@ -319,7 +319,7 @@
 "settings_crypto_device_id" = "\nセッションID: ";
 "settings_crypto_device_key" = "\nセッションキー:\n";
 "settings_crypto_export" = "鍵をエクスポート";
-"settings_crypto_blacklist_unverified_devices" = "認証されたセッションのみで暗号化";
+"settings_crypto_blacklist_unverified_devices" = "認証済のセッションにのみ暗号化";
 // Room Details
 "room_details_title" = "ルームの詳細";
 "room_details_people" = "メンバー";
@@ -359,7 +359,7 @@
 "room_details_advanced_enable_e2e_encryption" = "暗号化を有効にする（警告: 有効後にこれを無効にすることはできません！)";
 "room_details_advanced_e2e_encryption_enabled" = "このルームの発言は暗号化されています";
 "room_details_advanced_e2e_encryption_disabled" = "このルームの発言は暗号化されていません。";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "認証されたセッションのみで暗号化";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "認証済のセッションにのみ暗号化";
 "room_details_fail_to_update_avatar" = "ルームのアイコン画像の更新に失敗";
 "room_details_fail_to_update_room_name" = "ルーム名の更新に失敗";
 "room_details_fail_to_update_topic" = "ルームの説明の更新に失敗";
@@ -622,7 +622,7 @@
 "widget_picker_manage_integrations" = "インテグレーションを管理する…";
 
 // Widget Picker
-"widget_picker_title" = "インテグレーションマネージャー";
+"widget_picker_title" = "インテグレーション";
 "widget_integration_manager_disabled" = "設定でインテグレーションマネージャーを有効にする必要があります";
 "widget_menu_remove" = "全員から削除";
 "widget_menu_revoke_permission" = "アクセスを取り消す";
@@ -668,7 +668,7 @@
 // Media picker
 "media_picker_title" = "メディアライブラリ";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "ここは暗号化が有効ではありません。";
-"room_details_advanced_e2e_encryption_enabled_for_dm" = "ここは暗号化が有効です";
+"room_details_advanced_e2e_encryption_enabled_for_dm" = "ここでは暗号化が有効です";
 "room_details_advanced_room_id_for_dm" = "ID：";
 "room_details_no_local_addresses_for_dm" = "ここにはローカルアドレスがありません";
 "room_details_access_section_directory_toggle_for_dm" = "ルーム一覧に掲載";
@@ -1002,7 +1002,7 @@
 "room_event_action_delete_confirmation_message" = "この未送信メッセージを削除してよろしいですか？";
 "room_accessibility_video_call" = "ビデオ通話";
 "room_accessibility_call" = "通話";
-"room_accessibility_integrations" = "統合";
+"room_accessibility_integrations" = "インテグレーション";
 "room_accessibility_search" = "検索";
 "room_accessibility_upload" = "アップロード";
 "room_message_edits_history_title" = "メッセージを編集";
