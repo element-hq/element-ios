@@ -42,15 +42,14 @@ struct PollHistoryDetail: View {
     }
 
     private var content: some View {
-        let timelineViewModel = viewModel.viewState.timelineViewModel
-        return ScrollView {
+        ScrollView {
             VStack(alignment: .leading) {
                 Text(DateFormatter.pollShortDateFormatter.string(from: viewModel.viewState.pollStartDate))
                     .foregroundColor(theme.colors.tertiaryContent)
                     .font(theme.fonts.caption1)
                     .padding([.top])
                     .accessibilityIdentifier("PollHistoryDetail.date")
-                TimelinePollView(viewModel: timelineViewModel)
+                AnyView(viewModel.viewState.timelinePollView)
                     .navigationTitle(navigationTitle)
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationBarBackButtonHidden(true)

@@ -57,7 +57,7 @@ final class PollHistoryCoordinator: NSObject, Coordinator, Presentable {
     
     func showPollDetail(_ poll: TimelinePollDetails) {
         guard let event = parameters.room.mxSession.store.event(withEventId: poll.id, inRoom: parameters.room.roomId),
-              let detailCoordinator: PollHistoryDetailCoordinator = try? .init(parameters: .init(event: event, room: parameters.room)) else {
+              let detailCoordinator: PollHistoryDetailCoordinator = try? .init(parameters: .init(event: event, poll: poll, room: parameters.room)) else {
             pollHistoryViewModel.context.alertInfo = .init(id: true, title: VectorL10n.settingsDiscoveryErrorMessage)
             return
         }

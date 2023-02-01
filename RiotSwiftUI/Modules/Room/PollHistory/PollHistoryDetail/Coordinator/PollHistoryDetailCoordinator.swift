@@ -21,6 +21,7 @@ import SwiftUI
 
 struct PollHistoryDetailCoordinatorParameters {
     let event: MXEvent
+    let poll: TimelinePollDetails
     let room: MXRoom
 }
 
@@ -37,7 +38,7 @@ final class PollHistoryDetailCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         let timelinePollCoordinator = try TimelinePollCoordinator(parameters: .init(session: parameters.room.mxSession, room: parameters.room, pollEvent: parameters.event))
         
-        let viewModel = PollHistoryDetailViewModel(timelineViewModel: timelinePollCoordinator.viewModel)
+        let viewModel = PollHistoryDetailViewModel(timelinePollView: timelinePollCoordinator.toView(), poll: parameters.poll)
         let view = PollHistoryDetail(viewModel: viewModel.context)
         pollHistoryDetailViewModel = viewModel
         pollHistoryDetailHostingController = VectorHostingController(rootView: view)

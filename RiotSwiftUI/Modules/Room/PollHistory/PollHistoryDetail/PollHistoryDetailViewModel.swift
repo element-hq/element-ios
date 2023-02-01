@@ -26,8 +26,8 @@ class PollHistoryDetailViewModel: PollHistoryDetailViewModelType, PollHistoryDet
     
     // MARK: - Setup
     
-    init(timelineViewModel: TimelinePollViewModelProtocol) {
-        super.init(initialViewState: PollHistoryDetailViewState(timelineViewModel: timelineViewModel.context))
+    init(timelinePollView: any View, poll: TimelinePollDetails) {
+        super.init(initialViewState: PollHistoryDetailViewState(timelinePollView: timelinePollView, poll: poll))
     }
     
     // MARK: - Public

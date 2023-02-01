@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 // MARK: - Coordinator
 
@@ -28,14 +29,14 @@ enum PollHistoryDetailViewModelResult {
 // MARK: View
 
 struct PollHistoryDetailViewState: BindableState {
-    var timelineViewModel: TimelinePollViewModelType.Context
-
+    var timelinePollView: any View
+    var poll: TimelinePollDetails
     var pollStartDate: Date {
-        timelineViewModel.viewState.poll.startDate
+        poll.startDate
     }
 
     var isPollClosed: Bool {
-        timelineViewModel.viewState.poll.closed
+        poll.closed
     }
 }
 
