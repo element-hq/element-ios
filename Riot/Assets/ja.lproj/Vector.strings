@@ -522,8 +522,8 @@
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "今すぐ追加しますか？";
 // Room key request dialog
 "e2e_room_key_request_title" = "暗号鍵の要求";
-"e2e_room_key_request_message_new_device" = "暗号化キーを要求している新しいセッション'%@'を追加しました。";
-"e2e_room_key_request_message" = "認証されていない端末 '%@' が暗号鍵を要求しています。";
+"e2e_room_key_request_message_new_device" = "暗号鍵を要求している新しいセッション'%@'を追加しました。";
+"e2e_room_key_request_message" = "未認証のセッション '%@' が暗号鍵を要求しています。";
 "e2e_room_key_request_start_verification" = "認証を始めます…";
 "e2e_room_key_request_share_without_verifying" = "認証せずに共有";
 "e2e_room_key_request_ignore_request" = "要求を無視";
