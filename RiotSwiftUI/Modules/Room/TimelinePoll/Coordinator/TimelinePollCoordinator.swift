@@ -33,7 +33,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     private let selectedAnswerIdentifiersSubject = PassthroughSubject<[String], Never>()
     
     private var pollAggregator: PollAggregator
-    private var viewModel: TimelinePollViewModelProtocol!
+    private(set) var viewModel: TimelinePollViewModelProtocol!
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
@@ -85,6 +85,10 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     
     func toPresentable() -> UIViewController {
         VectorHostingController(rootView: TimelinePollView(viewModel: viewModel.context))
+    }
+
+    func toView() -> any View {
+        TimelinePollView(viewModel: viewModel.context)
     }
     
     func canEndPoll() -> Bool {

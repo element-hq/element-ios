@@ -41,6 +41,8 @@ final class PollHistoryViewModel: PollHistoryViewModelType, PollHistoryViewModel
             fetchContent()
         case .segmentDidChange:
             updateViewState()
+        case .showPollDetail(let poll):
+            completion?(.showPollDetail(poll: poll))
         case .loadMoreContent:
             fetchContent()
         }

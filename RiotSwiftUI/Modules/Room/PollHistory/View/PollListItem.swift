@@ -28,7 +28,7 @@ struct PollListItem: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(DateFormatter.shortDateFormatter.string(from: pollData.startDate))
+            Text(DateFormatter.pollShortDateFormatter.string(from: pollData.startDate))
                 .foregroundColor(theme.colors.tertiaryContent)
                 .font(theme.fonts.caption1)
             
@@ -68,8 +68,8 @@ struct PollListItem: View {
     }
 }
 
-private extension DateFormatter {
-    static let shortDateFormatter: DateFormatter = {
+extension DateFormatter {
+    static let pollShortDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.timeStyle = .none
         formatter.dateStyle = .short

@@ -2306,6 +2306,7 @@ Tap the + to start adding people.";
 "poll_history_no_past_poll_text" = "There are no past polls in this room";
 "poll_history_no_active_poll_period_text" = "There are no active polls for the past %@ days. Load more polls to view polls for previous months";
 "poll_history_no_past_poll_period_text" = "There are no past polls for the past %@ days. Load more polls to view polls for previous months";
+"poll_history_detail_view_in_timeline" = "View poll in timeline";
 "poll_history_load_more" = "Load more polls";
 "poll_history_fetching_error" = "Error fetching polls.";
 
