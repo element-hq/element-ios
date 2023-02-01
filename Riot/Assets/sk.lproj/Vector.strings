@@ -2922,3 +2922,5 @@
 "key_backup_recover_from_private_key_progress" = "%@%% Dokončené";
 "wysiwyg_composer_format_action_indent" = "Zväčšenie odsadenia";
 "wysiwyg_composer_format_action_un_indent" = "Zmenšenie odsadenia";
+"poll_history_detail_view_in_timeline" = "Zobraziť anketu na časovej osi";
+"settings_push_rules_error" = "Pri aktualizácii vašich predvolieb oznámení došlo k chybe. Skúste prosím prepnúť možnosť znova.";
