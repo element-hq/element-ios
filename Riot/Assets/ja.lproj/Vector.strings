@@ -675,7 +675,7 @@
 "room_details_access_section_anyone_apart_from_guest_for_dm" = "リンクを知っている人なら誰でも（ゲストユーザーを除く）";
 "room_details_access_section_anyone_for_dm" = "リンクを知っている人なら誰でも（ゲストユーザーを含む）";
 "room_details_access_section_for_dm" = "これにアクセスできる人は？";
-"room_details_photo_for_dm" = "写真";
+"room_details_photo_for_dm" = "画像";
 "room_details_integrations" = "インテグレーション";
 "room_details_search" = "ルーム内検索";
 "room_details_title_for_dm" = "詳細";
