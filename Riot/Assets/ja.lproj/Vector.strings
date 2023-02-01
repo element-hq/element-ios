@@ -753,7 +753,7 @@
 "error_user_already_logged_in" = "他のホームサーバーに接続しようとしているようですね。サインアウトしますか？";
 "social_login_button_title_sign_up" = "%@でサインアップ";
 "social_login_button_title_sign_in" = "%@でサインイン";
-"social_login_button_title_continue" = "続きはこちら%@";
+"social_login_button_title_continue" = "%@ で続ける";
 "social_login_list_title_sign_up" = "もしくは";
 "social_login_list_title_sign_in" = "もしくは";
 
