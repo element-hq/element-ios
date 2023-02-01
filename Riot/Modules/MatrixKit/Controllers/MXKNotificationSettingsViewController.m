@@ -193,7 +193,7 @@
         MXPushRule *pushRule = [_mxAccount.mxSession.notificationCenter ruleById:kMXNotificationCenterDisableAllNotificationsRuleID];
         if (pushRule)
         {
-            [_mxAccount.mxSession.notificationCenter enableRule:pushRule isEnabled:!areAllDisabled];
+            [_mxAccount.mxSession.notificationCenter enableRule:pushRule isEnabled:!areAllDisabled completion:nil];
         }
     }
 }

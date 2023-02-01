@@ -3400,8 +3400,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         
-        RiotSettings.shared.enableCryptoSDK = isEnabled;
-        MXSDKOptions.sharedInstance.enableCryptoSDK = isEnabled;
+        [CryptoSDKConfiguration.shared enable];
         [[AppDelegate theDelegate] reloadMatrixSessions:YES];
     }]];
 
