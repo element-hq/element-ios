@@ -1,3 +1,15 @@
+## Changes in 1.10.0 (2023-02-02)
+
+🙌 Improvements
+
+- CryptoV2: Generate Crypto SDK store key ([#7310](https://github.com/vector-im/element-ios/pull/7310))
+- Backup: Display backup import progress ([#7319](https://github.com/vector-im/element-ios/pull/7319))
+- CryptoV2: Reset Crypto SDK on logout ([#7323](https://github.com/vector-im/element-ios/pull/7323))
+- CryptoV2: Refresh notification service on crypto change ([#7332](https://github.com/vector-im/element-ios/pull/7332))
+- CryptoV2: Enable Crypto SDK for production ([#7333](https://github.com/vector-im/element-ios/pull/7333))
+- Upgrade MatrixSDK version ([v0.25.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.25.0)).
+
+
 ## Changes in 1.9.17 (2023-01-26)
 
 🙌 Improvements
