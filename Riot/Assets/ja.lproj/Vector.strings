@@ -325,7 +325,7 @@
 "room_details_people" = "メンバー";
 "room_details_files" = "アップロード";
 "room_details_settings" = "設定";
-"room_details_photo" = "ルームのアイコン画像";
+"room_details_photo" = "ルームの画像";
 "room_details_room_name" = "ルーム名";
 "room_details_topic" = "トピック";
 "room_details_favourite_tag" = "お気に入り";
@@ -337,27 +337,27 @@
 "room_details_access_section_anyone_apart_from_guest" = "ルームのリンクを知っている人なら誰でも（ゲストユーザーを除く）";
 "room_details_access_section_anyone" = "ルームのリンクを知っている人なら誰でも（ゲストユーザーを含む）";
 "room_details_access_section_no_address_warning" = "このルームへのリンクを作成するには、ルームのアドレスが必要です";
-"room_details_access_section_directory_toggle" = "ルーム一覧へ公開";
-"room_details_history_section" = "履歴を閲覧できる人";
+"room_details_access_section_directory_toggle" = "このルームをルーム一覧に掲載";
+"room_details_history_section" = "履歴を閲覧できる人は？";
 "room_details_history_section_anyone" = "誰でも";
-"room_details_history_section_members_only" = "メンバーのみ (この設定を選択した時点から)";
+"room_details_history_section_members_only" = "メンバーのみ（この設定を選択した時点から）";
 "room_details_history_section_members_only_since_invited" = "メンバーのみ（招待を送った時点から）";
-"room_details_history_section_members_only_since_joined" = "メンバーのみ (参加した時点から)";
-"room_details_history_section_prompt_title" = "個人情報の警告";
-"room_details_history_section_prompt_msg" = "発言履歴を読むことができる人の変更は、以後の発言にのみ適用されます。既存の発言履歴の可視性は変更されません。";
+"room_details_history_section_members_only_since_joined" = "メンバーのみ（参加した時点から）";
+"room_details_history_section_prompt_title" = "プライバシーに関する警告";
+"room_details_history_section_prompt_msg" = "履歴の閲覧権限に関する変更は、今後、このルームで表示されるメッセージにのみ適用されます。既存の履歴の見え方には影響しません。";
 "room_details_addresses_section" = "アドレス";
 "room_details_no_local_addresses" = "このルームにはローカルアドレスがありません";
 "room_details_new_address" = "新しいアドレスを追加";
 "room_details_new_address_placeholder" = "新しいアドレスを追加（例 #foo%@）";
-"room_details_addresses_invalid_address_prompt_title" = "不正なエイリアスのフォーマット";
-"room_details_addresses_invalid_address_prompt_msg" = "%@はエイリアスの正しいフォーマットではありません";
+"room_details_addresses_invalid_address_prompt_title" = "エイリアスの形式が正しくありません";
+"room_details_addresses_invalid_address_prompt_msg" = "%@はエイリアスの正しい形式ではありません";
 "room_details_addresses_disable_main_address_prompt_title" = "メインアドレスの警告";
-"room_details_addresses_disable_main_address_prompt_msg" = "メインアドレスが設定されていません。このルームのメインアドレスは無作為に選択、設定されます";
+"room_details_addresses_disable_main_address_prompt_msg" = "メインアドレスが設定されていません。このルームのメインアドレスはランダムに設定されます";
 "room_details_banned_users_section" = "ブロックされたユーザー";
 "room_details_advanced_section" = "高度な設定";
 "room_details_advanced_room_id" = "ルームID：";
-"room_details_advanced_enable_e2e_encryption" = "暗号化を有効にする（警告: 有効後にこれを無効にすることはできません！)";
-"room_details_advanced_e2e_encryption_enabled" = "このルームでは暗号化が有効になっています";
+"room_details_advanced_enable_e2e_encryption" = "暗号化を有効にする（警告：有効にした後に無効にすることはできません！)";
+"room_details_advanced_e2e_encryption_enabled" = "このルームでは暗号化が有効です";
 "room_details_advanced_e2e_encryption_disabled" = "このルームでは暗号化が有効ではありません。";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "認証済のセッションにのみ暗号化";
 "room_details_fail_to_update_avatar" = "ルームのアイコン画像の更新に失敗";
@@ -365,8 +365,8 @@
 "room_details_fail_to_update_topic" = "トピックの更新に失敗";
 "room_details_fail_to_update_room_guest_access" = "ゲストによるルームへのアクセスの設定更新に失敗";
 "room_details_fail_to_update_room_join_rule" = "参加ルールの更新に失敗";
-"room_details_fail_to_update_room_directory_visibility" = "ルーム一覧の可視設定の更新に失敗";
-"room_details_fail_to_update_history_visibility" = "発言履歴の可視範囲の設定更新に失敗";
+"room_details_fail_to_update_room_directory_visibility" = "ルーム一覧の見え方の更新に失敗";
+"room_details_fail_to_update_history_visibility" = "履歴の見え方の設定更新に失敗";
 "room_details_fail_to_add_room_aliases" = "新しいルームアドレスの追加に失敗";
 "room_details_fail_to_remove_room_aliases" = "ルームアドレスの削除に失敗";
 "room_details_fail_to_update_room_canonical_alias" = "メインアドレスの更新に失敗";
@@ -382,21 +382,21 @@
 "read_receipts_list" = "既読一覧を見る";
 "receipt_status_read" = "既読状況： ";
 // Media picker
-"media_picker_library" = "ライブラリ";
+"media_picker_library" = "ライブラリー";
 "media_picker_select" = "選択";
 // Directory
 "directory_title" = "ルーム一覧";
 "directory_server_picker_title" = "ルーム一覧を選択";
 "directory_server_all_rooms" = "%@ サーバー上の全てのルーム";
 "directory_server_all_native_rooms" = "全てのMatrix連携ルーム";
-"directory_server_type_homeserver" = "公開ルーム一覧を表示するための接続サーバーを入力してください";
+"directory_server_type_homeserver" = "公開ルームの一覧を表示するホームサーバーを入力してください";
 "directory_server_placeholder" = "matrix.org";
 // Events formatter
-"event_formatter_member_updates" = "%tu権限が変更されました";
-"event_formatter_widget_added" = "%@ウィジェットが %@ さんにより追加されました";
-"event_formatter_widget_removed" = "%@ウィジェットが %@ さんにより削除されました";
-"event_formatter_jitsi_widget_added" = "音声会議が%@ さんにより追加されました";
-"event_formatter_jitsi_widget_removed" = "音声会議が%@ さんにより削除されました";
+"event_formatter_member_updates" = "%tu個の権限の変更";
+"event_formatter_widget_added" = "%@のウィジェットが%@により追加されました";
+"event_formatter_widget_removed" = "%@のウィジェットが%@により削除されました";
+"event_formatter_jitsi_widget_added" = "VoIP会議が%@により追加されました";
+"event_formatter_jitsi_widget_removed" = "VoIP会議が%@により削除されました";
 // Others
 "or" = "または";
 "you" = "あなた";
@@ -404,10 +404,10 @@
 "yesterday" = "昨日";
 "network_offline_prompt" = "インターネットへの接続が切れているようです。";
 "public_room_section_title" = "公開ルーム（%@ にて）：";
-"bug_report_prompt" = "前回アプリが異常終了しました。バグレポートを送信しますか？";
-"rage_shake_prompt" = "あなたは不満があって端末を揺らしているようです。バグレポートをしますか？";
+"bug_report_prompt" = "前回アプリケーションがクラッシュしました。クラッシュ報告を送信しますか？";
+"rage_shake_prompt" = "あなたは不満で端末を振っているようです。バグレポートを報告しますか？";
 "do_not_ask_again" = "再び表示しない";
-"camera_access_not_granted" = "%@はカメラを使用する権限を持っていません。個人情報保護設定の変更をお願いします";
+"camera_access_not_granted" = "%@にはカメラを使用する権限がありません。プライバシー設定を変更してください";
 "large_badge_value_k_format" = "%.1fK";
 // room display name
 "room_displayname_room_invite" = "招待";
@@ -486,7 +486,7 @@
 "settings_deactivate_my_account" = "アカウントを永久に無効にする";
 "room_details_flair_section" = "コミュニティーの特色を表示";
 "room_details_new_flair_placeholder" = "新しいコミュニティーIDを追加（例 +foo%@）";
-"room_details_flair_invalid_id_prompt_title" = "無効な形式";
+"room_details_flair_invalid_id_prompt_title" = "不正な形式です";
 "room_details_flair_invalid_id_prompt_msg" = "%@はコミュニティーの有効な識別子ではありません";
 "room_details_fail_to_update_room_communities" = "関連するコミュニティーの更新に失敗";
 // Group Details
@@ -495,9 +495,9 @@
 "group_details_people" = "連絡先";
 "group_details_rooms" = "ルーム";
 // Group Home
-"group_home_one_member_format" = "1名のメンバー";
-"group_home_multi_members_format" = "%tu名のメンバー";
-"group_home_one_room_format" = "1つのルーム";
+"group_home_one_member_format" = "1人のメンバー";
+"group_home_multi_members_format" = "%tu人のメンバー";
+"group_home_one_room_format" = "1個のルーム";
 "group_home_multi_rooms_format" = "%tu個のルーム";
 "group_invitation_format" = "%@がこのコミュニティーにあなたを招待しました";
 // Group participants
@@ -514,7 +514,7 @@
 "group_participants_invite_malformed_id" = "不正なID。'@localpart:domain'のようなMatrix IDでなければなりません";
 "group_participants_invited_section" = "招待中";
 // Group rooms
-"group_rooms_filter_rooms" = "コミュニティールームを絞り込む";
+"group_rooms_filter_rooms" = "コミュニティーのルームを絞り込む";
 "event_formatter_rerequest_keys_part1_link" = "暗号鍵を再要求";
 "event_formatter_rerequest_keys_part2" = " あなたの他のセッションに。";
 "homeserver_connection_lost" = "ホームサーバーに接続できませんでした。";
@@ -645,8 +645,8 @@
 "call_no_stun_server_error_message_1" = "通話を確実に機能させるためには、ホームサーバー%@の管理者にTURNサーバーの設定を依頼してください。";
 "call_no_stun_server_error_title" = "サーバーの設定が間違っているため通話に失敗しました";
 "room_does_not_exist" = "%@は存在しません";
-"photo_library_access_not_granted" = "%@はフォトライブラリにアクセスする権限がありません";
-"camera_unavailable" = "お使いの端末ではカメラを利用できません";
+"photo_library_access_not_granted" = "%@にはフォトライブラリーにアクセスする権限がありません。プライバシー設定を変更してください";
+"camera_unavailable" = "この端末ではカメラを利用できません";
 "event_formatter_widget_removed_by_you" = "ウィジェットを削除しました：%@";
 "event_formatter_jitsi_widget_removed_by_you" = "VoIP会議を削除しました";
 "event_formatter_jitsi_widget_added_by_you" = "VoIP会議を追加しました";
@@ -660,15 +660,15 @@
 "event_formatter_call_video" = "ビデオ通話";
 "event_formatter_call_voice" = "音声通話";
 "event_formatter_message_edited_mention" = "（編集済）";
-"image_picker_action_library" = "ライブラリを選ぶ";
+"image_picker_action_library" = "ライブラリーから選択";
 
 // Image picker
-"image_picker_action_camera" = "写真を撮る";
+"image_picker_action_camera" = "写真を撮影";
 
 // Media picker
-"media_picker_title" = "メディアライブラリ";
+"media_picker_title" = "メディアライブラリー";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "ここでは暗号化が有効ではありません。";
-"room_details_advanced_e2e_encryption_enabled_for_dm" = "ここでは暗号化が有効になっています";
+"room_details_advanced_e2e_encryption_enabled_for_dm" = "ここでは暗号化が有効です";
 "room_details_advanced_room_id_for_dm" = "ID：";
 "room_details_no_local_addresses_for_dm" = "ここにはローカルアドレスがありません";
 "room_details_access_section_directory_toggle_for_dm" = "ルーム一覧に掲載";
@@ -1711,7 +1711,7 @@
 "create_room_promotion_header" = "プロモート";
 "searchable_directory_search_placeholder" = "名前または ID";
 "room_suggestion_settings_screen_title" = "スペースにおすすめのルームを作成";
-"room_suggestion_settings_screen_message" = "おすすめのルームは、スペースメンバーに参加を推奨するものとして PR されます。";
+"room_suggestion_settings_screen_message" = "おすすめのルームは、スペースのメンバーに参加を推奨するものとしてPRされます。";
 
 // Room suggestion Settings
 "room_suggestion_settings_screen_nav_title" = "おすすめのルーム";
@@ -1739,7 +1739,7 @@
 "space_selector_empty_view_title" = "まだスペースがありません";
 "all_chats_empty_list_placeholder_title" = "未読はありません";
 "all_chats_empty_unreads_placeholder_message" = "未読のメッセージがある場合は、ここに表示されます。";
-"room_notifs_settings_account_settings" = "アカウント設定";
+"room_notifs_settings_account_settings" = "アカウントの設定";
 "room_access_settings_screen_upgrade_alert_upgrading" = "ルームをアップグレードしています";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "アップグレード";
 "room_access_settings_screen_edit_spaces" = "スペースを編集";
@@ -1747,7 +1747,7 @@
 "room_access_settings_screen_upgrade_alert_title" = "ルームをアップグレード";
 "room_access_settings_screen_public_message" = "誰でも検索・参加できます。";
 "room_access_settings_screen_private_message" = "招待された人だけが検索・参加できます。";
-"room_access_settings_screen_message" = "誰が %@ を検索・参加できるか選択してください。";
+"room_access_settings_screen_message" = "誰が%@を検索・参加できるか選択してください。";
 "space_settings_access_section" = "このスペースにアクセスできる人は？";
 "room_access_settings_screen_title" = "このルームにアクセスできる人は？";
 "room_notifs_settings_none" = "なし";
@@ -2501,7 +2501,7 @@
 "space_private_join_rule" = "非公開のスペース";
 "spaces_no_result_found_title" = "検索結果がありません";
 "space_tag" = "スペース";
-"spaces_explore_rooms_one_room" = "1つのルーム";
+"spaces_explore_rooms_one_room" = "1個のルーム";
 "spaces_explore_rooms_room_number" = "%@個のルーム";
 "leave_space_and_all_rooms_action" = "全てのルームとスペースから退出";
 "leave_space_only_action" = "どのルームからも退出しない";
