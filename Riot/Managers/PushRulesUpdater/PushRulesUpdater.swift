@@ -39,7 +39,6 @@ final class PushRulesUpdater {
 
 private extension PushRulesUpdater {
     func syncRulesIfNeeded() {
-        print("*** check started: \(rules.count)")
         for rule in rules {
             syncRelatedRulesIfNeeded(for: rule)
         }
@@ -54,11 +53,9 @@ private extension PushRulesUpdater {
         
         for relatedRule in relatedRules {
             guard rule.hasSameContentOf(relatedRule) == false else {
-                print("*** OK -> rule: \(relatedRule.ruleId)")
                 continue
             }
             
-            print("*** mismatch -> rule: \(relatedRule.ruleId)")
             sync(relatedRuleId: relatedRule.ruleId, with: rule)
         }
     }

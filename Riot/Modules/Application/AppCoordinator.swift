@@ -273,7 +273,6 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             }
         
         sessionReady
-            .print("*** ready")
             .sink { [weak self] session in
                 let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
                 let needsCheckPublisher = applicationDidBecomeActive.merge(with: Just(())).eraseToAnyPublisher()
@@ -288,7 +287,6 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             .filter { $0.state == .closed }
         
         sessionClosed
-            .print("*** closed")
             .sink { [weak self] _ in
                 self?.pushRulesUpdater = nil
             }
