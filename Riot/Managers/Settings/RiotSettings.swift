@@ -192,11 +192,9 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "enableVoiceBroadcast", defaultValue: false, storage: defaults)
     var enableVoiceBroadcast
     
-    #if DEBUG
     /// Flag indicating if we are using rust-based `MatrixCryptoSDK` instead of `MatrixSDK`'s internal crypto module
     @UserDefault(key: "enableCryptoSDK", defaultValue: false, storage: defaults)
     var enableCryptoSDK
-    #endif
 
     // MARK: Calls
     
