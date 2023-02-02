@@ -804,9 +804,9 @@ Tap the + to start adding people.";
 "settings_labs_enable_new_app_layout" = "New Application Layout";
 "settings_labs_enable_wysiwyg_composer" = "Try out the rich text editor";
 "settings_labs_enable_voice_broadcast" = "Voice broadcast";
-"settings_labs_enable_crypto_sdk" = "Enable new rust-based Crypto SDK";
-"settings_labs_confirm_crypto_sdk" = "This action cannot be undone";
-"settings_labs_disable_crypto_sdk" = "Crypto SDK is enabled. To disable please reinstall the app";
+"settings_labs_enable_crypto_sdk" = "Rust end-to-end encryption";
+"settings_labs_confirm_crypto_sdk" = "Please be advised that as this feature is still in its experimental stage, it may not function as expected and could potentially have unintended consequences. To revert the feature, simply log out and log back in. Use at your own discretion and with caution.";
+"settings_labs_disable_crypto_sdk" = "Rust end-to-end encryption (log out to disable)";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -1469,6 +1469,7 @@ Tap the + to start adding people.";
 
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Restoring backup…";
+"key_backup_recover_from_private_key_progress" = "%@%% Complete";
 
 // Recover from passphrase
 

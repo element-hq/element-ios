@@ -1,5 +1,5 @@
 // 
-// Copyright 2021 Vector Creations Ltd
+// Copyright 2023 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,13 @@
 // limitations under the License.
 //
 
-// Version
-MARKETING_VERSION = 1.10.0
-CURRENT_PROJECT_VERSION = 1.10.0
+import Foundation
+import MatrixSDKCrypto
+
+extension CryptoStoreError: LocalizedError {
+    public var errorDescription: String? {
+        // We dont really care about the type of error here when showing to the user.
+        // Details about the error are tracked independently
+        return VectorL10n.e2eNeedLogInAgain
+    }
+}
