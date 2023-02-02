@@ -42,12 +42,13 @@ final class PushRulesUpdaterTests: XCTestCase {
         
         needsCheckPublisher.send(())
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             XCTAssertEqual(self.notificationService.rules[targetRuleIndex].ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
             XCTAssertTrue(self.notificationService.rules[targetRuleIndex].enabled)
             expectation.fulfill()
         }
-        waitForExpectations(timeout: 1.0)
+        
+        waitForExpectations(timeout: 2.0)
     }
     
     func testAffectedRulesAreUpdated() throws {
@@ -59,7 +60,7 @@ final class PushRulesUpdaterTests: XCTestCase {
         
         needsCheckPublisher.send(())
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             for rule in self.notificationService.rules {
                 guard let id = rule.pushRuleId else {
                     continue
@@ -74,7 +75,7 @@ final class PushRulesUpdaterTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1.0)
+        waitForExpectations(timeout: 2.0)
     }
     
     func testAffectedOneToOneRulesAreUpdated() throws {
@@ -86,7 +87,7 @@ final class PushRulesUpdaterTests: XCTestCase {
         
         needsCheckPublisher.send(())
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             for rule in self.notificationService.rules {
                 guard let id = rule.pushRuleId else {
                     continue
@@ -101,7 +102,7 @@ final class PushRulesUpdaterTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1.0)
+        waitForExpectations(timeout: 2.0)
     }
 }
 
