@@ -2183,6 +2183,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Clear cache
     [self clearCache];
     
+    // Reset Crypto SDK configuration (labs flag for which crypto module to use)
+    [CryptoSDKConfiguration.shared disable];
+    
     // Reset key backup banner preferences
     [SecureBackupBannerPreferences.shared reset];
     

@@ -885,10 +885,12 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
             return
         }
 
-        let devices = mainSession.crypto.devices(forUser: mainSession.myUserId).values
-        let userHasOneUnverifiedDevice = devices.contains(where: {!$0.trustLevel.isCrossSigningVerified})
-        if userHasOneUnverifiedDevice {
-            presentReviewUnverifiedSessionsAlert(with: session)
+        if let userId = mainSession.myUserId, let crypto = mainSession.crypto {
+            let devices = crypto.devices(forUser: userId).values
+            let userHasOneUnverifiedDevice = devices.contains(where: {!$0.trustLevel.isCrossSigningVerified})
+            if userHasOneUnverifiedDevice {
+                presentReviewUnverifiedSessionsAlert(with: session)
+            }
         }
     }
     
