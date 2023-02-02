@@ -81,7 +81,7 @@ private extension AppConfiguration {
             .eraseOutput()
         
         let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
-        let needsRulesCheck = Publishers.Merge(sessionIsReady, applicationDidBecomeActive).eraseToAnyPublisher()
+        let needsRulesCheck = Publishers.CombineLatest(sessionIsReady, applicationDidBecomeActive).eraseOutput()
         
         pushRulesUpdater = .init(notificationSettingsService: MXNotificationSettingsService(session: matrixSession), needsCheck: needsRulesCheck)
     }

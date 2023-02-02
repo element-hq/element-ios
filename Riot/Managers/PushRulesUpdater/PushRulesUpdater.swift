@@ -31,14 +31,14 @@ final class PushRulesUpdater {
         
         needsCheck
             .sink { [weak self] _ in
-                self?.updateRulesIfNeeded()
+                self?.syncRulesIfNeeded()
             }
             .store(in: &cancellables)
     }
 }
 
 private extension PushRulesUpdater {
-    func updateRulesIfNeeded() {
+    func syncRulesIfNeeded() {
         print("*** check started: \(rules.count)")
         for rule in rules {
             syncRelatedRulesIfNeeded(for: rule)
@@ -53,41 +53,39 @@ private extension PushRulesUpdater {
         let relatedRules = ruleId.syncedRules(in: rules)
         
         for relatedRule in relatedRules {
-            guard rule.hasSameContent(relatedRule) == false else {
+            guard rule.hasSameContentOf(relatedRule) == false else {
                 print("*** OK -> rule: \(relatedRule.ruleId)")
                 continue
             }
             
-            let notificationOption = NotificationIndex.index(when: rule.enabled)
-            
-            guard
-                let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
-                let expectedActions = ruleId.standardActions(for: notificationOption).actions
-            else {
-                return
-            }
-            
             print("*** mismatch -> rule: \(relatedRule.ruleId)")
-            Task {
-                try? await notificationSettingsService.updatePushRuleActions(for: relatedRule.ruleId, enabled: rule.enabled, actions: expectedActions)
-            }
+            sync(relatedRuleId: relatedRule.ruleId, with: rule)
+        }
+    }
+    
+    func sync(relatedRuleId: String, with rule: NotificationPushRuleType) {
+        let notificationOption = NotificationIndex.index(when: rule.enabled)
+        
+        guard
+            let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
+            let expectedActions = ruleId.standardActions(for: notificationOption).actions
+        else {
+            return
+        }
+        
+        Task {
+            try? await notificationSettingsService.updatePushRuleActions(for: relatedRuleId, enabled: rule.enabled, actions: expectedActions)
         }
     }
 }
 
-extension NotificationPushRuleType {
-    func hasSameContent(_ otherRule: NotificationPushRuleType) -> Bool {
+private extension NotificationPushRuleType {
+    func hasSameContentOf(_ otherRule: NotificationPushRuleType) -> Bool {
         guard let ruleId = NotificationPushRuleId(rawValue: ruleId) else {
             return false
         }
         
         let notificationOption = NotificationIndex.index(when: enabled)
         return otherRule.matches(standardActions: ruleId.standardActions(for: notificationOption))
-    }
-}
-
-private extension MXPushRule {
-    var mxActions: [MXPushRuleAction]? {
-        actions as? [MXPushRuleAction]
     }
 }
