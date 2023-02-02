@@ -94,11 +94,11 @@ class CommonConfiguration: NSObject, Configurable {
         
         if sdkOptions.isCryptoSDKAvailable {
             let isEnabled = RiotSettings.shared.enableCryptoSDK
-            MXLog.debug("[CryptoSDKConfiguration] Crypto SDK is \(isEnabled ? "enabled" : "disabled")")
+            MXLog.debug("[CommonConfiguration] Crypto SDK is \(isEnabled ? "enabled" : "disabled")")
             sdkOptions.enableCryptoSDK = isEnabled
             sdkOptions.enableStartupProgress = isEnabled
         } else {
-            MXLog.debug("[CryptoSDKConfiguration] Crypto SDK is not available)")
+            MXLog.debug("[CommonConfiguration] Crypto SDK is not available)")
         }
     }
     

@@ -324,6 +324,11 @@ extension Analytics {
         viewRoomTrigger = .unknown
         capture(event: event)
     }
+    
+    func trackCryptoSDKEnabled() {
+        let event = AnalyticsEvent.CryptoSDKEnabled()
+        capture(event: event)
+    }
 }
 
 // MARK: - MXAnalyticsDelegate
@@ -391,5 +396,16 @@ extension Analytics: MXAnalyticsDelegate {
 
     func trackNonFatalIssue(_ issue: String, details: [String: Any]?) {
         monitoringClient.trackNonFatalIssue(issue, details: details)
+    }
+}
+
+/// iOS-specific analytics event triggered when users select the Crypto SDK labs option
+///
+/// Due to this event being iOS only, and temporary during gradual rollout of Crypto SDK,
+/// this event is not added into the shared analytics schema
+extension AnalyticsEvent {
+    struct CryptoSDKEnabled: AnalyticsEventProtocol {
+        let eventName = "CryptoSDKEnabled"
+        let properties: [String: Any] = [:]
     }
 }

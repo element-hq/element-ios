@@ -2599,7 +2599,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 labelAndSwitchCell.mxkSwitch.on = isEnabled;
                 [labelAndSwitchCell.mxkSwitch setEnabled:!isEnabled];
                 labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableCryptoSDKFeature:) forControlEvents:UIControlEventTouchUpInside];
+                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(enableCryptoSDKFeature:) forControlEvents:UIControlEventTouchUpInside];
                 
                 cell = labelAndSwitchCell;
             }
@@ -3375,16 +3375,14 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     RiotSettings.shared.enableVoiceBroadcast = sender.isOn;
 }
 
-- (void)toggleEnableCryptoSDKFeature:(UISwitch *)sender
+- (void)enableCryptoSDKFeature:(UISwitch *)sender
 {
-    BOOL isEnabled = sender.isOn;
-    MXWeakify(self);
-    
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     UIAlertController *confirmationAlert = [UIAlertController alertControllerWithTitle:VectorL10n.settingsLabsEnableCryptoSdk
                                                                              message:VectorL10n.settingsLabsConfirmCryptoSdk
                                                                       preferredStyle:UIAlertControllerStyleAlert];
 
+    MXWeakify(self);
     [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         self->currentAlert = nil;
@@ -3393,9 +3391,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }]];
 
     [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        MXStrongifyAndReturnIfNil(self);
         
         [CryptoSDKConfiguration.shared enable];
+        [Analytics.shared trackCryptoSDKEnabled];
+        
         [[AppDelegate theDelegate] reloadMatrixSessions:YES];
     }]];
 
