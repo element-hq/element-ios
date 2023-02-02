@@ -597,22 +597,22 @@
 // Call Bar
 "callbar_only_single_active" = "タップして通話（%@）に戻る";
 "settings_add_3pid_password_title_msidsn" = "電話番号を追加";
-"device_verification_emoji_scissors" = "ハサミ";
-"device_verification_emoji_paperclip" = "ペーパークリップ";
+"device_verification_emoji_scissors" = "はさみ";
+"device_verification_emoji_paperclip" = "クリップ";
 "device_verification_emoji_pencil" = "鉛筆";
 "device_verification_emoji_book" = "本";
 "device_verification_emoji_light bulb" = "電球";
 "device_verification_emoji_gift" = "ギフト";
 "device_verification_emoji_clock" = "時計";
 "device_verification_emoji_hourglass" = "砂時計";
-"device_verification_emoji_umbrella" = "雨";
+"device_verification_emoji_umbrella" = "傘";
 "device_verification_emoji_thumbs up" = "いいね";
 "device_verification_emoji_spanner" = "スパナ";
 "device_verification_emoji_santa" = "サンタ";
-"device_verification_emoji_glasses" = "メガネ";
-"device_verification_emoji_hat" = "ハット";
+"device_verification_emoji_glasses" = "めがね";
+"device_verification_emoji_hat" = "帽子";
 "device_verification_emoji_robot" = "ロボット";
-"device_verification_emoji_smiley" = "笑顔";
+"device_verification_emoji_smiley" = "スマイル";
 "device_verification_emoji_heart" = "ハート";
 "device_verification_emoji_cake" = "ケーキ";
 "device_verification_emoji_pizza" = "ピザ";
@@ -726,7 +726,7 @@
 "room_accessiblity_scroll_to_bottom" = "いちばん下までスクロール";
 "room_member_power_level_short_custom" = "カスタム";
 "room_member_power_level_short_moderator" = "モデレーター";
-"room_member_power_level_custom_in" = "カスタム (%@) in %@";
+"room_member_power_level_custom_in" = "カスタム（%@）：%@";
 "room_member_power_level_short_admin" = "管理者";
 "room_member_power_level_moderator_in" = "%@のモデレーター";
 "room_member_power_level_admin_in" = "%@の管理者";
@@ -902,20 +902,20 @@
 "key_verification_scan_confirmation_scanned_user_information" = "%@は同じシールドを表示していますか？";
 
 // Scanned
-"key_verification_scan_confirmation_scanned_title" = "まもなくです！";
+"key_verification_scan_confirmation_scanned_title" = "もう少しです！";
 "key_verification_scan_confirmation_scanning_device_waiting_other" = "他の端末を待機しています…";
 
 // MARK: Scan confirmation
 
 // Scanning
-"key_verification_scan_confirmation_scanning_title" = "もう少しです。確認を待っています…";
+"key_verification_scan_confirmation_scanning_title" = "もう少しです！確認を待機しています…";
 "key_verification_scan_confirmation_scanning_user_waiting_other" = "%@を待機しています…";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "QRコードを正常に検証しました。";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "コードを検証しました！";
 "key_verification_verify_qr_code_other_scan_my_code_title" = "相手がQRコードを正常に読み取りましたか？";
-"key_verification_verify_qr_code_start_emoji_action" = "絵文字による認証";
+"key_verification_verify_qr_code_start_emoji_action" = "絵文字で認証";
 "key_verification_verify_qr_code_cannot_scan_action" = "スキャンできませんか？";
-"key_verification_verify_qr_code_scan_code_action" = "コードをスキャン";
+"key_verification_verify_qr_code_scan_code_action" = "コードをスキャンしてください";
 "key_verification_verify_qr_code_emoji_information" = "絵文字の並びを比較して認証。";
 "key_verification_verify_qr_code_information_other_device" = "以下のコードをスキャンして認証してください：";
 "key_verification_verify_qr_code_information" = "コードをスキャンして、お互いを安全に認証しましょう。";
@@ -931,13 +931,13 @@
 "key_verification_tile_conclusion_done_title" = "認証済";
 "key_verification_tile_request_incoming_approval_decline" = "拒否";
 "key_verification_tile_request_incoming_approval_accept" = "承認";
-"key_verification_tile_request_status_accepted" = "あなたは承認しました";
+"key_verification_tile_request_status_accepted" = "承認しました";
 "key_verification_tile_request_status_cancelled" = "%@はキャンセルしました";
-"key_verification_tile_request_status_cancelled_by_me" = "あなたはキャンセルしました";
+"key_verification_tile_request_status_cancelled_by_me" = "キャンセルしました";
 "key_verification_tile_request_status_expired" = "期限切れ";
 "key_verification_tile_request_status_waiting" = "待機しています…";
-"key_verification_tile_request_status_data_loading" = "日時を読み込み…";
-"key_verification_tile_request_outgoing_title" = "認証を送信済";
+"key_verification_tile_request_status_data_loading" = "日時を読み込んでいます…";
+"key_verification_tile_request_outgoing_title" = "認証を送信しました";
 
 // Tiles
 
@@ -951,7 +951,7 @@
 
 
 // Generic errors
-"error_invite_3pid_with_no_identity_server" = "メールで招待するために設定からIDサーバーを追加します。";
+"error_invite_3pid_with_no_identity_server" = "メールで招待するには、設定でIDサーバーを追加してください。";
 
 // MARK: Reaction history
 "reaction_history_title" = "リアクションの履歴";
@@ -971,8 +971,8 @@
 "file_upload_error_unsupported_file_type_message" = "ファイルの種類がサポートされていません。";
 "device_verification_emoji_pin" = "ピン";
 "device_verification_emoji_folder" = "フォルダー";
-"device_verification_emoji_headphones" = "ヘッドフォン";
-"device_verification_emoji_anchor" = "アンカー";
+"device_verification_emoji_headphones" = "ヘッドホン";
+"device_verification_emoji_anchor" = "いかり";
 "device_verification_emoji_bell" = "ベル";
 "device_verification_emoji_trumpet" = "トランペット";
 "device_verification_emoji_guitar" = "ギター";
@@ -983,10 +983,10 @@
 "device_verification_emoji_bicycle" = "自転車";
 "device_verification_emoji_train" = "電車";
 "device_verification_emoji_flag" = "旗";
-"device_verification_emoji_telephone" = "テレフォン";
-"device_verification_emoji_hammer" = "ハンマー";
+"device_verification_emoji_telephone" = "電話機";
+"device_verification_emoji_hammer" = "金槌";
 "device_verification_emoji_key" = "鍵";
-"device_verification_emoji_lock" = "錠";
+"device_verification_emoji_lock" = "錠前";
 "settings_three_pids_management_information_part1" = "ログインやアカウントの回復に使用できるメールアドレスや電話番号をここで管理。あなたを見つけられる人を ";
 "settings_identity_server_settings" = "IDサーバー";
 "external_link_confirmation_title" = "このリンクを再確認してください";
@@ -1847,7 +1847,7 @@
 "settings_presence_offline_mode" = "オフラインモード";
 "settings_enable_room_message_bubbles" = "吹き出しでメッセージを表示";
 "settings_discovery_accept_terms" = "IDサーバーの利用規約を承諾";
-"settings_labs_confirm_crypto_sdk" = "このオプションは、新しく、より高速で安定性のあるエンドツーエンド暗号化（Rustで記述）を有効にします。無効にするにはログアウトが必要となります。続行してよろしいですか？";
+"settings_labs_confirm_crypto_sdk" = "この機能は実験段階のため、予期したとおりに機能せず、意図しない結果を引き起こす可能性があります。この機能を無効にするには、ログアウトして再度ログインしてください。自分自身の判断で慎重に使ってください。";
 "settings_labs_enable_voice_broadcast" = "音声配信";
 "settings_labs_enable_new_app_layout" = "アプリケーションの新しいレイアウト";
 "settings_labs_enable_new_client_info_feature" = "クライアントの名称、バージョン、URLを記録し、セッションマネージャーでより容易にセッションを認識できるよう設定";
@@ -2600,8 +2600,8 @@
 "wysiwyg_composer_format_action_code_block" = "コードブロックの表示を切り替える";
 "wysiwyg_composer_format_action_quote" = "引用の表示を切り替える";
 "poll_timeline_reply_ended_poll" = "終了したアンケート";
-"settings_labs_enable_crypto_sdk" = "エンドツーエンド暗号化2.0";
-"settings_labs_disable_crypto_sdk" = "エンドツーエンド暗号化2.0（無効にするにはログアウトしてください）";
+"settings_labs_enable_crypto_sdk" = "Rust エンドツーエンド暗号化";
+"settings_labs_disable_crypto_sdk" = "Rust エンドツーエンド暗号化（無効にするにはログアウトしてください）";
 
 // MARK: - Launch loading
 
