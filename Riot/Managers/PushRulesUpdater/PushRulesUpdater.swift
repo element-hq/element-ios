@@ -80,12 +80,7 @@ private extension PushRulesUpdater {
 }
 
 private extension NotificationPushRuleType {
-    func hasSameContentOf(_ otherRule: NotificationPushRuleType) -> Bool {
-        guard let ruleId = pushRuleId else {
-            return false
-        }
-        
-        let notificationOption = NotificationIndex.index(when: enabled)
-        return otherRule.matches(standardActions: ruleId.standardActions(for: notificationOption))
+    func hasSameContentOf(_ otherRule: NotificationPushRuleType) -> Bool? {
+        enabled == otherRule.enabled && ruleActions == otherRule.ruleActions
     }
 }
