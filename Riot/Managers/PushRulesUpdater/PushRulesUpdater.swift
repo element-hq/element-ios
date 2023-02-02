@@ -19,13 +19,16 @@ import Combine
 final class PushRulesUpdater {
     private var cancellables: Set<AnyCancellable> = .init()
     private var rules: [MXPushRule] = []
+    private let notificationSettingsService: NotificationSettingsServiceType
     
-    init(checkSignal: AnyPublisher<Void, Never>, rulesProvider: AnyPublisher<[MXPushRule], Never>) {
-        rulesProvider
+    init(notificationSettingsService: NotificationSettingsServiceType, rules: AnyPublisher<[MXPushRule], Never>, needsCheck: AnyPublisher<Void, Never>) {
+        self.notificationSettingsService = notificationSettingsService
+        
+        rules
             .weakAssign(to: \.rules, on: self)
             .store(in: &cancellables)
         
-        checkSignal
+        needsCheck
             .sink { [weak self] _ in
                 self?.updateRulesIfNeeded()
             }
@@ -45,11 +48,20 @@ private extension PushRulesUpdater {
         
         for relatedRule in relatedRules {
             guard MXPushRule.haveSameContent(relatedRule, rule) == false else {
-                MXLog.debug("*** mismatch -> rule: \(relatedRule.ruleId)")
+                MXLog.debug("*** OK -> rule: \(relatedRule.ruleId)")
                 continue
             }
             
-            MXLog.debug("*** OK -> rule: \(relatedRule.ruleId)")
+            let index = NotificationIndex.index(when: rule.enabled)
+            #warning("Fix me")
+            let standardActions = NotificationPushRuleId(rawValue: rule.ruleId)!.standardActions(for: index)
+            
+            MXLog.debug("*** mismatch -> rule: \(relatedRule.ruleId)")
+            Task {
+                try? await notificationSettingsService.updatePushRuleActions(for: relatedRule.ruleId,
+                                                                             enabled: rule.enabled,
+                                                                             actions: standardActions.actions)
+            }
         }
     }
 }

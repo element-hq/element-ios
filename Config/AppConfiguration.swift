@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+import Combine
 import Foundation
 
 /// AppConfiguration is CommonConfiguration plus configurations dedicated to the app
@@ -54,12 +55,17 @@ class AppConfiguration: CommonConfiguration {
     
     // MARK: - Per matrix session settings
     
+    private var pushRulesUpdater: PushRulesUpdater?
+    
     override func setupSettings(for matrixSession: MXSession) {
         super.setupSettings(for: matrixSession)
         setupWidgetReadReceipts(for: matrixSession)
+        setupPushRuleSync(for: matrixSession)
     }
-  
-    private func setupWidgetReadReceipts(for matrixSession: MXSession) {
+}
+
+private extension AppConfiguration {
+    func setupWidgetReadReceipts(for matrixSession: MXSession) {
         var acknowledgableEventTypes = matrixSession.acknowledgableEventTypes ?? []
         acknowledgableEventTypes.append(kWidgetMatrixEventTypeString)
         acknowledgableEventTypes.append(kWidgetModularEventTypeString)
@@ -67,4 +73,28 @@ class AppConfiguration: CommonConfiguration {
         matrixSession.acknowledgableEventTypes = acknowledgableEventTypes
     }
     
+    func setupPushRuleSync(for matrixSession: MXSession) {
+        let firstSyncEnded = NotificationCenter.default.publisher(for: .mxSessionDidSync)
+            .first()
+            .eraseOutput()
+
+        let rulesDidChange = NotificationCenter.default.publisher(for: NSNotification.Name(rawValue: kMXNotificationCenterDidUpdateRules)).eraseOutput()
+        
+        let rules = Publishers.Merge(rulesDidChange, firstSyncEnded)
+            .compactMap { _ ->  [MXPushRule]? in
+                guard let center = matrixSession.notificationCenter else {
+                    return nil
+                }
+                
+                return center.flatRules as? [MXPushRule]
+            }
+            .eraseToAnyPublisher()
+        
+        let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
+        let needsRulesCheck = Publishers.Merge(firstSyncEnded, applicationDidBecomeActive).eraseOutput()
+        
+        pushRulesUpdater = .init(notificationSettingsService: MXNotificationSettingsService(session: matrixSession),
+                                 rules: rules,
+                                 needsCheck: needsRulesCheck)
+    }
 }

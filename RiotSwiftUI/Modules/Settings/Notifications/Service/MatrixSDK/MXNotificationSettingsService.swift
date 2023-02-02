@@ -38,14 +38,14 @@ class MXNotificationSettingsService: NotificationSettingsServiceType {
         let rulesUpdated = NotificationCenter.default.publisher(for: NSNotification.Name(rawValue: kMXNotificationCenterDidUpdateRules))
         
         // Set initial value of the content rules
-        if let contentRules = session.notificationCenter.rules.global.content as? [MXPushRule] {
+        if let contentRules = session.notificationCenter.rules?.global.content as? [MXPushRule] {
             self.contentRules = contentRules
         }
         
         // Observe future updates to content rules
         rulesUpdated
             .compactMap { [weak self] _ in
-                self?.session.notificationCenter.rules.global.content as? [MXPushRule]
+                self?.session.notificationCenter.rules?.global.content as? [MXPushRule]
             }
             .assign(to: &$contentRules)
         

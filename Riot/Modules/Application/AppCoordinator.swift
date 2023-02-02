@@ -54,7 +54,6 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     fileprivate weak var sideMenuCoordinator: SideMenuCoordinatorType?
     
     private let userSessionsService: UserSessionsService
-    private var pushRulesUpdater: PushRulesUpdater?
         
     /// Main user Matrix session
     private var mainMatrixSession: MXSession? {
@@ -86,7 +85,6 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         setupLogger()
         setupTheme()
         excludeAllItemsFromBackup()
-        setupPushRuleSync()
         
         // Setup navigation router store
         _ = NavigationRouterStore.shared
@@ -261,29 +259,6 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         
         // Reload split view with selected space id
         self.splitViewCoordinator?.start(with: spaceId)
-    }
-    
-    private func setupPushRuleSync() {
-        let firstSyncEndend = NotificationCenter.default.publisher(for: .mxSessionDidSync)
-            .first()
-            .eraseOutput()
-
-        let rulesDidChange = NotificationCenter.default.publisher(for: NSNotification.Name(rawValue: kMXNotificationCenterDidUpdateRules)).eraseOutput()
-        
-        let rules = Publishers.Merge(rulesDidChange, firstSyncEndend)
-            .compactMap { [weak self] _ ->  [MXPushRule]? in
-                guard let center = self?.mainMatrixSession?.notificationCenter else {
-                    return nil
-                }
-                
-                return center.flatRules as? [MXPushRule]
-            }
-            .eraseToAnyPublisher()
-        
-        let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
-        let needsRulesCheck = Publishers.Merge(firstSyncEndend, applicationDidBecomeActive).eraseOutput()
-        
-        pushRulesUpdater = .init(checkSignal: needsRulesCheck, rulesProvider: rules)
     }
 }
 
