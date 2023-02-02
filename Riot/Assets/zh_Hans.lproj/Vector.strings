@@ -2278,3 +2278,10 @@
 "authentication_qr_login_display_subtitle" = "用你登出的设备扫描下面的二维码。";
 "room_invite_to_space_option_detail" = "他们可以探索 %@，但不会成为 %@ 的成员。";
 "analytics_prompt_message_new_user" = "通过分享匿名的使用数据，帮助我们识别问题并改进 %@ 。为了了解人们如何使用多个设备，我们将生成一个随机的标识符，由你的设备共享。";
+"threads_notice_done" = "知道了";
+"message_from_a_thread" = "来自消息列";
+"threads_empty_info_all" = "消息列帮助你的对话不离题且易于跟踪。";
+"accessibility_selected" = "已选中";
+"deselect_all" = "取消全选";
+"notice_voice_broadcast_ended" = "%@结束了一个语音广播。";
+"notice_voice_broadcast_ended_by_you" = "你结束了一个语音广播。";
