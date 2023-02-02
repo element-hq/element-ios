@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+import Combine
 import Foundation
 import Intents
 import MatrixSDK
@@ -263,14 +264,15 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     }
     
     private func setupPushRuleSync() {
-        let needsRulesCheck = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
-            .map { _ in () }
-            .eraseToAnyPublisher()
+        let firstSyncEndend = NotificationCenter.default.publisher(for: .mxSessionDidSync)
+            .first()
+            .eraseOutput()
+
+        let rulesDidChange = NotificationCenter.default.publisher(for: NSNotification.Name(rawValue: kMXNotificationCenterDidUpdateRules)).eraseOutput()
         
-        #warning("Doesn't include the initial state of rules")
-        let rulesUpdated = NotificationCenter.default.publisher(for: NSNotification.Name(rawValue: kMXNotificationCenterDidUpdateRules))
-            .compactMap { notification -> [MXPushRule]? in
-                guard let center = notification.object as? MXNotificationCenter else {
+        let rules = Publishers.Merge(rulesDidChange, firstSyncEndend)
+            .compactMap { [weak self] _ ->  [MXPushRule]? in
+                guard let center = self?.mainMatrixSession?.notificationCenter else {
                     return nil
                 }
                 
@@ -278,7 +280,10 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             }
             .eraseToAnyPublisher()
         
-        pushRulesUpdater = .init(checkSignal: needsRulesCheck, rulesProvider: rulesUpdated)
+        let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
+        let needsRulesCheck = Publishers.Merge(firstSyncEndend, applicationDidBecomeActive).eraseOutput()
+        
+        pushRulesUpdater = .init(checkSignal: needsRulesCheck, rulesProvider: rules)
     }
 }
 

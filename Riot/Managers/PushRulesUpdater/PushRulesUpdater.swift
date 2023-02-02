@@ -44,12 +44,12 @@ private extension PushRulesUpdater {
         let relatedRules = rule.syncedRules(in: rules)
         
         for relatedRule in relatedRules {
-            guard relatedRule == rule else {
-                MXLog.debug("*** mismatch not found. rule: \(relatedRule.ruleId)")
+            guard MXPushRule.haveSameContent(relatedRule, rule) == false else {
+                MXLog.debug("*** mismatch -> rule: \(relatedRule.ruleId)")
                 continue
             }
             
-            MXLog.debug("*** mismatch found. rule: \(relatedRule.ruleId)")
+            MXLog.debug("*** OK -> rule: \(relatedRule.ruleId)")
         }
     }
 }
@@ -66,5 +66,29 @@ private extension MXPushRule {
             }
             return ruleId.syncedRules.contains(someRuleId)
         }
+    }
+    
+    static func haveSameContent(_ firstRule: MXPushRule, _ secondRule: MXPushRule) -> Bool {
+        guard
+            firstRule.enabled == secondRule.enabled,
+            let firstActions = firstRule.mxActions,
+            let secondActions = secondRule.mxActions,
+            firstActions.count == secondActions.count
+        else {
+            return false
+        }
+        
+        return firstActions.indices.allSatisfy { index in
+            let action1 = firstActions[index]
+            let action2 = secondActions[index]
+            #warning("compare  @property (nonatomic) NSDictionary *parameters")
+            return action1.actionType == action2.actionType
+        }
+    }
+}
+
+private extension MXPushRule {
+    var mxActions: [MXPushRuleAction]? {
+        actions as? [MXPushRuleAction]
     }
 }
