@@ -18,13 +18,14 @@ import Combine
 
 final class PushRulesUpdater {
     private var cancellables: Set<AnyCancellable> = .init()
-    private var rules: [MXPushRule] = []
+    private var rules: [NotificationPushRuleType] = []
     private let notificationSettingsService: NotificationSettingsServiceType
     
-    init(notificationSettingsService: NotificationSettingsServiceType, rules: AnyPublisher<[MXPushRule], Never>, needsCheck: AnyPublisher<Void, Never>) {
+    init(notificationSettingsService: NotificationSettingsServiceType, needsCheck: AnyPublisher<Void, Never>) {
         self.notificationSettingsService = notificationSettingsService
         
-        rules
+        notificationSettingsService
+            .rulesPublisher
             .weakAssign(to: \.rules, on: self)
             .store(in: &cancellables)
         
@@ -38,64 +39,50 @@ final class PushRulesUpdater {
 
 private extension PushRulesUpdater {
     func updateRulesIfNeeded() {
+        print("*** check started: \(rules.count)")
         for rule in rules {
             syncRelatedRulesIfNeeded(for: rule)
         }
     }
     
-    func syncRelatedRulesIfNeeded(for rule: MXPushRule) {
-        let relatedRules = rule.syncedRules(in: rules)
+    func syncRelatedRulesIfNeeded(for rule: NotificationPushRuleType) {
+        guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else {
+            return
+        }
+        
+        let relatedRules = ruleId.syncedRules(in: rules)
         
         for relatedRule in relatedRules {
-            guard MXPushRule.haveSameContent(relatedRule, rule) == false else {
-                MXLog.debug("*** OK -> rule: \(relatedRule.ruleId)")
+            guard rule.hasSameContent(relatedRule) == false else {
+                print("*** OK -> rule: \(relatedRule.ruleId)")
                 continue
             }
             
-            let index = NotificationIndex.index(when: rule.enabled)
-            #warning("Fix me")
-            let standardActions = NotificationPushRuleId(rawValue: rule.ruleId)!.standardActions(for: index)
+            let notificationOption = NotificationIndex.index(when: rule.enabled)
             
-            MXLog.debug("*** mismatch -> rule: \(relatedRule.ruleId)")
+            guard
+                let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
+                let expectedActions = ruleId.standardActions(for: notificationOption).actions
+            else {
+                return
+            }
+            
+            print("*** mismatch -> rule: \(relatedRule.ruleId)")
             Task {
-                try? await notificationSettingsService.updatePushRuleActions(for: relatedRule.ruleId,
-                                                                             enabled: rule.enabled,
-                                                                             actions: standardActions.actions)
+                try? await notificationSettingsService.updatePushRuleActions(for: relatedRule.ruleId, enabled: rule.enabled, actions: expectedActions)
             }
         }
     }
 }
 
-private extension MXPushRule {
-    func syncedRules(in rules: [MXPushRule]) -> [MXPushRule] {
+extension NotificationPushRuleType {
+    func hasSameContent(_ otherRule: NotificationPushRuleType) -> Bool {
         guard let ruleId = NotificationPushRuleId(rawValue: ruleId) else {
-            return []
-        }
-        
-        return rules.filter {
-            guard let someRuleId = NotificationPushRuleId(rawValue: $0.ruleId) else {
-                return false
-            }
-            return ruleId.syncedRules.contains(someRuleId)
-        }
-    }
-    
-    static func haveSameContent(_ firstRule: MXPushRule, _ secondRule: MXPushRule) -> Bool {
-        guard
-            firstRule.enabled == secondRule.enabled,
-            let firstActions = firstRule.mxActions,
-            let secondActions = secondRule.mxActions,
-            firstActions.count == secondActions.count
-        else {
             return false
         }
         
-        return firstActions.indices.allSatisfy { index in
-            let action1 = firstActions[index]
-            let action2 = secondActions[index]
-            #warning("compare  @property (nonatomic) NSDictionary *parameters")
-            return action1.actionType == action2.actionType
-        }
+        let notificationOption = NotificationIndex.index(when: enabled)
+        return otherRule.matches(standardActions: ruleId.standardActions(for: notificationOption))
     }
 }
 

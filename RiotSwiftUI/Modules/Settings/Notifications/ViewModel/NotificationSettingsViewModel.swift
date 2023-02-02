@@ -294,7 +294,7 @@ private extension NotificationSettingsViewModel {
     }
 }
 
-private extension NotificationPushRuleId {
+extension NotificationPushRuleId {
     func syncedRules(in rules: [NotificationPushRuleType]) -> [NotificationPushRuleType] {
         rules.filter {
             guard let ruleId = NotificationPushRuleId(rawValue: $0.ruleId) else {

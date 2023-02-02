@@ -17,7 +17,7 @@
 import Combine
 import Foundation
 
-class MXNotificationSettingsService: NotificationSettingsServiceType {
+final class MXNotificationSettingsService: NotificationSettingsServiceType {
     private let session: MXSession
     private var cancellables = Set<AnyCancellable>()
     
@@ -34,8 +34,22 @@ class MXNotificationSettingsService: NotificationSettingsServiceType {
     
     init(session: MXSession) {
         self.session = session
+
         // Publisher of all rule updates
-        let rulesUpdated = NotificationCenter.default.publisher(for: NSNotification.Name(rawValue: kMXNotificationCenterDidUpdateRules))
+        let rulesUpdated: AnyPublisher<Void, Never>
+        let didUpdateRules = NotificationCenter.default.publisher(for: NSNotification.Name(rawValue: kMXNotificationCenterDidUpdateRules)).eraseOutput()
+        
+        if session.state >= .running {
+            rulesUpdated = didUpdateRules
+        } else {
+            let sessionIsReady = NotificationCenter.default.publisher(for: .mxSessionStateDidChange)
+                .first { _ in
+                    session.state >= .running
+                }
+                .eraseOutput()
+            
+            rulesUpdated = Publishers.Merge(sessionIsReady, didUpdateRules).eraseToAnyPublisher()
+        }
         
         // Set initial value of the content rules
         if let contentRules = session.notificationCenter.rules?.global.content as? [MXPushRule] {

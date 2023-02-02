@@ -74,27 +74,15 @@ private extension AppConfiguration {
     }
     
     func setupPushRuleSync(for matrixSession: MXSession) {
-        let firstSyncEnded = NotificationCenter.default.publisher(for: .mxSessionDidSync)
-            .first()
-            .eraseOutput()
-
-        let rulesDidChange = NotificationCenter.default.publisher(for: NSNotification.Name(rawValue: kMXNotificationCenterDidUpdateRules)).eraseOutput()
-        
-        let rules = Publishers.Merge(rulesDidChange, firstSyncEnded)
-            .compactMap { _ ->  [MXPushRule]? in
-                guard let center = matrixSession.notificationCenter else {
-                    return nil
-                }
-                
-                return center.flatRules as? [MXPushRule]
+        let sessionIsReady = NotificationCenter.default.publisher(for: .mxSessionStateDidChange)
+            .first { _ in
+                matrixSession.state >= .running
             }
-            .eraseToAnyPublisher()
+            .eraseOutput()
         
         let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
-        let needsRulesCheck = Publishers.Merge(firstSyncEnded, applicationDidBecomeActive).eraseOutput()
+        let needsRulesCheck = Publishers.Merge(sessionIsReady, applicationDidBecomeActive).eraseToAnyPublisher()
         
-        pushRulesUpdater = .init(notificationSettingsService: MXNotificationSettingsService(session: matrixSession),
-                                 rules: rules,
-                                 needsCheck: needsRulesCheck)
+        pushRulesUpdater = .init(notificationSettingsService: MXNotificationSettingsService(session: matrixSession), needsCheck: needsRulesCheck)
     }
 }
