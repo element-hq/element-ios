@@ -46,7 +46,7 @@ private extension PushRulesUpdater {
     }
     
     func syncRelatedRulesIfNeeded(for rule: NotificationPushRuleType) {
-        guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else {
+        guard let ruleId = rule.pushRuleId else {
             return
         }
         
@@ -67,7 +67,7 @@ private extension PushRulesUpdater {
         let notificationOption = NotificationIndex.index(when: rule.enabled)
         
         guard
-            let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
+            let ruleId = rule.pushRuleId,
             let expectedActions = ruleId.standardActions(for: notificationOption).actions
         else {
             return
@@ -81,7 +81,7 @@ private extension PushRulesUpdater {
 
 private extension NotificationPushRuleType {
     func hasSameContentOf(_ otherRule: NotificationPushRuleType) -> Bool {
-        guard let ruleId = NotificationPushRuleId(rawValue: ruleId) else {
+        guard let ruleId = pushRuleId else {
             return false
         }
         

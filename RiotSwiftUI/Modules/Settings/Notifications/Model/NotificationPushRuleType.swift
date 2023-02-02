@@ -21,3 +21,9 @@ protocol NotificationPushRuleType {
     var enabled: Bool { get }
     func matches(standardActions: NotificationStandardActions?) -> Bool
 }
+
+extension NotificationPushRuleType {
+    var pushRuleId: NotificationPushRuleId? {
+        ruleId.flatMap(NotificationPushRuleId.init(rawValue:))
+    }
+}
