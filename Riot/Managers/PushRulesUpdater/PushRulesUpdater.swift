@@ -64,17 +64,8 @@ private extension PushRulesUpdater {
     }
     
     func sync(relatedRuleId: String, with rule: NotificationPushRuleType) {
-        let notificationOption = NotificationIndex.index(when: rule.enabled)
-        
-        guard
-            let ruleId = rule.pushRuleId,
-            let expectedActions = ruleId.standardActions(for: notificationOption).actions
-        else {
-            return
-        }
-        
         Task {
-            try? await notificationSettingsService.updatePushRuleActions(for: relatedRuleId, enabled: rule.enabled, actions: expectedActions)
+            try? await notificationSettingsService.updatePushRuleActions(for: relatedRuleId, enabled: rule.enabled, actions: rule.ruleActions)
         }
     }
 }
