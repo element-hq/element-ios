@@ -61,6 +61,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     }
         
     private var currentSpaceId: String?
+    private var cancellables: Set<AnyCancellable> = .init()
+    private var pushRulesUpdater: PushRulesUpdater?
   
     // MARK: Public
     
@@ -85,6 +87,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         setupLogger()
         setupTheme()
         excludeAllItemsFromBackup()
+        setupPushRulesSync()
         
         // Setup navigation router store
         _ = NavigationRouterStore.shared
@@ -259,6 +262,37 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         
         // Reload split view with selected space id
         self.splitViewCoordinator?.start(with: spaceId)
+    }
+    
+    private func setupPushRulesSync() {
+        let sessionReady = NotificationCenter.default.publisher(for: .mxSessionStateDidChange)
+            .compactMap { $0.object as? MXSession }
+            .filter { $0.state == .running }
+            .removeDuplicates { session1, session2 in
+                session1 == session2
+            }
+        
+        sessionReady
+            .print("*** ready")
+            .sink { [weak self] session in
+                let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
+                let needsCheckPublisher = applicationDidBecomeActive.merge(with: Just(())).eraseToAnyPublisher()
+                
+                self?.pushRulesUpdater = .init(notificationSettingsService: MXNotificationSettingsService(session: session), needsCheck: needsCheckPublisher)
+            }
+            .store(in: &cancellables)
+        
+        
+        let sessionClosed = NotificationCenter.default.publisher(for: .mxSessionStateDidChange)
+            .compactMap { $0.object as? MXSession }
+            .filter { $0.state == .closed }
+        
+        sessionClosed
+            .print("*** closed")
+            .sink { [weak self] _ in
+                self?.pushRulesUpdater = nil
+            }
+            .store(in: &cancellables)
     }
 }
 

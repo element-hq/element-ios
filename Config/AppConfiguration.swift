@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-import Combine
 import Foundation
 
 /// AppConfiguration is CommonConfiguration plus configurations dedicated to the app
@@ -55,17 +54,12 @@ class AppConfiguration: CommonConfiguration {
     
     // MARK: - Per matrix session settings
     
-    private var pushRulesUpdater: PushRulesUpdater?
-    
     override func setupSettings(for matrixSession: MXSession) {
         super.setupSettings(for: matrixSession)
         setupWidgetReadReceipts(for: matrixSession)
-        setupPushRuleSync(for: matrixSession)
     }
-}
-
-private extension AppConfiguration {
-    func setupWidgetReadReceipts(for matrixSession: MXSession) {
+  
+    private func setupWidgetReadReceipts(for matrixSession: MXSession) {
         var acknowledgableEventTypes = matrixSession.acknowledgableEventTypes ?? []
         acknowledgableEventTypes.append(kWidgetMatrixEventTypeString)
         acknowledgableEventTypes.append(kWidgetModularEventTypeString)
@@ -73,16 +67,4 @@ private extension AppConfiguration {
         matrixSession.acknowledgableEventTypes = acknowledgableEventTypes
     }
     
-    func setupPushRuleSync(for matrixSession: MXSession) {
-        let sessionIsReady = NotificationCenter.default.publisher(for: .mxSessionStateDidChange)
-            .first { _ in
-                matrixSession.state >= .running
-            }
-            .eraseOutput()
-        
-        let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
-        let needsRulesCheck = Publishers.CombineLatest(sessionIsReady, applicationDidBecomeActive).eraseOutput()
-        
-        pushRulesUpdater = .init(notificationSettingsService: MXNotificationSettingsService(session: matrixSession), needsCheck: needsRulesCheck)
-    }
 }
