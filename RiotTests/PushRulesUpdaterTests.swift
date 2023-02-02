@@ -22,11 +22,16 @@ final class PushRulesUpdaterTests: XCTestCase {
     private var notificationService: MockNotificationSettingsService!
     private var pushRulesUpdater: PushRulesUpdater!
     private var needsCheckPublisher: PassthroughSubject<Void, Never> = .init()
+    private var subscriptions: Set<AnyCancellable> = .init()
 
     override func setUpWithError() throws {
         notificationService = .init()
         notificationService.rules = [MockNotificationPushRule].default
         pushRulesUpdater = .init(notificationSettingsService: notificationService, needsCheck: needsCheckPublisher.eraseOutput())
+    }
+    
+    override func tearDownWithError() throws {
+        subscriptions.removeAll()
     }
 
     func testNoRuleIsUpdated() throws {
@@ -42,11 +47,14 @@ final class PushRulesUpdaterTests: XCTestCase {
         
         needsCheckPublisher.send(())
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            XCTAssertEqual(self.notificationService.rules[targetRuleIndex].ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
-            XCTAssertTrue(self.notificationService.rules[targetRuleIndex].enabled)
-            expectation.fulfill()
-        }
+        pushRulesUpdater
+            .didCompleteUpdate
+            .sink { _ in
+                XCTAssertEqual(self.notificationService.rules[targetRuleIndex].ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
+                XCTAssertTrue(self.notificationService.rules[targetRuleIndex].enabled)
+                expectation.fulfill()
+            }
+            .store(in: &subscriptions)
         
         waitForExpectations(timeout: 2.0)
     }
@@ -60,21 +68,24 @@ final class PushRulesUpdaterTests: XCTestCase {
         
         needsCheckPublisher.send(())
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            for rule in self.notificationService.rules {
-                guard let id = rule.pushRuleId else {
-                    continue
+        pushRulesUpdater
+            .didCompleteUpdate
+            .sink { _ in
+                for rule in self.notificationService.rules {
+                    guard let id = rule.pushRuleId else {
+                        continue
+                    }
+                    
+                    if affectedRules.contains(id) {
+                        XCTAssertEqual(rule.ruleActions, targetActions)
+                    } else {
+                        XCTAssertEqual(rule.ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
+                    }
                 }
-                
-                if affectedRules.contains(id) {
-                    XCTAssertEqual(rule.ruleActions, targetActions)
-                } else {
-                    XCTAssertEqual(rule.ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
-                }
+                expectation.fulfill()
             }
-            expectation.fulfill()
-        }
-
+            .store(in: &subscriptions)
+        
         waitForExpectations(timeout: 2.0)
     }
     
@@ -87,20 +98,23 @@ final class PushRulesUpdaterTests: XCTestCase {
         
         needsCheckPublisher.send(())
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            for rule in self.notificationService.rules {
-                guard let id = rule.pushRuleId else {
-                    continue
+        pushRulesUpdater
+            .didCompleteUpdate
+            .sink { _ in
+                for rule in self.notificationService.rules {
+                    guard let id = rule.pushRuleId else {
+                        continue
+                    }
+                    
+                    if affectedRules.contains(id) {
+                        XCTAssertEqual(rule.ruleActions, targetActions)
+                    } else {
+                        XCTAssertEqual(rule.ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
+                    }
                 }
-                
-                if affectedRules.contains(id) {
-                    XCTAssertEqual(rule.ruleActions, targetActions)
-                } else {
-                    XCTAssertEqual(rule.ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
-                }
+                expectation.fulfill()
             }
-            expectation.fulfill()
-        }
+            .store(in: &subscriptions)
 
         waitForExpectations(timeout: 2.0)
     }

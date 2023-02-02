@@ -20,6 +20,11 @@ final class PushRulesUpdater {
     private var cancellables: Set<AnyCancellable> = .init()
     private var rules: [NotificationPushRuleType] = []
     private let notificationSettingsService: NotificationSettingsServiceType
+    private let didCompleteUpdateSubject: PassthroughSubject<Void, Never> = .init()
+    
+    var didCompleteUpdate: AnyPublisher<Void, Never> {
+        didCompleteUpdateSubject.eraseToAnyPublisher()
+    }
     
     init(notificationSettingsService: NotificationSettingsServiceType, needsCheck: AnyPublisher<Void, Never>) {
         self.notificationSettingsService = notificationSettingsService
@@ -39,31 +44,35 @@ final class PushRulesUpdater {
 
 private extension PushRulesUpdater {
     func syncRulesIfNeeded() {
+        let dispatchGroup: DispatchGroup = .init()
+        
         for rule in rules {
-            syncRelatedRulesIfNeeded(for: rule)
-        }
-    }
-    
-    func syncRelatedRulesIfNeeded(for rule: NotificationPushRuleType) {
-        guard let ruleId = rule.pushRuleId else {
-            return
-        }
-        
-        let relatedRules = ruleId.syncedRules(in: rules)
-        
-        for relatedRule in relatedRules {
-            guard rule.hasSameContentOf(relatedRule) == false else {
+            guard let ruleId = rule.pushRuleId else {
                 continue
             }
             
-            sync(relatedRuleId: relatedRule.ruleId, with: rule)
+            let relatedRules = ruleId.syncedRules(in: rules)
+            
+            for relatedRule in relatedRules {
+                guard rule.hasSameContentOf(relatedRule) == false else {
+                    continue
+                }
+                
+                dispatchGroup.enter()
+                Task {
+                    try? await sync(relatedRuleId: relatedRule.ruleId, with: rule)
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            self?.didCompleteUpdateSubject.send(())
         }
     }
     
-    func sync(relatedRuleId: String, with rule: NotificationPushRuleType) {
-        Task {
-            try? await notificationSettingsService.updatePushRuleActions(for: relatedRuleId, enabled: rule.enabled, actions: rule.ruleActions)
-        }
+    func sync(relatedRuleId: String, with rule: NotificationPushRuleType) async throws {
+        try await notificationSettingsService.updatePushRuleActions(for: relatedRuleId, enabled: rule.enabled, actions: rule.ruleActions)
     }
 }
 
