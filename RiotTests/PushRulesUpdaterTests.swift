@@ -21,102 +21,66 @@ import XCTest
 final class PushRulesUpdaterTests: XCTestCase {
     private var notificationService: MockNotificationSettingsService!
     private var pushRulesUpdater: PushRulesUpdater!
-    private var needsCheckPublisher: PassthroughSubject<Void, Never> = .init()
-    private var subscriptions: Set<AnyCancellable> = .init()
 
     override func setUpWithError() throws {
         notificationService = .init()
         notificationService.rules = [MockNotificationPushRule].default
-        pushRulesUpdater = .init(notificationSettingsService: notificationService, needsCheck: needsCheckPublisher.eraseOutput())
-    }
-    
-    override func tearDownWithError() throws {
-        subscriptions.removeAll()
+        pushRulesUpdater = .init(notificationSettingsService: notificationService)
     }
 
-    func testNoRuleIsUpdated() throws {
-        needsCheckPublisher.send()
+    func testNoRuleIsUpdated() async throws {
+        await pushRulesUpdater.syncRulesIfNeeded()
         XCTAssertEqual(notificationService.rules as? [MockNotificationPushRule], [MockNotificationPushRule].default)
     }
     
-    func testSingleRuleAffected() throws {
-        let expectation = expectation(description: #function)
-        
+    func testSingleRuleAffected() async throws {
         let targetActions: NotificationActions = .init(notify: true, sound: "default")
         let targetRuleIndex = try mockRule(ruleId: .pollStart, enabled: false, actions: targetActions)
         
-        needsCheckPublisher.send(())
-        
-        pushRulesUpdater
-            .didCompleteUpdate
-            .sink { _ in
-                XCTAssertEqual(self.notificationService.rules[targetRuleIndex].ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
-                XCTAssertTrue(self.notificationService.rules[targetRuleIndex].enabled)
-                expectation.fulfill()
-            }
-            .store(in: &subscriptions)
-        
-        waitForExpectations(timeout: 2.0)
+        await pushRulesUpdater.syncRulesIfNeeded()
+
+        XCTAssertEqual(self.notificationService.rules[targetRuleIndex].ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
+        XCTAssertTrue(self.notificationService.rules[targetRuleIndex].enabled)
     }
     
-    func testAffectedRulesAreUpdated() throws {
-        let expectation = expectation(description: #function)
-        
+    func testAffectedRulesAreUpdated() async throws {
         let targetActions: NotificationActions = .init(notify: true, sound: "abc")
         try mockRule(ruleId: .allOtherMessages, enabled: true, actions: targetActions)
         let affectedRules: [NotificationPushRuleId] =  [.allOtherMessages, .pollStart, .msc3930pollStart, .pollEnd, .msc3930pollEnd]
         
-        needsCheckPublisher.send(())
+        await pushRulesUpdater.syncRulesIfNeeded()
         
-        pushRulesUpdater
-            .didCompleteUpdate
-            .sink { _ in
-                for rule in self.notificationService.rules {
-                    guard let id = rule.pushRuleId else {
-                        continue
-                    }
-                    
-                    if affectedRules.contains(id) {
-                        XCTAssertEqual(rule.ruleActions, targetActions)
-                    } else {
-                        XCTAssertEqual(rule.ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
-                    }
-                }
-                expectation.fulfill()
+        for rule in self.notificationService.rules {
+            guard let id = rule.pushRuleId else {
+                continue
             }
-            .store(in: &subscriptions)
-        
-        waitForExpectations(timeout: 2.0)
+            
+            if affectedRules.contains(id) {
+                XCTAssertEqual(rule.ruleActions, targetActions)
+            } else {
+                XCTAssertEqual(rule.ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
+            }
+        }
     }
     
-    func testAffectedOneToOneRulesAreUpdated() throws {
-        let expectation = expectation(description: #function)
-
+    func testAffectedOneToOneRulesAreUpdated() async throws {
         let targetActions: NotificationActions = .init(notify: true, sound: "abc")
         try mockRule(ruleId: .oneToOneRoom, enabled: true, actions: targetActions)
         let affectedRules: [NotificationPushRuleId] =  [.oneToOneRoom, .oneToOnePollStart, .msc3930oneToOnePollStart, .oneToOnePollEnd, .msc3930oneToOnePollEnd]
         
-        needsCheckPublisher.send(())
+        await pushRulesUpdater.syncRulesIfNeeded()
         
-        pushRulesUpdater
-            .didCompleteUpdate
-            .sink { _ in
-                for rule in self.notificationService.rules {
-                    guard let id = rule.pushRuleId else {
-                        continue
-                    }
-                    
-                    if affectedRules.contains(id) {
-                        XCTAssertEqual(rule.ruleActions, targetActions)
-                    } else {
-                        XCTAssertEqual(rule.ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
-                    }
-                }
-                expectation.fulfill()
+        for rule in self.notificationService.rules {
+            guard let id = rule.pushRuleId else {
+                continue
             }
-            .store(in: &subscriptions)
-
-        waitForExpectations(timeout: 2.0)
+            
+            if affectedRules.contains(id) {
+                XCTAssertEqual(rule.ruleActions, targetActions)
+            } else {
+                XCTAssertEqual(rule.ruleActions, NotificationStandardActions.notifyDefaultSound.actions)
+            }
+        }
     }
 }
 

@@ -87,7 +87,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         setupLogger()
         setupTheme()
         excludeAllItemsFromBackup()
-        setupPushRulesSync()
+        setupPushRulesSessionEvents()
         
         // Setup navigation router store
         _ = NavigationRouterStore.shared
@@ -264,7 +264,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         self.splitViewCoordinator?.start(with: spaceId)
     }
     
-    private func setupPushRulesSync() {
+    private func setupPushRulesSessionEvents() {
         let sessionReady = NotificationCenter.default.publisher(for: .mxSessionStateDidChange)
             .compactMap { $0.object as? MXSession }
             .filter { $0.state == .running }
@@ -274,10 +274,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         
         sessionReady
             .sink { [weak self] session in
-                let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
-                let needsCheckPublisher = applicationDidBecomeActive.merge(with: Just(())).eraseToAnyPublisher()
-                
-                self?.pushRulesUpdater = .init(notificationSettingsService: MXNotificationSettingsService(session: session), needsCheck: needsCheckPublisher)
+                self?.setupPushRulesUpdater(session: session)
             }
             .store(in: &cancellables)
         
@@ -289,6 +286,21 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         sessionClosed
             .sink { [weak self] _ in
                 self?.pushRulesUpdater = nil
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func setupPushRulesUpdater(session: MXSession) {
+        pushRulesUpdater = .init(notificationSettingsService: MXNotificationSettingsService(session: session))
+        
+        let applicationDidBecomeActive = NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).eraseOutput()
+        let needsCheckPublisher = applicationDidBecomeActive.merge(with: Just(())).eraseToAnyPublisher()
+        
+        needsCheckPublisher
+            .sink { _ in
+                Task { @MainActor [weak self] in
+                    await self?.pushRulesUpdater?.syncRulesIfNeeded()
+                }
             }
             .store(in: &cancellables)
     }
