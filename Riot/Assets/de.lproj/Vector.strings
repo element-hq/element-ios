@@ -2720,9 +2720,9 @@
 // MARK: - Launch loading
 
 "launch_loading_migrating_data" = "Migriere Daten\n%@ %%";
-"settings_labs_disable_crypto_sdk" = "Ende-zu-Ende-Verschlüsselung 2.0 (zum Deaktivieren abmelden)";
-"settings_labs_confirm_crypto_sdk" = "Diese Option wird eine neue, schnellere und zuverlässigere Ende-zu-Ende-Verschlüsselungs-Engine aktivieren, die in Rust geschrieben wurde. Einmal aktiviert, wirst du dich abmelden müssen, um sie zu deaktivieren. Möchtest du fortfahren?";
-"settings_labs_enable_crypto_sdk" = "Ende-zu-Ende-Verschlüsselung 2.0";
+"settings_labs_disable_crypto_sdk" = "Rust-Ende-zu-Ende-Verschlüsselung (zum Deaktivieren abmelden)";
+"settings_labs_confirm_crypto_sdk" = "Bitte beachte, dass diese Funktion noch experimentell ist, womöglich nicht wie erwartet funktioniert und unerwünschte Nebeneffekte haben kann. Melde dich zum deaktivieren einfach ab und erneut an. Nutze diese Funktion nach eigenem Ermessen und mit Vorsicht.";
+"settings_labs_enable_crypto_sdk" = "Rust-Ende-zu-Ende-Verschlüsselung";
 "poll_history_no_past_poll_period_text" = "Für die vergangenen %@ Tage sind keine beendeten Umfragen verfügbar. Lade weitere Umfragen, um die der vorherigen Monate zu sehen";
 "poll_history_no_active_poll_period_text" = "Für die vergangenen %@ Tage sind keine aktiven Umfragen verfügbar. Lade weitere Umfragen, um die der vorherigen Monate zu sehen";
 "poll_history_load_more" = "Weitere Umfragen laden";
