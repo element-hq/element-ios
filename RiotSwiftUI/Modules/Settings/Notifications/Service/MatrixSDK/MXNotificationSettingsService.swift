@@ -89,10 +89,10 @@ class MXNotificationSettingsService: NotificationSettingsServiceType {
         
         // Updating the actions before enabling the rule allows the homeserver to triggers just one sync update
         try await session.notificationCenter.updatePushRuleActions(ruleId,
-                                                         kind: rule.kind,
-                                                         notify: actions.notify,
-                                                         soundName: actions.sound,
-                                                         highlight: actions.highlight)
+                                                                   kind: rule.kind,
+                                                                   notify: actions.notify,
+                                                                   soundName: actions.sound,
+                                                                   highlight: actions.highlight)
         
         try await session.notificationCenter.enableRule(pushRule: rule, isEnabled: enabled)
     }

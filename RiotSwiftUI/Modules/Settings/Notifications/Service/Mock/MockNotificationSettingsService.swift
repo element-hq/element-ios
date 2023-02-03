@@ -49,6 +49,6 @@ class MockNotificationSettingsService: NotificationSettingsServiceType, Observab
             return
         }
         
-        rules[ruleIndex] = MockNotificationPushRule(ruleId: ruleId, enabled: enabled, actions: actions)
+        rules[ruleIndex] = MockNotificationPushRule(ruleId: ruleId, enabled: enabled, ruleActions: actions)
     }
 }

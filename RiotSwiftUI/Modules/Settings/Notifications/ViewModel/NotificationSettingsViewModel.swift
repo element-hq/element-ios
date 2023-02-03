@@ -218,7 +218,7 @@ private extension NotificationSettingsViewModel {
         
         for rule in newRules {
             guard
-                let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
+                let ruleId = rule.pushRuleId,
                 ruleIds.contains(ruleId)
             else {
                 continue
@@ -248,7 +248,7 @@ private extension NotificationSettingsViewModel {
     /// - Parameter rule: The push rule type to check.
     /// - Returns: Wether it should be displayed as checked or not checked.
     func defaultIsChecked(rule: NotificationPushRuleType) -> Bool {
-        guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else {
+        guard let ruleId = rule.pushRuleId else {
             return false
         }
         
@@ -264,7 +264,7 @@ private extension NotificationSettingsViewModel {
     }
     
     func isChecked(rule: NotificationPushRuleType, syncedRules: [NotificationPushRuleType]) -> Bool {
-        guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else {
+        guard let ruleId = rule.pushRuleId else {
             return false
         }
         
@@ -280,7 +280,7 @@ private extension NotificationSettingsViewModel {
     }
     
     func isOutOfSync(rule: NotificationPushRuleType, syncedRules: [NotificationPushRuleType]) -> Bool {
-        guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else {
+        guard let ruleId = rule.pushRuleId else {
             return false
         }
         
@@ -294,10 +294,10 @@ private extension NotificationSettingsViewModel {
     }
 }
 
-private extension NotificationPushRuleId {
+extension NotificationPushRuleId {
     func syncedRules(in rules: [NotificationPushRuleType]) -> [NotificationPushRuleType] {
         rules.filter {
-            guard let ruleId = NotificationPushRuleId(rawValue: $0.ruleId) else {
+            guard let ruleId = $0.pushRuleId else {
                 return false
             }
             return syncedRules.contains(ruleId)

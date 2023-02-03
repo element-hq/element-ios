@@ -16,12 +16,12 @@
 
 import Foundation
 
-struct MockNotificationPushRule: NotificationPushRuleType {
+struct MockNotificationPushRule: NotificationPushRuleType, Equatable {
     var ruleId: String!
     var enabled: Bool
-    var actions: NotificationActions? = NotificationStandardActions.notifyDefaultSound.actions
+    var ruleActions: NotificationActions? = NotificationStandardActions.notifyDefaultSound.actions
     
     func matches(standardActions: NotificationStandardActions?) -> Bool {
-        standardActions?.actions == actions
+        standardActions?.actions == ruleActions
     }
 }
