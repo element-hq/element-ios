@@ -569,7 +569,7 @@
 "create_room_show_in_directory" = "ルーム一覧に掲載";
 "create_room_section_footer_type" = "非公開のルームは、ルームに招待された人のみ参加できます。";
 "create_room_type_public" = "公開ルーム（誰でも参加可能）";
-"create_room_type_private" = "非公開ルーム (招待者のみ参加可能)";
+"create_room_type_private" = "非公開のルーム（招待者のみ参加可能）";
 "create_room_section_header_type" = "アクセスできる人";
 "create_room_section_footer_encryption" = "暗号化はあとから無効にすることはできません。";
 "create_room_section_header_encryption" = "暗号化";
@@ -588,7 +588,7 @@
 
 // Mark: - Room creation introduction cell
 
-"room_intro_cell_add_participants_action" = "参加者を追加";
+"room_intro_cell_add_participants_action" = "連絡先を追加";
 "room_participants_security_information_room_encrypted" = "このルームのメッセージはエンドツーエンドで暗号化されています。\n\nメッセージは安全に保護されており、メッセージのロックを解除するための固有の鍵は、あなたと受信者だけが持っています。";
 "room_participants_security_information_room_not_encrypted" = "このルームのメッセージはエンドツーエンドで暗号化されていません。";
 "room_intro_cell_information_dm_sentence1_part3" = "とのダイレクトメッセージの始まりです。 ";
@@ -1607,7 +1607,7 @@
 // MARK: - Share invite link
 
 "share_invite_link_action" = "招待リンクを共有";
-"room_intro_cell_information_room_with_topic_sentence2" = "トピック: %@";
+"room_intro_cell_information_room_with_topic_sentence2" = "トピック：%@";
 "room_intro_cell_information_room_sentence1_part3" = "の始まりです。 ";
 "room_intro_cell_information_room_sentence1_part1" = "ここが ";
 "room_intro_cell_information_dm_sentence1_part1" = "ここが ";
@@ -1642,7 +1642,7 @@
 "stop" = "停止";
 "spaces_creation_post_process_creating_space_task" = "%@を作成しています";
 "side_menu_coach_message" = "右にスワイプまたはタップで全てのルームが表示されます";
-"spaces_creation_post_process_creating_space" = "スペースを作成中";
+"spaces_creation_post_process_creating_space" = "スペースを作成しています";
 "spaces_creation_add_rooms_message" = "このスペースはあなた専用のため、他の人に通知されることはありません。この設定は後から変更できます。";
 "spaces_creation_add_rooms_title" = "どれを追加しますか？";
 "spaces_creation_sharing_type_me_and_teammates_detail" = "あなたとチームメイトの非公開のスペース";
@@ -1689,7 +1689,7 @@
 
 // MARK: - Call Transfer
 "call_transfer_title" = "転送";
-"room_info_back_button_title" = "ルーム情報";
+"room_info_back_button_title" = "ルームの情報";
 "create_room_processing" = "ルームを作成しています";
 "call_transfer_users" = "ユーザー";
 "home_context_menu_notifications" = "通知";
@@ -1706,16 +1706,16 @@
 "leave_space_action" = "スペースから退出";
 "leave_space_selection_title" = "ルームを選択";
 "create_room_section_footer_type_restricted" = "誰でもスペース名で検索・参加できます。";
-"create_room_suggest_room" = "スペースメンバーにおすすめ";
+"create_room_suggest_room" = "スペースのメンバーへのおすすめ";
 "create_room_show_in_directory_footer" = "他の人が検索・参加できるようになります。";
 "create_room_promotion_header" = "プロモート";
 "searchable_directory_search_placeholder" = "名前または ID";
 "room_suggestion_settings_screen_title" = "スペースにおすすめのルームを作成";
-"room_suggestion_settings_screen_message" = "おすすめのルームは、スペースのメンバーに参加を推奨するものとしてPRされます。";
+"room_suggestion_settings_screen_message" = "おすすめのルームは、スペースのメンバーに対して参加候補として表示されます。";
 
 // Room suggestion Settings
 "room_suggestion_settings_screen_nav_title" = "おすすめのルーム";
-"room_details_promote_room_suggest_title" = "スペースメンバーへのおすすめ";
+"room_details_promote_room_suggest_title" = "スペースのメンバーへのおすすめ";
 "settings_default" = "既定の通知";
 "pin_protection_reset_alert_action_reset" = "リセット";
 "authentication_recaptcha_title" = "あなたは人間ですか？";
@@ -1746,7 +1746,7 @@
 "room_access_settings_screen_upgrade_required" = "アップグレードが必要";
 "room_access_settings_screen_upgrade_alert_title" = "ルームをアップグレード";
 "room_access_settings_screen_public_message" = "誰でも検索・参加できます。";
-"room_access_settings_screen_private_message" = "招待された人だけが検索・参加できます。";
+"room_access_settings_screen_private_message" = "招待された人のみ検索・参加できます。";
 "room_access_settings_screen_message" = "誰が%@を検索・参加できるか選択してください。";
 "space_settings_access_section" = "このスペースにアクセスできる人は？";
 "room_access_settings_screen_title" = "このルームにアクセスできる人は？";
@@ -2626,7 +2626,7 @@
 "event_formatter_call_active_voice" = "実行中の音声通話";
 "launch_loading_server_syncing_nth_attempt" = "サーバーと同期しています\n（%@回試行）";
 "create_room_suggest_room_footer" = "おすすめのルームは、スペースのメンバーに対して参加候補として表示されます。";
-"create_room_section_footer_type_public" = "スペース名にあるだけでなく、招待された連絡先のみが検索し、参加できます。";
+"create_room_section_footer_type_public" = "スペースの名前だけでなく、招待された人だけが検索・参加できます。";
 "searchable_directory_x_network" = "%@ネットワーク";
 "pin_protection_explanatory" = "PINコードを設定すると、メッセージや連絡先などのデータを保護できます。アプリの開始時にPINコードを入力するよう要求します。";
 "secrets_recovery_with_key_information_default" = "セキュリティーキーを入力すると、保護されたメッセージの履歴と、他のセッションの認証用のクロス署名IDにアクセスできます。";
@@ -2673,7 +2673,7 @@
 
 // MARK: - Dial Pad
 "dialpad_title" = "ダイヤルパッド";
-"create_room_type_restricted" = "スペースの参加者";
+"create_room_type_restricted" = "スペースのメンバー";
 "biometrics_cant_unlocked_alert_message_login" = "再ログイン";
 "biometrics_cant_unlocked_alert_message_x" = "ロックを解除するには、%@を使用するか、再ログインして%@を有効にしてください";
 "biometrics_setup_subtitle" = "時間を節約";
@@ -2684,7 +2684,7 @@
 "pin_protection_settings_change_pin" = "PINコードを変更";
 "pin_protection_settings_enabled_forced" = "PINコードが有効です";
 "pin_protection_settings_section_footer" = "PINコードを再設定するには、再ログインして新しいコードを作成してください。";
-"pin_protection_mismatch_too_many_times_error_message" = "PINコードを覚えていない場合は「PINコードを忘れました」をタップしてください。";
+"pin_protection_mismatch_too_many_times_error_message" = "PINコードを覚えていない場合は「PINコードを忘れました」のボタンをタップしてください。";
 "pin_protection_mismatch_error_message" = "もう一度やり直してください";
 "pin_protection_mismatch_error_title" = "PINコードが一致しません";
 "pin_protection_reset_alert_message" = "PINコードを再設定するには、再ログインして新しいコードを作成してください";
@@ -2699,7 +2699,7 @@
 
 "major_update_title" = "Riotは%@になりました";
 "secrets_reset_authentication_message" = "承認するにはMatrixのアカウントのパスワードを入力してください";
-"secrets_setup_recovery_passphrase_summary_information" = "セキュリティーフレーズを記憶。セキュリティーフレーズを使うと、暗号化したメッセージやデータのロックを解除することができます。";
+"secrets_setup_recovery_passphrase_summary_information" = "セキュリティーフレーズを記録してください。セキュリティーフレーズを使うと、暗号化したメッセージやデータのロックを解除することができます。";
 "secrets_setup_recovery_key_storage_alert_message" = "✓ 印刷して安全な場所で保管\n✓ USBキーやバックアップ用ドライブに保存\n✓ 個人用のクラウドストレージにコピー";
 "secrets_setup_recovery_key_information" = "セキュリティーキーは安全な場所で保管してください。セキュリティーキーを使うと、暗号化したメッセージやデータのロックを解除することができます。";
 "secrets_recovery_with_key_invalid_recovery_key_message" = "正しいセキュリティーキーを入力したことを確認してください。";
@@ -2814,7 +2814,7 @@
 "space_beta_announce_subtitle" = "コミュニティー機能の新しいバージョン";
 "space_invite_not_enough_permission" = "このスペースにユーザーを招待する権限がありません";
 "room_invite_not_enough_permission" = "このルームにユーザーを招待する権限がありません";
-"room_invite_to_room_option_detail" = "%@には所属しません。";
+"room_invite_to_room_option_detail" = "%@のメンバーにはなりません。";
 "room_invite_to_space_option_detail" = "%@を探索することはできますが、%@のメンバーにはなりません。";
 
 // MARK: - Room invite
