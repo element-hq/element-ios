@@ -44,6 +44,8 @@ struct LiveLocationSharingViewerViewState: BindableState {
 
     var showLoadingIndicator = false
     
+    var isSharingOwnLocation: Bool
+    
     var shareButtonEnabled: Bool {
         !showLoadingIndicator
     }

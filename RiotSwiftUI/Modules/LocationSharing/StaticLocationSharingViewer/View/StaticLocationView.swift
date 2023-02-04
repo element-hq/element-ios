@@ -27,6 +27,8 @@ struct StaticLocationView: View {
     
     @ObservedObject var viewModel: StaticLocationViewingViewModel.Context
     
+    @State private var showsUserLocation = false
+    
     // MARK: Views
     
     var body: some View {
@@ -36,7 +38,7 @@ struct StaticLocationView: View {
                                        annotations: [viewModel.viewState.sharedAnnotation],
                                        highlightedAnnotation: viewModel.viewState.sharedAnnotation,
                                        userAvatarData: viewModel.viewState.userAvatarData,
-                                       showsUserLocation: false,
+                                       showsUserLocation: showsUserLocation,
                                        userLocation: Binding.constant(nil),
                                        mapCenterCoordinate: Binding.constant(nil),
                                        errorSubject: viewModel.viewState.errorSubject)
@@ -53,6 +55,14 @@ struct StaticLocationView: View {
                     Text(VectorL10n.locationSharingTitle)
                         .font(.headline)
                         .foregroundColor(theme.colors.primaryContent)
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showsUserLocation = true
+                    } label: {
+                        // TODO: Replace icon
+                        Image(uiImage: Asset.Images.locationPinIcon.image)
+                    }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {

@@ -42,7 +42,7 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
     // MARK: - Setup
     
     init(mapStyleURL: URL, service: LiveLocationSharingViewerServiceProtocol) {
-        let viewState = LiveLocationSharingViewerViewState(mapStyleURL: mapStyleURL, annotations: [], highlightedAnnotation: nil, listItemsViewData: [])
+        let viewState = LiveLocationSharingViewerViewState(mapStyleURL: mapStyleURL, annotations: [], highlightedAnnotation: nil, listItemsViewData: [], isSharingOwnLocation: false)
         
         liveLocationSharingViewerService = service
         mapViewErrorAlertInfoBuilder = MapViewErrorAlertInfoBuilder()
@@ -198,6 +198,7 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
         state.annotations = annotations
         state.highlightedAnnotation = highlightedAnnotation
         state.listItemsViewData = listViewItems
+        state.isSharingOwnLocation = annotations.first { liveLocationSharingViewerService.isCurrentUserId($0.userId) } != nil
     }
     
     private func highlighAnnotation(with userId: String) {

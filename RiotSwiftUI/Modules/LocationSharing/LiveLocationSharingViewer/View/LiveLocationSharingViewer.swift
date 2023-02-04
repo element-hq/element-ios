@@ -27,6 +27,7 @@ struct LiveLocationSharingViewer: View {
     @Environment(\.openURL) var openURL
     
     @State private var isBottomSheetExpanded = false
+    @State private var showsUserLocation = false
     
     var bottomSheetCollapsedHeight: CGFloat = 150.0
     
@@ -41,7 +42,7 @@ struct LiveLocationSharingViewer: View {
                                        annotations: viewModel.viewState.annotations,
                                        highlightedAnnotation: viewModel.viewState.highlightedAnnotation,
                                        userAvatarData: nil,
-                                       showsUserLocation: false,
+                                       showsUserLocation: showsUserLocation,
                                        userAnnotationCanShowCallout: true,
                                        userLocation: Binding.constant(nil),
                                        mapCenterCoordinate: Binding.constant(nil),
@@ -103,6 +104,16 @@ struct LiveLocationSharingViewer: View {
             ToolbarItem(placement: .cancellationAction) {
                 Button(VectorL10n.close) {
                     viewModel.send(viewAction: .done)
+                }
+            }
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                if !viewModel.viewState.isSharingOwnLocation {
+                    Button {
+                        showsUserLocation = true
+                    } label: {
+                        // TODO: Replace icon
+                        Image(uiImage: Asset.Images.locationPinIcon.image)
+                    }
                 }
             }
         }
