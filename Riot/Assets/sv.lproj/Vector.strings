@@ -2659,5 +2659,6 @@
 "room_details_polls" = "Omröstningshistorik";
 "settings_labs_disable_crypto_sdk" = "Krypto-SDK är aktiverad. För att inaktivera, vänligen installera om appen";
 "settings_labs_confirm_crypto_sdk" = "Vänligen notera att den här funktionen fortfarande ska anses vara experimentell, den kanske inte fungerar som förväntat eller kan leda till okända konsekvenser. För att gå tillbaka, logga ut och logga sedan in igen. Använd på egen risk.";
-"settings_labs_enable_crypto_sdk" = "Aktivera ny Rust-baserad krypto-SDK";
+"settings_labs_enable_crypto_sdk" = "Totalsträckskryptering i Rust";
 "accessibility_selected" = "vald";
+"settings_push_rules_error" = "Ett fel uppstod vid uppdatering av dina aviseringsinställningar. Vänligen försök att växla dina alternativ igen.";
