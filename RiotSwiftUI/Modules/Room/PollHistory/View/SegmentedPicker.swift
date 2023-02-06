@@ -39,12 +39,29 @@ struct SegmentedPicker<Segment: Hashable & CustomStringConvertible>: View {
                 } label: {
                     Text(segment.description)
                         .font(isSelectedSegment ? theme.fonts.headline : theme.fonts.body)
-                        .underline(isSelectedSegment)
+                        .underlineBar(isSelectedSegment)
                 }
                 .accentColor(isSelectedSegment ? theme.colors.accent : theme.colors.primaryContent)
                 .accessibilityLabel(segment.description)
                 .accessibilityValue(isSelectedSegment ? VectorL10n.accessibilitySelected : "")
             }
+        }
+    }
+}
+
+private extension Text {
+    @ViewBuilder
+    func underlineBar(_ isActive: Bool) -> some View {
+        if #available(iOS 15.0, *) {
+            overlay(alignment: .bottom) {
+                if isActive {
+                    Rectangle()
+                        .frame(height: 1)
+                        .offset(y: 2)
+                }
+            }
+        } else {
+            underline(isActive)
         }
     }
 }
