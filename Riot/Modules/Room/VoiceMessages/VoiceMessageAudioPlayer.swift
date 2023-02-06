@@ -230,6 +230,7 @@ class VoiceMessageAudioPlayer: NSObject {
             self.delegateContainer.notifyDelegatesWithBlock { delegate in
                 (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidFinishPlaying(self)
             }
+            self.unloadContent()
         }
         
         appBackgroundObserver = NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil) { [weak self] _ in
