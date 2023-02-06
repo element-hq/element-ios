@@ -2662,3 +2662,9 @@
 "settings_labs_enable_crypto_sdk" = "Totalsträckskryptering i Rust";
 "accessibility_selected" = "vald";
 "settings_push_rules_error" = "Ett fel uppstod vid uppdatering av dina aviseringsinställningar. Vänligen försök att växla dina alternativ igen.";
+"wysiwyg_composer_format_action_un_indent" = "Minska indrag";
+"wysiwyg_composer_format_action_indent" = "Öka indrag";
+"poll_history_detail_view_in_timeline" = "Visa omröstning i tidslinje";
+"voice_broadcast_playback_unable_to_decrypt" = "Kunde inte avkryptera denna röstsändning.";
+"home_context_menu_mark_as_unread" = "Markera som oläst";
+"key_backup_recover_from_private_key_progress" = "%@%% Färdig";
