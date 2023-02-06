@@ -37,6 +37,9 @@
                 break;
                 
             case MXPresenceUnknown: // Do like matrix-js-sdk
+                presenceText = @"";
+                break;
+                
             case MXPresenceOffline:
                 presenceText = [VectorL10n roomParticipantsOffline];
                 break;
