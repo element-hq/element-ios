@@ -2704,6 +2704,10 @@
 "launch_loading_migrating_data" = "Po migrohen të dhëna\n%@ %%";
 "key_backup_recover_from_private_key_progress" = "Plotësuar %@%%";
 "room_details_polls" = "Historik pyetësorësh";
-"settings_labs_disable_crypto_sdk" = "Fshehtëzim skaj-më-skaj 2.0 (që ta çaktivizoni, dilni)";
-"settings_labs_confirm_crypto_sdk" = "Kjo mundësi do të aktivizojë për fshhehtëzim skaj-më-skaj një motor të ri, më të shpejtë dhe më të qëndrueshëm, të shkruar në Rust. Pasi të aktivizohet, do t’ju duhet të bëni daljen nga llogaria, që ta çaktivizoni. Doni të vazhdohet?";
-"settings_labs_enable_crypto_sdk" = "Fshehtëzim skaj-më-skaj 2.0";
+"settings_labs_disable_crypto_sdk" = "Fshehtëzim skaj-më-skaj bazuar në Rust (që ta çaktivizoni, dilni)";
+"settings_labs_confirm_crypto_sdk" = "Ju lutemi, kini parasysh se kjo veçori është ende në fazë eksperimentale, mund të mos funksionojë siç pritet dhe mundet, në potencial, të ketë pasojë të paparashikuara. Që ta prapaktheni këtë veçori, thjesht dilni nga llogaria dhe rihyni. Përdoreni me përgjegjësinë tuaj dhe me kujdes.";
+"settings_labs_enable_crypto_sdk" = "Fshehtëzim skaj-më-skaj bazuar në Rust";
+"settings_push_rules_error" = "Ndodhi një gabim, kur përditësoheshin parapëlqimet tuaja për njoftime. JU lutemi, provoni të aktivizoni mundësi tuaj sërish.";
+"wysiwyg_composer_format_action_un_indent" = "Zvogëlo shmangie kryeradhë";
+"wysiwyg_composer_format_action_indent" = "Rrit shmangie kryeradhe";
+"poll_history_detail_view_in_timeline" = "Shiheni pyetësorin në rrjedhë kohore";
