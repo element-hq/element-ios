@@ -2729,9 +2729,9 @@
 "launch_loading_migrating_data" = "Migration des données\n%@ %%";
 "key_backup_recover_from_private_key_progress" = "%@%% Fini";
 "room_details_polls" = "Historique des sondages";
-"settings_labs_disable_crypto_sdk" = "Chiffrement de bout en bout 2.0 (se déconnecter pour désactiver)";
-"settings_labs_confirm_crypto_sdk" = "Cette option activera un nouvel engin pour le chiffrement de bout en bout, plus rapide et plus fiable, écrit en Rust. Une fois activé vous devrez vous déconnecter pour le désactiver. Voulez-vous continuer?";
-"settings_labs_enable_crypto_sdk" = "Chiffrement de bout en bout 2.0";
+"settings_labs_disable_crypto_sdk" = "Chiffrement de bout en bout avec Rust (se déconnecter pour désactiver)";
+"settings_labs_confirm_crypto_sdk" = "Cette option activera le nouveau moteur de chiffrement de bout en bout, plus rapide et plus fiable, écrit en Rust. Une fois activé vous devrez vous déconnecter pour le désactiver. Voulez-vous continuer ?";
+"settings_labs_enable_crypto_sdk" = "Chiffrement de bout en bout en Rust";
 "settings_push_rules_error" = "Nous avons rencontré une erreur lors de la mise à jours de vos préférences de notification. Veuillez réactiver l'option.";
 "password_policy_pwd_in_dict_error" = "Ce mot de passe a été trouvé dans un dictionnaire, et son usage n'est donc pas autorisé.";
 "password_policy_weak_pwd_error" = "Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, dont au moins une majuscule, une minuscule, un chiffre et un caractère spécial.";
