@@ -583,7 +583,7 @@
 "create_room_title" = "新しいルーム";
 "create_room_enable_encryption" = "暗号化を有効にする";
 "room_details_room_name_for_dm" = "名前";
-"room_participants_security_information_room_encrypted_for_dm" = "ここで送受信されるメッセージはエンドツーエンドで暗号化されています。\n\nメッセージは安全に保護されており、メッセージのロックを解除するための固有の鍵は、あなたと受信者だけが持っています。";
+"room_participants_security_information_room_encrypted_for_dm" = "ここでのメッセージはエンドツーエンドで暗号化されています。\n\nメッセージは安全に保護されており、メッセージのロックを解除するための固有の鍵は、あなたと受信者だけが持っています。";
 "room_participants_security_information_room_not_encrypted_for_dm" = "ここでのメッセージはエンドツーエンドで暗号化されていません。";
 
 // Mark: - Room creation introduction cell
@@ -684,7 +684,7 @@
 "identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "無視して接続解除";
 "identity_server_settings_alert_disconnect_still_sharing_3pid" = "あなたはまだIDサーバー %@ で個人データを共有しています。\n\n接続を解除する前に、メールアドレスと電話番号をIDサーバーから削除することをお勧めします。";
 "identity_server_settings_alert_disconnect_button" = "接続を解除";
-"identity_server_settings_alert_disconnect" = "IDサーバー %@ との接続を解除しますか？";
+"identity_server_settings_alert_disconnect" = "IDサーバー %@ から切断しますか？";
 "identity_server_settings_alert_disconnect_title" = "IDサーバーから接続を解除";
 "identity_server_settings_alert_change" = "IDサーバー %1$@ を切断し、代わりに %2$@ に接続しますか？";
 "identity_server_settings_alert_change_title" = "IDサーバーを変更";
@@ -719,7 +719,7 @@
 "room_multiple_typing_notification" = "%@とその他のメンバー";
 "external_link_confirmation_message" = "リンク %@ は別のサイトに移動します：%@\n\n続行してよろしいですか？";
 "room_event_action_delete_confirmation_title" = "未送信のメッセージを削除";
-"room_unsent_messages_cancel_message" = "このルームにある未送信のメッセージを全て削除してもよろしいですか？";
+"room_unsent_messages_cancel_message" = "このルームの全ての未送信のメッセージを削除してよろしいですか？";
 "room_unsent_messages_cancel_title" = "未送信のメッセージを削除";
 "room_message_replying_to" = "%@に返信しています";
 "room_message_editing" = "編集中";
@@ -751,11 +751,11 @@
 
 // Errors
 "error_user_already_logged_in" = "他のホームサーバーに接続しようとしているようです。サインアウトしますか？";
-"social_login_button_title_sign_up" = "%@で登録";
+"social_login_button_title_sign_up" = "%@でサインアップ";
 "social_login_button_title_sign_in" = "%@でサインイン";
 "social_login_button_title_continue" = "%@で続行";
-"social_login_list_title_sign_up" = "もしくは";
-"social_login_list_title_sign_in" = "もしくは";
+"social_login_list_title_sign_up" = "または";
+"social_login_list_title_sign_in" = "または";
 
 // Social login
 
@@ -1240,7 +1240,7 @@
 "notice_redaction" = "%@はイベントを編集しました（id：%@）";
 "notice_error_unsupported_event" = "サポートされていないイベント";
 "notice_error_unexpected_event" = "予期しないイベント";
-"notice_error_unknown_event_type" = "不明なイベントタイプ";
+"notice_error_unknown_event_type" = "イベントの種類が不明です";
 "notice_room_history_visible_to_anyone" = "%@が今後のルームの履歴を「誰でも」閲覧可能に設定しました。";
 "notice_room_history_visible_to_members" = "%@が今後のルームの履歴を「メンバーのみ」閲覧可能に設定しました。";
 "notice_room_history_visible_to_members_from_invited_point" = "%@が今後のルームの履歴を「メンバーのみ （招待された時点以降）」閲覧可能に設定しました。";
@@ -1438,9 +1438,9 @@
 "create_room" = "ルームを作成";
 "login" = "ログイン";
 "create_account" = "アカウントを作成";
-"membership_invite" = "招待しました";
-"membership_leave" = "退出しました";
-"membership_ban" = "ブロックしました";
+"membership_invite" = "招待済";
+"membership_leave" = "退出済";
+"membership_ban" = "ブロック済";
 "num_members_one" = "%@人のユーザー";
 "num_members_other" = "%@人のユーザー";
 "kick" = "会話から追放";
@@ -1590,7 +1590,7 @@
 "side_menu_action_invite_friends" = "友だちを招待";
 "call_more_actions_change_audio_device" = "オーディオデバイスを変更";
 "call_more_actions_dialpad" = "ダイヤルパッド";
-"onboarding_splash_login_button_title" = "既にアカウントを持っています";
+"onboarding_splash_login_button_title" = "既にアカウントがあります";
 
 // Onboarding
 "onboarding_splash_register_button_title" = "アカウントを作成";
@@ -1616,8 +1616,8 @@
 "spaces_add_space_title" = "スペースを作成";
 "spaces_creation_address" = "アドレス";
 "spaces_creation_visibility_message" = "既存のスペースに参加するには、招待が必要です。";
-"spaces_creation_footer" = "この設定は後から変更できます";
-"onboarding_display_name_hint" = "この設定は後から変更できます";
+"spaces_creation_footer" = "これは後から変更できます";
+"onboarding_display_name_hint" = "これは後から変更できます";
 "spaces_creation_visibility_title" = "作成するスペースの種類を選択してください";
 "space_public_join_rule_detail" = "誰でも参加可能。コミュニティー向け";
 "space_private_join_rule_detail" = "招待者のみ参加可能。個人やチーム向け";
@@ -1650,7 +1650,7 @@
 "spaces_creation_sharing_type_just_me_detail" = "ルームを整理するための非公開のスペース";
 "spaces_creation_sharing_type_just_me_title" = "自分専用";
 "spaces_creation_sharing_type_message" = "適切な人が %@ アクセスできることを確認してください。この設定は後から変更できます。";
-"spaces_creation_settings_message" = "詳細を入力してください。この設定は後から変更できます。";
+"spaces_creation_settings_message" = "詳細を入力してください。これはいつでも変更できます。";
 "spaces_creation_address_default_message" = "スペースは以下で閲覧可能になります\n%@";
 "space_settings_current_address_message" = "スペースは以下で閲覧できます\n%@";
 "space_topic" = "詳細";
@@ -1826,7 +1826,7 @@
 "room_notifs_settings_manage_notifications" = "通知は%@で管理できます";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "メンバーを新しいルームに自動的に招待";
 "room_access_settings_screen_upgrade_alert_note" = "アップグレードすると、このルームの新しいバージョンが作成されます。今ある全てのメッセージは、アーカイブしたルームに残ります。";
-"room_access_settings_screen_upgrade_alert_message_no_param" = "親のスペースに属する人は、誰でもこのルームを検索し、参加することができます。手動で全員を招待する必要はありません。これはルームの設定からいつでも変更できます。";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "上位のスペースに属する人は、誰でもこのルームを検索し、参加することができます。手動で全員を招待する必要はありません。これはルームの設定からいつでも変更できます。";
 "room_access_settings_screen_upgrade_alert_message" = "%@に属する人は、誰でもこのルームを検索し、参加することができます。手動で全員を招待する必要はありません。これはルームの設定からいつでも変更できます。";
 
 // Room Access Settings
@@ -1911,7 +1911,7 @@
 "authentication_choose_password_input_title" = "パスワードを選択";
 "authentication_forgot_password_waiting_button" = "電子メールを再送信";
 /* The placeholder will show the email address that was entered. */
-"authentication_forgot_password_waiting_message" = "%@に送信された手順に従ってください";
+"authentication_forgot_password_waiting_message" = "%@に送信された手順に従ってください。";
 "authentication_forgot_password_waiting_title" = "電子メールを確認してください。";
 "authentication_forgot_password_text_field_placeholder" = "メールアドレス";
 /* The placeholder will show the homeserver's domain */
@@ -1920,7 +1920,7 @@
 "authentication_verify_email_waiting_button" = "電子メールを再送信";
 "authentication_verify_email_waiting_hint" = "電子メールが届いていませんか？";
 /* The placeholder will show the email address that was entered. */
-"authentication_verify_email_waiting_message" = "%@に送信された手順に従ってください";
+"authentication_verify_email_waiting_message" = "%@に送信された手順に従ってください。";
 "authentication_verify_email_waiting_title" = "メールアドレスを認証してください。";
 "authentication_verify_email_text_field_placeholder" = "メールアドレス";
 /* The placeholder will show the homeserver's domain */
@@ -1992,7 +1992,7 @@
 // Banner
 
 "secure_backup_setup_banner_title" = "セキュアバックアップ";
-"secure_key_backup_setup_cancel_alert_message" = "いまキャンセルすると、ログインできなくなった際に、暗号化されたメッセージとデータを失ってしまう可能性があります。\n\nまた、設定から、安全なバックアップの設定や鍵の管理を行うことができます。";
+"secure_key_backup_setup_cancel_alert_message" = "いまキャンセルすると、ログインできなくなった際に、暗号化されたメッセージとデータを失ってしまう可能性があります。\n\n設定から、セキュアバックアップの設定や鍵の管理を行うこともできます。";
 
 
 // Cancel
@@ -2291,7 +2291,7 @@
 
 // User
 
-"key_verification_verified_user_information" = "このユーザーとのメッセージはエンドツーエンドで暗号化されており、第三者に解読することはできません。";
+"key_verification_verified_user_information" = "このユーザーとのメッセージはエンドツーエンドで暗号化されており、第三者が解読することはできません。";
 "key_verification_verified_new_session_title" = "新しいセッションを認証しました！";
 "device_verification_verified_got_it_button" = "了解";
 
@@ -2554,7 +2554,7 @@
 /* The placeholder will show the full Matrix ID that has been entered. */
 "authentication_registration_username_footer_available" = "他の人は %@ であなたを見つけることができます";
 "authentication_server_selection_register_message" = "あなたのホームサーバーのアドレスを入力してください。ここにあなたの全てのデータがホストされます";
-"authentication_server_info_title_login" = "会話が実施される場所";
+"authentication_server_info_title_login" = "アカウントにサインインするサーバー";
 "authentication_server_info_title" = "アカウントを作成するサーバー";
 "onboarding_avatar_message" = "表示名にプロフィール画像を追加しましょう";
 "all_chats_edit_layout_add_filters_message" = "あなたが選択したカテゴリーにメッセージを自動的にフィルタリング";
@@ -2622,8 +2622,8 @@
 
 // Analytics
 "analytics_prompt_title" = "%@の改善を手伝う";
-"event_formatter_call_active_video" = "実行中のビデオ通話";
-"event_formatter_call_active_voice" = "実行中の音声通話";
+"event_formatter_call_active_video" = "実施中のビデオ通話";
+"event_formatter_call_active_voice" = "実施中の音声通話";
 "launch_loading_server_syncing_nth_attempt" = "サーバーと同期しています\n（%@回試行）";
 "create_room_suggest_room_footer" = "おすすめのルームは、スペースのメンバーに対して参加候補として表示されます。";
 "create_room_section_footer_type_public" = "スペースの名前だけでなく、招待された人だけが検索・参加できます。";
