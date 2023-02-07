@@ -176,8 +176,12 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
             coordinator.start()
             push(coordinator: coordinator)
         case .pollHistory:
-            let coordinator: PollHistoryCoordinator = .init(parameters: .init(mode: .active))
+            let coordinator: PollHistoryCoordinator = .init(parameters: .init(mode: .active, room: room, navigationRouter: navigationRouter))
             coordinator.start()
+            coordinator.completion = { [weak self] event in
+                guard let self else { return }
+                self.delegate?.roomInfoCoordinator(self, viewEventInTimeline: event)
+            }
             push(coordinator: coordinator)
         default:
             guard let tabIndex = target.tabIndex else {

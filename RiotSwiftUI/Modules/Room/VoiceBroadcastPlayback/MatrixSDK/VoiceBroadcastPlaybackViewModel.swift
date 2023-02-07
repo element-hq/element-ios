@@ -44,7 +44,16 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     private var reloadVoiceBroadcastChunkQueue: Bool = false
     private var seekToChunkTime: TimeInterval?
     
+    /// The last chunk we tried to load
+    private var lastChunkProcessed: UInt = 0
+    /// The last chunk correctly loaded and added to the player's queue
     private var lastChunkAddedToPlayer: UInt = 0
+    
+    private var hasAttachmentErrors: Bool = false {
+        didSet {
+            updateErrorState()
+        }
+    }
     
     private var isPlayingLastChunk: Bool {
         // We can't play the last chunk if the brodcast is not stopped
@@ -60,18 +69,19 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         return state.bindings.progress + 1000 >= state.playingState.duration - Float(chunkDuration)
     }
     
-    private var playingChunk: VoiceBroadcastChunk? {
+    /// Current chunk loaded in the audio player
+    private var currentChunk: VoiceBroadcastChunk? {
         guard let currentAudioPlayerUrl = audioPlayer?.currentUrl,
-              let playingEventId = voiceBroadcastAttachmentCacheManagerLoadResults.first(where: { result in
+              let currentEventId = voiceBroadcastAttachmentCacheManagerLoadResults.first(where: { result in
                   result.url == currentAudioPlayerUrl
               })?.eventIdentifier else {
             return nil
         }
         
-        let playingChunk = voiceBroadcastAggregator.voiceBroadcast.chunks.first(where: { chunk in
-            chunk.attachment.eventId == playingEventId
+        let currentChunk = voiceBroadcastAggregator.voiceBroadcast.chunks.first(where: { chunk in
+            chunk.attachment.eventId == currentEventId
         })
-        return playingChunk
+        return currentChunk
     }
     
     private var isLivePlayback: Bool {
@@ -111,7 +121,9 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                                                         broadcastState: voiceBroadcastAggregator.voiceBroadcastState,
                                                         playbackState: .stopped,
                                                         playingState: VoiceBroadcastPlayingState(duration: Float(voiceBroadcastAggregator.voiceBroadcast.duration), isLive: false, canMoveForward: false, canMoveBackward: false),
-                                                        bindings: VoiceBroadcastPlaybackViewStateBindings(progress: 0))
+                                                        bindings: VoiceBroadcastPlaybackViewStateBindings(progress: 0),
+                                                        decryptionState: VoiceBroadcastPlaybackDecryptionState(errorCount: 0),
+                                                        showPlaybackError: false)
         super.init(initialViewState: viewState)
         
         displayLink = CADisplayLink(target: WeakTarget(self, selector: #selector(handleDisplayLinkTick)), selector: WeakTarget.triggerSelector)
@@ -197,8 +209,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
             // If we known the last chunk sequence, use it to check if we need to stop
             // Note: it's possible to be in .stopped state and to still have a last chunk sequence at 0 (old versions or a crash during recording). In this case, we use isPlayingLastChunk as a fallback solution
             if voiceBroadcastAggregator.voiceBroadcastLastChunkSequence > 0 {
-                // we should stop only if we have already added the last chunk to the player
-                shouldStop = (lastChunkAddedToPlayer == voiceBroadcastAggregator.voiceBroadcastLastChunkSequence)
+                // we should stop only if we have already processed the last chunk
+                shouldStop = (lastChunkProcessed == voiceBroadcastAggregator.voiceBroadcastLastChunkSequence)
             } else {
                 shouldStop = isPlayingLastChunk
             }
@@ -235,10 +247,12 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
     
     private func seek(to seekTime: Float) {
         // Flush the chunks queue and the current audio player playlist
+        lastChunkProcessed = 0
         lastChunkAddedToPlayer = 0
         voiceBroadcastChunkQueue = []
         reloadVoiceBroadcastChunkQueue = isProcessingVoiceBroadcastChunk
         audioPlayer?.removeAllPlayerItems()
+        hasAttachmentErrors = false
         
         let chunks = reorderVoiceBroadcastChunks(chunks: Array(voiceBroadcastAggregator.voiceBroadcast.chunks))
         
@@ -325,6 +339,8 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                 return
             }
             
+            self.lastChunkProcessed = chunk.sequence
+
             switch result {
             case .success(let result):
                 guard result.eventIdentifier == chunk.attachment.eventId else {
@@ -368,17 +384,44 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
                     audioPlayer.seekToTime(time)
                     self.seekToChunkTime = nil
                 }
-                                
+
+                self.hasAttachmentErrors = false
+                self.processNextVoiceBroadcastChunk()
+
             case .failure (let error):
-                MXLog.error("[VoiceBroadcastPlaybackViewModel] processVoiceBroadcastChunkQueue: loadAttachment error", context: error)
-                if self.voiceBroadcastChunkQueue.count == 0 {
-                    // No more chunk to try. Go to error
-                    self.state.playbackState = .error
+                MXLog.error("[VoiceBroadcastPlaybackViewModel] processVoiceBroadcastChunkQueue: loadAttachment error", context: ["error": error, "chunk": chunk.sequence])
+                self.hasAttachmentErrors = true
+                // If nothing has been added to the player's queue, exit the buffer state 
+                if self.lastChunkAddedToPlayer == 0 {
+                    self.pause()
                 }
             }
-            
-            self.processNextVoiceBroadcastChunk()
         }
+    }
+    
+    private func resetErrorState() {
+        state.showPlaybackError = false
+    }
+    
+    private func updateErrorState() {
+        // Show an error if the playback state is .error
+        var showPlaybackError = state.playbackState == .error
+        
+        // Or if there is an attachment error
+        if hasAttachmentErrors {
+            // only if the audio player is not playing and has nothing left to play
+            let audioPlayerIsPlaying = audioPlayer?.isPlaying ?? false
+            let currentPlayerTime = audioPlayer?.currentTime ?? 0
+            let currentPlayerDuration = audioPlayer?.duration ?? 0
+            let currentChunkSequence = currentChunk?.sequence ?? 0
+            let hasNoMoreChunkToPlay = (currentChunk == nil && lastChunkAddedToPlayer == 0) || (currentChunkSequence == lastChunkAddedToPlayer)
+            if !audioPlayerIsPlaying && hasNoMoreChunkToPlay && (currentPlayerDuration - currentPlayerTime < 0.2) {
+                showPlaybackError = true
+            }
+        }
+        
+        state.showPlaybackError = showPlaybackError
+
     }
     
     private func updateDuration() {
@@ -403,10 +446,11 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         } else {
             seek(to: state.bindings.progress)
         }
+        resetErrorState()
     }
     
     @objc private func handleDisplayLinkTick() {
-        guard let playingSequence = self.playingChunk?.sequence else {
+        guard let playingSequence = self.currentChunk?.sequence else {
             return
         }
 
@@ -437,7 +481,7 @@ class VoiceBroadcastPlaybackViewModel: VoiceBroadcastPlaybackViewModelType, Voic
         state.playingState.remainingTimeLabel = label
         
         state.playingState.canMoveBackward = state.bindings.progress > 0
-        state.playingState.canMoveForward = state.bindings.progress < state.playingState.duration
+        state.playingState.canMoveForward = (state.playingState.duration - state.bindings.progress) > 500
     }
     
     private func handleVoiceBroadcastChunksProcessing() {
@@ -486,12 +530,24 @@ extension VoiceBroadcastPlaybackViewModel: VoiceBroadcastAggregatorDelegate {
             handleVoiceBroadcastChunksProcessing()
         }
     }
+    
+    func voiceBroadcastAggregator(_ aggregator: VoiceBroadcastAggregator, didUpdateUndecryptableEventList events: Set<MXEvent>) {
+        state.decryptionState.errorCount = events.count
+        if events.count > 0 {
+            MXLog.debug("[VoiceBroadcastPlaybackViewModel] voice broadcast decryption error count: \(events.count)/\(aggregator.voiceBroadcast.chunks.count)")
+            
+            if [.playing, .buffering].contains(state.playbackState) {
+                pause()
+            }
+        }
+    }
 }
 
 
 // MARK: - VoiceMessageAudioPlayerDelegate
 extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
     func audioPlayerDidFinishLoading(_ audioPlayer: VoiceMessageAudioPlayer) {
+        updateErrorState()
     }
     
     func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
@@ -499,6 +555,7 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
         state.playingState.isLive = isLivePlayback
         isPlaybackInitialized = true
         displayLink.isPaused = false
+        resetErrorState()
     }
     
     func audioPlayerDidPausePlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
@@ -510,6 +567,9 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
     func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] audioPlayerDidStopPlaying")
         state.playbackState = .stopped
+        
+        updateErrorState()
+        
         state.playingState.isLive = false
         audioPlayer.deregisterDelegate(self)
         self.mediaServiceProvider.deregisterNowPlayingInfoDelegate(forPlayer: audioPlayer)
@@ -519,11 +579,16 @@ extension VoiceBroadcastPlaybackViewModel: VoiceMessageAudioPlayerDelegate {
     
     func audioPlayer(_ audioPlayer: VoiceMessageAudioPlayer, didFailWithError error: Error) {
         state.playbackState = .error
+        updateErrorState()
     }
     
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         MXLog.debug("[VoiceBroadcastPlaybackViewModel] audioPlayerDidFinishPlaying: \(audioPlayer.playerItems.count)")
-        stopIfVoiceBroadcastOver()
+        if hasAttachmentErrors {
+            stop()
+        } else {
+            stopIfVoiceBroadcastOver()
+        }
     }
 }
 

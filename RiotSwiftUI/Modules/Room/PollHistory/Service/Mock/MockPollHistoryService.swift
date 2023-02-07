@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2023 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,31 +14,70 @@
 // limitations under the License.
 //
 
-final class MockPollHistoryService: PollHistoryServiceProtocol {
-    var activePollsData: [PollListData] = (1..<10)
-        .map { index in
-            PollListData(
-                startDate: .init().addingTimeInterval(-CGFloat(index) * 3600),
-                question: "Do you like the active poll number \(index)?",
-                numberOfVotes: 30,
-                winningOption: nil
-            )
-        }
-    
-    var pastPollsData: [PollListData] = (1..<10)
-        .map { index in
-            PollListData(
-                startDate: .init().addingTimeInterval(-CGFloat(index) * 3600),
-                question: "Do you like the past poll number \(index)?",
-                numberOfVotes: 30,
-                winningOption: .init(id: "id", text: "Yes, of course!", count: 20, winner: true, selected: true)
-            )
-        }
+import Combine
 
-    func fetchHistory() async throws -> [PollListData] {
+final class MockPollHistoryService: PollHistoryServiceProtocol {
+    lazy var nextBatchPublishers: [AnyPublisher<TimelinePollDetails, Error>] = [
         (activePollsData + pastPollsData)
-            .sorted { poll1, poll2 in
-                poll1.startDate > poll2.startDate
+            .publisher
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    ]
+    
+    func nextBatch() -> AnyPublisher<TimelinePollDetails, Error> {
+        nextBatchPublishers.isEmpty ? Empty().eraseToAnyPublisher() : nextBatchPublishers.removeFirst()
+    }
+    
+    var updatesPublisher: AnyPublisher<TimelinePollDetails, Never> = Empty().eraseToAnyPublisher()
+    var updates: AnyPublisher<TimelinePollDetails, Never> {
+        updatesPublisher
+    }
+    
+    var hasNextBatch = true
+    
+    var fetchedUpToPublisher: AnyPublisher<Date, Never> = Just(.init()).eraseToAnyPublisher()
+    var fetchedUpTo: AnyPublisher<Date, Never> {
+        fetchedUpToPublisher
+    }
+    
+    var livePollsPublisher: AnyPublisher<TimelinePollDetails, Never> = Empty().eraseToAnyPublisher()
+    var livePolls: AnyPublisher<TimelinePollDetails, Never> {
+        livePollsPublisher
+    }
+}
+
+private extension MockPollHistoryService {
+    var activePollsData: [TimelinePollDetails] {
+        (1...3)
+            .map { index in
+                TimelinePollDetails(id: "a\(index)",
+                                    question: "Do you like the active poll number \(index)?",
+                                    answerOptions: [],
+                                    closed: false,
+                                    startDate: .init().addingTimeInterval(TimeInterval(-index) * 3600 * 24),
+                                    totalAnswerCount: 30,
+                                    type: .disclosed,
+                                    eventType: .started,
+                                    maxAllowedSelections: 1,
+                                    hasBeenEdited: false,
+                                    hasDecryptionError: false)
+            }
+    }
+    
+    var pastPollsData: [TimelinePollDetails] {
+        (1...3)
+            .map { index in
+                TimelinePollDetails(id: "p\(index)",
+                                    question: "Do you like the active poll number \(index)?",
+                                    answerOptions: [.init(id: "id", text: "Yes, of course!", count: 20, winner: true, selected: true)],
+                                    closed: true,
+                                    startDate: .init().addingTimeInterval(TimeInterval(-index) * 3600 * 24),
+                                    totalAnswerCount: 30,
+                                    type: .disclosed,
+                                    eventType: .started,
+                                    maxAllowedSelections: 1,
+                                    hasBeenEdited: false,
+                                    hasDecryptionError: false)
             }
     }
 }

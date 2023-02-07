@@ -2472,3 +2472,199 @@
 "authentication_choose_password_not_verified_title" = "E-post inte verifierad";
 "authentication_login_with_qr" = "Logga in med QR-kod";
 "invite_to" = "Bjud in till %@";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "Äktheten för det här krypterade meddelandet kan inte garanteras på den här enheten.";
+"notice_voice_broadcast_ended_by_you" = "Du avslutade en röstsändning.";
+"notice_voice_broadcast_ended" = "%@ avslutade en röstsändning.";
+"notice_voice_broadcast_live" = "Direktsändning";
+"deselect_all" = "Välj bort alla";
+"wysiwyg_composer_link_action_edit_title" = "Redigera länk";
+"wysiwyg_composer_link_action_create_title" = "Skapa en länk";
+"wysiwyg_composer_link_action_link" = "Länk";
+
+
+
+// Links
+"wysiwyg_composer_link_action_text" = "Text";
+"wysiwyg_composer_format_action_quote" = "Växla citat";
+"wysiwyg_composer_format_action_code_block" = "Växla kodblock";
+"wysiwyg_composer_format_action_ordered_list" = "Växla numrerad lista";
+"wysiwyg_composer_format_action_unordered_list" = "Växla punktlista";
+"wysiwyg_composer_format_action_inline_code" = "Tillämpa inline-kodstil";
+"wysiwyg_composer_format_action_link" = "Tillämpa länkformat";
+"wysiwyg_composer_format_action_strikethrough" = "Tillämpa understruken stil";
+"wysiwyg_composer_format_action_underline" = "Tillämpa genomstruken stil";
+"wysiwyg_composer_format_action_italic" = "Tillämpa kursiv stil";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Tillämpa fetstil";
+"wysiwyg_composer_start_action_voice_broadcast" = "Röstsändning";
+"wysiwyg_composer_start_action_text_formatting" = "Textformatering";
+"wysiwyg_composer_start_action_camera" = "Kamera";
+"wysiwyg_composer_start_action_location" = "Plats";
+"wysiwyg_composer_start_action_polls" = "Omröstningar";
+"wysiwyg_composer_start_action_attachments" = "Bilagor";
+"wysiwyg_composer_start_action_stickers" = "Dekaler";
+
+
+// MARK: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Fotobibliotek";
+"user_session_overview_session_details_button_title" = "Sessionsdetaljer";
+"user_session_overview_session_title" = "Session";
+"user_session_overview_current_session_title" = "Nuvarande session";
+"user_session_details_application_url" = "URL";
+"user_session_details_application_version" = "Version";
+"user_session_details_application_name" = "Namn";
+"user_session_details_device_os" = "Operativsystem";
+"user_session_details_device_browser" = "Webbläsare";
+"user_session_details_device_model" = "Modell";
+"user_session_details_device_ip_location" = "IP-plats";
+"user_session_details_device_ip_address" = "IP-adress";
+"user_session_details_last_activity" = "Senaste aktivitet";
+"user_session_details_session_section_footer" = "Kopiera data genom att trycka på den och hålla nere.";
+"user_session_details_session_id" = "Sessions-ID";
+"user_session_details_session_name" = "Sessionsnamn";
+"user_session_details_device_section_header" = "Enhet";
+"user_session_details_application_section_header" = "Applikation";
+"user_session_details_session_section_header" = "Session";
+"user_session_details_title" = "Sessionsdetaljer";
+"device_type_name_unknown" = "Okänd";
+"device_type_name_mobile" = "Mobil";
+"device_type_name_web" = "Webb";
+"device_type_name_desktop" = "Skrivbord";
+"device_name_unknown" = "Okänd klient";
+"device_name_mobile" = "%@ Mobil";
+"device_name_web" = "%@ Webb";
+"device_name_desktop" = "%@ Skrivbord";
+"user_inactive_session_item_with_date" = "Inaktiv i 90+ dagar (%@)";
+"user_inactive_session_item" = "Inaktiv i 90+ dagar";
+"user_session_item_details_last_activity" = "Senast aktiv %@";
+
+/* %1$@ will be the verification state and %2$@ will be user_session_item_details_verification_unknown or user_other_session_current_session_details */
+"user_session_item_details" = "%1$@ · %2$@";
+// First item is client name and second item is session display name
+"user_session_name" = "%@: %@";
+"user_other_session_menu_sign_out_sessions" = "Logga ut ur %@ sessioner";
+"user_other_session_menu_select_sessions" = "Välj sessioner";
+"user_other_session_selected_count" = "%@ valda";
+"user_other_session_clear_filter" = "Rensa filter";
+"user_other_session_no_unverified_sessions" = "Inga overifierade sessioner hittade.";
+"user_other_session_no_verified_sessions" = "Inga verifierade sessioner hittade.";
+"user_other_session_no_inactive_sessions" = "Inga inaktiva sessioner hittade.";
+"user_other_session_filter_menu_inactive" = "Inaktiva";
+"user_other_session_filter_menu_unverified" = "Overifierade";
+"user_other_session_filter_menu_verified" = "Verifierade";
+"user_other_session_filter_menu_all" = "Alla sessioner";
+"user_other_session_filter" = "Filtrera";
+"user_other_session_verified_sessions_header_subtitle" = "För bäst säkerhet, logga ut ur alla sessioner du inte känner igen eller använder längre.";
+"user_other_session_current_session_details" = "Din nuvarande session";
+"user_other_session_unverified_sessions_header_subtitle" = "Verifiera dina sessioner för förbättrade säkra meddelanden eller logga ut ur de du inte känner igen eller använder längre.";
+"user_other_session_security_recommendation_title" = "Andra sessioner";
+"user_session_rename_session_description" = "Andra användare i direktmeddelanden och rum du går med i kan se den fulla listan över dina sessioner.\n\nDetta gör att de kan lita på att de verkligen pratar med dig, men det betyder också att de kan se sessionsnamnet du anger här.";
+"user_session_rename_session_title" = "Döper om sessioner";
+"user_session_inactive_session_description" = "Inaktiva sessioner är sessioner du inte har använt på ett tag, men de fortsätter att ta emot krypteringsnycklar.\n\nBorttagning av inaktiva sessioner förbättrar säkerhet och prestanda, och gör det enklare för dig att identifiera om en ny session ser misstänkt ut.";
+"user_session_inactive_session_title" = "Inaktiva sessioner";
+"user_session_permanently_unverified_session_description" = "Sessionen stöder inte kryptering, så den kan inte verifieras.\n\nDu kommer inte kunna delta i rum där kryptering är aktiverat när du använder den här sessionen.\n\nFör bäst säkerhet så rekommenderas det att använda Matrixklienter som stöder kryptering.";
+"user_session_unverified_session_description" = "Overifierade sessioner är sessioner som har loggat in med dina uppgifter men som inte har korsverifierats.\n\nDu bör speciellt försäkra att du känner igen dessa sessioner eftersom de kan representera obehörig användning av ditt konto.";
+"user_session_unverified_session_title" = "Overifierad session";
+"user_session_verified_session_description" = "Verifierade sessioner är alla ställen där du använder Element efter att ha angett din lösenfras eller bekräftat din identitet med en annan verifierad session.\n\nDet betyder att du har alla nycklar som krävs för att låsa upp krypterade meddelanden och bekräfta för andra användare att du litar på den här sessionen.";
+"user_session_verified_session_title" = "Verifierade sessioner";
+"user_session_got_it" = "Förstått";
+"user_session_push_notifications_message" = "När aktiverad så tar den här sessionen emot pushnotiser.";
+"user_session_push_notifications" = "Pushnotiser";
+"user_other_session_verified_additional_info" = "Den här sessioner är redo för säkra meddelanden.";
+"user_other_session_permanently_unverified_additional_info" = "Den här sessionen stöder inte kryptering och kan därför inte verifieras.";
+"user_other_session_unverified_additional_info" = "Verifiera eller logga ut ur den här sessionen för bäst säkerhet och pålitlighet.";
+"user_session_verification_unknown_additional_info" = "Verifiera din nuvarande session för att avslöja den här sessionens verifieringsstatus.";
+"user_session_unverified_additional_info" = "Verifiera din nuvarande session för förbättrade säkra meddelanden.";
+"user_session_verified_additional_info" = "Din nuvarande session är redo för säkra meddelanden.";
+"user_session_learn_more" = "Läs mer";
+"user_session_view_details" = "Visa detaljer";
+"user_session_verify_action" = "Verifiera session";
+"user_session_verification_unknown_short" = "Okänd";
+"user_session_unverified_short" = "Overifierad";
+"user_session_verified_short" = "Verifierad";
+"user_session_verification_unknown" = "Okänd verifieringsstatus";
+"user_session_unverified" = "Overifierad session";
+"user_session_verified" = "Verifierad session";
+"user_sessions_view_all_action" = "Visa alla (%d)";
+"user_sessions_overview_link_device" = "Länka en enhet";
+"user_sessions_overview_current_session_section_title" = "Nuvarande session";
+"user_sessions_hide_location_info" = "Dölj IP-adress";
+"user_sessions_show_location_info" = "Visa IP-adress";
+"user_sessions_overview_other_sessions_section_info" = "För bäst säkerhet, verifiera dina sessioner och logga ut ur alla sessioner du inte känner igen eller använder längre.";
+"user_sessions_overview_other_sessions_section_title" = "Andra sessioner";
+"user_sessions_overview_security_recommendations_inactive_info" = "Överväg att logga ut ur gamla sessioner (90 dagar eller äldre) du inte använder längre.";
+"user_sessions_overview_security_recommendations_inactive_title" = "Inaktiva sessioner";
+"user_sessions_overview_security_recommendations_unverified_info" = "Verifiera eller logga ut från overifierade sessioner.";
+"user_sessions_overview_security_recommendations_unverified_title" = "Overifierade sessioner";
+"user_sessions_overview_security_recommendations_section_info" = "Förbättra din kontosäkerhet genom att följa dessa rekommendationer.";
+"user_sessions_overview_security_recommendations_section_title" = "Säkerhetsrekommendationer";
+"user_sessions_overview_title" = "Sessioner";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"location_sharing_map_loading_error" = "Kan inte ladda karta.\nDen här hemservern är inte konfigurerad för att visa kartor";
+"location_sharing_invalid_power_level_message" = "Du har inte de behörigheter som krävs för att dela realtidsplats i det här rummet.";
+"location_sharing_invalid_power_level_title" = "Du är inte behörig att dela realtidsplats";
+"poll_timeline_reply_ended_poll" = "Avslutade omröstning";
+"poll_timeline_ended_text" = "Avslutade omröstningen";
+"poll_timeline_decryption_error" = "På grund av avkrypteringsfel så kanske inte vissa röster räknas";
+"poll_history_fetching_error" = "Fel vid hämtning av omröstningar.";
+"poll_history_load_more" = "Ladda fler omröstningar";
+"poll_history_no_past_poll_period_text" = "Det finns inga tidigare omröstningar från det senaste %@ dagarna. Ladda fler omröstningar för att se omröstningar från tidigare månader";
+"poll_history_no_active_poll_period_text" = "Det finns inga aktiva omröstningar under de senaste %@ dagarna. Ladda fler omröstningar för att visa omröstningar för tidigare månader";
+"poll_history_no_past_poll_text" = "Det finns inga tidigare omröstningar i det här rummet";
+"poll_history_no_active_poll_text" = "Det finns inga aktiva omröstningar i det här rummet";
+"poll_history_past_segment_title" = "Tidigare omröstningar";
+"poll_history_active_segment_title" = "Aktiva omröstningar";
+"poll_history_loading_text" = "Visar omröstningar";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Omröstningshistorik";
+"space_invite_nav_title" = "Utrymmesinbjudan";
+"space_detail_nav_title" = "Utrymmesdetalj";
+"space_selector_create_space" = "Skapa utrymme";
+"space_selector_empty_view_information" = "Utrymmen är ett sätt att gruppera rum och personer. Skapa et utrymme för att komma igång.";
+"space_selector_empty_view_title" = "Inga utrymmen än.";
+
+// MARK: - Space Selector
+
+"space_selector_title" = "Mina utrymmen";
+"room_invites_empty_view_information" = "Det här är vart dina inbjudningar hamnar.";
+
+// MARK: - Room invites
+
+"room_invites_empty_view_title" = "Inget nytt.";
+"all_chats_edit_menu_space_settings" = "Utrymmesinställningar";
+"all_chats_edit_menu_leave_space" = "Lämna %@";
+"all_chats_user_menu_settings" = "Användarinställningar";
+"all_chats_user_menu_accessibility_label" = "Användarmeny";
+"room_recents_recently_viewed_section" = "Nyligen sedda";
+"all_chats_nothing_found_placeholder_message" = "Pröva att justera din sökning.";
+"all_chats_nothing_found_placeholder_title" = "Inget hittat.";
+"all_chats_empty_unreads_placeholder_message" = "Det här är vart dina olästa meddelanden kommer att hamna, när du har några.";
+"voice_broadcast_recorder_connection_error" = "Anslutningsfel - Inspelning pausad";
+"voice_broadcast_connection_error_message" = "Tyvärr kan vi inte starta en röstsändning för tillfället. Vänligen pröva igen senare.";
+"voice_broadcast_connection_error_title" = "Anslutningsfel";
+"voice_broadcast_playback_lock_screen_placeholder" = "Röstsändning";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Migrerar data\n%@ %%";
+"room_details_polls" = "Omröstningshistorik";
+"settings_labs_disable_crypto_sdk" = "Totalsträckskryptering i Rust (logga ut för att stänga av)";
+"settings_labs_confirm_crypto_sdk" = "Vänligen observera att den här funktionen fortfarande ska anses vara experimentell, den kanske inte fungerar som förväntat eller kan leda till okända konsekvenser. För att återgå, logga ut och logga sedan in igen. Använd på egen risk.";
+"settings_labs_enable_crypto_sdk" = "Totalsträckskryptering i Rust";
+"accessibility_selected" = "vald";
+"settings_push_rules_error" = "Ett fel uppstod vid uppdatering av dina aviseringsinställningar. Vänligen försök att växla dina alternativ igen.";
+"wysiwyg_composer_format_action_un_indent" = "Minska indrag";
+"wysiwyg_composer_format_action_indent" = "Öka indrag";
+"poll_history_detail_view_in_timeline" = "Visa omröstning i tidslinje";
+"voice_broadcast_playback_unable_to_decrypt" = "Kunde inte avkryptera denna röstsändning.";
+"home_context_menu_mark_as_unread" = "Markera som oläst";
+"key_backup_recover_from_private_key_progress" = "%@%% Färdig";

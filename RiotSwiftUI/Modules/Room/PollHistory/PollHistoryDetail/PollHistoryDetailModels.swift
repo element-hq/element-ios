@@ -15,9 +15,31 @@
 //
 
 import Foundation
+import SwiftUI
 
-protocol AllChatsOnboardingViewModelProtocol {
-    var completion: ((AllChatsOnboardingViewModelResult) -> Void)? { get set }
-    static func makeAllChatsOnboardingViewModel() -> AllChatsOnboardingViewModelProtocol
-    var context: AllChatsOnboardingViewModelType.Context { get }
+// MARK: - Coordinator
+
+typealias PollHistoryDetailViewModelCallback = (PollHistoryDetailViewModelResult) -> Void
+
+enum PollHistoryDetailViewModelResult {
+    case dismiss
+    case viewInTimeline
+}
+
+// MARK: View
+
+struct PollHistoryDetailViewState: BindableState {
+    var poll: TimelinePollDetails
+    var pollStartDate: Date {
+        poll.startDate
+    }
+
+    var isPollClosed: Bool {
+        poll.closed
+    }
+}
+
+enum PollHistoryDetailViewAction {
+    case dismiss
+    case viewInTimeline
 }

@@ -1,9 +1,9 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "カメラは、ビデオ通話や写真撮影、動画撮影に使用されます。";
-"NSPhotoLibraryUsageDescription" = "フォトライブラリは、写真や動画の送信に使用されます。";
+"NSCameraUsageDescription" = "カメラは、ビデオ通話や写真、動画の撮影とアップロードに使用されます。";
+"NSPhotoLibraryUsageDescription" = "フォトへのアクセスを許可すると、写真や動画をライブラリーからアップロードできるようになります。";
 "NSMicrophoneUsageDescription" = "Elementは通話、動画撮影、ボイスメッセージの録音にマイクへのアクセスを必要としています。";
-"NSContactsUsageDescription" = "Elementは、あなたが連絡先をチャットに招待できるように、連絡先を表示します。";
+"NSContactsUsageDescription" = "あなたのIDサーバーに共有され、Matrixで連絡先を発見するのに使用されます。";
 "NSCalendarsUsageDescription" = "予定されているミーティングをアプリで確認することができます。";
 "NSFaceIDUsageDescription" = "Face IDはアプリへのアクセスに使用されます。";
 "NSLocationWhenInUseUsageDescription" = "位置情報を共有する際には、地図を表示するためのアクセスをElementに付与する必要があります。";
-"NSLocationAlwaysAndWhenInUseUsageDescription" = "あなたが他の人に位置を共有するとき、Elementは地図をその人に表示するアクセス権が必要です。";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "位置情報を共有する際には、地図を表示するためのアクセスをElementに付与する必要があります。";

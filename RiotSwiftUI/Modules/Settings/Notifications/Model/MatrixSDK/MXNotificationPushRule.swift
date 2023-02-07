@@ -41,6 +41,10 @@ extension MXPushRule: NotificationPushRuleType {
         return false
     }
     
+    var ruleActions: NotificationActions? {
+        .init(notify: notify, highlight: highlight, sound: sound)
+    }
+    
     private func getAction(actionType: MXPushRuleActionType, tweakType: String? = nil) -> MXPushRuleAction? {
         guard let actions = actions as? [MXPushRuleAction] else {
             return nil

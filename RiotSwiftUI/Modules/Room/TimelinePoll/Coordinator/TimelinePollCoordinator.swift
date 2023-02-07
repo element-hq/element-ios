@@ -33,7 +33,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     private let selectedAnswerIdentifiersSubject = PassthroughSubject<[String], Never>()
     
     private var pollAggregator: PollAggregator
-    private var viewModel: TimelinePollViewModelProtocol!
+    private(set) var viewModel: TimelinePollViewModelProtocol!
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
@@ -86,6 +86,10 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     func toPresentable() -> UIViewController {
         VectorHostingController(rootView: TimelinePollView(viewModel: viewModel.context))
     }
+
+    func toView() -> any View {
+        TimelinePollView(viewModel: viewModel.context)
+    }
     
     func canEndPoll() -> Bool {
         pollAggregator.poll.isClosed == false
@@ -114,10 +118,17 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) { }
     
     // MARK: - Private
-    
-    // PollProtocol is intentionally not available in the SwiftUI target as we don't want
-    // to add the SDK as a dependency to it. We need to translate from one to the other on this level.
+
     func buildTimelinePollFrom(_ poll: PollProtocol) -> TimelinePollDetails {
+        let representedType: TimelinePollEventType = parameters.pollEvent.eventType == .pollStart ? .started : .ended
+        return .init(poll: poll, represent: representedType)
+    }
+}
+
+// PollProtocol is intentionally not available in the SwiftUI target as we don't want
+// to add the SDK as a dependency to it. We need to translate from one to the other on this level.
+extension TimelinePollDetails {
+    init(poll: PollProtocol, represent eventType: TimelinePollEventType) {
         let answerOptions = poll.answerOptions.map { pollAnswerOption in
             TimelinePollAnswerOption(id: pollAnswerOption.id,
                                      text: pollAnswerOption.text,
@@ -126,21 +137,27 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
                                      selected: pollAnswerOption.isCurrentUserSelection)
         }
         
-        return TimelinePollDetails(question: poll.text,
-                                   answerOptions: answerOptions,
-                                   closed: poll.isClosed,
-                                   totalAnswerCount: poll.totalAnswerCount,
-                                   type: pollKindToTimelinePollType(poll.kind),
-                                   eventType: parameters.pollEvent.eventType == .pollStart ? .started : .ended,
-                                   maxAllowedSelections: poll.maxAllowedSelections,
-                                   hasBeenEdited: poll.hasBeenEdited,
-                                   hasDecryptionError: poll.hasDecryptionError)
+        self.init(id: poll.id,
+                  question: poll.text,
+                  answerOptions: answerOptions,
+                  closed: poll.isClosed,
+                  startDate: poll.startDate,
+                  totalAnswerCount: poll.totalAnswerCount,
+                  type: poll.kind.timelinePollType,
+                  eventType: eventType,
+                  maxAllowedSelections: poll.maxAllowedSelections,
+                  hasBeenEdited: poll.hasBeenEdited,
+                  hasDecryptionError: poll.hasDecryptionError)
     }
-    
-    private func pollKindToTimelinePollType(_ kind: PollKind) -> TimelinePollType {
-        let mapping = [PollKind.disclosed: TimelinePollType.disclosed,
-                       PollKind.undisclosed: TimelinePollType.undisclosed]
-        
-        return mapping[kind] ?? .disclosed
+}
+
+private extension PollKind {
+    var timelinePollType: TimelinePollType {
+        switch self {
+        case .disclosed:
+            return .disclosed
+        case .undisclosed:
+            return .undisclosed
+        }
     }
 }

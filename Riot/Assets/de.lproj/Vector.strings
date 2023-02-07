@@ -2457,9 +2457,7 @@
 "all_chats_all_filter" = "Alle";
 "all_chats_edit_layout_show_filters" = "Filter anzeigen";
 "all_chats_edit_menu_leave_space" = "%@ verlassen";
-"all_chats_onboarding_page_title3" = "Rückmeldung geben";
 "room_invites_empty_view_information" = "Hier erscheinen deine Einladungen.";
-"all_chats_onboarding_try_it" = "Probiere es aus";
 "threads_discourage_information_1" = "Dein Heimserver unterstützt aktuell keine Threads, weshalb diese Funktion unzuverlässig sein könnte. Manche Thread-Nachrichten könnten nicht zuverlässig verfügbar sein. ";
 "all_chats_nothing_found_placeholder_title" = "Nichts gefunden.";
 "spaces_create_subspace_title" = "Sub-Space erstellen";
@@ -2475,16 +2473,10 @@
 "room_access_settings_screen_private_message" = "Nur sichtbar und betretbar für eingeladene Personen.";
 "location_sharing_allow_background_location_message" = "Wenn du deinen Echtzeit-Standort freigeben möchtest, benötigt Element den Standortzugriff auch im Hintergrund. Um den Zugriff zu gewähren, tippe auf Einstellungen > Standort und wähle „Immer“";
 "space_selector_empty_view_information" = "Spaces sind eine neue Möglichkeit, Räume und Personen zu gruppieren. Erstelle einen Space, um zu beginnen.";
-"all_chats_onboarding_title" = "Was ist neu";
-"all_chats_onboarding_page_message3" = "Drücke auf dein Profil um uns Wissen zu lassen, was du denkst.";
-"all_chats_onboarding_page_message2" = "Greife auf deine Spaces (unten links) schneller und einfacher denn je zu.";
-"all_chats_onboarding_page_title2" = "Auf Spaces zugreifen";
-"all_chats_onboarding_page_message1" = "Um dein Element zu vereinfachen, sind Tabs nun optional. Verwalte sie mit dem Menü oben rechts.";
 "all_chats_empty_view_information" = "Die Komplettlösung für sichere Kommunikation unter Freunden, in Gruppen oder in Organisationen. Erstelle eine Unterhaltung oder trete einem bestehenden Raum bei, um loszulegen.";
 "all_chats_empty_space_information" = "Spaces sind eine neue Möglichkeit, Räume und Personen zu gruppieren. Füge einen bestehenden Raum hinzu oder erstelle einen neuen mit der Schaltfläche unten rechts.";
 "all_chats_edit_layout_sorting_options_title" = "Sortiere deine Nachrichten nach";
 "space_detail_nav_title" = "Space-Details";
-"all_chats_onboarding_page_title1" = "Willkommen in einer neuen Übersicht!";
 "all_chats_edit_menu_space_settings" = "Space-Einstellungen";
 "all_chats_user_menu_settings" = "Nutzereinstellungen";
 "room_recents_recently_viewed_section" = "Kürzlich angesehen";
@@ -2722,12 +2714,24 @@
 "wysiwyg_composer_format_action_quote" = "Zitat umschalten";
 "wysiwyg_composer_format_action_ordered_list" = "Nummerierte Liste umschalten";
 "wysiwyg_composer_format_action_unordered_list" = "Unsortierte Liste umschalten";
-"voice_broadcast_recorder_connection_error" = "Verbindungsfehler – Aufzeichnung pausiert";
+"voice_broadcast_recorder_connection_error" = "Verbindungsfehler − Aufnahme pausiert";
 "poll_timeline_reply_ended_poll" = "Beendete Umfrage";
 
 // MARK: - Launch loading
 
 "launch_loading_migrating_data" = "Migriere Daten\n%@ %%";
-"settings_labs_disable_crypto_sdk" = "Krypto-SDK ist aktiviert. Zum Deaktivieren, bitte die App neu installieren";
-"settings_labs_confirm_crypto_sdk" = "Dies kann nicht rückgängig gemacht werden";
-"settings_labs_enable_crypto_sdk" = "Rust-basiertes Krypto-SDK aktivieren";
+"settings_labs_disable_crypto_sdk" = "Rust-Ende-zu-Ende-Verschlüsselung (zum Deaktivieren abmelden)";
+"settings_labs_confirm_crypto_sdk" = "Bitte beachte, dass diese Funktion noch experimentell ist, womöglich nicht wie erwartet funktioniert und unerwünschte Nebeneffekte haben kann. Melde dich zum deaktivieren einfach ab und erneut an. Nutze diese Funktion nach eigenem Ermessen und mit Vorsicht.";
+"settings_labs_enable_crypto_sdk" = "Rust-Ende-zu-Ende-Verschlüsselung";
+"poll_history_no_past_poll_period_text" = "Für die vergangenen %@ Tage sind keine beendeten Umfragen verfügbar. Lade weitere Umfragen, um die der vorherigen Monate zu sehen";
+"poll_history_no_active_poll_period_text" = "Für die vergangenen %@ Tage sind keine aktiven Umfragen verfügbar. Lade weitere Umfragen, um die der vorherigen Monate zu sehen";
+"poll_history_load_more" = "Weitere Umfragen laden";
+"poll_history_loading_text" = "Zeige Umfragen an";
+"poll_history_fetching_error" = "Fehler beim Laden der Umfragen.";
+"key_backup_recover_from_private_key_progress" = "%@% % abgeschlossen";
+"voice_broadcast_playback_unable_to_decrypt" = "Entschlüsseln der Sprachübertragung nicht möglich.";
+"home_context_menu_mark_as_unread" = "Als ungelesen markieren";
+"wysiwyg_composer_format_action_un_indent" = "Einrückung verringern";
+"wysiwyg_composer_format_action_indent" = "Einrückung erhöhen";
+"settings_push_rules_error" = "Ein Fehler ist während der Aktualisierung deiner Benachrichtigungseinstellungen aufgetreten. Bitte versuche die Option erneut umzuschalten.";
+"poll_history_detail_view_in_timeline" = "Umfrage in Verlauf anzeigen";

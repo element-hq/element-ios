@@ -22,6 +22,7 @@ import Foundation
     func roomContextActionService(_ service: RoomContextActionServiceProtocol, showRoomNotificationSettingsForRoomWithId roomId: String)
     func roomContextActionServiceDidJoinRoom(_ service: RoomContextActionServiceProtocol)
     func roomContextActionServiceDidLeaveRoom(_ service: RoomContextActionServiceProtocol)
+    func roomContextActionServiceDidMarkRoom(_ service: RoomContextActionServiceProtocol)
 }
 
 /// `RoomContextActionServiceProtocol` classes are meant to be called by a `RoomActionProviderProtocol` instance so it provides the implementation of the menu actions.

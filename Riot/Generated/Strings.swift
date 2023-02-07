@@ -211,38 +211,6 @@ public class VectorL10n: NSObject {
   public static var allChatsNothingFoundPlaceholderTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_nothing_found_placeholder_title") 
   }
-  /// To simplify your Element, tabs are now optional. Manage them using the top-right menu.
-  public static var allChatsOnboardingPageMessage1: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message1") 
-  }
-  /// Access your Spaces (bottom-left) faster and easier than ever before.
-  public static var allChatsOnboardingPageMessage2: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message2") 
-  }
-  /// Tap your profile to let us know what you think.
-  public static var allChatsOnboardingPageMessage3: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_message3") 
-  }
-  /// Welcome to a new view!
-  public static var allChatsOnboardingPageTitle1: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title1") 
-  }
-  /// Access Spaces
-  public static var allChatsOnboardingPageTitle2: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title2") 
-  }
-  /// Give Feedback
-  public static var allChatsOnboardingPageTitle3: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_page_title3") 
-  }
-  /// What's new
-  public static var allChatsOnboardingTitle: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_title") 
-  }
-  /// Try it out
-  public static var allChatsOnboardingTryIt: String { 
-    return VectorL10n.tr("Vector", "all_chats_onboarding_try_it") 
-  }
   /// Chats
   public static var allChatsSectionTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_section_title") 
@@ -2546,6 +2514,10 @@ public class VectorL10n: NSObject {
   /// Mark as read
   public static var homeContextMenuMarkAsRead: String { 
     return VectorL10n.tr("Vector", "home_context_menu_mark_as_read") 
+  }
+  /// Mark as unread
+  public static var homeContextMenuMarkAsUnread: String { 
+    return VectorL10n.tr("Vector", "home_context_menu_mark_as_unread") 
   }
   /// Mute
   public static var homeContextMenuMute: String { 
@@ -4855,9 +4827,33 @@ public class VectorL10n: NSObject {
   public static var pollHistoryActiveSegmentTitle: String { 
     return VectorL10n.tr("Vector", "poll_history_active_segment_title") 
   }
+  /// View poll in timeline
+  public static var pollHistoryDetailViewInTimeline: String { 
+    return VectorL10n.tr("Vector", "poll_history_detail_view_in_timeline") 
+  }
+  /// Error fetching polls.
+  public static var pollHistoryFetchingError: String { 
+    return VectorL10n.tr("Vector", "poll_history_fetching_error") 
+  }
+  /// Load more polls
+  public static var pollHistoryLoadMore: String { 
+    return VectorL10n.tr("Vector", "poll_history_load_more") 
+  }
+  /// Displaying polls
+  public static var pollHistoryLoadingText: String { 
+    return VectorL10n.tr("Vector", "poll_history_loading_text") 
+  }
+  /// There are no active polls for the past %@ days. Load more polls to view polls for previous months
+  public static func pollHistoryNoActivePollPeriodText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "poll_history_no_active_poll_period_text", p1)
+  }
   /// There are no active polls in this room
   public static var pollHistoryNoActivePollText: String { 
     return VectorL10n.tr("Vector", "poll_history_no_active_poll_text") 
+  }
+  /// There are no past polls for the past %@ days. Load more polls to view polls for previous months
+  public static func pollHistoryNoPastPollPeriodText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "poll_history_no_past_poll_period_text", p1)
   }
   /// There are no past polls in this room
   public static var pollHistoryNoPastPollText: String { 
@@ -7775,6 +7771,10 @@ public class VectorL10n: NSObject {
   public static var settingsProfilePicture: String { 
     return VectorL10n.tr("Vector", "settings_profile_picture") 
   }
+  /// An error occurred when updating your notification preferences. Please try to toggle your option again.
+  public static var settingsPushRulesError: String { 
+    return VectorL10n.tr("Vector", "settings_push_rules_error") 
+  }
   /// Are you sure you want to remove the email address %@?
   public static func settingsRemoveEmailPromptMsg(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_remove_email_prompt_msg", p1)
@@ -9255,6 +9255,10 @@ public class VectorL10n: NSObject {
   public static var voiceBroadcastPlaybackLockScreenPlaceholder: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_playback_lock_screen_placeholder") 
   }
+  /// Unable to decrypt this voice broadcast.
+  public static var voiceBroadcastPlaybackUnableToDecrypt: String { 
+    return VectorL10n.tr("Vector", "voice_broadcast_playback_unable_to_decrypt") 
+  }
   /// Connection error - Recording paused
   public static var voiceBroadcastRecorderConnectionError: String { 
     return VectorL10n.tr("Vector", "voice_broadcast_recorder_connection_error") 
@@ -9419,6 +9423,10 @@ public class VectorL10n: NSObject {
   public static var wysiwygComposerFormatActionCodeBlock: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_code_block") 
   }
+  /// Increase indentation
+  public static var wysiwygComposerFormatActionIndent: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_indent") 
+  }
   /// Apply inline code format
   public static var wysiwygComposerFormatActionInlineCode: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_inline_code") 
@@ -9442,6 +9450,10 @@ public class VectorL10n: NSObject {
   /// Apply underline format
   public static var wysiwygComposerFormatActionStrikethrough: String { 
     return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_strikethrough") 
+  }
+  /// Decrease indentation
+  public static var wysiwygComposerFormatActionUnIndent: String { 
+    return VectorL10n.tr("Vector", "wysiwyg_composer_format_action_un_indent") 
   }
   /// Apply strikethrough format
   public static var wysiwygComposerFormatActionUnderline: String { 

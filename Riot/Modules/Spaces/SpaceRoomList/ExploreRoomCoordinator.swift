@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import MatrixSDK
 
 @objcMembers
 final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
@@ -518,6 +519,9 @@ extension ExploreRoomCoordinator: RoomInfoCoordinatorDelegate {
         self.navigationRouter.dismissModule(animated: true) {
             self.remove(childCoordinator: coordinator)
         }
+    }
+    func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, viewEventInTimeline event: MXEvent) {
+        
     }
     
 }

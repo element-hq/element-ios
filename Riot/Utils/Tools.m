@@ -36,7 +36,11 @@
                 presenceText = [VectorL10n roomParticipantsIdle];
                 break;
                 
-            case MXPresenceUnknown: // Do like matrix-js-sdk
+            case MXPresenceUnknown:
+                // Fix https://github.com/vector-im/element-ios/issues/6597
+                // Return nil because we don't want to display anything if the status is unknown
+                return nil;
+                
             case MXPresenceOffline:
                 presenceText = [VectorL10n roomParticipantsOffline];
                 break;

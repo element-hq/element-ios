@@ -17,6 +17,7 @@
 import Foundation
 import Reusable
 import WysiwygComposer
+import HTMLParser
 import SwiftUI
 import Combine
 import UIKit
@@ -43,9 +44,14 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var voiceMessageBottomConstraint: NSLayoutConstraint?
     private var hostingViewController: VectorHostingController!
     private var wysiwygViewModel = WysiwygComposerViewModel(
-        textColor: ThemeService.shared().theme.colors.primaryContent,
-        linkColor: ThemeService.shared().theme.colors.links,
-        codeBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor
+        parserStyle: HTMLParserStyle(textColor: ThemeService.shared().theme.colors.primaryContent,
+                                     linkColor: ThemeService.shared().theme.colors.links,
+                                     codeBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor,
+                                     codeBorderColor: ThemeService.shared().theme.textQuinaryColor,
+                                     quoteBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor,
+                                     quoteBorderColor: ThemeService.shared().theme.textQuinaryColor,
+                                     borderWidth: 1.0,
+                                     cornerRadius: 4.0)
     )
     private var viewModel: ComposerViewModelProtocol!
     
@@ -298,9 +304,14 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     private func update(theme: Theme) {
         hostingViewController.view.backgroundColor = theme.colors.background
-        wysiwygViewModel.textColor = theme.colors.primaryContent
-        wysiwygViewModel.linkColor = theme.colors.links
-        wysiwygViewModel.codeBackgroundColor = theme.selectedBackgroundColor
+        wysiwygViewModel.parserStyle = HTMLParserStyle(textColor: ThemeService.shared().theme.colors.primaryContent,
+                                                       linkColor: ThemeService.shared().theme.colors.links,
+                                                       codeBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor,
+                                                       codeBorderColor: ThemeService.shared().theme.textQuinaryColor,
+                                                       quoteBackgroundColor: ThemeService.shared().theme.selectedBackgroundColor,
+                                                       quoteBorderColor: ThemeService.shared().theme.textQuinaryColor,
+                                                       borderWidth: 1.0,
+                                                       cornerRadius: 4.0)
     }
     
     private func updateTextViewHeight() {

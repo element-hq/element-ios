@@ -44,6 +44,7 @@ targets:
     - package: SwiftOGG
     - package: WysiwygComposer
     - package: DeviceKit
+    - package: DTCoreText
 
     configFiles:
       Debug: Debug.xcconfig

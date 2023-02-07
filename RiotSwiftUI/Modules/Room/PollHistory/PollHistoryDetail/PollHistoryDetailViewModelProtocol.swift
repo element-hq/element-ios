@@ -15,29 +15,8 @@
 //
 
 import Foundation
-import UIKit
 
-// MARK: - Coordinator
-
-// MARK: View model
-
-enum AllChatsOnboardingViewModelResult {
-    case cancel
-}
-
-// MARK: View
-
-struct AllChatsOnboardingPageData: Identifiable {
-    let id = UUID().uuidString
-    let image: UIImage
-    let title: String
-    let message: String
-}
-
-struct AllChatsOnboardingViewState: BindableState {
-    let pages: [AllChatsOnboardingPageData]
-}
-
-enum AllChatsOnboardingViewAction {
-    case cancel
+protocol PollHistoryDetailViewModelProtocol {
+    var completion: PollHistoryDetailViewModelCallback? { get set }
+    var context: PollHistoryDetailViewModelType.Context { get }
 }

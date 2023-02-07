@@ -2467,14 +2467,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Semmi új.";
-"all_chats_onboarding_try_it" = "Próbáld ki";
-"all_chats_onboarding_title" = "Újdonságok";
-"all_chats_onboarding_page_message3" = "Koppints a profilodra és mond el mit gondolsz.";
-"all_chats_onboarding_page_title3" = "Visszajelzés adása";
-"all_chats_onboarding_page_message2" = "A terekhez való hozzáférés (balra lent) gyorsabb és egyszerűbb mint valaha.";
-"all_chats_onboarding_page_title2" = "Hozzáférés a terekhez";
-"all_chats_onboarding_page_message1" = "Element egyszerűsítéséhez a lapok mostantól választhatók. Beállítani a jobb felső menüből lehet.";
-"all_chats_onboarding_page_title1" = "Üdv az új kinézetben!";
 "all_chats_nothing_found_placeholder_message" = "Próbáld meg a keresést módosítani.";
 "all_chats_nothing_found_placeholder_title" = "Nincs találat.";
 "all_chats_empty_unreads_placeholder_message" = "Ez az a hely ahol az olvasatlan üzeneteid megjelennek, ha lesznek.";
@@ -2710,3 +2702,18 @@
 "voice_broadcast_connection_error_message" = "Sajnos most nem lehet elindítani a felvételt. Próbálja meg később.";
 "voice_broadcast_connection_error_title" = "Kapcsolat hiba";
 "voice_broadcast_playback_lock_screen_placeholder" = "Hang közvetítés";
+"poll_history_load_more" = "Még több szavazás betöltése";
+"poll_history_no_past_poll_period_text" = "%@ napja nincs aktív szavazás. További szavazások betöltése az előző havi szavazások megjelenítéséhez";
+"poll_history_no_active_poll_period_text" = "%@ napja nincs aktív szavazás. További szavazások betöltése az előző havi szavazások megjelenítéséhez";
+"poll_history_loading_text" = "Szavazások megjelenítése";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Adatok migrálása\n%@ %%";
+"settings_labs_disable_crypto_sdk" = "Végpontok közötti titkosítás 2.0 (kikapcsoláshoz kijelentkezés szükséges)";
+"settings_labs_confirm_crypto_sdk" = "Ezzel az opcióval egy gyorsabb és megbízhatóbb végponttól végponting titkosító motor kerül engedélyezésre ami Rustban lett megírva. Bekapcsolás után a kikapcsolásához ki kell jelentkezni. Folytatod?";
+"settings_labs_enable_crypto_sdk" = "Az új Rust alapú Titkosítási SDK engedélyezése";
+"home_context_menu_mark_as_unread" = "Olvasatlannak jelöl";
+"poll_history_fetching_error" = "Szavazás betöltési hiba.";
+"voice_broadcast_playback_unable_to_decrypt" = "A hang közvetítés nem fejthető vissza.";
+"key_backup_recover_from_private_key_progress" = "%@%% kész";

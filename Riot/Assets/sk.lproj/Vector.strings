@@ -2668,14 +2668,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Nič nové.";
-"all_chats_onboarding_try_it" = "Vyskúšajte si to";
-"all_chats_onboarding_title" = "Čo je nové";
-"all_chats_onboarding_page_message3" = "Ťuknite na svoj profil a dajte nám vedieť, čo si myslíte.";
-"all_chats_onboarding_page_title3" = "Poskytnite spätnú väzbu";
-"all_chats_onboarding_page_title2" = "Prístup k priestorom";
-"all_chats_onboarding_page_message2" = "Získajte prístup k svojim priestorom (vľavo dole) rýchlejšie a jednoduchšie ako kedykoľvek predtým.";
-"all_chats_onboarding_page_message1" = "Pre zjednodušenie vašej aplikácie Element, sú teraz karty voliteľné. Spravujte ich pomocou ponuky vpravo hore.";
-"all_chats_onboarding_page_title1" = "Vitajte v novom zobrazení!";
 "all_chats_nothing_found_placeholder_message" = "Skúste upraviť svoje hľadanie.";
 "all_chats_nothing_found_placeholder_title" = "Nič sa nenašlo.";
 "all_chats_empty_unreads_placeholder_message" = "Tu sa zobrazia neprečítané správy, ak nejaké máte.";
@@ -2917,6 +2909,18 @@
 // MARK: - Launch loading
 
 "launch_loading_migrating_data" = "Migrácia údajov\n%@ %%";
-"settings_labs_disable_crypto_sdk" = "Crypto SDK je povolené. Ak to chcete vypnúť, preinštalujte prosím aplikáciu";
-"settings_labs_confirm_crypto_sdk" = "Túto akciu nemožno vrátiť späť";
-"settings_labs_enable_crypto_sdk" = "Zapnúť nové Crypto SDK využívajúce Rust";
+"settings_labs_disable_crypto_sdk" = "Rust end-to-end šifrovanie (odhláste sa, aby ste ho vypli)";
+"settings_labs_confirm_crypto_sdk" = "Upozorňujeme, že táto funkcia je stále v experimentálnej fáze, preto nemusí fungovať podľa očakávaní a môže mať potenciálne nezamýšľané dôsledky. Ak chcete funkciu vrátiť späť, jednoducho sa odhláste a znova prihláste. Používajte ju podľa vlastného uváženia a s opatrnosťou.";
+"settings_labs_enable_crypto_sdk" = "Rust end-to-end šifrovanie";
+"poll_history_load_more" = "Načítať ďalšie ankety";
+"poll_history_no_past_poll_period_text" = "Za posledných %@ dní nie sú aktívne žiadne ankety. Načítaním ďalších ankiet zobrazíte ankety za predchádzajúce mesiace";
+"poll_history_no_active_poll_period_text" = "Za posledných %@ dní nie sú aktívne žiadne ankety. Načítaním ďalších ankiet zobrazíte ankety za predchádzajúce mesiace";
+"poll_history_loading_text" = "Zobrazenie ankiet";
+"poll_history_fetching_error" = "Chyba pri načítavaní ankiet.";
+"voice_broadcast_playback_unable_to_decrypt" = "Toto hlasové vysielanie sa nedá dešifrovať.";
+"home_context_menu_mark_as_unread" = "Označiť ako neprečítané";
+"key_backup_recover_from_private_key_progress" = "%@%% Dokončené";
+"wysiwyg_composer_format_action_indent" = "Zväčšenie odsadenia";
+"wysiwyg_composer_format_action_un_indent" = "Zmenšenie odsadenia";
+"poll_history_detail_view_in_timeline" = "Zobraziť anketu na časovej osi";
+"settings_push_rules_error" = "Pri aktualizácii vašich predvolieb oznámení došlo k chybe. Skúste prosím prepnúť možnosť znova.";

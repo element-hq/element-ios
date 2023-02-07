@@ -48,12 +48,18 @@ struct VoiceBroadcastPlayingState {
     var canMoveBackward: Bool
 }
 
+struct VoiceBroadcastPlaybackDecryptionState {
+    var errorCount: Int
+}
+
 struct VoiceBroadcastPlaybackViewState: BindableState {
     var details: VoiceBroadcastPlaybackDetails
     var broadcastState: VoiceBroadcastInfoState
     var playbackState: VoiceBroadcastPlaybackState
     var playingState: VoiceBroadcastPlayingState
     var bindings: VoiceBroadcastPlaybackViewStateBindings
+    var decryptionState: VoiceBroadcastPlaybackDecryptionState
+    var showPlaybackError: Bool
 }
 
 struct VoiceBroadcastPlaybackViewStateBindings {

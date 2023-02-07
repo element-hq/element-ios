@@ -69,6 +69,7 @@
     self.missedNotifAndUnreadIndicator.hidden = YES;
     self.missedNotifAndUnreadBadgeBgView.hidden = YES;
     self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
+    self.missedNotifAndUnreadBadgeLabel.text = @"";
     
     roomCellData = (id<MXKRecentCellDataStoring>)cellData;
     if (roomCellData)
@@ -93,10 +94,10 @@
         // Notify unreads and bing
         if (roomCellData.hasUnread)
         {
-            self.missedNotifAndUnreadIndicator.hidden = NO;
 
             if (0 < roomCellData.notificationCount)
             {
+                self.missedNotifAndUnreadIndicator.hidden = NO;
                 self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
 
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
@@ -109,7 +110,9 @@
             }
             else
             {
-                self.missedNotifAndUnreadIndicator.backgroundColor = ThemeService.shared.theme.unreadRoomIndentColor;
+                self.missedNotifAndUnreadBadgeBgView.hidden = NO;
+                self.missedNotifAndUnreadBadgeBgView.backgroundColor = ThemeService.shared.theme.tintColor;
+                self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 20;
             }
 
             // Use bold font for the room title
