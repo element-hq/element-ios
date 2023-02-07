@@ -2714,12 +2714,24 @@
 "wysiwyg_composer_format_action_quote" = "Zitat umschalten";
 "wysiwyg_composer_format_action_ordered_list" = "Nummerierte Liste umschalten";
 "wysiwyg_composer_format_action_unordered_list" = "Unsortierte Liste umschalten";
-"voice_broadcast_recorder_connection_error" = "Verbindungsfehler – Aufzeichnung pausiert";
+"voice_broadcast_recorder_connection_error" = "Verbindungsfehler − Aufnahme pausiert";
 "poll_timeline_reply_ended_poll" = "Beendete Umfrage";
 
 // MARK: - Launch loading
 
 "launch_loading_migrating_data" = "Migriere Daten\n%@ %%";
-"settings_labs_disable_crypto_sdk" = "Krypto-SDK ist aktiviert. Zum Deaktivieren, bitte die App neu installieren";
-"settings_labs_confirm_crypto_sdk" = "Dies kann nicht rückgängig gemacht werden";
-"settings_labs_enable_crypto_sdk" = "Rust-basiertes Krypto-SDK aktivieren";
+"settings_labs_disable_crypto_sdk" = "Rust-Ende-zu-Ende-Verschlüsselung (zum Deaktivieren abmelden)";
+"settings_labs_confirm_crypto_sdk" = "Bitte beachte, dass diese Funktion noch experimentell ist, womöglich nicht wie erwartet funktioniert und unerwünschte Nebeneffekte haben kann. Melde dich zum deaktivieren einfach ab und erneut an. Nutze diese Funktion nach eigenem Ermessen und mit Vorsicht.";
+"settings_labs_enable_crypto_sdk" = "Rust-Ende-zu-Ende-Verschlüsselung";
+"poll_history_no_past_poll_period_text" = "Für die vergangenen %@ Tage sind keine beendeten Umfragen verfügbar. Lade weitere Umfragen, um die der vorherigen Monate zu sehen";
+"poll_history_no_active_poll_period_text" = "Für die vergangenen %@ Tage sind keine aktiven Umfragen verfügbar. Lade weitere Umfragen, um die der vorherigen Monate zu sehen";
+"poll_history_load_more" = "Weitere Umfragen laden";
+"poll_history_loading_text" = "Zeige Umfragen an";
+"poll_history_fetching_error" = "Fehler beim Laden der Umfragen.";
+"key_backup_recover_from_private_key_progress" = "%@% % abgeschlossen";
+"voice_broadcast_playback_unable_to_decrypt" = "Entschlüsseln der Sprachübertragung nicht möglich.";
+"home_context_menu_mark_as_unread" = "Als ungelesen markieren";
+"wysiwyg_composer_format_action_un_indent" = "Einrückung verringern";
+"wysiwyg_composer_format_action_indent" = "Einrückung erhöhen";
+"settings_push_rules_error" = "Ein Fehler ist während der Aktualisierung deiner Benachrichtigungseinstellungen aufgetreten. Bitte versuche die Option erneut umzuschalten.";
+"poll_history_detail_view_in_timeline" = "Umfrage in Verlauf anzeigen";

@@ -287,8 +287,8 @@
 "settings_old_password" = "旧密码";
 "settings_new_password" = "新密码";
 "settings_confirm_password" = "确认密码";
-"settings_fail_to_update_password" = "更新密码失败";
-"settings_password_updated" = "您的密码已经更新";
+"settings_fail_to_update_password" = "更新Matrix账户密码失败";
+"settings_password_updated" = "您的Matrix账户密码已经更新";
 "settings_crypto_device_name" = "会话名称： ";
 "settings_crypto_device_id" = "\n会话ID： ";
 "settings_crypto_device_key" = "\n会话密钥:\n";
@@ -582,7 +582,7 @@
 "deactivate_account_informations_part5" = "如果您希望我们忘记您的消息，请勾选下面的框\n\nMatrix中的消息可见性与电子邮件类似。 我们忘记您的消息意味着您已发送的消息将不会再与任何新用户或未注册用户共享，但已有权访问这些消息的注册用户仍可访问其副本。";
 "deactivate_account_forget_messages_information_part1" = "当我的账户被停用时，请忘记我发送的所有消息（";
 "deactivate_account_forget_messages_information_part3" = ": 这会导致将来加入的用户看到的是一段不完整的对话）";
-"deactivate_account_password_alert_message" = "要继续，请输入您的密码";
+"deactivate_account_password_alert_message" = "要继续，请输入你的Matrix账户密码";
 "rerequest_keys_alert_message" = "请在另一台可以解密消息的设备上启动%@，这样它就可以将密钥发送到此会话。";
 "key_backup_setup_title" = "密钥备份";
 "key_backup_setup_skip_alert_title" = "您确定吗？";
@@ -725,7 +725,7 @@
 "settings_labs_enable_cross_signing" = "开启交叉签名按用户验证而不是按设备验证（开发中）";
 "settings_add_3pid_password_title_email" = "添加邮箱地址";
 "settings_add_3pid_password_title_msidsn" = "添加电话号码";
-"settings_add_3pid_password_message" = "请填写你的密码以继续";
+"settings_add_3pid_password_message" = "请填写你的Matrix账户的密码以继续";
 "settings_add_3pid_invalid_password_message" = "验证信息无效";
 "settings_key_backup_button_connect" = "关联此会话到密钥备份";
 "settings_devices_description" = "会话的公开名字会对你联络的人可见";
@@ -1044,15 +1044,15 @@
 "key_verification_bootstrap_not_setup_title" = "错误";
 "key_verification_bootstrap_not_setup_message" = "您需要先启动交叉签名。";
 "key_verification_verify_qr_code_title" = "通过扫描进行验证";
-"key_verification_verify_qr_code_information" = "扫描代码以安全地相互验证。";
-"key_verification_verify_qr_code_information_other_device" = "扫描以下代码以验证：";
+"key_verification_verify_qr_code_information" = "扫描条码以安全地相互验证。";
+"key_verification_verify_qr_code_information_other_device" = "扫描以下条码以验证：";
 "key_verification_verify_qr_code_emoji_information" = "通过比较唯一的表情符号进行验证。";
-"key_verification_verify_qr_code_scan_code_action" = "扫描他们的代码";
+"key_verification_verify_qr_code_scan_code_action" = "扫描他们的条码";
 "key_verification_verify_qr_code_cannot_scan_action" = "不能扫描吗？";
 "key_verification_verify_qr_code_start_emoji_action" = "通过表情符号验证";
-"key_verification_verify_qr_code_other_scan_my_code_title" = "其他用户是否成功扫描了二维码？";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "其他用户是否成功扫描了QR码？";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "代码已验证！";
-"key_verification_verify_qr_code_scan_other_code_success_message" = "二维码已成功验证。";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "QR码已成功验证。";
 // Scanning
 "key_verification_scan_confirmation_scanning_title" = "快好了！正在等待确认…";
 "key_verification_scan_confirmation_scanning_user_waiting_other" = "等待中%@…";
@@ -1082,7 +1082,7 @@
 "secrets_recovery_with_key_invalid_recovery_key_title" = "无法访问机密存储";
 "secrets_recovery_with_key_invalid_recovery_key_message" = "请验证您输入的安全密钥是否正确。";
 "rooms_empty_view_information" = "房间非常适合任何群聊，无论是私人的还是公共的。点击+以查找现有房间，或新建房间。";
-"security_settings_user_password_description" = "通过输入您的账户密码确认您的身份";
+"security_settings_user_password_description" = "通过输入您的Matrix账户密码确认您的身份";
 "rooms_empty_view_title" = "房间";
 "people_empty_view_information" = "与任何人安全聊天。点击+开始添加人员。";
 "people_empty_view_title" = "用户";
@@ -1104,7 +1104,7 @@
 "security_settings_secure_backup_synchronise" = "同步";
 "security_settings_secure_backup_setup" = "设置";
 "security_settings_secure_backup_description" = "备份你的账户数据备份和加密密钥，以防你无法访问会话。 你的密钥将受到唯一的安全密钥保护。";
-"security_settings_crypto_sessions_description_2" = "如果您未曾发起登录，请更改密码并重置安全备份。";
+"security_settings_crypto_sessions_description_2" = "如果您未曾发起登录，请更改Matrix账户的密码并重置安全备份。";
 "settings_show_NSFW_public_rooms" = "显示 NSFW 公共房间";
 "external_link_confirmation_message" = "此链接 %@ 会将您带至另一个网站：%@\n\n是否前往？";
 "external_link_confirmation_title" = "双击此链接";
@@ -1167,14 +1167,14 @@
 "room_info_list_section_other" = "其他";
 "create_room_section_footer_encryption" = "加密一经启用，便无法禁用。";
 "create_room_placeholder_address" = "#testroom:matrix.org";
-"create_room_section_header_address" = "房间地址";
-"create_room_section_header_type" = "房间类型";
+"create_room_section_header_address" = "地址";
+"create_room_section_header_type" = "谁可以加入";
 "create_room_enable_encryption" = "启用加密";
-"create_room_section_header_encryption" = "房间加密";
+"create_room_section_header_encryption" = "加密";
 "create_room_placeholder_topic" = "这个房间是关于什么的？";
-"create_room_section_header_topic" = "房间话题（可选）";
+"create_room_section_header_topic" = "话题（可选）";
 "create_room_placeholder_name" = "名称";
-"create_room_section_header_name" = "房间名称";
+"create_room_section_header_name" = "名称";
 
 // MARK: - Create Room
 
@@ -1251,10 +1251,10 @@
 "invite_friends_share_text" = "嗨，在 %@ 跟我说：%@";
 "favourites_empty_view_information" = "你可以选择几种方法 - 最快只需按住。点击星星，它们会自动出现在这里，以确保安全。";
 "home_empty_view_information" = "团队、朋友和组织的一体化安全聊天应用程序。 点击下面的「+」按钮添加人员和房间。";
-"create_room_show_in_directory" = "在目录中显示房间";
+"create_room_show_in_directory" = "在房间目录中显示";
 "create_room_section_footer_type" = "人们只有在收到聊天室邀请后才可以进入私有房间。";
-"create_room_type_public" = "公开房间";
-"create_room_type_private" = "私有房间";
+"create_room_type_public" = "公开房间（任何人）";
+"create_room_type_private" = "私有房间（仅邀请）";
 "biometrics_cant_unlocked_alert_message_login" = "重新登录";
 "biometrics_cant_unlocked_alert_message_x" = "若要解锁，请使用 %@ 或重新登录并启用 %@";
 "biometrics_cant_unlocked_alert_title" = "无法解锁应用程序";
@@ -1288,7 +1288,7 @@
 // Banner
 
 "cross_signing_setup_banner_title" = "设置加密";
-"secrets_reset_authentication_message" = "请输入你的账户密码进行确认";
+"secrets_reset_authentication_message" = "请输入你的Matrix账户密码进行确认";
 "secrets_reset_warning_message" = "您将重新启动，没有历史记录，消息，受信任的设备或受信任的用户。";
 "secrets_reset_warning_title" = "如果你选择全部重置";
 "secrets_reset_information" = "仅当没有其他设备可用来验证此设备时，才执行此操作。";
@@ -2259,19 +2259,29 @@
 "authentication_qr_login_failure_retry" = "再试一次";
 "authentication_qr_login_failure_request_timed_out" = "连接没有在规定的时间内完成。";
 "authentication_qr_login_failure_request_denied" = "请求在另一个设备上被拒绝。";
-"authentication_qr_login_failure_invalid_qr" = "二维码无效。";
+"authentication_qr_login_failure_invalid_qr" = "QR码无效。";
 "authentication_qr_login_failure_title" = "连接失败";
 "authentication_qr_login_loading_signed_in" = "您现在已经登录到另一个设备上。";
-"authentication_qr_login_loading_waiting_signin" = "等待设备登录。";
-"authentication_qr_login_loading_connecting_device" = "连接到设备";
-"authentication_qr_login_confirm_alert" = "请确保您知道此代码的来源。通过连接设备，您将为某人提供对您帐户的完全访问权限。";
-"authentication_qr_login_confirm_subtitle" = "确认下面的代码与您的其他设备匹配:";
-"authentication_qr_login_confirm_title" = "建立安全连接";
-"authentication_qr_login_scan_subtitle" = "将二维码放置在下面的方框中";
-"authentication_qr_login_scan_title" = "扫描二维码";
-"authentication_qr_login_display_step2" = "选择“以二维码登入”";
+"authentication_qr_login_loading_waiting_signin" = "正在等待设备以登录。";
+"authentication_qr_login_loading_connecting_device" = "正在连接到设备";
+"authentication_qr_login_confirm_alert" = "请确保您知道此代码的来源。通过连接设备，您将为某人提供对您账户的完全访问权限。";
+"authentication_qr_login_confirm_subtitle" = "确认下面的代码与您的其他设备匹配：";
+"authentication_qr_login_confirm_title" = "安全连接已建立";
+"authentication_qr_login_scan_subtitle" = "将QR码放置在下面的方框中";
+"authentication_qr_login_scan_title" = "扫描QR码";
+"authentication_qr_login_display_step2" = "选择“以QR码登入”";
 "authentication_qr_login_display_step1" = "在您的其它设备中打开Element";
 "onboarding_splash_page_4_title_no_pun" = "为您的团队发送消息。";
 "user_session_learn_more" = "了解更多";
 "manage_session_name_info_link" = "了解更多";
 "threads_beta_information_link" = "了解更多";
+"authentication_qr_login_display_subtitle" = "用你登出的设备扫描下面的QR码。";
+"room_invite_to_space_option_detail" = "他们可以探索 %@，但不会成为 %@ 的成员。";
+"analytics_prompt_message_new_user" = "通过分享匿名的使用数据，帮助我们识别问题并改进 %@ 。为了了解人们如何使用多个设备，我们将生成一个随机的标识符，由你的设备共享。";
+"threads_notice_done" = "知道了";
+"message_from_a_thread" = "来自消息列";
+"threads_empty_info_all" = "消息列帮助你的对话不离题且易于跟踪。";
+"accessibility_selected" = "已选中";
+"deselect_all" = "取消全选";
+"notice_voice_broadcast_ended" = "%@结束了一个语音广播。";
+"notice_voice_broadcast_ended_by_you" = "你结束了一个语音广播。";
