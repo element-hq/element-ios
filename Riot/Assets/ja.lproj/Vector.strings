@@ -1504,7 +1504,7 @@
 "ssl_only_accept" = "サーバーの管理者が上記のものと一致するフィンガープリントを発行した場合にのみ、証明書を承認してください。";
 "unignore" = "無視を解除";
 "notice_encryption_enabled_ok" = "%@がエンドツーエンド暗号化を有効にしました。";
-"notice_encryption_enabled_unknown_algorithm" = "%1$@がエンドツーエンド暗号化（認識されていないアルゴリズム %@）を有効にしました。";
+"notice_encryption_enabled_unknown_algorithm" = "%1$@がエンドツーエンド暗号化（認識されていないアルゴリズム %2$@）を有効にしました。";
 "device_details_rename_prompt_title" = "セッション名";
 "account_error_push_not_allowed" = "通知は許可されていません";
 "notice_room_third_party_revoked_invite" = "%@が%@のルームへの招待を取り消しました";
@@ -1856,7 +1856,7 @@
 "settings_labs_enable_threads" = "メッセージのスレッド機能";
 "settings_labs_enabled_polls" = "アンケート";
 "settings_ui_show_redactions_in_room_history" = "削除されたメッセージに関する通知を表示";
-"settings_calls_stun_server_fallback_description" = "ホームサーバーがフォールバック用の通話アシストサーバーを提供していない場合は ％@ を許可（IPアドレスが通話中に共有されます）。";
+"settings_calls_stun_server_fallback_description" = "ホームサーバーがフォールバック用の通話アシストサーバーを提供していない場合は %@ を許可（IPアドレスが通話中に共有されます）。";
 "settings_callkit_info" = "ロック画面に着信を表示。%@の着信はシステムの通話履歴で確認できます。iCloudが有効になっている場合、この通話履歴はAppleと共有されます。";
 "settings_notifications_disabled_alert_title" = "通知が無効です";
 "threads_discourage_information_1" = "ホームサーバーがサポートしていないため、スレッド機能は不安定かもしれません。スレッドのメッセージが安定して表示されないおそれがあります。 ";
@@ -1897,7 +1897,7 @@
 "authentication_qr_login_start_title" = "QRコードをスキャン";
 "authentication_terms_policy_url_error" = "選択した運営方針が見つかりませんでした。後でもう一度やり直してください。";
 /* The placeholder will show the homeserver's domain */
-"authentication_terms_message" = "%sの利用規約と運営方針を確認してください";
+"authentication_terms_message" = "%@の利用規約と運営方針を確認してください";
 "authentication_verify_msisdn_invalid_phone_number" = "電話番号が不正です";
 /* The placeholder will show the phone number that was entered. */
 "authentication_verify_msisdn_waiting_message" = "コードが%@に送信されました";
@@ -2390,7 +2390,7 @@
 
 /* %1$@ will be the verification state and %2$@ will be user_session_item_details_verification_unknown or user_other_session_current_session_details */
 "user_session_item_details" = "%1$@ · %2$@";
-"user_other_session_selected_count" = "%d件選択済";
+"user_other_session_selected_count" = "%@件選択済";
 "user_session_inactive_session_description" = "非アクティブなセッションは、しばらく使用されていませんが、暗号鍵を受信しているセッションです。\n\n使用していないセッションを削除すると、セキュリティーとパフォーマンスが改善されます。また、新しいセッションが疑わしい場合に、より容易に特定できるようになります。";
 "user_session_permanently_unverified_session_description" = "このセッションは暗号化をサポートしていないため、認証できません。\n\nこのセッションでは、暗号化が有効になっているルームに参加することができません。\n\nセキュリティーとプライバシー保護の観点から、暗号化をサポートしているMatrixのクライアントの使用を推奨します。";
 "user_sessions_overview_security_recommendations_unverified_info" = "未認証のセッションを認証するか、サインアウトしてください。";
