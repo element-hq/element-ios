@@ -31,11 +31,7 @@ struct PollHistory: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             
-            if viewModel.viewState.polls.isEmpty {
-                noPollsView
-            } else {
-                pollListView
-            }
+            content
         }
         .padding(.top, 32)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -48,37 +44,94 @@ struct PollHistory: View {
         .onChange(of: viewModel.mode) { _ in
             viewModel.send(viewAction: .segmentDidChange)
         }
+        .alert(item: $viewModel.alertInfo) {
+            $0.alert
+        }
+    }
+    
+    @ViewBuilder
+    private var content: some View {
+        if viewModel.viewState.polls == nil {
+            loadingView
+        } else if viewModel.viewState.polls?.isEmpty == true {
+            noPollsView
+        } else {
+            pollListView
+        }
     }
     
     private var pollListView: some View {
         ScrollView {
             LazyVStack(spacing: 32) {
-                let enumeratedPolls = Array(viewModel.viewState.polls.enumerated())
-                
-                ForEach(enumeratedPolls, id: \.offset) { _, pollData in
-                    PollListItem(pollData: pollData)
+                ForEach(viewModel.viewState.polls ?? []) { pollData in
+                    Button(action: {
+                        viewModel.send(viewAction: .showPollDetail(poll: pollData))
+                    }) {
+                        PollListItem(pollData: pollData)
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                
-                Button {
-                    #warning("handle action")
-                } label: {
-                    Text("Load more polls")
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
+
+                loadMoreButton
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.top, 32)
             .padding(.horizontal, 16)
         }
     }
     
+    @ViewBuilder
+    private var loadMoreButton: some View {
+        if viewModel.viewState.canLoadMoreContent {
+            HStack(spacing: 8) {
+                if viewModel.viewState.isLoading {
+                    spinner
+                }
+                
+                Button {
+                    viewModel.send(viewAction: .loadMoreContent)
+                } label: {
+                    Text(VectorL10n.pollHistoryLoadMore)
+                        .font(theme.fonts.body)
+                }
+                .accessibilityIdentifier("PollHistory.loadMore")
+                .disabled(viewModel.viewState.isLoading)
+            }
+        }
+    }
+    
+    private var spinner: some View {
+        ProgressView()
+            .progressViewStyle(CircularProgressViewStyle())
+    }
+    
     private var noPollsView: some View {
-        Text(viewModel.mode == .active ? VectorL10n.pollHistoryNoActivePollText : VectorL10n.pollHistoryNoPastPollText)
-            .font(theme.fonts.body)
-            .foregroundColor(theme.colors.secondaryContent)
-            .frame(maxHeight: .infinity)
-            .padding(.horizontal, 16)
-            .accessibilityLabel("PollHistory.emptyText")
+        VStack(spacing: 32) {
+            Text(viewModel.emptyPollsText)
+                .font(theme.fonts.body)
+                .multilineTextAlignment(.center)
+                .foregroundColor(theme.colors.secondaryContent)
+                .padding(.horizontal, 16)
+                .accessibilityIdentifier("PollHistory.emptyText")
+
+            if viewModel.viewState.canLoadMoreContent {
+                loadMoreButton
+            }
+        }
+        .frame(maxHeight: .infinity)
+    }
+    
+    private var loadingView: some View {
+        HStack(spacing: 8) {
+            spinner
+            
+            Text(VectorL10n.pollHistoryLoadingText)
+                .font(theme.fonts.body)
+                .foregroundColor(theme.colors.secondaryContent)
+                .frame(maxHeight: .infinity)
+                .accessibilityIdentifier("PollHistory.loadingText")
+        }
+        .padding(.horizontal, 16)
     }
 }
 

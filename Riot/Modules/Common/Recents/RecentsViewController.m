@@ -2471,6 +2471,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     editedRoomId = nil;
 }
 
+-(void)roomContextActionServiceDidMarkRoom:(id<RoomContextActionServiceProtocol>)service
+{
+    [self refreshRecentsTable];
+}
+
 #pragma mark - RecentCellContextMenuProviderDelegate
 
 - (void)recentCellContextMenuProviderDidStartShowingPreview:(RecentCellContextMenuProvider *)menuProvider

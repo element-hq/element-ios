@@ -22,7 +22,7 @@ extension NotificationPushRuleId {
     /// It is defined similarly across Web and Android.
     /// - Parameter index: The notification index for which to get the actions for.
     /// - Returns: The associated `NotificationStandardActions`.
-    func standardActions(for index: NotificationIndex) -> NotificationStandardActions? {
+    func standardActions(for index: NotificationIndex) -> NotificationStandardActions {
         switch self {
         case .containDisplayName:
             switch index {
@@ -42,7 +42,7 @@ extension NotificationPushRuleId {
             case .silent: return .notify
             case .noisy: return .highlight
             }
-        case .oneToOneRoom:
+        case .oneToOneRoom, .oneToOnePollStart, .msc3930oneToOnePollStart, .oneToOnePollEnd, .msc3930oneToOnePollEnd:
             switch index {
             case .off: return .dontNotify
             case .silent: return .notify
@@ -54,7 +54,7 @@ extension NotificationPushRuleId {
             case .silent: return .notify
             case .noisy: return .notifyDefaultSound
             }
-        case .allOtherMessages:
+        case .allOtherMessages, .pollStart, .msc3930pollStart, .pollEnd, .msc3930pollEnd:
             switch index {
             case .off: return .dontNotify
             case .silent: return .notify

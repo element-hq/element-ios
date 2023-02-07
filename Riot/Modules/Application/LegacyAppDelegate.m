@@ -2219,9 +2219,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Logout all matrix account
     [[MXKAccountManager sharedManager] logoutWithCompletion:^{
         
-        // We reset allChatsOnboardingHasBeenDisplayed flag on logout
-        RiotSettings.shared.allChatsOnboardingHasBeenDisplayed = NO;
-        
         if (completion)
         {
             completion (YES);

@@ -16,8 +16,12 @@
 
 // MARK: View model
 
-enum PollHistoryViewModelResult: Equatable {
-    #warning("e.g. show poll detail")
+enum PollHistoryConstants {
+    static let chunkSizeInDays: UInt = 30
+}
+
+enum PollHistoryViewModelResult {
+    case showPollDetail(poll: TimelinePollDetails)
 }
 
 // MARK: View
@@ -29,6 +33,7 @@ enum PollHistoryMode: CaseIterable {
 
 struct PollHistoryViewBindings {
     var mode: PollHistoryMode
+    var alertInfo: AlertInfo<Bool>?
 }
 
 struct PollHistoryViewState: BindableState {
@@ -37,10 +42,16 @@ struct PollHistoryViewState: BindableState {
     }
     
     var bindings: PollHistoryViewBindings
-    var polls: [PollListData] = []
+    var isLoading = false
+    var canLoadMoreContent = true
+    var polls: [TimelinePollDetails]?
+    var syncStartDate: Date = .init()
+    var syncedUpTo: Date = .distantFuture
 }
 
 enum PollHistoryViewAction {
     case viewAppeared
     case segmentDidChange
+    case showPollDetail(poll: TimelinePollDetails)
+    case loadMoreContent
 }

@@ -33,6 +33,7 @@ targets:
 
     dependencies:
     - package: DeviceKit
+    - package: DTCoreText
 
     configFiles:
       Debug: Debug.xcconfig

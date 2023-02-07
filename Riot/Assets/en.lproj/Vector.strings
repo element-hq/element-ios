@@ -759,6 +759,7 @@ Tap the + to start adding people.";
 "settings_your_keywords" = "Your Keywords";
 "settings_new_keyword" = "Add new Keyword";
 "settings_mentions_and_keywords_encryption_notice" = "You won’t get notifications for mentions & keywords in encrypted rooms on mobile.";
+"settings_push_rules_error" = "An error occurred when updating your notification preferences. Please try to toggle your option again.";
 
 "settings_enable_callkit" = "Integrated calling";
 "settings_callkit_info" = "Receive incoming calls on your lock screen. See your %@ calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
@@ -2000,6 +2001,7 @@ Tap the + to start adding people.";
 "home_context_menu_normal_priority" = "Normal priority";
 "home_context_menu_leave" = "Leave";
 "home_context_menu_mark_as_read" = "Mark as read";
+"home_context_menu_mark_as_unread" = "Mark as unread";
 "home_syncing" = "Syncing";
 
 // MARK: - Favourites
@@ -2226,6 +2228,7 @@ Tap the + to start adding people.";
 "voice_broadcast_connection_error_title" = "Connection error";
 "voice_broadcast_connection_error_message" = "Unfortunately we’re unable to start a recording right now. Please try again later.";
 "voice_broadcast_recorder_connection_error" = "Connection error - Recording paused";
+"voice_broadcast_playback_unable_to_decrypt" = "Unable to decrypt this voice broadcast.";
 
 // MARK: - Version check
 
@@ -2278,15 +2281,6 @@ Tap the + to start adding people.";
 "all_chats_edit_menu_leave_space" = "Leave %@";
 "all_chats_edit_menu_space_settings" = "Space settings";
 
-"all_chats_onboarding_page_title1" = "Welcome to a new view!";
-"all_chats_onboarding_page_message1" = "To simplify your Element, tabs are now optional. Manage them using the top-right menu.";
-"all_chats_onboarding_page_title2" = "Access Spaces";
-"all_chats_onboarding_page_message2" = "Access your Spaces (bottom-left) faster and easier than ever before.";
-"all_chats_onboarding_page_title3" = "Give Feedback";
-"all_chats_onboarding_page_message3" = "Tap your profile to let us know what you think.";
-"all_chats_onboarding_title" = "What's new";
-"all_chats_onboarding_try_it" = "Try it out";
-
 // MARK: - Room invites
 
 "room_invites_empty_view_title" = "Nothing new.";
@@ -2305,10 +2299,16 @@ Tap the + to start adding people.";
 // MARK: - Polls history
 
 "poll_history_title" = "Poll history";
+"poll_history_loading_text" = "Displaying polls";
 "poll_history_active_segment_title" = "Active polls";
 "poll_history_past_segment_title" = "Past polls";
 "poll_history_no_active_poll_text" = "There are no active polls in this room";
 "poll_history_no_past_poll_text" = "There are no past polls in this room";
+"poll_history_no_active_poll_period_text" = "There are no active polls for the past %@ days. Load more polls to view polls for previous months";
+"poll_history_no_past_poll_period_text" = "There are no past polls for the past %@ days. Load more polls to view polls for previous months";
+"poll_history_detail_view_in_timeline" = "View poll in timeline";
+"poll_history_load_more" = "Load more polls";
+"poll_history_fetching_error" = "Error fetching polls.";
 
 // MARK: - Polls
 
@@ -2584,8 +2584,8 @@ To enable access, tap Settings> Location and select Always";
 "wysiwyg_composer_format_action_ordered_list" = "Toggle numbered list";
 "wysiwyg_composer_format_action_code_block" = "Toggle code block";
 "wysiwyg_composer_format_action_quote" = "Toggle quote";
-
-
+"wysiwyg_composer_format_action_indent" = "Increase indentation";
+"wysiwyg_composer_format_action_un_indent" = "Decrease indentation";
 
 // Links
 "wysiwyg_composer_link_action_text" = "Text";

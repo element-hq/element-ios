@@ -49,7 +49,9 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         
         // Observe when the rules are updated, to subsequently update the state of the settings.
         notificationSettingsService.rulesPublisher
-            .sink(receiveValue: rulesUpdated(newRules:))
+            .sink { [weak self] newRules in
+                self?.rulesUpdated(newRules: newRules)
+            }
             .store(in: &cancellables)
         
         // Only observe keywords if the current settings view displays it.
@@ -88,7 +90,9 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
             // Keyword rules were updates, check if we need to update the setting.
             keywordsRules
                 .map { $0.contains { $0.enabled } }
-                .sink(receiveValue: keywordRuleUpdated(anyEnabled:))
+                .sink { [weak self] in
+                    self?.keywordRuleUpdated(anyEnabled: $0)
+                }
                 .store(in: &cancellables)
             
             // Update the viewState with the final keywords to be displayed.
@@ -105,35 +109,27 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     
     // MARK: - Public
     
-    func update(ruleID: NotificationPushRuleId, isChecked: Bool) {
+    @MainActor
+    func update(ruleID: NotificationPushRuleId, isChecked: Bool) async {
         let index = NotificationIndex.index(when: isChecked)
-        if ruleID == .keywords {
-            // Keywords is handled differently to other settings
-            updateKeywords(isChecked: isChecked)
-            return
-        }
-        // Get the static definition and update the actions and enabled state.
-        guard let standardActions = ruleID.standardActions(for: index) else { return }
+        let standardActions = ruleID.standardActions(for: index)
         let enabled = standardActions != .disabled
-        notificationSettingsService.updatePushRuleActions(
-            for: ruleID.rawValue,
-            enabled: enabled,
-            actions: standardActions.actions
-        )
-    }
-    
-    private func updateKeywords(isChecked: Bool) {
-        guard !keywordsOrdered.isEmpty else {
-            viewState.selectionState[.keywords]?.toggle()
-            return
-        }
-        // Get the static definition and update the actions and enabled state for every keyword.
-        let index = NotificationIndex.index(when: isChecked)
-        guard let standardActions = NotificationPushRuleId.keywords.standardActions(for: index) else { return }
-        let enabled = standardActions != .disabled
-        keywordsOrdered.forEach { keyword in
-            notificationSettingsService.updatePushRuleActions(
-                for: keyword,
+        
+        switch ruleID {
+        case .keywords: // Keywords is handled differently to other settings
+            await updateKeywords(isChecked: isChecked)
+
+        case .oneToOneRoom, .allOtherMessages:
+            await updatePushAction(
+                id: ruleID,
+                enabled: enabled,
+                standardActions: standardActions,
+                then: ruleID.syncedRules
+            )
+
+        default:
+            try? await notificationSettingsService.updatePushRuleActions(
+                for: ruleID.rawValue,
                 enabled: enabled,
                 actions: standardActions.actions
             )
@@ -152,17 +148,94 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         notificationSettingsService.remove(keyword: keyword)
     }
     
-    // MARK: - Private
+    func isRuleOutOfSync(_ ruleId: NotificationPushRuleId) -> Bool {
+        viewState.outOfSyncRules.contains(ruleId) && viewState.saving == false
+    }
+}
 
-    private func rulesUpdated(newRules: [NotificationPushRuleType]) {
-        for rule in newRules {
-            guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
-                  ruleIds.contains(ruleId) else { continue }
-            viewState.selectionState[ruleId] = isChecked(rule: rule)
+// MARK: - Private
+
+private extension NotificationSettingsViewModel {
+    @MainActor
+    func updateKeywords(isChecked: Bool) async {
+        guard !keywordsOrdered.isEmpty else {
+            viewState.selectionState[.keywords]?.toggle()
+            return
+        }
+        
+        // Get the static definition and update the actions and enabled state for every keyword.
+        let index = NotificationIndex.index(when: isChecked)
+        let standardActions = NotificationPushRuleId.keywords.standardActions(for: index)
+        let enabled = standardActions != .disabled
+        let keywordsToUpdate = keywordsOrdered
+        
+        await withThrowingTaskGroup(of: Void.self) { group in
+            for keyword in keywordsToUpdate {
+                group.addTask {
+                    try await self.notificationSettingsService.updatePushRuleActions(
+                        for: keyword,
+                        enabled: enabled,
+                        actions: standardActions.actions
+                    )
+                }
+            }
+        }
+    }
+
+    func updatePushAction(id: NotificationPushRuleId,
+                          enabled: Bool,
+                          standardActions: NotificationStandardActions,
+                          then rules: [NotificationPushRuleId]) async {
+        await MainActor.run {
+            viewState.saving = true
+        }
+        
+        do {
+            // update the 'parent rule' first
+            try await notificationSettingsService.updatePushRuleActions(for: id.rawValue, enabled: enabled, actions: standardActions.actions)
+            
+            // synchronize all the 'children rules' with the parent rule
+            await withThrowingTaskGroup(of: Void.self) { group in
+                for ruleId in rules {
+                    group.addTask {
+                        try await self.notificationSettingsService.updatePushRuleActions(for: ruleId.rawValue, enabled: enabled, actions: standardActions.actions)
+                    }
+                }
+            }
+            await completeUpdate()
+        } catch {
+            await completeUpdate()
         }
     }
     
-    private func keywordRuleUpdated(anyEnabled: Bool) {
+    @MainActor
+    func completeUpdate() {
+        viewState.saving = false
+    }
+    
+    func rulesUpdated(newRules: [NotificationPushRuleType]) {
+        var outOfSyncRules: Set<NotificationPushRuleId> = .init()
+        
+        for rule in newRules {
+            guard
+                let ruleId = rule.pushRuleId,
+                ruleIds.contains(ruleId)
+            else {
+                continue
+            }
+
+            let relatedSyncedRules = ruleId.syncedRules(in: newRules)
+            viewState.selectionState[ruleId] = isChecked(rule: rule, syncedRules: relatedSyncedRules)
+            
+            if isOutOfSync(rule: rule, syncedRules: relatedSyncedRules) {
+                outOfSyncRules.insert(ruleId)
+            }
+        }
+        
+        viewState.outOfSyncRules = outOfSyncRules
+    }
+    
+    func keywordRuleUpdated(anyEnabled: Bool) {
         if !keywordsOrdered.isEmpty {
             viewState.selectionState[.keywords] = anyEnabled
         }
@@ -174,8 +247,10 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     /// The same logic is used on android.
     /// - Parameter rule: The push rule type to check.
     /// - Returns: Wether it should be displayed as checked or not checked.
-    private func isChecked(rule: NotificationPushRuleType) -> Bool {
-        guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else { return false }
+    func defaultIsChecked(rule: NotificationPushRuleType) -> Bool {
+        guard let ruleId = rule.pushRuleId else {
+            return false
+        }
         
         let firstIndex = NotificationIndex.allCases.first { nextIndex in
             rule.matches(standardActions: ruleId.standardActions(for: nextIndex))
@@ -186,5 +261,46 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         }
         
         return index.enabled
+    }
+    
+    func isChecked(rule: NotificationPushRuleType, syncedRules: [NotificationPushRuleType]) -> Bool {
+        guard let ruleId = rule.pushRuleId else {
+            return false
+        }
+        
+        switch ruleId {
+        case .oneToOneRoom, .allOtherMessages:
+            let ruleIsChecked = defaultIsChecked(rule: rule)
+            let someSyncedRuleIsChecked = syncedRules.contains(where: { defaultIsChecked(rule: $0) })
+            // The "loudest" rule will be applied when there is a clash between a rule and its dependent rules.
+            return ruleIsChecked || someSyncedRuleIsChecked
+        default:
+            return defaultIsChecked(rule: rule)
+        }
+    }
+    
+    func isOutOfSync(rule: NotificationPushRuleType, syncedRules: [NotificationPushRuleType]) -> Bool {
+        guard let ruleId = rule.pushRuleId else {
+            return false
+        }
+        
+        switch ruleId {
+        case .oneToOneRoom, .allOtherMessages:
+            let ruleIsChecked = defaultIsChecked(rule: rule)
+            return syncedRules.contains(where: { defaultIsChecked(rule: $0) != ruleIsChecked })
+        default:
+            return false
+        }
+    }
+}
+
+extension NotificationPushRuleId {
+    func syncedRules(in rules: [NotificationPushRuleType]) -> [NotificationPushRuleType] {
+        rules.filter {
+            guard let ruleId = $0.pushRuleId else {
+                return false
+            }
+            return syncedRules.contains(ruleId)
+        }
     }
 }

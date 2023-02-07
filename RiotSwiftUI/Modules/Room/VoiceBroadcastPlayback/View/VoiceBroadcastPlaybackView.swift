@@ -91,7 +91,7 @@ struct VoiceBroadcastPlaybackView: View {
                         }
                     }
                 }.frame(maxWidth: .infinity, alignment: .leading)
-                
+                                
                 if viewModel.viewState.broadcastState != .stopped {
                     Label {
                         Text(VectorL10n.voiceBroadcastLive)
@@ -109,7 +109,12 @@ struct VoiceBroadcastPlaybackView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(EdgeInsets(top: 0.0, leading: 0.0, bottom: 4.0, trailing: 0.0))
             
-            if viewModel.viewState.playbackState == .error {
+            if viewModel.viewState.decryptionState.errorCount > 0 {
+                VoiceBroadcastPlaybackDecryptionErrorView()
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("decryptionErrorView")
+            }
+            else if viewModel.viewState.showPlaybackError {
                 VoiceBroadcastPlaybackErrorView()
             } else {
                 HStack (spacing: 34.0) {
@@ -156,8 +161,8 @@ struct VoiceBroadcastPlaybackView: View {
             }
             
             VoiceBroadcastSlider(value: $viewModel.progress,
-                       minValue: 0.0,
-                       maxValue: viewModel.viewState.playingState.duration) { didChange in
+                                 minValue: 0.0,
+                                 maxValue: viewModel.viewState.playingState.duration) { didChange in
                 viewModel.send(viewAction: .sliderChange(didChange: didChange))
             }
             

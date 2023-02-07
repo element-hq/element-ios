@@ -2445,14 +2445,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Niente di nuovo.";
-"all_chats_onboarding_try_it" = "Provalo";
-"all_chats_onboarding_title" = "Novità";
-"all_chats_onboarding_page_message3" = "Tocca il tuo profilo per farci sapere cosa ne pensi.";
-"all_chats_onboarding_page_title3" = "Invia un feedback";
-"all_chats_onboarding_page_message2" = "Accedi ai tuoi spazi (in basso a sinistra) più velocemente e più facilmente che mai.";
-"all_chats_onboarding_page_title2" = "Accedi agli spazi";
-"all_chats_onboarding_page_message1" = "Per semplificare Element, le schede ora sono opzionali. Gestiscile usando il menu in alto a destra.";
-"all_chats_onboarding_page_title1" = "Benvenuti ad una nuova panoramica!";
 "all_chats_nothing_found_placeholder_message" = "Prova a cambiare la tua ricerca.";
 "all_chats_nothing_found_placeholder_title" = "Non è stato trovato niente.";
 "all_chats_empty_unreads_placeholder_message" = "Qui è dove verranno mostrati i messaggi non letti, quando ne avrai qualcuno.";
@@ -2690,3 +2682,22 @@
 "voice_broadcast_recorder_connection_error" = "Errore di connessione - Registrazione in pausa";
 "voice_broadcast_connection_error_message" = "Sfortunatamente non riusciamo ad iniziare una registrazione al momento. Riprova più tardi.";
 "voice_broadcast_connection_error_title" = "Errore di connessione";
+"poll_history_load_more" = "Carica più sondaggi";
+"poll_history_no_past_poll_period_text" = "Non ci sono sondaggi passati negli ultimi %@ giorni. Carica più sondaggi per vedere quelli dei mesi precedenti";
+"poll_history_no_active_poll_period_text" = "Non ci sono sondaggi attivi negli ultimi %@ giorni. Carica più sondaggi per vedere quelli dei mesi precedenti";
+"poll_history_loading_text" = "Visualizzazione sondaggi";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Migrazione dati\n%@ %%";
+"settings_labs_disable_crypto_sdk" = "Crittografia end-to-end Rust (disconnettiti per disattivarla)";
+"settings_labs_confirm_crypto_sdk" = "Si noti che questa funzione, essendo ancora in fase sperimentale, potrebbe non funzionare come previsto e potrebbe avere conseguenze indesiderate. Per disattivare la funzione, è sufficiente disconnettersi e riaccedere. Utilizzare a propria discrezione e con cautela.";
+"settings_labs_enable_crypto_sdk" = "Crittografia end-to-end Rust";
+"wysiwyg_composer_format_action_un_indent" = "Diminuisci indentazione";
+"wysiwyg_composer_format_action_indent" = "Aumenta indentazione";
+"poll_history_fetching_error" = "Errore di recupero dei sondaggi.";
+"voice_broadcast_playback_unable_to_decrypt" = "Impossibile decifrare questa trasmissione vocale.";
+"home_context_menu_mark_as_unread" = "Segna come non letto";
+"key_backup_recover_from_private_key_progress" = "%@%% Completato";
+"poll_history_detail_view_in_timeline" = "Vedi sondaggio nella linea temporale";
+"settings_push_rules_error" = "Si è verificato un errore aggiornando le tue preferenze di notifica. Prova ad attivare/disattivare di nuovo l'opzione.";

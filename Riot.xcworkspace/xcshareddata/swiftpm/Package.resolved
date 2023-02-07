@@ -10,6 +10,24 @@
       }
     },
     {
+      "identity" : "dtcoretext",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Cocoanetics/DTCoreText",
+      "state" : {
+        "revision" : "9d2d4d2296e5d2d852a7d3c592b817d913a5d020",
+        "version" : "1.6.27"
+      }
+    },
+    {
+      "identity" : "dtfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Cocoanetics/DTFoundation.git",
+      "state" : {
+        "revision" : "76062513434421cb6c8a1ae1d4f8368a7ebc2da3",
+        "version" : "1.7.18"
+      }
+    },
+    {
       "identity" : "maplibre-gl-native-distribution",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/maplibre/maplibre-gl-native-distribution",
@@ -23,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/matrix-org/matrix-wysiwyg-composer-swift",
       "state" : {
-        "revision" : "6927cb878376136c4a03d919b689af8dfbdad080",
-        "version" : "0.19.0"
+        "revision" : "3f72aeab7d7e04b52ff3f735ab79a75993f97ef2",
+        "version" : "0.22.0"
       }
     },
     {

@@ -2672,14 +2672,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Belum ada yang baru.";
-"all_chats_onboarding_try_it" = "Coba";
-"all_chats_onboarding_title" = "Apa yang baru";
-"all_chats_onboarding_page_message3" = "Ketuk profil Anda untuk memberi tahu kami bagaimana menurut Anda.";
-"all_chats_onboarding_page_title3" = "Berikan Masukan";
-"all_chats_onboarding_page_message2" = "Akses Space Anda (di kiri bawah) dengan lebih cepat dan lebih mudah dari sebelumnya.";
-"all_chats_onboarding_page_title2" = "Akses Space";
-"all_chats_onboarding_page_message1" = "Untuk membuat Element Anda lebih sederhana, fitur tab sekarang opsional. Kelola menggunakan menu kanan atas.";
-"all_chats_onboarding_page_title1" = "Selamat datang di tampilan yang baru!";
 "all_chats_nothing_found_placeholder_message" = "Coba atur pencarian Anda.";
 "all_chats_nothing_found_placeholder_title" = "Tidak ada yang ditemukan.";
 "all_chats_empty_unreads_placeholder_message" = "Ini di mana pesan Anda yang belum dibaca akan ditampilkan, ketika Anda menerimanya.";
@@ -2921,6 +2913,18 @@
 // MARK: - Launch loading
 
 "launch_loading_migrating_data" = "Memigrasikan data\n%@ %%";
-"settings_labs_disable_crypto_sdk" = "SDK Kripto diaktifkan. Untuk menonaktifkan, mohon memasang ulang aplikasi";
-"settings_labs_confirm_crypto_sdk" = "Tindakan ini tidak dapat diurungkan";
-"settings_labs_enable_crypto_sdk" = "Aktifkan SDK Kripto baru berbasis Rust";
+"settings_labs_disable_crypto_sdk" = "Enkripsi ujung ke ujung Rust (keluar dari akun untuk menonaktifkan)";
+"settings_labs_confirm_crypto_sdk" = "Ketahui bahwa fitur ini masih dalam masa eksperimental, ini mungkin tidak berfungsi seperti yang diharapkan dan dapat memiliki konsekuensi yang tidak terduga. Untuk mengembalikan fitur, cukup keluar dari akun dan masuk kembali ke akun. Gunakan dengan pengetahuan dan risiko Anda.";
+"settings_labs_enable_crypto_sdk" = "Enkripsi ujung ke ujung Rust";
+"poll_history_load_more" = "Muat lebih banyak pemungutan suara";
+"poll_history_no_active_poll_period_text" = "Tidak ada pemungutan suara terakhir untuk %@ hari sebelumnya. Muat lebih banyak pemungutan suara untuk bulan sebelumnya";
+"poll_history_no_past_poll_period_text" = "Tidak ada pemungutan suara untuk %@ hari sebelumnya. Muat lebih banyak pemungutan suara untuk melihat pemungutan suara untuk bulan sebelumnya";
+"poll_history_loading_text" = "Menampilkan pemungutan suara";
+"poll_history_fetching_error" = "Terjadi kesalahan mendapatkan pemungutan suara.";
+"key_backup_recover_from_private_key_progress" = "%@%% Selesai";
+"voice_broadcast_playback_unable_to_decrypt" = "Tidak dapat mendekripsi siaran suara ini.";
+"home_context_menu_mark_as_unread" = "Tandai sebagai belum dibaca";
+"wysiwyg_composer_format_action_un_indent" = "Kurangi indentasi";
+"wysiwyg_composer_format_action_indent" = "Tambahkan indentasi";
+"poll_history_detail_view_in_timeline" = "Tampilkan pemungutan suara dalam lini masa";
+"settings_push_rules_error" = "Sebuah kesalahan terjadi ketika memperbarui preferensi notifikasi Anda. Silakan alih ulang opsi Anda.";

@@ -199,7 +199,7 @@ final class RoomInfoListViewController: UIViewController {
         }
         rows.append(rowMembers)
         
-        if BuildSettings.pollsHistoryEnabled {
+        if BuildSettings.pollsEnabled {
             rows.append(rowPollHistory)
         }
         

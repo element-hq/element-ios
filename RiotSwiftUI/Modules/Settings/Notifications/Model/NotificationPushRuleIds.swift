@@ -30,6 +30,18 @@ enum NotificationPushRuleId: String {
     case allOtherMessages = ".m.rule.message"
     case encrypted = ".m.rule.encrypted"
     case keywords = "_keywords"
+    // poll started event
+    case pollStart = ".m.rule.poll_start"
+    case msc3930pollStart = ".org.matrix.msc3930.rule.poll_start"
+    // poll started event (one to one)
+    case oneToOnePollStart = ".m.rule.poll_start_one_to_one"
+    case msc3930oneToOnePollStart = ".org.matrix.msc3930.rule.poll_start_one_to_one"
+    // poll ended event
+    case pollEnd = ".m.rule.poll_end"
+    case msc3930pollEnd = ".org.matrix.msc3930.rule.poll_end"
+    // poll ended event (one to one)
+    case oneToOnePollEnd = ".m.rule.poll_end_one_to_one"
+    case msc3930oneToOnePollEnd = ".org.matrix.msc3930.rule.poll_end_one_to_one"
 }
 
 extension NotificationPushRuleId: Identifiable {
@@ -65,6 +77,20 @@ extension NotificationPushRuleId {
             return VectorL10n.settingsEncryptedGroupMessages
         case .keywords:
             return VectorL10n.settingsMessagesContainingKeywords
+        case .pollStart, .msc3930pollStart, .oneToOnePollStart, .msc3930oneToOnePollStart, .pollEnd, .msc3930pollEnd, .oneToOnePollEnd, .msc3930oneToOnePollEnd:
+            // They don't need to be rendered on the UI
+            return ""
+        }
+    }
+    
+    var syncedRules: [NotificationPushRuleId] {
+        switch self {
+        case .oneToOneRoom:
+            return [.oneToOnePollStart, .msc3930oneToOnePollStart, .oneToOnePollEnd, .msc3930oneToOnePollEnd]
+        case .allOtherMessages:
+            return [.pollStart, .msc3930pollStart, .pollEnd, .msc3930pollEnd]
+        default:
+            return []
         }
     }
 }

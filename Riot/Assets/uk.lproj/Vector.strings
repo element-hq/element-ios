@@ -2670,14 +2670,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Нічого нового.";
-"all_chats_onboarding_try_it" = "Спробувати";
-"all_chats_onboarding_title" = "Що нового";
-"all_chats_onboarding_page_message3" = "Торкніться свого профілю, щоб розповісти нам свою думку.";
-"all_chats_onboarding_page_title3" = "Напишіть відгук";
-"all_chats_onboarding_page_message2" = "Отримуйте доступ до своїх просторів (унизу ліворуч) швидше та легше, ніж раніше.";
-"all_chats_onboarding_page_title2" = "Доступ до просторів";
-"all_chats_onboarding_page_message1" = "Щоб спростити ваш Element, вкладки тепер необов’язкові. Керуйте ними у верхньому правому меню.";
-"all_chats_onboarding_page_title1" = "Вітаємо в новому вигляді!";
 "all_chats_nothing_found_placeholder_message" = "Спробуйте налаштувати пошук.";
 "all_chats_nothing_found_placeholder_title" = "Нічого не знайдено.";
 "all_chats_empty_unreads_placeholder_message" = "Тут з'являтимуться ваші непрочитані повідомлення, якщо вони є.";
@@ -2919,6 +2911,18 @@
 // MARK: - Launch loading
 
 "launch_loading_migrating_data" = "Перенесення даних\n%@ %%";
-"settings_labs_disable_crypto_sdk" = "Crypto SDK увімкнено. Щоб вимкнути, перевстановіть застосунок";
-"settings_labs_confirm_crypto_sdk" = "Дію не можна скасувати";
-"settings_labs_enable_crypto_sdk" = "Увімкнути новий заснований на rust Crypto SDK";
+"settings_labs_disable_crypto_sdk" = "Наскрізне шифрування Rust (вийдіть, щоб вимкнути)";
+"settings_labs_confirm_crypto_sdk" = "Зауважте, що оскільки ця функція досі перебуває на стадії експерименту, вона може працювати не так, як очікується, і може мати непередбачувані наслідки. Щоб вимкнути цю функцію, просто вийдіть з системи та увійдіть знову. Використовуйте на власний розсуд і з обережністю.";
+"settings_labs_enable_crypto_sdk" = "Наскрізне шифрування Rust";
+"poll_history_load_more" = "Завантажити більше опитувань";
+"poll_history_no_past_poll_period_text" = "За останні %@ днів немає активних опитувань. Завантажте більше опитувань, щоб переглянути опитування за попередні місяці";
+"poll_history_no_active_poll_period_text" = "За останні %@ днів немає активних опитувань. Завантажте більше опитувань, щоб переглянути опитування за попередні місяці";
+"poll_history_loading_text" = "Показ опитувань";
+"poll_history_fetching_error" = "Помилка отримання опитувань.";
+"key_backup_recover_from_private_key_progress" = "%@%% виконано";
+"voice_broadcast_playback_unable_to_decrypt" = "Неможливо розшифрувати цю голосову трансляцію.";
+"home_context_menu_mark_as_unread" = "Позначити непрочитаним";
+"wysiwyg_composer_format_action_un_indent" = "Зменшити відступ";
+"wysiwyg_composer_format_action_indent" = "Збільшити відступ";
+"settings_push_rules_error" = "Сталася помилка під час оновлення налаштувань сповіщень. Спробуйте змінити налаштування ще раз.";
+"poll_history_detail_view_in_timeline" = "Переглянути опитування у стрічці";

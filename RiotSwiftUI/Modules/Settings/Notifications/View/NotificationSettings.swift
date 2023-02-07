@@ -21,6 +21,7 @@ import SwiftUI
 /// Also renders an optional bottom section.
 /// Used in the case of keywords, for the keyword chips and input.
 struct NotificationSettings<BottomSection: View>: View {
+    @Environment(\.theme) var theme: ThemeSwiftUI
     @ObservedObject var viewModel: NotificationSettingsViewModel
     
     var bottomSection: BottomSection?
@@ -31,15 +32,28 @@ struct NotificationSettings<BottomSection: View>: View {
                 header: FormSectionHeader(text: VectorL10n.settingsNotifyMeFor)
             ) {
                 ForEach(viewModel.viewState.ruleIds) { ruleId in
-                    let checked = viewModel.viewState.selectionState[ruleId] ?? false
-                    FormPickerItem(title: ruleId.title, selected: checked) {
-                        viewModel.update(ruleID: ruleId, isChecked: !checked)
+                    VStack(alignment: .leading, spacing: 4) {
+                        let checked = viewModel.viewState.selectionState[ruleId] ?? false
+                        FormPickerItem(title: ruleId.title, selected: checked) {
+                            Task {
+                                await viewModel.update(ruleID: ruleId, isChecked: !checked)
+                            }
+                        }
+                        
+                        if viewModel.isRuleOutOfSync(ruleId) {
+                            Text(VectorL10n.settingsPushRulesError)
+                                .font(theme.fonts.caption1)
+                                .foregroundColor(theme.colors.alert)
+                                .padding(.horizontal)
+                                .padding(.bottom, 16)
+                        }
                     }
                 }
             }
             bottomSection
         }
         .activityIndicator(show: viewModel.viewState.saving)
+        .disabled(viewModel.viewState.saving)
     }
 }
 

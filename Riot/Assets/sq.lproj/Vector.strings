@@ -2417,7 +2417,6 @@
 
 // MARK: Authentication
 "authentication_registration_title" = "Krijoni llogarinë tuaj";
-"all_chats_onboarding_page_message3" = "Prekni profilin tuaj që të na bëni të ditur se ç’mendoni.";
 "all_chats_edit_layout_add_section_message" = "Fiksoni ndarje te kreu, për hyrje të lehtë në ta";
 "room_event_encryption_info_key_authenticity_not_guaranteed" = "S’mund të garantohet mirëfilltësia e këtij mesazhi të fshehtëzuar në këtë pajisje.";
 "deselect_all" = "Shpërzgjidhi Krejt";
@@ -2534,13 +2533,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "S’ka gjë të re.";
-"all_chats_onboarding_try_it" = "Provojeni";
-"all_chats_onboarding_title" = "Ç’ka të re";
-"all_chats_onboarding_page_title3" = "Jepni Përshtypje";
-"all_chats_onboarding_page_message2" = "Hyni në Hapësirat tuaja (poshtë djathtas) më shpejt dhe më kollaj se kurrë më parë.";
-"all_chats_onboarding_page_title2" = "Hyni Në Hapësira";
-"all_chats_onboarding_page_message1" = "Që të thjeshtohet Element-i juaj, skedat tanimë janë opsionale. Administrojini duke përdorur menunë djathtas në krye.";
-"all_chats_onboarding_page_title1" = "Mirë se vini te një pamje e re!";
 "all_chats_edit_menu_space_settings" = "Rregullime hapësire";
 "all_chats_edit_menu_leave_space" = "Braktise %@";
 "all_chats_user_menu_settings" = "Rregullime përdoruesi";
@@ -2687,3 +2679,35 @@
 "voice_broadcast_voip_cannot_start_title" = "S’niset dot një thirrje";
 "voice_message_broadcast_in_progress_message" = "S’mund të niset mesazh zanor, ngaqë aktualisht po regjistroni një transmetim të drejtpërdrejtë. Ju lutemi, përfundoni transmetimin e drejtpërdrejtë, që të mund të nisni regjistrimin e një mesazhi zanor";
 "voice_message_broadcast_in_progress_title" = "S’niset dot mesazh zanor";
+"wysiwyg_composer_format_action_quote" = "Shfaq/fshih citim";
+"wysiwyg_composer_format_action_code_block" = "Shfaq/fshih bllok kodi";
+"wysiwyg_composer_format_action_ordered_list" = "Shfaq/fshih listë të numërtuar";
+"wysiwyg_composer_format_action_unordered_list" = "Shfaq/fshih listë me toptha";
+"poll_timeline_reply_ended_poll" = "Pyetësor i përfunduar";
+"poll_history_fetching_error" = "Gabim në sjelle pyetësorë.";
+"poll_history_load_more" = "Ngarko më tepër pyetësorë";
+"poll_history_no_past_poll_period_text" = "S’ka pyetësorë të kaluar për %@ ditët e shkuara. Që të shihni pyetësorë nga muajt e kaluar, ngarkoni më tepër pyetësorë";
+"poll_history_no_active_poll_period_text" = "S’ka pyetësorë aktivë për %@ ditët e shkuara. Që të shihni pyetësorë nga muajt e kaluar, ngarkoni më tepër pyetësorë";
+"poll_history_loading_text" = "Shfaqje pyetësorësh";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Historik pyetësorësh";
+"voice_broadcast_playback_unable_to_decrypt" = "S’arrihet të shfshehtëzohet ky transmetim zanor.";
+"voice_broadcast_recorder_connection_error" = "Gabim lidhjeje - Incizimi u ndal";
+"voice_broadcast_connection_error_message" = "Mjerisht, s’jemi në gjendje të nisim një incizim mu tani. Ju lutemi, riprovoni më vonë.";
+"voice_broadcast_connection_error_title" = "Gabim lidhjeje";
+"home_context_menu_mark_as_unread" = "Vëri shenjë si i palexuar";
+
+// MARK: - Launch loading
+
+"launch_loading_migrating_data" = "Po migrohen të dhëna\n%@ %%";
+"key_backup_recover_from_private_key_progress" = "Plotësuar %@%%";
+"room_details_polls" = "Historik pyetësorësh";
+"settings_labs_disable_crypto_sdk" = "Fshehtëzim skaj-më-skaj bazuar në Rust (që ta çaktivizoni, dilni)";
+"settings_labs_confirm_crypto_sdk" = "Ju lutemi, kini parasysh se kjo veçori është ende në fazë eksperimentale, mund të mos funksionojë siç pritet dhe mundet, në potencial, të ketë pasojë të paparashikuara. Që ta prapaktheni këtë veçori, thjesht dilni nga llogaria dhe rihyni. Përdoreni me përgjegjësinë tuaj dhe me kujdes.";
+"settings_labs_enable_crypto_sdk" = "Fshehtëzim skaj-më-skaj bazuar në Rust";
+"settings_push_rules_error" = "Ndodhi një gabim, kur përditësoheshin parapëlqimet tuaja për njoftime. JU lutemi, provoni të aktivizoni mundësi tuaj sërish.";
+"wysiwyg_composer_format_action_un_indent" = "Zvogëlo shmangie kryeradhë";
+"wysiwyg_composer_format_action_indent" = "Rrit shmangie kryeradhe";
+"poll_history_detail_view_in_timeline" = "Shiheni pyetësorin në rrjedhë kohore";

@@ -1473,7 +1473,7 @@
 
 // Mark: - Polls
 
-"poll_edit_form_create_poll" = "Koosta üks küsitlus";
+"poll_edit_form_create_poll" = "Loo selline küsitlus";
 "settings_discovery_accept_terms" = "Nõustu isikutuvastusserveri tingimustega";
 "poll_timeline_not_closed_action" = "Sobib";
 "poll_timeline_not_closed_subtitle" = "Palun proovi uuesti";
@@ -1548,9 +1548,9 @@
 // Onboarding
 "onboarding_splash_register_button_title" = "Loo kasutajakonto";
 "poll_edit_form_poll_type_closed_description" = "Tulemusi kuvame vaid siis, kui küsitlus on lõppenud";
-"poll_edit_form_poll_type_closed" = "Küsitlus on lõppenud";
+"poll_edit_form_poll_type_closed" = "Suletud valikutega küsitlus";
 "poll_edit_form_poll_type_open_description" = "Osalejad näevad tulemusi peale oma valiku salvestamist";
-"poll_edit_form_poll_type_open" = "Ava küsitlus";
+"poll_edit_form_poll_type_open" = "Avatud valikutega küsitlus";
 "poll_edit_form_update_failure_subtitle" = "Palun proovi uuesti";
 "poll_edit_form_update_failure_title" = "Küsitluse muutmine ei õnnestunud";
 "poll_edit_form_poll_type" = "Küsitluse tüüp";
@@ -2417,14 +2417,6 @@
 // Mark: - Room invites
 
 "room_invites_empty_view_title" = "Uut teavet ei leidu.";
-"all_chats_onboarding_try_it" = "Proovi nüüd";
-"all_chats_onboarding_title" = "Mida on meil uut";
-"all_chats_onboarding_page_message3" = "Kui soovid meile teada anda oma arvamustest, siis klõpsi oma profiili ikooni.";
-"all_chats_onboarding_page_title3" = "Jaga tagasisidet";
-"all_chats_onboarding_page_message2" = "Kogukonnad leiad alt vasakult kiiremini ja lihtsamini, kui varem.";
-"all_chats_onboarding_page_title2" = "Ligipääs kogukondadele";
-"all_chats_onboarding_page_message1" = "Et Element'i kasutamine oleks lihtsam, siis kaardid on nüüd valikulised. Neid saad hallata ülal paremal avanevast menüüst.";
-"all_chats_onboarding_page_title1" = "Meie liidesel on nüüd uus vaade!";
 "all_chats_nothing_found_placeholder_message" = "Proovi muuta oma otsingut.";
 "all_chats_nothing_found_placeholder_title" = "Mitte midagi ei leidu.";
 "all_chats_empty_unreads_placeholder_message" = "Kui sul on lugemata sõnumeid, siis nad on siit leitavad.";
@@ -2666,6 +2658,18 @@
 // MARK: - Launch loading
 
 "launch_loading_migrating_data" = "Tõstame andmeid ümber\n%@ %%";
-"settings_labs_disable_crypto_sdk" = "Uus Crypto SDK on kasutusel. Tema väljalülitamiseks palun paigalda rakendus uuesti";
-"settings_labs_confirm_crypto_sdk" = "Seda toimingut ei saa tagasi pöörata";
-"settings_labs_enable_crypto_sdk" = "Võta kasutusele uus Rust-keelel põhinev Crypto SDK";
+"settings_labs_disable_crypto_sdk" = "Rust'i-põhine läbiv krüptimine (väljalülitamiseks pead välja logima)";
+"settings_labs_confirm_crypto_sdk" = "Palun arvesta, et see funktsionaalsus on alles katseline ja ei pruugi toimida eesmärgipäraselt. Kui ta juba on kasutusel, siis väljalülitamiseks pead hiljem korraks võrgust välja logima. Jätka ettevaatlikult ja omal äranägemisel.";
+"settings_labs_enable_crypto_sdk" = "Rust'i-põhine läbiv krüptimine";
+"poll_history_load_more" = "Laadi veel küsitlusi";
+"poll_history_no_active_poll_period_text" = "Möödunud %@ päeva jooksul polnud ühtegi toimumas olnud küsitlust. Varasemate kuude vaatamiseks laadi veel küsitlusi";
+"poll_history_no_past_poll_period_text" = "Möödunud %@ päeva jooksul polnud ühtegi lõppenud küsitlust. Varasemate kuude vaatamiseks laadi veel küsitlusi";
+"poll_history_loading_text" = "Küsitluste kuvamise ootel";
+"poll_history_fetching_error" = "Viga küsitluste laadimisel.";
+"key_backup_recover_from_private_key_progress" = "%@%% tehtud";
+"voice_broadcast_playback_unable_to_decrypt" = "Selle ringhäälingukõne dekrüptimine ei õnnestu.";
+"home_context_menu_mark_as_unread" = "Märgi mitteloetuks";
+"wysiwyg_composer_format_action_un_indent" = "Vähenda taandrida";
+"wysiwyg_composer_format_action_indent" = "Suurenda taandrida";
+"settings_push_rules_error" = "Teavituste eelistuste muutmisel tekkis viga. Palun proovi sama valikut uuesti sisse/välja lülitada.";
+"poll_history_detail_view_in_timeline" = "Näita küsitlust ajajoonel";

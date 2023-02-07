@@ -19,5 +19,13 @@ import Foundation
 protocol NotificationPushRuleType {
     var ruleId: String! { get }
     var enabled: Bool { get }
+    var ruleActions: NotificationActions? { get }
+    
     func matches(standardActions: NotificationStandardActions?) -> Bool
+}
+
+extension NotificationPushRuleType {
+    var pushRuleId: NotificationPushRuleId? {
+        ruleId.flatMap(NotificationPushRuleId.init(rawValue:))
+    }
 }

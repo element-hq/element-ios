@@ -16,7 +16,7 @@ use_frameworks!
 # - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '= 0.25.0'
+$matrixSDKVersion = '= 0.25.1'
 # $matrixSDKVersion = :local
 # $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
@@ -53,8 +53,6 @@ end
 
 def import_MatrixKit_pods
   pod 'libPhoneNumber-iOS', '~> 0.9.13'  
-  pod 'DTCoreText', '~> 1.6.25'
-  #pod 'DTCoreText/Extension', '~> 1.6.25'
   pod 'Down', '~> 0.11.0'
 end
 

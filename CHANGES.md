@@ -1,3 +1,31 @@
+## Changes in 1.10.1 (2023-02-07)
+
+✨ Features
+
+- Add mark as unread option for rooms ([#7253](https://github.com/vector-im/element-ios/issues/7253))
+
+🙌 Improvements
+
+- Polls: add logic for fetching poll histories in rooms. ([#7293](https://github.com/vector-im/element-ios/pull/7293))
+- Poll: add a feature to load more polls in the poll history. ([#7303](https://github.com/vector-im/element-ios/pull/7303))
+- CryptoV2: Generate Crypto SDK store key ([#7310](https://github.com/vector-im/element-ios/pull/7310))
+- Poll: added poll detail in poll list hisotry with navigation to timeline ([#7314](https://github.com/vector-im/element-ios/pull/7314))
+- Backup: Display backup import progress ([#7319](https://github.com/vector-im/element-ios/pull/7319))
+- Polls: sync push rules with the one of normal messages. ([#7320](https://github.com/vector-im/element-ios/pull/7320))
+- CryptoV2: Reset Crypto SDK on logout ([#7323](https://github.com/vector-im/element-ios/pull/7323))
+- Polls: add error handling when syncing push rules with the ones of normal messages. ([#7324](https://github.com/vector-im/element-ios/pull/7324))
+- CryptoV2: Refresh notification service on crypto change ([#7332](https://github.com/vector-im/element-ios/pull/7332))
+- CryptoV2: Enable Crypto SDK for production ([#7333](https://github.com/vector-im/element-ios/pull/7333))
+- Polls: add automatic synchronization logic for poll push rules. ([#7335](https://github.com/vector-im/element-ios/pull/7335))
+- Polls: update poll history UI. ([#7341](https://github.com/vector-im/element-ios/pull/7341))
+- Upgrade MatrixSDK version ([v0.25.1](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.25.1)).
+- Hide the presence info if the presence status is unknown. ([#6597](https://github.com/vector-im/element-ios/issues/6597))
+- Inform the user about decryption errors during a voice broadcast. ([#7189](https://github.com/vector-im/element-ios/issues/7189))
+- App Layout: Removed the onboarding flow ([#7298](https://github.com/vector-im/element-ios/issues/7298))
+- Improve error handling during a voice broadcast playback. ([#7311](https://github.com/vector-im/element-ios/issues/7311))
+- Labs: Rich text editor: enable list items indentation ([#7316](https://github.com/vector-im/element-ios/issues/7316))
+
+
 ## Changes in 1.10.0 (2023-02-02)
 
 🙌 Improvements

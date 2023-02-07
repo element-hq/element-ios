@@ -34,7 +34,7 @@ class RoomActionProvider: RoomActionProviderProtocol {
     
     var menu: UIMenu {
         if service.isRoomJoined {
-            var children = service.hasUnread ? [self.markAsReadAction] : []
+            var children = service.hasUnread ? [self.markAsReadAction] : [self.markAsUnreadAction]
             children.append(contentsOf: [
                 self.directChatAction,
                 self.notificationsAction,
@@ -111,6 +111,14 @@ class RoomActionProvider: RoomActionProviderProtocol {
             image: UIImage(systemName: "envelope.open")) { [weak self] action in
                 guard let self = self else { return }
                 self.service.markAsRead()
+        }
+    }
+    private var markAsUnreadAction: UIAction {
+        return UIAction(
+            title: VectorL10n.homeContextMenuMarkAsUnread,
+            image: UIImage(systemName: "envelope.badge")) { [weak self] action in
+                guard let self = self else { return }
+                self.service.markAsUnread()
         }
     }
     
