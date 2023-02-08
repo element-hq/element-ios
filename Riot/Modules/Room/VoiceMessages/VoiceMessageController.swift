@@ -187,7 +187,10 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         audioPlayer?.stop()
         audioRecorder?.stopRecording()
         
-        sendRecordingAtURL(temporaryFileURL)
+        // As we only use a single temporary file, we have to rename it, otherwise it will be deleted once the file is sent and if another recording has been started meanwhile, it will fail.
+        if let finalFileURL = finalizeRecordingAtURL(temporaryFileURL) {
+            sendRecordingAtURL(finalFileURL)
+        }
         
         isInLockedMode = false
         updateUI()
@@ -260,8 +263,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         audioRecorder?.stopRecording()
 
         guard isInLockedMode else {
-            if recordDuration ?? 0 >= Constants.minimumRecordingDuration {
-                sendRecordingAtURL(temporaryFileURL)
+            if recordDuration ?? 0 >= Constants.minimumRecordingDuration, let finalRecordingURL = finalizeRecordingAtURL(temporaryFileURL) {
+                sendRecordingAtURL(finalRecordingURL)
             } else {
                 cancelRecording()
             }
@@ -369,6 +372,23 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
                 }
             }
         }
+    }
+    
+    private func finalizeRecordingAtURL(_ url: URL?) -> URL? {
+        guard let url = url, FileManager.default.fileExists(atPath: url.path) else {
+            return nil
+        }
+
+        // We rename the file to something unique, so that we can start a new recording without having to wait for this record to be sent.
+        let newPath = url.deletingPathExtension().path + "-\(UUID().uuidString)"
+        let destinationUrl = URL(fileURLWithPath: newPath).appendingPathExtension(url.pathExtension)
+        do {
+            try FileManager.default.moveItem(at: url, to: destinationUrl)
+        } catch {
+            MXLog.error("[VoiceMessageController] finalizeRecordingAtURL:", context: error)
+            return nil
+        }
+        return destinationUrl
     }
     
     private func deleteRecordingAtURL(_ url: URL?) {
