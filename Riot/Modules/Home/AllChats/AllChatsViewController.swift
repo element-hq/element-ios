@@ -196,7 +196,7 @@ class AllChatsViewController: HomeViewController {
         searchController.isActive = false
 
         guard let spaceId = spaceId else {
-            self.dataSource?.currentSpace = nil
+            dataSource?.currentSpace = nil
             updateUI()
 
             return
@@ -207,7 +207,7 @@ class AllChatsViewController: HomeViewController {
             return
         }
         
-        self.dataSource.currentSpace = space
+        dataSource?.currentSpace = space
         updateUI()
         
         self.recentsTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
@@ -288,7 +288,7 @@ class AllChatsViewController: HomeViewController {
     
     @objc private func showSpaceSelectorAction(sender: AnyObject) {
         Analytics.shared.viewRoomTrigger = .roomList
-        let currentSpaceId = self.dataSource.currentSpace?.spaceId ?? SpaceSelectorConstants.homeSpaceId
+        let currentSpaceId = dataSource?.currentSpace?.spaceId ?? SpaceSelectorConstants.homeSpaceId
         let spaceSelectorBridgePresenter = SpaceSelectorBottomSheetCoordinatorBridgePresenter(session: self.mainSession, selectedSpaceId: currentSpaceId, showHomeSpace: true)
         spaceSelectorBridgePresenter.present(from: self, animated: true)
         spaceSelectorBridgePresenter.delegate = self
@@ -310,7 +310,7 @@ class AllChatsViewController: HomeViewController {
             return super.tableView(tableView, numberOfRowsInSection: section)
         }
         
-        return dataSource.tableView(tableView, numberOfRowsInSection: section)
+        return dataSource?.tableView(tableView, numberOfRowsInSection: section) ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -318,6 +318,10 @@ class AllChatsViewController: HomeViewController {
             return super.tableView(tableView, cellForRowAt: indexPath)
         }
         
+        guard let dataSource = dataSource else {
+            MXLog.failure("Missing data source")
+            return UITableViewCell()
+        }
         return dataSource.tableView(tableView, cellForRowAt: indexPath)
     }
     
@@ -328,7 +332,7 @@ class AllChatsViewController: HomeViewController {
             return super.tableView(tableView, heightForRowAt: indexPath)
         }
         
-        return dataSource.cellHeight(at: indexPath)
+        return dataSource?.cellHeight(at: indexPath) ?? 0
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -583,7 +587,7 @@ class AllChatsViewController: HomeViewController {
     }
     
     private func showSpaceInvite() {
-        guard let session = mainSession, let spaceRoom = dataSource.currentSpace?.room else {
+        guard let session = mainSession, let spaceRoom = dataSource?.currentSpace?.room else {
             return
         }
         
@@ -595,7 +599,7 @@ class AllChatsViewController: HomeViewController {
     }
     
     private func showSpaceMembers() {
-        guard let session = mainSession, let spaceId = dataSource.currentSpace?.spaceId else {
+        guard let session = mainSession, let spaceId = dataSource?.currentSpace?.spaceId else {
             return
         }
         
@@ -609,7 +613,7 @@ class AllChatsViewController: HomeViewController {
     }
 
     private func showSpaceSettings() {
-        guard let session = mainSession, let spaceId = dataSource.currentSpace?.spaceId else {
+        guard let session = mainSession, let spaceId = dataSource?.currentSpace?.spaceId else {
             return
         }
         
@@ -630,7 +634,7 @@ class AllChatsViewController: HomeViewController {
     }
     
     private func showLeaveSpace() {
-        guard let session = mainSession, let spaceSummary = dataSource.currentSpace?.summary else {
+        guard let session = mainSession, let spaceSummary = dataSource?.currentSpace?.summary else {
             return
         }
         
@@ -714,11 +718,11 @@ extension AllChatsViewController: SpaceSelectorBottomSheetCoordinatorBridgePrese
 extension AllChatsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
-            self.dataSource.search(withPatterns: nil)
+            self.dataSource?.search(withPatterns: nil)
             return
         }
         
-        self.dataSource.search(withPatterns: [searchText])
+        self.dataSource?.search(withPatterns: [searchText])
     }
 }
 
@@ -754,7 +758,7 @@ extension AllChatsViewController: AllChatsEditActionProviderDelegate {
         case .startChat:
             startChat()
         case .createSpace:
-            showCreateSpace(parentSpaceId: dataSource.currentSpace?.spaceId)
+            showCreateSpace(parentSpaceId: dataSource?.currentSpace?.spaceId)
         }
     }
     
