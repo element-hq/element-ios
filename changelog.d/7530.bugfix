@@ -1,1 +1,1 @@
-The green dot for unread rooms was also showing for silent rooms
+Fixes #7350 - Fix green dot only to appear for marked action
