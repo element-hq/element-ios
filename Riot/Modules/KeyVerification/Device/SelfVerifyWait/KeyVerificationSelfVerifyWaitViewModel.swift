@@ -26,10 +26,18 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
 
     private let session: MXSession
     private let keyVerificationService: KeyVerificationService
-    private let verificationManager: MXKeyVerificationManager
+    private let verificationManager: MXKeyVerificationManager?
     private let isNewSignIn: Bool
-    private var secretsRecoveryAvailability: SecretsRecoveryAvailability
+    private var secretsRecoveryAvailability: SecretsRecoveryAvailability?
     private var keyVerificationRequest: MXKeyVerificationRequest?
+    
+    private var myUserId: String {
+        guard let userId = session.myUserId else {
+            MXLog.error("[KeyVerificationSelfVerifyWaitViewModel] userId is missing")
+            return ""
+        }
+        return userId
+    }
     
     // MARK: Public
     
@@ -40,10 +48,10 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     
     init(session: MXSession, isNewSignIn: Bool) {
         self.session = session
-        self.verificationManager = session.crypto.keyVerificationManager
+        self.verificationManager = session.crypto?.keyVerificationManager
         self.keyVerificationService = KeyVerificationService()
         self.isNewSignIn = isNewSignIn
-        self.secretsRecoveryAvailability = session.crypto.recoveryService.vc_availability
+        self.secretsRecoveryAvailability = session.crypto?.recoveryService.vc_availability
     }
     
     deinit {
@@ -59,9 +67,16 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
         case .cancel:
             self.cancel()
         case .recoverSecrets:
-            switch self.secretsRecoveryAvailability {
+            guard let availability = secretsRecoveryAvailability else {
+                MXLog.error("[KeyVerificationSelfVerifyWaitViewModel] process: secretsRecoveryAvailability not set")
+                self.cancel()
+                return
+            }
+            
+            switch availability {
             case .notAvailable:
-                fatalError("Should not happen: When recovery is not available button is hidden")
+                MXLog.error("Should not happen: When recovery is not available button is hidden")
+                self.cancel()
             case .available(let secretsRecoveryMode):
                 self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, wantsToRecoverSecretsWith: secretsRecoveryMode)
             }
@@ -71,12 +86,16 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     // MARK: - Private
     
     private func loadData() {
+        guard let verificationManager = verificationManager else {
+            MXLog.failure("Verification manager is not set")
+            return
+        }
         
         if !self.isNewSignIn {
             MXLog.debug("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices")
             
             let keyVerificationService = KeyVerificationService()
-            self.verificationManager.requestVerificationByToDevice(withUserId: self.session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
+            verificationManager.requestVerificationByToDevice(withUserId: self.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
                 guard let self = self else {
                     return
                 }
@@ -103,7 +122,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
                     MXLog.debug("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices instead of waiting")
                     
                     let keyVerificationService = KeyVerificationService()
-                    self.verificationManager.requestVerificationByToDevice(withUserId: self.session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
+                    verificationManager.requestVerificationByToDevice(withUserId: self.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
                         guard let self = self else {
                             return
                         }
@@ -132,12 +151,18 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     }
     
     private func continueLoadData() {
+        guard let verificationManager = verificationManager, let recoveryService = session.crypto?.recoveryService else {
+            MXLog.error("[KeyVerificationSelfVerifyWaitViewModel] continueLoadData: Missing dependencies")
+            return
+        }
+        
         //  update availability again
-        self.secretsRecoveryAvailability = session.crypto.recoveryService.vc_availability
+        let availability = recoveryService.vc_availability
+        self.secretsRecoveryAvailability = availability
         
-        let viewData = KeyVerificationSelfVerifyWaitViewData(isNewSignIn: self.isNewSignIn, secretsRecoveryAvailability: self.secretsRecoveryAvailability)
+        let viewData = KeyVerificationSelfVerifyWaitViewData(isNewSignIn: self.isNewSignIn, secretsRecoveryAvailability: availability)
         
-        self.registerKeyVerificationManagerNewRequestNotification(for: self.verificationManager)
+        self.registerKeyVerificationManagerNewRequestNotification(for: verificationManager)
         self.update(viewState: .loaded(viewData))
         self.registerTransactionDidStateChangeNotification()
         self.registerKeyVerificationRequestChangeNotification()
@@ -251,7 +276,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
 
     @objc private func transactionDidStateChange(notification: Notification) {
         guard let sasTransaction = notification.object as? MXSASTransaction,
-            sasTransaction.isIncoming, sasTransaction.otherUserId == self.session.myUserId else {
+            sasTransaction.isIncoming, sasTransaction.otherUserId == self.myUserId else {
             return
         }
         self.sasTransactionDidStateChange(sasTransaction)
