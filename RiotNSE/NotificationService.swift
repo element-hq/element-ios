@@ -382,7 +382,14 @@ class NotificationService: UNNotificationServiceExtension {
                     let currentUserId = account.mxCredentials.userId
                     let roomDisplayName = roomSummary?.displayname
                     let pushRule = NotificationService.backgroundSyncService.pushRule(matching: event, roomState: roomState)
-                    
+                
+                    // if the actions contains the dont_notify one, we complete with nil and return
+                    if let actions = pushRule?.actions as? [MXPushRuleAction],
+                       actions.contains(where: { $0.actionType == MXPushRuleActionTypeDontNotify }) {
+                        onComplete(nil, false)
+                        return
+                    }
+
                     switch event.eventType {
                         case .callInvite:
                             let offer = event.content["offer"] as? [AnyHashable: Any]
