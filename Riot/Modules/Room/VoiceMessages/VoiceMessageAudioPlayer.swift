@@ -53,7 +53,7 @@ class VoiceMessageAudioPlayer: NSObject {
             return false
         }
         
-        return (audioPlayer.rate > 0)
+        return audioPlayer.currentItem != nil && (audioPlayer.rate > 0)
     }
     
     var duration: TimeInterval {
@@ -118,6 +118,13 @@ class VoiceMessageAudioPlayer: NSObject {
         }
     }
     
+    func reloadContentIfNeeded() {
+        if let url, let audioPlayer, audioPlayer.currentItem == nil {
+            self.url = nil
+            loadContentFromURL(url)
+        }
+    }
+    
     func removeAllPlayerItems() {
         audioPlayer?.removeAllItems()
     }
@@ -129,6 +136,8 @@ class VoiceMessageAudioPlayer: NSObject {
     
     func play() {
         isStopped = false
+        
+        reloadContentIfNeeded()
         
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
