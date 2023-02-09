@@ -2150,7 +2150,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                 }
                 else
                 {
-                    failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorResendGeneric userInfo:nil]);
+                    if (failure)
+                    {
+                        failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorResendGeneric userInfo:nil]);
+                    }
                     MXLogWarning(@"[MXKRoomDataSource][%p] resendEventWithEventId: Warning - Unable to resend room message of type: %@", self, msgType);
                 }
             }
@@ -2177,7 +2180,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             NSURL *localFileURL = [NSURL URLWithString:localFilePath];
             
             if (![NSFileManager.defaultManager fileExistsAtPath:localFilePath]) {
-                failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorResendInvalidLocalFilePath userInfo:nil]);
+                if (failure)
+                {
+                    failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorResendInvalidLocalFilePath userInfo:nil]);
+                }
                 MXLogWarning(@"[MXKRoomDataSource][%p] resendEventWithEventId: Warning - Unable to resend voice message, invalid file path.", self);
                 return;
             }
@@ -2247,7 +2253,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                 }
                 else
                 {
-                    failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorResendGeneric userInfo:nil]);
+                    if (failure)
+                    {
+                        failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorResendGeneric userInfo:nil]);
+                    }
                     MXLogWarning(@"[MXKRoomDataSource][%p] resendEventWithEventId: Warning - Unable to resend room message of type: %@", self, msgType);
                 }
             }
@@ -2259,13 +2268,19 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         }
         else
         {
-            failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorResendInvalidMessageType userInfo:nil]);
+            if (failure)
+            {
+                failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorResendInvalidMessageType userInfo:nil]);
+            }
             MXLogWarning(@"[MXKRoomDataSource][%p] resendEventWithEventId: Warning - Unable to resend room message of type: %@", self, msgType);
         }
     }
     else
     {
-        failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorResendInvalidMessageType userInfo:nil]);
+        if (failure)
+        {
+            failure([NSError errorWithDomain:MXKRoomDataSourceErrorDomain code:MXKRoomDataSourceErrorResendInvalidMessageType userInfo:nil]);
+        }
         MXLogWarning(@"[MXKRoomDataSource][%p] MXKRoomDataSource: Warning - Only resend of MXEventTypeRoomMessage is allowed. Event.type: %@", self, event.type);
     }
 }
