@@ -1572,7 +1572,7 @@ Tap the + to start adding people.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Security Key";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Security Phrase or Key";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't access an existing session";
-"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Checking for other verification capabilities ...";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Checking for other verification capabilities …";
 
 // MARK: Verify
 
@@ -2219,7 +2219,7 @@ Tap the + to start adding people.";
 "voice_broadcast_live" = "Live";
 "voice_broadcast_tile" = "Voice broadcast";
 "voice_broadcast_time_left" = "%@ left";
-"voice_broadcast_buffering" = "Buffering...";
+"voice_broadcast_buffering" = "Buffering…";
 "voice_broadcast_stop_alert_title" = "Stop live broadcasting?";
 "voice_broadcast_stop_alert_description" = "Are you sure you want to stop your live broadcast? This will end the broadcast, and the full recording will be available in the room.";
 "voice_broadcast_stop_alert_agree_button" = "Yes, stop";
@@ -2434,7 +2434,7 @@ To enable access, tap Settings> Location and select Always";
 "location_sharing_live_list_item_current_user_display_name" = "You";
 "location_sharing_live_list_item_stop_sharing_action" = "Stop";
 "location_sharing_live_timer_incoming" = "Live until %@";
-"location_sharing_live_loading" = "Loading Live location...";
+"location_sharing_live_loading" = "Loading Live location…";
 "location_sharing_live_error" = "Live location error";
 "location_sharing_live_timer_selector_title" = "Choose for how long others will see your accurate location.";
 "location_sharing_live_timer_selector_short" = "for 15 minutes";
@@ -2782,7 +2782,7 @@ To enable access, tap Settings> Location and select Always";
 "room_event_encryption_info_device_verified" = "Verified";
 "room_event_encryption_info_device_not_verified" = "NOT verified";
 "room_event_encryption_info_device_blocked" = "Blacklisted";
-"room_event_encryption_info_verify" = "Verify...";
+"room_event_encryption_info_verify" = "Verify…";
 "room_event_encryption_info_unverify" = "Unverify";
 "room_event_encryption_info_block" = "Blacklist";
 "room_event_encryption_info_unblock" = "Unblacklist";
@@ -2820,7 +2820,7 @@ To enable access, tap Settings> Location and select Always";
 "room_creation_alias_placeholder" = "(e.g. #foo:example.org)";
 "room_creation_alias_placeholder_with_homeserver" = "(e.g. #foo%@)";
 "room_creation_participants_title" = "Participants:";
-"room_creation_participants_placeholder" = "(e.g. @bob:homeserver1; @john:homeserver2...)";
+"room_creation_participants_placeholder" = "(e.g. @bob:homeserver1; @john:homeserver2…)";
 
 // Room
 "room_please_select" = "Please select a room";
@@ -2866,7 +2866,7 @@ To enable access, tap Settings> Location and select Always";
 "attachment_multiselection_size_prompt" = "Do you want to send images as:";
 "attachment_multiselection_original" = "Actual Size";
 "attachment_e2e_keys_file_prompt" = "This file contains encryption keys exported from a Matrix client.\nDo you want to view the file content or import the keys it contains?";
-"attachment_e2e_keys_import" = "Import...";
+"attachment_e2e_keys_import" = "Import…";
 "attachment_unsupported_preview_title" = "Unable to preview";
 "attachment_unsupported_preview_message" = "This file type is not supported.";
 
@@ -2878,7 +2878,7 @@ To enable access, tap Settings> Location and select Always";
 
 // Search
 "search_no_results" = "No Results";
-"search_searching" = "Search in progress...";
+"search_searching" = "Search in progress…";
 
 // Time
 "format_time_s" = "s";
@@ -3106,7 +3106,7 @@ To enable access, tap Settings> Location and select Always";
 "notification_settings_people_join_leave_rooms" = "Notify me when people join or leave rooms";
 "notification_settings_receive_a_call" = "Notify me when I receive a call";
 "notification_settings_suppress_from_bots" = "Suppress notifications from bots";
-"notification_settings_by_default" = "By default...";
+"notification_settings_by_default" = "By default…";
 "notification_settings_notify_all_other" = "Notify for all other messages/rooms";
 
 // gcm section
