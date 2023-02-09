@@ -144,6 +144,8 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         audioPlayer.seekToTime(0.0) { [weak self] _ in
             guard let self = self else { return }
             self.state = .stopped
+            // Reload its content if necessary, otherwise the seek won't work
+            self.audioPlayer?.reloadContentIfNeeded()
         }
     }
     

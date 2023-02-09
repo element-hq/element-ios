@@ -191,7 +191,9 @@ import MediaPlayer
                 continue
             }
             
-            audioRecorder.stopRecording()
+            // We should release the audio session only if we want to pause all services
+            let shouldReleaseAudioSession = (service == nil)
+            audioRecorder.stopRecording(releaseAudioSession: shouldReleaseAudioSession)
         }
         
         guard let audioPlayersEnumerator = audioPlayers.objectEnumerator() else {

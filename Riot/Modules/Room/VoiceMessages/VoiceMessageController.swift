@@ -199,15 +199,25 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     // MARK: - AudioRecorderDelegate
     
     func audioRecorderDidStartRecording(_ audioRecorder: VoiceMessageAudioRecorder) {
+        guard self.audioRecorder === audioRecorder else {
+            return
+        }
         notifiedRemainingTime = false
         updateUI()
     }
     
     func audioRecorderDidFinishRecording(_ audioRecorder: VoiceMessageAudioRecorder) {
+        guard self.audioRecorder === audioRecorder else {
+            return
+        }
         updateUI()
     }
     
     func audioRecorder(_ audioRecorder: VoiceMessageAudioRecorder, didFailWithError: Error) {
+        guard self.audioRecorder === audioRecorder else {
+            MXLog.error("[VoiceMessageController] audioRecorder failed but it's not the current one.")
+            return
+        }
         isInLockedMode = false
         updateUI()
         
@@ -217,20 +227,34 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     // MARK: - VoiceMessageAudioPlayerDelegate
     
     func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        guard self.audioPlayer === audioPlayer else {
+            return
+        }
         updateUI()
     }
     
     func audioPlayerDidPausePlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        guard self.audioPlayer === audioPlayer else {
+            return
+        }
         updateUI()
     }
     
     func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        guard self.audioPlayer === audioPlayer else {
+            return
+        }
         updateUI()
     }
     
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        guard self.audioPlayer === audioPlayer else {
+            return
+        }
         audioPlayer.seekToTime(0.0) { [weak self] _ in
             self?.updateUI()
+            // Reload its content if necessary, otherwise the seek won't work
+            self?.audioPlayer?.reloadContentIfNeeded()
         }
     }
     
@@ -280,7 +304,13 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         isInLockedMode = false
         
         audioPlayer?.stop()
-        audioRecorder?.stopRecording()
+        
+        // Check if we are recording before stopping the recording, because it will try to pause the audio session and it can be problematic if another player or recorder is running
+        if let audioRecorder, audioRecorder.isRecording {
+            audioRecorder.stopRecording()
+        }
+        // Also, we can release it now, which will prevent the service provider from trying to manage an old audio recorder.
+        audioRecorder = nil
         
         deleteRecordingAtURL(temporaryFileURL)
         
