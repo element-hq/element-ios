@@ -287,7 +287,7 @@
 "settings_global_settings_info" = "全体の通知設定は %@ webクライアントで行えます";
 "settings_pin_rooms_with_missed_notif" = "逃した通知があるルームをピン止め";
 "settings_ui_language" = "言語";
-"settings_ui_theme" = "外観";
+"settings_ui_theme" = "テーマ";
 "settings_ui_theme_auto" = "自動";
 "settings_ui_theme_light" = "ライト";
 "settings_ui_theme_dark" = "ダーク";
@@ -444,9 +444,9 @@
 "widget_integration_need_to_be_able_to_invite" = "それを行うにはユーザーを招待する権限が必要です。";
 "widget_integration_unable_to_create" = "ウィジェットを作成できません。";
 "widget_integration_failed_to_send_request" = "リクエストの送信に失敗しました。";
-"widget_integration_room_not_recognised" = "このルームでは認められません。";
-"widget_integration_positive_power_level" = "権限の数値は正の整数で入力してください。";
-"widget_integration_must_be_in_room" = "あなたはこのルームに所属していません。";
+"widget_integration_room_not_recognised" = "このルームは認識されていません。";
+"widget_integration_positive_power_level" = "権限レベルは正の整数でなければなりません。";
+"widget_integration_must_be_in_room" = "あなたはこのルームのメンバーではありません。";
 "widget_integration_no_permission_in_room" = "このルームでそれを行う権限がありません。";
 "widget_integration_missing_room_id" = "リクエストにroom_idがありません。";
 "widget_integration_missing_user_id" = "リクエストにuser_idがありません。";
@@ -641,7 +641,7 @@
 "e2e_key_backup_wrong_version_title" = "新しい鍵のバックアップ";
 "call_no_stun_server_error_use_fallback_button" = "%@を使ってみてください";
 "call_actions_unhold" = "再開";
-"call_no_stun_server_error_message_2" = "または %@ の公開サーバーを使用することもできますが、信頼性が低く、また、あなたのIPアドレスがそのサーバーと共有されてしまいます。これは設定画面からも管理できます";
+"call_no_stun_server_error_message_2" = "公開サーバー %@ を使用することもできますが、信頼性は低く、また、サーバーとIPアドレスが共有されます。これは設定画面からも管理できます";
 "call_no_stun_server_error_message_1" = "安定した通話のために、ホームサーバー %@ の管理者にTURNサーバーの設定を依頼してください。";
 "call_no_stun_server_error_title" = "サーバーの不正な設定のため通話に失敗しました";
 "room_does_not_exist" = "%@は存在しません";
@@ -1188,7 +1188,7 @@
 "login_error_resource_limit_exceeded_title" = "リソース制限を超えました";
 "login_error_resource_limit_exceeded_message_default" = "このホームサーバーはリソースの上限に達しました。";
 "login_error_resource_limit_exceeded_message_monthly_active_user" = "このホームサーバーは月間アクティブユーザー数の上限に達しました 。";
-"login_error_resource_limit_exceeded_message_contact" = "\n\nこのサービスを続行するには、サービス管理者に連絡してください。";
+"login_error_resource_limit_exceeded_message_contact" = "\n\nこのサービスを引き続き使用するには、サービス管理者にお問い合わせください。";
 "login_error_resource_limit_exceeded_contact_button" = "管理者に連絡";
 "abort" = "中断";
 "discard" = "破棄";
@@ -1758,7 +1758,7 @@
 "room_details_notifs" = "通知";
 "location_sharing_invalid_power_level_title" = "位置情報（ライブ）の共有に必要な権限がありません";
 "settings_labs_enable_live_location_sharing" = "位置情報（ライブ）の共有 - 現在の位置情報を共有（開発中の機能。位置情報が一時的にルームの履歴に残ります）";
-"event_formatter_message_deleted" = "削除済みのメッセージ";
+"event_formatter_message_deleted" = "メッセージが削除されました";
 "home_context_menu_unfavourite" = "お気に入りから削除";
 "home_context_menu_favourite" = "お気に入り";
 "all_chats_user_menu_settings" = "ユーザー設定";
@@ -1852,7 +1852,7 @@
 "settings_labs_enable_new_app_layout" = "アプリケーションの新しいレイアウト";
 "settings_labs_enable_new_client_info_feature" = "クライアントの名称、バージョン、URLを記録し、セッションマネージャーでより容易にセッションを認識できるよう設定";
 "settings_labs_enable_new_session_manager" = "新しいセッションマネージャー";
-"settings_labs_use_only_latest_user_avatar_and_name" = "ユーザーのアバターと名前をメッセージの履歴に表示";
+"settings_labs_use_only_latest_user_avatar_and_name" = "ユーザーの最新のアバターと名前をメッセージの履歴に表示";
 "settings_labs_enable_threads" = "メッセージのスレッド機能";
 "settings_labs_enabled_polls" = "アンケート";
 "settings_ui_show_redactions_in_room_history" = "削除されたメッセージに関する通知を表示";
