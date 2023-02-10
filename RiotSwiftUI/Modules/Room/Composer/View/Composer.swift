@@ -71,12 +71,15 @@ struct Composer: View {
     }
     
     private var formatItems: [FormatItem] {
-        FormatType.allCases.map { type in
-            FormatItem(
-                type: type,
-                state: wysiwygViewModel.actionStates[type.composerAction] ?? .disabled
-            )
-        }
+        return FormatType.allCases
+            // Exclude indent type outside of lists.
+            .filter { wysiwygViewModel.isInList || !$0.isIndentType }
+            .map { type in
+                FormatItem(
+                    type: type,
+                    state: wysiwygViewModel.actionStates[type.composerAction] ?? .disabled
+                )
+            }
     }
     
     private var composerContainer: some View {
@@ -254,6 +257,13 @@ struct Composer: View {
     private func sendLinkAction() {
         let linkAction = wysiwygViewModel.getLinkAction()
         viewModel.send(viewAction: .linkTapped(linkAction: linkAction))
+    }
+}
+
+private extension WysiwygComposerViewModel {
+    /// Return true if the selection of the composer is currently located in a list.
+    var isInList: Bool {
+        actionStates[.orderedList] == .reversed || actionStates[.unorderedList] == .reversed
     }
 }
 

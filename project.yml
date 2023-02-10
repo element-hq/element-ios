@@ -53,7 +53,7 @@ packages:
     branch: main
   WysiwygComposer:
     url: https://github.com/matrix-org/matrix-wysiwyg-composer-swift
-    version: 0.22.0
+    version: 1.1.0
   DeviceKit:
     url: https://github.com/devicekit/DeviceKit
     majorVersion: 4.7.0
