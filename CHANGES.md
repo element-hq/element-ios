@@ -1,3 +1,10 @@
+## Changes in 1.10.2 (2023-02-10)
+
+🐛 Bugfixes
+
+- Fixes #7350 - Fix green dot only to appear for marked action ([#7530](https://github.com/vector-im/element-ios/issues/7530))
+
+
 ## Changes in 1.10.1 (2023-02-07)
 
 ✨ Features

@@ -50,7 +50,7 @@ class PollBaseBubbleCell: PollPlainCell {
             return
         }
         
-        self.addBubbleBackgroundView( messageBubbleBackgroundView, to: pollView)
+        self.addBubbleBackgroundView(messageBubbleBackgroundView, to: pollView)
         messageBubbleBackgroundView.backgroundColor = self.bubbleBackgroundColor
     }
     
