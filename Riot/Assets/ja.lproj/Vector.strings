@@ -1556,7 +1556,7 @@
 "poll_timeline_total_no_votes" = "投票がありません";
 "poll_timeline_votes_count" = "%lu票";
 "poll_timeline_one_vote" = "1票";
-"poll_edit_form_poll_type_closed_description" = "結果はアンケートを終了した後でのみ明らかにされます";
+"poll_edit_form_poll_type_closed_description" = "結果はアンケートが終了した後で表示されます";
 "poll_edit_form_poll_type_closed" = "アンケートの終了後に結果を公開";
 "poll_edit_form_poll_type_open_description" = "投票した人には、投票の際に即座に結果が表示されます";
 "poll_edit_form_poll_type_open" = "投票の際に結果を公開";
@@ -1656,7 +1656,7 @@
 "space_topic" = "詳細";
 "spaces_creation_cancel_message" = "これまでの設定は失われます。";
 "spaces_creation_cancel_title" = "スペースの作成を中止しますか？";
-"create_room_section_footer_type_private" = "招待した人のみが検索・参加できます。";
+"create_room_section_footer_type_private" = "招待した人のみが検索し、参加できます。";
 
 // MARK: - Searchable Directory View Controller
 
@@ -1705,9 +1705,9 @@
 
 "leave_space_action" = "スペースから退出";
 "leave_space_selection_title" = "ルームを選択";
-"create_room_section_footer_type_restricted" = "誰でもスペース名で検索・参加できます。";
+"create_room_section_footer_type_restricted" = "誰でもスペース名で検索し、参加できます。";
 "create_room_suggest_room" = "スペースのメンバーへのおすすめ";
-"create_room_show_in_directory_footer" = "他の人が検索・参加できるようになります。";
+"create_room_show_in_directory_footer" = "他の人が検索し、参加できるようになります。";
 "create_room_promotion_header" = "プロモート";
 "searchable_directory_search_placeholder" = "名前または ID";
 "room_suggestion_settings_screen_title" = "スペースにおすすめのルームを作成";
@@ -1745,9 +1745,9 @@
 "room_access_settings_screen_edit_spaces" = "スペースを編集";
 "room_access_settings_screen_upgrade_required" = "アップグレードが必要";
 "room_access_settings_screen_upgrade_alert_title" = "ルームをアップグレード";
-"room_access_settings_screen_public_message" = "誰でも検索・参加できます。";
-"room_access_settings_screen_private_message" = "招待された人のみ検索・参加できます。";
-"room_access_settings_screen_message" = "誰が%@を検索・参加できるか選択してください。";
+"room_access_settings_screen_public_message" = "誰でも検索し、参加できます。";
+"room_access_settings_screen_private_message" = "招待された人のみ検索し、参加できます。";
+"room_access_settings_screen_message" = "誰が%@を検索し、参加できるか選択してください。";
 "space_settings_access_section" = "このスペースにアクセスできる人は？";
 "room_access_settings_screen_title" = "このルームにアクセスできる人は？";
 "room_notifs_settings_none" = "なし";
@@ -2338,8 +2338,8 @@
 
 // MARK: Start
 "device_verification_start_title" = "短い文字列を比較して認証";
-"device_verification_incoming_description_2" = "このセッションを認証すると、信頼済としてマークされ、あなたのセッションも相手に信頼済としてマークされます。";
-"device_verification_incoming_description_1" = "このセッションを認証すると、信頼済としてマークされます。相手のセッションを信頼すると、より一層安心してエンドツーエンド暗号化を使用することができます。";
+"device_verification_incoming_description_2" = "このセッションを認証すると、信頼済として表示し、あなたのセッションも相手に信頼済として表示されます。";
+"device_verification_incoming_description_1" = "このセッションを認証すると、信頼済として表示します。相手のセッションを信頼すると、より一層安心してエンドツーエンド暗号化を使用することができます。";
 
 // MARK: Incoming
 "device_verification_incoming_title" = "認証のリクエストが届いています";
@@ -2626,7 +2626,7 @@
 "event_formatter_call_active_voice" = "実施中の音声通話";
 "launch_loading_server_syncing_nth_attempt" = "サーバーと同期しています\n（%@回試行）";
 "create_room_suggest_room_footer" = "おすすめのルームは、スペースのメンバーに対して参加候補として表示されます。";
-"create_room_section_footer_type_public" = "スペースの名前だけでなく、招待された人だけが検索・参加できます。";
+"create_room_section_footer_type_public" = "スペースの名前だけでなく、招待された人だけが検索し、参加できます。";
 "searchable_directory_x_network" = "%@ネットワーク";
 "pin_protection_explanatory" = "PINコードを設定すると、メッセージや連絡先などのデータを保護できます。アプリの開始時にPINコードを入力するよう要求します。";
 "secrets_recovery_with_key_information_default" = "セキュリティーキーを入力すると、保護されたメッセージの履歴と、他のセッションの認証用のクロス署名IDにアクセスできます。";
