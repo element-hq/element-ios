@@ -50,6 +50,7 @@
 @property (nonatomic, readonly) NSString *lastEventDate;
 
 @property (nonatomic, readonly) BOOL hasUnread;
+@property (nonatomic, readonly) BOOL isRoomMarkedAsUnread;
 @property (nonatomic, readonly) NSUInteger notificationCount;
 @property (nonatomic, readonly) NSUInteger highlightCount;
 @property (nonatomic, readonly) NSString *notificationCountStringValue;

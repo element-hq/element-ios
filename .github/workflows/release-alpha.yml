@@ -4,9 +4,7 @@ on:
 
   # Triggers the workflow on any pull request
   pull_request:
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    types: [ labeled, synchronize, opened, reopened ]
 
 env:
   # Make the git branch for a PR available to our Fastfile
@@ -14,11 +12,9 @@ env:
 
 jobs:
   build:
-    # Don't run for forks as secrets are unavailable.
-    if: |
-      github.event.pull_request.head.repo.full_name == github.repository &&
-      (github.event_name == 'push' ||
-      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Trigger-PR-Build')))
+    # Only run for PRs that contain the trigger label. The action will fail for forks due to
+    # missing secrets, but there's no need to handle this as it won't run automatically.
+    if: contains(github.event.pull_request.labels.*.name, 'Trigger-PR-Build')
 
     name: Release
     runs-on: macos-12
