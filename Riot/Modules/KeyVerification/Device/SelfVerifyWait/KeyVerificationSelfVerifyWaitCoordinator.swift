@@ -25,7 +25,6 @@ final class KeyVerificationSelfVerifyWaitCoordinator: KeyVerificationSelfVerifyW
     
     // MARK: Private
     
-    private let session: MXSession
     private var keyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWaitViewModelType
     private let keyVerificationSelfVerifyWaitViewController: KeyVerificationSelfVerifyWaitViewController
     private let cancellable: Bool
@@ -40,9 +39,7 @@ final class KeyVerificationSelfVerifyWaitCoordinator: KeyVerificationSelfVerifyW
     // MARK: - Setup
     
     init(session: MXSession, isNewSignIn: Bool, cancellable: Bool) {
-        self.session = session
-        
-        let keyVerificationSelfVerifyWaitViewModel = KeyVerificationSelfVerifyWaitViewModel(session: self.session, isNewSignIn: isNewSignIn)
+        let keyVerificationSelfVerifyWaitViewModel = KeyVerificationSelfVerifyWaitViewModel(session: session, isNewSignIn: isNewSignIn)
         let keyVerificationSelfVerifyWaitViewController = KeyVerificationSelfVerifyWaitViewController.instantiate(with: keyVerificationSelfVerifyWaitViewModel, cancellable: cancellable)
         self.keyVerificationSelfVerifyWaitViewModel = keyVerificationSelfVerifyWaitViewModel
         self.keyVerificationSelfVerifyWaitViewController = keyVerificationSelfVerifyWaitViewController
