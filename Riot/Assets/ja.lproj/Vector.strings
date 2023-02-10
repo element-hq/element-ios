@@ -147,8 +147,8 @@
 // Chat participants
 "room_participants_title" = "参加者";
 "room_participants_add_participant" = "参加者を追加";
-"room_participants_one_participant" = "参加者1名";
-"room_participants_multi_participants" = "参加者%d名";
+"room_participants_one_participant" = "1人の参加者";
+"room_participants_multi_participants" = "%d人の参加者";
 "room_participants_leave_prompt_title" = "ルームから退出";
 "room_participants_leave_prompt_msg" = "ルームから退出してよろしいですか？";
 "room_participants_remove_prompt_title" = "確認";
@@ -164,7 +164,7 @@
 "room_participants_online" = "オンライン";
 "room_participants_offline" = "オフライン";
 "room_participants_unknown" = "不明";
-"room_participants_idle" = "アイドル";
+"room_participants_idle" = "待機中";
 "room_participants_now" = "現在";
 "room_participants_ago" = "前";
 "room_participants_action_section_admin_tools" = "管理者ツール";
@@ -530,7 +530,7 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "%@のホームサーバーを引き続き使用するには、利用規約を確認して同意する必要があります。";
 "gdpr_consent_not_given_alert_review_now_action" = "確認";
-"deactivate_account_title" = "アカウントを無効化";
+"deactivate_account_title" = "アカウントの無効化";
 "deactivate_account_informations_part1" = "この操作により、あなたのアカウントは永久に使えなくなります。ログインしたり同じユーザーIDを再登録したりすることはできなくなります。あなたのアカウントは参加している全てのルームから退出し、あなたのIDサーバーからアカウントの詳細が削除されます。 ";
 "deactivate_account_informations_part2_emphasize" = "この操作は取り消せません。";
 "deactivate_account_informations_part3" = "\n\nアカウントを無効化しても、 ";
@@ -540,7 +540,7 @@
 "deactivate_account_forget_messages_information_part2_emphasize" = "警告";
 "deactivate_account_forget_messages_information_part3" = "：今後のユーザーには、不完全な会話が表示されます）";
 "deactivate_account_validate_action" = "アカウントを無効化";
-"deactivate_account_password_alert_title" = "アカウントを無効化";
+"deactivate_account_password_alert_title" = "アカウントの無効化";
 "deactivate_account_password_alert_message" = "続行するには、Matrixのアカウントのパスワードを入力してください";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "要求を送信しました";
@@ -683,14 +683,14 @@
 "identity_server_settings_alert_error_terms_not_accepted" = "IDサーバーに設定するには、%@の利用規約を承諾する必要があります。";
 "identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "無視して接続解除";
 "identity_server_settings_alert_disconnect_still_sharing_3pid" = "あなたはまだIDサーバー %@ で個人データを共有しています。\n\n接続を解除する前に、メールアドレスと電話番号をIDサーバーから削除することをお勧めします。";
-"identity_server_settings_alert_disconnect_button" = "接続を解除";
+"identity_server_settings_alert_disconnect_button" = "切断";
 "identity_server_settings_alert_disconnect" = "IDサーバー %@ から切断しますか？";
-"identity_server_settings_alert_disconnect_title" = "IDサーバーから接続を解除";
-"identity_server_settings_alert_change" = "IDサーバー %1$@ を切断し、代わりに %2$@ に接続しますか？";
+"identity_server_settings_alert_disconnect_title" = "IDサーバーから切断";
+"identity_server_settings_alert_change" = "IDサーバー %1$@ から切断して %2$@ に接続しますか？";
 "identity_server_settings_alert_change_title" = "IDサーバーを変更";
 "identity_server_settings_alert_no_terms" = "選択したIDサーバーには利用規約がありません。そのサーバーの所有者を信頼できる場合にのみ続行してください。";
 "identity_server_settings_alert_no_terms_title" = "IDサーバーには利用規約がありません";
-"identity_server_settings_disconnect" = "接続を解除";
+"identity_server_settings_disconnect" = "切断";
 "identity_server_settings_disconnect_info" = "IDサーバーとの接続を解除すると、他のユーザーによって見つけられなくなり、また、メールアドレスや電話で他のユーザーを招待することもできなくなります。";
 "identity_server_settings_change" = "変更";
 "identity_server_settings_add" = "追加";
@@ -705,7 +705,7 @@
 "settings_key_backup_info_valid" = "このセッションは鍵をバックアップしています。";
 "settings_key_backup_info_algorithm" = "アルゴリズム：%@";
 "settings_key_backup_info_version" = "鍵のバックアップのバージョン：%@";
-"settings_key_backup_info_none" = "あなたの鍵は、このセッションからバックアップされていません。";
+"settings_key_backup_info_none" = "このセッションでは鍵がバックアップされていません。";
 "settings_key_backup_info_checking" = "確認しています…";
 "settings_add_3pid_password_message" = "続行するには、Matrixのアカウントのパスワードを入力してください";
 "settings_add_3pid_invalid_password_message" = "認証情報が正しくありません";
@@ -844,7 +844,7 @@
 "settings_discovery_three_pids_management_information_part3" = "。";
 "settings_discovery_three_pids_management_information_part2" = "ユーザー設定";
 "settings_discovery_three_pids_management_information_part1" = "他のユーザーがあなたを発見したり、ルームに招待する際に使用するメールアドレスや電話番号を管理できます。このリストに、メールアドレスや電話番号を追加したり、削除したりすることができます。 ";
-"settings_discovery_terms_not_signed" = "メールアドレスか電話番号でアカウントを見つけてもらえるようにするには、IDサーバー %@ の利用規約への同意が必要です。";
+"settings_discovery_terms_not_signed" = "メールアドレスか電話番号でアカウントを検出可能にするには、IDサーバー %@ の利用規約への同意が必要です。";
 "settings_discovery_no_identity_server" = "現在、IDサーバーを使用していません。連絡先から見つけてもらうようにするには、IDサーバーを追加してください。";
 "settings_key_backup_delete_confirmation_prompt_msg" = "よろしいですか？鍵が適切にバックアップされていないと、暗号化されたメッセージを読み取れなくなってしまいます。";
 "settings_key_backup_button_connect" = "このセッションを鍵のバックアップに接続";
@@ -1553,7 +1553,7 @@
 "location_sharing_title" = "位置情報";
 "poll_timeline_not_closed_subtitle" = "もう一度やり直してください";
 "poll_timeline_not_closed_title" = "アンケートの終了に失敗しました";
-"poll_timeline_total_no_votes" = "まだ誰も投票していません";
+"poll_timeline_total_no_votes" = "投票がありません";
 "poll_timeline_votes_count" = "%lu票";
 "poll_timeline_one_vote" = "1票";
 "poll_edit_form_poll_type_closed_description" = "結果はアンケートを終了した後でのみ明らかにされます";
@@ -1577,7 +1577,7 @@
 "poll_edit_form_create_poll" = "アンケートを作成";
 "poll_timeline_vote_not_registered_subtitle" = "投票できませんでした。もう一度やり直してください";
 "poll_timeline_vote_not_registered_title" = "投票できませんでした";
-"poll_timeline_total_final_results" = "合計%lu票の投票に基づく最終結果";
+"poll_timeline_total_final_results" = "合計%lu票に基づく最終結果";
 "poll_timeline_total_final_results_one_vote" = "合計1票の投票に基づく最終結果";
 "poll_timeline_total_votes_not_voted" = "合計%lu票。投票すると結果を確認できます";
 "poll_timeline_total_one_vote_not_voted" = "合計1票。投票すると結果を確認できます";
@@ -2094,7 +2094,7 @@
 "user_session_verified_session_title" = "認証済のセッション";
 "user_session_unverified_session_title" = "未認証のセッション";
 "user_session_inactive_session_title" = "非アクティブなセッション";
-"user_session_rename_session_title" = "セッション名を変更";
+"user_session_rename_session_title" = "セッション名の変更";
 "user_other_session_security_recommendation_title" = "その他のセッション";
 "user_other_session_unverified_sessions_header_subtitle" = "セッションを認証すると、より安全なメッセージのやりとりが可能になります。見覚えのない、または使用していないセッションがあれば、サインアウトしましょう。";
 "user_other_session_current_session_details" = "現在のセッション";
@@ -2505,7 +2505,7 @@
 "spaces_explore_rooms_room_number" = "%@個のルーム";
 "leave_space_and_all_rooms_action" = "全てのルームとスペースから退出";
 "leave_space_only_action" = "どのルームからも退出しない";
-"threads_discourage_information_2" = "\n\nスレッド機能を有効にしてよろしいですか？";
+"threads_discourage_information_2" = "\n\nスレッド機能を有効にしますか？";
 "room_no_privileges_to_create_group_call" = "通話を開始するには管理者あるいはモデレーターである必要があります。";
 "contacts_address_book_permission_denied_alert_message" = "連絡先を有効にするには、端末の設定画面を開いてください。";
 "contacts_address_book_permission_denied_alert_title" = "連絡先が無効です";
