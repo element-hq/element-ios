@@ -92,12 +92,17 @@
         self.lastEventDecriptionLabelTrailingConstraint.constant = self.unsentImageView.hidden ? 10 : 30;
 
         // Notify unreads and bing
-        if (roomCellData.hasUnread)
+        if (roomCellData.isRoomMarkedAsUnread)
         {
-
+            self.missedNotifAndUnreadBadgeBgView.hidden = NO;
+            self.missedNotifAndUnreadBadgeBgView.backgroundColor = ThemeService.shared.theme.tintColor;
+            self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 20;
+        }
+        else if (roomCellData.hasUnread)
+        {
+            self.missedNotifAndUnreadIndicator.hidden = NO;
             if (0 < roomCellData.notificationCount)
             {
-                self.missedNotifAndUnreadIndicator.hidden = NO;
                 self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
 
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
@@ -110,9 +115,7 @@
             }
             else
             {
-                self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-                self.missedNotifAndUnreadBadgeBgView.backgroundColor = ThemeService.shared.theme.tintColor;
-                self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 20;
+                self.missedNotifAndUnreadIndicator.backgroundColor = ThemeService.shared.theme.unreadRoomIndentColor;
             }
 
             // Use bold font for the room title

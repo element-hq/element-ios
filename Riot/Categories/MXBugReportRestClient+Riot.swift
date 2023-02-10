@@ -46,10 +46,10 @@ extension MXBugReportRestClient {
         // User info (TODO: handle multi-account and find a way to expose them in rageshake API)
         var userInfo = [String: String]()
         let mainAccount = MXKAccountManager.shared().accounts.first
-        if let userId = mainAccount?.mxSession.myUser.userId {
+        if let userId = mainAccount?.mxSession?.myUser?.userId {
             userInfo["user_id"] = userId
         }
-        if let deviceId = mainAccount?.mxSession.matrixRestClient.credentials.deviceId {
+        if let deviceId = mainAccount?.mxSession?.myDeviceId {
             userInfo["device_id"] = deviceId
         }
         
