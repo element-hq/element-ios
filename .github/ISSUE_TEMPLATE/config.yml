@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Propose an enhancement or feature request
+    url: https://github.com/vector-im/element-meta/discussions/categories/ideas
+    about: You can propose a new feature or an improvement to our apps
+  - name: Element iOS Community Support
+    url: https://matrix.to/#/#element-ios:matrix.org
+    about: General Element iOS support questions can be asked here
+  - name: Matrix Security Policy
+    url: https://www.matrix.org/security-disclosure-policy/
+    about: Learn more about our security disclosure policy
