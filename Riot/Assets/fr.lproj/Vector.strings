@@ -113,7 +113,7 @@
 "people_conversation_section" = "DISCUSSIONS";
 "people_no_conversation" = "Aucune discussion";
 // Rooms tab
-"room_directory_no_public_room" = "Aucun forum disponible";
+"room_directory_no_public_room" = "Aucun salon public disponible";
 // Groups tab
 "group_invite_section" = "INVITATIONS";
 "group_section" = "COMMUNAUTÉS";
@@ -399,7 +399,7 @@
 "directory_server_picker_title" = "Sélectionner un répertoire";
 "directory_server_all_rooms" = "Tous les salons sur le serveur %@";
 "directory_server_all_native_rooms" = "Tous les salons Matrix natifs";
-"directory_server_type_homeserver" = "Saisir un serveur d’accueil pour lister ses forums";
+"directory_server_type_homeserver" = "Saisir un serveur d’accueil pour lister ses salons publics";
 "directory_server_placeholder" = "matrix.org";
 // Others
 "or" = "ou";
@@ -407,7 +407,7 @@
 "today" = "Aujourd’hui";
 "yesterday" = "Hier";
 "network_offline_prompt" = "La connexion Internet semble être hors-ligne.";
-"public_room_section_title" = "Forums (sur %@) :";
+"public_room_section_title" = "Salons publics (sur %@) :";
 "bug_report_prompt" = "L’application s’est arrêtée brusquement la dernière fois. Voulez-vous envoyer un rapport d’anomalie ?";
 "rage_shake_prompt" = "Vous semblez secouer le téléphone avec frustration. Souhaitez-vous soumettre un rapport d’anomalie ?";
 "do_not_ask_again" = "Ne plus demander";
@@ -1211,8 +1211,8 @@
 "create_room_section_header_address" = "ADRESSE";
 "create_room_show_in_directory" = "Afficher le salon dans le répertoire";
 "create_room_section_footer_type" = "Les personnes ne rejoignent un salon privé que sur invitation.";
-"create_room_type_public" = "Forum (tout le monde)";
-"create_room_type_private" = "Salon (seulement sur invitation)";
+"create_room_type_public" = "Salon public (tout le monde)";
+"create_room_type_private" = "Salon privé (seulement sur invitation)";
 "create_room_section_header_type" = "QUI PEUT Y ACCÉDER";
 "create_room_section_footer_encryption" = "Le chiffrement ne peut pas être désactivé ensuite.";
 "create_room_enable_encryption" = "Activer le chiffrement";
@@ -1317,7 +1317,7 @@
 "room_details_room_name_for_dm" = "Nom";
 "room_details_photo_for_dm" = "Photo";
 "room_details_title_for_dm" = "Détails";
-"settings_show_NSFW_public_rooms" = "Afficher les forums au contenu choquant";
+"settings_show_NSFW_public_rooms" = "Afficher les salons publics au contenu choquant";
 "external_link_confirmation_message" = "Le lien %@ vous emmène vers un autre site : %@\n\nÊtes vous sûr de vouloir poursuivre ?";
 "external_link_confirmation_title" = "Inspectez ce lien";
 "room_open_dialpad" = "Pavé de numérotation";
@@ -1494,7 +1494,7 @@
 "spaces_empty_space_title" = "Cet espace n’a pas (encore) de salon";
 "space_tag" = "espace";
 "spaces_suggested_room" = "Recommandé";
-"spaces_explore_rooms" = "Rejoindre un forum";
+"spaces_explore_rooms" = "Parcourir les salons";
 "leave_space_and_all_rooms_action" = "Quitter tous les salons et espaces";
 "leave_space_only_action" = "Ne quitter aucun salon";
 "leave_space_message_admin_warning" = "Vous êtes administrateur de cet espace. Assurez-vous d’avoir transmis les droits d’administration à un autre membre avant de partir.";
