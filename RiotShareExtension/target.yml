@@ -52,6 +52,7 @@ targets:
     - path: ../Riot/Categories/MXRoom+Riot.m
     - path: ../Config/Configurable.swift
     - path: ../Config/CommonConfiguration.swift
+    - path: ../Riot/Experiments/
     - path: ../Riot/Utils/UserNameColorGenerator.swift
     - path: ../Riot/Categories/MXRoomSummary+Riot.m
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift

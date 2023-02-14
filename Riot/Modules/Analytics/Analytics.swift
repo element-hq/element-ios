@@ -44,7 +44,7 @@ import AnalyticsEvents
     static let shared = Analytics()
     
     /// The analytics client to send events with.
-    private var client: AnalyticsClientProtocol = PostHogAnalyticsClient()
+    private var client: AnalyticsClientProtocol = PostHogAnalyticsClient.shared
     
     /// The monitoring client to track crashes, issues and performance
     private var monitoringClient = SentryMonitoringClient()
