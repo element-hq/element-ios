@@ -154,6 +154,7 @@ class RendezvousService {
     }
     
     private func decodeBase64(input: String) -> Data? {
+        // MXBase64Tools will decode both padded and unpadded data so we don't need to take account of algorithm here
         return MXBase64Tools.data(fromBase64: input)
     }
 
