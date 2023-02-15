@@ -1348,7 +1348,7 @@
 "attachment_cancel_download" = "ダウンロードをキャンセルしますか？";
 "attachment_cancel_upload" = "アップロードをキャンセルしますか？";
 "attachment_multiselection_size_prompt" = "画像を次のように送信しますか：";
-"attachment_multiselection_original" = "実際のサイズ";
+"attachment_multiselection_original" = "等倍";
 "attachment_e2e_keys_file_prompt" = "このファイルには、Matrixのクライアントからエクスポートされた暗号鍵が含まれています。\nファイルの内容を表示するか、ファイル内の鍵をインポートしますか？";
 "attachment_e2e_keys_import" = "インポート…";
 // Contacts
