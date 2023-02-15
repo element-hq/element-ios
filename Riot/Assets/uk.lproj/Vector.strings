@@ -2926,3 +2926,4 @@
 "wysiwyg_composer_format_action_indent" = "Збільшити відступ";
 "settings_push_rules_error" = "Сталася помилка під час оновлення налаштувань сповіщень. Спробуйте змінити налаштування ще раз.";
 "poll_history_detail_view_in_timeline" = "Переглянути опитування у стрічці";
+"authentication_qr_login_failure_device_not_supported" = "Пов'язування з цим пристроєм не підтримується.";
