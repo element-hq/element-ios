@@ -1290,3 +1290,59 @@
 "stop" = "توقف";
 "joining" = "پیوستن";
 "enable" = "فعال";
+"authentication_server_selection_generic_error" = "در این آدرس سروری نیست! لطفا صحت آن را بررسی کنید.";
+"authentication_server_selection_server_url" = "آدرس هوم سرور";
+"authentication_server_selection_register_message" = "آدرس سرورتان چیست؟ این آدرس ذخیره سازی اطلاعات شماست";
+"authentication_server_selection_register_title" = "هوم سرور خود را انتخاب کنید";
+"authentication_server_selection_login_message" = "آدرس سرورتان چیست؟";
+"authentication_server_selection_login_title" = "اتصال به هوم سرور";
+"authentication_login_with_qr" = "ورود با QR کد";
+"authentication_server_info_title_login" = "جایی که مکالماتتان قرار میگیرند";
+"authentication_login_forgot_password" = "فراموشی رمز عبور";
+"authentication_login_username" = "نام کاربری، ایمیل، یا شماره تلفن";
+"authentication_login_title" = "خوش برگشتید!";
+"authentication_server_info_title" = "جایی که مکالماتتان قرار میگیرند";
+"authentication_registration_password_footer" = "باید 8 حرف یا بیشتر باشد";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "بقیه میتوانند شما را پیدا کنند %@";
+"authentication_registration_username_footer" = "نمیتوانید بعدا تغییرش دهید";
+"authentication_registration_username" = "نام کاربری";
+
+// MARK: Authentication
+"authentication_registration_title" = "حسابتان را بسازید";
+"onboarding_celebration_button" = "بزن بریم";
+"onboarding_celebration_message" = "برای ویرایش پروفایلتان، به تنظیمات بروید";
+"onboarding_celebration_title" = "خوب به نظر میرسد!";
+"onboarding_avatar_accessibility_label" = "تصویر پروفایل";
+"onboarding_avatar_message" = "زمان آن رسیده که به نامتان، تصویر اضافه کنید";
+"onboarding_avatar_title" = "یک عکس پروفایل اضافه کنید";
+"onboarding_display_name_max_length" = "نام نمایشی شما باید کمتر از 256 حرف باشد";
+"onboarding_display_name_hint" = "میتواند بعدا آن را تغییر دهید";
+"onboarding_display_name_placeholder" = "نام نمایشی";
+"onboarding_display_name_message" = "این نام هنگام ارسال پیام ها نمایش داده میشود.";
+"onboarding_display_name_title" = "یک نام نمایشی انتخاب کنید";
+"onboarding_personalization_skip" = "این مرحله را رد کن";
+"onboarding_personalization_save" = "ذخیره و ادامه";
+"onboarding_congratulations_home_button" = "مرا به خانه ببر";
+"onboarding_congratulations_personalize_button" = "شخصی سازی پروفایل";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "حسابتان %@ ایجاد شد";
+"onboarding_congratulations_title" = "تبریک!";
+"onboarding_use_case_existing_server_button" = "اتصال به سرور";
+"onboarding_use_case_existing_server_message" = "دنبال اتصال به یک سرور موجود هستید؟";
+"onboarding_use_case_skip_button" = "این سوال را رد کن";
+/* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
+"onboarding_use_case_not_sure_yet" = "هنوز مطمئن نیستید؟ %@";
+"onboarding_use_case_community_messaging" = "اجتماعات";
+"onboarding_use_case_work_messaging" = "تیم ها";
+"onboarding_use_case_personal_messaging" = "خانواده و دوستان";
+"onboarding_use_case_message" = "ما به شما کمک میکنیم که متصل شوید";
+"onboarding_use_case_title" = "با چه کسانی بیشتر چت میکنید؟";
+"onboarding_splash_page_4_message" = "المنت برای محیط های شغلی عالی است چرا که توسط امن ترین سازمان های جهانی، استفاده میشود.";
+"onboarding_splash_page_4_title_no_pun" = "ارسال پیام بین اعضای تیمتان.";
+"onboarding_splash_page_3_message" = "رمزنگاری کامل بدون نیاز به شماره تلفن، بدون وجود تبلیغات و دیتاکاوی.";
+"onboarding_splash_page_3_title" = "پیام رسانی امن.";
+"onboarding_splash_page_2_message" = "انتخاب مکان ذخیره سازی پیام هایتان، برایتان کنترل و استقلال را از طریق اتصال به ماتریکس به ارمغان می‌آورد.";
+"onboarding_splash_page_2_title" = "تحت کنترل شماست.";
+"onboarding_splash_page_1_message" = "یک ارتباط امن و مستقل که سطح حریم شخصی آن دقیقا مشابه ارتباط رو در رو در منزل شماست.";
+"accessibility_selected" = "انتخاب شده";
