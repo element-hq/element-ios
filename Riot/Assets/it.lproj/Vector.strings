@@ -2701,3 +2701,4 @@
 "key_backup_recover_from_private_key_progress" = "%@%% Completato";
 "poll_history_detail_view_in_timeline" = "Vedi sondaggio nella linea temporale";
 "settings_push_rules_error" = "Si è verificato un errore aggiornando le tue preferenze di notifica. Prova ad attivare/disattivare di nuovo l'opzione.";
+"authentication_qr_login_failure_device_not_supported" = "Il collegamento con questo dispositivo non è supportato.";
