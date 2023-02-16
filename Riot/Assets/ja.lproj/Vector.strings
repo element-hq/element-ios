@@ -724,9 +724,9 @@
 "room_message_replying_to" = "%@に返信しています";
 "room_message_editing" = "編集中";
 "room_accessiblity_scroll_to_bottom" = "いちばん下までスクロール";
-"room_member_power_level_short_custom" = "カスタム";
+"room_member_power_level_short_custom" = "ユーザー定義";
 "room_member_power_level_short_moderator" = "モデレーター";
-"room_member_power_level_custom_in" = "カスタム（%@）：%@";
+"room_member_power_level_custom_in" = "ユーザー定義（%@）：%@";
 "room_member_power_level_short_admin" = "管理者";
 "room_member_power_level_moderator_in" = "%@のモデレーター";
 "room_member_power_level_admin_in" = "%@の管理者";
@@ -1467,7 +1467,7 @@
 "notification_settings_never_notify" = "通知しない";
 "notification_settings_word_to_match" = "一致する単語";
 "notification_settings_highlight" = "ハイライト";
-"notification_settings_custom_sound" = "カスタムサウンド";
+"notification_settings_custom_sound" = "カスタム音";
 "notification_settings_per_room_notifications" = "ルーム単位の通知";
 "notification_settings_per_sender_notifications" = "送信者単位の通知";
 "notification_settings_sender_hint" = "@user:domain.com";
@@ -2824,3 +2824,4 @@
 "event_formatter_call_missed_voice" = "不在着信（音声）";
 "settings_push_rules_error" = "通知の設定をアップデートする際にエラーが発生しました。もう一度オプションを切り替えてみてください。";
 "settings_presence" = "プレゼンス（ステータス表示）";
+"authentication_qr_login_failure_device_not_supported" = "この端末とのリンクはサポートしていません。";
