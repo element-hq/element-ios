@@ -26,21 +26,38 @@ struct StaticLocationView: View {
     // MARK: Public
     
     @ObservedObject var viewModel: StaticLocationViewingViewModel.Context
-    
+    @State private var showsUserLocation: Bool = false
     // MARK: Views
+    
+    var mapView: LocationSharingMapView {
+        LocationSharingMapView(tileServerMapURL: viewModel.viewState.mapStyleURL,
+                               annotations: [viewModel.viewState.sharedAnnotation],
+                               highlightedAnnotation: viewModel.viewState.sharedAnnotation,
+                               userAvatarData: nil,
+                               showsUserLocation: viewModel.viewState.showsUserLocation,
+                               userLocation: Binding.constant(nil),
+                               mapCenterCoordinate: Binding.constant(nil),
+                               errorSubject: viewModel.viewState.errorSubject)
+    }
     
     var body: some View {
         NavigationView {
-            ZStack(alignment: .bottom) {
-                LocationSharingMapView(tileServerMapURL: viewModel.viewState.mapStyleURL,
-                                       annotations: [viewModel.viewState.sharedAnnotation],
-                                       highlightedAnnotation: viewModel.viewState.sharedAnnotation,
-                                       userAvatarData: viewModel.viewState.userAvatarData,
-                                       showsUserLocation: false,
-                                       userLocation: Binding.constant(nil),
-                                       mapCenterCoordinate: Binding.constant(nil),
-                                       errorSubject: viewModel.viewState.errorSubject)
-                MapCreditsView()
+            ZStack(alignment: .topTrailing) {
+                ZStack(alignment: .bottom) {
+                    mapView
+                    MapCreditsView()
+                }
+                Button {
+                    viewModel.send(viewAction: .showUserLocation)
+                } label: {
+                    Image(uiImage: Asset.Images.locationCenterMapIcon.image)
+                        .foregroundColor(theme.colors.accent)
+                }
+                .padding(8.0)
+                .background(theme.colors.background)
+                .clipShape(Circle())
+                .shadow(radius: 2.0)
+                .offset(x: -11.0, y: 52)
             }
             .ignoresSafeArea(.all, edges: [.bottom])
             .toolbar {

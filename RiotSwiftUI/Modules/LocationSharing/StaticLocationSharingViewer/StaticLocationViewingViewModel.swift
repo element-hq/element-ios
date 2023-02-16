@@ -63,6 +63,8 @@ class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, Static
             completion?(.close)
         case .share:
             completion?(.share(state.sharedAnnotation.coordinate))
+        case .showUserLocation:
+            state.showsUserLocation.toggle()
         }
     }
     
