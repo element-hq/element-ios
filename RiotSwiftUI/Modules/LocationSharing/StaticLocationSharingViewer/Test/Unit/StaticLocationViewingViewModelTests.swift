@@ -79,6 +79,13 @@ class StaticLocationViewingViewModelTests: XCTestCase {
         waitForExpectations(timeout: 3)
     }
     
+    func testToggleShowUserLocation() {
+        let viewModel = buildViewModel()
+        XCTAssertFalse(viewModel.context.viewState.showsUserLocation)
+        viewModel.context.send(viewAction: .showUserLocation)
+        XCTAssertTrue(viewModel.context.viewState.showsUserLocation)
+    }
+    
     private func buildViewModel() -> StaticLocationViewingViewModel {
         StaticLocationViewingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
                                        avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""),
