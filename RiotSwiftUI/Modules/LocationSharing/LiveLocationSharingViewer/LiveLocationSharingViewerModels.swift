@@ -42,6 +42,12 @@ struct LiveLocationSharingViewerViewState: BindableState {
     /// Live location list items
     var listItemsViewData: [LiveLocationListItemViewData]
 
+    var showsUserLocation = false
+    
+    var isCurrentUserShared: Bool {
+        listItemsViewData.contains { $0.isCurrentUser }
+    }
+    
     var showLoadingIndicator = false
     
     var shareButtonEnabled: Bool {
@@ -75,4 +81,5 @@ enum LiveLocationSharingViewerViewAction {
     case tapListItem(_ userId: String)
     case share(_ annotation: UserLocationAnnotation)
     case mapCreditsDidTap
+    case showUserLocation
 }

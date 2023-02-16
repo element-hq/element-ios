@@ -72,6 +72,8 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
             completion?(.share(userLocationAnnotation.coordinate))
         case .mapCreditsDidTap:
             state.bindings.showMapCreditsSheet.toggle()
+        case .showUserLocation:
+            state.showsUserLocation.toggle()
         }
     }
     

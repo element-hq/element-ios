@@ -34,23 +34,42 @@ struct LiveLocationSharingViewer: View {
     
     @ObservedObject var viewModel: LiveLocationSharingViewerViewModel.Context
     
+    var mapView: LocationSharingMapView {
+        LocationSharingMapView(tileServerMapURL: viewModel.viewState.mapStyleURL,
+                               annotations: viewModel.viewState.annotations,
+                               highlightedAnnotation: viewModel.viewState.highlightedAnnotation,
+                               userAvatarData: nil,
+                               showsUserLocation: viewModel.viewState.showsUserLocation,
+                               userAnnotationCanShowCallout: true,
+                               userLocation: Binding.constant(nil),
+                               mapCenterCoordinate: Binding.constant(nil),
+                               onCalloutTap: { annotation in
+                                   if let userLocationAnnotation = annotation as? UserLocationAnnotation {
+                                       viewModel.send(viewAction: .share(userLocationAnnotation))
+                                   }
+                               },
+                               errorSubject: viewModel.viewState.errorSubject)
+    }
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             if !viewModel.viewState.showMapLoadingError {
-                LocationSharingMapView(tileServerMapURL: viewModel.viewState.mapStyleURL,
-                                       annotations: viewModel.viewState.annotations,
-                                       highlightedAnnotation: viewModel.viewState.highlightedAnnotation,
-                                       userAvatarData: nil,
-                                       showsUserLocation: false,
-                                       userAnnotationCanShowCallout: true,
-                                       userLocation: Binding.constant(nil),
-                                       mapCenterCoordinate: Binding.constant(nil),
-                                       onCalloutTap: { annotation in
-                                           if let userLocationAnnotation = annotation as? UserLocationAnnotation {
-                                               viewModel.send(viewAction: .share(userLocationAnnotation))
-                                           }
-                                       },
-                                       errorSubject: viewModel.viewState.errorSubject)
+                ZStack(alignment: .topTrailing) {
+                    mapView
+                    if !viewModel.viewState.isCurrentUserShared {
+                        Button {
+                            viewModel.send(viewAction: .showUserLocation)
+                        } label: {
+                            Image(uiImage: Asset.Images.locationCenterMapIcon.image)
+                                .foregroundColor(theme.colors.accent)
+                        }
+                        .padding(8.0)
+                        .background(theme.colors.background)
+                        .clipShape(Circle())
+                        .shadow(radius: 2.0)
+                        .offset(x: -11.0, y: 52)
+                    }
+                }
                 
                 // Show map credits above collapsed bottom sheet height if bottom sheet is visible
                 if viewModel.viewState.isBottomSheetVisible {
