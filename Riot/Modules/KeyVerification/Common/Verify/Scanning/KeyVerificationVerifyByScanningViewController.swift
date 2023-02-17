@@ -40,8 +40,10 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
     
     @IBOutlet private weak var scanCodeButton: UIButton!
     @IBOutlet private weak var cannotScanButton: UIButton!
-    
+        
     @IBOutlet private weak var qrCodeContainerView: UIView!
+    @IBOutlet private weak var qrCodeScannerContainerView: UIView!
+    @IBOutlet private weak var qrCodeReaderContainerView: UIView!
     
     @IBOutlet private weak var scanButtonContainerView: UIView!
     
@@ -55,6 +57,7 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
     private var cameraAccessManager: CameraAccessManager!
     
     private weak var qrCodeReaderViewController: QRCodeReaderViewController?
+    private var qrCodeReaderView: QRCodeReaderView?
     
     private var alertPresentingViewController: UIViewController {
         return self.qrCodeReaderViewController ?? self
@@ -154,6 +157,8 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
+        case .loaded(viewData: let viewData) where viewData.qrCodeData == nil:
+            self.renderLoadedWithoutQRCodeData(viewData: viewData)
         case .loaded(viewData: let viewData):
             self.renderLoaded(viewData: viewData)
         case .error(let error):
@@ -171,8 +176,40 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
+    private func renderLoadedWithoutQRCodeData(viewData: KeyVerificationVerifyByScanningViewData) {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        
+        self.title = viewData.verificationKind.verificationTitle
+        self.titleLabel.text = VectorL10n.authenticationQrLoginStartTitle
+        self.qrCodeContainerView.isHidden = true
+        self.scanButtonContainerView.isHidden = true
+        self.qrCodeScannerContainerView.isHidden = false
+        
+        if viewData.showScanAction == false {
+            // Update the copy if QR code scanning is not possible at all
+            self.informationLabel.text = VectorL10n.keyVerificationVerifyQrCodeEmojiInformation
+            self.cannotScanButton.setTitle(VectorL10n.keyVerificationVerifyQrCodeStartEmojiAction, for: .normal)
+        } else {
+            self.informationLabel.text = VectorL10n.authenticationQrLoginStartSubtitle
+            
+            if self.qrCodeReaderView == nil {
+                // configure QRCodeReaderView
+                let qrCodeReaderView = QRCodeReaderView()
+                qrCodeReaderView.didFoundData = { [weak self] data in
+                    self?.viewModel.process(viewAction: .scannedCode(payloadData: data))
+                }
+                self.qrCodeReaderView = qrCodeReaderView
+                self.qrCodeReaderContainerView.vc_addSubViewMatchingParent(qrCodeReaderView)
+            }
+        }
+    }
+    
     private func renderLoaded(viewData: KeyVerificationVerifyByScanningViewData) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        
+        self.qrCodeContainerView.isHidden = false
+        self.scanButtonContainerView.isHidden = false
+        qrCodeScannerContainerView.isHidden = true
         
         let hideQRCodeImage: Bool
         
@@ -206,6 +243,11 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
             
             self.scanCodeButton.isHidden = false
             self.informationLabel.text = informationText
+        }
+        
+        if let qrCodeReaderView {
+            qrCodeReaderView.removeFromSuperview()
+            self.qrCodeReaderView = nil
         }
     }
     
@@ -288,6 +330,8 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
         
         if let qrCodeReaderViewController = self.qrCodeReaderViewController {
             qrCodeReaderViewController.present(alert, animated: animated, completion: nil)
+        } else {
+            self.present(alert, animated: true)
         }
     }
     
@@ -316,6 +360,7 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
     
     private func dismissQRCodeScanningIfPresented(animated: Bool, completion: (() -> Void)? = nil) {
         guard self.qrCodeReaderViewController?.presentingViewController != nil else {
+            completion?()
             return
         }
         self.dismiss(animated: animated, completion: completion)
@@ -328,6 +373,7 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
     }
     
     @IBAction private func cannotScanAction(_ sender: Any) {
+        qrCodeReaderView?.stopScanning()
         self.viewModel.process(viewAction: .cannotScan)
     }
     
@@ -352,7 +398,7 @@ extension KeyVerificationVerifyByScanningViewController: KeyVerificationVerifyBy
 // MARK: - QRCodeReaderViewControllerDelegate
 extension KeyVerificationVerifyByScanningViewController: QRCodeReaderViewControllerDelegate {
     
-    func qrCodeReaderViewController(_ viewController: QRCodeReaderViewController, didFound payloadData: Data) {        
+    func qrCodeReaderViewController(_ viewController: QRCodeReaderViewController, didFound payloadData: Data) {
         self.viewModel.process(viewAction: .scannedCode(payloadData: payloadData))
     }
     
