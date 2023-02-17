@@ -64,7 +64,7 @@ class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, Static
         case .share:
             completion?(.share(state.sharedAnnotation.coordinate))
         case .showUserLocation:
-            state.showsUserLocation.toggle()
+            showsCurrentUserLocation()
         }
     }
     
@@ -90,5 +90,15 @@ class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, Static
         }
         
         state.bindings.alertInfo = alertInfo
+    }
+    
+    private let locationManager = CLLocationManager()
+    
+    private func showsCurrentUserLocation() {
+        if locationManager.isAuthorizedOrRequest() {
+            state.showsUserLocation = true
+        } else {
+            state.errorSubject.send(.invalidLocationAuthorization)
+        }
     }
 }

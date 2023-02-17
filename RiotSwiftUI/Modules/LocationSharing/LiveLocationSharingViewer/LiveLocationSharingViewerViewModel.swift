@@ -15,6 +15,7 @@
 //
 
 import Combine
+import CoreLocation
 import Mapbox
 import SwiftUI
 
@@ -73,7 +74,7 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
         case .mapCreditsDidTap:
             state.bindings.showMapCreditsSheet.toggle()
         case .showUserLocation:
-            state.showsUserLocation.toggle()
+            showsCurrentUserLocation()
         }
     }
     
@@ -229,6 +230,16 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
                                                           message: VectorL10n.locationSharingLiveStopSharingError,
                                                           primaryButton: (VectorL10n.ok, nil))
             }
+        }
+    }
+    
+    private let locationManager = CLLocationManager()
+    
+    private func showsCurrentUserLocation() {
+        if locationManager.isAuthorizedOrRequest() {
+            state.showsUserLocation = true
+        } else {
+            state.errorSubject.send(.invalidLocationAuthorization)
         }
     }
 }

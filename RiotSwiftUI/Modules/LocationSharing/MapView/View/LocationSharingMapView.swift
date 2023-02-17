@@ -75,7 +75,7 @@ struct LocationSharingMapView: UIViewRepresentable {
         mapView.vc_removeAllAnnotations()
         mapView.addAnnotations(annotations)
         
-        if let highlightedAnnotation = highlightedAnnotation {
+        if let highlightedAnnotation = highlightedAnnotation, !showsUserLocation {
             mapView.setCenter(highlightedAnnotation.coordinate, zoomLevel: Constants.mapZoomLevel, animated: false)
         }
         

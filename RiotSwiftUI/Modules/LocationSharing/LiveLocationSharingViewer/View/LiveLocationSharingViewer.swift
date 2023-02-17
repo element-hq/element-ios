@@ -54,21 +54,14 @@ struct LiveLocationSharingViewer: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             if !viewModel.viewState.showMapLoadingError {
-                ZStack(alignment: .topTrailing) {
+                    
+                if !viewModel.viewState.isCurrentUserShared {
                     mapView
-                    if !viewModel.viewState.isCurrentUserShared {
-                        Button {
+                        .overlay(CenterToUserLocationButton(action: {
                             viewModel.send(viewAction: .showUserLocation)
-                        } label: {
-                            Image(uiImage: Asset.Images.locationCenterMapIcon.image)
-                                .foregroundColor(theme.colors.accent)
-                        }
-                        .padding(8.0)
-                        .background(theme.colors.background)
-                        .clipShape(Circle())
-                        .shadow(radius: 2.0)
-                        .offset(x: -11.0, y: 52)
-                    }
+                        }).offset(x: -11.0, y: 52), alignment: .topTrailing)
+                } else {
+                    mapView
                 }
                 
                 // Show map credits above collapsed bottom sheet height if bottom sheet is visible
@@ -195,5 +188,29 @@ struct LiveLocationSharingViewer_Previews: PreviewProvider {
             stateRenderer.screenGroup().theme(.light).preferredColorScheme(.light)
             stateRenderer.screenGroup().theme(.dark).preferredColorScheme(.dark)
         }
+    }
+}
+
+struct CenterToUserLocationButton: View {
+    
+    // MARK: Private
+    
+    @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    // MARK: Public
+    
+    var action: () -> Void
+    
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            Image(uiImage: Asset.Images.locationCenterMapIcon.image)
+                .foregroundColor(theme.colors.accent)
+        }
+        .padding(8.0)
+        .background(theme.colors.background)
+        .clipShape(Circle())
+        .shadow(radius: 2.0)
     }
 }
