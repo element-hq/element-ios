@@ -2711,3 +2711,4 @@
 "wysiwyg_composer_format_action_un_indent" = "Zvogëlo shmangie kryeradhë";
 "wysiwyg_composer_format_action_indent" = "Rrit shmangie kryeradhe";
 "poll_history_detail_view_in_timeline" = "Shiheni pyetësorin në rrjedhë kohore";
+"authentication_qr_login_failure_device_not_supported" = "Nuk mbulohet lidhja me këtë pajisje.";
