@@ -2668,3 +2668,4 @@
 "voice_broadcast_playback_unable_to_decrypt" = "Kunde inte avkryptera denna röstsändning.";
 "home_context_menu_mark_as_unread" = "Markera som oläst";
 "key_backup_recover_from_private_key_progress" = "%@%% Färdig";
+"authentication_qr_login_failure_device_not_supported" = "Det finns inget stöd för att länka denna enhet.";
