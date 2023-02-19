@@ -473,7 +473,7 @@
 "room_replacement_information" = "このルームは置き換えられており、アクティブではありません。";
 "room_replacement_link" = "こちらから継続中の会話を確認。";
 "room_predecessor_information" = "このルームは別の会話の続きです。";
-"room_predecessor_link" = "以前のメッセージを表示するには、ここをタップしてください。";
+"room_predecessor_link" = "ここをタップすると、以前のメッセージを表示します。";
 "room_resource_limit_exceeded_message_contact_2_link" = "サービス管理者に連絡してください";
 "room_resource_limit_exceeded_message_contact_3" = " このサービスの使用を継続するには。";
 "room_resource_usage_limit_reached_message_1_default" = "このホームサーバーはリソースの上限に達しました ";
@@ -646,7 +646,7 @@
 "call_no_stun_server_error_title" = "サーバーの不正な設定のため通話に失敗しました";
 "room_does_not_exist" = "%@は存在しません";
 "photo_library_access_not_granted" = "%@にはフォトライブラリーにアクセスする権限がありません。プライバシー設定を変更してください";
-"camera_unavailable" = "この端末ではカメラを利用できません";
+"camera_unavailable" = "この端末ではカメラを使用できません";
 "event_formatter_widget_removed_by_you" = "ウィジェットを削除しました：%@";
 "event_formatter_jitsi_widget_removed_by_you" = "VoIP会議を削除しました";
 "event_formatter_jitsi_widget_added_by_you" = "VoIP会議を追加しました";
@@ -705,7 +705,7 @@
 "settings_key_backup_info_valid" = "このセッションは鍵をバックアップしています。";
 "settings_key_backup_info_algorithm" = "アルゴリズム：%@";
 "settings_key_backup_info_version" = "鍵のバックアップのバージョン：%@";
-"settings_key_backup_info_none" = "このセッションでは鍵がバックアップされていません。";
+"settings_key_backup_info_none" = "鍵はこのセッションからバックアップされていません。";
 "settings_key_backup_info_checking" = "確認しています…";
 "settings_add_3pid_password_message" = "続行するには、Matrixのアカウントのパスワードを入力してください";
 "settings_add_3pid_invalid_password_message" = "認証情報が正しくありません";
@@ -2067,9 +2067,9 @@
 "user_sessions_overview_security_recommendations_section_info" = "以下の勧告に従い、アカウントのセキュリティーを改善しましょう。";
 "user_sessions_overview_security_recommendations_unverified_title" = "未認証のセッション";
 "user_sessions_overview_security_recommendations_inactive_title" = "非アクティブなセッション";
-"user_sessions_overview_security_recommendations_inactive_info" = "使用していない古いセッション（90日以上使用されていません）からサインアウトすることを検討してください。";
+"user_sessions_overview_security_recommendations_inactive_info" = "使用していない古いセッション（90日以上使用されていません）からのサインアウトを検討してください。";
 "user_sessions_overview_other_sessions_section_title" = "その他のセッション";
-"user_sessions_overview_other_sessions_section_info" = "セキュリティーを最大限に高めるには、セッションを認証し、不明なセッションや利用していないセッションからサインアウトしてください。";
+"user_sessions_overview_other_sessions_section_info" = "セキュリティーを最大限に高めるには、セッションを認証し、不明なセッションや使用していないセッションからサインアウトしてください。";
 "user_sessions_show_location_info" = "IPアドレスを表示";
 "user_sessions_hide_location_info" = "IPアドレスを表示しない";
 "user_sessions_overview_current_session_section_title" = "現在のセッション";
@@ -2098,7 +2098,7 @@
 "user_other_session_security_recommendation_title" = "その他のセッション";
 "user_other_session_unverified_sessions_header_subtitle" = "セッションを認証すると、より安全なメッセージのやりとりが可能になります。見覚えのない、または使用していないセッションがあれば、サインアウトしましょう。";
 "user_other_session_current_session_details" = "現在のセッション";
-"user_other_session_verified_sessions_header_subtitle" = "セキュリティーを最大限に高めるには、不明なセッションや利用していないセッションからサインアウトしてください。";
+"user_other_session_verified_sessions_header_subtitle" = "セキュリティーを最大限に高めるには、不明なセッションや使用していないセッションからサインアウトしてください。";
 "user_other_session_filter" = "絞り込む";
 "user_other_session_filter_menu_all" = "全てのセッション";
 "user_other_session_filter_menu_verified" = "認証済";
@@ -2680,7 +2680,7 @@
 "biometrics_desetup_disable_button_title_x" = "%@を無効にする";
 "biometrics_desetup_title_x" = "%@を無効にする";
 "pin_protection_kick_user_alert_message" = "多数のエラーが発生したため、ログアウトしました";
-"pin_protection_not_allowed_pin" = "セキュリティー上の理由で、このPINコードは利用できません。他のPINコードを試してください";
+"pin_protection_not_allowed_pin" = "セキュリティー上の理由で、このPINコードは使用できません。他のPINコードを試してください";
 "pin_protection_settings_change_pin" = "PINコードを変更";
 "pin_protection_settings_enabled_forced" = "PINコードが有効です";
 "pin_protection_settings_section_footer" = "PINコードを再設定するには、再ログインして新しいコードを作成してください。";
