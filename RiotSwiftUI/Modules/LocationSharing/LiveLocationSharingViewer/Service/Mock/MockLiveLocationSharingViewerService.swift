@@ -61,6 +61,10 @@ class MockLiveLocationSharingViewerService: LiveLocationSharingViewerServiceProt
     
     func stopUserLiveLocationSharing(completion: @escaping (Result<Void, Error>) -> Void) { }
     
+    func requestAuthorizationIfNeeded() -> Bool {
+        return true
+    }
+    
     // MARK: Private
     
     private func createFirstUserLiveLocation() -> UserLiveLocation {

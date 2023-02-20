@@ -15,7 +15,6 @@
 //
 
 import Combine
-import CoreLocation
 import Mapbox
 import SwiftUI
 
@@ -233,10 +232,8 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
         }
     }
     
-    private let locationManager = CLLocationManager()
-    
     private func showsCurrentUserLocation() {
-        if locationManager.isAuthorizedOrRequest() {
+        if liveLocationSharingViewerService.requestAuthorizationIfNeeded() {
             state.showsUserLocation = true
         } else {
             state.errorSubject.send(.invalidLocationAuthorization)

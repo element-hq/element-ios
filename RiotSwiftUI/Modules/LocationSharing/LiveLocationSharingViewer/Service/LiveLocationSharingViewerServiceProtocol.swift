@@ -33,4 +33,6 @@ protocol LiveLocationSharingViewerServiceProtocol {
     
     /// Stop current user location sharing
     func stopUserLiveLocationSharing(completion: @escaping (Result<Void, Error>) -> Void)
+    
+    func requestAuthorizationIfNeeded() -> Bool
 }

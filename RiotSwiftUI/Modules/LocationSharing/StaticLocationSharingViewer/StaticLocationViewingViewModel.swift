@@ -95,7 +95,7 @@ class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, Static
     private let locationManager = CLLocationManager()
     
     private func showsCurrentUserLocation() {
-        if locationManager.isAuthorizedOrRequest() {
+        if locationManager.requestAuthorizationIfNeeded() {
             state.showsUserLocation = true
         } else {
             state.errorSubject.send(.invalidLocationAuthorization)

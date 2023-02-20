@@ -228,7 +228,7 @@ extension LocationManager: CLLocationManagerDelegate {
 }
 
 extension CLLocationManager {
-    func isAuthorizedOrRequest() -> Bool {
+    func requestAuthorizationIfNeeded() -> Bool {
         switch authorizationStatus {
         case .notDetermined:
             requestWhenInUseAuthorization()
