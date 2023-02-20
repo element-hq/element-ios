@@ -2721,3 +2721,4 @@
 "wysiwyg_composer_format_action_indent" = "Behúzás növelése";
 "poll_history_detail_view_in_timeline" = "Szavazás megjelenítése az idővonalon";
 "settings_push_rules_error" = "Hiba történt az értesítések beállításának frissítésekor. Próbáld meg az beállítást újra átkapcsolni.";
+"authentication_qr_login_failure_device_not_supported" = "Ezzel az eszközzel való összeköttetés nem támogatott.";
