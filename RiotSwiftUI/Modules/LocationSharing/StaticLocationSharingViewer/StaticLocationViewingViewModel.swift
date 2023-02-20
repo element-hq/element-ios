@@ -24,6 +24,7 @@ class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, Static
 
     // MARK: Private
     
+    private var staticLocationSharingViewerService: StaticLocationSharingViewerServiceProtocol
     private var mapViewErrorAlertInfoBuilder: MapViewErrorAlertInfoBuilder
 
     // MARK: Public
@@ -32,7 +33,10 @@ class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, Static
     
     // MARK: - Setup
     
-    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D, coordinateType: LocationSharingCoordinateType) {
+    init(mapStyleURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D, coordinateType: LocationSharingCoordinateType, service: StaticLocationSharingViewerServiceProtocol) {
+        
+        staticLocationSharingViewerService = service
+        
         let sharedAnnotation: LocationAnnotation
         switch coordinateType {
         case .user:
@@ -92,10 +96,8 @@ class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, Static
         state.bindings.alertInfo = alertInfo
     }
     
-    private let locationManager = CLLocationManager()
-    
     private func showsCurrentUserLocation() {
-        if locationManager.requestAuthorizationIfNeeded() {
+        if staticLocationSharingViewerService.requestAuthorizationIfNeeded() {
             state.showsUserLocation = true
         } else {
             state.errorSubject.send(.invalidLocationAuthorization)

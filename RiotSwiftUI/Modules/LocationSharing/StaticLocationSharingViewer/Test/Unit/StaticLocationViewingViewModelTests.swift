@@ -90,6 +90,7 @@ class StaticLocationViewingViewModelTests: XCTestCase {
         StaticLocationViewingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
                                        avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""),
                                        location: CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096),
-                                       coordinateType: .user)
+                                       coordinateType: .user,
+                                       service: MockStaticLocationSharingViewerService())
     }
 }
