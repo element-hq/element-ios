@@ -32,7 +32,7 @@ struct MapViewErrorAlertInfoBuilder {
         case .invalidLocationAuthorization:
             alertInfo = AlertInfo(id: .authorizationError,
                                   title: VectorL10n.locationSharingInvalidAuthorizationErrorTitle(AppInfo.current.displayName),
-                                  primaryButton: (VectorL10n.locationSharingInvalidAuthorizationNotNow, primaryButtonCompletion),
+                                  primaryButton: (VectorL10n.locationSharingInvalidAuthorizationNotNow, {}),
                                   secondaryButton: (VectorL10n.locationSharingInvalidAuthorizationSettings, primaryButtonCompletion))
         default:
             alertInfo = nil

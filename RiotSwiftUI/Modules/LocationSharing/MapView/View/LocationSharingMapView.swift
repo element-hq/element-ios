@@ -75,7 +75,7 @@ struct LocationSharingMapView: UIViewRepresentable {
         mapView.vc_removeAllAnnotations()
         mapView.addAnnotations(annotations)
         
-        if let highlightedAnnotation = highlightedAnnotation {
+        if let highlightedAnnotation = highlightedAnnotation, !showsUserLocation {
             mapView.setCenter(highlightedAnnotation.coordinate, zoomLevel: Constants.mapZoomLevel, animated: false)
         }
         
@@ -125,11 +125,14 @@ extension LocationSharingMapView {
                 return LocationAnnotationView(userLocationAnnotation: userLocationAnnotation)
             } else if let pinLocationAnnotation = annotation as? PinLocationAnnotation {
                 return LocationAnnotationView(pinLocationAnnotation: pinLocationAnnotation)
-            } else if annotation is MGLUserLocation, let currentUserAvatarData = locationSharingMapView.userAvatarData {
-                // Replace default current location annotation view with a UserLocationAnnotatonView when the map is center on user location
-                return LocationAnnotationView(avatarData: currentUserAvatarData)
+            } else if annotation is MGLUserLocation {
+                if let currentUserAvatarData = locationSharingMapView.userAvatarData {
+                    // Replace default current location annotation view with a UserLocationAnnotatonView when the map is center on user location
+                    return LocationAnnotationView(avatarData: currentUserAvatarData)
+                } else {
+                    return LocationAnnotationView(userPinLocationAnnotation: annotation)
+                }
             }
-
             return nil
         }
         

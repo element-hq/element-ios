@@ -48,7 +48,11 @@ class LocationAnnotationView: MGLUserLocationAnnotationView {
         
         addUserMarkerView(with: userLocationAnnotation.avatarData)
     }
-    
+    convenience init(userPinLocationAnnotation: MGLAnnotation) {
+        self.init(annotation: userPinLocationAnnotation, reuseIdentifier: "userPinLocation")
+        
+        addPinView()
+    }
     convenience init(pinLocationAnnotation: PinLocationAnnotation) {
         // TODO: Use a reuseIdentifier
         self.init(annotation: pinLocationAnnotation, reuseIdentifier: nil)
@@ -72,6 +76,16 @@ class LocationAnnotationView: MGLUserLocationAnnotationView {
         }
         
         addMarkerView(avatarMarkerView)
+    }
+    
+    private func addPinView() {
+        guard let pinView = UIHostingController(rootView: Image(uiImage: Asset.Images.locationMarkerIcon.image)
+            .resizable()
+            .foregroundColor(theme.colors.accent)).view else {
+            return
+        }
+        
+        addMarkerView(pinView)
     }
     
     private func addPinMarkerView() {
