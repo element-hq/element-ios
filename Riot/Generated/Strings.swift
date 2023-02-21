@@ -1851,6 +1851,14 @@ public class VectorL10n: NSObject {
   public static var deviceVerificationIncomingTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_incoming_title") 
   }
+  /// Point your camera at the QR code displayed on your other device to verify this session
+  public static var deviceVerificationScanQrCodeInformation: String { 
+    return VectorL10n.tr("Vector", "device_verification_scan_qr_code_information") 
+  }
+  /// Scan QR code
+  public static var deviceVerificationScanQrCodeTitle: String { 
+    return VectorL10n.tr("Vector", "device_verification_scan_qr_code_title") 
+  }
   /// Compare the unique emoji, ensuring they appear in the same order.
   public static var deviceVerificationSecurityAdviceEmoji: String { 
     return VectorL10n.tr("Vector", "device_verification_security_advice_emoji") 

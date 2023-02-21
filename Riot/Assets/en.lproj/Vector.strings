@@ -1529,6 +1529,9 @@ Tap the + to start adding people.";
 "device_verification_cancelled" = "The other party cancelled the verification.";
 "device_verification_cancelled_by_me" = "The verification has been cancelled. Reason: %@";
 "device_verification_error_cannot_load_device" = "Cannot load session information.";
+"device_verification_scan_qr_code_title" = "Scan QR code";
+"device_verification_scan_qr_code_information" = "Point your camera at the QR code displayed on your other device to verify this session";
+
 
 // MARK: Incoming
 "device_verification_incoming_title" = "Incoming Verification Request";
