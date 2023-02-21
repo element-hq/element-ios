@@ -30,6 +30,7 @@ enum QRLoginServiceMode {
 enum QRLoginServiceError: Error, Equatable {
     case noCameraAccess
     case noCameraAvailable
+    case deviceNotSupported
     case invalidQR
     case requestDenied
     case requestTimedOut

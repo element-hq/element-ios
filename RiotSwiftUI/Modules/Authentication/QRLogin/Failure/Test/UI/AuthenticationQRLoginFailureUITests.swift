@@ -32,6 +32,20 @@ class AuthenticationQRLoginFailureUITests: MockScreenTestCase {
         XCTAssertTrue(cancelButton.isEnabled)
     }
 
+    func testDeviceNotSupported() {
+        app.goToScreenWithIdentifier(MockAuthenticationQRLoginFailureScreenState.deviceNotSupported.title)
+
+        XCTAssertTrue(app.staticTexts["failureLabel"].exists)
+
+        let retryButton = app.buttons["retryButton"]
+        XCTAssertTrue(retryButton.exists)
+        XCTAssertTrue(retryButton.isEnabled)
+
+        let cancelButton = app.buttons["cancelButton"]
+        XCTAssertTrue(cancelButton.exists)
+        XCTAssertTrue(cancelButton.isEnabled)
+    }
+
     func testRequestDenied() {
         app.goToScreenWithIdentifier(MockAuthenticationQRLoginFailureScreenState.requestDenied.title)
 

@@ -158,4 +158,32 @@ final class ComposerUITests: MockScreenTestCase {
         XCTAssertFalse(minimiseButton.exists)
         XCTAssertTrue(maximiseButton.exists)
     }
+
+    func testCreatingListDisplaysIndentButtons() throws {
+        app.goToScreenWithIdentifier(MockComposerScreenState.send.title)
+
+        XCTAssertFalse(composerToolbarButton(in: app, for: .indent).exists)
+        XCTAssertFalse(composerToolbarButton(in: app, for: .indent).exists)
+        // Create a list.
+        composerToolbarButton(in: app, for: .orderedList).tap()
+        XCTAssertTrue(composerToolbarButton(in: app, for: .indent).exists)
+        XCTAssertTrue(composerToolbarButton(in: app, for: .indent).exists)
+        // Remove the list
+        composerToolbarButton(in: app, for: .orderedList).tap()
+        XCTAssertFalse(composerToolbarButton(in: app, for: .indent).exists)
+        XCTAssertFalse(composerToolbarButton(in: app, for: .indent).exists)
+    }
+}
+
+private extension ComposerUITests {
+    /// Returns the button of the composer toolbar associated with given format type.
+    ///
+    /// - Parameters:
+    ///   - app: the running app
+    ///   - formatType: format type to look for
+    /// - Returns: XCUIElement for the button
+    func composerToolbarButton(in app: XCUIApplication, for formatType: FormatType) -> XCUIElement {
+        // Note: state is irrelevant here, we're just building this to retrieve the accessibility identifier.
+        app.buttons[FormatItem(type: formatType, state: .enabled).accessibilityIdentifier]
+    }
 }

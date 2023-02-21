@@ -171,8 +171,16 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
     @MainActor
     private func processQRLoginCode(_ code: QRLoginCode) async {
         MXLog.debug("[QRLoginService] processQRLoginCode: \(code)")
-        state = .connectingToDevice
-        
+
+        // we check these first so that we can show a more specific error message
+        guard code.rendezvous.transport?.type == "org.matrix.msc3886.http.v1",
+              let algorithm = RendezvousChannelAlgorithm(rawValue: code.rendezvous.algorithm) else {
+            MXLog.error("[QRLoginService] Unsupported algorithm or transport")
+            state = .failed(error: .deviceNotSupported)
+            return
+        }
+
+        // so, this is of an expected algorithm so any bad data can be considered an invalid QR code
         guard code.intent == QRLoginRendezvousPayload.Intent.loginReciprocate.rawValue,
               let uri = code.rendezvous.transport?.uri,
               let rendezvousURL = URL(string: uri),
@@ -182,9 +190,11 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
             return
         }
         
+        state = .connectingToDevice
+
         let transport = RendezvousTransport(baseURL: BuildSettings.rendezvousServerBaseURL,
                                             rendezvousURL: rendezvousURL)
-        let rendezvousService = RendezvousService(transport: transport)
+        let rendezvousService = RendezvousService(transport: transport, algorithm: algorithm)
         self.rendezvousService = rendezvousService
         
         MXLog.debug("[QRLoginService] Joining the rendezvous at \(rendezvousURL)")

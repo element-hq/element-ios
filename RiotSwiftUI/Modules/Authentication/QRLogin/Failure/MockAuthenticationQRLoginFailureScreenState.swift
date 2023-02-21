@@ -24,6 +24,7 @@ enum MockAuthenticationQRLoginFailureScreenState: MockScreenState, CaseIterable 
     // with specific, minimal associated data that will allow you
     // mock that screen.
     case invalidQR
+    case deviceNotSupported
     case requestDenied
     case requestTimedOut
     
@@ -35,7 +36,7 @@ enum MockAuthenticationQRLoginFailureScreenState: MockScreenState, CaseIterable 
     /// A list of screen state definitions
     static var allCases: [MockAuthenticationQRLoginFailureScreenState] {
         // Each of the presence statuses
-        [.invalidQR, .requestDenied, .requestTimedOut]
+        [.invalidQR, .deviceNotSupported, .requestDenied, .requestTimedOut]
     }
     
     /// Generate the view struct for the screen state.
@@ -45,6 +46,8 @@ enum MockAuthenticationQRLoginFailureScreenState: MockScreenState, CaseIterable 
         switch self {
         case .invalidQR:
             viewModel = .init(qrLoginService: MockQRLoginService(withState: .failed(error: .invalidQR)))
+        case .deviceNotSupported:
+            viewModel = .init(qrLoginService: MockQRLoginService(withState: .failed(error: .deviceNotSupported)))
         case .requestDenied:
             viewModel = .init(qrLoginService: MockQRLoginService(withState: .failed(error: .requestDenied)))
         case .requestTimedOut:

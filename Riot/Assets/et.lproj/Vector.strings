@@ -2673,3 +2673,4 @@
 "wysiwyg_composer_format_action_indent" = "Suurenda taandrida";
 "settings_push_rules_error" = "Teavituste eelistuste muutmisel tekkis viga. Palun proovi sama valikut uuesti sisse/välja lülitada.";
 "poll_history_detail_view_in_timeline" = "Näita küsitlust ajajoonel";
+"authentication_qr_login_failure_device_not_supported" = "Sidumine selle seadmega ei ole toetatud.";

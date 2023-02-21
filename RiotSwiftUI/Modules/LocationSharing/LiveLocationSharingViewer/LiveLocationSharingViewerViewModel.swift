@@ -72,6 +72,8 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
             completion?(.share(userLocationAnnotation.coordinate))
         case .mapCreditsDidTap:
             state.bindings.showMapCreditsSheet.toggle()
+        case .showUserLocation:
+            showsCurrentUserLocation()
         }
     }
     
@@ -227,6 +229,14 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
                                                           message: VectorL10n.locationSharingLiveStopSharingError,
                                                           primaryButton: (VectorL10n.ok, nil))
             }
+        }
+    }
+    
+    private func showsCurrentUserLocation() {
+        if liveLocationSharingViewerService.requestAuthorizationIfNeeded() {
+            state.showsUserLocation = true
+        } else {
+            state.errorSubject.send(.invalidLocationAuthorization)
         }
     }
 }

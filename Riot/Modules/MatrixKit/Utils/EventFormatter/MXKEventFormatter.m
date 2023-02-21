@@ -1900,7 +1900,7 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
                 repliedEventContent = [MXEventContentPollStart modelFromJSON:repliedEvent.content].question;
             }
             if (!repliedEventContent && repliedEvent.eventType == MXEventTypePollEnd) {
-                repliedEventContent = MXSendReplyEventDefaultStringLocalizer.new.replyToEndedPoll;
+                repliedEventContent = MXSendReplyEventDefaultStringLocalizer.new.endedPollMessage;
             }
         }
 

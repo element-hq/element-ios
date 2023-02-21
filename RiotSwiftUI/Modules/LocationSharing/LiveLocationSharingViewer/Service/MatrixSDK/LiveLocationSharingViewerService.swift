@@ -19,11 +19,13 @@ import Foundation
 import MatrixSDK
 
 class LiveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol {
+    
     // MARK: - Properties
     
     private(set) var usersLiveLocation: [UserLiveLocation] = []
     private let roomId: String
     private var beaconInfoSummaryListener: Any?
+    private let locationManager = CLLocationManager()
     
     // MARK: Private
     
@@ -72,6 +74,10 @@ class LiveLocationSharingViewerService: LiveLocationSharingViewerServiceProtocol
                 completion(.failure(error))
             }
         }
+    }
+    
+    func requestAuthorizationIfNeeded() -> Bool {
+        locationManager.requestAuthorizationIfNeeded()
     }
     
     // MARK: - Private

@@ -239,6 +239,7 @@
 "authentication_qr_login_loading_signed_in" = "You are now signed in on your other device.";
 
 "authentication_qr_login_failure_title" = "Linking failed";
+"authentication_qr_login_failure_device_not_supported" = "Linking with this device is not supported.";
 "authentication_qr_login_failure_invalid_qr" = "QR code is invalid.";
 "authentication_qr_login_failure_request_denied" = "The request was denied on the other device.";
 "authentication_qr_login_failure_request_timed_out" = "The linking wasn’t completed in the required time.";

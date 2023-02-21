@@ -21,8 +21,7 @@ struct MentionsAndKeywordNotificationSettings: View {
     
     var keywordSection: some View {
         SwiftUI.Section(
-            header: FormSectionHeader(text: VectorL10n.settingsYourKeywords),
-            footer: FormSectionFooter(text: VectorL10n.settingsMentionsAndKeywordsEncryptionNotice)
+            header: FormSectionHeader(text: VectorL10n.settingsYourKeywords)
         ) {
             NotificationSettingsKeywords(viewModel: viewModel)
         }

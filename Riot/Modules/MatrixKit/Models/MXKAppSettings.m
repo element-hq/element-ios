@@ -199,7 +199,9 @@ static NSString *const kMXAppGroupID = @"group.org.matrix";
             kMXEventTypeStringCallHangup,
             kMXEventTypeStringSticker,
             kMXEventTypeStringPollStart,
-            kMXEventTypeStringPollStartMSC3381
+            kMXEventTypeStringPollStartMSC3381,
+            kMXEventTypeStringPollEnd,
+            kMXEventTypeStringPollEndMSC3381
         ].mutableCopy;
         
         _messageDetailsAllowSharing = YES;

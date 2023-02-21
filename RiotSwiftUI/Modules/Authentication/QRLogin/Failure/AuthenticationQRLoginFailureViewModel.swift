@@ -55,6 +55,9 @@ class AuthenticationQRLoginFailureViewModel: AuthenticationQRLoginFailureViewMod
             case .invalidQR:
                 self.state.failureText = VectorL10n.authenticationQrLoginFailureInvalidQr
                 self.state.retryButtonVisible = true
+            case .deviceNotSupported:
+                self.state.failureText = VectorL10n.authenticationQrLoginFailureDeviceNotSupported
+                self.state.retryButtonVisible = true
             case .requestDenied:
                 self.state.failureText = VectorL10n.authenticationQrLoginFailureRequestDenied
                 self.state.retryButtonVisible = false

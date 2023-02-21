@@ -2661,10 +2661,11 @@
 "settings_labs_confirm_crypto_sdk" = "Vänligen observera att den här funktionen fortfarande ska anses vara experimentell, den kanske inte fungerar som förväntat eller kan leda till okända konsekvenser. För att återgå, logga ut och logga sedan in igen. Använd på egen risk.";
 "settings_labs_enable_crypto_sdk" = "Totalsträckskryptering i Rust";
 "accessibility_selected" = "vald";
-"settings_push_rules_error" = "Ett fel uppstod vid uppdatering av dina aviseringsinställningar. Vänligen försök att växla dina alternativ igen.";
+"settings_push_rules_error" = "Ett fel uppstod vid uppdatering av dina aviseringsinställningar. Vänligen försök igen.";
 "wysiwyg_composer_format_action_un_indent" = "Minska indrag";
 "wysiwyg_composer_format_action_indent" = "Öka indrag";
 "poll_history_detail_view_in_timeline" = "Visa omröstning i tidslinje";
 "voice_broadcast_playback_unable_to_decrypt" = "Kunde inte avkryptera denna röstsändning.";
 "home_context_menu_mark_as_unread" = "Markera som oläst";
 "key_backup_recover_from_private_key_progress" = "%@%% Färdig";
+"authentication_qr_login_failure_device_not_supported" = "Det finns inget stöd för att länka denna enhet.";
