@@ -44,3 +44,6 @@
 "VOICE_CONF_NAMED_FROM_USER" = "Grupas zvans no %@: '%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Grupas video zvans no %@: '%@'";
+/** General **/
+
+"Notification" = "Paziņojums";

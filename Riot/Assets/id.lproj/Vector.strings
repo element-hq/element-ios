@@ -2928,3 +2928,4 @@
 "wysiwyg_composer_format_action_indent" = "Tambahkan indentasi";
 "poll_history_detail_view_in_timeline" = "Tampilkan pemungutan suara dalam lini masa";
 "settings_push_rules_error" = "Sebuah kesalahan terjadi ketika memperbarui preferensi notifikasi Anda. Silakan alih ulang opsi Anda.";
+"authentication_qr_login_failure_device_not_supported" = "Penautan dengan perangkat ini tidak didukung.";
