@@ -31,6 +31,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     private let parentSpaceId: String?
     private let initialSection: RoomInfoSection
     private let dismissOnCancel: Bool
+    private let canAddParticipants: Bool
     private weak var roomSettingsViewController: RoomSettingsViewController?
     
     private lazy var segmentedViewController: SegmentedViewController = {
@@ -43,6 +44,8 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         participants.parentSpaceId = self.parentSpaceId
         participants.delegate = self
         participants.screenTracker = AnalyticsScreenTracker(screen: .roomMembers)
+        participants.showInviteUserFab = self.canAddParticipants
+        
         
         let files = RoomFilesViewController()
         files.finalizeInit()
@@ -105,6 +108,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         self.room = parameters.room
         self.parentSpaceId = parameters.parentSpaceId
         self.initialSection = parameters.initialSection
+        self.canAddParticipants = parameters.canAddParticipants
         self.dismissOnCancel = parameters.dismissOnCancel
     }    
     

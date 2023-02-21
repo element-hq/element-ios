@@ -251,6 +251,50 @@ extension RoomViewController {
         composerLinkActionBridgePresenter = presenter
         presenter.present(from: self, animated: true)
     }
+    
+    @objc func showWaitingOtherParticipantHeader() {
+        let controller = VectorHostingController(rootView: RoomWaitingForMembers())
+        guard let headerView = controller.view else {
+            return
+        }
+        self.waitingOtherParticipantViewController = controller
+        self.addChild(controller)
+                
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.vc_addSubViewMatchingParent(headerView, withInsets: UIEdgeInsets(top: 9, left: 9, bottom: -9, right: -9))
+
+        self.bubblesTableView.tableHeaderView = containerView
+        NSLayoutConstraint.activate([
+            containerView.centerXAnchor.constraint(equalTo: self.bubblesTableView.centerXAnchor),
+            containerView.widthAnchor.constraint(equalTo: self.bubblesTableView.widthAnchor),
+            containerView.topAnchor.constraint(equalTo: self.bubblesTableView.topAnchor)
+        ])
+        controller.didMove(toParent: self)
+        
+        self.bubblesTableView.tableHeaderView?.layoutIfNeeded()
+    }
+    
+    @objc func hideWaitingOtherParticipantHeader() {
+        guard let waitingOtherParticipantViewController else {
+            return
+        }
+        waitingOtherParticipantViewController.removeFromParent()
+        self.bubblesTableView.tableHeaderView = nil
+        waitingOtherParticipantViewController.didMove(toParent: nil)
+        self.waitingOtherParticipantViewController = nil
+    }
+    
+    @objc func waitForOtherParticipant(_ wait: Bool) {
+        self.isWaitingForOtherParticipants = wait
+        if wait {
+            showWaitingOtherParticipantHeader()
+        } else {
+            hideWaitingOtherParticipantHeader()
+        }
+    }
+    
 }
 
 // MARK: - Private Helpers

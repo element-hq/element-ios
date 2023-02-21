@@ -125,6 +125,8 @@ extern NSTimeInterval const kResizeComposerAnimationDuration;
 
 @property (nonatomic, strong, nullable) ComposerLinkActionBridgePresenter *composerLinkActionBridgePresenter;
 
+@property (weak, nonatomic, nullable) UIViewController *waitingOtherParticipantViewController;
+@property (nonatomic) BOOL isWaitingForOtherParticipants;
 
 /**
  Retrieve the live data source in cases where the timeline is not live.
