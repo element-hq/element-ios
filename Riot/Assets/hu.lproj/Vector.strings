@@ -2710,10 +2710,15 @@
 // MARK: - Launch loading
 
 "launch_loading_migrating_data" = "Adatok migrálása\n%@ %%";
-"settings_labs_disable_crypto_sdk" = "Végpontok közötti titkosítás 2.0 (kikapcsoláshoz kijelentkezés szükséges)";
-"settings_labs_confirm_crypto_sdk" = "Ezzel az opcióval egy gyorsabb és megbízhatóbb végponttól végponting titkosító motor kerül engedélyezésre ami Rustban lett megírva. Bekapcsolás után a kikapcsolásához ki kell jelentkezni. Folytatod?";
-"settings_labs_enable_crypto_sdk" = "Az új Rust alapú Titkosítási SDK engedélyezése";
+"settings_labs_disable_crypto_sdk" = "Rust végpontok közötti titkosítás (kikapcsoláshoz kijelentkezés szükséges)";
+"settings_labs_confirm_crypto_sdk" = "Ez a funkció még kísérleti fázisban van. Lehet, hogy nem az elvártnak megfelelően fog működni és előre nem látható következménye lehet. A funkció kikapcsolásához egyszerű ki-, és bejelentkezés szükséges. Használata csak saját felelősségre.";
+"settings_labs_enable_crypto_sdk" = "Rust végpontok közötti titkosítás";
 "home_context_menu_mark_as_unread" = "Olvasatlannak jelöl";
 "poll_history_fetching_error" = "Szavazás betöltési hiba.";
 "voice_broadcast_playback_unable_to_decrypt" = "A hang közvetítés nem fejthető vissza.";
 "key_backup_recover_from_private_key_progress" = "%@%% kész";
+"wysiwyg_composer_format_action_un_indent" = "Behúzás csökkentése";
+"wysiwyg_composer_format_action_indent" = "Behúzás növelése";
+"poll_history_detail_view_in_timeline" = "Szavazás megjelenítése az idővonalon";
+"settings_push_rules_error" = "Hiba történt az értesítések beállításának frissítésekor. Próbáld meg az beállítást újra átkapcsolni.";
+"authentication_qr_login_failure_device_not_supported" = "Ezzel az eszközzel való összeköttetés nem támogatott.";

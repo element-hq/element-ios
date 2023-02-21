@@ -1,6 +1,6 @@
 // Titles
 "title_home" = "首頁";
-"title_favourites" = "收藏夾";
+"title_favourites" = "喜好項目";
 "title_people" = "聯絡人";
 "title_rooms" = "聊天室";
 "title_groups" = "社群";
@@ -8,7 +8,7 @@
 // Actions
 "view" = "檢視";
 "next" = "下一步";
-"back" = "返回";
+"back" = "上一步";
 "continue" = "繼續";
 "create" = "建立";
 "start" = "開始";
@@ -618,10 +618,10 @@
 "joined" = "已加入";
 "skip" = "跳過";
 "close" = "關閉";
-"store_promotional_text" = "開放網絡上的隱私保護聊天和協作應用程序。 去中心化管理。 沒有數據挖掘，沒有後門，也沒有第三方存取。";
+"store_promotional_text" = "開放網路上的隱私保護聊天和協作應用程式。去中心化管理。沒有資料探勘，沒有後門，也沒有第三方存取。";
 "store_full_description" = "Element是一種新型的通訊和協作應用程式，它可以使你：\n\n1.掌控您的隱私\n2.可以與Matrix網絡中的任何人進行通信，甚至可以與Slack等應用程式整合\n3.保護您免受廣告，數據挖掘，後門和封閉平台的侵害\n4.通過端到端加密和交互簽名來驗證他人，從而保護您的安全\n\nElement是去中心化的開源軟件，因此與其他通訊和協作應用程式完全不同。\n\nElement允許您自行架設（或選擇託管）伺服器，使您擁有隱私權，所有權以及對數據和會話的控制權。自行架設的伺服器可以使您訪問開放的網絡；因此，您不僅可以只與其他 Element 用戶聊天。而且非常安全。\n\nElement之所以能夠達至所有這些目標，是因為它在Matrix（開放，去中心化通信的標準）上運行。\n\nElement通過讓您選擇託管對話的伺服器來控制您的訊息和資料。在Element應用程式中，您可以選擇以不同方式託管你的訊息：\n\n1.在matrix.org公共伺服器上獲得一個免費帳戶\n2.通過在自己的硬件上架設伺服器來託管帳戶\n3.訂閱Element Matrix Services託管平台，即可在自定伺服器上註冊帳戶\n\n為什麼選擇Element？\n\n擁有您的數據：您可以決定將數據和訊息保留在何處。您擁有並控制它，而不是某些超大型企業一樣，會挖掘您的數據或把數據提供給第三方。\n\n開放的通訊和協作：您可以與Matrix網絡中的任何人聊天，無論他們使用的是Element還是其他Matrix應用程式，甚至他們使用的是Slack，IRC或XMPP之類的其他通訊系統。\n\n超級安全：真正的端到端加密（只有對話中的人才能解密消息），並進行交互簽名以驗證對話參與者的設備。\n\n完整的通信：文字通訊，語音和視像通話，文件共享，屏幕共享以及大量整合，機器人和小部件。建立房間、社群，保持聯繫並完成工作。\n\n無論您身在何處都可保持聯繫：無論您身在何處，都可以通過 https://element.io/app 在所有設備和網絡上完全同步訊息歷史記錄來保持聯繫。";
 // String for App Store
-"store_short_description" = "去中心化的安全通訊軟件";
+"store_short_description" = "去中心化的安全通訊軟體";
 "settings_three_pids_management_information_part1" = "在此管理你可以用作登入或回復帳戶的電郵或電話號碼。你也可控制誰可以用這些資料找到你。 ";
 "external_link_confirmation_message" = "此鏈結 %@ 將帶你到另一網頁: %@\n\n確定要前往?";
 "external_link_confirmation_title" = "按此鏈結";
@@ -1141,7 +1141,7 @@
 "notice_room_history_visible_to_members" = "%@ 讓所有聊天室成員都能看到未來的房間歷史記錄。";
 "stop" = "停止";
 "joining" = "正在加入";
-"enable" = "啓用";
+"enable" = "啟用";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "確認接受 %@";
 /* The placeholder will show the homeserver's domain */
 "authentication_terms_message" = "請閱讀 %@ 的條款與政策";

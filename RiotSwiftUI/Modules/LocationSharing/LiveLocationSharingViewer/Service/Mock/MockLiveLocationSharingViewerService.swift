@@ -27,12 +27,17 @@ class MockLiveLocationSharingViewerService: LiveLocationSharingViewerServiceProt
     
     // MARK: Setup
     
-    init(generateRandomUsers: Bool = false) {
-        let firstUserLiveLocation = createFirstUserLiveLocation()
+    init(generateRandomUsers: Bool = false, currentUserSharingLocation: Bool = true) {
+        let firstUserLiveLocation: UserLiveLocation?
+        if currentUserSharingLocation {
+            firstUserLiveLocation = createFirstUserLiveLocation()
+        } else {
+            firstUserLiveLocation = nil
+        }
         
         let secondUserLiveLocation = createSecondUserLiveLocation()
         
-        var usersLiveLocation: [UserLiveLocation] = [firstUserLiveLocation, secondUserLiveLocation]
+        var usersLiveLocation: [UserLiveLocation] = [firstUserLiveLocation, secondUserLiveLocation].compactMap { $0 }
         
         if generateRandomUsers {
             for _ in 1...20 {
@@ -55,6 +60,10 @@ class MockLiveLocationSharingViewerService: LiveLocationSharingViewerServiceProt
     func stopListeningLiveLocationUpdates() { }
     
     func stopUserLiveLocationSharing(completion: @escaping (Result<Void, Error>) -> Void) { }
+    
+    func requestAuthorizationIfNeeded() -> Bool {
+        return true
+    }
     
     // MARK: Private
     

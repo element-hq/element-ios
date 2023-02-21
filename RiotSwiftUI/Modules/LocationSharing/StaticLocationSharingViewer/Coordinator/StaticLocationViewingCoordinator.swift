@@ -53,7 +53,8 @@ final class StaticLocationViewingCoordinator: Coordinator, Presentable {
             mapStyleURL: parameters.session.vc_homeserverConfiguration().tileServer.mapStyleURL,
             avatarData: parameters.avatarData,
             location: parameters.location,
-            coordinateType: parameters.coordinateType
+            coordinateType: parameters.coordinateType,
+            service: StaticLocationSharingViewerService()
         )
         let view = StaticLocationView(viewModel: viewModel.context)
             .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.mediaManager)))

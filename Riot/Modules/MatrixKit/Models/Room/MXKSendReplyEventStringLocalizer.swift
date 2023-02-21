@@ -49,7 +49,7 @@ class MXKSendReplyEventStringLocalizer: NSObject, MXSendReplyEventStringLocalize
         VectorL10n.messageReplyToMessageToReplyToPrefix
     }
     
-    func replyToEndedPoll() -> String {
+    func endedPollMessage() -> String {
         VectorL10n.pollTimelineReplyEndedPoll
     }
 }

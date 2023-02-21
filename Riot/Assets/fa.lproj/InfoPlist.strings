@@ -1,1 +1,11 @@
 
+
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "زمانی که شما مکان خود را با دیگران به اشتراک میگذارید، المنت برای نمایش مکانتان به آنها، به نقشه نیاز دارد.";
+"NSLocationWhenInUseUsageDescription" = "زمانی که شما مکان خود را با دیگران به اشتراک میگذارید، المنت برای نمایش مکانتان به آنها، به نقشه نیاز دارد.";
+"NSFaceIDUsageDescription" = "برای دسترسی به برنامه تان، از face Id استفاده میشود.";
+"NSCalendarsUsageDescription" = "ملاقات های برنامه ریزی شده خود را در برنامه ببینید.";
+"NSContactsUsageDescription" = "برای یافتن مخاطبانتان در ماتریکس، اینها را با سرور هویت شما به اشتراک خواهیم گذاشت.";
+"NSMicrophoneUsageDescription" = "المنت برای ضبط صدا، فیلم برداری و ارسال پیام صوتی، دسترسی به میکروفون را نیاز دارد.";
+"NSPhotoLibraryUsageDescription" = "برای انتخاب و آپلود تصاویر و ویدیو ها از گالری خود، اجازه دسترسی به گالری را بدهید.";
+// Permissions usage explanations
+"NSCameraUsageDescription" = "دوربین برای فیلم و تصویر برداری و آپلود آنها استفاده میشود.";

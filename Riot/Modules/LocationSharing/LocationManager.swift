@@ -226,3 +226,19 @@ extension LocationManager: CLLocationManagerDelegate {
         MXLog.error("[LocationManager] Did failed", context: error)
     }
 }
+
+extension CLLocationManager {
+    func requestAuthorizationIfNeeded() -> Bool {
+        switch authorizationStatus {
+        case .notDetermined:
+            requestWhenInUseAuthorization()
+            return false
+        case .restricted, .denied:
+            return false
+        case .authorizedAlways, .authorizedWhenInUse, .authorized:
+            return true
+        @unknown default:
+            return false
+        }
+    }
+}

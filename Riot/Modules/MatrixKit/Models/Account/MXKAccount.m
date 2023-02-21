@@ -947,9 +947,10 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
 
         if (clearStore)
         {
-            // Force a reload of device keys at the next session start.
+            // Force a reload of device keys at the next session start, unless we are just about to migrate
+            // all data and device keys into CryptoSDK.
             // This will fix potential UISIs other peoples receive for our messages.
-            if ([mxSession.crypto isKindOfClass:[MXLegacyCrypto class]])
+            if ([mxSession.crypto isKindOfClass:[MXLegacyCrypto class]] && !MXSDKOptions.sharedInstance.enableCryptoSDK)
             {
                 [(MXLegacyCrypto *)mxSession.crypto resetDeviceKeys];
             }

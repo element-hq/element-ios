@@ -1,5 +1,5 @@
 // 
-// Copyright 2021 Vector Creations Ltd
+// Copyright 2023 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,12 @@
 // limitations under the License.
 //
 
-// Version
-MARKETING_VERSION = 1.10.3
-CURRENT_PROJECT_VERSION = 1.10.3
+import Foundation
+
+class MockStaticLocationSharingViewerService: StaticLocationSharingViewerServiceProtocol {
+    
+    func requestAuthorizationIfNeeded() -> Bool {
+        return true
+    }
+    
+}

@@ -1,3 +1,22 @@
+## Changes in 1.10.3 (2023-02-21)
+
+🙌 Improvements
+
+- Polls: add fallback text for poll ended events. ([#7353](https://github.com/vector-im/element-ios/pull/7353))
+- Push Rules: Apply push rules client side for encrypted rooms, hiding in case of dont_notify action ([#7356](https://github.com/vector-im/element-ios/pull/7356))
+- Map Views: Show own location in map views ([#7361](https://github.com/vector-im/element-ios/pull/7361))
+- Do not reset device keys if migrating to CryptoSDK ([#7369](https://github.com/vector-im/element-ios/pull/7369))
+- Labs: Rich Text Editor: Update to version 1.1.1 ([#7370](https://github.com/vector-im/element-ios/pull/7370))
+- Updates to protocol used for Sign in with QR code. ([#7372](https://github.com/vector-im/element-ios/pull/7372))
+- Upgrade MatrixSDK version ([v0.25.2](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.25.2)).
+
+🐛 Bugfixes
+
+- A voice message is now replayable. ([#7217](https://github.com/vector-im/element-ios/issues/7217))
+- Fix an issue where a voice message recording was failing. ([#7325](https://github.com/vector-im/element-ios/issues/7325))
+- Fix an issue where a voice message disappears after being sent. ([#7326](https://github.com/vector-im/element-ios/issues/7326))
+
+
 ## Changes in 1.10.2 (2023-02-10)
 
 🐛 Bugfixes

@@ -29,19 +29,26 @@ struct StaticLocationView: View {
     
     // MARK: Views
     
+    var mapView: LocationSharingMapView {
+        LocationSharingMapView(tileServerMapURL: viewModel.viewState.mapStyleURL,
+                               annotations: [viewModel.viewState.sharedAnnotation],
+                               highlightedAnnotation: viewModel.viewState.sharedAnnotation,
+                               userAvatarData: nil,
+                               showsUserLocation: viewModel.viewState.showsUserLocation,
+                               userLocation: Binding.constant(nil),
+                               mapCenterCoordinate: Binding.constant(nil),
+                               errorSubject: viewModel.viewState.errorSubject)
+    }
+    
     var body: some View {
         NavigationView {
             ZStack(alignment: .bottom) {
-                LocationSharingMapView(tileServerMapURL: viewModel.viewState.mapStyleURL,
-                                       annotations: [viewModel.viewState.sharedAnnotation],
-                                       highlightedAnnotation: viewModel.viewState.sharedAnnotation,
-                                       userAvatarData: viewModel.viewState.userAvatarData,
-                                       showsUserLocation: false,
-                                       userLocation: Binding.constant(nil),
-                                       mapCenterCoordinate: Binding.constant(nil),
-                                       errorSubject: viewModel.viewState.errorSubject)
+                mapView
                 MapCreditsView()
             }
+            .overlay(CenterToUserLocationButton(action: {
+                viewModel.send(viewAction: .showUserLocation)
+            }).offset(x: -11.0, y: 52), alignment: .topTrailing)
             .ignoresSafeArea(.all, edges: [.bottom])
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

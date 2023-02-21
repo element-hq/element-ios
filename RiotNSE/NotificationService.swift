@@ -382,7 +382,13 @@ class NotificationService: UNNotificationServiceExtension {
                     let currentUserId = account.mxCredentials.userId
                     let roomDisplayName = roomSummary?.displayname
                     let pushRule = NotificationService.backgroundSyncService.pushRule(matching: event, roomState: roomState)
-                    
+                
+                    // if the push rule must not be notified we complete and return
+                    if pushRule?.dontNotify == true {
+                        onComplete(nil, false)
+                        return
+                    }
+
                     switch event.eventType {
                         case .callInvite:
                             let offer = event.content["offer"] as? [AnyHashable: Any]
@@ -885,5 +891,12 @@ class NotificationService: UNNotificationServiceExtension {
         let locale = LocaleProvider.locale ?? Locale.current
         
         return String(format: format, locale: locale, arguments: args)
+    }
+}
+
+private extension MXPushRule {
+    var dontNotify: Bool {
+        let actions = (actions as? [MXPushRuleAction]) ?? []
+        return actions.contains { $0.actionType == MXPushRuleActionTypeDontNotify }
     }
 }

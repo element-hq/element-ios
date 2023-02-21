@@ -23,6 +23,7 @@ import Foundation
 enum StaticLocationViewingViewAction {
     case close
     case share
+    case showUserLocation
 }
 
 enum StaticLocationViewingViewModelResult {
@@ -41,6 +42,8 @@ struct StaticLocationViewingViewState: BindableState {
     
     /// Shared annotation to display existing location
     let sharedAnnotation: LocationAnnotation
+    
+    var showsUserLocation = false
     
     var showLoadingIndicator = false
     
