@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>806011827743-8eofivk57sd7nejdq4alv1ha3mfg5onn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.806011827743-8eofivk57sd7nejdq4alv1ha3mfg5onn</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>806011827743-8j2j5shlridriou4cddoulhriv8qri33.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA5q7f-_sWXpv6LhZj1YmnkGxxOAhhwZjU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>806011827743</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.holedo.limited.holdeo.hub</string>
+	<key>PROJECT_ID</key>
+	<string>holedo-matrix-chat</string>
+	<key>STORAGE_BUCKET</key>
+	<string>holedo-matrix-chat.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:806011827743:ios:79315c9016d7627526072a</string>
+</dict>
+</plist>

@@ -102,7 +102,7 @@ final class BuildSettings: NSObject {
     static let serverConfigDefaultHomeserverUrlString = "https://holedo.com"
     static let serverConfigDefaultIdentityServerUrlString = "https://vector.im"
     
-    static let serverConfigSygnalAPIUrlString = "https://matrix.org/_matrix/push/v1/notify"
+    static let serverConfigSygnalAPIUrlString = "https://matrix.holedo.com/_matrix/push/v1/notify"
     
     
     // MARK: - Legal URLs
