@@ -1,0 +1,1 @@
+Pin SwiftOGG to a release rather than main branch to avoid breaking changes in SwiftOGG causing bugs in element-ios.
