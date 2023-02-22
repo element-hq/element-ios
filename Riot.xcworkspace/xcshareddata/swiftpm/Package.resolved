@@ -77,7 +77,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vector-im/swift-ogg",
       "state" : {
-        "branch" : "main",
+        "branch" : "0.0.1",
         "revision" : "e9a9e7601da662fd8b97d93781ff5c60b4becf88"
       }
     }
