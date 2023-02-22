@@ -57,7 +57,7 @@ PODS:
     - OLMKit/olmcpp (= 3.2.12)
   - OLMKit/olmc (3.2.12)
   - OLMKit/olmcpp (3.2.12)
-  - PostHog (1.4.4)
+  - PostHog (2.0.0)
   - ReadMoreTextView (3.0.1)
   - Realm (10.27.0):
     - Realm/Headers (= 10.27.0)
@@ -105,7 +105,7 @@ DEPENDENCIES:
   - MatrixSDK (= 0.25.2)
   - MatrixSDK/JingleCallStack (= 0.25.2)
   - OLMKit
-  - PostHog (~> 1.4.4)
+  - PostHog (~> 2.0.0)
   - ReadMoreTextView (~> 3.0.1)
   - Reusable (~> 4.1)
   - Sentry (~> 7.15.0)
@@ -199,7 +199,7 @@ SPEC CHECKSUMS:
   MatrixSDK: 354274127d163af37bdc55093ab96deea1be6a40
   MatrixSDKCrypto: e1ef22aae76b5a6f030ace21a47be83864f4ff44
   OLMKit: da115f16582e47626616874e20f7bb92222c7a51
-  PostHog: 4b6321b521569092d4ef3a02238d9435dbaeb99f
+  PostHog: 660ec6c9d80cec17b685e148f17f6785a88b597d
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: 9ca328bd7e700cc19703799785e37f77d1a130f2
   Reusable: 6bae6a5e8aa793c9c441db0213c863a64bce9136
@@ -217,6 +217,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 20544e99d9acfdfbc4bf98b21d20c1496b9d6fe9
+PODFILE CHECKSUM: a160b10da6c4728f70275f07b53ef1502c794d4e
 
 COCOAPODS: 1.11.3

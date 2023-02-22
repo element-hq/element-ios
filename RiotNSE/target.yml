@@ -45,6 +45,7 @@ targets:
     - path: ../Config/BuildSettings.swift
     - path: ../Riot/Utils/DataProtectionHelper.swift
     - path: ../Config/CommonConfiguration.swift
+    - path: ../Riot/Experiments/
     - path: ../Riot/Managers/PushNotification/PushNotificationStore.swift
     - path: ../Riot/Modules/SetPinCode/PinCodePreferences.swift
     - path: ../Riot/Managers/KeyValueStorage/Extensions/Keychain.swift
