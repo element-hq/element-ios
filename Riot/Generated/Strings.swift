@@ -1851,14 +1851,6 @@ public class VectorL10n: NSObject {
   public static var deviceVerificationIncomingTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_incoming_title") 
   }
-  /// Point your camera at the QR code displayed on your other device to verify this session
-  public static var deviceVerificationScanQrCodeInformation: String { 
-    return VectorL10n.tr("Vector", "device_verification_scan_qr_code_information") 
-  }
-  /// Scan QR code
-  public static var deviceVerificationScanQrCodeTitle: String { 
-    return VectorL10n.tr("Vector", "device_verification_scan_qr_code_title") 
-  }
   /// Compare the unique emoji, ensuring they appear in the same order.
   public static var deviceVerificationSecurityAdviceEmoji: String { 
     return VectorL10n.tr("Vector", "device_verification_security_advice_emoji") 
@@ -1878,6 +1870,14 @@ public class VectorL10n: NSObject {
   /// Verify
   public static var deviceVerificationSelfVerifyAlertValidateAction: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_alert_validate_action") 
+  }
+  /// You need to verify this session in order to read your secure message history.\n\nOpen Element on one of your other devices and follow the instructions.
+  public static var deviceVerificationSelfVerifyOpenOnOtherDeviceInformation: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_open_on_other_device_information") 
+  }
+  /// Open %@ on your other device
+  public static func deviceVerificationSelfVerifyOpenOnOtherDeviceTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "device_verification_self_verify_open_on_other_device_title", p1)
   }
   /// Use this session to verify your new one, granting it access to encrypted messages.
   public static var deviceVerificationSelfVerifyStartInformation: String { 
@@ -1902,6 +1902,10 @@ public class VectorL10n: NSObject {
   /// Verify this login
   public static var deviceVerificationSelfVerifyWaitNewSignInTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_new_sign_in_title") 
+  }
+  /// Can't access an existing Element session?
+  public static var deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalHelp: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_additional_help") 
   }
   /// If you can't access an existing session
   public static var deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalInformation: String { 
@@ -2994,6 +2998,26 @@ public class VectorL10n: NSObject {
   /// Waiting for %@…
   public static func keyVerificationScanConfirmationScanningUserWaitingOther(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanning_user_waiting_other", p1)
+  }
+  /// Point your camera at the QR code displayed on your other device to verify your new session
+  public static var keyVerificationScanQrCodeInformationNewSession: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_qr_code_information_new_session") 
+  }
+  /// Point your camera at the QR code displayed on your other device to verify this session
+  public static var keyVerificationScanQrCodeInformationOtherDevice: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_qr_code_information_other_device") 
+  }
+  /// Point your camera at the QR code displayed on your other device to verify your session
+  public static var keyVerificationScanQrCodeInformationOtherSession: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_qr_code_information_other_session") 
+  }
+  /// Point your camera at the QR code displayed on their device to verify their session
+  public static var keyVerificationScanQrCodeInformationOtherUser: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_qr_code_information_other_user") 
+  }
+  /// Scan QR code
+  public static var keyVerificationScanQrCodeTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_qr_code_title") 
   }
   /// Other users may not trust it.
   public static var keyVerificationSelfVerifyCurrentSessionAlertMessage: String { 

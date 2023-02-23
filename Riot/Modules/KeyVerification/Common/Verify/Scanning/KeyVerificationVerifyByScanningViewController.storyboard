@@ -20,23 +20,17 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fyB-h5-5v2">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="443"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="498.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D7P-C8-cqw">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="168.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="lPc-YT-wnY">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="168.5"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J1F-ba-sZ7">
-                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="254" text="Verify by scanning" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VsP-5V-z35">
-                                                                        <rect key="frame" x="20" y="20" width="288" height="30"/>
-                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                                        <nil key="textColor"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1PP-lU-Ags" customClass="CloseButton" customModule="Element" customModuleProvider="target">
                                                                         <rect key="frame" x="318" y="13" width="44" height="44"/>
                                                                         <constraints>
@@ -52,20 +46,16 @@
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="bottom" secondItem="VsP-5V-z35" secondAttribute="bottom" id="A4U-o4-Q6E"/>
-                                                                    <constraint firstItem="VsP-5V-z35" firstAttribute="centerY" secondItem="1PP-lU-Ags" secondAttribute="centerY" id="F8E-af-0ee"/>
-                                                                    <constraint firstItem="VsP-5V-z35" firstAttribute="leading" secondItem="J1F-ba-sZ7" secondAttribute="leading" constant="20" id="gIh-y4-VEc"/>
                                                                     <constraint firstAttribute="height" priority="250" id="guf-gx-dH4"/>
-                                                                    <constraint firstItem="1PP-lU-Ags" firstAttribute="leading" secondItem="VsP-5V-z35" secondAttribute="trailing" constant="10" id="lfn-WB-Ilq"/>
                                                                     <constraint firstItem="1PP-lU-Ags" firstAttribute="top" secondItem="J1F-ba-sZ7" secondAttribute="top" constant="13" id="swy-iI-xCv"/>
                                                                     <constraint firstAttribute="trailing" secondItem="1PP-lU-Ags" secondAttribute="trailing" constant="13" id="xNP-5O-bnD"/>
                                                                 </constraints>
                                                             </view>
-                                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JWN-4v-RUi">
-                                                                <rect key="frame" x="0.0" y="50" width="375" height="20"/>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JWN-4v-RUi">
+                                                                <rect key="frame" x="0.0" y="52" width="375" height="53.5"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" verticalCompressionResistancePriority="751" text="Scan QR Code" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Vv-12-J2A">
-                                                                        <rect key="frame" x="20" y="20" width="335" height="0.0"/>
+                                                                        <rect key="frame" x="20" y="20" width="335" height="33.5"/>
                                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -81,7 +71,7 @@
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SLA-sa-fBw">
-                                                                <rect key="frame" x="0.0" y="50" width="375" height="63"/>
+                                                                <rect key="frame" x="0.0" y="105.5" width="375" height="63"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" verticalCompressionResistancePriority="751" text="Scan the code to securely verify each other." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y2w-7m-BE3">
                                                                         <rect key="frame" x="20" y="20" width="335" height="18"/>
@@ -116,7 +106,7 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bQd-8A-8hf">
-                                                <rect key="frame" x="0.0" y="113" width="375" height="330"/>
+                                                <rect key="frame" x="0.0" y="168.5" width="375" height="330"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vrz-UO-PDk">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
@@ -292,6 +282,7 @@
                     <connections>
                         <outlet property="cannotScanButton" destination="bRZ-4Z-DEJ" id="O51-k2-JJY"/>
                         <outlet property="closeButton" destination="1PP-lU-Ags" id="cwn-nr-esg"/>
+                        <outlet property="closeButtonContainer" destination="J1F-ba-sZ7" id="OQp-Vr-iv8"/>
                         <outlet property="codeImageView" destination="NFT-6Y-5rt" id="0FH-o1-GBM"/>
                         <outlet property="informationLabel" destination="y2w-7m-BE3" id="uXB-RC-Ppc"/>
                         <outlet property="qrCodeContainerView" destination="vrz-UO-PDk" id="64E-48-YIv"/>
@@ -299,10 +290,8 @@
                         <outlet property="qrCodeScannerContainerView" destination="NG7-qS-njl" id="xmO-wT-3X5"/>
                         <outlet property="scanButtonContainerView" destination="s4G-bW-EGe" id="TL4-jJ-EDC"/>
                         <outlet property="scanCodeButton" destination="a4h-x5-COe" id="8Cl-iJ-be8"/>
-                        <outlet property="scanTitleLabel" destination="4Vv-12-J2A" id="C9X-QH-zC8"/>
-                        <outlet property="scanTitleView" destination="JWN-4v-RUi" id="7jz-CL-Zf1"/>
-                        <outlet property="titleLabel" destination="VsP-5V-z35" id="t5i-0x-a7m"/>
-                        <outlet property="titleView" destination="J1F-ba-sZ7" id="zVT-Mg-8di"/>
+                        <outlet property="titleLabel" destination="4Vv-12-J2A" id="HZc-SV-hcP"/>
+                        <outlet property="titleView" destination="JWN-4v-RUi" id="p4S-wd-mnh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uyZ-jd-xN3" userLabel="First Responder" sceneMemberID="firstResponder"/>

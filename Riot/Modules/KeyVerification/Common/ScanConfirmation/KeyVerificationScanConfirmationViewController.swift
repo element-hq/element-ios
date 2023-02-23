@@ -173,7 +173,6 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
             }
         }
         
-        self.title = viewData.verificationKind.verificationTitle
         self.titleLabel.text = title
         self.waitingLabel.text = waitingInfo
         self.scannedInformationLabel.text = scannedInfo
