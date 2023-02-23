@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,6 +30,18 @@ enum OnboardingCongratulationsViewModelResult {
 struct OnboardingCongratulationsViewState: BindableState {
     let userId: String
     let personalizationDisabled: Bool
+    
+    var messageString: NSAttributedString {
+        let message = VectorL10n.onboardingCongratulationsMessage(userId)
+        
+        let attributedMessage = NSMutableAttributedString(string: message)
+        let range = (message as NSString).range(of: userId)
+        if range.location != NSNotFound {
+            attributedMessage.addAttributes([.font: UIFont.preferredFont(forTextStyle: .body).vc_bold], range: range)
+        }
+        
+        return attributedMessage
+    }
 }
 
 enum OnboardingCongratulationsViewAction {

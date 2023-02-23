@@ -14,13 +14,14 @@
 // limitations under the License.
 //
 
+import Combine
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
-@available(iOS 14.0, *)
 protocol UserSuggestionCoordinatorDelegate: AnyObject {
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
+    func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didUpdateViewHeight height: CGFloat)
 }
 
 struct UserSuggestionCoordinatorParameters {
@@ -28,19 +29,19 @@ struct UserSuggestionCoordinatorParameters {
     let room: MXRoom
 }
 
-@available(iOS 14.0, *)
 final class UserSuggestionCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
     
     private let parameters: UserSuggestionCoordinatorParameters
     
-    private var userSuggestionHostingController: UIViewController
+    private var userSuggestionHostingController: UIHostingController<AnyView>
     private var userSuggestionService: UserSuggestionServiceProtocol
     private var userSuggestionViewModel: UserSuggestionViewModelProtocol
     private var roomMemberProvider: UserSuggestionCoordinatorRoomMemberProvider
+
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
 
@@ -52,7 +53,6 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: UserSuggestionCoordinatorParameters) {
         self.parameters = parameters
         
@@ -80,30 +80,61 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
                 self.delegate?.userSuggestionCoordinator(self, didRequestMentionForMember: member, textTrigger: self.userSuggestionService.currentTextTrigger)
             }
         }
+
+        userSuggestionService.items.sink { [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.userSuggestionCoordinator(self,
+                                                     didUpdateViewHeight: self.calculateViewHeight())
+        }.store(in: &cancellables)
     }
     
     func processTextMessage(_ textMessage: String) {
         userSuggestionService.processTextMessage(textMessage)
     }
-    
+
     // MARK: - Public
-    func start() {
-        
-    }
+
+    func start() { }
     
     func toPresentable() -> UIViewController {
-        return self.userSuggestionHostingController
+        userSuggestionHostingController
+    }
+
+    // MARK: - Private
+
+    private func calculateViewHeight() -> CGFloat {
+        let viewModel = UserSuggestionViewModel(userSuggestionService: userSuggestionService)
+        let view = UserSuggestionList(viewModel: viewModel.context)
+            .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
+
+        let controller = VectorHostingController(rootView: view)
+        guard let view = controller.view else {
+            return 0
+        }
+        view.isHidden = true
+
+        toPresentable().view.addSubview(view)
+        controller.didMove(toParent: toPresentable())
+
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+
+        let result = view.intrinsicContentSize.height
+
+        controller.didMove(toParent: nil)
+        view.removeFromSuperview()
+
+        return result
     }
 }
 
 private class UserSuggestionCoordinatorRoomMemberProvider: RoomMembersProviderProtocol {
-    
     private let room: MXRoom
     
     var roomMembers: [MXRoomMember] = []
     
     init(room: MXRoom) {
-        self.room = room;
+        self.room = room
     }
     
     func fetchMembers(_ members: @escaping ([RoomMembersProviderMember]) -> Void) {
@@ -120,7 +151,7 @@ private class UserSuggestionCoordinatorRoomMemberProvider: RoomMembersProviderPr
             self.roomMembers = joinedMembers
             members(self.roomMembersToProviderMembers(joinedMembers))
         }, failure: { error in
-            MXLog.error("[UserSuggestionCoordinatorRoomMemberProvider] Failed loading room with error: \(String(describing: error))")
+            MXLog.error("[UserSuggestionCoordinatorRoomMemberProvider] Failed loading room", context: error)
         })
     }
     

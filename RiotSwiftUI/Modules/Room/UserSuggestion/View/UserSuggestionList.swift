@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,8 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct UserSuggestionList: View {
-    private struct Constants {
+    private enum Constants {
         static let topPadding: CGFloat = 8.0
         static let listItemPadding: CGFloat = 4.0
         static let lineSpacing: CGFloat = 10.0
@@ -58,7 +57,7 @@ struct UserSuggestionList: View {
                                 userId: item.id
                             )
                             .padding(.bottom, Constants.listItemPadding)
-                            .padding(.top, (viewModel.viewState.items.first?.id == item.id ? Constants.listItemPadding + Constants.topPadding : Constants.listItemPadding))
+                            .padding(.top, viewModel.viewState.items.first?.id == item.id ? Constants.listItemPadding + Constants.topPadding : Constants.listItemPadding)
                         }
                     }
                     .listStyle(PlainListStyle())
@@ -76,9 +75,7 @@ struct UserSuggestionList: View {
     }
 }
 
-@available(iOS 14.0, *)
 private struct BackgroundView<Content: View>: View {
-    
     var content: () -> Content
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
@@ -100,7 +97,6 @@ private struct BackgroundView<Content: View>: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct UserSuggestion_Previews: PreviewProvider {
     static let stateRenderer = MockUserSuggestionScreenState.stateRenderer
     static var previews: some View {

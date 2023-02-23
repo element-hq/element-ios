@@ -35,14 +35,38 @@ extension MXRestClient {
         }
     }
     
-    /// An async version of `getRegisterSession(completion:)`.
-    func getRegisterSession() async throws -> MXAuthenticationSession {
-        try await getResponse(getRegisterSession)
-    }
+    // MARK: - Login
     
     /// An async version of `getLoginSession(completion:)`.
     func getLoginSession() async throws -> MXAuthenticationSession {
         try await getResponse(getLoginSession)
+    }
+    
+    /// An async version of `login(parameters:completion:)`, that takes a value that conforms to `LoginParameters`.
+    func login(parameters: LoginParameters) async throws -> MXCredentials {
+        let dictionary = try parameters.dictionary()
+        return try await login(parameters: dictionary)
+    }
+    
+    /// An async version of `login(parameters:completion:)`.
+    func login(parameters: [String: Any]) async throws -> MXCredentials {
+        let jsonDictionary = try await getResponse { completion in
+            login(parameters: parameters, completion: completion)
+        }
+        guard let loginResponse = MXLoginResponse(fromJSON: jsonDictionary) else { throw ClientError.decodingError }
+        return MXCredentials(loginResponse: loginResponse, andDefaultCredentials: credentials)
+    }
+    
+    /// An async version of generateLoginToken(completion:)
+    func generateLoginToken() async throws -> MXLoginToken {
+        try await getResponse(generateLoginToken)
+    }
+    
+    // MARK: - Registration
+    
+    /// An async version of `getRegisterSession(completion:)`.
+    func getRegisterSession() async throws -> MXAuthenticationSession {
+        try await getResponse(getRegisterSession)
     }
     
     /// An async version of `isUsernameAvailable(_:completion:)`.
@@ -101,8 +125,54 @@ extension MXRestClient {
         }
     }
     
-    // MARK: Private
+    // MARK: - Reset Password
     
+    /// An async version of `forgetPassword(forEmail:clientSecret:sendAttempt:success:failure:)`.
+    /// - Returns: The session ID to be included when calling `resetPassword(parameters:)`.
+    func forgetPassword(for email: String, clientSecret: String, sendAttempt: UInt) async throws -> String {
+        try await getResponse { success, failure in
+            forgetPassword(forEmail: email,
+                           clientSecret: clientSecret,
+                           sendAttempt: sendAttempt,
+                           success: success,
+                           failure: failure)
+        }
+    }
+    
+    /// An async version of `resetPassword(parameters:completion:)`, that takes a `CheckResetPasswordParameters` value instead of a dictionary.
+    func resetPassword(parameters: CheckResetPasswordParameters) async throws {
+        let dictionary = try parameters.dictionary()
+        try await resetPassword(parameters: dictionary)
+    }
+    
+    /// An async version of `resetPassword(parameters:completion:)`.
+    func resetPassword(parameters: [String: Any]) async throws {
+        try await getResponse { completion in
+            resetPassword(parameters: parameters, completion: completion)
+        }
+    }
+
+    // MARK: - Change Password
+
+    /// An async version of `changePassword(from:to:logoutDevices:completion:)`.
+    func changePassword(from oldPassword: String, to newPassword: String, logoutDevices: Bool) async throws {
+        try await getResponse { completion in
+            changePassword(from: oldPassword, to: newPassword, logoutDevices: logoutDevices, completion: completion)
+        }
+    }
+
+    // MARK: - Versions
+
+    /// An async version of `supportedMatrixVersions(completion:)`.
+    func supportedMatrixVersions() async throws -> MXMatrixVersions {
+        try await getResponse({ completion in
+            supportedMatrixVersions(completion: completion)
+        })
+    }
+    
+    // MARK: - Private
+    
+    @MainActor
     private func getResponse<T>(_ callback: (@escaping (MXResponse<T>) -> Void) -> MXHTTPOperation) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
             _ = callback { response in
@@ -116,6 +186,7 @@ extension MXRestClient {
         }
     }
     
+    @MainActor
     private func getResponse<T>(_ callback: (@escaping (T?) -> Void, @escaping (Error?) -> Void) -> MXHTTPOperation) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
             _ = callback { response in
@@ -131,6 +202,7 @@ extension MXRestClient {
         }
     }
     
+    @MainActor
     private func getResponse<T, U, V>(_ callback: (@escaping (T?, U?, V?) -> Void, @escaping (Error?) -> Void) -> MXHTTPOperation) async throws -> (T?, U?, V?) {
         try await withCheckedThrowingContinuation { continuation in
             _ = callback { arg1, arg2, arg3  in

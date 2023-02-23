@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import SwiftUI
 
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
-@available(iOS 14.0, *)
 enum MockSpaceSettingsScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
@@ -39,7 +38,7 @@ enum MockSpaceSettingsScreenState: MockScreenState, CaseIterable {
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let service: MockSpaceSettingsService
         switch self {
         case .visibility(let visibility):
@@ -54,7 +53,8 @@ enum MockSpaceSettingsScreenState: MockScreenState, CaseIterable {
                 isNameEditable: true,
                 isTopicEditable: true,
                 isAddressEditable: true,
-                isAccessEditable: true)
+                isAccessEditable: true
+            )
             service = MockSpaceSettingsService(roomProperties: roomProperties)
         case .notEditable:
             let roomProperties = SpaceSettingsRoomProperties(
@@ -68,7 +68,8 @@ enum MockSpaceSettingsScreenState: MockScreenState, CaseIterable {
                 isNameEditable: false,
                 isTopicEditable: false,
                 isAddressEditable: false,
-                isAccessEditable: false)
+                isAccessEditable: false
+            )
             service = MockSpaceSettingsService(roomProperties: roomProperties)
         }
         let viewModel = SpaceSettingsViewModel.makeSpaceSettingsViewModel(service: service)

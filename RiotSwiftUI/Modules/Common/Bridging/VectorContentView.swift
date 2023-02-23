@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,9 +19,7 @@ import SwiftUI
 /// A Modifier to be called from the top-most SwiftUI view before being added to a HostViewController.
 ///
 /// Provides any app level configuration the SwiftUI hierarchy might need (E.g. to monitor theme changes).
-@available(iOS 14.0, *)
 struct VectorContentModifier: ViewModifier {
-    
     @ObservedObject private var themePublisher = ThemePublisher.shared
     @Environment(\.layoutDirection) private var defaultLayoutDirection
     
@@ -38,9 +36,8 @@ struct VectorContentModifier: ViewModifier {
     }
 }
 
-@available(iOS 14.0, *)
 extension View {
     func vectorContent() -> some View {
-        self.modifier(VectorContentModifier())
+        modifier(VectorContentModifier())
     }
 }

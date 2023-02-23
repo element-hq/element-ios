@@ -137,7 +137,7 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         }
         
         self.backgroundColor = theme.colors.background
-        playButton.backgroundColor = theme.colors.background
+        playButton.backgroundColor = theme.roomCellIncomingBubbleBackgroundColor
         playButton.tintColor = theme.colors.secondaryContent
         
         let backgroundViewColor = self.customBackgroundViewColor ?? theme.colors.quinaryContent
@@ -145,7 +145,8 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         backgroundView.backgroundColor = backgroundViewColor
         _waveformView.primaryLineColor =  theme.colors.quarterlyContent
         _waveformView.secondaryLineColor = theme.colors.secondaryContent
-        elapsedTimeLabel.textColor = theme.colors.tertiaryContent
+        elapsedTimeLabel.textColor = theme.colors.secondaryContent
+        elapsedTimeLabel.font = theme.fonts.body
     }
     
     func getRequiredNumberOfSamples() -> Int {

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,6 @@ enum AuthenticationType {
 
 /// Errors that can be thrown from `AuthenticationService`.
 enum AuthenticationError: String, LocalizedError {
-    /// A failure to convert a struct into a dictionary.
-    case dictionaryError
     case invalidHomeserver
     case loginFlowNotCalled
     case missingMXRestClient
@@ -58,11 +56,17 @@ enum RegistrationError: String, LocalizedError {
     case missingThreePIDURL
     case threePIDValidationFailure
     case threePIDClientFailure
+    case waitingForThreePIDValidation
+    case invalidPhoneNumber
     
     var errorDescription: String? {
         switch self {
         case .registrationDisabled:
             return VectorL10n.loginErrorRegistrationIsNotSupported
+        case .threePIDValidationFailure, .threePIDClientFailure:
+            return VectorL10n.authMsisdnValidationError
+        case .invalidPhoneNumber:
+            return VectorL10n.authenticationVerifyMsisdnInvalidPhoneNumber
         default:
             return VectorL10n.errorCommonMessage
         }
@@ -71,7 +75,27 @@ enum RegistrationError: String, LocalizedError {
 
 /// Errors that can be thrown from `LoginWizard`
 enum LoginError: String, Error {
-    case unimplemented
+    case resetPasswordNotStarted
+}
+
+@objcMembers
+class HomeserverAddress: NSObject {
+    /// Sanitizes a user entered homeserver address with the following rules
+    /// - Trim any whitespace.
+    /// - Lowercase the address.
+    /// - Ensure the address contains a scheme, otherwise make it `https`.
+    /// - Remove any trailing slashes.
+    static func sanitized(_ address: String) -> String {
+        var address = address.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        
+        if !address.contains("://") {
+            address = "https://\(address)"
+        }
+        
+        address = address.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        
+        return address
+    }
 }
 
 /// Represents an SSO Identity Provider as provided in a login flow.

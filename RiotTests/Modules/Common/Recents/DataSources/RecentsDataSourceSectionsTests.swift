@@ -16,7 +16,7 @@
 
 import Foundation
 import XCTest
-@testable import Riot
+@testable import Element
 
 class RecentsDataSourceSectionsTests: XCTestCase {
     func test_canCreateWithNSNumbers() {

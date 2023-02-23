@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct OnboardingIconImage: View {
-    
     @Environment(\.theme) private var theme
     
     let image: ImageAsset
@@ -35,7 +34,6 @@ struct OnboardingIconImage: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct OnboardingIconImage_Previews: PreviewProvider {
     static var previews: some View {
         OnboardingIconImage(image: Asset.Images.authenticationEmailIcon)

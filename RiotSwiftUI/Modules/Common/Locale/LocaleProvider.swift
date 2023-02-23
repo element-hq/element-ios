@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +18,6 @@ import Foundation
 
 class LocaleProvider: LocaleProviderType {
     static var locale: Locale? {
-        return nil
+        nil
     }
 }

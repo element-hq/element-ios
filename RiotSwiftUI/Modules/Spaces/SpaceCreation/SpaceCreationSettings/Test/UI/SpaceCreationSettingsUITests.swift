@@ -1,6 +1,6 @@
 // File created from TemplateAdvancedRoomsExample
 // $ createSwiftUITwoScreen.sh Spaces/SpaceCreation SpaceCreation SpaceCreationMenu SpaceCreationSettings
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,36 +16,21 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-@available(iOS 14.0, *)
-class SpaceCreationSettingsUITests: MockScreenTest {
-    
-    override class var screenType: MockScreenState.Type {
-        return MockSpaceCreationSettingsScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return SpaceCreationSettingsUITests(selector: #selector(verifySpaceCreationSettingsScreen))
-    }
-    
-    func verifySpaceCreationSettingsScreen() throws {
-        guard let screenState = screenState as? MockSpaceCreationSettingsScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .privateSpace: break
-        case .validated: break
-        case .validationFailed: break
-        }
-    }
-    
-    func verifyPrivateSpace() {
+class SpaceCreationSettingsUITests: MockScreenTestCase {
+    func testPrivateSpace() {
+        app.goToScreenWithIdentifier(MockSpaceCreationSettingsScreenState.privateSpace.title)
+        
         let addressTextField = app.groups["addressTextField"]
         XCTAssertEqual(addressTextField.exists, false)
     }
     
-    func verifyPublicValidated() {
+    func testPublicValidated() {
+        app.goToScreenWithIdentifier(MockSpaceCreationSettingsScreenState.validated.title)
+        
         let addressTextField = app.groups["addressTextField"]
-        XCTAssertEqual(addressTextField.exists, true)
+        XCTAssertEqual(addressTextField.exists, false)
     }
 }

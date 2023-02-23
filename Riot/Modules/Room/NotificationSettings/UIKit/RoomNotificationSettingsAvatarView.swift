@@ -25,7 +25,7 @@ class RoomNotificationSettingsAvatarView: UIView {
     func configure(viewData: AvatarViewDataProtocol) {
         avatarView.fill(with: viewData)
         
-        switch viewData.fallbackImage {
+        switch viewData.fallbackImages?.first {
         case .matrixItem(_, let matrixItemDisplayName):
             nameLabel.text = matrixItemDisplayName
         default:

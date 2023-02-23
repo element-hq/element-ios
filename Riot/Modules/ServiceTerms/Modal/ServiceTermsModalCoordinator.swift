@@ -96,8 +96,7 @@ final class ServiceTermsModalCoordinator: NSObject, ServiceTermsModalCoordinator
         // Disable IS feature on user's account
         session.setIdentityServer(nil, andAccessToken: nil)
         session.setAccountDataIdentityServer(nil, success: nil) { error in
-            guard let errorDescription = error?.localizedDescription else { return }
-            MXLog.error("[ServiceTermsModalCoordinator] IS Terms: Error: \(errorDescription)")
+            MXLog.error("[ServiceTermsModalCoordinator] IS Terms", context: error)
         }
     }
 }

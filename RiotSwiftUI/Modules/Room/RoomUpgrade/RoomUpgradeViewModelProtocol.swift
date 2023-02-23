@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,7 @@
 import Foundation
 
 protocol RoomUpgradeViewModelProtocol {
-    
     var completion: ((RoomUpgradeViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
     static func makeRoomUpgradeViewModel(roomUpgradeService: RoomUpgradeServiceProtocol) -> RoomUpgradeViewModelProtocol
-    @available(iOS 14, *)
     var context: RoomUpgradeViewModelType.Context { get }
 }

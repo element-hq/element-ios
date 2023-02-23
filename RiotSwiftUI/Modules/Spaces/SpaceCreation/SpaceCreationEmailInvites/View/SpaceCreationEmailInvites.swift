@@ -1,6 +1,6 @@
 // File created from SimpleUserProfileExample
 // $ createScreen.sh Spaces/SpaceCreation/SpaceCreationEmailInvites SpaceCreationEmailInvites
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct SpaceCreationEmailInvites: View {
-
     // MARK: - Properties
     
     @ObservedObject var viewModel: SpaceCreationEmailInvitesViewModel.Context
@@ -86,7 +84,7 @@ struct SpaceCreationEmailInvites: View {
     private var formView: some View {
         VStack {
             VStack(spacing: 20) {
-                ForEach(viewModel.emailInvites.indices) { index in
+                ForEach(viewModel.emailInvites.indices, id: \.self) { index in
                     RoundedBorderTextField(title: VectorL10n.spacesCreationEmailInvitesEmailTitle, placeHolder: VectorL10n.spacesCreationEmailInvitesEmailTitle, text: $viewModel.emailInvites[index], footerText: viewModel.viewState.emailAddressesValid[index] ? nil : VectorL10n.authInvalidEmail, isError: !viewModel.viewState.emailAddressesValid[index], configuration: UIKitTextInputConfiguration(keyboardType: .emailAddress, returnKeyType: index < viewModel.emailInvites.endIndex - 1 ? .next : .done, autocapitalizationType: .none, autocorrectionType: .no))
                         .accessibility(identifier: "emailTextField")
                 }
@@ -114,7 +112,6 @@ struct SpaceCreationEmailInvites: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct SpaceCreationEmailInvites_Previews: PreviewProvider {
     static let stateRenderer = MockSpaceCreationEmailInvitesScreenState.stateRenderer
     static var previews: some View {

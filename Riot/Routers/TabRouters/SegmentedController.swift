@@ -102,8 +102,8 @@ class SegmentedController: UIViewController, Themable {
     }
 
     func update(theme: Theme) {
-        self.view.backgroundColor = theme.colors.navigation
-        self.contentView.backgroundColor = theme.colors.navigation
+        self.view.backgroundColor = theme.baseColor
+        self.contentView.backgroundColor = theme.baseColor
     }
     
     // MARK: Private

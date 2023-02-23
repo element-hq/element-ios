@@ -17,7 +17,7 @@
 import Foundation
 import XCTest
 
-@testable import Riot
+@testable import Element
 
 class MXKRoomDataSourceTests: XCTestCase {
 
@@ -93,7 +93,7 @@ private final class StubMXKRoomDataSource: MXKRoomDataSource {
 private final class FakeMXKRoomDataSource: MXKRoomDataSource {
 
     class func make() throws -> FakeMXKRoomDataSource {
-        let dataSource = try XCTUnwrap(FakeMXKRoomDataSource(roomId: "!foofoofoofoofoofoo:matrix.org", andMatrixSession: nil))
+        let dataSource = try XCTUnwrap(FakeMXKRoomDataSource(roomId: "!foofoofoofoofoofoo:matrix.org", andMatrixSession: nil, threadId: nil))
         dataSource.registerCellDataClass(CollapsibleBubbleCellData.self, forCellIdentifier: kMXKRoomBubbleCellDataIdentifier)
         dataSource.eventFormatter = CountingEventFormatter(matrixSession: nil)
         return dataSource
@@ -148,8 +148,10 @@ private final class CollapsibleBubbleCellData: MXKRoomBubbleCellData {
 
 private final class CountingEventFormatter: MXKEventFormatter {
 
-    override func attributedString(from events: [MXEvent]!, with roomState: MXRoomState!, error: UnsafeMutablePointer<MXKEventFormatterError>!) -> NSAttributedString! {
+    override func attributedString(from events: [MXEvent]!,
+                                   with roomState: MXRoomState!,
+                                   andLatestRoomState latestRoomState: MXRoomState!,
+                                   error: UnsafeMutablePointer<MXKEventFormatterError>!) -> NSAttributedString! {
         NSAttributedString(string: "\(events.count)")
     }
-
 }

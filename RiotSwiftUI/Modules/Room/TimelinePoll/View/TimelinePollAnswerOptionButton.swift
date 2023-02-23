@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct TimelinePollAnswerOptionButton: View {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -43,12 +41,12 @@ struct TimelinePollAnswerOptionButton: View {
                 .overlay(rect.stroke(borderAccentColor, lineWidth: 1.0))
                 .accentColor(progressViewAccentColor)
         }
+        .accessibilityIdentifier("PollAnswerOption\(optionIndex)")
     }
     
     var answerOptionLabel: some View {
         VStack(alignment: .leading, spacing: 12.0) {
             HStack(alignment: .top, spacing: 8.0) {
-                
                 if !poll.closed {
                     Image(uiImage: answerOption.selected ? Asset.Images.pollCheckboxSelected.image : Asset.Images.pollCheckboxDefault.image)
                 }
@@ -56,8 +54,9 @@ struct TimelinePollAnswerOptionButton: View {
                 Text(answerOption.text)
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.primaryContent)
+                    .accessibilityIdentifier("PollAnswerOption\(optionIndex)Label")
                 
-                if poll.closed && answerOption.winner {
+                if poll.closed, answerOption.winner {
                     Spacer()
                     Image(uiImage: Asset.Images.pollWinnerIcon.image)
                 }
@@ -69,11 +68,13 @@ struct TimelinePollAnswerOptionButton: View {
                                  total: Double(poll.totalAnswerCount))
                         .progressViewStyle(LinearProgressViewStyle())
                         .scaleEffect(x: 1.0, y: 1.2, anchor: .center)
+                        .accessibilityIdentifier("PollAnswerOption\(optionIndex)Progress")
                     
-                    if (poll.shouldDiscloseResults) {
+                    if poll.shouldDiscloseResults {
                         Text(answerOption.count == 1 ? VectorL10n.pollTimelineOneVote : VectorL10n.pollTimelineVotesCount(Int(answerOption.count)))
                             .font(theme.fonts.footnote)
                             .foregroundColor(poll.closed && answerOption.winner ? theme.colors.accent : theme.colors.secondaryContent)
+                            .accessibilityIdentifier("PollAnswerOption\(optionIndex)Count")
                     }
                 }
             }
@@ -95,9 +96,12 @@ struct TimelinePollAnswerOptionButton: View {
         
         return answerOption.selected ? theme.colors.accent : theme.colors.quarterlyContent
     }
+    
+    var optionIndex: Int {
+        poll.answerOptions.firstIndex { $0.id == answerOption.id } ?? Int.max
+    }
 }
 
-@available(iOS 14.0, *)
 struct TimelinePollAnswerOptionButton_Previews: PreviewProvider {
     static let stateRenderer = MockTimelinePollScreenState.stateRenderer
     
@@ -109,33 +113,33 @@ struct TimelinePollAnswerOptionButton_Previews: PreviewProvider {
                 VStack {
                     TimelinePollAnswerOptionButton(poll: buildPoll(closed: false, type: type),
                                                    answerOption: buildAnswerOption(selected: false),
-                                                   action: {})
+                                                   action: { })
                     
                     TimelinePollAnswerOptionButton(poll: buildPoll(closed: false, type: type),
                                                    answerOption: buildAnswerOption(selected: true),
-                                                   action: {})
+                                                   action: { })
                     
                     TimelinePollAnswerOptionButton(poll: buildPoll(closed: true, type: type),
                                                    answerOption: buildAnswerOption(selected: false, winner: false),
-                                                   action: {})
+                                                   action: { })
 
                     TimelinePollAnswerOptionButton(poll: buildPoll(closed: true, type: type),
                                                    answerOption: buildAnswerOption(selected: false, winner: true),
-                                                   action: {})
+                                                   action: { })
 
                     TimelinePollAnswerOptionButton(poll: buildPoll(closed: true, type: type),
                                                    answerOption: buildAnswerOption(selected: true, winner: false),
-                                                   action: {})
+                                                   action: { })
 
                     TimelinePollAnswerOptionButton(poll: buildPoll(closed: true, type: type),
                                                    answerOption: buildAnswerOption(selected: true, winner: true),
-                                                   action: {})
+                                                   action: { })
 
                     let longText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 
                     TimelinePollAnswerOptionButton(poll: buildPoll(closed: true, type: type),
                                                    answerOption: buildAnswerOption(text: longText, selected: true, winner: true),
-                                                   action: {})
+                                                   action: { })
                 }
             }
         }
@@ -143,12 +147,12 @@ struct TimelinePollAnswerOptionButton_Previews: PreviewProvider {
     
     static func buildPoll(closed: Bool, type: TimelinePollType) -> TimelinePollDetails {
         TimelinePollDetails(question: "",
-                     answerOptions: [],
-                     closed: closed,
-                     totalAnswerCount: 100,
-                     type: type,
-                     maxAllowedSelections: 1,
-                     hasBeenEdited: false)
+                            answerOptions: [],
+                            closed: closed,
+                            totalAnswerCount: 100,
+                            type: type,
+                            maxAllowedSelections: 1,
+                            hasBeenEdited: false)
     }
     
     static func buildAnswerOption(text: String = "Test", selected: Bool, winner: Bool = false) -> TimelinePollAnswerOption {

@@ -44,6 +44,7 @@
 {
     [super customizeTableViewCellRendering];
     
+    self.contentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.roomTitle.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.lastEventDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.lastEventDate.textColor = ThemeService.shared.theme.textSecondaryColor;
@@ -88,7 +89,7 @@
         {
             self.lastEventDescription.text = roomCellData.lastEventTextMessage;
         }
-        
+
         self.unsentImageView.hidden = roomCellData.roomSummary.sentStatus == MXRoomSummarySentStatusOk;
         self.lastEventDecriptionLabelTrailingConstraint.constant = self.unsentImageView.hidden ? 10 : 30;
 
@@ -96,32 +97,32 @@
         if (roomCellData.hasUnread)
         {
             self.missedNotifAndUnreadIndicator.hidden = NO;
-            
+
             if (0 < roomCellData.notificationCount)
             {
                 self.missedNotifAndUnreadIndicator.backgroundColor = roomCellData.highlightCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
-                
+
                 self.missedNotifAndUnreadBadgeBgView.hidden = NO;
                 self.missedNotifAndUnreadBadgeBgView.backgroundColor = self.missedNotifAndUnreadIndicator.backgroundColor;
-                
+
                 self.missedNotifAndUnreadBadgeLabel.text = roomCellData.notificationCountStringValue;
                 [self.missedNotifAndUnreadBadgeLabel sizeToFit];
-                
+
                 self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = self.missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
             }
             else
             {
                 self.missedNotifAndUnreadIndicator.backgroundColor = ThemeService.shared.theme.unreadRoomIndentColor;
             }
-            
+
             // Use bold font for the room title
             self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightBold];
         }
         else
         {
             self.lastEventDate.textColor = ThemeService.shared.theme.textSecondaryColor;
-            
-            // The room title is not bold anymore            
+
+            // The room title is not bold anymore
             self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
         }
 

@@ -17,9 +17,9 @@
 import Foundation
 import MatrixSDK
 import Reusable
-import DGCollectionViewLeftAlignFlowLayout
 import UIKit
 import UICollectionViewRightAlignedLayout
+import UICollectionViewLeftAlignedLayout
 
 /// RoomReactionsView items alignment
 enum RoomReactionsViewAlignment {
@@ -46,7 +46,9 @@ final class RoomReactionsView: UIView, NibOwnerLoadable {
     // MARK: Private
     
     private var reactionsViewData: [RoomReactionViewData] = []
+    private var remainingViewData: [RoomReactionViewData] = []
     private var showAllButtonState: RoomReactionsViewState.ShowAllButtonState = .none
+    private var showAddReaction: Bool = false
     private var theme: Theme?
     
     // MARK: Public
@@ -105,6 +107,7 @@ final class RoomReactionsView: UIView, NibOwnerLoadable {
         
         self.collectionView.register(cellType: RoomReactionViewCell.self)
         self.collectionView.register(cellType: RoomReactionActionViewCell.self)
+        self.collectionView.register(cellType: RoomReactionImageViewCell.self)
         self.collectionView.reloadData()
     }
     
@@ -130,7 +133,7 @@ final class RoomReactionsView: UIView, NibOwnerLoadable {
         
         switch alignment {
         case .left:
-            collectionViewLayout = DGCollectionViewLeftAlignFlowLayout()
+            collectionViewLayout = UICollectionViewLeftAlignedLayout()
         case .right:
             collectionViewLayout = UICollectionViewRightAlignedLayout()
         }
@@ -151,22 +154,28 @@ final class RoomReactionsView: UIView, NibOwnerLoadable {
         self.viewModel?.process(viewAction: .longPress)
     }
     
-    private func fill(reactionsViewData: [RoomReactionViewData], showAllButtonState: RoomReactionsViewState.ShowAllButtonState) {
+    private func fill(reactionsViewData: [RoomReactionViewData], remainingViewData: [RoomReactionViewData], showAllButtonState: RoomReactionsViewState.ShowAllButtonState, showAddReaction: Bool) {
         self.reactionsViewData = reactionsViewData
+        self.remainingViewData = remainingViewData
         self.showAllButtonState = showAllButtonState
+        self.showAddReaction = showAddReaction
         self.collectionView.reloadData()
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
 
-    private func actionButtonString() -> String {
+    private func actionButtonString(at indexPath: IndexPath) -> String {
         let actionString: String
-        switch self.showAllButtonState {
-        case .showAll:
-            actionString = VectorL10n.roomEventActionReactionShowAll
-        case .showLess:
-            actionString = VectorL10n.roomEventActionReactionShowLess
-        case .none:
-            actionString = ""
+        if indexPath.row == self.reactionsViewData.count && self.showAllButtonState != .none {
+            switch self.showAllButtonState {
+            case .showAll:
+                actionString = VectorL10n.roomEventActionReactionMore("\(remainingViewData.count)")
+            case .showLess:
+                actionString = VectorL10n.roomEventActionReactionShowLess
+            case .none:
+                actionString = ""
+            }
+        } else {
+            actionString = VectorL10n.add.capitalized
         }
 
         return actionString
@@ -178,7 +187,10 @@ extension RoomReactionsView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // "Show all" or "Show less" is a cell in the same section as reactions cells
-        let additionalItems = self.showAllButtonState == .none ? 0 : 1
+        var additionalItems = self.showAllButtonState == .none ? 0 : 1
+        if self.showAddReaction {
+            additionalItems += 1
+        }
 
         return self.reactionsViewData.count + additionalItems
     }
@@ -196,16 +208,29 @@ extension RoomReactionsView: UICollectionViewDataSource {
 
             return cell
         } else {
-            let cell: RoomReactionActionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+            if indexPath.row == self.reactionsViewData.count && self.showAllButtonState != .none {
+                let cell: RoomReactionActionViewCell = collectionView.dequeueReusableCell(for: indexPath)
 
-            if let theme = self.theme {
-                cell.update(theme: theme)
+                if let theme = self.theme {
+                    cell.update(theme: theme)
+                }
+
+                let actionString = self.actionButtonString(at: indexPath)
+                cell.fill(actionString: actionString)
+                
+                return cell
+            } else {
+                let cell: RoomReactionImageViewCell = collectionView.dequeueReusableCell(for: indexPath)
+
+                if let theme = self.theme {
+                    cell.update(theme: theme)
+                }
+
+                cell.fill(actionIcon: Asset.Images.reactionsMoreAction.image)
+                
+                return cell
             }
 
-            let actionString = self.actionButtonString()
-            cell.fill(actionString: actionString)
-
-            return cell
         }
     }
 }
@@ -217,13 +242,17 @@ extension RoomReactionsView: UICollectionViewDelegate {
         if indexPath.row < self.reactionsViewData.count {
             self.viewModel?.process(viewAction: .tapReaction(index: indexPath.row))
         } else {
-            switch self.showAllButtonState {
-            case .showAll:
-                self.viewModel?.process(viewAction: .tapShowAction(action: .showAll))
-            case .showLess:
-                self.viewModel?.process(viewAction: .tapShowAction(action: .showLess))
-            case .none:
-                break
+            if indexPath.row == self.reactionsViewData.count && self.showAllButtonState != .none {
+                switch self.showAllButtonState {
+                case .showAll:
+                    self.viewModel?.process(viewAction: .tapShowAction(action: .showAll))
+                case .showLess:
+                    self.viewModel?.process(viewAction: .tapShowAction(action: .showLess))
+                case .none:
+                    break
+                }
+            } else {
+                self.viewModel?.process(viewAction: .tapShowAction(action: .addReaction))
             }
         }
     }
@@ -234,8 +263,8 @@ extension RoomReactionsView: RoomReactionsViewModelViewDelegate {
     
     func roomReactionsViewModel(_ viewModel: RoomReactionsViewModel, didUpdateViewState viewState: RoomReactionsViewState) {
         switch viewState {
-        case .loaded(reactionsViewData: let reactionsViewData, showAllButtonState: let showAllButtonState):
-            self.fill(reactionsViewData: reactionsViewData, showAllButtonState: showAllButtonState)
+        case .loaded(reactionsViewData: let reactionsViewData, remainingViewData: let remainingViewData, showAllButtonState: let showAllButtonState, showAddReaction: let showAddReaction):
+            self.fill(reactionsViewData: reactionsViewData, remainingViewData: remainingViewData, showAllButtonState: showAllButtonState, showAddReaction: showAddReaction)
         }
     }
 }

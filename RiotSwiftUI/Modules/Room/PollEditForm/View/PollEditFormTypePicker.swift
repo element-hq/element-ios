@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct PollEditFormTypePicker: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
@@ -33,7 +32,6 @@ struct PollEditFormTypePicker: View {
     }
 }
 
-@available(iOS 14.0, *)
 private struct PollEditFormTypeButton: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
@@ -45,7 +43,6 @@ private struct PollEditFormTypeButton: View {
             selectedType = type
         } label: {
             HStack(alignment: .top, spacing: 8.0) {
-                
                 Image(uiImage: selectionImage)
                 
                 VStack(alignment: .leading, spacing: 2) {
@@ -87,7 +84,6 @@ private struct PollEditFormTypeButton: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct PollEditFormTypePicker_Previews: PreviewProvider {
     static var previews: some View {
         VStack {

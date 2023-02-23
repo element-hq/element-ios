@@ -137,7 +137,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     
     func audioPlayer(_ audioPlayer: VoiceMessageAudioPlayer, didFailWithError error: Error) {
         state = .error
-        MXLog.error("Failed playing voice message with error: \(error)")
+        MXLog.error("Failed playing voice message", context: error)
     }
     
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {

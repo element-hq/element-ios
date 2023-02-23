@@ -46,5 +46,13 @@ import Foundation
         
         return result
     }
-    
+
+    open override func refreshProfilesIfNeeded(_ latestRoomState: MXRoomState!) {
+        super.refreshProfilesIfNeeded(latestRoomState)
+
+        if #available(iOS 15.0, *), let attributedTextMessage = self.attributedTextMessage {
+            // Pills are displayed with the latest data regardless of `roomScreenUseOnlyLatestUserAvatarAndName`.
+            PillsFormatter.refreshPills(in: attributedTextMessage, with: latestRoomState)
+        }
+    }
 }

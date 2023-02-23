@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ struct AuthenticationReCaptchaViewState: BindableState {
 
 struct AuthenticationReCaptchaBindings {
     /// Information describing the currently displayed alert.
-    var alertInfo: AlertInfo<Int>?
+    var alertInfo: AlertInfo<AuthenticationReCaptchaErrorType>?
 }
 
 enum AuthenticationReCaptchaViewAction {
@@ -46,4 +46,11 @@ enum AuthenticationReCaptchaViewAction {
     case validate(String)
     /// Cancel the flow.
     case cancel
+}
+
+enum AuthenticationReCaptchaErrorType: Hashable {
+    /// An error response from the homeserver.
+    case mxError(String)
+    /// An unknown error occurred.
+    case unknown
 }

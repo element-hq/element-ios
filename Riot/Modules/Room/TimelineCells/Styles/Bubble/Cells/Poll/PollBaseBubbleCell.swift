@@ -36,10 +36,10 @@ class PollBaseBubbleCell: PollPlainCell {
         self.setupBubbleBackgroundView()
     }
     
-    override func addPollView(_ pollView: UIView, on contentView: UIView) {
-        super.addPollView(pollView, on: contentView)
+    override func addContentViewController(_ controller: UIViewController, on contentView: UIView) {
+        super.addContentViewController(controller, on: contentView)
         
-        self.addBubbleBackgroundViewIfNeeded(for: pollView)
+        self.addBubbleBackgroundViewIfNeeded(for: controller.view)
     }
     
     // MARK: - Private

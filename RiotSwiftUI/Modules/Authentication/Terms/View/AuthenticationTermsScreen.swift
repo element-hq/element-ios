@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationTermsScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -46,6 +45,7 @@ struct AuthenticationTermsScreen: View {
             .padding(.bottom, 16)
         }
         .background(theme.colors.background.ignoresSafeArea())
+        .toolbar { toolbar }
         .alert(item: $viewModel.alertInfo) { $0.alert }
         .accentColor(theme.colors.accent)
     }
@@ -61,7 +61,7 @@ struct AuthenticationTermsScreen: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
             
-            Text(VectorL10n.authenticationTermsMessage)
+            Text(viewModel.viewState.headerMessage)
                 .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
@@ -89,6 +89,15 @@ struct AuthenticationTermsScreen: View {
             .buttonStyle(PrimaryActionButtonStyle())
             .disabled(!viewModel.viewState.hasAcceptedAllPolicies)
             .accessibilityIdentifier("nextButton")
+        }
+    }
+    
+    /// A simple toolbar with a cancel button.
+    var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .cancellationAction) {
+            Button(VectorL10n.cancel) {
+                viewModel.send(viewAction: .cancel)
+            }
         }
     }
 }

@@ -17,7 +17,7 @@
 import Foundation
 import XCTest
 @testable import CommonKit
-@testable import Riot
+@testable import Element
 import MatrixSDK
 
 class UserIndicatorStoreTests: XCTestCase {

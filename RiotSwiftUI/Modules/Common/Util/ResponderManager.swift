@@ -18,8 +18,7 @@ import UIKit
 
 /// `ResponderManager` is used to chain `SwiftUI` text editing views that embed `UIKit` text editing views using `UIViewRepresentable`
 class ResponderManager {
-    
-    private static var tagIndex: Int = 1000
+    private static var tagIndex = 1000
     private static var registeredResponders = NSMapTable<NSNumber, UIView>(keyOptions: .strongMemory, valueOptions: .weakMemory)
 
     private static var nextIndex: Int {
@@ -63,7 +62,7 @@ class ResponderManager {
     /// Tries to get the focused registered responder and give the focus to it's next responder
     /// - Returns: `True` if the next responder has been found and is successfully focused. `False` otherwise.
     static func makeActiveNextResponder() -> Bool {
-        guard let firstResponder = self.firstResponder else {
+        guard let firstResponder = firstResponder else {
             return false
         }
         

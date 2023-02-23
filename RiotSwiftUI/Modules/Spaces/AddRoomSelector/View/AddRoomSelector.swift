@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct AddRoomSelector: View {
-    
     // MARK: Properties
     
     @ObservedObject var viewModel: MatrixItemChooserViewModel.Context
@@ -27,7 +25,7 @@ struct AddRoomSelector: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     private var isDoneEnabled: Bool {
-        return !viewModel.viewState.selectedItemIds.isEmpty && !viewModel.viewState.loading
+        !viewModel.viewState.selectedItemIds.isEmpty && !viewModel.viewState.loading
     }
 
     // MARK: Setup
@@ -45,6 +43,7 @@ struct AddRoomSelector: View {
         Button(VectorL10n.cancel, action: {
             viewModel.send(viewAction: .cancel)
         })
+        .foregroundColor(Color("FirstScreenColor"))
         .font(theme.fonts.body)
     }
     
@@ -52,6 +51,7 @@ struct AddRoomSelector: View {
         Button(VectorL10n.add, action: {
             viewModel.send(viewAction: .done)
         })
+        .foregroundColor(Color("FirstScreenColor"))
         .font(theme.fonts.body)
         .opacity(isDoneEnabled ? 1 : 0.7)
         .disabled(!isDoneEnabled)

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,6 +28,7 @@ enum MockAuthenticationRegistrationScreenState: MockScreenState, CaseIterable {
     case passwordWithCredentials
     case passwordWithUsernameError
     case ssoOnly
+    case fallback
 
     /// The associated screen
     var screenType: Any.Type {
@@ -35,34 +36,28 @@ enum MockAuthenticationRegistrationScreenState: MockScreenState, CaseIterable {
     }
 
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let viewModel: AuthenticationRegistrationViewModel
         switch self {
         case .matrixDotOrg:
-            viewModel = AuthenticationRegistrationViewModel(homeserverAddress: "https://matrix.org", ssoIdentityProviders: [
-                SSOIdentityProvider(id: "1", name: "Apple", brand: "apple", iconURL: nil),
-                SSOIdentityProvider(id: "2", name: "Facebook", brand: "facebook", iconURL: nil),
-                SSOIdentityProvider(id: "3", name: "GitHub", brand: "github", iconURL: nil),
-                SSOIdentityProvider(id: "4", name: "GitLab", brand: "gitlab", iconURL: nil),
-                SSOIdentityProvider(id: "5", name: "Google", brand: "google", iconURL: nil)
-            ])
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockMatrixDotOrg)
         case .passwordOnly:
-            viewModel = AuthenticationRegistrationViewModel(homeserverAddress: "https://example.com", ssoIdentityProviders: [])
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer)
         case .passwordWithCredentials:
-            viewModel = AuthenticationRegistrationViewModel(homeserverAddress: "https://example.com", ssoIdentityProviders: [])
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer)
             viewModel.context.username = "alice"
             viewModel.context.password = "password"
+            Task { await viewModel.confirmUsernameAvailability("alice") }
         case .passwordWithUsernameError:
-            viewModel = AuthenticationRegistrationViewModel(homeserverAddress: "https://example.com", ssoIdentityProviders: [])
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockBasicServer)
             viewModel.state.hasEditedUsername = true
             Task { await viewModel.displayError(.usernameUnavailable(VectorL10n.authInvalidUserName)) }
         case .ssoOnly:
-            viewModel = AuthenticationRegistrationViewModel(homeserverAddress: "https://company.com",
-                                                            showRegistrationForm: false,
-                                                            ssoIdentityProviders: [SSOIdentityProvider(id: "test", name: "SAML", brand: nil, iconURL: nil)])
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockEnterpriseSSO)
+        case .fallback:
+            viewModel = AuthenticationRegistrationViewModel(homeserver: .mockFallback)
         }
         
-
         // can simulate service and viewModel actions here if needs be.
 
         return (

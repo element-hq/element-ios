@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RoomAncestorSelector: View {
-    
     // MARK: Properties
     
     @ObservedObject var viewModel: MatrixItemChooserViewModel.Context
@@ -38,14 +36,15 @@ struct RoomAncestorSelector: View {
                     Button(VectorL10n.cancel) {
                         viewModel.send(viewAction: .cancel)
                     }
+                    .foregroundColor(Color("FirstScreenColor"))
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(VectorL10n.done) {
                         viewModel.send(viewAction: .done)
                     }
+                    .foregroundColor(Color("FirstScreenColor"))
                     .disabled(viewModel.viewState.selectedItemIds.isEmpty)
                 }
             }
     }
-
 }

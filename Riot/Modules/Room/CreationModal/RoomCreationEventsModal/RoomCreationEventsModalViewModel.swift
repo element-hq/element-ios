@@ -25,12 +25,12 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
     // MARK: Private
 
     private let session: MXSession
-    private let bubbleData: MXKRoomBubbleCellDataStoring
     private let roomState: MXRoomState
     private lazy var eventFormatter: EventFormatter = {
         return EventFormatter(matrixSession: self.session)
     }()
     private var events: [MXEvent] = []
+    private var roomCreateEvent: MXEvent?
     
     // MARK: Public
 
@@ -40,10 +40,14 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
     var numberOfRows: Int {
         return events.count
     }
+    
     func rowViewModel(at indexPath: IndexPath) -> RoomCreationEventRowViewModel? {
         let event = events[indexPath.row]
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-        if let string = eventFormatter.attributedString(from: event, with: roomState, error: formatterError) {
+        if let string = eventFormatter.attributedString(from: event,
+                                                        with: roomState,
+                                                        andLatestRoomState: nil,
+                                                        error: formatterError) {
             if string.string.hasPrefix("·") {
                 return RoomCreationEventRowViewModel(title: string)
             }
@@ -53,14 +57,16 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         }
         return RoomCreationEventRowViewModel(title: nil)
     }
+    
     var roomName: String? {
         guard let summary = session.roomSummary(withRoomId: roomState.roomId) else {
             return nil
         }
         return summary.displayname
     }
+    
     var roomInfo: String? {
-        guard let creationEvent = events.first(where: { $0.eventType == .roomCreate }) else {
+        guard let creationEvent = roomCreateEvent else {
             return nil
         }
         let timestamp = creationEvent.originServerTs
@@ -69,6 +75,7 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         formatter.dateStyle = .full
         return formatter.string(from: date)
     }
+    
     func setAvatar(in avatarImageView: MXKImageView) {
         let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: roomState.roomId, withDisplayName: roomName)
         
@@ -86,6 +93,7 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
             avatarImageView.image = avatarImage
         }
     }
+    
     func setEncryptionIcon(in imageView: UIImageView) {
         guard let summary = session.roomSummary(withRoomId: roomState.roomId) else {
             imageView.image = nil
@@ -103,23 +111,9 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
     
     // MARK: - Setup
     
-    init(session: MXSession, bubbleData: MXKRoomBubbleCellDataStoring, roomState: MXRoomState) {
+    init(session: MXSession, roomState: MXRoomState) {
         self.session = session
-        self.bubbleData = bubbleData
         self.roomState = roomState
-        
-        //  shape-up events
-        events.append(contentsOf: bubbleData.events)
-        var nextBubbleData = bubbleData.nextCollapsableCellData
-        while nextBubbleData != nil {
-            // swiftlint:disable force_unwrapping
-            events.append(contentsOf: nextBubbleData!.events)
-            // swiftlint:enable force_unwrapping
-            nextBubbleData = nextBubbleData?.nextCollapsableCellData
-        }
-        
-        //  remove room create event from the list, as EW and ElA do. This will also avoid duplication of "%@ joined" messages for direct rooms.
-        events.removeAll(where: { $0.eventType == .roomCreate })
     }
     
     // MARK: - Public
@@ -136,7 +130,36 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
     // MARK: - Private
     
     private func loadData() {
+        events.removeAll()
+        
+        //  shape-up events
+        for event in roomState.stateEvents {
+            let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
+            let eventString = eventFormatter.attributedString(from: event,
+                                                              with: roomState,
+                                                              andLatestRoomState: nil,
+                                                              error: formatterError)
+            guard shouldDisplay(event), eventString != nil, formatterError.pointee == MXKEventFormatterErrorNone else {
+                continue
+            }
+            
+            // we replace previous event of the same type to keep the latest one.
+            if events.last?.eventType == event.eventType {
+                events.removeLast()
+            }
+            events.append(event)
+        }
+        
+        roomCreateEvent = events.first(where: { $0.eventType == .roomCreate })
+
+        //  remove room create event from the list, as EW and ElA do. This will also avoid duplication of "%@ joined" messages for direct rooms.
+        events.removeAll(where: { $0.eventType == .roomCreate })
+
         self.update(viewState: .loaded)
+    }
+    
+    private func shouldDisplay(_ event: MXEvent) -> Bool {
+        return event.eventType != .roomPowerLevels
     }
     
     private func update(viewState: RoomCreationEventsModalViewState) {

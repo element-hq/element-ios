@@ -84,7 +84,7 @@ class SpaceDetailPresenter: NSObject {
     // MARK: - Private
     
     private func show(with session: MXSession) {
-        let viewController = SpaceDetailViewController.instantiate(mediaManager: session.mediaManager, viewModel: self.viewModel)
+        let viewController = SpaceDetailViewController.instantiate(mediaManager: session.mediaManager, viewModel: self.viewModel, showCancel: true)
         self.present(viewController, animated: true)
     }
     

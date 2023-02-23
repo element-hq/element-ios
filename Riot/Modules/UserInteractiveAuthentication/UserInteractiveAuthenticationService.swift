@@ -131,7 +131,7 @@ final class UserInteractiveAuthenticationService: NSObject {
                                success: @escaping (MXAuthenticationSession?) -> Void,
                                failure: @escaping (Error) -> Void) -> MXHTTPOperation {
         // Get the authentication flow required for this API
-        return self.session.matrixRestClient.authSessionForRequest(withMethod: request.httpMethod, path: request.path, parameters: [:], success: { [weak self] (authenticationSession) in
+        return self.session.matrixRestClient.authSessionForRequest(withMethod: request.httpMethod, path: request.path, parameters: request.params, success: { [weak self] (authenticationSession) in
             guard let self = self else {
                 return
             }

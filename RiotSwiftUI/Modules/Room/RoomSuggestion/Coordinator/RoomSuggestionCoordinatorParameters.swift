@@ -18,7 +18,6 @@ import Foundation
 
 /// RoomSuggestionCoordinator input parameters
 struct RoomSuggestionCoordinatorParameters {
-    
     /// The Matrix room
     let room: MXRoom
                 

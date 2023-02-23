@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,6 @@ import SwiftUI
 /// SomeView()
 ///    .background(ViewFrameReader(frame: $frame))
 /// ```
-@available(iOS 14.0, *)
 struct ViewFrameReader: View {
     @Binding var frame: CGRect
     

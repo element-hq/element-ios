@@ -15,7 +15,6 @@
 //
 import Foundation
 
-@available(iOS 14.0, *)
 @objc protocol NotificationSettingsCoordinatorBridgePresenterDelegate {
     func notificationSettingsCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: NotificationSettingsCoordinatorBridgePresenter)
 }
@@ -24,10 +23,8 @@ import Foundation
 /// This bridge is used while waiting for global usage of coordinator pattern.
 /// It breaks the Coordinator abstraction and it has been introduced for Objective-C compatibility (mainly for integration in legacy view controllers).
 /// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
-@available(iOS 14.0, *)
 @objcMembers
 final class NotificationSettingsCoordinatorBridgePresenter: NSObject {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -50,7 +47,6 @@ final class NotificationSettingsCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func push(from navigationController: UINavigationController, animated: Bool, screen: NotificationSettingsScreen, popCompletion: (() -> Void)?) {
-        
         let router = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
         let notificationSettingsCoordinator = NotificationSettingsCoordinator(session: session, screen: screen)
@@ -63,12 +59,12 @@ final class NotificationSettingsCoordinatorBridgePresenter: NSObject {
         
         notificationSettingsCoordinator.start()
         
-        self.coordinator = notificationSettingsCoordinator
+        coordinator = notificationSettingsCoordinator
         self.router = router
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        guard let coordinator = self.coordinator else {
+        guard let coordinator = coordinator else {
             return
         }
         coordinator.toPresentable().dismiss(animated: animated) {
@@ -82,20 +78,17 @@ final class NotificationSettingsCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - NotificationSettingsCoordinatorDelegate
-@available(iOS 14.0, *)
+
 extension NotificationSettingsCoordinatorBridgePresenter: NotificationSettingsCoordinatorDelegate {
     func notificationSettingsCoordinatorDidComplete(_ coordinator: NotificationSettingsCoordinatorType) {
-        self.delegate?.notificationSettingsCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.notificationSettingsCoordinatorBridgePresenterDelegateDidComplete(self)
     }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
-@available(iOS 14.0, *)
 extension NotificationSettingsCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
-    
     func notificationSettingsCoordinatorDidComplete(_ presentationController: UIPresentationController) {
-        self.delegate?.notificationSettingsCoordinatorBridgePresenterDelegateDidComplete(self)
+        delegate?.notificationSettingsCoordinatorBridgePresenterDelegateDidComplete(self)
     }
-    
 }

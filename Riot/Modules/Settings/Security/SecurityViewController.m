@@ -26,6 +26,8 @@
 
 #import "GeneratedInterface-Swift.h"
 
+@import DesignKit;
+
 // Dev flag to have more options
 //#define CROSS_SIGNING_AND_BACKUP_DEV
 
@@ -154,9 +156,8 @@ TableViewSectionsDelegate>
     // Do any additional setup after loading the view, typically from a nib.
     
     self.navigationItem.title = [VectorL10n securitySettingsTitle];
-    
-    // Remove back bar button title when pushing a view controller
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
+    [self vc_removeBackTitle];
 
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
@@ -323,7 +324,7 @@ TableViewSectionsDelegate>
     
     // Crypto sessions section
         
-    if (RiotSettings.shared.settingsSecurityScreenShowSessions)
+    if (RiotSettings.shared.settingsSecurityScreenShowSessions && !RiotSettings.shared.enableNewSessionManager)
     {
         Section *sessionsSection = [Section sectionWithTag:SECTION_CRYPTO_SESSIONS];
         
@@ -423,10 +424,6 @@ TableViewSectionsDelegate>
 {
     // Keep ref on pushed view controller
     pushedViewController = viewController;
-
-    // Hide back button title
-    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -630,7 +627,7 @@ TableViewSectionsDelegate>
 
 - (void)loadCrossSigning
 {
-    MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+    id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
     
     [crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
         if (stateUpdated)
@@ -646,7 +643,7 @@ TableViewSectionsDelegate>
 {
     NSInteger numberOfRowsInCrossSigningSection;
     
-    MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+    id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
     switch (crossSigning.state)
     {
         case MXCrossSigningStateNotBootstrapped:                // Action: Bootstrap
@@ -664,7 +661,7 @@ TableViewSectionsDelegate>
 
 - (NSAttributedString*)crossSigningInformation
 {
-    MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+    id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
     
     NSString *crossSigningInformation;
     switch (crossSigning.state)
@@ -711,7 +708,7 @@ TableViewSectionsDelegate>
     buttonCell.mxkButton.accessibilityIdentifier = nil;
     
     // And customise it
-    MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+    id<MXCrossSigning> crossSigning = self.mainSession.crypto.crossSigning;
     switch (crossSigning.state)
     {
         case MXCrossSigningStateNotBootstrapped:                // Action: Bootstrap
@@ -1028,11 +1025,11 @@ TableViewSectionsDelegate>
     return tableSection.rows.count;
 }
 
-- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
+- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableView forIndexPath:(NSIndexPath *)indexPath
 {
-    MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
+    MXKTableViewCellWithLabelAndSwitch *cell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
 
-    cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left;
+    cell.mxkLabelLeadingConstraint.constant = tableView.vc_separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
 
     cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
@@ -1221,9 +1218,9 @@ TableViewSectionsDelegate>
         cell = [secureBackupSection cellForRowAtRow:rowTag];
     }
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
-    else if (section == SECTION_KEYBACKUP)
+    else if (sectionTag == SECTION_KEYBACKUP)
     {
-        cell = [keyBackupSection cellForRowAtRow:row];
+        cell = [keyBackupSection cellForRowAtRow:rowTag];
     }
 #endif
     else if (sectionTag == SECTION_CROSSSIGNING)
@@ -1449,7 +1446,7 @@ TableViewSectionsDelegate>
     currentAlert = exportView.alertController;
 
     // Use a temporary file for the export
-    keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"riot-keys.txt"]];
+    keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"element-keys.txt"]];
 
     // Make sure the file is empty
     [self deleteKeyExportFile];

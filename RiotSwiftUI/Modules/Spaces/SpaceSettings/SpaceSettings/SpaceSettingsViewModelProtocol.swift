@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +17,8 @@
 import Foundation
 
 protocol SpaceSettingsViewModelProtocol {
-    
     var completion: ((SpaceSettingsViewModelResult) -> Void)? { get set }
-    @available(iOS 14, *)
     static func makeSpaceSettingsViewModel(service: SpaceSettingsServiceProtocol) -> SpaceSettingsViewModelProtocol
-    @available(iOS 14, *)
     var context: SpaceSettingsViewModelType.Context { get }
     func updateAvatarImage(with image: UIImage?)
 }

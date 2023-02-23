@@ -14,23 +14,12 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-@available(iOS 14.0, *)
-class PollEditFormUITests: XCTestCase {
-    
-    private var app: XCUIApplication!
-    
-    override func setUp() {
-        continueAfterFailure = false
-                
-        app = XCUIApplication()
-        app.launch()
-        app.goToScreenWithIdentifier(MockPollEditFormScreenState.standard.title)
-    }
-    
+class PollEditFormUITests: MockScreenTestCase {
     func testInitialStateComponents() {
+        app.goToScreenWithIdentifier(MockPollEditFormScreenState.standard.title)
         
         XCTAssert(app.scrollViews.firstMatch.exists)
         
@@ -59,6 +48,7 @@ class PollEditFormUITests: XCTestCase {
     }
     
     func testRemoveAddAnswerOptions() {
+        app.goToScreenWithIdentifier(MockPollEditFormScreenState.standard.title)
         
         let deleteAnswerOptionButton = app.buttons["Delete answer option"].firstMatch
         

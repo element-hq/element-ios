@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ enum RoomNotificationState: Int {
 extension RoomNotificationState: CaseIterable { }
 
 extension RoomNotificationState: Identifiable {
-    var id: Int { self.rawValue }
+    var id: Int { rawValue }
 }
 
 extension RoomNotificationState {

@@ -87,11 +87,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
      The listener to receipts events in the room.
      */
     id receiptsListener;
-    
-    /**
-     The listener to the related groups state events in the room.
-     */
-    id relatedGroupsListener;
 
     /**
      The listener to reactions changed in the room.
@@ -213,9 +208,9 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 @implementation MXKRoomDataSource
 
-+ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete
++ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId threadId:(NSString*)threadId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete
 {
-    MXKRoomDataSource *roomDataSource = [[self alloc] initWithRoomId:roomId andMatrixSession:mxSession];
+    MXKRoomDataSource *roomDataSource = [[self alloc] initWithRoomId:roomId andMatrixSession:mxSession threadId:threadId];
     [self ensureSessionStateForDataSource:roomDataSource initialEventId:nil andMatrixSession:mxSession onComplete:onComplete];
 }
 
@@ -289,7 +284,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
-- (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession
+- (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession threadId:(NSString *)threadId
 {
     self = [super initWithMatrixSession:matrixSession];
     if (self)
@@ -297,6 +292,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         MXLogVerbose(@"[MXKRoomDataSource][%p] initWithRoomId: %@", self, roomId);
         
         _roomId = roomId;
+        _threadId = threadId;
         _secondaryRoomEventTypes = @[
             kMXEventTypeStringCallInvite,
             kMXEventTypeStringCallCandidates,
@@ -317,8 +313,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         bubbles = [NSMutableArray array];
         eventsToProcess = [NSMutableArray array];
         eventIdToBubbleMap = [NSMutableDictionary dictionary];
-        
-        externalRelatedGroups = [NSMutableDictionary dictionary];
         
         _filterMessagesWithURL = NO;
         
@@ -375,7 +369,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (instancetype)initWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId2 threadId:(NSString*)threadId andMatrixSession:(MXSession*)mxSession
 {
-    self = [self initWithRoomId:roomId andMatrixSession:mxSession];
+    self = [self initWithRoomId:roomId andMatrixSession:mxSession threadId:threadId];
     if (self)
     {
         if (initialEventId2)
@@ -383,7 +377,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             initialEventId = initialEventId2;
             _isLive = NO;
         }
-        _threadId = threadId;
     }
 
     return self;
@@ -471,8 +464,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)resetNotifying:(BOOL)notify
 {
-    [externalRelatedGroups removeAllObjects];
-    
     if (roomDidFlushDataNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:roomDidFlushDataNotificationObserver];
@@ -515,9 +506,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         
         [_timeline removeListener:receiptsListener];
         receiptsListener = nil;
-        
-        [_timeline removeListener:relatedGroupsListener];
-        relatedGroupsListener = nil;
     }
     
     if (_secondaryRoom && secondaryLiveEventsListener)
@@ -565,6 +553,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         }
         
         self.room = nil;
+        self.thread = nil;
         self.secondaryRoom = nil;
     }
     
@@ -596,13 +585,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)destroy
 {
-    MXLogDebug(@"[MXKRoomDataSource][%p] Destroy - room id: %@", self, _roomId);
+    MXLogDebug(@"[MXKRoomDataSource][%p] Destroy - room id: %@ - thread id: %@", self, _roomId, _threadId);
     
     [self unregisterScanManagerNotifications];
     [self unregisterReactionsChangeListener];
     [self unregisterEventEditsListener];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidChangeSentStateNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidDecryptNotification object:nil];
@@ -637,8 +624,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
     [_timeline destroy];
     [_secondaryTimeline destroy];
-    
-    externalRelatedGroups = nil;
     
     [super destroy];
 }
@@ -824,52 +809,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             [self setState:MXKDataSourceStateFailed];
         }
     }
-    
-    if (_room && MXSessionStateRunning == self.mxSession.state)
-    {
-        // Flair handling: observe the update in the publicised groups by users when the flair is enabled in the room.
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
-        [self.room state:^(MXRoomState *roomState) {
-            if (roomState.relatedGroups.count)
-            {
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionUpdatePublicisedGroupsForUsers:) name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
-
-                // Get a fresh profile for all the related groups. Trigger a table refresh when all requests are done.
-                __block NSUInteger count = roomState.relatedGroups.count;
-                for (NSString *groupId in roomState.relatedGroups)
-                {
-                    MXGroup *group = [self.mxSession groupWithGroupId:groupId];
-                    if (!group)
-                    {
-                        // Create a group instance for the groups that the current user did not join.
-                        group = [[MXGroup alloc] initWithGroupId:groupId];
-                        [self->externalRelatedGroups setObject:group forKey:groupId];
-                    }
-
-                    // Refresh the group profile from server.
-                    [self.mxSession updateGroupProfile:group success:^{
-
-                        if (self.delegate && !(--count))
-                        {
-                            // All the requests have been done.
-                            [self.delegate dataSource:self didCellChange:nil];
-                        }
-
-                    } failure:^(NSError *error) {
-
-                        MXLogDebug(@"[MXKRoomDataSource][%p] group profile update failed %@", self, groupId);
-
-                        if (self.delegate && !(--count))
-                        {
-                            // All the requests have been done.
-                            [self.delegate dataSource:self didCellChange:nil];
-                        }
-
-                    }];
-                }
-            }
-        }];
-    }
 }
 
 - (void)initializeTimelineForThread
@@ -980,16 +919,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     return attachments;
 }
 
-- (NSString *)partialTextMessage
-{
-    return _room.partialTextMessage;
-}
-
-- (void)setPartialTextMessage:(NSString *)partialTextMessage
-{
-    _room.partialTextMessage = partialTextMessage;
-}
-
 - (NSAttributedString *)partialAttributedTextMessage
 {
     return _room.partialAttributedTextMessage;
@@ -1008,7 +937,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         [_timeline removeListener:liveEventsListener];
         [_timeline removeListener:redactionListener];
         [_timeline removeListener:receiptsListener];
-        [_timeline removeListener:relatedGroupsListener];
     }
 
     // Listen to live events only for live timeline
@@ -1021,13 +949,13 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             
             MXStrongifyAndReturnIfNil(self);
 
-            if (event.eventType == MXEventTypeRoomMember && event.isUserProfileChange)
-            {
-                [self refreshProfilesIfNeeded];
-            }
-            
             if (MXTimelineDirectionForwards == direction)
             {
+                if (event.eventType == MXEventTypeRoomMember && event.isUserProfileChange)
+                {
+                    [self refreshProfilesIfNeeded];
+                }
+
                 // Check for local echo suppression
                 MXEvent *localEcho;
                 if (self.room.outgoingMessages.count && [event.sender isEqualToString:self.mxSession.myUser.userId])
@@ -1057,8 +985,19 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                 else if (nil == localEcho)
                 {
                     // Process here incoming events, and outgoing events sent from another device.
-                    [self queueEventForProcessing:event withRoomState:roomState direction:MXTimelineDirectionForwards];
-                    [self processQueuedEvents:nil];
+                    if (self.threadId == nil && event.isInThread)
+                    {
+                        NSInteger index = [self indexOfCellDataWithEventId:event.relatesTo.eventId];
+                        if (index != NSNotFound)
+                        {
+                            [self reloadNotifying:NO];
+                        }
+                    }
+                    else
+                    {
+                        [self queueEventForProcessing:event withRoomState:roomState direction:MXTimelineDirectionForwards];
+                        [self processQueuedEvents:nil];
+                    }
                 }
             }
         }];
@@ -1069,16 +1008,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             {
                 // Handle this read receipt
                 [self didReceiveReceiptEvent:event roomState:roomState];
-            }
-        }];
-        
-        // Flair handling: register a listener for the related groups state event in this room.
-        relatedGroupsListener = [_timeline listenToEventsOfTypes:@[kMXEventTypeStringRoomRelatedGroups] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
-            
-            if (MXTimelineDirectionForwards == direction)
-            {
-                // The flair settings have been updated: flush the current bubble data and rebuild them.
-                [self reload];
             }
         }];
     }
@@ -1127,6 +1056,8 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                         {
                             // Update bubble data
                             NSUInteger remainingEvents = [bubbleData updateEvent:redactionEvent.redacts withEvent:redactedEvent];
+
+                            [self refreshRepliesWithUpdatedEventId:redactedEvent.eventId];
 
                             hasChanged = YES;
 
@@ -1451,6 +1382,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         if (!event.getMediaURLs.count)
         {
             // ignore the event
+            return NO;
+        }
+        
+        // Ignore voice message related to an actual voice broadcast.
+        if (event.content[VoiceBroadcastSettings.voiceBroadcastContentKeyChunkType] != nil) {
             return NO;
         }
     }
@@ -2438,15 +2374,61 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
         // Update cell data we have received a read receipt for
         NSArray *readEventIds = receiptEvent.readReceiptEventIds;
-        for (NSString* eventId in readEventIds)
+        if (RiotSettings.shared.enableThreads)
         {
-            MXKRoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
-            if (cellData)
+            NSArray *readThreadIds = receiptEvent.readReceiptThreadIds;
+            for (int i = 0 ; i < readEventIds.count ; i++)
             {
+                NSString *eventId = readEventIds[i];
+                MXKRoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
+                if (cellData)
+                {
+                    if ([readThreadIds[i] isEqualToString:kMXEventUnthreaded])
+                    {
+                        // Unthreaded RR must be propagated through all threads.
+                        [self.mxSession.threadingService allThreadsInRoomWithId:self.roomId onlyParticipated:NO completion:^(NSArray<id<MXThreadProtocol>> *threads) {
+                            NSMutableArray *threadIds = [NSMutableArray arrayWithObject:kMXEventTimelineMain];
+                            for (id<MXThreadProtocol> thread in threads)
+                            {
+                                [threadIds addObject:thread.id];
+                            }
+                            
+                            for (NSString *threadId in threadIds)
+                            {
+                                @synchronized(self->bubbles)
+                                {
+                                    dispatch_group_enter(dispatchGroup);
+                                    [self addReadReceiptsForEvent:eventId threadId:threadId inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
+                                        dispatch_group_leave(dispatchGroup);
+                                    }];
+                                }
+                            }
+                        }];
+                    }
+                    else
+                    {
+                        NSString *threadId = readThreadIds[i];
+                        @synchronized(self->bubbles)
+                        {
+                            dispatch_group_enter(dispatchGroup);
+                            [self addReadReceiptsForEvent:eventId threadId:threadId inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
+                                dispatch_group_leave(dispatchGroup);
+                            }];
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            // If
+            for (NSString *eventId in readEventIds)
+            {
+                MXKRoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
                 @synchronized(self->bubbles)
                 {
                     dispatch_group_enter(dispatchGroup);
-                    [self addReadReceiptsForEvent:eventId inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
+                    [self addReadReceiptsForEvent:eventId threadId:kMXEventTimelineMain inCellDatas:self->bubbles startingAtCellData:cellData completion:^{
                         dispatch_group_leave(dispatchGroup);
                     }];
                 }
@@ -2691,32 +2673,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
-- (void)didMXSessionUpdatePublicisedGroupsForUsers:(NSNotification *)notif
-{
-    // Retrieved the list of the concerned users
-    NSArray<NSString*> *userIds = notif.userInfo[kMXSessionNotificationUserIdsArrayKey];
-    if (userIds.count)
-    {
-        // Check whether at least one listed user is a room member.
-        for (NSString* userId in userIds)
-        {
-            MXRoomMember * roomMember = [self.roomState.members memberWithUserId:userId];
-            if (roomMember)
-            {
-                // Inform the delegate to refresh the bubble display
-                // We dispatch here this action in order to let each bubble data update their sender flair.
-                if (self.delegate)
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.delegate dataSource:self didCellChange:nil];
-                    });
-                }
-                break;
-            }
-        }
-    }
-}
-
 - (void)eventDidChangeSentState:(NSNotification *)notif
 {
     MXEvent *event = notif.object;
@@ -2945,11 +2901,14 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)setState:(MXKDataSourceState)newState
 {
-    self->state = newState;
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(dataSource:didStateChange:)])
+    if (self->state != newState)
     {
-        [self.delegate dataSource:self didStateChange:self->state];
+        self->state = newState;
+
+        if (self.delegate && [self.delegate respondsToSelector:@selector(dataSource:didStateChange:)])
+        {
+            [self.delegate dataSource:self didStateChange:self->state];
+        }
     }
 }
 
@@ -3615,7 +3574,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                     @autoreleasepool
                     {
                         dispatch_group_enter(dispatchGroup);
-                        [self addReadReceiptsForEvent:queuedEvent.event.eventId inCellDatas:self->bubblesSnapshot startingAtCellData:self->eventIdToBubbleMap[queuedEvent.event.eventId] completion:^{
+                        [self addReadReceiptsForEvent:queuedEvent.event.eventId
+                                             threadId:queuedEvent.event.threadId
+                                          inCellDatas:self->bubblesSnapshot
+                                   startingAtCellData:self->eventIdToBubbleMap[queuedEvent.event.eventId] completion:^{
                             dispatch_group_leave(dispatchGroup);
                         }];
                     }
@@ -3666,7 +3628,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                     while ((nextBubbleData = nextBubbleData.nextCollapsableCellData));
 
                     // Build the summary string for the series
-                    bubbleData.collapsedAttributedTextMessage = [self.eventFormatter attributedStringFromEvents:events withRoomState:bubbleData.collapseState error:nil];
+                    bubbleData.collapsedAttributedTextMessage = [self.eventFormatter attributedStringFromEvents:events
+                                                                                                  withRoomState:bubbleData.collapseState
+                                                                                             andLatestRoomState:self.roomState
+                                                                                                          error:nil];
 
                     // Release collapseState objects, even the one of collapsableSeriesAtStart.
                     // We do not need to keep its state because if an collapsable event comes before collapsableSeriesAtStart,
@@ -3767,16 +3732,22 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
  If the event is not displayed, read receipts will be added to a previous displayed message.
 
  @param eventId the id of the event.
+ @param threadId the Id of the thread related of the event.
  @param cellDatas the working array of cell datas.
  @param cellData the original cell data the event belongs to.
+ @param completion completion block
  */
-- (void)addReadReceiptsForEvent:(NSString*)eventId inCellDatas:(NSArray<id<MXKRoomBubbleCellDataStoring>>*)cellDatas startingAtCellData:(id<MXKRoomBubbleCellDataStoring>)cellData completion:(void (^)(void))completion
+- (void)addReadReceiptsForEvent:(NSString*)eventId
+                       threadId:(NSString *)threadId
+                    inCellDatas:(NSArray<id<MXKRoomBubbleCellDataStoring>>*)cellDatas
+             startingAtCellData:(id<MXKRoomBubbleCellDataStoring>)cellData
+                     completion:(void (^)(void))completion
 {
     if (self.showBubbleReceipts)
     {
         if (self.room)
         {
-            [self.room getEventReceipts:eventId sorted:YES completion:^(NSArray<MXReceiptData *> * _Nonnull readReceipts) {
+            [self.room getEventReceipts:eventId threadId:threadId sorted:YES completion:^(NSArray<MXReceiptData *> * _Nonnull readReceipts) {
                 if (readReceipts.count)
                 {
                     NSInteger cellDataIndex = [cellDatas indexOfObject:cellData];
@@ -3786,6 +3757,14 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                     }
                 }
                 
+                if (!RiotSettings.shared.enableThreads)
+                {
+                    // If threads are disabled, we may have several threaded RR with same userId
+                    // but different threadId within the same timeline.
+                    // We just need to keep the latest one.
+                    [self clearDuplicatedReadReceiptsInCellDatas:cellDatas];
+                }
+
                 if (completion)
                 {
                     completion();
@@ -3871,6 +3850,45 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
+/**
+ Clear all potential duplicated RR with same user ID within a given list of cell data.
+ 
+ This is needed for client with threads disabled in order to clean threaded RRs.
+ 
+ @param cellDatas the working array of cell datas.
+ */
+- (void)clearDuplicatedReadReceiptsInCellDatas:(NSArray<id<MXKRoomBubbleCellDataStoring>>*)cellDatas
+{
+    NSMutableSet<NSString *> *seenUserIds = [NSMutableSet set];
+    for (id<MXKRoomBubbleCellDataStoring> cellData in cellDatas.reverseObjectEnumerator)
+    {
+        if ([cellData isKindOfClass:MXKRoomBubbleCellData.class])
+        {
+            MXKRoomBubbleCellData *roomBubbleCellData = (MXKRoomBubbleCellData*)cellData;
+
+            for (MXKRoomBubbleComponent *component in roomBubbleCellData.bubbleComponents)
+            {
+                if (component.attributedTextMessage)
+                {
+                    if (roomBubbleCellData.readReceipts[component.event.eventId])
+                    {
+                        NSArray<MXReceiptData*> *currentReadReceipts = roomBubbleCellData.readReceipts[component.event.eventId];
+                        NSMutableArray<MXReceiptData*> *newReadReceipts = [NSMutableArray array];
+                        for (MXReceiptData *readReceipt in currentReadReceipts)
+                        {
+                            if (![seenUserIds containsObject:readReceipt.userId])
+                            {
+                                [newReadReceipts addObject:readReceipt];
+                                [seenUserIds addObject:readReceipt.userId];
+                            }
+                        }
+                        [self updateCellData:roomBubbleCellData withReadReceipts:newReadReceipts forEventId:component.event.eventId];
+                    }
+                }
+            }
+        }
+    }
+}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -3986,34 +4004,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
     
     return cell;
-}
-
-#pragma mark - Groups
-
-- (MXGroup *)groupWithGroupId:(NSString*)groupId
-{
-    MXGroup *group = [self.mxSession groupWithGroupId:groupId];
-    if (!group)
-    {
-        // Check whether an instance has been already created.
-        group = [externalRelatedGroups objectForKey:groupId];
-    }
-        
-    if (!group)
-    {
-        // Create a new group instance.
-        group = [[MXGroup alloc] initWithGroupId:groupId];
-        [externalRelatedGroups setObject:group forKey:groupId];
-        
-        // Retrieve at least the group profile
-        [self.mxSession updateGroupProfile:group success:nil failure:^(NSError *error) {
-            
-            MXLogDebug(@"[MXKRoomDataSource][%p] groupWithGroupId: group profile update failed %@", self, groupId);
-            
-        }];
-    }
-    
-    return group;
 }
 
 #pragma mark - MXScanManager notifications
@@ -4242,10 +4232,34 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
+- (BOOL)refreshRepliesWithUpdatedEventId:(NSString*)updatedEventId
+{
+    BOOL hasChanged = NO;
+
+    @synchronized (bubbles) {
+        for (id<MXKRoomBubbleCellDataStoring> bubbleCellData in bubbles)
+        {
+            for (MXEvent *event in bubbleCellData.events)
+            {
+                if ([event.relatesTo.inReplyTo.eventId isEqual:updatedEventId])
+                {
+                    [bubbleCellData updateEvent:event.eventId withEvent:event];
+                    [bubbleCellData invalidateTextLayout];
+                    hasChanged = YES;
+                }
+            }
+        }
+    }
+
+    return hasChanged;
+}
+
 - (BOOL)updateCellData:(id<MXKRoomBubbleCellDataStoring>)bubbleCellData forEditionWithReplaceEvent:(MXEvent*)replaceEvent andEventId:(NSString*)eventId
 {
     BOOL hasChanged = NO;
-    
+
+    hasChanged = [self refreshRepliesWithUpdatedEventId:eventId];
+
     @synchronized (bubbleCellData)
     {
         // Retrieve the original event to edit it
@@ -4333,18 +4347,14 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 #pragma mark - Use Only Latest Profiles
 
 /**
- Refreshes the avatars and display names if needed. This has no effect
- if `roomScreenUseOnlyLatestUserAvatarAndName` is disabled.
+ Refresh avatars and display names (AKA profiles) if needed.
  */
 - (void)refreshProfilesIfNeeded
 {
-    if (RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName)
-    {
-        @synchronized (bubbles) {
-            for (id<MXKRoomBubbleCellDataStoring> bubble in bubbles)
-            {
-                [bubble setRoomState:self.roomState];
-            }
+   @synchronized (bubbles) {
+        for (id<MXKRoomBubbleCellDataStoring> bubble in bubbles)
+        {
+            [bubble refreshProfilesIfNeeded:self.roomState];
         }
     }
 }

@@ -23,6 +23,8 @@ import UIKit
 enum UserIndicatorType {
     case loading(label: String, isInteractionBlocking: Bool)
     case success(label: String)
+    case failure(label: String)
+    case custom(label: String, icon: UIImage?)
 }
 
 /// A presenter which can handle `UserIndicatorType` by creating the underlying `UserIndicator`
@@ -75,6 +77,10 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
             }
         case .success(let label):
             return successRequest(label: label)
+        case .failure(let label):
+            return failureRequest(label: label)
+        case .custom(let label, let icon):
+            return customRequest(label: label, icon: icon)
         }
     }
     
@@ -114,6 +120,34 @@ class UserIndicatorTypePresenter: UserIndicatorTypePresenterProtocol {
         return UserIndicatorRequest(
             presenter: presenter,
             dismissal: .timeout(1.5)
+        )
+    }
+    
+    private func failureRequest(label: String) -> UserIndicatorRequest {
+        let presenter = ToastViewPresenter(
+            viewState: .init(
+                style: .failure,
+                label: label
+            ),
+            presentationContext: presentationContext
+        )
+        return UserIndicatorRequest(
+            presenter: presenter,
+            dismissal: .timeout(1.5)
+        )
+    }
+    
+    private func customRequest(label: String, icon: UIImage?) -> UserIndicatorRequest {
+        let presenter = ToastViewPresenter(
+            viewState: .init(
+                style: .custom(icon: icon),
+                label: label
+            ),
+            presentationContext: presentationContext
+        )
+        return UserIndicatorRequest(
+            presenter: presenter,
+            dismissal: .manual
         )
     }
 }

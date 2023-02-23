@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationVerifyEmailScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -46,19 +45,28 @@ struct AuthenticationVerifyEmailScreen: View {
             }
         }
         .background(background.ignoresSafeArea())
-        .alert(item: $viewModel.alertInfo) { $0.alert }
         .toolbar { toolbar }
+        .alert(item: $viewModel.alertInfo) { $0.alert }
         .accentColor(theme.colors.accent)
     }
     
     @ViewBuilder
     var mainContent: some View {
         if viewModel.viewState.hasSentEmail {
-            waitingHeader
-                .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
-                .padding(.bottom, 36)
+            waitingContent
         } else {
             AuthenticationVerifyEmailForm(viewModel: viewModel)
+        }
+    }
+    
+    var waitingContent: some View {
+        VStack(spacing: 36) {
+            waitingHeader
+                .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
+            
+            ProgressView()
+                .scaleEffect(1.3)
+                .progressViewStyle(CircularProgressViewStyle(tint: theme.colors.secondaryContent))
         }
     }
     
@@ -102,35 +110,19 @@ struct AuthenticationVerifyEmailScreen: View {
     @ViewBuilder
     /// The view's background, which will show a gradient in light mode after sending the email.
     var background: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .top) {
-                theme.colors.background
-                
-                if viewModel.viewState.hasSentEmail && !theme.isDark {
-                    gradient
-                        .frame(height: geometry.size.height * 0.65)
-                }
-            }
-        }
+        OnboardingBreakerScreenBackground(viewModel.viewState.hasSentEmail)
     }
-    
-    /// The background gradient shown after sending the email.
-    var gradient: some View {
-        LinearGradient(gradient: viewModel.viewState.gradient,
-                       startPoint: .leading,
-                       endPoint: .trailing)
-            .opacity(0.3)
-            .mask(LinearGradient(colors: [.white, .clear],
-                                 startPoint: .top,
-                                 endPoint: .bottom))
-    }
-    
+
+    /// A simple toolbar with a cancel button.
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            Button { viewModel.send(viewAction: .cancel) } label: {
-                Image(systemName: "chevron.backward")
+            Button(viewModel.viewState.hasSentEmail ? VectorL10n.back : VectorL10n.cancel) {
+                if viewModel.viewState.hasSentEmail {
+                    viewModel.send(viewAction: .goBack)
+                } else {
+                    viewModel.send(viewAction: .cancel)
+                }
             }
-            .accessibilityLabel(VectorL10n.close)
             .accessibilityIdentifier("cancelButton")
         }
     }

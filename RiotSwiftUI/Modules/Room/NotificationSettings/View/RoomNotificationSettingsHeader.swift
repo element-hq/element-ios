@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RoomNotificationSettingsHeader: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     var avatarData: AvatarInputProtocol
     var displayName: String?
@@ -41,7 +39,6 @@ struct RoomNotificationSettingsHeader: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct RoomNotificationSettingsHeader_Previews: PreviewProvider {
     static let name = "Element"
     static var previews: some View {

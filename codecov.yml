@@ -1,0 +1,21 @@
+coverage:
+  status:
+    project:
+      default:
+        # Commits pushed to master should not make the overall
+        # project coverage decrease by more than 1%:
+        target: auto
+        threshold: 1%
+    patch: false
+
+ignore:
+  - "Riot/Generated"  # ignore the folder and all its contents
+
+flag_management:
+  default_rules:
+    carryforward: true
+    statuses:
+      - name_prefix: project-
+        type: project
+        target: auto
+        threshold: 1%

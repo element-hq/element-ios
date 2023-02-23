@@ -13,43 +13,66 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct ScreenList: View {
+    private let allStates: [ScreenStateInfo]
     
-    private var allStates: [ScreenStateInfo]
+    @State private var searchQuery = ""
+    @State private var filteredStates: [ScreenStateInfo]
     
     init(screens: [MockScreenState.Type]) {
-        allStates = screens
-            .map({ $0.stateRenderer })
-            .flatMap{( $0.states )}
+        let states = screens
+            // swiftformat:disable:next preferKeyPath
+            .map { $0.stateRenderer }
+            .flatMap(\.states)
+        
+        allStates = states
+        filteredStates = states
     }
     
     var body: some View {
         NavigationView {
-            List {
-                SwiftUI.Section {
-                    ForEach(0..<allStates.count, id: \.self) { i in
-                        let state = allStates[i]
-                        NavigationLink(destination: state.view) {
-                            Text(state.screenTitle)
+            VStack {
+                TextField("Search", text: $searchQuery)
+                    .textFieldStyle(.roundedBorder)
+                    .autocorrectionDisabled()
+                    .padding(.horizontal)
+                    .accessibilityIdentifier("searchQueryTextField")
+                    .onChange(of: searchQuery, perform: search)
+                
+                Form {
+                    SwiftUI.Section {
+                        ForEach(0..<filteredStates.count, id: \.self) { i in
+                            let state = filteredStates[i]
+                            NavigationLink(destination: state.view) {
+                                Text(state.screenTitle)
+                            }
                         }
+                    } footer: {
+                        Text("End of list")
+                            .accessibilityIdentifier("footerText")
                     }
                 }
-                
-                SwiftUI.Section {
-                    Text("Last Item")
-                        .accessibilityIdentifier("lastItem")
-                }
             }
+            .background(Color(.systemGroupedBackground).ignoresSafeArea())
+            .navigationTitle("SwiftUI Screens")
+            .navigationBarTitleDisplayMode(.inline)
         }
         .navigationTitle("Screen States")
     }
+    
+    func search(query: String) {
+        if query.isEmpty {
+            filteredStates = allStates
+        } else {
+            filteredStates = allStates.filter {
+                $0.screenTitle.localizedStandardContains(query)
+            }
+        }
+    }
 }
 
-@available(iOS 14.0, *)
 struct ScreenList_Previews: PreviewProvider {
     static var previews: some View {
         ScreenList(screens: [MockTemplateUserProfileScreenState.self])

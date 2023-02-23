@@ -36,4 +36,13 @@ protocol SplitViewCoordinatorType: Coordinator, Presentable {
     // TODO: Do not expose publicly this method
     /// Remove detail screens and display placeholder if needed 
     func resetDetails(animated: Bool)
+    
+    /// Displays an error using a `UserIndicator`. The messages is dimissed automatically.
+    func showErroIndicator(with error: Error)
+    
+    /// Displays an message related to the application state using a `UserIndicator`. The message must be dimissed by calling the method `hideAppStateIndicator()`
+    func showAppStateIndicator(with text: String, icon: UIImage?)
+    
+    /// Hide the message related to the application state currently displayed.
+    func hideAppStateIndicator()
 }

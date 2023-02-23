@@ -24,6 +24,13 @@ import CommonKit
     private let presenter: UserIndicatorTypePresenterProtocol
     private var indicators: [UserIndicator]
     
+    @objc init(from viewController: UIViewController) {
+        self.presenter = UserIndicatorTypePresenter(presentingViewController: viewController)
+        self.indicators = []
+
+        super.init()
+    }
+    
     init(presenter: UserIndicatorTypePresenterProtocol) {
         self.presenter = presenter
         self.indicators = []
@@ -58,5 +65,25 @@ import CommonKit
     @objc func presentSuccess(label: String) {
         let indicator = presenter.present(.success(label: label))
         indicators.append(indicator)
+    }
+    
+    /// Present an error message that will be automatically dismissed after a few seconds.
+    ///
+    /// Note: This is a convenience function callable by objective-c code
+    @objc func presentFailure(label: String) {
+        let indicator = presenter.present(.failure(label: label))
+        indicators.append(indicator)
+    }
+    
+    /// Present an custom message
+    /// To remove the indicator call the returned `UserIndicatorCancel` function
+    ///
+    /// Note: This is a convenience function callable by objective-c code
+    @objc func presentCustom(label: String, icon: UIImage?) -> UserIndicatorCancel {
+        let indicator = presenter.present(.custom(label: label, icon: icon))
+        indicators.append(indicator)
+        return {
+            indicator.cancel()
+        }
     }
 }

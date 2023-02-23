@@ -248,7 +248,10 @@ final class RoomInfoListViewController: UIViewController {
         }
         
         self.title = ""
-        
+        self.vc_removeBackTitle()
+        // TODO: Check string with product (+ DM specific alt ?) and move this out of Untranslated.
+        self.navigationItem.backButtonTitle = VectorL10n.roomInfoBackButtonTitle
+
         mainTableView.register(headerFooterViewType: TextViewTableViewHeaderFooterView.self)
         mainTableView.sectionHeaderHeight = UITableView.automaticDimension
         mainTableView.estimatedSectionHeaderHeight = 50

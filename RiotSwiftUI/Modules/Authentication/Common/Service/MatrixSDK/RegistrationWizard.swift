@@ -35,8 +35,8 @@ class RegistrationWizard {
         var sendAttempt: UInt = 0
     }
     
-    let client: MXRestClient
-    let sessionCreator: SessionCreator
+    let client: AuthenticationRestClient
+    let sessionCreator: SessionCreatorProtocol
     
     private(set) var state: State
     
@@ -59,11 +59,11 @@ class RegistrationWizard {
         state.isRegistrationStarted
     }
     
-    init(client: MXRestClient, sessionCreator: SessionCreator = SessionCreator()) {
+    init(client: AuthenticationRestClient, sessionCreator: SessionCreatorProtocol) {
         self.client = client
         self.sessionCreator = sessionCreator
         
-        self.state = State()
+        state = State()
     }
     
     /// Call this method to get the possible registration flow of the current homeserver.
@@ -88,16 +88,17 @@ class RegistrationWizard {
     /// Can be call to check is the desired username is available for registration on the current homeserver.
     /// It may also fails if the desired username is not correctly formatted or does not follow any restriction on
     /// the homeserver. Ex: username with only digits may be rejected.
-    /// - Parameter username the desired username. Ex: "alice"
+    /// - Parameter username: The desired username. Ex: "alice"
     func registrationAvailable(username: String) async throws -> Bool {
         try await client.isUsernameAvailable(username)
     }
 
     /// This is the first method to call in order to create an account and start the registration process.
     ///
-    /// - Parameter username the desired username. Ex: "alice"
-    /// - Parameter password the desired password
-    /// - Parameter initialDeviceDisplayName the device display name
+    /// - Parameters:
+    ///   - username: The desired username. Ex: "alice"
+    ///   - password: The desired password
+    ///   - initialDeviceDisplayName: The device display name
     func createAccount(username: String?,
                        password: String?,
                        initialDeviceDisplayName: String?) async throws -> RegistrationResult {
@@ -144,7 +145,7 @@ class RegistrationWizard {
 
     /// Perform the "m.login.email.identity" or "m.login.msisdn" stage.
     ///
-    /// - Parameter threePID the threePID to add to the account. If this is an email, the homeserver will send an email
+    /// - Parameter threePID: the threePID to add to the account. If this is an email, the homeserver will send an email
     /// to validate it. For a msisdn a SMS will be sent.
     func addThreePID(threePID: RegisterThreePID) async throws -> RegistrationResult {
         state.currentThreePIDData = nil
@@ -163,20 +164,24 @@ class RegistrationWizard {
     /// Send the code received by SMS to validate a msisdn.
     /// If the code is correct, the registration request will be executed to validate the msisdn.
     func handleValidateThreePID(code: String) async throws -> RegistrationResult {
-        return try await validateThreePid(code: code)
+        try await validateThreePid(code: code)
     }
 
     /// Useful to poll the homeserver when waiting for the email to be validated by the user.
     /// Once the email is validated, this method will return successfully.
-    /// - Parameter delay How long to wait before sending the request.
-    func checkIfEmailHasBeenValidated(delay: TimeInterval) async throws -> RegistrationResult {
-        MXLog.failure("The delay on this method is no longer available. Move this to the object handling the polling.")
+    func checkIfEmailHasBeenValidated() async throws -> RegistrationResult {
         guard let parameters = state.currentThreePIDData?.registrationParameters else {
             MXLog.error("[RegistrationWizard] checkIfEmailHasBeenValidated: The current 3pid data hasn't been stored in the state.")
             throw RegistrationError.missingThreePIDData
         }
 
-        return try await performRegistrationRequest(parameters: parameters)
+        do {
+            return try await performRegistrationRequest(parameters: parameters)
+        } catch {
+            // An unauthorized error indicates that the user hasn't tapped the link yet.
+            guard isUnauthorized(error) else { throw error }
+            throw RegistrationError.waitingForThreePIDValidation
+        }
     }
     
     // MARK: - Private
@@ -192,12 +197,11 @@ class RegistrationWizard {
             throw RegistrationError.missingThreePIDURL
         }
         
-        
         let validationBody = ThreePIDValidationCodeBody(clientSecret: state.clientSecret,
                                                         sessionID: threePIDData.registrationResponse.sessionID,
                                                         code: code)
         
-        #warning("Seems odd to pass a nil baseURL and then the url as the path, yet this is how MXK3PID works")
+        //  Seems odd to pass a nil baseURL and then the url as the path, yet this is how MXK3PID works"
         guard let httpClient = MXHTTPClient(baseURL: nil, andOnUnrecognizedCertificateBlock: nil) else {
             MXLog.error("[RegistrationWizard] validateThreePid: Failed to create an MXHTTPClient.")
             throw RegistrationError.threePIDClientFailure
@@ -208,7 +212,6 @@ class RegistrationWizard {
         }
         
         let parameters = threePIDData.registrationParameters
-        MXLog.failure("This method used to add a 3-second delay to the request. This should be moved to the caller of `handleValidateThreePID`.")
         return try await performRegistrationRequest(parameters: parameters)
     }
     
@@ -237,15 +240,21 @@ class RegistrationWizard {
         
         state.currentThreePIDData = ThreePIDData(threePID: threePID, registrationResponse: response, registrationParameters: parameters)
 
-        // Send the session id for the first time
-        return try await performRegistrationRequest(parameters: parameters)
+        do {
+            // Send the session id for the first time
+            return try await performRegistrationRequest(parameters: parameters)
+        } catch {
+            // An unauthorized error means that it was accepted and is awaiting validation.
+            guard isUnauthorized(error) else { throw error }
+            throw RegistrationError.waitingForThreePIDValidation
+        }
     }
     
     private func performRegistrationRequest(parameters: RegistrationParameters, isCreatingAccount: Bool = false) async throws -> RegistrationResult {
         do {
             let response = try await client.register(parameters: parameters)
             let credentials = MXCredentials(loginResponse: response, andDefaultCredentials: client.credentials)
-            return .success(sessionCreator.createSession(credentials: credentials, client: client))
+            return await .success(sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false))
         } catch {
             let nsError = error as NSError
             
@@ -258,17 +267,23 @@ class RegistrationWizard {
             let flowResult = authenticationSession.flowResult
             
             if isCreatingAccount || isRegistrationStarted {
-                return try await handleMandatoryDummyStage(flowResult: flowResult)
+                return try await handleDummyStage(flowResult: flowResult)
             }
             
             return .flowResponse(flowResult)
         }
     }
     
-    /// Checks for a mandatory dummy stage and handles it automatically when possible.
-    private func handleMandatoryDummyStage(flowResult: FlowResult) async throws -> RegistrationResult {
+    /// Checks for a dummy stage and handles it automatically when possible.
+    private func handleDummyStage(flowResult: FlowResult) async throws -> RegistrationResult {
         // If the dummy stage is mandatory, do the dummy stage now
-        guard flowResult.missingStages.contains(where: { $0.isDummyAndMandatory }) else { return .flowResponse(flowResult) }
+        guard flowResult.missingStages.contains(where: \.isDummy) else { return .flowResponse(flowResult) }
         return try await dummy()
+    }
+    
+    /// Checks whether an error is an `M_UNAUTHORIZED` for handling third party ID responses.
+    private func isUnauthorized(_ error: Error) -> Bool {
+        guard let mxError = MXError(nsError: error) else { return false }
+        return mxError.errcode == kMXErrCodeStringUnauthorized
     }
 }

@@ -17,11 +17,10 @@
  */
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 final class SpaceCreationMenuCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -38,7 +37,6 @@ final class SpaceCreationMenuCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: SpaceCreationMenuCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = SpaceCreationMenuViewModel(navTitle: parameters.navTitle, creationParams: parameters.creationParams, title: parameters.title, detail: parameters.detail, options: parameters.options)
@@ -64,12 +62,11 @@ final class SpaceCreationMenuCoordinator: Coordinator, Presentable {
                 self.callback?(.cancel)
             case .back:
                 self.callback?(.back)
-            break
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.spaceCreationMenuHostingController
+        spaceCreationMenuHostingController
     }
 }

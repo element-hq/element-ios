@@ -107,7 +107,7 @@ class VoiceMessageAttachmentCacheManager {
             try setupTemporaryFilesFolder()
         } catch {
             completion(Result.failure(VoiceMessageAttachmentCacheManagerError.preparationError(error)))
-            MXLog.error("[VoiceMessageAttachmentCacheManager] Failed creating temporary files folder with error: \(error)")
+            MXLog.error("[VoiceMessageAttachmentCacheManager] Failed creating temporary files folder", context: error)
             return
         }
         
@@ -140,7 +140,7 @@ class VoiceMessageAttachmentCacheManager {
         do {
             try FileManager.default.removeItem(at: temporaryFilesFolderURL)
         } catch {
-            MXLog.error("[VoiceMessageAttachmentCacheManager] Failed clearing cached disk files with error: \(error)")
+            MXLog.error("[VoiceMessageAttachmentCacheManager] Failed clearing cached disk files", context: error)
         }
     }
     
@@ -176,7 +176,7 @@ class VoiceMessageAttachmentCacheManager {
                 }, failure: { error in
                     // A nil error in this case is a cancellation on the MXMediaLoader
                     if let error = error {
-                        MXLog.error("[VoiceMessageAttachmentCacheManager] Failed decrypting attachment with error: \(String(describing: error))")
+                        MXLog.error("[VoiceMessageAttachmentCacheManager] Failed decrypting attachment", context: error)
                         self.invokeFailureCallbacksForIdentifier(identifier, requiredNumberOfSamples: numberOfSamples, error: VoiceMessageAttachmentCacheManagerError.decryptionError(error))
                     }
                     semaphore.signal()
@@ -189,7 +189,7 @@ class VoiceMessageAttachmentCacheManager {
                 }, failure: { error in
                     // A nil error in this case is a cancellation on the MXMediaLoader
                     if let error = error {
-                        MXLog.error("[VoiceMessageAttachmentCacheManager] Failed preparing attachment with error: \(String(describing: error))")
+                        MXLog.error("[VoiceMessageAttachmentCacheManager] Failed preparing attachment", context: error)
                         self.invokeFailureCallbacksForIdentifier(identifier, requiredNumberOfSamples: numberOfSamples, error: VoiceMessageAttachmentCacheManagerError.preparationError(error))
                     }
                     semaphore.signal()
@@ -208,7 +208,8 @@ class VoiceMessageAttachmentCacheManager {
             return
         }
         
-        let newURL = temporaryFilesFolderURL.appendingPathComponent(identifier).appendingPathExtension("m4a")
+        let fileExtension = filePath.hasSuffix(".mp4") ? "mp4" : "m4a"
+        let newURL = temporaryFilesFolderURL.appendingPathComponent(identifier).appendingPathExtension(fileExtension)
         
         let conversionCompletion: (Result<Void, VoiceMessageAudioConverterError>) -> Void = { result in
             self.workQueue.async {
@@ -232,14 +233,14 @@ class VoiceMessageAttachmentCacheManager {
                                     semaphore.signal()
                                 }
                             case .failure(let error):
-                                MXLog.error("[VoiceMessageAttachmentCacheManager] Failed retrieving audio duration with error: \(error)")
+                                MXLog.error("[VoiceMessageAttachmentCacheManager] Failed retrieving audio duration", context: error)
                                 self.invokeFailureCallbacksForIdentifier(identifier, requiredNumberOfSamples: numberOfSamples, error: VoiceMessageAttachmentCacheManagerError.durationError(error))
                                 semaphore.signal()
                             }
                         }
                     }
                 case .failure(let error):
-                    MXLog.error("[VoiceMessageAttachmentCacheManager] Failed converting voice message with error: \(error)")
+                    MXLog.error("[VoiceMessageAttachmentCacheManager] Failed converting voice message", context: error)
                     self.invokeFailureCallbacksForIdentifier(identifier, requiredNumberOfSamples: numberOfSamples, error: VoiceMessageAttachmentCacheManagerError.conversionError(error))
                     semaphore.signal()
                 }

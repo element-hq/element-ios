@@ -26,4 +26,3 @@ protocol RoomNotificationSettingsViewStateType {
     var avatarData: AvatarProtocol? { get }
     var displayName: String? { get }
 }
-

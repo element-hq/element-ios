@@ -71,6 +71,12 @@
         [self flushPills];
     }
     [super setAttributedText:attributedText];
+
+    if (@available(iOS 15.0, *)) {
+        // Fixes an iOS 16 issue where attachment are not drawn properly by
+        // forcing the layoutManager to redraw the glyphs at all NSAttachment positions.
+        [self vc_invalidateTextAttachmentsDisplay];
+    }
 }
 
 - (void)registerPillView:(UIView *)pillView

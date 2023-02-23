@@ -34,4 +34,8 @@ import UIKit
         return userInterfaceIdiom == .phone
     }
     
+    var initialDisplayName: String {
+        VectorL10n.userSessionsDefaultSessionDisplayName(AppInfo.current.displayName)
+    }
+    
 }

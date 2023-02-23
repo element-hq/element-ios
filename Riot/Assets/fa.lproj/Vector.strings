@@ -1270,3 +1270,23 @@
 "microphone_access_not_granted_for_voice_message" = "جهت ارسال پیام صوتی نیاز به دسترسی به میکروفون وجود دارد اما %@ دسترسی استفاده از آن را ندارد";
 "e2e_passphrase_too_short" = "کلمه عبور بیش از حد کوتاه است (حداقل می‌بایست %d کاراکتر باشد)";
 "message_reply_to_sender_sent_a_voice_message" = "یک پیام صوتی ارسال کنید.";
+"onboarding_splash_page_1_title" = "صاحب گفتگوهای خود شوید.";
+"onboarding_splash_login_button_title" = "من از قبل حساب کاربری دارم";
+
+// MARK: Onboarding
+"onboarding_splash_register_button_title" = "ساخت حساب کاربری";
+"accessibility_button_label" = "دکمه";
+"saving" = "در حال ذخیره";
+
+// Activities
+"loading" = "در حال بارگزاری";
+"invite_to" = "دعوت به %@";
+"confirm" = "تأیید";
+"edit" = "ویرایش";
+"suggest" = "پیشنهاد";
+"add" = "افزودن";
+"existing" = "خروج";
+"new_word" = "جدید";
+"stop" = "توقف";
+"joining" = "پیوستن";
+"enable" = "فعال";

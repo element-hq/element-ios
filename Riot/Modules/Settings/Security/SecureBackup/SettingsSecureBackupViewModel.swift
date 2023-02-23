@@ -24,6 +24,7 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
     // MARK: Private
     private let recoveryService: MXRecoveryService
     private let keyBackup: MXKeyBackup
+    private var progressUpdateTimer: Timer?
 
     init(recoveryService: MXRecoveryService, keyBackup: MXKeyBackup) {
         self.recoveryService = recoveryService
@@ -106,17 +107,13 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
             guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
                 return
             }
-
-            // Get the backup progress before updating the state
-            self.keyBackup.backupProgress { [weak self] (progress) in
-                guard let self = self else {
-                    return
-                }
-                
-                let keyBackupState: SettingsSecureBackupViewState.KeyBackupState = .keyBackup(keyBackupVersion, keyBackupVersionTrust, progress)
-                let viewState: SettingsSecureBackupViewState = self.recoveryService.hasRecovery() ? .secureBackup(keyBackupState) : .noSecureBackup(keyBackupState)
-                self.viewDelegate?.settingsSecureBackupViewModel(self, didUpdateViewState: viewState)
-            }
+            
+            let importProgress = keyBackup.importProgress
+            let keyBackupState: SettingsSecureBackupViewState.KeyBackupState = .keyBackup(keyBackupVersion, keyBackupVersionTrust, importProgress)
+            let viewState: SettingsSecureBackupViewState = self.recoveryService.hasRecovery() ? .secureBackup(keyBackupState) : .noSecureBackup(keyBackupState)
+            self.viewDelegate?.settingsSecureBackupViewModel(self, didUpdateViewState: viewState)
+            scheduleProgressUpdateIfNecessary(keyBackupVersionTrust: keyBackupVersionTrust, progress: importProgress)
+            
         default:
             break
         }
@@ -128,6 +125,17 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
 
         if let viewState = viewState {
             self.viewDelegate?.settingsSecureBackupViewModel(self, didUpdateViewState: viewState)
+        }
+    }
+    
+    private func scheduleProgressUpdateIfNecessary(keyBackupVersionTrust: MXKeyBackupVersionTrust, progress: Progress?) {
+        if progress != nil {
+            progressUpdateTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
+                self?.computeState(withBackupVersionTrust: keyBackupVersionTrust)
+            }
+        } else {
+            progressUpdateTimer?.invalidate()
+            progressUpdateTimer = nil
         }
     }
 

@@ -13,15 +13,15 @@
 		<string>webcredentials:riot.im</string>
 		<string>applinks:element.io</string>
 		<string>applinks:app.element.io</string>
-		<string>applinks:space.stvd.io</string>
 		<string>applinks:staging.element.io</string>
 		<string>applinks:develop.element.io</string>
 		<string>applinks:mobile.element.io</string>
-		<string>webcredentials:*.element.io</string>
+		<string>applinks:space.stvd.io</string>
+		<string>applinks:app.vector.im</string>
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
-		<string>iCloud.$(CFBundleIdentifier)s</string>
+		<string>iCloud.io.stvd.spaces</string>
 	</array>
 	<key>com.apple.developer.icloud-services</key>
 	<array>
@@ -31,13 +31,13 @@
 	<true/>
 	<key>com.apple.developer.ubiquity-container-identifiers</key>
 	<array>
-		<string>iCloud.$(CFBundleIdentifier)s</string>
+		<string>iCloud.io.stvd.spaces</string>
 	</array>
 	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
 	<string>$(TeamIdentifierPrefix)$(CFBundleIdentifier)</string>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
+		<string>group.io.stvd.space</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>

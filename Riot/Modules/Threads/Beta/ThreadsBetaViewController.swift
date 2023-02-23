@@ -145,7 +145,7 @@ extension ThreadsBetaViewController: Themable {
         self.separatorLineView.backgroundColor = theme.colors.system
         self.informationTextView.textColor = theme.textPrimaryColor
 
-        self.enableButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
+        self.enableButton.vc_setBackgroundColor(UIColor(named: "FirstScreenColor")!, for: .normal)
         self.enableButton.setTitleColor(theme.baseTextPrimaryColor, for: .normal)
         self.cancelButton.vc_setBackgroundColor(.clear, for: .normal)
         self.cancelButton.setTitleColor(theme.tintColor, for: .normal)

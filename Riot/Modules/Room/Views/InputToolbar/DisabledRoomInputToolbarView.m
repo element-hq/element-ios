@@ -27,7 +27,7 @@
                           bundle:[NSBundle bundleForClass:[DisabledRoomInputToolbarView class]]];
 }
 
-+ (instancetype)roomInputToolbarView
++ (MXKRoomInputToolbarView *)instantiateRoomInputToolbarView
 {
     if ([[self class] nib])
     {

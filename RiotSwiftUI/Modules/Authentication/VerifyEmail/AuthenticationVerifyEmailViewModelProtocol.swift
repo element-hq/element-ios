@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,14 @@
 import Foundation
 
 protocol AuthenticationVerifyEmailViewModelProtocol {
-    
-    @MainActor var callback: ((AuthenticationVerifyEmailViewModelResult) -> Void)? { get set }
+    var callback: (@MainActor (AuthenticationVerifyEmailViewModelResult) -> Void)? { get set }
     var context: AuthenticationVerifyEmailViewModelType.Context { get }
     
     /// Updates the view to reflect that a verification email was successfully sent.
     @MainActor func updateForSentEmail()
+
+    /// Goes back to the email form
+    @MainActor func goBackToEnterEmailForm()
     
     /// Display an error to the user.
     @MainActor func displayError(_ type: AuthenticationVerifyEmailErrorType)

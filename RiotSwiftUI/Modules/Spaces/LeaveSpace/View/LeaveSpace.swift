@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct LeaveSpace: View {
-    
     // MARK: Properties
     
     @ObservedObject var viewModel: MatrixItemChooserViewModel.Context
@@ -31,7 +29,7 @@ struct LeaveSpace: View {
     @ViewBuilder
     var body: some View {
         mainView
-            .background(theme.colors.background)
+            .background(theme.colors.background.ignoresSafeArea())
     }
     
     // MARK: - Private
@@ -54,5 +52,4 @@ struct LeaveSpace: View {
         .buttonStyle(PrimaryActionButtonStyle(customColor: theme.colors.alert))
         .padding()
     }
-
 }

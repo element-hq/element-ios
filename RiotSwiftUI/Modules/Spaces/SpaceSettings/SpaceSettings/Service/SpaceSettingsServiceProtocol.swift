@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 enum SpaceSettingsServiceCompletionResult {
     case success
     case failure(Error)
 }
 
-@available(iOS 14.0, *)
 protocol SpaceSettingsServiceProtocol: Avatarable {
     var spaceId: String { get }
     var roomProperties: SpaceSettingsRoomProperties? { get }
@@ -39,11 +38,11 @@ protocol SpaceSettingsServiceProtocol: Avatarable {
 
 // MARK: Avatarable
 
-@available(iOS 14.0, *)
 extension SpaceSettingsServiceProtocol {
     var mxContentUri: String? {
         roomProperties?.avatarUrl
     }
+
     var matrixItemId: String {
         spaceId
     }

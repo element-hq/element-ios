@@ -59,14 +59,14 @@ class URLPreviewStore {
         // Load the persistent stores into the container
         container.loadPersistentStores { storeDescription, error in
             if let error = error {
-                MXLog.error("[URLPreviewStore] Core Data container error: \(error.localizedDescription)")
+                MXLog.error("[URLPreviewStore] Core Data container", context: error)
             }
             
             if let url = storeDescription.url {
                 do {
                     try FileManager.default.excludeItemFromBackup(at: url)
                 } catch {
-                    MXLog.error("[URLPreviewStore] Cannot exclude Core Data from backup: \(error.localizedDescription)")
+                    MXLog.error("[URLPreviewStore] Cannot exclude Core Data from backup", context: error)
                 }
             }
         }
@@ -130,7 +130,7 @@ class URLPreviewStore {
         do {
             try context.execute(NSBatchDeleteRequest(fetchRequest: request))
         } catch {
-            MXLog.error("[URLPreviewStore] Error executing batch delete request: \(error.localizedDescription)")
+            MXLog.error("[URLPreviewStore] Error executing batch delete request", context: error)
         }
     }
     
@@ -140,7 +140,7 @@ class URLPreviewStore {
             _ = try context.execute(NSBatchDeleteRequest(fetchRequest: URLPreviewDataMO.fetchRequest()))
             _ = try context.execute(NSBatchDeleteRequest(fetchRequest: URLPreviewUserDataMO.fetchRequest()))
         } catch {
-            MXLog.error("[URLPreviewStore] Error executing batch delete request: \(error.localizedDescription)")
+            MXLog.error("[URLPreviewStore] Error executing batch delete request", context: error)
         }
     }
     
@@ -171,7 +171,7 @@ class URLPreviewStore {
         do {
             try context.save()
         } catch {
-            MXLog.error("[URLPreviewStore] Error saving changes: \(error.localizedDescription)")
+            MXLog.error("[URLPreviewStore] Error saving changes", context: error)
         }
     }
 }

@@ -32,7 +32,7 @@
 #define TABLEVIEW_ROW_CELL_HEIGHT         46
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
 
-@interface RoomMemberDetailsViewController () <UIGestureRecognizerDelegate, DeviceTableViewCellDelegate, RoomMemberTitleViewDelegate, KeyVerificationCoordinatorBridgePresenterDelegate>
+@interface RoomMemberDetailsViewController () <UIGestureRecognizerDelegate, DeviceTableViewCellDelegate, RoomMemberTitleViewDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, UserVerificationCoordinatorBridgePresenterDelegate>
 {
     RoomMemberTitleView* memberTitleView;
     
@@ -350,9 +350,11 @@
     {        
         self.roomMemberNameContainerView.hidden = !self.mxRoomMember.displayname;
         
-        self.roomMemberNameLabel.text = self.mxRoomMember.displayname; 
+        self.roomMemberNameLabel.text = self.mxRoomMember.displayname;
         
-        self.roomMemberUserIdLabel.text = self.mxRoomMember.userId;    
+        NSArray *listItems = [self.mxRoomMember.userId componentsSeparatedByString:@":"];
+        
+        self.roomMemberUserIdLabel.text = listItems.firstObject;
         
         // Update member power level
         MXWeakify(self);
@@ -440,7 +442,9 @@
 
 - (void)startUserVerification
 {
-    [[AppDelegate theDelegate] presentUserVerificationForRoomMember:self.mxRoomMember session:self.mainSession];
+    [[AppDelegate theDelegate] presentUserVerificationForRoomMember:self.mxRoomMember session:self.mainSession completion:^{
+        [self refreshUserEncryptionTrustLevel];
+    }];
 }
 
 - (void)presentUserVerification
@@ -449,6 +453,7 @@
                                                                                                                                                            session:self.mxRoom.mxSession
                                                                                                                                                             userId:self.mxRoomMember.userId
                                                                                                                                                    userDisplayName:self.mxRoomMember.displayname];
+    userVerificationCoordinatorBridgePresenter.delegate = self;
     [userVerificationCoordinatorBridgePresenter start];
     self.userVerificationCoordinatorBridgePresenter = userVerificationCoordinatorBridgePresenter;
 }
@@ -1331,6 +1336,7 @@
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
+    [self refreshUserEncryptionTrustLevel];
     [self dismissKeyVerificationCoordinatorBridgePresenter];
 }
 
@@ -1343,6 +1349,13 @@
 {
     [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     keyVerificationCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - UserVerificationCoordinatorBridgePresenterDelegate
+
+- (void)userVerificationCoordinatorBridgePresenterDelegateDidComplete:(UserVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self refreshUserEncryptionTrustLevel];
 }
 
 @end

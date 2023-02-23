@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RoomAccessTypeChooserRow: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -70,7 +68,6 @@ struct RoomAccessTypeChooserRow: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct RoomAccessTypeChooserRow_Previews: PreviewProvider {
     static var previews: some View {
         VStack {

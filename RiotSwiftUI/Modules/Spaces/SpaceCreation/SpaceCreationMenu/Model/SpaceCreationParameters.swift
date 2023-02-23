@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,26 +28,31 @@ class SpaceCreationParameters {
             isModified = true
         }
     }
+
     var topic: String? {
         didSet {
             isModified = true
         }
     }
+
     var address: String? {
         didSet {
             isModified = true
         }
     }
+
     var userDefinedAddress: String? {
         didSet {
             isModified = true
         }
     }
-    var isPublic: Bool = false {
+
+    var isPublic = false {
         didSet {
             isModified = true
         }
     }
+
     var showAddress: Bool {
         isPublic
     }
@@ -57,7 +62,8 @@ class SpaceCreationParameters {
             isModified = true
         }
     }
-    var isShared: Bool = false {
+
+    var isShared = false {
         didSet {
             isModified = true
         }
@@ -84,22 +90,26 @@ class SpaceCreationParameters {
             isModified = true
         }
     }
+
     var userDefinedEmailInvites: [String] {
-        return emailInvites.filter { address in
-            return !address.isEmpty
+        emailInvites.filter { address in
+            !address.isEmpty
         }
     }
+
     var userIdInvites: [String] = [] {
         didSet {
             isModified = true
         }
     }
+
     var inviteType: SpaceCreationInviteType = .email {
         didSet {
             isModified = true
         }
     }
-    var isModified: Bool = false
+
+    var isModified = false
 }
 
 struct SpaceCreationNewRoom: Equatable {
@@ -107,6 +117,6 @@ struct SpaceCreationNewRoom: Equatable {
     var defaultName: String
     
     static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.defaultName == rhs.defaultName && lhs.name == rhs.name
+        lhs.defaultName == rhs.defaultName && lhs.name == rhs.name
     }
 }

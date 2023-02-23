@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 /// A SwiftUI `PreferenceKey` for `CGRect` values such as a view's frame.
-@available(iOS 14.0, *)
 struct FramePreferenceKey: PreferenceKey {
     static var defaultValue: CGRect = .zero
     

@@ -1,0 +1,9 @@
+{
+    "m.homeserver": {
+        "base_url": "https://matrix.company.com"
+    },
+    "m.identity_server": {
+        "base_url": "https://identity.company.com"
+    }
+}
+

@@ -115,6 +115,15 @@
         
     }];
     [self userInterfaceThemeDidChange];
+
+    if (@available(iOS 15.0, *))
+    {
+        [[_contactsTableView.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor] setActive:YES];
+    }
+    else
+    {
+        [[_contactsTableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor] setActive:YES];
+    }
 }
 
 - (void)userInterfaceThemeDidChange

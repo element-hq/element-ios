@@ -16,7 +16,7 @@
 
 import XCTest
 
-@testable import Riot
+@testable import Element
 
 final class MarkdownToHTMLRendererTests: XCTestCase {
     // MARK: - Tests
@@ -108,6 +108,20 @@ final class MarkdownToHTMLRendererTests: XCTestCase {
         + "https://github.com/matrix-org/synapse/blob/develop/synapse/module_api/__init__.py"
         + " <em>some emphased text</em> "
         + "http://domain.xyz/foo/bar-_stuff-like-this_-in-it.jpg</p>"
+        + "\n"
+        testRenderHTML(input: input, expectedOutput: expectedOutput)
+    }
+
+    func testRenderRepairedLinksWithCharactersRequiringPercentEncoding() {
+        let input = "Some link with special characters: "
+        + "https://matrix.to/#/#_oftc_#matrix-dev:matrix.org"
+        + " "
+        + "https://matrix.to/#/#?=+-_#_"
+        + "\n"
+        let expectedOutput = "<p>Some link with special characters: "
+        + "https://matrix.to/#/#_oftc_#matrix-dev:matrix.org"
+        + " "
+        + "https://matrix.to/#/#?=+-_#_</p>"
         + "\n"
         testRenderHTML(input: input, expectedOutput: expectedOutput)
     }

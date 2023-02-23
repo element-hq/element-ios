@@ -37,6 +37,8 @@
  */
 @property (nonatomic, assign) CGFloat topViewHeight;
 
+@property (nonatomic, assign) CGFloat topPadding;
+
 /**
  A view which spans the top view. No frame value will be used. Height will be equal to topViewHeight.
  */

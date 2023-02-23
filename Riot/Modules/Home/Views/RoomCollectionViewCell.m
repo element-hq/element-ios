@@ -34,10 +34,6 @@
 {
     [super awakeFromNib];
     
-    // Round room image view
-    [_roomAvatar.layer setCornerRadius:_roomAvatar.frame.size.width / 2];
-    _roomAvatar.clipsToBounds = YES;
-    
     // Disable the user interaction on the room avatar.
     self.roomAvatar.userInteractionEnabled = NO;
     
@@ -73,6 +69,9 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    [self.roomAvatar.layer setCornerRadius:self.roomAvatar.frame.size.width / 2.0];
+    [self.roomAvatar setClipsToBounds: YES];
 }
 
 - (void)render:(MXKCellData *)cellData

@@ -118,7 +118,6 @@ final class BuildSettings: NSObject {
     // MARK: - Permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
     static let permalinkSupportedHosts: [String: [String]] = [
-        "space.stvd.io": [],
         "app.element.io": [],
         "staging.element.io": [],
         "develop.element.io": [],
@@ -129,8 +128,9 @@ final class BuildSettings: NSObject {
         "vector.im": ["/app", "/staging", "/develop"],
         "www.vector.im": ["/app", "/staging", "/develop"],
         // Official Matrix ones
-        "matrix.to": ["/"],
-        "www.matrix.to": ["/"],
+        "space.stvd.io": ["/"],
+        "www.space.stvd.io": ["/"],
+        ":matrix.org": [""]
         // Client Permalinks (for use with `BuildSettings.clientPermalinkBaseUrl`)
 //        "example.com": ["/"],
 //        "www.example.com": ["/"],
@@ -140,8 +140,8 @@ final class BuildSettings: NSObject {
     // This baseURL is used to generate permalinks within the app (E.g. timeline message permalinks).
     // Optional String that when set is used as permalink base, when nil matrix.to format is used.
     // Example value would be "https://www.example.com", note there is no trailing '/'.
-    static let clientPermalinkBaseUrl: String? = nil
-    
+    static let clientPermalinkBaseUrl: String? = "https://space.stvd.io"
+
     // MARK: - VoIP
     static var allowVoIPUsage: Bool {
         #if canImport(JitsiMeetSDK)
@@ -235,8 +235,10 @@ final class BuildSettings: NSObject {
     
     static let allowInviteExernalUsers: Bool = true
     
+    static let allowBackgroundAudioMessagePlayback: Bool = true
+    
     // MARK: - Side Menu
-    static let enableSideMenu: Bool = true
+    static let enableSideMenu: Bool = true && !newAppLayoutEnabled
     static let sideMenuShowInviteFriends: Bool = true
 
     /// Whether to read the `io.element.functional_members` state event and exclude any service members when computing a room's name and avatar.
@@ -266,7 +268,6 @@ final class BuildSettings: NSObject {
     static let homeScreenShowFavouritesTab: Bool = true
     static let homeScreenShowPeopleTab: Bool = true
     static let homeScreenShowRoomsTab: Bool = true
-    static let homeScreenShowCommunitiesTab: Bool = true
 
     // MARK: - General Settings Screen
     
@@ -349,7 +350,6 @@ final class BuildSettings: NSObject {
     static let roomSettingsScreenAllowChangingAccessSettings: Bool = true
     static let roomSettingsScreenAllowChangingHistorySettings: Bool = true
     static let roomSettingsScreenShowAddressSettings: Bool = true
-    static let roomSettingsScreenShowFlairSettings: Bool = true
     static let roomSettingsScreenShowAdvancedSettings: Bool = true
     static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool = true
 
@@ -376,18 +376,17 @@ final class BuildSettings: NSObject {
     
     // MARK: - Authentication Screen
     static let authScreenShowRegister = true
-    static let authScreenShowPhoneNumber = false
+    static let authScreenShowPhoneNumber = true
     static let authScreenShowForgotPassword = true
-    static let authScreenShowCustomServerOptions = false
+    static let authScreenShowCustomServerOptions = true
     static let authScreenShowSocialLoginSection = true
     
     // MARK: - Authentication Options
     static let authEnableRefreshTokens = false
     
     // MARK: - Onboarding
-    static let onboardingShowAccountPersonalization = false
-    static let onboardingEnableNewAuthenticationFlow = false
-    static let onboardingHostYourOwnServerLink = URL(string: "https://element.io/contact-sales")!
+    static let onboardingShowAccountPersonalization = true
+    static let onboardingEnableNewAuthenticationFlow = true
     
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
@@ -400,36 +399,46 @@ final class BuildSettings: NSObject {
     
     // MARK: - Polls
     
-    static var pollsEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return true
-    }
+    static let pollsEnabled = true
     
     // MARK: - Location Sharing
     
-    static let tileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
+    /// Overwritten by the home server's .well-known configuration (if any exists)
+    static let defaultTileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
     
-    static var locationSharingEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return true
-    }
+    static let locationSharingEnabled = true
     
-    static var liveLocationSharingEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        guard self.locationSharingEnabled else {
-            return false
-        }
-        
-        // Do not enable live location sharing atm
-        return false
-    }
+    // MARK: - Voice Broadcast
+    static let voiceBroadcastChunkLength: Int = 120
+    static let voiceBroadcastMaxLength: UInt = 14400 // 240min.
+
+    // MARK: - MXKAppSettings
+    static let enableBotCreation: Bool = false
+    static let maxAllowedMediaCacheSize: Int = 1073741824
+    static let presenceColorForOfflineUser: Int = 15020851
+    static let presenceColorForOnlineUser: Int = 3401011
+    static let presenceColorForUnavailableUser: Int = 15066368
+    static let showAllEventsInRoomHistory: Bool = false
+    static let showLeftMembersInRoomMemberList: Bool = false
+    static let showRedactionsInRoomHistory: Bool = true
+    static let showUnsupportedEventsInRoomHistory: Bool = false
+    static let sortRoomMembersUsingLastSeenTime: Bool = true
+    static let syncLocalContacts: Bool = false
+    
+    // MARK: - New App Layout
+    static let newAppLayoutEnabled = true
+
+    // MARK: - QR Login
+    
+    /// Flag indicating whether the QR login enabled from login screen
+    static let qrLoginEnabledFromNotAuthenticated = true
+    /// Flag indicating whether the QR login enabled from Device Manager screen
+    static let qrLoginEnabledFromAuthenticated = false
+    /// Flag indicating whether displaying QRs enabled for the QR login screens
+    static let qrLoginEnableDisplayingQRs = false
+    
+    static let rendezvousServerBaseURL = URL(string: "https://rendezvous.lab.element.dev/")!
+    
+    // MARK: - Alerts
+    static let showUnverifiedSessionsAlert = true
 }

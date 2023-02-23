@@ -148,7 +148,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
                 self.updateSections()
                 //  scroll bottom to show user new fields
                 DispatchQueue.main.async {
-                    self.mainTableView.scrollToRow(at: IndexPath(row: 0, section: 5), at: .bottom, animated: true)
+                    self.mainTableView.vc_scrollToBottom()
                 }
             }
             let row_4_2 = Row(type: .default, text: VectorL10n.createRoomTypePublic, accessoryType: viewModel.roomCreationParameters.joinRule == .public ? .checkmark : .none) { [weak self] in
@@ -161,7 +161,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
                 self.updateSections()
                 //  scroll bottom to show user new fields
                 DispatchQueue.main.async {
-                    self.mainTableView.scrollToRow(at: IndexPath(row: 0, section: 6), at: .bottom, animated: true)
+                    self.mainTableView.vc_scrollToBottom()
                 }
             }
             let rows: [Row]
@@ -473,7 +473,7 @@ extension EnterNewRoomDetailsViewController: UITableViewDataSource {
                 }
                 onValueChanged?(cell.mxkSwitch)
             }
-            cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left
+            cell.mxkLabelLeadingConstraint.constant = tableView.vc_separatorInset.left
             cell.mxkSwitchTrailingConstraint.constant = 15
             cell.update(theme: theme)
             

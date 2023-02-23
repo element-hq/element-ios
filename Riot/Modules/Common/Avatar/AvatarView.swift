@@ -106,19 +106,9 @@ class AvatarView: UIView, Themable {
             return
         }
         
-        let defaultAvatarImage: UIImage?
-        var defaultAvatarImageContentMode: UIView.ContentMode = .scaleAspectFill
+        let (defaultAvatarImage, defaultAvatarImageContentMode) = viewData.fallbackImageParameters() ?? (nil, .scaleAspectFill)
+        updateAvatarImageView(image: defaultAvatarImage, contentMode: defaultAvatarImageContentMode)
         
-        switch viewData.fallbackImage {
-        case .matrixItem(let matrixItemId, let matrixItemDisplayName):
-            defaultAvatarImage = AvatarGenerator.generateAvatar(forMatrixItem: matrixItemId, withDisplayName: matrixItemDisplayName)
-        case .image(let image, let contentMode):
-            defaultAvatarImage = image
-            defaultAvatarImageContentMode = contentMode ?? .scaleAspectFill
-        case .none:
-            defaultAvatarImage = nil
-        }
-                
         if let avatarUrl = viewData.avatarUrl {
             avatarImageView.setImageURI(avatarUrl,
                                         withType: nil,
@@ -127,12 +117,9 @@ class AvatarView: UIView, Themable {
                                         with: MXThumbnailingMethodScale,
                                         previewImage: defaultAvatarImage,
                                         mediaManager: viewData.mediaManager)
-            avatarImageView.contentMode = .scaleAspectFill
-            avatarImageView.imageView?.contentMode = .scaleAspectFill
+            updateAvatarContentMode(contentMode: .scaleAspectFill)
         } else {
-            avatarImageView.image = defaultAvatarImage
-            avatarImageView.contentMode = defaultAvatarImageContentMode
-            avatarImageView.imageView?.contentMode = defaultAvatarImageContentMode
+            updateAvatarImageView(image: defaultAvatarImage, contentMode: defaultAvatarImageContentMode)
         }
     }
     
@@ -147,6 +134,16 @@ class AvatarView: UIView, Themable {
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(buttonAction(_:)))
         gestureRecognizer.minimumPressDuration = 0
         self.addGestureRecognizer(gestureRecognizer)
+    }
+    
+    private func updateAvatarImageView(image: UIImage?, contentMode: UIView.ContentMode) {
+        avatarImageView?.image = image
+        updateAvatarContentMode(contentMode: contentMode)
+    }
+    
+    private func updateAvatarContentMode(contentMode: UIView.ContentMode) {
+        avatarImageView?.contentMode = contentMode
+        avatarImageView?.imageView?.contentMode = contentMode
     }
         
     // MARK: - Actions

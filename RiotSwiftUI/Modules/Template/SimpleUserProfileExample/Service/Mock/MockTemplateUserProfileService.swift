@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class MockTemplateUserProfileService: TemplateUserProfileServiceProtocol {
     var presenceSubject: CurrentValueSubject<TemplateUserProfilePresence, Never>
@@ -23,19 +23,17 @@ class MockTemplateUserProfileService: TemplateUserProfileServiceProtocol {
     let userId: String
     let displayName: String?
     let avatarUrl: String?
-    init(
-        userId: String = "@alice:matrix.org",
-        displayName:  String? = "Alice",
-        avatarUrl: String? = "mxc://matrix.org/VyNYAgahaiAzUoOeZETtQ",
-        presence: TemplateUserProfilePresence = .offline
-    ) {
+    init(userId: String = "@alice:matrix.org",
+         displayName: String? = "Alice",
+         avatarUrl: String? = "mxc://matrix.org/VyNYAgahaiAzUoOeZETtQ",
+         presence: TemplateUserProfilePresence = .offline) {
         self.userId = userId
         self.displayName = displayName
         self.avatarUrl = avatarUrl
-        self.presenceSubject = CurrentValueSubject<TemplateUserProfilePresence, Never>(presence)
+        presenceSubject = CurrentValueSubject<TemplateUserProfilePresence, Never>(presence)
     }
     
     func simulateUpdate(presence: TemplateUserProfilePresence) {
-        self.presenceSubject.value = presence
+        presenceSubject.value = presence
     }
 }

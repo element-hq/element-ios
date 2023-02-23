@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,19 +16,17 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RoundedBorderTextEditor: View {
-    
     // MARK: - Properties
     
-    var title: String? = nil
+    var title: String?
     let placeHolder: String
     @Binding var text: String
-    var textMaxHeight: CGFloat? = nil
-    var error: String? = nil
+    var textMaxHeight: CGFloat?
+    var error: String?
     
-    var onTextChanged: ((String) -> Void)? = nil
-    var onEditingChanged: ((Bool) -> Void)? = nil
+    var onTextChanged: ((String) -> Void)?
+    var onEditingChanged: ((Bool) -> Void)?
 
     @State private var editing = false
     
@@ -63,7 +61,7 @@ struct RoundedBorderTextEditor: View {
                     })
                     .showClearButton(text: $text)
                     // Found no good solution here. Hidding next button for the moment
-    //                .modifier(NextViewModifier(alignment: .bottomTrailing, isEditing: $editing))
+                    //                .modifier(NextViewModifier(alignment: .bottomTrailing, isEditing: $editing))
                     .padding(EdgeInsets(top: 2, leading: 6, bottom: 0, trailing: 0))
                     .onChange(of: text, perform: { newText in
                         onTextChanged?(newText)
@@ -83,7 +81,7 @@ struct RoundedBorderTextEditor: View {
             }
             .background(RoundedRectangle(cornerRadius: 8).fill(theme.colors.background))
             .overlay(RoundedRectangle(cornerRadius: 8)
-                    .stroke(editing ? theme.colors.accent : (error == nil ? theme.colors.quinaryContent : theme.colors.alert), lineWidth: editing || error != nil ? 2 : 1))
+                .stroke(editing ? theme.colors.accent : (error == nil ? theme.colors.quinaryContent : theme.colors.alert), lineWidth: editing || error != nil ? 2 : 1))
             .frame(height: textMaxHeight)
             if let error = self.error {
                 Text(error)
@@ -100,10 +98,8 @@ struct RoundedBorderTextEditor: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct ThemableTextEditor_Previews: PreviewProvider {
     static var previews: some View {
-
         Group {
             sampleView.theme(.light).preferredColorScheme(.light)
             sampleView.theme(.dark).preferredColorScheme(.dark)

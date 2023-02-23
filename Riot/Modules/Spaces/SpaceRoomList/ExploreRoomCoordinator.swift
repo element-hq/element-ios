@@ -204,7 +204,6 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         self.navigationRouter.present(coordinator, animated: true)
     }
     
-    @available(iOS 14.0, *)
     private func showSpaceSettings(of childInfo: MXSpaceChildInfo) {
         let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: childInfo.childRoomId, parentSpaceId: spaceIdStack.last))
         coordinator.callback = { [weak self] result in
@@ -241,10 +240,6 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     }
 
     private func startEditPollCoordinator(room: MXRoom, startEvent: MXEvent? = nil) {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-        
         let parameters = PollEditFormCoordinatorParameters(room: room, pollStartEvent: startEvent)
         let coordinator = PollEditFormCoordinator(parameters: parameters)
         
@@ -284,9 +279,7 @@ extension ExploreRoomCoordinator: SpaceExploreRoomCoordinatorDelegate {
     
     func spaceExploreRoomCoordinator(_ coordinator: SpaceExploreRoomCoordinatorType, openSettingsOf item: SpaceExploreRoomListItemViewData) {
         if item.childInfo.roomType == .space {
-            if #available(iOS 14, *) {
-                self.showSpaceSettings(of: item.childInfo)
-            }
+            self.showSpaceSettings(of: item.childInfo)
         } else {
             if !presentSettings(ofRoomWithId: item.childInfo.childRoomId) {
                 self.navigateTo(roomWith: item.childInfo.childRoomId, showSettingsInitially: true, animated: true)
@@ -439,18 +432,10 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
     }
 
     func roomViewController(_ roomViewController: RoomViewController, canEditPollWithEventIdentifier eventIdentifier: String) -> Bool {
-        guard #available(iOS 14.0, *) else {
-            return false
-        }
-        
         return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEditPoll() ?? false
     }
 
     func roomViewController(_ roomViewController: RoomViewController, endPollWithEventIdentifier eventIdentifier: String) {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-        
         TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
     }
     
@@ -459,10 +444,6 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
-        guard #available(iOS 14.0, *) else {
-            return false
-        }
-        
         return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
     }
     

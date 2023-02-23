@@ -16,31 +16,20 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-@available(iOS 14.0, *)
-class SpaceCreationRoomsUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockSpaceCreationRoomsScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return SpaceCreationRoomsUITests(selector: #selector(verifySpaceCreationRoomsScreen))
-    }
-
-    func verifySpaceCreationRoomsScreen() throws {
-        guard let screenState = screenState as? MockSpaceCreationRoomsScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .defaultValues:
-            verifyValueTextFields()
-        case .valuesEntered:
-            verifyValueTextFields()
-        }
+class SpaceCreationRoomsUITests: MockScreenTestCase {
+    func testDefaultValues() {
+        app.goToScreenWithIdentifier(MockSpaceCreationRoomsScreenState.defaultValues.title)
+        
+        let emailTextFieldsCount = app.textFields.matching(identifier: "roomTextField").count
+        XCTAssertEqual(emailTextFieldsCount, 3)
     }
     
-    func verifyValueTextFields() {
+    func testValuesEntered() {
+        app.goToScreenWithIdentifier(MockSpaceCreationRoomsScreenState.valuesEntered.title)
+        
         let emailTextFieldsCount = app.textFields.matching(identifier: "roomTextField").count
         XCTAssertEqual(emailTextFieldsCount, 3)
     }

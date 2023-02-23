@@ -17,9 +17,7 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 14.0, *)
 final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -50,25 +48,26 @@ final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType
         case .other:
             viewController = VectorHostingController(rootView: OtherNotificationSettings(viewModel: viewModel))
         }
-        self.notificationSettingsViewModel = viewModel
-        self.notificationSettingsViewController = viewController
+        notificationSettingsViewModel = viewModel
+        notificationSettingsViewController = viewController
+        notificationSettingsViewController.vc_setLargeTitleDisplayMode(.never)
     }
     
     // MARK: - Public methods
     
-    func start() {            
-        self.notificationSettingsViewModel.coordinatorDelegate = self
+    func start() {
+        notificationSettingsViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.notificationSettingsViewController
+        notificationSettingsViewController
     }
 }
 
 // MARK: - NotificationSettingsViewModelCoordinatorDelegate
-@available(iOS 14.0, *)
+
 extension NotificationSettingsCoordinator: NotificationSettingsViewModelCoordinatorDelegate {
     func notificationSettingsViewModelDidComplete(_ viewModel: NotificationSettingsViewModelType) {
-        self.delegate?.notificationSettingsCoordinatorDidComplete(self)
+        delegate?.notificationSettingsCoordinatorDidComplete(self)
     }
 }

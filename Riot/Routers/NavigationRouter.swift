@@ -52,11 +52,13 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         self.completions = [:]
         super.init()
         self.navigationController.delegate = self
-        
+        self.navigationController.overrideUserInterfaceStyle = ThemeService.shared().theme.userInterfaceStyle
+
         // Post local notification on NavigationRouter creation
         let userInfo: [String: Any] = [NavigationRouter.NotificationUserInfoKey.navigationRouter: self,
                         NavigationRouter.NotificationUserInfoKey.navigationController: navigationController]
         NotificationCenter.default.post(name: NavigationRouter.didCreate, object: self, userInfo: userInfo)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.themeDidChange), name: Notification.Name.themeServiceDidChangeTheme, object: nil)
     }
     
     deinit {
@@ -289,6 +291,12 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     
     func toPresentable() -> UIViewController {
         return navigationController
+    }
+    
+    // MARK: - Theme management
+    
+    @objc private func themeDidChange() {
+        self.navigationController.overrideUserInterfaceStyle = ThemeService.shared().theme.userInterfaceStyle
     }
     
     // MARK: - Private

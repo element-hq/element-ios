@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+import CommonKit
 import SwiftUI
 
 protocol OnboardingSplashScreenCoordinatorProtocol: Coordinator, Presentable {
@@ -21,13 +22,15 @@ protocol OnboardingSplashScreenCoordinatorProtocol: Coordinator, Presentable {
 }
 
 final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinatorProtocol {
-    
     // MARK: - Properties
     
     // MARK: Private
     
     private let onboardingSplashScreenHostingController: VectorHostingController
     private var onboardingSplashScreenViewModel: OnboardingSplashScreenViewModelProtocol
+    
+    private var indicatorPresenter: UserIndicatorTypePresenterProtocol
+    private var loadingIndicator: UserIndicator?
     
     // MARK: Public
 
@@ -43,22 +46,46 @@ final class OnboardingSplashScreenCoordinator: OnboardingSplashScreenCoordinator
         onboardingSplashScreenViewModel = viewModel
         onboardingSplashScreenHostingController = VectorHostingController(rootView: view)
         onboardingSplashScreenHostingController.vc_removeBackTitle()
+        onboardingSplashScreenHostingController.isNavigationBarHidden = true
+        
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: onboardingSplashScreenHostingController)
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[OnboardingSplashScreenCoordinator] did start.")
         onboardingSplashScreenViewModel.completion = { [weak self] result in
             MXLog.debug("[OnboardingSplashScreenCoordinator] OnboardingSplashScreenViewModel did complete with result: \(result).")
             guard let self = self else { return }
             switch result {
-            case .login, .register:
+            case .login:
+                self.startLoading()
+                self.completion?(result)
+            case .register:
                 self.completion?(result)
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.onboardingSplashScreenHostingController
+        onboardingSplashScreenHostingController
+    }
+    
+    /// Stops any ongoing activities in the coordinator.
+    func stop() {
+        stopLoading()
+    }
+    
+    // MARK: - Private
+    
+    /// Show an activity indicator whilst loading.
+    private func startLoading() {
+        loadingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.loading, isInteractionBlocking: true))
+    }
+    
+    /// Hide the currently displayed activity indicator.
+    private func stopLoading() {
+        loadingIndicator = nil
     }
 }

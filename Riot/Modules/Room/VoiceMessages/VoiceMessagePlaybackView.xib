@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,7 +22,7 @@
                     </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ZQ2-Ij-mYr">
-                    <rect key="frame" x="8" y="0.0" width="411" height="44"/>
+                    <rect key="frame" x="12" y="0.0" width="403" height="44"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="voice_message_record_icon" translatesAutoresizingMaskIntoConstraints="NO" id="REB-gl-h0h">
                             <rect key="frame" x="0.0" y="17" width="10" height="10"/>
@@ -48,7 +48,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Fl-yZ-dZB">
-                            <rect key="frame" x="94" y="7" width="317" height="30"/>
+                            <rect key="frame" x="94" y="7" width="309" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <gestureRecognizers/>
                         </view>
@@ -66,8 +66,8 @@
                 <constraint firstItem="LPc-i8-8UC" firstAttribute="leading" secondItem="Ugy-Dx-gcs" secondAttribute="leading" id="FnY-Ab-FVL"/>
                 <constraint firstItem="ZQ2-Ij-mYr" firstAttribute="top" secondItem="cGR-49-HWB" secondAttribute="top" id="KRu-5w-kGE"/>
                 <constraint firstAttribute="bottom" secondItem="LPc-i8-8UC" secondAttribute="bottom" id="apf-b1-yIb"/>
-                <constraint firstItem="ZQ2-Ij-mYr" firstAttribute="leading" secondItem="cGR-49-HWB" secondAttribute="leading" constant="8" id="fDO-rh-Jbl"/>
-                <constraint firstAttribute="trailing" secondItem="ZQ2-Ij-mYr" secondAttribute="trailing" constant="8" id="fM3-nY-rDV"/>
+                <constraint firstItem="ZQ2-Ij-mYr" firstAttribute="leading" secondItem="cGR-49-HWB" secondAttribute="leading" constant="12" id="fDO-rh-Jbl"/>
+                <constraint firstAttribute="trailing" secondItem="ZQ2-Ij-mYr" secondAttribute="trailing" constant="12" id="fM3-nY-rDV"/>
                 <constraint firstItem="LPc-i8-8UC" firstAttribute="top" secondItem="cGR-49-HWB" secondAttribute="top" id="zl5-Sf-qSF"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>

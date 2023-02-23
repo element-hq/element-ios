@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +17,6 @@
 import SwiftUI
 
 struct TemplateSimpleScreen: View {
-
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
@@ -29,11 +24,7 @@ struct TemplateSimpleScreen: View {
         horizontalSizeClass == .regular ? 50 : 16
     }
     
-    // MARK: Public
-    
     @ObservedObject var viewModel: TemplateSimpleScreenViewModel.Context
-    
-    // MARK: Views
     
     var body: some View {
         GeometryReader { geometry in
@@ -64,10 +55,10 @@ struct TemplateSimpleScreen: View {
             Image(viewModel.viewState.promptType.image.name)
                 .resizable()
                 .scaledToFit()
-                .frame(width:100)
+                .frame(width: 100)
                 .foregroundColor(theme.colors.accent)
             
-            HStack{
+            HStack {
                 Text("Counter: \(viewModel.viewState.count)")
                     .foregroundColor(theme.colors.primaryContent)
                 

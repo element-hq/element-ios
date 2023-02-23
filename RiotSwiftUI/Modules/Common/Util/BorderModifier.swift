@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct BorderModifier<Shape: InsettableShape>: ViewModifier {
-    
     var color: Color
     var borderWidth: CGFloat
     var shape: Shape
@@ -29,7 +27,6 @@ struct BorderModifier<Shape: InsettableShape>: ViewModifier {
     }
 }
 
-@available(iOS 14.0, *)
 extension View {
     func shapedBorder<Shape: InsettableShape>(color: Color, borderWidth: CGFloat, shape: Shape) -> some View {
         modifier(BorderModifier(color: color, borderWidth: borderWidth, shape: shape))

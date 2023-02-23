@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import Foundation
 
 protocol RoomAccessTypeChooserViewModelProtocol {
     var callback: ((RoomAccessTypeChooserViewModelAction) -> Void)? { get set }
-    @available(iOS 14, *)
     var context: RoomAccessTypeChooserViewModelType.Context { get }
     
     func handleRoomUpgradeResult(_ result: RoomUpgradeCoordinatorResult)

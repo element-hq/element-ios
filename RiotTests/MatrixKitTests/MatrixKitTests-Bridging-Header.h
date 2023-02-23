@@ -3,3 +3,4 @@
 //
 
 #import "MXKRoomDataSource+Tests.h"
+#import "MXKEventFormatter+Tests.h"

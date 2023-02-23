@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +16,10 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct ThemableButton: View {
-    
     // MARK: - Style
     
     private struct Style: ButtonStyle {
-        
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
                 .scaleEffect(configuration.isPressed ? 0.97 : 1)
@@ -64,17 +61,16 @@ struct ThemableButton: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct ThemableButton_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             VStack(alignment: .center, spacing: 20) {
-                ThemableButton(icon: Asset.Images.spaceTypeIcon.image, title: "A title", action: {}).theme(.light).preferredColorScheme(.light)
-                ThemableButton(icon: nil, title: "A title", action: {}).theme(.light).preferredColorScheme(.light)
+                ThemableButton(icon: Asset.Images.spaceTypeIcon.image, title: "A title", action: { }).theme(.light).preferredColorScheme(.light)
+                ThemableButton(icon: nil, title: "A title", action: { }).theme(.light).preferredColorScheme(.light)
             }
             VStack(alignment: .center, spacing: 20) {
-                ThemableButton(icon: Asset.Images.spaceTypeIcon.image, title: "A title", action: {}).theme(.dark).preferredColorScheme(.dark)
-                ThemableButton(icon: nil, title: "A title", action: {}).theme(.dark).preferredColorScheme(.dark)
+                ThemableButton(icon: Asset.Images.spaceTypeIcon.image, title: "A title", action: { }).theme(.dark).preferredColorScheme(.dark)
+                ThemableButton(icon: nil, title: "A title", action: { }).theme(.dark).preferredColorScheme(.dark)
             }
         }
         .padding()

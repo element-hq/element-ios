@@ -1,6 +1,6 @@
 // File created from SimpleUserProfileExample
 // $ createScreen.sh Spaces/SpaceCreation/SpaceCreationPostProcess SpaceCreationPostProcess
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,10 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 import UIKit
 
-@available(iOS 14.0, *)
 protocol SpaceCreationPostProcessServiceProtocol: AnyObject {
     var tasksSubject: CurrentValueSubject<[SpaceCreationPostProcessTask], Never> { get }
     var createdSpaceId: String? { get }

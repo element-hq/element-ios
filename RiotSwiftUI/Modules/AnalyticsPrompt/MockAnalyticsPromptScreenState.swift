@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@ import SwiftUI
 
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
-@available(iOS 14.0, *)
 enum MockAnalyticsPromptScreenState: MockScreenState, CaseIterable {
     /// The type of prompt to display.
     case promptType(AnalyticsPromptType)

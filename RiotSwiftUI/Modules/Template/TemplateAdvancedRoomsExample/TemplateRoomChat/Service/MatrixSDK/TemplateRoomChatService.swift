@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,37 +14,29 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let room: MXRoom
     private let eventFormatter: EventFormatter
     private var timeline: MXEventTimeline?
     private var eventBatch: [MXEvent]
     private var roomListenerReference: Any?
-    
-    
-    // MARK: Public
+
     private(set) var chatMessagesSubject: CurrentValueSubject<[TemplateRoomChatMessage], Never>
     private(set) var roomInitializationStatus: CurrentValueSubject<TemplateRoomChatRoomInitializationStatus, Never>
     
     var roomName: String? {
-        self.room.summary.displayname
+        room.summary.displayname
     }
-    // MARK: - Setup
     
     init(room: MXRoom) {
         self.room = room
-        self.eventFormatter = EventFormatter(matrixSession: room.mxSession)
-        self.chatMessagesSubject = CurrentValueSubject([])
-        self.roomInitializationStatus = CurrentValueSubject(.notInitialized)
-        self.eventBatch = [MXEvent]()
+        eventFormatter = EventFormatter(matrixSession: room.mxSession)
+        chatMessagesSubject = CurrentValueSubject([])
+        roomInitializationStatus = CurrentValueSubject(.notInitialized)
+        eventBatch = [MXEvent]()
         initializeRoom()
     }
     
@@ -54,14 +46,15 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     }
     
     // MARK: Public
+
     func send(textMessage: String) {
-        var localEcho: MXEvent? = nil
+        var localEcho: MXEvent?
         room.sendTextMessage(textMessage, threadId: nil, localEcho: &localEcho, completion: { _ in })
     }
     
     // MARK: Private
     
-    private func initializeRoom(){
+    private func initializeRoom() {
         room.liveTimeline { [weak self] timeline in
             guard let self = self,
                   let timeline = timeline
@@ -70,21 +63,20 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
             }
             self.timeline = timeline
             timeline.resetPagination()
-            self.roomListenerReference = timeline.listenToEvents([.roomMessage], { [weak self] event, direction, roomState in
+            self.roomListenerReference = timeline.listenToEvents([.roomMessage]) { [weak self] event, direction, _ in
                 guard let self = self else { return }
                 if direction == .backwards {
                     self.eventBatch.append(event)
                 } else {
                     self.chatMessagesSubject.value += self.mapChatMessages(from: [event])
                 }
-                
-            })
+            }
             timeline.paginate(200, direction: .backwards, onlyFromStore: false) { result in
                 guard result.isSuccess else {
                     self.roomInitializationStatus.value = .failedToInitialize
                     return
                 }
-                let sortedBatch = self.eventBatch.sorted(by: { $0.originServerTs < $1.originServerTs})
+                let sortedBatch = self.eventBatch.sorted(by: { $0.originServerTs < $1.originServerTs })
                 self.chatMessagesSubject.value = self.mapChatMessages(from: sortedBatch)
                 self.roomInitializationStatus.value = .initialized
             }
@@ -92,15 +84,14 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     }
     
     private func mapChatMessages(from events: [MXEvent]) -> [TemplateRoomChatMessage] {
-        return events
-            .filter({ event in
+        events
+            .filter { event in
                 event.type == kMXEventTypeStringRoomMessage
                     && event.content[kMXMessageTypeKey] as? String == kMXMessageTypeText
                 
                 // TODO: New to our SwiftUI Template? Why not implement another message type like image?
-                
-            })
-            .compactMap({ event -> TemplateRoomChatMessage?  in
+            }
+            .compactMap { event -> TemplateRoomChatMessage? in
                 guard let eventId = event.eventId,
                       let body = event.content[kMXMessageBodyKey] as? String,
                       let sender = senderForMessage(event: event)
@@ -112,7 +103,7 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
                     sender: sender,
                     timestamp: Date(timeIntervalSince1970: TimeInterval(event.originServerTs / 1000))
                 )
-            })
+            }
     }
     
     private func senderForMessage(event: MXEvent) -> TemplateRoomChatMember? {

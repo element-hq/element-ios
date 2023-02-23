@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct MentionsAndKeywordNotificationSettings: View {
-    
     @ObservedObject var viewModel: NotificationSettingsViewModel
     
     var keywordSection: some View {
@@ -29,6 +27,7 @@ struct MentionsAndKeywordNotificationSettings: View {
             NotificationSettingsKeywords(viewModel: viewModel)
         }
     }
+
     var body: some View {
         NotificationSettings(
             viewModel: viewModel,
@@ -39,7 +38,6 @@ struct MentionsAndKeywordNotificationSettings: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct MentionsAndKeywords_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {

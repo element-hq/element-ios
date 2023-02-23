@@ -99,8 +99,8 @@
 "contacts_address_book_matrix_users_toggle" = "ຜູ້ໃຊ້ Matrix ເທົ່ານັ້ນ";
 "directory_search_fail" = "ດຶງຂໍ້ມູນບໍ່ສຳເລັດ";
 "directory_searching_title" = "ກຳລັງຊອກຫາລາຍການ…";
-"directory_search_results_more_than" = ">%tu ພົບເຫັນຜົນຮັບສຳລັບ %@";
-"directory_search_results" = "ພົບ %tu ຜົນການຄົ້ນຫາສຳລັບ %@";
+"directory_search_results_more_than" = ">%1$tu ພົບເຫັນຜົນຮັບສຳລັບ %2$@";
+"directory_search_results" = "ພົບ %1$tu ຜົນການຄົ້ນຫາສຳລັບ %2$@";
 "directory_search_results_title" = "ຜົນການຊອກຫາລາຍການ";
 "directory_cell_description" = "%tu ຫ້ອງ";
 

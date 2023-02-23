@@ -209,7 +209,8 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
         return eventFormatter.attributedString(from: message.replyStrippedVersion,
                                                with: roomState,
-                                               error: formatterError).vc_byRemovingLinks
+                                               andLatestRoomState: nil,
+                                               error: formatterError)?.vc_byRemovingLinks
     }
     
     private func lastMessageTextAndTime(forThread thread: MXThreadProtocol) -> (NSAttributedString?, String?) {
@@ -223,6 +224,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         return (
             eventFormatter.attributedString(from: message.replyStrippedVersion,
                                             with: roomState,
+                                            andLatestRoomState: nil,
                                             error: formatterError),
             eventFormatter.dateString(from: message, withTime: true)
         )
@@ -251,7 +253,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                 self.threads = threads
                 self.threadsLoaded()
             case .failure(let error):
-                MXLog.error("[ThreadListViewModel] loadData: error: \(error)")
+                MXLog.error("[ThreadListViewModel] loadData", context: error)
                 self.viewState = .error(error)
             }
         }

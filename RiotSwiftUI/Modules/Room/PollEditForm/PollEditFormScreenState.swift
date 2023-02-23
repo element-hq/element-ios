@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 14.0, *)
 enum MockPollEditFormScreenState: MockScreenState, CaseIterable {
     case standard
     
@@ -25,7 +24,7 @@ enum MockPollEditFormScreenState: MockScreenState, CaseIterable {
         PollEditForm.self
     }
     
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .creation, pollDetails: .default))
         return ([viewModel], AnyView(PollEditForm(viewModel: viewModel.context)))
     }

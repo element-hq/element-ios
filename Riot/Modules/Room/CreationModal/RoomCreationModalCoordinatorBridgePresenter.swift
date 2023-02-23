@@ -33,7 +33,6 @@ final class RoomCreationModalCoordinatorBridgePresenter: NSObject {
     
     private let session: MXSession
     private let roomState: MXRoomState
-    private let bubbleData: MXKRoomBubbleCellDataStoring
     private var coordinator: RoomCreationEventsModalCoordinator?
     private lazy var slidingModalPresenter: SlidingModalPresenter = {
         return SlidingModalPresenter()
@@ -45,9 +44,8 @@ final class RoomCreationModalCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(session: MXSession, bubbleData: MXKRoomBubbleCellDataStoring, roomState: MXRoomState) {
+    init(session: MXSession, roomState: MXRoomState) {
         self.session = session
-        self.bubbleData = bubbleData
         self.roomState = roomState
         super.init()
     }
@@ -56,7 +54,7 @@ final class RoomCreationModalCoordinatorBridgePresenter: NSObject {
     
     func present(from viewController: UIViewController, animated: Bool) {
         slidingModalPresenter.dismiss(animated: false, completion: nil)
-        let roomCreationEventsModalCoordinator = RoomCreationEventsModalCoordinator(session: self.session, bubbleData: bubbleData, roomState: roomState)
+        let roomCreationEventsModalCoordinator = RoomCreationEventsModalCoordinator(session: self.session, roomState: roomState)
         roomCreationEventsModalCoordinator.delegate = self
         
         slidingModalPresenter.present(roomCreationEventsModalCoordinator.toSlidingModalPresentable(),

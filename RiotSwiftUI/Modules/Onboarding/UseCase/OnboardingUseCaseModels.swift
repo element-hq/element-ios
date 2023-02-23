@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,16 +20,11 @@ import Foundation
 
 // MARK: View model
 
-enum OnboardingUseCaseStateAction {
-    case viewAction(OnboardingUseCaseViewAction)
-}
-
 enum OnboardingUseCaseViewModelResult {
     case personalMessaging
     case workMessaging
     case communityMessaging
     case skipped
-    case customServer
 }
 
 // MARK: View

@@ -26,7 +26,7 @@ struct UserAvatarViewData: AvatarViewDataProtocol {
         return userId
     }
     
-    var fallbackImage: AvatarFallbackImage? {
-        return .matrixItem(matrixItemId, displayName)
+    var fallbackImages: [AvatarFallbackImage]? {
+        [.matrixItem(matrixItemId, displayName), .image(Asset.Images.tabPeople.image, .scaleAspectFill)]
     }
 }

@@ -16,25 +16,23 @@
 
 import SwiftUI
 
-typealias AuthenticationServerSelectionViewModelType = StateStoreViewModel<AuthenticationServerSelectionViewState,
-                                                                           Never,
-                                                                           AuthenticationServerSelectionViewAction>
+typealias AuthenticationServerSelectionViewModelType = StateStoreViewModel<AuthenticationServerSelectionViewState, AuthenticationServerSelectionViewAction>
 
 class AuthenticationServerSelectionViewModel: AuthenticationServerSelectionViewModelType, AuthenticationServerSelectionViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private
 
     // MARK: Public
 
-    @MainActor var callback: ((AuthenticationServerSelectionViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationServerSelectionViewModelResult) -> Void)?
 
     // MARK: - Setup
 
-    init(homeserverAddress: String, hasModalPresentation: Bool) {
-        let bindings = AuthenticationServerSelectionBindings(homeserverAddress: HomeserverAddress.displayable(homeserverAddress))
+    init(homeserverAddress: String, flow: AuthenticationFlow, hasModalPresentation: Bool) {
+        let bindings = AuthenticationServerSelectionBindings(homeserverAddress: homeserverAddress)
         super.init(initialViewState: AuthenticationServerSelectionViewState(bindings: bindings,
+                                                                            flow: flow,
                                                                             hasModalPresentation: hasModalPresentation))
     }
 
@@ -46,8 +44,6 @@ class AuthenticationServerSelectionViewModel: AuthenticationServerSelectionViewM
             Task { await callback?(.confirm(homeserverAddress: state.bindings.homeserverAddress)) }
         case .dismiss:
             Task { await callback?(.dismiss) }
-        case .getInTouch:
-            Task { await getInTouch() }
         case .clearFooterError:
             Task { await clearFooterError() }
         }
@@ -70,15 +66,5 @@ class AuthenticationServerSelectionViewModel: AuthenticationServerSelectionViewM
     @MainActor private func clearFooterError() {
         guard state.footerErrorMessage != nil else { return }
         withAnimation { state.footerErrorMessage = nil }
-    }
-    
-    /// Opens the EMS link in the user's browser.
-    @MainActor private func getInTouch() {
-        let url = BuildSettings.onboardingHostYourOwnServerLink
-        
-        UIApplication.shared.open(url) { [weak self] success in
-            guard !success, let self = self else { return }
-            self.displayError(.openURLAlert)
-        }
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,7 @@ struct PlaceholderAvatarViewModel {
     
     /// Get the first character of the display name capitalized or else a space character.
     var firstCharacterCapitalized: Character {
-        return displayName?.capitalized.first ?? " "
+        displayName?.capitalized.first ?? " "
     }
     
     /// Provides the same color each time for a specified matrixId
@@ -39,7 +39,7 @@ struct PlaceholderAvatarViewModel {
     var stableColorIndex: Int {
         // Sum all characters
         let sum = matrixItemId.utf8
-            .map({ UInt($0) })
+            .map { UInt($0) }
             .reduce(0, +)
         // modulo the color count
         return Int(sum) % colorCount

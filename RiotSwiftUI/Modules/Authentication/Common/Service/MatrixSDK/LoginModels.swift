@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +16,7 @@
 
 import Foundation
 
+/// The result returned when querying a homeserver's available login flows.
 struct LoginFlowResult {
     let supportedLoginTypes: [MXLoginFlow]
     let ssoIdentityProviders: [SSOIdentityProvider]
@@ -35,17 +36,25 @@ struct LoginFlowResult {
     }
 }
 
+/// The supported forms of login that a homeserver allows.
 enum LoginMode {
+    /// The login mode hasn't been determined yet.
     case unknown
+    /// The homeserver supports login with a password.
     case password
+    /// The homeserver supports login via one or more SSO providers.
     case sso(ssoIdentityProviders: [SSOIdentityProvider])
+    /// The homeserver supports login with either a password or via an SSO provider.
     case ssoAndPassword(ssoIdentityProviders: [SSOIdentityProvider])
+    /// The homeserver only allows login with unsupported mechanisms. Use fallback instead.
     case unsupported
     
     var ssoIdentityProviders: [SSOIdentityProvider]? {
         switch self {
         case .sso(let ssoIdentityProviders), .ssoAndPassword(let ssoIdentityProviders):
-            return ssoIdentityProviders
+            // Provide a backup for homeservers that support SSO but don't offer any identity providers
+            // https://spec.matrix.org/latest/client-server-api/#client-login-via-sso
+            return ssoIdentityProviders.count > 0 ? ssoIdentityProviders : [SSOIdentityProvider(id: "", name: "SSO", brand: nil, iconURL: nil)]
         default:
             return nil
         }
@@ -60,7 +69,7 @@ enum LoginMode {
         }
     }
     
-    var supportsSignModeScreen: Bool {
+    var supportsPasswordFlow: Bool {
         switch self {
         case .password, .ssoAndPassword:
             return true
@@ -68,4 +77,19 @@ enum LoginMode {
             return false
         }
     }
+
+    var isUnsupported: Bool {
+        switch self {
+        case .unsupported:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+/// Data obtained when calling `LoginWizard.resetPassword` that will be used
+/// when calling `LoginWizard.checkResetPasswordMailConfirmed`.
+struct ResetPasswordData {
+    let addThreePIDSessionID: String
 }

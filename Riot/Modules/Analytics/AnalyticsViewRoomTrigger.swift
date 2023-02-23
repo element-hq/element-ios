@@ -44,6 +44,7 @@ import AnalyticsEvents
     case linkShare
     case exploreRooms
     case spaceMembers
+    case spaceBottomSheet
 
     var trigger: AnalyticsEvent.ViewRoom.Trigger? {
         switch self {
@@ -99,6 +100,8 @@ import AnalyticsEvents
             return .MobileExploreRooms
         case .spaceMembers:
             return .MobileSpaceMembers
+        case .spaceBottomSheet:
+            return .MobileSpaceBottomSheet
         }
     }
 }

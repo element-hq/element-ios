@@ -33,7 +33,7 @@
     self.navigationItem.title = [VectorL10n roomActionSendSticker];
 
     // Hide back button title
-    self.parentViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self.parentViewController vc_removeBackTitle];
 
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(onEditButtonPressed)];
     [self.navigationItem setRightBarButtonItem: editButton animated:YES];

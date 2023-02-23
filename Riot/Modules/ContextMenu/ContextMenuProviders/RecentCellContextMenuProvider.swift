@@ -16,11 +16,17 @@
 
 import Foundation
 
+@objc
+protocol RecentCellContextMenuProviderDelegate: AnyObject {
+    func recentCellContextMenuProviderDidStartShowingPreview(_ menuProvider: RecentCellContextMenuProvider)
+}
+
 /// Helper class `RecentCellContextMenuProvider` that provides an instace of `UIContextMenuConfiguration` from an instance of `MXKRecentCellDataStoring`
 @objcMembers
 class RecentCellContextMenuProvider: NSObject {
 
     weak var serviceDelegate: RoomContextActionServiceDelegate?
+    weak var menuProviderDelegate: RecentCellContextMenuProviderDelegate?
     private var currentService: RoomContextActionServiceProtocol?
     
     @available(iOS 13.0, *)
@@ -39,7 +45,11 @@ class RecentCellContextMenuProvider: NSObject {
             let service = RoomContextActionService(room: room, delegate: serviceDelegate)
             self.currentService = service
             let actionProvider = RoomActionProvider(service: service)
-            return UIContextMenuConfiguration(identifier: cellData.roomIdentifier as NSString) {
+            return UIContextMenuConfiguration(identifier: cellData.roomIdentifier as NSString) { [weak self] in
+                if let self = self {
+                    self.menuProviderDelegate?.recentCellContextMenuProviderDidStartShowingPreview(self)
+                }
+                
                 if room.summary?.isJoined == true {
                     let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
                     guard let roomViewController = storyboard.instantiateViewController(withIdentifier: "RoomViewControllerStoryboardId") as? RoomViewController else {
@@ -47,7 +57,7 @@ class RecentCellContextMenuProvider: NSObject {
                     }
                     roomViewController.isContextPreview = true
                     
-                    RoomPreviewDataSource.load(withRoomId: room.roomId, andMatrixSession: session) { [weak roomViewController] roomDataSource in
+                    RoomPreviewDataSource.load(withRoomId: room.roomId, threadId: nil, andMatrixSession: session) { [weak roomViewController] roomDataSource in
                         guard let dataSource = roomDataSource as? RoomPreviewDataSource else {
                             return
                         }

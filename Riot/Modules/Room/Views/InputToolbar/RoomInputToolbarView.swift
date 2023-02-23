@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import GBDeviceInfo
 
 extension RoomInputToolbarView {
     open override func sendCurrentMessage() {
@@ -28,15 +29,66 @@ extension RoomInputToolbarView {
             self.becomeFirstResponder()
             temp.removeFromSuperview()
         }
-
+        
         // Send message if any.
         if let messageToSend = self.attributedTextMessage, messageToSend.length > 0 {
             self.delegate.roomInputToolbarView(self, sendAttributedTextMessage: messageToSend)
         }
-
+        
         // Reset message, disable view animation during the update to prevent placeholder distorsion.
         UIView.setAnimationsEnabled(false)
         self.attributedTextMessage = nil
         UIView.setAnimationsEnabled(true)
+    }
+}
+
+@objc extension RoomInputToolbarView {
+    func updatePlaceholder() {
+        updatePlaceholderText()
+    }
+}
+
+extension RoomInputToolbarViewProtocol where Self: MXKRoomInputToolbarView {
+    func updatePlaceholderText() {
+        // Consider the default placeholder
+        
+        let placeholder: String
+        
+        // Check the device screen size before using large placeholder
+        let shouldDisplayLargePlaceholder = GBDeviceInfo.deviceInfo().family == .familyiPad || GBDeviceInfo.deviceInfo().displayInfo.display.rawValue >= GBDeviceDisplay.display5p8Inch.rawValue
+        
+        if !shouldDisplayLargePlaceholder {
+            switch sendMode {
+            case .reply:
+                placeholder = VectorL10n.roomMessageReplyToShortPlaceholder
+            case .createDM:
+                placeholder = VectorL10n.roomFirstMessagePlaceholder
+                
+            default:
+                placeholder = VectorL10n.roomMessageShortPlaceholder
+            }
+        } else {
+            if isEncryptionEnabled {
+                switch sendMode {
+                case .reply:
+                    placeholder = VectorL10n.encryptedRoomMessageReplyToPlaceholder
+                    
+                default:
+                    placeholder = VectorL10n.encryptedRoomMessagePlaceholder
+                }
+            } else {
+                switch sendMode {
+                case .reply:
+                    placeholder = VectorL10n.roomMessageReplyToPlaceholder
+                    
+                case .createDM:
+                    placeholder = VectorL10n.roomFirstMessagePlaceholder
+                default:
+                    placeholder = VectorL10n.roomMessagePlaceholder
+                }
+            }
+        }
+        
+        self.placeholder = placeholder
     }
 }

@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="180"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WmY-Jw-mqv" id="ef1-Tq-U3Z">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="179.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="180"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SFg-55-RF4" userLabel="Pagination Title View">
@@ -78,7 +75,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="5IE-JS-uf3" userLabel="Attachment View" customClass="MXKImageView">
-                        <rect key="frame" x="67" y="75" width="192" height="46.5"/>
+                        <rect key="frame" x="67" y="75" width="192" height="47"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="AttachmentView"/>
                         <constraints>
@@ -87,7 +84,7 @@
                         </constraints>
                     </view>
                     <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-Kt-8vW">
-                        <rect key="frame" x="515" y="54" width="70" height="125.5"/>
+                        <rect key="frame" x="515" y="54" width="70" height="126"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
                         <constraints>
@@ -95,19 +92,19 @@
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3b7-4a-YL0">
-                        <rect key="frame" x="12" y="3" width="576" height="174"/>
+                        <rect key="frame" x="8" y="3" width="584" height="174"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4ru-pn-Aka">
-                        <rect key="frame" x="57" y="48" width="458" height="30"/>
+                        <rect key="frame" x="57" y="48" width="458" height="24"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lgz-UT-c2U">
-                        <rect key="frame" x="67" y="131.5" width="53.5" height="38"/>
+                        <rect key="frame" x="67" y="132" width="53.5" height="38"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bk9-l7-4ug">
                                 <rect key="frame" x="10" y="0.0" width="20" height="10"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="JYF-su-bXV"/>
                                     <constraint firstAttribute="width" constant="20" id="o8q-GT-1HB"/>
@@ -124,7 +121,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="PwC-m9-IC3" secondAttribute="bottom" constant="5" id="9IY-ct-GK4"/>
                                     <constraint firstItem="PwC-m9-IC3" firstAttribute="top" secondItem="lql-N7-aOv" secondAttribute="top" constant="5" id="Ptz-mS-jIO"/>
@@ -146,7 +143,7 @@
                 </subviews>
                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
-                    <constraint firstItem="4ru-pn-Aka" firstAttribute="bottom" secondItem="q9c-0p-QyP" secondAttribute="bottom" constant="6" id="0Cl-Or-gY1"/>
+                    <constraint firstItem="4ru-pn-Aka" firstAttribute="bottom" secondItem="q9c-0p-QyP" secondAttribute="bottom" id="0Cl-Or-gY1"/>
                     <constraint firstItem="3b7-4a-YL0" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="10i-70-PDz"/>
                     <constraint firstItem="SfO-mO-OOz" firstAttribute="top" secondItem="SFg-55-RF4" secondAttribute="bottom" constant="34" id="7ug-dI-P4H"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="75" id="96U-67-5TP"/>
@@ -201,9 +198,13 @@
                 <outlet property="userNameLabelTopConstraint" destination="Ixr-7h-f8j" id="RqB-b5-7D2"/>
                 <outlet property="userNameTapGestureMaskView" destination="4ru-pn-Aka" id="28k-f4-1LY"/>
             </connections>
+            <point key="canvasLocation" x="133" y="126"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="e2e_verified" width="10" height="12"/>
+        <systemColor name="groupTableViewBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,14 @@
 import SwiftUI
 
 struct AuthenticationRegistrationScreen: View {
-
+    
     // MARK: - Properties
     
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    @State private var isPasswordFocused = false
     
     // MARK: Public
     
@@ -33,29 +35,35 @@ struct AuthenticationRegistrationScreen: View {
             VStack(spacing: 0) {
                 header
                     .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
-                    .padding(.bottom, 36)
+                    .padding(.bottom, 28)
                 
-                serverInfo
-                    .padding(.leading, 12)
                 
                 Rectangle()
                     .fill(theme.colors.quinaryContent)
                     .frame(height: 1)
-                    .padding(.vertical, 21)
+                    .padding(.bottom, 22)
                 
-                if viewModel.viewState.showRegistrationForm {
+                if viewModel.viewState.homeserver.showRegistrationForm {
                     registrationForm
                 }
                 
-                if viewModel.viewState.showRegistrationForm && viewModel.viewState.showSSOButtons {
+                if viewModel.viewState.homeserver.showRegistrationForm && viewModel.viewState.showSSOButtons {
                     Text(VectorL10n.or)
                         .foregroundColor(theme.colors.secondaryContent)
                         .padding(.top, 16)
                 }
                 
+                termsAndConditionLabel
+                    .padding(.top, 16)
+                    .padding(.leading, 5)
+                
                 if viewModel.viewState.showSSOButtons {
                     ssoButtons
                         .padding(.top, 16)
+                }
+
+                if !viewModel.viewState.homeserver.showRegistrationForm && !viewModel.viewState.showSSOButtons {
+                    fallbackButton
                 }
                 
             }
@@ -78,45 +86,15 @@ struct AuthenticationRegistrationScreen: View {
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
-            
-            Text(VectorL10n.authenticationRegistrationMessage)
-                .font(theme.fonts.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.secondaryContent)
         }
     }
     
-    /// The sever information section that includes a button to select a different server.
-    var serverInfo: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(VectorL10n.authenticationRegistrationServerTitle)
-                .font(theme.fonts.subheadline)
-                .foregroundColor(theme.colors.secondaryContent)
-            
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(viewModel.viewState.homeserverAddress)
-                        .font(theme.fonts.body)
-                        .foregroundColor(theme.colors.primaryContent)
-                    
-                    if let serverDescription = viewModel.viewState.serverDescription {
-                        Text(serverDescription)
-                            .font(theme.fonts.caption1)
-                            .foregroundColor(theme.colors.tertiaryContent)
-                            .accessibilityIdentifier("serverDescriptionText")
-                    }
-                }
-                
-                Spacer()
-                
-                Button { viewModel.send(viewAction: .selectServer) } label: {
-                    Text(VectorL10n.edit)
-                        .font(theme.fonts.body)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(theme.colors.accent))
-                }
-            }
+    
+    var termsAndConditionLabel: some View {
+        VStack {
+            let link = "By using STVDIO Space you agree to the [STVDIO Space Terms and Conditions](https://stvd.io/terms-and-conditions/)"
+            Text(.init(link))
+                .accentColor(Color("FirstScreenColor"))
         }
     }
     
@@ -127,30 +105,33 @@ struct AuthenticationRegistrationScreen: View {
                                    placeHolder: VectorL10n.authenticationRegistrationUsername,
                                    text: $viewModel.username,
                                    footerText: viewModel.viewState.usernameFooterMessage,
-                                   isError: viewModel.viewState.hasEditedUsername && !viewModel.viewState.isUsernameValid,
+                                   isError: viewModel.viewState.hasEditedUsername && viewModel.viewState.isUsernameInvalid,
                                    isFirstResponder: false,
-                                   configuration: UIKitTextInputConfiguration(returnKeyType: .default,
+                                   configuration: UIKitTextInputConfiguration(returnKeyType: .next,
                                                                               autocapitalizationType: .none,
                                                                               autocorrectionType: .no),
-                                   onEditingChanged: { validateUsername(isEditing: $0) })
-            .onChange(of: viewModel.username) { _ in viewModel.send(viewAction: .clearUsernameError) }
+                                   onEditingChanged: usernameEditingChanged,
+                                   onCommit: { isPasswordFocused = true })
+            .onChange(of: viewModel.username) { _ in viewModel.send(viewAction: .resetUsernameAvailability) }
             .accessibilityIdentifier("usernameTextField")
             
             RoundedBorderTextField(title: nil,
                                    placeHolder: VectorL10n.authPasswordPlaceholder,
                                    text: $viewModel.password,
                                    footerText: VectorL10n.authenticationRegistrationPasswordFooter,
-                                   isError: viewModel.viewState.hasEditedPassword && !viewModel.viewState.isPasswordValid,
-                                   isFirstResponder: false,
-                                   configuration: UIKitTextInputConfiguration(isSecureTextEntry: true),
-                                   onEditingChanged: { validatePassword(isEditing: $0) })
+                                   isError: viewModel.viewState.hasEditedPassword && viewModel.viewState.isPasswordInvalid,
+                                   isFirstResponder: isPasswordFocused,
+                                   configuration: UIKitTextInputConfiguration(returnKeyType: .done,
+                                                                              isSecureTextEntry: true),
+                                   onEditingChanged: passwordEditingChanged,
+                                   onCommit: submit)
             .accessibilityIdentifier("passwordTextField")
             
-            Button { viewModel.send(viewAction: .next) } label: {
+            Button(action: submit) {
                 Text(VectorL10n.next)
             }
             .buttonStyle(PrimaryActionButtonStyle())
-            .disabled(!viewModel.viewState.hasValidCredentials)
+            .disabled(!viewModel.viewState.canSubmit)
             .accessibilityIdentifier("nextButton")
         }
     }
@@ -158,25 +139,49 @@ struct AuthenticationRegistrationScreen: View {
     /// A list of SSO buttons that can be used for login.
     var ssoButtons: some View {
         VStack(spacing: 16) {
-            ForEach(viewModel.viewState.ssoIdentityProviders) { provider in
+            ForEach(viewModel.viewState.homeserver.ssoIdentityProviders.filter{ $0.name != "GitHub" && $0.name != "GitLab" }) { provider in
                 AuthenticationSSOButton(provider: provider) {
-                    viewModel.send(viewAction: .continueWithSSO(id: provider.id))
+                    viewModel.send(viewAction: .continueWithSSO(provider))
                 }
                 .accessibilityIdentifier("ssoButton")
             }
         }
     }
+
+    /// A fallback button that can be used for login.
+    var fallbackButton: some View {
+        Button(action: fallback) {
+            Text(VectorL10n.authRegister)
+        }
+        .buttonStyle(PrimaryActionButtonStyle())
+        .accessibilityIdentifier("fallbackButton")
+    }
     
     /// Validates the username when the text field ends editing.
-    func validateUsername(isEditing: Bool) {
+    func usernameEditingChanged(isEditing: Bool) {
         guard !isEditing, !viewModel.username.isEmpty else { return }
         viewModel.send(viewAction: .validateUsername)
     }
     
-    /// Enables password validation the first time the user finishes editing the password text field.
-    func validatePassword(isEditing: Bool) {
-        guard !viewModel.viewState.hasEditedPassword, !isEditing else { return }
+    /// Enables password validation the first time the user finishes editing.
+    /// Additionally resets the password field focus.
+    func passwordEditingChanged(isEditing: Bool) {
+        guard !isEditing else { return }
+        isPasswordFocused = false
+        
+        guard !viewModel.viewState.hasEditedPassword else { return }
         viewModel.send(viewAction: .enablePasswordValidation)
+    }
+    
+    /// Sends the `next` view action so long as valid credentials have been input.
+    func submit() {
+        guard viewModel.viewState.canSubmit else { return }
+        viewModel.send(viewAction: .next)
+    }
+
+    /// Sends the `fallback` view action.
+    func fallback() {
+        viewModel.send(viewAction: .fallback)
     }
 }
 

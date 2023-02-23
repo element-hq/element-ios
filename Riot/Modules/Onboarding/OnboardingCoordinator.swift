@@ -17,19 +17,16 @@
  */
 
 import UIKit
+import CommonKit
 
 /// OnboardingCoordinator input parameters
 struct OnboardingCoordinatorParameters {
                 
     /// The navigation router that manage physical navigation
     let router: NavigationRouterType
-    /// The credentials to use if a soft logout has taken place.
-    let softLogoutCredentials: MXCredentials?
     
-    init(router: NavigationRouterType? = nil,
-         softLogoutCredentials: MXCredentials? = nil) {
+    init(router: NavigationRouterType? = nil) {
         self.router = router ?? NavigationRouter(navigationController: RiotNavigationController(isLockedToPortraitOnPhone: true))
-        self.softLogoutCredentials = softLogoutCredentials
     }
 }
 
@@ -42,23 +39,15 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     // MARK: Private
         
     private let parameters: OnboardingCoordinatorParameters
-    // TODO: these can likely be consolidated using an additional authType.
-    /// The any registration parameters for AuthenticationViewController from a server provisioning link.
-    private var externalRegistrationParameters: [AnyHashable: Any]?
-    /// A custom homeserver to be shown when logging in.
-    private var customHomeserver: String?
-    /// A custom identity server to be used once logged in.
-    private var customIdentityServer: String?
     
     // MARK: Navigation State
     private var navigationRouter: NavigationRouterType {
         parameters.router
     }
-    // Keep a strong ref as we need to init authVC early to preload its view
-    private let authenticationCoordinator: AuthenticationCoordinatorProtocol
-    #warning("This might be removable when SSO comes through the AuthenticationService?")
-    /// A boolean to prevent authentication being shown when already in progress.
-    private var isShowingLegacyAuthentication = false
+    /// A strong ref to the legacy authVC as we need to init early to preload its view.
+    private let legacyAuthenticationCoordinator: LegacyAuthenticationCoordinator
+    /// The currently active authentication coordinator, otherwise `nil`.
+    private weak var authenticationCoordinator: AuthenticationCoordinatorProtocol?
     
     // MARK: Screen results
     private var splashScreenResult: OnboardingSplashScreenViewModelResult?
@@ -70,6 +59,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     private var session: MXSession?
     /// A place to store the image selected in the avatar screen until it has been saved.
     private var selectedAvatar: UIImage?
+    private let authenticationService: AuthenticationService = .shared
+
+    private var indicatorPresenter: UserIndicatorTypePresenterProtocol
+    private var loadingIndicator: UserIndicator?
     
     private var shouldShowDisplayNameScreen = false
     private var shouldShowAvatarScreen = false
@@ -90,9 +83,12 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     init(parameters: OnboardingCoordinatorParameters) {
         self.parameters = parameters
         
-        // Preload the authVC (it is *really* slow to load in realtime)
-        let authenticationParameters = LegacyAuthenticationCoordinatorParameters(navigationRouter: parameters.router, canPresentAdditionalScreens: false)
-        authenticationCoordinator = LegacyAuthenticationCoordinator(parameters: authenticationParameters)
+        // Preload the legacy authVC (it is *really* slow to load in realtime)
+        let params = LegacyAuthenticationCoordinatorParameters(navigationRouter: parameters.router,
+                                                               canPresentAdditionalScreens: false)
+        legacyAuthenticationCoordinator = LegacyAuthenticationCoordinator(parameters: params)
+
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: parameters.router.toPresentable())
         
         super.init()
     }    
@@ -100,8 +96,22 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     // MARK: - Public
     
     func start() {
-        // TODO: Manage a separate flow for soft logout that just uses AuthenticationCoordinator
-        if parameters.softLogoutCredentials == nil, BuildSettings.authScreenShowRegister {
+        if authenticationService.softLogoutCredentials != nil {
+            //  show the splash screen and a loading indicator
+            if BuildSettings.authScreenShowRegister {
+                showSplashScreen()
+            } else {
+                showEmptyScreen()
+            }
+            startLoading()
+            if BuildSettings.onboardingEnableNewAuthenticationFlow {
+                beginAuthentication(with: .login) { [weak self] in
+                    self?.stopLoading()
+                }
+            } else {
+                showLegacyAuthenticationScreen(forceAsRootModule: true)
+            }
+        } else if BuildSettings.authScreenShowRegister {
             showSplashScreen()
         } else {
             showLegacyAuthenticationScreen()
@@ -111,27 +121,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     func toPresentable() -> UIViewController {
         navigationRouter.toPresentable()
     }
-    
-    /// Force a registration process based on a predefined set of parameters from a server provisioning link.
-    /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
-    func update(externalRegistrationParameters: [AnyHashable: Any]) {
-        self.externalRegistrationParameters = externalRegistrationParameters
-        authenticationCoordinator.update(externalRegistrationParameters: externalRegistrationParameters)
-    }
-    
-    /// Set up the authentication screen with the specified homeserver and/or identity server.
-    func updateHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
-        self.customHomeserver = homeserver
-        self.customIdentityServer = identityServer
-        authenticationCoordinator.updateHomeserver(homeserver, andIdentityServer: identityServer)
-    }
-    
-    /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
-    func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
-        guard isShowingLegacyAuthentication else { return false }
-        return authenticationCoordinator.continueSSOLogin(withToken: loginToken, transactionID: transactionID)
-    }
-    
+
     // MARK: - Pre-Authentication
     
     /// Show the onboarding splash screen as the root module in the flow.
@@ -147,32 +137,42 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         coordinator.start()
         add(childCoordinator: coordinator)
         
-        navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        navigationRouter.setRootModule(coordinator) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+
+    /// Show an empty screen when configuring soft logout flow
+    private func showEmptyScreen() {
+        MXLog.debug("[OnboardingCoordinator] showEmptyScreen")
+
+        let viewController = UIViewController()
+        viewController.view.backgroundColor = ThemeService.shared().theme.backgroundColor
+        navigationRouter.setRootModule(viewController)
     }
     
     /// Displays the next view in the flow after the splash screen.
     private func splashScreenCoordinator(_ coordinator: OnboardingSplashScreenCoordinator, didCompleteWith result: OnboardingSplashScreenViewModelResult) {
         splashScreenResult = result
         
-        // Set the auth type early to allow network requests to finish during display of the use case screen.
-        authenticationCoordinator.update(authenticationFlow: result.flow)
+        // Set the auth type early on the legacy auth to allow network requests to finish during display of the use case screen.
+        legacyAuthenticationCoordinator.update(authenticationFlow: result.flow)
         
         switch result {
         case .register:
-//            showUseCaseSelectionScreen()
-            useCaseResult = .skipped
-            guard BuildSettings.onboardingEnableNewAuthenticationFlow else {
-                showLegacyAuthenticationScreen()
-                return
-            }
-            beginAuthentication(with: .registration)
+            beginAuthentication(with: .registration, onStart: coordinator.stop)
         case .login:
-            showLegacyAuthenticationScreen()
+            if BuildSettings.onboardingEnableNewAuthenticationFlow {
+                beginAuthentication(with: .login, onStart: coordinator.stop)
+            } else {
+                coordinator.stop()
+                showLegacyAuthenticationScreen()
+            }
         }
     }
     
     /// Show the use case screen for new users.
-    private func showUseCaseSelectionScreen() {
+    private func showUseCaseSelectionScreen(animated: Bool = true) {
         MXLog.debug("[OnboardingCoordinator] showUseCaseSelectionScreen")
         
         let coordinator = OnboardingUseCaseSelectionCoordinator()
@@ -185,9 +185,11 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         add(childCoordinator: coordinator)
         
         if navigationRouter.modules.isEmpty {
-            navigationRouter.setRootModule(coordinator, popCompletion: nil)
+            navigationRouter.setRootModule(coordinator) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
         } else {
-            navigationRouter.push(coordinator, animated: true) { [weak self] in
+            navigationRouter.push(coordinator, animated: animated) { [weak self] in
                 self?.remove(childCoordinator: coordinator)
             }
         }
@@ -199,49 +201,52 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         
         guard BuildSettings.onboardingEnableNewAuthenticationFlow else {
             showLegacyAuthenticationScreen()
+            coordinator.stop()
             return
         }
         
-        if result == .customServer {
-            beginAuthentication(with: .selectServerForRegistration)
-        } else {
-            beginAuthentication(with: .registration)
-        }
+        beginAuthentication(with: .registration, onStart: coordinator.stop)
     }
     
     // MARK: - Authentication
     
     /// Show the authentication flow, starting at the specified initial screen.
-    private func beginAuthentication(with initialScreen: AuthenticationCoordinator.EntryPoint) {
+    private func beginAuthentication(with initialScreen: AuthenticationCoordinator.EntryPoint, onStart: (() -> Void)? = nil) {
         MXLog.debug("[OnboardingCoordinator] beginAuthentication")
         
         let parameters = AuthenticationCoordinatorParameters(navigationRouter: navigationRouter,
                                                              initialScreen: initialScreen,
                                                              canPresentAdditionalScreens: false)
         let coordinator = AuthenticationCoordinator(parameters: parameters)
-        coordinator.completion = { [weak self, weak coordinator] result in
+        coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             
             switch result {
+            case .didStart:
+                onStart?()
             case .didLogin(let session, let authenticationFlow, let authenticationType):
                 self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
+            case .clearAllData:
+                self.showClearAllDataConfirmation()
+            case .cancel(let flow):
+                self.cancelAuthentication(flow: flow)
             }
         }
+        authenticationCoordinator = coordinator
         
         add(childCoordinator: coordinator)
         coordinator.start()
     }
-    
+
     /// Show the legacy authentication screen. Any parameters that have been set in previous screens are be applied.
-    private func showLegacyAuthenticationScreen() {
-        guard !isShowingLegacyAuthentication else { return }
-        
+    /// - Parameter forceAsRootModule: Force setting the module as root instead of pushing
+    private func showLegacyAuthenticationScreen(forceAsRootModule: Bool = false) {
         MXLog.debug("[OnboardingCoordinator] showLegacyAuthenticationScreen")
         
-        let coordinator = authenticationCoordinator
-        coordinator.completion = { [weak self, weak coordinator] result in
+        let coordinator = legacyAuthenticationCoordinator
+        coordinator.callback = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
             
             switch result {
@@ -249,39 +254,42 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
                 self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationFlow, using: authenticationType)
             case .didComplete:
                 self.authenticationCoordinatorDidComplete(coordinator)
+            case .clearAllData:
+                self.showClearAllDataConfirmation()
+            case .didStart, .cancel:
+                // These results are only sent by the new flow.
+                break
             }
-            
         }
-        
-        // Due to needing to preload the authVC, this breaks the Coordinator init/start pattern.
-        // This can be re-assessed once we re-write a native flow for authentication.
-        
-        if let externalRegistrationParameters = externalRegistrationParameters {
-            coordinator.update(externalRegistrationParameters: externalRegistrationParameters)
-        }
-        
-        coordinator.customServerFieldsVisible = useCaseResult == .customServer
-        
-        if let softLogoutCredentials = parameters.softLogoutCredentials {
-            coordinator.update(softLogoutCredentials: softLogoutCredentials)
-        }
+
+        authenticationCoordinator = coordinator
         
         coordinator.start()
         add(childCoordinator: coordinator)
-        
-        if customHomeserver != nil || customIdentityServer != nil {
-            coordinator.updateHomeserver(customHomeserver, andIdentityServer: customIdentityServer)
-        }
-        
-        if navigationRouter.modules.isEmpty {
+
+        if navigationRouter.modules.isEmpty || forceAsRootModule {
             navigationRouter.setRootModule(coordinator, popCompletion: nil)
         } else {
             navigationRouter.push(coordinator, animated: true) { [weak self] in
                 self?.remove(childCoordinator: coordinator)
-                self?.isShowingLegacyAuthentication = false
             }
         }
-        isShowingLegacyAuthentication = true
+        stopLoading()
+    }
+    
+    /// Cancels the registration flow, returning to the Use Case screen.
+    private func cancelAuthentication(flow: AuthenticationFlow) {
+        switch flow {
+        case .register:
+            navigationRouter.popAllModules(animated: false)
+            
+            showSplashScreen()
+            showUseCaseSelectionScreen(animated: false)
+        case .login:
+            navigationRouter.popAllModules(animated: false)
+
+            showSplashScreen()
+        }
     }
     
     /// Displays the next view in the flow after the authentication screens,
@@ -298,14 +306,11 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         if authenticationFlow == .register,
            let userId = session.credentials.userId,
            let userSession = UserSessionsService.shared.userSession(withUserId: userId) {
+            // Skip personalisation when a generic SSO provider was used in case it already included the same steps.
+            let shouldShowPersonalization = BuildSettings.onboardingShowAccountPersonalization && authenticationType.analyticsType != .SSO
+            
             // If personalisation is to be shown, check that the homeserver supports it otherwise show the congratulations screen
-            if BuildSettings.onboardingShowAccountPersonalization {
                 checkHomeserverCapabilities(for: userSession)
-                return
-            } else {
-                showCongratulationsScreen(for: userSession)
-                return
-            }
         } else if Analytics.shared.shouldShowAnalyticsPrompt {
             showAnalyticsPrompt(for: session)
             return
@@ -335,8 +340,6 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     
     /// Completes the onboarding flow if possible, otherwise waits for any remaining screens.
     private func authenticationCoordinatorDidComplete(_ coordinator: AuthenticationCoordinatorProtocol) {
-        isShowingLegacyAuthentication = false
-        
         // Handle the chosen use case where applicable
         if authenticationFlow == .register,
            let useCase = useCaseResult?.userSessionPropertyValue,
@@ -357,7 +360,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     
     /// Starts the part of the flow that comes after authentication for new users.
     private func beginPostAuthentication(for userSession: UserSession) {
-        showCongratulationsScreen(for: userSession)
+        checkHomeserverCapabilities(for: userSession)
     }
     
     /// Show the congratulations screen for new users. The screen will be configured based on the homeserver's capabilities.
@@ -547,7 +550,12 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         }
         
         guard authenticationFinished else {
-            MXLog.debug("[OnboardingCoordinator] Allowing LegacyAuthenticationCoordinator to display any remaining screens.")
+            guard let authenticationCoordinator = authenticationCoordinator else {
+                MXLog.failure("[OnboardingCoordinator] completeIfReady: authenticationCoordinator is missing.")
+                return
+            }
+
+            MXLog.debug("[OnboardingCoordinator] Allowing AuthenticationCoordinator to display any remaining screens.")
             authenticationCoordinator.presentPendingScreensIfNecessary()
             return
         }
@@ -555,6 +563,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         trackSignup()
         
         completion?()
+        
+        // Reset the authentication service back to using matrix.org
+        authenticationService.reset(useDefaultServer: true)
     }
     
     /// Sends a signup event to the Analytics class if onboarding has completed via the register flow.
@@ -566,6 +577,34 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         }
         
         Analytics.shared.trackSignup(authenticationType: authenticationType.analyticsType)
+    }
+
+    /// Show an activity indicator whilst loading.
+    private func startLoading() {
+        loadingIndicator = indicatorPresenter.present(.loading(label: VectorL10n.loading, isInteractionBlocking: true))
+    }
+
+    /// Hide the currently displayed activity indicator.
+    private func stopLoading() {
+        loadingIndicator = nil
+    }
+
+    /// Shows a confirmation to clear all data, and proceeds to do so if the user confirms.
+    private func showClearAllDataConfirmation() {
+        let alertController = UIAlertController(title: VectorL10n.authSoftlogoutClearDataSignOutTitle,
+                                                message: VectorL10n.authSoftlogoutClearDataSignOutMsg,
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: VectorL10n.authSoftlogoutClearDataSignOut, style: .destructive) { [weak self] action in
+            guard let self = self else { return }
+            MXLog.debug("[OnboardingCoordinator] showClearAllDataConfirmation: clear all data after soft logout")
+            self.authenticationService.reset()
+            self.authenticationFinished = false
+            self.cancelAuthentication(flow: .login)
+            AppDelegate.theDelegate().logoutSendingRequestServer(true, completion: nil)
+        })
+        
+        navigationRouter.present(alertController, animated: true)
     }
 }
 
@@ -585,7 +624,7 @@ extension OnboardingSplashScreenViewModelResult {
 
 extension OnboardingUseCaseViewModelResult {
     /// The result converted into the type stored in the user session.
-    var userSessionPropertyValue: UserSessionProperties.UseCase? {
+    var userSessionPropertyValue: UserSessionProperties.UseCase {
         switch self {
         case .personalMessaging:
             return .personalMessaging
@@ -595,8 +634,6 @@ extension OnboardingUseCaseViewModelResult {
             return .communityMessaging
         case .skipped:
             return .skipped
-        case .customServer:
-            return nil
         }
     }
 }

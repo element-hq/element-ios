@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +16,8 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// A modifier for showing the wait overlay view over a view.
 struct WaitOverlayModifier: ViewModifier {
-    
     var allowUserInteraction: Bool
     var show: Bool
     var message: String?
@@ -28,27 +26,25 @@ struct WaitOverlayModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .modifier(WaitOverlay(
-                        allowUserInteraction: allowUserInteraction,
-                        message: message,
-                        isLoading: show))
+                allowUserInteraction: allowUserInteraction,
+                message: message,
+                isLoading: show
+            ))
     }
 }
 
-@available(iOS 14.0, *)
 extension View {
-    @available(iOS 14.0, *)
     func waitOverlay(show: Bool, message: String? = nil, allowUserInteraction: Bool = true) -> some View {
-        self.modifier(WaitOverlayModifier(allowUserInteraction: allowUserInteraction, show: show, message: message))
+        modifier(WaitOverlayModifier(allowUserInteraction: allowUserInteraction, show: show, message: message))
     }
 }
 
 /// `WaitOverlay` allows to easily add an overlay that covers the entire with an `ActivityIndicator` at the center
-@available(iOS 14.0, *)
 struct WaitOverlay: ViewModifier {
     // MARK: - Properties
     
     var alignment: Alignment = .center
-    var allowUserInteraction: Bool = true
+    var allowUserInteraction = true
     var message: String?
     var isLoading: Bool
 
@@ -70,8 +66,7 @@ struct WaitOverlay: ViewModifier {
 
     // MARK: - Public
     
-    public func body(content: Content) -> some View
-    {
+    public func body(content: Content) -> some View {
         ZStack {
             content
             if isLoading {
@@ -93,7 +88,7 @@ struct WaitOverlay: ViewModifier {
                     }
                     .padding(12)
                     .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .fill(theme.colors.navigation.opacity(0.9)))
+                        .fill(theme.colors.navigation.opacity(0.9)))
                 }
                 .edgesIgnoringSafeArea(.all)
                 .transition(.opacity)
@@ -103,29 +98,28 @@ struct WaitOverlay: ViewModifier {
     }
 }
 
-@available(iOS 14.0, *)
 struct WaitOverlay_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             VStack {
-                ThemableNavigationBar(title: nil, showBackButton: true, backAction: {}, closeAction: {})
-                ThemableNavigationBar(title: "Some Title", showBackButton: true, backAction: {}, closeAction: {})
-                ThemableNavigationBar(title: nil, showBackButton: false, backAction: {}, closeAction: {})
-                ThemableNavigationBar(title: "Some Title", showBackButton: false, backAction: {}, closeAction: {})
+                ThemableNavigationBar(title: nil, showBackButton: true, backAction: { }, closeAction: { })
+                ThemableNavigationBar(title: "Some Title", showBackButton: true, backAction: { }, closeAction: { })
+                ThemableNavigationBar(title: nil, showBackButton: false, backAction: { }, closeAction: { })
+                ThemableNavigationBar(title: "Some Title", showBackButton: false, backAction: { }, closeAction: { })
             }
             .modifier(WaitOverlay(isLoading: true))
             VStack {
-                ThemableNavigationBar(title: nil, showBackButton: true, backAction: {}, closeAction: {})
-                ThemableNavigationBar(title: "Some Title", showBackButton: true, backAction: {}, closeAction: {})
-                ThemableNavigationBar(title: nil, showBackButton: false, backAction: {}, closeAction: {})
-                ThemableNavigationBar(title: "Some Title", showBackButton: false, backAction: {}, closeAction: {})
+                ThemableNavigationBar(title: nil, showBackButton: true, backAction: { }, closeAction: { })
+                ThemableNavigationBar(title: "Some Title", showBackButton: true, backAction: { }, closeAction: { })
+                ThemableNavigationBar(title: nil, showBackButton: false, backAction: { }, closeAction: { })
+                ThemableNavigationBar(title: "Some Title", showBackButton: false, backAction: { }, closeAction: { })
             }
-            .modifier(WaitOverlay(alignment:.topLeading, isLoading:  true))
+            .modifier(WaitOverlay(alignment: .topLeading, isLoading: true))
             VStack {
-                ThemableNavigationBar(title: nil, showBackButton: true, backAction: {}, closeAction: {}).theme(.dark)
-                ThemableNavigationBar(title: "Some Title", showBackButton: true, backAction: {}, closeAction: {}).theme(.dark)
-                ThemableNavigationBar(title: nil, showBackButton: false, backAction: {}, closeAction: {}).theme(.dark)
-                ThemableNavigationBar(title: "Some Title", showBackButton: false, backAction: {}, closeAction: {}).theme(.dark)
+                ThemableNavigationBar(title: nil, showBackButton: true, backAction: { }, closeAction: { }).theme(.dark)
+                ThemableNavigationBar(title: "Some Title", showBackButton: true, backAction: { }, closeAction: { }).theme(.dark)
+                ThemableNavigationBar(title: nil, showBackButton: false, backAction: { }, closeAction: { }).theme(.dark)
+                ThemableNavigationBar(title: "Some Title", showBackButton: false, backAction: { }, closeAction: { }).theme(.dark)
             }
             
             .modifier(WaitOverlay(isLoading: true)).theme(.dark)

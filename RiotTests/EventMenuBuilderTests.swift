@@ -16,7 +16,7 @@
 
 import XCTest
 import UIKit
-@testable import Riot
+@testable import Element
 
 class EventMenuBuilderTests: XCTestCase {
     

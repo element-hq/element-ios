@@ -122,7 +122,7 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
     }
     
     @objc private func keyVerificationRequestDidChange(notification: Notification) {
-        guard let keyVerificationRequest = notification.object as? MXKeyVerificationByDMRequest else {
+        guard let keyVerificationRequest = notification.object as? MXKeyVerificationRequest else {
             return
         }
         

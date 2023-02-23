@@ -100,11 +100,6 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
      The queue of events that need to be processed in order to compute their display.
      */
     NSMutableArray<MXKQueuedEvent*> *eventsToProcess;
-    
-    /**
-     The dictionary of the related groups that the current user did not join.
-     */
-    NSMutableDictionary<NSString*, MXGroup*> *externalRelatedGroups;
 }
 
 /**
@@ -164,11 +159,6 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  during server sync for which the process is pending.
  */
 @property (nonatomic, readonly) NSInteger serverSyncEventCount;
-
-/**
- The current text message partially typed in text input (use nil to reset it).
- */
-@property (nonatomic) NSString *partialTextMessage;
 
 /**
  The current attributed text message partially typed in text input (use nil to reset it).
@@ -266,10 +256,11 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  the room data source is created.
 
  @param roomId the id of the room to get data from.
+ @param threadId the id of the thread to load. If provided, thread data source will be loaded from the room specified with `roomId`.
  @param mxSession the Matrix session to get data from.
  @param onComplete a block providing the newly created instance.
  */
-+ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete;
++ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId threadId:(NSString*)threadId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete;
 
 /**
  Asynchronously create adata source to serve data corresponding to an event in the
@@ -311,10 +302,11 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  Initialise the data source to serve data corresponding to the passed room.
  
  @param roomId the id of the room to get data from.
+ @param threadId the id of the thread to initialize. If provided, thread data source will be initialized from the room specified with `roomId`.
  @param mxSession the Matrix session to get data from.
  @return the newly created instance.
  */
-- (instancetype)initWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)mxSession;
+- (instancetype)initWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)mxSession threadId:(NSString*)threadId;
 
 /**
  Initialise the data source to serve data corresponding to an event in the
@@ -776,17 +768,6 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  @param collapsed YES to collapse. NO to expand.
  */
 - (void)collapseRoomBubble:(id<MXKRoomBubbleCellDataStoring>)bubbleData collapsed:(BOOL)collapsed;
-
-#pragma mark - Groups
-
-/**
- Get a MXGroup instance for a group.
- This method is used by the bubble to retrieve a related groups of the room.
- 
- @param groupId The identifier to the group.
- @return the MXGroup instance.
- */
-- (MXGroup *)groupWithGroupId:(NSString*)groupId;
 
 #pragma mark - Reactions
 

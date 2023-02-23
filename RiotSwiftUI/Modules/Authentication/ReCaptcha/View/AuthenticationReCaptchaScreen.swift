@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationReCaptchaScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -51,6 +50,7 @@ struct AuthenticationReCaptchaScreen: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .background(theme.colors.background.ignoresSafeArea())
+        .toolbar { toolbar }
         .alert(item: $viewModel.alertInfo) { $0.alert }
         .accentColor(theme.colors.accent)
     }
@@ -58,18 +58,13 @@ struct AuthenticationReCaptchaScreen: View {
     /// The header containing the icon, title and message.
     var header: some View {
         VStack(spacing: 8) {
-            OnboardingIconImage(image: Asset.Images.onboardingCongratulationsIcon)
+            OnboardingIconImage(image: Asset.Images.authenticationRecaptchaIcon)
                 .padding(.bottom, 8)
             
-            Text(VectorL10n.authenticationRegistrationTitle)
+            Text(VectorL10n.authenticationRecaptchaTitle)
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
-            
-            Text(VectorL10n.authenticationRecaptchaMessage)
-                .font(theme.fonts.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.secondaryContent)
         }
     }
     
@@ -79,6 +74,15 @@ struct AuthenticationReCaptchaScreen: View {
                                        homeserverURL: viewModel.viewState.homeserverURL,
                                        isLoading: $isLoading) { response in
             viewModel.send(viewAction: .validate(response))
+        }
+    }
+    
+    /// A simple toolbar with a cancel button.
+    var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .cancellationAction) {
+            Button(VectorL10n.cancel) {
+                viewModel.send(viewAction: .cancel)
+            }
         }
     }
 }

@@ -63,11 +63,15 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     [timeFormatter setDateFormat:kEventFormatterTimeFormat];
 }
 
-- (NSString *)stringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
+- (NSString *)stringFromEvent:(MXEvent *)event
+                withRoomState:(MXRoomState *)roomState
+           andLatestRoomState:(MXRoomState *)latestRoomState
+                        error:(MXKEventFormatterError *)error
 {
     NSString *stringFromEvent;
     NSAttributedString *attributedStringFromEvent = [self attributedStringFromEvent:event
                                                                       withRoomState:roomState
+                                                                 andLatestRoomState:latestRoomState
                                                                        displayPills:NO
                                                                               error:error];
     if (*error == MXKEventFormatterErrorNone)
@@ -80,10 +84,14 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 - (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event
                                     withRoomState:(MXRoomState *)roomState
+                               andLatestRoomState:(MXRoomState *)latestRoomState
                                      displayPills:(BOOL)displayPills
                                             error:(MXKEventFormatterError *)error
 {
-    NSAttributedString *string = [self unsafeAttributedStringFromEvent:event withRoomState:roomState error:error];
+    NSAttributedString *string = [self unsafeAttributedStringFromEvent:event
+                                                         withRoomState:roomState
+                                                    andLatestRoomState:latestRoomState
+                                                                 error:error];
     if (!string)
     {
         MXLogDebug(@"[EventFormatter]: No attributed string for event: %@, type: %@, msgtype: %@, has room state: %d, members: %lu, error: %lu",
@@ -97,7 +105,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         // If we cannot create attributed string, but the message is nevertheless meant for display, show generic error
         // instead of a missing message on a timeline.
         if ([self shouldDisplayEvent:event]) {
-            MXLogError(@"[EventFormatter]: Missing attributed string for message event: %@", event.eventId);
+            MXLogErrorDetails(@"[EventFormatter]: Missing attributed string for message event", @{
+                @"event_id": event.eventId ?: @"unknown"
+            });
             string = [[NSAttributedString alloc] initWithString:[VectorL10n noticeErrorUnformattableEvent] attributes:@{
                 NSFontAttributeName: [self encryptedMessagesTextFont]
             }];
@@ -112,7 +122,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                        withSession:mxSession
                                     eventFormatter:self
                                              event:event
-                                      andRoomState:roomState
+                                         roomState:roomState
+                                andLatestRoomState:latestRoomState
                                         isEditMode:NO];
         }
     }
@@ -120,9 +131,16 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     return string;
 }
 
-- (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
+- (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event
+                                    withRoomState:(MXRoomState *)roomState
+                               andLatestRoomState:(MXRoomState *)latestRoomState
+                                            error:(MXKEventFormatterError *)error
 {
-    return [self attributedStringFromEvent:event withRoomState:roomState displayPills:YES error:error];
+    return [self attributedStringFromEvent:event
+                             withRoomState:roomState
+                        andLatestRoomState:latestRoomState
+                              displayPills:YES
+                                     error:error];
 }
 
 - (BOOL)shouldDisplayEvent:(MXEvent *)event {
@@ -135,31 +153,23 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 // it impossible to catch all the `return nil` and failure states.
 // To make catching of missing strings reliable (and not place that burden on callers), we use private `unsafeAttributedStringFromEvent` method
 // which is called by the public `attributedStringFromEvent`, and which also handles the catch-all missing message.
-- (NSAttributedString *)unsafeAttributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
+- (NSAttributedString *)unsafeAttributedStringFromEvent:(MXEvent *)event
+                                          withRoomState:(MXRoomState *)roomState
+                                     andLatestRoomState:(MXRoomState *)latestRoomState
+                                                  error:(MXKEventFormatterError *)error
 {
     if (event.isRedactedEvent)
     {
+        if (event.eventType == MXEventTypeReaction)
+        {
+            //  do not show redacted reactions in the timeline
+            return nil;
+        }
         // Check whether the event is a thread root or redacted information is required
         if ((RiotSettings.shared.enableThreads && [mxSession.threadingService isEventThreadRoot:event])
             || self.settings.showRedactionsInRoomHistory)
         {
-            UIFont *font = self.defaultTextFont;
-            UIColor *color = ThemeService.shared.theme.colors.secondaryContent;
-            NSString *string = [NSString stringWithFormat:@" %@", VectorL10n.eventFormatterMessageDeleted];
-            NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:string
-                                                                             attributes:@{
-                                                                                 NSFontAttributeName: font,
-                                                                                 NSForegroundColorAttributeName: color
-                                                                             }];
-            
-            CGSize imageSize = CGSizeMake(20, 20);
-            NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-            attachment.image = [[AssetImages.roomContextMenuDelete.image vc_resizedWith:imageSize] vc_tintedImageUsingColor:color];
-            attachment.bounds = CGRectMake(0, font.descender, imageSize.width, imageSize.height);
-            NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:attachment];
-            
-            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString:imageString];
-            [result appendAttributedString:attrString];
+            NSAttributedString *result = [self redactedMessageReplacementAttributedString];
             
             if (error)
             {
@@ -171,95 +181,100 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     }
     BOOL isEventSenderMyUser = [event.sender isEqualToString:mxSession.myUserId];
     
-    // Build strings for widget events
-    if (event.eventType == MXEventTypeCustom
-        && ([event.type isEqualToString:kWidgetMatrixEventTypeString]
-            || [event.type isEqualToString:kWidgetModularEventTypeString]))
-    {
-        NSString *displayText;
-
-        Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:mxSession];
-        if (widget)
+    if (event.eventType == MXEventTypeCustom) {
+        
+        // Build strings for widget events
+        if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
+                || [event.type isEqualToString:kWidgetModularEventTypeString])
         {
-            // Prepare the display name of the sender
-            NSString *senderDisplayName = roomState ? [self senderDisplayNameForEvent:event withRoomState:roomState] : event.sender;
-
-            if (widget.isActive)
+            NSString *displayText;
+            
+            Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:mxSession];
+            if (widget)
             {
-                if ([widget.type isEqualToString:kWidgetTypeJitsiV1]
-                    || [widget.type isEqualToString:kWidgetTypeJitsiV2])
+                // Prepare the display name of the sender
+                NSString *senderDisplayName = roomState ? [self senderDisplayNameForEvent:event withRoomState:roomState] : event.sender;
+                
+                if (widget.isActive)
                 {
-                    // This is an alive jitsi widget
-                    if (isEventSenderMyUser)
+                    if ([widget.type isEqualToString:kWidgetTypeJitsiV1]
+                        || [widget.type isEqualToString:kWidgetTypeJitsiV2])
                     {
-                        displayText = [VectorL10n eventFormatterJitsiWidgetAddedByYou];
+                        // This is an alive jitsi widget
+                        if (isEventSenderMyUser)
+                        {
+                            displayText = [VectorL10n eventFormatterJitsiWidgetAddedByYou];
+                        }
+                        else
+                        {
+                            displayText = [VectorL10n eventFormatterJitsiWidgetAdded:senderDisplayName];
+                        }
                     }
                     else
                     {
-                        displayText = [VectorL10n eventFormatterJitsiWidgetAdded:senderDisplayName];
+                        if (isEventSenderMyUser)
+                        {
+                            displayText = [VectorL10n eventFormatterWidgetAddedByYou:(widget.name ? widget.name : widget.type)];
+                        }
+                        else
+                        {
+                            displayText = [VectorL10n eventFormatterWidgetAdded:(widget.name ? widget.name : widget.type) :senderDisplayName];
+                        }
                     }
                 }
                 else
                 {
-                    if (isEventSenderMyUser)
+                    // This is a closed widget
+                    // Check if it corresponds to a jitsi widget by looking at other state events for
+                    // this jitsi widget (widget id = event.stateKey).
+                    // Get all widgets state events in the room
+                    NSMutableArray<MXEvent*> *widgetStateEvents = [NSMutableArray arrayWithArray:[roomState stateEventsWithType:kWidgetMatrixEventTypeString]];
+                    [widgetStateEvents addObjectsFromArray:[roomState stateEventsWithType:kWidgetModularEventTypeString]];
+                    
+                    for (MXEvent *widgetStateEvent in widgetStateEvents)
                     {
-                        displayText = [VectorL10n eventFormatterWidgetAddedByYou:(widget.name ? widget.name : widget.type)];
-                    }
-                    else
-                    {
-                        displayText = [VectorL10n eventFormatterWidgetAdded:(widget.name ? widget.name : widget.type) :senderDisplayName];
-                    }
-                }
-            }
-            else
-            {
-                // This is a closed widget
-                // Check if it corresponds to a jitsi widget by looking at other state events for
-                // this jitsi widget (widget id = event.stateKey).
-                // Get all widgets state events in the room
-                NSMutableArray<MXEvent*> *widgetStateEvents = [NSMutableArray arrayWithArray:[roomState stateEventsWithType:kWidgetMatrixEventTypeString]];
-                [widgetStateEvents addObjectsFromArray:[roomState stateEventsWithType:kWidgetModularEventTypeString]];
-
-                for (MXEvent *widgetStateEvent in widgetStateEvents)
-                {
-                    if ([widgetStateEvent.stateKey isEqualToString:widget.widgetId])
-                    {
-                        Widget *activeWidget = [[Widget alloc] initWithWidgetEvent:widgetStateEvent inMatrixSession:mxSession];
-                        if (activeWidget.isActive)
+                        if ([widgetStateEvent.stateKey isEqualToString:widget.widgetId])
                         {
-                            if ([activeWidget.type isEqualToString:kWidgetTypeJitsiV1]
-                                || [activeWidget.type isEqualToString:kWidgetTypeJitsiV2])
+                            Widget *activeWidget = [[Widget alloc] initWithWidgetEvent:widgetStateEvent inMatrixSession:mxSession];
+                            if (activeWidget.isActive)
                             {
-                                // This was a jitsi widget
-                                return nil;
-                            }
-                            else
-                            {
-                                if (isEventSenderMyUser)
+                                if ([activeWidget.type isEqualToString:kWidgetTypeJitsiV1]
+                                    || [activeWidget.type isEqualToString:kWidgetTypeJitsiV2])
                                 {
-                                    displayText = [VectorL10n eventFormatterWidgetRemovedByYou:(activeWidget.name ? activeWidget.name : activeWidget.type)];
+                                    // This was a jitsi widget
+                                    return nil;
                                 }
                                 else
                                 {
-                                    displayText = [VectorL10n eventFormatterWidgetRemoved:(activeWidget.name ? activeWidget.name : activeWidget.type) :senderDisplayName];
+                                    if (isEventSenderMyUser)
+                                    {
+                                        displayText = [VectorL10n eventFormatterWidgetRemovedByYou:(activeWidget.name ? activeWidget.name : activeWidget.type)];
+                                    }
+                                    else
+                                    {
+                                        displayText = [VectorL10n eventFormatterWidgetRemoved:(activeWidget.name ? activeWidget.name : activeWidget.type) :senderDisplayName];
+                                    }
                                 }
+                                break;
                             }
-                            break;
                         }
                     }
                 }
             }
-        }
-
-        if (displayText)
-        {
-            if (error)
+        
+            if (displayText)
             {
-                *error = MXKEventFormatterErrorNone;
-            }
+                if (error)
+                {
+                    *error = MXKEventFormatterErrorNone;
+                }
 
-            // Build the attributed string with the right font and color for the events
-            return [self renderString:displayText forEvent:event];
+                // Build the attributed string with the right font and color for the events
+                return [self renderString:displayText forEvent:event];
+            }
+        } else if ([event.type isEqualToString:VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType]) {
+            //  do not show voice broadcast info in the timeline
+            return nil;
         }
     }
     
@@ -277,7 +292,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             }
             else
             {
-                NSAttributedString *string = [super attributedStringFromEvent:event withRoomState:roomState error:error];
+                NSAttributedString *string = [super attributedStringFromEvent:event
+                                                                withRoomState:roomState
+                                                           andLatestRoomState:latestRoomState
+                                                                        error:error];
                 NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"· "];
                 [result appendAttributedString:string];
                 return result;
@@ -312,7 +330,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             break;
     }
     
-    NSAttributedString *attributedString = [super attributedStringFromEvent:event withRoomState:roomState error:error];
+    NSAttributedString *attributedString = [super attributedStringFromEvent:event
+                                                              withRoomState:roomState
+                                                         andLatestRoomState:latestRoomState
+                                                                      error:error];
 
     if (event.sentState == MXEventSentStateSent
         && [event.decryptionError.domain isEqualToString:MXDecryptingErrorDomain])
@@ -375,7 +396,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     return attributedString;
 }
 
-- (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events withRoomState:(MXRoomState*)roomState error:(MXKEventFormatterError*)error
+- (NSAttributedString*)attributedStringFromEvents:(NSArray<MXEvent*>*)events
+                                    withRoomState:(MXRoomState*)roomState
+                               andLatestRoomState:(MXRoomState*)latestRoomState
+                                            error:(MXKEventFormatterError*)error
 {
     NSString *displayText;
 
@@ -388,7 +412,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         if (roomCreateEvent)
         {
             MXKEventFormatterError tmpError;
-            displayText = [super attributedStringFromEvent:roomCreateEvent withRoomState:roomState error:&tmpError].string;
+            displayText = [super attributedStringFromEvent:roomCreateEvent
+                                             withRoomState:roomState
+                                        andLatestRoomState:latestRoomState
+                                                     error:&tmpError].string;
 
             NSAttributedString *rendered = [self renderString:displayText forEvent:roomCreateEvent];
             NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"· "];
@@ -416,7 +443,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         {
             // This is a series for cells tagged with RoomBubbleCellDataTagMembership
             // TODO: Build a complete summary like Riot-web
-            displayText = [VectorL10n eventFormatterMemberUpdates:events.count];
+//            displayText = [VectorL10n eventFormatterMemberUpdates:events.count];
         }
     }
 
@@ -426,7 +453,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         return [self renderString:displayText forEvent:events[0]];
     }
 
-    return [super attributedStringFromEvents:events withRoomState:roomState error:error];
+    return [super attributedStringFromEvents:events
+                               withRoomState:roomState
+                          andLatestRoomState:latestRoomState
+                                       error:error];
 }
 
 - (instancetype)initWithMatrixSession:(MXSession *)matrixSession
@@ -436,8 +466,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     {
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         
-        // Use the secondary bg color to set the background color in the default CSS.
-        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.headerBackgroundColor];
+        // Use the selected bg color to set the code block background color in the default CSS.
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.selectedBackgroundColor];
         self.defaultCSS = [NSString stringWithFormat:@" \
                            pre,code { \
                            background-color: #%06lX; \
@@ -537,6 +567,29 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     }
     
     return updated;
+}
+
+- (NSAttributedString *)redactedMessageReplacementAttributedString
+{
+    UIFont *font = self.defaultTextFont;
+    UIColor *color = ThemeService.shared.theme.colors.secondaryContent;
+    NSString *string = [NSString stringWithFormat:@" %@", VectorL10n.eventFormatterMessageDeleted];
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:string
+                                                                     attributes:@{
+                                                                         NSFontAttributeName: font,
+                                                                         NSForegroundColorAttributeName: color
+                                                                     }];
+
+    CGSize imageSize = CGSizeMake(20, 20);
+    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+    attachment.image = [[AssetImages.roomContextMenuDelete.image vc_resizedWith:imageSize] vc_tintedImageUsingColor:color];
+    attachment.bounds = CGRectMake(0, font.descender, imageSize.width, imageSize.height);
+    NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:attachment];
+
+//    NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString:imageString];
+//    [result appendAttributedString:attrString];
+
+    return nil;
 }
 
 - (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withServerRoomSummary:(MXRoomSyncSummary *)serverRoomSummary roomState:(MXRoomState *)roomState

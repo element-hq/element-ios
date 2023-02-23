@@ -44,3 +44,16 @@ packages:
     url: https://github.com/maplibre/maplibre-gl-native-distribution
     minVersion: 5.12.2
     maxVersion: 5.13.0
+  OrderedCollections:
+    url: https://github.com/apple/swift-collections
+    minVersion: 1.0.2
+    maxVersion: 2.0.0
+  SwiftOGG:
+    url: https://github.com/vector-im/swift-ogg
+    branch: main
+  WysiwygComposer:
+    url: https://github.com/matrix-org/matrix-wysiwyg-composer-swift
+    revision: 38ad28bedbe63b3587126158245659b6c989ec2c
+  DeviceKit:
+    url: https://github.com/devicekit/DeviceKit
+    majorVersion: 4.7.0

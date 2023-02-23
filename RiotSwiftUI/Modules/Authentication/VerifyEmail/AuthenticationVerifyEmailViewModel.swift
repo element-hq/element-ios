@@ -16,23 +16,22 @@
 
 import SwiftUI
 
-typealias AuthenticationVerifyEmailViewModelType = StateStoreViewModel<AuthenticationVerifyEmailViewState,
-                                                                       Never,
-                                                                       AuthenticationVerifyEmailViewAction>
-class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType, AuthenticationVerifyEmailViewModelProtocol {
+typealias AuthenticationVerifyEmailViewModelType = StateStoreViewModel<AuthenticationVerifyEmailViewState, AuthenticationVerifyEmailViewAction>
 
+class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType, AuthenticationVerifyEmailViewModelProtocol {
     // MARK: - Properties
 
     // MARK: Private
 
     // MARK: Public
 
-    @MainActor var callback: ((AuthenticationVerifyEmailViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationVerifyEmailViewModelResult) -> Void)?
 
     // MARK: - Setup
 
-    init(emailAddress: String = "") {
-        let viewState = AuthenticationVerifyEmailViewState(bindings: AuthenticationVerifyEmailBindings(emailAddress: emailAddress))
+    init(homeserver: AuthenticationHomeserverViewData, emailAddress: String = "") {
+        let viewState = AuthenticationVerifyEmailViewState(homeserver: homeserver,
+                                                           bindings: AuthenticationVerifyEmailBindings(emailAddress: emailAddress))
         super.init(initialViewState: viewState)
     }
 
@@ -46,11 +45,17 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
             Task { await callback?(.resend) }
         case .cancel:
             Task { await callback?(.cancel) }
+        case .goBack:
+            Task { await callback?(.goBack) }
         }
     }
     
     @MainActor func updateForSentEmail() {
         state.hasSentEmail = true
+    }
+
+    @MainActor func goBackToEnterEmailForm() {
+        state.hasSentEmail = false
     }
     
     @MainActor func displayError(_ type: AuthenticationVerifyEmailErrorType) {

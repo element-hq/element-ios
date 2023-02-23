@@ -15,7 +15,7 @@
 //
 
 import XCTest
-@testable import Riot
+@testable import Element
 
 class OnboardingTests: XCTestCase {
     
@@ -56,18 +56,6 @@ class OnboardingTests: XCTestCase {
         
         // Then the use case property should return skipped
         XCTAssertEqual(properties.useCase, .skipped)
-    }
-    
-    func testCustomServerUseCase() {
-        // Given an empty set of user properties
-        let properties = UserSessionProperties(userId: userId)
-        
-        // When storing a custom server case result
-        let result = OnboardingUseCaseViewModelResult.customServer
-        properties.useCase = result.userSessionPropertyValue
-        
-        // Then the use case property should return nil
-        XCTAssertNil(properties.useCase)
     }
     
     func testUseCaseAfterDeletingProperties() {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -27,7 +27,7 @@
                                 <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="WbU-WH-gwL"/>
                             </connections>
                         </button>
-                        <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ESv-9w-KJF" customClass="RoomActionsBar" customModule="Riot" customModuleProvider="target">
+                        <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ESv-9w-KJF" customClass="RoomActionsBar" customModule="Element" customModuleProvider="target">
                             <rect key="frame" x="60" y="8" width="540" height="38"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="i6C-gL-ADZ"/>
@@ -41,7 +41,7 @@
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="input_text_background" translatesAutoresizingMaskIntoConstraints="NO" id="uH7-Q7-hpZ">
                                     <rect key="frame" x="0.0" y="0.0" width="484" height="36"/>
                                 </imageView>
-                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jXI-9E-Bgl">
+                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jXI-9E-Bgl" userLabel="Input Context View">
                                     <rect key="frame" x="0.0" y="0.0" width="484" height="32"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="input_edit_icon" translatesAutoresizingMaskIntoConstraints="NO" id="PZ4-0Y-TmL">
@@ -69,7 +69,7 @@
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="dVr-ZM-kkX" secondAttribute="bottom" constant="4" id="58M-yd-hhK"/>
                                         <constraint firstItem="PZ4-0Y-TmL" firstAttribute="centerY" secondItem="dVr-ZM-kkX" secondAttribute="centerY" id="Bu1-sl-qDk"/>
-                                        <constraint firstAttribute="height" constant="32" id="KNn-ng-NHK"/>
+                                        <constraint firstAttribute="height" priority="750" constant="32" id="KNn-ng-NHK"/>
                                         <constraint firstItem="dVr-ZM-kkX" firstAttribute="leading" secondItem="PZ4-0Y-TmL" secondAttribute="trailing" constant="4" id="RbN-mc-y2P"/>
                                         <constraint firstItem="48y-kn-7b5" firstAttribute="leading" secondItem="dVr-ZM-kkX" secondAttribute="trailing" constant="4" id="bmi-rg-TNM"/>
                                         <constraint firstItem="PZ4-0Y-TmL" firstAttribute="leading" secondItem="jXI-9E-Bgl" secondAttribute="leading" constant="8" id="mp0-tl-IIe"/>
@@ -77,7 +77,7 @@
                                         <constraint firstItem="48y-kn-7b5" firstAttribute="centerY" secondItem="dVr-ZM-kkX" secondAttribute="centerY" id="z5v-Vy-6tc"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="RoomInputToolbarTextView" customModule="Riot" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="RoomInputToolbarTextView" customModule="Element" customModuleProvider="target">
                                     <rect key="frame" x="5" y="33" width="474" height="4"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="GrowingTextView"/>

@@ -23,7 +23,15 @@ import UIKit
 class PillsFormatter: NSObject {
     // MARK: - Internal Properties
     /// UTType identifier for pills. Should be declared as Document type & Exported type identifier inside Info.plist
-    static let pillUTType: String = "im.vector.app.pills"
+    static let pillUTType: String = "io.stvd.space.pills"
+
+    // MARK: - Internal Enums
+    /// Defines a replacement mode for converting Pills to plain text.
+    @objc enum PillsReplacementTextMode: Int {
+        case displayname
+        case identifier
+        case markdown
+    }
 
     // MARK: - Internal Methods
     /// Insert text attachments for pills inside given message attributed string.
@@ -34,20 +42,22 @@ class PillsFormatter: NSObject {
     ///   - eventFormatter: the event formatter
     ///   - event: the event
     ///   - roomState: room state for message
+    ///   - latestRoomState: latest room state of the room containing this message
     ///   - isEditMode: whether this string will be used in the composer
     /// - Returns: new attributed string with pills
     static func insertPills(in attributedString: NSAttributedString,
                             withSession session: MXSession,
                             eventFormatter: MXKEventFormatter,
                             event: MXEvent,
-                            andRoomState roomState: MXRoomState,
+                            roomState: MXRoomState,
+                            andLatestRoomState latestRoomState: MXRoomState?,
                             isEditMode: Bool = false) -> NSAttributedString {
         let newAttr = NSMutableAttributedString(attributedString: attributedString)
-        let totalRange = NSRange(location: 0, length: newAttr.length)
-
-        newAttr.vc_enumerateAttribute(.link, in: totalRange) { (url: URL, range: NSRange, _) in
+        newAttr.vc_enumerateAttribute(.link) { (url: URL, range: NSRange, _) in
             if let userId = userIdFromPermalink(url.absoluteString),
-               let roomMember = roomState.members.member(withUserId: userId) {
+               let roomMember = roomMember(withUserId: userId,
+                                           roomState: roomState,
+                                           andLatestRoomState: latestRoomState) {
                 let isHighlighted = roomMember.userId == session.myUserId && event.sender != session.myUserId
                 let attachmentString = mentionPill(withRoomMember: roomMember,
                                                    andUrl: isEditMode ? nil : url,
@@ -64,17 +74,24 @@ class PillsFormatter: NSObject {
     ///
     /// - Parameters:
     ///   - attributedString: attributed string with pills
-    ///   - asMarkdown: wether pill should be replaced by markdown links or raw text
+    ///   - mode: replacement mode for pills (default: displayname)
     /// - Returns: string with display names
-    static func stringByReplacingPills(in attributedString: NSAttributedString, asMarkdown: Bool = false) -> String {
+    static func stringByReplacingPills(in attributedString: NSAttributedString,
+                                       mode: PillsReplacementTextMode = .displayname) -> String {
         let newAttr = NSMutableAttributedString(attributedString: attributedString)
-        let totalRange = NSRange(location: 0, length: newAttr.length)
-
-        newAttr.vc_enumerateAttribute(.attachment, in: totalRange) { (attachment: PillTextAttachment, range: NSRange, _) in
+        newAttr.vc_enumerateAttribute(.attachment) { (attachment: PillTextAttachment, range: NSRange, _) in
             if let displayText = attachment.data?.displayText,
                let userId = attachment.data?.matrixItemId,
                let permalink = MXTools.permalinkToUser(withUserId: userId) {
-                let pillString = asMarkdown ? "[\(displayText)](\(permalink))" : "\(displayText)"
+                let pillString: String
+                switch mode {
+                case .displayname:
+                    pillString = displayText
+                case .identifier:
+                    pillString = userId
+                case .markdown:
+                    pillString = "[\(displayText)](\(permalink))"
+                }
                 newAttr.replaceCharacters(in: range, with: pillString)
             }
         }
@@ -98,7 +115,6 @@ class PillsFormatter: NSObject {
             return NSAttributedString(string: roomMember.displayname)
         }
         let string = NSMutableAttributedString(attachment: attachment)
-        string.replaceCharacters(in: NSRange(location: 0, length: string.length), with: roomMember.displayname)
         string.addAttribute(.font, value: font, range: .init(location: 0, length: string.length))
         if let url = url {
             string.addAttribute(.link, value: url, range: .init(location: 0, length: string.length))
@@ -112,18 +128,36 @@ class PillsFormatter: NSObject {
     ///   - alpha: Alpha value to apply
     ///   - attributedString: Attributed string containing the pills
     static func setPillAlpha(_ alpha: CGFloat, inAttributedString attributedString: NSAttributedString) {
-        let totalRange = NSRange(location: 0, length: attributedString.length)
-        attributedString.vc_enumerateAttribute(.attachment,
-                                               in: totalRange) { (pill: PillTextAttachment, range: NSRange, _) in
+        attributedString.vc_enumerateAttribute(.attachment) { (pill: PillTextAttachment, range: NSRange, _) in
             pill.data?.alpha = alpha
         }
     }
 
-    // MARK: - Private Methods
+    /// Refresh pills inside given attributed string.
+    /// 
+    /// - Parameters:
+    ///   - attributedString: attributed string to update
+    ///   - roomState: room state for refresh, should be the latest available
+    static func refreshPills(in attributedString: NSAttributedString, with roomState: MXRoomState) {
+        attributedString.vc_enumerateAttribute(.attachment) { (pill: PillTextAttachment, range: NSRange, _) in
+            guard let userId = pill.data?.matrixItemId,
+                  let roomMember = roomState.members.member(withUserId: userId) else {
+                return
+            }
+
+            pill.data?.displayName = roomMember.displayname
+            pill.data?.avatarUrl = roomMember.avatarUrl
+        }
+    }
+}
+
+// MARK: - Private Methods
+@available (iOS 15.0, *)
+private extension PillsFormatter {
     /// Extract user id from given permalink
     /// - Parameter permalink: the permalink
     /// - Returns: userId, if any
-    private static func userIdFromPermalink(_ permalink: String) -> String? {
+    static func userIdFromPermalink(_ permalink: String) -> String? {
         let baseUrl: String
         if let clientBaseUrl = BuildSettings.clientPermalinkBaseUrl {
             baseUrl = String(format: "%@/#/user/", clientBaseUrl)
@@ -131,5 +165,18 @@ class PillsFormatter: NSObject {
             baseUrl = String(format: "%@/#/", kMXMatrixDotToUrl)
         }
         return permalink.starts(with: baseUrl) ? String(permalink.dropFirst(baseUrl.count)) : nil
+    }
+
+    /// Retrieve the latest available `MXRoomMember` from given data.
+    ///
+    /// - Parameters:
+    ///   - userId: the id of the user
+    ///   - roomState: room state for message
+    ///   - latestRoomState: latest room state of the room containing this message
+    /// - Returns: the room member, if available
+    static func roomMember(withUserId userId: String,
+                           roomState: MXRoomState,
+                           andLatestRoomState latestRoomState: MXRoomState?) -> MXRoomMember? {
+        return latestRoomState?.members.member(withUserId: userId) ?? roomState.members.member(withUserId: userId)
     }
 }

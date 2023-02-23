@@ -24,6 +24,9 @@ schemes:
       disableMainThreadChecker: true
       targets:
       - RiotTests
+      gatherCoverageData: true
+      coverageTargets:
+        - Riot
 
 targets:
   RiotTests:
@@ -46,7 +49,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: org.matrix.$(PRODUCT_NAME:rfc1034identifier)
         PRODUCT_NAME: RiotTests
         SWIFT_OBJC_BRIDGING_HEADER: RiotTests/RiotTests-Bridging-Header.h
-        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Riot.app/Riot
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Element.app/Element
       configs:
         Debug:
         Release:
@@ -60,6 +63,8 @@ targets:
     - path: ../Config/AppConfiguration.swift
     - path: ../Config/CommonConfiguration.swift
     - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Managers/AppInfo/AppInfo.swift
+    - path: ../Riot/Managers/AppInfo/AppVersion.swift
     - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage/
@@ -67,3 +72,4 @@ targets:
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
     - path: ../Riot/Modules/Room/EventMenu/EventMenuBuilder.swift
     - path: ../Riot/Modules/Room/EventMenu/EventMenuItemType.swift
+    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/VoiceBroadcastSettings.swift

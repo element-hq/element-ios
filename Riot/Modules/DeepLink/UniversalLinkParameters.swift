@@ -22,8 +22,8 @@ class UniversalLinkParameters: NSObject {
         
     // MARK: - Properties
         
-    /// The unprocessed universal link URL
-    let universalLinkURL: URL
+    /// The universal link
+    let universalLink: UniversalLink
     
     /// The fragment part of the universal link
     let fragment: String
@@ -34,22 +34,33 @@ class UniversalLinkParameters: NSObject {
     // MARK: - Setup
     
     init(fragment: String,
-         universalLinkURL: URL,
+         universalLink: UniversalLink,
          presentationParameters: ScreenPresentationParameters) {
         self.fragment = fragment
-        self.universalLinkURL = universalLinkURL
+        self.universalLink = universalLink
         self.presentationParameters = presentationParameters
         
         super.init()
     }
     
-    convenience init?(universalLinkURL: URL,
+    convenience init?(universalLink: UniversalLink,
                       presentationParameters: ScreenPresentationParameters) {
         
-        guard let fixedURL = Tools.fixURL(withSeveralHashKeys: universalLinkURL), let fragment = fixedURL.fragment else {
+        guard let fixedURL = Tools.fixURL(withSeveralHashKeys: universalLink.url), let fragment = fixedURL.fragment else {
             return nil
         }
         
-        self.init(fragment: fragment, universalLinkURL: universalLinkURL, presentationParameters: presentationParameters)
+        self.init(fragment: fragment, universalLink: universalLink, presentationParameters: presentationParameters)
+    }
+
+    convenience init?(url: URL,
+                      presentationParameters: ScreenPresentationParameters) {
+
+        guard let fixedURL = Tools.fixURL(withSeveralHashKeys: url), let fragment = fixedURL.fragment else {
+            return nil
+        }
+        let universalLink = UniversalLink(url: fixedURL)
+
+        self.init(fragment: fragment, universalLink: universalLink, presentationParameters: presentationParameters)
     }
 }

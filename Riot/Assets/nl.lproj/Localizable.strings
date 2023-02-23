@@ -54,11 +54,11 @@
 /** Invites **/
 
 /* A user has invited you to a chat */
-"USER_INVITE_TO_CHAT" = "%@ heeft u uitgenodigd om te chatten";
+"USER_INVITE_TO_CHAT" = "%@ heeft je uitgenodigd om te chatten";
 /* A user has invited you to an (unamed) group chat */
-"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ heeft u uitgenodigd in een groepschat";
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ heeft je uitgenodigd in een groepschat";
 /* A user has invited you to a named room */
-"USER_INVITE_TO_NAMED_ROOM" = "%@ heeft u in %@-kamer uitgenodigd";
+"USER_INVITE_TO_NAMED_ROOM" = "%@ heeft je in %@-kamer uitgenodigd";
 /** Calls **/
 
 /* Incoming one-to-one voice call */
@@ -74,9 +74,9 @@
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Video-groepsoproep van %@: ‘%@’";
 /* A single unread message in a room */
-"SINGLE_UNREAD_IN_ROOM" = "U heeft een bericht ontvangen in %@";
+"SINGLE_UNREAD_IN_ROOM" = "Je hebt een bericht ontvangen in %@";
 /* A single unread message */
-"SINGLE_UNREAD" = "U heeft een bericht ontvangen";
+"SINGLE_UNREAD" = "Je hebt een bericht ontvangen";
 /* Message title for a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
 /* Sticker from a specific person, not referencing a room. */

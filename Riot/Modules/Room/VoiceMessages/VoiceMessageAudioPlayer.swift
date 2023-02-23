@@ -35,12 +35,13 @@ enum VoiceMessageAudioPlayerError: Error {
 class VoiceMessageAudioPlayer: NSObject {
     
     private var playerItem: AVPlayerItem?
-    private var audioPlayer: AVPlayer?
+    private var audioPlayer: AVQueuePlayer?
     
     private var statusObserver: NSKeyValueObservation?
     private var playbackBufferEmptyObserver: NSKeyValueObservation?
     private var rateObserver: NSKeyValueObservation?
     private var playToEndObserver: NSObjectProtocol?
+    private var appBackgroundObserver: NSObjectProtocol?
     
     private let delegateContainer = DelegateContainer()
     
@@ -60,7 +61,20 @@ class VoiceMessageAudioPlayer: NSObject {
     }
     
     var currentTime: TimeInterval {
-        return abs(CMTimeGetSeconds(audioPlayer?.currentTime() ?? .zero))
+        let currentTime = abs(CMTimeGetSeconds(audioPlayer?.currentTime() ?? .zero))
+        return currentTime.isFinite ? currentTime : .zero
+    }
+    
+    var playerItems: [AVPlayerItem] {
+        guard let audioPlayer = audioPlayer else {
+            return []
+        }
+        
+        return audioPlayer.items()
+    }
+    
+    var currentUrl: URL? {
+        return (audioPlayer?.currentItem?.asset as? AVURLAsset)?.url
     }
     
     private(set) var isStopped = true
@@ -84,9 +98,28 @@ class VoiceMessageAudioPlayer: NSObject {
         }
         
         playerItem = AVPlayerItem(url: url)
-        audioPlayer = AVPlayer(playerItem: playerItem)
+        audioPlayer = AVQueuePlayer(playerItem: playerItem)
         
         addObservers()
+    }
+    
+    func addContentFromURL(_ url: URL) {
+        let playerItem = AVPlayerItem(url: url)
+        audioPlayer?.insert(playerItem, after: nil)
+        
+        // audioPlayerDidFinishPlaying must be called on this last AVPlayerItem
+        NotificationCenter.default.removeObserver(playToEndObserver as Any)
+        playToEndObserver = NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem, queue: nil) { [weak self] notification in
+            guard let self = self else { return }
+            
+            self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidFinishPlaying(self)
+            }
+        }
+    }
+    
+    func removeAllPlayerItems() {
+        audioPlayer?.removeAllItems()
     }
     
     func unloadContent() {
@@ -121,7 +154,7 @@ class VoiceMessageAudioPlayer: NSObject {
         audioPlayer?.seek(to: .zero)
     }
     
-    func seekToTime(_ time: TimeInterval, completionHandler:@escaping (Bool) -> Void = { _ in }) {
+    func seekToTime(_ time: TimeInterval, completionHandler: @escaping (Bool) -> Void = { _ in }) {
         audioPlayer?.seek(to: CMTime(seconds: time, preferredTimescale: 60000), completionHandler: completionHandler)
     }
     
@@ -198,6 +231,15 @@ class VoiceMessageAudioPlayer: NSObject {
                 (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidFinishPlaying(self)
             }
         }
+        
+        appBackgroundObserver = NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil) { [weak self] _ in
+            guard let self = self, !BuildSettings.allowBackgroundAudioMessagePlayback else { return }
+            
+            self.pause()
+            self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidPausePlaying(self)
+            }
+        }
     }
     
     private func removeObservers() {
@@ -205,6 +247,7 @@ class VoiceMessageAudioPlayer: NSObject {
         playbackBufferEmptyObserver?.invalidate()
         rateObserver?.invalidate()
         NotificationCenter.default.removeObserver(playToEndObserver as Any)
+        NotificationCenter.default.removeObserver(appBackgroundObserver as Any)
     }
 }
 

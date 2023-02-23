@@ -14,25 +14,18 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 struct TemplateRoomChat: View {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    // MARK: Public
     
     @ObservedObject var viewModel: TemplateRoomChatViewModel.Context
     var presentedModally = false
     
     var body: some View {
         VStack {
-            VStack{
+            VStack {
                 roomContent
             }.frame(maxHeight: .infinity)
             
@@ -51,7 +44,6 @@ struct TemplateRoomChat: View {
             .animation(.easeOut(duration: 0.25))
             .transition(.move(edge: .trailing))
             .padding()
-            
         }
         .background(theme.colors.background)
         .navigationTitle(viewModel.viewState.roomName ?? "Chat")
@@ -83,14 +75,14 @@ struct TemplateRoomChat: View {
     
     private var bubbleList: some View {
         ScrollViewReader { reader in
-            ScrollView{
+            ScrollView {
                 LazyVStack {
                     ForEach(viewModel.viewState.bubbles) { bubble in
                         TemplateRoomChatBubbleView(bubble: bubble)
                             .id(bubble.id)
                     }
                 }
-                .onAppear{
+                .onAppear {
                     guard let lastBubbleId = viewModel.viewState.bubbles.last?.id
                     else { return }
                     reader.scrollTo(lastBubbleId, anchor: .bottom)
@@ -116,7 +108,7 @@ struct TemplateRoomChat: View {
     }
     
     private var itemCount: Int {
-        return viewModel.viewState
+        viewModel.viewState
             .bubbles
             .map(\.items)
             .map(\.count)

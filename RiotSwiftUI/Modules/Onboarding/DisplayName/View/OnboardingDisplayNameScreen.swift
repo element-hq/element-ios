@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct OnboardingDisplayNameScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -64,7 +63,6 @@ struct OnboardingDisplayNameScreen: View {
     /// The icon, title and message views.
     var header: some View {
         VStack(spacing: 8) {
-            
             OnboardingIconImage(image: Asset.Images.onboardingCongratulationsIcon)
                 .padding(.bottom, 8)
             
@@ -72,11 +70,6 @@ struct OnboardingDisplayNameScreen: View {
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
-            
-            Text(VectorL10n.onboardingDisplayNameMessage)
-                .font(theme.fonts.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.secondaryContent)
         }
     }
     
@@ -87,8 +80,7 @@ struct OnboardingDisplayNameScreen: View {
                 isEditingTextField = $0
             }
             .autocapitalization(.words)
-            .textFieldStyle(BorderedInputFieldStyle(theme: _theme,
-                                                    isEditing: isEditingTextField,
+            .textFieldStyle(BorderedInputFieldStyle(isEditing: isEditingTextField,
                                                     isError: viewModel.viewState.validationErrorMessage != nil))
             
             Text(viewModel.viewState.textFieldFooterMessage)

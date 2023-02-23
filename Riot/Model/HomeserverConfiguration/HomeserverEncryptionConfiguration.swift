@@ -22,12 +22,15 @@ final class HomeserverEncryptionConfiguration: NSObject {
     let isE2EEByDefaultEnabled: Bool
     let isSecureBackupRequired: Bool
     let secureBackupSetupMethods: [VectorWellKnownBackupSetupMethod]
+    let outboundKeysPreSharingMode: MXKKeyPreSharingStrategy
 
     init(isE2EEByDefaultEnabled: Bool,
          isSecureBackupRequired: Bool,
-         secureBackupSetupMethods: [VectorWellKnownBackupSetupMethod]) {
+         secureBackupSetupMethods: [VectorWellKnownBackupSetupMethod],
+         outboundKeysPreSharingMode: MXKKeyPreSharingStrategy) {
         self.isE2EEByDefaultEnabled = isE2EEByDefaultEnabled
         self.isSecureBackupRequired = isSecureBackupRequired
+        self.outboundKeysPreSharingMode = outboundKeysPreSharingMode
         self.secureBackupSetupMethods = secureBackupSetupMethods
 
         super.init()

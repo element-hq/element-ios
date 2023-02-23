@@ -308,7 +308,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
                     MXLog.error("[VoiceMessageController] Failed retrieving media duration")
                 }
             case .failure(let error):
-                MXLog.error("[VoiceMessageController] Failed getting audio duration with: \(error)")
+                MXLog.error("[VoiceMessageController] Failed getting audio duration", context: error)
             }
             
             dispatchGroup.leave()
@@ -336,7 +336,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             case .success:
                 finalURL = destinationURL
             case .failure(let error):
-                MXLog.error("Failed failed encoding audio message with: \(error)")
+                MXLog.error("Failed failed encoding audio message", context: error)
             }
             
             dispatchGroup.leave()
@@ -371,7 +371,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         do {
             try FileManager.default.removeItem(at: url)
         } catch {
-            MXLog.error(error)
+            MXLog.error("[VoiceMessageController] deleteRecordingAtURL:", context: error)
         }
     }
     

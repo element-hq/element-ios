@@ -1,0 +1,19 @@
+{
+  "flows": [
+    {
+      "type": "m.login.sso",
+      "identity_providers": [
+        {
+          "id": "saml",
+          "name": "SAML"
+        }
+      ]
+    },
+    {
+      "type": "m.login.token"
+    },
+    {
+      "type": "m.login.application_service"
+    }
+  ]
+}

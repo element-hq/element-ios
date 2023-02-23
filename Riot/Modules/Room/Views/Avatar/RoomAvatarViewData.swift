@@ -26,7 +26,7 @@ struct RoomAvatarViewData: AvatarViewDataProtocol {
         return roomId
     }
     
-    var fallbackImage: AvatarFallbackImage? {
-        return .matrixItem(matrixItemId, displayName)
+    var fallbackImages: [AvatarFallbackImage]? {
+        [.matrixItem(matrixItemId, displayName)]
     }
 }

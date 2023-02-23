@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,17 +17,16 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 14.0, *)
 enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
     case multipleResults
     
-    static private var members: [RoomMembersProviderMember]!
+    private static var members: [RoomMembersProviderMember]!
     
     var screenType: Any.Type {
         UserSuggestionList.self
     }
     
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let service = UserSuggestionService(roomMemberProvider: self)
         let listViewModel = UserSuggestionViewModel(userSuggestionService: service)
         
@@ -38,12 +37,11 @@ enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
         return (
             [service, listViewModel],
             AnyView(UserSuggestionListWithInput(viewModel: viewModel)
-                        .addDependency(MockAvatarService.example))
+                .addDependency(MockAvatarService.example))
         )
     }
 }
 
-@available(iOS 14.0, *)
 extension MockUserSuggestionScreenState: RoomMembersProviderProtocol {
     func fetchMembers(_ members: ([RoomMembersProviderMember]) -> Void) {
         if Self.members == nil {
@@ -54,7 +52,7 @@ extension MockUserSuggestionScreenState: RoomMembersProviderProtocol {
     }
     
     private func generateUsersWithCount(_ count: UInt) -> [RoomMembersProviderMember] {
-        return (0..<count).map { _ in
+        (0..<count).map { _ in
             let identifier = "@" + UUID().uuidString
             return RoomMembersProviderMember(userId: identifier, displayName: identifier, avatarUrl: "mxc://matrix.org/VyNYAgahaiAzUoOeZETtQ")
         }

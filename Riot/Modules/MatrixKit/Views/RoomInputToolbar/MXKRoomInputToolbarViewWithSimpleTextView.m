@@ -16,6 +16,8 @@
  */
 
 #import "MXKRoomInputToolbarViewWithSimpleTextView.h"
+#import "ThemeService.h"
+#import "GeneratedInterface-Swift.h"
 
 @implementation MXKRoomInputToolbarViewWithSimpleTextView
 
@@ -30,8 +32,8 @@
     [super awakeFromNib];
     
     // Add an accessory view to the text view in order to retrieve keyboard view.
-    inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.messageComposerTextView.inputAccessoryView = self.inputAccessoryView;
+    inputAccessoryViewForKeyboard = [[UIView alloc] initWithFrame:CGRectZero];
+    self.messageComposerTextView.inputAccessoryView = inputAccessoryViewForKeyboard;
 }
 
 -(void)customizeViewRendering
@@ -39,7 +41,10 @@
     [super customizeViewRendering];
     
     // Set default message composer background color
-    self.messageComposerTextView.backgroundColor = [UIColor whiteColor];
+    self.messageComposerTextView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.backgroundColor = ThemeService.shared.theme.colors.system;
+    self.leftInputToolbarButton.tintColor = ThemeService.shared.theme.colors.accent;
+    self.rightInputToolbarButton.tintColor = ThemeService.shared.theme.colors.accent;
 }
 
 - (NSString*)textMessage

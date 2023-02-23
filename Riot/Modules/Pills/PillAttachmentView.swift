@@ -82,6 +82,7 @@ class PillAttachmentView: UIView {
                                              avatarUrl: pillData.avatarUrl,
                                              mediaManager: mediaManager,
                                              fallbackImage: .matrixItem(pillData.matrixItemId, pillData.displayName)))
+        avatarView.isUserInteractionEnabled = false
 
         pillBackgroundView.addSubview(avatarView)
         pillBackgroundView.addSubview(label)

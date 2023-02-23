@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct TimelinePollView: View {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -33,7 +31,6 @@ struct TimelinePollView: View {
         let poll = viewModel.viewState.poll
         
         VStack(alignment: .leading, spacing: 16.0) {
-            
             Text(poll.question)
                 .font(theme.fonts.bodySB)
                 .foregroundColor(theme.colors.primaryContent) +
@@ -78,12 +75,12 @@ struct TimelinePollView: View {
             return VectorL10n.pollTimelineTotalNoVotes
         case 1:
             return (poll.hasCurrentUserVoted || poll.type == .undisclosed ?
-                        VectorL10n.pollTimelineTotalOneVote :
-                        VectorL10n.pollTimelineTotalOneVoteNotVoted)
+                VectorL10n.pollTimelineTotalOneVote :
+                VectorL10n.pollTimelineTotalOneVoteNotVoted)
         default:
             return (poll.hasCurrentUserVoted || poll.type == .undisclosed ?
-                        VectorL10n.pollTimelineTotalVotes(Int(poll.totalAnswerCount)) :
-                        VectorL10n.pollTimelineTotalVotesNotVoted(Int(poll.totalAnswerCount)))
+                VectorL10n.pollTimelineTotalVotes(Int(poll.totalAnswerCount)) :
+                VectorL10n.pollTimelineTotalVotesNotVoted(Int(poll.totalAnswerCount)))
         }
     }
     
@@ -94,7 +91,6 @@ struct TimelinePollView: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct TimelinePollView_Previews: PreviewProvider {
     static let stateRenderer = MockTimelinePollScreenState.stateRenderer
     static var previews: some View {

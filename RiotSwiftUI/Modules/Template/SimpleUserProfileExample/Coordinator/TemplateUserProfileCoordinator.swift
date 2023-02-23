@@ -14,33 +14,24 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct TemplateUserProfileCoordinatorParameters {
     let session: MXSession
 }
 
 final class TemplateUserProfileCoordinator: Coordinator, Presentable {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let parameters: TemplateUserProfileCoordinatorParameters
     private let templateUserProfileHostingController: UIViewController
     private var templateUserProfileViewModel: TemplateUserProfileViewModelProtocol
     
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
-    
-    // MARK: Public
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     var completion: (() -> Void)?
-    
-    // MARK: - Setup
     
     init(parameters: TemplateUserProfileCoordinatorParameters) {
         self.parameters = parameters
@@ -68,7 +59,7 @@ final class TemplateUserProfileCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.templateUserProfileHostingController
+        templateUserProfileHostingController
     }
     
     // MARK: - Private

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct SpaceSettings: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -33,7 +31,7 @@ struct SpaceSettings: View {
         ScrollView {
             VStack {
                 avatarView
-                Spacer().frame(height:32)
+                Spacer().frame(height: 32)
                 formView
                 roomAccess
                 options
@@ -57,6 +55,7 @@ struct SpaceSettings: View {
                 Button(VectorL10n.cancel) {
                     viewModel.send(viewAction: .cancel)
                 }
+                .foregroundColor(Color("FirstScreenColor"))
             }
         }
         .accentColor(theme.colors.accent)
@@ -64,7 +63,7 @@ struct SpaceSettings: View {
             Alert(title: Text(VectorL10n.settingsTitle),
                   message: Text(VectorL10n.spaceSettingsUpdateFailedMessage),
                   primaryButton: .default(Text(VectorL10n.retry), action: {
-                    updateSpace()
+                      updateSpace()
                   }),
                   secondaryButton: .cancel())
         })
@@ -81,7 +80,7 @@ struct SpaceSettings: View {
             GeometryReader { reader in
                 ZStack {
                     SpaceAvatarImage(mxContentUri: viewModel.viewState.avatar.mxContentUri, matrixItemId: viewModel.viewState.avatar.matrixItemId, displayName: viewModel.viewState.avatar.displayName, size: .xxLarge)
-                    .padding(6)
+                        .padding(6)
                     if let image = viewModel.viewState.userSelectedAvatar {
                         Image(uiImage: image)
                             .resizable()
@@ -90,13 +89,13 @@ struct SpaceSettings: View {
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
                 }.padding(10)
-                .onTapGesture {
-                    guard viewModel.viewState.roomProperties?.isAvatarEditable == true else {
-                        return
+                    .onTapGesture {
+                        guard viewModel.viewState.roomProperties?.isAvatarEditable == true else {
+                            return
+                        }
+                        ResponderManager.resignFirstResponder()
+                        viewModel.send(viewAction: .pickImage(reader.frame(in: .global)))
                     }
-                    ResponderManager.resignFirstResponder()
-                    viewModel.send(viewAction: .pickImage(reader.frame(in: .global)))
-                }
             }
             if viewModel.viewState.roomProperties?.isAvatarEditable == true {
                 Image(uiImage: Asset.Images.spaceCreationCamera.image)
@@ -111,26 +110,28 @@ struct SpaceSettings: View {
     
     @ViewBuilder
     private var formView: some View {
-        VStack{
+        VStack {
             RoundedBorderTextField(
                 title: VectorL10n.createRoomPlaceholderName,
                 placeHolder: "",
                 text: $viewModel.name,
                 footerText: viewModel.viewState.roomNameError,
                 isError: true,
-                configuration: UIKitTextInputConfiguration( returnKeyType: .next))
-                .padding(.horizontal, 2)
-                .padding(.bottom, 20)
-                .disabled(viewModel.viewState.roomProperties?.isNameEditable != true)
+                configuration: UIKitTextInputConfiguration(returnKeyType: .next)
+            )
+            .padding(.horizontal, 2)
+            .padding(.bottom, 20)
+            .disabled(viewModel.viewState.roomProperties?.isNameEditable != true)
             RoundedBorderTextEditor(
                 title: VectorL10n.spaceTopic,
                 placeHolder: VectorL10n.spaceTopic,
                 text: $viewModel.topic,
                 textMaxHeight: 72,
-                error: nil)
-                .padding(.horizontal, 2)
-                .padding(.bottom, viewModel.viewState.showRoomAddress ? 20 : 3)
-                .disabled(viewModel.viewState.roomProperties?.isTopicEditable != true)
+                error: nil
+            )
+            .padding(.horizontal, 2)
+            .padding(.bottom, viewModel.viewState.showRoomAddress ? 20 : 3)
+            .disabled(viewModel.viewState.roomProperties?.isTopicEditable != true)
             if viewModel.viewState.showRoomAddress {
                 RoundedBorderTextField(
                     title: VectorL10n.spacesCreationAddress,
@@ -138,14 +139,15 @@ struct SpaceSettings: View {
                     text: $viewModel.address,
                     footerText: viewModel.viewState.addressMessage,
                     isError: !viewModel.viewState.isAddressValid,
-                    configuration: UIKitTextInputConfiguration(keyboardType: .URL, returnKeyType: .done, autocapitalizationType: .none), onTextChanged:  {
+                    configuration: UIKitTextInputConfiguration(keyboardType: .URL, returnKeyType: .done, autocapitalizationType: .none), onTextChanged: {
                         newText in
                         viewModel.send(viewAction: .addressChanged(newText))
-                    })
-                    .disabled(viewModel.viewState.roomProperties?.isAddressEditable != true)
-                    .padding(.horizontal, 2)
-                    .padding(.bottom, 3)
-                    .accessibility(identifier: "addressTextField")
+                    }
+                )
+                .disabled(viewModel.viewState.roomProperties?.isAddressEditable != true)
+                .padding(.horizontal, 2)
+                .padding(.bottom, 3)
+                .accessibility(identifier: "addressTextField")
             }
         }
         .padding(.horizontal)
@@ -154,7 +156,7 @@ struct SpaceSettings: View {
     @ViewBuilder
     private var roomAccess: some View {
         VStack(alignment: .leading) {
-            Spacer().frame(height:24)
+            Spacer().frame(height: 24)
             Text(VectorL10n.spaceSettingsAccessSection)
                 .font(theme.fonts.footnote)
                 .foregroundColor(theme.colors.secondaryContent)
@@ -162,11 +164,12 @@ struct SpaceSettings: View {
                 .padding(.bottom, 4)
             SpaceSettingsOptionListItem(
                 title: VectorL10n.roomDetailsAccessRowTitle,
-                value: viewModel.viewState.visibilityString) {
+                value: viewModel.viewState.visibilityString
+            ) {
                 ResponderManager.resignFirstResponder()
                 viewModel.send(viewAction: .optionSelected(.visibility))
             }
-                .disabled(viewModel.viewState.roomProperties?.isAccessEditable != true)
+            .disabled(viewModel.viewState.roomProperties?.isAccessEditable != true)
         }
     }
     
@@ -183,11 +186,12 @@ struct SpaceSettings: View {
                 SpaceSettingsOptionListItem(
                     icon: option.icon,
                     title: option.title,
-                    value: option.value) {
+                    value: option.value
+                ) {
                     ResponderManager.resignFirstResponder()
                     viewModel.send(viewAction: .optionSelected(option.id))
                 }
-                    .disabled(!option.isEnabled)
+                .disabled(!option.isEnabled)
             }
         }
     }
@@ -199,7 +203,6 @@ struct SpaceSettings: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct SpaceSettings_Previews: PreviewProvider {
     static let stateRenderer = MockSpaceSettingsScreenState.stateRenderer
     static var previews: some View {

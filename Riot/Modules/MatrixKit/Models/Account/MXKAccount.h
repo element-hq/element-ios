@@ -287,11 +287,15 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
  
  @param oldPassword the old password.
  @param newPassword the new password.
- 
+ @param logoutDevices flag to logout from all devices.
  @param success A block object called when the operation succeeds.
  @param failure A block object called when the operation fails.
  */
-- (void)changePassword:(NSString*)oldPassword with:(NSString*)newPassword success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+- (void)changePassword:(NSString*)oldPassword
+                  with:(NSString*)newPassword
+         logoutDevices:(BOOL)logoutDevices
+               success:(void (^)(void))success
+               failure:(void (^)(NSError *error))failure;
 
 /**
  Load the 3PIDs linked to this account.
@@ -301,6 +305,15 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
  @param failure A block object called when the operation fails.
  */
 - (void)load3PIDs:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+
+/**
+ Loads the pusher instance linked to this account.
+ This method must be called to refresh self.pushNotificationServiceIsActive
+
+ @param success A block object called when the operation succeeds.
+ @param failure A block object called when the operation fails.
+ */
+- (void)loadCurrentPusher:(nullable void (^)(void))success failure:(nullable void (^)(NSError *error))failure;
 
 /**
  Load the current device information for this account.
@@ -346,11 +359,6 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 - (void)resetDeviceId;
 
 #pragma mark - Sync filter
-/**
- Check if the homeserver supports room members lazy loading.
- @param completion the check result.
- */
-- (void)supportLazyLoadOfRoomMembers:(void (^)(BOOL supportLazyLoadOfRoomMembers))completion;
 
 /**
  Call this method at an appropriate time to attempt dehydrating to a new backup device

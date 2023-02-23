@@ -29,7 +29,7 @@
 #import "GeneratedInterface-Swift.h"
 
 @implementation MXKRoomBubbleCellData
-@synthesize senderId, targetId, roomId, senderDisplayName, senderAvatarUrl, senderAvatarPlaceholder, targetDisplayName, targetAvatarUrl, targetAvatarPlaceholder, isEncryptedRoom, isPaginationFirstBubble, shouldHideSenderInformation, date, isIncoming, isAttachmentWithThumbnail, isAttachmentWithIcon, attachment, senderFlair;
+@synthesize senderId, targetId, roomId, senderDisplayName, senderAvatarUrl, senderAvatarPlaceholder, targetDisplayName, targetAvatarUrl, targetAvatarPlaceholder, isEncryptedRoom, isPaginationFirstBubble, shouldHideSenderInformation, date, isIncoming, isAttachmentWithThumbnail, isAttachmentWithIcon, attachment;
 @synthesize textMessage, attributedTextMessage, attributedTextMessageWithoutPositioningSpace;
 @synthesize shouldHideSenderName, isTyping, showBubbleDateTime, showBubbleReceipts, useCustomDateTimeLabel, useCustomReceipts, useCustomUnsentButton, hasNoDisplay;
 @synthesize tag;
@@ -48,14 +48,33 @@
         self.readReceipts = [NSMutableDictionary dictionary];
         
         // Create the bubble component based on matrix event
-        MXKRoomBubbleComponent *firstComponent = [[MXKRoomBubbleComponent alloc] initWithEvent:event roomState:roomState eventFormatter:roomDataSource.eventFormatter session:roomDataSource.mxSession];
+        MXKRoomBubbleComponent *firstComponent = [[MXKRoomBubbleComponent alloc] initWithEvent:event
+                                                                                     roomState:roomState
+                                                                            andLatestRoomState:roomDataSource.roomState
+                                                                                eventFormatter:roomDataSource.eventFormatter
+                                                                                       session:roomDataSource.mxSession];
         if (firstComponent)
         {
             bubbleComponents = [NSMutableArray array];
             [bubbleComponents addObject:firstComponent];
             
             senderId = event.sender;
-            targetId = [event.type isEqualToString:kMXEventTypeStringRoomMember] ? event.stateKey : nil;
+            if ([event.type isEqualToString:kMXEventTypeStringRoomMember])
+            {
+                MXRoomMemberEventContent *content = [MXRoomMemberEventContent modelFromJSON:event.content];
+                if (![content.membership isEqualToString:kMXMembershipStringJoin])
+                {
+                    targetId = event.stateKey;
+                }
+                else
+                {
+                    targetId = event.sender;
+                }
+            }
+            else
+            {
+                targetId = nil;
+            }
             roomId = roomDataSource.roomId;
 
             // If `roomScreenUseOnlyLatestUserAvatarAndName`is enabled, the avatar and name are
@@ -103,13 +122,25 @@
 
 - (void)dealloc
 {
-    // Reset any observer on publicised groups by user.
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
-    
     roomDataSource = nil;
     bubbleComponents = nil;
 }
 
+- (void)refreshProfilesIfNeeded:(MXRoomState *)latestRoomState
+{
+    if (RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName)
+    {
+        [self setRoomState:latestRoomState];
+    }
+}
+
+/**
+ Sets the `MXRoomState` for a buble cell. This allows to adapt the display
+ of a cell with a different room state than its historical. This won't update critical
+ flag/status, such as `isEncryptedRoom`.
+
+ @param roomState the `MXRoomState` to use for this cell.
+ */
 - (void)setRoomState:(MXRoomState *)roomState;
 {
     MXEvent* firstEvent = self.events.firstObject;
@@ -141,7 +172,10 @@
             MXKRoomBubbleComponent *roomBubbleComponent = [bubbleComponents objectAtIndex:index];
             if ([roomBubbleComponent.event.eventId isEqualToString:eventId])
             {
-                [roomBubbleComponent updateWithEvent:event roomState:roomDataSource.roomState session:self.mxSession];
+                [roomBubbleComponent updateWithEvent:event
+                                           roomState:roomDataSource.roomState
+                                  andLatestRoomState:nil
+                                             session:self.mxSession];
                 if (!roomBubbleComponent.textMessage.length)
                 {
                     [bubbleComponents removeObjectAtIndex:index];
@@ -413,58 +447,22 @@
 - (void)setShouldHideSenderInformation:(BOOL)inShouldHideSenderInformation
 {
     shouldHideSenderInformation = inShouldHideSenderInformation;
-    
-    if (!shouldHideSenderInformation)
-    {
-        // Refresh the flair
-        [self refreshSenderFlair];
-    }
 }
 
-- (void)refreshSenderFlair
+- (BOOL)hasThreadRoot
 {
-    // Reset by default any observer on publicised groups by user.
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
-    
-    // Check first whether the room enabled the flair for some groups
-    NSArray<NSString *> *roomRelatedGroups = roomDataSource.roomState.relatedGroups;
-    if (roomRelatedGroups.count && senderId)
+    @synchronized (bubbleComponents)
     {
-        NSArray<NSString *> *senderPublicisedGroups;
-        
-        senderPublicisedGroups = [self.mxSession publicisedGroupsForUser:senderId];
-        
-        if (senderPublicisedGroups.count)
+        for (MXKRoomBubbleComponent *component in bubbleComponents)
         {
-            // Cross the 2 arrays to keep only the common group ids
-            NSMutableArray *flair = [NSMutableArray arrayWithCapacity:roomRelatedGroups.count];
-            
-            for (NSString *groupId in roomRelatedGroups)
+            if (component.thread)
             {
-                if ([senderPublicisedGroups indexOfObject:groupId] != NSNotFound)
-                {
-                    MXGroup *group = [roomDataSource groupWithGroupId:groupId];
-                    [flair addObject:group];
-                }
-            }
-            
-            if (flair.count)
-            {
-                self.senderFlair = flair;
-            }
-            else
-            {
-                self.senderFlair = nil;
+                return YES;
             }
         }
-        else
-        {
-            self.senderFlair = nil;
-        }
-        
-        // Observe any change on publicised groups for the message sender
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionUpdatePublicisedGroupsForUsers:) name:kMXSessionDidUpdatePublicisedGroupsForUsersNotification object:self.mxSession];
     }
+
+    return NO;
 }
 
 #pragma mark -
@@ -538,8 +536,11 @@
         // Select the right text view for measurement
         UITextView *selectedTextView = (removeVerticalInset ? measurementTextViewWithoutInset : measurementTextView);
         
-        selectedTextView.frame = CGRectMake(0, 0, _maxTextViewWidth, MAXFLOAT);
+        selectedTextView.frame = CGRectMake(0, 0, _maxTextViewWidth, 0);
         selectedTextView.attributedText = attributedText;
+        
+        // Force the layout manager to layout the text, fixes problems starting iOS 16
+        [selectedTextView.layoutManager ensureLayoutForTextContainer:selectedTextView.textContainer];
             
         CGSize size = [selectedTextView sizeThatFits:selectedTextView.frame.size];
 
@@ -656,22 +657,6 @@
     return NO;
 }
 
-- (BOOL)hasThreadRoot
-{
-    @synchronized (bubbleComponents)
-    {
-        for (MXKRoomBubbleComponent *component in bubbleComponents)
-        {
-            if (component.thread)
-            {
-                return YES;
-            }
-        }
-    }
-    
-    return NO;
-}
-
 - (MXKRoomBubbleComponentDisplayFix)displayFix
 {
     MXKRoomBubbleComponentDisplayFix displayFix = MXKRoomBubbleComponentDisplayFixNone;
@@ -699,6 +684,13 @@
     }
     
     return res;
+}
+
+- (BOOL)canInvitePeople
+{
+    NSInteger requiredLevel = roomDataSource.roomState.powerLevels.invite;
+    NSInteger myLevel = [roomDataSource.roomState.powerLevels powerLevelOfUserWithUserID:roomDataSource.mxSession.myUserId];
+    return myLevel >= requiredLevel;
 }
 
 - (NSArray*)events
@@ -925,7 +917,7 @@
     {
         for (MXKRoomBubbleComponent *component in bubbleComponents)
         {
-            if (component.showEncryptionBadge)
+            if (component.encryptionDecoration != EventEncryptionDecorationNone)
             {
                 containsBubbleComponentWithEncryptionBadge = YES;
                 break;
@@ -995,20 +987,6 @@
     {
         // Update resulting message body
         attributedTextMessage = customAttributedTextMsg;
-    }
-}
-
-- (void)didMXSessionUpdatePublicisedGroupsForUsers:(NSNotification *)notif
-{
-    // Retrieved the list of the concerned users
-    NSArray<NSString*> *userIds = notif.userInfo[kMXSessionNotificationUserIdsArrayKey];
-    if (userIds.count && self.senderId)
-    {
-        // Check whether the current sender is concerned.
-        if ([userIds indexOfObject:self.senderId] != NSNotFound)
-        {
-            [self refreshSenderFlair];
-        }
     }
 }
 

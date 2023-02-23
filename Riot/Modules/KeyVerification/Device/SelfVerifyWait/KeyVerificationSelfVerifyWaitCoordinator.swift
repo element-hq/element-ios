@@ -68,7 +68,7 @@ extension KeyVerificationSelfVerifyWaitCoordinator: KeyVerificationSelfVerifyWai
         self.delegate?.keyVerificationSelfVerifyWaitCoordinator(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
     }
     
-    func keyVerificationSelfVerifyWaitViewModel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType, didAcceptIncomingSASTransaction incomingSASTransaction: MXIncomingSASTransaction) {
+    func keyVerificationSelfVerifyWaitViewModel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType, didAcceptIncomingSASTransaction incomingSASTransaction: MXSASTransaction) {
         self.delegate?.keyVerificationSelfVerifyWaitCoordinator(self, didAcceptIncomingSASTransaction: incomingSASTransaction)
     }
     

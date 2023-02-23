@@ -27,6 +27,8 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     private var _conversationRoomListData: MXRoomListData?
     private var _lowPriorityRoomListData: MXRoomListData?
     private var _serverNoticeRoomListData: MXRoomListData?
+    private var _recentsRoomListData: MXRoomListData?
+    private var _allChatsRoomListData: MXRoomListData?
     
     // swiftlint:disable weak_delegate
     private let multicastDelegate: MXMulticastDelegate<RecentsListServiceDelegate> = MXMulticastDelegate()
@@ -72,6 +74,8 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
         _conversationRoomListData = MockRoomListData(withRooms: conversation)
         _lowPriorityRoomListData = MockRoomListData(withRooms: lowPriority)
         _serverNoticeRoomListData = MockRoomListData(withRooms: serverNotice)
+        _recentsRoomListData = MockRoomListData(withRooms: conversation)
+        _allChatsRoomListData = MockRoomListData(withRooms: conversation)
         
         super.init()
     }
@@ -149,6 +153,10 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     
     public var suggestedRoomListData: MXRoomListData?
     
+    public var breadcrumbsRoomListData: MXRoomListData?
+    
+    public var allChatsRoomListData: MXRoomListData?
+
     public var favoritedMissedDiscussionsCount: DiscussionsCount = .zero
     
     public var peopleMissedDiscussionsCount: DiscussionsCount = .zero
@@ -165,6 +173,8 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
             return peopleRoomListData?.counts.numberOfRooms ?? 0
         case .rooms:
             return conversationRoomListData?.counts.numberOfRooms ?? 0
+        case .allChats:
+            return allChatsRoomListData?.counts.numberOfRooms ?? 0
         @unknown default:
             return 0
         }
@@ -198,6 +208,8 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
         _conversationRoomListData = nil
         _lowPriorityRoomListData = nil
         _serverNoticeRoomListData = nil
+        _recentsRoomListData = nil
+        _allChatsRoomListData = nil
         removeAllDelegates()
     }
     

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct FormSectionHeader: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     var text: String
     
@@ -34,7 +32,6 @@ struct FormSectionHeader: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct FormSectionHeader_Previews: PreviewProvider {
     static var previews: some View {
         VectorForm {

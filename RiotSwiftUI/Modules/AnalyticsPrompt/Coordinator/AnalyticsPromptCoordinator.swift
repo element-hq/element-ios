@@ -22,18 +22,16 @@ struct AnalyticsPromptCoordinatorParameters {
 }
 
 final class AnalyticsPromptCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
     
     private let parameters: AnalyticsPromptCoordinatorParameters
-    private let analyticsPromptHostingController: UIViewController
-    private var _analyticsPromptViewModel: Any? = nil
+    private let analyticsPromptHostingController: VectorHostingController
+    private var _analyticsPromptViewModel: Any?
     
-    @available(iOS 14.0, *)
     fileprivate var analyticsPromptViewModel: AnalyticsPromptViewModel {
-        return _analyticsPromptViewModel as! AnalyticsPromptViewModel
+        _analyticsPromptViewModel as! AnalyticsPromptViewModel
     }
     
     // MARK: Public
@@ -44,7 +42,6 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: AnalyticsPromptCoordinatorParameters) {
         self.parameters = parameters
         
@@ -62,16 +59,12 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
         let view = AnalyticsPrompt(viewModel: viewModel.context)
         _analyticsPromptViewModel = viewModel
         analyticsPromptHostingController = VectorHostingController(rootView: view)
+        analyticsPromptHostingController.isNavigationBarHidden = true
     }
     
     // MARK: - Public
     
     func start() {
-        guard #available(iOS 14.0, *) else {
-            MXLog.debug("[AnalyticsPromptCoordinator] start: Invalid iOS version, returning.")
-            return
-        }
-        
         MXLog.debug("[AnalyticsPromptCoordinator] did start.")
         
         analyticsPromptViewModel.completion = { [weak self] result in
@@ -91,6 +84,6 @@ final class AnalyticsPromptCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.analyticsPromptHostingController
+        analyticsPromptHostingController
     }
 }

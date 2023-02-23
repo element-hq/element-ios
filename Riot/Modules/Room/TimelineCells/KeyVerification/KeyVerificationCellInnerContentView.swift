@@ -130,7 +130,7 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.backgroundColor = theme.headerBackgroundColor
+        self.backgroundColor = theme.colors.system
         self.titleLabel.textColor = theme.textPrimaryColor
         self.otherUserInformationLabel.textColor = theme.textSecondaryColor
         

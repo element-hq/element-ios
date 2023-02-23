@@ -20,7 +20,6 @@ import SwiftUI
 /**
  Struct for holding fonts for use in SwiftUI.
  */
-@available(iOS 14.0, *)
 public struct FontSwiftUI: Fonts {
     
     public let uiFonts: FontsUIKit

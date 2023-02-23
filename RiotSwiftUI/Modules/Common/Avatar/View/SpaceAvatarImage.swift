@@ -14,12 +14,10 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import DesignKit
+import SwiftUI
 
-@available(iOS 14.0, *)
 struct SpaceAvatarImage: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     @Environment(\.dependencies) var dependencies: DependencyContainer
     @StateObject var viewModel = AvatarViewModel()
@@ -73,7 +71,6 @@ struct SpaceAvatarImage: View {
     }
 }
 
-@available(iOS 14.0, *)
 extension SpaceAvatarImage {
     init(avatarData: AvatarInputProtocol, size: AvatarSize) {
         self.init(
@@ -85,7 +82,6 @@ extension SpaceAvatarImage {
     }
 }
 
-@available(iOS 14.0, *)
 struct LiveAvatarImage_Previews: PreviewProvider {
     static let mxContentUri = "fakeUri"
     static let name = "Alice"

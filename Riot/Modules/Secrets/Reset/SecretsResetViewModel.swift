@@ -63,7 +63,7 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
     }
     
     private func resetSecrets(with authParameters: [String: Any]) {
-        guard let crossSigning = self.session.crypto.crossSigning else {
+        guard let crossSigning = self.session.crypto?.crossSigning else {
             return
         }
         MXLog.debug("[SecretsResetViewModel] resetSecrets")

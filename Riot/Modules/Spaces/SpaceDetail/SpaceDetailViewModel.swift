@@ -85,8 +85,10 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
             } else {
                 sender = nil
             }
+            var spaceId = publicRoom.roomId.components(separatedBy: ":").first ?? ""
             
-            self.update(viewState: .loaded(SpaceDetailLoadedParameters(spaceId: publicRoom.roomId,
+            
+            self.update(viewState: .loaded(SpaceDetailLoadedParameters(spaceId: spaceId,
                                                                        displayName: publicRoom.displayname(),
                                                                        topic: publicRoom.topic,
                                                                        avatarUrl: publicRoom.avatarUrl,
@@ -100,8 +102,9 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
                 MXLog.error("[SpaceDetailViewModel] setupViews: no space found")
                 return
             }
+            var spaceId = space.spaceId.components(separatedBy: ":").first ?? ""
             
-            let parameters = SpaceDetailLoadedParameters(spaceId: space.spaceId,
+            let parameters = SpaceDetailLoadedParameters(spaceId: spaceId,
                                                          displayName: summary.displayname,
                                                          topic: summary.topic,
                                                          avatarUrl: summary.avatar,
@@ -128,15 +131,16 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
                         inviter = self.session.user(withUserId: userId)
                     }
                 })
+                let newInviter = MXUser(userId: inviter?.userId.components(separatedBy: ":").first ?? "")
                 
-                let parameters = SpaceDetailLoadedParameters(spaceId: space.spaceId,
+                let parameters = SpaceDetailLoadedParameters(spaceId: spaceId,
                                                              displayName: summary.displayname,
                                                              topic: summary.topic,
                                                              avatarUrl: summary.avatar,
                                                              joinRule: joinRule,
                                                              membership: summary.membership,
                                                              inviterId: inviterId,
-                                                             inviter: inviter,
+                                                             inviter: newInviter,
                                                              membersCount: membersCount)
                 self.update(viewState: .loaded(parameters))
             }

@@ -51,5 +51,16 @@ extension UITableViewCell {
     @objc func vc_setAccessoryDisclosureIndicatorWithCurrentTheme() {
         self.vc_setAccessoryDisclosureIndicator(withTheme: ThemeService.shared().theme)
     }
+
+    @objc var vc_parentViewController: UIViewController? {
+        var parent: UIResponder? = self
+        while parent != nil {
+            parent = parent?.next
+            if let viewController = parent as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
+    }
     
 }

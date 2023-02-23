@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,15 +17,13 @@
 import SwiftUI
 
 class LeaveSpaceViewProvider: MatrixItemChooserCoordinatorViewProvider {
-    
     private let navTitle: String?
     
     init(navTitle: String?) {
         self.navTitle = navTitle
     }
     
-    @available(iOS 14, *)
     func view(with viewModel: MatrixItemChooserViewModelType.Context) -> AnyView {
-        return AnyView(LeaveSpace(viewModel: viewModel, navTitle: navTitle))
+        AnyView(LeaveSpace(viewModel: viewModel, navTitle: navTitle))
     }
 }

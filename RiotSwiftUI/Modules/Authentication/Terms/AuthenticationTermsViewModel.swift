@@ -16,25 +16,22 @@
 
 import SwiftUI
 
-
-typealias AuthenticationTermsViewModelType = StateStoreViewModel<AuthenticationTermsViewState,
-                                                                 Never,
-                                                                 AuthenticationTermsViewAction>
+typealias AuthenticationTermsViewModelType = StateStoreViewModel<AuthenticationTermsViewState, AuthenticationTermsViewAction>
 
 class AuthenticationTermsViewModel: AuthenticationTermsViewModelType, AuthenticationTermsViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private
 
     // MARK: Public
 
-    @MainActor var callback: ((AuthenticationTermsViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationTermsViewModelResult) -> Void)?
 
     // MARK: - Setup
 
-    init(policies: [AuthenticationTermsPolicy]) {
-        super.init(initialViewState: AuthenticationTermsViewState(bindings: AuthenticationTermsBindings(policies: policies)))
+    init(homeserver: AuthenticationHomeserverViewData, policies: [AuthenticationTermsPolicy]) {
+        super.init(initialViewState: AuthenticationTermsViewState(homeserver: homeserver,
+                                                                  bindings: AuthenticationTermsBindings(policies: policies)))
     }
 
     // MARK: - Public
@@ -56,6 +53,10 @@ class AuthenticationTermsViewModel: AuthenticationTermsViewModelType, Authentica
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
                                                  message: message)
+        case .invalidPolicyURL:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.authenticationTermsPolicyUrlError)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
         }

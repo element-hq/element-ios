@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,17 +11,17 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="RoomReactionActionViewCell" customModule="Riot" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="66" height="22"/>
+            <rect key="frame" x="0.0" y="0.0" width="101" height="22"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="66" height="22"/>
+                <rect key="frame" x="0.0" y="0.0" width="101" height="22"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jjn-uq-kYN">
-                        <rect key="frame" x="1" y="1" width="64" height="20"/>
+                        <rect key="frame" x="1" y="1" width="99" height="20"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Show all" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gyn-ux-gmi">
-                                <rect key="frame" x="6" y="4" width="52" height="12"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Show all" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gyn-ux-gmi">
+                                <rect key="frame" x="6" y="4" width="87" height="12"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -29,8 +29,8 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="gyn-ux-gmi" firstAttribute="leading" secondItem="jjn-uq-kYN" secondAttribute="leading" constant="6" id="7hb-HC-Usg"/>
                             <constraint firstAttribute="trailing" secondItem="gyn-ux-gmi" secondAttribute="trailing" constant="6" id="HAk-8U-Qky"/>
-                            <constraint firstItem="gyn-ux-gmi" firstAttribute="leading" secondItem="jjn-uq-kYN" secondAttribute="leading" constant="6" id="OZ2-Xd-9f3"/>
                             <constraint firstItem="gyn-ux-gmi" firstAttribute="top" secondItem="jjn-uq-kYN" secondAttribute="top" constant="4" id="et3-mn-8dh"/>
                             <constraint firstAttribute="bottom" secondItem="gyn-ux-gmi" secondAttribute="bottom" constant="4" id="thv-mo-0kv"/>
                         </constraints>
@@ -44,11 +44,12 @@
                 <constraint firstItem="jjn-uq-kYN" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="1" id="iT6-rk-qd6"/>
                 <constraint firstAttribute="trailing" secondItem="jjn-uq-kYN" secondAttribute="trailing" constant="1" id="ztM-7J-Dnf"/>
             </constraints>
-            <size key="customSize" width="443" height="170"/>
+            <size key="customSize" width="478" height="170"/>
             <connections>
                 <outlet property="actionLabel" destination="gyn-ux-gmi" id="qme-DX-UAc"/>
+                <outlet property="reactionBackgroundView" destination="jjn-uq-kYN" id="vKf-Un-6PZ"/>
             </connections>
-            <point key="canvasLocation" x="-459.4202898550725" y="-207.58928571428569"/>
+            <point key="canvasLocation" x="-431.15942028985512" y="-207.58928571428569"/>
         </collectionViewCell>
     </objects>
 </document>

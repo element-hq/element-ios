@@ -59,6 +59,7 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
+        vc_setLargeTitleDisplayMode(.never)
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
         self.activityPresenter = ActivityIndicatorPresenter()

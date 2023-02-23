@@ -14,17 +14,16 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct AuthenticationVerifyEmailCoordinatorParameters {
-    let authenticationService: AuthenticationService
     let registrationWizard: RegistrationWizard
+    /// The homeserver that is requesting email verification.
+    let homeserver: AuthenticationState.Homeserver
 }
 
-@available(iOS 14.0, *)
 final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -36,8 +35,6 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
     
-    /// The authentication service used for the registration.
-    private var authenticationService: AuthenticationService { parameters.authenticationService }
     /// The wizard used to handle the registration flow.
     private var registrationWizard: RegistrationWizard { parameters.registrationWizard }
     
@@ -51,14 +48,14 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    @MainActor var callback: ((AuthenticationVerifyEmailViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationRegistrationStageResult) -> Void)?
     
     // MARK: - Setup
     
     @MainActor init(parameters: AuthenticationVerifyEmailCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = AuthenticationVerifyEmailViewModel()
+        let viewModel = AuthenticationVerifyEmailViewModel(homeserver: parameters.homeserver.viewData)
         let view = AuthenticationVerifyEmailScreen(viewModel: viewModel.context)
         authenticationVerifyEmailViewModel = viewModel
         authenticationVerifyEmailHostingController = VectorHostingController(rootView: view)
@@ -76,7 +73,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationVerifyEmailHostingController
+        authenticationVerifyEmailHostingController
     }
     
     // MARK: - Private
@@ -91,9 +88,11 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
             case .send(let emailAddress):
                 self.sendEmail(emailAddress)
             case .resend:
-                self.resentEmail()
+                self.resendEmail()
             case .cancel:
-                #warning("Reset the flow.")
+                self.callback?(.cancel)
+            case .goBack:
+                self.authenticationVerifyEmailViewModel.goBackToEnterEmailForm()
             }
         }
     }
@@ -108,20 +107,30 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         loadingIndicator = nil
     }
     
+    /// Sends a validation email to the supplied address and then begins polling the server.
     @MainActor private func sendEmail(_ address: String) {
-        let threePID = RegisterThreePID.email(address)
+        let threePID = RegisterThreePID.email(address.trimmingCharacters(in: .whitespaces))
         
         startLoading()
         
         currentTask = Task { [weak self] in
             do {
-                _ = try await registrationWizard.addThreePID(threePID: threePID)
+                let result = try await registrationWizard.addThreePID(threePID: threePID)
+                
+                // Shouldn't be reachable but just in case, continue the flow.
                 
                 guard !Task.isCancelled else { return }
                 
+                self?.callback?(.completed(result))
+                self?.stopLoading()
+            } catch RegistrationError.waitingForThreePIDValidation {
+                // If everything went well, begin polling the server.
                 authenticationVerifyEmailViewModel.updateForSentEmail()
-                pollForEmailValidation()
                 self?.stopLoading()
+                
+                checkForEmailValidation()
+            } catch is CancellationError {
+                return
             } catch {
                 self?.stopLoading()
                 self?.handleError(error)
@@ -129,17 +138,26 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         }
     }
     
-    @MainActor private func resentEmail() {
+    /// Resends an email to the previously entered address and then resumes polling the server.
+    @MainActor private func resendEmail() {
         startLoading()
         
         currentTask = Task { [weak self] in
             do {
-                _ = try await registrationWizard.sendAgainThreePID()
+                let result = try await registrationWizard.sendAgainThreePID()
+                
+                // Shouldn't be reachable but just in case, continue the flow.
                 
                 guard !Task.isCancelled else { return }
                 
-                pollForEmailValidation()
+                self?.callback?(.completed(result))
                 self?.stopLoading()
+            } catch RegistrationError.waitingForThreePIDValidation {
+                // Resume polling the server.
+                self?.stopLoading()
+                checkForEmailValidation()
+            } catch is CancellationError {
+                return
             } catch {
                 self?.stopLoading()
                 self?.handleError(error)
@@ -147,14 +165,33 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         }
     }
     
-    @MainActor private func pollForEmailValidation() {
-        // TODO
+    @MainActor private func checkForEmailValidation() {
+        currentTask = Task { [weak self] in
+            do {
+                MXLog.debug("[AuthenticationVerifyEmailCoordinator] checkForEmailValidation: Sleeping for 3 seconds.")
+                
+                try await Task.sleep(nanoseconds: 3_000_000_000)
+                let result = try await registrationWizard.checkIfEmailHasBeenValidated()
+                
+                guard !Task.isCancelled else { return }
+                
+                self?.callback?(.completed(result))
+            } catch RegistrationError.waitingForThreePIDValidation {
+                // Check again, creating a poll on the server.
+                checkForEmailValidation()
+            } catch is CancellationError {
+                return
+            } catch {
+                self?.handleError(error)
+            }
+        }
     }
     
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleError(_ error: Error) {
         if let mxError = MXError(nsError: error as NSError) {
-            authenticationVerifyEmailViewModel.displayError(.mxError(mxError.error))
+            let message = mxError.authenticationErrorMessage()
+            authenticationVerifyEmailViewModel.displayError(.mxError(message))
             return
         }
         

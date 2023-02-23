@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@ import SwiftUI
 
 /// Positions this view within an invisible frame that fills the width of its parent view,
 /// whilst limiting the width of the content to a readable size (which is customizable).
-fileprivate struct ReadableFrameModifier: ViewModifier {
+private struct ReadableFrameModifier: ViewModifier {
     var maxWidth: CGFloat
     
     func body(content: Content) -> some View {

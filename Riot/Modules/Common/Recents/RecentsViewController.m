@@ -36,7 +36,7 @@
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate, RoomContextActionServiceDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate, RoomContextActionServiceDelegate, RecentCellContextMenuProviderDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -140,6 +140,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     _contextMenuProvider = [RecentCellContextMenuProvider new];
     self.contextMenuProvider.serviceDelegate = self;
+    self.contextMenuProvider.menuProviderDelegate = self;
 
     // Set itself as delegate by default.
     self.delegate = self;
@@ -372,8 +373,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)refreshRecentsTable
 {
-    MXLogDebug(@"[RecentsViewController]: Refreshing recents table view")
-
     if (!self.recentsUpdateEnabled)
     {
         isRefreshNeeded = YES;
@@ -383,7 +382,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     isRefreshNeeded = NO;
     
     // Refresh the tabBar icon badges
-    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    if (!BuildSettings.newAppLayoutEnabled)
+    {
+        // Refresh the tabBar icon badges
+        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    }
     
     // do not refresh if there is a pending recent drag and drop
     if (movingCellPath)
@@ -1102,9 +1105,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [self refreshRecentsTable];
     }
     
-    // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
-    // Refresh tab bar badges separately.
-    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    if (!BuildSettings.newAppLayoutEnabled)
+    {
+        // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
+        // Refresh tab bar badges separately.
+        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    }
     
     [self showEmptyViewIfNeeded];
 
@@ -1116,166 +1122,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 }
 
 #pragma mark - Swipe actions
-
-- (void)tableView:(UITableView*)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self cancelEditionMode:isRefreshPending];
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleNone;
-}
-
-- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    MXRoom *room = [self.dataSource getRoomAtIndexPath:indexPath];
-    
-    if (!room)
-    {
-        return nil;
-    }
-    
-    // Display no action for the invited room
-    if (room.summary.membership == MXMembershipInvite)
-    {
-        return nil;
-    }
-    
-    // Store the identifier of the room related to the edited cell.
-    editedRoomId = room.roomId;
-    
-    UIColor *selectedColor = ThemeService.shared.theme.tintColor;
-    UIColor *unselectedColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
-    UIColor *actionBackgroundColor = ThemeService.shared.theme.baseColor;
-    
-    NSString* title = @"      ";
-    
-    // Direct chat toggle
-    
-    BOOL isDirect = room.isDirect;
-    
-    UIContextualAction *directChatAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
-                                                                                   title:title
-                                                                                 handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-        [self makeDirectEditedRoom:!isDirect];
-        completionHandler(YES);
-    }];
-    directChatAction.backgroundColor = actionBackgroundColor;
-    
-    UIImage *directChatImage = AssetImages.roomActionDirectChat.image;
-    directChatImage = [directChatImage vc_tintedImageUsingColor:isDirect ? selectedColor : unselectedColor];
-    directChatAction.image = [directChatImage vc_notRenderedImage];
-    
-    // Notification toggle
-    
-    BOOL isMuted = room.isMute || room.isMentionsOnly;
-    
-    UIContextualAction *muteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
-                                                                             title:title
-                                                                           handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-        
-        if ([BuildSettings showNotificationsV2])
-        {
-            [self changeEditedRoomNotificationSettings];
-        }
-        else
-        {
-            [self muteEditedRoomNotifications:!isMuted];
-        }
-        
-        
-        completionHandler(YES);
-    }];
-    muteAction.backgroundColor = actionBackgroundColor;
-    
-    UIImage *notificationImage;
-    if([BuildSettings showNotificationsV2] && isMuted)
-    {
-        notificationImage = AssetImages.roomActionNotificationMuted.image;
-    }
-    else
-    {
-        notificationImage = AssetImages.roomActionNotification.image;
-    }
-
-    notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
-    muteAction.image = [notificationImage vc_notRenderedImage];
-    
-    // Favorites management
-    
-    MXRoomTag* currentTag = nil;
-    
-    // Get the room tag (use only the first one).
-    if (room.accountData.tags)
-    {
-        NSArray<MXRoomTag*>* tags = room.accountData.tags.allValues;
-        if (tags.count)
-        {
-            currentTag = tags[0];
-        }
-    }
-    
-    BOOL isFavourite = (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name]);
-    
-    UIContextualAction *favouriteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
-                                                                             title:title
-                                                                           handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-        NSString *favouriteTag = isFavourite ? nil : kMXRoomTagFavourite;
-        [self updateEditedRoomTag:favouriteTag];
-        completionHandler(YES);
-    }];
-    favouriteAction.backgroundColor = actionBackgroundColor;
-    
-    UIImage *favouriteImage = AssetImages.roomActionFavourite.image;
-    favouriteImage = [favouriteImage vc_tintedImageUsingColor:isFavourite ? selectedColor : unselectedColor];
-    favouriteAction.image = [favouriteImage vc_notRenderedImage];
-    
-    // Priority toggle
-    
-    BOOL isInLowPriority = (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name]);
-    
-    UIContextualAction *priorityAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
-                                                                                   title:title
-                                                                                 handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-        NSString *priorityTag = isInLowPriority ? nil : kMXRoomTagLowPriority;
-        [self updateEditedRoomTag:priorityTag];
-        completionHandler(YES);
-    }];
-    priorityAction.backgroundColor = actionBackgroundColor;
-    
-    UIImage *priorityImage = isInLowPriority ? AssetImages.roomActionPriorityHigh.image : AssetImages.roomActionPriorityLow.image;
-    priorityImage = [priorityImage vc_tintedImageUsingColor:unselectedColor];
-    priorityAction.image = [priorityImage vc_notRenderedImage];
-    
-    // Leave action
-    
-    UIContextualAction *leaveAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
-                                                                                   title:title
-                                                                                 handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-        [self leaveEditedRoom];
-        completionHandler(YES);
-    }];
-    leaveAction.backgroundColor = actionBackgroundColor;
-    
-    UIImage *leaveImage = AssetImages.roomActionLeave.image;
-    leaveImage = [leaveImage vc_tintedImageUsingColor:unselectedColor];
-    leaveAction.image = [leaveImage vc_notRenderedImage];
-        
-    // Create swipe action configuration
-    
-    NSArray<UIContextualAction*> *actions = @[
-        leaveAction,
-        priorityAction,
-        favouriteAction,
-        muteAction,
-        directChatAction
-    ];
-    
-    UISwipeActionsConfiguration *swipeActionConfiguration = [UISwipeActionsConfiguration configurationWithActions:actions];
-    swipeActionConfiguration.performsFirstActionWithFullSwipe = NO;
-    return swipeActionConfiguration;
-}
 
 - (void)leaveEditedRoom
 {
@@ -1601,10 +1447,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         
         if (roomIdOrAlias.length)
         {
-            // Open the room or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
-            NSURL *url = [NSURL URLWithString:[MXTools permalinkToRoom:fragment]];
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:url];
+            // Create a permalink to open or preview the room.
+            NSString *permalink = [MXTools permalinkToRoom:roomIdOrAlias];
+            NSURL *permalinkURL = [NSURL URLWithString:permalink];
+            [[AppDelegate theDelegate] handleUniversalLinkURL:permalinkURL];
         }
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
@@ -1664,10 +1510,20 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [VectorL10n leave];
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (!self.recentsSearchBar)
+    {
+        [super scrollViewDidScroll:scrollView];
+        return;
+    }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [self refreshStickyHeadersContainersHeight];
@@ -2084,7 +1940,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         self.exploreRoomsCoordinatorBridgePresenter = [[ExploreRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
         self.exploreRoomsCoordinatorBridgePresenter.delegate = self;
-        [self.exploreRoomsCoordinatorBridgePresenter presentFrom:self animated:YES];
+        [self.exploreRoomsCoordinatorBridgePresenter presentFrom:self animated:YES presentationStyle: UIModalPresentationFullScreen];
     }
     else if (RiotSettings.shared.roomsAllowToJoinPublicRooms)
     {
@@ -2201,7 +2057,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         }
         else if (section >= self.recentsTableView.numberOfSections)
         {
-            MXLogFailure(@"[RecentsViewController] Section %ld is invalid in a table view with only %ld sections", section, self.recentsTableView.numberOfSections);
+            NSDictionary *details = @{
+                @"section": @(section),
+                @"number_of_sections": @(self.recentsTableView.numberOfSections)
+            };
+            MXLogFailureDetails(@"[RecentsViewController] Section in a table view is invalid", details);
         }
     }
 }
@@ -2366,7 +2226,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [self.view addSubview:emptyView];
     }
     
-    emptyViewBottomConstraint = [emptyView.bottomAnchor constraintEqualToAnchor:emptyView.superview.bottomAnchor];
+    NSLayoutYAxisAnchor *bottomAnchor = self.emptyViewBottomAnchor ?: emptyView.superview.bottomAnchor;
+    emptyViewBottomConstraint = [emptyView.bottomAnchor constraintEqualToAnchor:bottomAnchor constant:-1]; // 1pt spacing for UIToolbar's divider.
     
     emptyView.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -2528,7 +2389,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)stopActivityIndicator {
     if (self.userIndicatorStore) {
         if (loadingIndicatorCancel) {
-            MXLogDebug(@"[RecentsViewController] Present loading indicator")
+            MXLogDebug(@"[RecentsViewController] Dismiss loading indicator")
             loadingIndicatorCancel();
             loadingIndicatorCancel = nil;
         }
@@ -2549,7 +2410,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         return nil;
     }
     
-    self.recentsUpdateEnabled = NO;
     return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
 }
 
@@ -2609,6 +2469,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     editedRoomId = roomId;
     [self changeEditedRoomNotificationSettings];
     editedRoomId = nil;
+}
+
+#pragma mark - RecentCellContextMenuProviderDelegate
+
+- (void)recentCellContextMenuProviderDidStartShowingPreview:(RecentCellContextMenuProvider *)menuProvider
+{
+    self.recentsUpdateEnabled = NO;
 }
 
 @end

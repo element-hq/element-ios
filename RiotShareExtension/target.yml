@@ -31,6 +31,9 @@ targets:
     platform: iOS
     type: app-extension
 
+    dependencies:
+    - package: DeviceKit
+
     configFiles:
       Debug: Debug.xcconfig
       Release: Release.xcconfig
@@ -57,6 +60,7 @@ targets:
     - path: ../Riot/Categories/UISearchBar.swift
     - path: ../Riot/Categories/String.swift
     - path: ../Riot/Categories/UIView.swift
+    - path: ../Riot/Categories/UITextView.swift
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Generated/Strings.swift
@@ -71,9 +75,11 @@ targets:
       buildPhase: resources
     - path: ../Riot/Modules/MatrixKit
       excludes:
-        - "**/MXKAuthenticationRecaptchaWebView.*"
+        - "**/MXKAuthenticationViewController.*"
+        - "Views/Authentication/**"
     - path: ../Riot/Modules/Analytics
     - path: ../Riot/Managers/UserSessions
       excludes:
         - "**/*.md" # excludes all files with the .md extension
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
+    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/VoiceBroadcastSettings.swift

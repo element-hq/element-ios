@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct OnboardingCongratulationsScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -62,7 +61,7 @@ struct OnboardingCongratulationsScreen: View {
         .overlay(effects.ignoresSafeArea())
         .background(theme.colors.accent.ignoresSafeArea())
         .navigationBarHidden(true)
-        .preferredColorScheme(.dark)    // make the status bar white
+        .preferredColorScheme(.dark) // make the status bar white
         .accentColor(.white)
     }
     
@@ -80,7 +79,7 @@ struct OnboardingCongratulationsScreen: View {
                     .font(theme.fonts.title2B)
                     .foregroundColor(.white)
                 
-                Text(VectorL10n.onboardingCongratulationsMessage(viewModel.viewState.userId))
+                StyledText(viewModel.viewState.messageString)
                     .font(theme.fonts.body)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
@@ -128,13 +127,9 @@ struct OnboardingCongratulationsScreen: View {
         .accessibilityIdentifier("homeButton")
     }
     
-    @ViewBuilder
     var effects: some View {
-        if viewModel.viewState.personalizationDisabled {
-            EffectsView(effect: .confetti)
-                .allowsHitTesting(false)
-                .accessibilityIdentifier("confetti")
-        }
+        EffectsView(effect: .confetti)
+            .allowsHitTesting(false)
     }
 }
 

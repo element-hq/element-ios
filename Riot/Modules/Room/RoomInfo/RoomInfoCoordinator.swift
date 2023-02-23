@@ -47,7 +47,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         let files = RoomFilesViewController()
         files.finalizeInit()
         files.screenTracker = AnalyticsScreenTracker(screen: .roomUploads)
-        MXKRoomDataSource.load(withRoomId: self.room.roomId, andMatrixSession: self.session) { (dataSource) in
+        MXKRoomDataSource.load(withRoomId: self.room.roomId, threadId: nil, andMatrixSession: self.session) { (dataSource) in
             guard let dataSource = dataSource as? MXKRoomDataSource else { return }
             dataSource.filterMessagesWithURL = true
             dataSource.finalizeInitialization()

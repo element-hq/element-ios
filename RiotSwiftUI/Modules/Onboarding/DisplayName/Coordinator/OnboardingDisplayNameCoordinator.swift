@@ -14,15 +14,14 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct OnboardingDisplayNameCoordinatorParameters {
     let userSession: UserSession
 }
 
 final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -46,7 +45,7 @@ final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         
         // Don't pre-fill the display name from the MXID to encourage the user to enter something
-        let viewModel = OnboardingDisplayNameViewModel()
+        let viewModel = OnboardingDisplayNameViewModel(displayName: parameters.userSession.account.userDisplayName)
         
         let view = OnboardingDisplayNameScreen(viewModel: viewModel.context)
         onboardingDisplayNameViewModel = viewModel
@@ -58,6 +57,7 @@ final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[OnboardingDisplayNameCoordinator] did start.")
         onboardingDisplayNameViewModel.completion = { [weak self] result in
@@ -74,7 +74,7 @@ final class OnboardingDisplayNameCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.onboardingDisplayNameHostingController
+        onboardingDisplayNameHostingController
     }
     
     // MARK: - Private

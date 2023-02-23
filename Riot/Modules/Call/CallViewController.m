@@ -373,7 +373,12 @@ CallAudioRouteMenuViewDelegate>
                                                                
                                                                // Acknowledge the existence of all devices
                                                                [self startActivityIndicator];
-                                                               [self.mainSession.crypto setDevicesKnown:unknownDevices complete:^{
+                                                               if (![self.mainSession.crypto isKindOfClass:[MXLegacyCrypto class]])
+                                                               {
+                                                                   MXLogFailure(@"[CallViewController] call: Only legacy crypto supports manual setting of known devices");
+                                                                   return;
+                                                               }
+                                                               [(MXLegacyCrypto *)self.mainSession.crypto setDevicesKnown:unknownDevices complete:^{
                                                                    
                                                                    [self stopActivityIndicator];
                                                                    

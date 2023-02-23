@@ -26,8 +26,6 @@
 		<dict>
 			<key>IntentsRestrictedWhileLocked</key>
 			<array/>
-			<key>IntentsRestrictedWhileProtectedDataUnavailable</key>
-			<array/>
 			<key>IntentsSupported</key>
 			<array>
 				<string>INStartAudioCallIntent</string>

@@ -31,6 +31,9 @@ targets:
     platform: iOS
     type: app-extension
 
+    dependencies:
+    - package: DeviceKit
+
     configFiles:
       Debug: Debug.xcconfig
       Release: Release.xcconfig
@@ -63,10 +66,14 @@ targets:
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Modules/MatrixKit
       excludes:
-        - "**/MXKAuthenticationRecaptchaWebView.*"
+        - "Controllers/**"
+        - "Models/*List/**"
+        - "Views/**"
+        
     - path: ../Riot/Modules/Analytics
     - path: ../Riot/Managers/UserSessions
     - path: ../Riot/Managers/AppInfo/
       excludes:
         - "**/*.md" # excludes all files with the .md extension
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
+    - path: ../Riot/Modules/VoiceBroadcast/VoiceBroadcastSDK/VoiceBroadcastSettings.swift

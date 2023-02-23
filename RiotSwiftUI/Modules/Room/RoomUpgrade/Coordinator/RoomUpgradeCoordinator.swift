@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import MatrixSDK
+import SwiftUI
 
 struct RoomUpgradeCoordinatorParameters {
     let session: MXSession
@@ -25,7 +25,6 @@ struct RoomUpgradeCoordinatorParameters {
 }
 
 final class RoomUpgradeCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -42,7 +41,6 @@ final class RoomUpgradeCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: RoomUpgradeCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = RoomUpgradeViewModel.makeRoomUpgradeViewModel(roomUpgradeService: RoomUpgradeService(session: parameters.session, roomId: parameters.roomId, parentSpaceId: parameters.parentSpaceId, versionOverride: parameters.versionOverride))
@@ -54,6 +52,7 @@ final class RoomUpgradeCoordinator: Coordinator, Presentable {
     }
     
     // MARK: - Public
+
     func start() {
         MXLog.debug("[RoomUpgradeCoordinator] did start.")
         roomUpgradeViewModel.completion = { [weak self] result in
@@ -69,6 +68,6 @@ final class RoomUpgradeCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.roomUpgradeHostingController
+        roomUpgradeHostingController
     }
 }

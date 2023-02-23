@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,9 +17,7 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 14.0, *)
 extension ThemeSwiftUI {
-    
     /// Get the stable display user color based on userId.
     /// - Parameter userId: The user id used to hash.
     /// - Returns: The SwiftUI color for the associated userId.

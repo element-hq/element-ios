@@ -14,38 +14,20 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-class AuthenticationVerifyEmailUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockAuthenticationVerifyEmailScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return AuthenticationVerifyEmailUITests(selector: #selector(verifyAuthenticationVerifyEmailScreen))
-    }
-
-    func verifyAuthenticationVerifyEmailScreen() throws {
-        guard let screenState = screenState as? MockAuthenticationVerifyEmailScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .emptyAddress:
-            verifyEmptyAddress()
-        case .enteredAddress:
-            verifyEnteredAddress()
-        case .hasSentEmail:
-            verifyWaitingForEmailLink()
-        }
-    }
-    
-    func verifyEmptyAddress() {
+class AuthenticationVerifyEmailUITests: MockScreenTestCase {
+    func testEmptyAddress() {
+        app.goToScreenWithIdentifier(MockAuthenticationVerifyEmailScreenState.emptyAddress.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown before an email is sent.")
         XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown before an email is sent.")
         
         let addressTextField = app.textFields["addressTextField"]
         XCTAssertTrue(addressTextField.exists, "The text field should be shown before an email is sent.")
-        XCTAssertEqual(addressTextField.value as? String, "Email Address", "The text field should be showing the placeholder before text is input.")
+        XCTAssertEqual(addressTextField.value as? String, VectorL10n.authenticationVerifyEmailTextFieldPlaceholder,
+                       "The text field should be showing the placeholder before text is input.")
         
         let nextButton = app.buttons["nextButton"]
         XCTAssertTrue(nextButton.exists, "The next button should be shown before an email is sent.")
@@ -53,9 +35,15 @@ class AuthenticationVerifyEmailUITests: MockScreenTest {
         
         XCTAssertFalse(app.staticTexts["waitingTitleLabel"].exists, "The waiting title should be hidden until an email is sent.")
         XCTAssertFalse(app.staticTexts["waitingMessageLabel"].exists, "The waiting message should be hidden until an email is sent.")
+
+        let cancelButton = app.navigationBars.firstMatch.buttons["cancelButton"]
+        XCTAssertTrue(cancelButton.exists, "Cancel button should be shown.")
+        XCTAssertEqual(cancelButton.label, "Cancel")
     }
     
-    func verifyEnteredAddress() {
+    func testEnteredAddress() {
+        app.goToScreenWithIdentifier(MockAuthenticationVerifyEmailScreenState.enteredAddress.title)
+        
         XCTAssertTrue(app.staticTexts["titleLabel"].exists, "The title should be shown before an email is sent.")
         XCTAssertTrue(app.staticTexts["messageLabel"].exists, "The message should be shown before an email is sent.")
         
@@ -69,9 +57,15 @@ class AuthenticationVerifyEmailUITests: MockScreenTest {
         
         XCTAssertFalse(app.staticTexts["waitingTitleLabel"].exists, "The waiting title should be hidden until an email is sent.")
         XCTAssertFalse(app.staticTexts["waitingMessageLabel"].exists, "The waiting message should be hidden until an email is sent.")
+
+        let cancelButton = app.navigationBars.firstMatch.buttons["cancelButton"]
+        XCTAssertTrue(cancelButton.exists, "Cancel button should be shown.")
+        XCTAssertEqual(cancelButton.label, "Cancel")
     }
     
-    func verifyWaitingForEmailLink() {
+    func testWaitingForEmailLink() {
+        app.goToScreenWithIdentifier(MockAuthenticationVerifyEmailScreenState.hasSentEmail.title)
+        
         XCTAssertFalse(app.staticTexts["titleLabel"].exists, "The title should be hidden once an email has been sent.")
         XCTAssertFalse(app.staticTexts["messageLabel"].exists, "The message should be hidden once an email has been sent.")
         XCTAssertFalse(app.textFields["addressTextField"].exists, "The text field should be hidden once an email has been sent.")
@@ -79,6 +73,9 @@ class AuthenticationVerifyEmailUITests: MockScreenTest {
         
         XCTAssertTrue(app.staticTexts["waitingTitleLabel"].exists, "The waiting title should be shown once an email has been sent.")
         XCTAssertTrue(app.staticTexts["waitingMessageLabel"].exists, "The waiting title should be shown once an email has been sent.")
-    }
 
+        let backButton = app.navigationBars.firstMatch.buttons["cancelButton"]
+        XCTAssertTrue(backButton.exists, "Back button should be shown.")
+        XCTAssertEqual(backButton.label, "Back")
+    }
 }

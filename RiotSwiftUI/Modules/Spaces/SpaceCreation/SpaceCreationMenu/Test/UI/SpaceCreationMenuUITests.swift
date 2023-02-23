@@ -1,6 +1,6 @@
 // File created from TemplateAdvancedRoomsExample
 // $ createSwiftUITwoScreen.sh Spaces/SpaceCreation SpaceCreation SpaceCreationMenu SpaceCreationSettings
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,30 +16,14 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-@available(iOS 14.0, *)
-class SpaceCreationMenuUITests: MockScreenTest {
-    
-    override class var screenType: MockScreenState.Type {
-        return MockSpaceCreationMenuScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return SpaceCreationMenuUITests(selector: #selector(verifySpaceCreationMenuScreen))
-    }
-    
-    func verifySpaceCreationMenuScreen() throws {
-        guard let screenState = screenState as? MockSpaceCreationMenuScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .options:
-            verifySpaceCreationMenuOptions()
-        }
-    }
-    
-    func verifySpaceCreationMenuOptions() {
-        let optionButtonCount = app.buttons.matching(identifier:"optionButton").count
+class SpaceCreationMenuUITests: MockScreenTestCase {
+    func testSpaceCreationMenuOptions() {
+        app.goToScreenWithIdentifier(MockSpaceCreationMenuScreenState.options.title)
+        
+        let optionButtonCount = app.buttons.matching(identifier: "optionButton").count
         XCTAssertEqual(optionButtonCount, 2)
         
         let titleText = app.staticTexts["titleText"]
@@ -50,5 +34,4 @@ class SpaceCreationMenuUITests: MockScreenTest {
         XCTAssert(detailText.exists)
         XCTAssertEqual(detailText.label, "Some detail text")
     }
-
 }

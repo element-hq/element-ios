@@ -35,7 +35,7 @@ enum ThreadNotificationStatus {
     init(withThread thread: MXThreadProtocol) {
         if thread.highlightCount > 0 {
             self = .highlighted
-        } else if thread.isParticipated && thread.notificationCount > 0 {
+        } else if thread.notificationCount > 0 {
             self = .notified
         } else {
             self = .none

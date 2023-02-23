@@ -76,7 +76,7 @@
 "joined" = "مُنضَمّ";
 "skip" = "تَخَطِّي";
 "close" = "إغلاق";
-"sending" = "يَجري الإرسَال";
+"sending" = "جاري الإرسَال";
 "send_to" = "إرسَال إلى %@";
 "collapse" = "تضييق";
 "rename" = "إعَادة التسمية";
@@ -189,8 +189,8 @@
 "contacts_address_book_section" = "جِهاتُ الاِتِّصال المَحَلِّيَّة";
 "directory_search_fail" = "فَشَلَ جَلبُ البَيَانَات";
 "directory_searching_title" = "بَحثُ الدَّلِيلِ جَارٍ…";
-"directory_search_results_more_than" = ">عُثِرَ عَلَى %tu نَتائج لِ%@";
-"directory_search_results" = "عُثِرَ عَلَى %tu نَتائج لِ%@";
+"directory_search_results_more_than" = ">عُثِرَ عَلَى %1$tu نَتائج لِ%2$@";
+"directory_search_results" = "عُثِرَ عَلَى %1$tu نَتائج لِ%2$@";
 "directory_search_results_title" = "تَصَفُحُ نَتائِجِ الدَّلِيل";
 "directory_cell_description" = "%tu غُرَف";
 
@@ -350,11 +350,11 @@
 "onboarding_use_case_existing_server_message" = "هَل تَتَطلَّع إلى الانْضِمام إلى الخادِم المَوجود؟";
 "onboarding_use_case_skip_button" = "تَخَطي هَذا السُؤال";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "لَستَ مٌتَأكداً بَعدَ؟ يُمَكَّنَك %@";
+"onboarding_use_case_not_sure_yet" = "لَستَ مٌتَأكداً بَعدَ؟ %@";
 "onboarding_use_case_community_messaging" = "المُجتَمَعَات";
 "onboarding_use_case_work_messaging" = "الفَرِقَ";
 "onboarding_use_case_personal_messaging" = "الأصَدقاء والعائِلة";
-"onboarding_use_case_message" = "سنساعَدَك على الاتصال.";
+"onboarding_use_case_message" = "سنساعَدَك على الاتصال";
 "onboarding_use_case_title" = "مَنْ الذي ستَتَحَدَّثَ إليه أكْثَر؟";
 "onboarding_splash_page_4_message" = "Element رائِع أيضاً لمَكان العَمِلَ. تَثِقُ به أكثر المٌؤسَسات أمانًا في العالم.";
 "onboarding_splash_page_4_title_no_pun" = "مُراسَلة لفَريقك.";
@@ -973,3 +973,108 @@
 "attachment_size_prompt_title" = "تأكيد الحَجم للإرسَال";
 "message_reply_to_sender_sent_their_location" = "شَارك موقعهُم.";
 "room_displayname_all_other_members_left" = "%@ (غادر)";
+"authentication_verify_email_waiting_title" = "قم بتأكيد بريدك الألكتروني.";
+"authentication_verify_email_text_field_placeholder" = "البَريد الإلِكتُرونيّ";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ يحتاج إلى التَّحَقُّق من حِسابك";
+"authentication_verify_email_input_title" = "أدخل البَريد الإلِكتُرونيّ الخاص بك";
+"authentication_cancel_flow_confirmation_message" = "لم يتم إنشاء حسابك بعد. إيقاف عملية التَّسجِيل؟";
+"authentication_server_selection_generic_error" = "لا يمكن العثور على خادم باستخدام هذا الرابط، يرجى التأكد من صحته.";
+"authentication_server_selection_server_url" = "رابط الخادِم الرَّئيسي";
+"authentication_server_selection_register_message" = "ما هو عنوان الخادِم الخاص بك؟ هذا مثل منزل لجميع بياناتك";
+"authentication_server_selection_register_title" = "اختر الخادِم الرَّئيسي الخاص بك";
+"authentication_server_selection_login_message" = "ما هو عنوان الخادِم الخاص بك؟";
+"authentication_server_selection_login_title" = "الاتصال بالخادِم الرَّئيسي";
+"authentication_server_info_title_login" = "أين تعيش مُحادَثَاتك";
+"authentication_server_info_title" = "أين ستعيش مُحادَثَاتك";
+"authentication_login_forgot_password" = "نِسيان كَلِمَةُ المُرُور";
+"authentication_login_username" = "اِسم مُستَخدِم / البَريد الإلِكتُرونيّ / رَقم الهَاتِف";
+"authentication_login_title" = "مرحباً بعَوْدتك!";
+"authentication_registration_password_footer" = "يجب أن يتكون من 8 أحرف أو أكثر";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "يمكن للآخرين اكتشافك %@";
+"authentication_registration_username_footer" = "لا يمكنك تغيير هذا لاحقًا";
+"authentication_registration_username" = "اِسم مُستَخدِم";
+
+// MARK: Authentication
+"authentication_registration_title" = "أنشئ حِسابك";
+"onboarding_celebration_button" = "هيا بنا";
+"onboarding_celebration_message" = "توجه إلى الإعدَادَات في أي وقت لتحديث ملف التعريف الخاص بك";
+"onboarding_celebration_title" = "تَبَدو جَيدة!";
+"onboarding_avatar_accessibility_label" = "صورة المَلفّ شَّخصي";
+"onboarding_avatar_message" = "حان الوقت لوضع وجه للاسم";
+"onboarding_avatar_title" = "أضف صورة للمَلفّ الشَّخصي";
+"onboarding_display_name_max_length" = "اِسم العَرَض الخاص بك يجب أن يكون أقل من 256 حرفاً";
+"onboarding_display_name_hint" = "بالإمكان تغيير هذا لاحقاً";
+"onboarding_display_name_placeholder" = "اِسم العَرَض";
+"onboarding_display_name_message" = "سيَظَهر هذا عند إرسَال الرَسائِل.";
+"onboarding_display_name_title" = "اختر اِسم العَرَض";
+"onboarding_personalization_skip" = "تَخَطِّي هذه الخَطوة";
+"onboarding_personalization_save" = "حِفظ والاِستِمرار";
+"onboarding_congratulations_home_button" = "خذني إلى الرَّئيسَة";
+"onboarding_congratulations_personalize_button" = "تَخصيص المَلفّ شَّخصي";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "تَمَّ إنشاء حِسابُك %@";
+"onboarding_congratulations_title" = "مَبْروك!";
+"saving" = "جاري الحِفظ";
+
+// Activities
+"loading" = "تَحْميل";
+"confirm" = "تَأْكيد";
+"edit" = "تعديل";
+"suggest" = "اقْتَرح";
+"add" = "إضافة";
+"existing" = "الحالي";
+"new_word" = "جديد";
+"stop" = "إيقاف";
+"joining" = "الانْضِمام إلى";
+"room_participants_invite_prompt_to_msg" = "هَل أنتَ مُتَأكِّدٌ أنَّكَ تريد دعوة %@ إلى %@؟";
+"room_participants_leave_success" = "غادَر الغُرفَة";
+"room_participants_leave_processing" = "مغادرة";
+"password_validation_error_contain_symbol" = "تحتوي على رمز.";
+"password_validation_error_contain_number" = "تحتوي على رقم.";
+"password_validation_error_contain_uppercase_letter" = "تحتوي على حرف كبير.";
+"password_validation_error_contain_lowercase_letter" = "تحتوي على حرف صغير.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "لا تتعدى %d أحرف.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "%d أحرف على الأقل.";
+"password_validation_error_header" = "كلمة المرور المقدمة لا تسْتَوفي المعايير أدناه:";
+
+// MARK: Password Validation
+"password_validation_info_header" = "يجب أن تسْتَوفي كَلِمَةُ المُرُور الخاصة بك المعايير أدناه:";
+"authentication_recaptcha_title" = "هل أنت إنسان؟";
+"authentication_terms_policy_url_error" = "تعذر العثور على السياسة المحددة. الرجاء معاودة المحاولة في وقت لاحق.";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "يرجى قراءة شروط وسياسات %@";
+"authentication_terms_title" = "سياسات الخُصُوصِيَّة";
+"authentication_verify_msisdn_invalid_phone_number" = "رَقم الهَاتِف غَير صَالِح";
+"authentication_verify_msisdn_waiting_button" = "إعادَة إرسَال الرمز";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "تم إرسال رمز إلى %@";
+"authentication_verify_msisdn_waiting_title" = "تحقق من رقم هاتفك";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "رمز التَأكيد";
+"authentication_verify_msisdn_text_field_placeholder" = "رَقم الهَاتِف";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ يحتاج إلى التحقق من حسابك";
+"authentication_verify_msisdn_input_title" = "أدخل رقم هَاتِفك";
+"authentication_choose_password_not_verified_message" = "تحقق من بريدك الوارد";
+"authentication_choose_password_not_verified_title" = "لم يتم التحقق من البَريد الإلِكتُرونيّ";
+"authentication_choose_password_submit_button" = "إعادة ضَبط كَلِمَةُ المُرُور";
+"authentication_choose_password_signout_all_devices" = "تَسجِيلُ الخُرُوج من جميع الأجهزة";
+"authentication_choose_password_text_field_placeholder" = "كَلِمَةُ المُرُور الجديدة";
+"authentication_choose_password_input_title" = "اختر كَلِمَةُ مُرُور جديدة";
+"authentication_choose_password_input_message" = "تأكد من أنها 8 أحرف أو أكثر";
+"authentication_forgot_password_waiting_button" = "إعادَة إرسَال البَريد الإلِكتُرونيّ";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "اتبع التعليمات المرسلة إلى %@";
+"authentication_forgot_password_waiting_title" = "تحقق من بَريدك الإلِكتُرونيّ.";
+"authentication_forgot_password_text_field_placeholder" = "البَريد الإلِكتُرونيّ";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@ سيقوم بإرسَال رابط التَّحَقُّق إليك";
+"authentication_forgot_password_input_title" = "أدخل بَريدك الإلِكتُرونيّ";
+"authentication_verify_email_waiting_button" = "إعادَة إرسال البَريد الإلِكتُرونيّ";
+"authentication_verify_email_waiting_hint" = "ألم تَتَلق رِسالة بَريد إلِكتُرونيّ؟";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "اتبع التعليمات المرسلة إلى %@";
+"invite_to" = "الدعوة إلى %@";

@@ -17,7 +17,7 @@
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>io.stvd.space.pills</string>
+				<string>im.vector.app.pills</string>
 			</array>
 		</dict>
 	</array>
@@ -50,8 +50,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
+	<key>ITSEncryptionExportComplianceCode</key>
+	<string>d1dd539c-d21c-43e2-92e2-212c5269565c</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>http</string>
@@ -60,7 +60,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<true/>
+	<false/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -69,17 +69,19 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>See your scheduled meetings in the app.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>The camera is used to take photos and videos, make video calls.</string>
+	<string>The camera is used to make video calls, or take and upload photos and videos.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>The contact book is used to send room invitation to your contacts with their emails.</string>
+	<string>They will be shared with your identity server to help find your contacts on Matrix.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID is used to access your app.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>When you share your location to people, Element needs access to show them a map.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>When you share your location to people, Element needs access to show them a map.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>The microphone is used to take videos, make calls.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>The photo library is used to send photos and videos.</string>
+	<string>Allow access to photos to upload photos and videos from your library.</string>
 	<key>NSSiriUsageDescription</key>
 	<string>Siri is used to perform calls even from the lock screen.</string>
 	<key>UIBackgroundModes</key>
@@ -119,8 +121,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIUserInterfaceStyle</key>
-	<string>Dark</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>UTExportedTypeDeclarations</key>
@@ -132,16 +132,10 @@
 			</array>
 			<key>UTTypeDescription</key>
 			<string>Mention Pills</string>
-			<key>UTTypeIconFiles</key>
-			<array/>
 			<key>UTTypeIdentifier</key>
-			<string>io.stvd.space.pills</string>
-			<key>UTTypeTagSpecification</key>
-			<dict/>
+			<string>im.vector.app.pills</string>
 		</dict>
 	</array>
-	<key>UserDefaults</key>
-	<string>${PRODUCT_NAME}-Defaults</string>
 	<key>applicationGroupIdentifier</key>
 	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
 	<key>baseBundleIdentifier</key>

@@ -38,6 +38,7 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
         self.room = room
         self.delegate = delegate
         self.isRoomJoined = room.summary?.isJoined ?? false
+        self.hasUnread = room.summary?.hasAnyUnread ?? false
         self.roomMembership = room.summary?.membership ?? .unknown
         self.session = room.mxSession
         self.unownedRoomService = UnownedRoomContextActionService(roomId: room.roomId, canonicalAlias: room.summary?.aliases?.first, session: self.session, delegate: delegate)
@@ -46,6 +47,7 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
     // MARK: - Public
     
     let isRoomJoined: Bool
+    let hasUnread: Bool
     let roomMembership: MXMembership
     
     var isRoomDirect: Bool {
@@ -103,6 +105,12 @@ class RoomContextActionService: NSObject, RoomContextActionServiceProtocol {
             self.updateRoom(tag: newValue ? kMXRoomTagLowPriority : nil)
         }
     }
+    
+    func markAsRead() {
+        room.markAllAsRead()
+    }
+    
+    // MARK: - Private
     
     private func muteRoomNotifications(_ isMuted: Bool) {
         self.delegate?.roomContextActionService(self, updateActivityIndicator: true)

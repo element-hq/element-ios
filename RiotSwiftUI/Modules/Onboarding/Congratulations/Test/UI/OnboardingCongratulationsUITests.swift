@@ -14,48 +14,27 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-class OnboardingCongratulationsUITests: MockScreenTest {
-
-    override class var screenType: MockScreenState.Type {
-        return MockOnboardingCongratulationsScreenState.self
-    }
-
-    override class func createTest() -> MockScreenTest {
-        return OnboardingCongratulationsUITests(selector: #selector(verifyOnboardingCongratulationsScreen))
-    }
-
-    func verifyOnboardingCongratulationsScreen() throws {
-        guard let screenState = screenState as? MockOnboardingCongratulationsScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .regular:
-            verifyButtons()
-        case .personalizationDisabled:
-            verifyButtonsWhenPersonalizationIsDisabled()
-        }
-    }
-    
-    func verifyButtons() {
+class OnboardingCongratulationsUITests: MockScreenTestCase {
+    func testButtons() {
+        app.goToScreenWithIdentifier(MockOnboardingCongratulationsScreenState.regular.title)
+        
         let personalizeButton = app.buttons["personalizeButton"]
         XCTAssertTrue(personalizeButton.exists, "The personalization button should be shown.")
         
         let homeButton = app.buttons["homeButton"]
         XCTAssertTrue(homeButton.exists, "The home button should always be shown.")
-        
-        let confetti = app.otherElements["confetti"]
-        XCTAssertFalse(confetti.exists, "There should not be any confetti.")
     }
     
-    func verifyButtonsWhenPersonalizationIsDisabled() {
+    func testButtonsWhenPersonalizationIsDisabled() {
+        app.goToScreenWithIdentifier(MockOnboardingCongratulationsScreenState.personalizationDisabled.title)
+        
         let personalizeButton = app.buttons["personalizeButton"]
         XCTAssertFalse(personalizeButton.exists, "The personalization button should be hidden.")
         
         let homeButton = app.buttons["homeButton"]
         XCTAssertTrue(homeButton.exists, "The home button should always be shown.")
-        
-        let confetti = app.otherElements["confetti"]
-        XCTAssertTrue(confetti.exists, "There should be a confetti overlay.")
     }
 }

@@ -1,6 +1,6 @@
 // File created from SimpleUserProfileExample
 // $ createScreen.sh Spaces/SpaceCreation/SpaceCreationPostProcess SpaceCreationPostProcess
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct SpaceCreationPostProcess: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -45,7 +43,7 @@ struct SpaceCreationPostProcess: View {
         .navigationBarHidden(true)
         .background(theme.colors.background.ignoresSafeArea())
         .frame(maxHeight: .infinity)
-        .onAppear() {
+        .onAppear {
             viewModel.send(viewAction: .runTasks)
         }
     }
@@ -63,7 +61,7 @@ struct SpaceCreationPostProcess: View {
     @ViewBuilder
     private var tasksList: some View {
         VStack(alignment: .leading, spacing: 11) {
-            ForEach(viewModel.viewState.tasks.indices) { index in
+            ForEach(viewModel.viewState.tasks.indices, id: \.self) { index in
                 SpaceCreationPostProcessItem(title: viewModel.viewState.tasks[index].title, state: viewModel.viewState.tasks[index].state)
             }
         }
@@ -86,7 +84,7 @@ struct SpaceCreationPostProcess: View {
     private var avatarView: some View {
         ZStack {
             SpaceAvatarImage(mxContentUri: viewModel.viewState.avatar.mxContentUri, matrixItemId: viewModel.viewState.avatar.matrixItemId, displayName: viewModel.viewState.avatar.displayName, size: .xLarge)
-            .padding(6)
+                .padding(6)
             if let image = viewModel.viewState.avatarImage {
                 Image(uiImage: image)
                     .resizable()
@@ -96,12 +94,10 @@ struct SpaceCreationPostProcess: View {
             }
         }
     }
-    
 }
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct SpaceCreationPostProcess_Previews: PreviewProvider {
     static let stateRenderer = MockSpaceCreationPostProcessScreenState.stateRenderer
     static var previews: some View {

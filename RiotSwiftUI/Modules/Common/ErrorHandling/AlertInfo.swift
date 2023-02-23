@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +29,11 @@ struct AlertInfo<T: Hashable>: Identifiable {
     /// The alert's title.
     let title: String
     /// The alert's message (optional).
-    var message: String? = nil
+    var message: String?
     /// The alert's primary button title and action. Defaults to an Ok button with no action.
     var primaryButton: (title: String, action: (() -> Void)?) = (VectorL10n.ok, nil)
     /// The alert's secondary button title and action.
-    var secondaryButton: (title: String, action: (() -> Void)?)? = nil
+    var secondaryButton: (title: String, action: (() -> Void)?)?
 }
 
 extension AlertInfo {
@@ -47,7 +47,7 @@ extension AlertInfo {
     ///   - id: An ID that identifies the error.
     ///   - error: The Error that occurred.
     init?(id: T, error: NSError? = nil) {
-        guard error?.domain != NSURLErrorDomain && error?.code != NSURLErrorCancelled else { return nil }
+        guard error?.domain != NSURLErrorDomain, error?.code != NSURLErrorCancelled else { return nil }
         
         self.id = id
         title = error?.userInfo[NSLocalizedFailureReasonErrorKey] as? String ?? VectorL10n.error

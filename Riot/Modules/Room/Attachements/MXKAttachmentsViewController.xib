@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MXKAttachmentsViewController">
+            <connections>
+                <outlet property="attachmentsCollection" destination="LOp-cf-Sji" id="4Zx-KZ-fkh"/>
+                <outlet property="backButton" destination="VjO-K2-a0w" id="VlD-Iw-NT5"/>
+                <outlet property="navigationBar" destination="orb-yb-k6g" id="ILw-DO-IH2"/>
+                <outlet property="navigationBarContainer" destination="40U-Si-EHJ" id="ub0-0l-lga"/>
+                <outlet property="view" destination="iN0-l3-epB" id="ieV-u7-rXU"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="LOp-cf-Sji">
+                    <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="RrA-v8-THJ">
+                        <size key="itemSize" width="600" height="600"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="gLX-KL-R8w"/>
+                        <outlet property="delegate" destination="-1" id="z1d-ep-n4n"/>
+                    </connections>
+                </collectionView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="40U-Si-EHJ" userLabel="Navigation Bar Container">
+                    <rect key="frame" x="0.0" y="0.0" width="390" height="88"/>
+                    <subviews>
+                        <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="orb-yb-k6g">
+                            <rect key="frame" x="0.0" y="44" width="390" height="44"/>
+                            <items>
+                                <navigationItem id="lP4-eZ-AQ8">
+                                    <barButtonItem key="leftBarButtonItem" image="back_icon.png" style="plain" id="VjO-K2-a0w">
+                                        <connections>
+                                            <action selector="onButtonPressed:" destination="-1" id="PEa-WB-Up1"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </navigationItem>
+                            </items>
+                        </navigationBar>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="orb-yb-k6g" secondAttribute="trailing" id="XxB-m0-ll4"/>
+                        <constraint firstItem="orb-yb-k6g" firstAttribute="leading" secondItem="40U-Si-EHJ" secondAttribute="leading" id="vCT-fM-dmm"/>
+                        <constraint firstAttribute="bottom" secondItem="orb-yb-k6g" secondAttribute="bottom" id="xgn-qV-XWo"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="kHK-qN-rPN"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="40U-Si-EHJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Ezg-Aa-OV8"/>
+                <constraint firstItem="40U-Si-EHJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="F5v-ws-OVn"/>
+                <constraint firstItem="LOp-cf-Sji" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="RQT-el-TH0"/>
+                <constraint firstItem="orb-yb-k6g" firstAttribute="top" secondItem="kHK-qN-rPN" secondAttribute="top" id="UxQ-JU-t2b"/>
+                <constraint firstAttribute="trailing" secondItem="LOp-cf-Sji" secondAttribute="trailing" id="Vgl-Wc-CI1"/>
+                <constraint firstAttribute="bottom" secondItem="LOp-cf-Sji" secondAttribute="bottom" id="d22-2K-BEZ"/>
+                <constraint firstItem="LOp-cf-Sji" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="jEc-aG-zZn"/>
+                <constraint firstAttribute="trailing" secondItem="40U-Si-EHJ" secondAttribute="trailing" id="kBi-Gh-1Oq"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <point key="canvasLocation" x="135" y="95"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="back_icon.png" width="13.666666984558105" height="23"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

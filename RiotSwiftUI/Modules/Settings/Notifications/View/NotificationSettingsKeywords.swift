@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 /// Renders the keywords input, driven by 'NotificationSettingsViewModel'.
-@available(iOS 14.0, *)
 struct NotificationSettingsKeywords: View {
     @ObservedObject var viewModel: NotificationSettingsViewModel
     var body: some View {
@@ -28,11 +27,9 @@ struct NotificationSettingsKeywords: View {
             placeholder: VectorL10n.settingsNewKeyword
         )
         .disabled(!(viewModel.viewState.selectionState[.keywords] ?? false))
-
     }
 }
 
-@available(iOS 14.0, *)
 struct Keywords_Previews: PreviewProvider {
     static let viewModel = NotificationSettingsViewModel(
         notificationSettingsService: MockNotificationSettingsService.example,

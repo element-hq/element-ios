@@ -14,11 +14,13 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct AuthenticationServerSelectionCoordinatorParameters {
     let authenticationService: AuthenticationService
+    /// Whether the server selection is for the login flow or registration flow.
+    let flow: AuthenticationFlow
     /// Whether the screen is presented modally or within a navigation stack.
     let hasModalPresentation: Bool
 }
@@ -29,7 +31,6 @@ enum AuthenticationServerSelectionCoordinatorResult {
 }
 
 final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -48,7 +49,7 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    @MainActor var callback: ((AuthenticationServerSelectionCoordinatorResult) -> Void)?
+    var callback: (@MainActor (AuthenticationServerSelectionCoordinatorResult) -> Void)?
     
     // MARK: - Setup
     
@@ -56,7 +57,8 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         
         let homeserver = parameters.authenticationService.state.homeserver
-        let viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: homeserver.addressFromUser ?? homeserver.address,
+        let viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: homeserver.displayableAddress,
+                                                               flow: parameters.authenticationService.state.flow,
                                                                hasModalPresentation: parameters.hasModalPresentation)
         let view = AuthenticationServerSelectionScreen(viewModel: viewModel.context)
         authenticationServerSelectionViewModel = viewModel
@@ -75,7 +77,7 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationServerSelectionHostingController
+        authenticationServerSelectionHostingController
     }
     
     // MARK: - Private
@@ -111,14 +113,12 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
     /// Updates the login flow using the supplied homeserver address, or shows an error when this isn't possible.
     @MainActor private func useHomeserver(_ homeserverAddress: String) {
         startLoading()
-        authenticationService.reset()
         
         let homeserverAddress = HomeserverAddress.sanitized(homeserverAddress)
         
         Task {
             do {
-                #warning("The screen should be configuration for .login too.")
-                try await authenticationService.startFlow(.register, for: homeserverAddress)
+                try await authenticationService.startFlow(parameters.flow, for: homeserverAddress)
                 stopLoading()
                 
                 callback?(.updated)

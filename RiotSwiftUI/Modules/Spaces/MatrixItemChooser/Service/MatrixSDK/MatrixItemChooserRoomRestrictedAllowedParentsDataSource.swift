@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ class MatrixItemChooserRoomRestrictedAllowedParentsDataSource: MatrixItemChooser
         }
         
         room.state { [weak self] state in
-            guard let self = self  else { return }
+            guard let self = self else { return }
             
             let joinRuleEvent = state?.stateEvents(with: .roomJoinRules)?.last
             let allowContent: [[String: String]] = joinRuleEvent?.wireContent[kMXJoinRulesContentKeyAllow] as? [[String: String]] ?? []
@@ -74,19 +74,20 @@ class MatrixItemChooserRoomRestrictedAllowedParentsDataSource: MatrixItemChooser
                 sections.append(MatrixListItemSectionData(
                     title: VectorL10n.roomAccessSpaceChooserOtherSpacesSection,
                     infoText: VectorL10n.roomAccessSpaceChooserOtherSpacesSectionInfo(room.displayName ?? ""),
-                    items: unknownParents.compactMap({ roomId in
+                    items: unknownParents.compactMap { roomId in
                         MatrixListItemData(
                             id: roomId,
                             type: .space,
                             avatar: AvatarInput(mxContentUri: roomId, matrixItemId: roomId, displayName: roomId),
                             displayName: roomId,
-                            detailText: nil)
-                    })
+                            detailText: nil
+                        )
+                    }
                 ))
             }
             
             completion(Result(catching: {
-                return sections
+                sections
             }))
         }
     }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct OtherNotificationSettings: View {
     @ObservedObject var viewModel: NotificationSettingsViewModel
     
@@ -27,7 +26,6 @@ struct OtherNotificationSettings: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct OtherNotifications_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {

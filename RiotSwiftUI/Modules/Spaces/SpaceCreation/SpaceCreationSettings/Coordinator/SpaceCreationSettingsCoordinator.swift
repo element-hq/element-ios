@@ -17,11 +17,10 @@
  */
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 final class SpaceCreationSettingsCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -44,7 +43,6 @@ final class SpaceCreationSettingsCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: SpaceCreationSettingsCoordinatorParameters) {
         self.parameters = parameters
         let service = SpaceCreationSettingsService(roomName: parameters.creationParameters.name ?? "", userDefinedAddress: parameters.creationParameters.userDefinedAddress, session: parameters.session)
@@ -73,13 +71,12 @@ final class SpaceCreationSettingsCoordinator: Coordinator, Presentable {
                 self.callback?(.back)
             case .pickImage(let sourceRect):
                 self.pickImage(from: sourceRect)
-            break
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.spaceCreationSettingsHostingController
+        spaceCreationSettingsHostingController
     }
     
     // MARK: - Private
@@ -92,6 +89,7 @@ final class SpaceCreationSettingsCoordinator: Coordinator, Presentable {
 }
 
 // MARK: - SingleImagePickerPresenterDelegate
+
 extension SpaceCreationSettingsCoordinator: SingleImagePickerPresenterDelegate {
     func singleImagePickerPresenter(_ presenter: SingleImagePickerPresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?) {
         spaceCreationSettingsViewModel.updateAvatarImage(with: UIImage(data: imageData))

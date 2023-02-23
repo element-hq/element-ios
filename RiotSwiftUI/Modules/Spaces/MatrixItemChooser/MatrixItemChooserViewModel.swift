@@ -14,23 +14,19 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
-@available(iOS 14, *)
-typealias MatrixItemChooserViewModelType = StateStoreViewModel<MatrixItemChooserViewState,
-                                                                 Never,
-                                                                 MatrixItemChooserViewAction>
-@available(iOS 14, *)
+typealias MatrixItemChooserViewModelType = StateStoreViewModel<MatrixItemChooserViewState, MatrixItemChooserViewAction>
+
 class MatrixItemChooserViewModel: MatrixItemChooserViewModelType, MatrixItemChooserViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Private
 
     private var matrixItemChooserService: MatrixItemChooserServiceProtocol
 
-    private var isLoading: Bool = false {
+    private var isLoading = false {
         didSet {
             state.loading = isLoading
             if isLoading {
@@ -46,7 +42,7 @@ class MatrixItemChooserViewModel: MatrixItemChooserViewModelType, MatrixItemChoo
     // MARK: - Setup
 
     static func makeMatrixItemChooserViewModel(matrixItemChooserService: MatrixItemChooserServiceProtocol, title: String?, detail: String?, selectionHeader: MatrixItemChooserSelectionHeader?) -> MatrixItemChooserViewModelProtocol {
-        return MatrixItemChooserViewModel(matrixItemChooserService: matrixItemChooserService, title: title, detail: detail, selectionHeader: selectionHeader)
+        MatrixItemChooserViewModel(matrixItemChooserService: matrixItemChooserService, title: title, detail: detail, selectionHeader: selectionHeader)
     }
 
     private init(matrixItemChooserService: MatrixItemChooserServiceProtocol, title: String?, detail: String?, selectionHeader: MatrixItemChooserSelectionHeader?) {
@@ -100,13 +96,13 @@ class MatrixItemChooserViewModel: MatrixItemChooserViewModelType, MatrixItemChoo
                 }
             }
         case .searchTextChanged(let searchText):
-            self.matrixItemChooserService.searchText = searchText
+            matrixItemChooserService.searchText = searchText
         case .itemTapped(let itemId):
-            self.matrixItemChooserService.reverseSelectionForItem(withId: itemId)
+            matrixItemChooserService.reverseSelectionForItem(withId: itemId)
         case .selectAll:
-            self.matrixItemChooserService.selectAllItems()
+            matrixItemChooserService.selectAllItems()
         case .selectNone:
-            self.matrixItemChooserService.deselectAllItems()
+            matrixItemChooserService.deselectAllItems()
         }
     }
     
@@ -121,5 +117,4 @@ class MatrixItemChooserViewModel: MatrixItemChooserViewModelType, MatrixItemChoo
     private func back() {
         completion?(.back)
     }
-
 }

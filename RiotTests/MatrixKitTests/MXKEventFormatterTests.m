@@ -22,7 +22,7 @@
 
 @import DTCoreText;
 
-@interface MXEventFormatterTests : XCTestCase
+@interface MXKEventFormatterTests : XCTestCase
 {
     MXKEventFormatter *eventFormatter;
     MXEvent *anEvent;
@@ -31,7 +31,7 @@
 
 @end
 
-@implementation MXEventFormatterTests
+@implementation MXKEventFormatterTests
 
 - (void)setUp
 {
@@ -70,9 +70,18 @@
     NSString *h3HTML = @"<h3>Acceptable Heading</h3>";
     
     // When rendering these strings as attributed strings
-    NSAttributedString *h1AttributedString = [eventFormatter renderHTMLString:h1HTML forEvent:anEvent withRoomState:nil];
-    NSAttributedString *h2AttributedString = [eventFormatter renderHTMLString:h2HTML forEvent:anEvent withRoomState:nil];
-    NSAttributedString *h3AttributedString = [eventFormatter renderHTMLString:h3HTML forEvent:anEvent withRoomState:nil];
+    NSAttributedString *h1AttributedString = [eventFormatter renderHTMLString:h1HTML
+                                                                     forEvent:anEvent
+                                                                withRoomState:nil
+                                                           andLatestRoomState:nil];
+    NSAttributedString *h2AttributedString = [eventFormatter renderHTMLString:h2HTML
+                                                                     forEvent:anEvent
+                                                                withRoomState:nil
+                                                           andLatestRoomState:nil];
+    NSAttributedString *h3AttributedString = [eventFormatter renderHTMLString:h3HTML
+                                                                     forEvent:anEvent
+                                                                withRoomState:nil
+                                                           andLatestRoomState:nil];
     
     // Then the h1/h2 fonts should be reduced in size to match h3.
     XCTAssertEqualObjects(h1AttributedString.string, @"Large Heading", @"The text from an H1 tag should be preserved when removing formatting.");
@@ -107,7 +116,10 @@
 - (void)testRenderHTMLStringWithPreCode
 {
     NSString *html = @"<pre><code>1\n2\n3\n4\n</code></pre>";
-    NSAttributedString *as = [eventFormatter renderHTMLString:html forEvent:anEvent withRoomState:nil];
+    NSAttributedString *as = [eventFormatter renderHTMLString:html
+                                                     forEvent:anEvent
+                                                withRoomState:nil
+                                           andLatestRoomState:nil];
 
     NSString *a = as.string;
 
@@ -128,7 +140,10 @@
     NSString *html = @"This text contains a <a href=\"https://www.matrix.org/\">link</a>.";
     
     // When rendering this string as an attributed string.
-    NSAttributedString *attributedString = [eventFormatter renderHTMLString:html forEvent:anEvent withRoomState:nil];
+    NSAttributedString *attributedString = [eventFormatter renderHTMLString:html
+                                                                   forEvent:anEvent
+                                                              withRoomState:nil
+                                                         andLatestRoomState:nil];
     
     // Then the attributed string should contain all of the text,
     XCTAssertEqualObjects(attributedString.string, @"This text contains a link.", @"The text should be preserved when adding a link.");
@@ -157,8 +172,16 @@
     NSString *h3HTML = @"<h3><a href=\"https://www.matrix.org/\">Matrix.org</a></h3>";
     
     // When rendering these strings as attributed strings.
-    NSAttributedString *h1AttributedString = [eventFormatter renderHTMLString:h1HTML forEvent:anEvent withRoomState:nil];
-    NSAttributedString *h3AttributedString = [eventFormatter renderHTMLString:h3HTML forEvent:anEvent withRoomState:nil];
+    NSAttributedString *h1AttributedString = [eventFormatter
+                                              renderHTMLString:h1HTML
+                                              forEvent:anEvent
+                                              withRoomState:nil
+                                              andLatestRoomState:nil];
+    NSAttributedString *h3AttributedString = [eventFormatter
+                                              renderHTMLString:h3HTML
+                                              forEvent:anEvent
+                                              withRoomState:nil
+                                              andLatestRoomState:nil];
     
     // Then the attributed string should contain all of the text,
     XCTAssertEqualObjects(h1AttributedString.string, @"Matrix.org", @"The text from an H1 tag should be preserved when removing formatting.");
@@ -214,7 +237,10 @@
     NSString *html = @"<iframe src=\"https://www.matrix.org/\"></iframe>";
     
     // When rendering this string as an attributed string.
-    NSAttributedString *attributedString = [eventFormatter renderHTMLString:html forEvent:anEvent withRoomState:nil];
+    NSAttributedString *attributedString = [eventFormatter renderHTMLString:html
+                                                                   forEvent:anEvent
+                                                              withRoomState:nil
+                                                         andLatestRoomState:nil];
     
     // Then the attributed string should have the iframe stripped and not include any attachments.
     BOOL hasAttachment = [attributedString containsAttachmentsInRange:NSMakeRange(0, attributedString.length)];
@@ -227,7 +253,10 @@
     NSString *html = @"<mx-reply><blockquote><a href=\"https://matrix.to/#/someroom/someevent\">In reply to</a> <a href=\"https://matrix.to/#/@alice:matrix.org\">@alice:matrix.org</a><br>Original message.</blockquote></mx-reply>This is a reply.";
     
     // When rendering this string as an attributed string.
-    NSAttributedString *attributedString = [eventFormatter renderHTMLString:html forEvent:anEvent withRoomState:nil];
+    NSAttributedString *attributedString = [eventFormatter renderHTMLString:html
+                                                                   forEvent:anEvent
+                                                              withRoomState:nil
+                                                         andLatestRoomState:nil];
     
     // Then the attributed string should contain all of the text,
     NSString *plainString = [attributedString.string stringByReplacingOccurrencesOfString:@"\U00002028" withString:@"\n"];
@@ -263,7 +292,10 @@
     NSString *html = @"<mx-reply><blockquote><a href=\"https://matrix.to/#/someroom/someevent\">In reply to</a> <a href=\"https://matrix.to/#/@alice:matrix.org\">@alice:matrix.org</a><br><h1>Heading with <badtag>invalid</badtag> content</h1></blockquote></mx-reply>This is a reply.";
     
     // When rendering this string as an attributed string.
-    NSAttributedString *attributedString = [eventFormatter renderHTMLString:html forEvent:anEvent withRoomState:nil];
+    NSAttributedString *attributedString = [eventFormatter renderHTMLString:html
+                                                                   forEvent:anEvent
+                                                              withRoomState:nil
+                                                         andLatestRoomState:nil];
     
     // Then the attributed string should contain all of the text,
     NSString *plainString = [attributedString.string stringByReplacingOccurrencesOfString:@"\U00002028" withString:@"\n"];
@@ -314,7 +346,10 @@
         NSBundle *bundle = [NSBundle bundleForClass:self.class];;
         return [bundle URLForResource:@"test" withExtension:@"png"];
     };
-    NSAttributedString *attributedString = [eventFormatter renderHTMLString:html forEvent:anEvent withRoomState:nil];
+    NSAttributedString *attributedString = [eventFormatter renderHTMLString:html
+                                                                   forEvent:anEvent
+                                                              withRoomState:nil
+                                                         andLatestRoomState:nil];
     
     // Then the attributed string should contain all of the text,
     NSString *plainString = [attributedString.string stringByReplacingOccurrencesOfString:@"\U0000fffc" withString:@""];

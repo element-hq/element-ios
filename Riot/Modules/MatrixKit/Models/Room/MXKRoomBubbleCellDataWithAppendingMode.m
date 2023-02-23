@@ -78,7 +78,11 @@ static NSAttributedString *messageSeparator = nil;
         }
         
         // Create new message component
-        MXKRoomBubbleComponent *addedComponent = [[MXKRoomBubbleComponent alloc] initWithEvent:event roomState:roomState eventFormatter:roomDataSource.eventFormatter session:self.mxSession];
+        MXKRoomBubbleComponent *addedComponent = [[MXKRoomBubbleComponent alloc] initWithEvent:event
+                                                                                     roomState:roomState
+                                                                            andLatestRoomState:roomDataSource.roomState
+                                                                                eventFormatter:roomDataSource.eventFormatter
+                                                                                       session:self.mxSession];
         if (addedComponent)
         {
             [self addComponent:addedComponent];

@@ -47,6 +47,7 @@ typedef enum : NSUInteger
 
 
 @class MXKRoomInputToolbarView;
+@class MXKImageView;
 @protocol MXKRoomInputToolbarViewDelegate <NSObject>
 
 /**
@@ -91,6 +92,22 @@ typedef enum : NSUInteger
  @param textMessage the string to send.
  */
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView sendTextMessage:(NSString*)textMessage;
+
+/**
+ Tells the delegate that the user wants to send a formatted  text message.
+
+ @param toolbarView the room input toolbar view.
+ @param formattedTextMessage the formatted message to send.
+ @param rawText the raw message to send.
+ */
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView *)toolbarView sendFormattedTextMessage:(NSString *)formattedTextMessage withRawText:(NSString *)rawText;
+
+/**
+ Tells the delegate that the user wants to display the send media actions.
+
+ @param toolbarView the room input toolbar view.
+ */
+- (void)roomInputToolbarViewShowSendMediaActions:(MXKRoomInputToolbarView *)toolbarView;
 
 /**
  Tells the delegate that the user wants to send an image.
@@ -205,7 +222,7 @@ typedef enum : NSUInteger
     UIView *messageComposerContainer;
     
 @protected
-    UIView *inputAccessoryView;
+    UIView *inputAccessoryViewForKeyboard;
 }
 
 /**
@@ -222,7 +239,7 @@ typedef enum : NSUInteger
  @discussion This is the designated initializer for programmatic instantiation.
  @return An initialized `MXKRoomInputToolbarView-inherited` object if successful, `nil` otherwise.
  */
-+ (instancetype)roomInputToolbarView;
++ (MXKRoomInputToolbarView *)instantiateRoomInputToolbarView;
 
 /**
  The delegate notified when inputs are ready.
@@ -333,7 +350,7 @@ typedef enum : NSUInteger
  actually used to retrieve the keyboard view. Indeed the keyboard view is the superview of
  the accessory view when the message composer become the first responder.
  */
-@property (readonly) UIView *inputAccessoryView;
+@property UIView *inputAccessoryViewForKeyboard;
 
 /**
  Display the keyboard.
@@ -364,5 +381,7 @@ typedef enum : NSUInteger
  The current attributed text message in message composer.
  */
 @property (nonatomic) NSAttributedString *attributedTextMessage;
+
+- (void)dismissValidationView:(MXKImageView*)validationView;
 
 @end

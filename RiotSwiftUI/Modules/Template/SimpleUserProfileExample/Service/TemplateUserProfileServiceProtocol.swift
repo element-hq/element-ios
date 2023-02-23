@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 protocol TemplateUserProfileServiceProtocol: Avatarable {
     var userId: String { get }
@@ -30,6 +30,7 @@ extension TemplateUserProfileServiceProtocol {
     var mxContentUri: String? {
         avatarUrl
     }
+
     var matrixItemId: String {
         userId
     }

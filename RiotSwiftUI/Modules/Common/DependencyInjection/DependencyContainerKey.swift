@@ -25,7 +25,6 @@ private struct DependencyContainerKey: EnvironmentKey {
     static let defaultValue = DependencyContainer()
 }
 
-@available(iOS 14.0, *)
 extension EnvironmentValues {
     var dependencies: DependencyContainer {
         get { self[DependencyContainerKey.self] }
@@ -33,9 +32,7 @@ extension EnvironmentValues {
     }
 }
 
-@available(iOS 14.0, *)
 extension View {
-    
     /// A modifier for adding a dependency to the SwiftUI view hierarchy's dependency container.
     ///
     /// Important: When adding a dependency to cast it to the type in which it will be injected.

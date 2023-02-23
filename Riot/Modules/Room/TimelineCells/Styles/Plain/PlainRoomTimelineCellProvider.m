@@ -110,7 +110,13 @@
     [self registerPollCellsForTableView:tableView];
     
     [self registerLocationCellsForTableView:tableView];
-        
+    
+    [self registerFileWithoutThumbnailCellsForTableView:tableView];
+    
+    [self registerVoiceBroadcastCellsForTableView:tableView];
+
+    [self registerVoiceBroadcastRecorderCellsForTableView:tableView];
+    
     [tableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
     
     [tableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
@@ -261,6 +267,27 @@
     [tableView registerClass:LocationWithPaginationTitlePlainCell.class forCellReuseIdentifier:LocationWithPaginationTitlePlainCell.defaultReuseIdentifier];
 }
 
+- (void)registerFileWithoutThumbnailCellsForTableView:(UITableView*)tableView
+{
+    [tableView registerClass:FileWithoutThumbnailPlainCell.class forCellReuseIdentifier:FileWithoutThumbnailPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:FileWithoutThumbnailWithoutSenderInfoPlainCell.class forCellReuseIdentifier:FileWithoutThumbnailWithoutSenderInfoPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:FileWithoutThumbnailWithPaginationTitlePlainCell.class forCellReuseIdentifier:FileWithoutThumbnailWithPaginationTitlePlainCell.defaultReuseIdentifier];
+}
+
+- (void)registerVoiceBroadcastCellsForTableView:(UITableView*)tableView
+{
+    [tableView registerClass:VoiceBroadcastPlaybackPlainBubbleCell.class forCellReuseIdentifier:VoiceBroadcastPlaybackPlainBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastPlaybackWithoutSenderInfoPlainCell.class forCellReuseIdentifier:VoiceBroadcastPlaybackWithoutSenderInfoPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastPlaybackWithPaginationTitlePlainCell.class forCellReuseIdentifier:VoiceBroadcastPlaybackWithPaginationTitlePlainCell.defaultReuseIdentifier];
+}
+
+- (void)registerVoiceBroadcastRecorderCellsForTableView:(UITableView*)tableView
+{
+    [tableView registerClass:VoiceBroadcastRecorderPlainBubbleCell.class forCellReuseIdentifier:VoiceBroadcastRecorderPlainBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastRecorderWithoutSenderInfoPlainCell.class forCellReuseIdentifier:VoiceBroadcastRecorderWithoutSenderInfoPlainCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceBroadcastRecorderWithPaginationTitlePlainCell.class forCellReuseIdentifier:VoiceBroadcastRecorderWithPaginationTitlePlainCell.defaultReuseIdentifier];
+}
+
 #pragma mark Cell class association
 
 - (NSDictionary<NSNumber*, Class>*)buildCellClasses
@@ -318,6 +345,12 @@
     
     NSDictionary *locationCellsMapping = [self locationCellsMapping];
     [cellClasses addEntriesFromDictionary:locationCellsMapping];
+    
+    NSDictionary *voiceBroadcastPlaybackCellsMapping = [self voiceBroadcastPlaybackCellsMapping];
+    [cellClasses addEntriesFromDictionary:voiceBroadcastPlaybackCellsMapping];
+    
+    NSDictionary *voiceBroadcastRecorderCellsMapping = [self voiceBroadcastRecorderCellsMapping];
+    [cellClasses addEntriesFromDictionary:voiceBroadcastRecorderCellsMapping];
         
     NSDictionary *othersCells = @{
         @(RoomTimelineCellIdentifierEmpty) : RoomEmptyBubbleCell.class,
@@ -435,13 +468,13 @@
 {
     return @{
         // Clear
-        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnail) : RoomIncomingTextMsgBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithoutSenderInfo) : RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithPaginationTitle) : RoomIncomingTextMsgWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnail) : FileWithoutThumbnailPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithoutSenderInfo) : FileWithoutThumbnailWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailWithPaginationTitle) : FileWithoutThumbnailWithPaginationTitlePlainCell.class,
         // Encrypted
-        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncrypted) : RoomIncomingEncryptedTextMsgBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo) : RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithPaginationTitle) : RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.class
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncrypted) : FileWithoutThumbnailPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo) : FileWithoutThumbnailWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingAttachmentWithoutThumbnailEncryptedWithPaginationTitle) : FileWithoutThumbnailWithPaginationTitlePlainCell.class
     };
 }
 
@@ -449,13 +482,13 @@
 {
     return @{
         // Clear
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnail) : RoomOutgoingTextMsgBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithoutSenderInfo) : RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithPaginationTitle) : RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnail) : FileWithoutThumbnailWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithoutSenderInfo) : FileWithoutThumbnailWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailWithPaginationTitle) : FileWithoutThumbnailWithPaginationTitlePlainCell.class,
         // Encrypted
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncrypted) : RoomOutgoingEncryptedTextMsgBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo) : RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithPaginationTitle) : RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncrypted) : FileWithoutThumbnailWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithoutSenderInfo) : FileWithoutThumbnailWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutThumbnailEncryptedWithPaginationTitle) : FileWithoutThumbnailWithPaginationTitlePlainCell.class
     };
 }
 
@@ -541,5 +574,28 @@
     };
 }
 
+- (NSDictionary<NSNumber*, Class>*)voiceBroadcastPlaybackCellsMapping
+{
+    return @{
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastPlayback) : VoiceBroadcastPlaybackPlainBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastPlaybackWithoutSenderInfo) : VoiceBroadcastPlaybackWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceBroadcastPlaybackWithPaginationTitle) : VoiceBroadcastPlaybackWithPaginationTitlePlainCell.class,
+        // Outoing
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlayback) : VoiceBroadcastPlaybackPlainBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlaybackWithoutSenderInfo) : VoiceBroadcastPlaybackWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastPlaybackWithPaginationTitle) : VoiceBroadcastPlaybackWithPaginationTitlePlainCell.class
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)voiceBroadcastRecorderCellsMapping
+{
+    return @{
+        // Outoing
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorder) : VoiceBroadcastRecorderPlainBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithoutSenderInfo) : VoiceBroadcastRecorderWithoutSenderInfoPlainCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceBroadcastRecorderWithPaginationTitle) : VoiceBroadcastRecorderWithPaginationTitlePlainCell.class
+    };
+}
 
 @end

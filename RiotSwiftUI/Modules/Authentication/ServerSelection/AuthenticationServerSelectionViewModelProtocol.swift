@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +17,7 @@
 import Foundation
 
 protocol AuthenticationServerSelectionViewModelProtocol {
-    
-    @MainActor var callback: ((AuthenticationServerSelectionViewModelResult) -> Void)? { get set }
+    var callback: (@MainActor (AuthenticationServerSelectionViewModelResult) -> Void)? { get set }
     var context: AuthenticationServerSelectionViewModelType.Context { get }
     
     /// Displays an error to the user.

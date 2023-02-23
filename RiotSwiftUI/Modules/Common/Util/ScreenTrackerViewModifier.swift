@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// `ScreenTrackerViewModifier` is a helper class used to track PostHog screen from SwiftUI screens.
 struct ScreenTrackerViewModifier: ViewModifier {
     let screen: AnalyticsScreen
@@ -32,9 +31,8 @@ struct ScreenTrackerViewModifier: ViewModifier {
     }
 }
 
-@available(iOS 14.0, *)
 extension View {
     func track(screen: AnalyticsScreen) -> some View {
-        return self.modifier(ScreenTrackerViewModifier(screen: screen))
+        modifier(ScreenTrackerViewModifier(screen: screen))
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +16,8 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// A visual cue to user that something is in progress.
 struct ActivityIndicator: View {
-    
     private enum Constants {
         static let backgroundColor = Color(UIColor(white: 0.8, alpha: 0.9))
     }
@@ -30,11 +28,9 @@ struct ActivityIndicator: View {
             .padding()
             .background(Constants.backgroundColor)
             .cornerRadius(5)
-            
     }
 }
 
-@available(iOS 14.0, *)
 struct ActivityIndicator_Previews: PreviewProvider {
     static var previews: some View {
         Group {

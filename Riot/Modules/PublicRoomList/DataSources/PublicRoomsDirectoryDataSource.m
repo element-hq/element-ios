@@ -299,7 +299,7 @@ static NSString *const kNSFWKeyword = @"nsfw";
         {
             typeof(self) self = weakSelf;
 
-            if (!newPublicRoomsRequest || newPublicRoomsRequest.isCancelled)
+            if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled)
             {
                 // Do not take into account error coming from a cancellation
                 return;

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationTermsListItem: View {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -53,7 +52,7 @@ struct AuthenticationTermsListItem: View {
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.primaryContent)
                 
-                Text(policy.description)
+                Text("STVDIO SPACE")
                     .font(theme.fonts.subheadline)
                     .foregroundColor(theme.colors.tertiaryContent)
             }
@@ -77,10 +76,10 @@ struct AuthenticationTermsListItem: View {
 struct Previews_AuthenticationTermsListItem_Previews: PreviewProvider {
     static var unaccepted = AuthenticationTermsPolicy(url: "",
                                                       title: "Terms and Conditions",
-                                                      description: "matrix.org")
+                                                      subtitle: "matrix.org")
     static var accepted = AuthenticationTermsPolicy(url: "",
                                                     title: "Terms and Conditions",
-                                                    description: "matrix.org",
+                                                    subtitle: "matrix.org",
                                                     accepted: true)
     static var previews: some View {
         VStack(spacing: 0) {

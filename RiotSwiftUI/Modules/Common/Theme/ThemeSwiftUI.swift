@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +14,9 @@
 // limitations under the License.
 //
 
-import Foundation
 import DesignKit
+import Foundation
 
-@available(iOS 14.0, *)
 protocol ThemeSwiftUI: ThemeSwiftUIType {
     var identifier: ThemeIdentifier { get }
     var isDark: Bool { get }

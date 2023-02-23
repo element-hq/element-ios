@@ -27,6 +27,8 @@ import Foundation
     case lowPriority
     case serverNotice
     case suggestedRooms
+    case breadcrumbs
     case searchedRoom
+    case allChats
     case unknown
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,9 +20,7 @@ import SwiftUI
 ///
 /// Also renders an optional bottom section.
 /// Used in the case of keywords, for the keyword chips and input.
-@available(iOS 14.0, *)
 struct NotificationSettings<BottomSection: View>: View {
-    
     @ObservedObject var viewModel: NotificationSettingsViewModel
     
     var bottomSection: BottomSection?
@@ -45,14 +43,12 @@ struct NotificationSettings<BottomSection: View>: View {
     }
 }
 
-@available(iOS 14.0, *)
 extension NotificationSettings where BottomSection == EmptyView {
     init(viewModel: NotificationSettingsViewModel) {
         self.init(viewModel: viewModel, bottomSection: nil)
     }
 }
 
-@available(iOS 14.0, *)
 struct NotificationSettings_Previews: PreviewProvider {
     static var previews: some View {
         Group {

@@ -71,7 +71,15 @@ final class PinCodePreferences: NSObject {
     }
     
     var isBiometricsAvailable: Bool {
-        return LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        var error: NSError?
+        let result = LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+        
+        // While in lockout they're still techincally available
+        if error?.code == LAError.Code.biometryLockout.rawValue {
+            return true
+        }
+        
+        return result
     }
     
     /// Allowed number of PIN trials before showing forgot help alert
@@ -127,6 +135,10 @@ final class PinCodePreferences: NSObject {
     
     var canUseBiometricsToUnlock: Bool? {
         get {
+            guard isBiometricsAvailable == true else {
+                return false
+            }
+            
             do {
                 return try store.bool(forKey: StoreKeys.canUseBiometricsToUnlock)
             } catch let error {

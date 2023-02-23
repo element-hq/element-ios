@@ -237,6 +237,7 @@ static BOOL _disableLongPressGestureOnEvent;
     [tapGesture setDelegate:self];
     [self.messageTextView addGestureRecognizer:tapGesture];
     self.messageTextView.userInteractionEnabled = YES;
+    self.messageTextView.clipsToBounds = NO;
     
     // Recognise and make tappable phone numbers, address, etc.
     self.messageTextView.dataDetectorTypes = UIDataDetectorTypeAll;
@@ -497,16 +498,7 @@ static BOOL _disableLongPressGestureOnEvent;
             // Display sender's name except if the name appears in the displayed text (see emote and membership events)
             if (bubbleData.shouldHideSenderName == NO)
             {
-                if (bubbleData.senderFlair)
-                {
-                    [self renderSenderFlair];
-                }
-                else
-                {
-                    self.userNameLabel.text = bubbleData.senderDisplayName;
-                }
-                
-                
+                self.userNameLabel.text = bubbleData.senderDisplayName;
                 self.userNameLabel.hidden = NO;
                 self.userNameTapGestureMaskView.userInteractionEnabled = YES;
             }
@@ -800,75 +792,6 @@ static BOOL _disableLongPressGestureOnEvent;
     mxkCellData = cellData;
 }
 
-- (void)renderSenderFlair
-{
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@  ", bubbleData.senderDisplayName]];
-    
-    NSUInteger index = 0;
-    
-    for (MXGroup *group in bubbleData.senderFlair)
-    {
-        NSString *mxcAvatarURI = group.profile.avatarUrl;
-        NSString *cacheFilePath = [MXMediaManager thumbnailCachePathForMatrixContentURI:mxcAvatarURI andType:@"image/jpeg" inFolder:kMXMediaManagerDefaultCacheFolder toFitViewSize:CGSizeMake(12, 12) withMethod:MXThumbnailingMethodCrop];
-        
-        // Check whether the avatar url is valid
-        if (cacheFilePath)
-        {
-            UIImage *image = [MXMediaManager loadThroughCacheWithFilePath:cacheFilePath];
-            if (image)
-            {
-                NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
-                textAttachment.image = [MXKTools resizeImageWithRoundedCorners:image toSize:CGSizeMake(12, 12)];
-                NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
-                [attributedString appendAttributedString:attrStringWithImage];
-                [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
-            }
-            else
-            {
-                NSString *downloadId = [MXMediaManager thumbnailDownloadIdForMatrixContentURI:mxcAvatarURI
-                                                                                     inFolder:kMXMediaManagerDefaultCacheFolder
-                                                                                toFitViewSize:CGSizeMake(12, 12)
-                                                                                   withMethod:MXThumbnailingMethodCrop];
-                // Check whether the download is in progress.
-                MXMediaLoader* loader = [MXMediaManager existingDownloaderWithIdentifier:downloadId];
-                if (loader)
-                {
-                    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXMediaLoaderStateDidChangeNotification object:loader];
-                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFlairDownloadStateChange:) name:kMXMediaLoaderStateDidChangeNotification object:loader];
-                }
-                else
-                {
-                    MXWeakify(self);
-                    [bubbleData.mxSession.mediaManager downloadThumbnailFromMatrixContentURI:mxcAvatarURI
-                                                                                    withType:@"image/jpeg"
-                                                                                    inFolder:kMXMediaManagerDefaultCacheFolder
-                                                                               toFitViewSize:CGSizeMake(12, 12)
-                                                                                  withMethod:MXThumbnailingMethodCrop
-                                                                                     success:^(NSString *outputFilePath) {
-                                                                                         // Refresh sender flair
-                                                                                         MXStrongifyAndReturnIfNil(self);
-                                                                                         [self renderSenderFlair];
-                                                                                     }
-                                                                                     failure:nil];
-                }
-            }
-            
-            index++;
-            if (index == 3)
-            {
-                if (bubbleData.senderFlair.count > 3)
-                {
-                    NSAttributedString *more = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"+%tu", (bubbleData.senderFlair.count - 3)] attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:11.0], NSBaselineOffsetAttributeName:@(+2)}];
-                    [attributedString appendAttributedString:more];
-                }
-                break;
-            }
-        }
-    }
-    
-    self.userNameLabel.attributedText = attributedString;
-}
-
 - (void)renderGif
 {
     if (self.attachmentView && bubbleData.attachment)
@@ -883,7 +806,7 @@ static BOOL _disableLongPressGestureOnEvent;
             mimetype = bubbleData.attachment.contentInfo[@"mimetype"];
         }
         
-        if ([mimetype isEqualToString:@"image/gif"])
+        if ([mimetype isKindOfClass:[NSString class]] && [mimetype isEqualToString:@"image/gif"])
         {
             if (_isAutoAnimatedGif)
             {
@@ -1077,6 +1000,12 @@ static BOOL _disableLongPressGestureOnEvent;
     
     NSArray *bubbleComponents = bubbleData.bubbleComponents;
     
+    if (bubbleComponents.count == 1) {
+        return bubbleComponents.firstObject;
+    }
+    
+    // The position check below fails for bubble data with a single component when message
+    // bubbles are enabled, thus the early bailout above
     for (MXKRoomBubbleComponent *component in bubbleComponents)
     {
         // Ignore components without display (For example redacted event or state events)
@@ -1279,23 +1208,6 @@ static BOOL _disableLongPressGestureOnEvent;
         case MXMediaLoaderStateCancelled:
             [self stopProgressUI];
             // remove the observer
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXMediaLoaderStateDidChangeNotification object:loader];
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)onFlairDownloadStateChange:(NSNotification *)notif
-{
-    MXMediaLoader *loader = (MXMediaLoader*)notif.object;
-    switch (loader.state) {
-        case MXMediaLoaderStateDownloadCompleted:
-            [self renderSenderFlair];
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXMediaLoaderStateDidChangeNotification object:loader];
-            break;
-        case MXMediaLoaderStateDownloadFailed:
-        case MXMediaLoaderStateCancelled:
             [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXMediaLoaderStateDidChangeNotification object:loader];
             break;
         default:
@@ -1556,38 +1468,20 @@ static NSMutableDictionary *childClasses;
             associatedEvent = bubbleComponent.event;
         }
         
+        // Tapping a file attachment who's name triggers a data detector will try to open that URL.
+        // Detect this and instead map the interaction into a tap on the cell.
+        if (associatedEvent.isMediaAttachment)
+        {
+            [delegate cell:self didRecognizeAction:kMXKRoomBubbleCellTapOnAttachmentView userInfo:nil];
+            return NO;
+        }
+        
         // Ask the delegate if iOS can open the link
         shouldInteractWithURL = [self shouldInteractWithURL:URL urlItemInteraction:interaction associatedEvent:associatedEvent];
     }
     
     return shouldInteractWithURL;
 }
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-implementations"
-// Delegate method only called on iOS 9. iOS 10+ use method above.
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
-{
-    BOOL shouldInteractWithURL = YES;
-    
-    if (delegate && URL)
-    {
-        MXEvent *associatedEvent;
-        
-        if ([textView isMemberOfClass:[MXKMessageTextView class]])
-        {
-            MXKMessageTextView *mxkMessageTextView = (MXKMessageTextView *)textView;
-            MXKRoomBubbleComponent *bubbleComponent = [self closestBubbleComponentAtPosition:mxkMessageTextView.lastHitTestLocation];
-            associatedEvent = bubbleComponent.event;
-        }
-        
-        // Ask the delegate if iOS can open the link
-        shouldInteractWithURL = [self shouldInteractWithURL:URL urlItemInteractionValue:@(0) associatedEvent:associatedEvent];
-    }
-    
-    return shouldInteractWithURL;
-}
-#pragma clang diagnostic pop
 
 #pragma mark - WKNavigationDelegate
 

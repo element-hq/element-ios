@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,12 @@ enum MockTemplateUserProfileScreenState: MockScreenState, CaseIterable {
     static var allCases: [MockTemplateUserProfileScreenState] {
         // Each of the presence statuses
         TemplateUserProfilePresence.allCases.map(MockTemplateUserProfileScreenState.presence)
-        // A long display name
-        + [.longDisplayName("Somebody with a super long name we would like to test")]
+            // A long display name
+            + [.longDisplayName("Somebody with a super long name we would like to test")]
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
+    var screenView: ([Any], AnyView) {
         let service: MockTemplateUserProfileService
         switch self {
         case .presence(let presence):

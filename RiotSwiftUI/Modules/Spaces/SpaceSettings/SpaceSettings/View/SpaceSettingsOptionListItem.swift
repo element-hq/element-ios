@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct SpaceSettingsOptionListItem: View {
-    
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
@@ -85,9 +83,7 @@ struct SpaceSettingsOptionListItem: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct SpaceSettingsOptionListItem_Previews: PreviewProvider {
-    
     static var previews: some View {
         sampleView.theme(.light).preferredColorScheme(.light)
         sampleView.theme(.dark).preferredColorScheme(.dark)
@@ -102,5 +98,4 @@ struct SpaceSettingsOptionListItem_Previews: PreviewProvider {
                 .disabled(true)
         }
     }
-
 }

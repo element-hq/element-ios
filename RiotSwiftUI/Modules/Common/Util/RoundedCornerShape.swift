@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,9 +17,7 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RoundedCornerShape: Shape {
-
     let radius: CGFloat
     let corners: UIRectCorner
 

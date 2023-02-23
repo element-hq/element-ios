@@ -30,5 +30,18 @@ extension UIScrollView {
             self.scrollRectToVisible(rect, animated: animated)
         }
     }
+
+    /// Scroll to bottom of the receiver.
+    /// - Parameter animated: animate the scroll
+    @objc func vc_scrollToBottom(animated: Bool = true) {
+        guard contentSize.height >= bounds.height else {
+            return
+        }
+        let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.height + contentInset.bottom)
+        if contentOffset != bottomOffset {
+            //  scroll only if not already there
+            setContentOffset(bottomOffset, animated: animated)
+        }
+    }
     
 }

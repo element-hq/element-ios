@@ -140,7 +140,16 @@ final class SpaceExploreRoomViewController: UIViewController {
                 self?.cancelButtonAction()
             }
             
-            self.navigationItem.leftBarButtonItem = cancelBarButtonItem
+            let longTitleLabel = UILabel()
+                longTitleLabel.text = "STVDIO SPACE"
+                longTitleLabel.font = UIFont(name: "Semibold", size: 15)
+                longTitleLabel.textColor = .white
+//                longTitleLabel.sizeToFit()
+
+            let leftItem = UIBarButtonItem(customView: longTitleLabel)
+                self.navigationItem.leftBarButtonItem = leftItem
+            
+//            self.navigationItem.leftBarButtonItem = cancelBarButtonItem
         }
 
         self.vc_removeBackTitle()

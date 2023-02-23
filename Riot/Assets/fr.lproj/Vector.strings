@@ -130,8 +130,8 @@
 "directory_cell_title" = "Parcourir le répertoire";
 "directory_cell_description" = "%tu salons";
 "directory_search_results_title" = "Parcourir les résultats dans le répertoire";
-"directory_search_results" = "%tu résultats trouvés pour %@";
-"directory_search_results_more_than" = ">%tu résultats trouvés pour %@";
+"directory_search_results" = "%1$tu résultats trouvés pour %2$@";
+"directory_search_results_more_than" = ">%1$tu résultats trouvés pour %2$@";
 "directory_searching_title" = "Recherche dans le répertoire…";
 "directory_search_fail" = "Impossible de récupérer les données";
 // Contacts
@@ -292,10 +292,10 @@
 "settings_send_crash_report" = "Envoyer des rapports d’anomalies anonymes et des statistiques d’utilisation";
 "settings_enable_rageshake" = "Secouer l’appareil pour signaler un bug";
 "settings_clear_cache" = "Vider le cache";
-"settings_change_password" = "Changer le mot de passe de votre compte Matrix";
-"settings_old_password" = "ancien mot de passe";
-"settings_new_password" = "nouveau mot de passe";
-"settings_confirm_password" = "confirmer le mot de passe";
+"settings_change_password" = "Changer mon mot de passe";
+"settings_old_password" = "Ancien mot de passe";
+"settings_new_password" = "Nouveau mot de passe";
+"settings_confirm_password" = "Confirmer le mot de passe";
 "settings_fail_to_update_password" = "Échec de la modification du mot de passe du compte Matrix";
 "settings_password_updated" = "Le mot de passe de votre compte Matrix a été modifié";
 "settings_crypto_device_name" = "Nom de la session : ";
@@ -511,7 +511,7 @@
 "room_action_send_photo_or_video" = "Envoyer une photo ou une vidéo";
 "room_action_send_sticker" = "Envoyer un autocollant";
 "settings_deactivate_account" = "DÉSACTIVER LE COMPTE";
-"settings_deactivate_my_account" = "Désactiver mon compte";
+"settings_deactivate_my_account" = "Désactiver le compte pour toujours";
 "widget_sticker_picker_no_stickerpacks_alert" = "Vous n’avez aucun jeu d’autocollants activé.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "En ajouter maintenant ?";
 "deactivate_account_title" = "Désactiver le compte";
@@ -1044,7 +1044,7 @@
 "security_settings_crosssigning_reset" = "Réinitialiser";
 "security_settings_crosssigning_complete_security" = "Compléter la sécurité";
 "security_settings_complete_security_alert_title" = "Améliorer la sécurité";
-"security_settings_complete_security_alert_message" = "Vous devriez d’abord améliorer la sécurité de votre session actuelle.";
+"security_settings_complete_security_alert_message" = "Vous devriez d’abord améliorer la sécurité de la session courante.";
 "security_settings_coming_soon" = "Désolé, cette action n’est pas encore disponible dans %@ iOS. Utilisez un autre client Matrix pour le configurer. %@ iOS l’utilisera.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Vérifier cette connexion";
 "device_verification_self_verify_wait_additional_information" = "Ceci fonctionne avec %@ ou un autre client Matrix prenant en charge la signature croisée.";
@@ -1208,19 +1208,19 @@
 
 "room_info_list_one_member" = "1 membre";
 "create_room_placeholder_address" = "#salondetest:matrix.org";
-"create_room_section_header_address" = "Adresse du salon";
-"create_room_show_in_directory" = "Publier le salon dans le répertoire";
+"create_room_section_header_address" = "ADRESSE";
+"create_room_show_in_directory" = "Afficher le salon dans le répertoire";
 "create_room_section_footer_type" = "Les personnes ne rejoignent un salon privé que sur invitation.";
-"create_room_type_public" = "Salon public";
-"create_room_type_private" = "Salon privé";
-"create_room_section_header_type" = "Type de salon";
+"create_room_type_public" = "Salon public (tout le monde)";
+"create_room_type_private" = "Salon privé (seulement sur invitation)";
+"create_room_section_header_type" = "QUI PEUT Y ACCÉDER";
 "create_room_section_footer_encryption" = "Le chiffrement ne peut pas être désactivé ensuite.";
 "create_room_enable_encryption" = "Activer le chiffrement";
-"create_room_section_header_encryption" = "Chiffrement du salon";
-"create_room_placeholder_topic" = "Sujet";
-"create_room_section_header_topic" = "Sujet du salon (facultatif)";
+"create_room_section_header_encryption" = "Chiffrement";
+"create_room_placeholder_topic" = "De quoi parle ce salon ?";
+"create_room_section_header_topic" = "SUJET (facultatif)";
 "create_room_placeholder_name" = "Nom";
-"create_room_section_header_name" = "Nom du salon";
+"create_room_section_header_name" = "NOM";
 
 // MARK: - Create Room
 
@@ -1663,13 +1663,13 @@
 "home_context_menu_normal_priority" = "Priorité normale";
 "home_context_menu_low_priority" = "Basse priorité";
 "onboarding_use_case_title" = "À qui allez-vous le plus parler ?";
-"onboarding_use_case_message" = "Nous allons vous aider à vous connecter.";
+"onboarding_use_case_message" = "Nous allons vous aider à vous connecter";
 "onboarding_use_case_personal_messaging" = "Famille et amis";
 "onboarding_use_case_work_messaging" = "Équipes";
 "onboarding_use_case_community_messaging" = "Communautés";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "Pas encore sûr ? Vous pouvez %@";
-"onboarding_use_case_skip_button" = "passer cette question";
+"onboarding_use_case_not_sure_yet" = "Pas encore sûr ? %@";
+"onboarding_use_case_skip_button" = "Passer cette question";
 "onboarding_use_case_existing_server_message" = "Vous cherchez à joindre un serveur existant ?";
 "onboarding_use_case_existing_server_button" = "Se connecter au serveur";
 "search_filter_placeholder" = "Filtrer";
@@ -2142,3 +2142,476 @@
 "room_participants_leave_processing" = "Départ";
 "notice_error_unformattable_event" = "** Impossible d’afficher le message. Merci de signaler une erreur";
 "home_syncing" = "Synchronisation";
+"room_details_access_row_title" = "Accéder";
+"settings_presence_offline_mode_description" = "Si active, vous apparaîtrez toujours hors-ligne aux autres utilisateurs, même lorsque vous utilisez l’application.";
+"settings_presence_offline_mode" = "Mode hors-ligne";
+"settings_presence" = "Présence";
+"settings_labs_enable_auto_report_decryption_errors" = "Rapports automatiques d’erreurs de déchiffrement";
+"room_preview_decline_invitation_options" = "Voulez-vous ignorer l’invitation ou ignorer l’utilisateur ?";
+"threads_discourage_information_2" = "\n\nVoulez-vous tout de même activer les fils de discussion ?";
+"threads_discourage_information_1" = "Votre serveur d’accueil ne prend pas en charge les fils de discussion, cette fonctionnalité pourrait ne pas être fiable. Certains messages dans les fils pourraient ne pas s’afficher. ";
+"threads_beta_cancel" = "Pas maintenant";
+"threads_beta_enable" = "Essayer";
+"threads_beta_information_link" = "En apprendre plus";
+"threads_beta_information" = "Gardez vos conversations organisées avec les fils de discussion.\n\nLes fils de discussion cadrent les conversations et permettent de s’y retrouver plus facilement. ";
+"threads_beta_title" = "Fils de discussion";
+"threads_notice_done" = "Compris";
+"threads_notice_information" = "Tous les fils de discussion créés pendant la période d’expérimentation seront désormais <b>affichés comme de simples réponses</b>.<br/><br/>Il s’agit d’une transition unique puisque les fils de discussion font désormais partie de la spécification Matrix.";
+"threads_notice_title" = "Les fils de discussions ne sont plus une fonctionnalité expérimentale 🎉";
+"room_participants_invite_prompt_to_msg" = "Êtes vous sûr de vouloir inviter %@ dans %@ ?";
+"onboarding_celebration_button" = "C’est parti";
+"onboarding_celebration_message" = "Rendez vous dans les paramètres pour mettre à jour votre profil";
+"onboarding_celebration_title" = "Parfait !";
+"onboarding_avatar_accessibility_label" = "Photo de profil";
+"onboarding_avatar_message" = "Donnons un visage à ce nom";
+"onboarding_avatar_title" = "Ajoutez un photo de profil";
+"onboarding_display_name_max_length" = "Votre nom d’affichage doit faire moins de 256 caractères";
+"onboarding_display_name_hint" = "Vous pouvez le changer plus tard";
+"onboarding_display_name_placeholder" = "Nom d’affichage";
+"onboarding_display_name_message" = "Il sera affiché lorsque vous envoyez des messages.";
+"onboarding_display_name_title" = "Choisissez un nom d’affichage";
+"onboarding_personalization_skip" = "Passer cette étape";
+"onboarding_personalization_save" = "Enregistrer et poursuivre";
+"onboarding_congratulations_home_button" = "Aller à l’écran d’accueil";
+"onboarding_congratulations_personalize_button" = "Personnaliser le profil";
+/* The placeholder string contains the user's matrix ID */
+"onboarding_congratulations_message" = "Votre compte %@ a été créé";
+"onboarding_congratulations_title" = "Félicitations !";
+"saving" = "Enregistrement";
+
+// Activities
+"loading" = "Chargement";
+"confirm" = "Confirmer";
+"edit" = "Modifier";
+"suggest" = "Suggérer";
+"add" = "Ajouter";
+"existing" = "Existant";
+"new_word" = "Nouveau";
+"stop" = "Arrêter";
+"create_room_processing" = "Création du salon";
+"create_room_suggest_room" = "Suggérer aux membres de l'espace";
+"create_room_section_footer_type_restricted" = "Peut être trouvé et rejoins par tous les membres de l'espace.";
+"create_room_section_footer_type_private" = "Peut être trouvé et rejoins uniquement par les personnes invitées.";
+"create_room_type_restricted" = "Membres de l'espace";
+"call_jitsi_unable_to_start" = "Impossible de démarrer la conférence";
+"room_suggestion_settings_screen_message" = "Les salons suggérés sont indiqués comme intéressant à rejoindre auprès des membres de l'espace.";
+"room_suggestion_settings_screen_title" = "Suggérer un salon dans un espace";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "Suggérer un salon";
+"room_access_space_chooser_other_spaces_section" = "Autres espaces ou salons";
+"room_access_space_chooser_known_spaces_section" = "Espaces que vous connaissez contenant %@";
+"room_access_settings_screen_setting_room_access" = "Réglages des permissions d'accès au salon";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Inviter automatiquement les membres dans les nouveaux salons";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "N'importe qui présent dans l'espace parent pourra trouver et rejoindre ce salon - pas besoin d'inviter tout le monde manuellement. Vous pouvez changer cette option dans les réglages du salon en tout temps.";
+"room_access_settings_screen_upgrade_alert_message" = "N'importe qui dans %@ pourra trouver et rejoindre ce salon - pas besoin d'inviter tout le monde manuellement. Vous pouvez changer cette option dans les réglages du salon en tout temps.";
+"room_access_settings_screen_public_message" = "Peut être trouvé et rejoint par n'importe qui.";
+"room_access_settings_screen_edit_spaces" = "Editer les espaces";
+"room_access_settings_screen_restricted_message" = "Peut être trouvé et rejoint par n'importe qui dans l'espace.\nVous allez devoir préciser depuis quel espace.";
+"room_access_settings_screen_private_message" = "Peut être trouvé et rejoint uniquement par les personnes invitées.";
+"room_access_settings_screen_message" = "Définir qui peut trouver et rejoindre %@.";
+"room_access_settings_screen_title" = "Qui peut accéder à ce salon ?";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "Permissions du salon";
+"room_details_promote_room_suggest_title" = "Proposer aux membres de l'espace";
+"room_details_promote_room_title" = "Promouvoir le salon";
+"settings_labs_enable_live_location_sharing" = "Partage de votre localisation en temps réel - partager votre géolocalisation actuelle (actuellement en développement, et de manière temporaire la géolocalisation persiste dans l’historique du salon)";
+"settings_ui_show_redactions_in_room_history" = "Afficher un message générique à la place de messages supprimés";
+"authentication_verify_msisdn_waiting_title" = "Surveillez vos messages";
+"room_accessibility_record_voice_message_hint" = "Appuyez deux fois et maintenez pour enregistrer.";
+"room_accessibility_record_voice_message" = "Enregistrer un message vocal";
+"password_validation_error_contain_symbol" = "Contient un symbole.";
+"password_validation_error_contain_number" = "Contient un chiffre.";
+"password_validation_error_contain_uppercase_letter" = "Contient une lettre majuscule.";
+"password_validation_error_contain_lowercase_letter" = "Contient une lettre minuscule.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "Pas plus de %d caractères.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "Au moins %d caractères.";
+"password_validation_error_header" = "Le mot de passe ne respecte pas les règles ci-dessous :";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Votre mot de passe doit respecter les règles ci-dessous :";
+"authentication_recaptcha_title" = "Êtes-vous un humain ?";
+"authentication_terms_policy_url_error" = "Impossible de trouver la politique sélectionnée. Veuillez réessayer plus tard.";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "Veuillez lire les conditions d’utilisation de %@";
+"authentication_terms_title" = "Politiques de confidentialité";
+"authentication_verify_msisdn_invalid_phone_number" = "Numéro de téléphone invalide";
+"authentication_verify_msisdn_waiting_button" = "Renvoyer le code";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "Un code a été envoyé à %@";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Code de confirmation";
+"authentication_verify_msisdn_text_field_placeholder" = "Numéro de téléphone";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ doit vérifier votre compte";
+"authentication_verify_msisdn_input_title" = "Saisissez votre numéro de téléphone";
+"authentication_choose_password_submit_button" = "Réinitialiser le mot de passe";
+"authentication_choose_password_signout_all_devices" = "Déconnecter tous les appareils";
+"authentication_choose_password_text_field_placeholder" = "Nouveau mot de passe";
+"authentication_choose_password_input_message" = "Assurez-vous qu’il fait 8 caractères ou plus";
+"authentication_choose_password_input_title" = "Choisissez un nouveau mot de passe";
+"authentication_forgot_password_waiting_button" = "Renvoyer l’email";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Suivez les instructions envoyées à %@";
+"authentication_forgot_password_waiting_title" = "Relevez vos e-mails.";
+"authentication_forgot_password_text_field_placeholder" = "E-mail";
+"authentication_verify_email_waiting_title" = "Surveillez votre boîte de réception.";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@ va vous envoyer un lien de vérification";
+"authentication_forgot_password_input_title" = "Entrez votre adresse e-mail";
+"authentication_verify_email_waiting_button" = "Renvoyer l’e-mail";
+"authentication_verify_email_waiting_hint" = "Vous n’avez pas reçu l’e-mail ?";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "Suivez les instructions envoyées à %@";
+"authentication_verify_email_text_field_placeholder" = "E-mail";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ doit vérifier votre compte";
+"authentication_verify_email_input_title" = "Entrez votre e-mail";
+"authentication_cancel_flow_confirmation_message" = "Votre compte n’a pas encore été créé. Interrompre le processus de création ?";
+"authentication_server_selection_generic_error" = "Impossible de trouver un serveur à cette URL, vérifiez qu’elle est correcte.";
+"authentication_server_selection_server_url" = "URL du serveur d’accueil";
+"authentication_server_selection_register_message" = "Quelle est l’adresse de votre serveur ? C’est l’endroit où vos données seront stockées";
+"authentication_server_selection_register_title" = "Choisissez votre serveur d’accueil";
+"authentication_server_selection_login_message" = "Quelle est l’adresse de votre serveur ?";
+"authentication_server_info_title_login" = "Où seront vos conversations";
+"authentication_login_forgot_password" = "Mot de passe oublié";
+"authentication_login_username" = "Nom d’utilisateur / Email / Numéro de téléphone";
+"authentication_login_title" = "Contents de vous retrouver !";
+"authentication_server_info_title" = "Où seront vous conversations";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Les autres peuvent vous trouver %@";
+"authentication_registration_password_footer" = "Le mot de passe doit contenir au moins 8 caractères";
+"authentication_registration_username_footer" = "Vous ne pourrez pas le changer par la suite";
+"authentication_registration_username" = "Nom d'utilisateur.ice";
+
+// MARK: Authentication
+"authentication_registration_title" = "Créez votre compte";
+"room_access_settings_screen_upgrade_alert_title" = "Mettre à niveau le salon";
+"room_access_settings_screen_upgrade_required" = "Mise à niveau requise";
+"location_sharing_allow_background_location_message" = "Si vous voulez partager votre localisation en temps réel, Element doit avoir accès à vos données de localisation lorsque l’application est en arrière-plan. Pour lui donner accès, rendez-vous dans Réglages > Position et sélectionnez Toujours";
+"settings_timeline" = "HISTORIQUE";
+"authentication_server_selection_login_title" = "Connexion à un serveur d’accueil";
+"message_reply_to_sender_sent_their_live_location" = "Localisation en temps réel.";
+"room_displayname_more_than_two_members" = "%@ et %@ autres";
+"ignore_user" = "Ignorer l’utilisateur";
+"location_sharing_live_lab_promotion_activation" = "Activer le partage de localisation en temps réel";
+"location_sharing_live_lab_promotion_text" = "Pour information : il s’agit d’une fonctionnalité expérimentale et d’une implémentation temporaire qui rend votre historique de localisation visible de manière permanente à toutes les autres personnes dans le salon.";
+"location_sharing_live_lab_promotion_title" = "Partage de localisation en temps réel";
+"location_sharing_live_stop_sharing_progress" = "Arrêter de partager ma localisation";
+"location_sharing_live_stop_sharing_error" = "Échec de l’arrêt du partage de la localisation";
+"location_sharing_live_no_user_locations_error_title" = "Aucune localisation d’utilisateur disponible";
+"location_sharing_live_timer_selector_long" = "pour 8 heures";
+"location_sharing_live_timer_selector_medium" = "pour 1 heure";
+"location_sharing_live_timer_selector_short" = "pour 15 minutes";
+"location_sharing_live_timer_selector_title" = "Choisissez pour combien de temps les autres peuvent voir votre localisation précise.";
+"location_sharing_live_error" = "Erreur de localisation en temps réel";
+"location_sharing_live_loading" = "Chargement de la localisation en temps réel…";
+"location_sharing_live_timer_incoming" = "Partage jusqu’à %@";
+"location_sharing_live_list_item_stop_sharing_action" = "Arrêter";
+"location_sharing_live_list_item_current_user_display_name" = "Vous";
+"location_sharing_live_list_item_last_update_invalid" = "Dernière mise à jour inconnue";
+"location_sharing_live_list_item_last_update" = "Mis à jour il y a %@";
+"location_sharing_live_list_item_sharing_expired" = "Partage expiré";
+"location_sharing_live_list_item_time_left" = "%@ restant";
+"location_sharing_live_viewer_title" = "Localisation";
+"location_sharing_live_map_callout_title" = "Partager la localisation";
+"location_sharing_pin_drop_share_title" = "Envoyer cette localisation";
+"location_sharing_static_share_title" = "Envoyer ma localisation actuelle";
+"live_location_sharing_banner_stop" = "Arrêter";
+"live_location_sharing_ended" = "Localisation en temps réel désactivée";
+"live_location_sharing_banner_title" = "Localisation en temps réel activée";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "Partager la localisation en temps réel";
+"location_sharing_map_credits_title" = "© Copyright";
+"location_sharing_allow_background_location_cancel_action" = "Pas maintenant";
+"location_sharing_allow_background_location_validate_action" = "Paramètres";
+"location_sharing_allow_background_location_title" = "Autoriser l’accès";
+"location_sharing_post_failure_subtitle" = "%@ n’a pas pu envoyer votre localisation. Veuillez réessayer plus tard.";
+"side_menu_coach_message" = "Balayez vers la droite ou appuyez pour voir tous les salons";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ de plus";
+"leave_space_selection_no_rooms" = "Ne sélectionner aucun salon";
+"leave_space_selection_all_rooms" = "Sélectionner tous les salons";
+"leave_space_selection_title" = "SÉLECTIONNER LES SALONS";
+"leave_space_and_more_rooms" = "Quitter l’espace et %@ salons";
+"leave_space_and_one_room" = "Quitter l’espace et 1 salon";
+
+// Mark: Leave space
+
+"leave_space_action" = "Quitter l’espace";
+"spaces_add_room_missing_permission_message" = "Vous n’avez pas la permission d’ajouter des salons à cet espace.";
+"spaces_creation_in_one_space" = "dans 1 espace";
+"spaces_creation_in_many_spaces" = "dans %@ espaces";
+"spaces_creation_in_spacename_plus_many" = "dans %@ et %@ autres espaces";
+"spaces_creation_in_spacename_plus_one" = "dans %@ et un autre espace";
+"spaces_creation_in_spacename" = "dans %@";
+"spaces_creation_post_process_inviting_users" = "Invitation de %@ utilisateurs";
+"spaces_creation_post_process_adding_rooms" = "Ajout de %@ salons";
+"spaces_creation_post_process_creating_room" = "Création de %@";
+"spaces_creation_post_process_uploading_avatar" = "Envoi de l’avatar";
+"spaces_creation_post_process_creating_space_task" = "Création de %@";
+"spaces_creation_post_process_creating_space" = "Création de l’espace";
+"spaces_creation_invite_by_username_message" = "Vous pouvez aussi les inviter plus tard.";
+"spaces_creation_invite_by_username_title" = "Inviter votre équipe";
+"spaces_creation_invite_by_username" = "Inviter par nom d’utilisateur";
+"spaces_creation_add_rooms_message" = "Cet espace n’est que pour vous : personne ne sera au courant. Vous pouvez en ajouter d’autres plus tard.";
+"spaces_creation_add_rooms_title" = "Que voulez-vous ajouter ?";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "Un espace privé pour vous et votre équipe";
+"spaces_creation_sharing_type_me_and_teammates_title" = "Moi et mon équipe";
+"spaces_creation_sharing_type_just_me_detail" = "Un espace privé pour organiser vos salons";
+"spaces_creation_sharing_type_just_me_title" = "Seulement moi";
+"spaces_creation_sharing_type_message" = "Assurez-vous que les bonnes personnes ont accès %@. Vous pouvez changer ceci plus tard.";
+"spaces_creation_sharing_type_title" = "Avec qui travaillez-vous ?";
+"spaces_creation_email_invites_email_title" = "E-mail";
+"spaces_creation_email_invites_message" = "Vous pouvez aussi les inviter plus tard.";
+"spaces_creation_email_invites_title" = "Invitez votre équipe";
+"spaces_creation_new_rooms_support" = "Support";
+"spaces_creation_new_rooms_random" = "Hors-sujet";
+"spaces_creation_new_rooms_general" = "Général";
+"spaces_creation_new_rooms_room_name_title" = "Nom du salon";
+"spaces_creation_new_rooms_message" = "Nous allons créer un salon pour chacune.";
+"spaces_creation_new_rooms_title" = "Quel type de discussions allez-vous avoir ?";
+"spaces_creation_cancel_message" = "Ces informations seront perdues.";
+"spaces_creation_cancel_title" = "Interrompre la création de l’espace ?";
+"spaces_creation_private_space_title" = "Votre espace privé";
+"spaces_creation_public_space_title" = "Votre espace public";
+"spaces_creation_address_already_exists" = "%@\nexiste déjà";
+"spaces_creation_address_invalid_characters" = "%@\na des caractères invalides";
+"spaces_creation_address_default_message" = "Votre espace pourra être visualisé via\n%@";
+"spaces_creation_empty_room_name_error" = "Nom requis";
+"spaces_creation_address" = "Adresse";
+"spaces_creation_settings_message" = "Ajoutez des détails pour lui donner de la personnalité. Vous pouvez les mettre à jour n’importe quand.";
+"spaces_creation_footer" = "Vous pouvez changer ceci plus tard";
+"spaces_creation_visibility_message" = "Pour rejoindre un espace existant, vous avez besoin d’une invitation.";
+"spaces_creation_visibility_title" = "Quel type d’espace voulez-vous créer ?";
+
+// Mark: - Space Creation
+
+"spaces_creation_hint" = "Les espaces sont une nouvelle manière de regrouper les salons et les gens.";
+"spaces_feature_not_available" = "Cette fonctionnalité n’est pas disponible ici. Pour l’instant, vous devez utiliser %@ sur votre ordinateur.";
+"space_settings_current_address_message" = "Votre espace peut être visualisé via\n%@";
+"space_settings_update_failed_message" = "Échec de la mise à jour des paramètres de l’espace. Voulez-vous réessayer ?";
+"space_settings_access_section" = "Qui peut accéder à cet espace ?";
+"space_topic" = "Description";
+"space_public_join_rule_detail" = "Ouvert à tous, idéal pour les communautés";
+"spaces_add_space" = "Ajouter un espace";
+"spaces_add_room" = "Ajouter un salon";
+"spaces_invite_people" = "Inviter des gens";
+"space_private_join_rule_detail" = "Sur invitation, idéal pour vous ou votre équipe";
+"spaces_explore_rooms_one_room" = "1 salon";
+"spaces_explore_rooms_room_number" = "%@ salons";
+"spaces_create_space_title" = "Créer un espace";
+"spaces_add_space_title" = "Créer un espace";
+"space_invite_not_enough_permission" = "Vous n’êtes pas autorisés à inviter des personnes dans cet espace";
+"room_invite_not_enough_permission" = "Vous n’êtes pas autorisés à inviter des personnes dans ce salon";
+"room_invite_to_room_option_detail" = "Ils ne feront pas partie de %@.";
+"room_invite_to_space_option_detail" = "Ils peuvent parcourir %@, mais ne seront pas membre de %@.";
+"share_invite_link_space_text" = "Hé, rejoignez cet espace sur %@";
+"share_invite_link_room_text" = "Hé, rejoignez ce salon sur %@";
+
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Partager le lien d’invitation";
+"home_context_menu_mark_as_read" = "Marquer comme lu";
+"room_info_back_button_title" = "Informations du salon";
+"create_room_suggest_room_footer" = "Les salons recommandés sont suggérés aux membres de l’espace comme salons de qualité.";
+"create_room_show_in_directory_footer" = "Ceci aidera les gens à le trouver et le rejoindre.";
+"network_offline_message" = "Vous êtes déconnecté, merci de vérifier votre connexion.";
+"network_offline_title" = "Vous êtes déconnecté";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Mise à niveau du salon";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Mettre à niveau";
+"room_access_settings_screen_upgrade_alert_note" = "Veuillez noter que la mise à niveau va créer une nouvelle version de ce salon. Tous les messages actuels vont rester dans ce salon archivé.";
+"joining" = "En train de rejoindre";
+"create_room_section_footer_type_public" = "Seules les personnes invitées peuvent trouver et rejoindre, pas uniquement les personnes dans le nom de l’espace.";
+"location_sharing_invalid_power_level_message" = "Vous devez avoir les bonnes permissions avant de pouvoir partager votre localisation en direct dans ce salon.";
+"location_sharing_invalid_power_level_title" = "Vous n’avez pas les permissions pour partager votre localisation en direct";
+"room_invite_to_room_option_title" = "Juste pour ce salon";
+
+// Mark: - Room invite
+
+"room_invite_to_space_option_title" = "Pour %@";
+"create_room_promotion_header" = "PROMOTION";
+"room_access_space_chooser_other_spaces_section_info" = "Ce sont probablement des choses auxquelles les autres admins de %@ participent.";
+"authentication_choose_password_not_verified_message" = "Vérifiez votre boîte de réception";
+"authentication_choose_password_not_verified_title" = "Email non vérifié";
+"all_chats_onboarding_page_title3" = "Donner mon avis";
+
+// MARK: User sessions management
+
+"user_sessions_overview_title" = "Sessions";
+"location_sharing_map_loading_error" = "Impossible de charger la carte\nCe serveur d’accueil n’est pas configuré pour afficher des cartes";
+"space_invite_nav_title" = "Invitations à l’espace";
+"space_detail_nav_title" = "Détails de l’espace";
+"space_selector_create_space" = "Créer un espace";
+"space_selector_empty_view_information" = "Les espaces sont un moyen de regrouper les salons et les gens. Créez un espace pour commencer.";
+"space_selector_empty_view_title" = "Pas d’espace pour l’instant.";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Mes espaces";
+"room_invites_empty_view_information" = "C’est ici que vos invitations apparaîtront.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "Rien de neuf.";
+"all_chats_onboarding_try_it" = "Essayez";
+"all_chats_onboarding_title" = "Quoi de neuf";
+"all_chats_onboarding_page_message3" = "Appuyez sur votre profil pour nous faire vos retours.";
+"all_chats_onboarding_page_message2" = "Accédez à vos espaces (en bas à gauche) plus rapidement et facilement qu’avant.";
+"all_chats_onboarding_page_title2" = "Accéder aux espaces";
+"all_chats_onboarding_page_message1" = "Pour simplifier Element, les onglets sont désormais facultatifs. Gérez les depuis le menu en haut à droite.";
+"all_chats_onboarding_page_title1" = "Bienvenu dans une nouvelle vue !";
+"all_chats_edit_menu_space_settings" = "Paramètres de l’espace";
+"all_chats_edit_menu_leave_space" = "Quitter %@";
+"all_chats_user_menu_settings" = "Paramètres utilisateur";
+"room_recents_recently_viewed_section" = "Récemment vus";
+"all_chats_nothing_found_placeholder_message" = "Essayez d’affiner votre recherche.";
+"all_chats_nothing_found_placeholder_title" = "Aucun résultat.";
+"all_chats_empty_unreads_placeholder_message" = "C'est ici que vos messages non-lus s’afficheront lorsque vous en aurez.";
+"all_chats_empty_list_placeholder_title" = "Plus rien à voir.";
+"all_chats_empty_view_information" = "La messagerie sécurisée tout en un pour les équipes, les amis, et les organisations. Créez une discussion ou rejoignez un salon pour démarrer.";
+"all_chats_empty_space_information" = "Les espaces sont un nouveau moyen de grouper les salons et les gens. Ajoutez un salon, ou créez en un nouveau à l’aide du bouton en bas à droite.";
+"all_chats_empty_view_title" = "%@\na l’air un peu vide.";
+"all_chats_all_filter" = "Tous";
+"all_chats_edit_layout_alphabetical_order" = "Ordonner de A à Z";
+"all_chats_edit_layout_activity_order" = "Ordonner par activité";
+"all_chats_edit_layout_sorting_options_title" = "Ordonner les messages par";
+"all_chats_edit_layout_show_filters" = "Afficher les filtres";
+"all_chats_edit_layout_show_recents" = "Afficher les plus récents";
+"all_chats_edit_layout_pin_spaces_title" = "Épinglez vos espaces";
+"all_chats_edit_layout_add_filters_message" = "Filtrez vos messages dans les catégories de votre choix";
+"all_chats_edit_layout_add_filters_title" = "Filtrez vos messages";
+"all_chats_edit_layout_add_section_message" = "Épinglez des sections à l’accueil pour y accéder plus rapidement";
+"all_chats_edit_layout_add_section_title" = "Ajouter une section à l’accueil";
+"all_chats_edit_layout_unreads" = "Non-lus";
+"all_chats_edit_layout_recents" = "Récents";
+"all_chats_edit_layout" = "Préférences d’agencement";
+"all_chats_section_title" = "Discussions";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Tous mes chats";
+"spaces_subspace_creation_visibility_message" = "L’espace créé sera ajouté à %@.";
+"spaces_subspace_creation_visibility_title" = "Quel type de sous-espace voulez-vous créer ?";
+"spaces_explore_rooms_format" = "Parcourir %@";
+"spaces_create_subspace_title" = "Créer un sous-espace";
+"spaces_add_subspace_title" = "Créer un espace dans %@";
+
+// User sessions management
+"user_sessions_settings" = "Gérer les sessions";
+"invite_to" = "Inviter dans %@";
+"user_session_unverified_additional_info" = "Vérifiez cette session pour renforcer la sécurité de votre messagerie.";
+"user_session_verified_additional_info" = "Cette session est prête pour la messagerie sécurisée.";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "L’authenticité de ce message chiffré ne peut être garantie sur cet appareil.";
+"user_session_overview_session_details_button_title" = "Informations de session";
+"user_session_overview_session_title" = "Session";
+"user_session_overview_current_session_title" = "Session courante";
+"user_session_details_application_url" = "URL";
+"user_session_details_application_version" = "Version";
+"user_session_details_application_name" = "Nom";
+"user_session_details_device_os" = "Système d’exploitation";
+"user_session_details_device_browser" = "Navigateur";
+"user_session_details_device_model" = "Modèle";
+"user_session_details_device_ip_location" = "Emplacement de l’IP";
+"user_session_details_device_ip_address" = "Adresse IP";
+"user_session_details_session_section_footer" = "Copiez n’importe quelles données en faisant une pression longue dessus.";
+"user_session_details_session_id" = "Identifiant de la session";
+"user_session_details_session_name" = "Nom de la session";
+"user_session_details_device_section_header" = "Appareil";
+"user_session_details_application_section_header" = "Application";
+"user_session_details_session_section_header" = "Session";
+"user_session_details_title" = "Informations de session";
+"device_type_name_unknown" = "Inconnu";
+"device_type_name_mobile" = "Mobile";
+"device_type_name_web" = "Web";
+"device_type_name_desktop" = "Bureau";
+"device_name_unknown" = "Client inconnu";
+"device_name_mobile" = "%@ Mobile";
+"device_name_web" = "%@ Web";
+"device_name_desktop" = "%@ Bureau";
+"user_inactive_session_item_with_date" = "Inactif depuis 90 jours ou plus (%@)";
+"user_inactive_session_item" = "Inactif depuis 90 jours ou plus";
+"user_session_item_details" = "%@ · Dernière activité %@";
+
+// First item is client name and second item is session display name
+"user_session_name" = "%@ : %@";
+"user_other_session_unverified_sessions_header_subtitle" = "Vérifiez vos sessions pour renforcer la sécurité de votre messagerie, ou déconnectez celles que vous ne reconnaissez ou utilisez plus.";
+"user_other_session_security_recommendation_title" = "Recommandations de sécurité";
+"user_session_push_notifications_message" = "Lorsqu’activé, cette session recevra des notifications push.";
+"user_session_push_notifications" = "Notifications push";
+"user_sessions_overview_current_session_section_title" = "Session courante";
+"user_session_learn_more" = "En apprendre plus";
+"user_session_view_details" = "Afficher les informations";
+"user_session_verify_action" = "Vérifier la session";
+"user_session_unverified_short" = "Non-vérifiée";
+"user_session_verified_short" = "Vérifiée";
+"user_session_unverified" = "Session non-vérifiée";
+"user_session_verified" = "Session vérifiée";
+"user_sessions_view_all_action" = "Tout afficher (%d)";
+"user_sessions_overview_link_device" = "Appairer un appareil";
+"user_sessions_overview_other_sessions_section_info" = "Pour une sécurité optimale, vérifiez vos sessions et déconnectez celles que vous de reconnaissez pas ou n’utilisez plus.";
+"user_sessions_overview_other_sessions_section_title" = "Autres sessions";
+"user_sessions_overview_security_recommendations_inactive_info" = "Vous pourriez vouloir déconnecter les anciennes sessions que vous n’utilisez plus (depuis au moins 90 jours).";
+"user_sessions_overview_security_recommendations_inactive_title" = "Sessions inactives";
+"user_sessions_overview_security_recommendations_unverified_info" = "Vérifiez ou déconnectez les sessions non-vérifiées.";
+"user_sessions_overview_security_recommendations_unverified_title" = "Sessions non-vérifiées";
+"user_sessions_overview_security_recommendations_section_info" = "Renforcez la sécurité de votre compte en suivant ces recommandations.";
+"user_sessions_overview_security_recommendations_section_title" = "Recommandations de sécurité";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"all_chats_user_menu_accessibility_label" = "Menu utilisateur";
+"sign_out_confirmation_message" = "Êtes vous sûr de vouloir vous déconnecter ?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Déconnexion";
+"manage_session_rename" = "Renommer la session";
+"settings_labs_enable_new_app_layout" = "Nouvelle disposition";
+"settings_labs_enable_new_client_info_feature" = "Renseignez le nom du client, sa version, et son URL pour retrouvez vos sessions plus facilement dans le gestionnaire de sessions";
+"settings_labs_enable_new_session_manager" = "Nouveau gestionnaire de sessions";
+"room_first_message_placeholder" = "Envoyez votre premier message…";
+"authentication_qr_login_failure_retry" = "Réessayez";
+"authentication_qr_login_failure_request_timed_out" = "L’appairage n’a pas été effectué dans le temps imparti.";
+"authentication_qr_login_failure_request_denied" = "La requête a été refusée sur l’autre appareil.";
+"authentication_qr_login_failure_invalid_qr" = "Le QR code est invalide.";
+"authentication_qr_login_failure_title" = "Échec de l’appairage";
+"authentication_qr_login_loading_signed_in" = "Vous êtes désormais connecté sur votre autre appareil.";
+"authentication_qr_login_loading_waiting_signin" = "En attente de connexion de l’appareil.";
+"authentication_qr_login_loading_connecting_device" = "Connexion à l’appareil";
+"authentication_qr_login_confirm_alert" = "Vérifiez l’origine de ce code. En appairant un appareil, vous lui fournissez un accès complet à votre compte.";
+"authentication_qr_login_confirm_subtitle" = "Confirmez que le code ci-dessous correspond à celui sur votre autre appareil :";
+"authentication_qr_login_confirm_title" = "Connexion sécurisée établie";
+"authentication_qr_login_scan_subtitle" = "Placez le QR code dans le carré ci-dessous";
+"authentication_qr_login_scan_title" = "Scannez le QR code";
+"authentication_qr_login_display_step2" = "Sélectionnez « Se connecter avec un QR code »";
+"authentication_qr_login_display_step1" = "Ouvrez Element sur votre autre appareil";
+"authentication_qr_login_display_subtitle" = "Scannez le QR code ci-dessous avec l’appareil qui n’est pas connecté.";
+"authentication_qr_login_display_title" = "Appairer un appareil";
+"authentication_qr_login_start_display_qr" = "Afficher le QR code sur cet appareil";
+"authentication_qr_login_start_need_alternative" = "Besoin d’une autre méthode ?";
+"authentication_qr_login_start_step4" = "Sélectionnez « Afficher le QR code sur cet appareil »";
+"authentication_qr_login_start_step3" = "Sélectionnez « Appairer un appareil »";
+"authentication_qr_login_start_step2" = "Allez dans Réglages -> Confidentialité et sécurité";
+"authentication_qr_login_start_step1" = "Ouvrez Element sur votre autre appareil";
+"authentication_qr_login_start_subtitle" = "Utilisez l’appareil photo de cet appareil pour scanner le QR code affiché sur votre autre appareil :";
+"authentication_qr_login_start_title" = "Scanner le QR code";
+"authentication_login_with_qr" = "Se connecter avec un QR code";
+"key_verification_alert_body" = "Passez les en revue pour vous assurer que votre compte n’est pas compromis.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Vous avez des sessions non-vérifiées";
+"manage_session_sign_out_other_sessions" = "Déconnecter toutes les autres sessions";
+"manage_session_name_info_link" = "Plus";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Gardez en tête que les noms des sessions sont aussi visibles par les personnes avec qui vous communiquez. %@";
+"manage_session_name_hint" = "Personnaliser les noms des sessions peut vous aider à reconnaître vos appareils plus facilement.";
+"settings_labs_enable_wysiwyg_composer" = "Essayez le compositeur de messages visuel";

@@ -45,6 +45,7 @@ final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
         
         let showDirectoryViewModel = ShowDirectoryViewModel(session: self.session, dataSource: dataSource)
         let showDirectoryViewController = ShowDirectoryViewController.instantiate(with: showDirectoryViewModel)
+        showDirectoryViewController.view.clipsToBounds = false
         self.showDirectoryViewModel = showDirectoryViewModel
         self.showDirectoryViewController = showDirectoryViewController
     }

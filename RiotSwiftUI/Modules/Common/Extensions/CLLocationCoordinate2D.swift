@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +14,16 @@
 // limitations under the License.
 //
 
-import Foundation
 import CoreLocation
+import Foundation
 
 extension CLLocationCoordinate2D {
-    
     /// Compare two coordinates
     /// - parameter coordinate: another coordinate to compare
     /// - parameter precision:it represente how close you want the two coordinates
     /// - return: bool value
     func isEqual(to coordinate: CLLocationCoordinate2D, precision: Double) -> Bool {
-        
-        if fabs(self.latitude - coordinate.latitude) <= precision && fabs(self.longitude - coordinate.longitude) <= precision {
+        if fabs(latitude - coordinate.latitude) <= precision, fabs(longitude - coordinate.longitude) <= precision {
             return true
         }
         return false

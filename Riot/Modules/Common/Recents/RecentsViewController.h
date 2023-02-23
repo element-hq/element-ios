@@ -94,6 +94,12 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 @property (nonatomic, weak) RootTabEmptyView *emptyView;
 
 /**
+ The bottom anchor used to layout `emptyView` in the absence of a FAB.
+ If this value is `nil` the empty view will be anchored to the bottom of its superview.
+ */
+@property (nonatomic, weak) NSLayoutYAxisAnchor *emptyViewBottomAnchor;
+
+/**
  The screen timer used for analytics if they've been enabled. The default value is nil.
  */
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;

@@ -28,6 +28,7 @@
 
 @protocol Configurable;
 @protocol LegacyAppDelegateDelegate;
+@protocol SplitViewMasterViewControllerProtocol;
 @class CallBar;
 @class CallPresenter;
 @class RoomNavigationParameters;
@@ -69,7 +70,7 @@ UINavigationControllerDelegate
 /**
  Application main view controller
  */
-@property (nonatomic, readonly) MasterTabBarController *masterTabBarController;
+@property (nonatomic, readonly) UIViewController<SplitViewMasterViewControllerProtocol>* masterTabBarController;
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -112,7 +113,7 @@ UINavigationControllerDelegate
 /**
  Last handled universal link (url will be formatted for several hash keys).
  */
-@property (nonatomic, readonly) UniversalLink *lastHandledUniversalLink;
+@property (nonatomic, copy, readonly) UniversalLink *lastHandledUniversalLink;
 
 // New message sound id.
 @property (nonatomic, readonly) SystemSoundID messageSound;
@@ -162,6 +163,9 @@ UINavigationControllerDelegate
 // Reload all running matrix sessions
 - (void)reloadMatrixSessions:(BOOL)clearCache;
 
+- (void)displayLogoutConfirmationForLink:(UniversalLink *)link
+                              completion:(void (^)(BOOL loggedOut))completion;
+
 /**
  Log out all the accounts after asking for a potential confirmation.
  Show the authentication screen on successful logout.
@@ -188,10 +192,12 @@ UINavigationControllerDelegate
  @param session The matrix session.
  @return Indicate NO if the key verification screen could not be presented.
  */
-- (BOOL)presentIncomingKeyVerificationRequest:(MXKeyVerificationRequest*)incomingKeyVerificationRequest
+- (BOOL)presentIncomingKeyVerificationRequest:(id<MXKeyVerificationRequest>)incomingKeyVerificationRequest
                                     inSession:(MXSession*)session;
 
-- (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession;
+- (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember
+                                     session:(MXSession*)mxSession
+                                  completion:(void (^)(void))completion;
 
 - (BOOL)presentCompleteSecurityForSession:(MXSession*)mxSession;
 
@@ -213,9 +219,6 @@ UINavigationControllerDelegate
 // Restore display and show the room
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
 
-// Creates a new direct chat with the provided user id
-- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
-
 // Show room preview
 - (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters completion:(void (^)(void))completion;
 
@@ -224,6 +227,12 @@ UINavigationControllerDelegate
 // Restore display and show the room preview
 - (void)showRoomPreview:(RoomPreviewData*)roomPreviewData;
 
+// Display a new direct room with a target user without associated room.
+- (void)showNewDirectChat:(NSString*)userId withMatrixSession:(MXSession*)mxSession completion:(void (^)(void))completion;
+
+// Creates a new direct room with the provided user id
+- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(NSString *roomId))completion;
+
 // Reopen an existing direct room with this userId or creates a new one (if it doesn't exist)
 - (void)startDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
 
@@ -231,10 +240,10 @@ UINavigationControllerDelegate
  Process the fragment part of a vector.im link.
 
  @param fragment the fragment part of the universal link.
- @param universalLinkURL the unprocessed the universal link URL (optional).
+ @param universalLink the original universal link.
  @return YES in case of processing success.
  */
-- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL;
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromLink:(UniversalLink*)universalLink;
 
 /**
  Process the URL of a vector.im link.
@@ -253,19 +262,6 @@ UINavigationControllerDelegate
 - (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
 
 /**
- Extract params from the URL fragment part (after '#') of a vector.im Universal link:
- 
- The fragment can contain a '?'. So there are two kinds of parameters: path params and query params.
- It is in the form of /[pathParam1]/[pathParam2]?[queryParam1Key]=[queryParam1Value]&[queryParam2Key]=[queryParam2Value]
- @note this method should be private but is used by RoomViewController. This should be moved to a univresal link parser class
-
- @param fragment the fragment to parse.
- @param outPathParams the decoded path params.
- @param outQueryParams the decoded query params. If there is no query params, it will be nil.
- */
-- (void)parseUniversalLinkFragment:(NSString*)fragment outPathParams:(NSArray<NSString*> **)outPathParams outQueryParams:(NSMutableDictionary **)outQueryParams;
-
-/**
  Open the dedicated space with the given ID.
  
  This method will open only joined or invited spaces.
@@ -281,14 +277,6 @@ UINavigationControllerDelegate
  Check for app version related informations to display
 */
 - (void)checkAppVersion;
-
-#pragma mark - Authentication
-
-/// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
-/// @param loginToken The login token provided when SSO succeeded.
-/// @param txnId transaction id generated during SSO page presentation.
-/// returns YES if the SSO login can be continued.
-- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId;
 
 @end
 

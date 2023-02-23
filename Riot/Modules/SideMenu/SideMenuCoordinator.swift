@@ -260,13 +260,12 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.spaceDetailPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
     }
     
-    @available(iOS 14.0, *)
     private func showCreateSpace() {
         guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
             return
         }
         
-        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: session))
+        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: session, parentSpaceId: nil))
         let presentable = coordinator.toPresentable()
         presentable.presentationController?.delegate = self
         self.sideMenuViewController.present(presentable, animated: true, completion: nil)
@@ -301,7 +300,6 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.createRoomCoordinator = createRoomCoordinator
     }
     
-    @available(iOS 14.0, *)
     private func showSpaceSettings(spaceId: String, session: MXSession) {
         let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId, parentSpaceId: nil))
         coordinator.callback = { [weak self] result in
@@ -322,7 +320,9 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     
     func showSpaceInvite(spaceId: String, session: MXSession) {
         guard let space = session.spaceService.getSpace(withId: spaceId), let spaceRoom = space.room else {
-            MXLog.error("[SideMenuCoordinator] showSpaceInvite: failed to find space with id \(spaceId)")
+            MXLog.error("[SideMenuCoordinator] showSpaceInvite: failed to find space", context: [
+                "space_id": spaceId
+            ])
             return
         }
         
@@ -432,9 +432,7 @@ extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
     }
     
     func spaceListCoordinatorDidSelectCreateSpace(_ coordinator: SpaceListCoordinatorType) {
-        if #available(iOS 14.0, *) {
-            self.showCreateSpace()
-        }
+        self.showCreateSpace()
     }
 }
 
@@ -462,11 +460,7 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
             case .addSpace:
                 AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesFeatureNotAvailable(AppInfo.current.displayName))
             case .settings:
-                if #available(iOS 14.0, *) {
-                    self.showSpaceSettings(spaceId: spaceId, session: session)
-                } else {
-                    AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.settingsTitle, message: VectorL10n.spacesFeatureNotAvailable(AppInfo.current.displayName))
-                }
+                self.showSpaceSettings(spaceId: spaceId, session: session)
             case .invite:
                 self.showSpaceInvite(spaceId: spaceId, session: session)
             }

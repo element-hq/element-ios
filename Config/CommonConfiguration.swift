@@ -17,6 +17,10 @@
 import Foundation
 import MatrixSDK
 
+#if !os(OSX)
+import DeviceKit
+#endif
+
 /// CommonConfiguration is the central point to setup settings for MatrixSDK, MatrixKit and common configurations for all targets.
 class CommonConfiguration: NSObject, Configurable {
     
@@ -66,8 +70,13 @@ class CommonConfiguration: NSObject, Configurable {
         // Disable identicon use
         sdkOptions.disableIdenticonUseForUserAvatar = true
         
+        // Set up user agent
+        if let userAgent = makeASCIIUserAgent() {
+            sdkOptions.httpAdditionalHeaders = ["User-Agent": userAgent]
+        }
+
         // Pass httpAdditionalHeaders to the SDK
-        sdkOptions.httpAdditionalHeaders = BuildSettings.httpAdditionalHeaders
+        sdkOptions.httpAdditionalHeaders = (sdkOptions.httpAdditionalHeaders ?? [:]).merging(BuildSettings.httpAdditionalHeaders, uniquingKeysWith: { _, value in value })
         
         // Disable key backup on common
         sdkOptions.enableKeyBackupWhenStartingMXCrypto = false
@@ -80,6 +89,61 @@ class CommonConfiguration: NSObject, Configurable {
         sdkOptions.authEnableRefreshTokens = BuildSettings.authEnableRefreshTokens
         // Configure key provider delegate
         MXKeyProvider.sharedInstance().delegate = EncryptionKeyManager.shared
+
+        sdkOptions.enableNewClientInformationFeature = RiotSettings.shared.enableClientInformationFeature
+    }
+    
+    private func makeASCIIUserAgent() -> String? {
+        guard var userAgent = makeUserAgent() else {
+            return nil
+        }
+        if !userAgent.canBeConverted(to: .ascii) {
+            let mutableUserAgent = NSMutableString(string: userAgent)
+            if CFStringTransform(mutableUserAgent, nil, "Any-Latin; Latin-ASCII; [:^ASCII:] Remove" as CFString, false) {
+                userAgent = mutableUserAgent as String
+            }
+        }
+        return userAgent
+    }
+    
+    private func makeUserAgent() -> String? {
+        let appInfo = AppInfo.current
+        let clientName = appInfo.displayName
+        let clientVersion = appInfo.appVersion?.bundleShortVersion ?? "unknown"
+
+    #if os(iOS)
+        return String(
+            format: "%@/%@ (%@; iOS %@; Scale/%0.2f)",
+                clientName,
+                clientVersion,
+                Device.current.safeDescription,
+                UIDevice.current.systemVersion,
+                UIScreen.main.scale)
+    #elseif os(tvOS)
+        return String(
+            format: "%@/%@ (%@; tvOS %@; Scale/%0.2f)",
+                clientName,
+                clientVersion,
+                Device.current.safeDescription,
+                UIDevice.current.systemVersion,
+                UIScreen.main.scale)
+    #elseif os(watchOS)
+        return String(
+            format: "%@/%@ (%@; watchOS %@; Scale/%0.2f)",
+                clientName,
+                clientVersion,
+                Device.current.safeDescription,
+                WKInterfaceDevice.current.systemVersion,
+                WKInterfaceDevice.currentDevice.screenScale)
+    #elseif os(OSX)
+        return String(
+            format: "%@/%@ (Mac; Mac OS X %@)",
+                clientName,
+                clientVersion,
+                NSProcessInfo.processInfo.operatingSystemVersionString)
+    #else
+        return nil
+    #endif
     }
     
     
@@ -108,7 +172,7 @@ class CommonConfiguration: NSObject, Configurable {
     
     func setupSettingsWhenLoaded(for matrixSession: MXSession) {
         // Do not warn for unknown devices. We have cross-signing now
-        matrixSession.crypto.warnOnUnknowDevices = false
+        (matrixSession.crypto as? MXLegacyCrypto)?.warnOnUnknowDevices = false
     }
     
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,7 +58,7 @@ struct MatrixListItemSectionData {
     }
 }
 
-extension MatrixListItemSectionData: Identifiable, Equatable {}
+extension MatrixListItemSectionData: Identifiable, Equatable { }
 
 struct MatrixListItemData {
     let id: String
@@ -68,7 +68,7 @@ struct MatrixListItemData {
     let detailText: String?
 }
 
-extension MatrixListItemData: Identifiable, Equatable {}
+extension MatrixListItemData: Identifiable, Equatable { }
 
 struct MatrixItemChooserSelectionHeader {
     var title: String

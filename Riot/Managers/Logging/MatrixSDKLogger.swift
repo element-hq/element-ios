@@ -33,7 +33,7 @@ class MatrixSDKLogger: LoggerProtocol {
     static func warning(_ message: @autoclosure () -> Any, _ file: String = #file, _ function: String = #function, line: Int = #line, context: Any? = nil) {
         MXLog.warning(message(), file, function, line: line, context: context)
     }
-    static func error(_ message: @autoclosure () -> Any, _ file: String = #file, _ function: String = #function, line: Int = #line, context: Any? = nil) {
+    static func error(_ message: @autoclosure () -> StaticString, _ file: String = #file, _ function: String = #function, line: Int = #line, context: Any? = nil) {
         MXLog.error(message(), file, function, line: line, context: context)
     }
 }

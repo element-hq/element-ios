@@ -33,6 +33,13 @@ extern NSString *const kMXKRoomBubbleCellRiotEditButtonPressed;
 extern NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer;
 
 /**
+ Action identifier used when the user tapped on the add reaction button.
+ 
+ The 'userInfo' dictionary contains a 'NSString' object under the 'kMXKRoomBubbleCellEventIdKey' key, representing the event id of the event associated with the reactions.
+ */
+extern NSString *const kMXKRoomBubbleCellTapOnAddReaction;
+
+/**
  Action identifier used when the user perform a long press on reactions view.
  
  The 'userInfo' dictionary contains a 'NSString' object under the 'kMXKRoomBubbleCellEventIdKey' key, representing the event id of the event associated with the reactions.

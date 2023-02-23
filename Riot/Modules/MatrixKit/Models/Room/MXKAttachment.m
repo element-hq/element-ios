@@ -476,7 +476,9 @@ NSString *const kMXKAttachmentFileNameBase = @"attatchment";
         NSError *error;
         BOOL result = [NSFileManager.defaultManager removeItemAtPath:[temporaryDirectoryPath stringByAppendingPathComponent:filePath] error:&error];
         if (!result && error) {
-            MXLogError(@"[MXKAttachment] Failed deleting temporary file with error: %@", error);
+            MXLogErrorDetails(@"[MXKAttachment] Failed deleting temporary file with error", @{
+                @"error": error ?: @"unknown"
+            });
         }
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RadioButton: View {
-    
     // MARK: - Properties
     
     var title: String
@@ -51,7 +49,6 @@ struct RadioButton: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct RadioButton_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -63,8 +60,8 @@ struct RadioButton_Previews: PreviewProvider {
     
     static var buttonGroup: some View {
         VStack {
-            RadioButton(title: "A title", selected: false, action: {})
-            RadioButton(title: "A title", selected: true, action: {})
+            RadioButton(title: "A title", selected: false, action: { })
+            RadioButton(title: "A title", selected: true, action: { })
         }
     }
 }

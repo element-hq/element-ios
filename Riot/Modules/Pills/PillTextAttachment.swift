@@ -34,6 +34,7 @@ class PillTextAttachment: NSTextAttachment {
                 return
             }
             contents = try? Self.serializationService.serialize(newValue)
+            updateBounds()
         }
     }
     private static let serializationService: SerializationServiceType = SerializationService()

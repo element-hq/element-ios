@@ -1,6 +1,6 @@
 // File created from TemplateAdvancedRoomsExample
 // $ createSwiftUITwoScreen.sh Spaces/SpaceCreation SpaceCreation SpaceCreationMenu SpaceCreationSettings
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct SpaceCreationMenu: View {
-    
     // MARK: - Properties
     
     @ObservedObject var viewModel: SpaceCreationMenuViewModelType.Context
@@ -100,9 +98,7 @@ struct SpaceCreationMenu: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct SpaceCreationMenu_Previews: PreviewProvider {
-    
     static let stateRenderer = MockSpaceCreationMenuScreenState.stateRenderer
     
     static var previews: some View {
@@ -117,7 +113,6 @@ struct SpaceCreationMenu_Previews: PreviewProvider {
 
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
-@available(iOS 14.0, *)
 enum MockSpaceCreationMenuScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you

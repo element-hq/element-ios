@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,10 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import SceneKit
+import SwiftUI
 
 struct OnboardingCelebrationScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -60,8 +59,7 @@ struct OnboardingCelebrationScreen: View {
             }
             .frame(maxHeight: .infinity)
         }
-        .overlay(effects.ignoresSafeArea())
-        .background(theme.colors.background.ignoresSafeArea())
+        .background(OnboardingBreakerScreenBackground().ignoresSafeArea())
         .accentColor(theme.colors.accent)
         .navigationBarHidden(true)
     }
@@ -93,11 +91,6 @@ struct OnboardingCelebrationScreen: View {
             }
             .buttonStyle(PrimaryActionButtonStyle())
         }
-    }
-    
-    var effects: some View {
-        EffectsView(effect: .confetti)
-            .allowsHitTesting(false)
     }
 }
 

@@ -28,7 +28,11 @@
 
 @implementation MXKRoomBubbleComponent
 
-- (instancetype)initWithEvent:(MXEvent*)event roomState:(MXRoomState*)roomState eventFormatter:(MXKEventFormatter*)eventFormatter session:(MXSession*)session;
+- (instancetype)initWithEvent:(MXEvent*)event
+                    roomState:(MXRoomState*)roomState
+           andLatestRoomState:(MXRoomState*)latestRoomState
+               eventFormatter:(MXKEventFormatter*)eventFormatter
+                      session:(MXSession*)session;
 {
     if (self = [super init])
     {
@@ -36,7 +40,10 @@
         _eventFormatter = eventFormatter;
         MXKEventFormatterError error;
 
-        NSAttributedString *eventString = [_eventFormatter attributedStringFromEvent:event withRoomState:roomState error:&error];
+        NSAttributedString *eventString = [_eventFormatter attributedStringFromEvent:event
+                                                                       withRoomState:roomState
+                                                                  andLatestRoomState:latestRoomState
+                                                                               error:&error];
         
         // Store the potential error
         event.mxkEventFormatterError = error;
@@ -58,15 +65,18 @@
         _event = event;
 
         _displayFix = MXKRoomBubbleComponentDisplayFixNone;
-        if ([event.content[@"format"] isEqualToString:kMXRoomMessageFormatHTML])
+        
+        NSString *format = event.content[@"format"];
+        if ([format isKindOfClass:[NSString class]] && [format isEqualToString:kMXRoomMessageFormatHTML])
         {
-            if ([((NSString*)event.content[@"formatted_body"]) containsString:@"<blockquote"])
+            NSString *formattedBody = (NSString*)event.content[@"formatted_body"];
+            if ([formattedBody isKindOfClass:[NSString class]] && [formattedBody containsString:@"<blockquote"])
             {
                 _displayFix |= MXKRoomBubbleComponentDisplayFixHtmlBlockquote;
             }
         }
         
-        _showEncryptionBadge = [self shouldShowWarningBadgeForEvent:event roomState:(MXRoomState*)roomState session:session];
+        _encryptionDecoration = [self encryptionDecorationForEvent:event roomState:(MXRoomState*)roomState session:session];
         
         [self updateLinkWithRoomState:roomState];
 
@@ -84,7 +94,10 @@
     return self;
 }
 
-- (void)updateWithEvent:(MXEvent*)event roomState:(MXRoomState*)roomState session:(MXSession*)session
+- (void)updateWithEvent:(MXEvent*)event
+              roomState:(MXRoomState*)roomState
+     andLatestRoomState:(MXRoomState*)latestRoomState
+                session:(MXSession*)session
 {
     // Report the new event
     _event = event;
@@ -101,9 +114,12 @@
     _textMessage = nil;
 
     MXKEventFormatterError error;
-    _attributedTextMessage = [_eventFormatter attributedStringFromEvent:event withRoomState:roomState error:&error];
+    _attributedTextMessage = [_eventFormatter attributedStringFromEvent:event
+                                                          withRoomState:roomState
+                                                     andLatestRoomState:latestRoomState
+                                                                  error:&error];
     
-    _showEncryptionBadge = [self shouldShowWarningBadgeForEvent:event roomState:roomState session:session];
+    _encryptionDecoration = [self encryptionDecorationForEvent:event roomState:roomState session:session];
     
     [self updateLinkWithRoomState:roomState];
 }
@@ -154,24 +170,24 @@
     self.link = url;
 }
 
-- (BOOL)shouldShowWarningBadgeForEvent:(MXEvent*)event roomState:(MXRoomState*)roomState session:(MXSession*)session
+- (EventEncryptionDecoration)encryptionDecorationForEvent:(MXEvent*)event roomState:(MXRoomState*)roomState session:(MXSession*)session
 {
     // Warning badges are unnecessary in unencrypted rooms
     if (!roomState.isEncrypted)
     {
-        return NO;
+        return EventEncryptionDecorationNone;
     }
     
     // Not all events are encrypted (e.g. state/reactions/redactions) and we only have encrypted cell subclasses for messages and attachments.
     if (event.eventType != MXEventTypeRoomMessage && !event.isMediaAttachment)
     {
-        return NO;
+        return EventEncryptionDecorationNone;
     }
     
     // Always show a warning badge if there was a decryption error.
     if (event.decryptionError)
     {
-        return YES;
+        return EventEncryptionDecorationDecryptionError;
     }
     
     // Unencrypted message events should show a warning unless they're pending local echoes
@@ -180,10 +196,10 @@
         if (event.isLocalEvent
             || event.contentHasBeenEdited)    // Local echo for an edit is clear but uses a true event id, the one of the edited event
         {
-            return NO;
+            return EventEncryptionDecorationNone;
         }
             
-        return YES;
+        return EventEncryptionDecorationNotEncrypted;
     }
     
     // The encryption is in a good state.
@@ -195,12 +211,17 @@
         
         if (userTrustLevel.isVerified && !deviceInfo.trustLevel.isVerified)
         {
-            return YES;
+            return EventEncryptionDecorationUntrustedDevice;
         }
     }
     
+    if (event.isUntrusted)
+    {
+        return EventEncryptionDecorationUnsafeKey;
+    }
+    
     // Everything was fine
-    return NO;
+    return EventEncryptionDecorationNone;
 }
 
 @end

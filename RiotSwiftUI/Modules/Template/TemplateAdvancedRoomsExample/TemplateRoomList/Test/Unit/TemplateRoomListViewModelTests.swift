@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +14,14 @@
 // limitations under the License.
 //
 
-import XCTest
 import Combine
+import XCTest
 
 @testable import RiotSwiftUI
 
 class TemplateRoomListViewModelTests: XCTestCase {
-    private enum Constants {
-    }
+    private enum Constants { }
+
     var service: MockTemplateRoomListService!
     var viewModel: TemplateRoomListViewModel!
     var context: TemplateRoomListViewModel.Context!
@@ -46,7 +46,7 @@ class TemplateRoomListViewModelTests: XCTestCase {
         let updatedRooms = Array(MockTemplateRoomListService.mockRooms.dropLast())
         let roomsPublisher = context.$viewState.map(\.rooms).removeDuplicates().collect(2).first()
         let awaitDeferred = xcAwaitDeferred(roomsPublisher)
-        service.simulateUpdate(rooms:  updatedRooms)
+        service.simulateUpdate(rooms: updatedRooms)
         XCTAssertEqual(try awaitDeferred(), [MockTemplateRoomListService.mockRooms, updatedRooms])
     }
 }

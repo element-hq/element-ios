@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-class AuthenticationReCaptchaUITests: MockScreenTest {
+class AuthenticationReCaptchaUITests: MockScreenTestCase {
     // Nothing to test as the view only has a single state.
 }

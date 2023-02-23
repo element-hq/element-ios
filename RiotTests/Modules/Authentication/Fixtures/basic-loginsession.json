@@ -1,0 +1,13 @@
+{
+  "flows": [
+    {
+      "type": "m.login.password"
+    },
+    {
+      "type": "m.login.application_service"
+    },
+    {
+      "type": "uk.half-shot.msc2778.login.application_service"
+    }
+  ]
+}

@@ -145,6 +145,12 @@
     recentsDataSource.publicRoomsDirectoryDataSource.showNSFWRooms = RiotSettings.shared.showNSFWPublicRooms;
     
     [self updateSearch];
+    
+    if (BuildSettings.newAppLayoutEnabled)
+    {
+        [self.searchBar vc_searchTextField].backgroundColor = nil;
+        [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeAutomatic];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -361,7 +367,7 @@
     }
 
     // Hide back button title
-    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self vc_removeBackTitle];
 }
 
 #pragma mark - Search

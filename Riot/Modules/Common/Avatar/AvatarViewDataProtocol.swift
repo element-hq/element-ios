@@ -41,6 +41,24 @@ protocol AvatarViewDataProtocol: AvatarProtocol {
     /// Matrix media handler
     var mediaManager: MXMediaManager? { get }
     
-    /// Fallback image used when avatarUrl is nil
-    var fallbackImage: AvatarFallbackImage? { get }
+    /// Fallback images used when avatarUrl is nil
+    var fallbackImages: [AvatarFallbackImage]? { get }
+}
+
+extension AvatarViewDataProtocol {
+    func fallbackImageParameters() -> (UIImage?, UIView.ContentMode)? {
+        fallbackImages?
+            .lazy
+            .map { fallbackImage in
+                switch fallbackImage {
+                case .matrixItem(let matrixItemId, let matrixItemDisplayName):
+                    return (AvatarGenerator.generateAvatar(forMatrixItem: matrixItemId, withDisplayName: matrixItemDisplayName), .scaleAspectFill)
+                case .image(let image, let contentMode):
+                    return (image, contentMode ?? .scaleAspectFill)
+                }
+            }
+            .first { (image, contentMode) in
+                image != nil
+            }
+    }
 }

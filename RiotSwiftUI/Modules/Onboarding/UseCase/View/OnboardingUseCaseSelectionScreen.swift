@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,6 @@ import SwiftUI
 
 /// The screen shown to a new user to select their use case for the app.
 struct OnboardingUseCaseSelectionScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -28,6 +27,23 @@ struct OnboardingUseCaseSelectionScreen: View {
     // MARK: Public
     
     @ObservedObject var viewModel: OnboardingUseCaseViewModel.Context
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 0) {
+                titleContent
+                    .padding(.bottom, 36)
+                
+                useCaseButtons
+            }
+            .readableFrame()
+            .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
+            .padding(.bottom, 8)
+            .padding(.horizontal, 16)
+        }
+        .background(theme.colors.background.ignoresSafeArea())
+        .accentColor(theme.colors.accent)
+    }
     
     /// The screen's title and instructions.
     var titleContent: some View {
@@ -75,47 +91,6 @@ struct OnboardingUseCaseSelectionScreen: View {
             .foregroundColor(theme.colors.tertiaryContent)
             .padding(.top, 8)
         }
-    }
-    
-    /// A footer showing a button to connect to a server.
-    var serverFooter: some View {
-        VStack(spacing: 14) {
-            Text(VectorL10n.onboardingUseCaseExistingServerMessage)
-                .font(theme.fonts.subheadline)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.tertiaryContent)
-            
-            Button { viewModel.send(viewAction: .answer(.customServer)) } label: {
-                Text(VectorL10n.onboardingUseCaseExistingServerButton)
-                    .font(theme.fonts.body)
-            }
-        }
-    }
-    
-    var body: some View {
-        GeometryReader { geometry in
-            VStack {
-                ScrollView {
-                    VStack(spacing: 0) {
-                        titleContent
-                            .padding(.bottom, 36)
-                        
-                        useCaseButtons
-                    }
-                    .readableFrame()
-                    .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
-                    .padding(.bottom, 8)
-                    .padding(.horizontal, 16)
-                }
-                
-                serverFooter
-                    .padding(.horizontal, 16)
-                    .padding(.top, 8)
-                    .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 20 : 36)
-            }
-        }
-        .background(theme.colors.background.ignoresSafeArea())
-        .accentColor(theme.colors.accent)
     }
 }
 

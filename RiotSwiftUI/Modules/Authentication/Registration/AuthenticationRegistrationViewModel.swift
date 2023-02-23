@@ -14,29 +14,23 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
-typealias AuthenticationRegistrationViewModelType = StateStoreViewModel<AuthenticationRegistrationViewState,
-                                                                        Never,
-                                                                        AuthenticationRegistrationViewAction>
+typealias AuthenticationRegistrationViewModelType = StateStoreViewModel<AuthenticationRegistrationViewState, AuthenticationRegistrationViewAction>
 
 class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelType, AuthenticationRegistrationViewModelProtocol {
-
     // MARK: - Properties
 
     // MARK: Public
 
-    @MainActor var callback: ((AuthenticationRegistrationViewModelResult) -> Void)?
+    var callback: (@MainActor (AuthenticationRegistrationViewModelResult) -> Void)?
 
     // MARK: - Setup
 
-    init(homeserverAddress: String, showRegistrationForm: Bool = true, ssoIdentityProviders: [SSOIdentityProvider]) {
+    init(homeserver: AuthenticationHomeserverViewData) {
         let bindings = AuthenticationRegistrationBindings()
-        let viewState = AuthenticationRegistrationViewState(homeserverAddress: HomeserverAddress.displayable(homeserverAddress),
-                                                            showRegistrationForm: showRegistrationForm,
-                                                            ssoIdentityProviders: ssoIdentityProviders,
-                                                            bindings: bindings)
+        let viewState = AuthenticationRegistrationViewState(homeserver: homeserver, bindings: bindings)
         
         super.init(initialViewState: viewState)
     }
@@ -51,25 +45,40 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
             Task { await validateUsername() }
         case .enablePasswordValidation:
             Task { await enablePasswordValidation() }
-        case .clearUsernameError:
-            Task { await clearUsernameError() }
+        case .resetUsernameAvailability:
+            Task { await resetUsernameAvailability() }
         case .next:
             Task { await callback?(.createAccount(username: state.bindings.username, password: state.bindings.password)) }
-        case .continueWithSSO(let id):
-            break
+        case .continueWithSSO(let provider):
+            Task { await callback?(.continueWithSSO(provider)) }
+        case .fallback:
+            Task { await callback?(.fallback) }
         }
     }
     
-    @MainActor func update(homeserverAddress: String, showRegistrationForm: Bool, ssoIdentityProviders: [SSOIdentityProvider]) {
-        state.homeserverAddress = HomeserverAddress.displayable(homeserverAddress)
-        state.showRegistrationForm = showRegistrationForm
-        state.ssoIdentityProviders = ssoIdentityProviders
+    @MainActor func update(isLoading: Bool) {
+        guard state.isLoading != isLoading else { return }
+        state.isLoading = isLoading
+    }
+    
+    @MainActor func update(homeserver: AuthenticationHomeserverViewData) {
+        state.homeserver = homeserver
+    }
+    
+    @MainActor func update(username: String) {
+        guard username != state.bindings.username else { return }
+        state.bindings.username = username
+    }
+    
+    @MainActor func confirmUsernameAvailability(_ username: String) {
+        guard username == state.bindings.username else { return }
+        state.usernameAvailability = .available
     }
     
     @MainActor func displayError(_ type: AuthenticationRegistrationErrorType) {
         switch type {
         case .usernameUnavailable(let message):
-            state.usernameErrorMessage = message
+            state.usernameAvailability = .invalid(message)
         case .mxError(let message):
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
@@ -104,9 +113,9 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
         state.hasEditedPassword = true
     }
     
-    /// Clear any errors being shown in the username text field footer.
-    @MainActor private func clearUsernameError() {
-        guard state.usernameErrorMessage != nil else { return }
-        state.usernameErrorMessage = nil
+    /// Reset the username's availability, clearing any messages being shown in the username text field footer.
+    @MainActor private func resetUsernameAvailability() {
+        if case .unknown = state.usernameAvailability { return }
+        state.usernameAvailability = .unknown
     }
 }

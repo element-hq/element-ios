@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,10 +24,10 @@ struct AuthenticationTermsPolicy: Identifiable, Equatable {
     let url: String
     /// The policy's title.
     let title: String
-    /// The policy's description.
-    let description: String
+    /// The policy's subtitle.
+    let subtitle: String
     /// Whether or not the policy has been accepted.
-    var accepted: Bool = false
+    var accepted = false
 }
 
 // MARK: View model
@@ -44,8 +44,14 @@ enum AuthenticationTermsViewModelResult {
 // MARK: View
 
 struct AuthenticationTermsViewState: BindableState {
+    /// The homeserver asking the user to accept the terms.
+    let homeserver: AuthenticationHomeserverViewData
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationTermsBindings
+    
+    var headerMessage: String {
+        VectorL10n.authenticationTermsMessage("STVDIO SPACE")
+    }
     
     /// Whether or not all of the policies have been accepted.
     var hasAcceptedAllPolicies: Bool {
@@ -72,6 +78,8 @@ enum AuthenticationTermsViewAction {
 enum AuthenticationTermsErrorType: Hashable {
     /// An error response from the homeserver.
     case mxError(String)
+    /// The homeserver supplied an invalid URL for the policy.
+    case invalidPolicyURL
     /// An unknown error occurred.
     case unknown
 }

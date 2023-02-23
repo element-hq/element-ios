@@ -48,6 +48,9 @@ extern NSString *const MXKAccountManagerDataType;
  */
 @interface MXKAccountManager : NSObject
 
+/// Flag indicating that saving accounts enabled. Defaults to `YES`.
+@property (nonatomic, assign, getter=isSavingAccountsEnabled) BOOL savingAccountsEnabled;
+
 /**
  The class of store used to open matrix session for the accounts. This class must be conformed to MXStore protocol.
  By default this class is MXFileStore.

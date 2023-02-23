@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0.0, *)
 struct RoomNotificationSettings: View {
-    
     @Environment(\.theme) var theme: ThemeSwiftUI
     
     @ObservedObject var viewModel: RoomNotificationSettingsSwiftUIViewModel
@@ -31,6 +29,7 @@ struct RoomNotificationSettings: View {
             Button(VectorL10n.cancel) {
                 viewModel.process(viewAction: .cancel)
             }
+            Color("FirstScreenColor")
         }
     }
     
@@ -39,11 +38,12 @@ struct RoomNotificationSettings: View {
         Button(VectorL10n.save) {
             viewModel.process(viewAction: .save)
         }
+        Color("FirstScreenColor")
     }
     
     var body: some View {
         VectorForm {
-            if  let avatarData = viewModel.viewState.avatarData as? AvatarInputProtocol {
+            if let avatarData = viewModel.viewState.avatarData as? AvatarInputProtocol {
                 RoomNotificationSettingsHeader(
                     avatarData: avatarData,
                     displayName: viewModel.viewState.displayName
@@ -74,9 +74,7 @@ struct RoomNotificationSettings: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct RoomNotificationSettings_Previews: PreviewProvider {
-    
     static let mockViewModel = RoomNotificationSettingsSwiftUIViewModel(
         roomNotificationService: MockRoomNotificationSettingsService.example,
         avatarData: MockAvatarInput.example,

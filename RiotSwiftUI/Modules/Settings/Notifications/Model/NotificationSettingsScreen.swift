@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@ import Foundation
 extension NotificationSettingsScreen: CaseIterable { }
 
 extension NotificationSettingsScreen: Identifiable {
-    var id: Int { self.rawValue }
+    var id: Int { rawValue }
 }
 
 extension NotificationSettingsScreen {

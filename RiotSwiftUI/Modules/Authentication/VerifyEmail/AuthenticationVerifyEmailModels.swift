@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,25 +25,24 @@ enum AuthenticationVerifyEmailViewModelResult {
     case resend
     /// Cancel the flow.
     case cancel
+    /// Go back to the email form
+    case goBack
 }
 
 // MARK: View
 
 struct AuthenticationVerifyEmailViewState: BindableState {
-    enum Constants {
-        static let gradientColors = [
-            Color(red: 0.646, green: 0.95, blue: 0.879),
-            Color(red: 0.576, green: 0.929, blue: 0.961),
-            Color(red: 0.874, green: 0.82, blue: 1)
-        ]
-    }
-    
-    /// The background gradient used with light mode.
-    let gradient = Gradient (colors: Constants.gradientColors)
+    /// The homeserver requesting email verification.
+    let homeserver: AuthenticationHomeserverViewData
     /// An email has been sent and the app is waiting for the user to tap the link.
     var hasSentEmail = false
     /// View state that can be bound to from SwiftUI.
     var bindings: AuthenticationVerifyEmailBindings
+    
+    /// The message shown in the header while asking for an email address to be entered.
+    var formHeaderMessage: String {
+        VectorL10n.authenticationVerifyEmailInputMessage("STVDIO SPACE")
+    }
     
     /// Whether the email address is valid and the user can continue.
     var hasInvalidAddress: Bool {
@@ -65,6 +64,8 @@ enum AuthenticationVerifyEmailViewAction {
     case resend
     /// Cancel the flow.
     case cancel
+    /// Go back to enter email adress screen
+    case goBack
 }
 
 enum AuthenticationVerifyEmailErrorType: Hashable {
@@ -73,3 +74,5 @@ enum AuthenticationVerifyEmailErrorType: Hashable {
     /// An unknown error occurred.
     case unknown
 }
+
+

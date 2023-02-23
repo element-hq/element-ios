@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2022 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,14 +16,12 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 /// A reusable view that will show a standard placeholder avatar with the
 /// supplied character and colour index for the `namesAndAvatars` color array.
 ///
 /// This view has a forced 1:1 aspect ratio but will appear very large until a `.frame`
 /// modifier is applied.
 struct PlaceholderAvatarImage: View {
-    
     // MARK: - Private
     
     @Environment(\.theme) private var theme
@@ -50,7 +48,6 @@ struct PlaceholderAvatarImage: View {
     }
 }
 
-@available(iOS 14.0, *)
 struct Previews_TemplateAvatarImage_Previews: PreviewProvider {
     static var previews: some View {
         PlaceholderAvatarImage(firstCharacter: "X", colorIndex: 1)

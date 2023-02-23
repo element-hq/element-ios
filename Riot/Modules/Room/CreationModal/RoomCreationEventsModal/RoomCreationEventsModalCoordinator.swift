@@ -38,10 +38,10 @@ final class RoomCreationEventsModalCoordinator: RoomCreationEventsModalCoordinat
     
     // MARK: - Setup
     
-    init(session: MXSession, bubbleData: MXKRoomBubbleCellDataStoring, roomState: MXRoomState) {
+    init(session: MXSession, roomState: MXRoomState) {
         self.session = session
         
-        let roomCreationEventsModalViewModel = RoomCreationEventsModalViewModel(session: self.session, bubbleData: bubbleData, roomState: roomState)
+        let roomCreationEventsModalViewModel = RoomCreationEventsModalViewModel(session: self.session, roomState: roomState)
         let roomCreationEventsModalViewController = RoomCreationEventsModalViewController.instantiate(with: roomCreationEventsModalViewModel)
         self.roomCreationEventsModalViewModel = roomCreationEventsModalViewModel
         self.roomCreationEventsModalViewController = roomCreationEventsModalViewController

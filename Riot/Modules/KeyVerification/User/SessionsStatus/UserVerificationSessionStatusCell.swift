@@ -63,7 +63,7 @@ final class UserVerificationSessionStatusCell: UITableViewCell, NibReusable, The
     
     func update(theme: Theme) {
         self.theme = theme
-        self.backgroundColor = theme.headerBackgroundColor
+        self.backgroundColor = theme.colors.system
         self.sessionNameLabel.textColor = theme.textPrimaryColor
         self.updateStatusTextColor()
     }

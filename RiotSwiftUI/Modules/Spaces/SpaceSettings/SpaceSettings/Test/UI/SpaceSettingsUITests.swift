@@ -14,10 +14,9 @@
 // limitations under the License.
 //
 
-import XCTest
 import RiotSwiftUI
+import XCTest
 
-@available(iOS 14.0, *)
-class SpaceSettingsUITests: MockScreenTest {
+class SpaceSettingsUITests: MockScreenTestCase {
     // Tests to be implemented.
 }

@@ -44,6 +44,9 @@ const CGFloat kTypingCellHeight = 24;
 // Listen to location beacon received
 @property (nonatomic, weak) id beaconInfoSummaryListener;
 
+// Listen to location beacon info deletion
+@property (nonatomic, weak) id beaconInfoSummaryDeletionListener;
+
 // Timer used to debounce cells refresh
 @property (nonatomic, strong) NSTimer *refreshCellsTimer;
 
@@ -65,9 +68,9 @@ const CGFloat kTypingCellHeight = 24;
 
 @implementation RoomDataSource
 
-- (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession
+- (instancetype)initWithRoomId:(NSString *)roomId andMatrixSession:(MXSession *)matrixSession threadId:(NSString *)threadId
 {
-    self = [super initWithRoomId:roomId andMatrixSession:matrixSession];
+    self = [super initWithRoomId:roomId andMatrixSession:matrixSession threadId:threadId];
     if (self)
     {
         // Replace default Cell data class
@@ -116,7 +119,7 @@ const CGFloat kTypingCellHeight = 24;
 
     // Sadly, we need to make sure we have fetched all room members from the HS
     // to be able to display read receipts
-    if (![self.mxSession.store hasLoadedAllRoomMembersForRoom:self.roomId])
+    if (!self.isPeeking && ![self.mxSession.store hasLoadedAllRoomMembersForRoom:self.roomId])
     {
         [self.room members:^(MXRoomMembers *roomMembers) {
             MXLogDebug(@"[MXKRoomDataSource] finalizeRoomDataSource: All room members have been retrieved");
@@ -159,7 +162,6 @@ const CGFloat kTypingCellHeight = 24;
     self.eventFormatter.treatMatrixUserIdAsLink = YES;
     self.eventFormatter.treatMatrixRoomIdAsLink = YES;
     self.eventFormatter.treatMatrixRoomAliasAsLink = YES;
-    self.eventFormatter.treatMatrixGroupIdAsLink = YES;
     
     // Apply the event types filter to display only the wanted event types.
     self.eventFormatter.eventTypesFilterForMessages = [MXKAppSettings standardAppSettings].eventsFilterForMessages;
@@ -188,6 +190,11 @@ const CGFloat kTypingCellHeight = 24;
     if (self.beaconInfoSummaryListener)
     {
         [self.mxSession.aggregations.beaconAggregations removeListener:self.beaconInfoSummaryListener];
+    }
+    
+    if (self.beaconInfoSummaryDeletionListener)
+    {
+        [self.mxSession.aggregations.beaconAggregations removeListener:self.beaconInfoSummaryDeletionListener];
     }
     
     [super destroy];
@@ -238,7 +245,7 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)roomSummaryDidChange:(NSNotification*)notification
 {
-    if (BuildSettings.liveLocationSharingEnabled)
+    if (RiotSettings.shared.enableLiveLocationSharing)
     {
         [self updateCurrentUserLocationSharingStatus];
     }
@@ -388,7 +395,7 @@ const CGFloat kTypingCellHeight = 24;
     id<RoomTimelineCellDecorator> cellDecorator = [RoomTimelineConfiguration shared].currentStyle.cellDecorator;
     
     // Finalize cell view customization here
-    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+    if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
     {
         MXKRoomBubbleTableViewCell *bubbleCell = (MXKRoomBubbleTableViewCell*)cell;
         [self resetAccessibilityForCell:bubbleCell];
@@ -678,7 +685,7 @@ const CGFloat kTypingCellHeight = 24;
     return roomBubbleCellData;
 }
 
-- (MXKeyVerificationRequest*)keyVerificationRequestFromEventId:(NSString*)eventId
+- (id<MXKeyVerificationRequest>)keyVerificationRequestFromEventId:(NSString*)eventId
 {
     RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:eventId];
     
@@ -718,13 +725,13 @@ const CGFloat kTypingCellHeight = 24;
                                                                 {
                                                                     id notificationObject = notification.object;
                                                                     
-                                                                    if ([notificationObject isKindOfClass:MXKeyVerificationByDMRequest.class])
+                                                                    if ([notificationObject conformsToProtocol:@protocol(MXKeyVerificationRequest)])
                                                                     {
-                                                                        MXKeyVerificationByDMRequest *keyVerificationByDMRequest = (MXKeyVerificationByDMRequest*)notificationObject;
+                                                                        id<MXKeyVerificationRequest> keyVerificationRequest = (id<MXKeyVerificationRequest>)notificationObject;
                                                                         
-                                                                        if ([keyVerificationByDMRequest.roomId isEqualToString:self.roomId])
+                                                                        if (keyVerificationRequest.transport == MXKeyVerificationTransportDirectMessage && [keyVerificationRequest.roomId isEqualToString:self.roomId])
                                                                         {
-                                                                            RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:keyVerificationByDMRequest.eventId];
+                                                                            RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:keyVerificationRequest.requestId];
                                                                             
                                                                             roomBubbleCellData.isKeyVerificationOperationPending = NO;
                                                                             roomBubbleCellData.keyVerification = nil;
@@ -745,7 +752,7 @@ const CGFloat kTypingCellHeight = 24;
                                                                                                                          queue:[NSOperationQueue mainQueue]
                                                                                                                     usingBlock:^(NSNotification *notification)
                                                                        {
-                                                                           MXKeyVerificationTransaction *keyVerificationTransaction = (MXKeyVerificationTransaction*)notification.object;
+                                                                           id<MXKeyVerificationTransaction> keyVerificationTransaction = (id<MXKeyVerificationTransaction>)notification.object;
                                                                            
                                                                            if ([keyVerificationTransaction.dmRoomId isEqualToString:self.roomId])
                                                                            {
@@ -770,9 +777,20 @@ const CGFloat kTypingCellHeight = 24;
         [self updateCurrentUserLocationSharingStatus];
         [self refreshFirstCellWithBeaconInfoSummary:beaconInfoSummary];
     }];
+    
+    self.beaconInfoSummaryDeletionListener = [self.mxSession.aggregations.beaconAggregations listenToBeaconInfoSummaryDeletionInRoomWithId:self.roomId handler:^(NSString * _Nonnull beaconInfoEventId) {
+        MXStrongifyAndReturnIfNil(self);
+        [self updateCurrentUserLocationSharingStatus];
+        [self refreshFirstCellWithBeaconInfoSummaryIdentifier:beaconInfoEventId updatedBeaconInfoSummary:nil];
+    }];
 }
 
 - (void)refreshFirstCellWithBeaconInfoSummary:(id<MXBeaconInfoSummaryProtocol>)beaconInfoSummary
+{
+    [self refreshFirstCellWithBeaconInfoSummaryIdentifier:beaconInfoSummary.id updatedBeaconInfoSummary:beaconInfoSummary];
+}
+
+- (void)refreshFirstCellWithBeaconInfoSummaryIdentifier:(NSString*)beaconInfoEventId updatedBeaconInfoSummary:(nullable id<MXBeaconInfoSummaryProtocol>)beaconInfoSummary
 {
     NSUInteger cellIndex;
     __block RoomBubbleCellData *roomBubbleCellData;
@@ -783,7 +801,7 @@ const CGFloat kTypingCellHeight = 24;
             if ([cellData isKindOfClass:[RoomBubbleCellData class]])
             {
                 roomBubbleCellData = (RoomBubbleCellData*)cellData;
-                if ([roomBubbleCellData.beaconInfoSummary.id isEqualToString:beaconInfoSummary.id])
+                if ([roomBubbleCellData.beaconInfoSummary.id isEqualToString:beaconInfoEventId])
                 {
                     *stop = YES;
                     return YES;
@@ -848,6 +866,7 @@ const CGFloat kTypingCellHeight = 24;
     }
     
     __block MXHTTPOperation *operation = [self.mxSession.crypto.keyVerificationManager keyVerificationFromKeyVerificationEvent:event
+                                                                                                                        roomId:self.roomId
                                                                                                                           success:^(MXKeyVerification * _Nonnull keyVerification)
                                           {
                                               BOOL shouldRefreshCells = bubbleCellData.isKeyVerificationOperationPending || bubbleCellData.keyVerification == nil;
@@ -927,7 +946,7 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)acceptVerificationRequestForEventId:(NSString*)eventId success:(void(^)(void))success failure:(void(^)(NSError*))failure
 {
-    MXKeyVerificationRequest *keyVerificationRequest = [self keyVerificationRequestFromEventId:eventId];
+    id<MXKeyVerificationRequest> keyVerificationRequest = [self keyVerificationRequestFromEventId:eventId];
     
     if (!keyVerificationRequest)
     {
@@ -950,7 +969,7 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)declineVerificationRequestForEventId:(NSString*)eventId success:(void(^)(void))success failure:(void(^)(NSError*))failure
 {
-    MXKeyVerificationRequest *keyVerificationRequest = [self keyVerificationRequestFromEventId:eventId];
+    id<MXKeyVerificationRequest> keyVerificationRequest = [self keyVerificationRequestFromEventId:eventId];
     
     if (!keyVerificationRequest)
     {
@@ -1077,6 +1096,11 @@ const CGFloat kTypingCellHeight = 24;
     [self setShowAllReactions:NO forEvent:eventId];
 }
 
+- (void)roomReactionsViewModel:(RoomReactionsViewModel *)viewModel didTapAddReactionForEventId:(NSString * _Nonnull)eventId
+{
+    [self.delegate dataSource:self didRecognizeAction:kMXKRoomBubbleCellTapOnAddReaction inCell:nil userInfo:@{ kMXKRoomBubbleCellEventIdKey: eventId }];
+}
+
 - (void)setShowAllReactions:(BOOL)showAllReactions forEvent:(NSString*)eventId
 {
     id<MXKRoomBubbleCellDataStoring> cellData = [self cellDataOfEventWithEventId:eventId];
@@ -1199,16 +1223,18 @@ const CGFloat kTypingCellHeight = 24;
 {
     MXLocationService *locationService = self.mxSession.locationService;
     
-    if (!locationService || !self.roomId)
+    NSString *roomId = self.roomId;
+    
+    if (!locationService || !roomId)
     {
         return;
     }
     
-    BOOL isUserSharingActiveLocation = [locationService isCurrentUserSharingActiveLocationInRoomWithId:self.roomId];
+    BOOL isUserSharingActiveLocation = [locationService isCurrentUserSharingActiveLocationInRoomWithId:roomId];
     
     if (isUserSharingActiveLocation != self.isCurrentUserSharingActiveLocation)
     {
-        self.isCurrentUserSharingActiveLocation = [locationService isCurrentUserSharingActiveLocationInRoomWithId:self.roomId];
+        self.isCurrentUserSharingActiveLocation = isUserSharingActiveLocation;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.roomDataSourceDelegate roomDataSourceDidUpdateCurrentUserSharingLocationStatus:self];

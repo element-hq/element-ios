@@ -16,21 +16,18 @@
 
 import SwiftUI
 
-
-@available(iOS 14.0, *)
 struct ThemableTextEditor: UIViewRepresentable {
-    
     // MARK: Properties
     
     @Binding var text: String
-    @State var configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration()
+    @State var configuration = UIKitTextInputConfiguration()
     var onEditingChanged: ((_ edit: Bool) -> Void)?
 
     // MARK: Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
 
-    private let textView: UITextView = UITextView()
+    private let textView = UITextView()
     private let internalParams = InternalParams()
     
     // MARK: Setup
@@ -38,8 +35,8 @@ struct ThemableTextEditor: UIViewRepresentable {
     init(text: Binding<String>,
          configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration(),
          onEditingChanged: ((_ edit: Bool) -> Void)? = nil) {
-        self._text = text
-        self._configuration = State(initialValue: configuration)
+        _text = text
+        _configuration = State(initialValue: configuration)
         self.onEditingChanged = onEditingChanged
         
         ResponderManager.register(view: textView)
@@ -64,8 +61,8 @@ struct ThemableTextEditor: UIViewRepresentable {
         uiView.textColor = UIColor(theme.colors.primaryContent)
         uiView.tintColor = UIColor(theme.colors.accent)
         
-        if uiView.text != self.text {
-            uiView.text = self.text
+        if uiView.text != text {
+            uiView.text = text
         }
 
         uiView.keyboardType = configuration.keyboardType
@@ -82,7 +79,7 @@ struct ThemableTextEditor: UIViewRepresentable {
     // MARK: - Private
     
     private func replaceText(with newText: String) {
-        self.text = newText
+        text = newText
     }
 
     private class InternalParams {
@@ -92,7 +89,7 @@ struct ThemableTextEditor: UIViewRepresentable {
     // MARK: - Coordinator
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(self)
+        Coordinator(self)
     }
     
     class Coordinator: NSObject, UITextViewDelegate {
@@ -128,7 +125,6 @@ struct ThemableTextEditor: UIViewRepresentable {
 
 // MARK: - modifiers
 
-@available(iOS 14.0, *)
 extension ThemableTextEditor {
     func keyboardType(_ type: UIKeyboardType) -> ThemableTextEditor {
         textView.keyboardType = type

@@ -134,6 +134,8 @@
     }];
     
     self.navigationItem.rightBarButtonItem = closeBarButtonItem;
+    // Hide back button title
+    [self vc_removeBackTitle];
     
     // Register collection view cell class
     [self.recentCapturesCollectionView registerNib:MXKMediaCollectionViewCell.nib forCellWithReuseIdentifier:[MXKMediaCollectionViewCell defaultReuseIdentifier]];
@@ -1029,9 +1031,6 @@
             albumContentViewController.allowsMultipleSelection = self.allowsMultipleSelection;
         }
 
-        // Hide back button title
-        self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-        
         [self.navigationController pushViewController:albumContentViewController animated:YES];
     }
 }

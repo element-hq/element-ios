@@ -34,13 +34,15 @@ class RoomActionProvider: RoomActionProviderProtocol {
     
     var menu: UIMenu {
         if service.isRoomJoined {
-            return UIMenu(children: [
+            var children = service.hasUnread ? [self.markAsReadAction] : []
+            children.append(contentsOf: [
                 self.directChatAction,
                 self.notificationsAction,
                 self.favouriteAction,
                 self.lowPriorityAction,
                 self.leaveAction
             ])
+            return UIMenu(children: children)
         } else {
             if service.roomMembership == .invite {
                 return UIMenu(children: [
@@ -103,14 +105,17 @@ class RoomActionProvider: RoomActionProviderProtocol {
         }
     }
     
-    private var leaveAction: UIAction {
-        let image: UIImage?
-        if #available(iOS 14.0, *) {
-            image = UIImage(systemName: "rectangle.righthalf.inset.fill.arrow.right")
-        } else {
-            image = UIImage(systemName: "rectangle.xmark")
+    private var markAsReadAction: UIAction {
+        return UIAction(
+            title: VectorL10n.homeContextMenuMarkAsRead,
+            image: UIImage(systemName: "envelope.open")) { [weak self] action in
+                guard let self = self else { return }
+                self.service.markAsRead()
         }
-
+    }
+    
+    private var leaveAction: UIAction {
+        let image = UIImage(systemName: "rectangle.righthalf.inset.fill.arrow.right")
         let action = UIAction(title: VectorL10n.homeContextMenuLeave, image: image) { [weak self] action in
             guard let self = self else { return }
             self.service.leaveRoom(promptUser: true)

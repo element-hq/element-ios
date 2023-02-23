@@ -15,15 +15,13 @@
 //
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
-@available(iOS 14.0, *)
 internal protocol MatrixItemChooserCoordinatorViewProvider {
     func view(with viewModel: MatrixItemChooserViewModelType.Context) -> AnyView
 }
 
-@available(iOS 14.0, *)
 struct MatrixItemChooserCoordinatorParameters {
     let session: MXSession
     let title: String?
@@ -50,9 +48,7 @@ struct MatrixItemChooserCoordinatorParameters {
     }
 }
 
-@available(iOS 14.0.0, *)
 final class MatrixItemChooserCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -69,7 +65,6 @@ final class MatrixItemChooserCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: MatrixItemChooserCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: MatrixItemChooserService(session: parameters.session, selectedItemIds: parameters.selectedItemsIds, itemsProcessor: parameters.itemsProcessor), title: parameters.title, detail: parameters.detail, selectionHeader: parameters.selectionHeader)
@@ -98,6 +93,6 @@ final class MatrixItemChooserCoordinator: Coordinator, Presentable {
     // MARK: - Presentable
     
     func toPresentable() -> UIViewController {
-        return self.matrixItemChooserHostingController
+        matrixItemChooserHostingController
     }
 }

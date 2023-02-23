@@ -14,16 +14,12 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
-@available(iOS 14, *)
-typealias SpaceSettingsViewModelType = StateStoreViewModel<SpaceSettingsViewState,
-                                                                 Never,
-                                                                 SpaceSettingsViewAction>
-@available(iOS 14, *)
+typealias SpaceSettingsViewModelType = StateStoreViewModel<SpaceSettingsViewState, SpaceSettingsViewAction>
+
 class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModelProtocol {
-
     // MARK: - Properties
     
     private static let options: [SpaceSettingsOption] = [
@@ -42,7 +38,7 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
     // MARK: - Setup
 
     static func makeSpaceSettingsViewModel(service: SpaceSettingsServiceProtocol) -> SpaceSettingsViewModelProtocol {
-        return SpaceSettingsViewModel(service: service)
+        SpaceSettingsViewModel(service: service)
     }
 
     private init(service: SpaceSettingsServiceProtocol) {
@@ -56,7 +52,8 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
             name: service.roomProperties?.name ?? "",
             topic: service.roomProperties?.topic ?? "",
             address: service.roomProperties?.address ?? "",
-            showPostProcessAlert: service.showPostProcessAlert.value)
+            showPostProcessAlert: service.showPostProcessAlert.value
+        )
         
         return SpaceSettingsViewState(
             defaultAddress: service.roomProperties?.address ?? "",
@@ -70,12 +67,13 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
             isLoading: service.isLoadingSubject.value,
             visibilityString: (service.roomProperties?.visibility ?? .private).stringValue,
             options: options,
-            bindings: bindings)
+            bindings: bindings
+        )
     }
     
     private func setupObservers() {
         service.isLoadingSubject.sink { [weak self] isLoading in
-                self?.state.isLoading = isLoading
+            self?.state.isLoading = isLoading
         }
         .store(in: &cancellables)
         
@@ -94,7 +92,7 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
         .store(in: &cancellables)
         
         service.addressValidationSubject.sink { [weak self] validationStatus in
-            self?.state.addressMessage = validationStatus.message
+            self?.state.addressMessage = validationStatus.message.components(separatedBy: ":").first
             self?.state.isAddressValid = validationStatus.isValid
         }
         .store(in: &cancellables)

@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct SpaceCreationMatrixItemChooser: View {
-    
     // MARK: Properties
     
     @ObservedObject var viewModel: MatrixItemChooserViewModel.Context
@@ -52,7 +50,6 @@ struct SpaceCreationMatrixItemChooser: View {
             footerView
         }
     }
-    
     
     @ViewBuilder
     private var footerView: some View {

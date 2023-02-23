@@ -30,9 +30,10 @@ class AppConfiguration: CommonConfiguration {
         // Enable CallKit for app
         MXKAppSettings.standard()?.isCallKitEnabled = true
         
-        // Get modular widget events in rooms histories
+        // Get additional events (modular widget, voice broadcast...)
         MXKAppSettings.standard()?.addSupportedEventTypes([kWidgetMatrixEventTypeString,
-                                                           kWidgetModularEventTypeString])
+                                                           kWidgetModularEventTypeString,
+                                                           VoiceBroadcastSettings.voiceBroadcastInfoContentKeyType])
         
         // Hide undecryptable messages that were sent while the user was not in the room
         MXKAppSettings.standard()?.hidePreJoinedUndecryptableEvents = true

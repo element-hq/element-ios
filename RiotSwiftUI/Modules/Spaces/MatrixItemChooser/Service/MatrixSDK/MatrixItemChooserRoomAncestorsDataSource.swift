@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ class MatrixItemChooserRoomAncestorsDataSource: MatrixItemChooserDataSource {
     func sections(with session: MXSession, completion: @escaping (Result<[MatrixListItemSectionData], Error>) -> Void) {
         let ancestorsIds = session.spaceService.ancestorsPerRoomId[roomId] ?? []
         completion(Result(catching: {
-            return [
+            [
                 MatrixListItemSectionData(title: VectorL10n.roomAccessSpaceChooserKnownSpacesSection(session.room(withRoomId: roomId)?.displayName ?? ""), items: ancestorsIds.compactMap { spaceId in
                     guard let space = session.spaceService.getSpace(withId: spaceId) else {
                         return nil

@@ -115,8 +115,8 @@
 "directory_cell_title" = "Shfletoni në drejtori";
 "directory_cell_description" = "Dhoma %tu";
 "directory_search_results_title" = "Shfletoni përfundime drejtorie";
-"directory_search_results" = "U gjetën %tu përfundime për %@";
-"directory_search_results_more_than" = ">%tu përfundime të gjetura për %@";
+"directory_search_results" = "U gjetën %1$tu përfundime për %2$@";
+"directory_search_results_more_than" = ">U gjetën %1$tu përfundime për %2$@";
 "directory_searching_title" = "Po kërkohet në drejtori…";
 "directory_search_fail" = "S’u arrit të sillen të dhëna";
 // Contacts
@@ -257,10 +257,10 @@
 "settings_privacy_policy" = "Rregulla Privatësie";
 "settings_third_party_notices" = "Njoftime Palësh të Treta";
 "settings_clear_cache" = "Pastroje fshehtinën";
-"settings_change_password" = "Ndryshoni fjalëkalim llogarie Matrix";
-"settings_old_password" = "fjalëkalim i vjetër";
-"settings_new_password" = "fjalëkalim i ri";
-"settings_confirm_password" = "ripohoni fjalëkalimin";
+"settings_change_password" = "Ndryshoni fjalëkalimin";
+"settings_old_password" = "Fjalëkalimi i vjetër";
+"settings_new_password" = "Fjalëkalimi i ri";
+"settings_confirm_password" = "Ripohoni frajëkalimin";
 "settings_password_updated" = "Fjalëkalimi i llogarisë tuaj Matrix u përditësua";
 "settings_crypto_device_name" = "Emër sesioni: ";
 "settings_crypto_device_id" = "\nID sesioni: ";
@@ -427,7 +427,7 @@
 "settings_pin_rooms_with_unread" = "Fikso dhomat me mesazhe të palexuar";
 "settings_labs_create_conference_with_jitsi" = "Krijoni thirrje konferencë me Jitsi-n";
 "settings_fail_to_update_password" = "S’u arrit të përditësohet fjalëkalimi i llogarisë Matrix";
-"settings_deactivate_my_account" = "Çaktivizoje llogarinë time";
+"settings_deactivate_my_account" = "Çaktivizoje llogarinë përgjithmonë";
 "room_details_mute_notifs" = "Heshtoji njoftimet";
 "room_details_access_section_no_address_warning" = "Që të lidhni një dhomë, ajo duhet të ketë një adresë";
 "room_details_new_address_placeholder" = "Shtoni adresë të re (p.sh. #foo%@)";
@@ -1643,13 +1643,13 @@
 "search_filter_placeholder" = "Filtër";
 "onboarding_use_case_existing_server_button" = "Lidhu me shërbyesin";
 "onboarding_use_case_existing_server_message" = "Po shihni për t’u lidhur me një shërbyes ekzistues?";
-"onboarding_use_case_skip_button" = "anashkaloni këtë pyetje";
+"onboarding_use_case_skip_button" = "Anashkaloni këtë pyetje";
 /* The placeholder string contains onboarding_use_case_skip_button as a tappable action */
-"onboarding_use_case_not_sure_yet" = "Ende jo i sigurt? Mundeni të %@";
+"onboarding_use_case_not_sure_yet" = "Ende jo i sigurt? %@";
 "onboarding_use_case_community_messaging" = "Bashkësi";
 "onboarding_use_case_work_messaging" = "Ekipe";
 "onboarding_use_case_personal_messaging" = "Shokë dhe familje";
-"onboarding_use_case_message" = "Do t’ju ndihmojmë të lidheni.";
+"onboarding_use_case_message" = "Do t’ju ndihmojmë të lidheni";
 "onboarding_use_case_title" = "Me kë do të bisedoni më të shumtën?";
 
 
@@ -1740,7 +1740,7 @@
 "room_displayname_more_than_two_members" = "%@ dhe %@ të tjerë";
 // Settings
 "settings" = "Rregullime";
-"settings_enable_inapp_notifications" = "Aktivizoni njoftime Aplikacioni";
+"settings_enable_inapp_notifications" = "Aktivizoni njoftime të aplikacionit";
 "settings_enable_push_notifications" = "Aktivizoni njoftime push";
 "settings_enter_validation_token_for" = "Jepni token vleftësimi për %@:";
 "notification_settings_room_rule_title" = "Dhomë: '%@'";
@@ -2254,10 +2254,10 @@
 "threads_notice_title" = "Rrjedhat s’janë më eksperimentale 🎉";
 "room_participants_invite_prompt_to_msg" = "Jeni i sigurt se doni të ftohet %@ te %@?";
 "onboarding_celebration_button" = "Shkojmë";
-"onboarding_celebration_message" = "Parapëlqimet tuaja u ruajtën.";
-"onboarding_celebration_title" = "Kaq qe!";
+"onboarding_celebration_message" = "Që të përditësoni profilin tuaj, shkoni kur të doni te rregullimet";
+"onboarding_celebration_title" = "Bukur duket!";
 "onboarding_avatar_accessibility_label" = "Foto profili";
-"onboarding_avatar_message" = "Këtë mund ta ndryshoni në çfarëdo kohe..";
+"onboarding_avatar_message" = "Koha për t’i dhënë pamje emrit";
 "onboarding_avatar_title" = "Shtoni një foto profili";
 "onboarding_display_name_max_length" = "Emri juaj për në ekran duhet të jetë më pak se 256 shenja";
 "onboarding_display_name_hint" = "Këtë mund ta ndryshoni më vonë";
@@ -2269,7 +2269,7 @@
 "onboarding_congratulations_home_button" = "Shpjemëni në shtëpi";
 "onboarding_congratulations_personalize_button" = "Personalizoni profilin";
 /* The placeholder string contains the user's matrix ID */
-"onboarding_congratulations_message" = "Llogaria juaj %@ u krijua.";
+"onboarding_congratulations_message" = "Llogaria juaj %@ u krijua";
 "onboarding_congratulations_title" = "Përgëzime!";
 "saving" = "Ruajtje";
 
@@ -2282,3 +2282,351 @@
 "new_word" = "E re";
 "stop" = "Ndale";
 "joining" = "Po hyhet";
+"location_sharing_live_stop_sharing_progress" = "Ndal tregim vendndodhjeje";
+"location_sharing_live_stop_sharing_error" = "S’u arrit të ndalet tregim vendndodhjeje";
+"location_sharing_live_no_user_locations_error_title" = "S’ka vendndodhje përdoruesish gati";
+"location_sharing_live_timer_selector_long" = "për 8 orë";
+"location_sharing_live_timer_selector_medium" = "për 1 orë";
+"location_sharing_live_timer_selector_short" = "për 15 minuta";
+"location_sharing_live_timer_selector_title" = "Zgjidhni për sa kohë do të shohin të tjerët vendndodhjen tuaj të saktë.";
+"location_sharing_live_error" = "Gabim vendndodhjeje “live”";
+"location_sharing_live_list_item_stop_sharing_action" = "Resht së ndari";
+"location_sharing_live_list_item_current_user_display_name" = "Ju";
+"location_sharing_live_list_item_last_update_invalid" = "Nuk dihet koha e përditësimit të fundit";
+"location_sharing_live_list_item_last_update" = "Përditësuar %@ më parë";
+"location_sharing_live_viewer_title" = "Vendndodhje";
+"location_sharing_live_map_callout_title" = "Jepe vendndodhjen";
+"live_location_sharing_ended" = "Vendndodhja “live” përfundoi";
+"location_sharing_allow_background_location_cancel_action" = "Jo tani";
+"location_sharing_allow_background_location_validate_action" = "Rregullime";
+"location_sharing_allow_background_location_title" = "Lejoni hyrje";
+"room_invite_to_space_option_detail" = "Mund të eksplorojnë %@, por s’do të jenë anëtarë të %@.";
+"room_access_settings_screen_upgrade_alert_note" = "Ju lutemi, kini parasysh se përmirësimi do të prodhojë një version të ri të dhomës. Krejt mesazhet e tanishëm do të mbeten në këtë dhomë të arkivuar.";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Cilido në një hapësirë mëmë do të jetë në gjendje ta gjejë dhe hyjë në këtë dhomë - s’ka nevojë të ftohen dorazi një e nga një. Do të jeni në gjendje ta ndryshoni këtë te rregullimet e dhomës, në çfarëdo kohe.";
+"room_access_settings_screen_upgrade_alert_message" = "Cilido te %@ do të jetë në gjendje të gjejë dhe hyjë në këtë dhomë - s’ka nevojë të ftohen dorazi një e nga një. Do të jeni në gjendje ta ndryshoni këtë te rregullimet e kësaj dhome, në çfarëdo kohe.";
+"settings_presence_offline_mode_description" = "Në u aktivizoftë, përdoruesve të tjerë do t’u dukeni përherë jo në linjë, madje edhe kur përdoret aplikacioni.";
+"settings_presence_offline_mode" = "Mënyra <em>Offline</em>";
+"settings_presence" = "Prani";
+"settings_enable_rageshake" = "“Rage shake” që të njoftoni një të metë";
+"settings_ui_show_redactions_in_room_history" = "Shfaq një vendmbajtëse për mesazhe të hequr";
+"threads_discourage_information_2" = "\n\nDoni të aktivizohen rrjedha, sido qoftë?";
+"threads_discourage_information_1" = "Shërbyesi juaj Home aktualisht s’mbulon rrjedha, ndaj kjo veçori mund të jetë e paqëndrueshme. Disa mesazhe rrjedhash mund të mos jenë të përdorshëm. ";
+"confirm" = "Ripohojeni";
+"message_reply_to_sender_sent_their_live_location" = "Vendndodhje drejtpërsëdrejti.";
+"location_sharing_live_lab_promotion_activation" = "Aktivizo tregim vendndodhjeje “live”";
+"location_sharing_live_lab_promotion_text" = "Ju lutemi, kini parasysh: kjo është një veçori në zhvillim, që përdor një sendërtim të përkohshëm i cili lejon që historiku i vendndodhjeve tuaja të dhëna për të tjerët të jenë përherë të dukshme për persona të tjerë te dhoma.";
+"location_sharing_live_lab_promotion_title" = "Tregim “live” vendndodhjeje";
+"location_sharing_live_loading" = "Po ngarkohet Vendndodhje “Live”…";
+"location_sharing_live_timer_incoming" = "“Live” deri më %@";
+"location_sharing_live_list_item_sharing_expired" = "Dhënia ka skaduar";
+"location_sharing_live_list_item_time_left" = "Edhe %@";
+"location_sharing_map_credits_title" = "© Të drejta kopjimi";
+"location_sharing_allow_background_location_message" = "Nëse do të donit të tregonit Vendndodhjen tuaj Drejtpërsëdrejti, Element-it i duhet hyrje te vendndodhja, kur aplikacioni është në prapaskenë.Që të aktivizoni hyrje, prekni Rregullime> Vendndodhje dhe përzgjidhni Përherë";
+"location_sharing_invalid_power_level_message" = "Që të mund të ndani me të tjerë në këtë dhomë vendndodhje, lypset të keni lejet e duhura.";
+"location_sharing_invalid_power_level_title" = "S’keni leje të tregoni vendndodhje drejtpërsëdrejti";
+
+// MARK: Reactions
+
+"room_event_action_reaction_more" = "%@ më tepër";
+"leave_space_selection_no_rooms" = "Mos përzgjidh dhoma";
+"leave_space_selection_all_rooms" = "Përzgjidhni krejt dhomat";
+"leave_space_selection_title" = "PËRZGJIDHNI DHOMA";
+"leave_space_and_more_rooms" = "Braktisni hapësirën dhe %@dhoma";
+"leave_space_and_one_room" = "Braktisni hapësirën dhe 1 dhomë";
+
+// Mark: Leave space
+
+"leave_space_action" = "Braktiseni hapësirën";
+"spaces_feature_not_available" = "Kjo veçori s’është e passhme këtu. Tani për tani, këtë mund ta bëni me %@ në kompjuterin tuaj.";
+"home_context_menu_mark_as_read" = "Vëri shenjë si të lexuar";
+"room_info_back_button_title" = "Hollësi Dhome";
+"network_offline_message" = "S’jeni në linjë, kontrolloni lidhjen tuaj në internet.";
+"network_offline_title" = "S’jeni në linjë";
+"settings_labs_enable_live_location_sharing" = "Tregim vendndodhjeje drejtpërsëdrejti - tregoju vendndodhjen e tanishme (në zhvillim aktiv dhe përkohësisht, vendndodhjet mbeten në historikun e dhomës)";
+"settings_timeline" = "RRJEDHË KOHORE";
+"room_accessibility_record_voice_message_hint" = "Për regjistrim, prekeni dyfish dhe mbajeni të prekur.";
+"room_accessibility_record_voice_message" = "Incizoni Mesazh Zanor";
+"password_validation_error_contain_symbol" = "Përmban një simbol.";
+"password_validation_error_contain_number" = "Përmban një numër.";
+"password_validation_error_contain_uppercase_letter" = "Përmban shkronjë të madhe.";
+"password_validation_error_contain_lowercase_letter" = "Përmban shkronjë të vogël.";
+/* The placeholder will show a number */
+"password_validation_error_max_length" = "S’tejkalon %d shenja.";
+/* The placeholder will show a number */
+"password_validation_error_min_length" = "E pakta %d shenja.";
+"password_validation_error_header" = "Fjalëkalimi i dhënë nuk plotëson kriteret më poshtë:";
+
+// MARK: Password Validation
+"password_validation_info_header" = "Fjalëkalimi juaj duhet të plotësojë kriteret më poshtë:";
+"authentication_recaptcha_title" = "Jeni qenie njerëzore?";
+"authentication_terms_policy_url_error" = "S’arrihet të gjendet rregulli i përzgjedhur. Ju lutemi, riprovoni.";
+/* The placeholder will show the homeserver's domain */
+"authentication_terms_message" = "Ju lutemi, lexoni kushte dhe rregulla të %@";
+"authentication_terms_title" = "Rregulla privatësie";
+"authentication_verify_msisdn_invalid_phone_number" = "Numër telefoni i pavlefshëm";
+"authentication_verify_msisdn_waiting_button" = "Ridërgomëni kodin";
+/* The placeholder will show the phone number that was entered. */
+"authentication_verify_msisdn_waiting_message" = "Te %@ u dërgua një kod";
+"authentication_verify_msisdn_waiting_title" = "Verifikoni numrin tuaj të telefonit";
+"authentication_verify_msisdn_otp_text_field_placeholder" = "Kod Ripohimi";
+"authentication_verify_msisdn_text_field_placeholder" = "Numër Telefoni";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_msisdn_input_message" = "%@ lyp verifikimin e llogarisë tuaj";
+"authentication_verify_msisdn_input_title" = "Jepni numrin e telefonit tuaj";
+"authentication_choose_password_not_verified_message" = "Kontrolloni te mesazhet tuaj të marrë";
+"authentication_choose_password_not_verified_title" = "Email i paverifikuar";
+"authentication_choose_password_submit_button" = "Ricaktoni Fjalëkalimin";
+"authentication_choose_password_signout_all_devices" = "Dil nga krejt pajisjet";
+"authentication_choose_password_text_field_placeholder" = "Fjalëkalim i Ri";
+"authentication_choose_password_input_message" = "Sigurohuni të jetë 8 ose më shumë shenja";
+"authentication_choose_password_input_title" = "Zgjidhni një fjalëkalim të ri";
+"authentication_forgot_password_waiting_button" = "Ridërgo email";
+/* The placeholder will show the email address that was entered. */
+"authentication_forgot_password_waiting_message" = "Ndiqni udhëzimet e dërguara te %@";
+"authentication_forgot_password_waiting_title" = "Kontrolloni email-et tuaj.";
+"authentication_forgot_password_text_field_placeholder" = "Email";
+/* The placeholder will show the homeserver's domain */
+"authentication_forgot_password_input_message" = "%@ do t’ju dërgojë një lidhje verifikimi";
+"authentication_forgot_password_input_title" = "Jepni email-in tuaj";
+"authentication_verify_email_waiting_button" = "Ridërgo email";
+"authentication_verify_email_waiting_hint" = "S’u mor email?";
+/* The placeholder will show the email address that was entered. */
+"authentication_verify_email_waiting_message" = "Ndiqni udhëzimet e dërguara te %@";
+"authentication_verify_email_waiting_title" = "Verifikoni email-in tuaj.";
+"authentication_verify_email_text_field_placeholder" = "Email";
+/* The placeholder will show the homeserver's domain */
+"authentication_verify_email_input_message" = "%@ lyp verifikimin e llogarisë tuaj";
+"authentication_verify_email_input_title" = "Jepni email-in tuaj";
+"authentication_cancel_flow_confirmation_message" = "Llogaria juaj s’është krijuar ende. Të ndalet procesi i regjistrimit?";
+"authentication_server_selection_generic_error" = "S’gjendet dot shërbyes në këtë URL, ju lutemi, shihni nëse është e saktë.";
+"authentication_server_selection_server_url" = "URL shërbyesi Home";
+"authentication_server_selection_register_message" = "Cila është adresa e shërbyesit tuaj? Kjo është si shtëpi për krejt të dhënat tuaja";
+"authentication_server_selection_register_title" = "Përzgjidhni shërbyesin tuaj Home";
+"authentication_server_selection_login_message" = "Cila është adresa e shërbyesit tuaj?";
+"authentication_server_selection_login_title" = "Lidhu me shërbyesin Home";
+"authentication_server_info_title_login" = "Ku gjenden bisedat tuaja";
+"authentication_login_forgot_password" = "Harruat fjalëkalimin";
+"authentication_login_username" = "Emër përdoruesi / Email / Telefon";
+"authentication_login_title" = "Mirë se u kthyet!";
+"authentication_server_info_title" = "Ku do të gjenden bisedat tuaja";
+"authentication_registration_password_footer" = "Duhet të jetë 8 ose më shumë shenja";
+/* The placeholder will show the full Matrix ID that has been entered. */
+"authentication_registration_username_footer_available" = "Të tjerët mund t’ju zbulojnë %@";
+"authentication_registration_username_footer" = "Këtë s’mund ta ndryshoni më vonë";
+"authentication_registration_username" = "Emër përdoruesi";
+
+// MARK: Authentication
+"authentication_registration_title" = "Krijoni llogarinë tuaj";
+"all_chats_onboarding_page_message3" = "Prekni profilin tuaj që të na bëni të ditur se ç’mendoni.";
+"all_chats_edit_layout_add_section_message" = "Fiksoni ndarje te kreu, për hyrje të lehtë në ta";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "S’mund të garantohet mirëfilltësia e këtij mesazhi të fshehtëzuar në këtë pajisje.";
+"deselect_all" = "Shpërzgjidhi Krejt";
+"wysiwyg_composer_format_action_strikethrough" = "Apliko format me të nënvizuara";
+"wysiwyg_composer_format_action_underline" = "Apliko format me të hequravije";
+"wysiwyg_composer_format_action_italic" = "Apliko format me të pjerrta";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Apliko format me të trasha";
+"wysiwyg_composer_start_action_voice_broadcast" = "Transmetim zanor";
+"wysiwyg_composer_start_action_text_formatting" = "Formatim Teksti";
+"wysiwyg_composer_start_action_camera" = "Kamerë";
+"wysiwyg_composer_start_action_location" = "Vendndodhje";
+"wysiwyg_composer_start_action_polls" = "Pyetësorë";
+"wysiwyg_composer_start_action_attachments" = "Bashkëngjitje";
+"wysiwyg_composer_start_action_stickers" = "Ngjitës";
+
+
+// Mark: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Fototekë";
+"user_session_overview_session_details_button_title" = "Hollësi sesioni";
+"user_session_overview_session_title" = "Sesion";
+"user_session_overview_current_session_title" = "Sesioni i tanishëm";
+"user_session_details_application_url" = "URL";
+"user_session_details_application_version" = "Version";
+"user_session_details_application_name" = "Emër";
+"user_session_details_device_os" = "Sistem Operativ";
+"user_session_details_device_browser" = "Shfletues";
+"user_session_details_device_model" = "Model";
+"user_session_details_device_ip_location" = "Venndodhje IP-je";
+"user_session_details_device_ip_address" = "Adresë IP";
+"user_session_details_last_activity" = "Veprimtaria e fundit";
+"user_session_details_session_section_footer" = "Kopjoni çfarëdo të dhëne duke prekur mbi të dhe duke e mbajtur të shtypur.";
+"user_session_details_session_id" = "ID Sesioni";
+"user_session_details_session_name" = "Emër sesioni";
+"user_session_details_device_section_header" = "Pajisje";
+"user_session_details_application_section_header" = "Aplikacion";
+"user_session_details_session_section_header" = "Sesion";
+"user_session_details_title" = "Hollësi sesioni";
+"device_type_name_unknown" = "E panjohur";
+"device_type_name_mobile" = "Celular";
+"device_type_name_web" = "Web";
+"device_type_name_desktop" = "Desktop";
+"device_name_unknown" = "Klient i panjohur";
+"user_inactive_session_item_with_date" = "Joaktiv për 90 e ca ditë (%@)";
+"user_inactive_session_item" = "Joaktiv për 90 e ca ditë";
+"user_session_item_details_last_activity" = "Veprimtaria e fundit %@";
+
+/* %1$@ will be the verification state and %2$@ will be user_session_item_details_verification_unknown or user_other_session_current_session_details */
+"user_session_item_details" = "%1$@ · %2$@";
+// First item is client name and second item is session display name
+"user_session_name" = "%@: %@";
+"user_other_session_menu_select_sessions" = "Përzgjidhni sesione";
+"user_other_session_selected_count" = "%@ të përzgjedhur";
+"user_other_session_clear_filter" = "Spastroje filtrin";
+"user_other_session_no_unverified_sessions" = "S’u gjetën sesione të paverifikuar.";
+"user_other_session_no_verified_sessions" = "S’u gjetën sesione të verifikuar.";
+"user_other_session_no_inactive_sessions" = "S’u gjetën sesione joaktive.";
+"user_other_session_filter_menu_inactive" = "Joaktiv";
+"user_other_session_filter_menu_unverified" = "I paverifikuar";
+"user_other_session_filter_menu_verified" = "I verifikuar";
+"user_other_session_filter_menu_all" = "Krejt sesionet";
+"user_other_session_filter" = "Filtroji";
+"user_other_session_verified_sessions_header_subtitle" = "Për sigurinë më të mirë, dilni nga çfarëdo sesioni që nuk e njihni apo përdorni më.";
+"user_other_session_current_session_details" = "Sesioni juaj i tanishëm";
+"user_other_session_unverified_sessions_header_subtitle" = "Verifikoni sesionet tuaj, për shkëmbim më të sigurt mesazhesh, ose dilni prej atyre që nuk i njihni, apo përdorni më.";
+"user_other_session_security_recommendation_title" = "Rekomandim sigurie";
+"user_session_push_notifications_message" = "Kur aktivizohet, ky sesion do të marrë njoftime push.";
+"user_session_push_notifications" = "Njoftime Push";
+"user_other_session_verified_additional_info" = "Ky sesion është gati për shkëmbim të sigurt mesazhesh.";
+"user_other_session_unverified_additional_info" = "Për sigurinë dhe besueshmërinë më të mirë, verifikojeni, ose dilni nga ky sesion.";
+"user_session_verification_unknown_additional_info" = "Verifikoni sesionin tuaj të tanishëm, që të shfaqni gjendjen e verifikimit të këtij sesioni.";
+"user_session_unverified_additional_info" = "Verifikoni sesionin tuaj të tanishëm, për shkëmbim më të sigurt të mesazheve.";
+"user_session_verified_additional_info" = "Sesioni juaj i tanishëm është gati për shkëmbim të sigurt mesazhesh.";
+"user_session_learn_more" = "Mësoni më tepër";
+"user_session_view_details" = "Shihni hollësitë";
+"user_session_verify_action" = "Verifiko sesion";
+"user_session_verification_unknown_short" = "I panjohur";
+"user_session_unverified_short" = "I paverifikuar";
+"user_session_verified_short" = "I verifikuar";
+"user_session_verification_unknown" = "Gjendje e panjohur verifikimi";
+"user_session_unverified" = "Sesion i paverifikuar";
+"user_session_verified" = "Sesion i verifikuar";
+"user_sessions_view_all_action" = "Shihini krejt (%d)";
+"user_sessions_overview_link_device" = "Lidhni një pajisje";
+"user_sessions_overview_current_session_section_title" = "Sesioni i tanishëm";
+"user_sessions_overview_other_sessions_section_info" = "Për sigurinë më të mirë, verifikoni sesionet tuaja dhe dilni nga çfarëdo sesioni që s’e njihni, ose s’e përdorni më.";
+"user_sessions_overview_other_sessions_section_title" = "Sesione të tjerë";
+"user_sessions_overview_security_recommendations_inactive_info" = "Shihni mundësinë e daljes nga sesione të vjetër (90 ditë ose më tepër) të cilët s’i përdorni më.";
+"user_sessions_overview_security_recommendations_inactive_title" = "Sesione joaktivë";
+"user_sessions_overview_security_recommendations_unverified_info" = "Verifikojini, ose dilni nga sesione të paverifikuar.";
+"user_sessions_overview_security_recommendations_unverified_title" = "Sesione të paverifikuar";
+"user_sessions_overview_security_recommendations_section_info" = "Përmirësoni sigurinë e llogarisë tuaj duke ndjekur këto rekomandime.";
+"user_sessions_overview_security_recommendations_section_title" = "Rekomandime sigurie";
+"user_sessions_overview_title" = "Sesione";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"location_sharing_map_loading_error" = "S’arrihet të ngarkohet hartë\nKy shërbyes Home s’është formësuar të shfaqë harta";
+"space_invite_nav_title" = "Ftesë për në hapësirë";
+"space_detail_nav_title" = "Hollësi hapësire";
+"space_selector_create_space" = "Krijo Hapësirë";
+"space_selector_empty_view_information" = "Hapësirat janë një mënyrë e re për të grupuar dhoma dhe njerëz. Që t’ia filloni, krijoni një hapësirë.";
+"space_selector_empty_view_title" = "Ende pa hapësira.";
+
+// Mark: - Space Selector
+
+"space_selector_title" = "Hapësirat e mia";
+"room_invites_empty_view_information" = "Ky është vendi ku shfaqen ftesat tuaja.";
+
+// Mark: - Room invites
+
+"room_invites_empty_view_title" = "S’ka gjë të re.";
+"all_chats_onboarding_try_it" = "Provojeni";
+"all_chats_onboarding_title" = "Ç’ka të re";
+"all_chats_onboarding_page_title3" = "Jepni Përshtypje";
+"all_chats_onboarding_page_message2" = "Hyni në Hapësirat tuaja (poshtë djathtas) më shpejt dhe më kollaj se kurrë më parë.";
+"all_chats_onboarding_page_title2" = "Hyni Në Hapësira";
+"all_chats_onboarding_page_message1" = "Që të thjeshtohet Element-i juaj, skedat tanimë janë opsionale. Administrojini duke përdorur menunë djathtas në krye.";
+"all_chats_onboarding_page_title1" = "Mirë se vini te një pamje e re!";
+"all_chats_edit_menu_space_settings" = "Rregullime hapësire";
+"all_chats_edit_menu_leave_space" = "Braktise %@";
+"all_chats_user_menu_settings" = "Rregullime përdoruesi";
+"all_chats_user_menu_accessibility_label" = "Menu përdoruesi";
+"room_recents_recently_viewed_section" = "Parë së fundi";
+"all_chats_nothing_found_placeholder_message" = "Provoni të përimtoni kërkimin tuaj.";
+"all_chats_nothing_found_placeholder_title" = "S’u gjet gjë.";
+"all_chats_empty_unreads_placeholder_message" = "Ky është vendi ku do të shfaqen mesazhet tuaj të palexuar, kur të ketë të tillë.";
+"all_chats_empty_view_information" = "Aplikacioni “all-in-one” i fjalosjeve të siguruara, për ekipe, shokë dhe ente. Që t’ia filloni, krijoni një fjalosje, ose hyni në një dhomë ekzistuese.";
+"all_chats_empty_space_information" = "Hapësirat janë një mënyrë e re për të grupuar dhoma dhe persona. Shtoni një dhomë ekzistuese, ose krijoni një të re, duke përdorur butonin poshtë djathtas.";
+"all_chats_empty_view_title" = "%@\nduket paksa si i zbrazët.";
+"all_chats_all_filter" = "Krejt";
+"all_chats_edit_layout_alphabetical_order" = "Renditi si A-Z";
+"all_chats_edit_layout_activity_order" = "Renditi sipas veprimtarish";
+"all_chats_edit_layout_show_filters" = "Shfaq filtra";
+"all_chats_edit_layout_show_recents" = "Shfaq të freskëta";
+"all_chats_edit_layout_sorting_options_title" = "Renditi mesazhet sipas";
+"all_chats_edit_layout_pin_spaces_title" = "Fiksoni hapësirat tuaja";
+"all_chats_edit_layout_add_filters_title" = "Filtroni mesazhet tuaja";
+"all_chats_edit_layout_add_section_title" = "Shtoni ndarje te kreu";
+"all_chats_edit_layout_unreads" = "Të palexuara";
+"all_chats_edit_layout_recents" = "Së fundi";
+"all_chats_edit_layout" = "Parapëlqime skeme grafike";
+"all_chats_section_title" = "Fjalosje";
+
+// Mark: - All Chats
+
+"all_chats_title" = "Krejt fjalosjet";
+"voice_broadcast_playback_loading_error" = "S’arrihet të luhet ky transmetim zanor.";
+"voice_broadcast_already_in_progress_message" = "Po incizoni tashmë një transmetim zanor. Ju lutemi, që të nisni një të ri, përfundoni transmetimin tuaj zanor të tanishëm.";
+"voice_broadcast_blocked_by_someone_else_message" = "Dikush tjetër është duke incizuar një transmetim zanor. Që të nisni një të ri, prisni të përfundojë incizimi zanor i tij.";
+"voice_broadcast_permission_denied_message" = "S’keni lejet e domosdoshme që të nisni një transmetim zanor në këtë dhomë. Lidhuni me një përgjegjës dhome që të përmirësoni lejet tuaja.";
+
+// Mark: - Voice broadcast
+"voice_broadcast_unauthorized_title" = "S’niset dot një transmetim zanor i ri";
+"spaces_subspace_creation_visibility_message" = "Hapësira e krijuar do të shtohet te %@.";
+"spaces_subspace_creation_visibility_title" = "Ç’lloj nënhapësire doni të krijoni?";
+"spaces_explore_rooms_format" = "Eksploroni %@";
+"spaces_create_subspace_title" = "Krijoni një nënhapësirë";
+"spaces_add_subspace_title" = "Krijoni hapësirë brenda %@";
+"sign_out_confirmation_message" = "Jeni i sigurt se doni të dilni?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Dilni";
+
+// User sessions management
+"user_sessions_settings" = "Administroni sesione";
+"manage_session_rename" = "Riemërtoni sesionin";
+"manage_session_name_info_link" = "Mësoni më tepër";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Ju lutemi, kini parasysh se emrat e sesioneve janë të dukshëm edhe për personat me të cilët komunikoni.%@";
+"manage_session_name_hint" = "Emra vetjakë sesionesh mund t’ju ndihmojnë të njihni më kollaj pajisjet tuaja.";
+"settings_labs_enable_voice_broadcast" = "Aktivizoni transmetim zanor (nën zhvillim aktiv)";
+"settings_labs_enable_wysiwyg_composer" = "Provoni përpunuesin e teksteve të pasur (për tekst të thjeshtë vjen së shpejti)";
+"settings_labs_enable_new_app_layout" = "Skemë e Re Aplikacioni";
+"settings_labs_enable_new_client_info_feature" = "Regjistro emrin, versionin dhe URL-në e klientit, për të dalluar më kollaj sesionit te përgjegjës sesionesh";
+"settings_labs_enable_new_session_manager" = "Përgjegjës i ri sesionesh";
+"room_first_message_placeholder" = "Dërgoni mesazhin tuaj të parë…";
+"authentication_qr_login_failure_retry" = "Riprovoni";
+"authentication_qr_login_failure_request_timed_out" = "Lidhja s’u plotësua brenda kohës së domosdoshme.";
+"authentication_qr_login_failure_request_denied" = "Kërkesa u hodh poshtë në pajisjen tjetër.";
+"authentication_qr_login_failure_invalid_qr" = "Kodi QR është i pavlefshëm.";
+"authentication_qr_login_failure_title" = "Lidhja dështoi";
+"authentication_qr_login_loading_signed_in" = "Tani jeni i futur te pajisja juaj tjetër.";
+"authentication_qr_login_loading_waiting_signin" = "Po pritet që të bëhet hyrja te pajisja.";
+"authentication_qr_login_loading_connecting_device" = "Po lidhet me pajisjen";
+"authentication_qr_login_confirm_alert" = "Ju lutemi, sigurohuni se e dini origjinën e këtij kodi. Duke lidhur pajisje, do t’i jepni dikujt hyrje të plotë në llogarinë tuaj.";
+"authentication_qr_login_confirm_subtitle" = "Ripohoni se kodi më poshtë përkon me atë në pajisjen tuaj tjetër:";
+"authentication_qr_login_confirm_title" = "U vendos lidhje e siguruar";
+"authentication_qr_login_scan_subtitle" = "Vendoseni kodin QR te kuadrati më poshtë";
+"authentication_qr_login_scan_title" = "Skanoni kodin QR";
+"authentication_qr_login_display_step2" = "Përzgjidhni “Hyni me kod QR”";
+"authentication_qr_login_display_step1" = "Hapeni Element-in në pajisjen tuaj tjetër";
+"authentication_qr_login_display_subtitle" = "Skanoni kodin QR më poshtë me pajisjen ku është bërë dalja.";
+"authentication_qr_login_display_title" = "Lidhni një pajisje";
+"authentication_qr_login_start_display_qr" = "Shfaq kod QR te kjo pajisje";
+"authentication_qr_login_start_need_alternative" = "Ju duhet një metodë alternative?";
+"authentication_qr_login_start_step4" = "Përzgjidhni “Shfaq kod QR në këtë pajisje”";
+"authentication_qr_login_start_step3" = "Përzgjidhni “Lidhni një pajisje”";
+"authentication_qr_login_start_step2" = "Kaloni te Rregullime -> Siguri & Privatësi";
+"authentication_qr_login_start_step1" = "Hapeni Element-in në pajisjen tuaj tjetër";
+"authentication_qr_login_start_subtitle" = "Përdorni kamerën në këtë pajisje që të skanoni kodin QR të shfaqur në pajisjen tuaj tjetër:";
+"authentication_qr_login_start_title" = "Skanoni kodin QR";
+"authentication_login_with_qr" = "Hyni me kod QR";
+"invite_to" = "Ftojeni te %@";
+"all_chats_empty_list_placeholder_title" = "S’ka gjë tjetër për të parë.";
+"all_chats_edit_layout_add_filters_message" = "Filtroni automatikisht mesazhet tuaj në kategori që caktoni vetë";

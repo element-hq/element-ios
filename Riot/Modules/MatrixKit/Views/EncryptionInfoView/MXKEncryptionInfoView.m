@@ -192,6 +192,7 @@ static NSAttributedString *verticalWhitespace = nil;
         NSString *claimedKey = _mxEvent.keysClaimed[@"ed25519"];
         NSString *algorithm = _mxEvent.wireContent[@"algorithm"];
         NSString *sessionId = _mxEvent.wireContent[@"session_id"];
+        NSString *untrusted = _mxEvent.isUntrusted ? [VectorL10n roomEventEncryptionInfoKeyAuthenticityNotGuaranteed] : [VectorL10n userVerificationSessionsListSessionTrusted];
         
         NSString *decryptionError;
         if (_mxEvent.decryptionError)
@@ -274,6 +275,16 @@ static NSAttributedString *verticalWhitespace = nil;
                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                         initWithString:sessionId
+                                                        attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
+                                                                     NSFontAttributeName: [UIFont systemFontOfSize:14]}]];
+        [eventInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
+
+        [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
+                                                        initWithString:[NSString stringWithFormat:@"%@\n", [VectorL10n sslTrust]]
+                                                        attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
+                                                                     NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
+        [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
+                                                        initWithString:untrusted
                                                         attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                      NSFontAttributeName: [UIFont systemFontOfSize:14]}]];
         [eventInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];

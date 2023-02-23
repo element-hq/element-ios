@@ -139,11 +139,7 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
         
         currentOperation = dataSource.paginate({ [weak self] (roomsAdded) in
             guard let self = self else { return }
-            if roomsAdded > 0 {
-                self.update(viewState: .loaded(self.sections))
-            } else {
-                self.update(viewState: .loadedWithoutUpdate)
-            }
+            self.update(viewState: .loaded(self.sections))
             self.currentOperation = nil
         }, failure: { [weak self] (error) in
             guard let self = self else { return }

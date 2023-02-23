@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct RoomAccessTypeChooser: View {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -40,12 +38,14 @@ struct RoomAccessTypeChooser: View {
                     Button(VectorL10n.cancel) {
                         viewModel.send(viewAction: .cancel)
                     }
+                    .foregroundColor(Color("FirstScreenColor"))
                     .disabled(viewModel.isLoading)
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(VectorL10n.done) {
                         viewModel.send(viewAction: .done)
                     }
+                    .foregroundColor(Color("FirstScreenColor"))
                     .disabled(viewModel.isLoading)
                 }
             }
@@ -56,7 +56,7 @@ struct RoomAccessTypeChooser: View {
     
     @ViewBuilder
     private var listContent: some View {
-        ScrollView{
+        ScrollView {
             VStack(alignment: .leading) {
                 Text(VectorL10n.roomAccessSettingsScreenTitle)
                     .foregroundColor(theme.colors.primaryContent)
@@ -84,9 +84,7 @@ struct RoomAccessTypeChooser: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct RoomAccessTypeChooser_Previews: PreviewProvider {
-    
     static let stateRenderer = MockRoomAccessTypeChooserScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup(addNavigation: true)

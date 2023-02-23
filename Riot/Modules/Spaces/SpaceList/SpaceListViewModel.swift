@@ -167,10 +167,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
             ]
 
         let spacesSectionIndex = sections.count - 1
-        if #available(iOS 14.0, *) {
-            let addSpaceViewData = self.createAddSpaceViewData(session: session)
-            sections.append(.addSpace(addSpaceViewData))
-        }
+        let addSpaceViewData = self.createAddSpaceViewData(session: session)
+        sections.append(.addSpace(addSpaceViewData))
         
         self.sections = sections
         let homeIndexPath = viewDataList.invites.isEmpty ? IndexPath(row: 0, section: 0) : IndexPath(row: 0, section: 1)

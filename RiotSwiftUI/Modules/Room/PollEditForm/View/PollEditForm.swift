@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct PollEditForm: View {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -34,7 +32,6 @@ struct PollEditForm: View {
             GeometryReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 32.0) {
-                        
                         PollEditFormTypePicker(selectedType: $viewModel.type)
                         
                         VStack(alignment: .leading, spacing: 16.0) {
@@ -98,11 +95,12 @@ struct PollEditForm: View {
                             Button(VectorL10n.cancel, action: {
                                 viewModel.send(viewAction: .cancel)
                             })
+                            .foregroundColor(Color("FirstScreenColor"))
                         }
                         ToolbarItem(placement: .principal) {
                             Text(VectorL10n.pollEditFormCreatePoll)
                                 .font(.headline)
-                                .foregroundColor(theme.colors.primaryContent)
+                                .foregroundColor(Color("FirstScreenColor"))
                         }
                         
                         ToolbarItem(placement: .navigationBarTrailing) {
@@ -110,6 +108,7 @@ struct PollEditForm: View {
                                 Button(VectorL10n.save, action: {
                                     viewModel.send(viewAction: .update)
                                 })
+                                .foregroundColor(Color("FirstScreenColor"))
                                 .disabled(!viewModel.viewState.confirmationButtonEnabled)
                             }
                         }
@@ -128,7 +127,6 @@ struct PollEditForm: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct PollEditForm_Previews: PreviewProvider {
     static let stateRenderer = MockPollEditFormScreenState.stateRenderer
     static var previews: some View {

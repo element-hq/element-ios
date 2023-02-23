@@ -93,7 +93,7 @@ class RoomInfoBasicView: UIView {
         }
         badgeImageView.image = viewData.encryptionImage
         roomNameLabel.text = viewData.roomDisplayName
-        roomAddressLabel.text = viewData.mainRoomAlias
+        roomAddressLabel.text = viewData.mainRoomAlias?.components(separatedBy: ":").first
         roomAddressLabel.isHidden = roomAddressLabel.text?.isEmpty ?? true
         roomTopicTextView.text = viewData.roomTopic
         topicContainerView.isHidden = roomTopicTextView.text?.isEmpty ?? true
