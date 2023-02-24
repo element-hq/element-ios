@@ -1903,9 +1903,9 @@ public class VectorL10n: NSObject {
   public static var deviceVerificationSelfVerifyWaitNewSignInTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_new_sign_in_title") 
   }
-  /// Can't access an existing Element session?
-  public static var deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalHelp: String { 
-    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_additional_help") 
+  /// Can't access an existing %@ session?
+  public static func deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalHelp(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_additional_help", p1)
   }
   /// If you can't access an existing session
   public static var deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalInformation: String { 
