@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="79A-qb-tmk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="79A-qb-tmk">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,7 +11,7 @@
         <!--Key Verification Self Verify Wait View Controller-->
         <scene sceneID="a9K-1U-7Nm">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="79A-qb-tmk" customClass="KeyVerificationSelfVerifyWaitViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="79A-qb-tmk" customClass="KeyVerificationSelfVerifyWaitViewController" customModule="Element" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tAM-kt-f0s">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -20,22 +20,28 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tIM-sl-gwE">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="518.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="562"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IlB-Ch-LEo">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="518.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="562"/>
                                                 <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open Element on your other device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="aOD-RJ-1qU">
+                                                        <rect key="frame" x="20" y="20" width="335" height="67"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d5Y-pj-XsI">
-                                                        <rect key="frame" x="20" y="20" width="335" height="84"/>
-                                                        <string key="text">Verify this session from one of your others sessions, granting it access to encrypted messages.
+                                                        <rect key="frame" x="20" y="117" width="335" height="84"/>
+                                                        <string key="text">You need to verify this session in order to read your secure message history. 
 
-Use the latest Riot on your other devices:</string>
+Open Element on one of your other devices and follow the instructions.</string>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="ANK-XS-dY7">
-                                                        <rect key="frame" x="27.5" y="144" width="320" height="48"/>
+                                                        <rect key="frame" x="27.5" y="241" width="320" height="48"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="3at-ql-vhb">
                                                                 <rect key="frame" x="0.0" y="0.0" width="160" height="48"/>
@@ -66,14 +72,8 @@ Use the latest Riot on your other devices:</string>
                                                             <constraint firstAttribute="width" constant="320" id="TyM-5Y-YSw"/>
                                                         </constraints>
                                                     </stackView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This works with Element and other cross-signing capable Matrix clients." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LnW-1H-Ltq">
-                                                        <rect key="frame" x="20" y="232" width="335" height="33.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8oJ-o6-DLK">
-                                                        <rect key="frame" x="20" y="285.5" width="335" height="233"/>
+                                                        <rect key="frame" x="20" y="329" width="335" height="233"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dXT-cL-ukJ">
                                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="114.5"/>
@@ -102,8 +102,14 @@ Use the latest Riot on your other devices:</string>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nf8-Ye-b9r">
                                                                 <rect key="frame" x="0.0" y="114.5" width="335" height="118.5"/>
                                                                 <subviews>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OEt-k0-vgM" customClass="RoundedButton" customModule="Riot" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="10" width="335" height="44"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If you can't accessing an existing session" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ou-cM-K9C">
+                                                                        <rect key="frame" x="20" y="10" width="295" height="24.5"/>
+                                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                                                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OEt-k0-vgM" customClass="RoundedButton" customModule="Element" customModuleProvider="target">
+                                                                        <rect key="frame" x="0.0" y="44.5" width="335" height="44"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="44" id="7ws-Nc-I7y"/>
                                                                         </constraints>
@@ -115,19 +121,13 @@ Use the latest Riot on your other devices:</string>
                                                                             <action selector="recoverSecretsButtonAction:" destination="79A-qb-tmk" eventType="touchUpInside" id="FY5-tR-dyT"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If you can't accessing an existing session" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ou-cM-K9C">
-                                                                        <rect key="frame" x="20" y="64" width="295" height="24.5"/>
-                                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
-                                                                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="trailing" secondItem="4Ou-cM-K9C" secondAttribute="trailing" constant="20" id="6a1-gA-Cev"/>
-                                                                    <constraint firstAttribute="bottom" secondItem="4Ou-cM-K9C" secondAttribute="bottom" constant="30" id="X1c-Yc-qLh"/>
-                                                                    <constraint firstItem="4Ou-cM-K9C" firstAttribute="top" secondItem="OEt-k0-vgM" secondAttribute="bottom" constant="10" id="Y5b-Bf-IYu"/>
-                                                                    <constraint firstItem="OEt-k0-vgM" firstAttribute="top" secondItem="nf8-Ye-b9r" secondAttribute="top" constant="10" id="fvJ-vZ-MMa"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="OEt-k0-vgM" secondAttribute="bottom" constant="30" id="LgI-8r-jEC"/>
+                                                                    <constraint firstItem="4Ou-cM-K9C" firstAttribute="top" secondItem="nf8-Ye-b9r" secondAttribute="top" constant="10" id="Y5b-Bf-IYu"/>
+                                                                    <constraint firstItem="OEt-k0-vgM" firstAttribute="top" secondItem="4Ou-cM-K9C" secondAttribute="bottom" constant="10" id="fvJ-vZ-MMa"/>
                                                                     <constraint firstItem="OEt-k0-vgM" firstAttribute="leading" secondItem="nf8-Ye-b9r" secondAttribute="leading" id="loc-cf-E6p"/>
                                                                     <constraint firstItem="4Ou-cM-K9C" firstAttribute="leading" secondItem="nf8-Ye-b9r" secondAttribute="leading" constant="20" id="o3E-Q9-7h1"/>
                                                                     <constraint firstAttribute="trailing" secondItem="OEt-k0-vgM" secondAttribute="trailing" id="yQK-YS-7Yr"/>
@@ -145,16 +145,16 @@ Use the latest Riot on your other devices:</string>
                                                     <constraint firstAttribute="height" priority="250" id="72E-My-WHK"/>
                                                     <constraint firstItem="ANK-XS-dY7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="IlB-Ch-LEo" secondAttribute="leading" id="9BR-a1-3By"/>
                                                     <constraint firstAttribute="bottom" secondItem="8oJ-o6-DLK" secondAttribute="bottom" id="CB2-Nd-n2g"/>
-                                                    <constraint firstItem="LnW-1H-Ltq" firstAttribute="top" secondItem="ANK-XS-dY7" secondAttribute="bottom" constant="40" id="Mph-SR-U7u"/>
-                                                    <constraint firstAttribute="trailing" secondItem="LnW-1H-Ltq" secondAttribute="trailing" constant="20" id="NZH-JW-JVA"/>
                                                     <constraint firstItem="d5Y-pj-XsI" firstAttribute="leading" secondItem="IlB-Ch-LEo" secondAttribute="leading" constant="20" id="Okc-DX-xdE"/>
-                                                    <constraint firstItem="d5Y-pj-XsI" firstAttribute="top" secondItem="IlB-Ch-LEo" secondAttribute="top" constant="20" id="Pkt-ox-zZs"/>
+                                                    <constraint firstItem="d5Y-pj-XsI" firstAttribute="top" secondItem="aOD-RJ-1qU" secondAttribute="bottom" constant="30" id="Pkt-ox-zZs"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ANK-XS-dY7" secondAttribute="trailing" id="RQI-kF-Z1h"/>
                                                     <constraint firstItem="8oJ-o6-DLK" firstAttribute="leading" secondItem="IlB-Ch-LEo" secondAttribute="leading" constant="20" id="RtP-rm-bjH"/>
-                                                    <constraint firstItem="LnW-1H-Ltq" firstAttribute="leading" secondItem="IlB-Ch-LEo" secondAttribute="leading" constant="20" id="VOi-rz-Qf1"/>
+                                                    <constraint firstAttribute="trailing" secondItem="aOD-RJ-1qU" secondAttribute="trailing" constant="20" id="ST6-T5-XSg"/>
+                                                    <constraint firstItem="aOD-RJ-1qU" firstAttribute="leading" secondItem="IlB-Ch-LEo" secondAttribute="leading" constant="20" id="e2Y-ak-D86"/>
+                                                    <constraint firstItem="aOD-RJ-1qU" firstAttribute="top" secondItem="IlB-Ch-LEo" secondAttribute="top" constant="20" id="fDO-Bh-1Gn"/>
                                                     <constraint firstItem="ANK-XS-dY7" firstAttribute="top" secondItem="d5Y-pj-XsI" secondAttribute="bottom" constant="40" id="gnp-AK-DYa"/>
                                                     <constraint firstItem="ANK-XS-dY7" firstAttribute="centerX" secondItem="IlB-Ch-LEo" secondAttribute="centerX" id="nEo-IT-GtP"/>
-                                                    <constraint firstItem="8oJ-o6-DLK" firstAttribute="top" secondItem="LnW-1H-Ltq" secondAttribute="bottom" constant="20" id="tLd-x1-rOB"/>
+                                                    <constraint firstItem="8oJ-o6-DLK" firstAttribute="top" secondItem="ANK-XS-dY7" secondAttribute="bottom" constant="40" id="tLd-x1-rOB"/>
                                                     <constraint firstAttribute="trailing" secondItem="8oJ-o6-DLK" secondAttribute="trailing" constant="20" id="vev-7p-7ua"/>
                                                 </constraints>
                                             </view>
@@ -178,6 +178,7 @@ Use the latest Riot on your other devices:</string>
                                 </constraints>
                             </scrollView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="GnW-bb-rsL"/>
                         <color key="backgroundColor" red="0.94509803920000002" green="0.96078431369999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="asO-rj-82y" firstAttribute="trailing" secondItem="GnW-bb-rsL" secondAttribute="trailing" id="Isw-tg-7go"/>
@@ -185,10 +186,8 @@ Use the latest Riot on your other devices:</string>
                             <constraint firstItem="GnW-bb-rsL" firstAttribute="top" secondItem="asO-rj-82y" secondAttribute="top" id="b3e-2d-oiV"/>
                             <constraint firstAttribute="bottomMargin" secondItem="asO-rj-82y" secondAttribute="bottom" id="wMk-Oq-DwP"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="GnW-bb-rsL"/>
                     </view>
                     <connections>
-                        <outlet property="additionalInformationLabel" destination="LnW-1H-Ltq" id="TJS-GC-ABf"/>
                         <outlet property="desktopClientImageView" destination="nrB-Kj-4zE" id="yl0-Ju-luK"/>
                         <outlet property="informationLabel" destination="d5Y-pj-XsI" id="TMb-bc-58a"/>
                         <outlet property="mobileClientImageView" destination="P0P-X4-uSQ" id="WtT-ix-yq8"/>
@@ -198,6 +197,7 @@ Use the latest Riot on your other devices:</string>
                         <outlet property="recoverSecretsAvailabilityLoadingLabel" destination="A4x-sK-d5C" id="n5k-IO-RkV"/>
                         <outlet property="recoverSecretsButton" destination="OEt-k0-vgM" id="RHU-ps-4m7"/>
                         <outlet property="recoverSecretsContainerView" destination="nf8-Ye-b9r" id="4az-pe-0Uc"/>
+                        <outlet property="titleLabel" destination="aOD-RJ-1qU" id="qvC-fk-TiU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OMs-Ee-CjK" userLabel="First Responder" sceneMemberID="firstResponder"/>

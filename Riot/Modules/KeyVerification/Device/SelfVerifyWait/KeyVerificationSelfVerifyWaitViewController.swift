@@ -30,13 +30,12 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
     // MARK: Outlets
     
+    @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var informationLabel: UILabel!
     
     @IBOutlet private weak var desktopClientImageView: UIImageView!
     @IBOutlet private weak var mobileClientImageView: UIImageView!
-    
-    @IBOutlet private weak var additionalInformationLabel: UILabel!
-    
+        
     @IBOutlet private weak var recoverSecretsAvailabilityLoadingContainerView: UIView!
     @IBOutlet private weak var recoverSecretsAvailabilityLoadingLabel: UILabel!
     @IBOutlet private weak var recoverSecretsAvailabilityActivityIndicatorView: UIActivityIndicatorView!
@@ -70,7 +69,6 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        
         self.setupViews()
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
@@ -96,11 +94,11 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         if let navigationBar = self.navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
-        
-        self.informationLabel.textColor = theme.textPrimaryColor
+
+        self.titleLabel.textColor = theme.textPrimaryColor
+        self.informationLabel.textColor = theme.textSecondaryColor
         self.desktopClientImageView.tintColor = theme.tintColor
         self.mobileClientImageView.tintColor = theme.tintColor
-        self.additionalInformationLabel.textColor = theme.textPrimaryColor
         self.recoverSecretsAvailabilityLoadingLabel.textColor = theme.textSecondaryColor
         self.recoverSecretsAvailabilityActivityIndicatorView.color = theme.tintColor
     }
@@ -125,16 +123,13 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
             self.cancelBarButtonItem = cancelBarButtonItem
         }
         
-        self.title = VectorL10n.deviceVerificationSelfVerifyWaitTitle
-        
-        self.informationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitInformation(AppInfo.current.displayName)
+        self.titleLabel.text = VectorL10n.deviceVerificationSelfVerifyOpenOnOtherDeviceTitle(AppInfo.current.displayName)
+        self.informationLabel.text = VectorL10n.deviceVerificationSelfVerifyOpenOnOtherDeviceInformation
         
         self.desktopClientImageView.image = Asset.Images.monitor.image.withRenderingMode(.alwaysTemplate)
         self.mobileClientImageView.image = Asset.Images.smartphone.image.withRenderingMode(.alwaysTemplate)
-        
-        self.additionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitAdditionalInformation(AppInfo.current.displayName)
-        
-        self.recoverSecretsAdditionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalInformation
+                
+        self.recoverSecretsAdditionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalHelp(AppInfo.current.displayName)
     }
 
     private func render(viewState: KeyVerificationSelfVerifyWaitViewState) {
@@ -168,7 +163,6 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     private func renderLoaded(viewData: KeyVerificationSelfVerifyWaitViewData) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        self.title = viewData.isNewSignIn ? VectorL10n.deviceVerificationSelfVerifyWaitNewSignInTitle : VectorL10n.deviceVerificationSelfVerifyWaitTitle
         self.cancelBarButtonItem?.title = viewData.isNewSignIn ? VectorL10n.skip : VectorL10n.cancel
    
         let hideRecoverSecrets: Bool

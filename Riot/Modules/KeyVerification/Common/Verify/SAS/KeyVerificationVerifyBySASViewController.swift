@@ -145,7 +145,6 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
             adviceText = VectorL10n.deviceVerificationSecurityAdviceNumber
         }
 
-        self.title = self.viewModel.verificationKind.verificationTitle
         self.titleLabel.text = instructionText
         self.informationLabel.text = adviceText
         self.waitingPartnerLabel.text = VectorL10n.deviceVerificationVerifyWaitPartner
