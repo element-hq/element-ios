@@ -27,7 +27,7 @@
     NSMutableDictionary *roomDataSources;
     
     /**
-     The list of rooms with a late event decrypt. Causing bubbles issues
+     The list of rooms with a "late decryption" event. Causing bubbles issues
      Each element is a room ID.
      */
     NSMutableSet *roomDataSourcesToDestroy;
