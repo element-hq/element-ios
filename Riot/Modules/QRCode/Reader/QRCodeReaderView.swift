@@ -49,8 +49,10 @@ final class QRCodeReaderView: UIView {
     }
     
     deinit {
+#if !targetEnvironment(simulator)
         self.zxCapture.layer.removeFromSuperlayer()
         self.zxCapture.hard_stop()
+#endif
     }
         
     override func didMoveToSuperview() {
@@ -64,12 +66,16 @@ final class QRCodeReaderView: UIView {
     // MARK: - Public
     
     func startScanning() {
+#if !targetEnvironment(simulator)
         self.zxCapture.start()
+#endif
         isScanning = true
     }
     
     func stopScanning() {
+#if !targetEnvironment(simulator)
         self.zxCapture.stop()
+#endif
         isScanning = false
     }
     
@@ -98,13 +104,14 @@ final class QRCodeReaderView: UIView {
     }
     
     private func setupQRCodeReaderView() {
+#if !targetEnvironment(simulator)
         zxCapture.delegate = self
         zxCapture.camera = zxCapture.back()
-        
         zxCapture.layer.frame = self.bounds
         self.layer.addSublayer(zxCapture.layer)
+#endif
     }
-    
+
     private func applyOrientation() {
         
         let orientation = UIApplication.shared.statusBarOrientation
@@ -182,7 +189,6 @@ final class QRCodeReaderView: UIView {
         let transformRect = transformedVideoRect.applying(_captureSizeTransform)
         zxCapture.scanRect = transformRect
     }
-    
 }
 
 
