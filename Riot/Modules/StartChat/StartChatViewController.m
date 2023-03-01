@@ -48,6 +48,7 @@
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeader;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBarView;
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeaderBorder;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarHeaderHeightConstraint;
 
 @property (nonatomic, strong) InviteFriendsPresenter *inviteFriendsPresenter;
 @property (nonatomic, weak) InviteFriendsHeaderView *inviteFriendsHeaderView;
@@ -314,13 +315,22 @@
             contactsDataSource.ignoredContactsByMatrixId[self.mainSession.myUser.userId] = userContact;
         }
     }
+    
+    // hide the search bar if a participant is already invited by email
+    BOOL hideSearchBar = [self participantsAlreadyContainAnEmail];
+    self.searchBarHeader.alpha = hideSearchBar ? 0.0f : 1.0f;
+    self.searchBarHeaderHeightConstraint.constant = hideSearchBar ? 0.0f : 50.0f;
+    [UIView animateWithDuration:0.2f animations:^{
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (BOOL)participantsAlreadyContainAnEmail
 {
     for (MXKContact* participant in participants)
     {
-        if ([MXTools isEmailAddress:participant.displayName])
+        // if it is not a matrix contact or a local contact with a MatrixID
+        if (participant.matrixIdentifiers.count == 0 && ![MXTools isMatrixUserIdentifier:participant.displayName])
         {
             return YES;
         }
@@ -328,14 +338,13 @@
     return NO;
 }
 
-- (BOOL)canAddParticipant: (NSString*) displayName
+- (BOOL)canAddParticipant: (MXKContact*) contact
 {
-    if (!displayName)
+    if (!contact)
     {
-        return NO;
+        return YES;
     }
-    displayName = [displayName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
+
     // The following rules will be applied only if the resulting room is going to be encrypted
     if (![self.mainSession vc_homeserverConfiguration].encryption.isE2EEByDefaultEnabled)
     {
@@ -347,10 +356,9 @@
     {
         return NO;
     }
-
-    BOOL isEmail = [MXTools isEmailAddress:displayName];
-    // If it is an email, we prevent to add it if we already have invited someone else
-    if (isEmail && participants.count > 0)
+        
+    // if it is not a matrix contact, nor a local contact with a MatrixID, and if there is already at least one participant, another participant cannot be added.
+    if ((contact.matrixIdentifiers.count == 0 && ![MXTools isMatrixUserIdentifier:contact.displayName]) && participants.count > 0)
     {
         return NO;
     }
@@ -468,7 +476,8 @@
     if (_isAddParticipantSearchBarEditing)
     {
         cell = [contactsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
-        if (![self canAddParticipant:self->currentSearch])
+        MXKContact* contact = [contactsDataSource contactAtIndexPath:indexPath];
+        if (![self canAddParticipant:contact])
         {
             // Prevent to add it
             cell.contentView.alpha = 0.5;
@@ -829,7 +838,18 @@
     self->currentSearch = searchText;
     if (searchText != nil && searchText.length > 0)
     {
-        [self showAllowOnlyOneInvitByEmailAllowedHeaderView: ![self canAddParticipant:searchText]];
+        MXKContact *contact = nil;
+        if ([MXTools isMatrixUserIdentifier:searchText])
+        {
+            contact = [[MXKContact alloc] initMatrixContactWithDisplayName:searchText andMatrixID:searchText];
+
+        }
+        else if ([MXTools isEmailAddress:searchText])
+        {
+            contact = [[MXKContact alloc] initContactWithDisplayName:searchText emails:nil phoneNumbers:nil andThumbnail:nil];
+        }
+        
+        [self showAllowOnlyOneInvitByEmailAllowedHeaderView: ![self canAddParticipant:contact]];
     }
     else
     {
@@ -899,7 +919,7 @@
         }
     }
     
-    if ([self canAddParticipant:contact.displayName])
+    if ([self canAddParticipant:contact])
     {
         // Update here the mutable list of participants
         [participants addObject:contact];
