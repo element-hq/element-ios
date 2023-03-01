@@ -316,7 +316,7 @@
     }
 }
 
-- (BOOL) participantsAlreadyContainAnEmail
+- (BOOL)participantsAlreadyContainAnEmail
 {
     for (MXKContact* participant in participants)
     {
@@ -328,7 +328,7 @@
     return NO;
 }
 
-- (BOOL) canAddParticipant: (NSString*) displayName
+- (BOOL)canAddParticipant: (NSString*) displayName
 {
     if (!displayName)
     {
@@ -336,30 +336,30 @@
     }
     displayName = [displayName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
-    // The following rules will apply only if the resulting room is going to be encrypted
+    // The following rules will be applied only if the resulting room is going to be encrypted
     if (![self.mainSession vc_homeserverConfiguration].encryption.isE2EEByDefaultEnabled)
     {
         return YES;
     }
-    
+
+    // If we have already invited an email, we cannot add another participant
+    if ([self participantsAlreadyContainAnEmail])
+    {
+        return NO;
+    }
+
     BOOL isEmail = [MXTools isEmailAddress:displayName];
     // If it is an email, we prevent to add it if we already have invited someone else
     if (isEmail && participants.count > 0)
     {
         return NO;
     }
-    
-    // If it is a MatrixID, we prevent to add it if we already have invited an email
-    if (!isEmail && [self participantsAlreadyContainAnEmail])
-    {
-        return NO;
-    }
-    
+        
     // Otherwise, we should be able to add this participant
     return YES;
 }
 
-- (void) showAllowOnlyOneInvitByEmailAllowedHeaderView:(BOOL)visible
+- (void)showAllowOnlyOneInvitByEmailAllowedHeaderView:(BOOL)visible
 {
     if (visible)
     {
