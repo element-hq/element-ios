@@ -210,7 +210,9 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
         guard let foundUserAnnotation = foundUserAnnotation else {
             return
         }
-        
+        if state.showsUserLocationMode == .follow {
+            state.showsUserLocationMode = .show
+        }
         state.highlightedAnnotation = foundUserAnnotation
     }
     
@@ -234,7 +236,7 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
     
     private func showsCurrentUserLocation() {
         if liveLocationSharingViewerService.requestAuthorizationIfNeeded() {
-            state.showsUserLocation = true
+            state.showsUserLocationMode = .follow
         } else {
             state.errorSubject.send(.invalidLocationAuthorization)
         }

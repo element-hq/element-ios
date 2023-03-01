@@ -81,7 +81,7 @@ struct LocationSharingViewState: BindableState {
     var showLoadingIndicator = false
     
     /// True to indicate to show and follow current user location
-    var showsUserLocation = false
+    var showsUserLocationMode: ShowUserLocationMode = .hide
     
     /// Used to hide live location sharing features
     var isLiveLocationSharingEnabled = false

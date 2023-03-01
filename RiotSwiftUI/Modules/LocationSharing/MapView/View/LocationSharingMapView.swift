@@ -18,6 +18,12 @@ import Combine
 import Mapbox
 import SwiftUI
 
+enum ShowUserLocationMode {
+    case follow
+    case show
+    case hide
+}
+
 struct LocationSharingMapView: UIViewRepresentable {
     // MARK: - Constants
     
@@ -40,7 +46,7 @@ struct LocationSharingMapView: UIViewRepresentable {
     let userAvatarData: AvatarInputProtocol?
     
     /// True to indicate to show and follow current user location
-    var showsUserLocation = false
+    var showsUserLocationMode: ShowUserLocationMode = .hide
     
     /// True to indicate that a touch on user annotation can show a callout
     var userAnnotationCanShowCallout = false
@@ -75,14 +81,18 @@ struct LocationSharingMapView: UIViewRepresentable {
         mapView.vc_removeAllAnnotations()
         mapView.addAnnotations(annotations)
         
-        if let highlightedAnnotation = highlightedAnnotation, !showsUserLocation {
-            mapView.setCenter(highlightedAnnotation.coordinate, zoomLevel: Constants.mapZoomLevel, animated: false)
+        if let highlightedAnnotation = highlightedAnnotation, showsUserLocationMode != .follow {
+            mapView.setCenter(highlightedAnnotation.coordinate, zoomLevel: Constants.mapZoomLevel, animated: true)
         }
         
-        if showsUserLocation {
+        switch showsUserLocationMode {
+        case .follow:
             mapView.showsUserLocation = true
             mapView.userTrackingMode = .follow
-        } else {
+        case .show:
+            mapView.showsUserLocation = true
+            mapView.userTrackingMode = .none
+        case .hide:
             mapView.showsUserLocation = false
             mapView.userTrackingMode = .none
         }

@@ -42,7 +42,7 @@ struct LiveLocationSharingViewerViewState: BindableState {
     /// Live location list items
     var listItemsViewData: [LiveLocationListItemViewData]
 
-    var showsUserLocation = false
+    var showsUserLocationMode: ShowUserLocationMode = .hide
     
     var isCurrentUserShared: Bool {
         listItemsViewData.contains { $0.isCurrentUser }
