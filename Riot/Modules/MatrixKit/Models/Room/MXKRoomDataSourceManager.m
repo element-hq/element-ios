@@ -27,9 +27,20 @@
     NSMutableDictionary *roomDataSources;
     
     /**
+     The list of rooms with a "late decryption" event. Causing bubbles issues
+     Each element is a room ID.
+     */
+    NSMutableSet *roomDataSourcesToDestroy;
+    
+    /**
      Observe UIApplicationDidReceiveMemoryWarningNotification to dispose of any resources that can be recreated.
      */
     id UIApplicationDidReceiveMemoryWarningNotificationObserver;
+    
+    /**
+     Observe kMXEventDidDecryptNotification to get late decrypted events.
+     */
+    id mxEventDidDecryptNotificationObserver;
 }
 
 @end
@@ -119,6 +130,7 @@ static Class _roomDataSourceClass;
     {
         mxSession = matrixSession;
         roomDataSources = [NSMutableDictionary dictionary];
+        roomDataSourcesToDestroy = [NSMutableSet set];
         _releasePolicy = MXKRoomDataSourceManagerReleasePolicyNeverRelease;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didMXSessionDidLeaveRoom:) name:kMXSessionDidLeaveRoomNotification object:nil];
@@ -138,6 +150,12 @@ static Class _roomDataSourceClass;
             }
             
         }];
+        
+        // Observe late decrypted events, and store rooms ids in memory
+        mxEventDidDecryptNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXEventDidDecryptNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            MXEvent *decryptedEvent = notif.object;
+            [self->roomDataSourcesToDestroy addObject:decryptedEvent.roomId];
+        }];
     }
     return self;
 }
@@ -155,6 +173,11 @@ static Class _roomDataSourceClass;
     {
         [[NSNotificationCenter defaultCenter] removeObserver:UIApplicationDidReceiveMemoryWarningNotificationObserver];
         UIApplicationDidReceiveMemoryWarningNotificationObserver = nil;
+    }
+    if (mxEventDidDecryptNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:mxEventDidDecryptNotificationObserver];
+        mxEventDidDecryptNotificationObserver = nil;
     }
 }
 
@@ -202,9 +225,19 @@ static Class _roomDataSourceClass;
 
     // If not available yet, create the room data source
     MXKRoomDataSource *roomDataSource = roomDataSources[roomId];
-
+    
+    // check if the room's dataSource has events with late decryption issues and destroys it
+    BOOL roomDataSourceToBeDestroyed = [roomDataSourcesToDestroy containsObject:roomId];
+    
+    if (roomDataSource && roomDataSourceToBeDestroyed && create) {
+        [roomDataSource destroy];
+        roomDataSources[roomId] = nil;
+        roomDataSource = nil;
+    }
+    
     if (!roomDataSource && create && roomId)
     {
+        [roomDataSourcesToDestroy removeObject:roomId];
         [_roomDataSourceClass loadRoomDataSourceWithRoomId:roomId threadId:nil andMatrixSession:mxSession onComplete:^(id roomDataSource) {
             [self addRoomDataSource:roomDataSource];
             onComplete(roomDataSource);
