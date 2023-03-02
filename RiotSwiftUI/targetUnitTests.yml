@@ -35,6 +35,7 @@ targets:
 
     dependencies:
     - target: RiotSwiftUI
+    - package: AnalyticsEvents
 
     configFiles:
       Debug: Debug.xcconfig

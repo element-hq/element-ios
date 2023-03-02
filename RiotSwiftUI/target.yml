@@ -34,6 +34,7 @@ targets:
     platform: iOS
     dependencies:
     - target: DesignKit
+    - package: AnalyticsEvents
     - package: Mapbox
     - package: WysiwygComposer
     sources:
