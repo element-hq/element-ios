@@ -43,6 +43,7 @@ struct StaticLocationViewingViewState: BindableState {
     /// Shared annotation to display existing location
     let sharedAnnotation: LocationAnnotation
     
+    /// Behavior mode of the current user's location, can be hidden, only shown and shown following the user
     var showsUserLocationMode: ShowUserLocationMode = .hide
     
     var showLoadingIndicator = false

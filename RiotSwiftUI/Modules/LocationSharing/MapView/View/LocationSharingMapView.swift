@@ -18,6 +18,9 @@ import Combine
 import Mapbox
 import SwiftUI
 
+/*
+ Behavior mode of the current user's location, can be hidden, only shown and shown following the user
+ */
 enum ShowUserLocationMode {
     case follow
     case show
@@ -45,7 +48,7 @@ struct LocationSharingMapView: UIViewRepresentable {
     /// Current user avatar data, used to replace current location annotation view with the user avatar
     let userAvatarData: AvatarInputProtocol?
     
-    /// True to indicate to show and follow current user location
+    /// Behavior mode of the current user's location, can be hidden, only shown and shown following the user
     var showsUserLocationMode: ShowUserLocationMode = .hide
     
     /// True to indicate that a touch on user annotation can show a callout
@@ -81,6 +84,11 @@ struct LocationSharingMapView: UIViewRepresentable {
         mapView.vc_removeAllAnnotations()
         mapView.addAnnotations(annotations)
         
+        /*
+            if there is an highlighted annotation,
+            and the current user's location it's either hidden or only shown,
+            we can center to the highlighted annotation
+         */
         if let highlightedAnnotation = highlightedAnnotation, showsUserLocationMode != .follow {
             mapView.setCenter(highlightedAnnotation.coordinate, zoomLevel: Constants.mapZoomLevel, animated: true)
         }

@@ -42,6 +42,7 @@ struct LiveLocationSharingViewerViewState: BindableState {
     /// Live location list items
     var listItemsViewData: [LiveLocationListItemViewData]
 
+    /// Behavior mode of the current user's location, can be hidden, only shown and shown following the user
     var showsUserLocationMode: ShowUserLocationMode = .hide
     
     var isCurrentUserShared: Bool {
