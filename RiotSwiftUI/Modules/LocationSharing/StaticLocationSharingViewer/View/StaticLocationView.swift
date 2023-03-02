@@ -34,7 +34,7 @@ struct StaticLocationView: View {
                                annotations: [viewModel.viewState.sharedAnnotation],
                                highlightedAnnotation: viewModel.viewState.sharedAnnotation,
                                userAvatarData: nil,
-                               showsUserLocation: viewModel.viewState.showsUserLocation,
+                               showsUserLocationMode: viewModel.viewState.showsUserLocationMode,
                                userLocation: Binding.constant(nil),
                                mapCenterCoordinate: Binding.constant(nil),
                                errorSubject: viewModel.viewState.errorSubject)

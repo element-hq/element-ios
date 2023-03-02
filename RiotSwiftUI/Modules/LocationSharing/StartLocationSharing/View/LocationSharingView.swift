@@ -92,7 +92,7 @@ struct LocationSharingView: View {
                                        annotations: context.viewState.annotations,
                                        highlightedAnnotation: context.viewState.highlightedAnnotation,
                                        userAvatarData: context.viewState.userAvatarData,
-                                       showsUserLocation: context.viewState.showsUserLocation,
+                                       showsUserLocationMode: context.viewState.showsUserLocationMode,
                                        userLocation: $context.userLocation,
                                        mapCenterCoordinate: $context.pinLocation,
                                        errorSubject: context.viewState.errorSubject,

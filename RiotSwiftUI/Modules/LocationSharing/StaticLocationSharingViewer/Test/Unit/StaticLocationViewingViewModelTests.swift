@@ -81,9 +81,9 @@ class StaticLocationViewingViewModelTests: XCTestCase {
     
     func testToggleShowUserLocation() {
         let viewModel = buildViewModel()
-        XCTAssertFalse(viewModel.context.viewState.showsUserLocation)
+        XCTAssertEqual(viewModel.context.viewState.showsUserLocationMode, .hide)
         viewModel.context.send(viewAction: .showUserLocation)
-        XCTAssertTrue(viewModel.context.viewState.showsUserLocation)
+        XCTAssertEqual(viewModel.context.viewState.showsUserLocationMode, .follow)
     }
     
     private func buildViewModel() -> StaticLocationViewingViewModel {

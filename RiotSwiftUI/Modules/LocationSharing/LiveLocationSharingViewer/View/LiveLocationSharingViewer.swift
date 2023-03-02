@@ -39,7 +39,7 @@ struct LiveLocationSharingViewer: View {
                                annotations: viewModel.viewState.annotations,
                                highlightedAnnotation: viewModel.viewState.highlightedAnnotation,
                                userAvatarData: nil,
-                               showsUserLocation: viewModel.viewState.showsUserLocation,
+                               showsUserLocationMode: viewModel.viewState.showsUserLocationMode,
                                userAnnotationCanShowCallout: true,
                                userLocation: Binding.constant(nil),
                                mapCenterCoordinate: Binding.constant(nil),
