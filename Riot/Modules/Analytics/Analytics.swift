@@ -230,10 +230,10 @@ extension Analytics {
     /// 
     /// Only non-nil properties will be updated when calling this method.
     func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil, numFavouriteRooms: Int? = nil, numSpaces: Int? = nil, allChatsActiveFilter: UserSessionProperties.AllChatsActiveFilter? = nil) {
-        let userProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: ftueUseCase?.analyticsName,
+        let userProperties = AnalyticsEvent.UserProperties(allChatsActiveFilter: allChatsActiveFilter?.analyticsName,
+                                                           ftueUseCaseSelection: ftueUseCase?.analyticsName,
                                                            numFavouriteRooms: numFavouriteRooms,
-                                                           numSpaces: numSpaces,
-                                                           allChatsActiveFilter: allChatsActiveFilter?.analyticsName)
+                                                           numSpaces: numSpaces)
         client.updateUserProperties(userProperties)
     }
     
@@ -281,7 +281,12 @@ extension Analytics {
     ///   - reason: The error that occurred.
     ///   - context: Additional context of the error that occured
     func trackE2EEError(_ reason: DecryptionFailureReason, context: String) {
-        let event = AnalyticsEvent.Error(context: context, domain: .E2EE, name: reason.errorName)
+        let event = AnalyticsEvent.Error(
+            context: context,
+            cryptoModule: MXSDKOptions.sharedInstance().enableCryptoSDK ? .Rust : .Native,
+            domain: .E2EE,
+            name: reason.errorName
+        )
         capture(event: event)
     }
     
@@ -359,7 +364,7 @@ extension Analytics: MXAnalyticsDelegate {
     
     func trackCallError(with reason: __MXCallHangupReason, video isVideo: Bool, numberOfParticipants: Int, incoming isIncoming: Bool) {
         let callEvent = AnalyticsEvent.CallError(isVideo: isVideo, numParticipants: numberOfParticipants, placed: !isIncoming)
-        let event = AnalyticsEvent.Error(context: nil, domain: .VOIP, name: reason.errorName)
+        let event = AnalyticsEvent.Error(context: nil, cryptoModule: nil, domain: .VOIP, name: reason.errorName)
         capture(event: callEvent)
         capture(event: event)
     }

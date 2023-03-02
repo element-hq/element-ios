@@ -39,6 +39,7 @@ targets:
     - target: RiotNSE
     - target: DesignKit
     - target: CommonKit
+    - package: AnalyticsEvents
     - package: Mapbox
     - package: OrderedCollections
     - package: SwiftOGG
