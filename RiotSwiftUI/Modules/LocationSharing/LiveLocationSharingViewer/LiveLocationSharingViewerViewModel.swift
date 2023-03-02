@@ -214,7 +214,7 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
         /*
             if the map is currently following the current user's location,
             we want to switch back to only showing the marker,
-            so the the highlited shared location can be centered
+            so the the highlighted shared location can be centered
          */
         if state.showsUserLocationMode == .follow {
             state.showsUserLocationMode = .show
