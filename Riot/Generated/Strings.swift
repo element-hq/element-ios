@@ -6627,7 +6627,7 @@ public class VectorL10n: NSObject {
   public static var roomUnsentMessagesUnknownDevicesNotification: String { 
     return VectorL10n.tr("Vector", "room_unsent_messages_unknown_devices_notification") 
   }
-  /// Once all users invited have joined %@, you will be able to chat and the room will be end-to end encrypted
+  /// Once invited users have joined %@, you will be able to chat and the room will be end-to-end encrypted
   public static func roomWaitingOtherParticipantsMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "room_waiting_other_participants_message", p1)
   }
