@@ -1,0 +1,1 @@
+Fix an issue where SAS verification would fail between two iOS devices
