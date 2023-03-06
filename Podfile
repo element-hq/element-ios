@@ -72,8 +72,6 @@ abstract_target 'RiotPods' do
   # PostHog for analytics
   pod 'PostHog', '~> 2.0.0'
   pod 'Sentry', '~> 7.15.0'
-  pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift', :inhibit_warnings => false
-  # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
 
   pod 'OLMKit'
   pod 'zxcvbn-ios'

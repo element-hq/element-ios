@@ -37,6 +37,15 @@
       }
     },
     {
+      "identity" : "matrix-analytics-events",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/matrix-org/matrix-analytics-events",
+      "state" : {
+        "revision" : "2f5fa5f1e2f6c6ae1a47c33d953a3ce289167eb0",
+        "version" : "0.5.0"
+      }
+    },
+    {
       "identity" : "matrix-wysiwyg-composer-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/matrix-org/matrix-wysiwyg-composer-swift",

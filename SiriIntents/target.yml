@@ -33,6 +33,7 @@ targets:
 
     dependencies:
     - sdk: Intents.framework
+    - package: AnalyticsEvents
     - package: DeviceKit
     - package: DTCoreText
 

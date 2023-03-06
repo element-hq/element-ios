@@ -40,6 +40,9 @@ include:
   - path: CommonKit/targetUnitTests.yml
 
 packages:
+  AnalyticsEvents:
+    url: https://github.com/matrix-org/matrix-analytics-events
+    exactVersion: 0.5.0
   Mapbox:
     url: https://github.com/maplibre/maplibre-gl-native-distribution
     minVersion: 5.12.2

@@ -32,6 +32,7 @@ targets:
     type: app-extension
 
     dependencies:
+    - package: AnalyticsEvents
     - package: DeviceKit
     - package: DTCoreText
 
