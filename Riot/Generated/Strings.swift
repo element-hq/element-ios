@@ -5267,6 +5267,10 @@ public class VectorL10n: NSObject {
   public static var roomCreationNameTitle: String { 
     return VectorL10n.tr("Vector", "room_creation_name_title") 
   }
+  /// You can only invite one email at a time
+  public static var roomCreationOnlyOneEmailInvite: String { 
+    return VectorL10n.tr("Vector", "room_creation_only_one_email_invite") 
+  }
   /// (e.g. @bob:homeserver1; @john:homeserver2...)
   public static var roomCreationParticipantsPlaceholder: String { 
     return VectorL10n.tr("Vector", "room_creation_participants_placeholder") 
@@ -6622,6 +6626,14 @@ public class VectorL10n: NSObject {
   /// Message failed to send due to unknown sessions being present.
   public static var roomUnsentMessagesUnknownDevicesNotification: String { 
     return VectorL10n.tr("Vector", "room_unsent_messages_unknown_devices_notification") 
+  }
+  /// Once invited users have joined %@, you will be able to chat and the room will be end-to-end encrypted
+  public static func roomWaitingOtherParticipantsMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_waiting_other_participants_message", p1)
+  }
+  /// Waiting for users to join %@
+  public static func roomWaitingOtherParticipantsTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_waiting_other_participants_title", p1)
   }
   /// End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.
   public static var roomWarningAboutEncryption: String { 

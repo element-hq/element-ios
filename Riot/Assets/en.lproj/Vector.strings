@@ -365,6 +365,7 @@
 "room_creation_invite_another_user" = "User ID, name or email";
 "room_creation_error_invite_user_by_email_without_identity_server" = "No identity server is configured so you cannot add a participant with an email.";
 "room_creation_dm_error" = "We couldn't create your DM. Please check the users you want to invite and try again.";
+"room_creation_only_one_email_invite" = "You can only invite one email at a time";
 
 // Room recents
 "room_recents_directory_section" = "ROOM DIRECTORY";
@@ -2294,6 +2295,9 @@ Tap the + to start adding people.";
 
 "room_invites_empty_view_title" = "Nothing new.";
 "room_invites_empty_view_information" = "This is where your invites appear.";
+
+"room_waiting_other_participants_title" = "Waiting for users to join %@";
+"room_waiting_other_participants_message" = "Once invited users have joined %@, you will be able to chat and the room will be end-to-end encrypted";
 
 // MARK: - Space Selector
 
