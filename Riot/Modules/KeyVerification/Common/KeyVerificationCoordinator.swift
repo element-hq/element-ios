@@ -252,6 +252,9 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
 
     private func showVerifyBySAS(transaction: MXSASTransaction, animated: Bool) {
+        if navigationRouter.modules.last is KeyVerificationVerifyBySASCoordinator {
+            return
+        }
         let coordinator = KeyVerificationVerifyBySASCoordinator(session: self.session, transaction: transaction, verificationKind: self.verificationKind)
         coordinator.delegate = self
         coordinator.start()
