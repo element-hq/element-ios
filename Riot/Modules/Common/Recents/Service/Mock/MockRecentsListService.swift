@@ -95,7 +95,7 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
             } else if i % 11 == 0 {
                 room.dataTypes = .serverNotice
             }
-            room.displayname = "Room \(i+1)"
+            room.displayName = "Room \(i+1)"
             if let event = MXEvent(fromJSON: [
                 "event_id": MXTools.generateTransactionId() as Any,
                 "room_id": room.roomId,

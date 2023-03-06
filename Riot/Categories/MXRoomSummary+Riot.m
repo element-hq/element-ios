@@ -27,7 +27,7 @@
 {
     [mxkImageView vc_setRoomAvatarImageWith:self.avatar
                                      roomId:self.roomId
-                                displayName:self.displayname
+                                displayName:self.displayName
                                mediaManager:self.mxSession.mediaManager];
 }
 

@@ -82,7 +82,7 @@
     if (_mxRoom)
     {
         // Replace empty string by nil : avoid having the placeholder 'Room name" when there is no displayname
-        self.displayNameTextField.text = (_mxRoom.summary.displayname.length) ? _mxRoom.summary.displayname : nil;
+        self.displayNameTextField.text = (_mxRoom.summary.displayName.length) ? _mxRoom.summary.displayName : nil;
     }
     else if (_mxUser)
     {
@@ -189,7 +189,7 @@
             if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName])
             {
                 // Only the room name is edited here, update the text field with the room name
-                textField.text = _mxRoom.summary.displayname;
+                textField.text = _mxRoom.summary.displayName;
                 textField.backgroundColor = [UIColor whiteColor];
             }
             else
@@ -236,7 +236,7 @@
         textField.backgroundColor = [UIColor clearColor];
         
         NSString *roomName = textField.text;
-        if ((roomName.length || _mxRoom.summary.displayname.length) && [roomName isEqualToString:_mxRoom.summary.displayname] == NO)
+        if ((roomName.length || _mxRoom.summary.displayName.length) && [roomName isEqualToString:_mxRoom.summary.displayName] == NO)
         {
             if ([self.delegate respondsToSelector:@selector(roomTitleView:isSaving:)])
             {
@@ -266,7 +266,7 @@
                     }
                     
                     // Revert change
-                    textField.text = strongSelf.mxRoom.summary.displayname;
+                    textField.text = strongSelf.mxRoom.summary.displayName;
                     MXLogDebug(@"[MXKRoomTitleView] Rename room failed");
                     // Notify MatrixKit user
                     NSString *myUserId = strongSelf.mxRoom.mxSession.myUser.userId;
@@ -278,7 +278,7 @@
         else
         {
             // No change on room name, restore title with room displayName
-            textField.text = _mxRoom.summary.displayname;
+            textField.text = _mxRoom.summary.displayName;
         }
     }
 }

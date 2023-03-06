@@ -141,7 +141,7 @@
         {
             for (NSString* pattern in patternsList)
             {
-                if (cellData.roomSummary.displayname && [cellData.roomSummary.displayname rangeOfString:pattern options:NSCaseInsensitiveSearch].location != NSNotFound)
+                if (cellData.roomSummary.displayName && [cellData.roomSummary.displayName rangeOfString:pattern options:NSCaseInsensitiveSearch].location != NSNotFound)
                 {
                     [self.visibleRoomCellDatas addObject:cellData];
                     break;

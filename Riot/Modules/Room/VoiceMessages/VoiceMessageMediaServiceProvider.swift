@@ -48,7 +48,7 @@ import MediaPlayer
         didSet {
             //  set avatar placeholder for now
             roomAvatar = AvatarGenerator.generateAvatar(forMatrixItem: currentRoomSummary?.roomId,
-                                                        withDisplayName: currentRoomSummary?.displayname,
+                                                        withDisplayName: currentRoomSummary?.displayName,
                                                         size: Constants.roomAvatarImageSize.width,
                                                         andFontSize: Constants.roomAvatarFontSize)
             

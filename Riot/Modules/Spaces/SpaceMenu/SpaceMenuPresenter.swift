@@ -101,7 +101,7 @@ class SpaceMenuPresenter: NSObject {
     }
     
     private func showLeaveSpace() {
-        let name = session.spaceService.getSpace(withId: spaceId)?.summary?.displayname ?? VectorL10n.spaceTag
+        let name = session.spaceService.getSpace(withId: spaceId)?.summary?.displayName ?? VectorL10n.spaceTag
         
         let selectionHeader = MatrixItemChooserSelectionHeader(title: VectorL10n.leaveSpaceSelectionTitle,
                                                                selectAllTitle: VectorL10n.leaveSpaceSelectionAllRooms,

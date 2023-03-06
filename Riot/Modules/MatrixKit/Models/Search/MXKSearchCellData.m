@@ -45,7 +45,7 @@
             MXRoom *room = [searchDataSource.mxSession roomWithRoomId:searchResult.result.roomId];
             if (room)
             {
-                title = room.summary.displayname;
+                title = room.summary.displayName;
             }
             else
             {

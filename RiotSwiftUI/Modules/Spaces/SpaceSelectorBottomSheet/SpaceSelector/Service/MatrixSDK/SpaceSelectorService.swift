@@ -77,7 +77,7 @@ class SpaceSelectorService: SpaceSelectorServiceProtocol {
             return nil
         }
         
-        return summary.displayname
+        return summary.displayName
     }
     
     // MARK: Public
@@ -117,7 +117,7 @@ private extension SpaceSelectorListItemData {
         
         return SpaceSelectorListItemData(id: summary.roomId,
                                          avatar: summary.room.avatarData,
-                                         displayName: summary.displayname,
+                                         displayName: summary.displayName,
                                          notificationCount: notificationState?.groupMissedDiscussionsCount ?? 0,
                                          highlightedNotificationCount: notificationState?.groupMissedDiscussionsHighlightedCount ?? 0,
                                          hasSubItems: !space.childSpaces.isEmpty,

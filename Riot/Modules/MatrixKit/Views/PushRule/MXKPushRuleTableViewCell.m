@@ -71,7 +71,7 @@
             MXRoom *room = [_mxSession roomWithRoomId:mxPushRule.ruleId];
             if (room)
             {
-                description = [VectorL10n notificationSettingsRoomRuleTitle:room.summary.displayname];
+                description = [VectorL10n notificationSettingsRoomRuleTitle:room.summary.displayName];
             }
             break;
         }
