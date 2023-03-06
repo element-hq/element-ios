@@ -35,7 +35,7 @@ enum RendezvousChannelAlgorithm: String {
 
 /// Algorithm name as per MSC3906
 enum RendezvousFlow: String {
-    ///     The v1 value never actually appears in JSON
+    /// The v1 value never actually appears in JSON
     case SETUP_ADDITIONAL_DEVICE_V1 = "org.matrix.msc3906.v1"
     case SETUP_ADDITIONAL_DEVICE_V2 = "org.matrix.msc3906.setup.additional_device.v2"
 }
