@@ -1,3 +1,22 @@
+## Changes in 1.10.4 (2023-03-07)
+
+🙌 Improvements
+
+- CryptoV2: CryptoSDK phased rollout feature ([#7374](https://github.com/vector-im/element-ios/pull/7374))
+- Analytics: Use SwiftPM for AnalyticsEvents instead of CocoaPods ([#7401](https://github.com/vector-im/element-ios/pull/7401))
+- Upgrade MatrixSDK version ([v0.26.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.0)).
+- Session verification: automatically starts scanning for a QR code if we do not have a QR code to display. ([#3115](https://github.com/vector-im/element-ios/issues/3115))
+- Direct Message: manage encrypted DM in case of invite by email ([#6612](https://github.com/vector-im/element-ios/issues/6612))
+
+🐛 Bugfixes
+
+- fix issue on timeline's bubbles not showing proper content after decrypt ([#7397](https://github.com/vector-im/element-ios/pull/7397))
+- Fixes bug about centring user in live location sharing ([#7398](https://github.com/vector-im/element-ios/pull/7398))
+- Polls: improve rendering of poll ended events. ([#7402](https://github.com/vector-im/element-ios/pull/7402))
+- Fix an issue where SAS verification would fail between two iOS devices ([#3946](https://github.com/vector-im/element-ios/issues/3946))
+- Pin SwiftOGG to a release rather than main branch to avoid breaking changes in SwiftOGG causing bugs in element-ios. ([#7388](https://github.com/vector-im/element-ios/issues/7388))
+
+
 ## Changes in 1.10.3 (2023-02-21)
 
 🙌 Improvements
