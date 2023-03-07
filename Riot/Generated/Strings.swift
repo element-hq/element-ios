@@ -4691,6 +4691,22 @@ public class VectorL10n: NSObject {
   public static func photoLibraryAccessNotGranted(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "photo_library_access_not_granted", p1)
   }
+  /// Message
+  public static var pillMessage: String { 
+    return VectorL10n.tr("Vector", "pill_message") 
+  }
+  /// Message from %@
+  public static func pillMessageFrom(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "pill_message_from", p1)
+  }
+  /// Message in %@
+  public static func pillMessageIn(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "pill_message_in", p1)
+  }
+  /// Space/Room
+  public static var pillRoomFallbackDisplayName: String { 
+    return VectorL10n.tr("Vector", "pill_room_fallback_display_name") 
+  }
   /// Create a PIN for security
   public static var pinProtectionChoosePin: String { 
     return VectorL10n.tr("Vector", "pin_protection_choose_pin") 
