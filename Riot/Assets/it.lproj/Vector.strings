@@ -2694,3 +2694,14 @@
 "poll_history_detail_view_in_timeline" = "Vedi sondaggio nella linea temporale";
 "settings_push_rules_error" = "Si è verificato un errore aggiornando le tue preferenze di notifica. Prova ad attivare/disattivare di nuovo l'opzione.";
 "authentication_qr_login_failure_device_not_supported" = "Il collegamento con questo dispositivo non è supportato.";
+"room_waiting_other_participants_message" = "Una volta che gli utenti si saranno uniti a %@, potrete scrivervi e la stanza sarà crittografata end-to-end";
+"room_waiting_other_participants_title" = "In attesa che gli utenti si uniscano a %@";
+"key_verification_scan_qr_code_information_new_session" = "Punta la fotocamera verso il codice QR mostrato sull'altro tuo dispositivo per verificare la tua nuova sessione";
+"key_verification_scan_qr_code_information_other_session" = "Punta la fotocamera verso il codice QR mostrato sull'altro tuo dispositivo per verificare la tua sessione";
+"key_verification_scan_qr_code_information_other_device" = "Punta la fotocamera verso il codice QR mostrato sull'altro tuo dispositivo per verificare questa sessione";
+"key_verification_scan_qr_code_information_other_user" = "Punta la fotocamera verso il codice QR mostrato sul suo dispositivo per verificare sua la sessione";
+"key_verification_scan_qr_code_title" = "Scansiona codice QR";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Non riesci ad accedere a una sessione esistente di %@?";
+"device_verification_self_verify_open_on_other_device_information" = "Devi verificare questa sessione per potere leggere la cronologia dei messaggi sicuri.\n\nApri Element su uno degli altri tuoi dispositivi e segui le istruzioni.";
+"device_verification_self_verify_open_on_other_device_title" = "Apri %@ sull'altro tuo dispositivo";
+"room_creation_only_one_email_invite" = "Puoi invitare una sola email alla volta";
