@@ -37,6 +37,15 @@
       }
     },
     {
+      "identity" : "matrix-analytics-events",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/matrix-org/matrix-analytics-events",
+      "state" : {
+        "revision" : "2f5fa5f1e2f6c6ae1a47c33d953a3ce289167eb0",
+        "version" : "0.5.0"
+      }
+    },
+    {
       "identity" : "matrix-wysiwyg-composer-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/matrix-org/matrix-wysiwyg-composer-swift",
@@ -77,7 +86,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vector-im/swift-ogg",
       "state" : {
-        "branch" : "main",
+        "branch" : "0.0.1",
         "revision" : "e9a9e7601da662fd8b97d93781ff5c60b4becf88"
       }
     }

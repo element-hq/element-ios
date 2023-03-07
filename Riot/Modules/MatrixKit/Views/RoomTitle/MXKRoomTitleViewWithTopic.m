@@ -367,7 +367,7 @@
             if (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName])
             {
                 // Only the room name is edited here, update the text field with the room name
-                textField.text = self.mxRoom.summary.displayname;
+                textField.text = self.mxRoom.summary.displayName;
                 textField.backgroundColor = [UIColor whiteColor];
             }
             else

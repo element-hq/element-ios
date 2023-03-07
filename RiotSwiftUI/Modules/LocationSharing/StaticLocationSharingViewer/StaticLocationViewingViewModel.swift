@@ -98,7 +98,7 @@ class StaticLocationViewingViewModel: StaticLocationViewingViewModelType, Static
     
     private func showsCurrentUserLocation() {
         if staticLocationSharingViewerService.requestAuthorizationIfNeeded() {
-            state.showsUserLocation = true
+            state.showsUserLocationMode = .follow
         } else {
             state.errorSubject.send(.invalidLocationAuthorization)
         }

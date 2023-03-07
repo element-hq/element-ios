@@ -122,7 +122,7 @@
                             INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userId type:INPersonHandleTypeUnknown];
                             
                             // For rooms we try to use room display name
-                            NSString *displayName = summary.displayname ? summary.displayname : user.displayname;
+                            NSString *displayName = summary.displayName ? summary.displayName : user.displayname;
                             
                             INPerson *person = [[INPerson alloc] initWithPersonHandle:personHandle
                                                                        nameComponents:nil

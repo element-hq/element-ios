@@ -285,7 +285,8 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     private func sasTransactionDidStateChange(_ transaction: MXSASTransaction) {
         switch transaction.state {
         case MXSASTransactionStateIncomingShowAccept:
-            transaction.accept()
+            // The transaction will be automatically accepted by the MXKeyVerificationManager when the SAS start event is handled
+            break
         case MXSASTransactionStateShowSAS:
             self.unregisterTransactionDidStateChangeNotification()
             self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, didAcceptIncomingSASTransaction: transaction)

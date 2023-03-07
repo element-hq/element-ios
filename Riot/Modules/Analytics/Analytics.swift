@@ -24,17 +24,8 @@ import AnalyticsEvents
 /// non-fatal issues and performance. `Analytics` class serves as a façade
 /// to all these use cases.
 ///
-/// ## Creating Analytics Events
-///
-/// Events are managed in a shared repo for all Element clients https://github.com/matrix-org/matrix-analytics-events
-/// To add a new event create a PR to that repo with the new/updated schema. Element's Podfile has
-/// a local version of the pod (commented out) for development purposes.
-/// Once merged into `main`, follow the steps below to integrate the changes into the project:
-/// 1. Check if `main` contains any source breaking changes to the events. If so, please
-/// wait until you are ready to merge your work into element-ios.
-/// 2. Merge `main` into the `release/swift` branch.
-/// 3. Run `bundle exec pod update AnalyticsEvents` to update the pod.
-/// 4. Make sure to commit `Podfile.lock` with the new commit hash.
+/// Events are managed in a shared repo for all Element clients
+/// https://github.com/matrix-org/matrix-analytics-events and integrated via SwiftPM
 ///
 @objcMembers class Analytics: NSObject {
     
@@ -44,7 +35,7 @@ import AnalyticsEvents
     static let shared = Analytics()
     
     /// The analytics client to send events with.
-    private var client: AnalyticsClientProtocol = PostHogAnalyticsClient()
+    private var client: AnalyticsClientProtocol = PostHogAnalyticsClient.shared
     
     /// The monitoring client to track crashes, issues and performance
     private var monitoringClient = SentryMonitoringClient()
@@ -230,10 +221,10 @@ extension Analytics {
     /// 
     /// Only non-nil properties will be updated when calling this method.
     func updateUserProperties(ftueUseCase: UserSessionProperties.UseCase? = nil, numFavouriteRooms: Int? = nil, numSpaces: Int? = nil, allChatsActiveFilter: UserSessionProperties.AllChatsActiveFilter? = nil) {
-        let userProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: ftueUseCase?.analyticsName,
+        let userProperties = AnalyticsEvent.UserProperties(allChatsActiveFilter: allChatsActiveFilter?.analyticsName,
+                                                           ftueUseCaseSelection: ftueUseCase?.analyticsName,
                                                            numFavouriteRooms: numFavouriteRooms,
-                                                           numSpaces: numSpaces,
-                                                           allChatsActiveFilter: allChatsActiveFilter?.analyticsName)
+                                                           numSpaces: numSpaces)
         client.updateUserProperties(userProperties)
     }
     
@@ -281,7 +272,12 @@ extension Analytics {
     ///   - reason: The error that occurred.
     ///   - context: Additional context of the error that occured
     func trackE2EEError(_ reason: DecryptionFailureReason, context: String) {
-        let event = AnalyticsEvent.Error(context: context, domain: .E2EE, name: reason.errorName)
+        let event = AnalyticsEvent.Error(
+            context: context,
+            cryptoModule: MXSDKOptions.sharedInstance().enableCryptoSDK ? .Rust : .Native,
+            domain: .E2EE,
+            name: reason.errorName
+        )
         capture(event: event)
     }
     
@@ -359,7 +355,7 @@ extension Analytics: MXAnalyticsDelegate {
     
     func trackCallError(with reason: __MXCallHangupReason, video isVideo: Bool, numberOfParticipants: Int, incoming isIncoming: Bool) {
         let callEvent = AnalyticsEvent.CallError(isVideo: isVideo, numParticipants: numberOfParticipants, placed: !isIncoming)
-        let event = AnalyticsEvent.Error(context: nil, domain: .VOIP, name: reason.errorName)
+        let event = AnalyticsEvent.Error(context: nil, cryptoModule: nil, domain: .VOIP, name: reason.errorName)
         capture(event: callEvent)
         capture(event: event)
     }

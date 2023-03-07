@@ -366,11 +366,11 @@
             
             switch (roomPowerLevel) {
                 case RoomPowerLevelAdmin:
-                    self.roomMemberPowerLevelLabel.text = [VectorL10n roomMemberPowerLevelAdminIn:self.mxRoom.summary.displayname];
+                    self.roomMemberPowerLevelLabel.text = [VectorL10n roomMemberPowerLevelAdminIn:self.mxRoom.summary.displayName];
                     self.roomMemberPowerLevelContainerView.hidden = NO;
                     break;
                 case RoomPowerLevelModerator:
-                    self.roomMemberPowerLevelLabel.text = [VectorL10n roomMemberPowerLevelModeratorIn:self.mxRoom.summary.displayname];
+                    self.roomMemberPowerLevelLabel.text = [VectorL10n roomMemberPowerLevelModeratorIn:self.mxRoom.summary.displayName];
                     self.roomMemberPowerLevelContainerView.hidden = NO;
                     break;
                 default:

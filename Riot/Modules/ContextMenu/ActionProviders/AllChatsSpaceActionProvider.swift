@@ -39,7 +39,7 @@ class AllChatsSpaceActionProvider {
 
     private var currentSpace: MXSpace? {
         didSet {
-            spaceName = currentSpace?.summary?.displayname ?? VectorL10n.spaceTag
+            spaceName = currentSpace?.summary?.displayName ?? VectorL10n.spaceTag
         }
     }
     private var spaceName: String = VectorL10n.spaceTag

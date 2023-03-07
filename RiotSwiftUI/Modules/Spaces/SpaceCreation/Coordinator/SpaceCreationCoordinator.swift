@@ -47,7 +47,7 @@ final class SpaceCreationCoordinator: Coordinator {
     init(parameters: SpaceCreationCoordinatorParameters) {
         let title: String
         let message: String
-        if let parentSpaceId = parameters.parentSpaceId, let parentSpaceName = parameters.session.spaceService.getSpace(withId: parentSpaceId)?.summary?.displayname {
+        if let parentSpaceId = parameters.parentSpaceId, let parentSpaceName = parameters.session.spaceService.getSpace(withId: parentSpaceId)?.summary?.displayName {
             title = VectorL10n.spacesSubspaceCreationVisibilityTitle
             message = VectorL10n.spacesSubspaceCreationVisibilityMessage(parentSpaceName)
         } else {

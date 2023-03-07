@@ -25,6 +25,8 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
     /// Any user properties to be included with the next captured event.
     private(set) var pendingUserProperties: AnalyticsEvent.UserProperties?
     
+    static let shared = PostHogAnalyticsClient()
+    
     var isRunning: Bool { postHog?.enabled ?? false }
     
     func start() {
@@ -79,10 +81,10 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
         }
         
         // Merge the updated user properties with the existing ones
-        self.pendingUserProperties = AnalyticsEvent.UserProperties(ftueUseCaseSelection: userProperties.ftueUseCaseSelection ?? pendingUserProperties.ftueUseCaseSelection,
+        self.pendingUserProperties = AnalyticsEvent.UserProperties(allChatsActiveFilter: userProperties.allChatsActiveFilter ?? pendingUserProperties.allChatsActiveFilter,
+                                                                   ftueUseCaseSelection: userProperties.ftueUseCaseSelection ?? pendingUserProperties.ftueUseCaseSelection,
                                                                    numFavouriteRooms: userProperties.numFavouriteRooms ?? pendingUserProperties.numFavouriteRooms,
-                                                                   numSpaces: userProperties.numSpaces ?? pendingUserProperties.numSpaces,
-                                                                   allChatsActiveFilter: userProperties.allChatsActiveFilter ?? pendingUserProperties.allChatsActiveFilter)
+                                                                   numSpaces: userProperties.numSpaces ?? pendingUserProperties.numSpaces)
     }
     
     // MARK: - Private
@@ -100,5 +102,11 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
         properties["$set"] = userProperties.properties.compactMapValues { $0 }
         pendingUserProperties = nil
         return properties
+    }
+}
+
+extension PostHogAnalyticsClient: RemoteFeaturesClientProtocol {
+    func isFeatureEnabled(_ feature: String) -> Bool {
+        postHog?.isFeatureEnabled(feature) == true
     }
 }

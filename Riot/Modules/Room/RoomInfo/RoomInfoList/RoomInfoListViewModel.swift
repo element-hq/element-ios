@@ -39,7 +39,7 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         let basicInfoViewData = RoomInfoBasicViewData(avatarUrl: room.summary.avatar,
                                                       mediaManager: session.mediaManager,
                                                       roomId: room.roomId,
-                                                      roomDisplayName: room.summary.displayname,
+                                                      roomDisplayName: room.summary.displayName,
                                                       mainRoomAlias: room.summary.aliases?.first,
                                                       roomTopic: room.summary.topic,
                                                       encryptionImage: encryptionImage,

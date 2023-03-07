@@ -365,6 +365,7 @@
 "room_creation_invite_another_user" = "User ID, name or email";
 "room_creation_error_invite_user_by_email_without_identity_server" = "No identity server is configured so you cannot add a participant with an email.";
 "room_creation_dm_error" = "We couldn't create your DM. Please check the users you want to invite and try again.";
+"room_creation_only_one_email_invite" = "You can only invite one email at a time";
 
 // Room recents
 "room_recents_directory_section" = "ROOM DIRECTORY";
@@ -1570,9 +1571,11 @@ Tap the + to start adding people.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verify this login";
 "device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest %@ on your other devices:";
 "device_verification_self_verify_wait_additional_information" = "This works with %@ and other cross-signing capable Matrix clients.";
+"device_verification_self_verify_open_on_other_device_title" = "Open %@ on your other device";
+"device_verification_self_verify_open_on_other_device_information" = "You need to verify this session in order to read your secure message history.\n\nOpen Element on one of your other devices and follow the instructions.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Security Key";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Security Phrase or Key";
-"device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't access an existing session";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Can't access an existing %@ session?";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Checking for other verification capabilities ...";
 
 // MARK: Verify
@@ -1747,6 +1750,12 @@ Tap the + to start adding people.";
 
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Code validated!";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "QR code has been successfully validated.";
+
+"key_verification_scan_qr_code_title" = "Scan QR code";
+"key_verification_scan_qr_code_information_other_user" = "Point your camera at the QR code displayed on their device to verify their session";
+"key_verification_scan_qr_code_information_other_device" = "Point your camera at the QR code displayed on your other device to verify this session";
+"key_verification_scan_qr_code_information_other_session" = "Point your camera at the QR code displayed on your other device to verify your session";
+"key_verification_scan_qr_code_information_new_session" = "Point your camera at the QR code displayed on your other device to verify your new session";
 
 // MARK: Scan confirmation
 
@@ -2286,6 +2295,9 @@ Tap the + to start adding people.";
 
 "room_invites_empty_view_title" = "Nothing new.";
 "room_invites_empty_view_information" = "This is where your invites appear.";
+
+"room_waiting_other_participants_title" = "Waiting for users to join %@";
+"room_waiting_other_participants_message" = "Once invited users have joined %@, you will be able to chat and the room will be end-to-end encrypted";
 
 // MARK: - Space Selector
 

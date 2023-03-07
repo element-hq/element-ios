@@ -237,13 +237,13 @@ class RoomGroupCallStatusCell: RoomCallBaseCell {
             TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToDisplayAnswerDeclineOptions {
             
             if JitsiService.shared.isWidgetDeclined(withId: widgetId) {
-                innerContentView.callerNameLabel.text = room.summary.displayname
+                innerContentView.callerNameLabel.text = room.summary.displayName
                 room.summary.setRoomAvatarImageIn(innerContentView.avatarImageView)
                 
                 viewState = .declined
                 statusText = VectorL10n.eventFormatterCallYouDeclined
             } else {
-                innerContentView.callerNameLabel.text = VectorL10n.eventFormatterGroupCallIncoming(bubbleCellData.senderDisplayName, room.summary.displayname)
+                innerContentView.callerNameLabel.text = VectorL10n.eventFormatterGroupCallIncoming(bubbleCellData.senderDisplayName, room.summary.displayName)
                 
                 innerContentView.avatarImageView.setImageURI(bubbleCellData.senderAvatarUrl,
                                             withType: nil,
@@ -257,7 +257,7 @@ class RoomGroupCallStatusCell: RoomCallBaseCell {
                 statusText = nil
             }
         } else {
-            innerContentView.callerNameLabel.text = room.summary.displayname
+            innerContentView.callerNameLabel.text = room.summary.displayName
             
             room.summary.setRoomAvatarImageIn(innerContentView.avatarImageView)
         }

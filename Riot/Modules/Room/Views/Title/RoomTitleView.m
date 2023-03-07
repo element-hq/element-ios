@@ -85,7 +85,7 @@
     [super customizeViewRendering];
 
     self.backgroundColor = UIColor.clearColor;
-    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? ThemeService.shared.theme.textPrimaryColor : ThemeService.shared.theme.textSecondaryColor);
+    self.displayNameTextField.textColor = (self.mxRoom.summary.displayName.length ? ThemeService.shared.theme.textPrimaryColor : ThemeService.shared.theme.textSecondaryColor);
     self.typingLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.dotView.backgroundColor = ThemeService.shared.theme.warningColor;
     self.missedDiscussionsBadgeLabel.textColor = ThemeService.shared.theme.tintColor;
@@ -121,7 +121,7 @@
             [self.presenceIndicatorView stopListeningPresenceUpdates];
         }
         
-        self.displayNameTextField.text = self.mxRoom.summary.displayname;
+        self.displayNameTextField.text = self.mxRoom.summary.displayName;
         if (!self.displayNameTextField.text.length)
         {
             self.displayNameTextField.text = [VectorL10n roomDisplaynameEmptyRoom];

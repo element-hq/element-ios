@@ -102,7 +102,7 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
             }
             
             let parameters = SpaceDetailLoadedParameters(spaceId: space.spaceId,
-                                                         displayName: summary.displayname,
+                                                         displayName: summary.displayName,
                                                          topic: summary.topic,
                                                          avatarUrl: summary.avatar,
                                                          joinRule: nil,
@@ -130,7 +130,7 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
                 })
                 
                 let parameters = SpaceDetailLoadedParameters(spaceId: space.spaceId,
-                                                             displayName: summary.displayname,
+                                                             displayName: summary.displayName,
                                                              topic: summary.topic,
                                                              avatarUrl: summary.avatar,
                                                              joinRule: joinRule,

@@ -189,7 +189,7 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
             discussionType = .room(topic: roomSummary.topic, canInvitePeople: bubbleData.canInvitePeople)
         }
         
-        let displayName = roomSummary.displayname ?? ""
+        let displayName = roomSummary.displayName ?? ""
         
         let roomAvatarViewData = RoomAvatarViewData(roomId: roomId,
                                                     displayName: displayName,

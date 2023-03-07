@@ -503,7 +503,7 @@ static const CGFloat kLocalPreviewMargin = 20;
     }
     else if (mxCall.isConferenceCall)
     {
-        peerDisplayName = mxCall.room.summary.displayname;
+        peerDisplayName = mxCall.room.summary.displayName;
         peerAvatarURL = mxCall.room.summary.avatar;
     }
     

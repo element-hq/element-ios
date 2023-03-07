@@ -40,7 +40,7 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
                                                  userAvatarData: avatarData,
                                                  annotations: [],
                                                  highlightedAnnotation: nil,
-                                                 showsUserLocation: true,
+                                                 showsUserLocationMode: .follow,
                                                  isLiveLocationSharingEnabled: isLiveLocationSharingEnabled)
         
         super.init(initialViewState: viewState)
@@ -73,7 +73,7 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
             
             completion?(.share(latitude: pinLocation.latitude, longitude: pinLocation.longitude, coordinateType: .pin))
         case .goToUserLocation:
-            state.showsUserLocation = true
+            state.showsUserLocationMode = .follow
             state.isPinDropSharing = false
         case .startLiveSharing:
             startLiveLocationSharing()
@@ -81,7 +81,7 @@ class LocationSharingViewModel: LocationSharingViewModelType, LocationSharingVie
             state.bindings.showingTimerSelector = false
             completion?(.shareLiveLocation(timeout: timeout.rawValue))
         case .userDidPan:
-            state.showsUserLocation = false
+            state.showsUserLocationMode = .hide
             state.isPinDropSharing = true
         case .mapCreditsDidTap:
             state.bindings.showMapCreditsSheet.toggle()

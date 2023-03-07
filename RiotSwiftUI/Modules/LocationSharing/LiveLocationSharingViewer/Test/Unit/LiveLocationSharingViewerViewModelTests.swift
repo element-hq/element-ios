@@ -40,8 +40,10 @@ class LiveLocationSharingViewerViewModelTests: XCTestCase {
         let service = MockLiveLocationSharingViewerService(currentUserSharingLocation: false)
         let viewModel = LiveLocationSharingViewerViewModel(mapStyleURL: BuildSettings.defaultTileServerMapStyleURL, service: service)
         XCTAssertFalse(viewModel.context.viewState.isCurrentUserShared)
-        XCTAssertFalse(viewModel.context.viewState.showsUserLocation)
+        XCTAssertEqual(viewModel.context.viewState.showsUserLocationMode, .hide)
         viewModel.context.send(viewAction: .showUserLocation)
-        XCTAssertTrue(viewModel.context.viewState.showsUserLocation)
+        XCTAssertEqual(viewModel.context.viewState.showsUserLocationMode, .follow)
+        viewModel.context.send(viewAction: .tapListItem("@bob:matrix.org"))
+        XCTAssertEqual(viewModel.context.viewState.showsUserLocationMode, .show)
     }
 }

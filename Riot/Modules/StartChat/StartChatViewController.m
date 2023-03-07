@@ -35,6 +35,9 @@
     UIBarButtonItem *cancelBarButtonItem;
     UIBarButtonItem *createBarButtonItem;
     
+    // SearchBar text
+    NSString *currentSearch;
+    
     // HTTP Request
     MXHTTPOperation *roomCreationRequest;
     
@@ -45,9 +48,12 @@
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeader;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBarView;
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeaderBorder;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarHeaderHeightConstraint;
 
 @property (nonatomic, strong) InviteFriendsPresenter *inviteFriendsPresenter;
 @property (nonatomic, weak) InviteFriendsHeaderView *inviteFriendsHeaderView;
+
+@property (nonatomic, weak) UIView *onlyOneEmailInvitationView;
 
 @end
 
@@ -130,6 +136,11 @@
 
 - (void)setupInviteFriendsHeaderView
 {
+    if (self.inviteFriendsHeaderView)
+    {
+        return;
+    }
+    
     if (!RiotSettings.shared.allowInviteExernalUsers)
     {
         self.contactsTableView.tableHeaderView = nil;
@@ -152,7 +163,7 @@
             [self setupInviteFriendsHeaderView];
         }
     }
-    else
+    else if (self.inviteFriendsHeaderView != nil)
     {
         self.contactsTableView.tableHeaderView = nil;
     }
@@ -304,6 +315,104 @@
             contactsDataSource.ignoredContactsByMatrixId[self.mainSession.myUser.userId] = userContact;
         }
     }
+    
+    // hide the search bar if a participant is already invited by email
+    BOOL hideSearchBar = [self participantsAlreadyContainAnEmail];
+    self.searchBarHeader.alpha = hideSearchBar ? 0.0f : 1.0f;
+    self.searchBarHeaderHeightConstraint.constant = hideSearchBar ? 0.0f : 50.0f;
+    [UIView animateWithDuration:0.2f animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (BOOL)participantsAlreadyContainAnEmail
+{
+    for (MXKContact* participant in participants)
+    {
+        // if it is not a matrix contact or a local contact with a MatrixID
+        if (participant.matrixIdentifiers.count == 0 && ![MXTools isMatrixUserIdentifier:participant.displayName])
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (BOOL)canAddParticipant: (MXKContact*) contact
+{
+    if (!contact)
+    {
+        return YES;
+    }
+
+    // The following rules will be applied only if the resulting room is going to be encrypted
+    if (![self.mainSession vc_homeserverConfiguration].encryption.isE2EEByDefaultEnabled)
+    {
+        return YES;
+    }
+
+    // If we have already invited an email, we cannot add another participant
+    if ([self participantsAlreadyContainAnEmail])
+    {
+        return NO;
+    }
+        
+    // if it is not a matrix contact, nor a local contact with a MatrixID, and if there is already at least one participant, another participant cannot be added.
+    if ((contact.matrixIdentifiers.count == 0 && ![MXTools isMatrixUserIdentifier:contact.displayName]) && participants.count > 0)
+    {
+        return NO;
+    }
+        
+    // Otherwise, we should be able to add this participant
+    return YES;
+}
+
+- (void)showAllowOnlyOneInvitByEmailAllowedHeaderView:(BOOL)visible
+{
+    if (visible)
+    {
+        if (!self.onlyOneEmailInvitationView)
+        {
+            UIView *headerView = [[UIView alloc] initWithFrame: CGRectZero];
+            headerView.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            UILabel *label = [[UILabel alloc] initWithFrame: CGRectZero];
+            label.numberOfLines = 0;
+            label.textColor = ThemeService.shared.theme.textSecondaryColor;
+            label.font = [UIFont systemFontOfSize:14 weight:UIFontWeightLight];
+            label.adjustsFontSizeToFitWidth = YES;
+
+            label.text = VectorL10n.roomCreationOnlyOneEmailInvite;
+            label.translatesAutoresizingMaskIntoConstraints = NO;
+            [headerView addSubview:label];
+            
+            [NSLayoutConstraint activateConstraints:@[
+                [label.leadingAnchor constraintEqualToAnchor:headerView.leadingAnchor constant:16],
+                [label.trailingAnchor constraintEqualToAnchor:headerView.trailingAnchor constant:-16],
+                [label.topAnchor constraintEqualToAnchor:headerView.topAnchor constant:8],
+                [label.bottomAnchor constraintEqualToAnchor:headerView.bottomAnchor constant:-8],
+            ]];
+            [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+            [headerView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+                                    
+            self.onlyOneEmailInvitationView = headerView;
+            self.contactsTableView.tableHeaderView = self.onlyOneEmailInvitationView;
+            
+            [NSLayoutConstraint activateConstraints:@[
+                [headerView.leadingAnchor constraintEqualToAnchor:self.contactsTableView.safeAreaLayoutGuide.leadingAnchor],
+                [headerView.trailingAnchor constraintEqualToAnchor:self.contactsTableView.safeAreaLayoutGuide.trailingAnchor]
+            ]];
+            [self.contactsTableView.tableHeaderView layoutIfNeeded];
+        }
+    }
+    else if (self.onlyOneEmailInvitationView != nil)
+    {
+        if (self.contactsTableView.tableHeaderView == self.onlyOneEmailInvitationView)
+        {
+            self.contactsTableView.tableHeaderView = nil;
+        }
+        self.onlyOneEmailInvitationView = nil;
+    }
 }
 
 - (void)showInviteFriendsFromSourceView:(UIView*)sourceView
@@ -367,6 +476,14 @@
     if (_isAddParticipantSearchBarEditing)
     {
         cell = [contactsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+        MXKContact* contact = [contactsDataSource contactAtIndexPath:indexPath];
+        if (![self canAddParticipant:contact])
+        {
+            // Prevent to add it
+            cell.contentView.alpha = 0.5;
+            cell.userInteractionEnabled = NO;
+            cell.accessoryView = nil;
+        }
     }
     else if (indexPath.section == participantsSection)
     {
@@ -533,7 +650,7 @@
         
         // Prepare the invited participant data
         NSMutableArray *inviteArray = [NSMutableArray array];
-        NSMutableArray *invite3PIDArray = [NSMutableArray array];
+        NSMutableArray<MXInvite3PID *> *invite3PIDArray = [NSMutableArray array];
         
         // Check whether some users must be invited
         for (MXKContact *contact in participants)
@@ -594,7 +711,7 @@
         
         // Is it a direct chat?
         BOOL isDirect = ((inviteArray.count + invite3PIDArray.count == 1) ? YES : NO);
-        
+       
         // In case of a direct chat with only one user id, we open the first available direct chat
         // or creates a new one (if it doesn't exist).
         if (isDirect && inviteArray.count)
@@ -606,6 +723,19 @@
         }
         else
         {
+            // We don't want to create a new direct room for a 3rd party invite if we already have one
+            NSString *first3rdPartyInvitee = invite3PIDArray.firstObject.address;
+            if (isDirect && first3rdPartyInvitee)
+            {
+                MXRoom *existingRoom = [self.mainSession directJoinedRoomWithUserId:first3rdPartyInvitee];
+                if (existingRoom)
+                {
+                    [self stopActivityIndicator];
+                    [[AppDelegate theDelegate] showRoom:existingRoom.roomId andEventId:nil withMatrixSession:self.mainSession];
+                    return;
+                }
+            }
+            
             // Ensure direct chat are created with equal ops on both sides (the trusted_private_chat preset)
             MXRoomPreset preset = (isDirect ? kMXRoomPresetTrustedPrivateChat : nil);
 
@@ -635,7 +765,7 @@
                 roomCreationParameters.isDirect = isDirect;
                 roomCreationParameters.preset = preset;
 
-                if (canEnableE2E && roomCreationParameters.invite3PIDArray == nil)
+                if (canEnableE2E)
                 {
                     roomCreationParameters.initialStateEvents = @[
                                                                   [MXRoomCreationParameters initialStateEventForEncryptionWithAlgorithm:kMXCryptoMegolmAlgorithm
@@ -644,6 +774,9 @@
 
                 self->roomCreationRequest = [self.mainSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
 
+                    // Update the room summary
+                    [room.summary resetRoomStateData];
+                    
                     self->roomCreationRequest = nil;
 
                     [self stopActivityIndicator];
@@ -702,8 +835,28 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [contactsDataSource searchWithPattern:searchText forceReset:NO];
+    self->currentSearch = searchText;
+    if (searchText != nil && searchText.length > 0)
+    {
+        MXKContact *contact = nil;
+        if ([MXTools isMatrixUserIdentifier:searchText])
+        {
+            contact = [[MXKContact alloc] initMatrixContactWithDisplayName:searchText andMatrixID:searchText];
+
+        }
+        else if ([MXTools isEmailAddress:searchText])
+        {
+            contact = [[MXKContact alloc] initContactWithDisplayName:searchText emails:nil phoneNumbers:nil andThumbnail:nil];
+        }
+        
+        [self showAllowOnlyOneInvitByEmailAllowedHeaderView: ![self canAddParticipant:contact]];
+    }
+    else
+    {
+        [self showAllowOnlyOneInvitByEmailAllowedHeaderView:NO];
+    }
     
+    [contactsDataSource searchWithPattern:searchText forceReset:NO];
     self.contactsAreFilteredWithSearch = searchText.length ? YES : NO;
 }
 
@@ -718,6 +871,7 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     searchBar.text = nil;
+    self->currentSearch = nil;
     self.isAddParticipantSearchBarEditing = NO;
     
     // Reset filtering
@@ -725,6 +879,8 @@
     
     // Leave search
     [searchBar resignFirstResponder];
+    
+    [self showAllowOnlyOneInvitByEmailAllowedHeaderView:NO];
 }
 
 #pragma mark - ContactsTableViewControllerDelegate
@@ -763,14 +919,14 @@
         }
     }
     
-    if (contact)
+    if ([self canAddParticipant:contact])
     {
         // Update here the mutable list of participants
         [participants addObject:contact];
+        
+        // Refresh display by leaving search session
+        [self searchBarCancelButtonClicked:_searchBarView];
     }
-    
-    // Refresh display by leaving search session
-    [self searchBarCancelButtonClicked:_searchBarView];
 }
 
 #pragma mark - InviteFriendsHeaderViewDelegate

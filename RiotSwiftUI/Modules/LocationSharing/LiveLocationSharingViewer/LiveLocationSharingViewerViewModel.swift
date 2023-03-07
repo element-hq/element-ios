@@ -211,6 +211,14 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
             return
         }
         
+        /*
+            if the map is currently following the current user's location,
+            we want to switch back to only showing the marker,
+            so the the highlighted shared location can be centered
+         */
+        if state.showsUserLocationMode == .follow {
+            state.showsUserLocationMode = .show
+        }
         state.highlightedAnnotation = foundUserAnnotation
     }
     
@@ -234,7 +242,7 @@ class LiveLocationSharingViewerViewModel: LiveLocationSharingViewerViewModelType
     
     private func showsCurrentUserLocation() {
         if liveLocationSharingViewerService.requestAuthorizationIfNeeded() {
-            state.showsUserLocation = true
+            state.showsUserLocationMode = .follow
         } else {
             state.errorSubject.send(.invalidLocationAuthorization)
         }

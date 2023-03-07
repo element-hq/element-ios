@@ -158,7 +158,7 @@ class CallPiPView: UIView {
                                                   andFontSize: fontSize)
         } else if let room = call?.room {
             return AvatarGenerator.generateAvatar(forMatrixItem: room.roomId,
-                                                  withDisplayName: room.summary.displayname,
+                                                  withDisplayName: room.summary.displayName,
                                                   size: imageView.bounds.width,
                                                   andFontSize: fontSize)
         }

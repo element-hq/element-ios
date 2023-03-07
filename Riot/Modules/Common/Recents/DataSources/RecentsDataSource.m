@@ -1103,7 +1103,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             RecentEmptySectionTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[RecentEmptySpaceSectionTableViewCell defaultReuseIdentifier]];
 
             tableViewCell.iconView.image = [ThemeService.shared isCurrentThemeDark] ? AssetImages.allChatsEmptySpaceArtworkDark.image : AssetImages.allChatsEmptySpaceArtwork.image;
-            tableViewCell.titleLabel.text = [VectorL10n allChatsEmptyViewTitle: self.currentSpace.summary.displayname];
+            tableViewCell.titleLabel.text = [VectorL10n allChatsEmptyViewTitle: self.currentSpace.summary.displayName];
             tableViewCell.messageLabel.text = VectorL10n.allChatsEmptySpaceInformation;
             
             return tableViewCell;
@@ -1670,7 +1670,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             
             NSString* tagOrder = [room.mxSession tagOrderToBeAtIndex:newPath.row from:oldPos withTag:dstRoomTag];
             
-            MXLogDebug(@"[RecentsDataSource] Update the room %@ [%@] tag from %@ to %@ with tag order %@", room.roomId, room.summary.displayname, oldRoomTag, dstRoomTag, tagOrder);
+            MXLogDebug(@"[RecentsDataSource] Update the room %@ [%@] tag from %@ to %@ with tag order %@", room.roomId, room.summary.displayName, oldRoomTag, dstRoomTag, tagOrder);
             
             [room replaceTag:oldRoomTag
                        byTag:dstRoomTag

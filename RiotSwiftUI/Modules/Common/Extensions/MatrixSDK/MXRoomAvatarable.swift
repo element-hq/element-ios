@@ -25,6 +25,6 @@ extension MXRoom: Avatarable {
     }
     
     var displayName: String? {
-        summary.displayname
+        summary.displayName
     }
 }

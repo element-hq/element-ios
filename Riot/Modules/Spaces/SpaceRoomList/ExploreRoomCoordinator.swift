@@ -60,7 +60,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     
     func start() {
 
-        let rootCoordinator = self.createShowSpaceExploreRoomCoordinator(session: self.session, spaceId: self.spaceId, spaceName: self.session.spaceService.getSpace(withId: self.spaceId)?.summary?.displayname)
+        let rootCoordinator = self.createShowSpaceExploreRoomCoordinator(session: self.session, spaceId: self.spaceId, spaceName: self.session.spaceService.getSpace(withId: self.spaceId)?.summary?.displayName)
 
         rootCoordinator.start()
 
