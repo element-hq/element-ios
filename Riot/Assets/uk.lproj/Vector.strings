@@ -2919,3 +2919,14 @@
 "settings_push_rules_error" = "Сталася помилка під час оновлення налаштувань сповіщень. Спробуйте змінити налаштування ще раз.";
 "poll_history_detail_view_in_timeline" = "Переглянути опитування у стрічці";
 "authentication_qr_login_failure_device_not_supported" = "Пов'язування з цим пристроєм не підтримується.";
+"room_waiting_other_participants_message" = "Після того, як запрошені користувачі приєднаються до %@, ви зможете спілкуватися з ними, а кімната буде захищена наскрізним шифруванням";
+"room_waiting_other_participants_title" = "Очікування коли користувачі приєднаються до %@";
+"key_verification_scan_qr_code_information_new_session" = "Наведіть камеру на QR-код, що показаний на іншому пристрої, щоб звірити сеанс";
+"key_verification_scan_qr_code_information_other_session" = "Наведіть камеру на QR-код, що показаний на іншому пристрої, щоб звірити сеанс";
+"key_verification_scan_qr_code_information_other_device" = "Наведіть камеру на QR-код, що показаний на іншому пристрої, щоб звірити сеанс";
+"key_verification_scan_qr_code_information_other_user" = "Наведіть камеру на QR-код, що показаний на їхньому пристрої, щоб звірити сеанс";
+"key_verification_scan_qr_code_title" = "Сканувати QR-код";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Не можете отримати доступ до наявного сеансу %@?";
+"device_verification_self_verify_open_on_other_device_information" = "Вам потрібно звірити цей сеанс, щоб прочитати історію захищених повідомлень.\n\nВідкрийте Element на одному з інших пристроїв і дотримуйтесь інструкцій.";
+"device_verification_self_verify_open_on_other_device_title" = "Відкрийте %@ на іншому своєму пристрої";
+"room_creation_only_one_email_invite" = "Ви можете запросити лише одну адресу електронної пошти за раз";
