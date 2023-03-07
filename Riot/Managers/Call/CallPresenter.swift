@@ -208,7 +208,7 @@ class CallPresenter: NSObject {
             if error == nil {
                 JMCallKitProxy.reportCallUpdate(with: newUUID,
                                                 handle: roomId,
-                                                displayName: room.summary.displayname,
+                                                displayName: room.summary.displayName,
                                                 hasVideo: true)
                 JMCallKitProxy.reportOutgoingCall(with: newUUID, connectedAt: nil)
 

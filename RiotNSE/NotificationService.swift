@@ -241,7 +241,7 @@ class NotificationService: UNNotificationServiceExtension {
         
         // If a room summary is available, use the displayname for the best attempt title.
         guard let roomSummary = NotificationService.backgroundSyncService.roomSummary(forRoomId: roomId) else { return }
-        guard let roomDisplayName = roomSummary.displayname else { return }
+        guard let roomDisplayName = roomSummary.displayName else { return }
         bestAttemptContents[eventId]?.title = roomDisplayName
         
         // At this stage we don't know the message type, so leave the body as set in didReceive.
@@ -383,7 +383,7 @@ class NotificationService: UNNotificationServiceExtension {
                     var ignoreBadgeUpdate = false
                     var threadIdentifier: String? = roomId
                     let currentUserId = account.mxCredentials.userId
-                    let roomDisplayName = roomSummary?.displayname
+                    let roomDisplayName = roomSummary?.displayName
                     let pushRule = NotificationService.backgroundSyncService.pushRule(matching: event, roomState: roomState)
                 
                     // if the push rule must not be notified we complete and return

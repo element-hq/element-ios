@@ -62,7 +62,7 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         guard let summary = session.roomSummary(withRoomId: roomState.roomId) else {
             return nil
         }
-        return summary.displayname
+        return summary.displayName
     }
     
     var roomInfo: String? {

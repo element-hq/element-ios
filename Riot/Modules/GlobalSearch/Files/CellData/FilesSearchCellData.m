@@ -100,7 +100,7 @@
         MXRoom *room = [searchDataSource.mxSession roomWithRoomId:roomId];
         if (room)
         {
-            roomDisplayName = room.summary.displayname;
+            roomDisplayName = room.summary.displayName;
             if (!roomDisplayName.length)
             {
                 roomDisplayName = [VectorL10n roomDisplaynameEmptyRoom];

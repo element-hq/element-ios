@@ -27,7 +27,7 @@ extension MatrixListItemData {
         if parentSpaceIds.isEmpty {
             detailText = nil
         } else {
-            if let spaceName = spaceService.getSpace(withId: parentSpaceIds.first ?? "")?.summary?.displayname {
+            if let spaceName = spaceService.getSpace(withId: parentSpaceIds.first ?? "")?.summary?.displayName {
                 let count = parentSpaceIds.count - 1
                 switch count {
                 case 0:
@@ -51,6 +51,6 @@ extension MatrixListItemData {
         } else {
             type = .room
         }
-        self.init(id: mxRoom.roomId, type: type, avatar: mxRoom.avatarData, displayName: mxRoom.summary.displayname, detailText: detailText)
+        self.init(id: mxRoom.roomId, type: type, avatar: mxRoom.avatarData, displayName: mxRoom.summary.displayName, detailText: detailText)
     }
 }

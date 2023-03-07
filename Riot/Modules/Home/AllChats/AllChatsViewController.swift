@@ -415,7 +415,7 @@ class AllChatsViewController: HomeViewController {
         let title: String
         let informationText: String
         if let currentSpace = self.dataSource?.currentSpace {
-            title = VectorL10n.allChatsEmptyViewTitle(currentSpace.summary?.displayname ?? VectorL10n.spaceTag)
+            title = VectorL10n.allChatsEmptyViewTitle(currentSpace.summary?.displayName ?? VectorL10n.spaceTag)
             informationText = VectorL10n.allChatsEmptySpaceInformation
         } else {
             let myUser = mainSession.myUser
@@ -495,7 +495,7 @@ class AllChatsViewController: HomeViewController {
 
     private func updateUI() {
         let currentSpace = self.dataSource?.currentSpace
-        self.title = currentSpace?.summary?.displayname ?? VectorL10n.allChatsTitle
+        self.title = currentSpace?.summary?.displayName ?? VectorL10n.allChatsTitle
         
         setupEditOptions()
         updateToolbar(with: editActionProvider.updateMenu(with: mainSession, parentSpace: currentSpace, completion: { [weak self] menu in
@@ -638,7 +638,7 @@ class AllChatsViewController: HomeViewController {
             return
         }
         
-        let name = spaceSummary.displayname ?? VectorL10n.spaceTag
+        let name = spaceSummary.displayName ?? VectorL10n.spaceTag
         
         let selectionHeader = MatrixItemChooserSelectionHeader(title: VectorL10n.leaveSpaceSelectionTitle,
                                                                selectAllTitle: VectorL10n.leaveSpaceSelectionAllRooms,

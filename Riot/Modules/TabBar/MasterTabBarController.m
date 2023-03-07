@@ -607,14 +607,14 @@
                 inMatrixSession:(MXSession*)mxSession
 {
     if (roomParentId) {
-        NSString *parentName = [mxSession roomSummaryWithRoomId:roomParentId].displayname;
+        NSString *parentName = [mxSession roomSummaryWithRoomId:roomParentId].displayName;
         NSMutableArray<NSString *> *breadcrumbs = [[NSMutableArray alloc] initWithObjects:parentName, nil];
 
         MXSpace *firstRootAncestor = roomParentId ? [mxSession.spaceService firstRootAncestorForRoomWithId:roomParentId] : nil;
         NSString *rootName = nil;
         if (firstRootAncestor)
         {
-            rootName = [mxSession roomSummaryWithRoomId:firstRootAncestor.spaceId].displayname;
+            rootName = [mxSession roomSummaryWithRoomId:firstRootAncestor.spaceId].displayName;
             [breadcrumbs insertObject:rootName atIndex:0];
         }
         titleView.breadcrumbView.breadcrumbs = breadcrumbs;

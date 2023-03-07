@@ -484,7 +484,7 @@ CallAudioRouteMenuViewDelegate>
     else if (self.mxCall.room)
     {
         return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId
-                                            withDisplayName:self.mxCall.room.summary.displayname
+                                            withDisplayName:self.mxCall.room.summary.displayName
                                                        size:self.callerImageViewWidthConstraint.constant
                                                 andFontSize:fontSize];
     }

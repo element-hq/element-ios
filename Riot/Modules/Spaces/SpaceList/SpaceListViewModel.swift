@@ -248,9 +248,9 @@ final class SpaceListViewModel: SpaceListViewModelType {
         var invites: [SpaceListItemViewData] = []
         var spaces: [SpaceListItemViewData] = []
         session.spaceService.rootSpaceSummaries.forEach { summary in
-            let avatarViewData = AvatarViewData(matrixItemId: summary.roomId, displayName: summary.displayname, avatarUrl: summary.avatar, mediaManager: session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
+            let avatarViewData = AvatarViewData(matrixItemId: summary.roomId, displayName: summary.displayName, avatarUrl: summary.avatar, mediaManager: session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayName))
             let notificationState = session.spaceService.notificationCounter.notificationState(forSpaceWithId: summary.roomId)
-            let viewData = SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayname,
+            let viewData = SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayName,
                                                  avatarViewData: avatarViewData,
                                                  isInvite: summary.membership == .invite,
                                                  notificationCount: notificationState?.groupMissedDiscussionsCount ?? 0,
