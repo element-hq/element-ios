@@ -48,7 +48,7 @@
 {
     [room.summary setRoomAvatarImageIn:self.avatarImageView];
     
-    self.titleLabel.text = room.summary.displayname;
+    self.titleLabel.text = room.summary.displayName;
 }
 
 + (CGFloat)cellHeight

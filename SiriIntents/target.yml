@@ -33,6 +33,7 @@ targets:
 
     dependencies:
     - sdk: Intents.framework
+    - package: AnalyticsEvents
     - package: DeviceKit
     - package: DTCoreText
 
@@ -45,6 +46,7 @@ targets:
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Categories/MXEvent.swift
     - path: ../Config/CommonConfiguration.swift
+    - path: ../Riot/Experiments/
     - path: ../Config/BuildSettings.swift
     - path: ../Config/Configurable.swift
     - path: ../Riot/Managers/Settings/RiotSettings.swift

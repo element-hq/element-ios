@@ -1871,6 +1871,14 @@ public class VectorL10n: NSObject {
   public static var deviceVerificationSelfVerifyAlertValidateAction: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_alert_validate_action") 
   }
+  /// You need to verify this session in order to read your secure message history.\n\nOpen Element on one of your other devices and follow the instructions.
+  public static var deviceVerificationSelfVerifyOpenOnOtherDeviceInformation: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_open_on_other_device_information") 
+  }
+  /// Open %@ on your other device
+  public static func deviceVerificationSelfVerifyOpenOnOtherDeviceTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "device_verification_self_verify_open_on_other_device_title", p1)
+  }
   /// Use this session to verify your new one, granting it access to encrypted messages.
   public static var deviceVerificationSelfVerifyStartInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_start_information") 
@@ -1895,9 +1903,9 @@ public class VectorL10n: NSObject {
   public static var deviceVerificationSelfVerifyWaitNewSignInTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_new_sign_in_title") 
   }
-  /// If you can't access an existing session
-  public static var deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalInformation: String { 
-    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_additional_information") 
+  /// Can't access an existing %@ session?
+  public static func deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalHelp(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_additional_help", p1)
   }
   /// Checking for other verification capabilities ...
   public static var deviceVerificationSelfVerifyWaitRecoverSecretsCheckingAvailability: String { 
@@ -2986,6 +2994,26 @@ public class VectorL10n: NSObject {
   /// Waiting for %@…
   public static func keyVerificationScanConfirmationScanningUserWaitingOther(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanning_user_waiting_other", p1)
+  }
+  /// Point your camera at the QR code displayed on your other device to verify your new session
+  public static var keyVerificationScanQrCodeInformationNewSession: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_qr_code_information_new_session") 
+  }
+  /// Point your camera at the QR code displayed on your other device to verify this session
+  public static var keyVerificationScanQrCodeInformationOtherDevice: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_qr_code_information_other_device") 
+  }
+  /// Point your camera at the QR code displayed on your other device to verify your session
+  public static var keyVerificationScanQrCodeInformationOtherSession: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_qr_code_information_other_session") 
+  }
+  /// Point your camera at the QR code displayed on their device to verify their session
+  public static var keyVerificationScanQrCodeInformationOtherUser: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_qr_code_information_other_user") 
+  }
+  /// Scan QR code
+  public static var keyVerificationScanQrCodeTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_qr_code_title") 
   }
   /// Other users may not trust it.
   public static var keyVerificationSelfVerifyCurrentSessionAlertMessage: String { 
@@ -5239,6 +5267,10 @@ public class VectorL10n: NSObject {
   public static var roomCreationNameTitle: String { 
     return VectorL10n.tr("Vector", "room_creation_name_title") 
   }
+  /// You can only invite one email at a time
+  public static var roomCreationOnlyOneEmailInvite: String { 
+    return VectorL10n.tr("Vector", "room_creation_only_one_email_invite") 
+  }
   /// (e.g. @bob:homeserver1; @john:homeserver2...)
   public static var roomCreationParticipantsPlaceholder: String { 
     return VectorL10n.tr("Vector", "room_creation_participants_placeholder") 
@@ -6594,6 +6626,14 @@ public class VectorL10n: NSObject {
   /// Message failed to send due to unknown sessions being present.
   public static var roomUnsentMessagesUnknownDevicesNotification: String { 
     return VectorL10n.tr("Vector", "room_unsent_messages_unknown_devices_notification") 
+  }
+  /// Once invited users have joined %@, you will be able to chat and the room will be end-to-end encrypted
+  public static func roomWaitingOtherParticipantsMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_waiting_other_participants_message", p1)
+  }
+  /// Waiting for users to join %@
+  public static func roomWaitingOtherParticipantsTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_waiting_other_participants_title", p1)
   }
   /// End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.
   public static var roomWarningAboutEncryption: String { 

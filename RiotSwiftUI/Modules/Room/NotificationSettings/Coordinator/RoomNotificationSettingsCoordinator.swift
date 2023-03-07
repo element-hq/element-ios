@@ -41,12 +41,12 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
         let avatarData = showAvatar ? AvatarInput(
             mxContentUri: room.summary.avatar,
             matrixItemId: room.roomId,
-            displayName: room.summary.displayname
+            displayName: room.summary.displayName
         ) : nil
         let viewModel = RoomNotificationSettingsSwiftUIViewModel(
             roomNotificationService: roomNotificationService,
             avatarData: avatarData,
-            displayName: room.summary.displayname,
+            displayName: room.summary.displayName,
             roomEncrypted: room.summary.isEncrypted
         )
         let avatarService: AvatarServiceProtocol = AvatarService(mediaManager: room.mxSession.mediaManager)

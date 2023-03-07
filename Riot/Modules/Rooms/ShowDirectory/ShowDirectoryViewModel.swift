@@ -237,7 +237,7 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
     }
     
     private func roomCellViewModel(with room: MXRoom) -> DirectoryRoomTableViewCellVM {
-        let displayName = room.summary.displayname
+        let displayName = room.summary.displayName
         let joinedMembersCount = Int(room.summary.membersCount.joined)
         let topic = MXTools.stripNewlineCharacters(room.summary.topic)
         let isJoined = room.summary.membership == .join || room.summary.membershipTransitionState == .joined

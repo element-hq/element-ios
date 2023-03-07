@@ -97,7 +97,6 @@ final class KeyVerificationVerifiedViewController: UIViewController {
             informationText = VectorL10n.keyVerificationVerifiedUserInformation
         }
         
-        self.title = self.verificationKind.verificationTitle
         self.titleLabel.text =  bodyTitle
         self.informationLabel.text = informationText
 

@@ -35,6 +35,7 @@ targets:
 
     dependencies:
     - target: Riot
+    - package: AnalyticsEvents
 
     configFiles:
       Debug: Debug.xcconfig
@@ -60,8 +61,6 @@ targets:
     - path: .
     - path: ../Config/Configurable.swift
     - path: ../Config/BuildSettings.swift
-    - path: ../Config/AppConfiguration.swift
-    - path: ../Config/CommonConfiguration.swift
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Managers/AppInfo/AppInfo.swift
     - path: ../Riot/Managers/AppInfo/AppVersion.swift

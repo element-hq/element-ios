@@ -28,7 +28,7 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     private(set) var roomInitializationStatus: CurrentValueSubject<TemplateRoomChatRoomInitializationStatus, Never>
     
     var roomName: String? {
-        room.summary.displayname
+        room.summary.displayName
     }
     
     init(room: MXRoom) {

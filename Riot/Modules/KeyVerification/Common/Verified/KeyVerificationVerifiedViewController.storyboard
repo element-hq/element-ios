@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dBQ-CG-VDL">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dBQ-CG-VDL">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,41 +11,41 @@
         <!--Key Verification Verified View Controller-->
         <scene sceneID="EyC-m5-6uM">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="dBQ-CG-VDL" customClass="KeyVerificationVerifiedViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="dBQ-CG-VDL" customClass="KeyVerificationVerifiedViewController" customModule="Element" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ht4-fu-3rS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jOh-c7-uod">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c4q-B8-hPy">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="345"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="358"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fNE-v3-2lx">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="345"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="358"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verified!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Nw-CZ-lKr">
-                                                        <rect key="frame" x="20" y="60" width="335" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                        <rect key="frame" x="20" y="60" width="335" height="33.5"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You've successfully verified this device." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sql-oR-dMk">
-                                                        <rect key="frame" x="20" y="103" width="335" height="18"/>
+                                                        <rect key="frame" x="20" y="116" width="335" height="18"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="key_verification_success_shield" translatesAutoresizingMaskIntoConstraints="NO" id="ie2-LW-ek2">
-                                                        <rect key="frame" x="127.5" y="141" width="120" height="120"/>
+                                                        <rect key="frame" x="127.5" y="154" width="120" height="120"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="ie2-LW-ek2" secondAttribute="height" multiplier="1:1" id="Re6-8V-peU"/>
                                                             <constraint firstAttribute="width" constant="120" id="qg0-4Z-ffM"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4i8-Se-1Ae" customClass="RoundedButton" customModule="Riot" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="281" width="335" height="44"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4i8-Se-1Ae" customClass="RoundedButton" customModule="Element" customModuleProvider="target">
+                                                        <rect key="frame" x="20" y="294" width="335" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="XNP-zj-OmI"/>
                                                         </constraints>
@@ -98,6 +96,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="6ex-OQ-2sZ"/>
                         <color key="backgroundColor" red="0.94509803921568625" green="0.96078431372549022" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="jOh-c7-uod" secondAttribute="trailing" id="7K8-MG-xLT"/>
@@ -107,7 +106,6 @@
                             <constraint firstItem="jOh-c7-uod" firstAttribute="trailing" secondItem="6ex-OQ-2sZ" secondAttribute="trailing" id="jVN-Fr-MKN"/>
                             <constraint firstItem="jOh-c7-uod" firstAttribute="top" secondItem="6ex-OQ-2sZ" secondAttribute="top" id="s7K-jf-P1z"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6ex-OQ-2sZ"/>
                     </view>
                     <connections>
                         <outlet property="doneButton" destination="4i8-Se-1Ae" id="K4a-4m-cU2"/>

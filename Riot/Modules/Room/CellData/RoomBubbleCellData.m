@@ -1072,6 +1072,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         // We do not want to merge room create event cells with other cell types
         return NO;
     }
+    
+    if (self.tag == RoomBubbleCellDataTagPoll) {
+        MXEvent* event = self.events.firstObject;
+        
+        if (event) {
+            // m.poll.ended events should always show the sender information
+            return event.eventType != MXEventTypePollEnd;
+        }
+    }
 
     if (self.hasThreadRoot || bubbleCellData.hasThreadRoot)
     {

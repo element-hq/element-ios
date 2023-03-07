@@ -86,7 +86,7 @@
     {
         return self.roomSummary.spaceChildInfo.displayName;
     }
-    return roomSummary.displayname;
+    return roomSummary.displayName;
 }
 
 - (NSString *)avatarUrl

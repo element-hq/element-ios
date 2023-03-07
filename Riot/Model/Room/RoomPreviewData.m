@@ -123,7 +123,7 @@
             [self.roomDataSource finalizeInitialization];
             self.roomDataSource.markTimelineInitialEvent = YES;
 
-            self->_roomName = peekingRoom.summary.displayname;
+            self->_roomName = peekingRoom.summary.displayName;
             self->_roomAvatarUrl = peekingRoom.summary.avatar;
 
             self->_roomTopic = [MXTools stripNewlineCharacters:peekingRoom.summary.topic];;

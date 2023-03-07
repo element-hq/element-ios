@@ -588,7 +588,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     if (BuildSettings.settingsScreenShowLabSettings)
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
-        if (MXSDKOptions.sharedInstance.isCryptoSDKAvailable)
+        if ([CryptoSDKFeature.shared canManuallyEnableForUserId:self.mainSession.myUserId])
         {
             [sectionLabs addRowWithTag:LABS_ENABLE_CRYPTO_SDK];
         }
@@ -2589,20 +2589,17 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
-        else
+        else if (row == LABS_ENABLE_CRYPTO_SDK)
         {
-            if (row == LABS_ENABLE_CRYPTO_SDK)
-            {
-                MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-                BOOL isEnabled = MXSDKOptions.sharedInstance.enableCryptoSDK;
-                labelAndSwitchCell.mxkLabel.text = isEnabled ? VectorL10n.settingsLabsDisableCryptoSdk : VectorL10n.settingsLabsEnableCryptoSdk;
-                labelAndSwitchCell.mxkSwitch.on = isEnabled;
-                [labelAndSwitchCell.mxkSwitch setEnabled:!isEnabled];
-                labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(enableCryptoSDKFeature:) forControlEvents:UIControlEventTouchUpInside];
-                
-                cell = labelAndSwitchCell;
-            }
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            BOOL isEnabled = MXSDKOptions.sharedInstance.enableCryptoSDK;
+            labelAndSwitchCell.mxkLabel.text = isEnabled ? VectorL10n.settingsLabsDisableCryptoSdk : VectorL10n.settingsLabsEnableCryptoSdk;
+            labelAndSwitchCell.mxkSwitch.on = isEnabled;
+            [labelAndSwitchCell.mxkSwitch setEnabled:!isEnabled];
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(enableCryptoSDKFeature:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
         }
     }
     else if (section == SECTION_TAG_SECURITY)
@@ -3391,10 +3388,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }]];
 
     [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        
-        [CryptoSDKConfiguration.shared enable];
-        [Analytics.shared trackCryptoSDKEnabled];
-        
+        [CryptoSDKFeature.shared enable];
         [[AppDelegate theDelegate] reloadMatrixSessions:YES];
     }]];
 

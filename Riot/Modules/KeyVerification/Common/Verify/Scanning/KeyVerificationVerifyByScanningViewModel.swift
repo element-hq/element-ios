@@ -77,7 +77,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
     
     private func loadData() {
         
-        let qrCodePlayloadData: Data?
+        let qrCodePayloadData: Data?
         let canShowScanAction: Bool
         
         self.qrCodeTransaction = self.keyVerificationManager.qrCodeTransaction(withTransactionId: self.keyVerificationRequest.requestId)
@@ -85,19 +85,19 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
         if let supportedVerificationMethods = self.keyVerificationRequest.myMethods {
             
             if let qrCodeData = self.qrCodeTransaction?.qrCodeData {
-                qrCodePlayloadData = self.qrCodeDataCoder.encode(qrCodeData)
+                qrCodePayloadData = self.qrCodeDataCoder.encode(qrCodeData)
             } else {
-                qrCodePlayloadData = nil
+                qrCodePayloadData = nil
             }
             
             canShowScanAction = self.canShowScanAction(from: supportedVerificationMethods)
         } else {
-            qrCodePlayloadData = nil
+            qrCodePayloadData = nil
             canShowScanAction = false
         }
         
         let viewData = KeyVerificationVerifyByScanningViewData(verificationKind: self.verificationKind,
-                                                               qrCodeData: qrCodePlayloadData,
+                                                               qrCodeData: qrCodePayloadData,
                                                                showScanAction: canShowScanAction)
         
         self.update(viewState: .loaded(viewData: viewData))

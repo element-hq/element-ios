@@ -26,7 +26,7 @@ public class MockRoomSummary: NSObject, MXRoomSummaryProtocol {
     
     public var avatar: String?
     
-    public var displayname: String?
+    public var displayName: String?
     
     public var topic: String?
     

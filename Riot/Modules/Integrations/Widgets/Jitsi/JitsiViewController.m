@@ -272,7 +272,7 @@ static NSString * _Nonnull kJitsiFeatureFlagChatEnabled = @"chat.enabled";
             builder.room = conferenceId;
             builder.videoMuted = !self.startWithVideo;
 
-            builder.subject = roomSummary.displayname;
+            builder.subject = roomSummary.displayName;
             builder.userInfo = [[JitsiMeetUserInfo alloc] initWithDisplayName:userDisplayName
                                                                      andEmail:nil
                                                                     andAvatar:avatarUrl];

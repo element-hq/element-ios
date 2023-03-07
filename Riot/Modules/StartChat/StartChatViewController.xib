@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,6 +13,7 @@
                 <outlet property="contactsTableView" destination="kNf-Ll-jvH" id="PDi-bW-2CG"/>
                 <outlet property="searchBarHeader" destination="Zm7-AB-ZtE" id="6ee-P0-twi"/>
                 <outlet property="searchBarHeaderBorder" destination="gcy-W7-89G" id="tsy-SP-KaJ"/>
+                <outlet property="searchBarHeaderHeightConstraint" destination="kSM-fg-IHB" id="nrd-MK-yrq"/>
                 <outlet property="searchBarView" destination="bsq-3U-VjV" id="x3M-wX-RW8"/>
                 <outlet property="view" destination="iN0-l3-epB" id="csR-cn-S4h"/>
             </connections>

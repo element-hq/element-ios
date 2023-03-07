@@ -40,7 +40,7 @@ class AllChatsEditActionProvider {
     private var rootSpaceCount: Int = 0
     private var parentSpace: MXSpace? {
         didSet {
-            parentName = parentSpace?.summary?.displayname ?? VectorL10n.spaceTag
+            parentName = parentSpace?.summary?.displayName ?? VectorL10n.spaceTag
         }
     }
     private var parentName: String = VectorL10n.spaceTag

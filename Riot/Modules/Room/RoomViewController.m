@@ -185,6 +185,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     // Time to display notification content in the timeline
     MXTaskProfile *notificationTaskProfile;
+    
+    // Observe kMXEventTypeStringRoomMember events
+    __weak id roomMemberEventListener;
 }
 
 @property (nonatomic, strong) RemoveJitsiWidgetView *removeJitsiWidgetView;
@@ -232,6 +235,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 // to autoscroll to the bottom again or not. Instead we need to capture the
 // scroll state just before the layout change, and restore it after the layout.
 @property (nonatomic) BOOL wasScrollAtBottomBeforeLayout;
+
+// Check if we should wait for other participants
+@property (nonatomic, readonly) BOOL shouldWaitForOtherParticipants;
 
 @end
 
@@ -329,6 +335,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     _showMissedDiscussionsBadge = YES;
     _scrollToBottomHidden = YES;
+    _isWaitingForOtherParticipants = NO;
     
     // Listen to the event sent state changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventDidChangeSentState:) name:kMXEventDidChangeSentStateNotification object:nil];
@@ -372,7 +379,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     // Prepare missed dicussion badge (if any)
     self.showMissedDiscussionsBadge = _showMissedDiscussionsBadge;
-    
+
+    // Refresh the waiting for other participants state
+    [self refreshWaitForOtherParticipantsState];
+
     // Set up the room title view according to the data source (if any)
     [self refreshRoomTitle];
     
@@ -1194,9 +1204,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         BOOL canSend = (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsMessage:kMXEventTypeStringRoomMessage]);
         BOOL isRoomObsolete = self.roomDataSource.roomState.isObsolete;
-        BOOL isResourceLimitExceeded = [self.roomDataSource.mxSession.syncError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded];
+        BOOL isResourceLimitExceeded = [self.roomDataSource.mxSession.syncError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded];        
         
-        if (isRoomObsolete || isResourceLimitExceeded)
+        if (isRoomObsolete || isResourceLimitExceeded || _isWaitingForOtherParticipants)
         {
             roomInputToolbarViewClass = nil;
             shouldDismissContextualMenu = YES;
@@ -1532,6 +1542,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidChangeSentStateNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidChangeIdentifierNotification object:nil];
     
+    [self waitForOtherParticipant:NO];
+    
     [super destroy];
 }
 
@@ -1636,6 +1648,57 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (BOOL)shouldShowLiveLocationSharingBannerView
 {
     return self.customizedRoomDataSource.isCurrentUserSharingActiveLocation;
+}
+
+#pragma mark - Wait for 3rd party invitee
+
+- (void)setIsWaitingForOtherParticipants:(BOOL)isWaitingForOtherParticipants
+{
+    if (_isWaitingForOtherParticipants == isWaitingForOtherParticipants)
+    {
+        return;
+    }
+
+    _isWaitingForOtherParticipants = isWaitingForOtherParticipants;
+    [self updateRoomInputToolbarViewClassIfNeeded];
+    
+    if (_isWaitingForOtherParticipants)
+    {
+        if (self->roomMemberEventListener == nil)
+        {
+            MXWeakify(self);
+            self->roomMemberEventListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+                MXStrongifyAndReturnIfNil(self);
+                if (direction != MXTimelineDirectionForwards)
+                {
+                    return;
+                }
+                [self refreshWaitForOtherParticipantsState];
+            }];
+        }
+    }
+    else
+    {
+        if (self->roomMemberEventListener != nil)
+        {
+            [self.roomDataSource.room removeListener:self->roomMemberEventListener];
+            self->roomMemberEventListener = nil;
+        }
+    }
+}
+
+- (BOOL)shouldWaitForOtherParticipants
+{
+    MXRoomState *roomState = self.roomDataSource.roomState;
+    BOOL isDirect = self.roomDataSource.room.isDirect;
+    
+    // Wait for the other participant only if it is a direct encrypted room with only one member waiting for a third party guest.
+    return (isDirect && roomState.isEncrypted && roomState.membersCount.members == 1 && roomState.thirdPartyInvites.count > 0);
+}
+
+- (void)refreshWaitForOtherParticipantsState
+{
+    [self waitForOtherParticipant:self.shouldWaitForOtherParticipants];
 }
 
 #pragma mark - Internals
@@ -1948,7 +2011,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         [self refreshMissedDiscussionsCount:YES];
         
-        if (RiotSettings.shared.enableThreads)
+        if (RiotSettings.shared.enableThreads && !_isWaitingForOtherParticipants)
         {
             if (self.roomDataSource.threadId)
             {
@@ -2260,8 +2323,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)showRoomInfoWithInitialSection:(RoomInfoSection)roomInfoSection animated:(BOOL)animated
 {
-    RoomInfoCoordinatorParameters *parameters = [[RoomInfoCoordinatorParameters alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room parentSpaceId:self.parentSpaceId initialSection:roomInfoSection];
-    
+    RoomInfoCoordinatorParameters *parameters = [[RoomInfoCoordinatorParameters alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room parentSpaceId:self.parentSpaceId initialSection:roomInfoSection canAddParticipants: !self.isWaitingForOtherParticipants];
+
     self.roomInfoCoordinatorBridgePresenter = [[RoomInfoCoordinatorBridgePresenter alloc] initWithParameters:parameters];
     
     self.roomInfoCoordinatorBridgePresenter.delegate = self;
@@ -7450,7 +7513,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)updateThreadListBarButtonItem:(UIBarButtonItem *)barButtonItem with:(MXThreadingService *)service
 {
-    if (!service)
+    if (!service || _isWaitingForOtherParticipants)
     {
         return;
     }
