@@ -2917,3 +2917,14 @@
 "poll_history_detail_view_in_timeline" = "Zobraziť anketu na časovej osi";
 "settings_push_rules_error" = "Pri aktualizácii vašich predvolieb oznámení došlo k chybe. Skúste prosím prepnúť možnosť znova.";
 "authentication_qr_login_failure_device_not_supported" = "Prepojenie s týmto zariadením nie je podporované.";
+"room_waiting_other_participants_message" = "Keď sa pozvaní používatelia pripoja k aplikácii %@, budete môcť konverzovať a miestnosť bude end-to-end šifrovaná";
+"room_waiting_other_participants_title" = "Čaká sa na používateľov, kým sa pripoja k aplikácii %@";
+"key_verification_scan_qr_code_information_new_session" = "Nasmerujte kameru na QR kód zobrazený na vašom druhom zariadení a overte vašu novú reláciu";
+"key_verification_scan_qr_code_information_other_session" = "Nasmerujte kameru na QR kód zobrazený na vašom druhom zariadení a overte vašu reláciu";
+"key_verification_scan_qr_code_information_other_device" = "Nasmerujte kameru na QR kód zobrazený na vašom druhom zariadení a overte túto reláciu";
+"key_verification_scan_qr_code_information_other_user" = "Nasmerujte kameru na QR kód zobrazený na ich zariadení a overte ich reláciu";
+"key_verification_scan_qr_code_title" = "Skenovať QR kód";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Nemôžete získať prístup k existujúcej relácii %@?";
+"device_verification_self_verify_open_on_other_device_information" = "Ak si chcete prečítať históriu zabezpečených správ, musíte túto reláciu overiť.\n\nOtvorte aplikáciu Element na jednom z vašich iných zariadení a postupujte podľa pokynov.";
+"device_verification_self_verify_open_on_other_device_title" = "Otvorte %@ na vašom druhom zariadení";
+"room_creation_only_one_email_invite" = "Naraz môžete pozvať len jeden e-mail";
