@@ -77,6 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.legacyAppDelegate.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         FirebaseApp.configure()
+        FirebaseConfiguration.shared.setLoggerLevel(.min)
         
         // [START set_messaging_delegate]
         Messaging.messaging().delegate = self
@@ -149,7 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             MXLog.debug("APNs token retrieved: \(deviceToken)")
 
           // With swizzling disabled you must set the APNs token here.
-          // Messaging.messaging().apnsToken = deviceToken
+           Messaging.messaging().apnsToken = deviceToken
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {

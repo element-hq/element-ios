@@ -85,6 +85,8 @@ targets:
         - "Assets/he.lproj/**"
         - "Assets/pr.lproj/**" # Unsupported language on iOS
     - path: ../RiotShareExtension/Shared
+    - path: GoogleService-Info.plist
+      buildPhase: resources
     - path: Modules/MatrixKit
       excludes:
         - "**/*.md" # excludes all files with the .md extension
