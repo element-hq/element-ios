@@ -2854,12 +2854,7 @@
 "key_verification_alert_title" = "У вас є не звірені сеанси";
 "user_other_session_permanently_unverified_additional_info" = "Цей сеанс не підтримує шифрування, і його не можна звірити.";
 "voice_broadcast_time_left" = "Залишилося %@";
-"launch_loading_processing_response" = "Обробка даних\n%@ %%";
-"launch_loading_server_syncing_nth_attempt" = "Синхронізація з сервером\n(%@ спроба)";
 
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Синхронізація з сервером";
 "voice_broadcast_buffering" = "Буферизація...";
 "voice_broadcast_stop_alert_agree_button" = "Так, припинити";
 "voice_broadcast_stop_alert_description" = "Ви впевнені, що хочете припинити голосову трансляцію? На цьому трансляція завершиться, і повний запис буде доступний у кімнаті.";
@@ -2908,9 +2903,6 @@
 "voice_broadcast_recorder_connection_error" = "Помилка з'єднання - Запис призупинено";
 "poll_timeline_reply_ended_poll" = "Завершене опитування";
 
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Перенесення даних\n%@ %%";
 "settings_labs_disable_crypto_sdk" = "Наскрізне шифрування Rust (вийдіть, щоб вимкнути)";
 "settings_labs_confirm_crypto_sdk" = "Зауважте, що оскільки ця функція досі перебуває на стадії експерименту, вона може працювати не так, як очікується, і може мати непередбачувані наслідки. Щоб вимкнути цю функцію, просто вийдіть з системи та увійдіть знову. Використовуйте на власний розсуд і з обережністю.";
 "settings_labs_enable_crypto_sdk" = "Наскрізне шифрування Rust";

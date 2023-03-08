@@ -2409,12 +2409,7 @@
 "spaces_explore_rooms_format" = "Utforska %@";
 "spaces_create_subspace_title" = "Skapa ett underutrymme";
 "spaces_add_subspace_title" = "Skapa utrymme inuti %@";
-"launch_loading_processing_response" = "Hanterar data\n%@ %%";
-"launch_loading_server_syncing_nth_attempt" = "Synkar med servern\n(%@ försök)";
 
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Synkar med servern";
 "key_verification_alert_body" = "Granska för att försäkra att ditt konto är säkert.";
 
 // Unverified sessions
@@ -2653,9 +2648,6 @@
 "voice_broadcast_connection_error_title" = "Anslutningsfel";
 "voice_broadcast_playback_lock_screen_placeholder" = "Röstsändning";
 
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Migrerar data\n%@ %%";
 "room_details_polls" = "Omröstningshistorik";
 "settings_labs_disable_crypto_sdk" = "Totalsträckskryptering i Rust (logga ut för att stänga av)";
 "settings_labs_confirm_crypto_sdk" = "Vänligen observera att den här funktionen fortfarande ska anses vara experimentell, den kanske inte fungerar som förväntat eller kan leda till okända konsekvenser. För att återgå, logga ut och logga sedan in igen. Använd på egen risk.";

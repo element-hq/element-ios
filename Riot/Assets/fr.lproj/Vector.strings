@@ -2616,7 +2616,6 @@
 "poll_history_loading_text" = "Afficher les sondages";
 "voice_message_broadcast_in_progress_title" = "Impossible de démarrer l'enregistrement vocal";
 "home_context_menu_mark_as_unread" = "Marquer comme non lu";
-"launch_loading_processing_response" = "Traitement des données\n%@ %%";
 "notice_voice_broadcast_ended_by_you" = "Vous avez terminé une diffusion vocale.";
 "notice_voice_broadcast_ended" = "%@ a terminé une diffusion vocale.";
 "notice_voice_broadcast_live" = "Diffusion en direct";
@@ -2721,12 +2720,7 @@
 // MARK: - Voice Broadcast
 "voice_broadcast_unauthorized_title" = "Impossible de démarrer une nouvelle diffusion vocale";
 "voice_message_broadcast_in_progress_message" = "Vous ne pouvez pas démarrer d'enregistrement vocal car vous diffusez en direct. Veuillez interrompre votre diffusion pour démarrer l'enregistrement vocal";
-"launch_loading_server_syncing_nth_attempt" = "Synchronisation avec le serveur\n(%@ tentatives)";
-"launch_loading_server_syncing" = "Synchronisation avec le serveur";
 
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Migration des données\n%@ %%";
 "key_backup_recover_from_private_key_progress" = "%@%% Fini";
 "room_details_polls" = "Historique des sondages";
 "settings_labs_disable_crypto_sdk" = "Chiffrement de bout en bout avec Rust (se déconnecter pour désactiver)";
