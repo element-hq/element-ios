@@ -248,6 +248,9 @@ struct Composer: View {
                 wysiwygViewModel.maximised = false
             }
         }
+        .onChange(of: wysiwygViewModel.suggestionPattern) { newValue in
+            sendMentionPattern(pattern: newValue)
+        }
     }
     
     private func storeCurrentSelection() {
@@ -257,6 +260,10 @@ struct Composer: View {
     private func sendLinkAction() {
         let linkAction = wysiwygViewModel.getLinkAction()
         viewModel.send(viewAction: .linkTapped(linkAction: linkAction))
+    }
+
+    private func sendMentionPattern(pattern: SuggestionPattern?) {
+        viewModel.send(viewAction: .suggestion(pattern: pattern))
     }
 }
 

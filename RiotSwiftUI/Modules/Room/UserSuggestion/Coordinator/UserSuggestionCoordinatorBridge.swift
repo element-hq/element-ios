@@ -44,6 +44,10 @@ final class UserSuggestionCoordinatorBridge: NSObject {
     func processTextMessage(_ textMessage: String) {
         userSuggestionCoordinator.processTextMessage(textMessage)
     }
+
+    func processSuggestionPattern(_ suggestionPatternWrapper: SuggestionPatternWrapper) {
+        userSuggestionCoordinator.processSuggestionPattern(suggestionPatternWrapper.suggestionPattern)
+    }
     
     func toPresentable() -> UIViewController? {
         userSuggestionCoordinator.toPresentable()

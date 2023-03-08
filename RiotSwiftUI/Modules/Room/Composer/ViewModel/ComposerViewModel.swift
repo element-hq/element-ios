@@ -90,6 +90,8 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
             callback?(.linkTapped(LinkAction: linkAction))
         case let .storeSelection(selection):
             selectionToRestore = selection
+        case let .suggestion(pattern: pattern):
+            callback?(.suggestion(pattern: pattern))
         }
     }
     

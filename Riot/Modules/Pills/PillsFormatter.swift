@@ -74,6 +74,48 @@ class PillsFormatter: NSObject {
         return newAttr
     }
 
+    /// Insert text attachments for pills inside given attributed string containing markdown.
+    ///
+    /// - Parameters:
+    ///   - markdownString: An attributed string with markdown formatting
+    ///   - roomState: The current room state
+    /// - Returns: A new attributed string with pills.
+    static func insertPills(in markdownString: NSAttributedString, roomState: MXRoomState) -> NSAttributedString {
+        // Create a regexp that detects markdown links.
+        let pattern = "\\[([^\\]]+)\\]\\(([^\\)\"\\s]+)(?:\\s+\"(.*)\")?\\)"
+        guard let regExp = try? NSRegularExpression(pattern: pattern) else { return markdownString }
+
+        let matches = regExp.matches(in: markdownString.string,
+                                     range: .init(location: 0, length: markdownString.length))
+
+        // If we have some matches, replace permalinks by a pill version.
+        let mutable = NSMutableAttributedString(attributedString: markdownString)
+        for match in matches.reversed() {
+            // Range at 2 is the URL, no need to care about the other parts because
+            // we are retrieving the most recent display name from the room state.
+            let urlRange = match.range(at: 2)
+            var url = markdownString.attributedSubstring(from: urlRange).string
+
+            // Note: a valid markdown link can be written with
+            // enclosing <..>, remove them for userId detection.
+            if url.first == "<" && url.last == ">" {
+                url = String(url[url.index(after: url.startIndex)...url.index(url.endIndex, offsetBy: -2)])
+            }
+
+            // If we find a user matching the link, replace the
+            // entire range of the match with a mention pill.
+            if let userId = userIdFromPermalink(url),
+                let roomMember = roomMember(withUserId: userId,
+                                            roomState: roomState,
+                                            andLatestRoomState: nil) {
+                let attachmentString = mentionPill(withRoomMember: roomMember, isHighlighted: false, font: UIFont.systemFont(ofSize: 14))
+                mutable.replaceCharacters(in: match.range, with: attachmentString)
+            }
+        }
+
+        return mutable
+    }
+
     /// Creates a string with all pills of given attributed string replaced by display names.
     ///
     /// - Parameters:
@@ -160,7 +202,6 @@ class PillsFormatter: NSObject {
             }
         }
     }
-
 }
 
 // MARK: - Private Methods
@@ -174,5 +215,31 @@ extension PillsFormatter {
             string.addAttribute(.link, value: url, range: .init(location: 0, length: string.length))
         }
         return string
+    }
+
+    /// Extract user id from given permalink
+    /// - Parameter permalink: the permalink
+    /// - Returns: userId, if any
+    static func userIdFromPermalink(_ permalink: String) -> String? {
+        let baseUrl: String
+        if let clientBaseUrl = BuildSettings.clientPermalinkBaseUrl {
+            baseUrl = String(format: "%@/#/user/", clientBaseUrl)
+        } else {
+            baseUrl = String(format: "%@/#/", kMXMatrixDotToUrl)
+        }
+        return permalink.starts(with: baseUrl) ? String(permalink.dropFirst(baseUrl.count)) : nil
+    }
+
+    /// Retrieve the latest available `MXRoomMember` from given data.
+    ///
+    /// - Parameters:
+    ///   - userId: the id of the user
+    ///   - roomState: room state for message
+    ///   - latestRoomState: latest room state of the room containing this message
+    /// - Returns: the room member, if available
+    static func roomMember(withUserId userId: String,
+                           roomState: MXRoomState,
+                           andLatestRoomState latestRoomState: MXRoomState?) -> MXRoomMember? {
+        return latestRoomState?.members.member(withUserId: userId) ?? roomState.members.member(withUserId: userId)
     }
 }

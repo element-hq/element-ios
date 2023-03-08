@@ -25,13 +25,18 @@ import UIKit
                                                                   avatarLeading: 2.0,
                                                                   avatarSideLength: 16.0,
                                                                   itemSpacing: 4)
-    private weak var messageTextView: MXKMessageTextView?
+    private weak var pillViewFlusher: PillViewFlusher?
 
     // MARK: - Override
     override init(textAttachment: NSTextAttachment, parentView: UIView?, textLayoutManager: NSTextLayoutManager?, location: NSTextLocation) {
         super.init(textAttachment: textAttachment, parentView: parentView, textLayoutManager: textLayoutManager, location: location)
 
-        self.messageTextView = parentView?.superview as? MXKMessageTextView
+        // Try to register a flusher for the pills.
+        if let pillViewFlusher = parentView?.superview as? PillViewFlusher {
+            self.pillViewFlusher = pillViewFlusher
+        } else {
+            MXLog.debug("[PillAttachmentViewProvider]: no handler found, pills will not be flushed properly")
+        }
     }
 
     override func loadView() {
@@ -55,6 +60,6 @@ import UIKit
                                           mediaManager: mainSession?.mediaManager,
                                           andPillData: pillData)
         view = pillView
-        messageTextView?.registerPillView(pillView)
+        pillViewFlusher?.registerPillView(pillView)
     }
 }

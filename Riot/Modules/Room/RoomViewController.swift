@@ -20,40 +20,42 @@ import WysiwygComposer
 extension RoomViewController {
     // MARK: - Override
     open override func mention(_ roomMember: MXRoomMember) {
-        guard let inputToolbar = inputToolbar else {
-            return
-        }
-
-        let newAttributedString = NSMutableAttributedString(attributedString: inputToolbar.attributedTextMessage)
-
-        if inputToolbar.attributedTextMessage.length > 0 {
-            if #available(iOS 15.0, *) {
-                newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
-                                                                      isHighlighted: false,
-                                                                      font: inputToolbar.textDefaultFont))
-            } else {
-                newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
-            }
-            newAttributedString.appendString(" ")
-        } else if roomMember.userId == self.mainSession.myUser.userId {
-            newAttributedString.appendString("/me ")
+        if let wysiwygInputToolbar, wysiwygInputToolbar.textFormattingEnabled {
+            wysiwygInputToolbar.mention(roomMember)
+            wysiwygInputToolbar.becomeFirstResponder()
         } else {
-            if #available(iOS 15.0, *) {
-                newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
-                                                                      isHighlighted: false,
-                                                                      font: inputToolbar.textDefaultFont))
-            } else {
-                newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
-            }
-            newAttributedString.appendString(": ")
-        }
+            guard let attributedText = inputToolbarView.attributedTextMessage else { return }
+            let newAttributedString = NSMutableAttributedString(attributedString: attributedText)
 
-        inputToolbar.attributedTextMessage = newAttributedString
-        inputToolbar.becomeFirstResponder()
+            if attributedText.length > 0 {
+                if #available(iOS 15.0, *) {
+                    newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
+                                                                          isHighlighted: false,
+                                                                          font: UIFont.systemFont(ofSize: 14)))
+                } else {
+                    newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
+                }
+                newAttributedString.appendString(" ")
+            } else if roomMember.userId == self.mainSession.myUser.userId {
+                newAttributedString.appendString("/me ")
+            } else {
+                if #available(iOS 15.0, *) {
+                    newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
+                                                                          isHighlighted: false,
+                                                                          font: UIFont.systemFont(ofSize: 14)))
+                } else {
+                    newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
+                }
+                newAttributedString.appendString(": ")
+            }
+
+            inputToolbarView.attributedTextMessage = newAttributedString
+            inputToolbarView.becomeFirstResponder()
+        }
     }
 
 
-    /// Send the formatted text message and its raw counterpat to the room
+    /// Send the formatted text message and its raw counterpart to the room
     ///
     /// - Parameter rawTextMsg: the raw text message
     /// - Parameter htmlMsg: the html text message
@@ -153,7 +155,22 @@ extension RoomViewController {
 
     @objc func togglePlainTextMode() {
         RiotSettings.shared.enableWysiwygTextFormatting.toggle()
-        wysiwygInputToolbar?.textFormattingEnabled.toggle()
+
+        guard let wysiwygInputToolbar else { return }
+
+        // Switching from plain -> RTE, replace Pills by valid markdown links for parsing.
+        if !wysiwygInputToolbar.textFormattingEnabled, #available(iOS 15.0, *),
+            let attributedText = wysiwygInputToolbar.attributedTextMessage {
+            wysiwygInputToolbar.attributedTextMessage = NSAttributedString(string: PillsFormatter.stringByReplacingPills(in: attributedText, mode: .markdown))
+        }
+
+        wysiwygInputToolbar.textFormattingEnabled.toggle()
+
+        // Switching from RTE -> plain, replace markdown links with Pills.
+        if !wysiwygInputToolbar.textFormattingEnabled, #available(iOS 15.0, *),
+            let attributedText = wysiwygInputToolbar.attributedTextMessage {
+            wysiwygInputToolbar.attributedTextMessage = PillsFormatter.insertPills(in: attributedText, roomState: self.roomDataSource.roomState)
+        }
     }
     
     @objc func didChangeMaximisedState(_ isMaximised: Bool) {
@@ -250,6 +267,21 @@ extension RoomViewController {
         presenter.delegate = self
         composerLinkActionBridgePresenter = presenter
         presenter.present(from: self, animated: true)
+    }
+
+    @objc func didRequestAttachmentStringForLink(_ link: String, andDisplayName: String) -> NSAttributedString? {
+        guard #available(iOS 15.0, *),
+              let userId = PillsFormatter.userIdFromPermalink(link),
+              let roomState = self.roomDataSource.roomState,
+              let member = PillsFormatter.roomMember(withUserId: userId,
+                                                     roomState: roomState,
+                                                     andLatestRoomState: nil) else {
+            return nil
+        }
+
+        return PillsFormatter.mentionPill(withRoomMember: member,
+                                          isHighlighted: false,
+                                          font: UIFont.systemFont(ofSize: 14))
     }
     
     @objc func showWaitingOtherParticipantHeader() {

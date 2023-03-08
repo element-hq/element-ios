@@ -18,6 +18,7 @@ import Combine
 import Foundation
 import SwiftUI
 import UIKit
+import WysiwygComposer
 
 protocol UserSuggestionCoordinatorDelegate: AnyObject {
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
@@ -90,6 +91,10 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     
     func processTextMessage(_ textMessage: String) {
         userSuggestionService.processTextMessage(textMessage)
+    }
+
+    func processSuggestionPattern(_ suggestionPattern: SuggestionPattern?) {
+        userSuggestionService.processSuggestionPattern(suggestionPattern)
     }
 
     // MARK: - Public

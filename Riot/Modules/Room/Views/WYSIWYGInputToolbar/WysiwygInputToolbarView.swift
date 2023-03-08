@@ -43,8 +43,9 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var heightConstraint: NSLayoutConstraint!
     private var voiceMessageBottomConstraint: NSLayoutConstraint?
     private var hostingViewController: VectorHostingController!
-    private var wysiwygViewModel = WysiwygComposerViewModel(
-        parserStyle: WysiwygInputToolbarView.parserStyle
+    private lazy var wysiwygViewModel = WysiwygComposerViewModel(
+        parserStyle: WysiwygInputToolbarView.parserStyle,
+        permalinkReplacer: self
     )
     /// Compute current HTML parser style for composer.
     private static var parserStyle: HTMLParserStyle {
@@ -84,6 +85,19 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     override var isFocused: Bool {
         viewModel.isFocused
+    }
+
+    override var attributedTextMessage: NSAttributedString? {
+        // Note: this is only interactive in plain text mode. If RTE is enabled,
+        // APIs from the composer view model should be used.
+        get {
+            guard !self.textFormattingEnabled else { return nil }
+            return self.wysiwygViewModel.textView.attributedText
+        }
+        set {
+            guard !self.textFormattingEnabled else { return }
+            self.wysiwygViewModel.textView.attributedText = newValue
+        }
     }
     
     var isMaximised: Bool {
@@ -217,6 +231,11 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     override func dismissKeyboard() {
         self.viewModel.dismissKeyboard()
     }
+
+    @discardableResult
+    override func becomeFirstResponder() -> Bool {
+        self.wysiwygViewModel.textView.becomeFirstResponder()
+    }
     
     override func dismissValidationView(_ validationView: MXKImageView!) {
         super.dismissValidationView(validationView)
@@ -238,6 +257,12 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             wysiwygViewModel.select(range: selectionToRestore)
         }
         wysiwygViewModel.applyLinkOperation(linkOperation)
+    }
+
+    func mention(_ member: MXRoomMember) {
+        self.wysiwygViewModel.setMention(link: MXTools.permalinkToUser(withUserId: member.userId),
+                                         name: member.displayname,
+                                         key: .at)
     }
     
     // MARK: - Private
@@ -291,6 +316,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             setVoiceMessageToolbarIsHidden(!isEmpty)
         case let .linkTapped(linkAction):
             toolbarViewDelegate?.didSendLinkAction(LinkActionWrapper(linkAction))
+        case let .suggestion(pattern):
+            toolbarViewDelegate?.didDetectTextPattern(SuggestionPatternWrapper(pattern))
         }
     }
     
@@ -409,6 +436,12 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     func toolbarHeight() -> CGFloat {
         return heightConstraint.constant
+    }
+}
+
+extension WysiwygInputToolbarView: PermalinkReplacer {
+    func replacementForLink(_ link: String, text: String) -> NSAttributedString? {
+        return toolbarViewDelegate?.didRequestAttachmentString(forLink: link, andDisplayName: text)
     }
 }
 
