@@ -99,6 +99,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             self.wysiwygViewModel.textView.attributedText = newValue
         }
     }
+
+    override var textDefaultFont: UIFont {
+        return self.wysiwygViewModel.textView.font ?? UIFont.preferredFont(forTextStyle: .body)
+    }
     
     var isMaximised: Bool {
         wysiwygViewModel.maximised

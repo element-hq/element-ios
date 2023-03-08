@@ -79,8 +79,9 @@ class PillsFormatter: NSObject {
     /// - Parameters:
     ///   - markdownString: An attributed string with markdown formatting
     ///   - roomState: The current room state
+    ///   - font: The font to use for the pill text
     /// - Returns: A new attributed string with pills.
-    static func insertPills(in markdownString: NSAttributedString, roomState: MXRoomState) -> NSAttributedString {
+    static func insertPills(in markdownString: NSAttributedString, roomState: MXRoomState, font: UIFont) -> NSAttributedString {
         // Create a regexp that detects markdown links.
         let pattern = "\\[([^\\]]+)\\]\\(([^\\)\"\\s]+)(?:\\s+\"(.*)\")?\\)"
         guard let regExp = try? NSRegularExpression(pattern: pattern) else { return markdownString }
@@ -108,7 +109,7 @@ class PillsFormatter: NSObject {
                 let roomMember = roomMember(withUserId: userId,
                                             roomState: roomState,
                                             andLatestRoomState: nil) {
-                let attachmentString = mentionPill(withRoomMember: roomMember, isHighlighted: false, font: UIFont.systemFont(ofSize: 14))
+                let attachmentString = mentionPill(withRoomMember: roomMember, isHighlighted: false, font: font)
                 mutable.replaceCharacters(in: match.range, with: attachmentString)
             }
         }

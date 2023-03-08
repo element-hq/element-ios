@@ -31,7 +31,7 @@ extension RoomViewController {
                 if #available(iOS 15.0, *) {
                     newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
                                                                           isHighlighted: false,
-                                                                          font: UIFont.systemFont(ofSize: 14)))
+                                                                          font: inputToolbarView.textDefaultFont))
                 } else {
                     newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
                 }
@@ -42,7 +42,7 @@ extension RoomViewController {
                 if #available(iOS 15.0, *) {
                     newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
                                                                           isHighlighted: false,
-                                                                          font: UIFont.systemFont(ofSize: 14)))
+                                                                          font: inputToolbarView.textDefaultFont))
                 } else {
                     newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
                 }
@@ -169,7 +169,9 @@ extension RoomViewController {
         // Switching from RTE -> plain, replace markdown links with Pills.
         if !wysiwygInputToolbar.textFormattingEnabled, #available(iOS 15.0, *),
             let attributedText = wysiwygInputToolbar.attributedTextMessage {
-            wysiwygInputToolbar.attributedTextMessage = PillsFormatter.insertPills(in: attributedText, roomState: self.roomDataSource.roomState)
+            wysiwygInputToolbar.attributedTextMessage = PillsFormatter.insertPills(in: attributedText,
+                                                                                   roomState: self.roomDataSource.roomState,
+                                                                                   font: self.inputToolbarView.textDefaultFont)
         }
     }
     
@@ -281,7 +283,7 @@ extension RoomViewController {
 
         return PillsFormatter.mentionPill(withRoomMember: member,
                                           isHighlighted: false,
-                                          font: UIFont.systemFont(ofSize: 14))
+                                          font: inputToolbarView.textDefaultFont)
     }
     
     @objc func showWaitingOtherParticipantHeader() {
