@@ -34,7 +34,7 @@
 /* A user has invited you to a named room */
 "USER_INVITE_TO_NAMED_ROOM" = "%@ 已經邀請您加入 %@";
 /* Incoming one-to-one voice call */
-"VOICE_CALL_FROM_USER" = "來自 %@ 的通話";
+"VOICE_CALL_FROM_USER" = "%@ 來電";
 /* Incoming one-to-one video call */
 "VIDEO_CALL_FROM_USER" = "來自 %@ 的視訊通話";
 /* Incoming unnamed voice conference invite from a specific person */
@@ -42,9 +42,9 @@
 /* Incoming unnamed video conference invite from a specific person */
 "VIDEO_CONF_FROM_USER" = "來自 %@ 的視訊群組通話";
 /* Incoming named voice conference invite from a specific person */
-"VOICE_CONF_NAMED_FROM_USER" = "來自 %@ 的群組通話：'%@'";
+"VOICE_CONF_NAMED_FROM_USER" = "來自 %@ 的群組通話：「%@」";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "來自 %@ 的視訊群組通話：'%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "來自 %@ 的視訊群組通話：「%@」";
 /* A single unread message in a room */
 "SINGLE_UNREAD_IN_ROOM" = "您在 %@ 中收到了一則訊息";
 /* A single unread message */
@@ -108,7 +108,7 @@
 "MESSAGE" = "訊息";
 
 /* Sticker from a specific person, not referencing a room. */
-"STICKER_FROM_USER" = "%@ 戳你一下";
+"STICKER_FROM_USER" = "%@ 傳送一張貼圖";
 
 /* New file message from a specific person, not referencing a room. */
 "LOCATION_FROM_USER" = "%@ 已分享他的位置";
@@ -117,15 +117,18 @@
 "FILE_FROM_USER" = "%@ 傳送一個檔案 %@";
 
 /* New voice message from a specific person, not referencing a room. */
-"VOICE_MESSAGE_FROM_USER" = "%@ 傳送一個語音訊息";
+"VOICE_MESSAGE_FROM_USER" = "%@ 傳送一則語音訊息";
 
 /* New audio message from a specific person, not referencing a room. */
 "AUDIO_FROM_USER" = "%@ 傳送一個音訊檔案 %@";
 
 /* New video message from a specific person, not referencing a room. */
-"VIDEO_FROM_USER" = "%@ 傳送一個影片";
+"VIDEO_FROM_USER" = "%@ 傳送一段影片";
 
 /** Media Messages **/
 
 /* New image message from a specific person, not referencing a room. */
 "PICTURE_FROM_USER" = "%@ 傳送一張圖片";
+
+/* New voice broadcast from a specific person, not referencing a room. */
+"VOICE_BROADCAST_FROM_USER" = "%@ 開始語音廣播";
