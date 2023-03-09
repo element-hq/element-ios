@@ -101,7 +101,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
 
     override var textDefaultFont: UIFont {
-        return self.wysiwygViewModel.textView.font ?? UIFont.preferredFont(forTextStyle: .body)
+        return UIFont.preferredFont(forTextStyle: .body)
     }
     
     var isMaximised: Bool {
