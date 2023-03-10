@@ -2635,7 +2635,6 @@
 "user_sessions_show_location_info" = "Shfaq adresë IP";
 "voice_broadcast_time_left" = "Edhe %@";
 "voice_broadcast_tile" = "Transmetim zanor";
-
 "key_verification_alert_body" = "Shqyrtojini, që të siguroheni se llogaria juaj është e parrezik.";
 
 // Unverified sessions
@@ -2693,7 +2692,6 @@
 "voice_broadcast_connection_error_message" = "Mjerisht, s’jemi në gjendje të nisim një incizim mu tani. Ju lutemi, riprovoni më vonë.";
 "voice_broadcast_connection_error_title" = "Gabim lidhjeje";
 "home_context_menu_mark_as_unread" = "Vëri shenjë si i palexuar";
-
 "key_backup_recover_from_private_key_progress" = "Plotësuar %@%%";
 "room_details_polls" = "Historik pyetësorësh";
 "settings_labs_disable_crypto_sdk" = "Fshehtëzim skaj-më-skaj bazuar në Rust (që ta çaktivizoni, dilni)";
@@ -2704,3 +2702,19 @@
 "wysiwyg_composer_format_action_indent" = "Rrit shmangie kryeradhe";
 "poll_history_detail_view_in_timeline" = "Shiheni pyetësorin në rrjedhë kohore";
 "authentication_qr_login_failure_device_not_supported" = "Nuk mbulohet lidhja me këtë pajisje.";
+"room_waiting_other_participants_message" = "Pasi përdoruesit e ftuar të kenë hyrë në %@, do të jeni në gjendje të bisedoni dhe dhoma do të jetë e fshehtëzuar skaj-më-skaj";
+"room_waiting_other_participants_title" = "Po pritet që përdoruesit të hyjnë në %@";
+"launch_loading_delay_warning" = "Kjo mund të zgjasë pak.\nFaleminderit për durimin.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Po njëkohësohen bisedat tuaja";
+"key_verification_scan_qr_code_information_new_session" = "Që të verifikoni sesionin tuaj të ri, drejtojeni kamerën tuaj drejt kodit QR të shfaqur në pajisjen tuaj tjetër";
+"key_verification_scan_qr_code_information_other_session" = "Që të verifikoni sesionin tuaj, drejtojeni kamerën tuaj drejt kodit QR të shfaqur në pajisjen tuaj tjetër";
+"key_verification_scan_qr_code_information_other_device" = "Që të verifikoni këtë sesion, drejtojeni kamerën tuaj drejt kodit QR të shfaqur në pajisjen tuaj tjetër";
+"key_verification_scan_qr_code_information_other_user" = "Që të verifikoni sesionin e tij, drejtojeni kamerën tuaj drejt kodit QR të shfaqur në pajisjen e tjetrit";
+"key_verification_scan_qr_code_title" = "Skanoni kodin QR";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "S’hyni dot te një sesion %@ ekzistues?";
+"device_verification_self_verify_open_on_other_device_information" = "Lypset të verifikoni këtë sesion, që të mund të lexoni historikun e mesazheve tuaj të siguruar.\n\nHapeni Element-in në një nga pajisjet tuaja të tjera dhe ndiqni udhëzimet.";
+"device_verification_self_verify_open_on_other_device_title" = "Hapeni %@ në pajisjen tuaj tjetër";
+"room_creation_only_one_email_invite" = "Mund të ftoni vetëm një email në herë";
