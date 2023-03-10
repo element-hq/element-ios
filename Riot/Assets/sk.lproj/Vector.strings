@@ -2852,7 +2852,6 @@
 "key_verification_alert_title" = "Máte neoverené relácie";
 "user_other_session_permanently_unverified_additional_info" = "Táto relácia nepodporuje šifrovanie, a preto ju nemožno overiť.";
 "voice_broadcast_time_left" = "%@ ostáva";
-
 "voice_broadcast_buffering" = "Načítavanie do vyrovnávacej pamäte…";
 "voice_broadcast_stop_alert_agree_button" = "Áno, zastaviť";
 "voice_broadcast_stop_alert_description" = "Určite chcete zastaviť vysielanie naživo? Tým sa vysielanie ukončí a v miestnosti bude k dispozícii celý záznam.";
@@ -2900,7 +2899,6 @@
 "wysiwyg_composer_format_action_unordered_list" = "Prepnúť zoznam s odrážkami";
 "voice_broadcast_recorder_connection_error" = "Chyba pripojenia - nahrávanie pozastavené";
 "poll_timeline_reply_ended_poll" = "Ukončená anketa";
-
 "settings_labs_disable_crypto_sdk" = "Rust end-to-end šifrovanie (odhláste sa, aby ste ho vypli)";
 "settings_labs_confirm_crypto_sdk" = "Upozorňujeme, že táto funkcia je stále v experimentálnej fáze, preto nemusí fungovať podľa očakávaní a môže mať potenciálne nezamýšľané dôsledky. Ak chcete funkciu vrátiť späť, jednoducho sa odhláste a znova prihláste. Používajte ju podľa vlastného uváženia a s opatrnosťou.";
 "settings_labs_enable_crypto_sdk" = "Rust end-to-end šifrovanie";
@@ -2928,3 +2926,8 @@
 "device_verification_self_verify_open_on_other_device_information" = "Ak si chcete prečítať históriu zabezpečených správ, musíte túto reláciu overiť.\n\nOtvorte aplikáciu Element na jednom z vašich iných zariadení a postupujte podľa pokynov.";
 "device_verification_self_verify_open_on_other_device_title" = "Otvorte %@ na vašom druhom zariadení";
 "room_creation_only_one_email_invite" = "Naraz môžete pozvať len jeden e-mail";
+"launch_loading_delay_warning" = "Môže to trvať trochu dlhšie.\nĎakujeme za vašu trpezlivosť.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Synchronizácia vašich konverzácií";
