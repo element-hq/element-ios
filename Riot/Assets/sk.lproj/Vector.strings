@@ -2852,12 +2852,7 @@
 "key_verification_alert_title" = "Máte neoverené relácie";
 "user_other_session_permanently_unverified_additional_info" = "Táto relácia nepodporuje šifrovanie, a preto ju nemožno overiť.";
 "voice_broadcast_time_left" = "%@ ostáva";
-"launch_loading_processing_response" = "Spracovanie údajov\n%@ %%";
-"launch_loading_server_syncing_nth_attempt" = "Synchronizácia so serverom\n(%@ pokus)";
 
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Synchronizácia so serverom";
 "voice_broadcast_buffering" = "Načítavanie do vyrovnávacej pamäte…";
 "voice_broadcast_stop_alert_agree_button" = "Áno, zastaviť";
 "voice_broadcast_stop_alert_description" = "Určite chcete zastaviť vysielanie naživo? Tým sa vysielanie ukončí a v miestnosti bude k dispozícii celý záznam.";
@@ -2906,9 +2901,6 @@
 "voice_broadcast_recorder_connection_error" = "Chyba pripojenia - nahrávanie pozastavené";
 "poll_timeline_reply_ended_poll" = "Ukončená anketa";
 
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Migrácia údajov\n%@ %%";
 "settings_labs_disable_crypto_sdk" = "Rust end-to-end šifrovanie (odhláste sa, aby ste ho vypli)";
 "settings_labs_confirm_crypto_sdk" = "Upozorňujeme, že táto funkcia je stále v experimentálnej fáze, preto nemusí fungovať podľa očakávaní a môže mať potenciálne nezamýšľané dôsledky. Ak chcete funkciu vrátiť späť, jednoducho sa odhláste a znova prihláste. Používajte ju podľa vlastného uváženia a s opatrnosťou.";
 "settings_labs_enable_crypto_sdk" = "Rust end-to-end šifrovanie";

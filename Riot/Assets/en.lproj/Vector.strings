@@ -1991,10 +1991,8 @@ Tap the + to start adding people.";
 
 // MARK: - Launch loading
 
-"launch_loading_migrating_data" = "Migrating data\n%@ %%";
-"launch_loading_server_syncing" = "Syncing with the server";
-"launch_loading_server_syncing_nth_attempt" = "Syncing with the server\n(%@ attempt)";
-"launch_loading_processing_response" = "Processing data\n%@ %%";
+"launch_loading_generic" = "Syncing your conversations";
+"launch_loading_delay_warning" = "This may take a little longer.\nThanks for your patience.";
 
 // MARK: - Home
 

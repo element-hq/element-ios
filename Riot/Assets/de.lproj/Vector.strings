@@ -2661,12 +2661,6 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Du hast nicht verifizierte Sitzungen";
-"launch_loading_processing_response" = "Verarbeite Daten\n%@ %%";
-"launch_loading_server_syncing_nth_attempt" = "Synchronisiere mit dem Server\n(%@ Versuch)";
-
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Synchronisiere mit dem Server";
 "user_other_session_permanently_unverified_additional_info" = "Diese Sitzung unterstützt keine Verschlüsselung und kann deshalb nicht verifiziert werden.";
 "voice_broadcast_time_left" = "%@ übrig";
 "voice_broadcast_buffering" = "Puffere …";
@@ -2717,9 +2711,6 @@
 "voice_broadcast_recorder_connection_error" = "Verbindungsfehler − Aufnahme pausiert";
 "poll_timeline_reply_ended_poll" = "Beendete Umfrage";
 
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Migriere Daten\n%@ %%";
 "settings_labs_disable_crypto_sdk" = "Rust-Ende-zu-Ende-Verschlüsselung (zum Deaktivieren abmelden)";
 "settings_labs_confirm_crypto_sdk" = "Bitte beachte, dass diese Funktion noch experimentell ist, womöglich nicht wie erwartet funktioniert und unerwünschte Nebeneffekte haben kann. Melde dich zum deaktivieren einfach ab und erneut an. Nutze diese Funktion nach eigenem Ermessen und mit Vorsicht.";
 "settings_labs_enable_crypto_sdk" = "Rust-Ende-zu-Ende-Verschlüsselung";
