@@ -2648,7 +2648,6 @@
 "wysiwyg_composer_format_action_unordered_list" = "Lülita täpploend sisse/välja";
 "voice_broadcast_recorder_connection_error" = "Viga võrguühenduses - salvestamine on peatatud";
 "poll_timeline_reply_ended_poll" = "Lõppenud küsitlus";
-
 "settings_labs_disable_crypto_sdk" = "Rust'i-põhine läbiv krüptimine (väljalülitamiseks pead välja logima)";
 "settings_labs_confirm_crypto_sdk" = "Palun arvesta, et see funktsionaalsus on alles katseline ja ei pruugi toimida eesmärgipäraselt. Kui ta juba on kasutusel, siis väljalülitamiseks pead hiljem korraks võrgust välja logima. Jätka ettevaatlikult ja omal äranägemisel.";
 "settings_labs_enable_crypto_sdk" = "Rust'i-põhine läbiv krüptimine";
@@ -2676,3 +2675,8 @@
 "device_verification_self_verify_open_on_other_device_information" = "Oma krüptitud sõnumite ajaloo lugemiseks pead selle seadme verifitseerima.\n\nAva Element või mõni muu ühilduv Matrixi klient on teises seadmes ja järgi juhendit.";
 "device_verification_self_verify_open_on_other_device_title" = "Ava %@ oma teises seadmes";
 "room_creation_only_one_email_invite" = "E-posti teel saad saata kutseid vaid ükshaaval";
+"launch_loading_delay_warning" = "Selleks võib natuke rohkem aega kuluda.\nTänud ootamast.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Sinu vestlused on sünkroniseerimisel";
