@@ -2714,3 +2714,9 @@
 "poll_history_detail_view_in_timeline" = "Szavazás megjelenítése az idővonalon";
 "settings_push_rules_error" = "Hiba történt az értesítések beállításának frissítésekor. Próbáld meg az beállítást újra átkapcsolni.";
 "authentication_qr_login_failure_device_not_supported" = "Ezzel az eszközzel való összeköttetés nem támogatott.";
+"room_waiting_other_participants_message" = "Miután a meghívott felhasználók csatlakoztak a(z) %@ alkalmazáshoz beszélhet velük és a szoba végpontok között titkosítva lesz";
+"room_waiting_other_participants_title" = "%@ alkalmazáshoz csatlakozó felhasználókra várakozás";
+"key_verification_scan_qr_code_title" = "QR kód beolvasása";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Nem férsz hozzá létező munkamenethez, %@?";
+"device_verification_self_verify_open_on_other_device_title" = "Nyisd meg ezt: %@ a másik eszközön";
+"room_creation_only_one_email_invite" = "E-mail meghívóból egyszerre csak egy küldhető";
