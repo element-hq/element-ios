@@ -618,10 +618,10 @@
 "joined" = "已加入";
 "skip" = "跳過";
 "close" = "關閉";
-"store_promotional_text" = "開放網路上的隱私保護聊天和協作應用程序。 去中心化管理。 沒有數據探勘，沒有後門，也沒有第三方存取。";
-"store_full_description" = "Element是一種新型的通訊和協作應用程式，它可以使您：\n\n1.掌控您的隱私\n2.可以與 Matrix 網絡中的任何人進行通信，甚至可以與Slack等應用程式整合\n3.保護您免受廣告，數據探勘，後門和封閉平台的侵害\n4.通過端到端加密和交叉簽署來驗證他人，從而保護您的安全\n\nElement 是去中心化的開源軟件，因此與其他通訊和協作應用程式完全不同。\n\nElement 允許您自行架設（或選擇託管）伺服器，使您擁有隱私權，所有權以及對數據和會話的控制權。自行架設的伺服器可以使您訪問開放的網絡；因此，您不僅可以只與其他 Element 使用者聊天。而且非常安全。\n\nElement 之所以能夠達至所有這些目標，是因為它在 Matrix（開放，去中心化通信的標準）上運行。\n\nElement 通過讓您選擇託管對話的伺服器來控制您的訊息和資料。在 Element 應用程式中，您可以選擇以不同方式託管您的訊息：\n\n1.在 matrix.org 公共伺服器上獲得一個免費帳戶\n2.通過在自己的硬體上架設伺服器來託管帳戶\n3.訂閱 Element Matrix Services 託管平台，即可在自定伺服器上註冊帳戶\n\n為什麼選擇 Element？\n\n擁有您的數據：您可以決定將數據和訊息保留在何處。您擁有並控制它，而不是像面對某些超大型企業一樣來探勘您的數據或把數據提供給第三方。\n\n開放的通訊和協作：您可以與 Matrix 網絡中的任何人聊天，無論他們使用的是 Element 還是其他 Matrix 應用程式，即便他們使用的是 Slack ， IRC 或 XMPP 之類的其他通訊系統。\n\n超級安全：真正的端到端加密（只有對話中的人才能解密消息），並進行交叉簽署以驗證對話參與者的設備。\n\n完整的通信：文字通訊，語音和視像通話，文件共享，屏幕共享以及大量整合，機器人和小工具。建立聊天室、社群，保持聯繫並完成工作。\n\n無論您身在何處都可保持聯繫：無論您身在何處，都可以通過 https：//element.io/app 在所有設備和網絡上完全同步訊息歷史記錄來保持聯繫。";
+"store_promotional_text" = "開放網路上的隱私保護聊天和協作應用程式。 去中心化機制讓您可自行管控。沒有資料探勘、沒有後門，也不會被第三方存取。";
+"store_full_description" = "Element 是一套新型的通訊和協作應用程式，它提供下列功能：\n\n1. 您可以自行掌控隱私\n2. 可以與 Matrix 網路中的任何人進行通訊，甚至可以與 Slack 等應用程式整合\n3. 保護您免受廣告、資料探勘、後門和封閉平台的侵害\n4. 透過端到端加密和交叉簽署來驗證彼此，互相確保安全\n\nElement 是去中心化的開源軟體，因此與其他通訊和協作應用程式完全不同。\n\nElement 允許您自行架設（或選擇託管）伺服器，使您可針對隱私權，所有權以及對資料和對話內容的完整控制權。您可以連線到所有開放的網路，所以您不是只能與其他 Element 使用者聊天。而且還非常安全。\n\nElement 之所以能夠做到所有這些目標，是因為它使用 Matrix（一套開放、去中心化的通訊標準）運作。\n\nElement 讓您可以自行選擇要將對話放在哪一台伺服器來讓您可自行控制自己的訊息和資料。在 Element 應用程式中，您可以選擇以不同方式託管您的訊息：\n\n1. 在 matrix.org 公開伺服器註冊免費帳號\n2. 使用自行架設的硬體主機上的伺服器來註冊帳號\n3. 訂閱 Element Matrix Services 代管平台，註冊自己的伺服器\n\n為什麼要選擇 Element？\n\n自己擁有自己數據：由您決定將資料與訊息保留在何處。您自己擁有並管理這些資料，而不用讓某些「超大型企業」來探勘您的資料，或將資料提供給第三方。\n\n開放的通訊與協作機制：您可以與 Matrix 網路中的任何人聊天，不管他們使用的是 Element 還是其他 Matrix 應用程式，甚至他們也可以使用像 Slack 、IRC 或 XMPP 之類的其他通訊系統。\n\n超級安全：真正的端對端加密（只有對話中的人才能解開訊息內容），並進行交叉簽署以驗證對話參與者的設備。\n\n完整的通訊：傳訊息、進行語音或視訊通話、分享檔案、畫面，還有大量整合、機器人與小工具。建立聊天室、社群，保持聯繫並完成工作。\n\n無論您身在何處都可保持聯繫：無論您身在何處，都可以透過 https://element.io/app 在所有裝置與網路取得完全同步的訊息記錄來保持聯繫。";
 // String for App Store
-"store_short_description" = "去中心化的安全通訊軟體／VoIP";
+"store_short_description" = "去中心化的安全通訊／VoIP 軟體";
 "settings_three_pids_management_information_part1" = "在此管理您用作登入或回復帳戶的電郵或電話號碼。您也可控制誰可以用這些資料找到您。 ";
 "external_link_confirmation_message" = "此連結 %@ 將帶您到另一網頁： %@\n\n確定要前往嗎？";
 "external_link_confirmation_title" = "請再次檢查此連結";
@@ -1187,7 +1187,7 @@
 "authentication_server_selection_register_title" = "選擇您的家伺服器";
 "authentication_server_selection_login_message" = "您的伺服器位址是？";
 "authentication_server_selection_login_title" = "連結到家伺服器";
-"authentication_login_with_qr" = "用 QR 碼登入";
+"authentication_login_with_qr" = "用 QR Code 登入";
 "authentication_server_info_title_login" = "您的對話將在哪裡進行";
 "authentication_login_forgot_password" = "忘記密碼";
 "authentication_login_username" = "使用者名稱 / 電子郵件 / 電話號碼";
@@ -2595,9 +2595,9 @@
 
 // Scanning
 "key_verification_scan_confirmation_scanning_title" = "就快完成了！正在等待確認…";
-"key_verification_verify_qr_code_scan_other_code_success_message" = "已成功驗證此 QR code 。";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "已成功驗證此 QR Code 。";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "驗證碼已驗證！";
-"key_verification_verify_qr_code_other_scan_my_code_title" = "其他的使用者也順利掃描了QR code 嗎？";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "對方也順利掃描了 QR Code 嗎？";
 "key_verification_verify_qr_code_start_emoji_action" = "透過表情符號驗證";
 "key_verification_verify_qr_code_cannot_scan_action" = "無法掃描嗎？";
 "key_verification_verify_qr_code_scan_code_other_device_action" = "使用此裝置掃描";
@@ -2766,10 +2766,10 @@
 
 // MARK: Password Validation
 "password_validation_info_header" = "您的密碼應該符合下列條件：";
-"authentication_qr_login_failure_retry" = "再次嘗試";
-"authentication_qr_login_failure_request_timed_out" = "連結未在要求的時間內完成。";
-"authentication_qr_login_failure_request_denied" = "此請求已被其他裝置拒絕。";
-"authentication_qr_login_failure_invalid_qr" = "此 QR 碼已無法使用。";
+"authentication_qr_login_failure_retry" = "再試一次";
+"authentication_qr_login_failure_request_timed_out" = "未在要求的時間內完成連結。";
+"authentication_qr_login_failure_request_denied" = "請求在另一台裝置上被拒絕。";
+"authentication_qr_login_failure_invalid_qr" = "此 QR Code 無效。";
 "authentication_qr_login_failure_title" = "連結錯誤";
 "authentication_qr_login_loading_signed_in" = "您已在您其他的裝置上登入。";
 "authentication_qr_login_loading_waiting_signin" = "等待裝置登入。";
@@ -2777,23 +2777,23 @@
 "authentication_qr_login_confirm_alert" = "請確定您知道此驗證碼的來源。裝置連結後，您會提供給其他人存取您帳號的所有權限。";
 "authentication_qr_login_confirm_subtitle" = "請確認下方的驗證碼與您其他的裝置相符：";
 "authentication_qr_login_confirm_title" = "已建立安全連線";
-"authentication_qr_login_scan_subtitle" = "將 QR code 放在下方的方框中";
-"authentication_qr_login_scan_title" = "掃描 QR code";
-"authentication_qr_login_display_step2" = "選擇「用 QR 碼登入」";
+"authentication_qr_login_scan_subtitle" = "將 QR Code 放在下方的方框中";
+"authentication_qr_login_scan_title" = "掃描 QR Code";
+"authentication_qr_login_display_step2" = "選擇「用 QR Code 登入」";
 "authentication_qr_login_display_step1" = "打開其他裝置上的 Element";
-"authentication_qr_login_display_subtitle" = "請用您已登出的裝置掃描下列的QR code。";
+"authentication_qr_login_display_subtitle" = "請用您已登出的裝置掃描下列的 QR Code。";
 "authentication_qr_login_display_title" = "連結裝置";
-"authentication_qr_login_start_display_qr" = "在此裝置上顯示 QR 碼";
+"authentication_qr_login_start_display_qr" = "在此裝置上顯示 QR Code";
 "authentication_qr_login_start_need_alternative" = "選擇其他方式？";
-"authentication_qr_login_start_step4" = "選擇「在裝置上顯示 QR 碼」";
+"authentication_qr_login_start_step4" = "選擇「在此裝置顯示 QR Code」";
 "authentication_qr_login_start_step3" = "選擇「連結裝置」";
 "authentication_qr_login_start_step2" = "前往設定 -> 安全與隱私";
 "authentication_qr_login_start_step1" = "打開您其他裝置上的 Element";
-"authentication_qr_login_start_subtitle" = "請使用這部裝置的相機掃描螢幕上的 QR 碼：";
-"authentication_qr_login_start_title" = "請掃描QR 碼";
+"authentication_qr_login_start_subtitle" = "請使用這部裝置的相機掃描螢幕上的 QR Code：";
+"authentication_qr_login_start_title" = "掃描 QR Code";
 "authentication_recaptcha_title" = "您是人類使用者嗎？";
 "authentication_terms_policy_url_error" = "無法找到您選擇的條款。請再次嘗試。";
-"key_verification_scan_qr_code_title" = "掃描 QR code";
+"key_verification_scan_qr_code_title" = "掃描 QR Code";
 "device_verification_self_verify_wait_recover_secrets_additional_help" = "無法存取其他的 %@ 工作階段嗎？";
 "device_verification_self_verify_open_on_other_device_information" = "需要先驗證此工作階段，才能讀取加密訊息紀錄。\n\n請在您的任一其他裝置開啟 Element 並依照當中的指示進行驗證。";
 "device_verification_self_verify_open_on_other_device_title" = "在您的另一台裝置上開啟 %@";
@@ -2807,3 +2807,52 @@
 "room_creation_only_one_email_invite" = "您一次僅能邀請一個電子郵件";
 "authentication_qr_login_failure_device_not_supported" = "不支援與此裝置連結。";
 "accessibility_selected" = "已選取";
+"notice_voice_broadcast_ended_by_you" = "您結束了語音廣播。";
+"poll_history_fetching_error" = "取得投票時發生錯誤。";
+"poll_history_no_past_poll_text" = "此聊天室沒有過去的投票";
+"key_verification_scan_qr_code_information_new_session" = "使用您的相機掃描您另一台裝置上顯示的 QR Code 來驗證新工作階段";
+"key_verification_scan_qr_code_information_other_session" = "使用您的相機掃描您另一台裝置上顯示的 QR Code 來驗證您的工作階段";
+"key_verification_scan_qr_code_information_other_device" = "使用您的相機掃描您另一台裝置上顯示的 QR Code 來驗證此工作階段";
+"key_verification_scan_qr_code_information_other_user" = "使用您的相機掃描對方裝置上顯示的 QR Code 來驗證對方的工作階段";
+"notice_voice_broadcast_ended" = "%@ 結束了語音廣播。";
+"notice_voice_broadcast_live" = "直播";
+"wysiwyg_composer_format_action_un_indent" = "減少縮排";
+"wysiwyg_composer_format_action_indent" = "增加縮排";
+"wysiwyg_composer_format_action_quote" = "切換引用";
+"wysiwyg_composer_format_action_code_block" = "切換程式碼區塊";
+"wysiwyg_composer_format_action_ordered_list" = "切換編號清單";
+"wysiwyg_composer_format_action_unordered_list" = "切換項目符號清單";
+"wysiwyg_composer_format_action_inline_code" = "套用內嵌程式碼格式";
+"user_other_session_security_recommendation_title" = "其他工作階段";
+"poll_timeline_reply_ended_poll" = "結束投票";
+"poll_timeline_ended_text" = "結束投票";
+"poll_timeline_decryption_error" = "因為解密錯誤，不會計算部份投票";
+"poll_history_load_more" = "載入更多投票";
+"poll_history_detail_view_in_timeline" = "在時間軸中檢視投票";
+"poll_history_no_past_poll_period_text" = "過去 %@ 天沒有過去的投票。載入更多投票以檢視前幾個月的投票";
+"poll_history_no_active_poll_period_text" = "過去 %@ 天沒有進行中的投票。載入更多投票以檢視前幾個月的投票";
+"poll_history_no_active_poll_text" = "此聊天室沒有正在進行的投票";
+"poll_history_past_segment_title" = "過去的投票";
+"poll_history_active_segment_title" = "進行中的投票";
+"poll_history_loading_text" = "顯示投票";
+
+// MARK: - Polls history
+
+"poll_history_title" = "投票紀錄";
+"room_waiting_other_participants_message" = "被邀請的使用者加入 %@ 後，您就可以聊天，聊天室將會進行端到端加密";
+"room_waiting_other_participants_title" = "等待使用者加入 %@";
+"voice_broadcast_playback_unable_to_decrypt" = "無法解密語音廣播。";
+"voice_broadcast_recorder_connection_error" = "連線錯誤 - 已暫停錄音";
+"voice_broadcast_connection_error_message" = "很抱歉，現在無法錄音。請稍後再試。";
+"voice_broadcast_connection_error_title" = "連線錯誤";
+"voice_broadcast_voip_cannot_start_description" = "您無法開始通話，因為您正在錄製直播。請結束您的直播以便開始通話。";
+"voice_broadcast_voip_cannot_start_title" = "無法開始通話";
+"voice_broadcast_playback_lock_screen_placeholder" = "語音廣播";
+"voice_message_broadcast_in_progress_message" = "您無法開始語音訊息，因為您目前正在錄製直播。請結束您的直播以開始錄製語音訊息";
+"voice_message_broadcast_in_progress_title" = "無法開始語音訊息";
+"home_context_menu_mark_as_unread" = "標示為未讀";
+"launch_loading_delay_warning" = "可能會需要花一點時間。\n感謝您等待。";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "正在同步對話";
