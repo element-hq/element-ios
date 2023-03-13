@@ -2595,9 +2595,9 @@
 
 // Scanning
 "key_verification_scan_confirmation_scanning_title" = "就快完成了！正在等待確認…";
-"key_verification_verify_qr_code_scan_other_code_success_message" = "已成功驗證此 QR 碼。";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "已成功驗證此 QR code 。";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "驗證碼已驗證！";
-"key_verification_verify_qr_code_other_scan_my_code_title" = "其他的使用者也順利掃描了QR 碼嗎？";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "其他的使用者也順利掃描了QR code 嗎？";
 "key_verification_verify_qr_code_start_emoji_action" = "透過表情符號驗證";
 "key_verification_verify_qr_code_cannot_scan_action" = "無法掃描嗎？";
 "key_verification_verify_qr_code_scan_code_other_device_action" = "使用此裝置掃描";
@@ -2777,8 +2777,8 @@
 "authentication_qr_login_confirm_alert" = "請確定您知道此驗證碼的來源。裝置連結後，您會提供給其他人存取您帳號的所有權限。";
 "authentication_qr_login_confirm_subtitle" = "請確認下方的驗證碼與您其他的裝置相符：";
 "authentication_qr_login_confirm_title" = "已建立安全連線";
-"authentication_qr_login_scan_subtitle" = "將 QR 碼放在下方的方框中";
-"authentication_qr_login_scan_title" = "掃描 QR 碼";
+"authentication_qr_login_scan_subtitle" = "將 QR code 放在下方的方框中";
+"authentication_qr_login_scan_title" = "掃描 QR code";
 "authentication_qr_login_display_step2" = "選擇「用 QR 碼登入」";
 "authentication_qr_login_display_step1" = "打開其他裝置上的 Element";
 "authentication_qr_login_display_subtitle" = "請用您已登出的裝置掃描下列的QR code。";
@@ -2793,3 +2793,17 @@
 "authentication_qr_login_start_title" = "請掃描QR 碼";
 "authentication_recaptcha_title" = "您是人類使用者嗎？";
 "authentication_terms_policy_url_error" = "無法找到您選擇的條款。請再次嘗試。";
+"key_verification_scan_qr_code_title" = "掃描 QR code";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "無法存取其他的 %@ 工作階段嗎？";
+"device_verification_self_verify_open_on_other_device_information" = "需要先驗證此工作階段，才能讀取加密訊息紀錄。\n\n請在您的任一其他裝置開啟 Element 並依照當中的指示進行驗證。";
+"device_verification_self_verify_open_on_other_device_title" = "在您的另一台裝置上開啟 %@";
+"key_backup_recover_from_private_key_progress" = "完成 %@%%";
+"room_details_polls" = "投票紀錄";
+"settings_labs_disable_crypto_sdk" = "Rust 端對端加密（登出後即可停用）";
+"settings_labs_confirm_crypto_sdk" = "請注意此功能仍然處於實驗性階段，可能無法如預期正常使用，且可能有非預期的結果。若要還原此功能，只要登出後重新登入即可。請自行判斷是否使用，使用前也請注意。";
+"settings_labs_enable_crypto_sdk" = "Rust 端到端加密";
+"settings_labs_enable_voice_broadcast" = "語音廣播";
+"settings_push_rules_error" = "更新您的通知偏好設定時發生錯誤。請再試一次。";
+"room_creation_only_one_email_invite" = "您一次僅能邀請一個電子郵件";
+"authentication_qr_login_failure_device_not_supported" = "不支援與此裝置連結。";
+"accessibility_selected" = "已選取";
