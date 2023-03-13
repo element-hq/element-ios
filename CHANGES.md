@@ -1,3 +1,11 @@
+## Changes in 1.10.5 (2023-03-13)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.26.1](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.1)).
+- Loading: Update startup progress UX ([#7417](https://github.com/vector-im/element-ios/issues/7417))
+
+
 ## Changes in 1.10.4 (2023-03-07)
 
 🙌 Improvements
