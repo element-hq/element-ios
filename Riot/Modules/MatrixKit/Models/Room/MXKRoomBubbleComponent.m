@@ -206,10 +206,10 @@
     // Only show a warning badge if there are trust issues.
     if (event.sender)
     {
-        MXUserTrustLevel *userTrustLevel = [session.crypto trustLevelForUser:event.sender];
+        BOOL isUserVerified = [session.crypto isUserVerified:event.sender];
         MXDeviceInfo *deviceInfo = [session.crypto eventDeviceInfo:event];
         
-        if (userTrustLevel.isVerified && !deviceInfo.trustLevel.isVerified)
+        if (isUserVerified && !deviceInfo.trustLevel.isVerified)
         {
             return EventEncryptionDecorationUntrustedDevice;
         }
