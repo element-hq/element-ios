@@ -2630,7 +2630,6 @@
 "user_other_session_permanently_unverified_additional_info" = "Questa sessione non supporta la crittografia, perciò non può essere verificata.";
 "voice_broadcast_buffering" = "Buffer...";
 "voice_broadcast_time_left" = "%@ rimasti";
-
 "voice_broadcast_stop_alert_agree_button" = "Sì, ferma";
 "voice_broadcast_stop_alert_description" = "Vuoi davvero fermare la tua trasmissione in diretta? Verrà terminata la trasmissione e la registrazione completa sarà disponibile nella stanza.";
 "voice_broadcast_stop_alert_title" = "Fermare la trasmissione in diretta?";
@@ -2681,7 +2680,6 @@
 "poll_history_no_past_poll_period_text" = "Non ci sono sondaggi passati negli ultimi %@ giorni. Carica più sondaggi per vedere quelli dei mesi precedenti";
 "poll_history_no_active_poll_period_text" = "Non ci sono sondaggi attivi negli ultimi %@ giorni. Carica più sondaggi per vedere quelli dei mesi precedenti";
 "poll_history_loading_text" = "Visualizzazione sondaggi";
-
 "settings_labs_disable_crypto_sdk" = "Crittografia end-to-end Rust (disconnettiti per disattivarla)";
 "settings_labs_confirm_crypto_sdk" = "Si noti che questa funzione, essendo ancora in fase sperimentale, potrebbe non funzionare come previsto e potrebbe avere conseguenze indesiderate. Per disattivare la funzione, è sufficiente disconnettersi e riaccedere. Utilizzare a propria discrezione e con cautela.";
 "settings_labs_enable_crypto_sdk" = "Crittografia end-to-end Rust";
@@ -2705,3 +2703,8 @@
 "device_verification_self_verify_open_on_other_device_information" = "Devi verificare questa sessione per potere leggere la cronologia dei messaggi sicuri.\n\nApri Element su uno degli altri tuoi dispositivi e segui le istruzioni.";
 "device_verification_self_verify_open_on_other_device_title" = "Apri %@ sull'altro tuo dispositivo";
 "room_creation_only_one_email_invite" = "Puoi invitare una sola email alla volta";
+"launch_loading_delay_warning" = "Potrebbe volerci un po' più tempo.\nGrazie per la pazienza.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Sincronizzazione delle tue conversazioni";
