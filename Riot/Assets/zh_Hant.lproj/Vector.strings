@@ -84,7 +84,7 @@
 "today" = "今天";
 "yesterday" = "昨天";
 "room_ongoing_conference_call_close" = "關閉";
-"bug_report_send_logs" = "傳送記錄檔";
+"bug_report_send_logs" = "傳送紀錄檔";
 "bug_report_send" = "傳送";
 "room_event_action_resend" = "重新傳送";
 "room_event_action_view_source" = "檢視原始碼";
@@ -155,10 +155,10 @@
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "您需要擁有邀請使用者的權限才能做這件事。";
 "widget_integration_unable_to_create" = "無法建立小工具。";
-"widget_integration_failed_to_send_request" = "無法發送請求。";
+"widget_integration_failed_to_send_request" = "無法傳送請求。";
 "widget_integration_room_not_recognised" = "無法識別此聊天室。";
 "widget_integration_positive_power_level" = "權限等級必需為正整數。";
-"widget_integration_must_be_in_room" = "您不在此聊天室。";
+"widget_integration_must_be_in_room" = "您不在這個聊天室內。";
 "widget_integration_no_permission_in_room" = "您沒有在這個聊天室做這件事的權限。";
 // Room key request dialog
 "e2e_room_key_request_title" = "加密金鑰請求";
@@ -298,7 +298,7 @@
 // Room Preview
 "room_preview_invitation_format" = "您已經透過 %@ 的邀請而加入聊天室";
 "room_preview_subtitle" = "這是該聊天室的預覽。聊天室互動已被停用。";
-"room_preview_unlinked_email_warning" = "該邀請已傳送至 %@， 但和此帳號沒有關聯。您或許會希望使用其他帳號登入，或把該電子郵件加入到你的帳號。";
+"room_preview_unlinked_email_warning" = "該邀請已傳送至 %@，但和此帳號沒有關聯。您或許會希望使用其他帳號登入，或把該電子郵件加入到你的帳號。";
 // Settings
 "settings_title" = "設定";
 "room_preview_try_join_an_unknown_room" = "您將開啟 %@。要加入聊天室參與討論嗎？";
@@ -337,8 +337,8 @@
 "settings_enable_push_notif" = "在此裝置上啟用通知";
 "settings_show_decrypted_content" = "顯示解密內容";
 "settings_global_settings_info" = "全域通知設定位於 %@ 網頁用戶端";
-"room_ongoing_conference_call" = "群組通話進行中。 以 %@ 或 %@ 加入。";
-"room_ongoing_conference_call_with_close" = "群組通話進行中。 以 %@ 或 %@ 加入。%@ 該通話。";
+"room_ongoing_conference_call" = "群組通話進行中。以 %@ 或 %@ 加入。";
+"room_ongoing_conference_call_with_close" = "群組通話進行中。以 %@ 或 %@ 加入。%@ 該通話。";
 "settings_pin_rooms_with_missed_notif" = "釘選含有錯過的通知的聊天室";
 "settings_pin_rooms_with_unread" = "釘選含有未讀訊息的聊天室";
 "settings_enable_callkit" = "整合式通話";
@@ -467,7 +467,7 @@
 "network_offline_prompt" = "網際網路連線似乎已中斷。";
 "public_room_section_title" = "公開聊天室（在 %@）：";
 "bug_report_prompt" = "應用程式上次當掉了，您要回報錯誤資訊嗎？";
-"rage_shake_prompt" = "您似乎在無奈地搖晃手機。 要回報錯誤報告嗎？";
+"rage_shake_prompt" = "您似乎在無奈地搖晃手機。要回報錯誤報告嗎？";
 "do_not_ask_again" = "不再詢問";
 "camera_access_not_granted" = "%@ 沒有使用相機的權限，請變更隱私權設定";
 "large_badge_value_k_format" = "%.1fK";
@@ -493,31 +493,31 @@
 // Widget
 "widget_no_power_to_manage" = "您需要相關權限以管理此聊天室的小工具";
 "widget_creation_failure" = "小工具建立失敗";
-"widget_sticker_picker_no_stickerpacks_alert" = "您目前沒有啟用任何貼圖。";
+"widget_sticker_picker_no_stickerpacks_alert" = "您目前沒有啟用任何貼圖包。";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "現在新增一些嗎？";
-"rerequest_keys_alert_message" = "請在其他可解密訊息的裝置開啟 %@ 以將金鑰傳送到此工作階段。";
-"bug_report_description" = "請描述此錯誤。您做了什麼？ 本來應該發生什麼？ 以及實際發生什麼？";
+"rerequest_keys_alert_message" = "請在另一個可以解密訊息的裝置上啟動 %@，以便它將金鑰傳送到此工作階段。";
+"bug_report_description" = "請描述此錯誤。您做了什麼？本來預期應該發生什麼？以及實際發生什麼？";
 "bug_crash_report_description" = "請描述您在當機前做了什麼：";
-"bug_report_logs_description" = "為了診斷問題，此用戶端的記錄檔將會隨此錯誤報告送出。 如果您只想傳送上面的文字，請取消勾選：";
-"widget_integration_missing_room_id" = "您所要的 room_id 並不存在。";
+"bug_report_logs_description" = "為了診斷問題，此用戶端的記錄檔將會隨此錯誤報告送出。如果您只想傳送上面的文字，請取消勾選：";
+"widget_integration_missing_room_id" = "請求中缺少 room_id。";
 "widget_integration_missing_user_id" = "請求的 user_id 並存在。";
-"widget_integration_room_not_visible" = "%@ 聊天室為隱藏。";
+"widget_integration_room_not_visible" = "聊天室 %@ 不可見。";
 // Share extension
 "share_extension_auth_prompt" = "登入主應用程式以分享內容";
-"share_extension_failed_to_encrypt" = "傳送失敗。 檢查主應用程式對此聊天室的加密設定";
-"e2e_room_key_request_message_new_device" = "您新增的工作階段 '%@'， 正在請求加密金鑰。";
-"e2e_room_key_request_message" = "您未驗證的工作階段 '%@' 正在請求加密金鑰。";
+"share_extension_failed_to_encrypt" = "傳送失敗。請檢查主應用程式對此聊天室的加密設定";
+"e2e_room_key_request_message_new_device" = "您新增的工作階段「%s」正在請求加密金鑰。";
+"e2e_room_key_request_message" = "您未驗證的工作階段「%@」正在請求加密金鑰。";
 // GDPR
 "gdpr_consent_not_given_alert_review_now_action" = "現在重新檢視";
 "deactivate_account_title" = "停用帳號";
-"deactivate_account_informations_part1" = "這會使您的帳號永久無法使用。 您將不能以此帳號登入，且任何人都將無法以此帳號的 ID 重新進行註冊。這會使您的帳號立即離開所有參加的聊天室，並從身分伺服器上將您帳號的詳細資料移除。 ";
-"deactivate_account_informations_part2_emphasize" = "此動作無法回復。";
-"deactivate_account_informations_part3" = "\n\n停用您的帳號 ";
+"deactivate_account_informations_part1" = "將永久停用您的帳號，無法再以此帳號登入，且任何人都將無法以相同 ID 重新註冊。這會使您的帳號立即離開所有加入的聊天室，並從身分伺服器將您帳號的詳細資料移除。 ";
+"deactivate_account_informations_part2_emphasize" = "此動作無法還原。";
+"deactivate_account_informations_part3" = "\n\n正在停用您的帳號 ";
 "deactivate_account_informations_part4_emphasize" = "在預設情況下我們並不會移除您曾傳送的訊息。 ";
 "deactivate_account_informations_part5" = "如果您希望我們移除您曾傳送的訊息，請選取下方的欄位\n\n在 Matrix 中，訊息的可見性如同電子郵件。我們移除了您曾傳送的訊息表示這些訊息，將不會與任何新註冊或未註冊的使用者分享，但過去已有權限讀取您的訊息的已註冊使用者仍能從他們的副本中讀取。";
 "deactivate_account_forget_messages_information_part1" = "當我停用我的帳號時，請移除所有我曾傳送的訊息（";
 "deactivate_account_forget_messages_information_part2_emphasize" = "警告";
-"deactivate_account_forget_messages_information_part3" = "： 這會導致未來的使用者看到不完整的對話紀錄)";
+"deactivate_account_forget_messages_information_part3" = "：這會導致未來的使用者看到不完整的對話紀錄）";
 "deactivate_account_validate_action" = "停用帳號";
 "deactivate_account_password_alert_title" = "停用帳號";
 "deactivate_account_password_alert_message" = "請輸入您的 Matrix 帳號密碼繼續";
@@ -618,7 +618,7 @@
 "joined" = "已加入";
 "skip" = "略過";
 "close" = "關閉";
-"store_promotional_text" = "開放網路上的隱私保護聊天和協作應用程式。 去中心化機制讓您可自行管控。沒有資料探勘、沒有後門，也不會被第三方存取。";
+"store_promotional_text" = "開放網路上的隱私保護聊天和協作應用程式。去中心化機制讓您可自行管控。沒有資料探勘、沒有後門，也不會被第三方存取。";
 "store_full_description" = "Element 是一套新型的通訊和協作應用程式，它提供下列功能：\n\n1. 您可以自行掌控隱私\n2. 可以與 Matrix 網路中的任何人進行通訊，甚至可以與 Slack 等應用程式整合\n3. 保護您免受廣告、資料探勘、後門和封閉平台的侵害\n4. 透過端到端加密和交叉簽署來驗證彼此，互相確保安全\n\nElement 是去中心化的開源軟體，因此與其他通訊和協作應用程式完全不同。\n\nElement 允許您自行架設（或選擇託管）伺服器，使您可針對隱私權，所有權以及對資料和對話內容的完整控制權。您可以連線到所有開放的網路，所以您不是只能與其他 Element 使用者聊天。而且還非常安全。\n\nElement 之所以能夠做到所有這些目標，是因為它使用 Matrix（一套開放、去中心化的通訊標準）運作。\n\nElement 讓您可以自行選擇要將對話放在哪一台伺服器來讓您可自行控制自己的訊息和資料。在 Element 應用程式中，您可以選擇以不同方式託管您的訊息：\n\n1. 在 matrix.org 公開伺服器註冊免費帳號\n2. 使用自行架設的硬體主機上的伺服器來註冊帳號\n3. 訂閱 Element Matrix Services 代管平台，註冊自己的伺服器\n\n為什麼要選擇 Element？\n\n自己擁有自己資料：由您決定將資料與訊息保留在何處。您自己擁有並管理這些資料，而不用讓某些「超大型企業」來探勘您的資料，或將資料提供給第三方。\n\n開放的通訊與協作機制：您可以與 Matrix 網路中的任何人聊天，不管他們使用的是 Element 還是其他 Matrix 應用程式，甚至他們也可以使用像 Slack 、IRC 或 XMPP 之類的其他通訊系統。\n\n超級安全：真正的端對端加密（只有對話中的人才能解開訊息內容），並進行交叉簽署以驗證對話參與者的設備。\n\n完整的通訊：傳訊息、進行語音或視訊通話、分享檔案、畫面，還有大量整合、機器人與小工具。建立聊天室、社群，保持聯繫並完成工作。\n\n無論您身在何處都可保持聯繫：無論您身在何處，都可以透過 https://element.io/app 在所有裝置與網路取得完全同步的訊息記錄來保持聯繫。";
 // String for App Store
 "store_short_description" = "去中心化的安全通訊／VoIP 軟體";
@@ -812,7 +812,7 @@
 
 // Room widget permissions
 "room_widget_permission_title" = "載入小工具";
-"widget_menu_open_outside" = "在瀏覽器開啟";
+"widget_menu_open_outside" = "在瀏覽器中開啟";
 "widget_menu_refresh" = "重新整理";
 "bug_report_background_mode" = "在背景繼續";
 "e2e_key_backup_wrong_version_button_settings" = "設定";
@@ -2280,30 +2280,30 @@
 "key_backup_setup_passphrase_passphrase_invalid" = "試著加入一個新的字";
 "key_backup_setup_passphrase_passphrase_valid" = "太棒了！";
 "key_backup_setup_passphrase_passphrase_placeholder" = "輸入安全密語";
-"key_backup_setup_passphrase_info" = "我們將會在您的家伺服器上儲存一份加密過的您的金鑰副本。使用安全密語保護您的備份以確保其安全。\n\n要有最大的安全性，這個應該要與您在 Matri 上的帳號密碼不同。";
+"key_backup_setup_passphrase_info" = "我們將會在您的家伺服器儲存一份您的金鑰的加密副本。請使用安全密語保護您的備份以確保其安全。\n\n為了確保有最大的安全性，這個應該要與您的 Matrix 帳號密碼不同。";
 
 // Passphrase
 
 "key_backup_setup_passphrase_title" = "使用安全密語保護您的備份";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "將此裝置連結至金鑰備份";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "開始使用金鑰備份";
-"key_backup_setup_intro_info" = "加密聊天室裡的訊息是使用端到端加密。只有您和接收者有金鑰可以閱讀這些訊息。\n\n安全地備份您的金鑰以避免失去它們。";
+"key_backup_setup_intro_info" = "加密聊天室裡的訊息使用端對端加密保護。只有您和接收者有金鑰可以閱讀這些訊息。\n\n請安全地備份您的金鑰，避免失去訊息內容。";
 
 // Intro
 
-"key_backup_setup_intro_title" = "永遠不失去加密訊息";
-"key_backup_setup_skip_alert_message" = "如果您登出或遺失您的裝置的話，您可能會失去加密訊息。";
-"secure_backup_setup_banner_subtitle" = "小心不要失去已加密訊息與資料的存取權";
-"secure_key_backup_setup_cancel_alert_message" = "如果您現在取消，而您又失去登入存取權的話，您可能會失去對加密訊息與資料。\n\n您也可以在設定中設定安全備份與管理您的金鑰。";
+"key_backup_setup_intro_title" = "絕不失去加密訊息";
+"key_backup_setup_skip_alert_message" = "如果您登出或遺失此裝置的話，可能會失去訊息的存取權。";
+"secure_backup_setup_banner_subtitle" = "小心不要失去加密訊息與資料的存取權";
+"secure_key_backup_setup_cancel_alert_message" = "如果您現在取消，當您忘記登入資訊的話，可能會失去存取加密訊息與資料。\n\n您也可以在「設定」中設定安全備份並管理您的金鑰。";
 "secure_key_backup_setup_existing_backup_error_info" = "解鎖此備份以重新使用，或移除此備份並在安全備份中重新建立新的訊息。";
-"secure_key_backup_setup_existing_backup_error_title" = "已經有此訊息的備份";
-"secure_key_backup_setup_intro_use_security_passphrase_info" = "輸入只有您知道的安全密語，並生成備份的金鑰。";
+"secure_key_backup_setup_existing_backup_error_title" = "已經有訊息備份";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "輸入只有您知道的安全密語，並產生備份的金鑰。";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "使用安全密語";
-"secure_key_backup_setup_intro_use_security_key_info" = "生成安全金鑰後，請儲存在密碼管理員或保險箱等安全的地方。";
-"secure_key_backup_setup_intro_info" = "確保您能存取加密訊息與資料，請在您的伺服器上備份您的金鑰。";
-"service_terms_modal_information_description_integration_manager" = "整合服務管理器能夠讓您加入第三方服務的功能。";
+"secure_key_backup_setup_intro_use_security_key_info" = "產生安全金鑰後，請儲存在密碼管理員或保險箱等安全的地方。";
+"secure_key_backup_setup_intro_info" = "透過備份您伺服器上的加密金鑰，來防止失去對您已加密的訊息與資料的存取權。";
+"service_terms_modal_information_description_integration_manager" = "整合管理員能夠讓您加入第三方服務的功能。";
 "service_terms_modal_information_description_identity_server" = "身分伺服器讓您能夠用電話或電子郵件，查詢您的聯絡人是否已經申請帳號。";
-"service_terms_modal_information_title_integration_manager" = "整合服務管理器";
+"service_terms_modal_information_title_integration_manager" = "整合管理員";
 
 // Alert explaining what an identity server / integration manager is.
 "service_terms_modal_information_title_identity_server" = "身分伺服器";
@@ -2321,7 +2321,7 @@
 "room_widget_permission_avatar_url_permission" = "您的大頭照網址";
 "room_widget_permission_information_title" = "使用它可能會與 %@ 分享資料：\n";
 "room_widget_permission_webview_information_title" = "使用它可能會設定 cookies 並與 %@ 分享資料：\n";
-"room_widget_permission_creator_info_title" = "新增此小工具的是：";
+"room_widget_permission_creator_info_title" = "此小工具新增者：";
 "widget_picker_manage_integrations" = "管理整合功能…";
 
 // Widget Picker
@@ -2391,12 +2391,12 @@
 "analytics_prompt_not_now" = "現在不要";
 "analytics_prompt_point_3" = "您可以隨時到設定中關閉此功能";
 /* Note: The word "don't" is formatted in bold */
-"analytics_prompt_point_2" = "我們 <b>不會</b> 與第三方分享這些資料";
+"analytics_prompt_point_2" = "我們<b>不會</b>與第三方分享這些資訊";
 /* Note: The word "don't" is formatted in bold */
-"analytics_prompt_point_1" = "我們 <b>不會</b> 紀錄或側寫任何帳號資料";
+"analytics_prompt_point_1" = "我們<b>不會</b>記錄或分析任何帳號資料";
 "analytics_prompt_terms_link_upgrade" = "此處";
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
-"analytics_prompt_terms_upgrade" = "請閱讀所有的使用條款 %@。有任何問題嗎？";
+"analytics_prompt_terms_upgrade" = "請閱讀我們的完整使用條款 %@。有任何問題嗎？";
 "analytics_prompt_terms_link_new_user" = "此處";
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
 "analytics_prompt_terms_new_user" = "您能在%@閱讀我們的完整條款。";
@@ -2579,7 +2579,7 @@
 "user_verification_start_additional_information" = "要確定安全，請面對面進行或使用其他方式來通訊。";
 "user_verification_start_waiting_partner" = "等待 %@…";
 "user_verification_start_information_part2" = " 藉由在您的所有裝置上確認單次性的條碼。";
-"user_verification_start_information_part1" = "為了更高的安全性，請進行驗證。 ";
+"user_verification_start_information_part1" = "為了加強安全性，請進行驗證。 ";
 
 // MARK: - User verification
 
@@ -2595,7 +2595,7 @@
 
 // Scanning
 "key_verification_scan_confirmation_scanning_title" = "就快完成了！正在等待確認…";
-"key_verification_verify_qr_code_scan_other_code_success_message" = "已成功驗證此 QR Code 。";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "已成功驗證此 QR Code。";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "驗證碼已驗證！";
 "key_verification_verify_qr_code_other_scan_my_code_title" = "對方也順利掃描了 QR Code 嗎？";
 "key_verification_verify_qr_code_start_emoji_action" = "透過表情符號驗證";
@@ -2673,7 +2673,7 @@
 "threads_beta_cancel" = "現在不要";
 "threads_beta_enable" = "試試看";
 "threads_beta_information_link" = "了解更多";
-"threads_beta_information" = "透過討論串使討論保持整潔。\n\n「討論串」功能，可使您的對話聚焦且容易追蹤。 ";
+"threads_beta_information" = "透過討論串使討論保持整潔。\n\n「討論串」功能可使您的對話聚焦且容易追蹤。 ";
 "threads_beta_title" = "討論串";
 "threads_notice_done" = "了解";
 "threads_notice_information" = "所有在實驗期間建立的討論串，將會改為<b>一般回覆</b>。<br/><br/>由於「討論串」已經是 Matrix 的功能之一，這種轉換只會進行一次。";
