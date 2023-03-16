@@ -1362,13 +1362,20 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
                         {
                             body = body? body : [VectorL10n noticeFileAttachment];
                             
-                            NSDictionary *fileInfo = contentToUse[@"info"];
+                            NSDictionary *fileInfo;
+                            MXJSONModelSetDictionary(fileInfo, contentToUse[@"info"]);
                             if (fileInfo)
                             {
-                                NSNumber *fileSize = fileInfo[@"size"];
+                                NSNumber *fileSize;
+                                MXJSONModelSetNumber(fileSize, fileInfo[@"size"])
                                 if (fileSize)
                                 {
                                     body = [NSString stringWithFormat:@"%@ (%@)", body, [MXTools fileSizeToString: fileSize.longValue]];
+                                }
+                                else
+                                {
+                                    MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported m.file format: %@", event.description);
+                                    *error = MXKEventFormatterErrorUnsupported;
                                 }
                             }
                         }
