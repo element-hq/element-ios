@@ -675,10 +675,10 @@
 "device_verification_emoji_thumbs up" = "讚";
 "device_verification_verified_got_it_button" = "了解";
 "side_menu_action_feedback" = "回饋";
-"side_menu_action_help" = "協助";
+"side_menu_action_help" = "說明";
 "side_menu_action_settings" = "設定";
-"room_intro_cell_information_dm_sentence1_part3" = ". ";
-"room_intro_cell_information_room_sentence1_part3" = ". ";
+"room_intro_cell_information_dm_sentence1_part3" = "的私人訊息紀錄的開頭。 ";
+"room_intro_cell_information_room_sentence1_part3" = "的開頭。 ";
 "call_transfer_error_title" = "錯誤";
 "call_transfer_contacts_all" = "全部";
 "call_transfer_contacts_recent" = "最近";
@@ -700,7 +700,7 @@
 "secrets_setup_recovery_key_export_action" = "儲存";
 "secrets_setup_recovery_key_loading" = "載入中…";
 "secrets_recovery_with_key_recovery_key_title" = "輸入";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = "。";
 "secrets_recovery_with_passphrase_passphrase_title" = "輸入";
 "user_verification_sessions_list_table_title" = "工作階段";
 "user_verification_sessions_list_user_trust_level_unknown_title" = "未知";
@@ -719,14 +719,14 @@
 
 // MARK: Emoji picker
 "emoji_picker_title" = "反應";
-"device_verification_emoji_pin" = "釘選";
+"device_verification_emoji_pin" = "圖釘";
 "device_verification_emoji_folder" = "資料夾";
 "device_verification_emoji_headphones" = "耳機";
-"device_verification_emoji_anchor" = "錨";
-"device_verification_emoji_bell" = "鐘";
+"device_verification_emoji_anchor" = "船錨";
+"device_verification_emoji_bell" = "鈴鐺";
 "device_verification_emoji_trumpet" = "喇叭";
 "device_verification_emoji_guitar" = "吉他";
-"device_verification_emoji_ball" = "球";
+"device_verification_emoji_ball" = "足球";
 "device_verification_emoji_trophy" = "獎盃";
 "device_verification_emoji_rocket" = "火箭";
 "device_verification_emoji_aeroplane" = "飛機";
@@ -734,7 +734,7 @@
 "device_verification_emoji_train" = "火車";
 "device_verification_emoji_flag" = "旗幟";
 "device_verification_emoji_telephone" = "電話";
-"device_verification_emoji_hammer" = "槌子";
+"device_verification_emoji_hammer" = "鎚子";
 "device_verification_emoji_key" = "鑰匙";
 "device_verification_emoji_scissors" = "剪刀";
 "device_verification_emoji_paperclip" = "迴紋針";
@@ -812,7 +812,7 @@
 
 // Room widget permissions
 "room_widget_permission_title" = "載入小工具";
-"widget_menu_open_outside" = "在瀏覽器中開啟";
+"widget_menu_open_outside" = "在網頁版中開啟";
 "widget_menu_refresh" = "重新整理";
 "bug_report_background_mode" = "在背景繼續";
 "e2e_key_backup_wrong_version_button_settings" = "設定";
@@ -1064,7 +1064,7 @@
 "login_prompt_email_token" = "請輸入您的電子郵件認證權杖:";
 "login_error_forgot_password_is_not_supported" = "目前不支援忘記密碼";
 "login_mobile_device" = "行動裝置";
-"login_desktop_device" = "桌上型電腦";
+"login_desktop_device" = "桌面版";
 "discard" = "放棄";
 "dismiss" = "關閉";
 "sign_up" = "註冊";
@@ -1313,7 +1313,7 @@
 "notification_settings_always_notify" = "總是通知";
 "notification_settings_per_word_info" = "單字比對對大小寫敏感，也可能包含萬用字元 *。所以：\n比對 foo 也同時會找到字串 foo 周邊的分隔符號（例如：逗號、空白或是句首與句尾）。\n尋找 foo*，會找到所有以 foo 開頭的字。\n尋找 *foo*，可能會找到所有包含 foo 的字。";
 "notification_settings_per_word_notifications" = "文字通知";
-"notification_settings_global_info" = "通知設定會被存在您的使用者帳號，您可以在所有客戶端存取支援的平台（包含桌上型電腦的通知）。\n\n各種規則會依序套用 ; 第一條符合的規則會決定訊息的處理方式。\n所以：文字通知會比聊天室通知更為重要，每個聊天室通知又會比每個寄件者通知更為重要。\n若有多條規則類似，在列表中的第一條規則會更為優先。";
+"notification_settings_global_info" = "通知設定會被存在您的使用者帳號，您可以在所有客戶端存取支援的平台（包含桌面版的通知）。\n\n各種規則會依序套用 ; 第一條符合的規則會決定訊息的處理方式。\n所以：文字通知會比聊天室通知更為重要，每個聊天室通知又會比每個寄件者通知更為重要。\n若有多條規則類似，在列表中的第一條規則會更為優先。";
 "notification_settings_enable_notifications_warning" = "您已取消所有裝置上的通知。";
 "notification_settings_enable_notifications" = "啟用通知";
 
@@ -1499,11 +1499,11 @@
 "device_type_name_unknown" = "未知";
 "device_type_name_mobile" = "行動裝置";
 "device_type_name_web" = "網頁";
-"device_type_name_desktop" = "桌上型電腦";
+"device_type_name_desktop" = "桌面版";
 "device_name_unknown" = "未知的客戶端";
 "device_name_mobile" = "%@ 手機";
-"device_name_web" = "%@ 瀏覽器";
-"device_name_desktop" = "%@ 桌上型電腦";
+"device_name_web" = "%@ 網頁版";
+"device_name_desktop" = "%@ 桌面版";
 "user_inactive_session_item_with_date" = "已未活躍超過90天（%@）";
 "user_inactive_session_item" = "已未活躍超過90天";
 "user_session_item_details_last_activity" = "最後活動 %@";
@@ -1591,7 +1591,7 @@
 "location_sharing_live_list_item_last_update_invalid" = "最後一次更新時間未知";
 "location_sharing_live_list_item_last_update" = "%@ 前已更新";
 "location_sharing_live_list_item_sharing_expired" = "停止分享";
-"location_sharing_live_list_item_time_left" = "%@ 離開了";
+"location_sharing_live_list_item_time_left" = "剩下 %@";
 "location_sharing_live_viewer_title" = "位置";
 "location_sharing_live_map_callout_title" = "分享位置";
 "location_sharing_pin_drop_share_title" = "分享此位置";
@@ -1722,7 +1722,7 @@
 "voice_broadcast_stop_alert_description" = "您確定您要停止您的即時廣播嗎？這將會結束廣播，聊天室內將會提供完整的錄製內容。";
 "voice_broadcast_stop_alert_title" = "停止即時廣播？";
 "voice_broadcast_buffering" = "正在緩衝…";
-"voice_broadcast_time_left" = "%@ 離開了";
+"voice_broadcast_time_left" = "剩下 %@";
 "voice_broadcast_tile" = "語音廣播";
 "voice_broadcast_live" = "直播";
 "voice_broadcast_playback_loading_error" = "無法播放此語音廣播。";
@@ -1746,19 +1746,19 @@
 // MARK: - Side menu
 
 "side_menu_reveal_action_accessibility_label" = "左側面板";
-"spaces_creation_email_invites_title" = "邀請您的團隊";
+"spaces_creation_email_invites_title" = "邀請您的團隊成員";
 "spaces_creation_new_rooms_support" = "支援";
 "spaces_creation_new_rooms_random" = "隨機";
 "spaces_creation_new_rooms_general" = "一般";
 "spaces_creation_new_rooms_room_name_title" = "聊天室名稱";
-"spaces_creation_new_rooms_message" = "我們將會為每個人建立聊天室。";
-"spaces_creation_new_rooms_title" = "您可能會有哪些討論呢？";
-"spaces_creation_cancel_message" = "您會遺失您的進度。";
-"spaces_creation_cancel_title" = "停止新建一個聊天空間？";
+"spaces_creation_new_rooms_message" = "我們將為每個主題建立聊天室。";
+"spaces_creation_new_rooms_title" = "可能會討論哪些事情呢？";
+"spaces_creation_cancel_message" = "將失去目前為止的進度。";
+"spaces_creation_cancel_title" = "要停止建立聊天空間嗎？";
 "spaces_creation_private_space_title" = "您的私密聊天空間";
 "spaces_creation_public_space_title" = "您的公開聊天空間";
 "spaces_creation_address_already_exists" = "%@\n已經存在";
-"spaces_creation_address_invalid_characters" = "%@\n沒有輸入字元";
+"spaces_creation_address_invalid_characters" = "%@\n含有無效字元";
 "spaces_creation_address_default_message" = "您可在這裡觀看您的空間\n%@";
 "spaces_creation_empty_room_name_error" = "需要名稱";
 "spaces_creation_address" = "位址";
@@ -1772,9 +1772,9 @@
 // MARK: - Space Creation
 
 "spaces_creation_hint" = "聊天空間是將聊天室與人們分組的新方式。";
-"spaces_feature_not_available" = "這項功能尚未上線。但您可以在電腦上用%@來使用此功能。";
+"spaces_feature_not_available" = "這項功能尚未上線。但您可以在電腦上用 %@ 來使用此功能。";
 "space_settings_current_address_message" = "您可在這裡觀看您的空間\n%@";
-"space_settings_update_failed_message" = "無法更新Space的設定。您要重新試試嗎？";
+"space_settings_update_failed_message" = "無法更新聊天空間設定。您想要重試嗎？";
 "space_settings_access_section" = "誰可以使用此聊天室？";
 "space_topic" = "描述";
 "space_public_join_rule_detail" = "對所有人開放，最適合社群";
@@ -1782,19 +1782,19 @@
 "spaces_add_room" = "新增聊天室";
 "spaces_invite_people" = "邀請夥伴";
 "space_public_join_rule" = "公開聊天空間";
-"space_private_join_rule_detail" = "邀請制，最適合您自己或團隊";
+"space_private_join_rule_detail" = "邀請制，適用於您自己或團隊使用";
 "space_private_join_rule" = "私密聊天空間";
 "space_home_show_all_rooms" = "顯示所有聊天室";
-"space_participants_action_ban" = "被這個聊天空間封鎖";
+"space_participants_action_ban" = "從這個聊天空間封鎖";
 "space_participants_action_remove" = "踢出此聊天空間";
 "spaces_coming_soon_detail" = "這項功能尚未在此啟用，但已正在開發中。目前，請您在電腦上的 %@ 使用這項功能。";
 "spaces_invites_coming_soon_title" = "邀請即將上線";
 "spaces_add_rooms_coming_soon_title" = "增加聊天室的功能即將上線";
 "spaces_coming_soon_title" = "即將上線";
-"spaces_no_member_found_detail" = "尋找某些不在 %@ 的人？現在起，您可以使用瀏覽器或桌上型電腦邀請他們。";
-"spaces_no_room_found_detail" = "有些結果可能會被隱藏，因為它們的設定為私密，您需要受邀請才能加入。";
+"spaces_no_member_found_detail" = "尋找某些不在 %@ 的人？現在起，您可以使用網頁版或桌面版邀請他們。";
+"spaces_no_room_found_detail" = "有些結果可能是隱藏的，因為它們是私密聊天室，您需要收到邀請才可加入。";
 "spaces_no_result_found_title" = "找不到結果";
-"spaces_empty_space_detail" = "有些聊天室可能設定為隱藏，因為是私密聊天室，您需要受邀請。";
+"spaces_empty_space_detail" = "有些聊天室可能是隱藏的，因為它們是私密聊天室，您需要收到邀請才可加入。";
 "spaces_empty_space_title" = "此聊天空間還沒有聊天室";
 "space_tag" = "聊天空間";
 "spaces_explore_rooms_one_room" = "1 間聊天室";
@@ -1813,17 +1813,17 @@
 "spaces_add_subspace_title" = "在 %@ 建立聊天空間";
 "spaces_add_space_title" = "建立聊天空間";
 "spaces_home_space_title" = "首頁";
-"space_beta_announce_information" = "聊天空間是一種組織聊天室與人的新方法。目前尚未提供 iOS 使用者使用，但您可以在瀏覽器和桌上型電腦上使用。";
+"space_beta_announce_information" = "聊天空間是一種將聊天室與人分組的新方法。目前尚未提供 iOS 使用者使用，但您可以在網頁版和桌面版使用此功能。";
 "space_beta_announce_subtitle" = "新版本的社群";
-"space_beta_announce_title" = "聊天空間即將上線";
-"space_beta_announce_badge" = "測試版";
-"space_feature_unavailable_information" = "聊天空間是一種聚集聊天室和人們的新方式。\n\n他們很快地就會加入。目前，如果您在任何平台加入聊天室，您可以在此存取任何您加入的聊天室。";
-"space_feature_unavailable_subtitle" = "iOS 上還沒有聊天空間，但您可以在瀏覽器和桌上型電腦上使用";
+"space_beta_announce_title" = "聊天空間功能即將上線";
+"space_beta_announce_badge" = "Beta 測試版";
+"space_feature_unavailable_information" = "聊天空間是一種聚集聊天室和人們的新方式。\n\n很快就會在此推出。目前，如果您在任何其他平台加入聊天空間，就可以在此存取任何您加入的聊天室。";
+"space_feature_unavailable_subtitle" = "iOS 版還不支援聊天空間，但您可以在網頁版跟桌面版使用此功能";
 
 // MARK: - Spaces
 
 "space_feature_unavailable_title" = "聊天空間尚未存在";
-"space_invite_not_enough_permission" = "您無權限邀請其他人加入此聊天空間";
+"space_invite_not_enough_permission" = "您沒有權限邀請夥伴到此聊天空間";
 "room_invite_not_enough_permission" = "您沒有權限邀請夥伴到此聊天室";
 "room_invite_to_room_option_detail" = "他們不會是 %@ 的一部分。";
 "room_invite_to_room_option_title" = "只對此聊天室";
@@ -1832,13 +1832,13 @@
 // MARK: - Room invite
 
 "room_invite_to_space_option_title" = "到 %@";
-"room_intro_cell_information_multiple_dm_sentence2" = "除非你們邀請其他人加入，否則只會有你們在此對話。";
+"room_intro_cell_information_multiple_dm_sentence2" = "除非你們兩位之中有人邀請其他人加入，否則此對話中只會有你們兩位。";
 "room_intro_cell_information_dm_sentence2" = "只有你們兩位在此對話之中，其他人都無法加入。";
-"room_intro_cell_information_dm_sentence1_part1" = "這是您直接訊息歷史紀錄的開頭 ";
+"room_intro_cell_information_dm_sentence1_part1" = "這是您與 ";
 "room_intro_cell_information_room_without_topic_sentence2_part2" = " 讓人們知道這個聊天室是做什麼用的。";
 "room_intro_cell_information_room_without_topic_sentence2_part1" = "新增主題";
 "room_intro_cell_information_room_with_topic_sentence2" = "主題：%@";
-"room_intro_cell_information_room_sentence1_part1" = "開始 ";
+"room_intro_cell_information_room_sentence1_part1" = "這是 ";
 
 // MARK: - Room creation introduction cell
 
@@ -1848,8 +1848,8 @@
 // MARK: - Room avatar view
 
 "room_avatar_view_accessibility_label" = "大頭照";
-"share_invite_link_space_text" = "Hey，在 %@ 加入這個聊天空間";
-"share_invite_link_room_text" = "Hey，在 %@ 加入這些聊天室";
+"share_invite_link_space_text" = "Hey，加入 %@ 的這間聊天空間";
+"share_invite_link_room_text" = "Hey，加入 %@ 的這間聊天室";
 
 // MARK: - Share invite link
 
@@ -1876,12 +1876,12 @@
 "home_context_menu_notifications" = "通知";
 "home_context_menu_make_room" = "移到聊天室";
 "home_context_menu_make_dm" = "移動至聯絡人";
-"home_empty_view_information" = "為工作團隊、朋友與機關整合的安全對話 APP。點擊下方＋的按鈕，加入其他人與聊天室。";
+"home_empty_view_information" = "為工作團隊、朋友與機關整合的安全對話應用程式。點擊下方＋的按鈕，加入其他人與聊天室。";
 
 // MARK: - Home
 
 "home_empty_view_title" = "歡迎來到 %@，\n%@";
-"call_transfer_error_message" = "轉接電話失敗";
+"call_transfer_error_message" = "電話轉接失敗";
 "call_transfer_dialpad" = "撥號鍵盤";
 
 // MARK: - Dial Pad
@@ -1890,20 +1890,20 @@
 "room_info_list_several_members" = "%@ 位成員";
 "create_room_processing" = "正在建立聊天室";
 "create_room_suggest_room_footer" = "將向聊天空間中的成員推薦建議的聊天室。";
-"create_room_suggest_room" = "給聊天空間成員的建議";
-"create_room_placeholder_address" = "#測試聊天室：matrix.org";
+"create_room_suggest_room" = "推薦給聊天空間成員";
+"create_room_placeholder_address" = "#testroom:matrix.org";
 "create_room_section_header_address" = "位址";
 "create_room_show_in_directory_footer" = "這會幫助人們找到並加入此聊天室。";
 "create_room_show_in_directory" = "在聊天室目錄中顯示";
 "create_room_promotion_header" = "推廣";
-"create_room_section_footer_type_public" = "只有受邀的人能夠找到並加入。";
-"create_room_section_footer_type_restricted" = "任何在Space 都可以找到此聊天室並加入。";
+"create_room_section_footer_type_public" = "只有受邀的人能夠找到並加入，而非只有聊天空間當中的人員。";
+"create_room_section_footer_type_restricted" = "聊天空間中的任何人都可以找到此聊天室並加入。";
 "create_room_section_footer_type_private" = "僅被邀請的人可以找到並加入。";
 "create_room_type_public" = "公開聊天室（任何人）";
 "create_room_type_restricted" = "聊天空間成員";
 "create_room_type_private" = "私密聊天室（邀請制）";
 "create_room_section_header_type" = "誰能存取";
-"create_room_section_footer_encryption" = "之後也能關閉加密。";
+"create_room_section_footer_encryption" = "開啟加密之後就不可再關閉。";
 "create_room_enable_encryption" = "啟用加密";
 "create_room_section_header_encryption" = "加密";
 "create_room_section_header_topic" = "主題（選擇性）";
@@ -1919,9 +1919,9 @@
 
 "searchable_directory_create_new_room" = "建立新的聊天室";
 "biometrics_cant_unlocked_alert_message_login" = "重新登入";
-"biometrics_cant_unlocked_alert_message_x" = "為了要解鎖，請使用 %@ 或是重新登入以再次啟用 %@";
-"biometrics_cant_unlocked_alert_title" = "無法解開 APP";
-"biometrics_usage_reason" = "需要您的授權才能存取您的 APP";
+"biometrics_cant_unlocked_alert_message_x" = "若要解鎖，請使用 %@ 或是重新登入以再次啟用 %@";
+"biometrics_cant_unlocked_alert_title" = "無法解鎖應用程式";
+"biometrics_usage_reason" = "需要您的授權才能存取您的應用程式";
 "biometrics_desetup_disable_button_title_x" = "關閉 %@";
 "biometrics_desetup_title_x" = "關閉 %@";
 "biometrics_setup_subtitle" = "節省您的時間";
@@ -1931,32 +1931,32 @@
 
 // MARK: - Biometrics Protection
 
-"biometrics_mode_touch_id" = "TOUCH ID";
-"pin_protection_kick_user_alert_message" = "太多錯誤，您已被登出";
+"biometrics_mode_touch_id" = "Touch ID";
+"pin_protection_kick_user_alert_message" = "錯誤太多次，已將您登出";
 "pin_protection_explanatory" = "設定您的 PIN 碼讓您能夠保護訊息和聯絡人等資料，讓您在進入 APP 時輸入 PIN 碼，以存取這些資料。";
 "pin_protection_not_allowed_pin" = "為了安全理由，這個 PIN 碼已經無法使用。請嘗試其他 PIN 碼";
 "pin_protection_settings_change_pin" = "變更 PIN 碼";
 "pin_protection_settings_enable_pin" = "啟用 PIN 碼";
 "pin_protection_settings_enabled_forced" = "啟用 PIN 碼";
-"pin_protection_settings_section_footer" = "要重設您的 PIN 碼，您將需要重新登入並建立新的。";
-"pin_protection_settings_section_header_with_biometrics" = "PIN 碼& %@";
+"pin_protection_settings_section_footer" = "若要重設 PIN 碼，需要重新登入並建立新的 PIN 碼。";
+"pin_protection_settings_section_header_with_biometrics" = "PIN 碼與 %@";
 "pin_protection_settings_section_header" = "PIN 碼";
 "pin_protection_mismatch_too_many_times_error_message" = "如果您忘了您的 PIN 碼，請點擊「忘記 PIN 碼」。";
 "pin_protection_mismatch_error_message" = "請再試一次";
 "pin_protection_mismatch_error_title" = "PIN 碼並不相符";
-"pin_protection_reset_alert_message" = "要重設您的 PIN 碼，您將需要重新登入並建立新的";
+"pin_protection_reset_alert_message" = "若要重設 PIN 碼，需要重新登入並建立新的 PIN 碼";
 "pin_protection_reset_alert_title" = "重設 PIN 碼";
 "pin_protection_forgot_pin" = "忘記 PIN 碼";
-"pin_protection_enter_pin" = "輸入 PIN 碼";
+"pin_protection_enter_pin" = "輸入您的 PIN 碼";
 "pin_protection_confirm_pin_to_change" = "請確認您的 PIN 碼，以變更 PIN 碼";
-"pin_protection_confirm_pin_to_disable" = "確認您的 PIN 碼，以關閉 PIN 碼";
+"pin_protection_confirm_pin_to_disable" = "請確認您的 PIN 碼，以關閉 PIN 碼";
 "pin_protection_confirm_pin" = "確認您的 PIN 碼";
 "pin_protection_choose_pin" = "建立 PIN 碼以確保安全";
-"major_update_information" = "我們很高興地宣布我們已變更名稱！您的應用程式是最新的，而您已登入了您的帳號。";
+"major_update_information" = "很高興宣布，我們已更名！您的應用程式已更新到最新版，您也已經成功登入帳號。";
 
 // MARK: - Major update
 
-"major_update_title" = "Riot 現在 %@";
+"major_update_title" = "Riot 已改名為 %@";
 "cross_signing_setup_banner_subtitle" = "更輕鬆地驗證其他的裝置";
 
 // MARK: - Cross-signing
@@ -1965,13 +1965,13 @@
 
 "cross_signing_setup_banner_title" = "設定加密";
 "secrets_reset_authentication_message" = "輸入您的 Matrix 帳號密碼來確認";
-"secrets_reset_warning_message" = "重新啟動後，歷史紀錄、訊息、已信任的裝置或已信任的使用者將會被清空。";
+"secrets_reset_warning_message" = "重新啟動後，將清空所有聊天紀錄、訊息、已信任的裝置或已信任的使用者。";
 "secrets_reset_warning_title" = "如果您重設了所有東西";
-"secrets_reset_information" = "僅在您沒有其他裝置可以驗證此裝置時才使用。";
+"secrets_reset_information" = "僅在您沒有其他裝置可以驗證此裝置時才使用此方式。";
 
 // MARK: - Secrets reset
 
-"secrets_reset_title" = "恢復所有設定";
+"secrets_reset_title" = "重設所有東西";
 "secrets_setup_recovery_passphrase_summary_information" = "請記住您的安全密語。此密語能夠用來解密您的加密訊息與資料。";
 
 
@@ -1979,12 +1979,12 @@
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "確認安全密語";
 "secrets_setup_recovery_passphrase_confirm_information" = "再次輸入您的安全密語以確認。";
 "secrets_setup_recovery_passphrase_additional_information" = "不要使用您的 Matrix 帳號密碼。";
-"secrets_setup_recovery_passphrase_information" = "輸入僅有您知道的安全密語，藉此保護您伺服器上的祕密。";
+"secrets_setup_recovery_passphrase_information" = "輸入僅有您知道的安全密語，來保護伺服器上與您有關的祕密資訊。";
 
 // Recovery passphrase
 
 "secrets_setup_recovery_passphrase_title" = "設定安全密語";
-"secrets_setup_recovery_key_storage_alert_message" = "✓ 印下並儲存在安全的地方\n✓ 用 USB 隨身碟或備份磁碟儲存金鑰\n✓ 複製到您個人的雲端硬碟";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ 印出來，儲存在安全的地方\n✓ 儲存到 USB 隨身碟或備份磁碟\n✓ 複製到您個人的雲端儲存空間";
 "device_details_rename_prompt_title" = "工作階段名稱";
 "device_details_last_seen_format" = "%@ @ %@\n";
 "notification_settings_room_rule_title" = "聊天室： '%@'";
@@ -2052,7 +2052,7 @@
 "user_session_details_application_version" = "版本";
 "user_session_details_application_name" = "姓名";
 "user_session_details_device_os" = "作業系統";
-"user_session_details_device_browser" = "瀏覽器";
+"user_session_details_device_browser" = "網頁版";
 "user_session_details_device_model" = "模型";
 "user_session_details_device_ip_location" = "IP 位址";
 "user_session_details_device_ip_address" = "IP 位址";
@@ -2072,30 +2072,30 @@
 
 "secrets_setup_recovery_key_title" = "儲存您的安全金鑰";
 "secrets_recovery_with_key_invalid_recovery_key_message" = "請確認您是否輸入正確的安全金鑰。";
-"secrets_recovery_with_key_invalid_recovery_key_title" = "無法存取秘密的儲存空間";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "無法存取秘密資訊儲存空間";
 "secrets_recovery_with_key_recover_action" = "使用金鑰";
 "secrets_recovery_with_key_recovery_key_placeholder" = "輸入安全金鑰";
-"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "使用您的安全金鑰以繼續。";
-"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "請輸入您的安全密語以進行下一步。";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "請輸入您的安全金鑰以繼續。";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "請輸入您的安全密語以繼續。";
 "secrets_recovery_with_key_information_verify_device" = "使用您的安全金鑰來驗證此裝置。";
-"secrets_recovery_with_key_information_default" = "請輸入安全密語來存取加密訊息歷史，以及交叉簽署身分來驗證其他工作階段。";
+"secrets_recovery_with_key_information_default" = "請輸入安全密語來存取加密訊息紀錄，以及交叉簽署身分來驗證其他工作階段。";
 
 // Recover with key
 
 "secrets_recovery_with_key_title" = "安全金鑰";
 "secrets_recovery_with_passphrase_invalid_passphrase_message" = "請確認您是否輸入正確的安全密語。";
-"secrets_recovery_with_passphrase_invalid_passphrase_title" = "無法存取秘密的儲存空間";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "使用您的安全金鑰";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "忘記您的安全密語嗎？您可以 ";
-"secrets_recovery_with_passphrase_recover_action" = "輸入安全密語";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "無法存取秘密資訊儲存空間";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "使用安全金鑰";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "忘記安全密語了嗎？您可以 ";
+"secrets_recovery_with_passphrase_recover_action" = "使用安全密語";
 "secrets_recovery_with_passphrase_passphrase_placeholder" = "輸入安全密語";
 "secrets_recovery_with_passphrase_information_verify_device" = "使用您的安全密語來驗證此裝置。";
-"secrets_recovery_with_passphrase_information_default" = "請輸入安全密語來存取加密訊息歷史，以及交叉簽署身分來驗證其他工作階段。";
+"secrets_recovery_with_passphrase_information_default" = "請輸入安全密語來存取加密訊息紀錄，以及交叉簽署身分來驗證其他工作階段。";
 
 // Recover with passphrase
 
 "secrets_recovery_with_passphrase_title" = "安全密語";
-"secrets_recovery_reset_action_part_2" = "重設所有設定";
+"secrets_recovery_reset_action_part_2" = "重設所有東西";
 
 // MARK: - Secrets recovery
 
@@ -2104,13 +2104,13 @@
 "user_verification_session_details_verify_action_current_user_manually" = "透過文字手動驗證";
 "user_verification_session_details_verify_action_current_user" = "互動驗證";
 "user_verification_session_details_additional_information_untrusted_current_user" = "如果您沒有登入此工作階段，您的帳號可能已經被入侵。";
-"user_verification_session_details_additional_information_untrusted_other_user" = "直到此使用者認證此工作階段為止，傳送到該工作階段與從它傳送的訊息都會以警告標記。或者您可以手動進行驗證。";
+"user_verification_session_details_additional_information_untrusted_other_user" = "直到此使用者信任此工作階段為止，該工作階段收發的訊息都會有警告標籤。您也可以手動進行驗證。";
 
 // Tiles
 
 "key_verification_tile_request_incoming_title" = "驗證請求";
 "key_verification_bootstrap_not_setup_message" = "您需要先啟用交叉簽署。";
-"error_not_supported_on_mobile" = "您不能在 %@ 手機上這樣做。";
+"error_not_supported_on_mobile" = "您不能在 %@ 行動版做這件事。";
 
 
 // Generic errors
@@ -2120,10 +2120,10 @@
 "emoji_picker_places_category" = "旅遊與景點";
 "emoji_picker_foods_category" = "食物與飲料";
 "emoji_picker_nature_category" = "動物與自然";
-"emoji_picker_people_category" = "笑臉與人";
+"emoji_picker_people_category" = "表情與人";
 "file_upload_error_unsupported_file_type_message" = "未支援的檔案類型。";
-"device_verification_emoji_lock" = "鎖定";
-"device_verification_emoji_spanner" = "Spanner 資料庫";
+"device_verification_emoji_lock" = "鎖頭";
+"device_verification_emoji_spanner" = "扳手";
 "device_verification_emoji_globe" = "地球";
 
 // User
@@ -2148,12 +2148,12 @@
 "key_verification_manually_verify_device_key_title" = "工作階段金鑰";
 "key_verification_manually_verify_device_id_title" = "工作階段 ID";
 "key_verification_manually_verify_device_name_title" = "工作階段名稱";
-"key_verification_manually_verify_device_instruction" = "透過比較以下內容與您其他的工作階段中的使用者設定來確認：";
+"key_verification_manually_verify_device_instruction" = "透過將下列內容與您其他工作階段中的「使用者設定」所顯示的內容來確認：";
 
 // MARK: Manually Verify Device
 
 "key_verification_manually_verify_device_title" = "透過文字手動驗證";
-"key_verification_verify_sas_additional_information" = "考慮到最安全的方式，請使用其他可信任的方式來溝通或是親自處理。";
+"key_verification_verify_sas_additional_information" = "為了得到最佳的安全性，請使用其他可信任的方式來溝通或是當面進行。";
 "key_verification_verify_sas_validate_action" = "它們相符";
 "key_verification_verify_sas_cancel_action" = "它們不相符";
 "key_verification_verify_sas_title_number" = "比對數字";
@@ -2172,7 +2172,7 @@
 
 "device_verification_self_verify_wait_title" = "全面的安全性";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "評論";
-"key_verification_alert_body" = "請審閱以確保您的帳號安全。";
+"key_verification_alert_body" = "請確認您的帳號安全。";
 
 // Unverified sessions
 "key_verification_alert_title" = "您有未驗證的工作階段";
@@ -2183,10 +2183,10 @@
 
 "key_verification_self_verify_current_session_alert_title" = "驗證此工作階段";
 "device_verification_self_verify_start_waiting" = "正在等待…";
-"device_verification_self_verify_start_information" = "使用此工作階段來驗證新的，讓它可以存取已加密的訊息。";
+"device_verification_self_verify_start_information" = "使用此工作階段來驗證新的工作階段，讓新階段可以存取加密訊息。";
 "device_verification_self_verify_start_verify_action" = "開始驗證";
 "device_verification_self_verify_alert_validate_action" = "驗證";
-"device_verification_self_verify_alert_message" = "驗證正在存取您帳號的新登入：%@";
+"device_verification_self_verify_alert_message" = "請驗證您的帳號新登入紀錄：%@";
 
 // MARK: Self verification start
 
@@ -2194,35 +2194,35 @@
 "device_verification_self_verify_alert_title" = "新登入。這是您嗎？";
 "device_verification_start_use_legacy_action" = "使用傳統驗證";
 "device_verification_start_verify_button" = "開始驗證";
-"device_verification_start_use_legacy" = "沒有動靜嗎？可能是因為有的客戶端並未支援互動驗證。請使用傳統驗證。";
-"device_verification_start_wait_partner" = "等待其他伙伴接受…";
+"device_verification_start_use_legacy" = "沒有動靜嗎？不是所有客戶端都支援互動式驗證。請改用傳統驗證機制。";
+"device_verification_start_wait_partner" = "正在等待夥伴確認…";
 
 // MARK: Start
 "device_verification_start_title" = "比較一小段文字以進行驗證";
-"device_verification_incoming_description_2" = "驗證此工作階段，會標記此工作階段為可形容。其他使用者也可以看到此工作階段為可信任。";
-"device_verification_incoming_description_1" = "驗證此工作階段，並標記為受信任的工作階段。信任的使用者可以在使用端到端加密訊息時能更加放心。";
+"device_verification_incoming_description_2" = "驗證此工作階段，會標記此工作階段為可信任。與您聊天的其他人也會看到此工作階段標記。";
+"device_verification_incoming_description_1" = "驗證此工作階段，並標記為可受信任。由您將工作階段標記為可受信任後，可讓聊天夥伴傳送端到端加密訊息時能更加放心。";
 
 // MARK: Incoming
-"device_verification_incoming_title" = "下一個驗證請求";
+"device_verification_incoming_title" = "收到的驗證請求";
 "device_verification_error_cannot_load_device" = "無法載入工作階段的資訊。";
-"device_verification_cancelled_by_me" = "以取消驗證。理由：%@";
+"device_verification_cancelled_by_me" = "已取消驗證。理由：%@";
 "device_verification_cancelled" = "另一方取消了驗證。";
 "device_verification_security_advice_number" = "比較這些數字，確保它們以相同的順序出現。";
-"device_verification_security_advice_emoji" = "比較獨特的表情符號，並確保它們以相同的順序出現。";
+"device_verification_security_advice_emoji" = "比對顯示的表情符號，確認它們以相同的順序出現。";
 "key_verification_user_title" = "驗證他們";
 "key_verification_this_session_title" = "驗證此工作階段";
-"key_verification_new_session_title" = "驗證您新的工作階段";
+"key_verification_new_session_title" = "驗證您的新工作階段";
 
 // MARK: - Device Verification
 "key_verification_other_session_title" = "驗證工作階段";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "我願意等待";
-"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "我不想要我的加密訊息";
-"sign_out_key_backup_in_progress_alert_title" = "金鑰備份進行中。如果您現在登出，您將會失去您的加密訊息。";
-"sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "除非您在登出前備份您的金鑰，否則您將會失去您對加密訊息的存取權。";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "我不要我的加密訊息了";
+"sign_out_key_backup_in_progress_alert_title" = "正在備份金鑰。若您現在登出，將無法再存取加密訊息。";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "除非您在登出前備份好金鑰，否則將無法再存取所有加密訊息。";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "您將會失去您的加密訊息";
-"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "我不想要我的加密訊息";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "我不要我的加密訊息了";
 "sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "開始使用安全備份";
-"sign_out_non_existing_key_backup_alert_title" = "如果您現在登出的話，您將無法存取您的加密訊息";
+"sign_out_non_existing_key_backup_alert_title" = "如果您現在登出的話，將無法再存取您的加密訊息";
 "sign_out_confirmation_message" = "您確定要登出嗎？";
 
 // MARK: Sign out warning
@@ -2232,47 +2232,47 @@
 // Success
 
 "key_backup_recover_success_info" = "備份已復原！";
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "遺失您的復原金鑰？您可以在設定中設定一個新的。";
-"key_backup_recover_from_recovery_key_recover_action" = "解鎖歷史紀錄";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "遺失您的復原金鑰？可以到設定中打一把新的金鑰。";
+"key_backup_recover_from_recovery_key_recover_action" = "解鎖訊息紀錄";
 "key_backup_recover_from_recovery_key_recovery_key_placeholder" = "輸入安全金鑰";
 
 // Recover from recovery key
 
-"key_backup_recover_from_recovery_key_info" = "使用您的通關密語來解鎖歷史加密訊息";
+"key_backup_recover_from_recovery_key_info" = "使用您的安全金鑰來解鎖加密訊息紀錄";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "使用您的安全金鑰";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "忘記您的安全密語嗎？您可以 ";
-"key_backup_recover_from_passphrase_recover_action" = "解鎖歷史紀錄";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "忘記安全密語了嗎？您可以 ";
+"key_backup_recover_from_passphrase_recover_action" = "解鎖訊息紀錄";
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "輸入安全密語";
 
 // Recover from passphrase
 
-"key_backup_recover_from_passphrase_info" = "使用您的安全密語來解鎖歷史加密訊息";
+"key_backup_recover_from_passphrase_info" = "使用您的安全密語來解鎖加密訊息紀錄";
 
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "正在復原備份…";
-"key_backup_recover_invalid_recovery_key" = "無法使用此安全金鑰解密備份：請確認您是否輸入了正確的安全金鑰。";
+"key_backup_recover_invalid_recovery_key" = "無法使用此金鑰解密備份：請確認您是否輸入了正確的安全金鑰。";
 "key_backup_recover_invalid_recovery_key_title" = "安全金鑰不相符";
-"key_backup_recover_invalid_passphrase" = "無法使用此安全密語解密備份：請確認您是否輸入了正確的安全密語。";
+"key_backup_recover_invalid_passphrase" = "無法使用此密語解密備份：請確認您是否輸入了正確的安全密語。";
 "key_backup_recover_invalid_passphrase_title" = "不正確的安全密語";
 
 // MARK: Key backup recover
 
-"key_backup_recover_title" = "加密訊息";
+"key_backup_recover_title" = "安全訊息";
 
 // Success from secure backup
-"key_backup_setup_success_from_secure_backup_info" = "您的金鑰正在備份。";
-"key_backup_setup_success_from_recovery_key_made_copy_action" = "我已經複製完了";
-"key_backup_setup_success_from_recovery_key_make_copy_action" = "複製";
+"key_backup_setup_success_from_secure_backup_info" = "正在備份您的金鑰。";
+"key_backup_setup_success_from_recovery_key_made_copy_action" = "我已經留下副本";
+"key_backup_setup_success_from_recovery_key_make_copy_action" = "建立副本";
 "key_backup_setup_success_from_recovery_key_recovery_key_title" = "安全金鑰";
 
 // Success from recovery key
-"key_backup_setup_success_from_recovery_key_info" = "您已備份您的金鑰。\n\n請備份您的金鑰並保持金鑰的安全。";
+"key_backup_setup_success_from_recovery_key_info" = "已開始備份您的金鑰。\n\n請複製保存安全金鑰並確保其安全。";
 "key_backup_setup_success_from_passphrase_save_recovery_key_action" = "儲存安全金鑰";
 
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "您的金鑰已經被備份。\n\n您的金鑰是個安全網，如果您忘記您的安全密語，您可以使用它來復原您對加密訊息的存取權。\n\n請把您的復原金鑰放在非常安全的地方，如密碼管理員（或保險箱）。";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "（進階）使用復原金鑰設定";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "或是使用復原金鑰來保障您的備份安全，將其儲存在安全的地方。";
+"key_backup_setup_success_from_passphrase_info" = "已開始備份您的金鑰。\n\n您的金鑰是一張安全網：如果忘記安全密語，可以使用它來復原您對加密訊息的存取權。\n\n請把您的安全金鑰放在非常安全的地方，如密碼管理員（或保險箱）。";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "（進階）使用安全金鑰設定";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "或是使用安全金鑰來保障您的備份安全，將其儲存在安全的地方。";
 "key_backup_setup_passphrase_set_passphrase_action" = "設定安全密語";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "安全密語不相符";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "太棒了！";
@@ -2351,11 +2351,11 @@
 
 // MARK: Reactions
 
-"room_event_action_reaction_more" = "更多 %@";
+"room_event_action_reaction_more" = "還有 %@ 個";
 "leave_space_selection_no_rooms" = "不選擇任何聊天室";
 "leave_space_selection_all_rooms" = "選擇所有的聊天室";
 "leave_space_selection_title" = "選擇聊天室";
-"leave_space_and_more_rooms" = "離開聊天空間與 %@ 聊天室";
+"leave_space_and_more_rooms" = "離開聊天空間與 %@ 間聊天室";
 "leave_space_and_one_room" = "離開聊天空間與一間聊天室";
 
 // MARK: Leave space
@@ -2366,23 +2366,23 @@
 "spaces_creation_in_many_spaces" = "在 %@ 個聊天空間";
 "spaces_creation_in_spacename_plus_many" = "在 %@ 加入 %@ 個聊天空間";
 "spaces_creation_in_spacename_plus_one" = "在 %@ 加入一個聊天空間";
-"spaces_creation_in_spacename" = "在%@";
-"spaces_creation_post_process_inviting_users" = "正在邀請%@使用者";
-"spaces_creation_post_process_adding_rooms" = "增加%@聊天室";
+"spaces_creation_in_spacename" = "在 %@";
+"spaces_creation_post_process_inviting_users" = "邀請 %@ 位使用者";
+"spaces_creation_post_process_adding_rooms" = "加入 %@ 個聊天室";
 "spaces_creation_post_process_creating_room" = "建立 %@";
 "spaces_creation_post_process_uploading_avatar" = "上傳大頭照";
 "spaces_creation_post_process_creating_space_task" = "建立 %@";
 "spaces_creation_post_process_creating_space" = "建立聊天空間";
 "spaces_creation_invite_by_username_message" = "您可以稍後再邀請他們。";
-"spaces_creation_invite_by_username_title" = "邀請您的團隊";
+"spaces_creation_invite_by_username_title" = "邀請您的團隊成員";
 "spaces_creation_invite_by_username" = "透過使用者名稱邀請";
 "spaces_creation_add_rooms_message" = "此聊天空間專屬於您，不會傳送通知給任何人。您稍後可以加入更多人。";
 "spaces_creation_add_rooms_title" = "您想要加入什麼？";
-"spaces_creation_sharing_type_me_and_teammates_detail" = "讓您與您的團隊成員使用的私密聊天空間";
+"spaces_creation_sharing_type_me_and_teammates_detail" = "專為您與團隊成員使用的私密空間";
 "spaces_creation_sharing_type_me_and_teammates_title" = "我與團隊成員";
-"spaces_creation_sharing_type_just_me_detail" = "用來整理您的聊天室的私密聊天空間";
+"spaces_creation_sharing_type_just_me_detail" = "整理您聊天室的私密聊天空間";
 "spaces_creation_sharing_type_just_me_title" = "只有我";
-"spaces_creation_sharing_type_message" = "確保合適的人有權存取%@。您可以稍後再變更這個選項。";
+"spaces_creation_sharing_type_message" = "確保合適的人有權存取 %@。您可以稍後再變更這個選項。";
 "spaces_creation_sharing_type_title" = "您與誰一起工作？";
 "spaces_creation_email_invites_email_title" = "電子郵件地址";
 "spaces_creation_email_invites_message" = "您可以稍後再邀請他們。";
@@ -2456,7 +2456,7 @@
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "此處已啟用加密";
 "room_details_advanced_room_id_for_dm" = "ID：";
 "room_details_no_local_addresses_for_dm" = "沒有本機位址";
-"room_details_promote_room_suggest_title" = "給聊天空間成員的建議";
+"room_details_promote_room_suggest_title" = "推薦給聊天空間成員";
 "room_details_access_section_directory_toggle_for_dm" = "在聊天室目錄中顯示";
 "room_details_promote_room_title" = "推廣聊天室";
 "room_details_access_row_title" = "存取";
@@ -2562,34 +2562,34 @@
 "user_verification_session_details_information_untrusted_other_user" = " 登入新的工作階段：";
 "user_verification_session_details_information_untrusted_current_user" = "驗證此工作階段並進行標記，使其能夠存取加密訊息：";
 "user_verification_session_details_information_trusted_other_user_part2" = " 驗證：";
-"user_verification_session_details_information_trusted_other_user_part1" = "此工作階段在安全通訊上已受信任，因為 ";
-"user_verification_session_details_information_trusted_current_user" = "因為您已驗證此工作階段，所以其在安全通訊上可受信任：";
+"user_verification_session_details_information_trusted_other_user_part1" = "可信任此工作階段進行安全通訊，因為 ";
+"user_verification_session_details_information_trusted_current_user" = "因為您已驗證此工作階段，可信任其用於安全通訊：";
 "user_verification_session_details_untrusted_title" = "未受信任";
 
 // Session details
 
-"user_verification_session_details_trusted_title" = "受認證";
+"user_verification_session_details_trusted_title" = "受信任";
 "user_verification_sessions_list_session_untrusted" = "未受信任";
-"user_verification_sessions_list_session_trusted" = "已信任";
+"user_verification_sessions_list_session_trusted" = "受信任";
 "user_verification_sessions_list_information" = "在此聊天室中與此使用者的訊息已進行端到端加密，無法被第三方讀取。";
 
 // Sessions list
 
-"user_verification_sessions_list_user_trust_level_trusted_title" = "已信任";
+"user_verification_sessions_list_user_trust_level_trusted_title" = "受信任";
 "user_verification_start_additional_information" = "要確定安全，請面對面進行或使用其他方式來通訊。";
-"user_verification_start_waiting_partner" = "等待 %@…";
-"user_verification_start_information_part2" = " 藉由在您的所有裝置上確認單次性的條碼。";
-"user_verification_start_information_part1" = "為了加強安全性，請進行驗證。 ";
+"user_verification_start_waiting_partner" = "正在等待 %@…";
+"user_verification_start_information_part2" = " 雙方裝置上顯示的單次驗證碼。";
+"user_verification_start_information_part1" = "為了加強安全性，請確認 ";
 
 // MARK: - User verification
 
 // Start
 
 "user_verification_start_verify_action" = "開始驗證";
-"key_verification_scan_confirmation_scanned_device_information" = "其他的裝置有相同的保護嗎？";
-"key_verification_scan_confirmation_scanned_user_information" = "%@ 有一樣的保護嗎？";
+"key_verification_scan_confirmation_scanned_device_information" = "另一台裝置有顯示一樣的盾牌嗎？";
+"key_verification_scan_confirmation_scanned_user_information" = "%@ 是否顯示一樣的盾牌？";
 "key_verification_scan_confirmation_scanning_device_waiting_other" = "等待其他裝置…";
-"key_verification_scan_confirmation_scanning_user_waiting_other" = "等待 %@…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "正在等待 %@…";
 
 // MARK: Scan confirmation
 
@@ -2601,7 +2601,7 @@
 "key_verification_verify_qr_code_start_emoji_action" = "透過表情符號驗證";
 "key_verification_verify_qr_code_cannot_scan_action" = "無法掃描嗎？";
 "key_verification_verify_qr_code_scan_code_other_device_action" = "使用此裝置掃描";
-"key_verification_verify_qr_code_scan_code_action" = "掃描他們的驗證碼";
+"key_verification_verify_qr_code_scan_code_action" = "掃描他們的條碼";
 "key_verification_verify_qr_code_emoji_information" = "透過比對獨特的表情符號來進行驗證。";
 "key_verification_verify_qr_code_information_other_device" = "掃描下方驗證碼以驗證：";
 "key_verification_verify_qr_code_information" = "掃描此驗證碼以安全地驗證彼此。";
@@ -2618,9 +2618,9 @@
 "key_verification_tile_request_status_accepted" = "您已接受";
 "key_verification_tile_request_status_cancelled" = "%@ 已取消";
 "key_verification_tile_request_status_cancelled_by_me" = "您已取消";
-"key_verification_tile_request_status_expired" = "過期";
+"key_verification_tile_request_status_expired" = "已過期";
 "key_verification_tile_request_status_waiting" = "正在等待…";
-"key_verification_tile_request_status_data_loading" = "下載資料…";
+"key_verification_tile_request_status_data_loading" = "正在載入資料…";
 "key_verification_tile_request_outgoing_title" = "已傳送驗證";
 "settings_labs_enable_new_client_info_feature" = "記錄客戶端名稱、版本與網址，以便在工作階段管理員當中能更輕鬆找出工作階段";
 "settings_labs_enable_new_session_manager" = "新版工作階段管理員";
@@ -2796,7 +2796,7 @@
 "key_verification_scan_qr_code_title" = "掃描 QR Code";
 "device_verification_self_verify_wait_recover_secrets_additional_help" = "無法存取其他的 %@ 工作階段嗎？";
 "device_verification_self_verify_open_on_other_device_information" = "需要先驗證此工作階段，才能讀取加密訊息紀錄。\n\n請在您的任一其他裝置開啟 Element 並依照當中的指示進行驗證。";
-"device_verification_self_verify_open_on_other_device_title" = "在您的另一台裝置上開啟 %@";
+"device_verification_self_verify_open_on_other_device_title" = "開啟您另一台裝置上的 %@";
 "key_backup_recover_from_private_key_progress" = "完成 %@%%";
 "room_details_polls" = "投票紀錄";
 "settings_labs_disable_crypto_sdk" = "Rust 端對端加密（登出後即可停用）";
