@@ -57,7 +57,8 @@ final class SpaceAvatarView: AvatarView, NibOwnerLoadable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.avatarImageView.layer.cornerRadius = Constants.cornerRadius
+        // Ensure we keep a rounded corner if the width is less than 2 * Constants.cornerRadius
+        self.avatarImageView.layer.cornerRadius = max(2.0, min(self.avatarImageView.bounds.width / 4, Constants.cornerRadius))
     }
     
     // MARK: - Public
