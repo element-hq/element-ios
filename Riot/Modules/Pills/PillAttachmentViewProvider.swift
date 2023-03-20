@@ -23,7 +23,7 @@ import UIKit
     static let pillAttachmentViewSizes = PillAttachmentView.Sizes(verticalMargin: 2.0,
                                                                   horizontalMargin: 6.0,
                                                                   avatarLeading: 2.0,
-                                                                  avatarSideLength: 20.0,
+                                                                  avatarSideLength: 16.0,
                                                                   itemSpacing: 4)
     private weak var messageTextView: MXKMessageTextView?
 
