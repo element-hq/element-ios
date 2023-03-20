@@ -6612,8 +6612,12 @@ static CGSize kThreadListBarButtonItemImageSize;
     // Check whether the read marker exists and has not been rendered yet.
     if (self.roomDataSource.isLive && !self.roomDataSource.isPeeking && self.roomDataSource.showReadMarker && self.roomDataSource.room.accountData.readMarkerEventId)
     {
-        UITableViewCell *cell = [self.bubblesTableView visibleCells].firstObject;
-        if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            return [evaluatedObject isKindOfClass:MXKRoomBubbleTableViewCell.class];
+        }];
+        NSArray *visibleCells = [[self.bubblesTableView visibleCells] filteredArrayUsingPredicate:predicate];
+        UITableViewCell *cell = visibleCells.firstObject;
+        if (cell)
         {
             MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
             // Check whether the read marker is inside the first displayed cell.
@@ -6653,6 +6657,39 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             // Move the read marker to the current read receipt position by default.
             [self.roomDataSource.room forgetReadMarker];
+        }
+        // Force the update of the read marker if we try to display it (in some cases, we are not able to setup the readMarkerView which prevent us to update the read marker)
+        else if (!self.roomDataSource.isLive && !self.roomDataSource.isPeeking && self.roomDataSource.showReadMarker && self.roomDataSource.room.accountData.readMarkerEventId && !self.updateRoomReadMarker)
+        {
+            // Check if the readmarker's event is in a visible cell
+            MXEvent *currentReadMarkerEvent = [self.roomDataSource.mxSession.store eventWithEventId:self.roomDataSource.room.accountData.readMarkerEventId inRoom:self.roomDataSource.roomId];
+            if (currentReadMarkerEvent)
+            {
+                NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+                    return [evaluatedObject isKindOfClass:MXKRoomBubbleTableViewCell.class];
+                }];
+                NSArray *visibleCells = [[self.bubblesTableView visibleCells] filteredArrayUsingPredicate:predicate];
+                UITableViewCell *firstCell = visibleCells.firstObject;
+                UITableViewCell *lastCell = visibleCells.lastObject;
+                if (firstCell && lastCell)
+                {
+                    // Get the first displayed event
+                    MXKRoomBubbleTableViewCell *firstRoomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)firstCell;
+                    MXKRoomBubbleComponent *component = firstRoomBubbleTableViewCell.bubbleData.bubbleComponents.firstObject;
+                    MXEvent *firstDisplayedEvent = component.event;
+
+                    // Get the last displayed event
+                    MXKRoomBubbleTableViewCell *lastRoomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)lastCell;
+                    MXKRoomBubbleComponent *lastComponent = lastRoomBubbleTableViewCell.bubbleData.bubbleComponents.lastObject;
+                    MXEvent *lastDisplayedEvent = lastComponent.event;
+                    
+                    // If the currentReadMarkerEvent is between the first and the last displayed event, force the update of the room read marker to prevent it from being blocked
+                    if (currentReadMarkerEvent.originServerTs > firstDisplayedEvent.originServerTs && currentReadMarkerEvent.originServerTs < lastDisplayedEvent.originServerTs)
+                    {
+                        self.updateRoomReadMarker = YES;
+                    }
+                }
+            }
         }
     }
 }
