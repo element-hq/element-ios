@@ -1629,20 +1629,20 @@
 
 "location_sharing_title" = "位置";
 "poll_timeline_not_closed_subtitle" = "請再試一次";
-"poll_timeline_not_closed_title" = "無法結束投票";
+"poll_timeline_not_closed_title" = "結束投票失敗";
 "poll_timeline_vote_not_registered_subtitle" = "抱歉，您的投票未計入。請再試一次";
-"poll_timeline_vote_not_registered_title" = "投票未註冊";
-"poll_timeline_total_final_results" = "最後的結果取決於 %lu 票";
-"poll_timeline_total_final_results_one_vote" = "最後的結果取決於一票";
-"poll_timeline_total_votes_not_voted" = "已投 %lu 票。投票以檢視結果";
-"poll_timeline_total_one_vote_not_voted" = "已投下一票。投票已檢視結果";
-"poll_timeline_total_votes" = "已投 %lu 票";
-"poll_timeline_total_one_vote" = "已投一票";
-"poll_timeline_total_no_votes" = "沒有投票";
-"poll_timeline_votes_count" = "%lu 投票";
-"poll_timeline_one_vote" = "一次投票";
+"poll_timeline_vote_not_registered_title" = "投票未計入";
+"poll_timeline_total_final_results" = "共計 %lu 票所獲得的投票結果";
+"poll_timeline_total_final_results_one_vote" = "共計 1 票所獲得的投票結果";
+"poll_timeline_total_votes_not_voted" = "已投 %lu 票。投票後即可檢視結果";
+"poll_timeline_total_one_vote_not_voted" = "已投 1 票。投票後即可檢視結果";
+"poll_timeline_total_votes" = "共計 %lu 票";
+"poll_timeline_total_one_vote" = "共計 1 票";
+"poll_timeline_total_no_votes" = "尚未投票";
+"poll_timeline_votes_count" = "%lu 張票";
+"poll_timeline_one_vote" = "1 票";
 "poll_edit_form_poll_type_closed_description" = "結果僅在您結束投票後顯示";
-"poll_edit_form_poll_type_closed" = "已結束投票";
+"poll_edit_form_poll_type_closed" = "秘密投票";
 "poll_edit_form_poll_type_open_description" = "投票者在投票後可以立刻看到投票結果";
 "poll_edit_form_poll_type_open" = "開放式投票";
 "poll_edit_form_update_failure_subtitle" = "請再試一次";
@@ -1652,7 +1652,7 @@
 "poll_edit_form_add_option" = "新增選項";
 "poll_edit_form_option_number" = "選項 %lu";
 "poll_edit_form_create_options" = "建立選項";
-"poll_edit_form_input_placeholder" = "寫一些東西";
+"poll_edit_form_input_placeholder" = "寫點東西";
 "poll_edit_form_question_or_topic" = "問題或主題";
 "poll_edit_form_poll_question_or_topic" = "投票問題或主題";
 "poll_edit_form_poll_type" = "投票類型";
@@ -1663,7 +1663,7 @@
 "space_invite_nav_title" = "此聊天空間的邀請";
 "space_detail_nav_title" = "此聊天空間的敘述";
 "space_selector_create_space" = "建立聊天空間";
-"space_selector_empty_view_information" = "聊天空間是一種對聊天室與人們分組的新方式。建立聊天空間即可開始。";
+"space_selector_empty_view_information" = "聊天空間是一種分類聊天室與聯絡人的新方式。開始建立聊天空間吧。";
 "space_selector_empty_view_title" = "尚無聊天空間。";
 
 // MARK: - Space Selector
@@ -1678,7 +1678,7 @@
 "all_chats_edit_menu_leave_space" = "離開 %@";
 "all_chats_user_menu_settings" = "使用者設定";
 "all_chats_user_menu_accessibility_label" = "使用者選單";
-"room_recents_recently_viewed_section" = "最近的檢視";
+"room_recents_recently_viewed_section" = "最近檢視";
 "all_chats_nothing_found_placeholder_message" = "試著調整您的搜尋條件。";
 "all_chats_nothing_found_placeholder_title" = "找不到任何結果。";
 "all_chats_empty_unreads_placeholder_message" = "當您有一些未讀的訊息時，這裡會顯示您的未讀訊息。";
@@ -1690,26 +1690,26 @@
 "all_chats_edit_layout_alphabetical_order" = "按 A-Z 排列";
 "all_chats_edit_layout_activity_order" = "按活動排列";
 "all_chats_edit_layout_show_filters" = "顯示過濾條件";
-"all_chats_edit_layout_show_recents" = "顯示最近內容";
+"all_chats_edit_layout_show_recents" = "顯示最近的";
 "all_chats_edit_layout_sorting_options_title" = "分類您的訊息";
 "all_chats_edit_layout_pin_spaces_title" = "釘選您的聊天空間";
-"all_chats_edit_layout_add_filters_message" = "自動依照您的選擇，過濾您的訊息";
+"all_chats_edit_layout_add_filters_message" = "自動依照您的選擇來分類訊息";
 "all_chats_edit_layout_add_filters_title" = "過濾您的訊息";
-"all_chats_edit_layout_add_section_message" = "固定首頁特定段落，下次能夠更快使用";
+"all_chats_edit_layout_add_section_message" = "將特定段落釘選到首頁，隨時方便使用";
 "all_chats_edit_layout_add_section_title" = "在首頁增加段落";
 "all_chats_edit_layout_unreads" = "未讀";
 "all_chats_edit_layout_recents" = "最近";
-"all_chats_edit_layout" = "佈局偏好設定";
+"all_chats_edit_layout" = "版面偏好設定";
 "all_chats_section_title" = "聊天";
 
 // MARK: - All Chats
 
 "all_chats_title" = "所有聊天";
-"version_check_modal_action_title_deprecated" = "找出原因";
-"version_check_modal_subtitle_deprecated" = "我們正在努力升級 %@，以達到更快速簡潔的使用體驗。很抱歉，您目前的 iOS 版本已經和某些更新不相容，將不再繼續支援。\n我們建議您升級您的操作系統，才能使用 %@ 的所有功能。";
+"version_check_modal_action_title_deprecated" = "了解要怎麼做";
+"version_check_modal_subtitle_deprecated" = "一直以來，我們都努力加強 %@，讓您有更快速簡潔的使用體驗。很抱歉，您目前的 iOS 版本已經和某些更新不相容，已不再繼續支援。\n我們建議您升級作業系統，才能使用 %@ 的完整功能。";
 "version_check_modal_title_deprecated" = "我們不再支援 iOS %@";
 "version_check_modal_action_title_supported" = "了解";
-"version_check_modal_subtitle_supported" = "我們正在努力升級 %@，以達到更快速簡潔的使用體驗。很抱歉，您目前的 iOS 版本已經和某些更新不相容，將不再繼續支援。\n我們建議您升級您的操作系統，才能使用 %@ 的所有功能。";
+"version_check_modal_subtitle_supported" = "一直以來，我們都努力加強 %@，讓您有更快速簡潔的使用體驗。很抱歉，您目前的 iOS 版本已經和某些更新不相容，將不再繼續支援。\n我們建議您升級作業系統，才能使用 %@ 的完整功能。";
 "version_check_modal_title_supported" = "我們不再支援 iOS %@";
 "version_check_banner_subtitle_deprecated" = "我們即將結束支援 iOS %@ 上的 %@。要繼續使用 %@ 的所有功能，我們建議您升級 iOS 的版本。";
 "version_check_banner_title_deprecated" = "我們不再支援 iOS %@";
@@ -1719,7 +1719,7 @@
 
 "version_check_banner_title_supported" = "我們不再支援 iOS %@";
 "voice_broadcast_stop_alert_agree_button" = "是的，停止";
-"voice_broadcast_stop_alert_description" = "您確定您要停止您的即時廣播嗎？這將會結束廣播，聊天室內將會提供完整的錄製內容。";
+"voice_broadcast_stop_alert_description" = "您真的要停止即時廣播嗎？將會結束廣播，完整錄音存檔稍後將在聊天室中提供。";
 "voice_broadcast_stop_alert_title" = "停止即時廣播？";
 "voice_broadcast_buffering" = "正在緩衝…";
 "voice_broadcast_time_left" = "剩下 %@";
@@ -2841,7 +2841,7 @@
 "poll_history_title" = "投票紀錄";
 "room_waiting_other_participants_message" = "被邀請的使用者加入 %@ 後，您就可以聊天，聊天室將會進行端到端加密";
 "room_waiting_other_participants_title" = "等待使用者加入 %@";
-"voice_broadcast_playback_unable_to_decrypt" = "無法解密語音廣播。";
+"voice_broadcast_playback_unable_to_decrypt" = "無法解密此語音廣播。";
 "voice_broadcast_recorder_connection_error" = "連線錯誤 - 已暫停錄音";
 "voice_broadcast_connection_error_message" = "很抱歉，現在無法錄音。請稍後再試。";
 "voice_broadcast_connection_error_title" = "連線錯誤";
