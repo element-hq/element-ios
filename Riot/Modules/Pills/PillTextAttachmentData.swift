@@ -18,11 +18,32 @@ import Foundation
 import UIKit
 
 @available (iOS 15.0, *)
+struct PillAssetColor: Codable {
+    var red: CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0, alpha: CGFloat = 0.0
+    
+    var uiColor: UIColor {
+        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+    }
+    
+    init(uiColor: UIColor) {
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+    }
+}
+
+@available (iOS 15.0, *)
+struct PillAssetParameter: Codable {
+    var tintColor: PillAssetColor?
+    var backgroundColor: PillAssetColor?
+    var rawRenderingMode: Int = UIImage.RenderingMode.automatic.rawValue
+    var padding: CGFloat = 2.0
+}
+
+@available (iOS 15.0, *)
 enum PillTextAttachmentItem: Codable {
     case text(String)
     case avatar(url: String?, string: String?, matrixId: String)
     case spaceAvatar(url: String?, string: String?, matrixId: String)
-    case asset(named: String)
+    case asset(named: String, parameters: PillAssetParameter)
 }
 
 @available (iOS 15.0, *)

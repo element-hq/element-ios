@@ -112,25 +112,25 @@ class PillAttachmentView: UIView {
                 
                 computedWidth += sizes.avatarSideLength
                 
-            case .asset(let name):
+            case .asset(let name, let parameters):
                 let assetView = UIView(frame: CGRect(x: 0, y: 0, width: sizes.avatarSideLength, height: sizes.avatarSideLength))
-                assetView.backgroundColor = theme.colors.links
+                assetView.backgroundColor = parameters.backgroundColor?.uiColor
                 assetView.layer.cornerRadius = sizes.avatarSideLength / 2
                 assetView.isUserInteractionEnabled = false
                 assetView.translatesAutoresizingMaskIntoConstraints = false
 
                 let imageView = UIImageView(frame: .zero)
-                imageView.image = ImageAsset(name: name).image.withRenderingMode(.alwaysTemplate)
-                imageView.tintColor = theme.baseIconPrimaryColor
+                imageView.image = ImageAsset(name: name).image.withRenderingMode(UIImage.RenderingMode(rawValue: parameters.rawRenderingMode) ?? .automatic)
+                imageView.tintColor = parameters.tintColor?.uiColor ?? theme.baseIconPrimaryColor
                 imageView.contentMode = .scaleAspectFit
                 imageView.translatesAutoresizingMaskIntoConstraints = false
                 
                 assetView.addSubview(imageView)
                 NSLayoutConstraint.activate([
-                    imageView.leadingAnchor.constraint(equalTo: assetView.leadingAnchor, constant: 2),
-                    imageView.trailingAnchor.constraint(equalTo: assetView.trailingAnchor, constant: -2),
-                    imageView.topAnchor.constraint(equalTo: assetView.topAnchor, constant: 2),
-                    imageView.bottomAnchor.constraint(equalTo: assetView.bottomAnchor, constant: -2)
+                    imageView.leadingAnchor.constraint(equalTo: assetView.leadingAnchor, constant: parameters.padding),
+                    imageView.trailingAnchor.constraint(equalTo: assetView.trailingAnchor, constant: -parameters.padding),
+                    imageView.topAnchor.constraint(equalTo: assetView.topAnchor, constant: parameters.padding),
+                    imageView.bottomAnchor.constraint(equalTo: assetView.bottomAnchor, constant: -parameters.padding)
                 ])
 
                 stack.addArrangedSubview(assetView)

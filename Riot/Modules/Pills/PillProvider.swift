@@ -119,16 +119,27 @@ struct PillProvider {
             // fallback on getting the user from the session's store
             user = session.user(withUserId: userId)
         }
+
         
         let avatarUrl = roomMember?.avatarUrl ?? user?.avatarUrl
         let displayName = roomMember?.displayname ?? user?.displayName ?? userId
         let isHighlighted = userId == session.myUserId
 
+        let avatar: PillTextAttachmentItem
+        if avatarUrl == nil {
+            avatar = .asset(named: "pill_user",
+                            parameters: .init(tintColor: PillAssetColor(uiColor: ThemeService.shared().theme.colors.secondaryContent),
+                                              rawRenderingMode: UIImage.RenderingMode.alwaysOriginal.rawValue,
+                                              padding: 0.0))
+        } else {
+            avatar = .avatar(url: avatarUrl,
+                             string: displayName,
+                             matrixId: userId)
+        }
+
         let data = PillTextAttachmentData(pillType: .user(userId: userId),
                                           items: [
-                                            .avatar(url: avatarUrl,
-                                                    string: displayName,
-                                                    matrixId: userId),
+                                            avatar,
                                             .text(displayName)
                                           ],
                                           isHighlighted: isHighlighted,
@@ -156,7 +167,7 @@ struct PillProvider {
         
         let avatar: PillTextAttachmentItem
         if let room {
-            if let _ = session.spaceService.getSpace(withId: roomId) {
+            if session.spaceService.getSpace(withId: roomId) != nil {
                 avatar = .spaceAvatar(url: room.avatarData.mxContentUri,
                                       string: displayName,
                                       matrixId: roomId)
@@ -166,7 +177,9 @@ struct PillProvider {
                                  matrixId: roomId)
             }
         } else {
-            avatar = .asset(named: "link_icon")
+            avatar = .asset(named: "link_icon",
+                            parameters: .init(backgroundColor: PillAssetColor(uiColor: ThemeService.shared().theme.colors.links),
+                                              rawRenderingMode: UIImage.RenderingMode.alwaysTemplate.rawValue))
         }
         
         let data = PillTextAttachmentData(pillType: .room(roomId: roomId),
@@ -207,7 +220,10 @@ struct PillProvider {
                              string: room.displayName,
                              matrixId: roomId)
         } else {
-            avatar = .asset(named: "link_icon")
+            avatar = .asset(named: "link_icon",
+                            parameters: .init(backgroundColor: PillAssetColor(uiColor: ThemeService.shared().theme.colors.links),
+                                              rawRenderingMode: UIImage.RenderingMode.alwaysTemplate.rawValue))
+                                              
         }
         
         func computeDisplayText(withRoomDisplayName displayName: String?) -> String {
