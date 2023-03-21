@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+import HTMLParser
 import UIKit
 import WysiwygComposer
 
@@ -38,6 +39,9 @@ extension RoomViewController {
                 newAttributedString.appendString(" ")
             } else if roomMember.userId == self.mainSession.myUser.userId {
                 newAttributedString.appendString("/me ")
+                newAttributedString.addAttribute(.font,
+                                                 value: inputToolbarView.textDefaultFont,
+                                                 range: .init(location: 0, length: newAttributedString.length))
             } else {
                 if #available(iOS 15.0, *) {
                     newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
@@ -155,24 +159,7 @@ extension RoomViewController {
 
     @objc func togglePlainTextMode() {
         RiotSettings.shared.enableWysiwygTextFormatting.toggle()
-
-        guard let wysiwygInputToolbar else { return }
-
-        // Switching from plain -> RTE, replace Pills by valid markdown links for parsing.
-        if !wysiwygInputToolbar.textFormattingEnabled, #available(iOS 15.0, *),
-            let attributedText = wysiwygInputToolbar.attributedTextMessage {
-            wysiwygInputToolbar.attributedTextMessage = NSAttributedString(string: PillsFormatter.stringByReplacingPills(in: attributedText, mode: .markdown))
-        }
-
-        wysiwygInputToolbar.textFormattingEnabled.toggle()
-
-        // Switching from RTE -> plain, replace markdown links with Pills.
-        if !wysiwygInputToolbar.textFormattingEnabled, #available(iOS 15.0, *),
-            let attributedText = wysiwygInputToolbar.attributedTextMessage {
-            wysiwygInputToolbar.attributedTextMessage = PillsFormatter.insertPills(in: attributedText,
-                                                                                   roomState: self.roomDataSource.roomState,
-                                                                                   font: self.inputToolbarView.textDefaultFont)
-        }
+        wysiwygInputToolbar?.textFormattingEnabled.toggle()
     }
     
     @objc func didChangeMaximisedState(_ isMaximised: Bool) {
@@ -269,21 +256,6 @@ extension RoomViewController {
         presenter.delegate = self
         composerLinkActionBridgePresenter = presenter
         presenter.present(from: self, animated: true)
-    }
-
-    @objc func didRequestAttachmentStringForLink(_ link: String, andDisplayName: String) -> NSAttributedString? {
-        guard #available(iOS 15.0, *),
-              let userId = PillsFormatter.userIdFromPermalink(link),
-              let roomState = self.roomDataSource.roomState,
-              let member = PillsFormatter.roomMember(withUserId: userId,
-                                                     roomState: roomState,
-                                                     andLatestRoomState: nil) else {
-            return nil
-        }
-
-        return PillsFormatter.mentionPill(withRoomMember: member,
-                                          isHighlighted: false,
-                                          font: inputToolbarView.textDefaultFont)
     }
     
     @objc func showWaitingOtherParticipantHeader() {
@@ -392,6 +364,43 @@ extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
     
     private func cleanup() {
         composerLinkActionBridgePresenter = nil
+    }
+}
+
+// MARK: - PermalinkReplacer
+extension RoomViewController: PermalinkReplacer {
+    public func replacementForLink(_ url: String, text: String) -> NSAttributedString? {
+        guard #available(iOS 15.0, *),
+              let userId = PillsFormatter.userIdFromPermalink(url),
+              let roomState = roomDataSource.roomState,
+              let member = PillsFormatter.roomMember(withUserId: userId,
+                                                     roomState: roomState,
+                                                     andLatestRoomState: nil) else {
+            return nil
+        }
+
+        return PillsFormatter.mentionPill(withRoomMember: member,
+                                          isHighlighted: false,
+                                          font: inputToolbarView.textDefaultFont)
+    }
+
+    public func postProcessMarkdown(in attributedString: NSAttributedString) -> NSAttributedString {
+        guard #available(iOS 15.0, *),
+              let roomState = roomDataSource.roomState else {
+            return attributedString
+        }
+
+        return PillsFormatter.insertPills(in: attributedString,
+                                          roomState: roomState,
+                                          font: inputToolbarView.textDefaultFont)
+    }
+
+    public func restoreMarkdown(in attributedString: NSAttributedString) -> String {
+        if #available(iOS 15.0, *) {
+            return PillsFormatter.stringByReplacingPills(in: attributedString, mode: .markdown)
+        } else {
+            return attributedString.string
+        }
     }
 }
 

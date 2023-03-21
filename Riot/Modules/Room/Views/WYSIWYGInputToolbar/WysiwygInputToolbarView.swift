@@ -45,7 +45,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var hostingViewController: VectorHostingController!
     private lazy var wysiwygViewModel = WysiwygComposerViewModel(
         parserStyle: WysiwygInputToolbarView.parserStyle,
-        permalinkReplacer: self
+        permalinkReplacer: permalinkReplacer
     )
     /// Compute current HTML parser style for composer.
     private static var parserStyle: HTMLParserStyle {
@@ -73,6 +73,12 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
     
     // MARK: Public
+
+    override var delegate: MXKRoomInputToolbarViewDelegate! {
+        didSet {
+            wysiwygViewModel.permalinkReplacer = permalinkReplacer
+        }
+    }
     
     override var placeholder: String! {
         get {
@@ -137,6 +143,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     private weak var toolbarViewDelegate: RoomInputToolbarViewDelegate? {
         return (delegate as? RoomInputToolbarViewDelegate) ?? nil
+    }
+
+    private var permalinkReplacer: PermalinkReplacer? {
+        return (delegate as? PermalinkReplacer)
     }
     
     override func awakeFromNib() {
@@ -207,6 +217,15 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                     if !value {
                         self.voiceMessageBottomConstraint?.constant = 2
                     }
+                },
+
+            wysiwygViewModel.$plainTextContent
+                .dropFirst()
+                .removeDuplicates()
+                .sink { [weak self] value in
+                    guard let self else { return }
+                    self.textMessage = value.string
+                    self.toolbarViewDelegate?.roomInputToolbarViewDidChangeTextMessage(self)
                 }
         ]
         
@@ -440,12 +459,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     
     func toolbarHeight() -> CGFloat {
         return heightConstraint.constant
-    }
-}
-
-extension WysiwygInputToolbarView: PermalinkReplacer {
-    func replacementForLink(_ link: String, text: String) -> NSAttributedString? {
-        return toolbarViewDelegate?.didRequestAttachmentString(forLink: link, andDisplayName: text)
     }
 }
 

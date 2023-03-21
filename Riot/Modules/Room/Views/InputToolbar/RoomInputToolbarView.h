@@ -60,7 +60,7 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
  
  @param toolbarView the room input toolbar view
  */
-- (void)roomInputToolbarViewDidChangeTextMessage:(RoomInputToolbarView*)toolbarView;
+- (void)roomInputToolbarViewDidChangeTextMessage:(MXKRoomInputToolbarView*)toolbarView;
 
 /**
  Inform the delegate that the action menu was opened.
@@ -82,8 +82,6 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
 - (void)didSendLinkAction: (LinkActionWrapper *)linkAction;
 
 - (void)didDetectTextPattern: (SuggestionPatternWrapper *)suggestionPattern;
-
-- (nullable NSAttributedString *)didRequestAttachmentStringForLink: (NSString *)link andDisplayName: (NSString *)displayName;
 
 @end
 
