@@ -32,7 +32,7 @@ class CryptoSDKFeatureTests: XCTestCase {
     override func setUp() {
         RiotSettings.shared.enableCryptoSDK = false
         remote = RemoteFeatureClient()
-        feature = CryptoSDKFeature(remoteFeature: remote)
+        feature = CryptoSDKFeature(remoteFeature: remote, localTargetPercentage: 0)
     }
     
     override func tearDown() {

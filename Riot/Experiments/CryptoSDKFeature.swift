@@ -44,14 +44,14 @@ import MatrixSDKCrypto
     private let remoteFeature: RemoteFeaturesClientProtocol
     private let localFeature: PhasedRolloutFeature
     
-    init(remoteFeature: RemoteFeaturesClientProtocol = PostHogAnalyticsClient.shared) {
+    init(
+        remoteFeature: RemoteFeaturesClientProtocol = PostHogAnalyticsClient.shared,
+        localTargetPercentage: Double = 0.2
+    ) {
         self.remoteFeature = remoteFeature
         self.localFeature = PhasedRolloutFeature(
             name: Self.FeatureName,
-            // Local feature is currently set to 0% target, and all availability is fully controlled
-            // by the remote feature. Once the remote is fully rolled out, target for local feature will
-            // be gradually increased.
-            targetPercentage: 0.2
+            targetPercentage: localTargetPercentage
         )
     }
     
