@@ -244,6 +244,7 @@ internal class Asset: NSObject {
     internal static let locationPinIcon = ImageAsset(name: "location_pin_icon")
     internal static let locationShareIcon = ImageAsset(name: "location_share_icon")
     internal static let locationUserMarker = ImageAsset(name: "location_user_marker")
+    internal static let pillUser = ImageAsset(name: "pill_user")
     internal static let pollCheckboxDefault = ImageAsset(name: "poll_checkbox_default")
     internal static let pollCheckboxSelected = ImageAsset(name: "poll_checkbox_selected")
     internal static let pollDeleteIcon = ImageAsset(name: "poll_delete_icon")

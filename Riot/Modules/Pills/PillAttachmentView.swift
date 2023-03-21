@@ -25,7 +25,9 @@ class PillAttachmentView: UIView {
     struct Sizes {
         var verticalMargin: CGFloat
         var horizontalMargin: CGFloat
+        var avatarLeading: CGFloat
         var avatarSideLength: CGFloat
+        var itemSpacing: CGFloat
 
         var pillBackgroundHeight: CGFloat {
             return avatarSideLength + 2 * verticalMargin
@@ -33,11 +35,8 @@ class PillAttachmentView: UIView {
         var pillHeight: CGFloat {
             return pillBackgroundHeight + 2 * verticalMargin
         }
-        var displaynameLabelLeading: CGFloat {
-            return avatarSideLength + 2 * horizontalMargin
-        }
         var totalWidthWithoutLabel: CGFloat {
-            return displaynameLabelLeading + 2 * horizontalMargin
+            return avatarSideLength + 2 * horizontalMargin
         }
     }
 
@@ -56,44 +55,111 @@ class PillAttachmentView: UIView {
                      mediaManager: MXMediaManager?,
                      andPillData pillData: PillTextAttachmentData) {
         self.init(frame: frame)
-        let label = UILabel(frame: .zero)
-        label.text = pillData.displayText
-        label.font = pillData.font
-        label.textColor = pillData.isHighlighted ? theme.baseTextPrimaryColor : theme.textPrimaryColor
-        let labelSize = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude,
-                                                  height: sizes.pillBackgroundHeight))
-        label.frame = CGRect(x: sizes.displaynameLabelLeading,
-                             y: 0,
-                             width: labelSize.width,
-                             height: sizes.pillBackgroundHeight)
+        
+        let stack = UIStackView(frame: frame)
+        stack.axis = .horizontal
+        stack.alignment = .center
+        stack.spacing = sizes.itemSpacing
 
+        var computedWidth: CGFloat = 0
+        for item in pillData.items {
+            switch item {
+            case .text(let string):
+                let label = UILabel(frame: .zero)
+                label.text = string
+                label.font = pillData.font
+                label.textColor = pillData.isHighlighted ? theme.baseTextPrimaryColor : theme.textPrimaryColor
+                label.translatesAutoresizingMaskIntoConstraints = false
+                label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+                stack.addArrangedSubview(label)
+                
+                computedWidth += label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: sizes.pillBackgroundHeight)).width
+
+            case .avatar(let url, let alt, let matrixId):
+                let avatarView = UserAvatarView(frame: CGRect(origin: .zero, size: CGSize(width: sizes.avatarSideLength, height: sizes.avatarSideLength)))
+
+                avatarView.fill(with: AvatarViewData(matrixItemId: matrixId,
+                                                     displayName: alt,
+                                                     avatarUrl: url,
+                                                     mediaManager: mediaManager,
+                                                     fallbackImage: .matrixItem(matrixId, alt)))
+                avatarView.isUserInteractionEnabled = false
+                avatarView.translatesAutoresizingMaskIntoConstraints = false
+                stack.addArrangedSubview(avatarView)
+                NSLayoutConstraint.activate([
+                    avatarView.widthAnchor.constraint(equalToConstant: sizes.avatarSideLength),
+                    avatarView.heightAnchor.constraint(equalToConstant: sizes.avatarSideLength)
+                ])
+                
+                computedWidth += sizes.avatarSideLength
+                
+            case .spaceAvatar(let url, let alt, let matrixId):
+                let avatarView = SpaceAvatarView(frame: CGRect(origin: .zero, size: CGSize(width: sizes.avatarSideLength, height: sizes.avatarSideLength)))
+
+                avatarView.fill(with: AvatarViewData(matrixItemId: matrixId,
+                                                     displayName: alt,
+                                                     avatarUrl: url,
+                                                     mediaManager: mediaManager,
+                                                     fallbackImage: .matrixItem(matrixId, alt)))
+                avatarView.isUserInteractionEnabled = false
+                avatarView.translatesAutoresizingMaskIntoConstraints = false
+                stack.addArrangedSubview(avatarView)
+                NSLayoutConstraint.activate([
+                    avatarView.widthAnchor.constraint(equalToConstant: sizes.avatarSideLength),
+                    avatarView.heightAnchor.constraint(equalToConstant: sizes.avatarSideLength)
+                ])
+                
+                computedWidth += sizes.avatarSideLength
+                
+            case .asset(let name, let parameters):
+                let assetView = UIView(frame: CGRect(x: 0, y: 0, width: sizes.avatarSideLength, height: sizes.avatarSideLength))
+                assetView.backgroundColor = parameters.backgroundColor?.uiColor
+                assetView.layer.cornerRadius = sizes.avatarSideLength / 2
+                assetView.isUserInteractionEnabled = false
+                assetView.translatesAutoresizingMaskIntoConstraints = false
+
+                let imageView = UIImageView(frame: .zero)
+                imageView.image = ImageAsset(name: name).image.withRenderingMode(UIImage.RenderingMode(rawValue: parameters.rawRenderingMode) ?? .automatic)
+                imageView.tintColor = parameters.tintColor?.uiColor ?? theme.baseIconPrimaryColor
+                imageView.contentMode = .scaleAspectFit
+                                
+                assetView.vc_addSubViewMatchingParent(imageView, withInsets: UIEdgeInsets(top: parameters.padding, left: parameters.padding, bottom: -parameters.padding, right: -parameters.padding))
+
+                stack.addArrangedSubview(assetView)
+                NSLayoutConstraint.activate([
+                    assetView.widthAnchor.constraint(equalToConstant: sizes.avatarSideLength),
+                    assetView.heightAnchor.constraint(equalToConstant: sizes.avatarSideLength)
+                ])
+                
+                computedWidth += sizes.avatarSideLength
+            }
+        }
+        computedWidth += max(0, CGFloat(stack.arrangedSubviews.count - 1) * stack.spacing)
+
+        let leadingStackMargin: CGFloat
+        switch pillData.items.first {
+        case .asset, .avatar:
+            leadingStackMargin = sizes.avatarLeading
+            computedWidth += sizes.avatarLeading + sizes.horizontalMargin
+        default:
+            leadingStackMargin = sizes.horizontalMargin
+            computedWidth += 2 * sizes.horizontalMargin
+        }
+        
         let pillBackgroundView = UIView(frame: CGRect(x: 0,
                                         y: sizes.verticalMargin,
-                                        width: labelSize.width + sizes.totalWidthWithoutLabel,
+                                        width: computedWidth,
                                         height: sizes.pillBackgroundHeight))
 
-        let avatarView = UserAvatarView(frame: CGRect(x: sizes.horizontalMargin,
-                                                      y: sizes.verticalMargin,
-                                                      width: sizes.avatarSideLength,
-                                                      height: sizes.avatarSideLength))
-
-        avatarView.fill(with: AvatarViewData(matrixItemId: pillData.matrixItemId,
-                                             displayName: pillData.displayName,
-                                             avatarUrl: pillData.avatarUrl,
-                                             mediaManager: mediaManager,
-                                             fallbackImage: .matrixItem(pillData.matrixItemId, pillData.displayName)))
-        avatarView.isUserInteractionEnabled = false
-
-        pillBackgroundView.addSubview(avatarView)
-        pillBackgroundView.addSubview(label)
-
+        pillBackgroundView.vc_addSubViewMatchingParent(stack, withInsets: UIEdgeInsets(top: sizes.verticalMargin, left: leadingStackMargin, bottom: -sizes.verticalMargin, right: -sizes.horizontalMargin))
+        
         pillBackgroundView.backgroundColor = pillData.isHighlighted ? theme.colors.alert : theme.colors.quinaryContent
         pillBackgroundView.layer.cornerRadius = sizes.pillBackgroundHeight / 2.0
 
         self.addSubview(pillBackgroundView)
         self.alpha = pillData.alpha
     }
-
+    
     // MARK: - Override
     override var isHidden: Bool {
         get {
