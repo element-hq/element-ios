@@ -1,11 +1,11 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "%@ 傳來的訊息";
+"MSG_FROM_USER" = "來自 %@ 的訊息";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ 在 %@ 貼文";
 /* New message from a specific person, not referencing a room. Content included. */
 "MSG_FROM_USER_WITH_CONTENT" = "%@：%@";
 /* New message from a specific person in a named room. Content included. */
-"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ 在 %@：%@";
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ 來自 %@：%@";
 /* New action message from a specific person, not referencing a room. */
 "ACTION_FROM_USER" = "* %@ %@";
 /* New action message from a specific person in a named room. */
@@ -26,13 +26,13 @@
 /* Multiple messages in two rooms */
 "MSGS_IN_TWO_ROOMS" = "%@ 個新訊息來自 %@ 與 %@";
 /* Look, stuff's happened, alright? Just open the app. */
-"MSGS_IN_TWO_PLUS_ROOMS" = "%@ 個新訊息來自 %@、%@ 與其他";
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ 個新訊息來自 %@、%@ 與其他人";
 /* A user has invited you to a chat */
-"USER_INVITE_TO_CHAT" = "%@ 已經邀請您來聊天";
+"USER_INVITE_TO_CHAT" = "%@ 邀請您來聊天";
 /* A user has invited you to an (unamed) group chat */
-"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ 已經邀請您到群組聊天中";
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ 邀請您到群組聊天中";
 /* A user has invited you to a named room */
-"USER_INVITE_TO_NAMED_ROOM" = "%@ 已經邀請您加入 %@";
+"USER_INVITE_TO_NAMED_ROOM" = "%@ 邀請您加入 %@";
 /* Incoming one-to-one voice call */
 "VOICE_CALL_FROM_USER" = "來自 %@ 的通話";
 /* Incoming one-to-one video call */
@@ -46,14 +46,14 @@
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "來自 %@ 的視訊群組通話：'%@'";
 /* A single unread message in a room */
-"SINGLE_UNREAD_IN_ROOM" = "您在 %@ 中收到了一則訊息";
+"SINGLE_UNREAD_IN_ROOM" = "您在 %@ 中收到一則訊息";
 /* A single unread message */
-"SINGLE_UNREAD" = "您收到了一則訊息";
+"SINGLE_UNREAD" = "您收到一則訊息";
 /* Message title for a specific person in a named room */
-"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ 從 %@";
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ 來自 %@";
 
 /* New message reply from a specific person in a named room. */
-"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ 在 %@ 已回覆";
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ 已從 %@ 回覆";
 
 /* New message reply from a specific person, not referencing a room. */
 "REPLY_FROM_USER_TITLE" = "%@ 已回覆";
@@ -63,41 +63,41 @@
 
 /** Key verification **/
 
-"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ 請求驗證";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ 希望驗證";
 
 /* Group call from user, CallKit caller name */
-"GROUP_CALL_FROM_USER" = "%@ （群組通話）";
+"GROUP_CALL_FROM_USER" = "%@ (群組通話）";
 
 /* A user added a Jitsi call to a room */
-"GROUP_CALL_STARTED" = "群組通話開始";
+"GROUP_CALL_STARTED" = "群組對話已開始";
 
 /* A user's membership has updated in an unknown way */
-"USER_MEMBERSHIP_UPDATED" = "%@ 更新了簡介";
+"USER_MEMBERSHIP_UPDATED" = "%@ 更新了個人資料";
 
 /* A user has change their name to a new name which we don't know */
-"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ 變更名稱";
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ 變更了名字";
 
 /** Membership Updates **/
 
 /* A user has change their name to a new name */
-"USER_UPDATED_DISPLAYNAME" = "%@ 變更名稱為 %@";
+"USER_UPDATED_DISPLAYNAME" = "%@ 把名稱變更為 %@";
 
 /* A user has change their avatar */
-"USER_UPDATED_AVATAR" = "%@ 變更頭像";
+"USER_UPDATED_AVATAR" = "%@ 變更了他們的頭像";
 
 /* A user has reacted to a message, but the reaction content is unknown */
-"GENERIC_REACTION_FROM_USER" = "%@ 送出一個反應";
+"GENERIC_REACTION_FROM_USER" = "%@ 送出了一個反應";
 
 /** Reactions **/
 
 /* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
-"REACTION_FROM_USER" = "%@ 覺得 %@";
+"REACTION_FROM_USER" = "%@ 對 %@ 做出了反應";
 
 /* New message with hidden content due to PIN enabled */
 "MESSAGE_PROTECTED" = "新訊息";
 
 /* New message indicator on a room */
-"MESSAGE_IN_X" = "在 %@ 的訊息";
+"MESSAGE_IN_X" = "來自 %@ 的訊息";
 
 /* New message indicator from a DM */
 "MESSAGE_FROM_X" = "來自 %@ 的訊息";
@@ -108,24 +108,27 @@
 "MESSAGE" = "訊息";
 
 /* Sticker from a specific person, not referencing a room. */
-"STICKER_FROM_USER" = "%@ 戳你一下";
+"STICKER_FROM_USER" = "%@ 傳了一張貼圖";
 
 /* New file message from a specific person, not referencing a room. */
-"LOCATION_FROM_USER" = "%@ 已分享他的位置";
+"LOCATION_FROM_USER" = "%@ 分享了他們的位置";
 
 /* New file message from a specific person, not referencing a room. */
-"FILE_FROM_USER" = "%@ 傳送一個檔案 %@";
+"FILE_FROM_USER" = "%@ 送出一個檔案 %@";
 
 /* New voice message from a specific person, not referencing a room. */
-"VOICE_MESSAGE_FROM_USER" = "%@ 傳送一個語音訊息";
+"VOICE_MESSAGE_FROM_USER" = "%@ 送出一段語音訊息";
 
 /* New audio message from a specific person, not referencing a room. */
-"AUDIO_FROM_USER" = "%@ 傳送一個音訊檔案 %@";
+"AUDIO_FROM_USER" = "%@ 送出一個語音檔案 %@";
 
 /* New video message from a specific person, not referencing a room. */
-"VIDEO_FROM_USER" = "%@ 傳送一個影片";
+"VIDEO_FROM_USER" = "%@ 送出一段影片";
 
 /** Media Messages **/
 
 /* New image message from a specific person, not referencing a room. */
-"PICTURE_FROM_USER" = "%@ 傳送一張圖片";
+"PICTURE_FROM_USER" = "%@ 送出一張圖片";
+
+/* New voice broadcast from a specific person, not referencing a room. */
+"VOICE_BROADCAST_FROM_USER" = "%@ 開始語音廣播";

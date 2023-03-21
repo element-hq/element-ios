@@ -2572,3 +2572,8 @@
 // User sessions management
 "user_sessions_settings" = "Zarządzaj sesjami";
 "invite_to" = "Zaproś do %@";
+"authentication_qr_login_start_step1" = "Otwórz Element na innym urządzeniu";
+"authentication_qr_login_start_subtitle" = "Użyj aparatu tego urządzenia, aby zeskanować kod QR widoczny na innym urządzeniu:";
+"authentication_qr_login_start_title" = "Zeskanuj kod QR";
+"authentication_login_with_qr" = "Zaloguj się za pomocą kodu QR";
+"accessibility_selected" = "wybrane";
