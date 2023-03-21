@@ -60,7 +60,6 @@ class PillAttachmentView: UIView {
         stack.axis = .horizontal
         stack.alignment = .center
         stack.spacing = sizes.itemSpacing
-        stack.translatesAutoresizingMaskIntoConstraints = false
 
         var computedWidth: CGFloat = 0
         for item in pillData.items {
@@ -123,15 +122,8 @@ class PillAttachmentView: UIView {
                 imageView.image = ImageAsset(name: name).image.withRenderingMode(UIImage.RenderingMode(rawValue: parameters.rawRenderingMode) ?? .automatic)
                 imageView.tintColor = parameters.tintColor?.uiColor ?? theme.baseIconPrimaryColor
                 imageView.contentMode = .scaleAspectFit
-                imageView.translatesAutoresizingMaskIntoConstraints = false
-                
-                assetView.addSubview(imageView)
-                NSLayoutConstraint.activate([
-                    imageView.leadingAnchor.constraint(equalTo: assetView.leadingAnchor, constant: parameters.padding),
-                    imageView.trailingAnchor.constraint(equalTo: assetView.trailingAnchor, constant: -parameters.padding),
-                    imageView.topAnchor.constraint(equalTo: assetView.topAnchor, constant: parameters.padding),
-                    imageView.bottomAnchor.constraint(equalTo: assetView.bottomAnchor, constant: -parameters.padding)
-                ])
+                                
+                assetView.vc_addSubViewMatchingParent(imageView, withInsets: UIEdgeInsets(top: parameters.padding, left: parameters.padding, bottom: -parameters.padding, right: -parameters.padding))
 
                 stack.addArrangedSubview(assetView)
                 NSLayoutConstraint.activate([
@@ -159,14 +151,7 @@ class PillAttachmentView: UIView {
                                         width: computedWidth,
                                         height: sizes.pillBackgroundHeight))
 
-        pillBackgroundView.addSubview(stack)
-                
-        NSLayoutConstraint.activate([
-            stack.leadingAnchor.constraint(equalTo: pillBackgroundView.leadingAnchor, constant: leadingStackMargin),
-            stack.trailingAnchor.constraint(equalTo: pillBackgroundView.trailingAnchor, constant: -sizes.horizontalMargin),
-            stack.topAnchor.constraint(equalTo: pillBackgroundView.topAnchor, constant: sizes.verticalMargin),
-            stack.bottomAnchor.constraint(equalTo: pillBackgroundView.bottomAnchor, constant: -sizes.verticalMargin)
-        ])
+        pillBackgroundView.vc_addSubViewMatchingParent(stack, withInsets: UIEdgeInsets(top: sizes.verticalMargin, left: leadingStackMargin, bottom: -sizes.verticalMargin, right: -sizes.horizontalMargin))
         
         pillBackgroundView.backgroundColor = pillData.isHighlighted ? theme.colors.alert : theme.colors.quinaryContent
         pillBackgroundView.layer.cornerRadius = sizes.pillBackgroundHeight / 2.0

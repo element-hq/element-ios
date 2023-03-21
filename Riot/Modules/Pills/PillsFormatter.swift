@@ -88,7 +88,7 @@ class PillsFormatter: NSObject {
                 return
             }
 
-            var pillString: String?
+            var pillString: String
             switch mode {
             case .displayname:
                 pillString = data.displayText
@@ -98,9 +98,7 @@ class PillsFormatter: NSObject {
                 pillString = data.markdown
             }
 
-            if let pillString {
-                newAttr.replaceCharacters(in: range, with: pillString)
-            }
+            newAttr.replaceCharacters(in: range, with: pillString)
         }
 
         return newAttr.string

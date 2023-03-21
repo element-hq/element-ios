@@ -139,7 +139,7 @@ struct PillTextAttachmentData: Codable {
     }
     
     // MARK: - Pill representations
-    var pillIdentifier: String? {
+    var pillIdentifier: String {
         switch pillType {
         case .user(let userId):
             return userId
@@ -150,8 +150,8 @@ struct PillTextAttachmentData: Codable {
         }
     }
     
-    var markdown: String? {
-        var permalink: String?
+    var markdown: String {
+        var permalink: String
         switch pillType {
         case .user(let userId):
             permalink = MXTools.permalinkToUser(withUserId: userId)
@@ -160,6 +160,6 @@ struct PillTextAttachmentData: Codable {
         case .message(let roomId, let messageId):
             permalink = MXTools.permalink(toEvent: messageId, inRoom: roomId)
         }
-        return permalink.flatMap { "[\(displayText)](\($0))" }
+        return "[\(displayText)](\(permalink))"
     }
 }
