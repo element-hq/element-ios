@@ -2742,3 +2742,9 @@
 // MARK: - Launch loading
 
 "launch_loading_generic" = "Synchronisiere deine Unterhaltungen";
+"pill_message_in" = "Nachricht in %@";
+"pill_message_from" = "Nachricht von %@";
+"pill_message" = "Nachricht";
+
+// Pills
+"pill_room_fallback_display_name" = "Space/Raum";
