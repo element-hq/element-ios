@@ -135,7 +135,7 @@ struct PillProvider {
         let isHighlighted = userId == session.myUserId
 
         let avatar: PillTextAttachmentItem
-        if avatarUrl == nil {
+        if roomMember == nil && user == nil {
             avatar = .asset(named: "pill_user",
                             parameters: .init(tintColor: PillAssetColor(uiColor: ThemeService.shared().theme.colors.secondaryContent),
                                               rawRenderingMode: UIImage.RenderingMode.alwaysOriginal.rawValue,
