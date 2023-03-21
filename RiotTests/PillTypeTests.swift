@@ -86,6 +86,22 @@ final class PillTypeTests: XCTestCase {
         }
     }
     
+    func testMessagePillWithRoomAlias() throws {
+        let urls = [
+            "https://matrix.to/#/%23room-alias:localhost/$4uvJnQsShl_2OqfqO4dkmUq-mKula7HUx-ictOTPmPc?via=localhost"
+        ]
+            
+        for url in urls {
+            switch PillType.from(url: URL(string: url)!) {
+            case .message(let roomId, let eventId):
+                XCTAssertEqual(roomId, "#room-alias:localhost")
+                XCTAssertEqual(eventId, "$4uvJnQsShl_2OqfqO4dkmUq-mKula7HUx-ictOTPmPc")
+            default:
+                XCTFail("Should be a .message pill")
+            }
+        }
+    }
+    
     func testNotAPermalink() throws {
         XCTAssertNil(PillType.from(url: URL(string: "matrix.org")!))
     }

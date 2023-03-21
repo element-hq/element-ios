@@ -54,8 +54,17 @@ struct PillProvider {
         }
                 
         // Do not pillify an url if it is a markdown or an http link (except for user and room) with a custom text
-        let urlFromLabel = URL(string: label)?.absoluteURL
-        let isUrlMarkDownLink = urlFromLabel != url
+        
+        // First, we need to handle the case where the label can contains more than one # (room alias)
+        var urlFromLabel = URL(string: label)?.absoluteURL
+        if urlFromLabel == nil, label.filter({ $0 == "#" }).count > 1 {
+            if let escapedLabel = label.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: escapedLabel) {
+                urlFromLabel = Tools.fixURL(withSeveralHashKeys: url)
+            }
+        }
+        
+        let fixedUrl = Tools.fixURL(withSeveralHashKeys: url)
+        let isUrlMarkDownLink = urlFromLabel != fixedUrl
 
         let result: PillAttachmentKind
         switch pillType {
