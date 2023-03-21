@@ -194,10 +194,10 @@ class PillsFormatterTests: XCTestCase {
         case .user(let userId):
             XCTAssertEqual(userId, Inputs.anotherUserId)
             switch pillTextAttachmentData.items.first  {
-            case .avatar(let url, _, _):
-                XCTAssertEqual(url, nil)
+            case .asset(let name, _):
+                XCTAssertEqual(name, "pill_user")
             default:
-                XCTFail("First pill item should be the avatar")
+                XCTFail("First pill item should be the asset")
             }
         default:
             XCTFail("Pill should be of type .user")
@@ -310,7 +310,7 @@ class PillsFormatterTests: XCTestCase {
         case .room(let userId):
             XCTAssertEqual(userId, Inputs.roomId)
             switch pillTextAttachmentData.items.first {
-            case .asset(let assetName):
+            case .asset(let assetName, let parameters):
                 XCTAssertEqual(assetName, "link_icon")
             default:
                 XCTFail("First pill item should be the asset")
@@ -382,10 +382,10 @@ class PillsFormatterTests: XCTestCase {
             XCTAssertEqual(messageId, Inputs.messageEventId)
             let firstItem = pillTextAttachmentData.items[0]
             switch firstItem {
-            case .avatar(let url, _, _):
-                XCTAssertNil(url)
+            case .asset(let name, _):
+                XCTAssertEqual(name, "link_icon")
             default:
-                XCTFail("First pill item should be the avatar")
+                XCTFail("First pill item should be the asset")
             }
         default:
             XCTFail("Pill should be of type .message")
@@ -436,7 +436,7 @@ class PillsFormatterTests: XCTestCase {
             XCTAssertEqual(roomId, Inputs.anotherRoomId)
             XCTAssertEqual(messageId, Inputs.messageEventId)
             switch pillTextAttachmentData.items.first {
-            case .asset(let name):
+            case .asset(let name, let parameters):
                 XCTAssertEqual(name, "link_icon")
             default:
                 XCTFail("First pill item should be the asset")

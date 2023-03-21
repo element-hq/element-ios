@@ -53,6 +53,22 @@ final class PillTypeTests: XCTestCase {
         }
     }
     
+    func testRoomAlias() throws {
+        let urls = [
+            "https://matrix.to/#/%23room-alias:localhost",
+            "https://matrix.to/#/room/%23room-alias:localhost"
+        ]
+            
+        for url in urls {
+            switch PillType.from(url: URL(string: url)!) {
+            case .room(let roomId):
+                XCTAssertEqual(roomId, "#room-alias:localhost")
+            default:
+                XCTFail("Should be a .room pill")
+            }
+        }
+    }
+    
     func testMessagePill() throws {
         let urls = [
             "https://matrix.to/#/!JppIaYcVkyCiSBVzBn:localhost/$4uvJnQsShl_2OqfqO4dkmUq-mKula7HUx-ictOTPmPc",
