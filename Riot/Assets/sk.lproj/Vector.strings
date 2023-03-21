@@ -2931,3 +2931,9 @@
 // MARK: - Launch loading
 
 "launch_loading_generic" = "Synchronizácia vašich konverzácií";
+"pill_message_in" = "Správa v %@";
+"pill_message_from" = "Správa od %@";
+"pill_message" = "Správa";
+
+// Pills
+"pill_room_fallback_display_name" = "Priestor/miestnosť";
