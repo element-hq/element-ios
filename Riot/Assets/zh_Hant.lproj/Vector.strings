@@ -505,7 +505,7 @@
 // Share extension
 "share_extension_auth_prompt" = "登入主應用程式以分享內容";
 "share_extension_failed_to_encrypt" = "傳送失敗。請檢查主應用程式對此聊天室的加密設定";
-"e2e_room_key_request_message_new_device" = "您新增的工作階段「%s」正在請求加密金鑰。";
+"e2e_room_key_request_message_new_device" = "您新增的工作階段「%@」正在請求加密金鑰。";
 "e2e_room_key_request_message" = "您未驗證的工作階段「%@」正在請求加密金鑰。";
 // GDPR
 "gdpr_consent_not_given_alert_review_now_action" = "現在重新檢視";
@@ -2001,7 +2001,7 @@
 "notice_room_history_visible_to_members_from_invited_point" = "%@ 從他們被邀請開始，讓未來的聊天室歷史紀錄顯示給所有聊天室成員。";
 "notice_room_history_visible_to_members_for_dm" = "%@ 讓所有聊天室成員都能看到聊天室之後的歷史記錄。";
 "notice_error_unformattable_event" = "** 無法顯示這則訊息。請回報此錯誤";
-"notice_encryption_enabled_unknown_algorithm" = "%1$s 已開啟端到端加密（無法識別的演算法 %2$s）。";
+"notice_encryption_enabled_unknown_algorithm" = "%1$@ 已開啟端到端加密（無法識別的演算法 %2$@）。";
 "notice_encryption_enabled_ok" = "%@ 已開啟端到端加密。";
 "notice_room_aliases_for_dm" = "此聊天室別名是：%@";
 "notice_room_power_level_intro_for_dm" = "成員們的權限級別是：";
