@@ -1059,7 +1059,6 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
             NSString *link = [mutableAttributedString.string substringWithRange:matchRange];
             // Handle potential permalinks
             if ([permalinkRegex numberOfMatchesInString:link options:0 range:NSMakeRange(0, link.length)]) {
-                MXLogDebug(@"[MXKTools] Permalink detected: %@", link);
                 NSURLComponents *url = [[NSURLComponents new] initWithString:link];
                 if (url.URL)
                 {

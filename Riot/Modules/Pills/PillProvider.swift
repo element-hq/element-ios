@@ -226,11 +226,7 @@ struct PillProvider {
                                               
         }
         
-        func computeDisplayText(withRoomDisplayName displayName: String?) -> String {
-            displayName.flatMap { VectorL10n.pillMessageIn($0) } ?? VectorL10n.pillMessage
-        }
-
-        let displayText = computeDisplayText(withRoomDisplayName: room?.displayName)
+        let displayText = room?.displayName.flatMap { VectorL10n.pillMessageIn($0) } ?? VectorL10n.pillMessage
 
         let data = PillTextAttachmentData(pillType: .message(roomId: roomId, eventId: messageId),
                                           items: [
@@ -254,25 +250,28 @@ struct PillProvider {
     /// - Returns: a pill attachment
     private func pillTextAttachment(inCurrentRoomForMessageId messageId: String) -> PillAttachmentKind {
         var roomMember: MXRoomMember?
-        // Try to get the room member
+        // If we have the event locally, try to get the room member
         if let event = session.store.event(withEventId: messageId, inRoom: roomState.roomId) {
             roomMember = self.roomMember(withUserId: event.sender)
         }
 
         let displayText: String
-        if let userDisplayName = roomMember?.displayname {
-            displayText = VectorL10n.pillMessageFrom(userDisplayName)
+        let avatar: PillTextAttachmentItem
+        if let roomMember {
+            displayText = VectorL10n.pillMessageFrom(roomMember.displayname)
+            avatar = .avatar(url: roomMember.avatarUrl,
+                             string: roomMember.displayname,
+                             matrixId: roomMember.userId)
         } else {
             displayText = VectorL10n.pillMessage
+            avatar = .asset(named: "link_icon",
+                            parameters: .init(backgroundColor: PillAssetColor(uiColor: ThemeService.shared().theme.colors.links),
+                                              rawRenderingMode: UIImage.RenderingMode.alwaysTemplate.rawValue))
         }
-
-        let avatarUrl = roomMember?.avatarUrl
 
         let data = PillTextAttachmentData(pillType: .message(roomId: roomState.roomId, eventId: messageId),
                                           items: [
-                                            .avatar(url: avatarUrl,
-                                                    string: roomMember?.displayname,
-                                                    matrixId: roomMember?.userId ?? ""),
+                                            avatar,
                                             .text(displayText)
                                           ].compactMap { $0 },
                                           isHighlighted: false,
