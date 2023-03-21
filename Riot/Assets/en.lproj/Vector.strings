@@ -1991,10 +1991,8 @@ Tap the + to start adding people.";
 
 // MARK: - Launch loading
 
-"launch_loading_migrating_data" = "Migrating data\n%@ %%";
-"launch_loading_server_syncing" = "Syncing with the server";
-"launch_loading_server_syncing_nth_attempt" = "Syncing with the server\n(%@ attempt)";
-"launch_loading_processing_response" = "Processing data\n%@ %%";
+"launch_loading_generic" = "Syncing your conversations";
+"launch_loading_delay_warning" = "This may take a little longer.\nThanks for your patience.";
 
 // MARK: - Home
 
@@ -3158,3 +3156,9 @@ To enable access, tap Settings> Location and select Always";
 "ssl_unexpected_existing_expl" = "The certificate has changed from one that was trusted by your phone. This is HIGHLY UNUSUAL. It is recommended that you DO NOT ACCEPT this new certificate.";
 "ssl_expected_existing_expl" = "The certificate has changed from a previously trusted one to one that is not trusted. The server may have renewed its certificate. Contact the server administrator for the expected fingerprint.";
 "ssl_only_accept" = "ONLY accept the certificate if the server administrator has published a fingerprint that matches the one above.";
+
+// Pills
+"pill_room_fallback_display_name" = "Space/Room";
+"pill_message" = "Message";
+"pill_message_from" = "Message from %@";
+"pill_message_in" = "Message in %@";

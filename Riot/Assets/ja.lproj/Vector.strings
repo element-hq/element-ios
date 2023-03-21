@@ -2591,8 +2591,6 @@
 "user_session_unverified_session_description" = "未認証のセッションは、認証情報でログインされていますが、クロス認証は行われていないセッションです。\n\nこれらのセッションは、アカウントの不正使用を示している可能性があるため、注意して確認してください。";
 "user_session_verified_session_description" = "認証済のセッションは、パスフレーズの入力、または他の認証済のセッションで本人確認を行ったセッションです。\n\n認証済のセッションには、暗号化されたメッセージを復号化する際に使用する全ての鍵が備わっています。また、他のユーザーに対しては、あなたがこのセッションを信頼していることが表示されます。";
 "user_session_push_notifications_message" = "有効にすると、このセッションはプッシュ通知を受信します。";
-"launch_loading_server_syncing" = "サーバーと同期しています";
-"launch_loading_processing_response" = "データを処理しています\n%@ %%";
 "wysiwyg_composer_format_action_link" = "リンクの装飾を適用";
 "wysiwyg_composer_format_action_inline_code" = "インラインコードの装飾を適用";
 "wysiwyg_composer_format_action_unordered_list" = "箇条書きリストの表示を切り替える";
@@ -2603,9 +2601,6 @@
 "settings_labs_enable_crypto_sdk" = "Rust エンドツーエンド暗号化";
 "settings_labs_disable_crypto_sdk" = "Rust エンドツーエンド暗号化（無効にするにはログアウトしてください）";
 
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "データを移行しています\n%@ %%";
 "poll_history_load_more" = "他のアンケートを読み込む";
 "key_backup_recover_from_private_key_progress" = "%@%%完了";
 "voice_broadcast_playback_unable_to_decrypt" = "この音声配信を復号化できません。";
@@ -2624,7 +2619,6 @@
 "analytics_prompt_title" = "%@の改善を手伝う";
 "event_formatter_call_active_video" = "実施中のビデオ通話";
 "event_formatter_call_active_voice" = "実施中の音声通話";
-"launch_loading_server_syncing_nth_attempt" = "サーバーと同期しています\n（%@回試行）";
 "create_room_suggest_room_footer" = "おすすめのルームは、スペースのメンバーに対して参加候補として表示されます。";
 "create_room_section_footer_type_public" = "スペースの名前だけでなく、招待された人だけが検索し、参加できます。";
 "searchable_directory_x_network" = "%@ネットワーク";

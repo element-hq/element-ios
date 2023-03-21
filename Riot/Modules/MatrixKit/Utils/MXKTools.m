@@ -36,6 +36,10 @@
 // Attribute in an NSAttributeString that marks a blockquote block that was in the original HTML string.
 NSString *const kMXKToolsBlockquoteMarkAttribute = @"kMXKToolsBlockquoteMarkAttribute";
 
+// Regex expression for permalink detection
+NSString *const kMXKToolsRegexStringForPermalink = @"\\/#\\/(?:(?:room|user)\\/)?([^\\s]*)";
+
+
 #pragma mark - MXKTools static private members
 // The regex used to find matrix ids.
 static NSRegularExpression *userIdRegex;
@@ -47,6 +51,8 @@ static NSRegularExpression *httpLinksRegex;
 // A regex to find all HTML tags
 static NSRegularExpression *htmlTagsRegex;
 static NSDataDetector *linkDetector;
+// A regex to detect permalinks
+static NSRegularExpression* permalinkRegex;
 
 @implementation MXKTools
 
@@ -63,6 +69,9 @@ static NSDataDetector *linkDetector;
         httpLinksRegex = [NSRegularExpression regularExpressionWithPattern:@"(?i)\\b(https?://\\S*)\\b" options:NSRegularExpressionCaseInsensitive error:nil];
         htmlTagsRegex  = [NSRegularExpression regularExpressionWithPattern:@"<(\\w+)[^>]*>" options:NSRegularExpressionCaseInsensitive error:nil];
         linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+                
+        NSString *permalinkPattern = [NSString stringWithFormat:@"%@%@", BuildSettings.clientPermalinkBaseUrl ?: kMXMatrixDotToUrl, kMXKToolsRegexStringForPermalink];
+        permalinkRegex = [NSRegularExpression regularExpressionWithPattern:permalinkPattern options:NSRegularExpressionCaseInsensitive error:nil];
     });
 }
 
@@ -1039,10 +1048,29 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
     {
         [MXKTools createLinksInMutableAttributedString:mutableAttributedString matchingRegex:eventIdRegex];
     }
+        
+    // Permalinks
+    NSArray* matches = [httpLinksRegex matchesInString: [mutableAttributedString string] options:0 range: NSMakeRange(0,mutableAttributedString.length)];
+    if (matches) {
+        for (NSTextCheckingResult *match in matches)
+        {
+            NSRange matchRange = [match range];
+
+            NSString *link = [mutableAttributedString.string substringWithRange:matchRange];
+            // Handle potential permalinks
+            if ([permalinkRegex numberOfMatchesInString:link options:0 range:NSMakeRange(0, link.length)]) {
+                NSURLComponents *url = [[NSURLComponents new] initWithString:link];
+                if (url.URL)
+                {
+                    [mutableAttributedString addAttribute:NSLinkAttributeName value:url.URL range:matchRange];
+                }
+            }
+        }
+    }
     
     // This allows to check for normal url based links (like https://element.io)
     // And set back the default link color
-    NSArray *matches = [linkDetector matchesInString: [mutableAttributedString string] options:0 range: NSMakeRange(0,mutableAttributedString.length)];
+    matches = [linkDetector matchesInString: [mutableAttributedString string] options:0 range: NSMakeRange(0,mutableAttributedString.length)];
     if (matches)
     {
         for (NSTextCheckingResult *match in matches)

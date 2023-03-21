@@ -30,6 +30,8 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
     // MARK: - Properties
     
     @IBOutlet private weak var animationView: ElementView!
+    @IBOutlet private weak var progressContainer: UIStackView!
+    @IBOutlet private weak var progressView: UIProgressView!
     @IBOutlet private weak var statusLabel: UILabel!
     
     private var animationTimeline: Timeline_1!
@@ -54,7 +56,7 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
         animationTimeline.play()
         self.animationTimeline = animationTimeline
         
-        self.statusLabel.isHidden = !MXSDKOptions.sharedInstance().enableStartupProgress
+        progressContainer.isHidden = true
     }
     
     // MARK: - Public
@@ -66,18 +68,18 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
 }
 
 extension LaunchLoadingView: MXSessionStartupProgressDelegate {
-    func sessionDidUpdateStartupStage(_ stage: MXSessionStartupStage) {
+    func sessionDidUpdateStartupProgress(state: MXSessionStartupProgress.State) {
         guard MXSDKOptions.sharedInstance().enableStartupProgress else {
             return
         }
-        updateStatusText(for: stage)
-
+        update(with: state)
+        
     }
     
-    private func updateStatusText(for stage: MXSessionStartupStage) {
+    private func update(with state: MXSessionStartupProgress.State) {
         guard Thread.isMainThread else {
             DispatchQueue.main.async { [weak self] in
-                self?.updateStatusText(for: stage)
+                self?.update(with: state)
             }
             return
         }
@@ -85,24 +87,9 @@ extension LaunchLoadingView: MXSessionStartupProgressDelegate {
         // Sync may be doing a lot of heavy work on the main thread and the status text
         // does not update reliably enough without explicitly refreshing
         CATransaction.begin()
-        statusLabel.text = statusText(for: stage)
+        progressContainer.isHidden = false
+        progressView.progress = Float(state.progress)
+        statusLabel.text = state.showDelayWarning ? VectorL10n.launchLoadingDelayWarning : VectorL10n.launchLoadingGeneric
         CATransaction.commit()
-    }
-    
-    private func statusText(for stage: MXSessionStartupStage) -> String {
-        switch stage {
-        case .migratingData(let progress):
-            let percent = Int(floor(progress * 100))
-            return VectorL10n.launchLoadingMigratingData("\(percent)")
-        case .serverSyncing(let attempts):
-            if attempts > 1, let nth = numberFormatter.string(from: NSNumber(value: attempts)) {
-                return VectorL10n.launchLoadingServerSyncingNthAttempt(nth)
-            } else {
-                return VectorL10n.launchLoadingServerSyncing
-            }
-        case .processingResponse(let progress):
-            let percent = Int(floor(progress * 100))
-            return VectorL10n.launchLoadingProcessingResponse("\(percent)")
-        }
     }
 }

@@ -2625,7 +2625,6 @@
 "user_session_inactive_session_description" = "Sesione jo aktive janë sesione që keni ca kohë që s’i keni përdorur, por që vazhdojnë të marrin kyçe fshehtëzimi.\n\nHeqja e sesioneve jo aktive përmirëson sigurinë dhe punimin dhe e bëjnë të lehtë për ju të identifikoni, nëse një sesion i ri është i dyshimtë.";
 "user_session_unverified_session_description" = "Sesione të paverifikuar janë sesione ku keni bërë hyrjen me kredencialet tuaja, por që nuk janë ndër-verifikuar.\n\nDuhet ta bëni veçanërisht të qartë se i njihni këto sesione, ngaqë mund të përfaqësojnë përdorim të paautorizuar të llogarisë tuaj.";
 "user_session_verified_session_description" = "Sesione të verifikuar janë ata kudo që përdorni Element-in pasi të keni dhënë frazëkalimin tuaj, ose pasi të keni ripohuar identitetin tuaj përmes një tjetër sesioni të verifikuar.\n\nKjo do të thotë se zotëroni krejt kyçet e nevojshëm për të shkyçur mesazhet tuaj të fshehtëzuar dhe ripohuar përdoruesve të tjerë se e besoni këtë sesion.";
-"launch_loading_server_syncing_nth_attempt" = "Po njëkohësohet me shërbyesin\n(Përpjekja e %@)";
 "user_session_rename_session_title" = "Riemërtim sesionesh";
 "user_session_inactive_session_title" = "Sesione jo aktive";
 "user_session_unverified_session_title" = "Sesione të paverifikuar";
@@ -2636,11 +2635,6 @@
 "user_sessions_show_location_info" = "Shfaq adresë IP";
 "voice_broadcast_time_left" = "Edhe %@";
 "voice_broadcast_tile" = "Transmetim zanor";
-"launch_loading_processing_response" = "Po përpunohen të dhëna\n%@ %%";
-
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Po njëkohësohet me shërbyesin";
 "key_verification_alert_body" = "Shqyrtojini, që të siguroheni se llogaria juaj është e parrezik.";
 
 // Unverified sessions
@@ -2698,10 +2692,6 @@
 "voice_broadcast_connection_error_message" = "Mjerisht, s’jemi në gjendje të nisim një incizim mu tani. Ju lutemi, riprovoni më vonë.";
 "voice_broadcast_connection_error_title" = "Gabim lidhjeje";
 "home_context_menu_mark_as_unread" = "Vëri shenjë si i palexuar";
-
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Po migrohen të dhëna\n%@ %%";
 "key_backup_recover_from_private_key_progress" = "Plotësuar %@%%";
 "room_details_polls" = "Historik pyetësorësh";
 "settings_labs_disable_crypto_sdk" = "Fshehtëzim skaj-më-skaj bazuar në Rust (që ta çaktivizoni, dilni)";
@@ -2712,3 +2702,19 @@
 "wysiwyg_composer_format_action_indent" = "Rrit shmangie kryeradhe";
 "poll_history_detail_view_in_timeline" = "Shiheni pyetësorin në rrjedhë kohore";
 "authentication_qr_login_failure_device_not_supported" = "Nuk mbulohet lidhja me këtë pajisje.";
+"room_waiting_other_participants_message" = "Pasi përdoruesit e ftuar të kenë hyrë në %@, do të jeni në gjendje të bisedoni dhe dhoma do të jetë e fshehtëzuar skaj-më-skaj";
+"room_waiting_other_participants_title" = "Po pritet që përdoruesit të hyjnë në %@";
+"launch_loading_delay_warning" = "Kjo mund të zgjasë pak.\nFaleminderit për durimin.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Po njëkohësohen bisedat tuaja";
+"key_verification_scan_qr_code_information_new_session" = "Që të verifikoni sesionin tuaj të ri, drejtojeni kamerën tuaj drejt kodit QR të shfaqur në pajisjen tuaj tjetër";
+"key_verification_scan_qr_code_information_other_session" = "Që të verifikoni sesionin tuaj, drejtojeni kamerën tuaj drejt kodit QR të shfaqur në pajisjen tuaj tjetër";
+"key_verification_scan_qr_code_information_other_device" = "Që të verifikoni këtë sesion, drejtojeni kamerën tuaj drejt kodit QR të shfaqur në pajisjen tuaj tjetër";
+"key_verification_scan_qr_code_information_other_user" = "Që të verifikoni sesionin e tij, drejtojeni kamerën tuaj drejt kodit QR të shfaqur në pajisjen e tjetrit";
+"key_verification_scan_qr_code_title" = "Skanoni kodin QR";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "S’hyni dot te një sesion %@ ekzistues?";
+"device_verification_self_verify_open_on_other_device_information" = "Lypset të verifikoni këtë sesion, që të mund të lexoni historikun e mesazheve tuaj të siguruar.\n\nHapeni Element-in në një nga pajisjet tuaja të tjera dhe ndiqni udhëzimet.";
+"device_verification_self_verify_open_on_other_device_title" = "Hapeni %@ në pajisjen tuaj tjetër";
+"room_creation_only_one_email_invite" = "Mund të ftoni vetëm një email në herë";

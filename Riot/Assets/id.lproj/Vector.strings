@@ -2856,12 +2856,6 @@
 "key_verification_alert_title" = "Anda punya sesi yang belum diverifikasi";
 "user_other_session_permanently_unverified_additional_info" = "Sesi ini tidak mendukung enkripsi jadi tidak dapat diverifikasi.";
 "voice_broadcast_time_left" = "Tersisa %@";
-"launch_loading_processing_response" = "Memroses data\n%@ %%";
-"launch_loading_server_syncing_nth_attempt" = "Menyinkron dengan server\n(%@ percobaan)";
-
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Menyinkron dengan server";
 "voice_broadcast_buffering" = "Memuat…";
 "voice_broadcast_stop_alert_agree_button" = "Ya, batalkan";
 "voice_broadcast_stop_alert_description" = "Apakah Anda ingin menghentikan siaran langsung Anda? Ini akan mengakhiri siarannya, dan rekamanan lengkap akan tersedia dalam ruangan.";
@@ -2909,10 +2903,6 @@
 "voice_broadcast_connection_error_title" = "Kesalahan koneksi";
 "voice_broadcast_recorder_connection_error" = "Kesalahan koneksi - Perekaman dijeda";
 "poll_timeline_reply_ended_poll" = "Pemungutan suara berakhir";
-
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Memigrasikan data\n%@ %%";
 "settings_labs_disable_crypto_sdk" = "Enkripsi ujung ke ujung Rust (keluar dari akun untuk menonaktifkan)";
 "settings_labs_confirm_crypto_sdk" = "Ketahui bahwa fitur ini masih dalam masa eksperimental, ini mungkin tidak berfungsi seperti yang diharapkan dan dapat memiliki konsekuensi yang tidak terduga. Untuk mengembalikan fitur, cukup keluar dari akun dan masuk kembali ke akun. Gunakan dengan pengetahuan dan risiko Anda.";
 "settings_labs_enable_crypto_sdk" = "Enkripsi ujung ke ujung Rust";
@@ -2929,3 +2919,19 @@
 "poll_history_detail_view_in_timeline" = "Tampilkan pemungutan suara dalam lini masa";
 "settings_push_rules_error" = "Sebuah kesalahan terjadi ketika memperbarui preferensi notifikasi Anda. Silakan alih ulang opsi Anda.";
 "authentication_qr_login_failure_device_not_supported" = "Penautan dengan perangkat ini tidak didukung.";
+"room_waiting_other_participants_message" = "Setelah pengguna yang diundang telah bergabung dengan %@, Anda akan dapat mengobrol dan ruangannya akan terenkripsi secara ujung ke ujung";
+"room_waiting_other_participants_title" = "Menunggu pengguna untuk bergabung dengan %@";
+"launch_loading_delay_warning" = "Ini mungkin membutuhkan waktu yang lebih lama.\nTerima kasih atas kesabaran Anda.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Menyinkronkan percakapan Anda";
+"key_verification_scan_qr_code_information_new_session" = "Arahkan kamera Anda ke kode QR yang ditampilkan di perangkat Anda yang lain untuk memverifikasi sesi Anda yang baru";
+"key_verification_scan_qr_code_information_other_session" = "Arahkan kamera Anda ke kode QR yang ditampilkan di perangkat Anda yang lain untuk memverifikasi sesi Anda";
+"key_verification_scan_qr_code_information_other_device" = "Arahkan kamera Anda ke kode QR yang ditampilkan di perangkat Anda yang lain untuk memverifikasi sesi ini";
+"key_verification_scan_qr_code_information_other_user" = "Arahkan kamera Anda ke kode QR yang ditampilkan di perangkatnya untuk memverifikasi sesi";
+"key_verification_scan_qr_code_title" = "Pindai kode QR";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Tidak dapat mengakses sesi %@ yang sudah ada?";
+"device_verification_self_verify_open_on_other_device_information" = "Anda harus memverifikasi sesi ini supaya dapat membaca riwayat pesan aman Anda.\n\nBuka Element di salah satu perangkat Anda yang lain dan ikuti petunjuknya.";
+"device_verification_self_verify_open_on_other_device_title" = "Buka %@ di perangkat Anda yang lain";
+"room_creation_only_one_email_invite" = "Amda hanya dapat mengundang satu surel satu-satu";

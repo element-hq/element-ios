@@ -2854,12 +2854,6 @@
 "key_verification_alert_title" = "У вас є не звірені сеанси";
 "user_other_session_permanently_unverified_additional_info" = "Цей сеанс не підтримує шифрування, і його не можна звірити.";
 "voice_broadcast_time_left" = "Залишилося %@";
-"launch_loading_processing_response" = "Обробка даних\n%@ %%";
-"launch_loading_server_syncing_nth_attempt" = "Синхронізація з сервером\n(%@ спроба)";
-
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Синхронізація з сервером";
 "voice_broadcast_buffering" = "Буферизація...";
 "voice_broadcast_stop_alert_agree_button" = "Так, припинити";
 "voice_broadcast_stop_alert_description" = "Ви впевнені, що хочете припинити голосову трансляцію? На цьому трансляція завершиться, і повний запис буде доступний у кімнаті.";
@@ -2907,10 +2901,6 @@
 "wysiwyg_composer_format_action_unordered_list" = "Перемкнути на маркований список";
 "voice_broadcast_recorder_connection_error" = "Помилка з'єднання - Запис призупинено";
 "poll_timeline_reply_ended_poll" = "Завершене опитування";
-
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Перенесення даних\n%@ %%";
 "settings_labs_disable_crypto_sdk" = "Наскрізне шифрування Rust (вийдіть, щоб вимкнути)";
 "settings_labs_confirm_crypto_sdk" = "Зауважте, що оскільки ця функція досі перебуває на стадії експерименту, вона може працювати не так, як очікується, і може мати непередбачувані наслідки. Щоб вимкнути цю функцію, просто вийдіть з системи та увійдіть знову. Використовуйте на власний розсуд і з обережністю.";
 "settings_labs_enable_crypto_sdk" = "Наскрізне шифрування Rust";
@@ -2927,3 +2917,19 @@
 "settings_push_rules_error" = "Сталася помилка під час оновлення налаштувань сповіщень. Спробуйте змінити налаштування ще раз.";
 "poll_history_detail_view_in_timeline" = "Переглянути опитування у стрічці";
 "authentication_qr_login_failure_device_not_supported" = "Пов'язування з цим пристроєм не підтримується.";
+"room_waiting_other_participants_message" = "Після того, як запрошені користувачі приєднаються до %@, ви зможете спілкуватися з ними, а кімната буде захищена наскрізним шифруванням";
+"room_waiting_other_participants_title" = "Очікування коли користувачі приєднаються до %@";
+"key_verification_scan_qr_code_information_new_session" = "Наведіть камеру на QR-код, що показаний на іншому пристрої, щоб звірити сеанс";
+"key_verification_scan_qr_code_information_other_session" = "Наведіть камеру на QR-код, що показаний на іншому пристрої, щоб звірити сеанс";
+"key_verification_scan_qr_code_information_other_device" = "Наведіть камеру на QR-код, що показаний на іншому пристрої, щоб звірити сеанс";
+"key_verification_scan_qr_code_information_other_user" = "Наведіть камеру на QR-код, що показаний на їхньому пристрої, щоб звірити сеанс";
+"key_verification_scan_qr_code_title" = "Сканувати QR-код";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Не можете отримати доступ до наявного сеансу %@?";
+"device_verification_self_verify_open_on_other_device_information" = "Вам потрібно звірити цей сеанс, щоб прочитати історію захищених повідомлень.\n\nВідкрийте Element на одному з інших пристроїв і дотримуйтесь інструкцій.";
+"device_verification_self_verify_open_on_other_device_title" = "Відкрийте %@ на іншому своєму пристрої";
+"room_creation_only_one_email_invite" = "Ви можете запросити лише одну адресу електронної пошти за раз";
+"launch_loading_delay_warning" = "Це може тривати трохи довше.\nДякуємо за ваше терпіння.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Синхронізація ваших розмов";

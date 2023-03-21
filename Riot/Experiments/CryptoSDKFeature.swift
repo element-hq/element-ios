@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import MatrixSDKCrypto
 
 /// An implementation of `MXCryptoV2Feature` which uses `UserDefaults` to persist the enabled status
 /// of `CryptoSDK`, and which uses feature flags to control rollout availability.
@@ -30,6 +31,11 @@ import Foundation
 @objc class CryptoSDKFeature: NSObject, MXCryptoV2Feature {
     @objc static let shared = CryptoSDKFeature()
     
+    var version: String {
+        // Will be moved into the olm machine as API
+        Bundle(for: OlmMachine.self).infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    }
+    
     var isEnabled: Bool {
         RiotSettings.shared.enableCryptoSDK
     }
@@ -38,14 +44,14 @@ import Foundation
     private let remoteFeature: RemoteFeaturesClientProtocol
     private let localFeature: PhasedRolloutFeature
     
-    init(remoteFeature: RemoteFeaturesClientProtocol = PostHogAnalyticsClient.shared) {
+    init(
+        remoteFeature: RemoteFeaturesClientProtocol = PostHogAnalyticsClient.shared,
+        localTargetPercentage: Double = 0.2
+    ) {
         self.remoteFeature = remoteFeature
         self.localFeature = PhasedRolloutFeature(
             name: Self.FeatureName,
-            // Local feature is currently set to 0% target, and all availability is fully controlled
-            // by the remote feature. Once the remote is fully rolled out, target for local feature will
-            // be gradually increased.
-            targetPercentage: 0.0
+            targetPercentage: localTargetPercentage
         )
     }
     

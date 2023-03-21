@@ -33,32 +33,15 @@
 
 - (RoomEncryptionTrustLevel)roomEncryptionTrustLevel
 {
-    RoomEncryptionTrustLevel roomEncryptionTrustLevel = RoomEncryptionTrustLevelUnknown;
-    if (self.trust)
+    MXUsersTrustLevelSummary *trust = self.trust;
+    if (!trust)
     {
-        double trustedUsersPercentage = self.trust.trustedUsersProgress.fractionCompleted;
-        double trustedDevicesPercentage = self.trust.trustedDevicesProgress.fractionCompleted;
-
-        if (trustedUsersPercentage >= 1.0)
-        {
-            if (trustedDevicesPercentage >= 1.0)
-            {
-                roomEncryptionTrustLevel = RoomEncryptionTrustLevelTrusted;
-            }
-            else
-            {
-                roomEncryptionTrustLevel = RoomEncryptionTrustLevelWarning;
-            }
-        }
-        else
-        {
-            roomEncryptionTrustLevel = RoomEncryptionTrustLevelNormal;
-        }
-            
-        roomEncryptionTrustLevel = roomEncryptionTrustLevel;
+        MXLogError(@"[MXRoomSummary] roomEncryptionTrustLevel: trust is missing");
+        return RoomEncryptionTrustLevelUnknown;
     }
     
-    return roomEncryptionTrustLevel;
+    EncryptionTrustLevel *encryption = [[EncryptionTrustLevel alloc] init];
+    return [encryption roomTrustLevelWithSummary:trust];
 }
 
 - (BOOL)isJoined

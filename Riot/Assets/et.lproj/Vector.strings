@@ -2601,12 +2601,6 @@
 "key_verification_alert_title" = "Sul on verifitseerimata sessioone";
 "user_other_session_permanently_unverified_additional_info" = "Seda sessiooni ei saa verifitseerida, sest seal puudub krüptimise tugi.";
 "voice_broadcast_time_left" = "aega jäänud %@";
-"launch_loading_processing_response" = "Töötleme andmeid\n%@ %%";
-"launch_loading_server_syncing_nth_attempt" = "Sünkroniseerime andmeid serveriga\n(katse: %@)";
-
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Sünkroniseerimine serveriga";
 "voice_broadcast_buffering" = "Andmed on puhverdamisel…";
 "voice_broadcast_stop_alert_agree_button" = "Jah, lõpetame";
 "voice_broadcast_stop_alert_description" = "Kas sa oled kindel, et soovid otseeetri lõpetada? Sellega ringhäälingukõne salvestamine lõppeb ja salvestis on kättesaadav kõigile jututoas.";
@@ -2629,7 +2623,7 @@
 "notice_voice_broadcast_ended" = "%@ lõpetas ringhäälingukõne.";
 "notice_voice_broadcast_live" = "Ringhäälingukõne on eetris";
 "user_other_session_security_recommendation_title" = "Muud sessioonid";
-"poll_timeline_decryption_error" = "Krüptimisvigade tõttu jääb osa hääli lugemata";
+"poll_timeline_decryption_error" = "Dekrüptimisvigade tõttu jääb osa hääli lugemata";
 "voice_message_broadcast_in_progress_title" = "Häälsõnumi salvestamine või esitamine ei õnnestu";
 "voice_message_broadcast_in_progress_message" = "Kuna sa hetkel salvestad ringhäälingukõnet, siis häälsõnumi salvestamine või esitamine ei õnnestu. Selleks palun lõpeta ringhäälingukõne";
 "poll_timeline_ended_text" = "Küsitlus on lõppenud";
@@ -2654,10 +2648,6 @@
 "wysiwyg_composer_format_action_unordered_list" = "Lülita täpploend sisse/välja";
 "voice_broadcast_recorder_connection_error" = "Viga võrguühenduses - salvestamine on peatatud";
 "poll_timeline_reply_ended_poll" = "Lõppenud küsitlus";
-
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Tõstame andmeid ümber\n%@ %%";
 "settings_labs_disable_crypto_sdk" = "Rust'i-põhine läbiv krüptimine (väljalülitamiseks pead välja logima)";
 "settings_labs_confirm_crypto_sdk" = "Palun arvesta, et see funktsionaalsus on alles katseline ja ei pruugi toimida eesmärgipäraselt. Kui ta juba on kasutusel, siis väljalülitamiseks pead hiljem korraks võrgust välja logima. Jätka ettevaatlikult ja omal äranägemisel.";
 "settings_labs_enable_crypto_sdk" = "Rust'i-põhine läbiv krüptimine";
@@ -2674,3 +2664,19 @@
 "settings_push_rules_error" = "Teavituste eelistuste muutmisel tekkis viga. Palun proovi sama valikut uuesti sisse/välja lülitada.";
 "poll_history_detail_view_in_timeline" = "Näita küsitlust ajajoonel";
 "authentication_qr_login_failure_device_not_supported" = "Sidumine selle seadmega ei ole toetatud.";
+"room_waiting_other_participants_message" = "Kui kutse saanud kasutajad on liitunud jututoaga %@, siis saad sa nendega suhelda ja jututuba on läbivalt krüptitud";
+"room_waiting_other_participants_title" = "Kasutajate liitumise ootel jututoaga %@";
+"key_verification_scan_qr_code_information_new_session" = "Suuna oma nutiseadme kaamera oma seadmes kuvatavale QR-koodile ja verifitseeri oma uus sessioon";
+"key_verification_scan_qr_code_information_other_user" = "Suuna oma nutiseadme kaamera teise kasutaja seadmes kuvatavale QR-koodile ja verifitseeri tema sessioon";
+"key_verification_scan_qr_code_information_other_device" = "Suuna kaamera oma teises seadmes kuvatavale QR-koodile ja verifitseeri see sessioon";
+"key_verification_scan_qr_code_information_other_session" = "Suuna oma seadme kaamera teises seadmes kuvatavale QR-koodile ja verifitseeri oma sessioon";
+"key_verification_scan_qr_code_title" = "Loe QR-koodi";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Sul puudub ligipääs olemasolevale %@ sessioonile?";
+"device_verification_self_verify_open_on_other_device_information" = "Oma krüptitud sõnumite ajaloo lugemiseks pead selle seadme verifitseerima.\n\nAva Element või mõni muu ühilduv Matrixi klient on teises seadmes ja järgi juhendit.";
+"device_verification_self_verify_open_on_other_device_title" = "Ava %@ oma teises seadmes";
+"room_creation_only_one_email_invite" = "E-posti teel saad saata kutseid vaid ükshaaval";
+"launch_loading_delay_warning" = "Selleks võib natuke rohkem aega kuluda.\nTänud ootamast.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Sinu vestlused on sünkroniseerimisel";

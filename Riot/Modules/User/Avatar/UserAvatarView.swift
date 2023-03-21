@@ -23,6 +23,7 @@ final class UserAvatarView: AvatarView {
     
     private func commonInit() {
         let avatarImageView = MXKImageView()
+        avatarImageView.frame = self.frame
         self.vc_addSubViewMatchingParent(avatarImageView)
         self.avatarImageView = avatarImageView
     }

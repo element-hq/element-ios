@@ -2852,12 +2852,6 @@
 "key_verification_alert_title" = "Máte neoverené relácie";
 "user_other_session_permanently_unverified_additional_info" = "Táto relácia nepodporuje šifrovanie, a preto ju nemožno overiť.";
 "voice_broadcast_time_left" = "%@ ostáva";
-"launch_loading_processing_response" = "Spracovanie údajov\n%@ %%";
-"launch_loading_server_syncing_nth_attempt" = "Synchronizácia so serverom\n(%@ pokus)";
-
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Synchronizácia so serverom";
 "voice_broadcast_buffering" = "Načítavanie do vyrovnávacej pamäte…";
 "voice_broadcast_stop_alert_agree_button" = "Áno, zastaviť";
 "voice_broadcast_stop_alert_description" = "Určite chcete zastaviť vysielanie naživo? Tým sa vysielanie ukončí a v miestnosti bude k dispozícii celý záznam.";
@@ -2905,10 +2899,6 @@
 "wysiwyg_composer_format_action_unordered_list" = "Prepnúť zoznam s odrážkami";
 "voice_broadcast_recorder_connection_error" = "Chyba pripojenia - nahrávanie pozastavené";
 "poll_timeline_reply_ended_poll" = "Ukončená anketa";
-
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Migrácia údajov\n%@ %%";
 "settings_labs_disable_crypto_sdk" = "Rust end-to-end šifrovanie (odhláste sa, aby ste ho vypli)";
 "settings_labs_confirm_crypto_sdk" = "Upozorňujeme, že táto funkcia je stále v experimentálnej fáze, preto nemusí fungovať podľa očakávaní a môže mať potenciálne nezamýšľané dôsledky. Ak chcete funkciu vrátiť späť, jednoducho sa odhláste a znova prihláste. Používajte ju podľa vlastného uváženia a s opatrnosťou.";
 "settings_labs_enable_crypto_sdk" = "Rust end-to-end šifrovanie";
@@ -2925,3 +2915,19 @@
 "poll_history_detail_view_in_timeline" = "Zobraziť anketu na časovej osi";
 "settings_push_rules_error" = "Pri aktualizácii vašich predvolieb oznámení došlo k chybe. Skúste prosím prepnúť možnosť znova.";
 "authentication_qr_login_failure_device_not_supported" = "Prepojenie s týmto zariadením nie je podporované.";
+"room_waiting_other_participants_message" = "Keď sa pozvaní používatelia pripoja k aplikácii %@, budete môcť konverzovať a miestnosť bude end-to-end šifrovaná";
+"room_waiting_other_participants_title" = "Čaká sa na používateľov, kým sa pripoja k aplikácii %@";
+"key_verification_scan_qr_code_information_new_session" = "Nasmerujte kameru na QR kód zobrazený na vašom druhom zariadení a overte vašu novú reláciu";
+"key_verification_scan_qr_code_information_other_session" = "Nasmerujte kameru na QR kód zobrazený na vašom druhom zariadení a overte vašu reláciu";
+"key_verification_scan_qr_code_information_other_device" = "Nasmerujte kameru na QR kód zobrazený na vašom druhom zariadení a overte túto reláciu";
+"key_verification_scan_qr_code_information_other_user" = "Nasmerujte kameru na QR kód zobrazený na ich zariadení a overte ich reláciu";
+"key_verification_scan_qr_code_title" = "Skenovať QR kód";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Nemôžete získať prístup k existujúcej relácii %@?";
+"device_verification_self_verify_open_on_other_device_information" = "Ak si chcete prečítať históriu zabezpečených správ, musíte túto reláciu overiť.\n\nOtvorte aplikáciu Element na jednom z vašich iných zariadení a postupujte podľa pokynov.";
+"device_verification_self_verify_open_on_other_device_title" = "Otvorte %@ na vašom druhom zariadení";
+"room_creation_only_one_email_invite" = "Naraz môžete pozvať len jeden e-mail";
+"launch_loading_delay_warning" = "Môže to trvať trochu dlhšie.\nĎakujeme za vašu trpezlivosť.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Synchronizácia vašich konverzácií";

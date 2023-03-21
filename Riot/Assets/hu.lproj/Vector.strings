@@ -2654,12 +2654,7 @@
 "voice_broadcast_stop_alert_title" = "Megszakítod az élő közvetítést?";
 "voice_broadcast_buffering" = "Pufferelés…";
 "voice_broadcast_time_left" = "%@ van vissza";
-"launch_loading_processing_response" = "Adat feldolgozása\n%@ %%";
-"launch_loading_server_syncing_nth_attempt" = "Szinkronizálás a szerverrel\n(%@ próbálkozás)";
 
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Szinkronizálás a szerverrel";
 "password_policy_pwd_in_dict_error" = "Ez a jelszó megtalálható a szótárban ezért nem engedélyezett.";
 "password_policy_weak_pwd_error" = "Ez a jelszó túl gyenge. Legalább 8 karakternek kell lennie és minden típusból legalább egy: nagybetű, kisbetű, szám és speciális karakter.";
 
@@ -2707,9 +2702,6 @@
 "poll_history_no_active_poll_period_text" = "%@ napja nincs aktív szavazás. További szavazások betöltése az előző havi szavazások megjelenítéséhez";
 "poll_history_loading_text" = "Szavazások megjelenítése";
 
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Adatok migrálása\n%@ %%";
 "settings_labs_disable_crypto_sdk" = "Rust végpontok közötti titkosítás (kikapcsoláshoz kijelentkezés szükséges)";
 "settings_labs_confirm_crypto_sdk" = "Ez a funkció még kísérleti fázisban van. Lehet, hogy nem az elvártnak megfelelően fog működni és előre nem látható következménye lehet. A funkció kikapcsolásához egyszerű ki-, és bejelentkezés szükséges. Használata csak saját felelősségre.";
 "settings_labs_enable_crypto_sdk" = "Rust végpontok közötti titkosítás";
@@ -2722,3 +2714,9 @@
 "poll_history_detail_view_in_timeline" = "Szavazás megjelenítése az idővonalon";
 "settings_push_rules_error" = "Hiba történt az értesítések beállításának frissítésekor. Próbáld meg az beállítást újra átkapcsolni.";
 "authentication_qr_login_failure_device_not_supported" = "Ezzel az eszközzel való összeköttetés nem támogatott.";
+"room_waiting_other_participants_message" = "Miután a meghívott felhasználók csatlakoztak a(z) %@ alkalmazáshoz beszélhet velük és a szoba végpontok között titkosítva lesz";
+"room_waiting_other_participants_title" = "%@ alkalmazáshoz csatlakozó felhasználókra várakozás";
+"key_verification_scan_qr_code_title" = "QR kód beolvasása";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Nem férsz hozzá létező munkamenethez, %@?";
+"device_verification_self_verify_open_on_other_device_title" = "Nyisd meg ezt: %@ a másik eszközön";
+"room_creation_only_one_email_invite" = "E-mail meghívóból egyszerre csak egy küldhető";
