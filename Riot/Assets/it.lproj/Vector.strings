@@ -2630,12 +2630,6 @@
 "user_other_session_permanently_unverified_additional_info" = "Questa sessione non supporta la crittografia, perciò non può essere verificata.";
 "voice_broadcast_buffering" = "Buffer...";
 "voice_broadcast_time_left" = "%@ rimasti";
-"launch_loading_processing_response" = "Elaborazione dati\n%@ %%";
-"launch_loading_server_syncing_nth_attempt" = "Sincronizzazione con il server\n(%@ tentativo)";
-
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Sincronizzazione con il server";
 "voice_broadcast_stop_alert_agree_button" = "Sì, ferma";
 "voice_broadcast_stop_alert_description" = "Vuoi davvero fermare la tua trasmissione in diretta? Verrà terminata la trasmissione e la registrazione completa sarà disponibile nella stanza.";
 "voice_broadcast_stop_alert_title" = "Fermare la trasmissione in diretta?";
@@ -2686,10 +2680,6 @@
 "poll_history_no_past_poll_period_text" = "Non ci sono sondaggi passati negli ultimi %@ giorni. Carica più sondaggi per vedere quelli dei mesi precedenti";
 "poll_history_no_active_poll_period_text" = "Non ci sono sondaggi attivi negli ultimi %@ giorni. Carica più sondaggi per vedere quelli dei mesi precedenti";
 "poll_history_loading_text" = "Visualizzazione sondaggi";
-
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Migrazione dati\n%@ %%";
 "settings_labs_disable_crypto_sdk" = "Crittografia end-to-end Rust (disconnettiti per disattivarla)";
 "settings_labs_confirm_crypto_sdk" = "Si noti che questa funzione, essendo ancora in fase sperimentale, potrebbe non funzionare come previsto e potrebbe avere conseguenze indesiderate. Per disattivare la funzione, è sufficiente disconnettersi e riaccedere. Utilizzare a propria discrezione e con cautela.";
 "settings_labs_enable_crypto_sdk" = "Crittografia end-to-end Rust";
@@ -2702,3 +2692,19 @@
 "poll_history_detail_view_in_timeline" = "Vedi sondaggio nella linea temporale";
 "settings_push_rules_error" = "Si è verificato un errore aggiornando le tue preferenze di notifica. Prova ad attivare/disattivare di nuovo l'opzione.";
 "authentication_qr_login_failure_device_not_supported" = "Il collegamento con questo dispositivo non è supportato.";
+"room_waiting_other_participants_message" = "Una volta che gli utenti si saranno uniti a %@, potrete scrivervi e la stanza sarà crittografata end-to-end";
+"room_waiting_other_participants_title" = "In attesa che gli utenti si uniscano a %@";
+"key_verification_scan_qr_code_information_new_session" = "Punta la fotocamera verso il codice QR mostrato sull'altro tuo dispositivo per verificare la tua nuova sessione";
+"key_verification_scan_qr_code_information_other_session" = "Punta la fotocamera verso il codice QR mostrato sull'altro tuo dispositivo per verificare la tua sessione";
+"key_verification_scan_qr_code_information_other_device" = "Punta la fotocamera verso il codice QR mostrato sull'altro tuo dispositivo per verificare questa sessione";
+"key_verification_scan_qr_code_information_other_user" = "Punta la fotocamera verso il codice QR mostrato sul suo dispositivo per verificare sua la sessione";
+"key_verification_scan_qr_code_title" = "Scansiona codice QR";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Non riesci ad accedere a una sessione esistente di %@?";
+"device_verification_self_verify_open_on_other_device_information" = "Devi verificare questa sessione per potere leggere la cronologia dei messaggi sicuri.\n\nApri Element su uno degli altri tuoi dispositivi e segui le istruzioni.";
+"device_verification_self_verify_open_on_other_device_title" = "Apri %@ sull'altro tuo dispositivo";
+"room_creation_only_one_email_invite" = "Puoi invitare una sola email alla volta";
+"launch_loading_delay_warning" = "Potrebbe volerci un po' più tempo.\nGrazie per la pazienza.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Sincronizzazione delle tue conversazioni";

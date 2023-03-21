@@ -45,6 +45,11 @@ class PillTextAttachment: NSTextAttachment {
 
         updateBounds()
     }
+    
+    convenience init?(attachmentData: PillTextAttachmentData) {
+        guard let encodedData = try? Self.serializationService.serialize(attachmentData) else { return nil }
+        self.init(data: encodedData, ofType: PillsFormatter.pillUTType)
+    }
 
     /// Create a Mention Pill text attachment for given room member.
     ///
@@ -55,9 +60,13 @@ class PillTextAttachment: NSTextAttachment {
     convenience init?(withRoomMember roomMember: MXRoomMember,
                       isHighlighted: Bool,
                       font: UIFont) {
-        let data = PillTextAttachmentData(matrixItemId: roomMember.userId,
-                                          displayName: roomMember.displayname,
-                                          avatarUrl: roomMember.avatarUrl,
+        let data = PillTextAttachmentData(pillType: .user(userId: roomMember.userId),
+                                          items: [
+                                            .avatar(url: roomMember.avatarUrl,
+                                                    string: roomMember.displayname,
+                                                    matrixId: roomMember.userId),
+                                            .text(roomMember.displayname)
+                                          ],
                                           isHighlighted: isHighlighted,
                                           alpha: 1.0,
                                           font: font)
@@ -71,14 +80,63 @@ class PillTextAttachment: NSTextAttachment {
 
         updateBounds()
     }
+    
+    /// Computes size required to display a pill for given display text.
+    ///
+    /// - Parameters:
+    ///   - font: the text font
+    /// - Returns: required size for pill
+    func size(forFont font: UIFont) -> CGSize {
+        guard let data else {
+            MXLog.debug("[PillTextAttachment]: data are missing")
+            return .zero
+        }
+        
+        let sizes = PillAttachmentViewProvider.pillAttachmentViewSizes
+
+        var width: CGFloat = 0
+
+        var textContent = ""
+        for item in data.items {
+            switch item {
+            case .text(let text):
+                textContent += text
+            case .avatar, .asset, .spaceAvatar:
+                width += sizes.avatarSideLength
+            }
+        }
+                
+        // add texts
+        if !textContent.isEmpty {
+            let label = UILabel(frame: .zero)
+            label.font = font
+            label.text = textContent
+            width += label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude,
+                                               height: sizes.pillBackgroundHeight)).width
+        }
+        
+        // add spacing
+        width += CGFloat(max(0, data.items.count - 1)) * sizes.itemSpacing
+        // add margins
+        switch data.items.first {
+        case .asset, .avatar:
+            width += sizes.avatarLeading + sizes.horizontalMargin
+        default:
+            width += 2 * sizes.horizontalMargin
+        }
+
+        return CGSize(width: width,
+                      height: sizes.pillHeight)
+    }
 }
 
 // MARK: - Private
 @available (iOS 15.0, *)
 private extension PillTextAttachment {
+        
     func updateBounds() {
         guard let data = data else { return }
-        let pillSize = PillAttachmentViewProvider.size(forDisplayText: data.displayText, andFont: data.font)
+        let pillSize = size(forFont: data.font)
         // Offset to align pill centerY with text centerY.
         let offset = data.font.descender + (data.font.lineHeight - pillSize.height) / 2.0
         self.bounds = CGRect(origin: CGPoint(x: 0.0, y: offset), size: pillSize)

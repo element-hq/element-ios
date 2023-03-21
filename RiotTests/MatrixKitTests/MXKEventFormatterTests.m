@@ -423,7 +423,7 @@
         }
     }];
 
-    XCTAssertEqual(hasLink, false, @"There should be no link in this case. We let the UI manage the link");
+    XCTAssertEqual(hasLink, true, @"There should be a link, so that a Pill can be rendered for this permalink.");
 }
 
 #pragma mark - Event sender/target info

@@ -2661,12 +2661,6 @@
 
 // Unverified sessions
 "key_verification_alert_title" = "Du hast nicht verifizierte Sitzungen";
-"launch_loading_processing_response" = "Verarbeite Daten\n%@ %%";
-"launch_loading_server_syncing_nth_attempt" = "Synchronisiere mit dem Server\n(%@ Versuch)";
-
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Synchronisiere mit dem Server";
 "user_other_session_permanently_unverified_additional_info" = "Diese Sitzung unterstützt keine Verschlüsselung und kann deshalb nicht verifiziert werden.";
 "voice_broadcast_time_left" = "%@ übrig";
 "voice_broadcast_buffering" = "Puffere …";
@@ -2716,10 +2710,6 @@
 "wysiwyg_composer_format_action_unordered_list" = "Unsortierte Liste umschalten";
 "voice_broadcast_recorder_connection_error" = "Verbindungsfehler − Aufnahme pausiert";
 "poll_timeline_reply_ended_poll" = "Beendete Umfrage";
-
-// MARK: - Launch loading
-
-"launch_loading_migrating_data" = "Migriere Daten\n%@ %%";
 "settings_labs_disable_crypto_sdk" = "Rust-Ende-zu-Ende-Verschlüsselung (zum Deaktivieren abmelden)";
 "settings_labs_confirm_crypto_sdk" = "Bitte beachte, dass diese Funktion noch experimentell ist, womöglich nicht wie erwartet funktioniert und unerwünschte Nebeneffekte haben kann. Melde dich zum deaktivieren einfach ab und erneut an. Nutze diese Funktion nach eigenem Ermessen und mit Vorsicht.";
 "settings_labs_enable_crypto_sdk" = "Rust-Ende-zu-Ende-Verschlüsselung";
@@ -2736,3 +2726,19 @@
 "settings_push_rules_error" = "Ein Fehler ist während der Aktualisierung deiner Benachrichtigungseinstellungen aufgetreten. Bitte versuche die Option erneut umzuschalten.";
 "poll_history_detail_view_in_timeline" = "Umfrage im Verlauf anzeigen";
 "authentication_qr_login_failure_device_not_supported" = "Die Verbindung mit diesem Gerät wird nicht unterstützt.";
+"room_waiting_other_participants_message" = "Sobald eingeladene Benutzer %@ beigetreten sind, werdet ihr euch unterhalten können und der Raum Ende-zu-Ende-verschlüsselt sein";
+"room_waiting_other_participants_title" = "Warte darauf, dass Benutzer %@ beitreten";
+"key_verification_scan_qr_code_information_new_session" = "Richte deine Kamera auf den QR-Code deines anderen Gerätes, um deine neue Sitzung zu verifizieren";
+"key_verification_scan_qr_code_information_other_session" = "Richte deine Kamera auf den QR-Code deines anderen Gerätes, um deine Sitzung zu verifizieren";
+"key_verification_scan_qr_code_information_other_device" = "Richte deine Kamera auf den QR-Code deines anderen Gerätes, um diese Sitzung zu verifizieren";
+"key_verification_scan_qr_code_information_other_user" = "Richte deine Kamera auf den QR-Code des anderen Gerätes, um die Sitzung der anderen Person zu verifizieren";
+"key_verification_scan_qr_code_title" = "QR-Code einlesen";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Du hast keinen Zugriff auf eine bestehende %@-Sitzung?";
+"device_verification_self_verify_open_on_other_device_information" = "Du musst diese Sitzung verifizieren, um deinen verschlüsselten Nachrichtenverlauf lesen zu können.\n\nÖffne Element auf einem deiner anderen Geräte und folge den Anweisungen.";
+"device_verification_self_verify_open_on_other_device_title" = "Öffne %@ auf deinem anderen Gerät";
+"room_creation_only_one_email_invite" = "Du kannst E-Mail-Einladung nur nacheinander verschicken";
+"launch_loading_delay_warning" = "Das könnte eine Weile dauern.\nDanke für deine Geduld.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Synchronisiere deine Unterhaltungen";

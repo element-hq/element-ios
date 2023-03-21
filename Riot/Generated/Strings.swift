@@ -3191,21 +3191,13 @@ public class VectorL10n: NSObject {
   public static var later: String { 
     return VectorL10n.tr("Vector", "later") 
   }
-  /// Migrating data\n%@ %%
-  public static func launchLoadingMigratingData(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "launch_loading_migrating_data", p1)
+  /// This may take a little longer.\nThanks for your patience.
+  public static var launchLoadingDelayWarning: String { 
+    return VectorL10n.tr("Vector", "launch_loading_delay_warning") 
   }
-  /// Processing data\n%@ %%
-  public static func launchLoadingProcessingResponse(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "launch_loading_processing_response", p1)
-  }
-  /// Syncing with the server
-  public static var launchLoadingServerSyncing: String { 
-    return VectorL10n.tr("Vector", "launch_loading_server_syncing") 
-  }
-  /// Syncing with the server\n(%@ attempt)
-  public static func launchLoadingServerSyncingNthAttempt(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "launch_loading_server_syncing_nth_attempt", p1)
+  /// Syncing your conversations
+  public static var launchLoadingGeneric: String { 
+    return VectorL10n.tr("Vector", "launch_loading_generic") 
   }
   /// Leave
   public static var leave: String { 
@@ -4698,6 +4690,22 @@ public class VectorL10n: NSObject {
   /// %@ doesn't have permission to access photo library, please change privacy settings
   public static func photoLibraryAccessNotGranted(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "photo_library_access_not_granted", p1)
+  }
+  /// Message
+  public static var pillMessage: String { 
+    return VectorL10n.tr("Vector", "pill_message") 
+  }
+  /// Message from %@
+  public static func pillMessageFrom(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "pill_message_from", p1)
+  }
+  /// Message in %@
+  public static func pillMessageIn(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "pill_message_in", p1)
+  }
+  /// Space/Room
+  public static var pillRoomFallbackDisplayName: String { 
+    return VectorL10n.tr("Vector", "pill_room_fallback_display_name") 
   }
   /// Create a PIN for security
   public static var pinProtectionChoosePin: String { 

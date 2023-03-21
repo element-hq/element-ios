@@ -2626,12 +2626,7 @@
 "user_session_got_it" = "Entendido";
 "user_other_session_permanently_unverified_additional_info" = "Esta sessão não suporta encriptação e assim não pode ser verificada.";
 "voice_broadcast_time_left" = "%@ restando";
-"launch_loading_processing_response" = "Processando dados\n%@ %%";
-"launch_loading_server_syncing_nth_attempt" = "Sincando com o servidor\n(%@ tentativa)";
 
-// MARK: - Launch loading
-
-"launch_loading_server_syncing" = "Sincando com o servidor";
 "key_verification_alert_body" = "Revise para assegurar que sua conta está segura.";
 
 // Unverified sessions
