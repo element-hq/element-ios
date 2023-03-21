@@ -267,7 +267,7 @@ struct PillProvider {
         let displayText: String
         let avatar: PillTextAttachmentItem
         if let roomMember {
-            displayText = VectorL10n.pillMessageFrom(roomMember.displayname)
+            displayText = VectorL10n.pillMessageFrom(roomMember.displayname ?? roomMember.userId)
             avatar = .avatar(url: roomMember.avatarUrl,
                              string: roomMember.displayname,
                              matrixId: roomMember.userId)
