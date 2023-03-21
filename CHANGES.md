@@ -1,3 +1,21 @@
+## Changes in 1.10.6 (2023-03-21)
+
+🙌 Improvements
+
+- Encryption: Refactor user / room encryption trust level ([#7430](https://github.com/vector-im/element-ios/pull/7430))
+- Crypto: Increase local rust crypto rollout to 20% of all users ([#7434](https://github.com/vector-im/element-ios/pull/7434))
+- Upgrade MatrixSDK version ([v0.26.2](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.2)).
+- Permalinks to a room/space are pillified ([#7409](https://github.com/vector-im/element-ios/issues/7409))
+- Permalinks to a matrix user are pillified ([#7411](https://github.com/vector-im/element-ios/issues/7411))
+- Permalinks to messages are pillified ([#7412](https://github.com/vector-im/element-ios/issues/7412))
+- Loading: Update startup progress UX ([#7417](https://github.com/vector-im/element-ios/issues/7417))
+
+🐛 Bugfixes
+
+- Room list: increase tappability area of the avatar button. ([#7427](https://github.com/vector-im/element-ios/pull/7427))
+- Manage bad m.file attachment format. ([#7406](https://github.com/vector-im/element-ios/issues/7406))
+
+
 ## Changes in 1.10.5 (2023-03-13)
 
 🙌 Improvements
