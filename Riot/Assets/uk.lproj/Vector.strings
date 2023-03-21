@@ -2933,3 +2933,9 @@
 // MARK: - Launch loading
 
 "launch_loading_generic" = "Синхронізація ваших розмов";
+"pill_message_in" = "Повідомлення у %@";
+"pill_message_from" = "Повідомлення від %@";
+"pill_message" = "Повідомлення";
+
+// Pills
+"pill_room_fallback_display_name" = "Простір/кімната";
