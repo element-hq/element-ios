@@ -88,7 +88,7 @@ class PillsFormatter: NSObject {
                 return
             }
 
-            var pillString: String
+            let pillString: String
             switch mode {
             case .displayname:
                 pillString = data.displayText
