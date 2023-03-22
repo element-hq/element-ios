@@ -1121,7 +1121,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         RecentsInvitesTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[RecentsInvitesTableViewCell defaultReuseIdentifier]];
         
-        tableViewCell.invitesCount = self.recentsListService.invitedRoomListData.counts.total.numberOfRooms;
+        tableViewCell.invitesCount = self.invitesCellDataArray.count;
 
         return tableViewCell;
     }
