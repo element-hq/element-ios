@@ -327,7 +327,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
             
             MXLog.debug("[QRLoginService] Marking the received master key as trusted")
             let mskVerificationResult = await withCheckedContinuation { (continuation: CheckedContinuation<Bool, Never>) in
-                session.crypto.setUserVerificationForUserId(session.myUserId) {
+                session.crypto.setUserVerification(true, forUser: session.myUserId) {
                     MXLog.debug("[QRLoginService] Successfully marked the received master key as trusted")
                     continuation.resume(returning: true)
                 } failure: { error in
