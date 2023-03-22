@@ -76,7 +76,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
 
     override var delegate: MXKRoomInputToolbarViewDelegate! {
         didSet {
-            wysiwygViewModel.permalinkReplacer = permalinkReplacer
+            setComposer()
+            //wysiwygViewModel.permalinkReplacer = permalinkReplacer
         }
     }
     
@@ -134,6 +135,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     var maxCompressedHeight: CGFloat {
         wysiwygViewModel.maxCompressedHeight
     }
+
+    var userSuggestionSharedContext: UserSuggestionSharedContext {
+        return toolbarViewDelegate!.userSuggestionContext()
+    }
     
     // MARK: - Setup
     
@@ -148,23 +153,24 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var permalinkReplacer: PermalinkReplacer? {
         return (delegate as? PermalinkReplacer)
     }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
+
+    func setComposer() {
         viewModel = ComposerViewModel(
             initialViewState: ComposerViewState(textFormattingEnabled: RiotSettings.shared.enableWysiwygTextFormatting,
-                                                isLandscapePhone: isLandscapePhone, bindings: ComposerBindings(focused: false)))
-        
+                                                isLandscapePhone: isLandscapePhone,
+                                                bindings: ComposerBindings(focused: false)))
+
         viewModel.callback = { [weak self] result in
             self?.handleViewModelResult(result)
         }
         wysiwygViewModel.plainTextMode = !RiotSettings.shared.enableWysiwygTextFormatting
-        
+
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
-        
+
         let composer = Composer(
             viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
+            userSuggestionSharedContext: userSuggestionSharedContext,
             resizeAnimationDuration: Double(kResizeComposerAnimationDuration),
             sendMessageAction: { [weak self] content in
             guard let self = self else { return }
@@ -176,13 +182,13 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             guard let self = self else { return }
             textView.inputAccessoryView = self.inputAccessoryViewForKeyboard
         }
-        
+
         hostingViewController = VectorHostingController(rootView: composer)
         hostingViewController.publishHeightChanges = true
         let height = hostingViewController.sizeThatFits(in: CGSize(width: self.frame.width, height: UIView.layoutFittingExpandedSize.height)).height
         let subView: UIView = hostingViewController.view
         self.addSubview(subView)
-        
+
         self.translatesAutoresizingMaskIntoConstraints = false
         subView.translatesAutoresizingMaskIntoConstraints = false
         heightConstraint = subView.heightAnchor.constraint(equalToConstant: height)
@@ -192,7 +198,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             subView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             subView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
-        
+
         cancellables = [
             hostingViewController.heightPublisher
                 .removeDuplicates()
@@ -206,7 +212,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                 .sink { [weak hostingViewController] _ in
                     hostingViewController?.view.setNeedsLayout()
                 },
-            
+
             wysiwygViewModel.$maximised
                 .dropFirst()
                 .removeDuplicates()
@@ -228,7 +234,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                     self.toolbarViewDelegate?.roomInputToolbarViewDidChangeTextMessage(self)
                 }
         ]
-        
+
         update(theme: ThemeService.shared().theme)
         registerThemeServiceDidChangeThemeNotification()
         NotificationCenter.default.addObserver(
@@ -244,6 +250,14 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             object: nil
         )
         NotificationCenter.default.addObserver(self, selector: #selector(deviceDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        if delegate != nil {
+            setComposer()
+        }
     }
     
     override func customizeRendering() {

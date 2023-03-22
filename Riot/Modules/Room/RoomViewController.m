@@ -5154,6 +5154,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self.userSuggestionCoordinator processSuggestionPattern:suggestionPattern];
 }
 
+- (UserSuggestionSharedContext *)userSuggestionContext
+{
+    return [self.userSuggestionCoordinator sharedContext];
+}
+
 - (void)roomInputToolbarViewDidOpenActionMenu:(RoomInputToolbarView*)toolbarView
 {
     // Consider opening the action menu as beginning to type and share encryption keys if requested.

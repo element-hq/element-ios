@@ -17,5 +17,6 @@
 import Foundation
 
 protocol UserSuggestionViewModelProtocol {
+    var sharedContext: UserSuggestionViewModelType.Context { get }
     var completion: ((UserSuggestionViewModelResult) -> Void)? { get set }
 }

@@ -256,3 +256,12 @@ final class SuggestionPatternWrapper: NSObject {
         super.init()
     }
 }
+
+final class UserSuggestionViewModelWrapper: NSObject {
+    let userSuggestionViewModel: UserSuggestionViewModel
+
+    init(_ userSuggestionViewModel: UserSuggestionViewModel) {
+        self.userSuggestionViewModel = userSuggestionViewModel
+        super.init()
+    }
+}

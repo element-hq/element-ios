@@ -27,7 +27,11 @@ class UserSuggestionViewModel: UserSuggestionViewModelType, UserSuggestionViewMo
     private let userSuggestionService: UserSuggestionServiceProtocol
     
     // MARK: Public
-    
+
+    var sharedContext: UserSuggestionViewModelType.Context {
+        return self.context
+    }
+
     var completion: ((UserSuggestionViewModelResult) -> Void)?
     
     // MARK: - Setup
