@@ -37,9 +37,9 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatrixSDK (0.26.2):
-    - MatrixSDK/Core (= 0.26.2)
-  - MatrixSDK/Core (0.26.2):
+  - MatrixSDK (0.26.4):
+    - MatrixSDK/Core (= 0.26.4)
+  - MatrixSDK/Core (0.26.4):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
@@ -47,7 +47,7 @@ PODS:
     - OLMKit (~> 3.2.5)
     - Realm (= 10.27.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.26.2):
+  - MatrixSDK/JingleCallStack (0.26.4):
     - JitsiMeetSDK (= 5.0.2)
     - MatrixSDK/Core
   - MatrixSDKCrypto (0.3.0)
@@ -100,8 +100,8 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - libPhoneNumber-iOS (~> 0.9.13)
-  - MatrixSDK (= 0.26.2)
-  - MatrixSDK/JingleCallStack (= 0.26.2)
+  - MatrixSDK (= 0.26.4)
+  - MatrixSDK/JingleCallStack (= 0.26.4)
   - OLMKit
   - PostHog (~> 2.0.0)
   - ReadMoreTextView (~> 3.0.1)
@@ -183,7 +183,7 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: 010cdccea670b6b2e1a665976bd1a1e6ea5330ca
+  MatrixSDK: f336fa2ba23d5db48873fa78d3e9565f768a2cda
   MatrixSDKCrypto: 05ebe373ccebf40f8a0cff37d8f8b24fd01b9883
   OLMKit: da115f16582e47626616874e20f7bb92222c7a51
   PostHog: 660ec6c9d80cec17b685e148f17f6785a88b597d
@@ -204,6 +204,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 90e256afba3906cdb4c1a3c1eb764abff6843a76
+PODFILE CHECKSUM: 741947b0cd7b44554c29e7ca268403622ba770b4
 
 COCOAPODS: 1.11.3
