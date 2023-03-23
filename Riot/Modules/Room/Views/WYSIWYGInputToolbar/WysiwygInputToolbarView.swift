@@ -219,7 +219,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         let composer = Composer(
             viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
-            userSuggestionSharedContext: toolbarViewDelegate.userSuggestionContext(),
+            userSuggestionSharedContext: toolbarViewDelegate.userSuggestionContext().context,
             resizeAnimationDuration: Double(kResizeComposerAnimationDuration),
             sendMessageAction: { [weak self] content in
             guard let self = self else { return }
@@ -227,10 +227,12 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }, showSendMediaActions: { [weak self]  in
             guard let self = self else { return }
             self.showSendMediaActions()
-        }).introspectTextView { [weak self] textView in
-            guard let self = self else { return }
-            textView.inputAccessoryView = self.inputAccessoryViewForKeyboard
-        }
+        })
+            .introspectTextView { [weak self] textView in
+                guard let self = self else { return }
+                textView.inputAccessoryView = self.inputAccessoryViewForKeyboard
+            }
+            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: toolbarViewDelegate.mediaManager())))
 
         hostingViewController = VectorHostingController(rootView: composer)
         hostingViewController.publishHeightChanges = true

@@ -53,7 +53,7 @@ final class UserSuggestionCoordinatorBridge: NSObject {
         userSuggestionCoordinator.toPresentable()
     }
 
-    func sharedContext() -> UserSuggestionSharedContext {
+    func sharedContext() -> UserSuggestionViewModelContextWrapper {
         userSuggestionCoordinator.sharedContext()
     }
 }

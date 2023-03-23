@@ -30,16 +30,12 @@ struct UserSuggestionCoordinatorParameters {
     let room: MXRoom
 }
 
-/// Defines a shared context providing the ability to use a single `UserSuggestionViewModel` for multiple
-/// `UserSuggestionList` e.g. the list component can then be displayed seemlessly in both `RoomViewController`
-/// UIKit hosted context, and in Rich-Text-Editor's SwiftUI fullscreen mode, without need to reload data.
-final class UserSuggestionSharedContext: NSObject {
+/// Wrapper around `UserSuggestionViewModelType.Context` to pass it through obj-c.
+final class UserSuggestionViewModelContextWrapper: NSObject {
     let context: UserSuggestionViewModelType.Context
-    let mediaManager: MXMediaManager
 
-    init(context: UserSuggestionViewModelType.Context, mediaManager: MXMediaManager) {
+    init(context: UserSuggestionViewModelType.Context) {
         self.context = context
-        self.mediaManager = mediaManager
     }
 }
 
@@ -118,9 +114,8 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
         userSuggestionHostingController
     }
 
-    func sharedContext() -> UserSuggestionSharedContext {
-        UserSuggestionSharedContext(context: userSuggestionViewModel.sharedContext,
-                                    mediaManager: parameters.mediaManager)
+    func sharedContext() -> UserSuggestionViewModelContextWrapper {
+        UserSuggestionViewModelContextWrapper(context: userSuggestionViewModel.sharedContext)
     }
 
     // MARK: - Private

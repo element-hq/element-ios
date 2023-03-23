@@ -22,7 +22,7 @@
 @class RoomInputToolbarView;
 @class LinkActionWrapper;
 @class SuggestionPatternWrapper;
-@class UserSuggestionSharedContext;
+@class UserSuggestionViewModelContextWrapper;
 
 /**
  Destination of the message in the composer
@@ -84,7 +84,9 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
 
 - (void)didDetectTextPattern: (SuggestionPatternWrapper *)suggestionPattern;
 
-- (UserSuggestionSharedContext *)userSuggestionContext;
+- (UserSuggestionViewModelContextWrapper *)userSuggestionContext;
+
+- (MXMediaManager *)mediaManager;
 
 @end
 

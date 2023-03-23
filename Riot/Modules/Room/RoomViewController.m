@@ -5154,9 +5154,14 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self.userSuggestionCoordinator processSuggestionPattern:suggestionPattern];
 }
 
-- (UserSuggestionSharedContext *)userSuggestionContext
+- (UserSuggestionViewModelContextWrapper *)userSuggestionContext
 {
     return [self.userSuggestionCoordinator sharedContext];
+}
+
+- (MXMediaManager *)mediaManager
+{
+    return self.roomDataSource.mxSession.mediaManager;
 }
 
 - (void)roomInputToolbarViewDidOpenActionMenu:(RoomInputToolbarView*)toolbarView
