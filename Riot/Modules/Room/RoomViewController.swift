@@ -387,6 +387,7 @@ extension RoomViewController: PermalinkReplacer {
 
     public func postProcessMarkdown(in attributedString: NSAttributedString) -> NSAttributedString {
         guard #available(iOS 15.0, *),
+              let roomDataSource,
               let session = roomDataSource.mxSession,
               let eventFormatter = roomDataSource.eventFormatter,
               let roomState = roomDataSource.roomState else {
