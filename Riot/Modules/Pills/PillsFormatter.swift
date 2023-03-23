@@ -65,7 +65,7 @@ class PillsFormatter: NSObject {
                         
             // try to get a mention pill from the url
             let label = Range(range, in: newAttr.string).flatMap { String(newAttr.string[$0]) }
-            if let attachmentString: NSAttributedString = provider.pillTextAttachmentString(forUrl: url, withLabel: label ?? "", event: event) {
+            if let attachmentString: NSAttributedString = provider.pillTextAttachmentString(forUrl: url, withLabel: label ?? "") {
                 // replace the url with the pill
                 newAttr.replaceCharacters(in: range, with: attachmentString)
             }
@@ -81,36 +81,28 @@ class PillsFormatter: NSObject {
     ///   - roomState: The current room state
     ///   - font: The font to use for the pill text
     /// - Returns: A new attributed string with pills.
-    static func insertPills(in markdownString: NSAttributedString, roomState: MXRoomState, font: UIFont) -> NSAttributedString {
-        // Create a regexp that detects markdown links.
-        let pattern = "\\[([^\\]]+)\\]\\(([^\\)\"\\s]+)(?:\\s+\"(.*)\")?\\)"
-        guard let regExp = try? NSRegularExpression(pattern: pattern) else { return markdownString }
-
-        let matches = regExp.matches(in: markdownString.string,
-                                     range: .init(location: 0, length: markdownString.length))
+    static func insertPills(in markdownString: NSAttributedString,
+                            withSession session: MXSession,
+                            eventFormatter: MXKEventFormatter,
+                            roomState: MXRoomState,
+                            font: UIFont) -> NSAttributedString {
+        let matches = markdownUrls(in: markdownString)
 
         // If we have some matches, replace permalinks by a pill version.
+        guard !matches.isEmpty else { return markdownString }
+
+        let pillProvider = PillProvider(withSession: session,
+                                        eventFormatter: eventFormatter,
+                                        event: nil,
+                                        roomState: roomState,
+                                        andLatestRoomState: nil,
+                                        isEditMode: true)
+
         let mutable = NSMutableAttributedString(attributedString: markdownString)
-        for match in matches.reversed() {
-            // Range at 2 is the URL, no need to care about the other parts because
-            // we are retrieving the most recent display name from the room state.
-            let urlRange = match.range(at: 2)
-            var url = markdownString.attributedSubstring(from: urlRange).string
 
-            // Note: a valid markdown link can be written with
-            // enclosing <..>, remove them for userId detection.
-            if url.first == "<" && url.last == ">" {
-                url = String(url[url.index(after: url.startIndex)...url.index(url.endIndex, offsetBy: -2)])
-            }
-
-            // If we find a user matching the link, replace the
-            // entire range of the match with a mention pill.
-            if let userId = userIdFromPermalink(url),
-                let roomMember = roomMember(withUserId: userId,
-                                            roomState: roomState,
-                                            andLatestRoomState: nil) {
-                let attachmentString = mentionPill(withRoomMember: roomMember, isHighlighted: false, font: font)
-                mutable.replaceCharacters(in: match.range, with: attachmentString)
+        matches.reversed().forEach { (url: URL, label: String, range: NSRange) in
+            if let attachmentString = pillProvider.pillTextAttachmentString(forUrl: url, withLabel: label) {
+                mutable.replaceCharacters(in: range, with: attachmentString)
             }
         }
 
@@ -166,6 +158,20 @@ class PillsFormatter: NSObject {
         }
         return attributedStringWithAttachment(attachment, link: url, font: font)
     }
+
+    static func mentionPill(withUrl url: URL,
+                            andLabel label: String,
+                            session: MXSession,
+                            eventFormatter: MXKEventFormatter,
+                            roomState: MXRoomState) -> NSAttributedString? {
+        let pillProvider = PillProvider(withSession: session,
+                                        eventFormatter: eventFormatter,
+                                        event: nil,
+                                        roomState: roomState,
+                                        andLatestRoomState: nil,
+                                        isEditMode: true)
+        return pillProvider.pillTextAttachmentString(forUrl: url, withLabel: label)
+    }
         
     /// Update alpha of all `PillTextAttachment` contained in given attributed string.
     ///
@@ -217,30 +223,35 @@ extension PillsFormatter {
         }
         return string
     }
+}
 
-    /// Extract user id from given permalink
-    /// - Parameter permalink: the permalink
-    /// - Returns: userId, if any
-    static func userIdFromPermalink(_ permalink: String) -> String? {
-        let baseUrl: String
-        if let clientBaseUrl = BuildSettings.clientPermalinkBaseUrl {
-            baseUrl = String(format: "%@/#/user/", clientBaseUrl)
-        } else {
-            baseUrl = String(format: "%@/#/", kMXMatrixDotToUrl)
+@available(iOS 15.0, *)
+private extension PillsFormatter {
+    static func markdownUrls(in attributedString: NSAttributedString) -> [(url: URL, label: String, range: NSRange)] {
+        // Create a regexp that detects markdown links.
+        let pattern = "\\[([^\\]]+)\\]\\(([^\\)\"\\s]+)(?:\\s+\"(.*)\")?\\)"
+        guard let regExp = try? NSRegularExpression(pattern: pattern) else { return [] }
+
+        let matches = regExp.matches(in: attributedString.string,
+                                     range: .init(location: 0, length: attributedString.length))
+
+        return matches.compactMap { match in
+            let labelRange = match.range(at: 1)
+            let urlRange = match.range(at: 2)
+            let label = attributedString.attributedSubstring(from: labelRange).string
+            var url = attributedString.attributedSubstring(from: urlRange).string
+
+            // Note: a valid markdown link can be written with
+            // enclosing <..>, remove them for userId detection.
+            if url.first == "<" && url.last == ">" {
+                url = String(url[url.index(after: url.startIndex)...url.index(url.endIndex, offsetBy: -2)])
+            }
+
+            if let url = URL(string: url) {
+                return (url: url, label: label, range: match.range)
+            } else {
+                return nil
+            }
         }
-        return permalink.starts(with: baseUrl) ? String(permalink.dropFirst(baseUrl.count)) : nil
-    }
-
-    /// Retrieve the latest available `MXRoomMember` from given data.
-    ///
-    /// - Parameters:
-    ///   - userId: the id of the user
-    ///   - roomState: room state for message
-    ///   - latestRoomState: latest room state of the room containing this message
-    /// - Returns: the room member, if available
-    static func roomMember(withUserId userId: String,
-                           roomState: MXRoomState,
-                           andLatestRoomState latestRoomState: MXRoomState?) -> MXRoomMember? {
-        return latestRoomState?.members.member(withUserId: userId) ?? roomState.members.member(withUserId: userId)
     }
 }

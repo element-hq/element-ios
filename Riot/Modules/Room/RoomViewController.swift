@@ -371,26 +371,30 @@ extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
 extension RoomViewController: PermalinkReplacer {
     public func replacementForLink(_ url: String, text: String) -> NSAttributedString? {
         guard #available(iOS 15.0, *),
-              let userId = PillsFormatter.userIdFromPermalink(url),
-              let roomState = roomDataSource.roomState,
-              let member = PillsFormatter.roomMember(withUserId: userId,
-                                                     roomState: roomState,
-                                                     andLatestRoomState: nil) else {
+              let url = URL(string: url),
+              let session = roomDataSource.mxSession,
+              let eventFormatter = roomDataSource.eventFormatter,
+              let roomState = roomDataSource.roomState else {
             return nil
         }
 
-        return PillsFormatter.mentionPill(withRoomMember: member,
-                                          isHighlighted: false,
-                                          font: inputToolbarView.textDefaultFont)
+        return PillsFormatter.mentionPill(withUrl: url,
+                                          andLabel: text,
+                                          session: session,
+                                          eventFormatter: eventFormatter,
+                                          roomState: roomState)
     }
 
     public func postProcessMarkdown(in attributedString: NSAttributedString) -> NSAttributedString {
         guard #available(iOS 15.0, *),
+              let session = roomDataSource.mxSession,
+              let eventFormatter = roomDataSource.eventFormatter,
               let roomState = roomDataSource.roomState else {
             return attributedString
         }
-
         return PillsFormatter.insertPills(in: attributedString,
+                                          withSession: session,
+                                          eventFormatter: eventFormatter,
                                           roomState: roomState,
                                           font: inputToolbarView.textDefaultFont)
     }
