@@ -256,7 +256,7 @@ struct Composer: View {
                     }
                 }
                 if wysiwygViewModel.maximised {
-                    UserSuggestionList(viewModel: userSuggestionSharedContext.context)
+                    UserSuggestionList(viewModel: userSuggestionSharedContext.context, showBackgroundShadow: false)
                         .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: userSuggestionSharedContext.mediaManager)))
                 }
             }
