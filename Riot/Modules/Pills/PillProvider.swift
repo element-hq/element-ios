@@ -135,8 +135,8 @@ struct PillProvider {
         let isHighlighted = userId == session.myUserId
             // No actual event means it is a composer Pill. No highlight
             && event != nil
-            // No highlight on self-mentions.
-            && event?.sender == session.myUserId
+            // No highlight on self-mentions
+            && event?.sender != session.myUserId
 
         let avatar: PillTextAttachmentItem
         if roomMember == nil && user == nil {
