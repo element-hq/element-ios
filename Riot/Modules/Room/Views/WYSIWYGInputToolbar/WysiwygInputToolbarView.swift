@@ -43,9 +43,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var heightConstraint: NSLayoutConstraint!
     private var voiceMessageBottomConstraint: NSLayoutConstraint?
     private var hostingViewController: VectorHostingController!
-    private lazy var wysiwygViewModel = WysiwygComposerViewModel(
-        parserStyle: WysiwygInputToolbarView.parserStyle,
-        permalinkReplacer: permalinkReplacer
+    private var wysiwygViewModel = WysiwygComposerViewModel(
+        parserStyle: WysiwygInputToolbarView.parserStyle
     )
     /// Compute current HTML parser style for composer.
     private static var parserStyle: HTMLParserStyle {
@@ -76,8 +75,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
 
     override var delegate: MXKRoomInputToolbarViewDelegate! {
         didSet {
-            setComposer()
-            //wysiwygViewModel.permalinkReplacer = permalinkReplacer
+            setupComposerIfNeeded()
         }
     }
     
@@ -135,10 +133,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     var maxCompressedHeight: CGFloat {
         wysiwygViewModel.maxCompressedHeight
     }
-
-    var userSuggestionSharedContext: UserSuggestionSharedContext {
-        return toolbarViewDelegate!.userSuggestionContext()
-    }
     
     // MARK: - Setup
     
@@ -153,8 +147,62 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private var permalinkReplacer: PermalinkReplacer? {
         return (delegate as? PermalinkReplacer)
     }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
 
-    func setComposer() {
+        setupComposerIfNeeded()
+    }
+    
+    override func customizeRendering() {
+        super.customizeRendering()
+        self.backgroundColor = .clear
+    }
+    
+    override func dismissKeyboard() {
+        self.viewModel.dismissKeyboard()
+    }
+
+    @discardableResult
+    override func becomeFirstResponder() -> Bool {
+        self.wysiwygViewModel.textView.becomeFirstResponder()
+    }
+    
+    override func dismissValidationView(_ validationView: MXKImageView!) {
+        super.dismissValidationView(validationView)
+        if isMaximised {
+            showKeyboard()
+        }
+    }
+    
+    func showKeyboard() {
+        self.viewModel.showKeyboard()
+    }
+    
+    func minimise() {
+        wysiwygViewModel.maximised = false
+    }
+    
+    func performLinkOperation(_ linkOperation: WysiwygLinkOperation) {
+        if let selectionToRestore = viewModel.selectionToRestore {
+            wysiwygViewModel.select(range: selectionToRestore)
+        }
+        wysiwygViewModel.applyLinkOperation(linkOperation)
+    }
+
+    func mention(_ member: MXRoomMember) {
+        self.wysiwygViewModel.setMention(link: MXTools.permalinkToUser(withUserId: member.userId),
+                                         name: member.displayname,
+                                         key: .at)
+    }
+    
+    // MARK: - Private
+
+    private func setupComposerIfNeeded() {
+        guard hostingViewController == nil,
+              let toolbarViewDelegate,
+              let permalinkReplacer else { return }
+
         viewModel = ComposerViewModel(
             initialViewState: ComposerViewState(textFormattingEnabled: RiotSettings.shared.enableWysiwygTextFormatting,
                                                 isLandscapePhone: isLandscapePhone,
@@ -164,13 +212,14 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             self?.handleViewModelResult(result)
         }
         wysiwygViewModel.plainTextMode = !RiotSettings.shared.enableWysiwygTextFormatting
+        wysiwygViewModel.permalinkReplacer = permalinkReplacer
 
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
 
         let composer = Composer(
             viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
-            userSuggestionSharedContext: userSuggestionSharedContext,
+            userSuggestionSharedContext: toolbarViewDelegate.userSuggestionContext(),
             resizeAnimationDuration: Double(kResizeComposerAnimationDuration),
             sendMessageAction: { [weak self] content in
             guard let self = self else { return }
@@ -251,58 +300,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         )
         NotificationCenter.default.addObserver(self, selector: #selector(deviceDidRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        if delegate != nil {
-            setComposer()
-        }
-    }
-    
-    override func customizeRendering() {
-        super.customizeRendering()
-        self.backgroundColor = .clear
-    }
-    
-    override func dismissKeyboard() {
-        self.viewModel.dismissKeyboard()
-    }
-
-    @discardableResult
-    override func becomeFirstResponder() -> Bool {
-        self.wysiwygViewModel.textView.becomeFirstResponder()
-    }
-    
-    override func dismissValidationView(_ validationView: MXKImageView!) {
-        super.dismissValidationView(validationView)
-        if isMaximised {
-            showKeyboard()
-        }
-    }
-    
-    func showKeyboard() {
-        self.viewModel.showKeyboard()
-    }
-    
-    func minimise() {
-        wysiwygViewModel.maximised = false
-    }
-    
-    func performLinkOperation(_ linkOperation: WysiwygLinkOperation) {
-        if let selectionToRestore = viewModel.selectionToRestore {
-            wysiwygViewModel.select(range: selectionToRestore)
-        }
-        wysiwygViewModel.applyLinkOperation(linkOperation)
-    }
-
-    func mention(_ member: MXRoomMember) {
-        self.wysiwygViewModel.setMention(link: MXTools.permalinkToUser(withUserId: member.userId),
-                                         name: member.displayname,
-                                         key: .at)
-    }
-    
-    // MARK: - Private
     
     @objc private func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
