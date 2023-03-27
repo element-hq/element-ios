@@ -211,6 +211,9 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "hideVerifyThisSessionAlert", defaultValue: false, storage: defaults)
     var hideVerifyThisSessionAlert
     
+    @UserDefault(key: "showVerificationUpgradeAlert", defaultValue: false, storage: defaults)
+    var showVerificationUpgradeAlert
+    
     @UserDefault(key: "matrixApps", defaultValue: false, storage: defaults)
     var matrixApps
     

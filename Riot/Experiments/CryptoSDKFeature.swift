@@ -40,7 +40,18 @@ import MatrixSDKCrypto
         RiotSettings.shared.enableCryptoSDK
     }
     
+    var needsVerificationUpgrade: Bool {
+        get {
+            return RiotSettings.shared.showVerificationUpgradeAlert
+        }
+        set {
+            RiotSettings.shared.showVerificationUpgradeAlert = newValue
+        }
+    }
+    
     private static let FeatureName = "ios-crypto-sdk"
+    private static let FeatureNameV2 = "ios-crypto-sdk-v2"
+    
     private let remoteFeature: RemoteFeaturesClientProtocol
     private let localFeature: PhasedRolloutFeature
     
@@ -98,6 +109,13 @@ import MatrixSDKCrypto
     }
     
     private func isFeatureEnabled(userId: String) -> Bool {
-        remoteFeature.isFeatureEnabled(Self.FeatureName) || localFeature.isEnabled(userId: userId)
+        // This feature includes app version with a bug, and thus will not be rolled out to 100% users
+        remoteFeature.isFeatureEnabled(Self.FeatureName)
+        
+        // Second version of the remote feature with a bugfix and released eventually to 100% users
+        || remoteFeature.isFeatureEnabled(Self.FeatureNameV2)
+        
+        // Local feature
+        || localFeature.isEnabled(userId: userId)
     }
 }
