@@ -1089,7 +1089,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     _voiceMessageController.roomId = dataSource.roomId;
     
     _userSuggestionCoordinator = [[UserSuggestionCoordinatorBridge alloc] initWithMediaManager:self.roomDataSource.mxSession.mediaManager
-                                                                                          room:dataSource.room];
+                                                                                          room:dataSource.room
+                                                                                        userID:self.roomDataSource.mxSession.myUserId];
     _userSuggestionCoordinator.delegate = self;
     
     [self setupUserSuggestionViewIfNeeded];
@@ -8048,6 +8049,19 @@ static CGSize kThreadListBarButtonItemImageSize;
              didRequestMentionForMember:(MXRoomMember *)member
                             textTrigger:(NSString *)textTrigger
 {
+    [self removeTriggerTextFromComposer:textTrigger];
+    [self mention:member];
+}
+
+- (void)userSuggestionCoordinatorBridgeDidRequestMentionForRoom:(UserSuggestionCoordinatorBridge *)coordinator
+                                                    textTrigger:(NSString *)textTrigger
+{
+    [self removeTriggerTextFromComposer:textTrigger];
+    [self.inputToolbarView pasteText:@"@room "];
+}
+
+- (void)removeTriggerTextFromComposer:(NSString *)textTrigger
+{
     RoomInputToolbarView *toolbar = (RoomInputToolbarView *)self.inputToolbarView;
     if (toolbar && textTrigger.length) {
         NSMutableAttributedString *attributedTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:toolbar.attributedTextMessage];
@@ -8057,8 +8071,6 @@ static CGSize kThreadListBarButtonItemImageSize;
                                                                     range:NSMakeRange(0, attributedTextMessage.length)];
         [toolbar setAttributedTextMessage:attributedTextMessage];
     }
-    
-    [self mention:member];
 }
 
 - (void)userSuggestionCoordinatorBridge:(UserSuggestionCoordinatorBridge *)coordinator didUpdateViewHeight:(CGFloat)height
