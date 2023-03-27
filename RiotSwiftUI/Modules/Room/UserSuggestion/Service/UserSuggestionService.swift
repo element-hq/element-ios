@@ -119,6 +119,6 @@ extension Array where Element == RoomMembersProviderMember {
     /// Returns the array with an additional member that represents an `@room` mention.
     func withRoom(_ canMentionRoom: Bool) -> Self {
         guard canMentionRoom else { return self }
-        return self + [RoomMembersProviderMember(userId: "@room", displayName: "@room", avatarUrl: "")]
+        return self + [RoomMembersProviderMember(userId: "@room", displayName: "Everyone", avatarUrl: "")]
     }
 }
