@@ -17,14 +17,14 @@
 #ifndef EventEncryptionDecoration_h
 #define EventEncryptionDecoration_h
 
+/**
+ Decoration used alongside encrypted events
+ */
 typedef NS_ENUM(NSUInteger, EventEncryptionDecoration)
 {
     EventEncryptionDecorationNone,
-    EventEncryptionDecorationUnsafeKey,
-    EventEncryptionDecorationDecryptionError,
-    EventEncryptionDecorationNotEncrypted,
-    EventEncryptionDecorationUntrustedDevice
+    EventEncryptionDecorationGrey,
+    EventEncryptionDecorationRed
 };
-
 
 #endif /* EventEncryptionDecoration_h */
