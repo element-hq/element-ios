@@ -3027,6 +3027,14 @@ public class VectorL10n: NSObject {
   public static var keyVerificationSelfVerifyCurrentSessionAlertValidateAction: String { 
     return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_validate_action") 
   }
+  /// Secure messaging has been improved with the latest update. Please re-verify your device.
+  public static var keyVerificationSelfVerifySecurityUpgradeAlertMessage: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_security_upgrade_alert_message") 
+  }
+  /// App updated
+  public static var keyVerificationSelfVerifySecurityUpgradeAlertTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_security_upgrade_alert_title") 
+  }
   /// Review
   public static var keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction: String { 
     return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_validate_action") 

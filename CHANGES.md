@@ -1,3 +1,11 @@
+## Changes in 1.10.8 (2023-03-28)
+
+🙌 Improvements
+
+- Verification: Display upgrade verification prompt ([#7454](https://github.com/vector-im/element-ios/pull/7454))
+- Upgrade MatrixSDK version ([v0.26.5](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.5)).
+
+
 ## Changes in 1.10.7 (2023-03-22)
 
 🙌 Improvements
