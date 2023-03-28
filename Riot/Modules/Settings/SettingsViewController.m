@@ -2889,7 +2889,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationAcceptableUsePolicyUrlString];
                 
-                webViewViewController.title = [VectorL10n settingsTermConditions];
+                webViewViewController.title = [VectorL10n settingsAcceptableUse];
                 [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
                 
                 [self pushViewController:webViewViewController];
