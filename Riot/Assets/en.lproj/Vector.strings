@@ -1562,8 +1562,8 @@ Tap the + to start adding people.";
 
 // Legacy to Rust security upgrade
 
-"key_verification_self_verify_security_upgrade_alert_title" = "Encryption upgraded";
-"key_verification_self_verify_security_upgrade_alert_message" = "The end-to-end encryption has been upgraded to be more secure. Please re-verify your account.";
+"key_verification_self_verify_security_upgrade_alert_title" = "App updated";
+"key_verification_self_verify_security_upgrade_alert_message" = "Secure messaging has been improved with the latest update. Please re-verify your device.";
 
 // Unverified sessions
 "key_verification_alert_title" = "You have unverified sessions";
