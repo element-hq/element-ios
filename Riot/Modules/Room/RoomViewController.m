@@ -8057,7 +8057,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                                                     textTrigger:(NSString *)textTrigger
 {
     [self removeTriggerTextFromComposer:textTrigger];
-    [self.inputToolbarView pasteText:@"@room "];
+    [self.inputToolbarView pasteText:[UserSuggestionID.room stringByAppendingString:@" "]];
 }
 
 - (void)removeTriggerTextFromComposer:(NSString *)textTrigger

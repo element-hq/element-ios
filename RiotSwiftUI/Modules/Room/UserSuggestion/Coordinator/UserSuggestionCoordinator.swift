@@ -75,7 +75,7 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
             
             switch result {
             case .selectedItemWithIdentifier(let identifier):
-                if identifier == "@room" {
+                if identifier == UserSuggestionID.room {
                     self.delegate?.userSuggestionCoordinatorDidRequestMentionForRoom(self, textTrigger: self.userSuggestionService.currentTextTrigger)
                     return
                 }

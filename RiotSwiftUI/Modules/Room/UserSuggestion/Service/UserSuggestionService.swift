@@ -23,6 +23,11 @@ struct RoomMembersProviderMember {
     var avatarUrl: String
 }
 
+class UserSuggestionID: NSObject {
+    /// A special case added for suggesting `@room` mentions.
+    @objc static let room = "@room"
+}
+
 protocol RoomMembersProviderProtocol {
     var canMentionRoom: Bool { get }
     func fetchMembers(_ members: @escaping ([RoomMembersProviderMember]) -> Void)
@@ -119,6 +124,6 @@ extension Array where Element == RoomMembersProviderMember {
     /// Returns the array with an additional member that represents an `@room` mention.
     func withRoom(_ canMentionRoom: Bool) -> Self {
         guard canMentionRoom else { return self }
-        return self + [RoomMembersProviderMember(userId: "@room", displayName: "Everyone", avatarUrl: "")]
+        return self + [RoomMembersProviderMember(userId: UserSuggestionID.room, displayName: "Everyone", avatarUrl: "")]
     }
 }

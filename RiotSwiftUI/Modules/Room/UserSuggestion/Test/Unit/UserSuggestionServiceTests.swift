@@ -124,7 +124,7 @@ class UserSuggestionServiceTests: XCTestCase {
         service.processTextMessage("@ro")
         
         // Then the completion for a room mention should be shown.
-        XCTAssertEqual(service.items.value.first?.userId, "@room")
+        XCTAssertEqual(service.items.value.first?.userId, UserSuggestionID.room)
     }
 }
 
