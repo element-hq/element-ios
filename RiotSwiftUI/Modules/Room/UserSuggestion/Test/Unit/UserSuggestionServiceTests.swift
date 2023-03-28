@@ -20,87 +20,111 @@ import XCTest
 @testable import RiotSwiftUI
 
 class UserSuggestionServiceTests: XCTestCase {
-    var service: UserSuggestionService?
+    var service: UserSuggestionService!
+    var canMentionRoom = false
     
     override func setUp() {
         service = UserSuggestionService(roomMemberProvider: self, shouldDebounce: false)
+        canMentionRoom = false
     }
     
     func testAlice() {
-        service?.processTextMessage("@Al")
-        assert(service?.items.value.first?.displayName == "Alice")
+        service.processTextMessage("@Al")
+        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
         
-        service?.processTextMessage("@al")
-        assert(service?.items.value.first?.displayName == "Alice")
+        service.processTextMessage("@al")
+        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
         
-        service?.processTextMessage("@ice")
-        assert(service?.items.value.first?.displayName == "Alice")
+        service.processTextMessage("@ice")
+        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
         
-        service?.processTextMessage("@Alice")
-        assert(service?.items.value.first?.displayName == "Alice")
+        service.processTextMessage("@Alice")
+        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
         
-        service?.processTextMessage("@alice:matrix.org")
-        assert(service?.items.value.first?.displayName == "Alice")
+        service.processTextMessage("@alice:matrix.org")
+        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
     }
     
     func testBob() {
-        service?.processTextMessage("@ob")
-        assert(service?.items.value.first?.displayName == "Bob")
+        service.processTextMessage("@ob")
+        XCTAssertEqual(service.items.value.first?.displayName, "Bob")
         
-        service?.processTextMessage("@ob:")
-        assert(service?.items.value.first?.displayName == "Bob")
+        service.processTextMessage("@ob:")
+        XCTAssertEqual(service.items.value.first?.displayName, "Bob")
         
-        service?.processTextMessage("@b:matrix")
-        assert(service?.items.value.first?.displayName == "Bob")
+        service.processTextMessage("@b:matrix")
+        XCTAssertEqual(service.items.value.first?.displayName, "Bob")
     }
     
     func testBoth() {
-        service?.processTextMessage("@:matrix")
-        assert(service?.items.value.first?.displayName == "Alice")
-        assert(service?.items.value.last?.displayName == "Bob")
+        service.processTextMessage("@:matrix")
+        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
+        XCTAssertEqual(service.items.value.last?.displayName, "Bob")
         
-        service?.processTextMessage("@.org")
-        assert(service?.items.value.first?.displayName == "Alice")
-        assert(service?.items.value.last?.displayName == "Bob")
+        service.processTextMessage("@.org")
+        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
+        XCTAssertEqual(service.items.value.last?.displayName, "Bob")
     }
     
     func testEmptyResult() {
-        service?.processTextMessage("Lorem ipsum idolor")
-        assert(service?.items.value.count == 0)
+        service.processTextMessage("Lorem ipsum idolor")
+        XCTAssertTrue(service.items.value.isEmpty)
         
-        service?.processTextMessage("@")
-        assert(service?.items.value.count == 0)
+        service.processTextMessage("@")
+        XCTAssertTrue(service.items.value.isEmpty)
         
-        service?.processTextMessage("@@")
-        assert(service?.items.value.count == 0)
+        service.processTextMessage("@@")
+        XCTAssertTrue(service.items.value.isEmpty)
         
-        service?.processTextMessage("alice@matrix.org")
-        assert(service?.items.value.count == 0)
+        service.processTextMessage("alice@matrix.org")
+        XCTAssertTrue(service.items.value.isEmpty)
     }
     
     func testStuff() {
-        service?.processTextMessage("@@")
-        assert(service?.items.value.count == 0)
+        service.processTextMessage("@@")
+        XCTAssertTrue(service.items.value.isEmpty)
     }
     
     func testWhitespaces() {
-        service?.processTextMessage("")
-        assert(service?.items.value.count == 0)
+        service.processTextMessage("")
+        XCTAssertTrue(service.items.value.isEmpty)
         
-        service?.processTextMessage(" ")
-        assert(service?.items.value.count == 0)
+        service.processTextMessage(" ")
+        XCTAssertTrue(service.items.value.isEmpty)
         
-        service?.processTextMessage("\n")
-        assert(service?.items.value.count == 0)
+        service.processTextMessage("\n")
+        XCTAssertTrue(service.items.value.isEmpty)
         
-        service?.processTextMessage(" \n ")
-        assert(service?.items.value.count == 0)
+        service.processTextMessage(" \n ")
+        XCTAssertTrue(service.items.value.isEmpty)
         
-        service?.processTextMessage("@A   ")
-        assert(service?.items.value.count == 0)
+        service.processTextMessage("@A   ")
+        XCTAssertTrue(service.items.value.isEmpty)
         
-        service?.processTextMessage("  @A   ")
-        assert(service?.items.value.count == 0)
+        service.processTextMessage("  @A   ")
+        XCTAssertTrue(service.items.value.isEmpty)
+    }
+    
+    func testRoomWithoutPower() {
+        // Given a user without the power to mention a room.
+        canMentionRoom = false
+        
+        // Given a user without the power to mention a room.
+        service.processTextMessage("@ro")
+        
+        // Then the completion for a room mention should not be shown.
+        XCTAssertTrue(service.items.value.isEmpty)
+    }
+    
+    func testRoomWithPower() {
+        // Given a user without the power to mention a room.
+        canMentionRoom = true
+        
+        // Given a user without the power to mention a room.
+        service.processTextMessage("@ro")
+        
+        // Then the completion for a room mention should be shown.
+        XCTAssertEqual(service.items.value.first?.userId, UserSuggestionID.room)
     }
 }
 

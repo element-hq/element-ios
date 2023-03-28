@@ -19,6 +19,7 @@ import Foundation
 @objc
 protocol UserSuggestionCoordinatorBridgeDelegate: AnyObject {
     func userSuggestionCoordinatorBridge(_ coordinator: UserSuggestionCoordinatorBridge, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
+    func userSuggestionCoordinatorBridgeDidRequestMentionForRoom(_ coordinator: UserSuggestionCoordinatorBridge, textTrigger: String?)
     func userSuggestionCoordinatorBridge(_ coordinator: UserSuggestionCoordinatorBridge, didUpdateViewHeight height: CGFloat)
 }
 
@@ -31,8 +32,8 @@ final class UserSuggestionCoordinatorBridge: NSObject {
     
     weak var delegate: UserSuggestionCoordinatorBridgeDelegate?
     
-    init(mediaManager: MXMediaManager, room: MXRoom) {
-        let parameters = UserSuggestionCoordinatorParameters(mediaManager: mediaManager, room: room)
+    init(mediaManager: MXMediaManager, room: MXRoom, userID: String) {
+        let parameters = UserSuggestionCoordinatorParameters(mediaManager: mediaManager, room: room, userID: userID)
         let userSuggestionCoordinator = UserSuggestionCoordinator(parameters: parameters)
         _userSuggestionCoordinator = userSuggestionCoordinator
         
@@ -53,6 +54,10 @@ final class UserSuggestionCoordinatorBridge: NSObject {
 extension UserSuggestionCoordinatorBridge: UserSuggestionCoordinatorDelegate {
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?) {
         delegate?.userSuggestionCoordinatorBridge(self, didRequestMentionForMember: member, textTrigger: textTrigger)
+    }
+    
+    func userSuggestionCoordinatorDidRequestMentionForRoom(_ coordinator: UserSuggestionCoordinator, textTrigger: String?) {
+        delegate?.userSuggestionCoordinatorBridgeDidRequestMentionForRoom(self, textTrigger: textTrigger)
     }
 
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didUpdateViewHeight height: CGFloat) {

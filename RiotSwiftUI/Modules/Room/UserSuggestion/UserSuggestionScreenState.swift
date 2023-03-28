@@ -43,6 +43,8 @@ enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
 }
 
 extension MockUserSuggestionScreenState: RoomMembersProviderProtocol {
+    var canMentionRoom: Bool { false }
+    
     func fetchMembers(_ members: ([RoomMembersProviderMember]) -> Void) {
         if Self.members == nil {
             Self.members = generateUsersWithCount(10)
