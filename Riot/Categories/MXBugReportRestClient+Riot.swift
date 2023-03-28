@@ -68,6 +68,13 @@ extension MXBugReportRestClient {
         dateFormatter.timeZone = TimeZone(identifier: "UTC")
         userInfo["utc_time"] = dateFormatter.string(from: currentDate)
         
+        // SDKs
+        userInfo["matrix_sdk_version"] = MatrixSDKVersion
+        userInfo["crypto_module"] = MXSDKOptions.sharedInstance().cryptoModuleId
+        if let crypto = mainAccount?.mxSession?.crypto {
+            userInfo["crypto_module_version"] = crypto.version
+        }
+        
         if let customFields = customFields {
             // combine userInfo with custom fields overriding with custom where there is a conflict
             userInfo.merge(customFields) { (_, new) in new }
