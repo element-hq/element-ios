@@ -2941,3 +2941,9 @@
 
 // Pills
 "pill_room_fallback_display_name" = "Space/Ruangan";
+"key_verification_self_verify_security_upgrade_alert_message" = "Perpesanan aman telah ditingkatkan dengan pembaruan terkini. Silakan verifikasi ulang perangkat Anda.";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "Aplikasi diperbarui";
+"settings_acceptable_use" = "Kebijakan Penggunaan yang Dapat Diterima";
