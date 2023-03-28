@@ -162,7 +162,7 @@ typedef NS_ENUM(NSUInteger, ADVANCED)
 typedef NS_ENUM(NSUInteger, ABOUT)
 {
     ABOUT_COPYRIGHT_INDEX = 0,
-    ABOUT_TERM_CONDITIONS_INDEX,
+    ABOUT_ACCEPTABLE_USE_INDEX,
     ABOUT_PRIVACY_INDEX,
     ABOUT_THIRD_PARTY_INDEX,
 };
@@ -567,9 +567,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         [sectionAbout addRowWithTag:ABOUT_COPYRIGHT_INDEX];
     }
-    if (BuildSettings.applicationTermsConditionsUrlString.length)
+    if (BuildSettings.applicationAcceptableUsePolicyUrlString.length)
     {
-        [sectionAbout addRowWithTag:ABOUT_TERM_CONDITIONS_INDEX];
+        [sectionAbout addRowWithTag:ABOUT_ACCEPTABLE_USE_INDEX];
     }
     if (BuildSettings.applicationPrivacyPolicyUrlString.length)
     {
@@ -2465,11 +2465,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }
     else if (section == SECTION_TAG_ABOUT)
     {
-        if (row == ABOUT_TERM_CONDITIONS_INDEX)
+        if (row == ABOUT_ACCEPTABLE_USE_INDEX)
         {
             MXKTableViewCell *termAndConditionCell = [self getDefaultTableViewCell:tableView];
 
-            termAndConditionCell.textLabel.text = [VectorL10n settingsTermConditions];
+            termAndConditionCell.textLabel.text = [VectorL10n settingsAcceptableUse];
             
             [termAndConditionCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
@@ -2885,9 +2885,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 
                 [self pushViewController:webViewViewController];
             }
-            else if (row == ABOUT_TERM_CONDITIONS_INDEX)
+            else if (row == ABOUT_ACCEPTABLE_USE_INDEX)
             {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationTermsConditionsUrlString];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationAcceptableUsePolicyUrlString];
                 
                 webViewViewController.title = [VectorL10n settingsTermConditions];
                 [webViewViewController vc_setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeNever];
