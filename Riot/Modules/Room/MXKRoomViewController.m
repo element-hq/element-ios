@@ -2491,7 +2491,22 @@
                         // Indicate to the homeserver that the user has read this event.
                         if (self.navigationController.viewControllers.lastObject == self)
                         {
-                            [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:NO];
+                            // If the current event is eligible to be the new read marker position
+                            if (!bubbleData.collapsed && [self eligibleForReadMarkerUpdate:component.event checkTimeStamp:YES])
+                            {
+                                [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:YES];
+                            }
+                            else
+                            {
+                                // Otherwise, only acknonwledge this event without updating the read marker
+                                [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:NO];
+
+                                if (_updateRoomReadMarker)
+                                {
+                                    // Try to find the best event for the new read marker position
+                                    [self updateReadMarkerEvent];
+                                }
+                            }
                         }
                     }
                     break;
@@ -2500,29 +2515,33 @@
             }
         }
     }
-    
-    [self updateReadMarkerEventIdAtTableBottom];
 }
 
-- (void)updateReadMarkerEventIdAtTableBottom
+- (BOOL)eligibleForReadMarkerUpdate:(MXEvent *)event checkTimeStamp:(BOOL)checkTimeStamp {
+    // Prevent the readmarker to be placed on a relatesTo or a redaction event
+    if (event.relatesTo || event.redacts)
+    {
+        return NO;
+    }
+    
+    if (checkTimeStamp && roomDataSource.room.accountData.readMarkerEventId)
+    {
+        MXEvent *currentReadMarkerEvent = [roomDataSource.mxSession.store eventWithEventId:roomDataSource.room.accountData.readMarkerEventId inRoom:roomDataSource.roomId];
+        if (!currentReadMarkerEvent)
+        {
+            currentReadMarkerEvent = [roomDataSource eventWithEventId:roomDataSource.room.accountData.readMarkerEventId];
+        }
+        
+        // Update the read marker only if the current event is available, and the new event is posterior to it.
+        return currentReadMarkerEvent && (currentReadMarkerEvent.eventId != event.eventId) && (currentReadMarkerEvent.originServerTs <= event.originServerTs);
+    }
+    
+    return YES;
+}
+
+/// Try to update the read marker by looking for an eligible event displayed at the bottom of the tableview
+- (void)updateReadMarkerEvent
 {
-    if (!_updateRoomReadMarker)
-    {
-        return;
-    }
-    
-    // Do not update events if the controller is used as context menu preview.
-    if (self.isContextPreview)
-    {
-        return;
-    }
-    
-    // Update the identifier of the event displayed at the bottom of the table, except if a rotation or other size transition is in progress.
-    if (isSizeTransitionInProgress || self.isBubbleTableViewDisplayInTransition)
-    {
-        return;
-    }
-    
     // Compute the content offset corresponding to the line displayed at the table bottom (just above the toolbar).
     CGFloat contentBottomOffsetY = _bubblesTableView.contentOffset.y + (_bubblesTableView.frame.size.height - _bubblesTableView.adjustedContentInset.bottom);
     if (contentBottomOffsetY > _bubblesTableView.contentSize.height)
@@ -2531,9 +2550,6 @@
     }
     // Be a bit less retrictive, consider visible an event at the bottom even if is partially hidden.
     contentBottomOffsetY += 8;
-    
-    // Reset the current event id
-    currentEventIdAtTableBottom = nil;
     
     // Consider the visible cells (starting by those displayed at the bottom)
     NSArray *visibleCells = [_bubblesTableView visibleCells];
@@ -2586,8 +2602,8 @@
                     continue;
                 }
                 
-                // Prevent the readmarker to be placed on a relatesTo or a redaction event
-                if (component.event.relatesTo || component.event.redacts)
+                // Prevent the read marker to be placed on an unsupported event (e.g. redactions, reactions, ...)
+                if (![self eligibleForReadMarkerUpdate:component.event checkTimeStamp:NO])
                 {
                     continue;
                 }
@@ -2599,37 +2615,20 @@
                 if (pos <= contentBottomOffsetY)
                 {
                     // We found the component
-                    currentEventIdAtTableBottom = component.event.eventId;
-                    break;
+                    // Check whether the read marker must be updated.
+                    if ([self eligibleForReadMarkerUpdate:component.event checkTimeStamp:YES])
+                    {
+                        // Move the read marker to this event
+                        [roomDataSource.room moveReadMarkerToEventId:component.event.eventId];
+
+                        return;
+                    }
                 }
                 
                 // Prepare the bottom position for the next component
                 bottomPositionY = roomBubbleTableViewCell.msgTextViewTopConstraint.constant + component.position.y;
             }
             
-            if (currentEventIdAtTableBottom)
-            {
-                // Check whether the read marker must be updated.
-                BOOL updateReadMarker = YES;
-                if (roomDataSource.room.accountData.readMarkerEventId)
-                {
-                    MXEvent *currentReadMarkerEvent = [roomDataSource.mxSession.store eventWithEventId:roomDataSource.room.accountData.readMarkerEventId inRoom:roomDataSource.roomId];
-                    if (!currentReadMarkerEvent)
-                    {
-                        currentReadMarkerEvent = [roomDataSource eventWithEventId:roomDataSource.room.accountData.readMarkerEventId];
-                    }
-                    
-                    // Update the read marker only if the current event is available, and the new event is posterior to it.
-                    updateReadMarker = currentReadMarkerEvent && (currentReadMarkerEvent.eventId != component.event.eventId) && (currentReadMarkerEvent.originServerTs <= component.event.originServerTs);
-                }
-                
-                if (updateReadMarker && self.navigationController.viewControllers.lastObject == self)
-                {
-                    [roomDataSource.room moveReadMarkerToEventId:component.event.eventId];
-                }
-
-                break;
-            }
             // else we consider the previous cell.
         }
     }

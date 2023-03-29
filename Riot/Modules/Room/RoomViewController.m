@@ -5323,7 +5323,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         [self dismissKeyboard];
         NSString *eventId = self.roomDataSource.room.accountData.readMarkerEventId;
         NSString *threadId = self.roomDataSource.threadId;
-        [self reloadRoomWihtEventId:eventId threadId:threadId];
+        [self reloadRoomWihtEventId:eventId threadId:threadId forceUpdateRoomMarker:YES];
     }
     else if (sender == self.resetReadMarkerButton)
     {
@@ -6644,6 +6644,9 @@ static CGSize kThreadListBarButtonItemImageSize;
                 else
                 {
                     self.jumpToLastUnreadBannerContainer.hidden = YES;
+                    
+                    // Force the read marker position in order to not depend on the read marker animation (https://github.com/vector-im/element-ios/issues/7420)
+                    self.updateRoomReadMarker = YES;
                 }
             }
         }
@@ -6657,39 +6660,6 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             // Move the read marker to the current read receipt position by default.
             [self.roomDataSource.room forgetReadMarker];
-        }
-        // Force the update of the read marker if we try to display it (in some cases, we are not able to setup the readMarkerView which prevent us to update the read marker)
-        else if (!self.roomDataSource.isLive && !self.roomDataSource.isPeeking && self.roomDataSource.showReadMarker && self.roomDataSource.room.accountData.readMarkerEventId && !self.updateRoomReadMarker)
-        {
-            // Check if the readmarker's event is in a visible cell
-            MXEvent *currentReadMarkerEvent = [self.roomDataSource.mxSession.store eventWithEventId:self.roomDataSource.room.accountData.readMarkerEventId inRoom:self.roomDataSource.roomId];
-            if (currentReadMarkerEvent)
-            {
-                NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-                    return [evaluatedObject isKindOfClass:MXKRoomBubbleTableViewCell.class];
-                }];
-                NSArray *visibleCells = [[self.bubblesTableView visibleCells] filteredArrayUsingPredicate:predicate];
-                UITableViewCell *firstCell = visibleCells.firstObject;
-                UITableViewCell *lastCell = visibleCells.lastObject;
-                if (firstCell && lastCell)
-                {
-                    // Get the first displayed event
-                    MXKRoomBubbleTableViewCell *firstRoomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)firstCell;
-                    MXKRoomBubbleComponent *component = firstRoomBubbleTableViewCell.bubbleData.bubbleComponents.firstObject;
-                    MXEvent *firstDisplayedEvent = component.event;
-
-                    // Get the last displayed event
-                    MXKRoomBubbleTableViewCell *lastRoomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)lastCell;
-                    MXKRoomBubbleComponent *lastComponent = lastRoomBubbleTableViewCell.bubbleData.bubbleComponents.lastObject;
-                    MXEvent *lastDisplayedEvent = lastComponent.event;
-                    
-                    // If the currentReadMarkerEvent is between the first and the last displayed event, force the update of the room read marker to prevent it from being blocked
-                    if (currentReadMarkerEvent.originServerTs > firstDisplayedEvent.originServerTs && currentReadMarkerEvent.originServerTs < lastDisplayedEvent.originServerTs)
-                    {
-                        self.updateRoomReadMarker = YES;
-                    }
-                }
-            }
         }
     }
 }
@@ -7956,15 +7926,17 @@ static CGSize kThreadListBarButtonItemImageSize;
         [[AppDelegate theDelegate] showRoomWithParameters:parameters];
     }
 }
+
 - (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinator
                        viewEventInTimeline:(MXEvent *)event
 {
     [self.navigationController popToViewController:self animated:true];
-    [self reloadRoomWihtEventId:event.eventId threadId:event.threadId];
+    [self reloadRoomWihtEventId:event.eventId threadId:event.threadId forceUpdateRoomMarker:NO];
 }
 
 -(void)reloadRoomWihtEventId:(NSString *)eventId
                     threadId:(NSString *)threadId
+       forceUpdateRoomMarker:(BOOL)forceUpdateRoomMarker
 {
     // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
     MXWeakify(self);
@@ -7983,6 +7955,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         // Give the data source ownership to the room view controller.
         self.hasRoomDataSourceOwnership = YES;
+        
+        // Force the read marker update if needed (this
+        self.updateRoomReadMarker |= forceUpdateRoomMarker;
     }];
 }
 
