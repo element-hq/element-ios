@@ -2743,7 +2743,7 @@
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "您新增了小工具：%@";
 "event_formatter_message_deleted" = "訊息已刪除";
-"event_formatter_group_call_incoming" = "%@ 在 %@";
+"event_formatter_group_call_incoming" = "%@ （來自 %@）";
 "event_formatter_call_decline" = "拒絕";
 "event_formatter_call_connection_failed" = "連線失敗";
 "event_formatter_call_missed_video" = "未接聽的視訊通話";
@@ -2862,3 +2862,9 @@
 
 // Pills
 "pill_room_fallback_display_name" = "聊天空間／聊天室";
+"key_verification_self_verify_security_upgrade_alert_message" = "最新版本中已改進加密訊息傳輸功能，請重新驗證您的裝置。";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "已更新程式";
+"settings_acceptable_use" = "可接受使用政策";
