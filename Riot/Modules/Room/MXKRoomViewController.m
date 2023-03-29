@@ -2491,14 +2491,15 @@
                         // Indicate to the homeserver that the user has read this event.
                         if (self.navigationController.viewControllers.lastObject == self)
                         {
-                            // If the current event is eligible to be the new read marker position
-                            if (!bubbleData.collapsed && [self eligibleForReadMarkerUpdate:component.event checkTimeStamp:YES])
+                            // Check if the selected event is eligible to be the new read marker position too
+                            if (!bubbleData.collapsed && [self eligibleForReadMarkerUpdate:component.event])
                             {
-                                [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:YES];
+                                BOOL updateRoomReadMarker = _updateRoomReadMarker && [self isEventPosteriorToCurrentReadMarker:component.event];
+                                [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:updateRoomReadMarker];
                             }
                             else
                             {
-                                // Otherwise, only acknonwledge this event without updating the read marker
+                                // Acknowledge only this event. The read marker is handled separately
                                 [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:NO];
 
                                 if (_updateRoomReadMarker)
@@ -2517,14 +2518,18 @@
     }
 }
 
-- (BOOL)eligibleForReadMarkerUpdate:(MXEvent *)event checkTimeStamp:(BOOL)checkTimeStamp {
+- (BOOL)eligibleForReadMarkerUpdate:(MXEvent *)event {
     // Prevent the readmarker to be placed on a relatesTo or a redaction event
     if (event.relatesTo || event.redacts)
     {
         return NO;
     }
     
-    if (checkTimeStamp && roomDataSource.room.accountData.readMarkerEventId)
+    return YES;
+}
+
+- (BOOL)isEventPosteriorToCurrentReadMarker:(MXEvent *)event {
+    if (roomDataSource.room.accountData.readMarkerEventId)
     {
         MXEvent *currentReadMarkerEvent = [roomDataSource.mxSession.store eventWithEventId:roomDataSource.room.accountData.readMarkerEventId inRoom:roomDataSource.roomId];
         if (!currentReadMarkerEvent)
@@ -2533,9 +2538,8 @@
         }
         
         // Update the read marker only if the current event is available, and the new event is posterior to it.
-        return currentReadMarkerEvent && (currentReadMarkerEvent.eventId != event.eventId) && (currentReadMarkerEvent.originServerTs <= event.originServerTs);
+        return currentReadMarkerEvent && (currentReadMarkerEvent.originServerTs <= event.originServerTs);
     }
-    
     return YES;
 }
 
@@ -2603,7 +2607,7 @@
                 }
                 
                 // Prevent the read marker to be placed on an unsupported event (e.g. redactions, reactions, ...)
-                if (![self eligibleForReadMarkerUpdate:component.event checkTimeStamp:NO])
+                if (![self eligibleForReadMarkerUpdate:component.event])
                 {
                     continue;
                 }
@@ -2616,13 +2620,13 @@
                 {
                     // We found the component
                     // Check whether the read marker must be updated.
-                    if ([self eligibleForReadMarkerUpdate:component.event checkTimeStamp:YES])
+                    if ([self isEventPosteriorToCurrentReadMarker:component.event])
                     {
                         // Move the read marker to this event
                         [roomDataSource.room moveReadMarkerToEventId:component.event.eventId];
-
-                        return;
                     }
+                    
+                    return;
                 }
                 
                 // Prepare the bottom position for the next component
