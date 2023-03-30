@@ -7956,7 +7956,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         // Give the data source ownership to the room view controller.
         self.hasRoomDataSourceOwnership = YES;
         
-        // Force the read marker update if needed (this
+        // Force the read marker update if needed (e.g if we jumped on the last unread message using the banner).
         self.updateRoomReadMarker |= forceUpdateRoomMarker;
     }];
 }
