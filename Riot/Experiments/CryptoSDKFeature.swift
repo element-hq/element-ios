@@ -52,7 +52,7 @@ import MatrixSDKCrypto
     
     init(
         remoteFeature: RemoteFeaturesClientProtocol = PostHogAnalyticsClient.shared,
-        localTargetPercentage: Double = 0.2
+        localTargetPercentage: Double = 0.5
     ) {
         self.remoteFeature = remoteFeature
         self.localFeature = PhasedRolloutFeature(
