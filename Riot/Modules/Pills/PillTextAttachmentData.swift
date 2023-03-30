@@ -96,7 +96,7 @@ struct PillTextAttachmentData: Codable {
          isHighlighted: Bool,
          alpha: CGFloat,
          font: UIFont,
-         maxWidth: CGFloat = CGFloat.greatestFiniteMagnitude) {
+         maxWidth: CGFloat = .greatestFiniteMagnitude) {
         self.pillType = pillType
         self.items = items
         self.isHighlighted = isHighlighted
@@ -112,7 +112,6 @@ struct PillTextAttachmentData: Codable {
         case isHighlighted
         case alpha
         case font
-        case maxWidth
     }
 
     enum PillTextAttachmentDataError: Error {
@@ -131,7 +130,7 @@ struct PillTextAttachmentData: Codable {
         } else {
             throw PillTextAttachmentDataError.noFontData
         }
-        maxWidth = try container.decode(CGFloat.self, forKey: .maxWidth)
+        maxWidth = .greatestFiniteMagnitude
     }
 
     func encode(to encoder: Encoder) throws {
@@ -142,7 +141,6 @@ struct PillTextAttachmentData: Codable {
         try container.encode(alpha, forKey: .alpha)
         let fontData = try NSKeyedArchiver.archivedData(withRootObject: font, requiringSecureCoding: false)
         try container.encode(fontData, forKey: .font)
-        try container.encode(maxWidth, forKey: .maxWidth)
     }
     
     // MARK: - Pill representations
