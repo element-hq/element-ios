@@ -44,6 +44,9 @@
 
 #import "MXKPreviewViewController.h"
 
+// Constant used to determine whether an event is visible at the bottom of the tableview, based on its visible height
+static const CGFloat kCellVisibilityMinimumHeight = 8.0;
+
 @interface MXKRoomViewController () <MXKPreviewViewControllerDelegate>
 {
     /**
@@ -2419,7 +2422,7 @@
             contentBottomOffsetY = _bubblesTableView.contentSize.height;
         }
         // Be a bit less retrictive, consider visible an event at the bottom even if is partially hidden.
-        contentBottomOffsetY += 8;
+        contentBottomOffsetY += kCellVisibilityMinimumHeight;
         
         // Reset the current event id
         currentEventIdAtTableBottom = nil;
@@ -2495,6 +2498,7 @@
                             if (!bubbleData.collapsed && [self eligibleForReadMarkerUpdate:component.event])
                             {
                                 BOOL updateRoomReadMarker = _updateRoomReadMarker && [self isEventPosteriorToCurrentReadMarker:component.event];
+                                // Acknowledge this event and update the read marker if needed
                                 [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:updateRoomReadMarker];
                             }
                             else
@@ -2553,7 +2557,7 @@
         contentBottomOffsetY = _bubblesTableView.contentSize.height;
     }
     // Be a bit less retrictive, consider visible an event at the bottom even if is partially hidden.
-    contentBottomOffsetY += 8;
+    contentBottomOffsetY += kCellVisibilityMinimumHeight;
     
     // Consider the visible cells (starting by those displayed at the bottom)
     NSArray *visibleCells = [_bubblesTableView visibleCells];
@@ -2564,77 +2568,69 @@
         cell = visibleCells[index];
         
         // Check whether the cell is actually visible
-        if (cell && (cell.frame.origin.y < contentBottomOffsetY))
+        if (!cell || cell.frame.origin.y > contentBottomOffsetY)
         {
-            if (![cell isKindOfClass:MXKTableViewCell.class])
-            {
-                continue;
-            }
-            
-            MXKCellData *cellData = ((MXKTableViewCell *)cell).mxkCellData;
-            
-            // Only 'MXKRoomBubbleCellData' is supported here for the moment.
-            if (![cellData isKindOfClass:MXKRoomBubbleCellData.class])
-            {
-                continue;
-            }
-
-            MXKRoomBubbleCellData *bubbleData = (MXKRoomBubbleCellData*)cellData;
-            
-            // Prevent to place the read marker on a collapsed cell
-            if (bubbleData.collapsed)
-            {
-                continue;
-            }
-            
-            // Check which bubble component is displayed at the bottom.
-            // For that update each component position.
-            [bubbleData prepareBubbleComponentsPosition];
-            
-            NSArray *bubbleComponents = bubbleData.bubbleComponents;
-            NSInteger componentIndex = bubbleComponents.count;
-            
-            CGFloat bottomPositionY = cell.frame.size.height;
-            
-            MXKRoomBubbleComponent *component;
-            
-            while (componentIndex --)
-            {
-                component = bubbleComponents[componentIndex];
-                if (![cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
-                {
-                    continue;
-                }
-                
-                // Prevent the read marker to be placed on an unsupported event (e.g. redactions, reactions, ...)
-                if (![self eligibleForReadMarkerUpdate:component.event])
-                {
-                    continue;
-                }
-                                
-                MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
-                
-                // Check whether the bottom part of the component is visible.
-                CGFloat pos = cell.frame.origin.y + bottomPositionY;
-                if (pos <= contentBottomOffsetY)
-                {
-                    // We found the component
-                    // Check whether the read marker must be updated.
-                    if ([self isEventPosteriorToCurrentReadMarker:component.event])
-                    {
-                        // Move the read marker to this event
-                        [roomDataSource.room moveReadMarkerToEventId:component.event.eventId];
-                    }
-                    
-                    return;
-                }
-                
-                // Prepare the bottom position for the next component
-                bottomPositionY = roomBubbleTableViewCell.msgTextViewTopConstraint.constant + component.position.y;
-            }
-            
-            // else we consider the previous cell.
+            continue;
         }
+
+        if (![cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+        {
+            continue;
+        }
+        MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+        MXKRoomBubbleCellData *bubbleData = roomBubbleTableViewCell.bubbleData;
+        if (!bubbleData)
+        {
+            continue;
+        }
+        
+        // Prevent to place the read marker on a collapsed cell
+        if (bubbleData.collapsed)
+        {
+            continue;
+        }
+        
+        // Check which bubble component is displayed at the bottom.
+        // For that update each component position.
+        [bubbleData prepareBubbleComponentsPosition];
+        
+        NSArray *bubbleComponents = bubbleData.bubbleComponents;
+        NSInteger componentIndex = bubbleComponents.count;
+        
+        CGFloat bottomPositionY = cell.frame.size.height;
+        
+        MXKRoomBubbleComponent *component;
+        
+        while (componentIndex --)
+        {
+            component = bubbleComponents[componentIndex];
+            
+            // Prevent the read marker to be placed on an unsupported event (e.g. redactions, reactions, ...)
+            if (![self eligibleForReadMarkerUpdate:component.event])
+            {
+                continue;
+            }
+            
+            // Check whether the bottom part of the component is visible.
+            CGFloat pos = cell.frame.origin.y + bottomPositionY;
+            if (pos <= contentBottomOffsetY)
+            {
+                // We found the component
+                // Check whether the read marker must be updated.
+                if ([self isEventPosteriorToCurrentReadMarker:component.event])
+                {
+                    // Move the read marker to this event
+                    [roomDataSource.room moveReadMarkerToEventId:component.event.eventId];
+                }
+                
+                return;
+            }
+            
+            // Prepare the bottom position for the next component
+            bottomPositionY = roomBubbleTableViewCell.msgTextViewTopConstraint.constant + component.position.y;
+        }
+        
+        // else we consider the previous cell.
     }
 }
 
