@@ -18,6 +18,7 @@ import Foundation
 
 struct QRLoginCode: Codable {
     let rendezvous: RendezvousDetails
+    let flow: String?
     let intent: String
 }
 
@@ -42,7 +43,8 @@ struct QRLoginRendezvousPayload: Codable {
     
     var intent: Intent?
     var outcome: Outcome?
-    
+    var reason: FailureReason?
+
     // swiftformat:disable:next redundantBackticks
     var protocols: [`Protocol`]?
     
@@ -64,6 +66,7 @@ struct QRLoginRendezvousPayload: Codable {
         case type
         case intent
         case outcome
+        case reason
         case homeserver
         case user
         case protocols
@@ -77,9 +80,18 @@ struct QRLoginRendezvousPayload: Codable {
     }
     
     enum `Type`: String, Codable {
-        case loginStart = "m.login.start"
         case loginProgress = "m.login.progress"
+        /**
+         This is only used in MSC3906 v1 and will be removed
+         */
         case loginFinish = "m.login.finish"
+        case loginFailure = "m.login.failure"
+        case loginProtocol = "m.login.protocol"
+        case loginProtocols = "m.login.protocols"
+        case loginApproved = "m.login.approved"
+        case loginDeclined = "m.login.declined"
+        case loginSuccess = "m.login.success"
+        case loginVerified = "m.login.verified"
     }
 
     enum Intent: String, Codable {
@@ -87,6 +99,9 @@ struct QRLoginRendezvousPayload: Codable {
         case loginReciprocate = "login.reciprocate"
     }
     
+    /**
+     This is only used in MSC306 v1 and will be removed
+     */
     enum Outcome: String, Codable {
         case success
         case declined
@@ -96,5 +111,12 @@ struct QRLoginRendezvousPayload: Codable {
     // swiftformat:disable:next redundantBackticks
     enum `Protocol`: String, Codable {
         case loginToken = "org.matrix.msc3906.login_token"
+    }
+    
+    enum FailureReason: String, Codable {
+        case cancelled
+        case unsupported
+        case e2eeSecurityError = "e2ee_security_error"
+        case incompatibleIntent = "incompatible_intent"
     }
 }

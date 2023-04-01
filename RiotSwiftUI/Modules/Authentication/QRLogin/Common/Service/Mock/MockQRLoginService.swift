@@ -20,13 +20,16 @@ import SwiftUI
 
 class MockQRLoginService: QRLoginServiceProtocol {
     private let mockCanDisplayQR: Bool
+    private let mockFlow: String?
 
     init(withState state: QRLoginServiceState = .initial,
          mode: QRLoginServiceMode = .notAuthenticated,
-         canDisplayQR: Bool = true) {
+         canDisplayQR: Bool = true,
+         flow: String? = nil) {
         self.state = state
         self.mode = mode
         mockCanDisplayQR = canDisplayQR
+        mockFlow = flow
     }
 
     // MARK: - QRLoginServiceProtocol
@@ -57,6 +60,7 @@ class MockQRLoginService: QRLoginServiceProtocol {
                                                          uri: "https://matrix.org"),
                                         key: "some.public.key")
         return QRLoginCode(rendezvous: details,
+                           flow: mockFlow,
                            intent: "login.start")
     }
 

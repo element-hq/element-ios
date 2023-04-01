@@ -180,6 +180,12 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
             return
         }
 
+        guard let flow = code.flow != nil ? RendezvousFlow(rawValue: code.flow!) : .SETUP_ADDITIONAL_DEVICE_V1 else {
+            MXLog.error("[QRLoginService] Unsupported flow")
+            state = .failed(error: .deviceNotSupported)
+            return
+        }
+
         // so, this is of an expected algorithm so any bad data can be considered an invalid QR code
         guard code.intent == QRLoginRendezvousPayload.Intent.loginReciprocate.rawValue,
               let uri = code.rendezvous.transport?.uri,
@@ -223,7 +229,10 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         }
         
         MXLog.debug("[QRLoginService] Request login with `login_token`")
-        guard let requestData = try? JSONEncoder().encode(QRLoginRendezvousPayload(type: .loginProgress, protocol: .loginToken)),
+        let protocolPayload = flow == .SETUP_ADDITIONAL_DEVICE_V1
+            ? QRLoginRendezvousPayload(type: .loginProgress, protocol: .loginToken)
+            : QRLoginRendezvousPayload(type: .loginProtocol, protocol: .loginToken)
+        guard let requestData = try? JSONEncoder().encode(protocolPayload),
               case .success = await rendezvousService.send(data: requestData) else {
             MXLog.error("[QRLoginService] Failed sending continue with `login_token` request")
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
@@ -282,10 +291,11 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         }
         
         MXLog.debug("[QRLoginService] Session created, sending device details")
-        guard let requestData = try? JSONEncoder().encode(QRLoginRendezvousPayload(type: .loginProgress,
-                                                                                   outcome: .success,
-                                                                                   deviceId: session.myDeviceId,
-                                                                                   deviceKey: session.crypto.deviceEd25519Key)),
+        let successPayload = flow == .SETUP_ADDITIONAL_DEVICE_V1
+            ? QRLoginRendezvousPayload(type: .loginProgress, outcome: .success, deviceId: session.myDeviceId, deviceKey: session.crypto.deviceEd25519Key)
+            : QRLoginRendezvousPayload(type: .loginSuccess, deviceId: session.myDeviceId, deviceKey: session.crypto.deviceEd25519Key)
+
+        guard let requestData = try? JSONEncoder().encode(successPayload),
               case .success = await rendezvousService.send(data: requestData) else {
             MXLog.error("[QRLoginService] Failed sending session details")
             await teardownRendezvous(state: .failed(error: .rendezvousFailed))
@@ -307,7 +317,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         MXLog.debug("[QRLoginService] Wait for cross-signing details")
         guard case let .success(data) = await rendezvousService.receive(),
               let responsePayload = try? JSONDecoder().decode(QRLoginRendezvousPayload.self, from: data),
-              responsePayload.outcome == .verified,
+              flow == .SETUP_ADDITIONAL_DEVICE_V1 && responsePayload.outcome == .verified || responsePayload.type == .loginVerified,
               let verifiyingDeviceId = responsePayload.verifyingDeviceId,
               let verifyingDeviceKey = responsePayload.verifyingDeviceKey else {
             MXLog.error("[QRLoginService] Received invalid cross-signing details")
