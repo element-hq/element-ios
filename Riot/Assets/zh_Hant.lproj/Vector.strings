@@ -386,7 +386,7 @@
 "room_details_mute_notifs" = "將通知靜音";
 "room_details_access_section_no_address_warning" = "要連結一個聊天室，該聊天室必須要有位址";
 "room_details_access_section_directory_toggle" = "將此聊天室列入聊天室目錄";
-"room_details_history_section_prompt_msg" = "對可閱讀歷史訊息的使用者的變更，將僅適用於此聊天室的新訊息。現有訊息的顯示狀態將保持不變。";
+"room_details_history_section_prompt_msg" = "對可閱讀歷史訊息的使用者的變更，僅適用於此聊天室的新訊息。現有訊息的顯示狀態將保持不變。";
 "room_details_new_address" = "新增位址";
 "room_details_new_address_placeholder" = "新增位址（例如 #foo%@）";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ 不是有效的別名格式";
@@ -826,7 +826,7 @@
 "event_formatter_call_answer" = "接聽";
 "event_formatter_call_back" = "回撥";
 "event_formatter_call_has_ended" = "通話結束";
-"event_formatter_call_connecting" = "正在連接…";
+"event_formatter_call_connecting" = "連線中…";
 "event_formatter_message_edited_mention" = "（已編輯）";
 "image_picker_action_library" = "從媒體庫挑選";
 
@@ -1291,7 +1291,7 @@
 // Settings keys
 
 // call string
-"call_connecting" = "正在連接…";
+"call_connecting" = "連線中…";
 "notification_settings_notify_all_other" = "其他訊息／聊天室的通知";
 "notification_settings_by_default" = "按預設…";
 "notification_settings_suppress_from_bots" = "限制來自機器人的通知";
@@ -1870,7 +1870,7 @@
 "home_context_menu_normal_priority" = "一般優先度";
 "home_context_menu_low_priority" = "低優先度";
 "home_context_menu_unfavourite" = "從我的最愛移除";
-"home_context_menu_favourite" = "我的最愛";
+"home_context_menu_favourite" = "加入我的最愛";
 "home_context_menu_unmute" = "解除靜音";
 "home_context_menu_mute" = "靜音";
 "home_context_menu_notifications" = "通知";
@@ -2576,7 +2576,7 @@
 // Sessions list
 
 "user_verification_sessions_list_user_trust_level_trusted_title" = "受信任";
-"user_verification_start_additional_information" = "要確定安全，請面對面進行或使用其他方式來通訊。";
+"user_verification_start_additional_information" = "為了確保安全，請面對面進行驗證，或使用其他方式來通訊。";
 "user_verification_start_waiting_partner" = "正在等待 %@…";
 "user_verification_start_information_part2" = " 雙方裝置上顯示的單次驗證碼。";
 "user_verification_start_information_part1" = "為了加強安全性，請確認 ";
