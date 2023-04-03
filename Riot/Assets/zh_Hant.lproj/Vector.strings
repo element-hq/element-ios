@@ -2474,7 +2474,7 @@
 "identity_server_settings_alert_change_title" = "變更身分伺服器";
 "identity_server_settings_alert_no_terms" = "您選擇的身分伺服器沒有任何服務條款。僅在您信任服務擁有者時才繼續。";
 "identity_server_settings_alert_no_terms_title" = "身分伺服器無使用條款";
-"identity_server_settings_disconnect_info" = "如果您未連線到您的身分伺服器，其他的使用者將無法找到您，您也無法經由電子郵件和電話找到其他使用者。";
+"identity_server_settings_disconnect_info" = "與您的身分伺服器中斷連線後，其他使用者就無法再探索到您，您也不能透過電子郵件地址或電話號碼邀請其他人。";
 "identity_server_settings_place_holder" = "輸入一個身分伺服器";
 "identity_server_settings_no_is_description" = "您目前未使用身分伺服器。若想要尋找或被您認識的聯絡人找到，請在上方加入伺服器。";
 "identity_server_settings_description" = "您正在使用 %@ 來讓其他現有的聯絡人和您能夠找到彼此。";
@@ -2533,7 +2533,7 @@
 "settings_discovery_three_pid_details_information_email" = "在此管理讓其他使用者尋找您以及邀請您進入聊天室的電子郵件地址偏好設定。您可以在「帳號」中加入或刪除電子郵件地址。";
 "settings_discovery_three_pids_management_information_part1" = "選擇您希望其他使用者用哪一個電子郵件（或電話）聯絡您，以及邀請您進入聊天室。您可以在此清單加入／移除電子郵件（或電話）。 ";
 "settings_discovery_accept_terms" = "同意身分伺服器的使用條款";
-"settings_discovery_terms_not_signed" = "同意身分伺服器（%@）的使用條款，讓其他人可以用您的電子郵件或電話號碼找到您。";
+"settings_discovery_terms_not_signed" = "需同意身分伺服器（%@）的使用條款，讓其他人可以用電子郵件地址或電話號碼找到您。";
 "settings_discovery_no_identity_server" = "您目前未使用身分伺服器。若想要被您認識的聯絡人找到，請加入伺服器。";
 "settings_devices_description" = "所有與您通訊的聯絡人都能看到此工作階段的公開名稱";
 "settings_key_backup_delete_confirmation_prompt_msg" = "您確定嗎？如果您的金鑰沒有正確備份的話，將會遺失所有加密訊息。";
@@ -2649,7 +2649,7 @@
 "settings_room_invitations" = "聊天室邀請";
 "settings_messages_containing_at_room" = "@room";
 "settings_notify_me_for" = "通知我";
-"settings_mentions_and_keywords" = "僅有被提及與出現關鍵字時";
+"settings_mentions_and_keywords" = "提及與關鍵字";
 "settings_notifications_disabled_alert_message" = "如需啟用通知，請前往裝置設定。";
 "settings_security" = "安全性";
 "settings_confirm_media_size_description" = "開啟此選項後，傳送檔案前，會先向您確認準備傳送的圖片與影片大小。";
