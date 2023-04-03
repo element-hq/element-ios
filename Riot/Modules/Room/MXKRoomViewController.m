@@ -44,6 +44,9 @@
 
 #import "MXKPreviewViewController.h"
 
+// Constant used to determine whether an event is visible at the bottom of the tableview, based on its visible height
+static const CGFloat kCellVisibilityMinimumHeight = 8.0;
+
 @interface MXKRoomViewController () <MXKPreviewViewControllerDelegate>
 {
     /**
@@ -2419,7 +2422,7 @@
             contentBottomOffsetY = _bubblesTableView.contentSize.height;
         }
         // Be a bit less retrictive, consider visible an event at the bottom even if is partially hidden.
-        contentBottomOffsetY += 8;
+        contentBottomOffsetY += kCellVisibilityMinimumHeight;
         
         // Reset the current event id
         currentEventIdAtTableBottom = nil;
@@ -2489,24 +2492,26 @@
                     if (acknowledge && self.isEventsAcknowledgementEnabled)
                     {
                         // Indicate to the homeserver that the user has read this event.
-                        
-                        // Check whether the read marker must be updated.
-                        BOOL updateReadMarker = _updateRoomReadMarker;
-                        if (updateReadMarker && roomDataSource.room.accountData.readMarkerEventId)
-                        {
-                            MXEvent *currentReadMarkerEvent = [roomDataSource.mxSession.store eventWithEventId:roomDataSource.room.accountData.readMarkerEventId inRoom:roomDataSource.roomId];
-                            if (!currentReadMarkerEvent)
-                            {
-                                currentReadMarkerEvent = [roomDataSource eventWithEventId:roomDataSource.room.accountData.readMarkerEventId];
-                            }
-                            
-                            // Update the read marker only if the current event is available, and the new event is posterior to it.
-                            updateReadMarker = (currentReadMarkerEvent && (currentReadMarkerEvent.originServerTs <= component.event.originServerTs));
-                        }
-                        
                         if (self.navigationController.viewControllers.lastObject == self)
                         {
-                            [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:updateReadMarker];
+                            // Check if the selected event is eligible to be the new read marker position too
+                            if (!bubbleData.collapsed && [self eligibleForReadMarkerUpdate:component.event])
+                            {
+                                BOOL updateRoomReadMarker = _updateRoomReadMarker && [self isEventPosteriorToCurrentReadMarker:component.event];
+                                // Acknowledge this event and update the read marker if needed
+                                [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:updateRoomReadMarker];
+                            }
+                            else
+                            {
+                                // Acknowledge only this event. The read marker is handled separately
+                                [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:NO];
+
+                                if (_updateRoomReadMarker)
+                                {
+                                    // Try to find the best event for the new read marker position
+                                    [self updateReadMarkerEvent];
+                                }
+                            }
                         }
                     }
                     break;
@@ -2514,6 +2519,118 @@
                 // else we consider the previous cell.
             }
         }
+    }
+}
+
+- (BOOL)eligibleForReadMarkerUpdate:(MXEvent *)event {
+    // Prevent the readmarker to be placed on a relatesTo or a redaction event
+    if (event.relatesTo || event.redacts)
+    {
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)isEventPosteriorToCurrentReadMarker:(MXEvent *)event {
+    if (roomDataSource.room.accountData.readMarkerEventId)
+    {
+        MXEvent *currentReadMarkerEvent = [roomDataSource.mxSession.store eventWithEventId:roomDataSource.room.accountData.readMarkerEventId inRoom:roomDataSource.roomId];
+        if (!currentReadMarkerEvent)
+        {
+            currentReadMarkerEvent = [roomDataSource eventWithEventId:roomDataSource.room.accountData.readMarkerEventId];
+        }
+        
+        // Update the read marker only if the current event is available, and the new event is posterior to it.
+        return currentReadMarkerEvent && (currentReadMarkerEvent.originServerTs <= event.originServerTs);
+    }
+    return YES;
+}
+
+/// Try to update the read marker by looking for an eligible event displayed at the bottom of the tableview
+- (void)updateReadMarkerEvent
+{
+    // Compute the content offset corresponding to the line displayed at the table bottom (just above the toolbar).
+    CGFloat contentBottomOffsetY = _bubblesTableView.contentOffset.y + (_bubblesTableView.frame.size.height - _bubblesTableView.adjustedContentInset.bottom);
+    if (contentBottomOffsetY > _bubblesTableView.contentSize.height)
+    {
+        contentBottomOffsetY = _bubblesTableView.contentSize.height;
+    }
+    // Be a bit less retrictive, consider visible an event at the bottom even if is partially hidden.
+    contentBottomOffsetY += kCellVisibilityMinimumHeight;
+    
+    // Consider the visible cells (starting by those displayed at the bottom)
+    NSArray *visibleCells = [_bubblesTableView visibleCells];
+    NSInteger index = visibleCells.count;
+    UITableViewCell *cell;
+    while (index--)
+    {
+        cell = visibleCells[index];
+        
+        // Check whether the cell is actually visible
+        if (!cell || cell.frame.origin.y > contentBottomOffsetY)
+        {
+            continue;
+        }
+
+        if (![cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
+        {
+            continue;
+        }
+        MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+        MXKRoomBubbleCellData *bubbleData = roomBubbleTableViewCell.bubbleData;
+        if (!bubbleData)
+        {
+            continue;
+        }
+        
+        // Prevent to place the read marker on a collapsed cell
+        if (bubbleData.collapsed)
+        {
+            continue;
+        }
+        
+        // Check which bubble component is displayed at the bottom.
+        // For that update each component position.
+        [bubbleData prepareBubbleComponentsPosition];
+        
+        NSArray *bubbleComponents = bubbleData.bubbleComponents;
+        NSInteger componentIndex = bubbleComponents.count;
+        
+        CGFloat bottomPositionY = cell.frame.size.height;
+        
+        MXKRoomBubbleComponent *component;
+        
+        while (componentIndex --)
+        {
+            component = bubbleComponents[componentIndex];
+            
+            // Prevent the read marker to be placed on an unsupported event (e.g. redactions, reactions, ...)
+            if (![self eligibleForReadMarkerUpdate:component.event])
+            {
+                continue;
+            }
+            
+            // Check whether the bottom part of the component is visible.
+            CGFloat pos = cell.frame.origin.y + bottomPositionY;
+            if (pos <= contentBottomOffsetY)
+            {
+                // We found the component
+                // Check whether the read marker must be updated.
+                if ([self isEventPosteriorToCurrentReadMarker:component.event])
+                {
+                    // Move the read marker to this event
+                    [roomDataSource.room moveReadMarkerToEventId:component.event.eventId];
+                }
+                
+                return;
+            }
+            
+            // Prepare the bottom position for the next component
+            bottomPositionY = roomBubbleTableViewCell.msgTextViewTopConstraint.constant + component.position.y;
+        }
+        
+        // else we consider the previous cell.
     }
 }
 
