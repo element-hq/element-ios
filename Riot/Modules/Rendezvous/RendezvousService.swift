@@ -33,6 +33,13 @@ enum RendezvousChannelAlgorithm: String {
     case ECDH_V2 = "org.matrix.msc3903.rendezvous.v2.curve25519-aes-sha256"
 }
 
+/// Algorithm name as per MSC3906
+enum RendezvousFlow: String {
+    /// The v1 value never actually appears in JSON
+    case SETUP_ADDITIONAL_DEVICE_V1 = "org.matrix.msc3906.v1"
+    case SETUP_ADDITIONAL_DEVICE_V2 = "org.matrix.msc3906.setup.additional_device.v2"
+}
+
 /// Allows communication through a secure channel. Based on MSC3886 and MSC3903
 @MainActor
 class RendezvousService {

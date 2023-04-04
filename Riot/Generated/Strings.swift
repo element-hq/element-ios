@@ -7219,6 +7219,10 @@ public class VectorL10n: NSObject {
   public static var settingsAbout: String { 
     return VectorL10n.tr("Vector", "settings_about") 
   }
+  /// Acceptable Use Policy
+  public static var settingsAcceptableUse: String { 
+    return VectorL10n.tr("Vector", "settings_acceptable_use") 
+  }
   /// Invalid credentials
   public static var settingsAdd3pidInvalidPasswordMessage: String { 
     return VectorL10n.tr("Vector", "settings_add_3pid_invalid_password_message") 

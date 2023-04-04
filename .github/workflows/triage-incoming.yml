@@ -17,7 +17,7 @@ jobs:
   add_to_triage:
     runs-on: ubuntu-latest
     if: >
-      github.repository == 'vector-im/element-x-ios'
+      github.repository == 'vector-im/element-ios'
     steps:
       - uses: octokit/graphql-action@v2.x
         with:

@@ -815,6 +815,7 @@ Tap the + to start adding people.";
 "settings_olm_version" = "Olm Version %@";
 "settings_copyright" = "Copyright";
 "settings_term_conditions" = "Terms & Conditions";
+"settings_acceptable_use" = "Acceptable Use Policy";
 "settings_privacy_policy" = "Privacy Policy";
 "settings_third_party_notices" = "Third-party Notices";
 "settings_analytics_and_crash_data" = "Send crash and analytics data";

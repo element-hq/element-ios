@@ -21,12 +21,14 @@ import UIKit
 
 protocol UserSuggestionCoordinatorDelegate: AnyObject {
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
+    func userSuggestionCoordinatorDidRequestMentionForRoom(_ coordinator: UserSuggestionCoordinator, textTrigger: String?)
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didUpdateViewHeight height: CGFloat)
 }
 
 struct UserSuggestionCoordinatorParameters {
     let mediaManager: MXMediaManager
     let room: MXRoom
+    let userID: String
 }
 
 final class UserSuggestionCoordinator: Coordinator, Presentable {
@@ -56,7 +58,7 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     init(parameters: UserSuggestionCoordinatorParameters) {
         self.parameters = parameters
         
-        roomMemberProvider = UserSuggestionCoordinatorRoomMemberProvider(room: parameters.room)
+        roomMemberProvider = UserSuggestionCoordinatorRoomMemberProvider(room: parameters.room, userID: parameters.userID)
         userSuggestionService = UserSuggestionService(roomMemberProvider: roomMemberProvider)
         
         let viewModel = UserSuggestionViewModel(userSuggestionService: userSuggestionService)
@@ -73,6 +75,11 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
             
             switch result {
             case .selectedItemWithIdentifier(let identifier):
+                if identifier == UserSuggestionID.room {
+                    self.delegate?.userSuggestionCoordinatorDidRequestMentionForRoom(self, textTrigger: self.userSuggestionService.currentTextTrigger)
+                    return
+                }
+                
                 guard let member = self.roomMemberProvider.roomMembers.filter({ $0.userId == identifier }).first else {
                     return
                 }
@@ -130,29 +137,44 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
 
 private class UserSuggestionCoordinatorRoomMemberProvider: RoomMembersProviderProtocol {
     private let room: MXRoom
+    private let userID: String
     
     var roomMembers: [MXRoomMember] = []
+    var canMentionRoom = false
     
-    init(room: MXRoom) {
+    init(room: MXRoom, userID: String) {
         self.room = room
+        self.userID = userID
+        updateWithPowerLevels()
+    }
+    
+    /// Gets the power levels for the room to update suggestions accordingly.
+    func updateWithPowerLevels() {
+        room.state { [weak self] state in
+            guard let self, let powerLevels = state?.powerLevels else { return }
+            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: self.userID)
+            let mentionRoomPowerLevel = powerLevels.minimumPowerLevel(forNotifications: kMXRoomPowerLevelNotificationsRoomKey,
+                                                                      defaultPower: kMXRoomPowerLevelNotificationsRoomDefault)
+            self.canMentionRoom = userPowerLevel >= mentionRoomPowerLevel
+        }
     }
     
     func fetchMembers(_ members: @escaping ([RoomMembersProviderMember]) -> Void) {
-        room.members({ [weak self] roomMembers in
+        room.members { [weak self] roomMembers in
             guard let self = self, let joinedMembers = roomMembers?.joinedMembers else {
                 return
             }
             self.roomMembers = joinedMembers
             members(self.roomMembersToProviderMembers(joinedMembers))
-        }, lazyLoadedMembers: { [weak self] lazyRoomMembers in
+        } lazyLoadedMembers: { [weak self] lazyRoomMembers in
             guard let self = self, let joinedMembers = lazyRoomMembers?.joinedMembers else {
                 return
             }
             self.roomMembers = joinedMembers
             members(self.roomMembersToProviderMembers(joinedMembers))
-        }, failure: { error in
+        } failure: { error in
             MXLog.error("[UserSuggestionCoordinatorRoomMemberProvider] Failed loading room", context: error)
-        })
+        }
     }
     
     private func roomMembersToProviderMembers(_ roomMembers: [MXRoomMember]) -> [RoomMembersProviderMember] {
