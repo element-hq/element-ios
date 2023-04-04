@@ -72,6 +72,8 @@ struct PillTextAttachmentData: Codable {
     var alpha: CGFloat
     /// Font for the display name
     var font: UIFont
+    /// Max width
+    var maxWidth: CGFloat
 
     /// Helper for preferred text to display.
     var displayText: String {
@@ -93,12 +95,14 @@ struct PillTextAttachmentData: Codable {
          items: [PillTextAttachmentItem],
          isHighlighted: Bool,
          alpha: CGFloat,
-         font: UIFont) {
+         font: UIFont,
+         maxWidth: CGFloat = .greatestFiniteMagnitude) {
         self.pillType = pillType
         self.items = items
         self.isHighlighted = isHighlighted
         self.alpha = alpha
         self.font = font
+        self.maxWidth = maxWidth
     }
     
     // MARK: - Codable
@@ -126,6 +130,7 @@ struct PillTextAttachmentData: Codable {
         } else {
             throw PillTextAttachmentDataError.noFontData
         }
+        maxWidth = .greatestFiniteMagnitude
     }
 
     func encode(to encoder: Encoder) throws {

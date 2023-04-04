@@ -31,11 +31,6 @@ import MatrixSDKCrypto
 @objc class CryptoSDKFeature: NSObject, MXCryptoV2Feature {
     @objc static let shared = CryptoSDKFeature()
     
-    var version: String {
-        // Will be moved into the olm machine as API
-        Bundle(for: OlmMachine.self).infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-    }
-    
     var isEnabled: Bool {
         RiotSettings.shared.enableCryptoSDK
     }
@@ -57,7 +52,7 @@ import MatrixSDKCrypto
     
     init(
         remoteFeature: RemoteFeaturesClientProtocol = PostHogAnalyticsClient.shared,
-        localTargetPercentage: Double = 0.2
+        localTargetPercentage: Double = 0.5
     ) {
         self.remoteFeature = remoteFeature
         self.localFeature = PhasedRolloutFeature(

@@ -125,6 +125,8 @@ class PillTextAttachment: NSTextAttachment {
             width += 2 * sizes.horizontalMargin
         }
 
+        width = min(width, data.maxWidth)
+
         return CGSize(width: width,
                       height: sizes.pillHeight)
     }

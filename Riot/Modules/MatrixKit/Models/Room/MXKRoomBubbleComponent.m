@@ -187,7 +187,7 @@
     // Always show a warning badge if there was a decryption error.
     if (event.decryptionError)
     {
-        return EventEncryptionDecorationDecryptionError;
+        return EventEncryptionDecorationRed;
     }
     
     // Unencrypted message events should show a warning unless they're pending local echoes
@@ -199,29 +199,27 @@
             return EventEncryptionDecorationNone;
         }
             
-        return EventEncryptionDecorationNotEncrypted;
+        return EventEncryptionDecorationRed;
     }
     
     // The encryption is in a good state.
-    // Only show a warning badge if there are trust issues.
-    if (event.sender)
+    // Only show a warning badge if there are decryption trust issues.
+    if (event.decryptionDecoration)
     {
-        MXUserTrustLevel *userTrustLevel = [session.crypto trustLevelForUser:event.sender];
-        MXDeviceInfo *deviceInfo = [session.crypto eventDeviceInfo:event];
-        
-        if (userTrustLevel.isVerified && !deviceInfo.trustLevel.isVerified)
+        switch (event.decryptionDecoration.color)
         {
-            return EventEncryptionDecorationUntrustedDevice;
+            case MXEventDecryptionDecorationColorNone:
+                return EventEncryptionDecorationNone;
+            case MXEventDecryptionDecorationColorGrey:
+                return EventEncryptionDecorationGrey;
+            case MXEventDecryptionDecorationColorRed:
+                return EventEncryptionDecorationRed;
         }
     }
-    
-    if (event.isUntrusted)
+    else
     {
-        return EventEncryptionDecorationUnsafeKey;
+        return EventEncryptionDecorationNone;
     }
-    
-    // Everything was fine
-    return EventEncryptionDecorationNone;
 }
 
 @end

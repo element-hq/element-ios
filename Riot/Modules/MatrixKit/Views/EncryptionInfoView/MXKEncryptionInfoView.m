@@ -192,7 +192,13 @@ static NSAttributedString *verticalWhitespace = nil;
         NSString *claimedKey = _mxEvent.keysClaimed[@"ed25519"];
         NSString *algorithm = _mxEvent.wireContent[@"algorithm"];
         NSString *sessionId = _mxEvent.wireContent[@"session_id"];
-        NSString *untrusted = _mxEvent.isUntrusted ? [VectorL10n roomEventEncryptionInfoKeyAuthenticityNotGuaranteed] : [VectorL10n userVerificationSessionsListSessionTrusted];
+        NSString *safetyMessage = _mxEvent.decryptionDecoration.message;
+        if (!safetyMessage)
+        {
+            // Use default copy if none is provided by the decryption decoration
+            BOOL isUntrusted = _mxEvent.decryptionDecoration && _mxEvent.decryptionDecoration.color != MXEventDecryptionDecorationColorNone;
+            safetyMessage = isUntrusted ? [VectorL10n roomEventEncryptionInfoKeyAuthenticityNotGuaranteed] : [VectorL10n userVerificationSessionsListSessionTrusted];
+        }
         
         NSString *decryptionError;
         if (_mxEvent.decryptionError)
@@ -218,7 +224,8 @@ static NSAttributedString *verticalWhitespace = nil;
         }
         
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                        initWithString:[VectorL10n roomEventEncryptionInfoEventUserId]                                                        attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
+                                                        initWithString:[VectorL10n roomEventEncryptionInfoEventUserId]
+                                                        attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                         initWithString:senderId
@@ -284,7 +291,7 @@ static NSAttributedString *verticalWhitespace = nil;
                                                         attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                      NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [eventInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                        initWithString:untrusted
+                                                        initWithString:safetyMessage
                                                         attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                      NSFontAttributeName: [UIFont systemFontOfSize:14]}]];
         [eventInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
@@ -368,7 +375,8 @@ static NSAttributedString *verticalWhitespace = nil;
         [deviceInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
         
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceId]                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
+                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceId]
+                                                         attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                          initWithString:deviceId
                                                          attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
@@ -376,12 +384,14 @@ static NSAttributedString *verticalWhitespace = nil;
         [deviceInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
         
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceVerification]                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
+                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceVerification]
+                                                         attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [deviceInformationString appendAttributedString:verification];
         [deviceInformationString appendAttributedString:[MXKEncryptionInfoView verticalWhitespace]];
         
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceFingerprint]                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
+                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceFingerprint]
+                                                         attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont boldSystemFontOfSize:14]}]];
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                          initWithString:fingerprint
                                                          attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
@@ -392,7 +402,8 @@ static NSAttributedString *verticalWhitespace = nil;
     {
         // Unknown device
         [deviceInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceUnknown]                                                             attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont italicSystemFontOfSize:14]}]];
+                                                         initWithString:[VectorL10n roomEventEncryptionInfoDeviceUnknown]
+                                                         attributes:@{NSForegroundColorAttributeName: _defaultTextColor, NSFontAttributeName: [UIFont italicSystemFontOfSize:14]}]];
     }
     
     [textViewAttributedString appendAttributedString:deviceInformationString];
@@ -462,7 +473,8 @@ static NSAttributedString *verticalWhitespace = nil;
         {
             // Prompt user
             NSMutableAttributedString *textViewAttributedString = [[NSMutableAttributedString alloc]
-                                                                   initWithString:[VectorL10n roomEventEncryptionVerifyTitle]                                                                   attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
+                                                                   initWithString:[VectorL10n roomEventEncryptionVerifyTitle]
+                                                                   attributes:@{NSForegroundColorAttributeName: _defaultTextColor,
                                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}];
             
             NSString *message = [VectorL10n roomEventEncryptionVerifyMessage:_mxDeviceInfo.displayName :_mxDeviceInfo.deviceId :_mxDeviceInfo.fingerprint];

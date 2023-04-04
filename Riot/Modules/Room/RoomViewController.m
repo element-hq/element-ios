@@ -1089,7 +1089,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     _voiceMessageController.roomId = dataSource.roomId;
     
     _userSuggestionCoordinator = [[UserSuggestionCoordinatorBridge alloc] initWithMediaManager:self.roomDataSource.mxSession.mediaManager
-                                                                                          room:dataSource.room];
+                                                                                          room:dataSource.room
+                                                                                        userID:self.roomDataSource.mxSession.myUserId];
     _userSuggestionCoordinator.delegate = self;
     
     [self setupUserSuggestionViewIfNeeded];
@@ -5322,7 +5323,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         [self dismissKeyboard];
         NSString *eventId = self.roomDataSource.room.accountData.readMarkerEventId;
         NSString *threadId = self.roomDataSource.threadId;
-        [self reloadRoomWihtEventId:eventId threadId:threadId];
+        [self reloadRoomWihtEventId:eventId threadId:threadId forceUpdateRoomMarker:YES];
     }
     else if (sender == self.resetReadMarkerButton)
     {
@@ -6611,8 +6612,12 @@ static CGSize kThreadListBarButtonItemImageSize;
     // Check whether the read marker exists and has not been rendered yet.
     if (self.roomDataSource.isLive && !self.roomDataSource.isPeeking && self.roomDataSource.showReadMarker && self.roomDataSource.room.accountData.readMarkerEventId)
     {
-        UITableViewCell *cell = [self.bubblesTableView visibleCells].firstObject;
-        if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && ![cell isKindOfClass:MXKRoomEmptyBubbleTableViewCell.class])
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            return [evaluatedObject isKindOfClass:MXKRoomBubbleTableViewCell.class];
+        }];
+        NSArray *visibleCells = [[self.bubblesTableView visibleCells] filteredArrayUsingPredicate:predicate];
+        UITableViewCell *cell = visibleCells.firstObject;
+        if (cell)
         {
             MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
             // Check whether the read marker is inside the first displayed cell.
@@ -6639,6 +6644,9 @@ static CGSize kThreadListBarButtonItemImageSize;
                 else
                 {
                     self.jumpToLastUnreadBannerContainer.hidden = YES;
+                    
+                    // Force the read marker position in order to not depend on the read marker animation (https://github.com/vector-im/element-ios/issues/7420)
+                    self.updateRoomReadMarker = YES;
                 }
             }
         }
@@ -7918,15 +7926,17 @@ static CGSize kThreadListBarButtonItemImageSize;
         [[AppDelegate theDelegate] showRoomWithParameters:parameters];
     }
 }
+
 - (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinator
                        viewEventInTimeline:(MXEvent *)event
 {
     [self.navigationController popToViewController:self animated:true];
-    [self reloadRoomWihtEventId:event.eventId threadId:event.threadId];
+    [self reloadRoomWihtEventId:event.eventId threadId:event.threadId forceUpdateRoomMarker:NO];
 }
 
 -(void)reloadRoomWihtEventId:(NSString *)eventId
                     threadId:(NSString *)threadId
+       forceUpdateRoomMarker:(BOOL)forceUpdateRoomMarker
 {
     // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
     MXWeakify(self);
@@ -7945,6 +7955,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         // Give the data source ownership to the room view controller.
         self.hasRoomDataSourceOwnership = YES;
+        
+        // Force the read marker update if needed (e.g if we jumped on the last unread message using the banner).
+        self.updateRoomReadMarker |= forceUpdateRoomMarker;
     }];
 }
 
@@ -8048,6 +8061,19 @@ static CGSize kThreadListBarButtonItemImageSize;
              didRequestMentionForMember:(MXRoomMember *)member
                             textTrigger:(NSString *)textTrigger
 {
+    [self removeTriggerTextFromComposer:textTrigger];
+    [self mention:member];
+}
+
+- (void)userSuggestionCoordinatorBridgeDidRequestMentionForRoom:(UserSuggestionCoordinatorBridge *)coordinator
+                                                    textTrigger:(NSString *)textTrigger
+{
+    [self removeTriggerTextFromComposer:textTrigger];
+    [self.inputToolbarView pasteText:[UserSuggestionID.room stringByAppendingString:@" "]];
+}
+
+- (void)removeTriggerTextFromComposer:(NSString *)textTrigger
+{
     RoomInputToolbarView *toolbar = (RoomInputToolbarView *)self.inputToolbarView;
     if (toolbar && textTrigger.length) {
         NSMutableAttributedString *attributedTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:toolbar.attributedTextMessage];
@@ -8057,8 +8083,6 @@ static CGSize kThreadListBarButtonItemImageSize;
                                                                     range:NSMakeRange(0, attributedTextMessage.length)];
         [toolbar setAttributedTextMessage:attributedTextMessage];
     }
-    
-    [self mention:member];
 }
 
 - (void)userSuggestionCoordinatorBridge:(UserSuggestionCoordinatorBridge *)coordinator didUpdateViewHeight:(CGFloat)height

@@ -27,11 +27,9 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
     switch (bubbleComponent.encryptionDecoration) {
         case EventEncryptionDecorationNone:
             return nil;
-        case EventEncryptionDecorationUnsafeKey:
+        case EventEncryptionDecorationGrey:
             return AssetImages.encryptionUntrusted.image;
-        case EventEncryptionDecorationDecryptionError:
-        case EventEncryptionDecorationNotEncrypted:
-        case EventEncryptionDecorationUntrustedDevice:
+        case EventEncryptionDecorationRed:
             return AssetImages.encryptionWarning.image;
         default:
             return nil;
