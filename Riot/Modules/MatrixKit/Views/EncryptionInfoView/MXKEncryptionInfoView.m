@@ -196,7 +196,8 @@ static NSAttributedString *verticalWhitespace = nil;
         if (!safetyMessage)
         {
             // Use default copy if none is provided by the decryption decoration
-            safetyMessage = _mxEvent.decryptionDecoration.color != MXEventDecryptionDecorationColorNone ? [VectorL10n roomEventEncryptionInfoKeyAuthenticityNotGuaranteed] : [VectorL10n userVerificationSessionsListSessionTrusted];
+            BOOL isUntrusted = _mxEvent.decryptionDecoration && _mxEvent.decryptionDecoration.color != MXEventDecryptionDecorationColorNone;
+            safetyMessage = isUntrusted ? [VectorL10n roomEventEncryptionInfoKeyAuthenticityNotGuaranteed] : [VectorL10n userVerificationSessionsListSessionTrusted];
         }
         
         NSString *decryptionError;

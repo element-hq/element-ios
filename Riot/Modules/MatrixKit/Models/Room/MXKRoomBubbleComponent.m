@@ -204,14 +204,21 @@
     
     // The encryption is in a good state.
     // Only show a warning badge if there are decryption trust issues.
-    switch (event.decryptionDecoration.color)
+    if (event.decryptionDecoration)
     {
-        case MXEventDecryptionDecorationColorRed:
-            return EventEncryptionDecorationRed;
-        case MXEventDecryptionDecorationColorGrey:
-            return EventEncryptionDecorationGrey;
-        case MXEventDecryptionDecorationColorNone:
-            return EventEncryptionDecorationNone;
+        switch (event.decryptionDecoration.color)
+        {
+            case MXEventDecryptionDecorationColorNone:
+                return EventEncryptionDecorationNone;
+            case MXEventDecryptionDecorationColorGrey:
+                return EventEncryptionDecorationGrey;
+            case MXEventDecryptionDecorationColorRed:
+                return EventEncryptionDecorationRed;
+        }
+    }
+    else
+    {
+        return EventEncryptionDecorationNone;
     }
 }
 
