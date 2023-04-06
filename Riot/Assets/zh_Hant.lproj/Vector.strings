@@ -2128,7 +2128,7 @@
 
 // User
 
-"key_verification_verified_user_information" = "與此使用者的訊息是端到端加密的，無法被第三方讀取。";
+"key_verification_verified_user_information" = "與此使用者的訊息有端對端加密，無法被第三方讀取。";
 "key_verification_verified_this_session_information" = "您現在可以在此裝置上閱讀您的加密訊息，其他使用者也會知道他們能夠信任此裝置。";
 "key_verification_verified_new_session_information" = "您現在也可以在新的裝置上閱讀您的加密訊息，其他使用者也會知道他們能夠信任此裝置。";
 "key_verification_verified_other_session_information" = "您現在也可以在其他的工作階段閱讀您的加密訊息，其他使用者也會知道他們能夠信任此工作階段。";
@@ -2300,7 +2300,7 @@
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "輸入只有您知道的安全密語，並產生備份的金鑰。";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "使用安全密語";
 "secure_key_backup_setup_intro_use_security_key_info" = "產生安全金鑰後，請儲存在密碼管理員或保險箱等安全的地方。";
-"secure_key_backup_setup_intro_info" = "透過備份您伺服器上的加密金鑰，來防止失去對您已加密的訊息與資料的存取權。";
+"secure_key_backup_setup_intro_info" = "透過備份您伺服器上的加密金鑰，來防止失去對加密訊息與資料的存取權。";
 "service_terms_modal_information_description_integration_manager" = "整合管理員能夠讓您加入第三方服務的功能。";
 "service_terms_modal_information_description_identity_server" = "身分伺服器讓您能夠用電話或電子郵件，查詢您的聯絡人是否已經申請帳號。";
 "service_terms_modal_information_title_integration_manager" = "整合管理員";
