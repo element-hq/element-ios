@@ -70,7 +70,6 @@ class PillAttachmentView: UIView {
                 label.font = pillData.font
                 label.textColor = pillData.isHighlighted ? theme.baseTextPrimaryColor : theme.textPrimaryColor
                 label.translatesAutoresizingMaskIntoConstraints = false
-                label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
                 stack.addArrangedSubview(label)
                 
                 computedWidth += label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: sizes.pillBackgroundHeight)).width
@@ -146,10 +145,12 @@ class PillAttachmentView: UIView {
             computedWidth += 2 * sizes.horizontalMargin
         }
         
+        computedWidth = min(pillData.maxWidth, computedWidth)
+        
         let pillBackgroundView = UIView(frame: CGRect(x: 0,
-                                        y: sizes.verticalMargin,
-                                        width: computedWidth,
-                                        height: sizes.pillBackgroundHeight))
+                                                      y: sizes.verticalMargin,
+                                                      width: computedWidth,
+                                                      height: sizes.pillBackgroundHeight))
 
         pillBackgroundView.vc_addSubViewMatchingParent(stack, withInsets: UIEdgeInsets(top: sizes.verticalMargin, left: leadingStackMargin, bottom: -sizes.verticalMargin, right: -sizes.horizontalMargin))
         

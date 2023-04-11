@@ -47,11 +47,15 @@ import UIKit
             return
         }
 
-        guard let pillData = textAttachment.data else {
+        guard var pillData = textAttachment.data else {
             MXLog.debug("[PillAttachmentViewProvider]: attachment misses pill data")
             return
         }
-
+        
+        if let messageTextView {
+            pillData.maxWidth = messageTextView.bounds.width - 8
+        }
+        
         let mainSession = AppDelegate.theDelegate().mxSessions.first as? MXSession
 
         let pillView = PillAttachmentView(frame: CGRect(origin: .zero, size: textAttachment.size(forFont: pillData.font)),

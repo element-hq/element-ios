@@ -31,22 +31,28 @@ import MatrixSDKCrypto
 @objc class CryptoSDKFeature: NSObject, MXCryptoV2Feature {
     @objc static let shared = CryptoSDKFeature()
     
-    var version: String {
-        // Will be moved into the olm machine as API
-        Bundle(for: OlmMachine.self).infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-    }
-    
     var isEnabled: Bool {
         RiotSettings.shared.enableCryptoSDK
     }
     
+    var needsVerificationUpgrade: Bool {
+        get {
+            return RiotSettings.shared.showVerificationUpgradeAlert
+        }
+        set {
+            RiotSettings.shared.showVerificationUpgradeAlert = newValue
+        }
+    }
+    
     private static let FeatureName = "ios-crypto-sdk"
+    private static let FeatureNameV2 = "ios-crypto-sdk-v2"
+    
     private let remoteFeature: RemoteFeaturesClientProtocol
     private let localFeature: PhasedRolloutFeature
     
     init(
         remoteFeature: RemoteFeaturesClientProtocol = PostHogAnalyticsClient.shared,
-        localTargetPercentage: Double = 0.2
+        localTargetPercentage: Double = 0.5
     ) {
         self.remoteFeature = remoteFeature
         self.localFeature = PhasedRolloutFeature(
@@ -98,6 +104,13 @@ import MatrixSDKCrypto
     }
     
     private func isFeatureEnabled(userId: String) -> Bool {
-        remoteFeature.isFeatureEnabled(Self.FeatureName) || localFeature.isEnabled(userId: userId)
+        // This feature includes app version with a bug, and thus will not be rolled out to 100% users
+        remoteFeature.isFeatureEnabled(Self.FeatureName)
+        
+        // Second version of the remote feature with a bugfix and released eventually to 100% users
+        || remoteFeature.isFeatureEnabled(Self.FeatureNameV2)
+        
+        // Local feature
+        || localFeature.isEnabled(userId: userId)
     }
 }

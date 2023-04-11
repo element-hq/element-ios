@@ -196,7 +196,7 @@ final class QRCodeReaderView: UIView {
 extension QRCodeReaderView: ZXCaptureDelegate {
     
     func captureCameraIsReady(_ capture: ZXCapture!) {
-        isScanning = true
+        startScanning()
     }
     
     func captureResult(_ capture: ZXCapture!, result: ZXResult!) {

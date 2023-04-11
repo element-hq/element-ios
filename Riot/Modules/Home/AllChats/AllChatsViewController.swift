@@ -985,8 +985,20 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
     private func presentVerifyCurrentSessionAlert(with session: MXSession) {
         MXLog.debug("[AllChatsViewController] presentVerifyCurrentSessionAlertWithSession")
         
-        let alert = UIAlertController(title: VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertTitle,
-                                      message: VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertMessage,
+        let title: String
+        let message: String
+        
+        if let feature = MXSDKOptions.sharedInstance().cryptoSDKFeature,
+           feature.isEnabled && feature.needsVerificationUpgrade {
+            title = VectorL10n.keyVerificationSelfVerifySecurityUpgradeAlertTitle
+            message = VectorL10n.keyVerificationSelfVerifySecurityUpgradeAlertMessage
+        } else {
+            title = VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertTitle
+            message = VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertMessage
+        }
+        
+        let alert = UIAlertController(title: title,
+                                      message: message,
                                       preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertValidateAction,

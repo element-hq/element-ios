@@ -815,6 +815,7 @@ Tap the + to start adding people.";
 "settings_olm_version" = "Olm Version %@";
 "settings_copyright" = "Copyright";
 "settings_term_conditions" = "Terms & Conditions";
+"settings_acceptable_use" = "Acceptable Use Policy";
 "settings_privacy_policy" = "Privacy Policy";
 "settings_third_party_notices" = "Third-party Notices";
 "settings_analytics_and_crash_data" = "Send crash and analytics data";
@@ -1559,6 +1560,11 @@ Tap the + to start adding people.";
 "key_verification_self_verify_current_session_alert_title" = "Verify this session";
 "key_verification_self_verify_current_session_alert_message" = "Other users may not trust it.";
 "key_verification_self_verify_current_session_alert_validate_action" = "Verify";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "App updated";
+"key_verification_self_verify_security_upgrade_alert_message" = "Secure messaging has been improved with the latest update. Please re-verify your device.";
 
 // Unverified sessions
 "key_verification_alert_title" = "You have unverified sessions";
