@@ -193,7 +193,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     func mention(_ member: MXRoomMember) {
         self.wysiwygViewModel.setMention(link: MXTools.permalinkToUser(withUserId: member.userId),
                                          name: member.displayname,
-                                         key: .at)
+                                         mentionType: .user)
     }
     
     // MARK: - Private
