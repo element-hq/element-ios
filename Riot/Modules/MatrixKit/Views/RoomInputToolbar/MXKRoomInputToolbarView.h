@@ -382,7 +382,10 @@ typedef enum : NSUInteger
  */
 @property (nonatomic) NSAttributedString *attributedTextMessage;
 
-@property (nonatomic, readonly, nonnull) UIFont *textDefaultFont;
+/**
+ Default font for the message composer.
+ */
+@property (nonatomic, readonly, nonnull) UIFont *defaultFont;
 
 - (void)dismissValidationView:(MXKImageView*)validationView;
 

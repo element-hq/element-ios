@@ -136,8 +136,6 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
  */
 @property (nonatomic, weak, readonly) UIButton *attachMediaButton;
 
-@property (nonatomic, readonly, nonnull) UIFont *textDefaultFont;
-
 /**
  Adds a voice message toolbar view to be displayed inside this input toolbar
  */

@@ -105,7 +105,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         }
     }
 
-    override var textDefaultFont: UIFont {
+    override var defaultFont: UIFont {
         return UIFont.preferredFont(forTextStyle: .body)
     }
     

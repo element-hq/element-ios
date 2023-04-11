@@ -32,7 +32,7 @@ extension RoomViewController {
                 if #available(iOS 15.0, *) {
                     newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
                                                                           isHighlighted: false,
-                                                                          font: inputToolbarView.textDefaultFont))
+                                                                          font: inputToolbarView.defaultFont))
                 } else {
                     newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
                 }
@@ -40,13 +40,13 @@ extension RoomViewController {
             } else if roomMember.userId == self.mainSession.myUser.userId {
                 newAttributedString.appendString("/me ")
                 newAttributedString.addAttribute(.font,
-                                                 value: inputToolbarView.textDefaultFont,
+                                                 value: inputToolbarView.defaultFont,
                                                  range: .init(location: 0, length: newAttributedString.length))
             } else {
                 if #available(iOS 15.0, *) {
                     newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
                                                                           isHighlighted: false,
-                                                                          font: inputToolbarView.textDefaultFont))
+                                                                          font: inputToolbarView.defaultFont))
                 } else {
                     newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
                 }
@@ -397,7 +397,7 @@ extension RoomViewController: PermalinkReplacer {
                                           withSession: session,
                                           eventFormatter: eventFormatter,
                                           roomState: roomState,
-                                          font: inputToolbarView.textDefaultFont)
+                                          font: inputToolbarView.defaultFont)
     }
 
     public func restoreMarkdown(in attributedString: NSAttributedString) -> String {

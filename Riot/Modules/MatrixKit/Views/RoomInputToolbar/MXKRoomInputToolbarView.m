@@ -358,7 +358,7 @@
     self.textMessage = [NSString stringWithFormat:@"%@%@", self.textMessage, text];
 }
 
-- (UIFont *)textDefaultFont
+- (UIFont *)defaultFont
 {
     return [UIFont systemFontOfSize:15.f];
 }
