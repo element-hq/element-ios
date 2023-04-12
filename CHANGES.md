@@ -1,3 +1,11 @@
+## Changes in 1.10.10 (2023-04-12)
+
+🙌 Improvements
+
+- Crypto: Enable Rust Crypto for all users ([#7485](https://github.com/vector-im/element-ios/pull/7485))
+- Upgrade MatrixSDK version ([v0.26.7](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.7)).
+
+
 ## Changes in 1.10.9 (2023-04-04)
 
 🙌 Improvements
