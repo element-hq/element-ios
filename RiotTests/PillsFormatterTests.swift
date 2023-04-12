@@ -29,12 +29,14 @@ private enum Inputs {
     static let aliceMemberAway = FakeMXRoomMember(displayname: aliceAwayDisplayname, avatarUrl: aliceNewAvatarUrl, userId: "@alice:matrix.org")
     static let alicePermalink = "https://matrix.to/#/@alice:matrix.org"
     static let mentionToAlice = NSAttributedString(string: aliceDisplayname, attributes: [.link: URL(string: alicePermalink)!])
-    static let markdownLinkToAlice = "[Alice](\(alicePermalink))"
+    static let markdownLinkToAlice = "[\(aliceDisplayname)](\(alicePermalink))"
 
     static let bobUserId = "@bob:matrix.org"
     static let bobDisplayname = "Bob"
     static let bobAvatarUrl = "mxc://matrix.org/VyNYBgahazAzUuOeZETtQ"
     static let bobMember = FakeMXRoomMember(displayname: bobDisplayname, avatarUrl: bobAvatarUrl, userId: bobUserId)
+    static let bobPermalink = "https://matrix.to/#/@bob:matrix.org"
+    static let markdownLinkToBob = "[\(bobDisplayname)](\(bobPermalink))"
     
     static let anotherUserId = "@another.user:matrix.org"
     static let anotherUserPermalink = "https://matrix.to/#/@another.user:matrix.org"
@@ -310,7 +312,7 @@ class PillsFormatterTests: XCTestCase {
         case .room(let userId):
             XCTAssertEqual(userId, Inputs.roomId)
             switch pillTextAttachmentData.items.first {
-            case .asset(let assetName, let parameters):
+            case .asset(let assetName, _):
                 XCTAssertEqual(assetName, "link_icon")
             default:
                 XCTFail("First pill item should be the asset")
@@ -436,13 +438,86 @@ class PillsFormatterTests: XCTestCase {
             XCTAssertEqual(roomId, Inputs.anotherRoomId)
             XCTAssertEqual(messageId, Inputs.messageEventId)
             switch pillTextAttachmentData.items.first {
-            case .asset(let name, let parameters):
+            case .asset(let name, _):
                 XCTAssertEqual(name, "link_icon")
             default:
                 XCTFail("First pill item should be the asset")
             }
         default:
             XCTFail("Pill should be of type .message")
+        }
+    }
+
+    func testInsertPillInMarkdownString() {
+        let message = "Hello \(Inputs.markdownLinkToBob)"
+        let messageWithPills = insertPillsInMarkdownString(message)
+        XCTAssertTrue(messageWithPills.attribute(.attachment, at: 6, effectiveRange: nil) is PillTextAttachment)
+        let pillTextAttachment = messageWithPills.attribute(.attachment, at: 6, effectiveRange: nil) as? PillTextAttachment
+        XCTAssertEqual(pillTextAttachment?.data?.displayText, Inputs.bobDisplayname)
+    }
+
+    func testInsertMultiplePillsInMarkdownString() {
+        let message = "Hello \(Inputs.markdownLinkToBob) and \(Inputs.markdownLinkToAlice)"
+        let messageWithPills = insertPillsInMarkdownString(message)
+        let bobPillTextAttachment = messageWithPills.attribute(.attachment, at: 6, effectiveRange: nil) as? PillTextAttachment
+        XCTAssertEqual(bobPillTextAttachment?.data?.displayText, Inputs.bobDisplayname)
+
+        let alicePillTextAttachment = messageWithPills.attribute(.attachment, at: 12, effectiveRange: nil) as? PillTextAttachment
+        XCTAssertEqual(alicePillTextAttachment?.data?.displayText, Inputs.aliceDisplayname)
+        // No self highlight
+        XCTAssert(alicePillTextAttachment?.data?.isHighlighted == false)
+    }
+
+    func testMarkdownLinkToUnknownUserIsNotPillified() {
+        let message = "Hello [Unknown user](https://matrix.to/#/@unknown:matrix.org)"
+        let messageWithPills = insertPillsInMarkdownString(message)
+        XCTAssertFalse(messageWithPills.attribute(.attachment, at: 6, effectiveRange: nil) is PillTextAttachment)
+    }
+
+    func testMarkdownSingleLinkDetection() {
+        let message = NSAttributedString(string: "Hello \(Inputs.markdownLinkToAlice)")
+        let expected = [
+            PillsFormatter.MarkdownLinkResult(url: URL(string: Inputs.alicePermalink)!,
+                                              label: Inputs.aliceDisplayname,
+                                              range: NSRange(location: 6, length: Inputs.markdownLinkToAlice.count))
+        ]
+
+        XCTAssertEqual(
+            PillsFormatter.markdownLinks(in: message),
+            expected
+        )
+    }
+
+    func testMarkdownMultipleLinksDetection() {
+        let message = NSAttributedString(string: "Hello \(Inputs.markdownLinkToAlice) and \(Inputs.markdownLinkToBob)")
+        let expected = [
+            PillsFormatter.MarkdownLinkResult(url: URL(string: Inputs.alicePermalink)!,
+                                              label: Inputs.aliceDisplayname,
+                                              range: NSRange(location: 6, length: Inputs.markdownLinkToAlice.count)),
+            PillsFormatter.MarkdownLinkResult(url: URL(string: Inputs.bobPermalink)!,
+                                              label: Inputs.bobDisplayname,
+                                              range: NSRange(location: 6 + Inputs.markdownLinkToAlice.count + 5,
+                                                             length: Inputs.markdownLinkToBob.count))
+        ]
+
+        XCTAssertEqual(
+            PillsFormatter.markdownLinks(in: message),
+            expected
+        )
+    }
+
+    func testBrokenMarkdownLinkIsNotDetected() {
+        let brokenMarkdownMessages = [
+            NSAttributedString(string: "Hello [Alice](https://matrix.to/#/@alice:matrix.org"),
+            NSAttributedString(string: "Hello [Alice]https://matrix.to/#/@alice:matrix.org)"),
+            NSAttributedString(string: "Hello [Alice(https://matrix.to/#/@alice:matrix.org)"),
+            NSAttributedString(string: "Hello Alice](https://matrix.to/#/@alice:matrix.org)"),
+            NSAttributedString(string: "Hello [Alice]](https://matrix.to/#/@alice:matrix.org)"),
+            NSAttributedString(string: "Hello (https://matrix.to/#/@alice:matrix.org)"),
+        ]
+
+        for message in brokenMarkdownMessages {
+            XCTAssertTrue(PillsFormatter.markdownLinks(in: message).isEmpty)
         }
     }
 }
@@ -604,6 +679,15 @@ private extension PillsFormatterTests {
         return messageWithPills
     }
 
+    private func insertPillsInMarkdownString(_ markdownString: String) -> NSAttributedString {
+        let message = NSAttributedString(string: markdownString)
+        let session = FakeMXSession(myUserId: Inputs.aliceUserId)
+        return PillsFormatter.insertPills(in: message,
+                                          withSession: session,
+                                          eventFormatter: EventFormatter(matrixSession: session),
+                                          roomState: FakeMXRoomState(roomMembers: FakeMXRoomMembers()),
+                                          font: UIFont.systemFont(ofSize: 15.0))
+    }
 }
 
 // MARK: - Mock objects

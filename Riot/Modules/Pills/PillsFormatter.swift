@@ -86,7 +86,7 @@ class PillsFormatter: NSObject {
                             eventFormatter: MXKEventFormatter,
                             roomState: MXRoomState,
                             font: UIFont) -> NSAttributedString {
-        let matches = markdownUrls(in: markdownString)
+        let matches = markdownLinks(in: markdownString)
 
         // If we have some matches, replace permalinks by a pill version.
         guard !matches.isEmpty else { return markdownString }
@@ -100,9 +100,9 @@ class PillsFormatter: NSObject {
 
         let mutable = NSMutableAttributedString(attributedString: markdownString)
 
-        matches.reversed().forEach { (url: URL, label: String, range: NSRange) in
-            if let attachmentString = pillProvider.pillTextAttachmentString(forUrl: url, withLabel: label) {
-                mutable.replaceCharacters(in: range, with: attachmentString)
+        matches.reversed().forEach {
+            if let attachmentString = pillProvider.pillTextAttachmentString(forUrl: $0.url, withLabel: $0.label) {
+                mutable.replaceCharacters(in: $0.range, with: attachmentString)
             }
         }
 
@@ -214,21 +214,15 @@ class PillsFormatter: NSObject {
 // MARK: - Private Methods
 @available (iOS 15.0, *)
 extension PillsFormatter {
-    
-    static func attributedStringWithAttachment(_ attachment: PillTextAttachment, link: URL?, font: UIFont) -> NSAttributedString {
-        let string = NSMutableAttributedString(attachment: attachment)
-        string.addAttribute(.font, value: font, range: .init(location: 0, length: string.length))
-        if let url = link {
-            string.addAttribute(.link, value: url, range: .init(location: 0, length: string.length))
-        }
-        return string
+    struct MarkdownLinkResult: Equatable {
+        let url: URL
+        let label: String
+        let range: NSRange
     }
-}
 
-@available(iOS 15.0, *)
-private extension PillsFormatter {
-    static func markdownUrls(in attributedString: NSAttributedString) -> [(url: URL, label: String, range: NSRange)] {
+    static func markdownLinks(in attributedString: NSAttributedString) -> [MarkdownLinkResult] {
         // Create a regexp that detects markdown links.
+        // Pattern source: https://gist.github.com/hugocf/66d6cd241eff921e0e02
         let pattern = "\\[([^\\]]+)\\]\\(([^\\)\"\\s]+)(?:\\s+\"(.*)\")?\\)"
         guard let regExp = try? NSRegularExpression(pattern: pattern) else { return [] }
 
@@ -248,10 +242,19 @@ private extension PillsFormatter {
             }
 
             if let url = URL(string: url) {
-                return (url: url, label: label, range: match.range)
+                return MarkdownLinkResult(url: url, label: label, range: match.range)
             } else {
                 return nil
             }
         }
+    }
+    
+    static func attributedStringWithAttachment(_ attachment: PillTextAttachment, link: URL?, font: UIFont) -> NSAttributedString {
+        let string = NSMutableAttributedString(attachment: attachment)
+        string.addAttribute(.font, value: font, range: .init(location: 0, length: string.length))
+        if let url = link {
+            string.addAttribute(.link, value: url, range: .init(location: 0, length: string.length))
+        }
+        return string
     }
 }
