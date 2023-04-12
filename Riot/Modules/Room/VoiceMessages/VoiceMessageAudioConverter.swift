@@ -39,10 +39,10 @@ struct VoiceMessageAudioConverter {
         }
     }
     
-    static func convertToMPEG4AAC(sourceURL: URL, destinationURL: URL, completion: @escaping (Result<Void, VoiceMessageAudioConverterError>) -> Void) {
+    static func convertToMPEG4AACIfNeeded(sourceURL: URL, destinationURL: URL, completion: @escaping (Result<Void, VoiceMessageAudioConverterError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             do {
-                if sourceURL.pathExtension == "mp4" {
+                if sourceURL.hasSupportedAudioExtension {
                     try FileManager.default.copyItem(atPath: sourceURL.path, toPath: destinationURL.path)
                 } else {
                     try OGGConverter.convertOpusOGGToM4aFile(src: sourceURL, dest: destinationURL)
@@ -84,5 +84,13 @@ struct VoiceMessageAudioConverter {
             default: break
             }
         }
+    }
+}
+
+extension URL {
+    /// Returns true if the URL has a supported audio extension
+    var hasSupportedAudioExtension: Bool {
+        let supportedExtensions = ["mp3", "mp4", "m4a", "wav", "aac"]
+        return supportedExtensions.contains(pathExtension.lowercased())
     }
 }
