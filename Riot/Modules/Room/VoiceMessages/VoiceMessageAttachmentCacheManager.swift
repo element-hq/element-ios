@@ -206,11 +206,12 @@ class VoiceMessageAttachmentCacheManager {
     }
     
     private func convertFileAtPath(_ path: String?, numberOfSamples: Int, identifier: String, semaphore: DispatchSemaphore) {
-        guard let filePath = path else {
+        guard let path else {
             return
         }
-        
-        let fileExtension = filePath.hasSuffix(".mp4") ? "mp4" : "m4a"
+
+        let filePath = URL(fileURLWithPath: path)
+        let fileExtension = filePath.hasSupportedAudioExtension ? filePath.pathExtension : "m4a"
         let newURL = temporaryFilesFolderURL.appendingPathComponent(identifier).appendingPathExtension(fileExtension)
         
         let conversionCompletion: (Result<Void, VoiceMessageAudioConverterError>) -> Void = { result in
@@ -252,7 +253,7 @@ class VoiceMessageAttachmentCacheManager {
         if FileManager.default.fileExists(atPath: newURL.path) {
             conversionCompletion(Result.success(()))
         } else {
-            VoiceMessageAudioConverter.convertToMPEG4AAC(sourceURL: URL(fileURLWithPath: filePath), destinationURL: newURL, completion: conversionCompletion)
+            VoiceMessageAudioConverter.convertToMPEG4AACIfNeeded(sourceURL: filePath, destinationURL: newURL, completion: conversionCompletion)
         }
     }
     
