@@ -154,7 +154,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     {
         NSMutableAttributedString *mutableTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:attributedTextMessage];
         [mutableTextMessage addAttributes:@{ NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor,
-                                             NSFontAttributeName: self.textDefaultFont }
+                                             NSFontAttributeName: self.defaultFont }
                                     range:NSMakeRange(0, mutableTextMessage.length)];
         attributedTextMessage = mutableTextMessage;
     }
@@ -181,7 +181,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     return self.textView.text;
 }
 
-- (UIFont *)textDefaultFont
+- (UIFont *)defaultFont
 {
     if (self.textView.font)
     {

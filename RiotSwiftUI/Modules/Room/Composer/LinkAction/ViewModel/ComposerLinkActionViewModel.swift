@@ -46,6 +46,9 @@ final class ComposerLinkActionViewModel: ComposerLinkActionViewModelType, Compos
             initialViewState = .init(linkAction: .createWithText, bindings: simpleBindings)
         case .create:
             initialViewState = .init(linkAction: .create, bindings: simpleBindings)
+        case .disabled:
+            // Note: Unreachable
+            initialViewState = .init(linkAction: .disabled, bindings: simpleBindings)
         }
         
         super.init(initialViewState: initialViewState)
@@ -74,6 +77,8 @@ final class ComposerLinkActionViewModel: ComposerLinkActionViewModelType, Compos
                         .setLink(urlString: state.bindings.linkUrl)
                     )
                 )
+            case .disabled:
+                break
             }
         }
     }

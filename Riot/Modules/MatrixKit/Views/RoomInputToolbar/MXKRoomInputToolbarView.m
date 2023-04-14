@@ -358,6 +358,10 @@
     self.textMessage = [NSString stringWithFormat:@"%@%@", self.textMessage, text];
 }
 
+- (UIFont *)defaultFont
+{
+    return [UIFont systemFontOfSize:15.f];
+}
 
 #pragma mark - MXKFileSizes
 
