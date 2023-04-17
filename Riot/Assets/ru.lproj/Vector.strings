@@ -239,7 +239,7 @@
 "settings_ignored_users" = "ИГНОРИРУЕМЫЕ ПОЛЬЗОВАТЕЛИ";
 "settings_contacts" = "КОНТАКТЫ УСТРОЙСТВА";
 "settings_advanced" = "ДОПОЛНИТЕЛЬНО";
-"settings_other" = "ДРУГИЕ";
+"settings_other" = "Другие";
 "settings_labs" = "ЛАБОРАТОРИЯ";
 "settings_devices" = "СЕАНСЫ";
 "settings_cryptography" = "КРИПТОГРАФИЯ";
@@ -272,11 +272,11 @@
 "settings_send_crash_report" = "Отправка данных о сбоях и использовании";
 "settings_clear_cache" = "Очистить кэш";
 "settings_change_password" = "Изменить пароль";
-"settings_old_password" = "старый пароль";
-"settings_new_password" = "новый пароль";
-"settings_confirm_password" = "подтвердить пароль";
-"settings_fail_to_update_password" = "Не удалось обновить пароль";
-"settings_password_updated" = "Ваш пароль был обновлен";
+"settings_old_password" = "Старый пароль";
+"settings_new_password" = "Новый пароль";
+"settings_confirm_password" = "Подтвердить пароль";
+"settings_fail_to_update_password" = "Не удалось обновить пароль аккаунта Matrix";
+"settings_password_updated" = "Ваш пароль аккаунта Matrix был обновлен";
 "settings_crypto_device_name" = "Имя сеанса: ";
 "settings_crypto_device_id" = "\nID сеанса: ";
 "settings_crypto_device_key" = "\nКлюч сеанса:\n";
@@ -512,7 +512,7 @@
 "room_action_send_photo_or_video" = "Отправить фото или видео";
 "room_action_send_sticker" = "Отправить стикер";
 "settings_deactivate_account" = "ДЕАКТИВАЦИЯ АККАУНТА";
-"settings_deactivate_my_account" = "Деактивировать мой аккаунт";
+"settings_deactivate_my_account" = "Деактивировать аккаунт навсегда";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Добавить сейчас?";
 "deactivate_account_title" = "Деактивировать аккаунт";
 "deactivate_account_informations_part1" = "Это действие сделает вашу учетную запись непригодной для дальнейшего использования. Вы не сможете войти в систему и никто другой не сможет заново зарегистрировать учетную запись с вашим идентификатором. Также, это приведет к тому, что вы покинете все комнаты, в которых участвовали и данные о вашей учетной записи будут удалены с сервера идентификации. ";
@@ -525,7 +525,7 @@
 "deactivate_account_forget_messages_information_part3" = ": будущие участники увидят неполное представление разговоров)";
 "deactivate_account_validate_action" = "Деактивировать аккаунт";
 "deactivate_account_password_alert_title" = "Деактивировать аккаунт";
-"deactivate_account_password_alert_message" = "Чтобы продолжить, введите пароль";
+"deactivate_account_password_alert_message" = "Чтобы продолжить, введите пароль аккаунта Matrix";
 "widget_sticker_picker_no_stickerpacks_alert" = "У вас пока нет включенных пакетов стикеров.";
 "event_formatter_rerequest_keys_part1_link" = "Повторно запросить ключи шифрования";
 "event_formatter_rerequest_keys_part2" = " из других ваших сеансов.";
@@ -583,7 +583,7 @@
 "key_backup_setup_intro_title" = "Никогда не теряйте зашифрованных сообщений";
 "key_backup_setup_intro_info" = "Сообщения в зашифрованных комнатах защищены сквозным шифрованием. Только вы и получатель(и) имеют ключи для чтения этих сообщений.\n\nСохраните ключи надежно, чтобы не потерять их.";
 "key_backup_setup_intro_setup_action" = "Настроить";
-"key_backup_setup_passphrase_info" = "Мы будем хранить зашифрованную копию ваших ключей на нашем сервере. Для безопасности, защитите резервную копию секретной фразой.\n\nДля обеспечения максимальной безопасности она должна отличаться от пароля учетной записи.";
+"key_backup_setup_passphrase_info" = "Мы будем хранить зашифрованную копию ваших ключей на нашем сервере. Для безопасности, защитите резервную копию секретной фразой.\n\nДля обеспечения максимальной безопасности она должна отличаться от пароля учётной записи Matrix.";
 "key_backup_setup_passphrase_passphrase_title" = "Ввод";
 "key_backup_setup_passphrase_passphrase_placeholder" = "Введите секретную фразу";
 "key_backup_setup_passphrase_passphrase_valid" = "Отлично!";
@@ -864,7 +864,7 @@
 "identity_server_settings_alert_error_invalid_identity_server" = "%@ не является действительным сервером идентификации.";
 "settings_add_3pid_password_title_email" = "Добавить адрес электронной почты";
 "settings_add_3pid_password_title_msidsn" = "Добавить номер телефона";
-"settings_add_3pid_password_message" = "Для продолжения, задайте пароль";
+"settings_add_3pid_password_message" = "Для продолжения, введите пароль аккаунта Matrix";
 "settings_add_3pid_invalid_password_message" = "Недействительные данные";
 "settings_discovery_three_pid_details_title_phone_number" = "Управление номера телефона";
 "settings_identity_server_no_is" = "Сервер идентификации не настроен";
@@ -915,7 +915,7 @@
 "security_settings_title" = "Безопасность";
 "security_settings_crypto_sessions" = "МОИ СЕАНСЫ";
 "security_settings_crypto_sessions_loading" = "Загрузка сеансов…";
-"security_settings_crypto_sessions_description_2" = "Если вы не узнали логин, измените пароль и сбросьте Безопасное резервное копирование.";
+"security_settings_crypto_sessions_description_2" = "Если вы не узнали логин, измените пароль аккаунта Matrix и сбросьте Безопасное резервное копирование.";
 "security_settings_secure_backup" = "БЕЗОПАСНОЕ РЕЗЕРВНОЕ КОПИРОВАНИЕ";
 "security_settings_secure_backup_description" = "Сделайте резервную копию ключей шифрования с данными вашей учетной записи на случай, если вы потеряете доступ к своим сеансам. Ваши ключи будут защищены уникальным электронным ключом.";
 "security_settings_secure_backup_setup" = "Настроить";
@@ -938,7 +938,7 @@
 "security_settings_complete_security_alert_title" = "Завершите настройку безопасности";
 "security_settings_complete_security_alert_message" = "Сначала вы должны завершить настройку безопасности текущего сеанса.";
 "security_settings_coming_soon" = "Извините. Это действие пока недоступно в %@ iOS. Пожалуйста, используйте другой клиент Matrix для его настройки. %@ iOS будет его использовать.";
-"security_settings_user_password_description" = "Подтвердите свою личность, введя пароль учетной записи";
+"security_settings_user_password_description" = "Подтвердите свою личность, введя пароль учётной записи Matrix";
 // Manage session
 "manage_session_title" = "Управление сеансами";
 "manage_session_info" = "ИНФОРМАЦИЯ О СЕАНСЕ";
@@ -1130,7 +1130,7 @@
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Распечатайте и храните в безопасном месте\n✓ Сохраните его на USB-носителе или резервном носителе\n✓ Скопируйте его в свое личное облачное хранилище";
 "secrets_setup_recovery_passphrase_title" = "Задайте мнемоническую фразу";
 "secrets_setup_recovery_passphrase_information" = "Введите секретную фразу, известную только вам, для защиты данных на вашем сервере.";
-"secrets_setup_recovery_passphrase_additional_information" = "Не используйте пароль своей учетной записи.";
+"secrets_setup_recovery_passphrase_additional_information" = "Не используйте пароль своей учётной записи Matrix.";
 "secrets_setup_recovery_passphrase_validate_action" = "Готово";
 "secrets_setup_recovery_passphrase_confirm_information" = "Введите мнемоническую фразу ещё раз, чтобы подтвердить её.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Подтвердить";
@@ -1183,7 +1183,7 @@
 "searchable_directory_x_network" = "%@ Сеть";
 "searchable_directory_search_placeholder" = "Имя или ID";
 "create_room_title" = "Новая комната";
-"create_room_section_header_name" = "Имя комнаты";
+"create_room_section_header_name" = "НАЗВАНИЕ";
 "create_room_placeholder_name" = "Имя";
 "create_room_section_header_topic" = "Тема комнаты (опционально)";
 "create_room_placeholder_topic" = "Тема";
@@ -1218,7 +1218,7 @@
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Шифрование включено";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Шифрование не включено.";
 "pin_protection_kick_user_alert_message" = "Слишком много ошибок, вы вышли из системы";
-"secrets_reset_authentication_message" = "Введите пароль своей учётной записи для подтверждения";
+"secrets_reset_authentication_message" = "Введите пароль своей учётной записи Matrix для подтверждения";
 "secrets_reset_reset_action" = "Сброс";
 "secrets_reset_warning_message" = "Вы перезапустите приложение без истории, сообщений, доверенных устройств или доверенных пользователей.";
 "secrets_reset_warning_title" = "Если сбросить все";
@@ -2224,3 +2224,40 @@
 "threads_notice_information" = "Все потоки созданные во время экспериментального периода теперь <b>отображаются как обычные ответы</b>.<br/><br/>Это разовый переход, так как потоки теперь часть спецификации Matrix.";
 "authentication_qr_login_failure_device_not_supported" = "Связь с этим устройством не поддерживается.";
 "accessibility_selected" = "выбранный";
+"room_access_settings_screen_message" = "Решите, кто может найти и присоединиться к %@.";
+"room_access_settings_screen_title" = "Кто может получить доступ к этой комнате?";
+"room_details_promote_room_suggest_title" = "Предложить участникам пространства";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Учитывайте, что имена сессий также видны людям, с которыми вы общаетесь. %@";
+"settings_labs_enable_new_client_info_feature" = "Запишите имя клиента, версию и URL-адрес, чтобы упростить распознавание сеансов в диспетчере сеансов";
+"sign_out_confirmation_message" = "Вы уверены, что хотите выйти?";
+"share_extension_send_now" = "Отправить сейчас";
+"share_extension_low_quality_video_title" = "Видео будет отправлено в низком качестве";
+"analytics_prompt_stop" = "Прекратить делиться";
+"analytics_prompt_not_now" = "Не сейчас";
+"analytics_prompt_point_3" = "Вы можете отключить это в любое время в настройках";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Мы <b>не</b> передаем информацию третьим лицам";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "Мы <b>не</b> записываем и не профилируем никакие данные учётной записи";
+"analytics_prompt_message_upgrade" = "Ранее вы дали согласие на передачу нам анонимных данных об использовании. Теперь, чтобы помочь понять, как люди используют несколько устройств, мы сгенерируем случайный идентификатор, общий для всех ваших устройств.";
+"analytics_prompt_message_new_user" = "Помогите нам выявить проблемы и улучшить %@, поделившись анонимными данными об использовании. Чтобы понять, как люди используют несколько устройств, мы сгенерируем случайный идентификатор, общий для всех ваших устройств.";
+
+// Analytics
+"analytics_prompt_title" = "Помогите улучшить %@";
+"call_jitsi_unable_to_start" = "Невозможно начать конференц-звонок";
+"network_offline_message" = "Вы не в сети, проверьте ваше соединение.";
+"network_offline_title" = "Вы не в сети";
+"event_formatter_message_deleted" = "Сообщение удалено";
+"room_access_space_chooser_other_spaces_section" = "Другие пространства или комнаты";
+"room_access_settings_screen_setting_room_access" = "Настройка доступа к комнате";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Автоматически приглашать участников в новую комнату";
+"room_access_settings_screen_upgrade_alert_note" = "Обратите внимание, что при обновлении будет создана новая версия комнаты. Все текущие сообщения останутся в этой архивной комнате.";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Любой в родительском пространстве сможет найти и присоединиться к этой комнате - нет необходимости вручную приглашать всех вручную. Вы сможете изменить это в настройках комнаты в любое время.";
+"room_access_settings_screen_upgrade_alert_message" = "Любой человек в %@ сможет найти и присоединиться к этой комнате - нет необходимости вручную приглашать всех. Вы сможете изменить это в настройках комнаты в любое время.";
+"room_access_settings_screen_public_message" = "Любой желающий может найти и присоединиться.";
+"room_access_settings_screen_edit_spaces" = "Редактировать пространства";
+"room_access_settings_screen_restricted_message" = "Позволяет всем, кто находится в пространстве, найти его и присоединиться.\nВам будет предложено подтвердить к каким пространствам.";
+"room_access_settings_screen_private_message" = "Только приглашенные люди могут найти и присоединиться.";
+"manage_session_name_hint" = "Индивидуальные имена сеансов помогут Вам легче распознавать свои устройства.";
+"settings_labs_confirm_crypto_sdk" = "Имейте ввиду, что эта функция все ещё на экспериментальной стадии, поэтому она может работать не так, как ожидается, и потенциально может иметь непредвиденные последствия. Для отмены функции выйдите из системы и войдите снова. Используйте её по своему усмотрению и с осторожностью.";
