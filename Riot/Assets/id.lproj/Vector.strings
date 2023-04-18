@@ -2935,3 +2935,15 @@
 "device_verification_self_verify_open_on_other_device_information" = "Anda harus memverifikasi sesi ini supaya dapat membaca riwayat pesan aman Anda.\n\nBuka Element di salah satu perangkat Anda yang lain dan ikuti petunjuknya.";
 "device_verification_self_verify_open_on_other_device_title" = "Buka %@ di perangkat Anda yang lain";
 "room_creation_only_one_email_invite" = "Amda hanya dapat mengundang satu surel satu-satu";
+"pill_message_in" = "Pesan di %@";
+"pill_message_from" = "Pesan dari %@";
+"pill_message" = "Pesan";
+
+// Pills
+"pill_room_fallback_display_name" = "Space/Ruangan";
+"key_verification_self_verify_security_upgrade_alert_message" = "Perpesanan aman telah ditingkatkan dengan pembaruan terkini. Silakan verifikasi ulang perangkat Anda.";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "Aplikasi diperbarui";
+"settings_acceptable_use" = "Kebijakan Penggunaan yang Dapat Diterima";

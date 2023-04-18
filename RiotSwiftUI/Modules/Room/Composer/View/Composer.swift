@@ -23,6 +23,7 @@ struct Composer: View {
     // MARK: Private
     @ObservedObject private var viewModel: ComposerViewModelType.Context
     @ObservedObject private var wysiwygViewModel: WysiwygComposerViewModel
+    private let userSuggestionSharedContext: UserSuggestionViewModelType.Context
     private let resizeAnimationDuration: Double
     
     private let sendMessageAction: (WysiwygComposerContent) -> Void
@@ -31,15 +32,42 @@ struct Composer: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @State private var isActionButtonShowing = false
-    
+
     private let horizontalPadding: CGFloat = 12
     private let borderHeight: CGFloat = 40
-    private var verticalPadding: CGFloat {
+    private let standardVerticalPadding: CGFloat = 8.0
+    private let contextBannerHeight: CGFloat = 14.5
+
+    /// Spacing applied within the VStack holding the context banner and the composer text view.
+    private let verticalComponentSpacing: CGFloat = 12.0
+    /// Padding for the main composer text view. Always applied on bottom.
+    /// Applied on top only if no context banner is present.
+    private var composerVerticalPadding: CGFloat {
         (borderHeight - wysiwygViewModel.minHeight) / 2
     }
-    
-    private var topPadding: CGFloat {
-        viewModel.viewState.shouldDisplayContext ? 0 : verticalPadding
+
+    /// Computes the top padding to apply on the composer text view depending on context.
+    private var composerTopPadding: CGFloat {
+        viewModel.viewState.shouldDisplayContext ? 0 : composerVerticalPadding
+    }
+
+    /// Computes the additional height required to display the context banner.
+    /// Returns 0.0 if the banner is not displayed.
+    /// Note: height of the actual banner + its added standard top padding + VStack spacing
+    private var additionalHeightForContextBanner: CGFloat {
+        viewModel.viewState.shouldDisplayContext ? contextBannerHeight + standardVerticalPadding + verticalComponentSpacing : 0
+    }
+
+    /// Computes the total height of the composer (excluding the RTE formatting bar).
+    /// This height includes the text view, as well as the context banner
+    /// and user suggestion list when displayed.
+    private var composerHeight: CGFloat {
+        wysiwygViewModel.idealHeight
+        + composerTopPadding
+        + composerVerticalPadding
+        // Extra padding added on top of the VStack containing the composer
+        + standardVerticalPadding
+        + additionalHeightForContextBanner
     }
     
     private var cornerRadius: CGFloat {
@@ -84,7 +112,7 @@ struct Composer: View {
     
     private var composerContainer: some View {
         let rect = RoundedRectangle(cornerRadius: cornerRadius)
-        return VStack(spacing: 12) {
+        return VStack(spacing: verticalComponentSpacing) {
             if viewModel.viewState.shouldDisplayContext {
                 HStack {
                     if let imageName = viewModel.viewState.contextImageName {
@@ -106,7 +134,8 @@ struct Composer: View {
                     }
                     .accessibilityIdentifier("cancelButton")
                 }
-                .padding(.top, 8)
+                .frame(height: contextBannerHeight)
+                .padding(.top, standardVerticalPadding)
                 .padding(.horizontal, horizontalPadding)
             }
             HStack(alignment: shouldFixRoundCorner ? .top : .center, spacing: 0) {
@@ -116,7 +145,6 @@ struct Composer: View {
                 )
                 .tintColor(theme.colors.accent)
                 .placeholder(viewModel.viewState.placeholder, color: theme.colors.tertiaryContent)
-                .frame(height: wysiwygViewModel.idealHeight)
                 .onAppear {
                     if wysiwygViewModel.isContentEmpty {
                         wysiwygViewModel.setup()
@@ -137,13 +165,13 @@ struct Composer: View {
                 }
             }
             .padding(.horizontal, horizontalPadding)
-            .padding(.top, topPadding)
-            .padding(.bottom, verticalPadding)
+            .padding(.top, composerTopPadding)
+            .padding(.bottom, composerVerticalPadding)
         }
         .clipShape(rect)
         .overlay(rect.stroke(borderColor, lineWidth: 1))
         .animation(.easeInOut(duration: resizeAnimationDuration), value: wysiwygViewModel.idealHeight)
-        .padding(.top, 8)
+        .padding(.top, standardVerticalPadding)
         .onTapGesture {
             if viewModel.focused {
                 viewModel.focused = true
@@ -195,11 +223,13 @@ struct Composer: View {
     init(
         viewModel: ComposerViewModelType.Context,
         wysiwygViewModel: WysiwygComposerViewModel,
+        userSuggestionSharedContext: UserSuggestionViewModelType.Context,
         resizeAnimationDuration: Double,
         sendMessageAction: @escaping (WysiwygComposerContent) -> Void,
         showSendMediaActions: @escaping () -> Void) {
             self.viewModel = viewModel
             self.wysiwygViewModel = wysiwygViewModel
+            self.userSuggestionSharedContext = userSuggestionSharedContext
             self.resizeAnimationDuration = resizeAnimationDuration
             self.sendMessageAction = sendMessageAction
             self.showSendMediaActions = showSendMediaActions
@@ -213,17 +243,23 @@ struct Composer: View {
                     .frame(width: 36, height: 5)
                     .padding(.top, 10)
             }
-            HStack(alignment: .bottom, spacing: 0) {
-                if !viewModel.viewState.textFormattingEnabled {
-                    sendMediaButton
-                        .padding(.bottom, 1)
+            VStack {
+                HStack(alignment: .bottom, spacing: 0) {
+                    if !viewModel.viewState.textFormattingEnabled {
+                        sendMediaButton
+                            .padding(.bottom, 1)
+                    }
+                    composerContainer
+                    if !viewModel.viewState.textFormattingEnabled {
+                        sendButton
+                            .padding(.bottom, 1)
+                    }
                 }
-                composerContainer
-                if !viewModel.viewState.textFormattingEnabled {
-                    sendButton
-                        .padding(.bottom, 1)
+                if wysiwygViewModel.maximised {
+                    UserSuggestionList(viewModel: userSuggestionSharedContext, showBackgroundShadow: false)
                 }
             }
+            .frame(height: composerHeight)
             if viewModel.viewState.textFormattingEnabled {
                 HStack(alignment: .center, spacing: 0) {
                     sendMediaButton
@@ -248,6 +284,9 @@ struct Composer: View {
                 wysiwygViewModel.maximised = false
             }
         }
+        .onChange(of: wysiwygViewModel.suggestionPattern) { newValue in
+            sendMentionPattern(pattern: newValue)
+        }
     }
     
     private func storeCurrentSelection() {
@@ -257,6 +296,10 @@ struct Composer: View {
     private func sendLinkAction() {
         let linkAction = wysiwygViewModel.getLinkAction()
         viewModel.send(viewAction: .linkTapped(linkAction: linkAction))
+    }
+
+    private func sendMentionPattern(pattern: SuggestionPattern?) {
+        viewModel.send(viewAction: .suggestion(pattern: pattern))
     }
 }
 

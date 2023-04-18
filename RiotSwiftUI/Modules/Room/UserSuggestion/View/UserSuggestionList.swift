@@ -23,6 +23,15 @@ struct UserSuggestionList: View {
         static let lineSpacing: CGFloat = 10.0
         static let maxHeight: CGFloat = 300.0
         static let maxVisibleRows = 4
+
+        /*
+         As of iOS 16.0, SwiftUI's List uses `UICollectionView` instead
+         of `UITableView` internally, this value is an adjustment to apply
+         to the list items in order to be as close as possible as the
+         `UITableView` display.
+         */
+        @available (iOS 16.0, *)
+        static let collectionViewPaddingCorrection: CGFloat = -5.0
     }
 
     // MARK: - Properties
@@ -35,6 +44,7 @@ struct UserSuggestionList: View {
     // MARK: Public
     
     @ObservedObject var viewModel: UserSuggestionViewModel.Context
+    var showBackgroundShadow: Bool = true
     
     var body: some View {
         if viewModel.viewState.items.isEmpty {
@@ -46,25 +56,12 @@ struct UserSuggestionList: View {
                                        userId: "Prototype")
                     .background(ViewFrameReader(frame: $prototypeListItemFrame))
                     .hidden()
-                BackgroundView {
-                    List(viewModel.viewState.items) { item in
-                        Button {
-                            viewModel.send(viewAction: .selectedItem(item))
-                        } label: {
-                            UserSuggestionListItem(
-                                avatar: item.avatar,
-                                displayName: item.displayName,
-                                userId: item.id
-                            )
-                            .padding(.bottom, Constants.listItemPadding)
-                            .padding(.top, viewModel.viewState.items.first?.id == item.id ? Constants.listItemPadding + Constants.topPadding : Constants.listItemPadding)
-                        }
+                if showBackgroundShadow {
+                    BackgroundView {
+                        list()
                     }
-                    .listStyle(PlainListStyle())
-                    .frame(height: min(Constants.maxHeight,
-                                       min(contentHeightForRowCount(Constants.maxVisibleRows),
-                                           contentHeightForRowCount(viewModel.viewState.items.count))))
-                    .id(UUID()) // Rebuild the whole list on item changes. Fixes performance issues.
+                } else {
+                    list()
                 }
             }
         }
@@ -72,6 +69,47 @@ struct UserSuggestionList: View {
     
     private func contentHeightForRowCount(_ count: Int) -> CGFloat {
         (prototypeListItemFrame.height + (Constants.listItemPadding * 2) + Constants.lineSpacing) * CGFloat(count) + Constants.topPadding
+    }
+
+    private func list() -> some View {
+        List(viewModel.viewState.items) { item in
+            Button {
+                viewModel.send(viewAction: .selectedItem(item))
+            } label: {
+                UserSuggestionListItem(
+                    avatar: item.avatar,
+                    displayName: item.displayName,
+                    userId: item.id
+                )
+                .modifier(ListItemPaddingModifier(isFirst: viewModel.viewState.items.first?.id == item.id))
+            }
+        }
+        .listStyle(PlainListStyle())
+        .frame(height: min(Constants.maxHeight,
+                           min(contentHeightForRowCount(Constants.maxVisibleRows),
+                               contentHeightForRowCount(viewModel.viewState.items.count))))
+        .id(UUID()) // Rebuild the whole list on item changes. Fixes performance issues.
+    }
+
+    private struct ListItemPaddingModifier: ViewModifier {
+        private let isFirst: Bool
+
+        init(isFirst: Bool) {
+            self.isFirst = isFirst
+        }
+
+        func body(content: Content) -> some View {
+            var topPadding: CGFloat = isFirst ? Constants.listItemPadding + Constants.topPadding : Constants.listItemPadding
+            var bottomPadding: CGFloat = Constants.listItemPadding
+            if #available(iOS 16.0, *) {
+                topPadding += Constants.collectionViewPaddingCorrection
+                bottomPadding += Constants.collectionViewPaddingCorrection
+            }
+
+            return content
+                .padding(.top, topPadding)
+                .padding(.bottom, bottomPadding)
+        }
     }
 }
 

@@ -27,7 +27,7 @@ enum PillType: Codable {
 extension PillType {
     private static var regexPermalinkTarget: NSRegularExpression? = {
         let clientBaseUrl = BuildSettings.clientPermalinkBaseUrl ?? kMXMatrixDotToUrl
-        let pattern = #"\#(clientBaseUrl)/#/(?:(?:room|user)/)?((?:@|!|#)[^@!#/?\s]*)/?((?:\$)[^\$/?\s]*)?"#
+        let pattern = #"(?:\#(clientBaseUrl)|\#(kMXMatrixDotToUrl))/#/(?:(?:room|user)/)?((?:@|!|#)[^@!#/?\s]*)/?((?:\$)[^\$/?\s]*)?"#
         return try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
     }()
     

@@ -2742,3 +2742,15 @@
 // MARK: - Launch loading
 
 "launch_loading_generic" = "Synchronisiere deine Unterhaltungen";
+"pill_message_in" = "Nachricht in %@";
+"pill_message_from" = "Nachricht von %@";
+"pill_message" = "Nachricht";
+
+// Pills
+"pill_room_fallback_display_name" = "Space/Raum";
+"key_verification_self_verify_security_upgrade_alert_message" = "Verschlüsselte Kommunikation wurde mit der neuesten Aktualisierung verbessert. Bitte verifiziere deine Geräte erneut.";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "App aktualisiert";
+"settings_acceptable_use" = "Nutzungsbedingungen";

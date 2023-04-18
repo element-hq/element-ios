@@ -75,15 +75,15 @@
 "USER_MEMBERSHIP_UPDATED" = "%@ 更新了個人資料";
 
 /* A user has change their name to a new name which we don't know */
-"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ 變更了名字";
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ 變更了名稱";
 
 /** Membership Updates **/
 
 /* A user has change their name to a new name */
-"USER_UPDATED_DISPLAYNAME" = "%@ 把名稱變更為 %@";
+"USER_UPDATED_DISPLAYNAME" = "%@ 將名稱變更為 %@";
 
 /* A user has change their avatar */
-"USER_UPDATED_AVATAR" = "%@ 變更了他們的頭像";
+"USER_UPDATED_AVATAR" = "%@ 變更了大頭照";
 
 /* A user has reacted to a message, but the reaction content is unknown */
 "GENERIC_REACTION_FROM_USER" = "%@ 送出了一個反應";

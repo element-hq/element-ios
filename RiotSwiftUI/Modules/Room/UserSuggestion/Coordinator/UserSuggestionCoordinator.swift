@@ -18,6 +18,7 @@ import Combine
 import Foundation
 import SwiftUI
 import UIKit
+import WysiwygComposer
 
 protocol UserSuggestionCoordinatorDelegate: AnyObject {
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
@@ -29,6 +30,15 @@ struct UserSuggestionCoordinatorParameters {
     let mediaManager: MXMediaManager
     let room: MXRoom
     let userID: String
+}
+
+/// Wrapper around `UserSuggestionViewModelType.Context` to pass it through obj-c.
+final class UserSuggestionViewModelContextWrapper: NSObject {
+    let context: UserSuggestionViewModelType.Context
+
+    init(context: UserSuggestionViewModelType.Context) {
+        self.context = context
+    }
 }
 
 final class UserSuggestionCoordinator: Coordinator, Presentable {
@@ -99,12 +109,20 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
         userSuggestionService.processTextMessage(textMessage)
     }
 
+    func processSuggestionPattern(_ suggestionPattern: SuggestionPattern?) {
+        userSuggestionService.processSuggestionPattern(suggestionPattern)
+    }
+
     // MARK: - Public
 
     func start() { }
     
     func toPresentable() -> UIViewController {
         userSuggestionHostingController
+    }
+
+    func sharedContext() -> UserSuggestionViewModelContextWrapper {
+        UserSuggestionViewModelContextWrapper(context: userSuggestionViewModel.sharedContext)
     }
 
     // MARK: - Private

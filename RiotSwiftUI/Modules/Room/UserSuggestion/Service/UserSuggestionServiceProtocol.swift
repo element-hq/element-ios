@@ -16,6 +16,7 @@
 
 import Combine
 import Foundation
+import WysiwygComposer
 
 protocol UserSuggestionItemProtocol: Avatarable {
     var userId: String { get }
@@ -29,6 +30,7 @@ protocol UserSuggestionServiceProtocol {
     var currentTextTrigger: String? { get }
     
     func processTextMessage(_ textMessage: String?)
+    func processSuggestionPattern(_ suggestionPattern: SuggestionPattern?)
 }
 
 // MARK: Avatarable

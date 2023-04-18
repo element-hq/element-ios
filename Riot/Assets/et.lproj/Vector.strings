@@ -2680,3 +2680,15 @@
 // MARK: - Launch loading
 
 "launch_loading_generic" = "Sinu vestlused on sünkroniseerimisel";
+"pill_message_in" = "Sõnum jututoas %@";
+"pill_message_from" = "Sõnum kasutajalt %@";
+"pill_message" = "Sõnum";
+
+// Pills
+"pill_room_fallback_display_name" = "Kogukond/jututuba";
+"settings_acceptable_use" = "Vastuvõetava kasutamise põhimõtted";
+"key_verification_self_verify_security_upgrade_alert_message" = "Turvalisele sõnumivahetusele on lisandunud palju täiendusi. Palun verifitseeri oma seade uuesti.";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "Rakendus on uuendatud";

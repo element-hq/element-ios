@@ -26,14 +26,14 @@ private enum PillAttachmentKind {
 struct PillProvider {
     private let session: MXSession
     private let eventFormatter: MXKEventFormatter
-    private let event: MXEvent
+    private let event: MXEvent?
     private let roomState: MXRoomState
     private let latestRoomState: MXRoomState?
     private let isEditMode: Bool
     
     init(withSession session: MXSession,
          eventFormatter: MXKEventFormatter,
-         event: MXEvent,
+         event: MXEvent?,
          roomState: MXRoomState,
          andLatestRoomState latestRoomState: MXRoomState?,
          isEditMode: Bool) {
@@ -46,7 +46,7 @@ struct PillProvider {
         self.isEditMode = isEditMode
     }
     
-    func pillTextAttachmentString(forUrl url: URL, withLabel label: String, event: MXEvent) -> NSAttributedString? {
+    func pillTextAttachmentString(forUrl url: URL, withLabel label: String) -> NSAttributedString? {
         
         // Try to get a pill from this url
         guard let pillType = PillType.from(url: url) else {
@@ -133,6 +133,10 @@ struct PillProvider {
         let avatarUrl = roomMember?.avatarUrl ?? user?.avatarUrl
         let displayName = roomMember?.displayname ?? user?.displayName ?? userId
         let isHighlighted = userId == session.myUserId
+            // No actual event means it is a composer Pill. No highlight
+            && event != nil
+            // No highlight on self-mentions
+            && event?.sender != session.myUserId
 
         let avatar: PillTextAttachmentItem
         if roomMember == nil && user == nil {

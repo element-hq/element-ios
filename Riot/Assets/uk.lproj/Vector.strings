@@ -2933,3 +2933,15 @@
 // MARK: - Launch loading
 
 "launch_loading_generic" = "Синхронізація ваших розмов";
+"pill_message_in" = "Повідомлення у %@";
+"pill_message_from" = "Повідомлення від %@";
+"pill_message" = "Повідомлення";
+
+// Pills
+"pill_room_fallback_display_name" = "Простір/кімната";
+"key_verification_self_verify_security_upgrade_alert_message" = "В останньому оновленні було вдосконалено захищений обмін повідомленнями. Перевірте свій пристрій ще раз.";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "Застосунок оновлено";
+"settings_acceptable_use" = "Політика прийнятного користування";

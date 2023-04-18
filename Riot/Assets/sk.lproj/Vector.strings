@@ -2931,3 +2931,15 @@
 // MARK: - Launch loading
 
 "launch_loading_generic" = "Synchronizácia vašich konverzácií";
+"pill_message_in" = "Správa v %@";
+"pill_message_from" = "Správa od %@";
+"pill_message" = "Správa";
+
+// Pills
+"pill_room_fallback_display_name" = "Priestor/miestnosť";
+"key_verification_self_verify_security_upgrade_alert_message" = "Najnovšou aktualizáciou sa zlepšilo bezpečné zasielanie správ. Overte prosím znova svoje zariadenie.";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "Aplikácia bola aktualizovaná";
+"settings_acceptable_use" = "Zásady prijateľného používania";

@@ -69,8 +69,9 @@ static NSRegularExpression* permalinkRegex;
         httpLinksRegex = [NSRegularExpression regularExpressionWithPattern:@"(?i)\\b(https?://\\S*)\\b" options:NSRegularExpressionCaseInsensitive error:nil];
         htmlTagsRegex  = [NSRegularExpression regularExpressionWithPattern:@"<(\\w+)[^>]*>" options:NSRegularExpressionCaseInsensitive error:nil];
         linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
-                
-        NSString *permalinkPattern = [NSString stringWithFormat:@"%@%@", BuildSettings.clientPermalinkBaseUrl ?: kMXMatrixDotToUrl, kMXKToolsRegexStringForPermalink];
+               
+        // if we have a custom clientPermalinkBaseUrl, we also need to support matrix.to permalinks
+        NSString *permalinkPattern = [NSString stringWithFormat:@"(?:%@|%@)%@", BuildSettings.clientPermalinkBaseUrl, kMXMatrixDotToUrl, kMXKToolsRegexStringForPermalink];
         permalinkRegex = [NSRegularExpression regularExpressionWithPattern:permalinkPattern options:NSRegularExpressionCaseInsensitive error:nil];
     });
 }

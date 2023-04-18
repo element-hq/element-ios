@@ -25,25 +25,29 @@ import UIKit
                                                                   avatarLeading: 2.0,
                                                                   avatarSideLength: 16.0,
                                                                   itemSpacing: 4)
-    private weak var messageTextView: MXKMessageTextView?
+    private weak var messageTextView: UITextView?
+    private var pillViewFlusher: PillViewFlusher? {
+        messageTextView as? PillViewFlusher
+    }
 
     // MARK: - Override
     override init(textAttachment: NSTextAttachment, parentView: UIView?, textLayoutManager: NSTextLayoutManager?, location: NSTextLocation) {
         super.init(textAttachment: textAttachment, parentView: parentView, textLayoutManager: textLayoutManager, location: location)
 
-        self.messageTextView = parentView?.superview as? MXKMessageTextView
+        // Keep a reference to the parent text view for size adjustments and pills flushing.
+        messageTextView = parentView?.superview as? UITextView
     }
 
     override func loadView() {
         super.loadView()
 
         guard let textAttachment = self.textAttachment as? PillTextAttachment else {
-            MXLog.debug("[PillAttachmentViewProvider]: attachment is missing or not of expected class")
+            MXLog.failure("[PillAttachmentViewProvider]: attachment is missing or not of expected class")
             return
         }
 
         guard var pillData = textAttachment.data else {
-            MXLog.debug("[PillAttachmentViewProvider]: attachment misses pill data")
+            MXLog.failure("[PillAttachmentViewProvider]: attachment misses pill data")
             return
         }
         
@@ -59,6 +63,11 @@ import UIKit
                                           mediaManager: mainSession?.mediaManager,
                                           andPillData: pillData)
         view = pillView
-        messageTextView?.registerPillView(pillView)
+
+        if let pillViewFlusher {
+            pillViewFlusher.registerPillView(pillView)
+        } else {
+            MXLog.failure("[PillAttachmentViewProvider]: no handler found, pill will not be flushed properly")
+        }
     }
 }

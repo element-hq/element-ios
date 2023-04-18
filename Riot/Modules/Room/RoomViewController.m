@@ -5150,6 +5150,21 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self.userSuggestionCoordinator processTextMessage:toolbarView.textMessage];
 }
 
+- (void)didDetectTextPattern:(SuggestionPatternWrapper *)suggestionPattern
+{
+    [self.userSuggestionCoordinator processSuggestionPattern:suggestionPattern];
+}
+
+- (UserSuggestionViewModelContextWrapper *)userSuggestionContext
+{
+    return [self.userSuggestionCoordinator sharedContext];
+}
+
+- (MXMediaManager *)mediaManager
+{
+    return self.roomDataSource.mxSession.mediaManager;
+}
+
 - (void)roomInputToolbarViewDidOpenActionMenu:(RoomInputToolbarView*)toolbarView
 {
     // Consider opening the action menu as beginning to type and share encryption keys if requested.

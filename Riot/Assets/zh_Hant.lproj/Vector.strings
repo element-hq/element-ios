@@ -98,7 +98,7 @@
 "directory_title" = "目錄";
 "auth_recaptcha_message" = "這個家伺服器想要確認您不是機器人";
 "auth_reset_password_missing_email" = "必須輸入和您帳號綁定的電子郵件地址。";
-"auth_reset_password_missing_password" = "必須輸入一個新密碼。";
+"auth_reset_password_missing_password" = "必須輸入新密碼。";
 "auth_reset_password_next_step_button" = "我已經驗證了電子郵件地址";
 "auth_reset_password_error_unauthorized" = "電子郵件地址驗證失敗：請確認您已點擊郵件中的連結";
 "auth_reset_password_error_not_found" = "您的電子郵件地址似乎並未與這台家伺服器上的任何 Matrix ID 相關聯。";
@@ -384,9 +384,9 @@
 "room_details_photo" = "聊天室圖片";
 "room_details_room_name" = "聊天室名稱";
 "room_details_mute_notifs" = "將通知靜音";
-"room_details_access_section_no_address_warning" = "要連結一個聊天室，該聊天室必須要有位址";
+"room_details_access_section_no_address_warning" = "要連結聊天室，該聊天室必須要有位址";
 "room_details_access_section_directory_toggle" = "將此聊天室列入聊天室目錄";
-"room_details_history_section_prompt_msg" = "對可閱讀歷史訊息的使用者的變更，將僅適用於此聊天室的新訊息。現有訊息的顯示狀態將保持不變。";
+"room_details_history_section_prompt_msg" = "對可閱讀訊息紀錄的使用者的變更，僅適用於此聊天室的新訊息。現有訊息的顯示狀態將保持不變。";
 "room_details_new_address" = "新增位址";
 "room_details_new_address_placeholder" = "新增位址（例如 #foo%@）";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ 不是有效的別名格式";
@@ -454,7 +454,7 @@
 "directory_server_type_homeserver" = "輸入一個家伺服器來列出所有公開聊天室";
 "directory_server_placeholder" = "matrix.org";
 // Events formatter
-"event_formatter_member_updates" = "變更 %tu 成員身分";
+"event_formatter_member_updates" = "%tu 筆成員狀態變更";
 "event_formatter_widget_added" = "%@ 小工具已由 %@ 新增";
 "event_formatter_widget_removed" = "%@ 小工具已由 %@ 移除";
 "event_formatter_jitsi_widget_added" = "VoIP 群組通話已由 %@ 新增";
@@ -526,7 +526,7 @@
 "room_message_reply_to_placeholder" = "傳送回覆（未加密）…";
 "encrypted_room_message_reply_to_placeholder" = "傳送加密的回覆…";
 "room_message_reply_to_short_placeholder" = "傳送回覆…";
-"room_event_action_view_decrypted_source" = "檢視已解密的來源";
+"room_event_action_view_decrypted_source" = "檢視解密的原始碼";
 "room_predecessor_link" = "點擊此處以檢視更早以前的訊息。";
 "room_replacement_information" = "這個聊天室已被取代，且不再使用。";
 "room_replacement_link" = "對話在此繼續。";
@@ -622,7 +622,7 @@
 "store_full_description" = "Element 是一套新型的通訊和協作應用程式，它提供下列功能：\n\n1. 您可以自行掌控隱私\n2. 可以與 Matrix 網路中的任何人進行通訊，甚至可以與 Slack 等應用程式整合\n3. 保護您免受廣告、資料探勘、後門和封閉平台的侵害\n4. 透過端到端加密和交叉簽署來驗證彼此，互相確保安全\n\nElement 是去中心化的開源軟體，因此與其他通訊和協作應用程式完全不同。\n\nElement 允許您自行架設（或選擇託管）伺服器，使您可針對隱私權，所有權以及對資料和對話內容的完整控制權。您可以連線到所有開放的網路，所以您不是只能與其他 Element 使用者聊天。而且還非常安全。\n\nElement 之所以能夠做到所有這些目標，是因為它使用 Matrix（一套開放、去中心化的通訊標準）運作。\n\nElement 讓您可以自行選擇要將對話放在哪一台伺服器來讓您可自行控制自己的訊息和資料。在 Element 應用程式中，您可以選擇以不同方式託管您的訊息：\n\n1. 在 matrix.org 公開伺服器註冊免費帳號\n2. 使用自行架設的硬體主機上的伺服器來註冊帳號\n3. 訂閱 Element Matrix Services 代管平台，註冊自己的伺服器\n\n為什麼要選擇 Element？\n\n自己擁有自己資料：由您決定將資料與訊息保留在何處。您自己擁有並管理這些資料，而不用讓某些「超大型企業」來探勘您的資料，或將資料提供給第三方。\n\n開放的通訊與協作機制：您可以與 Matrix 網路中的任何人聊天，不管他們使用的是 Element 還是其他 Matrix 應用程式，甚至他們也可以使用像 Slack 、IRC 或 XMPP 之類的其他通訊系統。\n\n超級安全：真正的端對端加密（只有對話中的人才能解開訊息內容），並進行交叉簽署以驗證對話參與者的設備。\n\n完整的通訊：傳訊息、進行語音或視訊通話、分享檔案、畫面，還有大量整合、機器人與小工具。建立聊天室、社群，保持聯繫並完成工作。\n\n無論您身在何處都可保持聯繫：無論您身在何處，都可以透過 https://element.io/app 在所有裝置與網路取得完全同步的訊息記錄來保持聯繫。";
 // String for App Store
 "store_short_description" = "去中心化的安全通訊／VoIP 軟體";
-"settings_three_pids_management_information_part1" = "在此管理您用作登入或恢復帳號的電子郵件地址或電話號碼。您也可控制誰可以用這些資料找到您 ";
+"settings_three_pids_management_information_part1" = "您可以在 ";
 "external_link_confirmation_message" = "此連結 %@ 將帶您到另一網頁：%@\n\n確定要前往嗎？";
 "external_link_confirmation_title" = "請確認此連結";
 "media_type_accessibility_sticker" = "貼圖";
@@ -826,7 +826,7 @@
 "event_formatter_call_answer" = "接聽";
 "event_formatter_call_back" = "回撥";
 "event_formatter_call_has_ended" = "通話結束";
-"event_formatter_call_connecting" = "正在連接…";
+"event_formatter_call_connecting" = "連線中…";
 "event_formatter_message_edited_mention" = "（已編輯）";
 "image_picker_action_library" = "從媒體庫挑選";
 
@@ -881,14 +881,14 @@
 "settings_messages_containing_keywords" = "關鍵字";
 "settings_messages_containing_user_name" = "我的使用者名稱";
 "settings_messages_containing_display_name" = "我的顯示名稱";
-"settings_encrypted_group_messages" = "已加密的群組訊息";
+"settings_encrypted_group_messages" = "加密的群組訊息";
 "settings_group_messages" = "群組訊息";
-"settings_encrypted_direct_messages" = "已加密的私人訊息";
+"settings_encrypted_direct_messages" = "加密的私人訊息";
 "settings_direct_messages" = "私人訊息";
 "settings_default" = "預設通知";
 "settings_notifications_disabled_alert_title" = "已停用通知";
 "settings_device_notifications" = "裝置通知";
-"settings_three_pids_management_information_part3" = "。";
+"settings_three_pids_management_information_part3" = "管理您用作登入或恢復帳號的電子郵件地址或電話號碼。您也可控制誰可以用這些資料找到您。";
 "room_join_group_call" = "加入";
 "room_place_voice_call" = "語音通話";
 "room_accessibility_video_call" = "視訊通話";
@@ -924,7 +924,7 @@
 "room_event_encryption_info_event" = "事件資訊\n";
 "room_event_encryption_info_event_user_id" = "使用者 ID\n";
 "room_event_encryption_info_event_identity_key" = "Curve25519 身分認證金鑰\n";
-"room_event_encryption_info_event_fingerprint_key" = "已聲請之 Ed25519 指紋金鑰\n";
+"room_event_encryption_info_event_fingerprint_key" = "聲稱的 Ed25519 指紋金鑰\n";
 "room_event_encryption_info_event_algorithm" = "演算法\n";
 "room_event_encryption_info_event_session_id" = "工作階段 ID\n";
 "room_event_encryption_info_event_decryption_error" = "解密錯誤\n";
@@ -993,14 +993,14 @@
 "notice_room_ban" = "%@ 已封鎖 %@";
 "notice_room_withdraw" = "%@ 已撤回 %@ 的邀請";
 "notice_room_reason" = "，原因：%@";
-"notice_avatar_url_changed" = "%@ 已變更大頭照";
-"notice_display_name_set" = "%@ 已將他們的顯示名稱設定為 %@";
-"notice_display_name_changed_from" = "%@ 將自己的顯示名稱從 %@ 改為 %@";
-"notice_display_name_removed" = "%@ 已移除他們的顯示名稱";
-"notice_topic_changed" = "%@ 已經將主題變更為：%@。";
+"notice_avatar_url_changed" = "%@ 變更了大頭照";
+"notice_display_name_set" = "%@ 將顯示名稱設定為 %@";
+"notice_display_name_changed_from" = "%@ 將顯示名稱從 %@ 改為 %@";
+"notice_display_name_removed" = "%@ 移除了顯示名稱";
+"notice_topic_changed" = "%@ 將主題變更為「%@」。";
 "notice_room_name_changed" = "%@ 將聊天室名稱變更為 %@。";
-"notice_placed_voice_call" = "%@ 已播出語音通話";
-"notice_placed_video_call" = "%@ 已播出視訊通話";
+"notice_placed_voice_call" = "%@ 已撥出語音通話";
+"notice_placed_video_call" = "%@ 已撥出視訊通話";
 "notice_answered_video_call" = "%@ 已接聽通話";
 "notice_ended_video_call" = "%@ 已結束通話";
 "notice_conference_call_request" = "%@ 已請求 VoIP 會議";
@@ -1098,7 +1098,7 @@
 "notice_room_topic_removed" = "%@ 移除了該主題";
 "notice_event_redacted_by" = " 由 %@";
 "notice_event_redacted_reason" = " [理由：%@]";
-"notice_profile_change_redacted" = "%@ 已更新他的個人檔案 %@";
+"notice_profile_change_redacted" = "%@ 更新了個人檔案 %@";
 "notice_room_created" = "%@ 已建立並設定該聊天室。";
 "notice_room_join_rule" = "加入規則： %@";
 "notice_room_power_level_intro" = "聊天室成員們的權限级别是：";
@@ -1138,7 +1138,7 @@
 "notice_error_unexpected_event" = "意外事件";
 "notice_error_unknown_event_type" = "未知的事件類型";
 "notice_room_history_visible_to_anyone" = "%@ 讓任何人都能看到未來的聊天室歷史記錄。";
-"notice_room_history_visible_to_members" = "%@ 讓所有聊天室成員都能看到聊天室之後的歷史記錄。";
+"notice_room_history_visible_to_members" = "%@ 讓所有成員都能看到聊天室之後的歷史記錄。";
 "stop" = "停止";
 "joining" = "正在加入";
 "enable" = "啟用";
@@ -1291,18 +1291,18 @@
 // Settings keys
 
 // call string
-"call_connecting" = "正在連接…";
+"call_connecting" = "連線中…";
 "notification_settings_notify_all_other" = "其他訊息／聊天室的通知";
 "notification_settings_by_default" = "按預設…";
 "notification_settings_suppress_from_bots" = "限制來自機器人的通知";
 "notification_settings_receive_a_call" = "當我收到通話時，請通知我";
 "notification_settings_people_join_leave_rooms" = "有人加入或離開聊天室時，請通知我";
-"notification_settings_invite_to_a_new_room" = "當我被邀請到一個全新的聊天室時，請通知我";
-"notification_settings_just_sent_to_me" = "當收到只寄給我的訊息時，請用聲音通知我";
-"notification_settings_contain_my_display_name" = "訊息出現我的顯示名稱時，請用聲音通知我";
-"notification_settings_contain_my_user_name" = "訊息出現我的使用者名稱時，請用聲音通知我";
+"notification_settings_invite_to_a_new_room" = "當我被邀請到全新的聊天室時，請通知我";
+"notification_settings_just_sent_to_me" = "當收到只寄給我的訊息時，請用音效通知我";
+"notification_settings_contain_my_display_name" = "訊息出現我的顯示名稱時，請用音效通知我";
+"notification_settings_contain_my_user_name" = "訊息出現我的使用者名稱時，請用音效通知我";
 "notification_settings_other_alerts" = "其他警告";
-"notification_settings_select_room" = "選擇一個聊天室";
+"notification_settings_select_room" = "請選擇聊天室";
 "notification_settings_sender_hint" = "@user:domain.com";
 "notification_settings_per_sender_notifications" = "寄件人通知";
 "notification_settings_per_room_notifications" = "聊天室的通知";
@@ -1346,11 +1346,11 @@
 "login_error_already_logged_in" = "已經登入";
 "message_unsaved_changes" = "還有變更未儲存。現在離開的話，您將會放棄這些變動。";
 "notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "您讓所有人在加入後，就能看到未來的聊天室歷史紀錄。";
-"notice_room_history_visible_to_members_from_joined_point_by_you" = "您讓所有聊天室成員在加入後，都能看到未來的聊天室歷史紀錄。";
+"notice_room_history_visible_to_members_from_joined_point_by_you" = "您讓所有成員在加入後，都能看到未來的聊天室歷史紀錄。";
 "notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "您讓所有人收到邀請後，都能看到未來的聊天室歷史紀錄。";
-"notice_room_history_visible_to_members_from_invited_point_by_you" = "您讓所有聊天室成員被邀請後，都能看到未來的聊天室歷史紀錄。";
-"notice_room_history_visible_to_members_by_you_for_dm" = "您讓所有聊天室成員都能看到聊天室未來的歷史記錄。";
-"notice_room_history_visible_to_members_by_you" = "您讓所有聊天室成員都能看到聊天室未來的歷史記錄。";
+"notice_room_history_visible_to_members_from_invited_point_by_you" = "您讓所有成員被邀請後，都能看到未來的聊天室歷史紀錄。";
+"notice_room_history_visible_to_members_by_you_for_dm" = "您讓所有成員都能看到聊天室未來的歷史記錄。";
+"notice_room_history_visible_to_members_by_you" = "您讓所有成員都能看到聊天室未來的歷史記錄。";
 "notice_room_history_visible_to_anyone_by_you" = "您讓任何人都能看到未來的聊天室歷史記錄。";
 "notice_redaction_by_you" = "您已取消一个事件（id: %@)";
 "notice_encryption_enabled_unknown_algorithm_by_you" = "您已開啟端到端加密（無法識別的演算法 %@）。";
@@ -1366,14 +1366,14 @@
 "notice_declined_video_call_by_you" = "您已拒絕此通話";
 "notice_ended_video_call_by_you" = "您已結束通話";
 "notice_answered_video_call_by_you" = "您已接聽此通話";
-"notice_placed_video_call_by_you" = "您已播出視訊通話";
-"notice_placed_voice_call_by_you" = "您已播出語音通話";
-"notice_room_name_changed_by_you_for_dm" = "您已將名稱變更為 %@。";
-"notice_room_name_changed_by_you" = "您已將聊天室名稱變更為 %@。";
-"notice_topic_changed_by_you" = "您已經將主題變更為：%@。";
+"notice_placed_video_call_by_you" = "您已撥出視訊通話";
+"notice_placed_voice_call_by_you" = "您已撥出語音通話";
+"notice_room_name_changed_by_you_for_dm" = "您將名稱變更為 %@。";
+"notice_room_name_changed_by_you" = "您將聊天室名稱變更為 %@。";
+"notice_topic_changed_by_you" = "您將主題更改為：「%@」。";
 "notice_display_name_removed_by_you" = "您已移除自己的顯示名稱";
 "notice_display_name_changed_from_by_you" = "您已將顯示名稱從 %@ 變更為 %@";
-"notice_display_name_set_by_you" = "您已將顯示名稱設定為 %@";
+"notice_display_name_set_by_you" = "您將您的顯示名稱設定為 %@";
 "notice_avatar_url_changed_by_you" = "您已變更您的大頭照";
 "notice_room_withdraw_by_you" = "您已撤回 %@ 的邀請";
 "notice_room_ban_by_you" = "您已封鎖 %@";
@@ -1392,12 +1392,12 @@
 // Notice Events with "You"
 "notice_room_invite_by_you" = "您已邀請 %@";
 "notice_declined_video_call" = "%@ 已拒絕此通話";
-"notice_room_name_changed_for_dm" = "%@ 把名稱變更為 %@。";
+"notice_room_name_changed_for_dm" = "%@ 將名稱變更為 %@。";
 "notice_room_third_party_revoked_invite_for_dm" = "%@ 已撤銷對 %@ 的邀請";
 "notice_room_third_party_revoked_invite" = "%@ 已撤銷對 %@ 加入聊天室的邀請";
 "notice_room_third_party_invite_for_dm" = "%@ 已邀請 %@";
 "microphone_access_not_granted_for_voice_message" = "語音簡訊需要使用麥克風的權限，但是 %@ 沒有存取權限";
-"error_common_message" = "發生了一個錯誤。請重新再試。";
+"error_common_message" = "發生錯誤。請稍後再試。";
 "e2e_passphrase_create" = "建立安全密語";
 "e2e_passphrase_too_short" = "安全密語太短（至少要 %d 字母的長度）";
 "e2e_passphrase_confirm" = "確認安全密語";
@@ -1445,7 +1445,7 @@
 "room_member_ignore_prompt" = "您確定要隱藏所有來自此使用者的訊息嗎？";
 "message_reply_to_message_to_reply_to_prefix" = "回覆給";
 "message_reply_to_sender_sent_their_live_location" = "即時位置。";
-"message_reply_to_sender_sent_their_location" = "已經分享了他們的位置。";
+"message_reply_to_sender_sent_their_location" = "分享了他們的位置。";
 "message_reply_to_sender_sent_a_file" = "已傳送檔案。";
 "message_reply_to_sender_sent_a_voice_message" = "已傳送語音訊息。";
 "message_reply_to_sender_sent_an_audio_file" = "已傳送音訊檔。";
@@ -1531,7 +1531,7 @@
 "user_session_rename_session_title" = "正在重新命名工作階段";
 "user_session_inactive_session_description" = "不活躍的工作階段是您有一段時間未使用的工作階段，但它們會繼續接收加密金鑰。\n\n移除不活躍的工作階段可以改善安全性與效能，並讓您可以更容易地識別新的工作階段是否可疑。";
 "user_session_inactive_session_title" = "不活躍的工作階段";
-"user_session_permanently_unverified_session_description" = "此工作階段無法對此對話進行加密，因此無法驗證。\n\n您無法進入已加密的聊天室中。\n\n為了安全與隱私，建議使用支援加密的 Matrix 客戶端。";
+"user_session_permanently_unverified_session_description" = "此工作階段不支援加密功能，所以無法驗證。\n\n您無法使用此工作階段進入有開啟加密的聊天室中。\n\n為了安全與隱私，建議使用支援加密的 Matrix 客戶端。";
 "user_session_unverified_session_description" = "未驗證的工作階段是使用您的憑證登入但交叉叉驗證的工作階段。\n\n您應特別確定您可以識別這些工作階段，因為它們可能代表未經授權使用您的帳號。";
 "user_session_unverified_session_title" = "未經驗證的工作階段";
 "user_session_verified_session_description" = "已驗證的工作階段，是您輸入安全密語或透過另一個已驗證工作階段確認您的身分後，使用此 Element 帳號的任何地方。\n\n這代表了您擁有解鎖加密訊息，並向其他使用者確認您信任此工作階段所需的所有金鑰。";
@@ -1638,8 +1638,8 @@
 "poll_timeline_total_one_vote_not_voted" = "已投 1 票。投票後即可檢視結果";
 "poll_timeline_total_votes" = "共計 %lu 票";
 "poll_timeline_total_one_vote" = "共計 1 票";
-"poll_timeline_total_no_votes" = "尚未投票";
-"poll_timeline_votes_count" = "%lu 張票";
+"poll_timeline_total_no_votes" = "尚無投票";
+"poll_timeline_votes_count" = "%lu 票";
 "poll_timeline_one_vote" = "1 票";
 "poll_edit_form_poll_type_closed_description" = "結果僅在您結束投票後顯示";
 "poll_edit_form_poll_type_closed" = "秘密投票";
@@ -1683,12 +1683,12 @@
 "all_chats_nothing_found_placeholder_title" = "找不到任何結果。";
 "all_chats_empty_unreads_placeholder_message" = "當您有一些未讀的訊息時，這裡會顯示您的未讀訊息。";
 "all_chats_empty_list_placeholder_title" = "您都看完了。";
-"all_chats_empty_view_information" = "適用於團隊、朋友與組織的多合一安全聊天應用程式。建立聊天室，或加入一個既有的聊天室。";
+"all_chats_empty_view_information" = "適用於團隊、朋友與組織的多合一安全聊天應用程式。建立聊天室，或加入現有的聊天室。";
 "all_chats_empty_space_information" = "聊天空間是一種為聊天室與人們分組的新方式。使用右下角的按鈕新增既有的聊天室或建立新的。";
 "all_chats_empty_view_title" = "%@\n看起來有點空。";
 "all_chats_all_filter" = "全部";
-"all_chats_edit_layout_alphabetical_order" = "按 A-Z 排列";
-"all_chats_edit_layout_activity_order" = "按活動排列";
+"all_chats_edit_layout_alphabetical_order" = "按名稱 A-Z 排序";
+"all_chats_edit_layout_activity_order" = "按頻道最新活動排列";
 "all_chats_edit_layout_show_filters" = "顯示過濾條件";
 "all_chats_edit_layout_show_recents" = "顯示最近的";
 "all_chats_edit_layout_sorting_options_title" = "分類您的訊息";
@@ -1870,7 +1870,7 @@
 "home_context_menu_normal_priority" = "一般優先度";
 "home_context_menu_low_priority" = "低優先度";
 "home_context_menu_unfavourite" = "從我的最愛移除";
-"home_context_menu_favourite" = "我的最愛";
+"home_context_menu_favourite" = "加入我的最愛";
 "home_context_menu_unmute" = "解除靜音";
 "home_context_menu_mute" = "靜音";
 "home_context_menu_notifications" = "通知";
@@ -1996,10 +1996,10 @@
 "notice_crypto_error_unknown_inbound_session_id" = "傳送者的工作階段，尚未傳送傳給我們這則訊息的金鑰。";
 "notice_crypto_unable_to_decrypt" = "** 無法解密：%@ **";
 "notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ 您讓所有人被邀請後，都能看到未來的聊天室歷史紀錄。";
-"notice_room_history_visible_to_members_from_joined_point" = "%@ 讓所有聊天室成員被邀請後開始，都能看到未來的聊天室歷史紀錄。";
-"notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@ 從他們被邀請開始，讓未來的聊天室歷史紀錄顯示給所有聊天室成員。";
-"notice_room_history_visible_to_members_from_invited_point" = "%@ 從他們被邀請開始，讓未來的聊天室歷史紀錄顯示給所有聊天室成員。";
-"notice_room_history_visible_to_members_for_dm" = "%@ 讓所有聊天室成員都能看到聊天室之後的歷史記錄。";
+"notice_room_history_visible_to_members_from_joined_point" = "%@ 讓所有成員被邀請後開始，都能看到未來的聊天紀錄。";
+"notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@ 從他們被邀請開始，讓未來的聊天紀錄顯示給所有成員。";
+"notice_room_history_visible_to_members_from_invited_point" = "%@ 從他們被邀請開始，讓未來的聊天紀錄顯示給所有成員。";
+"notice_room_history_visible_to_members_for_dm" = "%@ 讓所有成員都能看到聊天室之後的歷史記錄。";
 "notice_error_unformattable_event" = "** 無法顯示這則訊息。請回報此錯誤";
 "notice_encryption_enabled_unknown_algorithm" = "%1$@ 已開啟端到端加密（無法識別的演算法 %2$@）。";
 "notice_encryption_enabled_ok" = "%@ 已開啟端到端加密。";
@@ -2009,11 +2009,11 @@
 "notice_room_join_rule_public_by_you" = "您已公開此聊天室。";
 "notice_room_join_rule_public_for_dm" = "%@ 公開這個。";
 "notice_room_join_rule_public" = "%@ 公開此聊天室。";
-"notice_room_join_rule_invite_by_you_for_dm" = "您讓此變為邀請制。";
+"notice_room_join_rule_invite_by_you_for_dm" = "您將此處變為邀請制。";
 "notice_room_join_rule_invite_by_you" = "您讓聊天室變為邀請才可加入。";
-"notice_room_join_rule_invite_for_dm" = "%@讓此變為邀請制。";
+"notice_room_join_rule_invite_for_dm" = "%@ 將此處變為邀請制。";
 //  New
-"notice_room_join_rule_invite" = "%@讓聊天室變為邀請才可加入。";
+"notice_room_join_rule_invite" = "%@ 將聊天室變為邀請制。";
 "notice_room_created_for_dm" = "%@ 已加入。";
 "notice_room_name_removed_for_dm" = "%@ 移除了該聊天室的名稱";
 "ignore_user" = "忽略使用者";
@@ -2114,7 +2114,7 @@
 
 
 // Generic errors
-"error_invite_3pid_with_no_identity_server" = "在設定加入一個身分伺服器，才能用電子郵件寄送邀請。";
+"error_invite_3pid_with_no_identity_server" = "在設定加入身分伺服器後，才能用電子郵件寄送邀請。";
 "emoji_picker_flags_category" = "旗幟";
 "emoji_picker_symbols_category" = "符號";
 "emoji_picker_places_category" = "旅遊與景點";
@@ -2128,7 +2128,7 @@
 
 // User
 
-"key_verification_verified_user_information" = "與此使用者的訊息是端到端加密的，無法被第三方讀取。";
+"key_verification_verified_user_information" = "與此使用者的訊息有端對端加密，無法被第三方讀取。";
 "key_verification_verified_this_session_information" = "您現在可以在此裝置上閱讀您的加密訊息，其他使用者也會知道他們能夠信任此裝置。";
 "key_verification_verified_new_session_information" = "您現在也可以在新的裝置上閱讀您的加密訊息，其他使用者也會知道他們能夠信任此裝置。";
 "key_verification_verified_other_session_information" = "您現在也可以在其他的工作階段閱讀您的加密訊息，其他使用者也會知道他們能夠信任此工作階段。";
@@ -2300,7 +2300,7 @@
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "輸入只有您知道的安全密語，並產生備份的金鑰。";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "使用安全密語";
 "secure_key_backup_setup_intro_use_security_key_info" = "產生安全金鑰後，請儲存在密碼管理員或保險箱等安全的地方。";
-"secure_key_backup_setup_intro_info" = "透過備份您伺服器上的加密金鑰，來防止失去對您已加密的訊息與資料的存取權。";
+"secure_key_backup_setup_intro_info" = "透過備份您伺服器上的加密金鑰，來防止失去對加密訊息與資料的存取權。";
 "service_terms_modal_information_description_integration_manager" = "整合管理員能夠讓您加入第三方服務的功能。";
 "service_terms_modal_information_description_identity_server" = "身分伺服器讓您能夠用電話或電子郵件，查詢您的聯絡人是否已經申請帳號。";
 "service_terms_modal_information_title_integration_manager" = "整合管理員";
@@ -2309,7 +2309,7 @@
 "service_terms_modal_information_title_identity_server" = "身分伺服器";
 "service_terms_modal_description_integration_manager" = "這會讓您可以使用聊天機器人、橋接、小工具和貼圖包。";
 "service_terms_modal_description_identity_server" = "這會讓手機上儲存您電話或電子郵件的人能找到您。";
-"service_terms_modal_table_header_integration_manager" = "管理整合服務使用條款";
+"service_terms_modal_table_header_integration_manager" = "整合管理員使用條款";
 "service_terms_modal_table_header_identity_server" = "身分伺服器條款";
 "service_terms_modal_footer" = "您可以隨時在設定中取消。";
 
@@ -2362,10 +2362,10 @@
 
 "leave_space_action" = "離開聊天空間";
 "spaces_add_room_missing_permission_message" = "您沒有權限在此聊天空間中新增聊天室。";
-"spaces_creation_in_one_space" = "在一個聊天空間";
+"spaces_creation_in_one_space" = "在 1 個聊天空間";
 "spaces_creation_in_many_spaces" = "在 %@ 個聊天空間";
 "spaces_creation_in_spacename_plus_many" = "在 %@ 加入 %@ 個聊天空間";
-"spaces_creation_in_spacename_plus_one" = "在 %@ 加入一個聊天空間";
+"spaces_creation_in_spacename_plus_one" = "在 %@ 加入 1 個聊天空間";
 "spaces_creation_in_spacename" = "在 %@";
 "spaces_creation_post_process_inviting_users" = "邀請 %@ 位使用者";
 "spaces_creation_post_process_adding_rooms" = "加入 %@ 個聊天室";
@@ -2424,7 +2424,7 @@
 "room_notifs_settings_mentions_and_keywords" = "僅提及和關鍵字";
 
 // Room Notification Settings
-"room_notifs_settings_notify_me_for" = "通知我";
+"room_notifs_settings_notify_me_for" = "收到下列訊息時通知我";
 "room_suggestion_settings_screen_message" = "將向聊天空間中的成員推薦建議的聊天室。";
 "room_suggestion_settings_screen_title" = "將聊天室設為聊天空間中的建議聊天室";
 
@@ -2437,7 +2437,7 @@
 "room_access_settings_screen_upgrade_alert_upgrading" = "升級聊天室";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "升級";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "自動邀請成員到新的聊天室";
-"room_access_settings_screen_upgrade_alert_note" = "請注意，升級會創造一個新版本的聊天室。目前所有的訊息都會放在已封存的聊天室。";
+"room_access_settings_screen_upgrade_alert_note" = "請注意，升級會建立新版的聊天室。目前的所有訊息都將封存在此聊天室中。";
 "room_access_settings_screen_upgrade_alert_message_no_param" = "母聊天空間中的任何人都可以找到並加入此聊天室，不需要手動邀請所有人。您隨時都可以在聊天室設定中變更此設定。";
 "room_access_settings_screen_upgrade_alert_message" = "任何在 %@ 的人都能找到並加入此聊天室，不需手動邀請所有人。您可以在聊天室的設定中隨時變更此設定。";
 "room_access_settings_screen_upgrade_alert_title" = "升級聊天室";
@@ -2474,7 +2474,7 @@
 "identity_server_settings_alert_change_title" = "變更身分伺服器";
 "identity_server_settings_alert_no_terms" = "您選擇的身分伺服器沒有任何服務條款。僅在您信任服務擁有者時才繼續。";
 "identity_server_settings_alert_no_terms_title" = "身分伺服器無使用條款";
-"identity_server_settings_disconnect_info" = "如果您未連線到您的身分伺服器，其他的使用者將無法找到您，您也無法經由電子郵件和電話找到其他使用者。";
+"identity_server_settings_disconnect_info" = "與您的身分伺服器中斷連線後，其他使用者就無法再探索到您，您也不能透過電子郵件地址或電話號碼邀請其他人。";
 "identity_server_settings_place_holder" = "輸入一個身分伺服器";
 "identity_server_settings_no_is_description" = "您目前未使用身分伺服器。若想要尋找或被您認識的聯絡人找到，請在上方加入伺服器。";
 "identity_server_settings_description" = "您正在使用 %@ 來讓其他現有的聯絡人和您能夠找到彼此。";
@@ -2531,9 +2531,9 @@
 "settings_discovery_three_pid_details_revoke_action" = "撤回";
 "settings_discovery_three_pid_details_information_phone_number" = "在此管理讓其他使用者尋找您以及邀請您進入聊天室的電話號碼偏好設定。您可以在「帳號」中加入或刪除電話號碼。";
 "settings_discovery_three_pid_details_information_email" = "在此管理讓其他使用者尋找您以及邀請您進入聊天室的電子郵件地址偏好設定。您可以在「帳號」中加入或刪除電子郵件地址。";
-"settings_discovery_three_pids_management_information_part1" = "選擇您希望其他使用者用哪一個電子郵件（或電話）聯絡您，以及邀請您進入聊天室。您可以在此清單加入／移除電子郵件（或電話）。 ";
+"settings_discovery_three_pids_management_information_part1" = "選擇您希望其他使用者用哪一個電子郵件地址（或電話號碼）聯絡您，以及邀請您進入聊天室。您可以在此清單加入／移除電子郵件地址（或電話號碼）。 ";
 "settings_discovery_accept_terms" = "同意身分伺服器的使用條款";
-"settings_discovery_terms_not_signed" = "同意身分伺服器（%@）的使用條款，讓其他人可以用您的電子郵件或電話號碼找到您。";
+"settings_discovery_terms_not_signed" = "需同意身分伺服器（%@）的使用條款，讓其他人可以用電子郵件地址或電話號碼找到您。";
 "settings_discovery_no_identity_server" = "您目前未使用身分伺服器。若想要被您認識的聯絡人找到，請加入伺服器。";
 "settings_devices_description" = "所有與您通訊的聯絡人都能看到此工作階段的公開名稱";
 "settings_key_backup_delete_confirmation_prompt_msg" = "您確定嗎？如果您的金鑰沒有正確備份的話，將會遺失所有加密訊息。";
@@ -2576,7 +2576,7 @@
 // Sessions list
 
 "user_verification_sessions_list_user_trust_level_trusted_title" = "受信任";
-"user_verification_start_additional_information" = "要確定安全，請面對面進行或使用其他方式來通訊。";
+"user_verification_start_additional_information" = "為了確保安全，請面對面進行驗證，或使用其他方式來通訊。";
 "user_verification_start_waiting_partner" = "正在等待 %@…";
 "user_verification_start_information_part2" = " 雙方裝置上顯示的單次驗證碼。";
 "user_verification_start_information_part1" = "為了加強安全性，請確認 ";
@@ -2648,8 +2648,8 @@
 "settings_call_invitations" = "通話邀請";
 "settings_room_invitations" = "聊天室邀請";
 "settings_messages_containing_at_room" = "@room";
-"settings_notify_me_for" = "通知我";
-"settings_mentions_and_keywords" = "僅有被提及與出現關鍵字時";
+"settings_notify_me_for" = "收到下列訊息時通知我";
+"settings_mentions_and_keywords" = "提及與關鍵字";
 "settings_notifications_disabled_alert_message" = "如需啟用通知，請前往裝置設定。";
 "settings_security" = "安全性";
 "settings_confirm_media_size_description" = "開啟此選項後，傳送檔案前，會先向您確認準備傳送的圖片與影片大小。";
@@ -2733,7 +2733,7 @@
 
 // Social login
 
-"social_login_list_title_continue" = "繼續";
+"social_login_list_title_continue" = "使用下列方式繼續";
 "network_offline_message" = "您已離線，請確認您的網路連線。";
 "network_offline_title" = "您已離線";
 "event_formatter_jitsi_widget_removed_by_you" = "您已刪除 VoIP 會議";
@@ -2743,7 +2743,7 @@
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "您新增了小工具：%@";
 "event_formatter_message_deleted" = "訊息已刪除";
-"event_formatter_group_call_incoming" = "%@ 在 %@";
+"event_formatter_group_call_incoming" = "%@ （來自 %@）";
 "event_formatter_call_decline" = "拒絕";
 "event_formatter_call_connection_failed" = "連線失敗";
 "event_formatter_call_missed_video" = "未接聽的視訊通話";
@@ -2824,8 +2824,8 @@
 "wysiwyg_composer_format_action_unordered_list" = "切換項目符號清單";
 "wysiwyg_composer_format_action_inline_code" = "套用內嵌程式碼格式";
 "user_other_session_security_recommendation_title" = "其他工作階段";
-"poll_timeline_reply_ended_poll" = "結束投票";
-"poll_timeline_ended_text" = "結束投票";
+"poll_timeline_reply_ended_poll" = "已結束投票";
+"poll_timeline_ended_text" = "投票已結束";
 "poll_timeline_decryption_error" = "因為解密錯誤，不會計算部份投票";
 "poll_history_load_more" = "載入更多投票";
 "poll_history_detail_view_in_timeline" = "在時間軸中檢視投票";
@@ -2856,3 +2856,15 @@
 // MARK: - Launch loading
 
 "launch_loading_generic" = "正在同步對話";
+"pill_message_in" = "在 %@ 的訊息";
+"pill_message_from" = "來自 %@ 的訊息";
+"pill_message" = "訊息";
+
+// Pills
+"pill_room_fallback_display_name" = "聊天空間／聊天室";
+"key_verification_self_verify_security_upgrade_alert_message" = "最新版本中已改進加密訊息傳輸功能，請重新驗證您的裝置。";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "已更新程式";
+"settings_acceptable_use" = "可接受使用政策";

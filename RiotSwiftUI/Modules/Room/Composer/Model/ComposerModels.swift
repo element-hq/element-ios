@@ -229,12 +229,14 @@ enum ComposerViewAction: Equatable {
     case contentDidChange(isEmpty: Bool)
     case linkTapped(linkAction: LinkAction)
     case storeSelection(selection: NSRange)
+    case suggestion(pattern: SuggestionPattern?)
 }
 
 enum ComposerViewModelResult: Equatable {
     case cancel
     case contentDidChange(isEmpty: Bool)
     case linkTapped(LinkAction: LinkAction)
+    case suggestion(pattern: SuggestionPattern?)
 }
 
 final class LinkActionWrapper: NSObject {
@@ -242,6 +244,24 @@ final class LinkActionWrapper: NSObject {
     
     init(_ linkAction: LinkAction) {
         self.linkAction = linkAction
+        super.init()
+    }
+}
+
+final class SuggestionPatternWrapper: NSObject {
+    let suggestionPattern: SuggestionPattern?
+
+    init(_ suggestionPattern: SuggestionPattern?) {
+        self.suggestionPattern = suggestionPattern
+        super.init()
+    }
+}
+
+final class UserSuggestionViewModelWrapper: NSObject {
+    let userSuggestionViewModel: UserSuggestionViewModel
+
+    init(_ userSuggestionViewModel: UserSuggestionViewModel) {
+        self.userSuggestionViewModel = userSuggestionViewModel
         super.init()
     }
 }
