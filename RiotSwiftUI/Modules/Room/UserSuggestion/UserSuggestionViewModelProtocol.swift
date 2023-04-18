@@ -17,5 +17,9 @@
 import Foundation
 
 protocol UserSuggestionViewModelProtocol {
+    /// Defines a shared context providing the ability to use a single `UserSuggestionViewModel` for multiple
+    /// `UserSuggestionList` e.g. the list component can then be displayed seemlessly in both `RoomViewController`
+    /// UIKit hosted context, and in Rich-Text-Editor's SwiftUI fullscreen mode, without need to reload the data.
+    var sharedContext: UserSuggestionViewModelType.Context { get }
     var completion: ((UserSuggestionViewModelResult) -> Void)? { get set }
 }

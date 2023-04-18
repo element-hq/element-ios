@@ -14,46 +14,52 @@
 // limitations under the License.
 //
 
+import HTMLParser
 import UIKit
 import WysiwygComposer
 
 extension RoomViewController {
     // MARK: - Override
     open override func mention(_ roomMember: MXRoomMember) {
-        guard let inputToolbar = inputToolbar else {
-            return
-        }
-
-        let newAttributedString = NSMutableAttributedString(attributedString: inputToolbar.attributedTextMessage)
-
-        if inputToolbar.attributedTextMessage.length > 0 {
-            if #available(iOS 15.0, *) {
-                newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
-                                                                      isHighlighted: false,
-                                                                      font: inputToolbar.textDefaultFont))
-            } else {
-                newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
-            }
-            newAttributedString.appendString(" ")
-        } else if roomMember.userId == self.mainSession.myUser.userId {
-            newAttributedString.appendString("/me ")
+        if let wysiwygInputToolbar, wysiwygInputToolbar.textFormattingEnabled {
+            wysiwygInputToolbar.mention(roomMember)
+            wysiwygInputToolbar.becomeFirstResponder()
         } else {
-            if #available(iOS 15.0, *) {
-                newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
-                                                                      isHighlighted: false,
-                                                                      font: inputToolbar.textDefaultFont))
-            } else {
-                newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
-            }
-            newAttributedString.appendString(": ")
-        }
+            guard let attributedText = inputToolbarView.attributedTextMessage else { return }
+            let newAttributedString = NSMutableAttributedString(attributedString: attributedText)
 
-        inputToolbar.attributedTextMessage = newAttributedString
-        inputToolbar.becomeFirstResponder()
+            if attributedText.length > 0 {
+                if #available(iOS 15.0, *) {
+                    newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
+                                                                          isHighlighted: false,
+                                                                          font: inputToolbarView.defaultFont))
+                } else {
+                    newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
+                }
+                newAttributedString.appendString(" ")
+            } else if roomMember.userId == self.mainSession.myUser.userId {
+                newAttributedString.appendString("/me ")
+                newAttributedString.addAttribute(.font,
+                                                 value: inputToolbarView.defaultFont,
+                                                 range: .init(location: 0, length: newAttributedString.length))
+            } else {
+                if #available(iOS 15.0, *) {
+                    newAttributedString.append(PillsFormatter.mentionPill(withRoomMember: roomMember,
+                                                                          isHighlighted: false,
+                                                                          font: inputToolbarView.defaultFont))
+                } else {
+                    newAttributedString.appendString(roomMember.displayname.count > 0 ? roomMember.displayname : roomMember.userId)
+                }
+                newAttributedString.appendString(": ")
+            }
+
+            inputToolbarView.attributedTextMessage = newAttributedString
+            inputToolbarView.becomeFirstResponder()
+        }
     }
 
 
-    /// Send the formatted text message and its raw counterpat to the room
+    /// Send the formatted text message and its raw counterpart to the room
     ///
     /// - Parameter rawTextMsg: the raw text message
     /// - Parameter htmlMsg: the html text message
@@ -358,6 +364,48 @@ extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
     
     private func cleanup() {
         composerLinkActionBridgePresenter = nil
+    }
+}
+
+// MARK: - PermalinkReplacer
+extension RoomViewController: PermalinkReplacer {
+    public func replacementForLink(_ url: String, text: String) -> NSAttributedString? {
+        guard #available(iOS 15.0, *),
+              let url = URL(string: url),
+              let session = roomDataSource.mxSession,
+              let eventFormatter = roomDataSource.eventFormatter,
+              let roomState = roomDataSource.roomState else {
+            return nil
+        }
+
+        return PillsFormatter.mentionPill(withUrl: url,
+                                          andLabel: text,
+                                          session: session,
+                                          eventFormatter: eventFormatter,
+                                          roomState: roomState)
+    }
+
+    public func postProcessMarkdown(in attributedString: NSAttributedString) -> NSAttributedString {
+        guard #available(iOS 15.0, *),
+              let roomDataSource,
+              let session = roomDataSource.mxSession,
+              let eventFormatter = roomDataSource.eventFormatter,
+              let roomState = roomDataSource.roomState else {
+            return attributedString
+        }
+        return PillsFormatter.insertPills(in: attributedString,
+                                          withSession: session,
+                                          eventFormatter: eventFormatter,
+                                          roomState: roomState,
+                                          font: inputToolbarView.defaultFont)
+    }
+
+    public func restoreMarkdown(in attributedString: NSAttributedString) -> String {
+        if #available(iOS 15.0, *) {
+            return PillsFormatter.stringByReplacingPills(in: attributedString, mode: .markdown)
+        } else {
+            return attributedString.string
+        }
     }
 }
 

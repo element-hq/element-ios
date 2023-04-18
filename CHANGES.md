@@ -1,3 +1,22 @@
+## Changes in 1.10.11 (2023-04-18)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.26.9](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.9)).
+- Labs: Rich Text Editor: Integrate version 2.0.0 with mention Pills support. ([#7442](https://github.com/vector-im/element-ios/issues/7442))
+
+🐛 Bugfixes
+
+- Continue to display pills for matrix.to permalinks if a custom permalinkBaseUrl is set. ([#7482](https://github.com/vector-im/element-ios/pull/7482))
+- Add a foreground color attribute for the unformattable event error message. ([#7501](https://github.com/vector-im/element-ios/pull/7501))
+- Fixed a bug that prevented audio messages that were not .mp4 to be played in the timeline ([#7451](https://github.com/vector-im/element-ios/issues/7451))
+- Fix user suggestion list item height on iOS 16+ ([#7492](https://github.com/vector-im/element-ios/issues/7492))
+
+🧱 Build
+
+- Pinned used Xcode version to 14.2 as newer version fail ASC validation ([#7476](https://github.com/vector-im/element-ios/issues/7476))
+
+
 ## Changes in 1.10.10 (2023-04-12)
 
 🙌 Improvements

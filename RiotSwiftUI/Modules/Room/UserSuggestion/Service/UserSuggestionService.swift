@@ -16,6 +16,7 @@
 
 import Combine
 import Foundation
+import WysiwygComposer
 
 struct RoomMembersProviderMember {
     var userId: String
@@ -90,6 +91,16 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
         }
         
         currentTextTriggerSubject.send(lastComponent)
+    }
+
+    func processSuggestionPattern(_ suggestionPattern: SuggestionPattern?) {
+        guard let suggestionPattern, suggestionPattern.key == .at else {
+            items.send([])
+            currentTextTriggerSubject.send(nil)
+            return
+        }
+
+        currentTextTriggerSubject.send("@" + suggestionPattern.text)
     }
     
     // MARK: - Private

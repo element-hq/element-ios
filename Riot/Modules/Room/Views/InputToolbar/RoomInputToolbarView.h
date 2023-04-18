@@ -21,6 +21,8 @@
 @class RoomActionsBar;
 @class RoomInputToolbarView;
 @class LinkActionWrapper;
+@class SuggestionPatternWrapper;
+@class UserSuggestionViewModelContextWrapper;
 
 /**
  Destination of the message in the composer
@@ -59,7 +61,7 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
  
  @param toolbarView the room input toolbar view
  */
-- (void)roomInputToolbarViewDidChangeTextMessage:(RoomInputToolbarView*)toolbarView;
+- (void)roomInputToolbarViewDidChangeTextMessage:(MXKRoomInputToolbarView*)toolbarView;
 
 /**
  Inform the delegate that the action menu was opened.
@@ -79,6 +81,12 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
 - (void)didChangeMaximisedState: (BOOL) isMaximised;
 
 - (void)didSendLinkAction: (LinkActionWrapper *)linkAction;
+
+- (void)didDetectTextPattern: (SuggestionPatternWrapper *)suggestionPattern;
+
+- (UserSuggestionViewModelContextWrapper *)userSuggestionContext;
+
+- (MXMediaManager *)mediaManager;
 
 @end
 
@@ -127,8 +135,6 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
  The attach media button
  */
 @property (nonatomic, weak, readonly) UIButton *attachMediaButton;
-
-@property (nonatomic, readonly, nonnull) UIFont *textDefaultFont;
 
 /**
  Adds a voice message toolbar view to be displayed inside this input toolbar

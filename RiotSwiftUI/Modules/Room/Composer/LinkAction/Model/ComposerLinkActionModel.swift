@@ -41,6 +41,7 @@ extension ComposerLinkActionViewState {
         switch linkAction {
         case .createWithText, .create: return VectorL10n.wysiwygComposerLinkActionCreateTitle
         case .edit: return VectorL10n.wysiwygComposerLinkActionEditTitle
+        case .disabled: return ""
         }
     }
     
@@ -64,6 +65,7 @@ extension ComposerLinkActionViewState {
         case .createWithText: return bindings.text.isEmpty
         case .create: return false
         case .edit: return !bindings.hasEditedUrl
+        case .disabled: return false
         }
     }
 }
