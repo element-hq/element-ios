@@ -1,8 +1,8 @@
 // Permissions usage explanations
 "NSCameraUsageDescription" = "給予相機權限會用來進行視訊通話或是拍攝並上傳照片與影片。";
-"NSPhotoLibraryUsageDescription" = "同意使用圖片的權限會用來上傳您圖庫的照片與影片。";
-"NSMicrophoneUsageDescription" = "Element 需要麥克風的權限來接受通話、拍攝影片以及錄製語音訊息。";
-"NSContactsUsageDescription" = "他們會與您的身分伺服器共享以找到您在Matrix上的聯絡人。";
+"NSPhotoLibraryUsageDescription" = "請允許存取「照片」，來上傳圖庫當中的照片或影片。";
+"NSMicrophoneUsageDescription" = "Element 需要麥克風的權限來通話、拍攝影片以及錄製語音訊息。";
+"NSContactsUsageDescription" = "會將此資訊分享給您的身分伺服器，以幫助您尋找 Matrix 聯絡人。";
 "NSLocationAlwaysAndWhenInUseUsageDescription" = "當您與其他人分享您的位置，Element 需要權限將位置顯示在地圖上。";
 "NSLocationWhenInUseUsageDescription" = "當您與其他人分享您的位置，Element 需要權限將位置顯示在地圖上。";
 "NSFaceIDUsageDescription" = "您可以使用 Face ID 來登入您的應用程式。";
