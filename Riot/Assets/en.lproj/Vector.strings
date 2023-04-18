@@ -807,9 +807,6 @@ Tap the + to start adding people.";
 "settings_labs_enable_new_app_layout" = "New Application Layout";
 "settings_labs_enable_wysiwyg_composer" = "Try out the rich text editor";
 "settings_labs_enable_voice_broadcast" = "Voice broadcast";
-"settings_labs_enable_crypto_sdk" = "Rust end-to-end encryption";
-"settings_labs_confirm_crypto_sdk" = "Please be advised that as this feature is still in its experimental stage, it may not function as expected and could potentially have unintended consequences. To revert the feature, simply log out and log back in. Use at your own discretion and with caution.";
-"settings_labs_disable_crypto_sdk" = "Rust end-to-end encryption (log out to disable)";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";

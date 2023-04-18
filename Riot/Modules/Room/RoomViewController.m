@@ -6356,21 +6356,10 @@ static CGSize kThreadListBarButtonItemImageSize;
                 self->currentAlert = nil;
                 
                 // Acknowledge the existence of all devices
-                [self startActivityIndicator];
+                self->unknownDevices = nil;
                 
-                if (![self.mainSession.crypto isKindOfClass:[MXLegacyCrypto class]])
-                {
-                    MXLogFailure(@"[RoomVC] eventDidChangeSentState: Only legacy crypto supports manual setting of known devices");
-                    return;
-                }
-                [(MXLegacyCrypto *)self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
-                    
-                    self->unknownDevices = nil;
-                    [self stopActivityIndicator];
-                    
-                    // And resend pending messages
-                    [self resendAllUnsentMessages];
-                }];
+                // And resend pending messages
+                [self resendAllUnsentMessages];
             }
             
         }]];

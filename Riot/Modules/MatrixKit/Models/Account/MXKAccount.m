@@ -946,15 +946,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         [MXKRoomDataSourceManager removeSharedManagerForMatrixSession:mxSession];
 
         if (clearStore)
-        {
-            // Force a reload of device keys at the next session start, unless we are just about to migrate
-            // all data and device keys into CryptoSDK.
-            // This will fix potential UISIs other peoples receive for our messages.
-            if ([mxSession.crypto isKindOfClass:[MXLegacyCrypto class]] && !MXSDKOptions.sharedInstance.enableCryptoSDK)
-            {
-                [(MXLegacyCrypto *)mxSession.crypto resetDeviceKeys];
-            }
-            
+        {   
             // Clean other stores
             [mxSession.scanManager deleteAllAntivirusScans];
             [mxSession.aggregations resetData];

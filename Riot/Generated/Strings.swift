@@ -7647,17 +7647,9 @@ public class VectorL10n: NSObject {
   public static var settingsLabs: String { 
     return VectorL10n.tr("Vector", "settings_labs") 
   }
-  /// Please be advised that as this feature is still in its experimental stage, it may not function as expected and could potentially have unintended consequences. To revert the feature, simply log out and log back in. Use at your own discretion and with caution.
-  public static var settingsLabsConfirmCryptoSdk: String { 
-    return VectorL10n.tr("Vector", "settings_labs_confirm_crypto_sdk") 
-  }
   /// Create conference calls with jitsi
   public static var settingsLabsCreateConferenceWithJitsi: String { 
     return VectorL10n.tr("Vector", "settings_labs_create_conference_with_jitsi") 
-  }
-  /// Rust end-to-end encryption (log out to disable)
-  public static var settingsLabsDisableCryptoSdk: String { 
-    return VectorL10n.tr("Vector", "settings_labs_disable_crypto_sdk") 
   }
   /// End-to-End Encryption
   public static var settingsLabsE2eEncryption: String { 
@@ -7670,10 +7662,6 @@ public class VectorL10n: NSObject {
   /// Auto Report Decryption Errors
   public static var settingsLabsEnableAutoReportDecryptionErrors: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_auto_report_decryption_errors") 
-  }
-  /// Rust end-to-end encryption
-  public static var settingsLabsEnableCryptoSdk: String { 
-    return VectorL10n.tr("Vector", "settings_labs_enable_crypto_sdk") 
   }
   /// Live location sharing - share current location (active development, and temporarily, locations persist in room history)
   public static var settingsLabsEnableLiveLocationSharing: String { 

@@ -41,7 +41,6 @@ class NotificationService: UNNotificationServiceExtension {
     private var ongoingVoIPPushRequests: [String: Bool] = [:]
     
     private var userAccount: MXKAccount?
-    private var isCryptoSDKEnabled = false
     
     /// Best attempt contents. Will be updated incrementally, if something fails during the process, this best attempt content will be showed as notification. Keys are eventId's
     private var bestAttemptContents: [String: UNMutableNotificationContent] = [:]
@@ -196,13 +195,12 @@ class NotificationService: UNNotificationServiceExtension {
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
             Self.backgroundServiceInitQueue.sync {
-                if hasChangedCryptoSDK() || NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
+                if NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
                     MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
                     self.logMemory()
                     
                     NotificationService.backgroundSyncService = MXBackgroundSyncService(
                         withCredentials: userAccount.mxCredentials,
-                        isCryptoSDKEnabled: isCryptoSDKEnabled,
                         persistTokenDataHandler: { persistTokenDataHandler in
                             MXKAccountManager.shared().readAndWriteCredentials(persistTokenDataHandler)
                         }, unauthenticatedHandler: { error, softLogout, refreshTokenAuth, completion in
@@ -217,16 +215,6 @@ class NotificationService: UNNotificationServiceExtension {
             MXLog.debug("[NotificationService] setup: No active accounts")
             fallbackToBestAttemptContent(forEventId: eventId)
         }
-    }
-    
-    /// Determine whether we have switched from using crypto v1 to v2 or vice versa which will require
-    /// rebuilding `MXBackgroundSyncService`
-    private func hasChangedCryptoSDK() -> Bool {
-        guard isCryptoSDKEnabled != MXSDKOptions.sharedInstance().enableCryptoSDK else {
-            return false
-        }
-        isCryptoSDKEnabled = MXSDKOptions.sharedInstance().enableCryptoSDK
-        return true
     }
     
     /// Attempts to preprocess payload and attach room display name to the best attempt content
