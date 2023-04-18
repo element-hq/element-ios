@@ -2708,3 +2708,15 @@
 // MARK: - Launch loading
 
 "launch_loading_generic" = "Sincronizzazione delle tue conversazioni";
+"pill_message_in" = "Messaggio in %@";
+"pill_message_from" = "Messaggio da %@";
+"pill_message" = "Messaggio";
+
+// Pills
+"pill_room_fallback_display_name" = "Spazio/Stanza";
+"key_verification_self_verify_security_upgrade_alert_message" = "La messaggistica sicura è stata migliorata con l'aggiornamento più recente. Ri-verifica il tuo dispositivo.";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "App aggiornata";
+"settings_acceptable_use" = "Politica di utilizzo accettabile";

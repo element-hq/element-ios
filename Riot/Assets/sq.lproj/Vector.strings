@@ -2718,3 +2718,16 @@
 "device_verification_self_verify_open_on_other_device_information" = "Lypset të verifikoni këtë sesion, që të mund të lexoni historikun e mesazheve tuaj të siguruar.\n\nHapeni Element-in në një nga pajisjet tuaja të tjera dhe ndiqni udhëzimet.";
 "device_verification_self_verify_open_on_other_device_title" = "Hapeni %@ në pajisjen tuaj tjetër";
 "room_creation_only_one_email_invite" = "Mund të ftoni vetëm një email në herë";
+"pill_message_in" = "Mesazh te %@";
+"pill_message_from" = "Mesazh nga %@";
+"pill_message" = "Mesazh";
+
+// Pills
+"pill_room_fallback_display_name" = "Hapësirë/Dhomë";
+"key_verification_self_verify_security_upgrade_alert_message" = "Me përditësimin e fundit shkëmbimi i siguruar i mesazheve është përmirësuar. Ju lutemi, riverifikoni pajisjen tuaj.";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "Aplikacioni u përditësua";
+"settings_acceptable_use" = "Rregull Përdorimi të Pranueshëm";
+"accessibility_selected" = "përzgjedhur";

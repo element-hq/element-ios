@@ -2654,7 +2654,6 @@
 "voice_broadcast_stop_alert_title" = "Megszakítod az élő közvetítést?";
 "voice_broadcast_buffering" = "Pufferelés…";
 "voice_broadcast_time_left" = "%@ van vissza";
-
 "password_policy_pwd_in_dict_error" = "Ez a jelszó megtalálható a szótárban ezért nem engedélyezett.";
 "password_policy_weak_pwd_error" = "Ez a jelszó túl gyenge. Legalább 8 karakternek kell lennie és minden típusból legalább egy: nagybetű, kisbetű, szám és speciális karakter.";
 
@@ -2701,7 +2700,6 @@
 "poll_history_no_past_poll_period_text" = "%@ napja nincs aktív szavazás. További szavazások betöltése az előző havi szavazások megjelenítéséhez";
 "poll_history_no_active_poll_period_text" = "%@ napja nincs aktív szavazás. További szavazások betöltése az előző havi szavazások megjelenítéséhez";
 "poll_history_loading_text" = "Szavazások megjelenítése";
-
 "settings_labs_disable_crypto_sdk" = "Rust végpontok közötti titkosítás (kikapcsoláshoz kijelentkezés szükséges)";
 "settings_labs_confirm_crypto_sdk" = "Ez a funkció még kísérleti fázisban van. Lehet, hogy nem az elvártnak megfelelően fog működni és előre nem látható következménye lehet. A funkció kikapcsolásához egyszerű ki-, és bejelentkezés szükséges. Használata csak saját felelősségre.";
 "settings_labs_enable_crypto_sdk" = "Rust végpontok közötti titkosítás";
@@ -2720,3 +2718,25 @@
 "device_verification_self_verify_wait_recover_secrets_additional_help" = "Nem férsz hozzá létező munkamenethez, %@?";
 "device_verification_self_verify_open_on_other_device_title" = "Nyisd meg ezt: %@ a másik eszközön";
 "room_creation_only_one_email_invite" = "E-mail meghívóból egyszerre csak egy küldhető";
+"pill_message_in" = "Üzenet itt: %@";
+"pill_message_from" = "Üzenet tőle: %@";
+"pill_message" = "Üzenet";
+
+// Pills
+"pill_room_fallback_display_name" = "Tér/Szoba";
+"launch_loading_delay_warning" = "Ez egy kicsit tovább tarthat.\nKöszönjük a türelmet.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Beszélgetések szinkronizálása";
+"key_verification_scan_qr_code_information_new_session" = "Az új munkameneted ellenőrzéséhez irányítsd a kamerádat a másik eszközödön megjelenő QR kódra";
+"key_verification_scan_qr_code_information_other_session" = "A munkameneted ellenőrzéséhez irányítsd a kamerádat a másik eszközödön megjelenő QR kódra";
+"key_verification_scan_qr_code_information_other_device" = "A munkamenet ellenőrzéséhez irányítsd a kamerádat a másik eszközödön megjelenő QR kódra";
+"key_verification_scan_qr_code_information_other_user" = "A munkamenetük ellenőrzéséhez irányítsd a kamerádat az eszközükön megjelenő QR kódra";
+"device_verification_self_verify_open_on_other_device_information" = "Ennek a munkamenetnek az ellenőrzésére szükséged van a régi titkosított üzenetek olvasásához.\n\nNyisd meg az Elementet egy másik eszközödön és kövesd az utasításokat.";
+"key_verification_self_verify_security_upgrade_alert_message" = "A biztonságos üzenetküldés a legutolsó fejlesztésekkel frissült. Kérjük ellenőrizzed újra az eszközt.";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "Alkalmazás frissítve";
+"settings_acceptable_use" = "Elfogadható felhasználói feltételek";
