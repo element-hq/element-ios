@@ -103,7 +103,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                 @"event_id": event.eventId ?: @"unknown"
             });
             string = [[NSAttributedString alloc] initWithString:[VectorL10n noticeErrorUnformattableEvent] attributes:@{
-                NSFontAttributeName: [self encryptedMessagesTextFont]
+                NSFontAttributeName: [self encryptedMessagesTextFont],
+                NSForegroundColorAttributeName: [self encryptingTextColor]
             }];
         }
     }
