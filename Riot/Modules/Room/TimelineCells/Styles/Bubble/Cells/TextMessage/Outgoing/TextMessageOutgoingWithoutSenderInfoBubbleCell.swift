@@ -35,6 +35,15 @@ class TextMessageOutgoingWithoutSenderInfoBubbleCell: TextMessageBaseBubbleCell,
         self.textMessageContentView?.bubbleBackgroundView?.backgroundColor = theme.roomCellOutgoingBubbleBackgroundColor
     }
     
+    override func render(_ cellData: MXKCellData!) {
+        // This cell displays an outgoing message without any sender information.
+        // However, we need to set the following properties to our cellData, otherwise, to make room for the timestamp, a whitespace could be added when calculating the position of the components.
+        // If we don't, the component frame calculation will not work for this cell.
+        (cellData as? RoomBubbleCellData)?.shouldHideSenderName = false
+        (cellData as? RoomBubbleCellData)?.shouldHideSenderInformation = false
+        super.render(cellData)
+    }
+    
     // MARK: - Private
     
     private func setupBubbleConstraints() {

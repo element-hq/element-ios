@@ -600,36 +600,47 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     }
     else if (roomBubbleTableViewCell.messageTextView)
     {
+        // Force the textView used underneath to layout its frame properly
+        [roomBubbleTableViewCell setNeedsLayout];
+        [roomBubbleTableViewCell layoutIfNeeded];
+                
+        // Compute the height
         CGFloat textMessageHeight = 0;
-        
         if ([bubbleCellData isKindOfClass:[RoomBubbleCellData class]])
         {
             RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)bubbleCellData;
             
             if (!roomBubbleCellData.attachment && selectedComponent.attributedTextMessage)
             {
-                textMessageHeight = [roomBubbleCellData rawTextHeight:selectedComponent.attributedTextMessage];
+                // Get the width of messageTextView to compute the needed height
+                CGFloat maxTextWidth = CGRectGetWidth(roomBubbleTableViewCell.messageTextView.bounds);
+                
+                // Compute text message height
+                textMessageHeight = [roomBubbleCellData rawTextHeight:selectedComponent.attributedTextMessage withMaxWidth:maxTextWidth];
             }
         }
-        
-        selectedComponentPositionY = selectedComponent.position.y;
-        
+                
+        // Get the messageText frame in the cell content view (as the messageTextView may be inside a stackView and not directly a child of the tableViewCell)
+        UITextView *messageTextView = roomBubbleTableViewCell.messageTextView;
+        CGRect messageTextViewFrame = [messageTextView convertRect:messageTextView.bounds toView:roomBubbleTableViewCell.contentView];
+
         if (textMessageHeight > 0)
         {
             selectedComponentHeight = textMessageHeight;
         }
         else
         {
-            selectedComponentHeight = roomBubbleTableViewCell.frame.size.height - selectedComponentPositionY;
+            // if we don't have a height, use the messageTextView height without the text container vertical insets to stay aligned with the text.
+            selectedComponentHeight = CGRectGetHeight(messageTextViewFrame) - messageTextView.textContainerInset.top - messageTextView.textContainerInset.bottom;
         }
         
-        // Force the textView used underneath to layout its frame properly
-        [roomBubbleTableViewCell setNeedsLayout];
-        [roomBubbleTableViewCell layoutIfNeeded];
-        
-        selectedComponenContentViewYOffset = roomBubbleTableViewCell.messageTextView.frame.origin.y;
+        // Get the vertical position of the messageTextView relative to the contentView
+        selectedComponenContentViewYOffset = CGRectGetMinY(messageTextViewFrame);
+
+        // Get the position of the component inside the messageTextView
+        selectedComponentPositionY = selectedComponent.position.y;
     }
-    
+        
     if (roomBubbleTableViewCell.attachmentView || roomBubbleTableViewCell.messageTextView)
     {
         CGFloat x = 0;
@@ -801,8 +812,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
 
 - (void)addTickView:(UIView *)tickView atIndex:(NSInteger)index
 {
-    CGRect componentFrame = [self componentFrameInContentViewForIndex: index];
-
+    CGRect componentFrame = [self componentFrameInContentViewForIndex:index];
     tickView.frame = CGRectMake(self.contentView.bounds.size.width - tickView.frame.size.width - 2 * PlainRoomCellLayoutConstants.readReceiptsViewRightMargin, CGRectGetMaxY(componentFrame) - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
 
     [self.contentView addSubview:tickView];
