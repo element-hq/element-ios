@@ -344,7 +344,7 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
         if ((RiotSettings.shared.enableThreads && [mxSession.threadingService isEventThreadRoot:event])
             || _settings.showRedactionsInRoomHistory)
         {
-            MXLogDebug(@"[MXKEventFormatter] Redacted event %@ (%@)", event.description, event.redactedBecause);
+            MXLogDebug(@"[MXKEventFormatter] Redacted event %@ (%@)", event.eventId, event.redactedBecause);
             
             NSString *redactorId = event.redactedBecause[@"sender"];
             NSString *redactedBy = @"";
@@ -1316,7 +1316,7 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
                         // Check attachment validity
                         if (![self isSupportedAttachment:event])
                         {
-                            MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
+                            MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment in event %@", event.eventId);
                             body = [VectorL10n noticeInvalidAttachment];
                             *error = MXKEventFormatterErrorUnsupported;
                         }
@@ -1326,7 +1326,7 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
                         body = body? body : [VectorL10n noticeAudioAttachment];
                         if (![self isSupportedAttachment:event])
                         {
-                            MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
+                            MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment in event %@", event.eventId);
                             if (_isForSubtitle || !_settings.showUnsupportedEventsInRoomHistory)
                             {
                                 body = [VectorL10n noticeInvalidAttachment];
@@ -1343,7 +1343,7 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
                         body = body? body : [VectorL10n noticeVideoAttachment];
                         if (![self isSupportedAttachment:event])
                         {
-                            MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
+                            MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment in event %@", event.eventId);
                             if (_isForSubtitle || !_settings.showUnsupportedEventsInRoomHistory)
                             {
                                 body = [VectorL10n noticeInvalidAttachment];
@@ -1374,14 +1374,14 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
                                 }
                                 else
                                 {
-                                    MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported m.file format: %@", event.description);
+                                    MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported m.file format in event: %@", event.eventId);
                                     *error = MXKEventFormatterErrorUnsupported;
                                 }
                             }
                         }
                         else
                         {
-                            MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
+                            MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment in event %@", event.eventId);
                             body = [VectorL10n noticeInvalidAttachment];
                             *error = MXKEventFormatterErrorUnsupported;
                         }
@@ -1620,7 +1620,7 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
                 // Check sticker validity
                 if (![self isSupportedAttachment:event])
                 {
-                    MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported sticker %@", event.description);
+                    MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported sticker in event %@", event.eventId);
                     body = [VectorL10n noticeInvalidAttachment];
                     *error = MXKEventFormatterErrorUnsupported;
                 }
@@ -1674,7 +1674,7 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
     
     if (!attributedDisplayText)
     {
-        MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported event %@)", event.description);
+        MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported event %@)", event.eventId);
         if (_settings.showUnsupportedEventsInRoomHistory)
         {
             if (MXKEventFormatterErrorNone == *error)
@@ -1914,7 +1914,7 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
         // No message content in a non-redacted event. Formatter should use fallback.
         if (!repliedEventContent)
         {
-            MXLogWarning(@"[MXKEventFormatter] Unable to retrieve content from replied event %@", repliedEvent.description)
+            MXLogWarning(@"[MXKEventFormatter] Unable to retrieve content from replied event %@", repliedEvent.eventId)
             return nil;
         }
     }
@@ -1949,7 +1949,7 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
     }
     else
     {
-        MXLogWarning(@"[MXKEventFormatter] Unable to build reply event %@", event.description)
+        MXLogWarning(@"[MXKEventFormatter] Unable to build reply event %@", event.eventId)
     }
 
     return html;
