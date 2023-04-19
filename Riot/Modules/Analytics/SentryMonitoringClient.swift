@@ -46,9 +46,6 @@ struct SentryMonitoringClient {
                 if let message = event.message?.formatted {
                     event.fingerprint = [message]
                 }
-                event.tags = [
-                    "crypto_module": MXSDKOptions.sharedInstance().cryptoModuleId
-                ]
                 MXLog.debug("[SentryMonitoringClient] Issue detected: \(event)")
                 return event
             }

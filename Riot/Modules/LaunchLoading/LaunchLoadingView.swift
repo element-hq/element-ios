@@ -69,9 +69,6 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
 
 extension LaunchLoadingView: MXSessionStartupProgressDelegate {
     func sessionDidUpdateStartupProgress(state: MXSessionStartupProgress.State) {
-        guard MXSDKOptions.sharedInstance().enableStartupProgress else {
-            return
-        }
         update(with: state)
         
     }

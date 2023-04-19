@@ -92,8 +92,7 @@ class CommonConfiguration: NSObject, Configurable {
 
         sdkOptions.enableNewClientInformationFeature = RiotSettings.shared.enableClientInformationFeature
         
-        // Configure Crypto SDK feature deciding which crypto module to use
-        sdkOptions.cryptoSDKFeature = CryptoSDKFeature.shared
+        sdkOptions.cryptoMigrationDelegate = self
     }
     
     private func makeASCIIUserAgent() -> String? {
@@ -168,14 +167,16 @@ class CommonConfiguration: NSObject, Configurable {
         if RiotSettings.shared.allowStunServerFallback, let stunServerFallback = BuildSettings.stunServerFallbackUrlString {
             callManager.fallbackSTUNServer = stunServerFallback
         }
+    }    
+}
+
+extension CommonConfiguration: MXCryptoV2MigrationDelegate {
+    var needsVerificationUpgrade: Bool {
+        get {
+            RiotSettings.shared.showVerificationUpgradeAlert
+        }
+        set {
+            RiotSettings.shared.showVerificationUpgradeAlert = newValue
+        }
     }
-    
-    
-    // MARK: - Per loaded matrix session settings
-    
-    func setupSettingsWhenLoaded(for matrixSession: MXSession) {
-        // Do not warn for unknown devices. We have cross-signing now
-        (matrixSession.crypto as? MXLegacyCrypto)?.warnOnUnknowDevices = false
-    }
-    
 }
