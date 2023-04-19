@@ -16,15 +16,15 @@
 
 import Foundation
 
-enum UserSuggestionViewAction {
-    case selectedItem(UserSuggestionViewStateItem)
+enum CompletionSuggestionViewAction {
+    case selectedItem(CompletionSuggestionViewStateItem)
 }
 
-enum UserSuggestionViewModelResult {
+enum CompletionSuggestionViewModelResult {
     case selectedItemWithIdentifier(String)
 }
 
-enum UserSuggestionViewStateItem: Identifiable {
+enum CompletionSuggestionViewStateItem: Identifiable {
     case command(name: String)
     case user(id: String, avatar: AvatarInputProtocol?, displayName: String?)
 
@@ -38,6 +38,6 @@ enum UserSuggestionViewStateItem: Identifiable {
     }
 }
 
-struct UserSuggestionViewState: BindableState {
-    var items: [UserSuggestionViewStateItem]
+struct CompletionSuggestionViewState: BindableState {
+    var items: [CompletionSuggestionViewStateItem]
 }

@@ -223,7 +223,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         let composer = Composer(
             viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
-            userSuggestionSharedContext: toolbarViewDelegate.userSuggestionContext().context,
+            completionSuggestionSharedContext: toolbarViewDelegate.completionSuggestionContext().context,
             resizeAnimationDuration: Double(kResizeComposerAnimationDuration),
             sendMessageAction: { [weak self] content in
             guard let self = self else { return }

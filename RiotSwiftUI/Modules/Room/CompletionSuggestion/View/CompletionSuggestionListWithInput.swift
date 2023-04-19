@@ -16,24 +16,24 @@
 
 import SwiftUI
 
-struct UserSuggestionListWithInputViewModel {
-    let listViewModel: UserSuggestionViewModel
+struct CompletionSuggestionListWithInputViewModel {
+    let listViewModel: CompletionSuggestionViewModel
     let callback: (String) -> Void
 }
 
-struct UserSuggestionListWithInput: View {
+struct CompletionSuggestionListWithInput: View {
     // MARK: - Properties
     
     // MARK: Private
     
     // MARK: Public
     
-    var viewModel: UserSuggestionListWithInputViewModel
+    var viewModel: CompletionSuggestionListWithInputViewModel
     @State private var inputText = ""
     
     var body: some View {
         VStack(spacing: 0.0) {
-            UserSuggestionList(viewModel: viewModel.listViewModel.context)
+            CompletionSuggestionList(viewModel: viewModel.listViewModel.context)
             TextField("Search for user", text: $inputText)
                 .background(Color.white)
                 .onChange(of: inputText, perform: viewModel.callback)
@@ -48,8 +48,8 @@ struct UserSuggestionListWithInput: View {
 
 // MARK: - Previews
 
-struct UserSuggestionListWithInput_Previews: PreviewProvider {
-    static let stateRenderer = MockUserSuggestionScreenState.stateRenderer
+struct CompletionSuggestionListWithInput_Previews: PreviewProvider {
+    static let stateRenderer = MockCompletionSuggestionScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
     }

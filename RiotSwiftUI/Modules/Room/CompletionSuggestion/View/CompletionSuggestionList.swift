@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct UserSuggestionList: View {
+struct CompletionSuggestionList: View {
     private enum Constants {
         static let topPadding: CGFloat = 8.0
         static let listItemPadding: CGFloat = 4.0
@@ -43,7 +43,7 @@ struct UserSuggestionList: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: UserSuggestionViewModel.Context
+    @ObservedObject var viewModel: CompletionSuggestionViewModel.Context
     var showBackgroundShadow: Bool = true
     
     var body: some View {
@@ -51,7 +51,7 @@ struct UserSuggestionList: View {
             EmptyView()
         } else {
             ZStack {
-                UserSuggestionListItem(content: UserSuggestionViewStateItem.user(
+                CompletionSuggestionListItem(content: CompletionSuggestionViewStateItem.user(
                     id: "Prototype",
                     avatar: AvatarInput(mxContentUri: "",
                                         matrixItemId: "",
@@ -79,7 +79,7 @@ struct UserSuggestionList: View {
             Button {
                 viewModel.send(viewAction: .selectedItem(item))
             } label: {
-                UserSuggestionListItem(content: item)
+                CompletionSuggestionListItem(content: item)
                     .modifier(ListItemPaddingModifier(isFirst: viewModel.viewState.items.first?.id == item.id))
             }
         }
@@ -134,8 +134,8 @@ private struct BackgroundView<Content: View>: View {
 
 // MARK: - Previews
 
-struct UserSuggestion_Previews: PreviewProvider {
-    static let stateRenderer = MockUserSuggestionScreenState.stateRenderer
+struct CompletionSuggestion_Previews: PreviewProvider {
+    static let stateRenderer = MockCompletionSuggestionScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
     }

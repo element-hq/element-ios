@@ -28,7 +28,7 @@ struct CommandsProviderCommand {
     var name: String
 }
 
-class UserSuggestionID: NSObject {
+class CompletionSuggestionUserID: NSObject {
     /// A special case added for suggesting `@room` mentions.
     @objc static let room = "@room"
 }
@@ -42,17 +42,17 @@ protocol CommandsProviderProtocol {
     func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void)
 }
 
-struct UserSuggestionServiceItem: UserSuggestionItemProtocol {
+struct CompletionSuggestionServiceUserItem: CompletionSuggestionUserItemProtocol {
     let userId: String
     let displayName: String?
     let avatarUrl: String?
 }
 
-struct CommandSuggestionServiceItem: CommandSuggestionItemProtocol {
+struct CompletionSuggestionServiceCommandItem: CompletionSuggestionCommandItemProtocol {
     let name: String
 }
 
-class UserSuggestionService: UserSuggestionServiceProtocol {
+class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
     // MARK: - Properties
     
     // MARK: Private
@@ -60,13 +60,13 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
     private let roomMemberProvider: RoomMembersProviderProtocol
     private let commandProvider: CommandsProviderProtocol
     
-    private var suggestionItems: [SuggestionItem] = []
+    private var suggestionItems: [CompletionSuggestionItem] = []
     private let currentTextTriggerSubject = CurrentValueSubject<String?, Never>(nil)
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
     
-    var items = CurrentValueSubject<[SuggestionItem], Never>([])
+    var items = CurrentValueSubject<[CompletionSuggestionItem], Never>([])
     
     var currentTextTrigger: String? {
         currentTextTriggerSubject.value
@@ -93,7 +93,7 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
         }
     }
     
-    // MARK: - UserSuggestionServiceProtocol
+    // MARK: - CompletionSuggestionServiceProtocol
     
     func processTextMessage(_ textMessage: String?) {
         guard let textMessage = textMessage,
@@ -145,14 +145,14 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
                 }
 
                 self.suggestionItems = members.withRoom(self.roomMemberProvider.canMentionRoom).map { member in
-                    SuggestionItem.user(value: UserSuggestionServiceItem(userId: member.userId, displayName: member.displayName, avatarUrl: member.avatarUrl))
+                    CompletionSuggestionItem.user(value: CompletionSuggestionServiceUserItem(userId: member.userId, displayName: member.displayName, avatarUrl: member.avatarUrl))
                 }
 
                 self.items.send(self.suggestionItems.filter { item in
-                    guard case let .user(userSuggestion) = item else { return false }
+                    guard case let .user(completionSuggestionUserItem) = item else { return false }
 
-                    let containedInUsername = userSuggestion.userId.lowercased().contains(partialName.lowercased())
-                    let containedInDisplayName = (userSuggestion.displayName ?? "").lowercased().contains(partialName.lowercased())
+                    let containedInUsername = completionSuggestionUserItem.userId.lowercased().contains(partialName.lowercased())
+                    let containedInDisplayName = (completionSuggestionUserItem.displayName ?? "").lowercased().contains(partialName.lowercased())
 
                     return (containedInUsername || containedInDisplayName)
                 })
@@ -165,7 +165,7 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
                 guard let self else { return }
 
                 self.suggestionItems = commands.map { command in
-                    SuggestionItem.command(value: CommandSuggestionServiceItem(name: command.name))
+                    CompletionSuggestionItem.command(value: CompletionSuggestionServiceCommandItem(name: command.name))
                 }
 
                 self.items.send(self.suggestionItems.filter { item in
@@ -184,6 +184,6 @@ extension Array where Element == RoomMembersProviderMember {
     /// Returns the array with an additional member that represents an `@room` mention.
     func withRoom(_ canMentionRoom: Bool) -> Self {
         guard canMentionRoom else { return self }
-        return self + [RoomMembersProviderMember(userId: UserSuggestionID.room, displayName: "Everyone", avatarUrl: "")]
+        return self + [RoomMembersProviderMember(userId: CompletionSuggestionUserID.room, displayName: "Everyone", avatarUrl: "")]
     }
 }

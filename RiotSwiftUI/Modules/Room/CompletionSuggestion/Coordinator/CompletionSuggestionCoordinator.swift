@@ -20,40 +20,40 @@ import SwiftUI
 import UIKit
 import WysiwygComposer
 
-protocol UserSuggestionCoordinatorDelegate: AnyObject {
-    func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
-    func userSuggestionCoordinatorDidRequestMentionForRoom(_ coordinator: UserSuggestionCoordinator, textTrigger: String?)
-    func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestCommand command: String, textTrigger: String?)
-    func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didUpdateViewHeight height: CGFloat)
+protocol CompletionSuggestionCoordinatorDelegate: AnyObject {
+    func completionSuggestionCoordinator(_ coordinator: CompletionSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
+    func completionSuggestionCoordinatorDidRequestMentionForRoom(_ coordinator: CompletionSuggestionCoordinator, textTrigger: String?)
+    func completionSuggestionCoordinator(_ coordinator: CompletionSuggestionCoordinator, didRequestCommand command: String, textTrigger: String?)
+    func completionSuggestionCoordinator(_ coordinator: CompletionSuggestionCoordinator, didUpdateViewHeight height: CGFloat)
 }
 
-struct UserSuggestionCoordinatorParameters {
+struct CompletionSuggestionCoordinatorParameters {
     let mediaManager: MXMediaManager
     let room: MXRoom
     let userID: String
 }
 
-/// Wrapper around `UserSuggestionViewModelType.Context` to pass it through obj-c.
-final class UserSuggestionViewModelContextWrapper: NSObject {
-    let context: UserSuggestionViewModelType.Context
+/// Wrapper around `CompletionSuggestionViewModelType.Context` to pass it through obj-c.
+final class CompletionSuggestionViewModelContextWrapper: NSObject {
+    let context: CompletionSuggestionViewModelType.Context
 
-    init(context: UserSuggestionViewModelType.Context) {
+    init(context: CompletionSuggestionViewModelType.Context) {
         self.context = context
     }
 }
 
-final class UserSuggestionCoordinator: Coordinator, Presentable {
+final class CompletionSuggestionCoordinator: Coordinator, Presentable {
     // MARK: - Properties
     
     // MARK: Private
     
-    private let parameters: UserSuggestionCoordinatorParameters
+    private let parameters: CompletionSuggestionCoordinatorParameters
     
-    private var userSuggestionHostingController: UIHostingController<AnyView>
-    private var userSuggestionService: UserSuggestionServiceProtocol
-    private var userSuggestionViewModel: UserSuggestionViewModelProtocol
-    private var roomMemberProvider: UserSuggestionCoordinatorRoomMemberProvider
-    private var commandProvider: UserSuggestionCoordinatorCommandProvider
+    private var completionSuggestionHostingController: UIHostingController<AnyView>
+    private var completionSuggestionService: CompletionSuggestionServiceProtocol
+    private var completionSuggestionViewModel: CompletionSuggestionViewModelProtocol
+    private var roomMemberProvider: CompletionSuggestionCoordinatorRoomMemberProvider
+    private var commandProvider: CompletionSuggestionCoordinatorCommandProvider
 
     private var cancellables = Set<AnyCancellable>()
     
@@ -63,57 +63,57 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     var childCoordinators: [Coordinator] = []
     var completion: (() -> Void)?
     
-    weak var delegate: UserSuggestionCoordinatorDelegate?
+    weak var delegate: CompletionSuggestionCoordinatorDelegate?
     
     // MARK: - Setup
     
-    init(parameters: UserSuggestionCoordinatorParameters) {
+    init(parameters: CompletionSuggestionCoordinatorParameters) {
         self.parameters = parameters
         
-        roomMemberProvider = UserSuggestionCoordinatorRoomMemberProvider(room: parameters.room, userID: parameters.userID)
-        commandProvider = UserSuggestionCoordinatorCommandProvider(room: parameters.room, userID: parameters.userID)
-        userSuggestionService = UserSuggestionService(roomMemberProvider: roomMemberProvider, commandProvider: commandProvider)
+        roomMemberProvider = CompletionSuggestionCoordinatorRoomMemberProvider(room: parameters.room, userID: parameters.userID)
+        commandProvider = CompletionSuggestionCoordinatorCommandProvider(room: parameters.room, userID: parameters.userID)
+        completionSuggestionService = CompletionSuggestionService(roomMemberProvider: roomMemberProvider, commandProvider: commandProvider)
         
-        let viewModel = UserSuggestionViewModel(userSuggestionService: userSuggestionService)
-        let view = UserSuggestionList(viewModel: viewModel.context)
+        let viewModel = CompletionSuggestionViewModel(completionSuggestionService: completionSuggestionService)
+        let view = CompletionSuggestionList(viewModel: viewModel.context)
             .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.mediaManager)))
         
-        userSuggestionViewModel = viewModel
-        userSuggestionHostingController = VectorHostingController(rootView: view)
+        completionSuggestionViewModel = viewModel
+        completionSuggestionHostingController = VectorHostingController(rootView: view)
         
-        userSuggestionViewModel.completion = { [weak self] result in
+        completionSuggestionViewModel.completion = { [weak self] result in
             guard let self = self else {
                 return
             }
             
             switch result {
             case .selectedItemWithIdentifier(let identifier):
-                if identifier == UserSuggestionID.room {
-                    self.delegate?.userSuggestionCoordinatorDidRequestMentionForRoom(self, textTrigger: self.userSuggestionService.currentTextTrigger)
+                if identifier == CompletionSuggestionUserID.room {
+                    self.delegate?.completionSuggestionCoordinatorDidRequestMentionForRoom(self, textTrigger: self.completionSuggestionService.currentTextTrigger)
                     return
                 }
                 
                 if let member = self.roomMemberProvider.roomMembers.filter({ $0.userId == identifier }).first {
-                    self.delegate?.userSuggestionCoordinator(self, didRequestMentionForMember: member, textTrigger: self.userSuggestionService.currentTextTrigger)
+                    self.delegate?.completionSuggestionCoordinator(self, didRequestMentionForMember: member, textTrigger: self.completionSuggestionService.currentTextTrigger)
                 } else if let command = self.commandProvider.commands.filter({ $0 == identifier }).first {
-                    self.delegate?.userSuggestionCoordinator(self, didRequestCommand: command, textTrigger: self.userSuggestionService.currentTextTrigger)
+                    self.delegate?.completionSuggestionCoordinator(self, didRequestCommand: command, textTrigger: self.completionSuggestionService.currentTextTrigger)
                 }
             }
         }
 
-        userSuggestionService.items.sink { [weak self] _ in
+        completionSuggestionService.items.sink { [weak self] _ in
             guard let self = self else { return }
-            self.delegate?.userSuggestionCoordinator(self,
+            self.delegate?.completionSuggestionCoordinator(self,
                                                      didUpdateViewHeight: self.calculateViewHeight())
         }.store(in: &cancellables)
     }
     
     func processTextMessage(_ textMessage: String) {
-        userSuggestionService.processTextMessage(textMessage)
+        completionSuggestionService.processTextMessage(textMessage)
     }
 
     func processSuggestionPattern(_ suggestionPattern: SuggestionPattern?) {
-        userSuggestionService.processSuggestionPattern(suggestionPattern)
+        completionSuggestionService.processSuggestionPattern(suggestionPattern)
     }
 
     // MARK: - Public
@@ -121,18 +121,18 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     func start() { }
     
     func toPresentable() -> UIViewController {
-        userSuggestionHostingController
+        completionSuggestionHostingController
     }
 
-    func sharedContext() -> UserSuggestionViewModelContextWrapper {
-        UserSuggestionViewModelContextWrapper(context: userSuggestionViewModel.sharedContext)
+    func sharedContext() -> CompletionSuggestionViewModelContextWrapper {
+        CompletionSuggestionViewModelContextWrapper(context: completionSuggestionViewModel.sharedContext)
     }
 
     // MARK: - Private
 
     private func calculateViewHeight() -> CGFloat {
-        let viewModel = UserSuggestionViewModel(userSuggestionService: userSuggestionService)
-        let view = UserSuggestionList(viewModel: viewModel.context)
+        let viewModel = CompletionSuggestionViewModel(completionSuggestionService: completionSuggestionService)
+        let view = CompletionSuggestionList(viewModel: viewModel.context)
             .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: parameters.mediaManager)))
 
         let controller = VectorHostingController(rootView: view)
@@ -156,7 +156,7 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     }
 }
 
-private class UserSuggestionCoordinatorRoomMemberProvider: RoomMembersProviderProtocol {
+private class CompletionSuggestionCoordinatorRoomMemberProvider: RoomMembersProviderProtocol {
     private let room: MXRoom
     private let userID: String
     
@@ -194,7 +194,7 @@ private class UserSuggestionCoordinatorRoomMemberProvider: RoomMembersProviderPr
             self.roomMembers = joinedMembers
             members(self.roomMembersToProviderMembers(joinedMembers))
         } failure: { error in
-            MXLog.error("[UserSuggestionCoordinatorRoomMemberProvider] Failed loading room", context: error)
+            MXLog.error("[CompletionSuggestionCoordinatorRoomMemberProvider] Failed loading room", context: error)
         }
     }
     
@@ -203,7 +203,7 @@ private class UserSuggestionCoordinatorRoomMemberProvider: RoomMembersProviderPr
     }
 }
 
-private class UserSuggestionCoordinatorCommandProvider: CommandsProviderProtocol {
+private class CompletionSuggestionCoordinatorCommandProvider: CommandsProviderProtocol {
     private let room: MXRoom
     private let userID: String
 

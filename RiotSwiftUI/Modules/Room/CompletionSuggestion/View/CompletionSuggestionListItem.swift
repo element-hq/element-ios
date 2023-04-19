@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct UserSuggestionListItem: View {
+struct CompletionSuggestionListItem: View {
     // MARK: - Properties
     
     // MARK: Private
@@ -25,7 +25,7 @@ struct UserSuggestionListItem: View {
     
     // MARK: Public
 
-    let content: UserSuggestionViewStateItem
+    let content: CompletionSuggestionViewStateItem
     
     var body: some View {
         HStack {
@@ -59,9 +59,9 @@ struct UserSuggestionListItem: View {
 
 // MARK: - Previews
 
-struct UserSuggestionHeader_Previews: PreviewProvider {
+struct CompletionSuggestionHeader_Previews: PreviewProvider {
     static var previews: some View {
-        UserSuggestionListItem(content: UserSuggestionViewStateItem.user(
+        CompletionSuggestionListItem(content: CompletionSuggestionViewStateItem.user(
             id: "@alice:matrix.org",
             avatar: MockAvatarInput.example,
             displayName: "Alice"

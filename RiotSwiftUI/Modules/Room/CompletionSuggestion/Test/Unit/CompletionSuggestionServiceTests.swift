@@ -19,51 +19,53 @@ import XCTest
 
 @testable import RiotSwiftUI
 
-class UserSuggestionServiceTests: XCTestCase {
-    var service: UserSuggestionService!
+class CompletionSuggestionServiceTests: XCTestCase {
+    var service: CompletionSuggestionService!
     var canMentionRoom = false
     
     override func setUp() {
-        service = UserSuggestionService(roomMemberProvider: self, shouldDebounce: false)
+        service = CompletionSuggestionService(roomMemberProvider: self,
+                                              commandProvider: self,
+                                              shouldDebounce: false)
         canMentionRoom = false
     }
     
     func testAlice() {
         service.processTextMessage("@Al")
-        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
+        XCTAssertEqual(service.items.value.first?.asUser?.displayName, "Alice")
         
         service.processTextMessage("@al")
-        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
+        XCTAssertEqual(service.items.value.first?.asUser?.displayName, "Alice")
         
         service.processTextMessage("@ice")
-        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
+        XCTAssertEqual(service.items.value.first?.asUser?.displayName, "Alice")
         
         service.processTextMessage("@Alice")
-        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
+        XCTAssertEqual(service.items.value.first?.asUser?.displayName, "Alice")
         
         service.processTextMessage("@alice:matrix.org")
-        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
+        XCTAssertEqual(service.items.value.first?.asUser?.displayName, "Alice")
     }
     
     func testBob() {
         service.processTextMessage("@ob")
-        XCTAssertEqual(service.items.value.first?.displayName, "Bob")
+        XCTAssertEqual(service.items.value.first?.asUser?.displayName, "Bob")
         
         service.processTextMessage("@ob:")
-        XCTAssertEqual(service.items.value.first?.displayName, "Bob")
+        XCTAssertEqual(service.items.value.first?.asUser?.displayName, "Bob")
         
         service.processTextMessage("@b:matrix")
-        XCTAssertEqual(service.items.value.first?.displayName, "Bob")
+        XCTAssertEqual(service.items.value.first?.asUser?.displayName, "Bob")
     }
     
     func testBoth() {
         service.processTextMessage("@:matrix")
-        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
-        XCTAssertEqual(service.items.value.last?.displayName, "Bob")
+        XCTAssertEqual(service.items.value.first?.asUser?.displayName, "Alice")
+        XCTAssertEqual(service.items.value.last?.asUser?.displayName, "Bob")
         
         service.processTextMessage("@.org")
-        XCTAssertEqual(service.items.value.first?.displayName, "Alice")
-        XCTAssertEqual(service.items.value.last?.displayName, "Bob")
+        XCTAssertEqual(service.items.value.first?.asUser?.displayName, "Alice")
+        XCTAssertEqual(service.items.value.last?.asUser?.displayName, "Bob")
     }
     
     func testEmptyResult() {
@@ -117,18 +119,18 @@ class UserSuggestionServiceTests: XCTestCase {
     }
     
     func testRoomWithPower() {
-        // Given a user without the power to mention a room.
+        // Given a user with the power to mention a room.
         canMentionRoom = true
         
-        // Given a user without the power to mention a room.
+        // Given a user with the power to mention a room.
         service.processTextMessage("@ro")
         
         // Then the completion for a room mention should be shown.
-        XCTAssertEqual(service.items.value.first?.userId, UserSuggestionID.room)
+        XCTAssertEqual(service.items.value.first?.asUser?.userId, CompletionSuggestionUserID.room)
     }
 }
 
-extension UserSuggestionServiceTests: RoomMembersProviderProtocol {
+extension CompletionSuggestionServiceTests: RoomMembersProviderProtocol {
     func fetchMembers(_ members: @escaping ([RoomMembersProviderMember]) -> Void) {
         let users = [("Alice", "@alice:matrix.org"),
                      ("Bob", "@bob:matrix.org")]
@@ -136,5 +138,25 @@ extension UserSuggestionServiceTests: RoomMembersProviderProtocol {
         members(users.map { user in
             RoomMembersProviderMember(userId: user.1, displayName: user.0, avatarUrl: "")
         })
+    }
+}
+
+extension CompletionSuggestionServiceTests: CommandsProviderProtocol {
+    func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void) {
+        let commandList = ["/ban", "/invite", "/join", "/me"]
+
+        commands(commandList.map { command in
+            CommandsProviderCommand(name: command)
+        })
+    }
+}
+
+extension CompletionSuggestionItem {
+    var asUser: CompletionSuggestionUserItemProtocol? {
+        if case let .user(value) = self { return value } else { return nil }
+    }
+
+    var asCommand: CompletionSuggestionCommandItemProtocol? {
+        if case let .command(value) = self { return value } else { return nil }
     }
 }

@@ -17,32 +17,32 @@
 import Foundation
 import SwiftUI
 
-enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
+enum MockCompletionSuggestionScreenState: MockScreenState, CaseIterable {
     case multipleResults
     
     private static var members: [RoomMembersProviderMember]!
     
     var screenType: Any.Type {
-        UserSuggestionList.self
+        CompletionSuggestionList.self
     }
     
     var screenView: ([Any], AnyView) {
-        let service = UserSuggestionService(roomMemberProvider: self, commandProvider: self)
-        let listViewModel = UserSuggestionViewModel(userSuggestionService: service)
+        let service = CompletionSuggestionService(roomMemberProvider: self, commandProvider: self)
+        let listViewModel = CompletionSuggestionViewModel(completionSuggestionService: service)
         
-        let viewModel = UserSuggestionListWithInputViewModel(listViewModel: listViewModel) { textMessage in
+        let viewModel = CompletionSuggestionListWithInputViewModel(listViewModel: listViewModel) { textMessage in
             service.processTextMessage(textMessage)
         }
         
         return (
             [service, listViewModel],
-            AnyView(UserSuggestionListWithInput(viewModel: viewModel)
+            AnyView(CompletionSuggestionListWithInput(viewModel: viewModel)
                 .environmentObject(AvatarViewModel.withMockedServices()))
         )
     }
 }
 
-extension MockUserSuggestionScreenState: RoomMembersProviderProtocol {
+extension MockCompletionSuggestionScreenState: RoomMembersProviderProtocol {
     var canMentionRoom: Bool { false }
     
     func fetchMembers(_ members: ([RoomMembersProviderMember]) -> Void) {
@@ -61,7 +61,7 @@ extension MockUserSuggestionScreenState: RoomMembersProviderProtocol {
     }
 }
 
-extension MockUserSuggestionScreenState: CommandsProviderProtocol {
+extension MockCompletionSuggestionScreenState: CommandsProviderProtocol {
     func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void) {
         commands([
             CommandsProviderCommand(name: "/ban"),
