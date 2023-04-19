@@ -25,7 +25,9 @@ struct RoomMembersProviderMember {
 }
 
 struct CommandsProviderCommand {
-    var name: String
+    let name: String
+    let parametersFormat: String
+    let description: String
 }
 
 class CompletionSuggestionUserID: NSObject {
@@ -50,6 +52,8 @@ struct CompletionSuggestionServiceUserItem: CompletionSuggestionUserItemProtocol
 
 struct CompletionSuggestionServiceCommandItem: CompletionSuggestionCommandItemProtocol {
     let name: String
+    let parametersFormat: String
+    let description: String
 }
 
 class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
@@ -165,7 +169,7 @@ class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
                 guard let self else { return }
 
                 self.suggestionItems = commands.map { command in
-                    CompletionSuggestionItem.command(value: CompletionSuggestionServiceCommandItem(name: command.name))
+                    CompletionSuggestionItem.command(value: CompletionSuggestionServiceCommandItem(name: command.name, parametersFormat: command.parametersFormat, description: command.description))
                 }
 
                 self.items.send(self.suggestionItems.filter { item in

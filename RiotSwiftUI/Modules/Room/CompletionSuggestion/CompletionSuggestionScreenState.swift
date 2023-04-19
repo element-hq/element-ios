@@ -64,10 +64,18 @@ extension MockCompletionSuggestionScreenState: RoomMembersProviderProtocol {
 extension MockCompletionSuggestionScreenState: CommandsProviderProtocol {
     func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void) {
         commands([
-            CommandsProviderCommand(name: "/ban"),
-            CommandsProviderCommand(name: "/invite"),
-            CommandsProviderCommand(name: "/join"),
-            CommandsProviderCommand(name: "/me")
+            CommandsProviderCommand(name: "/ban",
+                                    parametersFormat: "<user-id> [reason]",
+                                    description: "Bans user with given id"),
+            CommandsProviderCommand(name: "/invite",
+                                    parametersFormat: "<user-id>",
+                                    description: "Invites user with given id to current room"),
+            CommandsProviderCommand(name: "/join",
+                                    parametersFormat: "<room-address>",
+                                    description: "Joins room with given address"),
+            CommandsProviderCommand(name: "/me",
+                                    parametersFormat: "<message>",
+                                    description: "Displays action")
         ])
     }
 }

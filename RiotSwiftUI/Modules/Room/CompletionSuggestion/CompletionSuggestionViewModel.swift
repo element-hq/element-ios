@@ -42,7 +42,11 @@ class CompletionSuggestionViewModel: CompletionSuggestionViewModelType, Completi
         let items = completionSuggestionService.items.value.map { suggestionItem in
             switch suggestionItem {
             case .command(let completionSuggestionCommandItem):
-                return CompletionSuggestionViewStateItem.command(name: completionSuggestionCommandItem.name)
+                return CompletionSuggestionViewStateItem.command(
+                    name: completionSuggestionCommandItem.name,
+                    parametersFormat: completionSuggestionCommandItem.parametersFormat,
+                    description: completionSuggestionCommandItem.description
+                )
             case .user(let completionSuggestionUserItem):
                 return CompletionSuggestionViewStateItem.user(id: completionSuggestionUserItem.userId,
                                                               avatar: completionSuggestionUserItem,
@@ -56,7 +60,11 @@ class CompletionSuggestionViewModel: CompletionSuggestionViewModelType, Completi
             self?.state.items = items.map { item in
                 switch item {
                 case .command(let completionSuggestionCommandItem):
-                    return CompletionSuggestionViewStateItem.command(name: completionSuggestionCommandItem.name)
+                    return CompletionSuggestionViewStateItem.command(
+                        name: completionSuggestionCommandItem.name,
+                        parametersFormat: completionSuggestionCommandItem.parametersFormat,
+                        description: completionSuggestionCommandItem.description
+                    )
                 case .user(let completionSuggestionUserItem):
                     return CompletionSuggestionViewStateItem.user(id: completionSuggestionUserItem.userId,
                                                                   avatar: completionSuggestionUserItem,

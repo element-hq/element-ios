@@ -95,8 +95,8 @@ final class CompletionSuggestionCoordinator: Coordinator, Presentable {
                 
                 if let member = self.roomMemberProvider.roomMembers.filter({ $0.userId == identifier }).first {
                     self.delegate?.completionSuggestionCoordinator(self, didRequestMentionForMember: member, textTrigger: self.completionSuggestionService.currentTextTrigger)
-                } else if let command = self.commandProvider.commands.filter({ $0 == identifier }).first {
-                    self.delegate?.completionSuggestionCoordinator(self, didRequestCommand: command, textTrigger: self.completionSuggestionService.currentTextTrigger)
+                } else if let command = self.commandProvider.commands.filter({ $0.name == identifier }).first {
+                    self.delegate?.completionSuggestionCoordinator(self, didRequestCommand: command.name, textTrigger: self.completionSuggestionService.currentTextTrigger)
                 }
             }
         }
@@ -207,7 +207,7 @@ private class CompletionSuggestionCoordinatorCommandProvider: CommandsProviderPr
     private let room: MXRoom
     private let userID: String
 
-    var commands: [String] = []
+    var commands: [(name: String, parametersFormat: String, description: String)] = []
 
     init(room: MXRoom, userID: String) {
         self.room = room
@@ -221,13 +221,23 @@ private class CompletionSuggestionCoordinatorCommandProvider: CommandsProviderPr
 
     func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void) {
         self.commands = [
-            "/ban",
-            "/invite",
-            "/join",
-            "/me"
+            (name: "/ban",
+             parametersFormat: "<user-id> [reason]",
+             description: "Bans user with given id"),
+            (name: "/invite",
+             parametersFormat: "<user-id>",
+             description: "Invites user with given id to current room"),
+            (name: "/join",
+             parametersFormat: "<room-address>",
+             description: "Joins room with given address"),
+            (name: "/me",
+             parametersFormat: "<message>",
+             description: "Displays action")
         ]
 
         // TODO: get real data
-        commands(self.commands.map { CommandsProviderCommand(name: $0) })
+        commands(self.commands.map { CommandsProviderCommand(name: $0.name,
+                                                             parametersFormat: $0.parametersFormat,
+                                                             description: $0.description) })
     }
 }

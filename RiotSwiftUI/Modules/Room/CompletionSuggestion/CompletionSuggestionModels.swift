@@ -25,12 +25,12 @@ enum CompletionSuggestionViewModelResult {
 }
 
 enum CompletionSuggestionViewStateItem: Identifiable {
-    case command(name: String)
+    case command(name: String, parametersFormat: String, description: String)
     case user(id: String, avatar: AvatarInputProtocol?, displayName: String?)
 
     var id: String {
         switch self {
-        case .command(let name):
+        case .command(let name, _, _):
             return name
         case .user(let id, _, _):
             return id

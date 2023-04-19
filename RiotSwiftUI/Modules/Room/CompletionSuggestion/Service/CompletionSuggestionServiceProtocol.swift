@@ -26,6 +26,8 @@ protocol CompletionSuggestionUserItemProtocol: Avatarable {
 
 protocol CompletionSuggestionCommandItemProtocol {
     var name: String { get }
+    var parametersFormat: String { get }
+    var description: String { get }
 }
 
 enum CompletionSuggestionItem {

@@ -30,12 +30,26 @@ struct CompletionSuggestionListItem: View {
     var body: some View {
         HStack {
             switch content {
-            case .command(let name):
-                Text(name)
-                    .font(theme.fonts.body)
-                    .foregroundColor(theme.colors.primaryContent)
-                    .accessibility(identifier: "nameText")
-                    .lineLimit(1)
+            case .command(let name, let parametersFormat, let description):
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text(name)
+                            .font(theme.fonts.body.bold())
+                            .foregroundColor(theme.colors.primaryContent)
+                            .accessibility(identifier: "nameText")
+                            .lineLimit(1)
+                        Text(parametersFormat)
+                            .font(theme.fonts.body.italic())
+                            .foregroundColor(theme.colors.tertiaryContent)
+                            .accessibility(identifier: "parametersFormatText")
+                            .lineLimit(1)
+                    }
+                    Text(description)
+                        .font(theme.fonts.body)
+                        .foregroundColor(theme.colors.tertiaryContent)
+                        .accessibility(identifier: "descriptionText")
+                        .lineLimit(1)
+                }
             case .user(let userId, let avatar, let displayName):
                 if let avatar = avatar {
                     AvatarImage(avatarData: avatar, size: .medium)
