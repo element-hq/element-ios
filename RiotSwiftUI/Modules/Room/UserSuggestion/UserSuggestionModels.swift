@@ -24,10 +24,18 @@ enum UserSuggestionViewModelResult {
     case selectedItemWithIdentifier(String)
 }
 
-struct UserSuggestionViewStateItem: Identifiable {
-    let id: String
-    let avatar: AvatarInputProtocol?
-    let displayName: String?
+enum UserSuggestionViewStateItem: Identifiable {
+    case command(name: String)
+    case user(id: String, avatar: AvatarInputProtocol?, displayName: String?)
+
+    var id: String {
+        switch self {
+        case .command(let name):
+            return name
+        case .user(let id, _, _):
+            return id
+        }
+    }
 }
 
 struct UserSuggestionViewState: BindableState {

@@ -8076,6 +8076,14 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self.inputToolbarView pasteText:[UserSuggestionID.room stringByAppendingString:@" "]];
 }
 
+- (void)userSuggestionCoordinatorBridge:(UserSuggestionCoordinatorBridge *)coordinator
+                      didRequestCommand:(NSString *)command
+                            textTrigger:(NSString *)textTrigger
+{
+    [self removeTriggerTextFromComposer:textTrigger];
+    [self setCommand:command];
+}
+
 - (void)removeTriggerTextFromComposer:(NSString *)textTrigger
 {
     RoomInputToolbarView *toolbar = (RoomInputToolbarView *)self.inputToolbarView;

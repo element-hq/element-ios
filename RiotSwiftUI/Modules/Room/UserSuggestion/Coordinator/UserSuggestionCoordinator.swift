@@ -23,6 +23,7 @@ import WysiwygComposer
 protocol UserSuggestionCoordinatorDelegate: AnyObject {
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
     func userSuggestionCoordinatorDidRequestMentionForRoom(_ coordinator: UserSuggestionCoordinator, textTrigger: String?)
+    func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestCommand command: String, textTrigger: String?)
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didUpdateViewHeight height: CGFloat)
 }
 
@@ -52,6 +53,7 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
     private var userSuggestionService: UserSuggestionServiceProtocol
     private var userSuggestionViewModel: UserSuggestionViewModelProtocol
     private var roomMemberProvider: UserSuggestionCoordinatorRoomMemberProvider
+    private var commandProvider: UserSuggestionCoordinatorCommandProvider
 
     private var cancellables = Set<AnyCancellable>()
     
@@ -69,7 +71,8 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         
         roomMemberProvider = UserSuggestionCoordinatorRoomMemberProvider(room: parameters.room, userID: parameters.userID)
-        userSuggestionService = UserSuggestionService(roomMemberProvider: roomMemberProvider)
+        commandProvider = UserSuggestionCoordinatorCommandProvider(room: parameters.room, userID: parameters.userID)
+        userSuggestionService = UserSuggestionService(roomMemberProvider: roomMemberProvider, commandProvider: commandProvider)
         
         let viewModel = UserSuggestionViewModel(userSuggestionService: userSuggestionService)
         let view = UserSuggestionList(viewModel: viewModel.context)
@@ -90,11 +93,11 @@ final class UserSuggestionCoordinator: Coordinator, Presentable {
                     return
                 }
                 
-                guard let member = self.roomMemberProvider.roomMembers.filter({ $0.userId == identifier }).first else {
-                    return
+                if let member = self.roomMemberProvider.roomMembers.filter({ $0.userId == identifier }).first {
+                    self.delegate?.userSuggestionCoordinator(self, didRequestMentionForMember: member, textTrigger: self.userSuggestionService.currentTextTrigger)
+                } else if let command = self.commandProvider.commands.filter({ $0 == identifier }).first {
+                    self.delegate?.userSuggestionCoordinator(self, didRequestCommand: command, textTrigger: self.userSuggestionService.currentTextTrigger)
                 }
-                
-                self.delegate?.userSuggestionCoordinator(self, didRequestMentionForMember: member, textTrigger: self.userSuggestionService.currentTextTrigger)
             }
         }
 
@@ -197,5 +200,34 @@ private class UserSuggestionCoordinatorRoomMemberProvider: RoomMembersProviderPr
     
     private func roomMembersToProviderMembers(_ roomMembers: [MXRoomMember]) -> [RoomMembersProviderMember] {
         roomMembers.map { RoomMembersProviderMember(userId: $0.userId, displayName: $0.displayname ?? "", avatarUrl: $0.avatarUrl ?? "") }
+    }
+}
+
+private class UserSuggestionCoordinatorCommandProvider: CommandsProviderProtocol {
+    private let room: MXRoom
+    private let userID: String
+
+    var commands: [String] = []
+
+    init(room: MXRoom, userID: String) {
+        self.room = room
+        self.userID = userID
+        updateWithPowerLevels()
+    }
+
+    func updateWithPowerLevels() {
+        // TODO: filter commands in terms of user power level ?
+    }
+
+    func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void) {
+        self.commands = [
+            "/ban",
+            "/invite",
+            "/join",
+            "/me"
+        ]
+
+        // TODO: get real data
+        commands(self.commands.map { CommandsProviderCommand(name: $0) })
     }
 }

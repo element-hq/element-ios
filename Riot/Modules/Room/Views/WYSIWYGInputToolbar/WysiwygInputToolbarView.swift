@@ -195,6 +195,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                                          name: member.displayname,
                                          mentionType: .user)
     }
+
+    func command(_ command: String) {
+        self.wysiwygViewModel.setCommand(name: command)
+    }
     
     // MARK: - Private
 

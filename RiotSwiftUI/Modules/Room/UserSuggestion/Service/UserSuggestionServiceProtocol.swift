@@ -24,8 +24,17 @@ protocol UserSuggestionItemProtocol: Avatarable {
     var avatarUrl: String? { get }
 }
 
+protocol CommandSuggestionItemProtocol {
+    var name: String { get }
+}
+
+enum SuggestionItem {
+    case command(value: CommandSuggestionItemProtocol)
+    case user(value: UserSuggestionItemProtocol)
+}
+
 protocol UserSuggestionServiceProtocol {
-    var items: CurrentValueSubject<[UserSuggestionItemProtocol], Never> { get }
+    var items: CurrentValueSubject<[SuggestionItem], Never> { get }
     
     var currentTextTrigger: String? { get }
     

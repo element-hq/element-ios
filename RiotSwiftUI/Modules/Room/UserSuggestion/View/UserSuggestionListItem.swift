@@ -25,26 +25,33 @@ struct UserSuggestionListItem: View {
     
     // MARK: Public
 
-    let avatar: AvatarInputProtocol?
-    let displayName: String?
-    let userId: String
+    let content: UserSuggestionViewStateItem
     
     var body: some View {
         HStack {
-            if let avatar = avatar {
-                AvatarImage(avatarData: avatar, size: .medium)
-            }
-            VStack(alignment: .leading) {
-                Text(displayName ?? "")
+            switch content {
+            case .command(let name):
+                Text(name)
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.primaryContent)
-                    .accessibility(identifier: "displayNameText")
+                    .accessibility(identifier: "nameText")
                     .lineLimit(1)
-                Text(userId)
-                    .font(theme.fonts.footnote)
-                    .foregroundColor(theme.colors.tertiaryContent)
-                    .accessibility(identifier: "userIdText")
-                    .lineLimit(1)
+            case .user(let userId, let avatar, let displayName):
+                if let avatar = avatar {
+                    AvatarImage(avatarData: avatar, size: .medium)
+                }
+                VStack(alignment: .leading) {
+                    Text(displayName ?? "")
+                        .font(theme.fonts.body)
+                        .foregroundColor(theme.colors.primaryContent)
+                        .accessibility(identifier: "displayNameText")
+                        .lineLimit(1)
+                    Text(userId)
+                        .font(theme.fonts.footnote)
+                        .foregroundColor(theme.colors.tertiaryContent)
+                        .accessibility(identifier: "userIdText")
+                        .lineLimit(1)
+                }
             }
         }
     }
@@ -54,7 +61,11 @@ struct UserSuggestionListItem: View {
 
 struct UserSuggestionHeader_Previews: PreviewProvider {
     static var previews: some View {
-        UserSuggestionListItem(avatar: MockAvatarInput.example, displayName: "Alice", userId: "@alice:matrix.org")
-            .environmentObject(AvatarViewModel.withMockedServices())
+        UserSuggestionListItem(content: UserSuggestionViewStateItem.user(
+            id: "@alice:matrix.org",
+            avatar: MockAvatarInput.example,
+            displayName: "Alice"
+        ))
+        .environmentObject(AvatarViewModel.withMockedServices())
     }
 }

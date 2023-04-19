@@ -40,14 +40,28 @@ class UserSuggestionViewModel: UserSuggestionViewModelType, UserSuggestionViewMo
         self.userSuggestionService = userSuggestionService
         
         let items = userSuggestionService.items.value.map { suggestionItem in
-            UserSuggestionViewStateItem(id: suggestionItem.userId, avatar: suggestionItem, displayName: suggestionItem.displayName)
+            switch suggestionItem {
+            case .command(let commandSuggestionItem):
+                return UserSuggestionViewStateItem.command(name: commandSuggestionItem.name)
+            case .user(let userSuggestionItem):
+                return UserSuggestionViewStateItem.user(id: userSuggestionItem.userId,
+                                                        avatar: userSuggestionItem,
+                                                        displayName: userSuggestionItem.displayName)
+            }
         }
         
         super.init(initialViewState: UserSuggestionViewState(items: items))
         
         userSuggestionService.items.sink { [weak self] items in
             self?.state.items = items.map { item in
-                UserSuggestionViewStateItem(id: item.userId, avatar: item, displayName: item.displayName)
+                switch item {
+                case .command(let commandSuggestionItem):
+                    return UserSuggestionViewStateItem.command(name: commandSuggestionItem.name)
+                case .user(let userSuggestionItem):
+                    return UserSuggestionViewStateItem.user(id: userSuggestionItem.userId,
+                                                            avatar: userSuggestionItem,
+                                                            displayName: userSuggestionItem.displayName)
+                }
             }
         }.store(in: &cancellables)
     }

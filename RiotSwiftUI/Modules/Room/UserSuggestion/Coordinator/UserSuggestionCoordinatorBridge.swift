@@ -20,6 +20,7 @@ import Foundation
 protocol UserSuggestionCoordinatorBridgeDelegate: AnyObject {
     func userSuggestionCoordinatorBridge(_ coordinator: UserSuggestionCoordinatorBridge, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
     func userSuggestionCoordinatorBridgeDidRequestMentionForRoom(_ coordinator: UserSuggestionCoordinatorBridge, textTrigger: String?)
+    func userSuggestionCoordinatorBridge(_ coordinator: UserSuggestionCoordinatorBridge, didRequestCommand command: String, textTrigger: String?)
     func userSuggestionCoordinatorBridge(_ coordinator: UserSuggestionCoordinatorBridge, didUpdateViewHeight height: CGFloat)
 }
 
@@ -66,6 +67,10 @@ extension UserSuggestionCoordinatorBridge: UserSuggestionCoordinatorDelegate {
     
     func userSuggestionCoordinatorDidRequestMentionForRoom(_ coordinator: UserSuggestionCoordinator, textTrigger: String?) {
         delegate?.userSuggestionCoordinatorBridgeDidRequestMentionForRoom(self, textTrigger: textTrigger)
+    }
+
+    func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestCommand command: String, textTrigger: String?) {
+        delegate?.userSuggestionCoordinatorBridge(self, didRequestCommand: command, textTrigger: textTrigger)
     }
 
     func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didUpdateViewHeight height: CGFloat) {

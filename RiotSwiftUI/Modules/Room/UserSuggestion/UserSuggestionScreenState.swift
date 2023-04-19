@@ -27,7 +27,7 @@ enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
     }
     
     var screenView: ([Any], AnyView) {
-        let service = UserSuggestionService(roomMemberProvider: self)
+        let service = UserSuggestionService(roomMemberProvider: self, commandProvider: self)
         let listViewModel = UserSuggestionViewModel(userSuggestionService: service)
         
         let viewModel = UserSuggestionListWithInputViewModel(listViewModel: listViewModel) { textMessage in
@@ -58,5 +58,16 @@ extension MockUserSuggestionScreenState: RoomMembersProviderProtocol {
             let identifier = "@" + UUID().uuidString
             return RoomMembersProviderMember(userId: identifier, displayName: identifier, avatarUrl: "mxc://matrix.org/VyNYAgahaiAzUoOeZETtQ")
         }
+    }
+}
+
+extension MockUserSuggestionScreenState: CommandsProviderProtocol {
+    func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void) {
+        commands([
+            CommandsProviderCommand(name: "/ban"),
+            CommandsProviderCommand(name: "/invite"),
+            CommandsProviderCommand(name: "/join"),
+            CommandsProviderCommand(name: "/me")
+        ])
     }
 }

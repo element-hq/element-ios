@@ -58,6 +58,22 @@ extension RoomViewController {
         }
     }
 
+    @objc func setCommand(_ command: String) {
+        if let wysiwygInputToolbar, wysiwygInputToolbar.textFormattingEnabled {
+            wysiwygInputToolbar.command(command)
+            wysiwygInputToolbar.becomeFirstResponder()
+        } else {
+            guard let attributedText = inputToolbarView.attributedTextMessage else { return }
+
+            let newAttributedString = NSMutableAttributedString(attributedString: attributedText)
+            newAttributedString.append(NSAttributedString(string: "\(command) ",
+                                                          attributes: [.font: inputToolbarView.defaultFont]))
+
+            inputToolbarView.attributedTextMessage = newAttributedString
+            inputToolbarView.becomeFirstResponder()
+        }
+    }
+
 
     /// Send the formatted text message and its raw counterpart to the room
     ///

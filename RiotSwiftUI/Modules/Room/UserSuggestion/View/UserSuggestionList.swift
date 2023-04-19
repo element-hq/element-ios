@@ -51,9 +51,12 @@ struct UserSuggestionList: View {
             EmptyView()
         } else {
             ZStack {
-                UserSuggestionListItem(avatar: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: "Prototype"),
-                                       displayName: "Prototype",
-                                       userId: "Prototype")
+                UserSuggestionListItem(content: UserSuggestionViewStateItem.user(
+                    id: "Prototype",
+                    avatar: AvatarInput(mxContentUri: "",
+                                        matrixItemId: "",
+                                        displayName: "Prototype"),
+                    displayName: "Prototype"))
                     .background(ViewFrameReader(frame: $prototypeListItemFrame))
                     .hidden()
                 if showBackgroundShadow {
@@ -76,12 +79,8 @@ struct UserSuggestionList: View {
             Button {
                 viewModel.send(viewAction: .selectedItem(item))
             } label: {
-                UserSuggestionListItem(
-                    avatar: item.avatar,
-                    displayName: item.displayName,
-                    userId: item.id
-                )
-                .modifier(ListItemPaddingModifier(isFirst: viewModel.viewState.items.first?.id == item.id))
+                UserSuggestionListItem(content: item)
+                    .modifier(ListItemPaddingModifier(isFirst: viewModel.viewState.items.first?.id == item.id))
             }
         }
         .listStyle(PlainListStyle())
