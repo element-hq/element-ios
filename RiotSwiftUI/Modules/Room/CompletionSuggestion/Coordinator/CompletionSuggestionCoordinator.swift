@@ -230,33 +230,32 @@ private class CompletionSuggestionCoordinatorCommandProvider: CommandsProviderPr
 }
 
 private extension MXKSlashCommand {
-    // TODO: L10N
     var description: String {
         switch self {
         case .changeDisplayName:
-            return "Changes your display nickname"
+            return VectorL10n.roomCommandChangeDisplayNameDescription
         case .emote:
-            return "Displays action"
+            return VectorL10n.roomCommandEmoteDescription
         case .joinRoom:
-            return "Joins room with given address"
+            return VectorL10n.roomCommandJoinRoomDescription
         case .partRoom:
-            return "Leave room"
+            return VectorL10n.roomCommandPartRoomDescription
         case .inviteUser:
-            return "Invites user with given id to current room"
+            return VectorL10n.roomCommandInviteUserDescription
         case .kickUser:
-            return "Removes user with given id from this room"
+            return VectorL10n.roomCommandKickUserDescription
         case .banUser:
-            return "Bans user with given id"
+            return VectorL10n.roomCommandBanUserDescription
         case .unbanUser:
-            return "Unbans user with given id"
+            return VectorL10n.roomCommandUnbanUserDescription
         case .setUserPowerLevel:
-            return "Define the power level of a user"
+            return VectorL10n.roomCommandSetUserPowerLevelDescription
         case .resetUserPowerLevel:
-            return "Deops user with given id"
+            return VectorL10n.roomCommandResetUserPowerLevelDescription
         case .changeRoomTopic:
-            return "Sets the room topic"
+            return VectorL10n.roomCommandChangeRoomTopicDescription
         case .discardSession:
-            return "Forces the current outbound group session in an encrypted room to be discarded"
+            return VectorL10n.roomCommandDiscardSessionDescription
         }
     }
 
