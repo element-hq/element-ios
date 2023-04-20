@@ -162,21 +162,29 @@ class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
                 })
             }
         case "/":
-            // TODO: send all commands if only text is "/"
             partialName.removeFirst()
 
             commandProvider.fetchCommands { [weak self] commands in
                 guard let self else { return }
 
                 self.suggestionItems = commands.map { command in
-                    CompletionSuggestionItem.command(value: CompletionSuggestionServiceCommandItem(name: command.name, parametersFormat: command.parametersFormat, description: command.description))
+                    CompletionSuggestionItem.command(value: CompletionSuggestionServiceCommandItem(
+                        name: command.name,
+                        parametersFormat: command.parametersFormat,
+                        description: command.description
+                    ))
                 }
 
-                self.items.send(self.suggestionItems.filter { item in
-                    guard case let .command(commandSuggestion) = item else { return false }
+                if partialName.isEmpty {
+                    // A single `/` will display all available commands.
+                    self.items.send(self.suggestionItems)
+                } else {
+                    self.items.send(self.suggestionItems.filter { item in
+                        guard case let .command(commandSuggestion) = item else { return false }
 
-                    return commandSuggestion.name.lowercased().contains(partialName.lowercased())
-                })
+                        return commandSuggestion.name.lowercased().contains(partialName.lowercased())
+                    })
+                }
             }
         default:
             return
