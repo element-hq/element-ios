@@ -29,7 +29,7 @@ class CompletionSuggestionViewModel: CompletionSuggestionViewModelType, Completi
     // MARK: Public
 
     var sharedContext: CompletionSuggestionViewModelType.Context {
-        return self.context
+        context
     }
 
     var completion: ((CompletionSuggestionViewModelResult) -> Void)?

@@ -143,11 +143,20 @@ extension CompletionSuggestionServiceTests: RoomMembersProviderProtocol {
 
 extension CompletionSuggestionServiceTests: CommandsProviderProtocol {
     func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void) {
-        let commandList = ["/ban", "/invite", "/join", "/me"]
-
-        commands(commandList.map { command in
-            CommandsProviderCommand(name: command)
-        })
+        commands([
+            CommandsProviderCommand(name: "/ban",
+                                    parametersFormat: "<user-id> [<reason>]",
+                                    description: "Bans user with given id"),
+            CommandsProviderCommand(name: "/invite",
+                                    parametersFormat: "<user-id>",
+                                    description: "Invites user with given id to current room"),
+            CommandsProviderCommand(name: "/join",
+                                    parametersFormat: "<room-address>",
+                                    description: "Joins room with given address"),
+            CommandsProviderCommand(name: "/me",
+                                    parametersFormat: "<message>",
+                                    description: "Displays action")
+        ])
     }
 }
 

@@ -103,8 +103,7 @@ final class CompletionSuggestionCoordinator: Coordinator, Presentable {
 
         completionSuggestionService.items.sink { [weak self] _ in
             guard let self = self else { return }
-            self.delegate?.completionSuggestionCoordinator(self,
-                                                     didUpdateViewHeight: self.calculateViewHeight())
+            self.delegate?.completionSuggestionCoordinator(self, didUpdateViewHeight: self.calculateViewHeight())
         }.store(in: &cancellables)
     }
     
@@ -233,11 +232,7 @@ private class CompletionSuggestionCoordinatorCommandProvider: CommandsProviderPr
     }
 
     func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void) {
-        commands(self.commands.map { CommandsProviderCommand(
-            name: $0.cmd,
-            parametersFormat: $0.parametersFormat,
-            description: $0.description
-        )})
+        commands(self.commands.map { CommandsProviderCommand(name: $0.cmd, parametersFormat: $0.parametersFormat, description: $0.description) })
     }
 }
 

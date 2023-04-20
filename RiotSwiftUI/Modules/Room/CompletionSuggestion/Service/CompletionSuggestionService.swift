@@ -200,14 +200,14 @@ private struct TextTrigger: Equatable {
     let text: String
 
     func asString() -> String {
-        return String(key.rawValue) + text
+        String(key.rawValue) + text
     }
 }
 
 private extension String {
     // Returns current completion suggestion for a text message, if any.
     var currentTextTrigger: TextTrigger? {
-        let components = self.components(separatedBy: .whitespaces)
+        let components = components(separatedBy: .whitespaces)
         guard var lastComponent = components.last,
               lastComponent.count > 0,
               let suggestionKey = SuggestionKey(rawValue: lastComponent.removeFirst()),

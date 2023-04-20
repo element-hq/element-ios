@@ -65,7 +65,7 @@ extension MockCompletionSuggestionScreenState: CommandsProviderProtocol {
     func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void) {
         commands([
             CommandsProviderCommand(name: "/ban",
-                                    parametersFormat: "<user-id> [reason]",
+                                    parametersFormat: "<user-id> [<reason>]",
                                     description: "Bans user with given id"),
             CommandsProviderCommand(name: "/invite",
                                     parametersFormat: "<user-id>",

@@ -30,7 +30,7 @@ struct CompletionSuggestionList: View {
          to the list items in order to be as close as possible as the
          `UITableView` display.
          */
-        @available (iOS 16.0, *)
+        @available(iOS 16.0, *)
         static let collectionViewPaddingCorrection: CGFloat = -5.0
     }
 
@@ -44,19 +44,14 @@ struct CompletionSuggestionList: View {
     // MARK: Public
     
     @ObservedObject var viewModel: CompletionSuggestionViewModel.Context
-    var showBackgroundShadow: Bool = true
+    var showBackgroundShadow = true
     
     var body: some View {
         if viewModel.viewState.items.isEmpty {
             EmptyView()
         } else {
             ZStack {
-                CompletionSuggestionListItem(content: CompletionSuggestionViewStateItem.user(
-                    id: "Prototype",
-                    avatar: AvatarInput(mxContentUri: "",
-                                        matrixItemId: "",
-                                        displayName: "Prototype"),
-                    displayName: "Prototype"))
+                CompletionSuggestionListItem(content: CompletionSuggestionViewStateItem.user(id: "Prototype", avatar: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: "Prototype"), displayName: "Prototype"))
                     .background(ViewFrameReader(frame: $prototypeListItemFrame))
                     .hidden()
                 if showBackgroundShadow {
