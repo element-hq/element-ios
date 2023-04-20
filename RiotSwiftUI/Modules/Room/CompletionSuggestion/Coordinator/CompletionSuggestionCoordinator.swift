@@ -95,8 +95,8 @@ final class CompletionSuggestionCoordinator: Coordinator, Presentable {
                 
                 if let member = self.roomMemberProvider.roomMembers.filter({ $0.userId == identifier }).first {
                     self.delegate?.completionSuggestionCoordinator(self, didRequestMentionForMember: member, textTrigger: self.completionSuggestionService.currentTextTrigger)
-                } else if let command = self.commandProvider.commands.filter({ $0.name == identifier }).first {
-                    self.delegate?.completionSuggestionCoordinator(self, didRequestCommand: command.name, textTrigger: self.completionSuggestionService.currentTextTrigger)
+                } else if let command = self.commandProvider.commands.filter({ $0.cmd == identifier }).first {
+                    self.delegate?.completionSuggestionCoordinator(self, didRequestCommand: command.cmd, textTrigger: self.completionSuggestionService.currentTextTrigger)
                 }
             }
         }
@@ -207,7 +207,7 @@ private class CompletionSuggestionCoordinatorCommandProvider: CommandsProviderPr
     private let room: MXRoom
     private let userID: String
 
-    var commands: [(name: String, parametersFormat: String, description: String)] = []
+    var commands = MXKSlashCommand.allCases
 
     init(room: MXRoom, userID: String) {
         self.room = room
@@ -216,28 +216,59 @@ private class CompletionSuggestionCoordinatorCommandProvider: CommandsProviderPr
     }
 
     func updateWithPowerLevels() {
-        // TODO: filter commands in terms of user power level ?
+        room.state { [weak self] state in
+            guard let self, let powerLevels = state?.powerLevels else { return }
+
+            // Note: for now only filter out `/op` and `/deop` (same as Element-Web),
+            // but we could use power level for ban/invite/etc to filter further.
+            let adminOnlyCommands: [MXKSlashCommand] = [.setUserPowerLevel, .resetUserPowerLevel]
+            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: self.userID)
+
+            if RoomPowerLevel(rawValue: userPowerLevel) != .admin {
+                self.commands = self.commands.filter {
+                    !adminOnlyCommands.contains($0)
+                }
+            }
+        }
     }
 
     func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void) {
-        self.commands = [
-            (name: "/ban",
-             parametersFormat: "<user-id> [reason]",
-             description: "Bans user with given id"),
-            (name: "/invite",
-             parametersFormat: "<user-id>",
-             description: "Invites user with given id to current room"),
-            (name: "/join",
-             parametersFormat: "<room-address>",
-             description: "Joins room with given address"),
-            (name: "/me",
-             parametersFormat: "<message>",
-             description: "Displays action")
-        ]
+        commands(self.commands.map { CommandsProviderCommand(
+            name: $0.cmd,
+            parametersFormat: $0.parametersFormat,
+            description: $0.description
+        )})
+    }
+}
 
-        // TODO: get real data
-        commands(self.commands.map { CommandsProviderCommand(name: $0.name,
-                                                             parametersFormat: $0.parametersFormat,
-                                                             description: $0.description) })
+private extension MXKSlashCommand {
+    // TODO: L10N
+    var description: String {
+        switch self {
+        case .changeDisplayName:
+            return "Changes your display nickname"
+        case .emote:
+            return "Displays action"
+        case .joinRoom:
+            return "Joins room with given address"
+        case .partRoom:
+            return "Leave room"
+        case .inviteUser:
+            return "Invites user with given id to current room"
+        case .kickUser:
+            return "Removes user with given id from this room"
+        case .banUser:
+            return "Bans user with given id"
+        case .unbanUser:
+            return "Unbans user with given id"
+        case .setUserPowerLevel:
+            return "Define the power level of a user"
+        case .resetUserPowerLevel:
+            return "Deops user with given id"
+        case .changeRoomTopic:
+            return "Sets the room topic"
+        case .discardSession:
+            return "Forces the current outbound group session in an encrypted room to be discarded"
+        }
     }
 }

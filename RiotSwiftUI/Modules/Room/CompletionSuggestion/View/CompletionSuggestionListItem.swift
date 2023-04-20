@@ -48,7 +48,6 @@ struct CompletionSuggestionListItem: View {
                         .font(theme.fonts.body)
                         .foregroundColor(theme.colors.tertiaryContent)
                         .accessibility(identifier: "descriptionText")
-                        .lineLimit(1)
                 }
             case .user(let userId, let avatar, let displayName):
                 if let avatar = avatar {

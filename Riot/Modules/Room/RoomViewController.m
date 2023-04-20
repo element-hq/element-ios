@@ -1281,6 +1281,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (BOOL)sendAsIRCStyleCommandIfPossible:(NSString*)string
 {
     // Override the default behavior for `/join` command in order to open automatically the joined room
+
+    NSString* kMXKSlashCmdJoinRoom = [MXKSlashCommandsHelper commandNameFor:MXKSlashCommandJoinRoom];
     
     if ([string hasPrefix:kMXKSlashCmdJoinRoom])
     {
@@ -1317,7 +1319,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         else
         {
             // Display cmd usage in text input as placeholder
-            self.inputToolbarView.placeholder = @"Usage: /join <room_alias>";
+            self.inputToolbarView.placeholder = [MXKSlashCommandsHelper commandUsageFor:MXKSlashCommandJoinRoom];
         }
         return YES;
     }
@@ -5237,7 +5239,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         if (readyToSend) {
             BOOL isMessageAHandledCommand = NO;
             // "/me" command is supported with Pills in RoomDataSource.
-            if (![attributedTextMessage.string hasPrefix:kMXKSlashCmdEmote])
+            if (![attributedTextMessage.string hasPrefix:[MXKSlashCommandsHelper commandNameFor:MXKSlashCommandEmote]])
             {
                 // Other commands currently work with identifiers (e.g. ban, invite, op, etc).
                 NSString *message;
