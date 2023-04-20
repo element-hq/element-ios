@@ -65,7 +65,7 @@ class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
     private let commandProvider: CommandsProviderProtocol
     
     private var suggestionItems: [CompletionSuggestionItem] = []
-    private let currentTextTriggerSubject = CurrentValueSubject<String?, Never>(nil)
+    private let currentTextTriggerSubject = CurrentValueSubject<TextTrigger?, Never>(nil)
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
@@ -73,7 +73,7 @@ class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
     var items = CurrentValueSubject<[CompletionSuggestionItem], Never>([])
     
     var currentTextTrigger: String? {
-        currentTextTriggerSubject.value
+        currentTextTriggerSubject.value?.asString()
     }
     
     // MARK: - Setup
@@ -88,11 +88,11 @@ class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
             currentTextTriggerSubject
                 .debounce(for: 0.5, scheduler: RunLoop.main)
                 .removeDuplicates()
-                .sink { [weak self] in self?.fetchAndFilterMembersForTextTrigger($0) }
+                .sink { [weak self] in self?.fetchAndFilterSuggestionsForTextTrigger($0) }
                 .store(in: &cancellables)
         } else {
             currentTextTriggerSubject
-                .sink { [weak self] in self?.fetchAndFilterMembersForTextTrigger($0) }
+                .sink { [weak self] in self?.fetchAndFilterSuggestionsForTextTrigger($0) }
                 .store(in: &cancellables)
         }
     }
@@ -101,16 +101,14 @@ class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
     
     func processTextMessage(_ textMessage: String?) {
         guard let textMessage = textMessage,
-              textMessage.count > 0,
-              let lastComponent = textMessage.components(separatedBy: .whitespaces).last,
-              lastComponent.prefix(while: { $0 == "@" || $0 == "/" }).count == 1 // Partial username should start with one and only one "@" character
+              let textTrigger = textMessage.currentTextTrigger
         else {
             items.send([])
             currentTextTriggerSubject.send(nil)
             return
         }
         
-        currentTextTriggerSubject.send(lastComponent)
+        currentTextTriggerSubject.send(textTrigger)
     }
 
     func processSuggestionPattern(_ suggestionPattern: SuggestionPattern?) {
@@ -122,27 +120,23 @@ class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
 
         switch suggestionPattern.key {
         case .at:
-            currentTextTriggerSubject.send("@" + suggestionPattern.text)
+            currentTextTriggerSubject.send(TextTrigger(key: .at, text: suggestionPattern.text))
         case .hash:
             // No room suggestion support yet
             items.send([])
             currentTextTriggerSubject.send(nil)
         case .slash:
-            currentTextTriggerSubject.send("/" + suggestionPattern.text)
+            currentTextTriggerSubject.send(TextTrigger(key: .slash, text: suggestionPattern.text))
         }
     }
     
     // MARK: - Private
     
-    private func fetchAndFilterMembersForTextTrigger(_ textTrigger: String?) {
-        guard var partialName = textTrigger else {
-            return
-        }
+    private func fetchAndFilterSuggestionsForTextTrigger(_ textTrigger: TextTrigger?) {
+        guard let textTrigger else { return }
 
-        switch partialName.first {
-        case "@":
-            partialName.removeFirst() // remove the '@' prefix
-
+        switch textTrigger.key {
+        case .at:
             roomMemberProvider.fetchMembers { [weak self] members in
                 guard let self = self else {
                     return
@@ -155,15 +149,13 @@ class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
                 self.items.send(self.suggestionItems.filter { item in
                     guard case let .user(completionSuggestionUserItem) = item else { return false }
 
-                    let containedInUsername = completionSuggestionUserItem.userId.lowercased().contains(partialName.lowercased())
-                    let containedInDisplayName = (completionSuggestionUserItem.displayName ?? "").lowercased().contains(partialName.lowercased())
+                    let containedInUsername = completionSuggestionUserItem.userId.lowercased().contains(textTrigger.text.lowercased())
+                    let containedInDisplayName = (completionSuggestionUserItem.displayName ?? "").lowercased().contains(textTrigger.text.lowercased())
 
                     return (containedInUsername || containedInDisplayName)
                 })
             }
-        case "/":
-            partialName.removeFirst()
-
+        case .slash:
             commandProvider.fetchCommands { [weak self] commands in
                 guard let self else { return }
 
@@ -175,19 +167,17 @@ class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
                     ))
                 }
 
-                if partialName.isEmpty {
+                if textTrigger.text.isEmpty {
                     // A single `/` will display all available commands.
                     self.items.send(self.suggestionItems)
                 } else {
                     self.items.send(self.suggestionItems.filter { item in
                         guard case let .command(commandSuggestion) = item else { return false }
 
-                        return commandSuggestion.name.lowercased().contains(partialName.lowercased())
+                        return commandSuggestion.name.lowercased().contains(textTrigger.text.lowercased())
                     })
                 }
             }
-        default:
-            return
         }
     }
 }
@@ -197,5 +187,36 @@ extension Array where Element == RoomMembersProviderMember {
     func withRoom(_ canMentionRoom: Bool) -> Self {
         guard canMentionRoom else { return self }
         return self + [RoomMembersProviderMember(userId: CompletionSuggestionUserID.room, displayName: "Everyone", avatarUrl: "")]
+    }
+}
+
+private enum SuggestionKey: Character {
+    case at = "@"
+    case slash = "/"
+}
+
+private struct TextTrigger: Equatable {
+    let key: SuggestionKey
+    let text: String
+
+    func asString() -> String {
+        return String(key.rawValue) + text
+    }
+}
+
+private extension String {
+    // Returns current completion suggestion for a text message, if any.
+    var currentTextTrigger: TextTrigger? {
+        let components = self.components(separatedBy: .whitespaces)
+        guard var lastComponent = components.last,
+              lastComponent.count > 0,
+              let suggestionKey = SuggestionKey(rawValue: lastComponent.removeFirst()),
+              // If a second character exists and is the same as the key it shouldn't trigger.
+              lastComponent.first != suggestionKey.rawValue,
+              // Slash commands should be displayed only if there is a single component
+              !(suggestionKey == .slash && components.count > 1)
+        else { return nil }
+
+        return TextTrigger(key: suggestionKey, text: lastComponent)
     }
 }
