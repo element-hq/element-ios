@@ -67,7 +67,7 @@
         }
     }
 
-    // Note: not localized for consistancy, as commands are in english
+    // Note: not localized for consistency, as commands are in english
     // also translating these parameters could lead to inconsistency in
     // the UI in case of languages with otherlength translation.
     var parametersFormat: String {
