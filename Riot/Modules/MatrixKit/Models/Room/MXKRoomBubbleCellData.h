@@ -145,6 +145,15 @@
 - (CGFloat)rawTextHeight:(NSAttributedString*)attributedText;
 
 /**
+ Return the raw height of the provided text by removing any vertical margin/inset and constraining the width.
+ 
+ @param attributedText the attributed text to measure
+ @param maxTextViewWidth the maximum text width
+ @return the computed height
+ */
+- (CGFloat)rawTextHeight:(NSAttributedString*)attributedText withMaxWidth:(CGFloat)maxTextViewWidth;
+
+/**
  Return the content size of a text view initialized with the provided attributed text.
  CAUTION: This method runs only on main thread.
  
