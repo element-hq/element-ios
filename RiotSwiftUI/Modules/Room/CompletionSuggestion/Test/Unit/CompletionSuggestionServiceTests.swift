@@ -22,14 +22,18 @@ import XCTest
 class CompletionSuggestionServiceTests: XCTestCase {
     var service: CompletionSuggestionService!
     var canMentionRoom = false
+    var isRoomAdmin = false
     
     override func setUp() {
         service = CompletionSuggestionService(roomMemberProvider: self,
                                               commandProvider: self,
                                               shouldDebounce: false)
         canMentionRoom = false
+        isRoomAdmin = false
     }
-    
+
+    // MARK: - User suggestions
+
     func testAlice() {
         service.processTextMessage("@Al")
         XCTAssertEqual(service.items.value.first?.asUser?.displayName, "Alice")
@@ -128,6 +132,85 @@ class CompletionSuggestionServiceTests: XCTestCase {
         // Then the completion for a room mention should be shown.
         XCTAssertEqual(service.items.value.first?.asUser?.userId, CompletionSuggestionUserID.room)
     }
+
+    // MARK: - Command suggestions
+
+    func testJoin() {
+        service.processTextMessage("/jo")
+        XCTAssertEqual(service.items.value.first?.asCommand?.name, "/join")
+
+        service.processTextMessage("/joi")
+        XCTAssertEqual(service.items.value.first?.asCommand?.name, "/join")
+
+        service.processTextMessage("/join")
+        XCTAssertEqual(service.items.value.first?.asCommand?.name, "/join")
+
+        service.processTextMessage("/oin")
+        XCTAssertEqual(service.items.value.first?.asCommand?.name, "/join")
+    }
+
+    func testInvite() {
+        service.processTextMessage("/inv")
+        XCTAssertEqual(service.items.value.first?.asCommand?.name, "/invite")
+
+        service.processTextMessage("/invite")
+        XCTAssertEqual(service.items.value.first?.asCommand?.name, "/invite")
+
+        service.processTextMessage("/vite")
+        XCTAssertEqual(service.items.value.first?.asCommand?.name, "/invite")
+    }
+
+    func testMultipleResults() {
+        service.processTextMessage("/in")
+        XCTAssertEqual(
+            service.items.value.compactMap { $0.asCommand?.name },
+            ["/invite", "/join"]
+        )
+    }
+
+    func testDoubleSlashDontTrigger() {
+        service.processTextMessage("//")
+        XCTAssertTrue(service.items.value.isEmpty)
+    }
+
+    func testNonLeadingSlashCommandDontTrigger() {
+        service.processTextMessage("test /joi")
+        XCTAssertTrue(service.items.value.isEmpty)
+    }
+
+    func testAdminCommandsAreNotAvailable() {
+        isRoomAdmin = false
+
+        service.processTextMessage("/op")
+        XCTAssertTrue(service.items.value.isEmpty)
+    }
+
+    func testAdminCommandsAreAvailable() {
+        isRoomAdmin = true
+
+        service.processTextMessage("/op")
+        XCTAssertEqual(service.items.value.compactMap { $0.asCommand?.name }, ["/op", "/deop"])
+    }
+
+    func testDisplayAllCommandsAsStandardUser() {
+        isRoomAdmin = false
+
+        service.processTextMessage("/")
+        XCTAssertEqual(
+            service.items.value.compactMap { $0.asCommand?.name },
+            ["/ban", "/invite", "/join", "/me"]
+        )
+    }
+
+    func testDisplayAllCommandsAsAdmin() {
+        isRoomAdmin = true
+
+        service.processTextMessage("/")
+        XCTAssertEqual(
+            service.items.value.compactMap { $0.asCommand?.name },
+            ["/ban", "/invite", "/join", "/op", "/deop", "/me"]
+        )
+    }
 }
 
 extension CompletionSuggestionServiceTests: RoomMembersProviderProtocol {
@@ -146,16 +229,28 @@ extension CompletionSuggestionServiceTests: CommandsProviderProtocol {
         commands([
             CommandsProviderCommand(name: "/ban",
                                     parametersFormat: "<user-id> [<reason>]",
-                                    description: "Bans user with given id"),
+                                    description: "Bans user with given id",
+                                    requiresAdminPowerLevel: false),
             CommandsProviderCommand(name: "/invite",
                                     parametersFormat: "<user-id>",
-                                    description: "Invites user with given id to current room"),
+                                    description: "Invites user with given id to current room",
+                                    requiresAdminPowerLevel: false),
             CommandsProviderCommand(name: "/join",
                                     parametersFormat: "<room-address>",
-                                    description: "Joins room with given address"),
+                                    description: "Joins room with given address",
+                                    requiresAdminPowerLevel: false),
+            CommandsProviderCommand(name: "/op",
+                                    parametersFormat: "<user-id> <power-level>",
+                                    description: "Define the power level of a user",
+                                    requiresAdminPowerLevel: true),
+            CommandsProviderCommand(name: "/deop",
+                                    parametersFormat: "<user-id>",
+                                    description: "Deops user with given id",
+                                    requiresAdminPowerLevel: true),
             CommandsProviderCommand(name: "/me",
                                     parametersFormat: "<message>",
-                                    description: "Displays action")
+                                    description: "Displays action",
+                                    requiresAdminPowerLevel: false)
         ])
     }
 }

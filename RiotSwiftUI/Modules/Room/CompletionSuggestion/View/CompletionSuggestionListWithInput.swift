@@ -34,13 +34,13 @@ struct CompletionSuggestionListWithInput: View {
     var body: some View {
         VStack(spacing: 0.0) {
             CompletionSuggestionList(viewModel: viewModel.listViewModel.context)
-            TextField("Search for user", text: $inputText)
+            TextField("Search for user/command", text: $inputText)
                 .background(Color.white)
                 .onChange(of: inputText, perform: viewModel.callback)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding([.leading, .trailing])
                 .onAppear {
-                    inputText = "@-" // Make the list show all available mock results
+                    inputText = "@-" // Make the list show all available user mock results
                 }
         }
     }

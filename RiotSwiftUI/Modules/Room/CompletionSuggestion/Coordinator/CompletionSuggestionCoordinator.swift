@@ -207,6 +207,7 @@ private class CompletionSuggestionCoordinatorCommandProvider: CommandsProviderPr
     private let userID: String
 
     var commands = MXKSlashCommand.allCases
+    var isRoomAdmin = false
 
     init(room: MXRoom, userID: String) {
         self.room = room
@@ -218,21 +219,13 @@ private class CompletionSuggestionCoordinatorCommandProvider: CommandsProviderPr
         room.state { [weak self] state in
             guard let self, let powerLevels = state?.powerLevels else { return }
 
-            // Note: for now only filter out `/op` and `/deop` (same as Element-Web),
-            // but we could use power level for ban/invite/etc to filter further.
-            let adminOnlyCommands: [MXKSlashCommand] = [.setUserPowerLevel, .resetUserPowerLevel]
             let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: self.userID)
-
-            if RoomPowerLevel(rawValue: userPowerLevel) != .admin {
-                self.commands = self.commands.filter {
-                    !adminOnlyCommands.contains($0)
-                }
-            }
+            isRoomAdmin = RoomPowerLevel(rawValue: userPowerLevel) == .admin
         }
     }
 
     func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void) {
-        commands(self.commands.map { CommandsProviderCommand(name: $0.cmd, parametersFormat: $0.parametersFormat, description: $0.description) })
+        commands(self.commands.map { CommandsProviderCommand(name: $0.cmd, parametersFormat: $0.parametersFormat, description: $0.description, requiresAdminPowerLevel: $0.requiresAdminPowerLevel) })
     }
 }
 
@@ -264,6 +257,17 @@ private extension MXKSlashCommand {
             return "Sets the room topic"
         case .discardSession:
             return "Forces the current outbound group session in an encrypted room to be discarded"
+        }
+    }
+
+    // Note: for now only filter out `/op` and `/deop` (same as Element-Web),
+    // but we could use power level for ban/invite/etc to filter further.
+    var requiresAdminPowerLevel: Bool {
+        switch self {
+        case .setUserPowerLevel, .resetUserPowerLevel:
+            return true
+        default:
+            return false
         }
     }
 }

@@ -62,20 +62,34 @@ extension MockCompletionSuggestionScreenState: RoomMembersProviderProtocol {
 }
 
 extension MockCompletionSuggestionScreenState: CommandsProviderProtocol {
+    var isRoomAdmin: Bool { false }
+
     func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void) {
         commands([
             CommandsProviderCommand(name: "/ban",
                                     parametersFormat: "<user-id> [<reason>]",
-                                    description: "Bans user with given id"),
+                                    description: "Bans user with given id",
+                                    requiresAdminPowerLevel: false),
             CommandsProviderCommand(name: "/invite",
                                     parametersFormat: "<user-id>",
-                                    description: "Invites user with given id to current room"),
+                                    description: "Invites user with given id to current room",
+                                    requiresAdminPowerLevel: false),
             CommandsProviderCommand(name: "/join",
                                     parametersFormat: "<room-address>",
-                                    description: "Joins room with given address"),
+                                    description: "Joins room with given address",
+                                    requiresAdminPowerLevel: false),
+            CommandsProviderCommand(name: "/op",
+                                    parametersFormat: "<user-id> <power-level>",
+                                    description: "Define the power level of a user",
+                                    requiresAdminPowerLevel: true),
+            CommandsProviderCommand(name: "/deop",
+                                    parametersFormat: "<user-id>",
+                                    description: "Deops user with given id",
+                                    requiresAdminPowerLevel: true),
             CommandsProviderCommand(name: "/me",
                                     parametersFormat: "<message>",
-                                    description: "Displays action")
+                                    description: "Displays action",
+                                    requiresAdminPowerLevel: false)
         ])
     }
 }

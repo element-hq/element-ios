@@ -28,6 +28,7 @@ struct CommandsProviderCommand {
     let name: String
     let parametersFormat: String
     let description: String
+    let requiresAdminPowerLevel: Bool
 }
 
 class CompletionSuggestionUserID: NSObject {
@@ -41,6 +42,7 @@ protocol RoomMembersProviderProtocol {
 }
 
 protocol CommandsProviderProtocol {
+    var isRoomAdmin: Bool { get }
     func fetchCommands(_ commands: @escaping ([CommandsProviderCommand]) -> Void)
 }
 
@@ -159,7 +161,7 @@ class CompletionSuggestionService: CompletionSuggestionServiceProtocol {
             commandProvider.fetchCommands { [weak self] commands in
                 guard let self else { return }
 
-                self.suggestionItems = commands.map { command in
+                self.suggestionItems = commands.filtered(isRoomAdmin: self.commandProvider.isRoomAdmin).map { command in
                     CompletionSuggestionItem.command(value: CompletionSuggestionServiceCommandItem(
                         name: command.name,
                         parametersFormat: command.parametersFormat,
@@ -187,6 +189,13 @@ extension Array where Element == RoomMembersProviderMember {
     func withRoom(_ canMentionRoom: Bool) -> Self {
         guard canMentionRoom else { return self }
         return self + [RoomMembersProviderMember(userId: CompletionSuggestionUserID.room, displayName: "Everyone", avatarUrl: "")]
+    }
+}
+
+extension Array where Element == CommandsProviderCommand {
+    func filtered(isRoomAdmin: Bool) -> Self {
+        guard !isRoomAdmin else { return self }
+        return filter { !$0.requiresAdminPowerLevel }
     }
 }
 
