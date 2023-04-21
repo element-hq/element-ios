@@ -220,7 +220,7 @@ private class CompletionSuggestionCoordinatorCommandProvider: CommandsProviderPr
             guard let self, let powerLevels = state?.powerLevels else { return }
 
             let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: self.userID)
-            isRoomAdmin = RoomPowerLevel(rawValue: userPowerLevel) == .admin
+            self.isRoomAdmin = RoomPowerLevel(rawValue: userPowerLevel) == .admin
         }
     }
 
