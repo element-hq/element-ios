@@ -627,6 +627,7 @@ Tap the + to start adding people.";
 "room_command_reset_user_power_level_description" = "Deops user with given id";
 "room_command_change_room_topic_description" = "Sets the room topic";
 "room_command_discard_session_description" = "Forces the current outbound group session in an encrypted room to be discarded";
+"room_command_error_unknown_command" = "Invalid or unhandled command";
 
 // MARK: Threads
 "room_thread_title" = "Thread";

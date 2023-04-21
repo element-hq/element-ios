@@ -5231,6 +5231,10 @@ public class VectorL10n: NSObject {
   public static var roomCommandEmoteDescription: String { 
     return VectorL10n.tr("Vector", "room_command_emote_description") 
   }
+  /// Invalid or unhandled command
+  public static var roomCommandErrorUnknownCommand: String { 
+    return VectorL10n.tr("Vector", "room_command_error_unknown_command") 
+  }
   /// Invites user with given id to current room
   public static var roomCommandInviteUserDescription: String { 
     return VectorL10n.tr("Vector", "room_command_invite_user_description") 

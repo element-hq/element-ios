@@ -5190,6 +5190,27 @@ static CGSize kThreadListBarButtonItemImageSize;
     }];
 }
 
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView *)toolbarView sendCommand:(NSString *)commandText
+{
+    // Create before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self createDiscussionIfNeeded:^(BOOL readyToSend) {
+        MXStrongifyAndReturnIfNil(self);
+
+        if (readyToSend) {
+            if (![self sendAsIRCStyleCommandIfPossible:commandText])
+            {
+                // Display an error for unknown command
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                               message:[VectorL10n roomCommandErrorUnknownCommand]
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:nil]];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+        }
+    }];
+}
+
 - (void)roomInputToolbarViewShowSendMediaActions:(MXKRoomInputToolbarView *)toolbarView
 {
     NSMutableArray *actionItems = [NSMutableArray new];

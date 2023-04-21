@@ -338,7 +338,30 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
     
     private func sendWysiwygMessage(content: WysiwygComposerContent) {
-        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.markdown)
+        if content.markdown.prefix(while: { $0 == "/" }).count == 1 {
+            let commandText: String
+            if content.markdown.hasPrefix(MXKSlashCommand.emote.cmd) {
+                // `/me` command works with markdown content
+                commandText = content.markdown
+            } else if #available(iOS 15.0, *) {
+                // Other commands should see pills replaced by matrix identifiers
+                commandText = PillsFormatter.stringByReplacingPills(in: self.wysiwygViewModel.textView.attributedText, mode: .identifier)
+            } else {
+                // Without Pills support, just use the raw text for command
+                commandText = self.wysiwygViewModel.textView.text
+            }
+
+            // Fix potential command failures due to trailing characters
+            // or NBSP that are not properly handled by the command interpreter
+            let sanitizedCommand = commandText
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .replacingOccurrences(of: String.nbsp, with: " ")
+
+            delegate?.roomInputToolbarView?(self, sendCommand: sanitizedCommand)
+        } else {
+            delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.markdown)
+        }
+
         if isMaximised {
             minimise()
         }

@@ -103,6 +103,14 @@ typedef enum : NSUInteger
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView *)toolbarView sendFormattedTextMessage:(NSString *)formattedTextMessage withRawText:(NSString *)rawText;
 
 /**
+ Tells the delegate that the user wants to send a command.
+
+ @param toolbarView the room input toolbar view.
+ @param commandText the command to send.
+ */
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView *)toolbarView sendCommand:(NSString *)commandText;
+
+/**
  Tells the delegate that the user wants to display the send media actions.
 
  @param toolbarView the room input toolbar view.
