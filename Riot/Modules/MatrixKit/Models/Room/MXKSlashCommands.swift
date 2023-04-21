@@ -69,7 +69,7 @@
 
     // Note: not localized for consistency, as commands are in english
     // also translating these parameters could lead to inconsistency in
-    // the UI in case of languages with otherlength translation.
+    // the UI in case of languages with overlength translation.
     var parametersFormat: String {
         switch self {
         case .changeDisplayName:
