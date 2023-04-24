@@ -2943,3 +2943,18 @@
 
 "key_verification_self_verify_security_upgrade_alert_title" = "Aplikácia bola aktualizovaná";
 "settings_acceptable_use" = "Zásady prijateľného používania";
+"room_command_error_unknown_command" = "Neplatný alebo nespracovaný príkaz";
+"room_command_discard_session_description" = "Vynúti zrušenie aktuálnej relácie odchádzajúcej skupiny v zašifrovanej miestnosti";
+"room_command_change_room_topic_description" = "Nastaví tému aktuálnej miestnosti";
+"room_command_reset_user_power_level_description" = "Zruší stav moderátora používateľovi so zadaným ID";
+"room_command_set_user_power_level_description" = "Určuje úroveň oprávnenia pre zadaného používateľa";
+"room_command_unban_user_description" = "Zruší zákaz vstúpiť používateľovi so zadaným ID";
+"room_command_ban_user_description" = "Zakáže vstup používateľovi so zadaným ID";
+"room_command_kick_user_description" = "Odstráni používateľa s daným ID z tejto miestnosti";
+"room_command_invite_user_description" = "Pozve zadaného používateľa do aktuálnej miestnosti";
+"room_command_part_room_description" = "Opustiť miestnosť";
+"room_command_join_room_description" = "Pripojí sa do miestnosti s danou adresou";
+"room_command_emote_description" = "Zobrazí akciu";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "Mení vaše zobrazované meno / prezývku";
