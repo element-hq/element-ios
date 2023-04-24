@@ -31,8 +31,6 @@
 
 #import "MXKAppSettings.h"
 
-#import "MXKSlashCommands.h"
-
 #import "GeneratedInterface-Swift.h"
 
 const BOOL USE_THREAD_TIMELINE = YES;
@@ -316,7 +314,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         
         _filterMessagesWithURL = NO;
         
-        emoteMessageSlashCommandPrefix = [NSString stringWithFormat:@"%@ ", kMXKSlashCmdEmote];
+        emoteMessageSlashCommandPrefix = [NSString stringWithFormat:@"%@ ", [MXKSlashCommandsHelper commandNameFor:MXKSlashCommandEmote]];
 
         // Set default data and view classes
         // Cell data

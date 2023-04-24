@@ -5211,6 +5211,58 @@ public class VectorL10n: NSObject {
   public static var roomAvatarViewAccessibilityLabel: String { 
     return VectorL10n.tr("Vector", "room_avatar_view_accessibility_label") 
   }
+  /// Bans user with given id
+  public static var roomCommandBanUserDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_ban_user_description") 
+  }
+  /// Changes your display nickname
+  public static var roomCommandChangeDisplayNameDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_change_display_name_description") 
+  }
+  /// Sets the room topic
+  public static var roomCommandChangeRoomTopicDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_change_room_topic_description") 
+  }
+  /// Forces the current outbound group session in an encrypted room to be discarded
+  public static var roomCommandDiscardSessionDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_discard_session_description") 
+  }
+  /// Displays action
+  public static var roomCommandEmoteDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_emote_description") 
+  }
+  /// Invalid or unhandled command
+  public static var roomCommandErrorUnknownCommand: String { 
+    return VectorL10n.tr("Vector", "room_command_error_unknown_command") 
+  }
+  /// Invites user with given id to current room
+  public static var roomCommandInviteUserDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_invite_user_description") 
+  }
+  /// Joins room with given address
+  public static var roomCommandJoinRoomDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_join_room_description") 
+  }
+  /// Removes user with given id from this room
+  public static var roomCommandKickUserDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_kick_user_description") 
+  }
+  /// Leave room
+  public static var roomCommandPartRoomDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_part_room_description") 
+  }
+  /// Deops user with given id
+  public static var roomCommandResetUserPowerLevelDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_reset_user_power_level_description") 
+  }
+  /// Define the power level of a user
+  public static var roomCommandSetUserPowerLevelDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_set_user_power_level_description") 
+  }
+  /// Unbans user with given id
+  public static var roomCommandUnbanUserDescription: String { 
+    return VectorL10n.tr("Vector", "room_command_unban_user_description") 
+  }
   /// You need permission to manage conference call in this room
   public static var roomConferenceCallNoPower: String { 
     return VectorL10n.tr("Vector", "room_conference_call_no_power") 

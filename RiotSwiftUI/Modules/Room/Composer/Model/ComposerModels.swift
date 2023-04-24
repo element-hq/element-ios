@@ -257,11 +257,11 @@ final class SuggestionPatternWrapper: NSObject {
     }
 }
 
-final class UserSuggestionViewModelWrapper: NSObject {
-    let userSuggestionViewModel: UserSuggestionViewModel
+final class CompletionSuggestionViewModelWrapper: NSObject {
+    let completionSuggestionViewModel: CompletionSuggestionViewModel
 
-    init(_ userSuggestionViewModel: UserSuggestionViewModel) {
-        self.userSuggestionViewModel = userSuggestionViewModel
+    init(_ completionSuggestionViewModel: CompletionSuggestionViewModel) {
+        self.completionSuggestionViewModel = completionSuggestionViewModel
         super.init()
     }
 }

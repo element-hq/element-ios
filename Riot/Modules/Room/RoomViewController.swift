@@ -58,6 +58,22 @@ extension RoomViewController {
         }
     }
 
+    @objc func setCommand(_ command: String) {
+        if let wysiwygInputToolbar, wysiwygInputToolbar.textFormattingEnabled {
+            wysiwygInputToolbar.command(command)
+            wysiwygInputToolbar.becomeFirstResponder()
+        } else {
+            guard let attributedText = inputToolbarView.attributedTextMessage else { return }
+
+            let newAttributedString = NSMutableAttributedString(attributedString: attributedText)
+            newAttributedString.append(NSAttributedString(string: "\(command) ",
+                                                          attributes: [.font: inputToolbarView.defaultFont]))
+
+            inputToolbarView.attributedTextMessage = newAttributedString
+            inputToolbarView.becomeFirstResponder()
+        }
+    }
+
 
     /// Send the formatted text message and its raw counterpart to the room
     ///
@@ -91,7 +107,7 @@ extension RoomViewController {
                             "event_id": eventModified.eventId
                         ])
                 })
-            } else if !self.send(asIRCStyleCommandIfPossible: rawTextMsg) {
+            } else {
                 roomDataSource.sendFormattedTextMessage(rawTextMsg, html: htmlMsg) { response in
                     switch response {
                     case .success:
