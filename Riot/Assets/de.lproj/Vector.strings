@@ -2754,3 +2754,17 @@
 
 "key_verification_self_verify_security_upgrade_alert_title" = "App aktualisiert";
 "settings_acceptable_use" = "Nutzungsbedingungen";
+"room_command_emote_description" = "Zeigt Aktionen";
+"room_command_error_unknown_command" = "Ungültige oder nicht verarbeitete Eingabe";
+"room_command_change_room_topic_description" = "Ändert das Raumthema";
+"room_command_reset_user_power_level_description" = "Setzt das Berechtigungslevel beim Benutzer mit der angegebenen ID zurück";
+"room_command_set_user_power_level_description" = "Bestimmt das Berechtigungslevel des Benutzers";
+"room_command_unban_user_description" = "Entbannt den Benutzer mit der angegebenen ID";
+"room_command_ban_user_description" = "Verbannt den Benutzer mit der angegebenen ID";
+"room_command_kick_user_description" = "Entfernt den Benutzer mit der angegebenen ID aus diesem Raum";
+"room_command_invite_user_description" = "Lädt den Benutzer mit der angegebenen ID in den aktuellen Raum ein";
+"room_command_part_room_description" = "Raum verlassen";
+"room_command_join_room_description" = "Raum mit angegebener Adresse betreten";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "Ändert deinen Anzeigenamen";
