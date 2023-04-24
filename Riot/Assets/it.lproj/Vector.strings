@@ -2720,3 +2720,18 @@
 
 "key_verification_self_verify_security_upgrade_alert_title" = "App aggiornata";
 "settings_acceptable_use" = "Politica di utilizzo accettabile";
+"room_command_error_unknown_command" = "Comando non valido o non gestito";
+"room_command_discard_session_description" = "Forza l'eliminazione dell'attuale sessione di gruppo in uscita in una stanza criptata";
+"room_command_change_room_topic_description" = "Imposta l'argomento della stanza";
+"room_command_kick_user_description" = "Rimuove l'utente per ID da questa stanza";
+"room_command_reset_user_power_level_description" = "Toglie privilegi all'utente per ID";
+"room_command_set_user_power_level_description" = "Definisci il livello di poteri di un utente";
+"room_command_unban_user_description" = "Riammette l'utente per ID";
+"room_command_ban_user_description" = "Bandisce l'utente per ID";
+"room_command_invite_user_description" = "Invita l'utente per ID alla stanza attuale";
+"room_command_part_room_description" = "Esci dalla stanza";
+"room_command_join_room_description" = "Entra nella stanza con l'indirizzo scelto";
+"room_command_emote_description" = "Mostra l'azione";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "Cambia il tuo nome visualizzato";
