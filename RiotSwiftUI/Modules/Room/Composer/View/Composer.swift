@@ -233,6 +233,7 @@ struct Composer: View {
             self.resizeAnimationDuration = resizeAnimationDuration
             self.sendMessageAction = sendMessageAction
             self.showSendMediaActions = showSendMediaActions
+            
         }
     
     var body: some View {
@@ -264,6 +265,7 @@ struct Composer: View {
                 HStack(alignment: .center, spacing: 0) {
                     sendMediaButton
                     FormattingToolbar(formatItems: formatItems) { type in
+                        viewModel.send(viewAction: .messageFormatted(formatType: type))
                         if type.action == .link {
                             storeCurrentSelection()
                             sendLinkAction()

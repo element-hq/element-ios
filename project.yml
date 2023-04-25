@@ -42,7 +42,9 @@ include:
 packages:
   AnalyticsEvents:
     url: https://github.com/matrix-org/matrix-analytics-events
-    exactVersion: 0.5.0
+#    TODO: bump version and remove revision before un-drafting PR.
+#    exactVersion: 0.5.0
+    revision: b0f4314ce1215ae5741a95e1eebd24ba6108d43e
   Mapbox:
     url: https://github.com/maplibre/maplibre-gl-native-distribution
     minVersion: 5.12.2

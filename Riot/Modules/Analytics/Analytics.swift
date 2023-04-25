@@ -382,11 +382,46 @@ extension Analytics: MXAnalyticsDelegate {
         // Do we still want to track this?
     }
 
-    func trackComposerEvent(inThread: Bool, isEditing: Bool, isReply: Bool, startsThread: Bool) {
-        let event = AnalyticsEvent.Composer(inThread: inThread,
-                                            isEditing: isEditing,
-                                            isReply: isReply,
-                                            startsThread: startsThread)
+    func trackComposerEvent(
+        inThread: Bool,
+        isEditing: Bool,
+        isReply: Bool,
+        startsThread: Bool
+    ) {
+        var editor: AnalyticsEvent.Composer.Editor
+        if !RiotSettings.shared.enableWysiwygComposer {
+            editor = .Legacy
+        } else if RiotSettings.shared.enableWysiwygTextFormatting {
+            editor = .RteFormatting
+        } else {
+            editor = .RtePlain
+        }
+        // The legacy editor always has markdown enabled as does the new editor in plain text mode
+        let markDownEnabled = !RiotSettings.shared.enableWysiwygComposer || !RiotSettings.shared.enableWysiwygTextFormatting
+        let event = AnalyticsEvent.Composer(
+            editor: editor,
+            inThread: inThread,
+            isEditing: isEditing,
+            isMarkdownEnabled: markDownEnabled,
+            isReply: isReply,
+            startsThread: startsThread
+        )
+        capture(event: event)
+    }
+    
+    func trackFormattedMessageEvent(
+        editor: AnalyticsEvent.FormattedMessage.Editor,
+        formatAction: AnalyticsEvent.FormattedMessage.FormatAction
+    ) {
+        var editor: AnalyticsEvent.FormattedMessage.Editor
+        if !RiotSettings.shared.enableWysiwygComposer {
+            editor = .Legacy
+        } else if RiotSettings.shared.enableWysiwygTextFormatting {
+            editor = .RteFormatting
+        } else {
+            editor = .RtePlain
+        }
+        let event = AnalyticsEvent.FormattedMessage(editor: editor, formatAction: formatAction)
         capture(event: event)
     }
 

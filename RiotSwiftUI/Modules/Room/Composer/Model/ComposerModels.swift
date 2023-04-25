@@ -17,6 +17,7 @@
 import Foundation
 import SwiftUI
 import WysiwygComposer
+import AnalyticsEvents
 
 // MARK: View
 
@@ -215,6 +216,35 @@ extension FormatType {
             return .link
         }
     }
+    
+    var analyticsAction: AnalyticsEvent.FormattedMessage.FormatAction {
+        switch self {
+        case .bold:
+            return .Bold
+        case .italic:
+            return .Italic
+        case .underline:
+            return .Underline
+        case .strikethrough:
+            return .Strikethrough
+        case .unorderedList:
+            return .UnorderedList
+        case .orderedList:
+            return .OrderedList
+        case .indent:
+            return .Indent
+        case .unindent:
+            return .Unindent
+        case .inlineCode:
+            return .InlineCode
+        case .codeBlock:
+            return .CodeBlock
+        case .quote:
+            return .Quote
+        case .link:
+            return .Link
+        }
+    }
 }
 
 enum ComposerSendMode: Equatable {
@@ -230,6 +260,7 @@ enum ComposerViewAction: Equatable {
     case linkTapped(linkAction: LinkAction)
     case storeSelection(selection: NSRange)
     case suggestion(pattern: SuggestionPattern?)
+    case messageFormatted(formatType: FormatType)
 }
 
 enum ComposerViewModelResult: Equatable {
@@ -237,6 +268,7 @@ enum ComposerViewModelResult: Equatable {
     case contentDidChange(isEmpty: Bool)
     case linkTapped(LinkAction: LinkAction)
     case suggestion(pattern: SuggestionPattern?)
+    case messageFormatted(formatType: FormatType)
 }
 
 final class LinkActionWrapper: NSObject {

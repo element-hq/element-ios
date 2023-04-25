@@ -15,6 +15,7 @@
 //
 
 import SwiftUI
+import AnalyticsEvents
 
 typealias ComposerViewModelType = StateStoreViewModel<ComposerViewState, ComposerViewAction>
 
@@ -92,6 +93,8 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
             selectionToRestore = selection
         case let .suggestion(pattern: pattern):
             callback?(.suggestion(pattern: pattern))
+        case let .messageFormatted(formatType: formatType):
+            callback?(.messageFormatted(formatType: formatType))
         }
     }
     
