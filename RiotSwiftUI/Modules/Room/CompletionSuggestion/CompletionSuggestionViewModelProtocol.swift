@@ -14,14 +14,12 @@
 // limitations under the License.
 //
 
-import RiotSwiftUI
-import XCTest
+import Foundation
 
-class UserSuggestionUITests: MockScreenTestCase {
-    func testUserSuggestionScreen() throws {
-        app.goToScreenWithIdentifier(MockUserSuggestionScreenState.multipleResults.title)
-        
-        let firstButton = app.buttons["displayNameText-userIdText"].firstMatch
-        XCTAssert(firstButton.waitForExistence(timeout: 10))
-    }
+protocol CompletionSuggestionViewModelProtocol {
+    /// Defines a shared context providing the ability to use a single `CompletionSuggestionViewModel` for multiple
+    /// `CompletionSuggestionList` e.g. the list component can then be displayed seemlessly in both `RoomViewController`
+    /// UIKit hosted context, and in Rich-Text-Editor's SwiftUI fullscreen mode, without need to reload the data.
+    var sharedContext: CompletionSuggestionViewModelType.Context { get }
+    var completion: ((CompletionSuggestionViewModelResult) -> Void)? { get set }
 }

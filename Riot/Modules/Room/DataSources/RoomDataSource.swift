@@ -19,7 +19,7 @@ import Foundation
 extension RoomDataSource {
     // MARK: - Private Constants
     private enum Constants {
-        static let emoteMessageSlashCommandPrefix = String(format: "%@ ", kMXKSlashCmdEmote)
+        static let emoteMessageSlashCommandPrefix = String(format: "%@ ", MXKSlashCommand.emote.cmd)
     }
     
     // MARK: - NSAttributedString Sending
