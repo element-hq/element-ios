@@ -571,7 +571,7 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
                             }
                             else
                             {
-                                displayText = [VectorL10n noticeDisplayNameChangedFrom:event.sender :prevDisplayname :displayname];
+                                displayText = [VectorL10n noticeDisplayNameChangedTo:prevDisplayname :displayname];
                             }
                         }
                     }

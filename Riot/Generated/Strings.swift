@@ -3899,6 +3899,10 @@ public class VectorL10n: NSObject {
   public static func noticeDisplayNameChangedFromByYou(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "notice_display_name_changed_from_by_you", p1, p2)
   }
+  /// %@ changed their display name to %@
+  public static func noticeDisplayNameChangedTo(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "notice_display_name_changed_to", p1, p2)
+  }
   /// %@ removed their display name
   public static func noticeDisplayNameRemoved(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "notice_display_name_removed", p1)
