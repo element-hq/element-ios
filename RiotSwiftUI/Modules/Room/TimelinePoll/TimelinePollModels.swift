@@ -37,6 +37,12 @@ enum TimelinePollEventType {
     case ended
 }
 
+enum TimelinePollState {
+    case loading
+    case loaded
+    case invalidStartEvent
+}
+
 struct TimelinePollAnswerOption: Identifiable {
     var id: String
     var text: String
@@ -99,6 +105,7 @@ struct TimelinePollViewState: BindableState {
 }
 
 struct TimelinePollViewStateBindings {
+    var pollState: TimelinePollState
     var alertInfo: AlertInfo<TimelinePollAlertType>?
 }
 

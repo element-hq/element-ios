@@ -31,7 +31,7 @@ class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelPro
     // MARK: - Setup
     
     init(timelinePollDetails: TimelinePollDetails) {
-        super.init(initialViewState: TimelinePollViewState(poll: timelinePollDetails, bindings: TimelinePollViewStateBindings()))
+        super.init(initialViewState: TimelinePollViewState(poll: timelinePollDetails, bindings: TimelinePollViewStateBindings(pollState: .loading)))
     }
     
     // MARK: - Public
@@ -56,6 +56,10 @@ class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelPro
     
     func updateWithPollDetails(_ pollDetails: TimelinePollDetails) {
         state.poll = pollDetails
+    }
+    
+    func updateWithPollState(_ pollState: TimelinePollState) {
+        state.bindings.pollState = pollState
     }
     
     func showAnsweringFailure() {

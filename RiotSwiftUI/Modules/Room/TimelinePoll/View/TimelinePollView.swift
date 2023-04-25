@@ -28,6 +28,23 @@ struct TimelinePollView: View {
     @ObservedObject var viewModel: TimelinePollViewModel.Context
     
     var body: some View {
+        Group {
+            switch viewModel.pollState {
+            case .loading:
+                TimelinePollMessageView(message: "loading...")
+            case .loaded:
+                pollContent
+            case .invalidStartEvent:
+                TimelinePollMessageView(message: VectorL10n.pollTimelineReplyEndedPoll)
+            }
+        }
+        .alert(item: $viewModel.alertInfo) { info in
+            info.alert
+        }
+    }
+    
+    @ViewBuilder
+    private var pollContent: some View {
         let poll = viewModel.viewState.poll
         
         VStack(alignment: .leading, spacing: 16.0) {
@@ -61,9 +78,6 @@ struct TimelinePollView: View {
         }
         .padding([.horizontal, .top], 2.0)
         .padding([.bottom])
-        .alert(item: $viewModel.alertInfo) { info in
-            info.alert
-        }
     }
     
     private var totalVotesString: String {

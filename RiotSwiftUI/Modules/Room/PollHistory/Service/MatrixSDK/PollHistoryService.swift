@@ -170,6 +170,7 @@ private extension PollHistoryService {
         
         do {
             newContext.pollAggregator = try PollAggregator(session: room.mxSession, room: room, pollEvent: pollStartEvent, delegate: self)
+            newContext.pollAggregator?.reloadPollData()
         } catch {
             pollAggregationContexts.removeValue(forKey: eventId)
         }

@@ -77,6 +77,8 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
                 }
             }
             .store(in: &cancellables)
+        
+        pollAggregator.reloadPollData()
     }
     
     // MARK: - Public
@@ -109,13 +111,20 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     
     func pollAggregatorDidUpdateData(_ aggregator: PollAggregator) {
         viewModel.updateWithPollDetails(buildTimelinePollFrom(aggregator.poll))
+        viewModel.updateWithPollState(.loaded)
     }
     
-    func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) { }
+    func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) {
+        viewModel.updateWithPollState(.loading)
+    }
     
-    func pollAggregatorDidEndLoading(_ aggregator: PollAggregator) { }
+    func pollAggregatorDidEndLoading(_ aggregator: PollAggregator) {
+        viewModel.updateWithPollState(.loaded)
+    }
     
-    func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) { }
+    func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) {
+        viewModel.updateWithPollState(.invalidStartEvent)
+    }
     
     // MARK: - Private
 

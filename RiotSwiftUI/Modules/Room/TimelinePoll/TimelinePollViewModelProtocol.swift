@@ -21,6 +21,7 @@ protocol TimelinePollViewModelProtocol {
     var completion: ((TimelinePollViewModelResult) -> Void)? { get set }
     
     func updateWithPollDetails(_ pollDetails: TimelinePollDetails)
+    func updateWithPollState(_ pollState: TimelinePollState)
     func showAnsweringFailure()
     func showClosingFailure()
 }
