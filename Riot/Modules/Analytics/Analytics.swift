@@ -410,7 +410,6 @@ extension Analytics: MXAnalyticsDelegate {
     }
     
     func trackFormattedMessageEvent(
-        editor: AnalyticsEvent.FormattedMessage.Editor,
         formatAction: AnalyticsEvent.FormattedMessage.FormatAction
     ) {
         var editor: AnalyticsEvent.FormattedMessage.Editor
@@ -424,10 +423,41 @@ extension Analytics: MXAnalyticsDelegate {
         let event = AnalyticsEvent.FormattedMessage(editor: editor, formatAction: formatAction)
         capture(event: event)
     }
+    
+    func trackMentionEvent(
+        targetType: AnalyticsEvent.Mention.TargetType
+    ) {
+        var editor: AnalyticsEvent.Mention.Editor
+        if !RiotSettings.shared.enableWysiwygComposer {
+            editor = .Legacy
+        } else if RiotSettings.shared.enableWysiwygTextFormatting {
+            editor = .RteFormatting
+        } else {
+            editor = .RtePlain
+        }
+        let event = AnalyticsEvent.Mention(editor: editor, targetType: targetType)
+        capture(event: event)
+    }
+    
+    func trackSlashCommandEvent(
+        command: AnalyticsEvent.SlashCommand.Command
+    ) {
+        var editor: AnalyticsEvent.SlashCommand.Editor
+        if !RiotSettings.shared.enableWysiwygComposer {
+            editor = .Legacy
+        } else if RiotSettings.shared.enableWysiwygTextFormatting {
+            editor = .RteFormatting
+        } else {
+            editor = .RtePlain
+        }
+        let event = AnalyticsEvent.SlashCommand(command: command, editor: editor)
+        capture(event: event)
+    }
 
     func trackNonFatalIssue(_ issue: String, details: [String: Any]?) {
         monitoringClient.trackNonFatalIssue(issue, details: details)
     }
+
 }
 
 /// iOS-specific analytics event triggered when users select the Crypto SDK labs option

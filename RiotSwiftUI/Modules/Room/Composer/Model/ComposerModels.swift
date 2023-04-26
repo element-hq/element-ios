@@ -269,6 +269,7 @@ enum ComposerViewModelResult: Equatable {
     case linkTapped(LinkAction: LinkAction)
     case suggestion(pattern: SuggestionPattern?)
     case messageFormatted(formatType: FormatType)
+    case mentionSelected(formatType: FormatType)
 }
 
 final class LinkActionWrapper: NSObject {

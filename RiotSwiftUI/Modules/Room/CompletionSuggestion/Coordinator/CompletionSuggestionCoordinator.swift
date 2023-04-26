@@ -89,13 +89,18 @@ final class CompletionSuggestionCoordinator: Coordinator, Presentable {
             switch result {
             case .selectedItemWithIdentifier(let identifier):
                 if identifier == CompletionSuggestionUserID.room {
+                    Analytics.shared.trackMentionEvent(targetType: .Room)
                     self.delegate?.completionSuggestionCoordinatorDidRequestMentionForRoom(self, textTrigger: self.completionSuggestionService.currentTextTrigger)
                     return
                 }
                 
                 if let member = self.roomMemberProvider.roomMembers.filter({ $0.userId == identifier }).first {
+                    Analytics.shared.trackMentionEvent(targetType: .User)
                     self.delegate?.completionSuggestionCoordinator(self, didRequestMentionForMember: member, textTrigger: self.completionSuggestionService.currentTextTrigger)
                 } else if let command = self.commandProvider.commands.filter({ $0.cmd == identifier }).first {
+                    if let analyticsCommand = command.analyticsCommand {
+                        Analytics.shared.trackSlashCommandEvent(command: analyticsCommand)
+                    }
                     self.delegate?.completionSuggestionCoordinator(self, didRequestCommand: command.cmd, textTrigger: self.completionSuggestionService.currentTextTrigger)
                 }
             }

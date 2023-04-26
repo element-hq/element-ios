@@ -383,7 +383,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         case let .suggestion(pattern):
             toolbarViewDelegate?.didDetectTextPattern(SuggestionPatternWrapper(pattern))
         case let .messageFormatted(formatType):
-            Analytics.shared.trackFormattedMessageEvent(editor: .RteFormatting, formatAction: formatType.analyticsAction)
+            Analytics.shared.trackFormattedMessageEvent(formatAction: formatType.analyticsAction)
         }
     }
     
