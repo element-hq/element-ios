@@ -37,10 +37,10 @@ enum TimelinePollEventType {
     case ended
 }
 
-enum TimelinePollState {
+enum TimelinePollDetailsState {
     case loading
-    case loaded
-    case invalidStartEvent
+    case loaded(TimelinePollDetails)
+    case errored
 }
 
 struct TimelinePollAnswerOption: Identifiable {
@@ -100,12 +100,11 @@ struct TimelinePollDetails {
 extension TimelinePollDetails: Identifiable { }
 
 struct TimelinePollViewState: BindableState {
-    var poll: TimelinePollDetails
+    var pollState: TimelinePollDetailsState
     var bindings: TimelinePollViewStateBindings
 }
 
 struct TimelinePollViewStateBindings {
-    var pollState: TimelinePollState
     var alertInfo: AlertInfo<TimelinePollAlertType>?
 }
 

@@ -4923,6 +4923,10 @@ public class VectorL10n: NSObject {
   public static var pollTimelineEndedText: String { 
     return VectorL10n.tr("Vector", "poll_timeline_ended_text") 
   }
+  /// Loading...
+  public static var pollTimelineLoading: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_loading") 
+  }
   /// Please try again
   public static var pollTimelineNotClosedSubtitle: String { 
     return VectorL10n.tr("Vector", "poll_timeline_not_closed_subtitle") 

@@ -170,7 +170,6 @@ private extension PollHistoryService {
         
         do {
             newContext.pollAggregator = try PollAggregator(session: room.mxSession, room: room, pollEvent: pollStartEvent, delegate: self)
-            newContext.pollAggregator?.reloadPollData()
         } catch {
             pollAggregationContexts.removeValue(forKey: eventId)
         }
@@ -210,13 +209,14 @@ extension PollHistoryService: PollAggregatorDelegate {
     func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) { }
     
     func pollAggregatorDidEndLoading(_ aggregator: PollAggregator) {
-        guard let context = pollAggregationContexts[aggregator.poll.id], context.published == false else {
+        
+        guard let poll = aggregator.poll, let context = pollAggregationContexts[poll.id], context.published == false else {
             return
         }
         
         context.published = true
         
-        let newPoll: TimelinePollDetails = .init(poll: aggregator.poll, represent: .started)
+        let newPoll: TimelinePollDetails = .init(poll: poll, represent: .started)
         
         if context.isLivePoll {
             livePollsSubject.send(newPoll)
@@ -226,9 +226,9 @@ extension PollHistoryService: PollAggregatorDelegate {
     }
     
     func pollAggregatorDidUpdateData(_ aggregator: PollAggregator) {
-        guard let context = pollAggregationContexts[aggregator.poll.id], context.published else {
+        guard let poll = aggregator.poll, let context = pollAggregationContexts[poll.id], context.published else {
             return
         }
-        updatesSubject.send(.init(poll: aggregator.poll, represent: .started))
+        updatesSubject.send(.init(poll: poll, represent: .started))
     }
 }

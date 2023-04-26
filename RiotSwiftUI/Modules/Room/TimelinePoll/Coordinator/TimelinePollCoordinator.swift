@@ -32,7 +32,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     private let parameters: TimelinePollCoordinatorParameters
     private let selectedAnswerIdentifiersSubject = PassthroughSubject<[String], Never>()
     
-    private var pollAggregator: PollAggregator
+    private var pollAggregator: PollAggregator!
     private(set) var viewModel: TimelinePollViewModelProtocol!
     private var cancellables = Set<AnyCancellable>()
     
@@ -46,10 +46,9 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     init(parameters: TimelinePollCoordinatorParameters) throws {
         self.parameters = parameters
         
-        try pollAggregator = PollAggregator(session: parameters.session, room: parameters.room, pollEvent: parameters.pollEvent)
-        pollAggregator.delegate = self
+        viewModel = TimelinePollViewModel(timelinePollDetailsState: .loading)
+        try pollAggregator = PollAggregator(session: parameters.session, room: parameters.room, pollEvent: parameters.pollEvent, delegate: self)
         
-        viewModel = TimelinePollViewModel(timelinePollDetails: buildTimelinePollFrom(pollAggregator.poll))
         viewModel.completion = { [weak self] result in
             guard let self = self else { return }
             
@@ -77,8 +76,6 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
                 }
             }
             .store(in: &cancellables)
-        
-        pollAggregator.reloadPollData()
     }
     
     // MARK: - Public
@@ -94,11 +91,11 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     }
     
     func canEndPoll() -> Bool {
-        pollAggregator.poll.isClosed == false
+        pollAggregator.poll?.isClosed == false
     }
     
     func canEditPoll() -> Bool {
-        pollAggregator.poll.isClosed == false && pollAggregator.poll.totalAnswerCount == 0
+        pollAggregator.poll?.isClosed == false && pollAggregator.poll?.totalAnswerCount == 0
     }
     
     func endPoll() {
@@ -110,20 +107,22 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     // MARK: - PollAggregatorDelegate
     
     func pollAggregatorDidUpdateData(_ aggregator: PollAggregator) {
-        viewModel.updateWithPollDetails(buildTimelinePollFrom(aggregator.poll))
-        viewModel.updateWithPollState(.loaded)
+        if let poll = aggregator.poll {
+            viewModel.updateWithPollDetailsState(.loaded(buildTimelinePollFrom(poll)))
+        }
     }
     
-    func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) {
-        viewModel.updateWithPollState(.loading)
-    }
+    func pollAggregatorDidStartLoading(_ aggregator: PollAggregator) { }
     
     func pollAggregatorDidEndLoading(_ aggregator: PollAggregator) {
-        viewModel.updateWithPollState(.loaded)
+        guard let poll = aggregator.poll else {
+            return
+        }
+        viewModel.updateWithPollDetailsState(.loaded(buildTimelinePollFrom(poll)))
     }
     
     func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) {
-        viewModel.updateWithPollState(.invalidStartEvent)
+        viewModel.updateWithPollDetailsState(.errored)
     }
     
     // MARK: - Private

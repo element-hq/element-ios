@@ -20,8 +20,7 @@ protocol TimelinePollViewModelProtocol {
     var context: TimelinePollViewModelType.Context { get }
     var completion: ((TimelinePollViewModelResult) -> Void)? { get set }
     
-    func updateWithPollDetails(_ pollDetails: TimelinePollDetails)
-    func updateWithPollState(_ pollState: TimelinePollState)
+    func updateWithPollDetailsState(_ pollDetailsState: TimelinePollDetailsState)
     func showAnsweringFailure()
     func showClosingFailure()
 }
