@@ -2962,3 +2962,4 @@
 
 // Room commands descriptions
 "room_command_change_display_name_description" = "Mengubah nama tampilan Anda";
+"notice_display_name_changed_to" = "%@ mengubah nama tampilannya menjadi %@";
