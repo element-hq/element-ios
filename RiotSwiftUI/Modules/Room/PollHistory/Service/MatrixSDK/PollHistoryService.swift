@@ -209,7 +209,6 @@ extension PollHistoryService: PollAggregatorDelegate {
     func pollAggregator(_ aggregator: PollAggregator, didFailWithError: Error) { }
     
     func pollAggregatorDidEndLoading(_ aggregator: PollAggregator) {
-        
         guard let poll = aggregator.poll, let context = pollAggregationContexts[poll.id], context.published == false else {
             return
         }
