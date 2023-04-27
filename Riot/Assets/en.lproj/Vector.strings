@@ -2984,6 +2984,7 @@ To enable access, tap Settings> Location and select Always";
 "notice_avatar_url_changed" = "%@ changed their avatar";
 "notice_display_name_set" = "%@ set their display name to %@";
 "notice_display_name_changed_from" = "%@ changed their display name from %@ to %@";
+"notice_display_name_changed_to" = "%@ changed their display name to %@";
 "notice_display_name_removed" = "%@ removed their display name";
 "notice_topic_changed" = "%@ changed the topic to \"%@\".";
 "notice_room_name_changed" = "%@ changed the room name to %@.";
