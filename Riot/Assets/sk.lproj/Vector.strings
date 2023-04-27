@@ -2958,3 +2958,5 @@
 
 // Room commands descriptions
 "room_command_change_display_name_description" = "Mení vaše zobrazované meno / prezývku";
+"notice_display_name_changed_to" = "%@ zmenil/a svoje zobrazované meno na %@";
+"poll_timeline_loading" = "Načítavanie…";
