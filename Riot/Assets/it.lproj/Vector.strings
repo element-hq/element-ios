@@ -2735,3 +2735,4 @@
 
 // Room commands descriptions
 "room_command_change_display_name_description" = "Cambia il tuo nome visualizzato";
+"notice_display_name_changed_to" = "%@ ha cambiato il suo nome visualizzato in %@";
