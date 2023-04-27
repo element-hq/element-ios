@@ -28,8 +28,23 @@ struct TimelinePollView: View {
     @ObservedObject var viewModel: TimelinePollViewModel.Context
     
     var body: some View {
-        let poll = viewModel.viewState.poll
-        
+        Group {
+            switch viewModel.viewState.pollState {
+            case .loading:
+                TimelinePollMessageView(message: VectorL10n.pollTimelineLoading)
+            case .loaded(let poll):
+                pollContent(poll)
+            case .errored:
+                TimelinePollMessageView(message: VectorL10n.pollTimelineReplyEndedPoll)
+            }
+        }
+        .alert(item: $viewModel.alertInfo) { info in
+            info.alert
+        }
+    }
+    
+    @ViewBuilder
+    private func pollContent(_ poll: TimelinePollDetails) -> some View {
         VStack(alignment: .leading, spacing: 16.0) {
             if poll.representsPollEndedEvent {
                 Text(VectorL10n.pollTimelineEndedText)
@@ -40,7 +55,7 @@ struct TimelinePollView: View {
             Text(poll.question)
                 .font(theme.fonts.bodySB)
                 .foregroundColor(theme.colors.primaryContent) +
-                Text(editedText)
+                Text(editedText(poll))
                 .font(theme.fonts.footnote)
                 .foregroundColor(theme.colors.secondaryContent)
             
@@ -54,21 +69,16 @@ struct TimelinePollView: View {
             .disabled(poll.closed)
             .fixedSize(horizontal: false, vertical: true)
             
-            Text(totalVotesString)
+            Text(totalVotesString(poll))
                 .lineLimit(2)
                 .font(theme.fonts.footnote)
                 .foregroundColor(theme.colors.tertiaryContent)
         }
         .padding([.horizontal, .top], 2.0)
         .padding([.bottom])
-        .alert(item: $viewModel.alertInfo) { info in
-            info.alert
-        }
     }
     
-    private var totalVotesString: String {
-        let poll = viewModel.viewState.poll
-        
+    private func totalVotesString(_ poll: TimelinePollDetails) -> String {
         if poll.hasDecryptionError, poll.totalAnswerCount > 0 {
             return VectorL10n.pollTimelineDecryptionError
         }
@@ -95,8 +105,8 @@ struct TimelinePollView: View {
         }
     }
     
-    private var editedText: String {
-        viewModel.viewState.poll.hasBeenEdited ? " \(VectorL10n.eventFormatterMessageEditedMention)" : ""
+    private func editedText(_ poll: TimelinePollDetails) -> String {
+        poll.hasBeenEdited ? " \(VectorL10n.eventFormatterMessageEditedMention)" : ""
     }
 }
 

@@ -41,111 +41,134 @@ class TimelinePollViewModelTests: XCTestCase {
                                                hasBeenEdited: false,
                                                hasDecryptionError: false)
         
-        viewModel = TimelinePollViewModel(timelinePollDetails: timelinePoll)
+        viewModel = TimelinePollViewModel(timelinePollDetailsState: .loaded(timelinePoll))
         context = viewModel.context
     }
     
     func testInitialState() {
-        XCTAssertEqual(context.viewState.poll.answerOptions.count, 3)
-        XCTAssertFalse(context.viewState.poll.closed)
-        XCTAssertEqual(context.viewState.poll.type, .disclosed)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions.count, 3)
+        XCTAssertEqual(context.viewState.pollState.poll?.closed, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.type, .disclosed)
     }
     
     func testSingleSelectionOnMax1Allowed() {
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
-        
-        XCTAssertTrue(context.viewState.poll.answerOptions[0].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[1].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[2].selected)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[0].selected, true)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[1].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[2].selected, false)
     }
     
     func testSingleReselectionOnMax1Allowed() {
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
-        
-        XCTAssertTrue(context.viewState.poll.answerOptions[0].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[1].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[2].selected)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[0].selected, true)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[1].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[2].selected, false)
     }
     
     func testMultipleSelectionOnMax1Allowed() {
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         context.send(viewAction: .selectAnswerOptionWithIdentifier("3"))
-        
-        XCTAssertFalse(context.viewState.poll.answerOptions[0].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[1].selected)
-        XCTAssertTrue(context.viewState.poll.answerOptions[2].selected)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[0].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[1].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[2].selected, true)
     }
     
     func testMultipleReselectionOnMax1Allowed() {
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         context.send(viewAction: .selectAnswerOptionWithIdentifier("3"))
         context.send(viewAction: .selectAnswerOptionWithIdentifier("3"))
-        
-        XCTAssertFalse(context.viewState.poll.answerOptions[0].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[1].selected)
-        XCTAssertTrue(context.viewState.poll.answerOptions[2].selected)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[0].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[1].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[2].selected, true)
     }
 
     func testClosedSelection() {
-        viewModel.state.poll.closed = true
+        guard case var .loaded(poll) = context.viewState.pollState else {
+            return XCTFail()
+        }
+        poll.closed = true
+        viewModel.updateWithPollDetailsState(.loaded(poll))
 
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         context.send(viewAction: .selectAnswerOptionWithIdentifier("3"))
         
-        XCTAssertFalse(context.viewState.poll.answerOptions[0].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[1].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[2].selected)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[0].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[1].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[2].selected, false)
     }
 
     func testSingleSelectionOnMax2Allowed() {
-        viewModel.state.poll.maxAllowedSelections = 2
+        guard case var .loaded(poll) = context.viewState.pollState else {
+            return XCTFail()
+        }
+        poll.maxAllowedSelections = 2
+        viewModel.updateWithPollDetailsState(.loaded(poll))
         
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         
-        XCTAssertTrue(context.viewState.poll.answerOptions[0].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[1].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[2].selected)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[0].selected, true)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[1].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[2].selected, false)
     }
     
     func testSingleReselectionOnMax2Allowed() {
-        viewModel.state.poll.maxAllowedSelections = 2
+        guard case var .loaded(poll) = context.viewState.pollState else {
+            return XCTFail()
+        }
+        poll.maxAllowedSelections = 2
+        viewModel.updateWithPollDetailsState(.loaded(poll))
         
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         
-        XCTAssertFalse(context.viewState.poll.answerOptions[0].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[1].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[2].selected)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[0].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[1].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[2].selected, false)
     }
     
     func testMultipleSelectionOnMax2Allowed() {
-        viewModel.state.poll.maxAllowedSelections = 2
-        
+        guard case var .loaded(poll) = context.viewState.pollState else {
+            return XCTFail()
+        }
+        poll.maxAllowedSelections = 2
+        viewModel.updateWithPollDetailsState(.loaded(poll))
+
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         context.send(viewAction: .selectAnswerOptionWithIdentifier("3"))
         context.send(viewAction: .selectAnswerOptionWithIdentifier("2"))
         
-        XCTAssertTrue(context.viewState.poll.answerOptions[0].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[1].selected)
-        XCTAssertTrue(context.viewState.poll.answerOptions[2].selected)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[0].selected, true)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[1].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[2].selected, true)
         
         context.send(viewAction: .selectAnswerOptionWithIdentifier("1"))
         
-        XCTAssertFalse(context.viewState.poll.answerOptions[0].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[1].selected)
-        XCTAssertTrue(context.viewState.poll.answerOptions[2].selected)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[0].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[1].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[2].selected, true)
         
         context.send(viewAction: .selectAnswerOptionWithIdentifier("2"))
         
-        XCTAssertFalse(context.viewState.poll.answerOptions[0].selected)
-        XCTAssertTrue(context.viewState.poll.answerOptions[1].selected)
-        XCTAssertTrue(context.viewState.poll.answerOptions[2].selected)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[0].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[1].selected, true)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[2].selected, true)
         
         context.send(viewAction: .selectAnswerOptionWithIdentifier("3"))
         
-        XCTAssertFalse(context.viewState.poll.answerOptions[0].selected)
-        XCTAssertTrue(context.viewState.poll.answerOptions[1].selected)
-        XCTAssertFalse(context.viewState.poll.answerOptions[2].selected)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[0].selected, false)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[1].selected, true)
+        XCTAssertEqual(context.viewState.pollState.poll?.answerOptions[2].selected, false)
+    }
+}
+
+private extension TimelinePollDetailsState {
+    var poll: TimelinePollDetails? {
+        switch self {
+        case .loaded(let poll):
+            return poll
+        default:
+            return nil
+        }
     }
 }

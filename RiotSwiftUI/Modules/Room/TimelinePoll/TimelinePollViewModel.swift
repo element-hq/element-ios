@@ -30,8 +30,8 @@ class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelPro
     
     // MARK: - Setup
     
-    init(timelinePollDetails: TimelinePollDetails) {
-        super.init(initialViewState: TimelinePollViewState(poll: timelinePollDetails, bindings: TimelinePollViewStateBindings()))
+    init(timelinePollDetailsState: TimelinePollDetailsState) {
+        super.init(initialViewState: TimelinePollViewState(pollState: timelinePollDetailsState, bindings: TimelinePollViewStateBindings()))
     }
     
     // MARK: - Public
@@ -40,11 +40,11 @@ class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelPro
         switch viewAction {
         // Update local state. An update will be pushed from the coordinator once sent.
         case .selectAnswerOptionWithIdentifier(let identifier):
-            guard !state.poll.closed else {
+            // only if the poll is ready and not closed
+            guard case let .loaded(poll) = state.pollState, !poll.closed else {
                 return
             }
-            
-            if state.poll.maxAllowedSelections == 1 {
+            if poll.maxAllowedSelections == 1 {
                 updateSingleSelectPollLocalState(selectedAnswerIdentifier: identifier, callback: completion)
             } else {
                 updateMultiSelectPollLocalState(&state, selectedAnswerIdentifier: identifier, callback: completion)
@@ -54,8 +54,8 @@ class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelPro
     
     // MARK: - TimelinePollViewModelProtocol
     
-    func updateWithPollDetails(_ pollDetails: TimelinePollDetails) {
-        state.poll = pollDetails
+    func updateWithPollDetailsState(_ pollDetailsState: TimelinePollDetailsState) {
+        state.pollState = pollDetailsState
     }
     
     func showAnsweringFailure() {
@@ -73,33 +73,40 @@ class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelPro
     // MARK: - Private
     
     func updateSingleSelectPollLocalState(selectedAnswerIdentifier: String, callback: TimelinePollViewModelCallback?) {
-        state.poll.answerOptions.updateEach { answerOption in
+        guard case var .loaded(poll) = state.pollState else { return }
+        
+        var pollAnswerOptions = poll.answerOptions
+        pollAnswerOptions.updateEach { answerOption in
             if answerOption.selected {
                 answerOption.selected = false
                 answerOption.count = UInt(max(0, Int(answerOption.count) - 1))
-                state.poll.totalAnswerCount = UInt(max(0, Int(state.poll.totalAnswerCount) - 1))
+                poll.totalAnswerCount = UInt(max(0, Int(poll.totalAnswerCount) - 1))
             }
             
             if answerOption.id == selectedAnswerIdentifier {
                 answerOption.selected = true
                 answerOption.count += 1
-                state.poll.totalAnswerCount += 1
+                poll.totalAnswerCount += 1
             }
         }
-        
+        poll.answerOptions = pollAnswerOptions
+        state.pollState = .loaded(poll)
         informCoordinatorOfSelectionUpdate(state: state, callback: callback)
     }
     
     func updateMultiSelectPollLocalState(_ state: inout TimelinePollViewState, selectedAnswerIdentifier: String, callback: TimelinePollViewModelCallback?) {
-        let selectedAnswerOptions = state.poll.answerOptions.filter { $0.selected == true }
+        guard case .loaded(var poll) = state.pollState else { return }
+        
+        let selectedAnswerOptions = poll.answerOptions.filter { $0.selected == true }
         
         let isDeselecting = selectedAnswerOptions.filter { $0.id == selectedAnswerIdentifier }.count > 0
         
-        if !isDeselecting, selectedAnswerOptions.count >= state.poll.maxAllowedSelections {
+        if !isDeselecting, selectedAnswerOptions.count >= poll.maxAllowedSelections {
             return
         }
         
-        state.poll.answerOptions.updateEach { answerOption in
+        var pollAnswerOptions = poll.answerOptions
+        pollAnswerOptions.updateEach { answerOption in
             if answerOption.id != selectedAnswerIdentifier {
                 return
             }
@@ -107,22 +114,24 @@ class TimelinePollViewModel: TimelinePollViewModelType, TimelinePollViewModelPro
             if answerOption.selected {
                 answerOption.selected = false
                 answerOption.count = UInt(max(0, Int(answerOption.count) - 1))
-                state.poll.totalAnswerCount = UInt(max(0, Int(state.poll.totalAnswerCount) - 1))
+                poll.totalAnswerCount = UInt(max(0, Int(poll.totalAnswerCount) - 1))
             } else {
                 answerOption.selected = true
                 answerOption.count += 1
-                state.poll.totalAnswerCount += 1
+                poll.totalAnswerCount += 1
             }
         }
-        
+        poll.answerOptions = pollAnswerOptions
+        state.pollState = .loaded(poll)
         informCoordinatorOfSelectionUpdate(state: state, callback: callback)
     }
     
     func informCoordinatorOfSelectionUpdate(state: TimelinePollViewState, callback: TimelinePollViewModelCallback?) {
-        let selectedIdentifiers = state.poll.answerOptions.compactMap { answerOption in
+        guard case .loaded(let poll) = state.pollState else { return }
+        
+        let selectedIdentifiers = poll.answerOptions.compactMap { answerOption in
             answerOption.selected ? answerOption.id : nil
         }
-        
         callback?(.selectedAnswerOptionsWithIdentifiers(selectedIdentifiers))
     }
 }
