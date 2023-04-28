@@ -457,11 +457,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)reset
 {
-    [self resetNotifying:YES];
-}
-
-- (void)resetNotifying:(BOOL)notify
-{
     if (roomDidFlushDataNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:roomDidFlushDataNotificationObserver];
@@ -556,12 +551,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
     
     _serverSyncEventCount = 0;
-
-    // Notify the delegate to reload its tableview
-    if (notify && self.delegate)
-    {
-        [self.delegate dataSource:self didCellChange:nil];
-    }
 }
 
 - (void)reload
@@ -575,10 +564,16 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     
     [self setState:MXKDataSourceStatePreparing];
     
-    [self resetNotifying:notify];
+    [self reset];
     
     // Reload
     [self didMXSessionStateChange];
+    
+    // Notify the delegate to refresh the tableview
+    if (notify && self.delegate)
+    {
+        [self.delegate dataSource:self didCellChange:nil];
+    }
 }
 
 - (void)destroy
