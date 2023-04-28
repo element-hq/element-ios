@@ -2961,3 +2961,4 @@
 // Room commands descriptions
 "room_command_change_display_name_description" = "Змінює ваш нік";
 "notice_display_name_changed_to" = "%@ змінили своє показуване ім'я на %@";
+"poll_timeline_loading" = "Завантаження...";
