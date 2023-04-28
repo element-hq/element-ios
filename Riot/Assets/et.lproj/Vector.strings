@@ -2707,3 +2707,5 @@
 
 // Room commands descriptions
 "room_command_change_display_name_description" = "Muudab sinu kuvatavat nime";
+"notice_display_name_changed_to" = "%@ muutis oma kuvatavaks nimeks %@";
+"poll_timeline_loading" = "Laadin...";
