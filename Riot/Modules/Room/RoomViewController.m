@@ -1094,6 +1094,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     _completionSuggestionCoordinator.delegate = self;
     
     [self setupCompletionSuggestionViewIfNeeded];
+
+    [self updateRoomInputToolbarViewClassIfNeeded];
     
     [self updateTopBanners];
 }
@@ -1194,6 +1196,12 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)updateRoomInputToolbarViewClassIfNeeded
 {
     Class roomInputToolbarViewClass = [RoomViewController mainToolbarClass];
+
+    // If RTE is enabled, delay the toolbar setup until `completionSuggestionCoordinator` is ready.
+    if (roomInputToolbarViewClass == WysiwygInputToolbarView.class && _completionSuggestionCoordinator == nil)
+    {
+        return;
+    }
     
     BOOL shouldDismissContextualMenu = NO;
     
