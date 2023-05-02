@@ -1094,6 +1094,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     _completionSuggestionCoordinator.delegate = self;
     
     [self setupCompletionSuggestionViewIfNeeded];
+
+    [self updateRoomInputToolbarViewClassIfNeeded];
     
     [self updateTopBanners];
 }
