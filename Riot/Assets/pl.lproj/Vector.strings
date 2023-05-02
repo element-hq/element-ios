@@ -2577,3 +2577,4 @@
 "authentication_qr_login_start_title" = "Zeskanuj kod QR";
 "authentication_login_with_qr" = "Zaloguj się za pomocą kodu QR";
 "accessibility_selected" = "wybrane";
+"authentication_qr_login_start_step2" = "Przejdź do ustawień -> Bezpieczeństwo i Prywatność";
