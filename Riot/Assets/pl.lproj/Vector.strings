@@ -2539,7 +2539,7 @@
 "room_recents_recently_viewed_section" = "Ostatnio wyświetlane";
 "all_chats_nothing_found_placeholder_message" = "Spróbuj poprawić swoje wyszukiwanie.";
 "all_chats_nothing_found_placeholder_title" = "Nic nie znaleziono.";
-"all_chats_empty_unreads_placeholder_message" = "W tym miejscu pojawią się nieprzeczytane wiadomości, gdy będziesz takie mieć.";
+"all_chats_empty_unreads_placeholder_message" = "W tym miejscu pojawią się nieprzeczytane wiadomości, jeśli jakieś dostaniesz.";
 "all_chats_empty_list_placeholder_title" = "Jesteś na bieżąco.";
 "all_chats_empty_view_information" = "Bezpieczny, wielofunkcyjny komunikator dla zespołów, znajomych i organizacji. Utwórz rozmowę, lub dołącz do istniejącego pokoju, aby rozpocząć.";
 "all_chats_empty_space_information" = "Przestrzenie to nowy sposób na grupowanie pokojów i osób. Dodaj istniejący pokój, lub utwórz nowy, korzystając z przycisku w prawym dolnym rogu.";
@@ -2578,3 +2578,267 @@
 "authentication_login_with_qr" = "Zaloguj się za pomocą kodu QR";
 "accessibility_selected" = "wybrane";
 "authentication_qr_login_start_step2" = "Przejdź do ustawień -> Bezpieczeństwo i Prywatność";
+"user_other_session_verified_sessions_header_subtitle" = "Dla najlepszego bezpieczeństwa, wyloguj się ze wszystkich sesji, których nie rozpoznajesz lub nie używasz.";
+"user_sessions_overview_other_sessions_section_info" = "Dla najlepszego bezpieczeństwa, zweryfikuj swoje sesje i wyloguj się ze wszystkich sesji, których nie rozpoznajesz lub nie używasz.";
+"poll_history_no_past_poll_period_text" = "Nie znaleziono aktywnych ankiet w ostatnich %@ dniach. Wczytaj więcej ankiet, aby wyświetlić ankiety z poprzednich miesięcy";
+"poll_history_no_active_poll_period_text" = "Nie znaleziono aktywnych ankiet w ostatnich %@ dniach. Wczytaj więcej ankiet, aby wyświetlić ankiety z poprzednich miesięcy";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "Bądź świadom, że nazwy sesji są również widoczne dla ludzi, z którymi się komunikujesz. %@";
+"settings_acceptable_use" = "Akceptowalna polityka użytkowania";
+// First item is client name and second item is session display name
+"user_session_name" = "%@: %@";
+
+/* %1$@ will be the verification state and %2$@ will be user_session_item_details_verification_unknown or user_other_session_current_session_details */
+"user_session_item_details" = "%1$@ · %2$@";
+"device_name_web" = "%@ Web";
+"device_name_mobile" = "%@ Mobile";
+"device_type_name_web" = "Web";
+"device_type_name_desktop" = "Desktop";
+"device_type_name_mobile" = "Mobile";
+"room_waiting_other_participants_message" = "Po dołączeniu zaproszonych użytkowników %@, będziesz mógł czatować w pokoju, który jest szyfrowany end-to-end";
+"room_waiting_other_participants_title" = "Czekanie na użytkowników %@";
+"all_chats_user_menu_accessibility_label" = "Menu użytkownika";
+"voice_broadcast_playback_unable_to_decrypt" = "Nie można rozszyfrować tej transmisji głosowej.";
+"voice_broadcast_recorder_connection_error" = "Błąd połączenia - Nagrywanie wstrzymane";
+"voice_broadcast_connection_error_message" = "Niestety, nie jesteśmy w stanie rozpocząć nowego nagrania. Spróbuj ponownie później.";
+"voice_broadcast_playback_loading_error" = "Nie można odtworzyć tej transmisji głosowej.";
+"voice_broadcast_already_in_progress_message" = "Już nagrywasz transmisję głosową. Zakończ bieżącą transmisję głosową, aby rozpocząć nową.";
+"voice_broadcast_blocked_by_someone_else_message" = "Ktoś już nagrywa transmisję głosową. Aby rozpocząć nową, poczekaj aż bieżąca się skończy.";
+"key_verification_scan_qr_code_information_other_user" = "Ustaw kamerę na kod QR wyświetlony na ich urządzeniu, aby zweryfikować ich sesję";
+"key_verification_scan_qr_code_information_other_device" = "Ustaw kamerę na kod QR wyświetlony na swoim drugim urządzeniu, aby zweryfikować tę sesję";
+"key_verification_scan_qr_code_information_other_session" = "Ustaw kamerę na kod QR wyświetlony na swoim drugim urządzeniu, aby zweryfikować swoją sesję";
+"key_verification_scan_qr_code_information_new_session" = "Ustaw kamerę na kod QR wyświetlony na swoim drugim urządzeniu, aby zweryfikować swoją nową sesję";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Nie możesz dostać się do istniejącej %@ sesji?";
+"poll_timeline_decryption_error" = "Ze względu na błędy odszyfrowywania, niektóre głosy mogły nie zostać policzone";
+"user_sessions_overview_security_recommendations_section_info" = "Zwiększ bezpieczeństwo swojego konta kierując się tymi rekomendacjami.";
+"user_other_session_current_session_details" = "Twoja bieżąca sesja";
+"user_other_session_security_recommendation_title" = "Inne sesje";
+"user_session_rename_session_title" = "Zmienianie nazwy sesji";
+"user_session_inactive_session_title" = "Sesje nieaktywne";
+"user_session_unverified_session_title" = "Sesje niezweryfikowane";
+"user_session_verified_session_title" = "Sesje zweryfikowane";
+"user_session_got_it" = "Rozumiem";
+"user_session_push_notifications_message" = "Po włączeniu, ta sesja zacznie otrzymywać powiadomienia push.";
+"user_session_push_notifications" = "Powiadomienia push";
+"user_other_session_verified_additional_info" = "Sesja jest gotowa do wysyłania bezpiecznych wiadomości.";
+"user_other_session_permanently_unverified_additional_info" = "Ta sesja nie wspiera szyfrowania, dlatego nie może zostać zweryfikowana.";
+"user_other_session_unverified_additional_info" = "Zweryfikuj lub wyloguj się z tej sesji dla zapewnienia najlepszego bezpieczeństwa.";
+"user_session_verification_unknown_additional_info" = "Zweryfikuj swoją bieżącą sesję, aby odsłonić status weryfikacji tej sesji.";
+"user_session_unverified_additional_info" = "Zweryfikuj swoją bieżącą sesję dla wzmocnienia bezpiecznych wiadomości.";
+"user_session_verified_additional_info" = "Twoja bieżąca sesja jest gotowa do wysyłania bezpiecznych wiadomości.";
+"user_session_learn_more" = "Dowiedz się więcej";
+"user_session_view_details" = "Wyświetl szczegóły";
+"user_session_verify_action" = "Zweryfikuj sesję";
+"user_session_verification_unknown_short" = "Nieznana";
+"user_session_unverified_short" = "Niezweryfikowano";
+"user_session_verified_short" = "Zweryfikowano";
+"user_session_verification_unknown" = "Nieznany status weryfikacji";
+"user_session_unverified" = "Sesja niezweryfikowana";
+"user_session_verified" = "Sesja zweryfikowana";
+"user_sessions_view_all_action" = "Wyświetl wszystko (%d)";
+"user_sessions_overview_link_device" = "Powiąż urządzenie";
+"user_sessions_overview_current_session_section_title" = "Bieżąca sesja";
+"user_sessions_hide_location_info" = "Ukryj adres IP";
+"user_sessions_show_location_info" = "Pokaż adres IP";
+"user_sessions_overview_security_recommendations_inactive_info" = "Rozważ wylogowanie się ze starych sesji (90 dni lub starsze), jeśli już z nich nie korzystasz.";
+"user_sessions_overview_other_sessions_section_title" = "Inne sesje";
+"user_sessions_overview_security_recommendations_inactive_title" = "Sesje nieaktywne";
+"user_sessions_overview_security_recommendations_unverified_info" = "Zweryfikuj lub wyloguj się z niezweryfikowanych sesji.";
+"user_sessions_overview_security_recommendations_unverified_title" = "Sesje niezweryfikowane";
+"user_sessions_overview_security_recommendations_section_title" = "Rekomendacje bezpieczeństwa";
+
+// MARK: User sessions management
+
+// Parameter is the application display name (e.g. "Element")
+"user_sessions_default_session_display_name" = "%@ iOS";
+"poll_timeline_loading" = "Wczytywanie...";
+"poll_timeline_reply_ended_poll" = "Zakończył ankietę";
+"poll_timeline_ended_text" = "Zakończył ankietę";
+"poll_history_fetching_error" = "Błąd podczas pobierania ankiet.";
+"poll_history_load_more" = "Wczytaj więcej ankiet";
+"poll_history_detail_view_in_timeline" = "Wyświetl ankietę na osi czasu";
+"poll_history_no_past_poll_text" = "Brak przeszłych ankiet w tym pokoju";
+"poll_history_no_active_poll_text" = "Brak aktywnych ankiet w tym pokoju";
+"poll_history_past_segment_title" = "Przeszłe ankiety";
+"poll_history_active_segment_title" = "Aktywne ankiety";
+"poll_history_loading_text" = "Wyświetlanie ankiet";
+
+// MARK: - Polls history
+
+"poll_history_title" = "Historia ankiet";
+"user_other_session_filter" = "Filtr";
+"user_other_session_no_unverified_sessions" = "Nie znaleziono niezweryfikowanych sesji.";
+"pill_message_in" = "Wiadomość w %@";
+"pill_message_from" = "Wiadomość od %@";
+"pill_message" = "Wiadomość";
+
+// Pills
+"pill_room_fallback_display_name" = "Przestrzeń/Pokój";
+"notice_display_name_changed_to" = "%@ zmienił swoją wyświetlaną nazwę %@";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "Autentyczność tej wiadomości zaszyfrowanej nie jest gwarantowana na tym urządzeniu.";
+"notice_voice_broadcast_ended_by_you" = "Zakończyłeś transmisje na żywo.";
+"notice_voice_broadcast_ended" = "%@ zakończył transmisje na żywo.";
+"notice_voice_broadcast_live" = "Transmisja na żywo";
+"deselect_all" = "Odznacz wszystko";
+"wysiwyg_composer_link_action_edit_title" = "Edytuj link";
+"wysiwyg_composer_link_action_create_title" = "Utwórz link";
+"wysiwyg_composer_link_action_link" = "Link";
+
+// Links
+"wysiwyg_composer_link_action_text" = "Tekst";
+"wysiwyg_composer_format_action_un_indent" = "Zmniejsz wcięcie";
+"wysiwyg_composer_format_action_indent" = "Zwiększ wcięcie";
+"wysiwyg_composer_format_action_quote" = "Przełącz cytat";
+"wysiwyg_composer_format_action_code_block" = "Przełącz blok kodu";
+"wysiwyg_composer_format_action_ordered_list" = "Przełącz listę numerowaną";
+"wysiwyg_composer_format_action_unordered_list" = "Przełącz listę punktorów";
+"wysiwyg_composer_format_action_inline_code" = "Zastosuj kod w tekście";
+"wysiwyg_composer_format_action_link" = "Zastosuj link";
+"wysiwyg_composer_format_action_strikethrough" = "Zastosuj podkreślenie";
+"wysiwyg_composer_format_action_underline" = "Zastosuj przekreślenie";
+"wysiwyg_composer_format_action_italic" = "Zastosuj kursywę";
+
+// Formatting Actions
+"wysiwyg_composer_format_action_bold" = "Zastosuj pogrubienie";
+"wysiwyg_composer_start_action_voice_broadcast" = "Transmisja głosowa";
+"wysiwyg_composer_start_action_text_formatting" = "Formatowanie tekstu";
+"wysiwyg_composer_start_action_camera" = "Kamera";
+"wysiwyg_composer_start_action_location" = "Lokalizacja";
+"wysiwyg_composer_start_action_polls" = "Ankiety";
+"wysiwyg_composer_start_action_attachments" = "Załączniki";
+"wysiwyg_composer_start_action_stickers" = "Naklejki";
+
+
+// MARK: - WYSIWYG Composer
+
+// Send Media Actions
+"wysiwyg_composer_start_action_media_picker" = "Biblioteka zdjęć";
+"user_session_overview_session_details_button_title" = "Szczegóły sesji";
+"user_session_overview_session_title" = "Sesja";
+"user_session_overview_current_session_title" = "Bieżąca sesja";
+"user_session_details_application_url" = "URL";
+"user_session_details_application_version" = "Wersja";
+"user_session_details_application_name" = "Nazwa";
+"user_session_details_device_os" = "System operacyjny";
+"user_session_details_device_browser" = "Przeglądarka";
+"user_session_details_device_model" = "Model";
+"user_session_details_device_ip_location" = "Lokalizacja IP";
+"user_session_details_device_ip_address" = "Adres IP";
+"user_session_details_last_activity" = "Ostatnia aktywność";
+"user_session_details_session_id" = "ID sesji";
+"user_session_details_session_name" = "Nazwa sesji";
+"user_session_details_device_section_header" = "Urządzenie";
+"user_session_details_application_section_header" = "Aplikacja";
+"user_session_details_session_section_header" = "Sesja";
+"user_session_details_title" = "Szczegóły sesji";
+"device_type_name_unknown" = "Nieznany";
+"device_name_unknown" = "Nieznany klient";
+"device_name_desktop" = "%@ Desktop";
+"user_inactive_session_item_with_date" = "Nieaktywny przez 90+ dni (%@)";
+"user_inactive_session_item" = "Nieaktywny przez 90+ dni";
+"user_session_item_details_last_activity" = "Ostatnia aktywność %@";
+"user_other_session_menu_sign_out_sessions" = "Wyloguj z %@ sesji";
+"user_other_session_menu_select_sessions" = "Zaznacz sesje";
+"user_other_session_selected_count" = "%@ zaznaczono";
+"user_other_session_clear_filter" = "Wyczyść filtry";
+"user_other_session_no_verified_sessions" = "Nie znaleziono zweryfikowanych sesji.";
+"user_other_session_no_inactive_sessions" = "Nie znaleziono nieaktywnych sesji.";
+"user_other_session_filter_menu_inactive" = "Nieaktywny";
+"user_other_session_filter_menu_unverified" = "Niezweryfikowano";
+"user_other_session_filter_menu_verified" = "Zweryfikowano";
+"user_other_session_filter_menu_all" = "Wszystkie sesje";
+"voice_broadcast_voip_cannot_start_description" = "Nie możesz rozpocząć połączenia, ponieważ już nagrywasz transmisję na żywo.";
+"voice_broadcast_connection_error_title" = "Błąd połączenia";
+"voice_broadcast_voip_cannot_start_title" = "Nie można rozpocząć połączenia";
+"voice_broadcast_stop_alert_agree_button" = "Tak, zatrzymaj";
+"voice_broadcast_stop_alert_description" = "Czy na pewno chcesz zakończyć transmisję na żywo? Transmisja zostanie zakończona, a całe nagranie będzie dostępne w pokoju.";
+"voice_broadcast_stop_alert_title" = "Zatrzymać transmisję na żywo?";
+"voice_broadcast_buffering" = "Buforowanie...";
+"voice_broadcast_time_left" = "%@ wyszedł";
+"voice_broadcast_tile" = "Transmisja głosowa";
+"voice_broadcast_live" = "Na żywo";
+"voice_broadcast_playback_lock_screen_placeholder" = "Transmisja głosowa";
+"voice_broadcast_permission_denied_message" = "Nie posiadasz wymaganych uprawnień, aby rozpocząć transmisję głosową w tym pokoju. Skontaktuj się z administratorem pokoju, aby zwiększyć swoje uprawnienia.";
+"voice_message_broadcast_in_progress_message" = "Nie możesz rozpocząć wiadomości głosowej, ponieważ już nagrywasz transmisję na żywo. Zakończ transmisję na żywo, aby rozpocząć nagrywanie wiadomości głosowej";
+
+// MARK: - Voice Broadcast
+"voice_broadcast_unauthorized_title" = "Nie można rozpocząć nowej transmisji głosowej";
+"voice_message_broadcast_in_progress_title" = "Nie można rozpocząć wiadomości głosowej";
+"home_context_menu_mark_as_unread" = "Oznacz jako nieprzeczytane";
+"launch_loading_delay_warning" = "Może to chwilę potrwać. \nDziękujemy za Twoją cierpliwość.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Synchronizowanie Twoich konwersacji";
+"key_verification_scan_qr_code_title" = "Skanuj kod QR";
+"device_verification_self_verify_open_on_other_device_information" = "Musisz zweryfikować tę sesję, aby przeglądać swoją bezpieczną historię rozmów.\n\nOtwórz Element na jednym z twoich innych urządzeń i podążaj za instrukcjami.";
+"device_verification_self_verify_open_on_other_device_title" = "Otwórz %@ na swoim drugim urządzeniu";
+"key_verification_alert_body" = "Przejrzyj, aby upewnić się, że twoje konto jest bezpieczne.";
+
+// Unverified sessions
+"key_verification_alert_title" = "Posiadasz niezweryfikowane sesje";
+"key_verification_self_verify_security_upgrade_alert_message" = "Bezpieczne wysyłanie wiadomości zostało usprawnione z najnowszą aktualizacją. Zweryfikuj swoje urządzenie ponownie.";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "Aplikacja została zaktualizowana";
+"sign_out_confirmation_message" = "Czy na pewno chcesz się wylogować?";
+
+// MARK: Sign out warning
+
+"sign_out" = "Wyloguj";
+"key_backup_recover_from_private_key_progress" = "%@%% Zakończone";
+"room_details_polls" = "Historia ankiet";
+"manage_session_sign_out_other_sessions" = "Wyloguj z wszystkich pozostałych sesji";
+"manage_session_rename" = "Zmień nazwę sesji";
+"manage_session_name_info_link" = "Dowiedz się więcej";
+"manage_session_name_hint" = "Własne nazwy sesji pomogą Ci łatwiej rozpoznać swoje urządzenia.";
+"settings_labs_enable_voice_broadcast" = "Transmisja głosowa";
+"settings_labs_enable_wysiwyg_composer" = "Wypróbuj w bogatym edytorze tekstu";
+"settings_labs_enable_new_app_layout" = "Nowy układ aplikacji";
+"settings_labs_enable_new_client_info_feature" = "Zapisz nazwę klienta, wersję i URL, aby łatwiej rozpoznawać sesje w menedżerze sesji";
+"settings_labs_enable_new_session_manager" = "Nowy menedżer sesji";
+"room_command_error_unknown_command" = "Komenda jest nieprawidłowa lub nieobsługiwana";
+"settings_push_rules_error" = "Wystąpił błąd podczas aktualizowania Twoich preferencji powiadomień. Przełącz opcję ponownie.";
+"room_command_change_room_topic_description" = "Ustawia temat pokoju";
+"room_command_reset_user_power_level_description" = "Usuwa uprawnienia administratora z danym ID";
+"room_command_set_user_power_level_description" = "Ustal poziom uprawnień użytkownika";
+"room_command_unban_user_description" = "Odbanowuje użytkownika z danym ID";
+"room_command_ban_user_description" = "Banuje użytkownika z danym ID";
+"room_command_kick_user_description" = "Usuwa użytkownika danym ID z tego pokoju";
+"room_command_invite_user_description" = "Zaprasza użytkownika z danym ID do bieżącego pokoju";
+"room_command_part_room_description" = "Opuść pokój";
+"room_command_join_room_description" = "Dołącza do pokoju z podanego adresu";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "Zmienia twój wyświetlany pseudonim";
+"room_command_emote_description" = "Wyświetla akcję";
+"room_first_message_placeholder" = "Wyślij swoją pierwszą wiadomość…";
+"room_creation_only_one_email_invite" = "Możesz zaprosić tylko jeden e-mail jednocześnie";
+"password_policy_pwd_in_dict_error" = "Hasło zostało znalezione w słowniku, dlatego nie można go użyć.";
+"password_policy_weak_pwd_error" = "Hasło jest za słabe. Musi zawierać co najmniej 8 znaków wraz z jednym z każdego typu: duże litery, małe litery, cyfry i znaki specjalne.";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "Hasło jest za krótkie";
+"authentication_qr_login_failure_retry" = "Spróbuj ponownie";
+"authentication_qr_login_failure_request_timed_out" = "Wiązanie nie zostało zakończone w ustalonym czasie.";
+"authentication_qr_login_failure_request_denied" = "Żądanie zostało odrzucone przez drugie urządzenie.";
+"authentication_qr_login_failure_invalid_qr" = "Kod QR jest nieprawidłowy.";
+"authentication_qr_login_failure_device_not_supported" = "Wiązanie z tym urządzeniem nie jest wspierane.";
+"authentication_qr_login_confirm_alert" = "Upewnij się, że znasz pochodzenie tego kodu. Poprzez powiązanie urządzeń udostępniasz pełny dostęp do Twojego konta.";
+"authentication_qr_login_failure_title" = "Nie udało się powiązać";
+"authentication_qr_login_loading_signed_in" = "Jesteś teraz zalogowany na swoim drugim urządzeniu.";
+"authentication_qr_login_loading_waiting_signin" = "Oczekiwanie na urządzenie, aby się zalogować.";
+"authentication_qr_login_loading_connecting_device" = "Łączenie z urządzeniem";
+"authentication_qr_login_confirm_subtitle" = "Potwierdź, że kod poniżej pasuje z Twoim drugim urządzeniem:";
+"authentication_qr_login_confirm_title" = "Bezpieczne połączenie ustanowione";
+"authentication_qr_login_scan_subtitle" = "Ustaw kod QR w obrębie kwadratu poniżej";
+"authentication_qr_login_scan_title" = "Skanuj kod QR";
+"authentication_qr_login_display_step2" = "Wybierz 'Zaloguj za pomocą kodu QR'";
+"authentication_qr_login_display_subtitle" = "Zeskanuj kod QR na Twoim urządzeniu, które jest wylogowane.";
+"authentication_qr_login_display_step1" = "Otwórz Element na innym urządzeniu";
+"authentication_qr_login_display_title" = "Powiąż urządzenie";
+"authentication_qr_login_start_need_alternative" = "Szukasz innej metody?";
+"authentication_qr_login_start_display_qr" = "Pokaż kod QR na tym urządzeniu";
+"authentication_qr_login_start_step4" = "Wybierz 'Pokaż kod QR na tym urządzeniu'";
+"authentication_qr_login_start_step3" = "Wybierz 'powiąż urządzenie'";
