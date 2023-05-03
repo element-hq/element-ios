@@ -213,6 +213,15 @@ typedef enum : NSUInteger
  */
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView updateActivityIndicator:(BOOL)isAnimating;
 
+/**
+ Tells the delegate that the partial content of the composer has changed
+ and should be stored to allow restoring it later if needed.
+
+ @param toolbarView the room input toolbar view
+ @param partialAttributedTextMessage the partial content to store
+ */
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView shouldStorePartialContent:(NSAttributedString*)partialAttributedTextMessage;
+
 @end
 
 /**
@@ -389,6 +398,11 @@ typedef enum : NSUInteger
  The current attributed text message in message composer.
  */
 @property (nonatomic) NSAttributedString *attributedTextMessage;
+
+/**
+ Sets the partial text message to apply to the current message composer.
+ */
+- (void)setPartialContent:(NSAttributedString *)attributedTextMessage;
 
 /**
  Default font for the message composer.

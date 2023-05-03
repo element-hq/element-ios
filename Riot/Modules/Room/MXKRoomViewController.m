@@ -360,7 +360,7 @@ static const CGFloat kCellVisibilityMinimumHeight = 8.0;
     {
         // Retrieve the potential message partially typed during last room display.
         // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-        inputToolbarView.attributedTextMessage = roomDataSource.partialAttributedTextMessage;
+        [inputToolbarView setPartialContent:roomDataSource.partialAttributedTextMessage];
     }
     
     if (!hasAppearedOnce)
