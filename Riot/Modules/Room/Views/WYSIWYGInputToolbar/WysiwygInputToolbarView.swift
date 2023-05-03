@@ -303,7 +303,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                     // Note: filter out `plainTextMode` being off, as switching to RTE will trigger this
                     // publisher with empty content. This avoids saving the partial text message
                     // or trying to compute suggestion from this empty content.
-                    guard let self, wysiwygViewModel.plainTextMode else { return }
+                    guard let self, self.wysiwygViewModel.plainTextMode else { return }
                     self.textMessage = attributed.string
                     self.toolbarViewDelegate?.roomInputToolbarViewDidChangeTextMessage(self)
                     self.toolbarViewDelegate?.roomInputToolbarView?(self, shouldStorePartialContent: attributed)
