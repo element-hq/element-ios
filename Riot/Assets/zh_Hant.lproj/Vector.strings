@@ -2883,3 +2883,5 @@
 
 // Room commands descriptions
 "room_command_change_display_name_description" = "變更您的顯示名稱";
+"notice_display_name_changed_to" = "%@ 將顯示名稱變更為 %@";
+"poll_timeline_loading" = "載入中 ...";
