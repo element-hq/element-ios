@@ -387,7 +387,11 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     private func updateAvatarButtonItem() {
+        MXLog.info("[AllChatsCoordinator] updating avatar button item.")
         if let avatar = userAvatarViewData(from: currentMatrixSession) {
+            if avatarMenuView == nil {
+                MXLog.warning("[AllChatsCoordinator] updateAvatarButtonItem: avatarMenuView is nil.")
+            }
             avatarMenuView?.fill(with: avatar)
             avatarMenuButton?.setImage(nil, for: .normal)
         } else {
