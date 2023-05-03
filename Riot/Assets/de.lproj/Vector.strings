@@ -2770,3 +2770,4 @@
 "room_command_change_display_name_description" = "Ändert deinen Anzeigenamen";
 "notice_display_name_changed_to" = "%@ hat den Anzeigenamen zu %@ geändert";
 "poll_timeline_loading" = "Lade …";
+"room_command_discard_session_description" = "Erzwingt das Verferfen der aktuell ausgehende Gruppensitzung in einem verschlüsseltem Raum";
