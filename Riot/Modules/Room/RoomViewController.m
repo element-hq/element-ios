@@ -7504,23 +7504,47 @@ static CGSize kThreadListBarButtonItemImageSize;
         return;
     }
     
+    NSMutableArray<NSIndexPath *> *rowsToReload = [[NSMutableArray alloc] init];
+    // Get the current hightlighted event because we will need to reload it
+    NSString *currentHiglightedEventId = self.customizedRoomDataSource.highlightedEventId;
+    if (currentHiglightedEventId)
+    {
+        NSInteger currentHiglightedRow = [self.roomDataSource indexOfCellDataWithEventId:currentHiglightedEventId];
+        if (currentHiglightedRow != NSNotFound)
+        {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentHiglightedRow inSection:0];
+            if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
+            {
+                [rowsToReload addObject:indexPath];
+            }
+        }
+    }
+    
     self.customizedRoomDataSource.highlightedEventId = eventId;
     
+    // Add the new highligted event to the list of rows to reload
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-    if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
+    BOOL indexPathIsVisible = [[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath];
+    if (indexPathIsVisible)
     {
-        [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
+        [rowsToReload addObject:indexPath];
+    }
+    
+    // Reload rows
+    if (rowsToReload.count > 0)
+    {
+        [self.bubblesTableView reloadRowsAtIndexPaths:rowsToReload
                                      withRowAnimation:UITableViewRowAnimationNone];
-        [self.bubblesTableView scrollToRowAtIndexPath:indexPath
-                                     atScrollPosition:UITableViewScrollPositionMiddle
-                                             animated:YES];
     }
-    else if ([self.bubblesTableView vc_hasIndexPath:indexPath])
+    
+    // Scroll to the newly highlighted row
+    if (indexPathIsVisible || [self.bubblesTableView vc_hasIndexPath:indexPath])
     {
         [self.bubblesTableView scrollToRowAtIndexPath:indexPath
                                      atScrollPosition:UITableViewScrollPositionMiddle
                                              animated:YES];
     }
+
     if (completion)
     {
         completion();
