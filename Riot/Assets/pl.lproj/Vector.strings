@@ -443,7 +443,7 @@
 "widget_integration_failed_to_send_request" = "Nie udało się wysłać żądania.";
 "widget_integration_unable_to_create" = "Nie można utworzyć widżetu.";
 // Widget Integration Manager
-"widget_integration_need_to_be_able_to_invite" = "Aby to zrobić musisz mieć możliwość zapraszania użytkowników.";
+"widget_integration_need_to_be_able_to_invite" = "Aby to zrobić, musisz mieć możliwość zapraszania użytkowników.";
 "widget_sticker_picker_no_stickerpacks_alert" = "Nie masz obecnie włączonych żadnych pakietów naklejek.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Czy chcesz dodać teraz kilka?";
 "widget_creation_failure" = "Utworzenie widżetu nie powiodło się";
@@ -2302,7 +2302,7 @@
 "create_room_suggest_room" = "Zaproponuj członkom przestrzeni";
 "create_room_show_in_directory_footer" = "Pomoże to ludziom znaleźć i dołączyć do pokoju.";
 "create_room_promotion_header" = "AWANS";
-"create_room_section_footer_type_public" = "Tylko zaproszone osoby mogą znajdować i dołączać, a nie tylko osoby o nazwie Space.";
+"create_room_section_footer_type_public" = "Tylko zaproszone osoby mogą Cię znaleźć i dołączyć, a nie tylko osoby w tej samej przestrzeni.";
 "create_room_section_footer_type_restricted" = "Każda osoba w Przestrzeni może wyszukiwać i dołączać.";
 "create_room_section_footer_type_private" = "Tylko zaproszone osoby mogą znaleźć i dołączyć do tego pokoju.";
 "create_room_type_restricted" = "Członkowie przestrzeni";
@@ -2842,3 +2842,12 @@
 "authentication_qr_login_start_display_qr" = "Pokaż kod QR na tym urządzeniu";
 "authentication_qr_login_start_step4" = "Wybierz 'Pokaż kod QR na tym urządzeniu'";
 "authentication_qr_login_start_step3" = "Wybierz 'powiąż urządzenie'";
+"room_command_discard_session_description" = "Wymusza usunięcie bieżącej sesji grupowej wychodzącej z zaszyfrowanego pokoju";
+"user_session_details_session_section_footer" = "Aby skopiować dane, przytrzymaj na nich stuknięcie.";
+"user_session_inactive_session_description" = "Sesje nieaktywne to sesje, które nie były używane przez dłuższy czas, ale wciąż otrzymują klucze szyfrujące.\n\nRegularne usuwanie sesji nieaktywnych poprawia bezpieczeństwo, wydajność i upraszcza Tobie detekcje podejrzanych sesji.";
+"user_session_rename_session_description" = "Inni użytkownicy w wiadomościach bezpośrednich i pokojach, do których dołączyłeś, mogą wyświetlić całą listę Twoich sesji.\n\nOznacza to dla nich pewność, że rzeczywiście rozmawiają z Tobą, ale jednocześnie oznacza, że widzą nazwę sesji, którą tutaj wpiszesz.";
+"user_session_permanently_unverified_session_description" = "Ta sesja nie wspiera szyfrowania, więc nie może zostać zweryfikowana. \n\nNie będziesz w stanie uczestniczyć w pokojach, gdzie szyfrowane jest włączone.\n\nDla najlepszego bezpieczeństwa i prywatności zaleca się korzystania z klientów Matrix, które wspierają szyfrowanie.";
+"user_session_unverified_session_description" = "Sesje niezweryfikowane to sesje, w których zalogowano się za pomocą Twoich danych, lecz nie zostały zweryfikowane inną sesją.\n\nW tym przypadku dokładnie się upewnij, że rozpoznajesz takie sesje, ponieważ mogą ujawnić nieautoryzowane użycie Twojego konta.";
+"user_session_verified_session_description" = "Sesje zweryfikowane są wszędzie, gdzie korzystasz z Element po wprowadzeniu swojego hasła lub zweryfikowaniu swojej tożsamości za pomocą innej sesji zweryfikowanej.\n\nTo oznacza, że posiadasz wszystkie niezbędne klucze wymagane do odblokowania swoich zaszyfrowanych wiadomości i oznajmiasz innym użytkownikom, że ufasz tej sesji.";
+"space_invite_nav_title" = "Zaproszenie do przestrzeni";
+"user_other_session_unverified_sessions_header_subtitle" = "Dla wzmocnienia bezpiecznych wiadomości, zweryfikuj swoje sesje i wyloguj się ze wszystkich sesji, których nie rozpoznajesz lub nie używasz.";
