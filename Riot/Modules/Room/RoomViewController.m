@@ -693,7 +693,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     {
         // Retrieve the potential message partially typed during last room display.
         // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
-        self.inputToolbarView.attributedTextMessage = self.roomDataSource.partialAttributedTextMessage;
+        [self.inputToolbarView setPartialContent:self.roomDataSource.partialAttributedTextMessage];
     }
     
     [self setMaximisedToolbarIsHiddenIfNeeded: NO];
@@ -5293,6 +5293,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     }];
 }
 
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView *)toolbarView shouldStorePartialContent:(NSAttributedString *)partialAttributedTextMessage
+{
+    self.roomDataSource.partialAttributedTextMessage = partialAttributedTextMessage;
+}
+
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
@@ -6135,7 +6140,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             if (self.saveProgressTextInput)
             {
                 // Restore the potential message partially typed before jump to last unread messages.
-                self.inputToolbarView.attributedTextMessage = roomDataSource.partialAttributedTextMessage;
+                [self.inputToolbarView setPartialContent:roomDataSource.partialAttributedTextMessage];
             }
         };
 
