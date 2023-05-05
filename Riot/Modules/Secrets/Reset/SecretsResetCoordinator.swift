@@ -94,11 +94,11 @@ extension SecretsResetCoordinator: SecretsResetViewModelCoordinatorDelegate {
 extension SecretsResetCoordinator: ReauthenticationCoordinatorDelegate {
     
     func reauthenticationCoordinatorDidComplete(_ coordinator: ReauthenticationCoordinatorType, withAuthenticationParameters authenticationParameters: [String: Any]?) {
-        
         self.secretsResetViewModel.process(viewAction: .authenticationInfoEntered(authenticationParameters ?? [:]))
     }
     
     func reauthenticationCoordinatorDidCancel(_ coordinator: ReauthenticationCoordinatorType) {
+        self.secretsResetViewModel.process(viewAction: .authenticationCancelled)
         self.remove(childCoordinator: coordinator)
     }
     
