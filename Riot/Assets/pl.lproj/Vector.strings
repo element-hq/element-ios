@@ -65,8 +65,8 @@
 "auth_username_in_use" = "Nazwa użytkownika jest już używana";
 "auth_use_server_options" = "Użyj niestandardowych ustawień serwera (zaawansowane)";
 "auth_email_validation_message" = "Sprawdź swój e-mail, aby kontynuować rejestrację";
-"auth_msisdn_validation_title" = "Oczekiwanie na weryfikację";
-"auth_msisdn_validation_message" = "Wysłaliśmy SMS z kodem aktywacyjnym. Podaj ten kod poniżej.";
+"auth_msisdn_validation_title" = "Oczekiwanie weryfikacji";
+"auth_msisdn_validation_message" = "Wysłaliśmy SMS-a z kodem aktywacyjnym. Wpisz otrzymany kod poniżej.";
 "auth_recaptcha_message" = "Ten serwer domowy chciałby się upewnić, że nie jesteś robotem";
 "auth_reset_password_message" = "Aby zresetować swoje hasło, wprowadź adres e-mail powiązany z twoim kontem:";
 "auth_reset_password_missing_password" = "Należy wprowadzić nowe hasło.";
@@ -1206,10 +1206,10 @@
 "device_verification_security_advice_emoji" = "Porównaj unikalne emotikony, upewniając się, że pojawiają się w tej samej kolejności.";
 "key_verification_user_title" = "Weryfikacja";
 "key_verification_this_session_title" = "Weryfikacja bieżącej sesji";
-"key_verification_new_session_title" = "Weryfikacja nowej sesji";
+"key_verification_new_session_title" = "Weryfikuj nową sesję";
 
 // MARK: - Device Verification
-"key_verification_other_session_title" = "Weryfikacja istniejącej sesji";
+"key_verification_other_session_title" = "Weryfikuj sesję";
 "sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Zacznij korzystać z bezpiecznej kopii zapasowej";
 
 // Recover from private key
@@ -1292,7 +1292,7 @@
 "room_details_access_section_anyone_for_dm" = "Każdy kto zna link pokoju, razem z gośćmi";
 "room_details_access_section_anyone_apart_from_guest_for_dm" = "Każdy kto zna link pokoju, poza gośćmi";
 "room_details_access_section_for_dm" = "Kto może dołączyć do pokoju?";
-"room_details_room_name_for_dm" = "Nazwa Pokoju";
+"room_details_room_name_for_dm" = "Nazwa";
 "room_details_photo_for_dm" = "Obraz pokoju";
 "room_details_integrations" = "Integracje";
 "room_details_search" = "Wyszukaj w pokoju";
@@ -1998,7 +1998,7 @@
 
 // Room members
 "room_member_ignore_prompt" = "Czy na pewno chcesz ukryć wszystkie wiadomości od tego użytkownika?";
-"message_reply_to_message_to_reply_to_prefix" = "W odpowiedzi na";
+"message_reply_to_message_to_reply_to_prefix" = "W odpowiedzi do";
 "message_reply_to_sender_sent_a_file" = "wysłał(-a) plik.";
 "message_reply_to_sender_sent_a_video" = "wysłał(-a) plik wideo.";
 "message_reply_to_sender_sent_an_audio_file" = "wysłał(-a) plik audio.";
@@ -2038,10 +2038,10 @@
 "account_error_display_name_change_failed" = "Zmiana wyświetlanej nazwy nie powiodła się";
 "account_msisdn_validation_error" = "Nie można zweryfikować numeru telefonu.";
 "account_msisdn_validation_message" = "Wysłaliśmy SMS-a z kodem aktywacyjnym. Wpisz otrzymany kod poniżej.";
-"account_msisdn_validation_title" = "Oczekiwanie na weryfikację";
+"account_msisdn_validation_title" = "Oczekiwanie weryfikacji";
 "account_email_validation_error" = "Nie można zweryfikować adresu e-mail. Sprawdź swoją skrzynkę e-mail i kliknij zawarte w niej łącze. Gdy to zrobisz, kliknij kontynuuj";
 "account_email_validation_message" = "Sprawdź swoją skrzynkę e-mail i kliknij zawarte w niej łącze. Gdy to zrobisz, kliknij kontynuuj.";
-"account_email_validation_title" = "Oczekiwanie na weryfikację";
+"account_email_validation_title" = "Oczekiwanie weryfikacji";
 "account_linked_emails" = "Połączone adresy e-mail";
 "account_link_email" = "Połącz adres e-mail";
 
@@ -2577,10 +2577,10 @@
 "authentication_qr_login_start_title" = "Zeskanuj kod QR";
 "authentication_login_with_qr" = "Zaloguj się za pomocą kodu QR";
 "accessibility_selected" = "wybrane";
-"authentication_qr_login_start_step2" = "Przejdź do ustawień -> Bezpieczeństwo i Prywatność";
+"authentication_qr_login_start_step2" = "Przejdź do Ustawień -> Bezpieczeństwo i prywatność";
 "user_other_session_verified_sessions_header_subtitle" = "Dla najlepszego bezpieczeństwa, wyloguj się ze wszystkich sesji, których nie rozpoznajesz lub nie używasz.";
 "user_sessions_overview_other_sessions_section_info" = "Dla najlepszego bezpieczeństwa, zweryfikuj swoje sesje i wyloguj się ze wszystkich sesji, których nie rozpoznajesz lub nie używasz.";
-"poll_history_no_past_poll_period_text" = "Nie znaleziono aktywnych ankiet w ostatnich %@ dniach. Wczytaj więcej ankiet, aby wyświetlić ankiety z poprzednich miesięcy";
+"poll_history_no_past_poll_period_text" = "Nie znaleziono przeszłych ankiet w ostatnich %@ dniach. Wczytaj więcej ankiet, aby wyświetlić ankiety z poprzednich miesięcy";
 "poll_history_no_active_poll_period_text" = "Nie znaleziono aktywnych ankiet w ostatnich %@ dniach. Wczytaj więcej ankiet, aby wyświetlić ankiety z poprzednich miesięcy";
 /* The placeholder will be replaces with manage_session_name_info_link */
 "manage_session_name_info" = "Bądź świadom, że nazwy sesji są również widoczne dla ludzi, z którymi się komunikujesz. %@";
@@ -2615,7 +2615,7 @@
 "user_other_session_security_recommendation_title" = "Inne sesje";
 "user_session_rename_session_title" = "Zmienianie nazwy sesji";
 "user_session_inactive_session_title" = "Sesje nieaktywne";
-"user_session_unverified_session_title" = "Sesje niezweryfikowane";
+"user_session_unverified_session_title" = "Sesja niezweryfikowana";
 "user_session_verified_session_title" = "Sesje zweryfikowane";
 "user_session_got_it" = "Rozumiem";
 "user_session_push_notifications_message" = "Po włączeniu, ta sesja zacznie otrzymywać powiadomienia push.";
@@ -2752,7 +2752,7 @@
 "voice_broadcast_voip_cannot_start_title" = "Nie można rozpocząć połączenia";
 "voice_broadcast_stop_alert_agree_button" = "Tak, zatrzymaj";
 "voice_broadcast_stop_alert_description" = "Czy na pewno chcesz zakończyć transmisję na żywo? Transmisja zostanie zakończona, a całe nagranie będzie dostępne w pokoju.";
-"voice_broadcast_stop_alert_title" = "Zatrzymać transmisję na żywo?";
+"voice_broadcast_stop_alert_title" = "Zakończyć transmisję na żywo?";
 "voice_broadcast_buffering" = "Buforowanie...";
 "voice_broadcast_time_left" = "%@ wyszedł";
 "voice_broadcast_tile" = "Transmisja głosowa";
