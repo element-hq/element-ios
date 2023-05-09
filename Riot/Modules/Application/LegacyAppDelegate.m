@@ -390,6 +390,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"en"];
+    UIApplication.sharedApplication.accessibilityLanguage = language;
     
     if (BuildSettings.disableRightToLeftLayout)
     {
