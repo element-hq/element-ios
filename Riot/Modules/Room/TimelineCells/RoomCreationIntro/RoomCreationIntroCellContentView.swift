@@ -69,8 +69,10 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
                 
         self.addParticipantsButton.layer.masksToBounds = true
         self.addParticipantsButton.addTarget(self, action: #selector(socialButtonAction(_:)), for: .touchUpInside)
+        self.addParticipantsButton.accessibilityLabel = VectorL10n.roomIntroCellAddParticipantsAction
         
         self.addParticipantsLabel.text = VectorL10n.roomIntroCellAddParticipantsAction
+        self.addParticipantsLabel.isAccessibilityElement = false
         
         self.roomAvatarView.showCameraBadgeOnFallbackImage = true
     }
