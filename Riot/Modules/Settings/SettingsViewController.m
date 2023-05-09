@@ -4158,6 +4158,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         || (language == nil && [NSBundle mxk_language]))
     {
         [NSBundle mxk_setLanguage:language];
+        UIApplication.sharedApplication.accessibilityLanguage = language;
 
         // Store user settings
         NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
