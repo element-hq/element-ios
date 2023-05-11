@@ -131,18 +131,15 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 
         let flow: AuthenticationFlow = initialScreen == .login ? .login : .register
 
-        // Use the homeserver defined by a provisioningLink or by the user (if none is set, the default one will be used)
-        let homeserverAddress = authenticationService.provisioningLink?.homeserverUrl ?? authenticationService.state.homeserver.addressFromUser
-        
         // Check if the user must select a server
-        if BuildSettings.forceHomeserverSelection, homeserverAddress == nil {
+        if BuildSettings.forceHomeserverSelection, authenticationService.provisioningLink?.homeserverUrl == nil {
             showServerSelectionScreen(for: flow)
             return
         }
         
         do {
             // Start the flow (if homeserverAddress is nil, the default server will be used).
-            try await authenticationService.startFlow(flow, for: homeserverAddress)
+            try await authenticationService.startFlow(flow)
         } catch {
             MXLog.error("[AuthenticationCoordinator] start: Failed to start, showing server selection.")
             showServerSelectionScreen(for: flow)

@@ -98,13 +98,13 @@ final class BuildSettings: NSObject {
     
     // MARK: - Server configuration
     
-    // Force the user to set a homeserver instead of using the default one
+    /// Force the user to set a homeserver instead of using the default one
     static let forceHomeserverSelection = false
 
-    // Default server proposed on the authentication screen
+    /// Default server proposed on the authentication screen
     static let serverConfigDefaultHomeserverUrlString = "https://matrix.org"
     
-    // Default identity server
+    /// Default identity server
     static let serverConfigDefaultIdentityServerUrlString = "https://vector.im"
         
     static let serverConfigSygnalAPIUrlString = "https://matrix.org/_matrix/push/v1/notify"
