@@ -57,7 +57,13 @@ final class AuthenticationServerSelectionCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         
         let homeserver = parameters.authenticationService.state.homeserver
-        let viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: homeserver.displayableAddress,
+        let homeserverAddress: String
+        if BuildSettings.forceHomeserverSelection, homeserver.addressFromUser == nil {
+            homeserverAddress = ""
+        } else {
+            homeserverAddress = homeserver.displayableAddress
+        }
+        let viewModel = AuthenticationServerSelectionViewModel(homeserverAddress: homeserverAddress,
                                                                flow: parameters.authenticationService.state.flow,
                                                                hasModalPresentation: parameters.hasModalPresentation)
         let view = AuthenticationServerSelectionScreen(viewModel: viewModel.context)

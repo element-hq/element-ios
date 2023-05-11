@@ -86,6 +86,10 @@ class HomeserverAddress: NSObject {
     /// - Ensure the address contains a scheme, otherwise make it `https`.
     /// - Remove any trailing slashes.
     static func sanitized(_ address: String) -> String {
+        guard !address.isEmpty else {
+            // prevent prefixing an empty string with "https:"
+            return address
+        }
         var address = address.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         
         if !address.contains("://") {
