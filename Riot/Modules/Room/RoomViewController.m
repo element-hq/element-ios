@@ -8147,6 +8147,14 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)removeTriggerTextFromComposer:(NSString *)textTrigger
 {
     RoomInputToolbarView *toolbar = (RoomInputToolbarView *)self.inputToolbarView;
+    Class roomInputToolbarViewClass = [RoomViewController mainToolbarClass];
+
+    // RTE handles removing the text trigger by itself.
+    if (roomInputToolbarViewClass == WysiwygInputToolbarView.class && RiotSettings.shared.enableWysiwygTextFormatting)
+    {
+        return;
+    }
+
     if (toolbar && textTrigger.length) {
         NSMutableAttributedString *attributedTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:toolbar.attributedTextMessage];
         [[attributedTextMessage mutableString] replaceOccurrencesOfString:textTrigger
