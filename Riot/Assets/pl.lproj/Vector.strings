@@ -1,5 +1,5 @@
 // Titles
-"title_home" = "Strona startowa";
+"title_home" = "Strona główna";
 "title_favourites" = "Ulubione";
 "title_people" = "Osoby";
 "title_rooms" = "Pokoje";
@@ -538,7 +538,7 @@
 "room_details_fail_to_update_room_communities" = "Nie udało się zaaktualizować powiązanych społeczności";
 "room_details_fail_to_update_room_direct" = "Nie udało się zaaktualizować flagi tego pokoju";
 "room_details_fail_to_enable_encryption" = "Nie udało się włączyć szyfrowania w tym pokoju";
-"group_details_home" = "Strona startowa";
+"group_details_home" = "Strona główna";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Zacznij korzystać z Bezpiecznej Kopii Kluczy";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Podłącz tę sesję do Bezpiecznej Kopii Kluczy";
 "key_backup_setup_intro_manual_export_info" = "(Zaawansowane)";
@@ -609,7 +609,7 @@
 "device_verification_error_cannot_load_device" = "Nie można załadować informacji dotyczących sesji.";
 // Mark: Incoming
 "device_verification_incoming_title" = "Przychodząca prośba o weryfikację";
-"device_verification_incoming_description_1" = "Zweryfikuj tą sesję, aby oznaczyć ją jako zaufaną. Zaufane sesje dają Twoim rozmówcom dodatkowe poczucie spokoju, podczas konwersacji w pokojach z włączonym szyfrowaniem wiadomości end-to-end.";
+"device_verification_incoming_description_1" = "Zweryfikuj tę sesję, aby oznaczyć ją jako zaufaną. Dodawanie sesji parterów do zaufanych, daje większej pewności, gdy korzystasz z wiadomości szyfrowanych end-to-end.";
 "device_verification_incoming_description_2" = "Weryfikacja tej sesji spowoduje oznaczenie jej, jako zaufanej. Dodatkowo zostanie ona oznaczona jako zaufana również dla Twojego rozmówcy.";
 // MARK: Start
 "device_verification_start_title" = "Zweryfikuj, porównując krótki tekst";
@@ -1123,9 +1123,9 @@
 "key_verification_tile_conclusion_done_title" = "Zweryfikowano";
 "key_verification_tile_request_incoming_approval_decline" = "Odmów";
 "key_verification_tile_request_incoming_approval_accept" = "Zaakceptuj";
-"key_verification_tile_request_status_accepted" = "Zaakceptowałeś(-aś)";
+"key_verification_tile_request_status_accepted" = "Zaakceptowano";
 "key_verification_tile_request_status_cancelled" = "%@ odrzucił(-a)";
-"key_verification_tile_request_status_cancelled_by_me" = "Anulowałeś(-aś)";
+"key_verification_tile_request_status_cancelled_by_me" = "Anulowałeś";
 "key_verification_tile_request_status_expired" = "Wygasło";
 "key_verification_tile_request_status_waiting" = "Oczekiwanie…";
 "key_verification_tile_request_status_data_loading" = "Ładowanie danych…";
@@ -1147,13 +1147,13 @@
 
 // User
 
-"key_verification_verified_user_information" = "Wiadomości wysyłane do tego użytkownika są szyfrowane metodą end-to-end i nie mogą być odczytywane przez osoby trzecie.";
+"key_verification_verified_user_information" = "Wiadomości z tym użytkownikiem są szyfrowane end-to-end i nie mogą zostać odczytane przez osoby trzecie.";
 "key_verification_verified_this_session_information" = "Uzyskałeś(-aś) dostęp do zaszyfrowanych wiadomości w tej sesji. Dodatkowo użytkownicy będą ufać tej sesji.";
 "key_verification_verified_new_session_information" = "Uzyskałeś(-aś) dostęp do zaszyfrowanych wiadomości w nowej sesji. Dodatkowo użytkownicy będą ufać tej sesji.";
 "key_verification_verified_other_session_information" = "Uzyskałeś(-aś) dostęp do zaszyfrowanych wiadomości w swojej drugiej sesji. Dodatkowo użytkownicy będą ufać tej sesji.";
 "key_verification_verified_new_session_title" = "Nowa sesja zweryfikowana!";
 "key_verification_manually_verify_device_validate_action" = "Zweryfikuj";
-"key_verification_manually_verify_device_additional_information" = "Jeżeli te dane się nie zgadzają to może oznaczać, że bezpieczeństwo komunikacji mogło zostać skompromitowane.";
+"key_verification_manually_verify_device_additional_information" = "Jeśli nie pasują, bezpieczeństwo twojego konta mogło zostać zdradzone.";
 "key_verification_manually_verify_device_key_title" = "Klucz sesji";
 "key_verification_manually_verify_device_id_title" = "Identyfikator sesji";
 "key_verification_manually_verify_device_name_title" = "Nazwa sesji";
@@ -1301,10 +1301,10 @@
 "identity_server_settings_alert_error_terms_not_accepted" = "Musisz zaakceptować warunki %@, aby ustawić go jako serwer tożsamości.";
 "identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Odłącz mimo wszystko";
 "identity_server_settings_alert_disconnect_still_sharing_3pid" = "Nadal udostępniasz swoje dane personalne na serwerze tożsamości %@. \n\nZalecamy usunięcie adresów e-mail i numerów telefonów z serwera tożsamości przed rozłączeniem.";
-"identity_server_settings_alert_disconnect_button" = "Odłącz";
-"identity_server_settings_alert_disconnect" = "Odłączyć się od serwera tożsamości %@?";
-"identity_server_settings_alert_disconnect_title" = "Odłącz serwer tożsamości";
-"identity_server_settings_alert_change" = "Odłączyć się od serwera tożsamości %1$@ i zamiast tego połączyć się z %2$@?";
+"identity_server_settings_alert_disconnect_button" = "Rozłącz";
+"identity_server_settings_alert_disconnect" = "Rozłączyć się z serwerem tożsamości %@?";
+"identity_server_settings_alert_disconnect_title" = "Rozłącz serwer tożsamości";
+"identity_server_settings_alert_change" = "Rozłączyć się z bieżącym serwerem tożsamości %1$@ i połączyć się z %2$@?";
 "identity_server_settings_alert_change_title" = "Zmień serwer tożsamości";
 "identity_server_settings_alert_no_terms" = "Wybrany serwer tożsamości nie ma żadnych warunków korzystania z usługi. Kontynuuj tylko wtedy, gdy ufasz właścicielowi serwera.";
 "identity_server_settings_alert_no_terms_title" = "Serwer tożsamości nie ma warunków świadczenia usług";
@@ -1348,7 +1348,7 @@
 "security_settings_crypto_sessions_description_2" = "Jeśli nie rozpoznajesz którejś z sesji to zmień hasło i zresetuj bezpieczną kopię zapasową.";
 "settings_show_NSFW_public_rooms" = "Pokaż publiczne pokoje NSFW";
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Wydrukuj klucz i przechowuj go w bezpiecznym miejscu\n✓ Zapisz klucz na pendrive lub dysku zapasowym\n✓ Skopiuj klucz na prywatnym dysku w chmurze";
-"user_verification_sessions_list_information" = "Konwersacja z tym użytkownikiem w tym pokoju jest szyfrowana end-to-end i nie może być odczytana przez osoby trzecie.";
+"user_verification_sessions_list_information" = "Wiadomości z tym użytkownikiem są szyfrowane end-to-end i nie mogą zostać odczytane przez osoby trzecie.";
 "service_terms_modal_description_for_identity_server_2" = "Daj się znaleźć na podstawie numeru telefonu lub adresu e-mail";
 "secrets_setup_recovery_passphrase_information" = "Wprowadź unikalne hasło odzyskiwania. Będzie ono używane do zabezpieczenia Twojej kopii kluczy przechowywanej na serwerze.";
 "secrets_recovery_with_key_invalid_recovery_key_message" = "Sprawdź, czy wprowadziłeś(-aś) poprawny klucz odzyskiwania.";
@@ -1448,7 +1448,7 @@
 
 "voice_message_release_to_send" = "Przytrzymaj, aby nagrać, zwolnij, aby wysłać";
 "side_menu_app_version" = "Wersja %@";
-"side_menu_action_feedback" = "Feedback";
+"side_menu_action_feedback" = "Opinia użytkownika";
 "side_menu_action_help" = "Pomoc";
 "side_menu_action_settings" = "Ustawienia";
 "side_menu_action_invite_friends" = "Zaproś przyjaciół";
@@ -2133,10 +2133,10 @@
 "poll_timeline_not_closed_subtitle" = "Proszę spróbuj ponownie";
 "poll_timeline_not_closed_title" = "Nie udało się zakończyć ankiety";
 "poll_timeline_vote_not_registered_subtitle" = "Przepraszamy, Twój głos nie został zarejestrowany, spróbuj ponownie";
-"poll_timeline_vote_not_registered_title" = "Głos niezarejestrowany";
+"poll_timeline_vote_not_registered_title" = "Głos nie został zarejestrowany";
 "poll_timeline_total_final_results" = "Ostateczne wyniki na podstawie %lu głosów";
 "poll_timeline_total_final_results_one_vote" = "Wyniki końcowe na podstawie 1 głosu";
-"poll_timeline_total_votes_not_voted" = "%lu oddane/ych głosy/ów. Zagłosuj, aby zobaczyć wyniki";
+"poll_timeline_total_votes_not_voted" = "Oddano %lu głosów. Zagłosuj, aby zobaczyć wyniki";
 "poll_timeline_total_one_vote_not_voted" = "1 oddany głos. Zagłosuj, aby zobaczyć wyniki";
 "poll_timeline_total_votes" = "%lu głosy/ów";
 "poll_timeline_total_one_vote" = "1 głos";
@@ -2169,11 +2169,11 @@
 
 // Mark: Avatar
 
-"space_avatar_view_accessibility_label" = "avatar";
+"space_avatar_view_accessibility_label" = "awatar";
 
 // MARK: Reactions
 
-"room_event_action_reaction_more" = "%@ jeszcze";
+"room_event_action_reaction_more" = "%@ więcej";
 "leave_space_selection_no_rooms" = "Nie zaznaczaj pokoi";
 "leave_space_selection_all_rooms" = "Wybierz wszystkie pokoje";
 "leave_space_selection_title" = "WYBIERZ POKOJE";
@@ -2237,15 +2237,15 @@
 "space_settings_access_section" = "Kto ma dostęp do tej przestrzeni?";
 "space_topic" = "Opis";
 "space_public_join_rule_detail" = "Otwarty dla każdego, najlepszy dla społeczności";
-"spaces_add_space" = "Dodaj miejsce";
+"spaces_add_space" = "Dodaj przestrzeń";
 "spaces_add_room" = "Dodaj pokój";
 "spaces_invite_people" = "Zaproś ludzi";
-"space_public_join_rule" = "Miejsce publiczne";
+"space_public_join_rule" = "Przestrzeń publiczna";
 "space_private_join_rule_detail" = "Tylko zapraszaj, najlepiej dla siebie lub zespołów";
-"space_private_join_rule" = "Prywatna przestrzeń";
+"space_private_join_rule" = "Przestrzeń prywatna";
 "space_home_show_all_rooms" = "Pokaż wszystkie pokoje";
-"space_participants_action_ban" = "Zakaz z tej przestrzeni";
-"space_participants_action_remove" = "Usuń z tego miejsca";
+"space_participants_action_ban" = "Zbanuj z tej przestrzeni";
+"space_participants_action_remove" = "Usuń z tej przestrzeni";
 "spaces_coming_soon_detail" = "Ta funkcja nie została tutaj zaimplementowana, ale jest w drodze. Na razie możesz to zrobić za pomocą %@ na swoim komputerze.";
 "spaces_invites_coming_soon_title" = "Zaproszenia już wkrótce";
 "spaces_add_rooms_coming_soon_title" = "Wkrótce dodam pokoje";
@@ -2306,7 +2306,7 @@
 "create_room_section_footer_type_restricted" = "Każda osoba w Przestrzeni może wyszukiwać i dołączać.";
 "create_room_section_footer_type_private" = "Tylko zaproszone osoby mogą znaleźć i dołączyć do tego pokoju.";
 "create_room_type_restricted" = "Członkowie przestrzeni";
-"key_verification_manually_verify_device_instruction" = "Potwierdź zgodność poniższych informacji porównując następujące elementy z ustawieniami użytkownika w drugiej sesji:";
+"key_verification_manually_verify_device_instruction" = "Potwierdź porównując następujące elementy w ustawieniach użytkownika w drugiej sesji:";
 "service_terms_modal_information_description_integration_manager" = "Menedżer integracji umożliwia dodawanie funkcji od stron trzecich.";
 "service_terms_modal_information_description_identity_server" = "Serwer tożsamości pomaga znaleźć kontakty, wyszukując ich numer telefonu lub adres e-mail, aby sprawdzić, czy mają już konto.";
 "service_terms_modal_information_title_integration_manager" = "Menedżer integracji";
@@ -2315,7 +2315,7 @@
 "service_terms_modal_information_title_identity_server" = "Serwer Tożsamości";
 "service_terms_modal_description_integration_manager" = "Umożliwi to korzystanie z botów, mostów, widżetów i pakietów naklejek.";
 "service_terms_modal_description_identity_server" = "Umożliwi to komuś znalezienie Cię, jeśli ma Twój numer telefonu lub adres e-mail zapisany w swoich kontaktach telefonicznych.";
-"analytics_prompt_message_new_user" = "Pomóż nam zidentyfikować problemy i ulepszyć %@, udostępniając anonimowe dane o użytkowaniu. Aby zrozumieć, w jaki sposób ludzie korzystają z wielu urządzeń, wygenerujemy losowy identyfikator udostępniany przez Twoje urządzenia.";
+"analytics_prompt_message_new_user" = "Pomóż nam zidentyfikować problemy i ulepszyć %@, udostępniając anonimowe dane o użytkowaniu. Aby zrozumieć, w jaki sposób użytkownicy korzystają z wielu urządzeń, wygenerujemy losowy identyfikator dzielony pomiędzy Twoimi urządzeniami.";
 "network_offline_message" = "Jesteś offline, sprawdź swoje połączenie.";
 "network_offline_title" = "Jesteś offline";
 "event_formatter_message_deleted" = "Wiadomość usunięta";
@@ -2390,7 +2390,7 @@
 "room_accessibility_threads" = "Wątki";
 "room_event_copy_link_info" = "Link skopiowany do schowka.";
 "room_event_action_reply_in_thread" = "Wątek";
-"room_event_action_view_in_room" = "Zobacz w pokoju";
+"room_event_action_view_in_room" = "Wyświetl w pokoju";
 "room_participants_invite_prompt_to_msg" = "Czy na pewno chcesz zaprosić %@ do %@?";
 "room_participants_leave_success" = "Opuszczono pokój";
 "room_participants_leave_processing" = "Opuszczanie";
@@ -2510,7 +2510,7 @@
 "new_word" = "Nowy";
 "stop" = "Stop";
 "joining" = "Dołączanie";
-"location_sharing_invalid_power_level_message" = "Aby udostępniać lokalizację na żywo w tym pokoju, musisz mieć odpowiednie uprawnienia.";
+"location_sharing_invalid_power_level_message" = "Musisz mieć odpowiednie uprawnienia, aby udostępniać lokalizację na żywo w tym pokoju.";
 "location_sharing_invalid_power_level_title" = "Nie masz uprawnień do udostępniania lokalizacji na żywo";
 "authentication_choose_password_not_verified_message" = "Sprawdź swoją skrzynkę odbiorczą";
 "authentication_choose_password_not_verified_title" = "E-mail niezweryfikowany";
@@ -2609,7 +2609,7 @@
 "key_verification_scan_qr_code_information_other_session" = "Ustaw kamerę na kod QR wyświetlony na swoim drugim urządzeniu, aby zweryfikować swoją sesję";
 "key_verification_scan_qr_code_information_new_session" = "Ustaw kamerę na kod QR wyświetlony na swoim drugim urządzeniu, aby zweryfikować swoją nową sesję";
 "device_verification_self_verify_wait_recover_secrets_additional_help" = "Nie możesz dostać się do istniejącej %@ sesji?";
-"poll_timeline_decryption_error" = "Ze względu na błędy odszyfrowywania, niektóre głosy mogły nie zostać policzone";
+"poll_timeline_decryption_error" = "Ze względu na błędy rozszyfrowywania, niektóre głosy mogły nie zostać policzone";
 "user_sessions_overview_security_recommendations_section_info" = "Zwiększ bezpieczeństwo swojego konta kierując się tymi rekomendacjami.";
 "user_other_session_current_session_details" = "Twoja bieżąca sesja";
 "user_other_session_security_recommendation_title" = "Inne sesje";
@@ -2675,7 +2675,7 @@
 // Pills
 "pill_room_fallback_display_name" = "Przestrzeń/Pokój";
 "notice_display_name_changed_to" = "%@ zmienił swoją wyświetlaną nazwę %@";
-"room_event_encryption_info_key_authenticity_not_guaranteed" = "Autentyczność tej wiadomości zaszyfrowanej nie jest gwarantowana na tym urządzeniu.";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "Autentyczność tej wiadomości szyfrowanej nie jest gwarantowana na tym urządzeniu.";
 "notice_voice_broadcast_ended_by_you" = "Zakończyłeś transmisje na żywo.";
 "notice_voice_broadcast_ended" = "%@ zakończył transmisje na żywo.";
 "notice_voice_broadcast_live" = "Transmisja na żywo";
