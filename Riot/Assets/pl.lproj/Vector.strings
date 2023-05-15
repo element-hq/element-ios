@@ -67,7 +67,7 @@
 "auth_email_validation_message" = "Sprawdź swój e-mail, aby kontynuować rejestrację";
 "auth_msisdn_validation_title" = "Oczekiwanie weryfikacji";
 "auth_msisdn_validation_message" = "Wysłaliśmy SMS-a z kodem aktywacyjnym. Wpisz otrzymany kod poniżej.";
-"auth_recaptcha_message" = "Ten serwer domowy chciałby się upewnić, że nie jesteś robotem";
+"auth_recaptcha_message" = "Serwer domowy prosi o potwierdzenie, że nie jesteś robotem";
 "auth_reset_password_message" = "Aby zresetować swoje hasło, wprowadź adres e-mail powiązany z twoim kontem:";
 "auth_reset_password_missing_password" = "Należy wprowadzić nowe hasło.";
 "auth_reset_password_next_step_button" = "Zweryfikowałem(-am) swój adres e-mail";
@@ -165,8 +165,8 @@
 "room_event_action_more" = "Więcej";
 "room_event_action_share" = "Udostępnij";
 "room_event_action_permalink" = "Skopiuj link do wiadomości";
-"room_event_action_view_source" = "Pokaż źródło";
-"room_event_action_view_decrypted_source" = "Pokaż odszyfrowane źródło";
+"room_event_action_view_source" = "Wyświetl źródło";
+"room_event_action_view_decrypted_source" = "Pokaż rozszyfrowane źródło";
 "room_event_action_report" = "Zgłoś zawartość";
 "room_event_action_report_prompt_reason" = "Powód zgłoszenia zawartości";
 "room_event_action_save" = "Zapisz";
@@ -567,10 +567,10 @@
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Zrób kopię";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "Zrobiłem(-am) kopię";
 "key_backup_recover_title" = "Bezpieczne wiadomości";
-"key_backup_recover_invalid_passphrase_title" = "Nieprawidłowe hasło odzyskiwania";
-"key_backup_recover_invalid_passphrase" = "Nie można odszyfrować kopii zapasowej przy użyciu tego hasła: sprawdź, czy zostało wprowadzone prawidłowe hasło odzyskiwania.";
-"key_backup_recover_invalid_recovery_key_title" = "Niezgodność klucza odzyskiwania";
-"key_backup_recover_invalid_recovery_key" = "Nie można odszyfrować kopii zapasowej za pomocą tego klucza: sprawdź, czy został wprowadzony prawidłowy klucz odzyskiwania.";
+"key_backup_recover_invalid_passphrase_title" = "Nieprawidłowe hasło bezpieczeństwa";
+"key_backup_recover_invalid_passphrase" = "Kopia zapasowa nie mogła zostać rozszyfrowana za pomocą tego Hasła: upewnij się, że wprowadzono prawidłowe Hasło bezpieczeństwa.";
+"key_backup_recover_invalid_recovery_key_title" = "Klucze bezpieczeństwa nie pasują do siebie";
+"key_backup_recover_invalid_recovery_key" = "Kopia zapasowa nie mogła zostać rozszyfrowana za pomocą tego Klucza: upewnij się, że wprowadzono prawidłowy Klucz bezpieczeństwa.";
 "key_backup_recover_from_passphrase_info" = "Użyj hasło odzyskiwania, aby odszyfrować historyczne wiadomości";
 "key_backup_recover_from_passphrase_passphrase_title" = "Wprowadź";
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "Wprowadź hasło";
@@ -1010,7 +1010,7 @@
 
 // MARK: - Secrets reset
 
-"secrets_reset_title" = "Zresetuj wszystko";
+"secrets_reset_title" = "Resetuj wszystko";
 "secrets_setup_recovery_passphrase_summary_information" = "Zapamiętaj swoje hasło odzyskiwania. Możesz go użyć do odszyfrowania zaszyfrowanych wiadomości i danych.";
 "secrets_setup_recovery_passphrase_summary_title" = "Zapisz swoje hasło odzyskiwania";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Potwierdź hasło";
@@ -1046,24 +1046,24 @@
 "secrets_recovery_with_passphrase_invalid_passphrase_message" = "Sprawdź, czy zostało wprowadzone prawidłowe hasło odzyskiwania.";
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Nie można uzyskać dostępu do kopii bezpieczeństwa";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "użyć klucz odzyskiwania";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Nie znasz swojego hasła odzyskiwania? Możesz ";
-"secrets_recovery_with_passphrase_recover_action" = "Użyj hasło odzyskiwania";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "Wprowadź hasło odzyskiwania";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "użyj swojego Klucza bezpieczeństwa";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Nie znasz swojego hasła bezpieczeństwa? Możesz ";
+"secrets_recovery_with_passphrase_recover_action" = "Użyj hasła bezpieczeństwa";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Wprowadź hasło bezpieczeństwa";
 "secrets_recovery_with_passphrase_passphrase_title" = "Wprowadź";
 "secrets_recovery_with_passphrase_information_verify_device" = "Użyj hasło odzyskiwania, aby zweryfikować tę sesję.";
 "secrets_recovery_with_passphrase_information_default" = "Uzyskaj dostęp do swoich zaszyfrowanych wiadomości i swojej tożsamości umożliwiającej weryfikację innych twoich sesji, wprowadzając swoje hasło odzyskiwania.";
 
 // Recover with passphrase
 
-"secrets_recovery_with_passphrase_title" = "Hasło odzyskiwania";
-"secrets_recovery_reset_action_part_2" = "Zresetuj wszystko";
+"secrets_recovery_with_passphrase_title" = "Hasło bezpieczeństwa";
+"secrets_recovery_reset_action_part_2" = "Resetuj wszystko";
 
 // MARK: - Secrets recovery
 
-"secrets_recovery_reset_action_part_1" = "Zapomniałeś(-aś) lub straciłeś(-aś) wszystkie opcje odzyskiwania? ";
-"user_verification_session_details_verify_action_other_user" = "Manualna weryfikacja";
-"user_verification_session_details_verify_action_current_user_manually" = "Manualna weryfikacja za pomocą tekstu";
+"secrets_recovery_reset_action_part_1" = "Zapomniałeś lub straciłeś wszystkie opcje odzyskiwania? ";
+"user_verification_session_details_verify_action_other_user" = "Weryfikuj ręcznie";
+"user_verification_session_details_verify_action_current_user_manually" = "Zweryfikuj manualnie za pomocą tekstu";
 "user_verification_session_details_verify_action_current_user" = "Interaktywna weryfikacja";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Jeśli nie rozpoznajesz tej sesji to może oznaczać, że ktoś inny logował się na Twoje konto.";
 "user_verification_session_details_additional_information_untrusted_other_user" = "Dopóki ten użytkownik nie zaufa tej sesji, wiadomości wysyłane do niej i z niej są oznaczane ostrzeżeniami. Alternatywnie możesz ją zweryfikować ręcznie.";
@@ -1160,7 +1160,7 @@
 
 // MARK: Manually Verify Device
 
-"key_verification_manually_verify_device_title" = "Manualna weryfikacja za pomocą tekstu";
+"key_verification_manually_verify_device_title" = "Zweryfikuj ręcznie za pomocą tekstu";
 "key_verification_verify_sas_additional_information" = "Aby zapewnić maksymalne bezpieczeństwo, użyj innego zaufanego środka komunikacji lub zrób to osobiście.";
 "key_verification_verify_sas_validate_action" = "Pasują";
 "key_verification_verify_sas_cancel_action" = "Nie pasują";
@@ -2828,7 +2828,7 @@
 "authentication_qr_login_confirm_alert" = "Upewnij się, że znasz pochodzenie tego kodu. Poprzez powiązanie urządzeń udostępniasz pełny dostęp do Twojego konta.";
 "authentication_qr_login_failure_title" = "Nie udało się powiązać";
 "authentication_qr_login_loading_signed_in" = "Jesteś teraz zalogowany na swoim drugim urządzeniu.";
-"authentication_qr_login_loading_waiting_signin" = "Oczekiwanie na urządzenie, aby się zalogować.";
+"authentication_qr_login_loading_waiting_signin" = "Oczekiwanie na logowanie urządzenia.";
 "authentication_qr_login_loading_connecting_device" = "Łączenie z urządzeniem";
 "authentication_qr_login_confirm_subtitle" = "Potwierdź, że kod poniżej pasuje z Twoim drugim urządzeniem:";
 "authentication_qr_login_confirm_title" = "Bezpieczne połączenie ustanowione";
