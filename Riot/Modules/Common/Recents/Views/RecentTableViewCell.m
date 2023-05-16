@@ -81,7 +81,8 @@
         // Manage lastEventAttributedTextMessage optional property
         if (!roomCellData.roomSummary.spaceChildInfo && [roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
         {
-            self.lastEventDescription.attributedText = roomCellData.lastEventAttributedTextMessage;
+            // Attempt to correct the attributed string colors to match the current theme
+            self.lastEventDescription.attributedText = [roomCellData.lastEventAttributedTextMessage fixForegroundColor];
         }
         else
         {

@@ -23,6 +23,7 @@
 class RoomInputToolbarTextView: UITextView {
     
     private var heightConstraint: NSLayoutConstraint!
+    private var pillViews = [UIView]()
         
     weak var toolbarDelegate: RoomInputToolbarTextViewDelegate?
         
@@ -51,12 +52,18 @@ class RoomInputToolbarTextView: UITextView {
     }
     
     override var text: String! {
+        willSet {
+            flushPills()
+        }
         didSet {
             updateUI()
         }
     }
 
     override var attributedText: NSAttributedString! {
+        willSet {
+            flushPills()
+        }
         didSet {
             updateUI()
         }
@@ -160,5 +167,19 @@ class RoomInputToolbarTextView: UITextView {
         }
         
         delegate.onTouchUp(inside: delegate.rightInputToolbarButton)
+    }
+}
+
+extension RoomInputToolbarTextView: PillViewFlusher {
+    func registerPillView(_ pillView: UIView) {
+        pillViews.append(pillView)
+    }
+
+    private func flushPills() {
+        for view in pillViews {
+            view.alpha = 0.0
+            view.removeFromSuperview()
+        }
+        pillViews.removeAll()
     }
 }

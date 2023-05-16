@@ -274,7 +274,7 @@ extension Analytics {
     func trackE2EEError(_ reason: DecryptionFailureReason, context: String) {
         let event = AnalyticsEvent.Error(
             context: context,
-            cryptoModule: MXSDKOptions.sharedInstance().enableCryptoSDK ? .Rust : .Native,
+            cryptoModule: .Rust,
             domain: .E2EE,
             name: reason.errorName
         )

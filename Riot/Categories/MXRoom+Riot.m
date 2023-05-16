@@ -20,7 +20,7 @@
 
 #import "AvatarGenerator.h"
 #import "MatrixKit.h"
-
+#import "GeneratedInterface-Swift.h"
 #import <objc/runtime.h>
 
 @implementation MXRoom (Riot)
@@ -331,30 +331,10 @@
     {
         [self.mxSession.crypto trustLevelSummaryForUserIds:@[userId] forceDownload:NO success:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
             
-            UserEncryptionTrustLevel userEncryptionTrustLevel;
-            double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;
-            
-            if (trustedDevicesPercentage >= 1.0)
-            {
-                userEncryptionTrustLevel = UserEncryptionTrustLevelTrusted;
-            }
-            else if (trustedDevicesPercentage == 0.0)
-            {
-                // Verify if the user has the user has cross-signing enabled
-                if ([self.mxSession.crypto.crossSigning crossSigningKeysForUser:userId])
-                {
-                    userEncryptionTrustLevel = UserEncryptionTrustLevelNotVerified;
-                }
-                else
-                {
-                    userEncryptionTrustLevel = UserEncryptionTrustLevelNoCrossSigning;
-                }
-            }
-            else
-            {
-                userEncryptionTrustLevel = UserEncryptionTrustLevelWarning;
-            }
-            
+            MXCrossSigningInfo *crossSigningInfo = [self.mxSession.crypto.crossSigning crossSigningKeysForUser:userId];
+            EncryptionTrustLevel *encryption = [[EncryptionTrustLevel alloc] init];
+            UserEncryptionTrustLevel userEncryptionTrustLevel = [encryption userTrustLevelWithCrossSigning:crossSigningInfo
+                                                                                    trustedDevicesProgress:usersTrustLevelSummary.trustedDevicesProgress];
             onComplete(userEncryptionTrustLevel);
             
         } failure:^(NSError *error) {

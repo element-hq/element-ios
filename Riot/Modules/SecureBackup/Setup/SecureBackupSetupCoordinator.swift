@@ -73,15 +73,19 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     // MARK: - Public methods
     
     func start() {
+        start(popCompletion: nil)
+    }
+
+    func start(popCompletion: (() -> Void)?) {
         let rootViewController = self.createIntro()
         
         if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootViewController, animated: true, popCompletion: nil)
+            self.navigationRouter.push(rootViewController, animated: true, popCompletion: popCompletion)
         } else {
-            self.navigationRouter.setRootModule(rootViewController)
+            self.navigationRouter.setRootModule(rootViewController, popCompletion: popCompletion)
         }
     }
-    
+
     func toPresentable() -> UIViewController {
         return self.navigationRouter
             .toPresentable()

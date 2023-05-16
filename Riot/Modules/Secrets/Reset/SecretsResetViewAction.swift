@@ -22,6 +22,7 @@ import Foundation
 enum SecretsResetViewAction {
     case loadData
     case reset
+    case authenticationCancelled
     case authenticationInfoEntered(_ authInfo: [String: Any])
     case cancel
 }

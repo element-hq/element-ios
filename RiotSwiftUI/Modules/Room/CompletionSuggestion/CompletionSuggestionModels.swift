@@ -16,20 +16,28 @@
 
 import Foundation
 
-enum UserSuggestionViewAction {
-    case selectedItem(UserSuggestionViewStateItem)
+enum CompletionSuggestionViewAction {
+    case selectedItem(CompletionSuggestionViewStateItem)
 }
 
-enum UserSuggestionViewModelResult {
+enum CompletionSuggestionViewModelResult {
     case selectedItemWithIdentifier(String)
 }
 
-struct UserSuggestionViewStateItem: Identifiable {
-    let id: String
-    let avatar: AvatarInputProtocol?
-    let displayName: String?
+enum CompletionSuggestionViewStateItem: Identifiable {
+    case command(name: String, parametersFormat: String, description: String)
+    case user(id: String, avatar: AvatarInputProtocol?, displayName: String?)
+
+    var id: String {
+        switch self {
+        case .command(let name, _, _):
+            return name
+        case .user(let id, _, _):
+            return id
+        }
+    }
 }
 
-struct UserSuggestionViewState: BindableState {
-    var items: [UserSuggestionViewStateItem]
+struct CompletionSuggestionViewState: BindableState {
+    var items: [CompletionSuggestionViewStateItem]
 }

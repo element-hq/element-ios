@@ -267,17 +267,6 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         
         let session = sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false)
         
-//        MXLog.debug("[QRLoginService] Session created without E2EE support. Inform the interlocutor of finishing")
-//        guard let requestData = try? JSONEncoder().encode(QRLoginRendezvousPayload(type: .loginFinish, outcome: .success)),
-//              case .success = await rendezvousService.send(data: requestData) else {
-//            await teardownRendezvous(state: .failed(error: .rendezvousFailed))
-//            return
-//        }
-//
-//        MXLog.debug("[QRLoginService] Login flow finished, returning session")
-//        state = .completed(session: session, securityCompleted: false)
-//        return
-        
         let cryptoResult = await withCheckedContinuation { continuation in
             session.enableCrypto(true) { response in
                 continuation.resume(returning: response)

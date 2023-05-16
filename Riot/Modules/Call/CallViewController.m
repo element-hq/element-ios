@@ -370,28 +370,16 @@ CallAudioRouteMenuViewDelegate>
                                                            {
                                                                typeof(self) self = weakSelf;
                                                                self->currentAlert = nil;
-                                                               
-                                                               // Acknowledge the existence of all devices
-                                                               [self startActivityIndicator];
-                                                               if (![self.mainSession.crypto isKindOfClass:[MXLegacyCrypto class]])
+                                                                   
+                                                               // Retry the call
+                                                               if (call.isIncoming)
                                                                {
-                                                                   MXLogFailure(@"[CallViewController] call: Only legacy crypto supports manual setting of known devices");
-                                                                   return;
+                                                                   [call answer];
                                                                }
-                                                               [(MXLegacyCrypto *)self.mainSession.crypto setDevicesKnown:unknownDevices complete:^{
-                                                                   
-                                                                   [self stopActivityIndicator];
-                                                                   
-                                                                   // Retry the call
-                                                                   if (call.isIncoming)
-                                                                   {
-                                                                       [call answer];
-                                                                   }
-                                                                   else
-                                                                   {
-                                                                       [call callWithVideo:call.isVideoCall];
-                                                                   }
-                                                               }];
+                                                               else
+                                                               {
+                                                                   [call callWithVideo:call.isVideoCall];
+                                                               }
                                                            }
                                                            
                                                        }]];

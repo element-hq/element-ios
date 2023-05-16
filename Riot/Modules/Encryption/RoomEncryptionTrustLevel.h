@@ -1,5 +1,5 @@
-//
-// Copyright 2021 New Vector Ltd
+// 
+// Copyright 2023 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,14 +14,12 @@
 // limitations under the License.
 //
 
-import RiotSwiftUI
-import XCTest
-
-class UserSuggestionUITests: MockScreenTestCase {
-    func testUserSuggestionScreen() throws {
-        app.goToScreenWithIdentifier(MockUserSuggestionScreenState.multipleResults.title)
-        
-        let firstButton = app.buttons["displayNameText-userIdText"].firstMatch
-        XCTAssert(firstButton.waitForExistence(timeout: 10))
-    }
-}
+/**
+ RoomEncryptionTrustLevel represents the trust level in an encrypted room.
+ */
+typedef NS_ENUM(NSUInteger, RoomEncryptionTrustLevel) {
+    RoomEncryptionTrustLevelTrusted,
+    RoomEncryptionTrustLevelWarning,
+    RoomEncryptionTrustLevelNormal,
+    RoomEncryptionTrustLevelUnknown
+};

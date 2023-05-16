@@ -36,7 +36,7 @@ final class ComposerLinkActionViewModel: ComposerLinkActionViewModelType, Compos
         switch linkAction {
         case let .edit(link):
             initialViewState = .init(
-                linkAction: .edit(link: link),
+                linkAction: .edit(url: link),
                 bindings: .init(
                     text: "",
                     linkUrl: link

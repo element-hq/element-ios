@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-struct UserSuggestionList: View {
+struct CompletionSuggestionList: View {
     private enum Constants {
         static let topPadding: CGFloat = 8.0
         static let listItemPadding: CGFloat = 4.0
@@ -30,7 +30,7 @@ struct UserSuggestionList: View {
          to the list items in order to be as close as possible as the
          `UITableView` display.
          */
-        @available (iOS 16.0, *)
+        @available(iOS 16.0, *)
         static let collectionViewPaddingCorrection: CGFloat = -5.0
     }
 
@@ -43,17 +43,15 @@ struct UserSuggestionList: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: UserSuggestionViewModel.Context
-    var showBackgroundShadow: Bool = true
+    @ObservedObject var viewModel: CompletionSuggestionViewModel.Context
+    var showBackgroundShadow = true
     
     var body: some View {
         if viewModel.viewState.items.isEmpty {
             EmptyView()
         } else {
             ZStack {
-                UserSuggestionListItem(avatar: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: "Prototype"),
-                                       displayName: "Prototype",
-                                       userId: "Prototype")
+                CompletionSuggestionListItem(content: CompletionSuggestionViewStateItem.user(id: "Prototype", avatar: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: "Prototype"), displayName: "Prototype"))
                     .background(ViewFrameReader(frame: $prototypeListItemFrame))
                     .hidden()
                 if showBackgroundShadow {
@@ -76,12 +74,8 @@ struct UserSuggestionList: View {
             Button {
                 viewModel.send(viewAction: .selectedItem(item))
             } label: {
-                UserSuggestionListItem(
-                    avatar: item.avatar,
-                    displayName: item.displayName,
-                    userId: item.id
-                )
-                .modifier(ListItemPaddingModifier(isFirst: viewModel.viewState.items.first?.id == item.id))
+                CompletionSuggestionListItem(content: item)
+                    .modifier(ListItemPaddingModifier(isFirst: viewModel.viewState.items.first?.id == item.id))
             }
         }
         .listStyle(PlainListStyle())
@@ -135,8 +129,8 @@ private struct BackgroundView<Content: View>: View {
 
 // MARK: - Previews
 
-struct UserSuggestion_Previews: PreviewProvider {
-    static let stateRenderer = MockUserSuggestionScreenState.stateRenderer
+struct CompletionSuggestion_Previews: PreviewProvider {
+    static let stateRenderer = MockCompletionSuggestionScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
     }

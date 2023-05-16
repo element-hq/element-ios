@@ -103,6 +103,14 @@ typedef enum : NSUInteger
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView *)toolbarView sendFormattedTextMessage:(NSString *)formattedTextMessage withRawText:(NSString *)rawText;
 
 /**
+ Tells the delegate that the user wants to send a command.
+
+ @param toolbarView the room input toolbar view.
+ @param commandText the command to send.
+ */
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView *)toolbarView sendCommand:(NSString *)commandText;
+
+/**
  Tells the delegate that the user wants to display the send media actions.
 
  @param toolbarView the room input toolbar view.
@@ -204,6 +212,15 @@ typedef enum : NSUInteger
  @param isAnimating YES if the activity indicator should run.
  */
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView updateActivityIndicator:(BOOL)isAnimating;
+
+/**
+ Tells the delegate that the partial content of the composer has changed
+ and should be stored to allow restoring it later if needed.
+
+ @param toolbarView the room input toolbar view
+ @param partialAttributedTextMessage the partial content to store
+ */
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView shouldStorePartialContent:(NSAttributedString*)partialAttributedTextMessage;
 
 @end
 
@@ -381,6 +398,11 @@ typedef enum : NSUInteger
  The current attributed text message in message composer.
  */
 @property (nonatomic) NSAttributedString *attributedTextMessage;
+
+/**
+ Sets the partial text message to apply to the current message composer.
+ */
+- (void)setPartialContent:(NSAttributedString *)attributedTextMessage;
 
 /**
  Default font for the message composer.

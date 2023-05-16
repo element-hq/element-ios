@@ -501,22 +501,33 @@
 // Return the raw height of the provided text by removing any margin
 - (CGFloat)rawTextHeight: (NSAttributedString*)attributedText
 {
+    return [self rawTextHeight:attributedText withMaxWidth:_maxTextViewWidth];
+}
+
+// Return the raw height of the provided text by removing any vertical margin/inset and constraining the width.
+- (CGFloat)rawTextHeight: (NSAttributedString*)attributedText withMaxWidth:(CGFloat)maxTextViewWidth
+{
     __block CGSize textSize;
     if ([NSThread currentThread] != [NSThread mainThread])
     {
         dispatch_sync(dispatch_get_main_queue(), ^{
-            textSize = [self textContentSize:attributedText removeVerticalInset:YES];
+            textSize = [self textContentSize:attributedText removeVerticalInset:YES maxTextViewWidth:maxTextViewWidth];
         });
     }
     else
     {
-        textSize = [self textContentSize:attributedText removeVerticalInset:YES];
+        textSize = [self textContentSize:attributedText removeVerticalInset:YES maxTextViewWidth:maxTextViewWidth];
     }
     
     return textSize.height;
 }
 
 - (CGSize)textContentSize:(NSAttributedString*)attributedText removeVerticalInset:(BOOL)removeVerticalInset
+{
+    return [self textContentSize:attributedText removeVerticalInset:removeVerticalInset maxTextViewWidth:_maxTextViewWidth];
+}
+
+- (CGSize)textContentSize:(NSAttributedString*)attributedText removeVerticalInset:(BOOL)removeVerticalInset maxTextViewWidth:(CGFloat)maxTextViewWidth
 {
     static UITextView* measurementTextView = nil;
     static UITextView* measurementTextViewWithoutInset = nil;
@@ -536,7 +547,7 @@
         // Select the right text view for measurement
         UITextView *selectedTextView = (removeVerticalInset ? measurementTextViewWithoutInset : measurementTextView);
         
-        selectedTextView.frame = CGRectMake(0, 0, _maxTextViewWidth, 0);
+        selectedTextView.frame = CGRectMake(0, 0, maxTextViewWidth, 0);
         selectedTextView.attributedText = attributedText;
         
         // Force the layout manager to layout the text, fixes problems starting iOS 16

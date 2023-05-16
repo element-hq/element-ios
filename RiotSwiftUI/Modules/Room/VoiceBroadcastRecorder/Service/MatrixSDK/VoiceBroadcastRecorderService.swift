@@ -146,7 +146,14 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     }
     
     func resumeRecordingVoiceBroadcast() {
-        try? audioEngine.start()
+        do {
+            // If we paused the recording because of an error, playing a sound mostly changed the category so we need to set it back to .playAndRecord
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default)
+            try audioEngine.start()
+        } catch {
+            MXLog.error("[VoiceBroadcastRecorderService] failed to resume recording", context: error)
+            return
+        }
         startTimer()
         
         voiceBroadcastService?.resumeVoiceBroadcast(success: { [weak self] _ in
@@ -179,12 +186,19 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
     }
     
     func pauseOnErrorRecordingVoiceBroadcast() {
+        guard audioEngine.isRunning else {
+            return
+        }
+        
         audioEngine.pause()
         UIApplication.shared.isIdleTimerDisabled = false
         invalidateTimer()
         
         // Update state
-        self.serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .error)
+        serviceDelegate?.voiceBroadcastRecorderService(self, didUpdateState: .error)
+        
+        // Play a sound
+        playSound(soundName: "vberror")
     }
     
     // MARK: - Private
@@ -387,6 +401,23 @@ class VoiceBroadcastRecorderService: VoiceBroadcastRecorderServiceProtocol {
                 MXLog.debug("[VoiceBroadcastRecorderService] convertAACToM4A other cases.")
                 completion(nil)
             }
+        }
+    }
+
+    private func playSound(soundName: String, delay: TimeInterval = 1.0) {
+        if let audioFileUrl = audioURLWithName(soundName: soundName) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                MXLog.debug("[VoiceBroadcastRecorderService] Playing sound: \(audioFileUrl.absoluteString)")
+                MXKSoundPlayer.sharedInstance().playSound(at: audioFileUrl, repeat: false, vibrate: false, routeToBuiltInReceiver: false)
+            }
+        }
+    }
+    
+    private func audioURLWithName(soundName: String) -> URL? {
+        if let path = Bundle.main.path(forResource: soundName, ofType: "mp3") {
+           return URL(fileURLWithPath: path)
+        } else {
+            return Bundle.mxk_audioURLFromMXKAssetsBundle(withName: soundName)
         }
     }
 }

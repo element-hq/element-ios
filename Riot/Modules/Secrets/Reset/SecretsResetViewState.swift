@@ -22,5 +22,6 @@ import Foundation
 enum SecretsResetViewState {
     case resetting
     case resetDone
+    case resetCancelled
     case error(Error)
 }

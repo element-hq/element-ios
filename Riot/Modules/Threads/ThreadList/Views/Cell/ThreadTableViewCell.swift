@@ -35,7 +35,7 @@ class ThreadTableViewCell: UITableViewCell {
     
     @IBOutlet private weak var rootMessageAvatarView: UserAvatarView!
     @IBOutlet private weak var rootMessageSenderLabel: UILabel!
-    @IBOutlet private weak var rootMessageContentLabel: UILabel!
+    @IBOutlet private weak var rootMessageContentTextView: UITextView!
     @IBOutlet private weak var lastMessageTimeLabel: UILabel!
     @IBOutlet private weak var summaryView: ThreadSummaryView!
     @IBOutlet private weak var notificationStatusView: ThreadNotificationStatusView!
@@ -61,7 +61,7 @@ class ThreadTableViewCell: UITableViewCell {
         if let rootMessageText = model.rootMessageText {
             updateRootMessageContentAttributes(rootMessageText, color: rootMessageColor)
         } else {
-            rootMessageContentLabel.attributedText = nil
+            rootMessageContentTextView.attributedText = nil
         }
         lastMessageTimeLabel.text = model.lastMessageTime
         if let summaryModel = model.summaryModel {
@@ -83,7 +83,7 @@ class ThreadTableViewCell: UITableViewCell {
         mutable.addAttributes([
             .foregroundColor: color
         ], range: NSRange(location: 0, length: mutable.length))
-        rootMessageContentLabel.attributedText = mutable
+        rootMessageContentTextView.attributedText = mutable
     }
 
 }
@@ -97,7 +97,7 @@ extension ThreadTableViewCell: Themable {
         Self.usernameColorGenerator.update(theme: theme)
         updateRootMessageSenderColor()
         rootMessageAvatarView.backgroundColor = .clear
-        if let attributedText = rootMessageContentLabel.attributedText {
+        if let attributedText = rootMessageContentTextView.attributedText {
             updateRootMessageContentAttributes(attributedText, color: rootMessageColor)
         }
         lastMessageTimeLabel.textColor = theme.colors.secondaryContent

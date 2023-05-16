@@ -132,6 +132,8 @@ final class SecretsResetViewController: UIViewController {
             self.renderLoading()
         case .resetDone:
             self.renderLoaded()
+        case .resetCancelled:
+            self.renderCancelled()
         case .error(let error):
             self.render(error: error)
         }
@@ -142,6 +144,10 @@ final class SecretsResetViewController: UIViewController {
     }
     
     private func renderLoaded() {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+    }
+    
+    private func renderCancelled() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
     }
     

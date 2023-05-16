@@ -23,5 +23,5 @@ extension ThemeService {
             return nil
         }        
         return ThemeIdentifier(rawValue: themeId)
-    }    
+    }
 }

@@ -256,40 +256,18 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     
     if (componentIndex < bubbleComponents.count)
     {
-        MXKRoomBubbleComponent *component = bubbleComponents[componentIndex];
-
-        // Define the marker frame
-        CGFloat markPosY = component.position.y + self.msgTextViewTopConstraint.constant;
-        
-        NSInteger mostRecentComponentIndex = bubbleComponents.count - 1;
-        if ([bubbleData isKindOfClass:RoomBubbleCellData.class])
+        CGRect componentFrame = [self componentFrameInContentViewForIndex:componentIndex];
+        if (CGRectIsEmpty(componentFrame))
         {
-            mostRecentComponentIndex = ((RoomBubbleCellData*)bubbleData).mostRecentComponentIndex;
-        }
-        
-        // Compute the mark height.
-        // Use the rest of the cell height by default.
-        CGFloat markHeight = self.contentView.frame.size.height - markPosY;
-        if (componentIndex != mostRecentComponentIndex)
-        {
-            // There is another component (with display) after this component in the cell.
-            // Stop the marker height to the top of this component.
-            for (NSInteger index = componentIndex + 1; index < bubbleComponents.count; index ++)
-            {
-                MXKRoomBubbleComponent *nextComponent  = bubbleComponents[index];
-                
-                if (nextComponent.attributedTextMessage)
-                {
-                    markHeight = nextComponent.position.y - component.position.y;
-                    break;
-                }
-            }
+            return;
         }
 
-        UIView *markerView = [[UIView alloc] initWithFrame:CGRectMake(VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_X,
-                                                                markPosY,
-                                                                VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH,
-                                                                markHeight)];
+        CGRect markerFrame = CGRectMake(VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_X,
+                                        CGRectGetMinY(componentFrame),
+                                        VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH,
+                                        CGRectGetHeight(componentFrame));
+
+        UIView *markerView = [[UIView alloc] initWithFrame:markerFrame];
         markerView.backgroundColor = ThemeService.shared.theme.tintColor;
 
         [markerView setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -303,28 +281,28 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
                                                                              toItem:self.contentView
                                                                           attribute:NSLayoutAttributeLeading
                                                                          multiplier:1.0
-                                                                           constant:VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_X];
+                                                                           constant:CGRectGetMinX(markerFrame)];
         NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:markerView
                                                                          attribute:NSLayoutAttributeTop
                                                                          relatedBy:NSLayoutRelationEqual
                                                                             toItem:self.contentView
                                                                          attribute:NSLayoutAttributeTop
                                                                         multiplier:1.0
-                                                                          constant:markPosY];
+                                                                          constant:CGRectGetMinY(markerFrame)];
         NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:markerView
                                                                            attribute:NSLayoutAttributeWidth
                                                                            relatedBy:NSLayoutRelationEqual
                                                                               toItem:nil
                                                                            attribute:NSLayoutAttributeNotAnAttribute
                                                                           multiplier:1.0
-                                                                            constant:VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH];
+                                                                            constant:CGRectGetWidth(markerFrame)];
         NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:markerView
                                                                             attribute:NSLayoutAttributeHeight
                                                                             relatedBy:NSLayoutRelationEqual
                                                                                toItem:nil
                                                                             attribute:NSLayoutAttributeNotAnAttribute
                                                                            multiplier:1.0
-                                                                             constant:markHeight];
+                                                                             constant:CGRectGetHeight(markerFrame)];
 
         // Available on iOS 8 and later
         [NSLayoutConstraint activateConstraints:@[leftConstraint, topConstraint, widthConstraint, heightConstraint]];
@@ -600,36 +578,47 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     }
     else if (roomBubbleTableViewCell.messageTextView)
     {
+        // Force the textView used underneath to layout its frame properly
+        [roomBubbleTableViewCell setNeedsLayout];
+        [roomBubbleTableViewCell layoutIfNeeded];
+                
+        // Compute the height
         CGFloat textMessageHeight = 0;
-        
         if ([bubbleCellData isKindOfClass:[RoomBubbleCellData class]])
         {
             RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)bubbleCellData;
             
             if (!roomBubbleCellData.attachment && selectedComponent.attributedTextMessage)
             {
-                textMessageHeight = [roomBubbleCellData rawTextHeight:selectedComponent.attributedTextMessage];
+                // Get the width of messageTextView to compute the needed height
+                CGFloat maxTextWidth = CGRectGetWidth(roomBubbleTableViewCell.messageTextView.bounds);
+                
+                // Compute text message height
+                textMessageHeight = [roomBubbleCellData rawTextHeight:selectedComponent.attributedTextMessage withMaxWidth:maxTextWidth];
             }
         }
-        
-        selectedComponentPositionY = selectedComponent.position.y;
-        
+                
+        // Get the messageText frame in the cell content view (as the messageTextView may be inside a stackView and not directly a child of the tableViewCell)
+        UITextView *messageTextView = roomBubbleTableViewCell.messageTextView;
+        CGRect messageTextViewFrame = [messageTextView convertRect:messageTextView.bounds toView:roomBubbleTableViewCell.contentView];
+
         if (textMessageHeight > 0)
         {
             selectedComponentHeight = textMessageHeight;
         }
         else
         {
-            selectedComponentHeight = roomBubbleTableViewCell.frame.size.height - selectedComponentPositionY;
+            // if we don't have a height, use the messageTextView height without the text container vertical insets to stay aligned with the text.
+            selectedComponentHeight = CGRectGetHeight(messageTextViewFrame) - messageTextView.textContainerInset.top - messageTextView.textContainerInset.bottom;
         }
         
-        // Force the textView used underneath to layout its frame properly
-        [roomBubbleTableViewCell setNeedsLayout];
-        [roomBubbleTableViewCell layoutIfNeeded];
-        
-        selectedComponenContentViewYOffset = roomBubbleTableViewCell.messageTextView.frame.origin.y;
+        // Get the vertical position of the messageTextView relative to the contentView
+        selectedComponenContentViewYOffset = CGRectGetMinY(messageTextViewFrame);
+
+        // Get the position of the component inside the messageTextView
+        selectedComponentPositionY = selectedComponent.position.y;
     }
-    
+        
     if (roomBubbleTableViewCell.attachmentView || roomBubbleTableViewCell.messageTextView)
     {
         CGFloat x = 0;
@@ -801,8 +790,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
 
 - (void)addTickView:(UIView *)tickView atIndex:(NSInteger)index
 {
-    CGRect componentFrame = [self componentFrameInContentViewForIndex: index];
-
+    CGRect componentFrame = [self componentFrameInContentViewForIndex:index];
     tickView.frame = CGRectMake(self.contentView.bounds.size.width - tickView.frame.size.width - 2 * PlainRoomCellLayoutConstants.readReceiptsViewRightMargin, CGRectGetMaxY(componentFrame) - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
 
     [self.contentView addSubview:tickView];

@@ -33,7 +33,7 @@ enum MockComposerLinkActionScreenState: MockScreenState, CaseIterable {
         case .create:
             viewModel = .init(from: .create)
         case .edit:
-            viewModel = .init(from: .edit(link: "https://element.io"))
+            viewModel = .init(from: .edit(url: "https://element.io"))
         }
         return (
             [viewModel],
