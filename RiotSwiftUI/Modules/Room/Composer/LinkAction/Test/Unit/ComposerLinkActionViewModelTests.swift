@@ -54,7 +54,7 @@ final class ComposerLinkActionViewModelTests: XCTestCase {
     
     func testEditDefaultState() {
         let link = "element.io"
-        setUp(with: .edit(link: link))
+        setUp(with: .edit(url: link))
         XCTAssertEqual(context.viewState.bindings.text, "")
         XCTAssertEqual(context.viewState.bindings.linkUrl, link)
         XCTAssertTrue(context.viewState.isSaveButtonDisabled)
@@ -83,7 +83,7 @@ final class ComposerLinkActionViewModelTests: XCTestCase {
     }
     
     func testRemoveAction() {
-        setUp(with: .edit(link: "element.io"))
+        setUp(with: .edit(url: "element.io"))
         var result: ComposerLinkActionViewModelResult!
         viewModel.callback = { value in
             result = value
@@ -119,7 +119,7 @@ final class ComposerLinkActionViewModelTests: XCTestCase {
     }
     
     func testSaveActionForEdit() {
-        setUp(with: .edit(link: "element.io"))
+        setUp(with: .edit(url: "element.io"))
         var result: ComposerLinkActionViewModelResult!
         viewModel.callback = { value in
             result = value

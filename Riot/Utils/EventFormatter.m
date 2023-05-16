@@ -573,8 +573,13 @@ withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
     {
         // Force the default text color for the last message (cancel highlighted message color)
         NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:summary.lastMessage.attributedText];
-        [lastEventDescription addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.textSecondaryColor
-                                     range:NSMakeRange(0, lastEventDescription.length)];
+        NSRange range = NSMakeRange(0, lastEventDescription.length);
+        [lastEventDescription addAttribute:NSForegroundColorAttributeName
+                                     value:ThemeService.shared.theme.colors.secondaryContent
+                                     range:range];
+        [lastEventDescription addThemeColorNameAttribute:@"secondaryContent" range:range];
+        [lastEventDescription addThemeIdentifierAttribute];
+        
         summary.lastMessage.attributedText = lastEventDescription;
     }
     
@@ -670,9 +675,11 @@ withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
     
     NSAttributedString *attachmentString = nil;
     UIColor *textColor;
+    NSString *colorIdentifier;
     if (isStoppedVoiceBroadcast)
     {
-        textColor = ThemeService.shared.theme.textSecondaryColor;
+        textColor = ThemeService.shared.theme.colors.secondaryContent;
+        colorIdentifier = @"secondaryContent";
         NSString *senderDisplayName;
         if ([stateEvent.stateKey isEqualToString:session.myUser.userId])
         {
@@ -688,6 +695,7 @@ withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
     else
     {
         textColor = ThemeService.shared.theme.colors.alert;
+        colorIdentifier = @"alert";
         UIImage *liveImage = AssetImages.voiceBroadcastLive.image;
         
         NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
@@ -717,6 +725,12 @@ withVoiceBroadcastInfoStateEvent:lastVoiceBroadcastInfoEvent
     }
     
     [lastMessage addAttribute:NSForegroundColorAttributeName value:textColor range:NSMakeRange(0, lastMessage.length)];
+    if (colorIdentifier)
+    {
+        [lastMessage addThemeColorNameAttribute:colorIdentifier range:NSMakeRange(0, lastMessage.length)];
+        [lastMessage addThemeIdentifierAttribute];
+    }
+
     summary.lastMessage.attributedText = lastMessage;
     
     return YES;

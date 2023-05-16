@@ -91,6 +91,10 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
     }
     
     func presentWithMainAppWindow(_ window: UIWindow) {
+        // Prevents the VoiceOver reading accessible content when the PIN screen is on top
+        // Calling `makeKeyAndVisible` in `dismissWithMainAppWindow(_:)` restores the visibility state.
+        window.isHidden = true
+        
         let pinCoordinatorWindow = UIWindow(frame: window.bounds)
         
         let setPinCoordinator = SetPinCoordinator(session: self.session, viewMode: self.viewMode, pinCodePreferences: .shared)

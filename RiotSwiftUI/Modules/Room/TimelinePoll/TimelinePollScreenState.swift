@@ -23,6 +23,9 @@ enum MockTimelinePollScreenState: MockScreenState, CaseIterable {
     case openUndisclosed
     case closedUndisclosed
     case closedPollEnded
+    case loading
+    case invalidStartEvent
+    case withAlert
     
     var screenType: Any.Type {
         TimelinePollDetails.self
@@ -45,7 +48,20 @@ enum MockTimelinePollScreenState: MockScreenState, CaseIterable {
                                        hasBeenEdited: false,
                                        hasDecryptionError: false)
         
-        let viewModel = TimelinePollViewModel(timelinePollDetails: poll)
+        let viewModel: TimelinePollViewModel
+        
+        switch self {
+        case .loading:
+            viewModel = TimelinePollViewModel(timelinePollDetailsState: .loading)
+        case .invalidStartEvent:
+            viewModel = TimelinePollViewModel(timelinePollDetailsState: .errored)
+        default:
+            viewModel = TimelinePollViewModel(timelinePollDetailsState: .loaded(poll))
+        }
+        
+        if self == .withAlert {
+            viewModel.showAnsweringFailure()
+        }
         
         return ([viewModel], AnyView(TimelinePollView(viewModel: viewModel.context)))
     }

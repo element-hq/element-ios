@@ -96,11 +96,17 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         // Note: this is only interactive in plain text mode. If RTE is enabled,
         // APIs from the composer view model should be used.
         get {
-            guard !self.textFormattingEnabled else { return nil }
+            guard !self.textFormattingEnabled else {
+                MXLog.failure("[WysiwygInputToolbarView] Trying to get attributedTextMessage in RTE mode")
+                return nil
+            }
             return self.wysiwygViewModel.textView.attributedText
         }
         set {
-            guard !self.textFormattingEnabled else { return }
+            guard !self.textFormattingEnabled else {
+                MXLog.failure("[WysiwygInputToolbarView] Trying to set attributedTextMessage in RTE mode")
+                return
+            }
             self.wysiwygViewModel.textView.attributedText = newValue
         }
     }
@@ -174,6 +180,16 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             showKeyboard()
         }
     }
+
+    override func setPartialContent(_ attributedTextMessage: NSAttributedString) {
+        let content: String
+        if #available(iOS 15.0, *) {
+            content = PillsFormatter.stringByReplacingPills(in: attributedTextMessage, mode: .markdown)
+        } else {
+            content = attributedTextMessage.string
+        }
+        self.wysiwygViewModel.setMarkdownContent(content)
+    }
     
     func showKeyboard() {
         self.viewModel.showKeyboard()
@@ -191,9 +207,13 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
 
     func mention(_ member: MXRoomMember) {
-        self.wysiwygViewModel.setMention(link: MXTools.permalinkToUser(withUserId: member.userId),
+        self.wysiwygViewModel.setMention(url: MXTools.permalinkToUser(withUserId: member.userId),
                                          name: member.displayname,
                                          mentionType: .user)
+    }
+
+    func command(_ command: String) {
+        self.wysiwygViewModel.setCommand(name: command)
     }
     
     // MARK: - Private
@@ -219,7 +239,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         let composer = Composer(
             viewModel: viewModel.context,
             wysiwygViewModel: wysiwygViewModel,
-            userSuggestionSharedContext: toolbarViewDelegate.userSuggestionContext().context,
+            completionSuggestionSharedContext: toolbarViewDelegate.completionSuggestionContext().context,
             resizeAnimationDuration: Double(kResizeComposerAnimationDuration),
             sendMessageAction: { [weak self] content in
             guard let self = self else { return }
@@ -277,12 +297,31 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                 },
 
             wysiwygViewModel.$plainTextContent
-                .dropFirst()
                 .removeDuplicates()
-                .sink { [weak self] value in
-                    guard let self else { return }
-                    self.textMessage = value.string
+                .dropFirst()
+                .sink { [weak self] attributed in
+                    // Note: filter out `plainTextMode` being off, as switching to RTE will trigger this
+                    // publisher with empty content. This avoids saving the partial text message
+                    // or trying to compute suggestion from this empty content.
+                    guard let self, self.wysiwygViewModel.plainTextMode else { return }
+                    self.textMessage = attributed.string
                     self.toolbarViewDelegate?.roomInputToolbarViewDidChangeTextMessage(self)
+                    self.toolbarViewDelegate?.roomInputToolbarView?(self, shouldStorePartialContent: attributed)
+                },
+            
+            wysiwygViewModel.$attributedContent
+                .removeDuplicates(by: {
+                    $0.text == $1.text
+                })
+                .dropFirst()
+                .sink { [weak self] _ in
+                    // Note: filter out `plainTextMode` being on, as switching to plain text mode will trigger this
+                    // publisher with empty content. This avoids saving the partial text message
+                    // or trying to compute suggestion from this empty content.
+                    guard let self, !self.wysiwygViewModel.plainTextMode else { return }
+                    let markdown = self.wysiwygViewModel.content.markdown
+                    let attributed = NSAttributedString(string: markdown, attributes: [.font: self.defaultFont])
+                    self.toolbarViewDelegate?.roomInputToolbarView?(self, shouldStorePartialContent: attributed)
                 }
         ]
 
@@ -334,7 +373,30 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
     
     private func sendWysiwygMessage(content: WysiwygComposerContent) {
-        delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.markdown)
+        if content.markdown.prefix(while: { $0 == "/" }).count == 1 {
+            let commandText: String
+            if content.markdown.hasPrefix(MXKSlashCommand.emote.cmd) {
+                // `/me` command works with markdown content
+                commandText = content.markdown
+            } else if #available(iOS 15.0, *) {
+                // Other commands should see pills replaced by matrix identifiers
+                commandText = PillsFormatter.stringByReplacingPills(in: self.wysiwygViewModel.textView.attributedText, mode: .identifier)
+            } else {
+                // Without Pills support, just use the raw text for command
+                commandText = self.wysiwygViewModel.textView.text
+            }
+
+            // Fix potential command failures due to trailing characters
+            // or NBSP that are not properly handled by the command interpreter
+            let sanitizedCommand = commandText
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .replacingOccurrences(of: String.nbsp, with: " ")
+
+            delegate?.roomInputToolbarView?(self, sendCommand: sanitizedCommand)
+        } else {
+            delegate?.roomInputToolbarView?(self, sendFormattedTextMessage: content.html, withRawText: content.markdown)
+        }
+
         if isMaximised {
             minimise()
         }

@@ -70,7 +70,6 @@ extension MXBugReportRestClient {
         
         // SDKs
         userInfo["matrix_sdk_version"] = MatrixSDKVersion
-        userInfo["crypto_module"] = MXSDKOptions.sharedInstance().cryptoModuleId
         if let crypto = mainAccount?.mxSession?.crypto {
             userInfo["crypto_module_version"] = crypto.version
         }

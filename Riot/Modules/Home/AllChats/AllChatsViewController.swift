@@ -988,8 +988,7 @@ extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
         let title: String
         let message: String
         
-        if let feature = MXSDKOptions.sharedInstance().cryptoSDKFeature,
-           feature.isEnabled && feature.needsVerificationUpgrade {
+        if MXSDKOptions.sharedInstance().cryptoMigrationDelegate?.needsVerificationUpgrade == true {
             title = VectorL10n.keyVerificationSelfVerifySecurityUpgradeAlertTitle
             message = VectorL10n.keyVerificationSelfVerifySecurityUpgradeAlertMessage
         } else {

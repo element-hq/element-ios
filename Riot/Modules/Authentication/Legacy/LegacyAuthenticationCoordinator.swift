@@ -106,8 +106,7 @@ final class LegacyAuthenticationCoordinator: NSObject, AuthenticationCoordinator
     // MARK: - Private
     
     private func showLoadingAnimation() {
-        let startupProgress: MXSessionStartupProgress? = MXSDKOptions.sharedInstance().enableStartupProgress ? session?.startupProgress : nil
-        let loadingViewController = LaunchLoadingViewController(startupProgress: startupProgress)
+        let loadingViewController = LaunchLoadingViewController(startupProgress: session?.startupProgress)
         loadingViewController.modalPresentationStyle = .fullScreen
         
         // Replace the navigation stack with the loading animation
@@ -220,12 +219,6 @@ extension LegacyAuthenticationCoordinator: AuthenticationViewControllerDelegate 
 // MARK: - KeyVerificationCoordinatorDelegate
 extension LegacyAuthenticationCoordinator: KeyVerificationCoordinatorDelegate {
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
-        if let crypto = session?.crypto as? MXLegacyCrypto, let backup = crypto.backup,
-           !backup.hasPrivateKeyInCryptoStore || !backup.enabled {
-            MXLog.debug("[LegacyAuthenticationCoordinator][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys")
-            crypto.setOutgoingKeyRequestsEnabled(true, onComplete: nil)
-        }
-        
         navigationRouter.dismissModule(animated: true) { [weak self] in
             self?.authenticationDidComplete()
         }

@@ -121,11 +121,12 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     private func showSecureBackupSetup(checkKeyBackup: Bool) {
         let coordinator = SecureBackupSetupCoordinator(session: self.session, checkKeyBackup: checkKeyBackup, navigationRouter: self.navigationRouter, cancellable: self.cancellable)
         coordinator.delegate = self
-        coordinator.start()
-        
-        self.navigationRouter.push(coordinator.toPresentable(), animated: true, popCompletion: { [weak self] in
+        // Fix: calling coordinator.start() will update the navigationRouter without a popCompletion
+        coordinator.start(popCompletion: { [weak self] in
             self?.remove(childCoordinator: coordinator)
         })
+        // Fix: do not push the presentable from the coordinator to the navigation router as this has already been done by coordinator.start().
+        //      Also, coordinator.toPresentable() returns a navigation controller, which cannot be pushed into a navigation router.
         self.add(childCoordinator: coordinator)
     }
 }

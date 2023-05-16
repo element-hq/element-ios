@@ -24,4 +24,9 @@ class VerifyEmojiCollectionViewCell: UICollectionViewCell, Reusable, Themable {
     func update(theme: Theme) {
         name.textColor = theme.textPrimaryColor
     }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        emoji.isAccessibilityElement = false
+    }
 }

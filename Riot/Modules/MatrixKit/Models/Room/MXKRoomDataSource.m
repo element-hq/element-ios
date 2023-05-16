@@ -31,8 +31,6 @@
 
 #import "MXKAppSettings.h"
 
-#import "MXKSlashCommands.h"
-
 #import "GeneratedInterface-Swift.h"
 
 const BOOL USE_THREAD_TIMELINE = YES;
@@ -316,7 +314,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         
         _filterMessagesWithURL = NO;
         
-        emoteMessageSlashCommandPrefix = [NSString stringWithFormat:@"%@ ", kMXKSlashCmdEmote];
+        emoteMessageSlashCommandPrefix = [NSString stringWithFormat:@"%@ ", [MXKSlashCommandsHelper commandNameFor:MXKSlashCommandEmote]];
 
         // Set default data and view classes
         // Cell data
@@ -459,11 +457,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (void)reset
 {
-    [self resetNotifying:YES];
-}
-
-- (void)resetNotifying:(BOOL)notify
-{
     if (roomDidFlushDataNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:roomDidFlushDataNotificationObserver];
@@ -558,12 +551,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
     
     _serverSyncEventCount = 0;
-
-    // Notify the delegate to reload its tableview
-    if (notify && self.delegate)
-    {
-        [self.delegate dataSource:self didCellChange:nil];
-    }
 }
 
 - (void)reload
@@ -577,10 +564,16 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     
     [self setState:MXKDataSourceStatePreparing];
     
-    [self resetNotifying:notify];
+    [self reset];
     
     // Reload
     [self didMXSessionStateChange];
+    
+    // Notify the delegate to refresh the tableview
+    if (notify && self.delegate)
+    {
+        [self.delegate dataSource:self didCellChange:nil];
+    }
 }
 
 - (void)destroy

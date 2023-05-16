@@ -29,7 +29,7 @@ enum MockComposerScreenState: MockScreenState, CaseIterable {
     
     var screenView: ([Any], AnyView) {
         let viewModel: ComposerViewModel
-        let userSuggestionViewModel = MockUserSuggestionViewModel(initialViewState: UserSuggestionViewState(items: []))
+        let completionSuggestionViewModel = MockCompletionSuggestionViewModel(initialViewState: CompletionSuggestionViewState(items: []))
         let bindings = ComposerBindings(focused: false)
         
         switch self {
@@ -67,7 +67,7 @@ enum MockComposerScreenState: MockScreenState, CaseIterable {
                 Spacer()
                 Composer(viewModel: viewModel.context,
                          wysiwygViewModel: wysiwygviewModel,
-                         userSuggestionSharedContext: userSuggestionViewModel.context,
+                         completionSuggestionSharedContext: completionSuggestionViewModel.context,
                          resizeAnimationDuration: 0.1,
                          sendMessageAction: { _ in },
                          showSendMediaActions: { })
@@ -82,6 +82,4 @@ enum MockComposerScreenState: MockScreenState, CaseIterable {
     }
 }
 
-private final class MockUserSuggestionViewModel: UserSuggestionViewModelType {
-
-}
+private final class MockCompletionSuggestionViewModel: CompletionSuggestionViewModelType { }

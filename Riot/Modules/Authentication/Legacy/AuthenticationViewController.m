@@ -132,7 +132,14 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                                                                              target:self
                                                                              action:@selector(onButtonPressed:)];
     
-    self.defaultHomeServerUrl = RiotSettings.shared.homeserverUrlString;
+    if (BuildSettings.forceHomeserverSelection)
+    {
+        self.defaultHomeServerUrl = nil;
+    }
+    else
+    {
+        self.defaultHomeServerUrl = RiotSettings.shared.homeserverUrlString;
+    }
     
     self.defaultIdentityServerUrl = RiotSettings.shared.identityServerUrlString;
     
@@ -1207,7 +1214,14 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         [self saveCustomServerInputs];
                 
         // Restore default configuration
-        [self setHomeServerTextFieldText:self.defaultHomeServerUrl];
+        if (BuildSettings.forceHomeserverSelection)
+        {
+            [self setHomeServerTextFieldText:nil];
+        }
+        else
+        {
+            [self setHomeServerTextFieldText:self.defaultHomeServerUrl];
+        }
         [self setIdentityServerTextFieldText:self.defaultIdentityServerUrl];
         
         [self.customServersTickButton setImage:AssetImages.selectionUntick.image forState:UIControlStateNormal];

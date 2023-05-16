@@ -98,7 +98,7 @@ final class ComposerViewModelTests: XCTestCase {
         XCTAssertEqual(result, .linkTapped(LinkAction: .createWithText))
         context.send(viewAction: .linkTapped(linkAction: .create))
         XCTAssertEqual(result, .linkTapped(LinkAction: .create))
-        context.send(viewAction: .linkTapped(linkAction: .edit(link: "https://element.io")))
-        XCTAssertEqual(result, .linkTapped(LinkAction: .edit(link: "https://element.io")))
+        context.send(viewAction: .linkTapped(linkAction: .edit(url: "https://element.io")))
+        XCTAssertEqual(result, .linkTapped(LinkAction: .edit(url: "https://element.io")))
     }
 }

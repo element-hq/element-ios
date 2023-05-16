@@ -164,6 +164,11 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
         roomCellContentView.didTapAddParticipants = { [weak self] in
             self?.notifyDelegate(with: RoomCreationIntroCell.tapOnAddParticipants)
         }
+        
+        self.accessibilityElements = [roomCellContentView.roomAvatarView as Any,
+                                      roomCellContentView.titleLabel as Any,
+                                      roomCellContentView.informationLabel as Any,
+                                      roomCellContentView.addParticipantsContainerView as Any]
     }
     
     

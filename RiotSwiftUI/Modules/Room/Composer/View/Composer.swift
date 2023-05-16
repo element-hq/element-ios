@@ -23,7 +23,7 @@ struct Composer: View {
     // MARK: Private
     @ObservedObject private var viewModel: ComposerViewModelType.Context
     @ObservedObject private var wysiwygViewModel: WysiwygComposerViewModel
-    private let userSuggestionSharedContext: UserSuggestionViewModelType.Context
+    private let completionSuggestionSharedContext: CompletionSuggestionViewModelType.Context
     private let resizeAnimationDuration: Double
     
     private let sendMessageAction: (WysiwygComposerContent) -> Void
@@ -223,13 +223,13 @@ struct Composer: View {
     init(
         viewModel: ComposerViewModelType.Context,
         wysiwygViewModel: WysiwygComposerViewModel,
-        userSuggestionSharedContext: UserSuggestionViewModelType.Context,
+        completionSuggestionSharedContext: CompletionSuggestionViewModelType.Context,
         resizeAnimationDuration: Double,
         sendMessageAction: @escaping (WysiwygComposerContent) -> Void,
         showSendMediaActions: @escaping () -> Void) {
             self.viewModel = viewModel
             self.wysiwygViewModel = wysiwygViewModel
-            self.userSuggestionSharedContext = userSuggestionSharedContext
+            self.completionSuggestionSharedContext = completionSuggestionSharedContext
             self.resizeAnimationDuration = resizeAnimationDuration
             self.sendMessageAction = sendMessageAction
             self.showSendMediaActions = showSendMediaActions
@@ -256,7 +256,7 @@ struct Composer: View {
                     }
                 }
                 if wysiwygViewModel.maximised {
-                    UserSuggestionList(viewModel: userSuggestionSharedContext, showBackgroundShadow: false)
+                    CompletionSuggestionList(viewModel: completionSuggestionSharedContext, showBackgroundShadow: false)
                 }
             }
             .frame(height: composerHeight)
