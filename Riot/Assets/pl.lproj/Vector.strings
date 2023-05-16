@@ -522,7 +522,7 @@
 "settings_key_backup_button_delete" = "Usuń kopię zapasową";
 "settings_key_backup_delete_confirmation_prompt_title" = "Usuń kopię zapasową";
 "auth_login_single_sign_on" = "Zaloguj się";
-"auth_autodiscover_invalid_response" = "Nie udało się odnaleźć serwera domowego";
+"auth_autodiscover_invalid_response" = "Nieprawidłowa odpowiedź na wykrycie serwera domowego";
 "settings_key_backup_button_create" = "Zacznij korzystać z kopii zapasowej kluczy";
 "settings_key_backup_button_restore" = "Przywróć z kopii zapasowej";
 "room_details_fail_to_update_avatar" = "Nie udało się zaaktualizować zdjęcia pokoju";
@@ -707,7 +707,7 @@
 // MARK: Reaction history
 "reaction_history_title" = "Reakcje";
 "auth_forgot_password_error_no_configured_identity_server" = "Brak skonfigurowanego serwera tożsamości: dodaj serwer tożsamości, aby zresetować hasło.";
-"auth_softlogout_signed_out" = "Zostałeś(-aś) wylogowany(-a)";
+"auth_softlogout_signed_out" = "Zostałeś wylogowany";
 "auth_softlogout_reason" = "Administrator serwera domowego (%1$@) wylogował Cię z Twojego konta %2$@ (%3$@).";
 "auth_softlogout_recover_encryption_keys" = "Zaloguj się aby odzyskać klucze szyfrujące zapisane na tym urządzeniu. Potrzebujesz ich aby odczytać wszystkie swoje zaszyfrowane wiadomości na którymkolwiek z Twoich urządzeń.";
 "auth_softlogout_clear_data" = "Wyczyść prywatne dane";
@@ -1011,8 +1011,8 @@
 // MARK: - Secrets reset
 
 "secrets_reset_title" = "Resetuj wszystko";
-"secrets_setup_recovery_passphrase_summary_information" = "Zapamiętaj swoje hasło odzyskiwania. Możesz go użyć do odszyfrowania zaszyfrowanych wiadomości i danych.";
-"secrets_setup_recovery_passphrase_summary_title" = "Zapisz swoje hasło odzyskiwania";
+"secrets_setup_recovery_passphrase_summary_information" = "Zapamiętaj swoje hasło bezpieczeństwa. Można go użyć do rozszyfrowania wiadomości szyfrowanych i różnych danych.";
+"secrets_setup_recovery_passphrase_summary_title" = "Zapisz swoje hasło bezpieczeństwa";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Potwierdź hasło";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Potwierdź";
 "secrets_setup_recovery_passphrase_confirm_information" = "Wprowadź ponownie swoje hasło odzyskiwania.";
@@ -1021,19 +1021,19 @@
 
 // Recovery passphrase
 
-"secrets_setup_recovery_passphrase_title" = "Ustaw hasło odzyskiwania";
+"secrets_setup_recovery_passphrase_title" = "Ustaw hasło bezpieczeństwa";
 "secrets_setup_recovery_key_storage_alert_title" = "Dbaj o bezpieczeństwo";
 "secrets_setup_recovery_key_done_action" = "Gotowe";
 "secrets_setup_recovery_key_export_action" = "Zapisz";
 "secrets_setup_recovery_key_loading" = "Ładowanie…";
-"secrets_setup_recovery_key_information" = "Zapisz klucz odzyskiwania i przechowuj go w bezpiecznym miejscu. Będzie Ci on potrzebny, aby uzyskać dostęp do kopii kluczy zaszyfrowanych wiadomości przechowywanych na serwerze.";
+"secrets_setup_recovery_key_information" = "Przechowuj swój klucz bezpieczeństwa w bezpiecznym miejscu. Można go użyć do rozszyfrowania wiadomości szyfrowanych i różnych danych.";
 
 // MARK: - Secrets set up
 
 // Recovery Key
 
 "secrets_setup_recovery_key_title" = "Zapisz swój klucz odzyskiwania";
-"secrets_recovery_with_key_invalid_recovery_key_title" = "Nie można uzyskać dostępu do kopii bezpieczeństwa";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Nie można uzyskać dostępu do sekretnego magazynu";
 "secrets_recovery_with_key_recover_action" = "Użyj klucz odzyskiwania";
 "secrets_recovery_with_key_recovery_key_placeholder" = "Wprowadź klucz odzyskiwania";
 "secrets_recovery_with_key_recovery_key_title" = "Wprowadź";
@@ -1044,7 +1044,7 @@
 
 "secrets_recovery_with_key_title" = "Klucz odzyskiwania";
 "secrets_recovery_with_passphrase_invalid_passphrase_message" = "Sprawdź, czy zostało wprowadzone prawidłowe hasło odzyskiwania.";
-"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Nie można uzyskać dostępu do kopii bezpieczeństwa";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Nie można uzyskać dostępu do sekretnego magazynu";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "użyj swojego Klucza bezpieczeństwa";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Nie znasz swojego hasła bezpieczeństwa? Możesz ";
@@ -1229,7 +1229,7 @@
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "Odblokuj starą kopię";
 "secure_key_backup_setup_existing_backup_error_info" = "Odblokuj ją, aby ponownie użyć jej w bezpiecznej kopii zapasowej lub usuń, aby utworzyć nową kopię zapasową wiadomości w bezpiecznej kopii zapasowej.";
 "secure_key_backup_setup_existing_backup_error_title" = "Kopia zapasowa wiadomości już istnieje";
-"secure_key_backup_setup_intro_use_security_passphrase_title" = "Ustaw hasło odzyskiwania";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Użyj hasła bezpieczeństwa";
 "secure_key_backup_setup_intro_use_security_key_info" = "Wygeneruj klucz odzyskiwania. Następnie zdeponuj go w bezpiecznym miejscu.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Ustaw klucz odzyskiwania";
 "secure_key_backup_setup_intro_info" = "Zabezpiecz się przed utratą dostępu do zaszyfrowanych wiadomości wykonując kopię zapasową kluczy szyfrowania na Twoim serwerze domowym.";
@@ -2196,7 +2196,7 @@
 "spaces_creation_post_process_creating_space_task" = "Tworzę %@";
 "spaces_creation_post_process_creating_space" = "Tworzenie przestrzeni";
 "spaces_creation_invite_by_username_message" = "Możesz ich też zaprosić później.";
-"spaces_creation_invite_by_username" = "Zaproś według nazwy użytkownika";
+"spaces_creation_invite_by_username" = "Zaproś przez nazwę użytkownika";
 "spaces_creation_add_rooms_message" = "Ponieważ ta przestrzeń jest tylko dla Ciebie, nikt nie zostanie o tym poinformowany. Możesz dodać więcej później.";
 "spaces_creation_add_rooms_title" = "Co chcesz dodać?";
 "spaces_creation_sharing_type_me_and_teammates_detail" = "Prywatna przestrzeń dla Ciebie i Twoich kolegów z drużyny";
@@ -2208,11 +2208,11 @@
 "spaces_creation_email_invites_email_title" = "Email";
 "spaces_creation_email_invites_message" = "Możesz ich też zaprosić później.";
 "spaces_creation_email_invites_title" = "Zaproś swój zespół";
-"spaces_creation_new_rooms_support" = "Wspierać się";
-"spaces_creation_new_rooms_random" = "Losowy";
+"spaces_creation_new_rooms_support" = "Wsparcie";
+"spaces_creation_new_rooms_random" = "Losowe";
 "spaces_creation_new_rooms_general" = "Ogólny";
 "spaces_creation_new_rooms_room_name_title" = "Nazwa pokoju";
-"spaces_creation_new_rooms_message" = "Dla każdego stworzymy pokój.";
+"spaces_creation_new_rooms_message" = "Utworzymy pokój dla każdego z nich.";
 "spaces_creation_new_rooms_title" = "Jakie dyskusje będziesz mieć?";
 "spaces_creation_cancel_message" = "Twoje postępy zostaną utracone.";
 "spaces_creation_cancel_title" = "Przestać tworzyć przestrzeń?";
@@ -2375,7 +2375,7 @@
 "threads_empty_show_all_threads" = "Pokaż wszystkie wątki";
 "threads_empty_tip" = "Wskazówka: dotknij wiadomości i użyj „Nowy wątek”, aby go utworzyć.";
 "threads_empty_info_my" = "Odpowiedz w danym wątku lub dotknij wiadomości i użyj „Nowy wątek”, aby go rozpocząć.";
-"threads_empty_info_all" = "Wątki umożliwiają łatwiejsze wyszukiwanie i agregowanie wiadomości dotyczących danego tematu.";
+"threads_empty_info_all" = "Dzięki wątkom Twoje rozmowy są zorganizowane i łatwe do śledzenia.";
 "threads_empty_title" = "Organizuj dyskusje za pomocą wątków";
 "threads_action_my_threads" = "Moje wątki";
 "threads_action_all_threads" = "Wszystkie wątki";
@@ -2424,7 +2424,7 @@
 "authentication_verify_msisdn_text_field_placeholder" = "Numer telefonu";
 "authentication_verify_msisdn_input_message" = "%@ musi zweryfikować Twoje konto";
 "authentication_verify_msisdn_input_title" = "Wprowadź swój numer telefonu";
-"authentication_choose_password_submit_button" = "Zresetuj hasło";
+"authentication_choose_password_submit_button" = "Resetuj hasło";
 "authentication_choose_password_signout_all_devices" = "Wyloguj się ze wszystkich urządzeń";
 "authentication_choose_password_text_field_placeholder" = "Nowe Hasło";
 "authentication_choose_password_input_message" = "Upewnij się, że ma 8 znaków lub więcej";
@@ -2497,7 +2497,7 @@
 "onboarding_splash_page_3_title" = "Bezpieczne przesyłanie wiadomości.";
 "onboarding_splash_page_2_message" = "Wybierz, gdzie chcesz przechowywać swoje rozmowy. Połączenie ustanowione poprzez Matrix.";
 "onboarding_splash_page_2_title" = "Masz kontrolę.";
-"onboarding_splash_page_1_title" = "Zarządzaj swoimi rozmowami.";
+"onboarding_splash_page_1_title" = "Bądź właścicielem swoich konwersacji.";
 "saving" = "Zapisywanie";
 
 // Activities
@@ -2513,7 +2513,7 @@
 "location_sharing_invalid_power_level_message" = "Musisz mieć odpowiednie uprawnienia, aby udostępniać lokalizację na żywo w tym pokoju.";
 "location_sharing_invalid_power_level_title" = "Nie masz uprawnień do udostępniania lokalizacji na żywo";
 "authentication_choose_password_not_verified_message" = "Sprawdź swoją skrzynkę odbiorczą";
-"authentication_choose_password_not_verified_title" = "E-mail niezweryfikowany";
+"authentication_choose_password_not_verified_title" = "E-mail nie został zweryfikowany";
 "authentication_server_info_title_login" = "Miejsce twoich konwersacji";
 
 // MARK: User sessions management
@@ -2595,7 +2595,7 @@
 "device_type_name_web" = "Web";
 "device_type_name_desktop" = "Desktop";
 "device_type_name_mobile" = "Mobile";
-"room_waiting_other_participants_message" = "Po dołączeniu zaproszonych użytkowników %@, będziesz mógł czatować w pokoju, który jest szyfrowany end-to-end";
+"room_waiting_other_participants_message" = "Jak tylko zaproszeni użytkownicy dołączą do %@, będziesz mógł czatować w pokoju szyfrowanym end-to-end";
 "room_waiting_other_participants_title" = "Czekanie na użytkowników %@";
 "all_chats_user_menu_accessibility_label" = "Menu użytkownika";
 "voice_broadcast_playback_unable_to_decrypt" = "Nie można rozszyfrować tej transmisji głosowej.";
