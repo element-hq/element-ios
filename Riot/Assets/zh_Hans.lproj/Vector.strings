@@ -1088,7 +1088,7 @@
 "people_empty_view_title" = "用户";
 "less" = "较小地";
 "more" = "更多";
-"switch" = "开关";
+"switch" = "切换";
 "joined" = "已加入";
 "store_promotional_text" = "在开放网络上保护隐私的聊天和协作应用程序。去中心化让你掌控一切。没有数据挖掘，没有后门，也没有第三方访问。";
 "social_login_button_title_sign_up" = "使用 %@ 注册";
@@ -2285,3 +2285,67 @@
 "deselect_all" = "取消全选";
 "notice_voice_broadcast_ended" = "%@结束了一个语音广播。";
 "notice_voice_broadcast_ended_by_you" = "你结束了一个语音广播。";
+"threads_beta_cancel" = "先不了";
+"threads_beta_enable" = "尝试一下";
+"threads_beta_information" = "使用消息列使讨论保持有序。\n\n消息列帮助你保持聊天不跑题，且易于回溯。 ";
+"threads_beta_title" = "消息列";
+"threads_notice_information" = "实验期间创建的所有消息列会被 <b>显示为普通回复</b>。<br/><br/>这是个一次性的转变，因为消息列现在是Matrix标准的一部分了。";
+"threads_notice_title" = "消息列不再是实验性功能了🎉";
+"threads_empty_show_all_threads" = "显示所有消息列";
+"threads_empty_tip" = "提示：点击一条消息然后点击“消息列”来新建一个消息列。";
+"threads_empty_info_my" = "回复到一个消息列，或者点击一条消息然后点击“消息列”来新建消息列。";
+"room_command_error_unknown_command" = "命令无效或未处理";
+"room_command_change_room_topic_description" = "设置房间话题";
+"room_command_set_user_power_level_description" = "设置用户权限级别";
+"room_command_unban_user_description" = "取消封禁指定id的用户";
+"room_command_invite_user_description" = "邀请指定id用户进入此房间";
+"room_command_kick_user_description" = "从此房间移除指定id用户";
+"room_command_ban_user_description" = "封禁指定id的用户";
+"room_command_part_room_description" = "离开房间";
+"room_command_join_room_description" = "根据地址加入房间";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "更改显示的昵称";
+"room_creation_only_one_email_invite" = "一次性只能邀请一个邮箱地址";
+"authentication_qr_login_failure_device_not_supported" = "不支持链接到此设备。";
+"all_chats_edit_layout_alphabetical_order" = "按照字母顺序排序";
+"all_chats_edit_layout_show_filters" = "显示过滤器";
+"all_chats_edit_layout_show_recents" = "显示最近项目";
+
+// MARK: - Space Selector
+
+"space_selector_title" = "我的空间";
+
+// MARK: - All Chats
+
+"all_chats_title" = "所有聊天";
+"settings_labs_enable_voice_broadcast" = "语音广播";
+"settings_labs_enable_wysiwyg_composer" = "尝试富文本编辑器";
+"settings_labs_enable_new_client_info_feature" = "记录客户端名字、版本和URL来在会话管理器中更方便地分辨会话";
+"settings_labs_enable_new_session_manager" = "新会话管理器";
+"location_sharing_live_error" = "实时位置共享错误";
+"location_sharing_live_loading" = "正在加载实时位置……";
+"location_sharing_live_timer_incoming" = "共享到%@";
+"location_sharing_live_list_item_stop_sharing_action" = "停止";
+"location_sharing_live_list_item_last_update" = "在%@之前更新";
+"location_sharing_live_list_item_sharing_expired" = "共享已过期";
+"location_sharing_live_viewer_title" = "位置";
+"location_sharing_live_map_callout_title" = "共享位置";
+"live_location_sharing_banner_stop" = "停止";
+"live_location_sharing_ended" = "实时位置共享已结束";
+"live_location_sharing_banner_title" = "实时位置共享已开启";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "共享实时位置";
+"location_sharing_allow_background_location_message" = "如果你想要实时共享你的位置，Element需要在后台访问你的位置信息。要允许访问，点击设置>位置，然后选择“总是”";
+"location_sharing_invalid_power_level_message" = "要在此房间中实时共享位置，你需要有对应的权限。";
+"settings_labs_enable_live_location_sharing" = "实时位置共享——共享当前位置（活跃开发中，位置暂时还会留在房间历史记录中）";
+"poll_timeline_decryption_error" = "因为解密错误，有的投票可能没有被算进去";
+"settings_labs_enable_auto_report_decryption_errors" = "自动报告解密错误";
+"settings_ui_show_redactions_in_room_history" = "为已被删除的消息显示占位符";
+"settings_enable_room_message_bubbles" = "消息气泡";
+"all_chats_user_menu_settings" = "用户设置";
+// User sessions management
+"user_sessions_settings" = "管理登陆会话";
+"settings_presence_offline_mode_description" = "如果开启此选项，对其他用户来说，你看起来就会像下线了一样，即使你正在使用此软件。";
