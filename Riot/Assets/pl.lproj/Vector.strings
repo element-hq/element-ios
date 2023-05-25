@@ -2781,7 +2781,7 @@
 
 // Legacy to Rust security upgrade
 
-"key_verification_self_verify_security_upgrade_alert_title" = "Aplikacja została zaktualizowana";
+"key_verification_self_verify_security_upgrade_alert_title" = "Zaktualizowano aplikację";
 "sign_out_confirmation_message" = "Czy na pewno chcesz się wylogować?";
 
 // MARK: Sign out warning
