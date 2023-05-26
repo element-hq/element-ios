@@ -69,7 +69,8 @@ platform :ios do
     # Upload to Diawi
     diawi(
       token: ENV["DIAWI_API_TOKEN"],
-      wall_of_apps: false
+      wall_of_apps: false,
+      file: lane_context[SharedValues::IPA_OUTPUT_PATH]
     )
 
     # Get the Diawi link from Diawi action shared value
