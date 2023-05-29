@@ -94,7 +94,7 @@ class UserSessionsOverviewService: UserSessionsOverviewServiceProtocol {
         }
         
         overviewDataPublisher = .init(UserSessionsOverviewData(currentSession: currentSessionInfo,
-                                                               unverifiedSessions: currentSessionInfo.verificationState == .verified ? [] : [currentSessionInfo],
+                                                               unverifiedSessions: currentSessionInfo.verificationState.isUnverified ? [currentSessionInfo] : [],
                                                                inactiveSessions: currentSessionInfo.isActive ? [] : [currentSessionInfo],
                                                                otherSessions: [],
                                                                linkDeviceEnabled: false))
