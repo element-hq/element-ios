@@ -9,7 +9,7 @@ import ReplayKit
 
 private enum Constants {
     // the App Group ID value that the app and the broadcast extension targets are setup with. It differs for each app.
-    static let appGroupIdentifier = "group.com.jitsi.example-screensharing.appgroup"
+    static let appGroupIdentifier = BuildSettings.applicationGroupIdentifier
 }
 
 class SampleHandler: RPBroadcastSampleHandler {
@@ -19,7 +19,7 @@ class SampleHandler: RPBroadcastSampleHandler {
     
     private var frameCount: Int = 0
     
-    var socketFilePath: String {
+    private var socketFilePath: String {
       let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroupIdentifier)
         return sharedContainer?.appendingPathComponent("rtc_SSFD").path ?? ""
     }

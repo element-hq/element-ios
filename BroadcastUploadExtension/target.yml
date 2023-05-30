@@ -37,3 +37,4 @@ targets:
 
     sources:
     - path: .
+    - path: ../Config/BuildSettings.swift
