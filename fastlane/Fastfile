@@ -397,7 +397,7 @@ platform :ios do
       skip_certificate_verification: skip_certificate_verification,
       output_path: output_path,
       filename: ENV["BROADCAST_UPLOAD_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
-      readonly: false,
+      readonly: true,
     )
   end
 
