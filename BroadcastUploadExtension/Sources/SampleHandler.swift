@@ -25,7 +25,7 @@ class SampleHandler: RPBroadcastSampleHandler {
     }
     
     override init() {
-      super.init()
+        super.init()
         if let connection = SocketConnection(filePath: socketFilePath) {
           clientConnection = connection
           setupConnection()
