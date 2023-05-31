@@ -47,6 +47,7 @@ class ForwardingShareItemSender: NSObject, ShareItemSenderProtocol {
         var errors = [Error]()
         
         let dispatchGroup = DispatchGroup()
+        
         for room in rooms {
             dispatchGroup.enter()
             
