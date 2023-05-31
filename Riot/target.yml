@@ -37,6 +37,7 @@ targets:
     - target: RiotShareExtension
     - target: SiriIntents
     - target: RiotNSE
+    - target: BroadcastUploadExtension
     - target: DesignKit
     - target: CommonKit
     - package: AnalyticsEvents

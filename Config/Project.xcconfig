@@ -23,6 +23,7 @@
 
 // Application constants
 KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
+BROADCAST_UPLOAD_EXTENSION_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).broadcastUploadExtension
 
 // Build settings
 IPHONEOS_DEPLOYMENT_TARGET = 14.0
