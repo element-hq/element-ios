@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MatrixSDK
+
 class SocketConnection: NSObject {
     var didOpen: (() -> Void)?
     var didClose: ((Error?) -> Void)?
@@ -28,16 +30,16 @@ class SocketConnection: NSObject {
         socketHandle = Darwin.socket(AF_UNIX, SOCK_STREAM, 0)
 
         guard socketHandle != -1 else {
-            print("failure: create socket")
+            MXLog.error("failure: create socket")
             return nil
         }
     }
 
     func open() -> Bool {
-        print("open socket connection")
+        MXLog.info("open socket connection")
 
         guard FileManager.default.fileExists(atPath: filePath) else {
-            print("failure: socket file missing")
+            MXLog.error("failure: socket file missing")
             return false
         }
       
@@ -80,7 +82,7 @@ extension SocketConnection: StreamDelegate {
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         switch eventCode {
         case .openCompleted:
-            print("client stream open completed")
+            MXLog.info("client stream open completed")
             if aStream == outputStream {
                 didOpen?()
             }
@@ -89,7 +91,7 @@ extension SocketConnection: StreamDelegate {
                 var buffer: UInt8 = 0
                 let numberOfBytesRead = inputStream?.read(&buffer, maxLength: 1)
                 if numberOfBytesRead == 0 && aStream.streamStatus == .atEnd {
-                    print("server socket closed")
+                    MXLog.info("server socket closed")
                     close()
                     notifyDidClose(error: nil)
                 }
@@ -99,7 +101,7 @@ extension SocketConnection: StreamDelegate {
                 streamHasSpaceAvailable?()
             }
         case .errorOccurred:
-            print("client stream error occured: \(String(describing: aStream.streamError))")
+            MXLog.error("client stream error occured", context: aStream.streamError)
             close()
             notifyDidClose(error: aStream.streamError)
 
@@ -114,7 +116,7 @@ private extension SocketConnection {
     func setupAddress() -> Bool {
         var addr = sockaddr_un()
         guard filePath.count < MemoryLayout.size(ofValue: addr.sun_path) else {
-            print("failure: fd path is too long")
+            MXLog.error("failure: fd path is too long")
             return false
         }
 
@@ -140,7 +142,7 @@ private extension SocketConnection {
         }
 
         guard status == noErr else {
-            print("failure: \(status)")
+            MXLog.error("connect socket failure", context: status)
             return false
         }
         

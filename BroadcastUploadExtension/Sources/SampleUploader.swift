@@ -9,6 +9,8 @@
 import Foundation
 import ReplayKit
 
+import MatrixSDK
+
 private enum Constants {
     static let bufferMaxLength = 10240
 }
@@ -90,7 +92,7 @@ private extension SampleUploader {
                 byteIndex = 0
             }
         } else {
-            print("writeBufferToStream failure")
+            MXLog.error("writeBufferToStream failure")
         }
       
         return true
@@ -98,7 +100,7 @@ private extension SampleUploader {
     
     func prepare(sample buffer: CMSampleBuffer) -> Data? {
         guard let imageBuffer = CMSampleBufferGetImageBuffer(buffer) else {
-            print("image buffer not available")
+            MXLog.error("image buffer not available")
             return nil
         }
         
@@ -115,7 +117,7 @@ private extension SampleUploader {
         CVPixelBufferUnlockBaseAddress(imageBuffer, .readOnly)
         
         guard let messageData = bufferData else {
-            print("corrupted image buffer")
+            MXLog.error("corrupted image buffer")
             return nil
         }
               

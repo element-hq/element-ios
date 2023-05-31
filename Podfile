@@ -127,6 +127,10 @@ abstract_target 'RiotPods' do
     import_MatrixKit_pods
   end
 
+  target "BroadcastUploadExtension" do
+    import_MatrixSDK
+  end
+
 end
 
 post_install do |installer|

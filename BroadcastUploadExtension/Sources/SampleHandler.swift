@@ -7,6 +7,8 @@
 
 import ReplayKit
 
+import MatrixSDK
+
 private enum Constants {
     // the App Group ID value that the app and the broadcast extension targets are setup with. It differs for each app.
     static let appGroupIdentifier = BuildSettings.applicationGroupIdentifier
@@ -74,7 +76,7 @@ private extension SampleHandler {
   
     func setupConnection() {
         clientConnection?.didClose = { [weak self] error in
-            print("client connection did close \(String(describing: error))")
+            MXLog.error("client connection did close", context: error)
           
             if let error = error {
                 self?.finishBroadcastWithError(error)
