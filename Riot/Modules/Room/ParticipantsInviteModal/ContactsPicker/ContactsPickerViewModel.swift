@@ -201,12 +201,31 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
             return
         }
         
+        // Check for user
+        if MXTools.isMatrixUserIdentifier(contact.displayName) {
+            let user = MXUser(userId: contact.displayName)
+            coordinatorDelegate?.contactsPickerViewModelDidStartValidatingUser(self)
+            user?.update(fromHomeserverOfMatrixSession: self.room.mxSession, success: { [weak self] in
+                guard let self = self else { return }
+                self.coordinatorDelegate?.contactsPickerViewModelDidEndValidatingUser(self)
+                self.displayInvitePrompt(contact: contact)
+            }, failure: { [weak self] error in
+                guard let self = self else { return }
+                self.coordinatorDelegate?.contactsPickerViewModelDidEndValidatingUser(self)
+                self.displayInvitePrompt(contact: contact, contactFound: false)
+            })
+        } else {
+            displayInvitePrompt(contact: contact)
+        }
+    }
+    
+    private func displayInvitePrompt(contact: MXKContact, contactFound: Bool = true) {
         let roomName = room.displayName ?? VectorL10n.spaceTag
-        let message = VectorL10n.roomParticipantsInvitePromptToMsg(contact.displayName, roomName)
-        
+        let message = contactFound ? VectorL10n.roomParticipantsInvitePromptToMsg(contact.displayName, roomName) : VectorL10n.roomParticipantsInviteUnknownParticipantPromptToMsg(contact.displayName, roomName)
+        let inviteActionTitle = contactFound ? VectorL10n.invite : VectorL10n.roomParticipantsInviteAnyway
         coordinatorDelegate?.contactsPickerViewModel(self, display: message, title: VectorL10n.roomParticipantsInvitePromptTitle, actions: [
-            UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil),
-            UIAlertAction(title: VectorL10n.invite, style: .default, handler: { [weak self] action in
+            UIAlertAction(title: VectorL10n.cancel, style: .cancel),
+            UIAlertAction(title: VectorL10n.invite, style: .default, handler: { [weak self] _ in
                 self?.invite(contact: contact)
             })
         ])
