@@ -1,4 +1,7 @@
 //
+// License from the original repository:
+// https://github.com/jitsi/jitsi-meet-sdk-samples/blob/master/LICENSE
+//
 //  SampleUploader.swift
 //  Broadcast Extension
 //

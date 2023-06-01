@@ -1,4 +1,8 @@
 //
+// License from the original repository:
+// https://github.com/jitsi/jitsi-meet-sdk-samples/blob/master/LICENSE
+
+//
 //  Atomic.swift
 //  Broadcast Extension
 //
