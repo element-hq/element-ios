@@ -28,6 +28,8 @@ class SampleHandler: RPBroadcastSampleHandler {
     
     override init() {
         super.init()
+        setupLogger()
+
         if let connection = SocketConnection(filePath: socketFilePath) {
           clientConnection = connection
           setupConnection()
@@ -102,5 +104,19 @@ private extension SampleHandler {
         }
         
         timer.resume()
+    }
+
+    func setupLogger() {
+        let configuration = MXLogConfiguration()
+        configuration.logLevel = .verbose
+        configuration.maxLogFilesCount = 100
+        configuration.logFilesSizeLimit = 10 * 1024 * 1024; // 10MB
+        configuration.subLogName = "broadcastUploadExtension"
+
+        if isatty(STDERR_FILENO) == 0 {
+            configuration.redirectLogsToFiles = true
+        }
+
+        MXLog.configure(configuration)
     }
 }
