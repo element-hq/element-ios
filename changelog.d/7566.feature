@@ -1,0 +1,1 @@
+Broadcast Upload Extension added to the app targets to allow Jitsi screen sharing feature.

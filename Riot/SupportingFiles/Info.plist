@@ -4,6 +4,10 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>RTCAppGroupIdentifier</key>
+	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
+	<key>RTCScreenSharingExtension</key>
+	<string>$(BROADCAST_UPLOAD_EXTENSION_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleDisplayName</key>
 	<string>$(BUNDLE_DISPLAY_NAME)</string>
 	<key>CFBundleDocumentTypes</key>
