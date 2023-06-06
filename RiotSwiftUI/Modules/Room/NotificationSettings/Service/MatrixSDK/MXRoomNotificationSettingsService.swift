@@ -102,7 +102,7 @@ final class MXRoomNotificationSettingsService: RoomNotificationSettingsServiceTy
         }
         
         // if the user defined one, use it
-        if rule.actionsContains(actionType: MXPushRuleActionTypeDontNotify) {
+        if rule.dontNotify {
             enablePushRule(rule: rule, completion: completion)
         } else {
             removePushRule(rule: rule) {
@@ -136,7 +136,7 @@ final class MXRoomNotificationSettingsService: RoomNotificationSettingsServiceTy
         }
         
         // if the user defined one, use it
-        if rule.actionsContains(actionType: MXPushRuleActionTypeDontNotify) {
+        if rule.dontNotify {
             enablePushRule(rule: rule, completion: completion)
         } else {
             removePushRule(rule: rule) {
@@ -261,7 +261,7 @@ public extension MXRoom {
         // Check whether an override rule has been defined with the roomm id as rule id.
         // This kind of rule is created to mute the room
         guard let rule = overridePushRule,
-              rule.actionsContains(actionType: MXPushRuleActionTypeDontNotify),
+              rule.dontNotify,
               rule.conditionIsEnabled(kind: .eventMatch, for: roomId) else {
             return false
         }
@@ -271,7 +271,7 @@ public extension MXRoom {
     var isMentionsOnly: Bool {
         // Check push rules at room level
         guard let rule = roomPushRule else { return false }
-        return rule.enabled && rule.actionsContains(actionType: MXPushRuleActionTypeDontNotify)
+        return rule.enabled && rule.dontNotify
     }
 }
 
