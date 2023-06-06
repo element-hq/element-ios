@@ -86,7 +86,7 @@
     }
     else if (_mxUser)
     {
-        self.displayNameTextField.text = (_mxUser.displayname.length) ? _mxUser.displayname : nil;
+        self.displayNameTextField.text = (_mxUser.displayname.length) ? _mxUser.displayname : _mxUser.userId;
     }
     else
     {
