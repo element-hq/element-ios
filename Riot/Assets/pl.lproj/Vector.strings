@@ -1269,7 +1269,7 @@
 "bug_report_background_mode" = "Kontynuuj w tle";
 "call_actions_unhold" = "Wznów połączenie";
 "call_no_stun_server_error_use_fallback_button" = "Spróbuj użyć %@";
-"call_no_stun_server_error_message_2" = "Alternatywnie możesz spróbować użyć serwera publicznego pod adresem %@, ale nie będzie to tak niezawodne i będzie udostępniać Twój adres IP temu serwerowi. Możesz również zarządzać tym w Ustawieniach";
+"call_no_stun_server_error_message_2" = "Alternatywnie możesz spróbować użyć serwera publicznego %@, ale mogą wystąpić problemy i zostanie udostępniony Twój adres IP z serwerem. Zarządzaj tym również w Ustawieniach";
 "call_no_stun_server_error_message_1" = "Poproś administratora swojego serwera domowego %@ o skonfigurowanie serwera TURN, aby połączenia działały niezawodnie.";
 "call_no_stun_server_error_title" = "Połączenie nie powiodło się z powodu błędnej konfiguracji serwera";
 
