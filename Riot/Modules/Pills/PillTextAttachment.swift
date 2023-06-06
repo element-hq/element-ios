@@ -65,7 +65,7 @@ class PillTextAttachment: NSTextAttachment {
                                             .avatar(url: roomMember.avatarUrl,
                                                     string: roomMember.displayname,
                                                     matrixId: roomMember.userId),
-                                            .text(roomMember.displayname)
+                                            .text(roomMember.displayname ?? roomMember.userId)
                                           ],
                                           isHighlighted: isHighlighted,
                                           alpha: 1.0,
