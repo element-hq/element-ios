@@ -252,7 +252,6 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
                 guard let self = self else { return }
                 textView.inputAccessoryView = self.inputAccessoryViewForKeyboard
             }
-            .environmentObject(AvatarViewModel(avatarService: AvatarService(mediaManager: toolbarViewDelegate.mediaManager())))
 
         hostingViewController = VectorHostingController(rootView: composer)
         hostingViewController.publishHeightChanges = true
