@@ -2406,7 +2406,7 @@
 // Analytics
 "analytics_prompt_title" = "協助改善 %@";
 "call_no_stun_server_error_use_fallback_button" = "嘗試使用 %@";
-"call_no_stun_server_error_message_2" = "或是您也可以試著使用公開伺服器 %@，但可能不夠可靠，而且會跟該伺服器分享您的 IP 位址。您也可以在設定中管理這個";
+"call_no_stun_server_error_message_2" = "或是您也可以試著使用公開伺服器 %@，但可能不夠可靠，而且會跟該伺服器分享您的 IP 位址。您也可以在設定中管理此設定";
 "call_no_stun_server_error_message_1" = "請聯繫您家伺服器 %@ 的管理員建立一套 TURN 伺服器，使通話能更穩定運作。";
 "call_no_stun_server_error_title" = "由於伺服器設定錯誤，無法通話";
 "call_jitsi_unable_to_start" = "無法建立會議通話";
