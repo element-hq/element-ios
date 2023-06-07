@@ -379,8 +379,12 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
         let avatarView = UserAvatarView(frame: view.bounds.inset(by: avatarInsets))
         avatarView.isUserInteractionEnabled = false
         avatarView.update(theme: ThemeService.shared().theme)
-        avatarView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        avatarView.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin]
         view.addSubview(avatarView)
+        NSLayoutConstraint.activate([
+            view.widthAnchor.constraint(equalToConstant: 36),
+            view.heightAnchor.constraint(equalToConstant: 36)
+        ])
         self.avatarMenuView = avatarView
         updateAvatarButtonItem()
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: view)
