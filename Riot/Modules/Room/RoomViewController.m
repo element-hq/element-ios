@@ -5172,7 +5172,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (MXMediaManager *)mediaManager
 {
-    return self.roomDataSource.mxSession.mediaManager;
+    return self.mainSession.mediaManager;
 }
 
 - (void)roomInputToolbarViewDidOpenActionMenu:(RoomInputToolbarView*)toolbarView
