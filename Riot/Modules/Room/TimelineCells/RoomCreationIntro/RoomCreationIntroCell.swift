@@ -17,7 +17,7 @@
 import UIKit
 
 @objcMembers
-class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
+class RoomCreationIntroCell: MXKRoomBubbleTableViewCell, Themable {
     
     // MARK: - Constants
     

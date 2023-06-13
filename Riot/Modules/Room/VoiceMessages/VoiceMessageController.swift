@@ -27,7 +27,7 @@ import DSWaveformImage
 public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, VoiceMessageAudioRecorderDelegate, VoiceMessageAudioPlayerDelegate {
     
     private enum Constants {
-        static let maximumAudioRecordingDuration: TimeInterval = 120.0
+        static let maximumAudioRecordingDuration: TimeInterval = 300.0
         static let maximumAudioRecordingLengthReachedThreshold: TimeInterval = 10.0
         static let elapsedTimeFormat = "m:ss"
         static let fileNameDateFormat = "MM.dd.yyyy HH.mm.ss"

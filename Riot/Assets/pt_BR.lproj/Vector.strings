@@ -2626,7 +2626,6 @@
 "user_session_got_it" = "Entendido";
 "user_other_session_permanently_unverified_additional_info" = "Esta sessão não suporta encriptação e assim não pode ser verificada.";
 "voice_broadcast_time_left" = "%@ restando";
-
 "key_verification_alert_body" = "Revise para assegurar que sua conta está segura.";
 
 // Unverified sessions
@@ -2653,3 +2652,5 @@
 "wysiwyg_composer_format_action_inline_code" = "Aplicar formato de código inline";
 "wysiwyg_composer_format_action_link" = "Aplicar formato de link";
 "user_other_session_security_recommendation_title" = "Outras sessões";
+"room_creation_only_one_email_invite" = "Você só pode convidar um e-mail de cada vez";
+"accessibility_selected" = "selecionado";

@@ -888,6 +888,7 @@ class NotificationService: UNNotificationServiceExtension {
 private extension MXPushRule {
     var dontNotify: Bool {
         let actions = (actions as? [MXPushRuleAction]) ?? []
-        return actions.contains { $0.actionType == MXPushRuleActionTypeDontNotify }
+        // Support for MSC3987: The dont_notify push rule action is deprecated and replaced by an empty actions list.
+        return actions.isEmpty || actions.contains { $0.actionType == MXPushRuleActionTypeDontNotify }
     }
 }

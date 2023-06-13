@@ -23,6 +23,8 @@ protocol ContactsPickerViewModelCoordinatorDelegate: AnyObject {
     func contactsPickerViewModelDidEndInvite(_ viewModel: ContactsPickerViewModelProtocol)
     func contactsPickerViewModel(_ viewModel: ContactsPickerViewModelProtocol, inviteFailedWithError error: Error?)
     func contactsPickerViewModel(_ viewModel: ContactsPickerViewModelProtocol, display message: String, title: String, actions: [UIAlertAction])
+    func contactsPickerViewModelDidStartValidatingUser(_ coordinator: ContactsPickerViewModelProtocol)
+    func contactsPickerViewModelDidEndValidatingUser(_ coordinator: ContactsPickerViewModelProtocol)
 }
 
 protocol ContactsPickerViewModelProtocol {

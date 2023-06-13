@@ -69,7 +69,8 @@ platform :ios do
     # Upload to Diawi
     diawi(
       token: ENV["DIAWI_API_TOKEN"],
-      wall_of_apps: false
+      wall_of_apps: false,
+      file: lane_context[SharedValues::IPA_OUTPUT_PATH]
     )
 
     # Get the Diawi link from Diawi action shared value
@@ -289,12 +290,14 @@ platform :ios do
       share_extension_provisioning_profile = ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
       siri_intents_provisioning_profile = ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
       nse_provisioning_profile = ENV["ADHOC_NSE_PROVISIONING_PROFILE_SPECIFIER"]
+      broadcast_upload_extension_provisioning_profile = ENV["ADHOC_BROADCAST_UPLOAD_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
     else
       export_method = "app-store"
       main_provisioning_profile = ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
       share_extension_provisioning_profile = ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
       siri_intents_provisioning_profile = ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
       nse_provisioning_profile = ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
+      broadcast_upload_extension_provisioning_profile = ENV["APPSTORE_BROADCAST_UPLOAD_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
     end
 
     # Build app and create ipa
@@ -320,6 +323,7 @@ platform :ios do
           ENV["SHARE_EXTENSION_BUNDLE_ID"] => share_extension_provisioning_profile,
           ENV["NSE_BUNDLE_ID"] => nse_provisioning_profile,
           ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"] => siri_intents_provisioning_profile,
+          ENV["BROADCAST_UPLOAD_EXTENSION_BUNDLE_ID"] => broadcast_upload_extension_provisioning_profile,
         },
         iCloudContainerEnvironment: "Production",
       },
@@ -339,6 +343,7 @@ platform :ios do
     share_extension_provisioning_name = adhoc ? ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
     siri_intents_provisioning_name = adhoc ? ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
     notification_service_extension_provisioning_name = adhoc ? ENV["ADHOC_NSE_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
+    broadcast_upload_extension_provisioning_name = adhoc ? ENV["ADHOC_BROADCAST_UPLOAD_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_BROADCAST_UPLOAD_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
 
     # Main application
     get_provisioning_profile(
@@ -384,6 +389,17 @@ platform :ios do
       filename: ENV["NSE_PROVISIONING_PROFILE_FILENAME"],
       readonly: true,
     )
+    # Broadcast Upload Extension
+    get_provisioning_profile(
+      app_identifier: ENV["BROADCAST_UPLOAD_EXTENSION_BUNDLE_ID"],
+      provisioning_name: broadcast_upload_extension_provisioning_name,
+      ignore_profiles_with_different_name: true,
+      adhoc: adhoc,
+      skip_certificate_verification: skip_certificate_verification,
+      output_path: output_path,
+      filename: ENV["BROADCAST_UPLOAD_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
+      readonly: true,
+    )
   end
 
   desc "Update provisioning profiles for each target"
@@ -418,6 +434,13 @@ platform :ios do
       xcodeproj: xcodeproj,
       profile: "#{provisioning_profiles_path}#{ENV["NSE_PROVISIONING_PROFILE_FILENAME"]}",
       target_filter: ENV["NSE_TARGET"],
+      build_configuration: build_configuration,
+    )
+    # Broadcast Upload Extension
+    update_project_provisioning(
+      xcodeproj: xcodeproj,
+      profile: "#{provisioning_profiles_path}#{ENV["BROADCAST_UPLOAD_EXTENSION_PROVISIONING_PROFILE_FILENAME"]}",
+      target_filter: ENV["BROADCAST_UPLOAD_EXTENSION_TARGET"],
       build_configuration: build_configuration,
     )
   end

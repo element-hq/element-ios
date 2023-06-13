@@ -2056,7 +2056,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             [userPictureView vc_setRoomAvatarImageWith:self.directChatTargetUser.avatarUrl
                                                 roomId:self.directChatTargetUser.userId
-                                           displayName:self.directChatTargetUser.displayname
+                                           displayName:self.directChatTargetUser.displayname ?: self.directChatTargetUser.userId
                                           mediaManager:self.mainSession.mediaManager];
         }
     }
@@ -5172,7 +5172,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (MXMediaManager *)mediaManager
 {
-    return self.roomDataSource.mxSession.mediaManager;
+    return self.mainSession.mediaManager;
 }
 
 - (void)roomInputToolbarViewDidOpenActionMenu:(RoomInputToolbarView*)toolbarView

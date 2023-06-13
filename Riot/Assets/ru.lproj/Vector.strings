@@ -915,7 +915,7 @@
 "security_settings_title" = "Безопасность";
 "security_settings_crypto_sessions" = "МОИ СЕАНСЫ";
 "security_settings_crypto_sessions_loading" = "Загрузка сеансов…";
-"security_settings_crypto_sessions_description_2" = "Если вы не узнали логин, измените пароль аккаунта Matrix и сбросьте Безопасное резервное копирование.";
+"security_settings_crypto_sessions_description_2" = "Если вы не узнаете логин, измените пароль учётной записи Matrix и сбросьте Secure Backup.";
 "security_settings_secure_backup" = "БЕЗОПАСНОЕ РЕЗЕРВНОЕ КОПИРОВАНИЕ";
 "security_settings_secure_backup_description" = "Сделайте резервную копию ключей шифрования с данными вашей учетной записи на случай, если вы потеряете доступ к своим сеансам. Ваши ключи будут защищены уникальным электронным ключом.";
 "security_settings_secure_backup_setup" = "Настроить";
@@ -1186,16 +1186,16 @@
 "create_room_section_header_name" = "НАЗВАНИЕ";
 "create_room_placeholder_name" = "Имя";
 "create_room_section_header_topic" = "Тема комнаты (опционально)";
-"create_room_placeholder_topic" = "Тема";
-"create_room_section_header_encryption" = "Шифрование комнаты";
+"create_room_placeholder_topic" = "О чём эта комната?";
+"create_room_section_header_encryption" = "ШИФРОВАНИЕ";
 "create_room_enable_encryption" = "Включено шифрование";
 "create_room_section_footer_encryption" = "После этого шифрование отключить нельзя.";
-"create_room_section_header_type" = "Тип комнаты";
-"create_room_type_private" = "Приватная комната";
-"create_room_type_public" = "Публичная комната";
+"create_room_section_header_type" = "КТО ИМЕЕТ ДОСТУП";
+"create_room_type_private" = "Приватная комната (только по приглашению)";
+"create_room_type_public" = "Публичная комната (для каждого)";
 "create_room_section_footer_type" = "Люди присоединяются к приватной комнате только по приглашению в комнату.";
 "create_room_show_in_directory" = "Показать комнату в списке";
-"create_room_section_header_address" = "Адрес комнаты";
+"create_room_section_header_address" = "АДРЕС";
 "create_room_placeholder_address" = "#testroom:matrix.org";
 "room_info_list_room_encrypted" = "Сообщения в этой комнате зашифрованы сквозным шифрованием";
 "room_info_list_one_member" = "1 пользователь";
@@ -2261,3 +2261,7 @@
 "room_access_settings_screen_private_message" = "Только приглашенные люди могут найти и присоединиться.";
 "manage_session_name_hint" = "Индивидуальные имена сеансов помогут Вам легче распознавать свои устройства.";
 "settings_labs_confirm_crypto_sdk" = "Имейте ввиду, что эта функция все ещё на экспериментальной стадии, поэтому она может работать не так, как ожидается, и потенциально может иметь непредвиденные последствия. Для отмены функции выйдите из системы и войдите снова. Используйте её по своему усмотрению и с осторожностью.";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "Доступ к комнате";
+"spaces_coming_soon_detail" = "Эта функция еще не реализована здесь, но она в разработке. На данный момент вы можете сделать это с помощью %@ на своем компьютере.";

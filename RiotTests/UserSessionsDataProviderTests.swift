@@ -209,6 +209,9 @@ private class MockCrossSigning: MXLegacyCrossSigning {
         super.init()
     }
     
+    override var state: MXCrossSigningState {
+        .crossSigningExists
+    }
 }
 
 /// A mock `MXDeviceInfo` that can override the `isVerified` state.
