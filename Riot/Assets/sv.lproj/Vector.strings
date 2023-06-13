@@ -2409,7 +2409,6 @@
 "spaces_explore_rooms_format" = "Utforska %@";
 "spaces_create_subspace_title" = "Skapa ett underutrymme";
 "spaces_add_subspace_title" = "Skapa utrymme inuti %@";
-
 "key_verification_alert_body" = "Granska för att försäkra att ditt konto är säkert.";
 
 // Unverified sessions
@@ -2647,7 +2646,6 @@
 "voice_broadcast_connection_error_message" = "Tyvärr kan vi inte starta en röstsändning för tillfället. Vänligen pröva igen senare.";
 "voice_broadcast_connection_error_title" = "Anslutningsfel";
 "voice_broadcast_playback_lock_screen_placeholder" = "Röstsändning";
-
 "room_details_polls" = "Omröstningshistorik";
 "settings_labs_disable_crypto_sdk" = "Totalsträckskryptering i Rust (logga ut för att stänga av)";
 "settings_labs_confirm_crypto_sdk" = "Vänligen observera att den här funktionen fortfarande ska anses vara experimentell, den kanske inte fungerar som förväntat eller kan leda till okända konsekvenser. För att återgå, logga ut och logga sedan in igen. Använd på egen risk.";
@@ -2661,3 +2659,20 @@
 "home_context_menu_mark_as_unread" = "Markera som oläst";
 "key_backup_recover_from_private_key_progress" = "%@%% Färdig";
 "authentication_qr_login_failure_device_not_supported" = "Det finns inget stöd för att länka denna enhet.";
+"room_command_emote_description" = "Visa åtgärd";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "Byter ditt visningsnamn";
+"room_creation_only_one_email_invite" = "Du kan bara bjuda in en e-postadress åt gången";
+"settings_acceptable_use" = "Policy för acceptabel användning";
+"room_command_join_room_description" = "Går med i rummet med den angivna adressen";
+"room_command_part_room_description" = "Lämna rummet";
+"room_command_invite_user_description" = "Bjuder in användaren med angivet ID till aktuellt rum";
+"room_command_kick_user_description" = "Tar bort användaren med angivet ID från det här rummet";
+"room_command_ban_user_description" = "Bannar användaren med angivet ID";
+"room_command_unban_user_description" = "Avbannar användaren med angivet ID";
+"room_command_set_user_power_level_description" = "Definiera behörighetsnivån för en användare";
+"room_command_reset_user_power_level_description" = "Avoppar användaren med angivet ID";
+"room_command_change_room_topic_description" = "Sätter rummets ämne";
+"room_command_discard_session_description" = "Tvingar den aktuella utgående gruppsessionen i ett krypterat rum att kasseras";
+"room_command_error_unknown_command" = "Ogiltigt eller obehandlat kommando";

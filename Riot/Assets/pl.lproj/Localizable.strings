@@ -118,3 +118,6 @@
 
 /* New file message from a specific person, not referencing a room. */
 "LOCATION_FROM_USER" = "%@ udostępnił(-a) swoją lokację";
+
+/* New voice broadcast from a specific person, not referencing a room. */
+"VOICE_BROADCAST_FROM_USER" = "%@ rozpoczął transmisję głosową";

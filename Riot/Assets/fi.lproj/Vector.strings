@@ -54,7 +54,6 @@
 
 // MARK: - MatrixKit
 
-
 "matrix" = "Matrix";
 // Login Screen
 "login_create_account" = "Luo tili:";
@@ -197,3 +196,23 @@
 "ssl_could_not_verify" = "Etäpalvelimen identiteetin vahvistaminen epäonnistui.";
 "login_user_id_placeholder" = "Matrix ID (esim. @matti:matrix.org tai pelkästään matti)";
 "login_identity_server_info" = "Matrix tarjoaa identiteettipalvelimen joka osaa kertaa mikä sähköpostiosoite tai puhelinnumero vastaa mitäkin Matrix ID:tä. Vain https://matrix.org on tällä hetkellä käytettävissä.";
+"suggest" = "Ehdota";
+"add" = "Lisää";
+"existing" = "Nykyinen";
+"new_word" = "Uusi";
+"stop" = "Seis";
+"done" = "Valmis";
+"open" = "Avaa";
+"less" = "Vähemmän";
+"more" = "Lisää";
+"switch" = "Vaihda";
+"joined" = "Liittyi";
+"skip" = "Ohita";
+"send_to" = "Lähetä käyttäjälle %@";
+"collapse" = "Näytä vähemmän";
+"rename" = "Nimeä uudelleen";
+"later" = "Myöhemmin";
+"active_call_details" = "Aktiivinen puhelu (%@)";
+"active_call" = "Aktiivinen puhelu";
+"enable" = "Ota käyttöön";
+"store_promotional_text" = "Yksityisyyttä varjeleva chat ja yhteistyösovellus, avoimessa verkossa. Hajautettu hallintaa varten. Ei datalouhintaa, takaovia tai kolmannen osapuolen pääsyä.";
