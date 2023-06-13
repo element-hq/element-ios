@@ -68,14 +68,14 @@
 "auth_msisdn_validation_title" = "等待验证中";
 "auth_msisdn_validation_message" = "我们通过短信向您发送了一条验证码，请在下方输入它。";
 "auth_msisdn_validation_error" = "无法验证此手机号。";
-"auth_recaptcha_message" = "此主服务器想确定您不是机器人";
+"auth_recaptcha_message" = "此家服务器想确定您不是机器人";
 "auth_reset_password_message" = "为了重置您的Matrix账户密码，请输入与您账户关联的邮箱地址：";
 "auth_reset_password_missing_email" = "必须输入与您的账户关联的邮箱地址。";
 "auth_reset_password_missing_password" = "必须输入新的密码。";
 "auth_reset_password_email_validation_message" = "一封邮件已经发送到 %@。当您已经按照其中的链接操作以后，请点下面。";
 "auth_reset_password_next_step_button" = "我已经验证了我的邮箱地址";
 "auth_reset_password_error_unauthorized" = "验证邮箱地址失败：请确认您已经点击了邮件里的链接";
-"auth_reset_password_error_not_found" = "您的邮箱地址可能没有与此主服务器上的 Matrix ID 绑定。";
+"auth_reset_password_error_not_found" = "您的邮箱地址可能没有与此家服务器上的 Matrix ID 绑定。";
 "auth_reset_password_success_message" = "您的Matrix账户密码已重置。\n\n您的所有会话都会被登出并且不会收到推送通知。要想重新收到通知，请在每个设备上重新登录。";
 "auth_add_email_and_phone_warning" = "在 API 出现之前，还不支持使用邮箱地址或手机号码直接注册。只有手机号码会和此账户绑定。您可以在设置中添加邮箱地址。";
 // Chat creation
@@ -237,7 +237,7 @@
 "settings_config_no_build_info" = "没有编译信息";
 "settings_mark_all_as_read" = "将所有消息标记为已读";
 "settings_report_bug" = "报告 bug";
-"settings_config_home_server" = "主服务器为 %@";
+"settings_config_home_server" = "家服务器为 %@";
 "settings_config_identity_server" = "身份认证服务器为 %@";
 "settings_config_user_id" = "以 %@ 登录";
 "settings_user_settings" = "用户设置";
@@ -258,12 +258,12 @@
 "settings_surname" = "姓氏";
 "settings_remove_prompt_title" = "确认";
 "settings_remove_email_prompt_msg" = "你确定要移除邮箱地址 %@？";
-"settings_remove_phone_prompt_msg" = "你确定要移除手机号码地址 %@？";
+"settings_remove_phone_prompt_msg" = "你确定要移除电话号码%@吗？";
 "settings_email_address" = "电子邮件";
 "settings_email_address_placeholder" = "输入您的邮箱地址";
 "settings_add_email_address" = "添加邮箱地址";
-"settings_phone_number" = "手机号码";
-"settings_add_phone_number" = "添加手机号码";
+"settings_phone_number" = "电话";
+"settings_add_phone_number" = "添加电话号码";
 "settings_night_mode" = "夜间模式";
 "settings_fail_to_update_profile" = "个人档案更新失败";
 "settings_enable_push_notif" = "在此设备上发送通知";
@@ -362,7 +362,7 @@
 "directory_server_picker_title" = "选择一个目录";
 "directory_server_all_rooms" = "%@ 服务器上的所有房间";
 "directory_server_all_native_rooms" = "所有本地 Matrix 房间";
-"directory_server_type_homeserver" = "输入一个主服务器来列出公共房间";
+"directory_server_type_homeserver" = "输入一个家服务器来列出公共房间";
 "directory_server_placeholder" = "matrix.org";
 // Others
 "or" = "或";
@@ -385,7 +385,7 @@
 // Crash report
 // Crypto
 "e2e_enabling_on_app_update" = "%@ 现在支持端到端加密，但是您需要重新登录以启用它。\n\n您可以现在重新登录，也可以之后从应用程序设置中选择开启。";
-"e2e_need_log_in_again" = "您需要登录回来以便为此会话生成端对端加密密钥并提交公钥到您的主服务器。\n这只需要做一次；很抱歉造成打扰。";
+"e2e_need_log_in_again" = "您需要登录回来以便为此会话生成端对端加密密钥并提交公钥到您的家服务器。\n这只需要做一次；很抱歉造成打扰。";
 // Bug report
 "bug_report_title" = "Bug 报告";
 "bug_report_description" = "请描述此 bug。您做了什么？本来应该发生什么？以及实际发生了什么？";
@@ -505,7 +505,7 @@
 "event_formatter_jitsi_widget_added" = "VoIP 会议已被 %@ 添加";
 "event_formatter_rerequest_keys_part1_link" = "重新请求加密密钥";
 "event_formatter_rerequest_keys_part2" = " （从您的其他会话中）。";
-"homeserver_connection_lost" = "无法连接至主服务器。";
+"homeserver_connection_lost" = "无法连接至家服务器。";
 "call_jitsi_error" = "电话会议加入失败。";
 "deactivate_account_forget_messages_information_part2_emphasize" = "警告";
 "deactivate_account_validate_action" = "停用账户";
@@ -516,12 +516,12 @@
 "room_replacement_link" = "对话自此继续。";
 "room_predecessor_information" = "这个房间是另一个对话的延续。";
 "room_predecessor_link" = "点击此处查看更早的消息。";
-"room_resource_usage_limit_reached_message_1_default" = "此主服务器某资源已超出使用限制，导致 ";
-"room_resource_usage_limit_reached_message_1_monthly_active_user" = "此主服务器已达到月活跃用户限制，导致 ";
+"room_resource_usage_limit_reached_message_1_default" = "此家服务器某资源已超出使用限制，导致 ";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "此家服务器已达到月活跃用户限制，导致 ";
 "room_resource_usage_limit_reached_message_2" = "部分用户将无法登录。";
 "room_resource_usage_limit_reached_message_contact_3" = " 以提高限制。";
 // String for App Store
-"store_short_description" = "安全、去中心化的聊天及 VoIP 应用";
+"store_short_description" = "安全、去中心化的聊天/VoIP";
 "store_full_description" = "Element 是一种新型的通讯与协作应用：\n\n1. 使您可以掌控您的隐私\n2. 使您与 Matrix 网络中的任何人交流，甚至可以通过集成功能与如 Slack 之类的其他应用通讯\n3. 保护您免受广告，大数据挖掘和封闭服务的侵害\n4. 通过端到端加密保证安全，通过交叉签名验证其他人\n\nElement 与其他通讯与协作应用完全不同，因为它是去中心化且开源的。\n\nElement 允许您自托管——或者选择托管商——因此，您能拥有数据和会话的隐私权，所有权和控制权。它允许您访问开放网络；因此，您可以与 Element 用户以外的人交流。并且它非常安全。\n\nElement 之所以可以做到这些，是因为它在 Matrix 上运行——开放，去中心化通讯的标准。\n\n通过让您选择由谁来托管您的会话，Element 让您掌控一切。在 Element 应用中，您可以选择不同的托管方式：\n\n1. 在由 Matrix 开发者托管的 matrix.org 公共服务器上获取免费账户，或从志愿者托管的上千个公共服务器中选择\n2. 在您自己的硬件上运行服务器，自托管您的会话\n3. 通过订阅 Element Matrix Services 托管平台，简单地在自定义服务器上注册账户\n\n为什么选择 Element？\n\n掌控您的数据：您来决定存放您的数据和消息的位置。拥有并控制它的是您，而不是挖掘您的数据或与第三方分享的巨型企业。\n\n开放通讯与协作：您可以与 Matrix 网络中的任何人聊天，不论他们使用 Element 还是其他 Matrix 应用，甚至/即使他们在使用不同的通讯系统，例如 Slack、IRC 或 XMPP。\n\n超级安全：支持真正的端到端加密（仅有会话中的人可以解密消息），还有能够验证会话参与方的设备的交叉签名。\n\n完善的通讯方式：消息，语音和视频通话，文件共享，屏幕共享和大量集成功能，机器人和挂件。建立房间与社区，保持联系并完成工作。\n\n随时随地：消息历史可在您的全部设备和 https://app.element.io 网页端之间完全同步，无论您在哪里，都可以保持联系。";
 "auth_accept_policies" = "请查看并接受此主页服务器的服务条款：";
 "room_replacement_information" = "这个房间已被替换，不再有效。";
@@ -572,7 +572,7 @@
 "e2e_room_key_request_message_new_device" = "您添加了一个新会话 '%@' ，它正在请求加密密钥。";
 "e2e_room_key_request_message" = "您的未验证会话 '%@' 正在请求加密密钥。";
 // GDPR
-"gdpr_consent_not_given_alert_message" = "要继续使用该 %@ 主服务器，您必须查看并同意其服务条款和条件。";
+"gdpr_consent_not_given_alert_message" = "要继续使用该 %@ 家服务器，您必须查看并同意其服务条款和条件。";
 "gdpr_consent_not_given_alert_review_now_action" = "立即查看";
 "deactivate_account_title" = "停用账户";
 "deactivate_account_informations_part1" = "这将使您的账户永久无法使用。 您将无法登录，也无法重新注册相同的用户 ID 。 这将导致您的账户离开其参与的所有房间，并且会从您的身份服务器中删除您的账户详细信息。 ";
@@ -595,7 +595,7 @@
 "key_backup_setup_intro_manual_export_info" = "（高级）";
 "key_backup_setup_intro_manual_export_action" = "手动导出密钥";
 "key_backup_setup_passphrase_title" = "使用一段安全词组保护您的备份";
-"key_backup_setup_passphrase_info" = "我们将会在主服务器上保存一份您的密钥的加密拷贝。设置一个词组来保护您的备份的安全。\n\n为了最大的安全性，它应当与您的Matrix账户密码不同。";
+"key_backup_setup_passphrase_info" = "我们将会在家服务器上保存一份您的密钥的加密拷贝。设置一个词组来保护您的备份的安全。\n\n为了最大的安全性，它应当与您的Matrix账户密码不同。";
 "key_backup_setup_passphrase_passphrase_title" = "输入";
 "key_backup_setup_passphrase_passphrase_placeholder" = "输入词组";
 "key_backup_setup_passphrase_passphrase_valid" = "太棒了！";
@@ -654,7 +654,7 @@
 "sign_out_key_backup_in_progress_alert_cancel_action" = "等待";
 "auth_login_single_sign_on" = "使用单点登录方式登入";
 "room_message_unable_open_link_error_message" = "无法打开链接。";
-"auth_autodiscover_invalid_response" = "主服务器探测响应无效";
+"auth_autodiscover_invalid_response" = "家服务器探测响应无效";
 "close" = "关闭";
 // Accessibility
 "accessibility_checkbox_label" = "多选框";
@@ -667,7 +667,7 @@
 "auth_reset_password_error_is_required" = "未配置身份服务器：在服务器选项中添加以便重设你的Matrix账户密码。";
 "auth_softlogout_signed_out" = "你已登出";
 "auth_softlogout_sign_in" = "登录";
-"auth_softlogout_reason" = "你的主服务器（%1$@）管理员已将你的账户%2$@（%3$@）登出。";
+"auth_softlogout_reason" = "你的家服务器（%1$@）管理员已将你的账户%2$@（%3$@）登出。";
 "auth_softlogout_recover_encryption_keys" = "登录以恢复单独保存在此设备上的加密密钥。你需要它们才能阅读任何设备上的安全消息。";
 "auth_softlogout_clear_data" = "清空个人信息";
 "auth_softlogout_clear_data_message_1" = "警告：你的个人信息（包括加密密钥）仍将保存在这台设备上。";
@@ -677,7 +677,7 @@
 "auth_softlogout_clear_data_sign_out_msg" = "你确定希望清空所有当前保存在此设备上数据吗？再次登录可以获取你的账户数据和消息。";
 "auth_softlogout_clear_data_sign_out" = "登出";
 // Errors
-"error_user_already_logged_in" = "您似乎正在尝试连接另一个主服务器。您想要登出吗？";
+"error_user_already_logged_in" = "您似乎正在尝试连接另一个家服务器。您想要登出吗？";
 "room_creation_error_invite_user_by_email_without_identity_server" = "未设置身份认证服务器，所以你不能用邮箱添加参与者。";
 "contacts_address_book_no_identity_server" = "未设置身份认证服务器";
 "room_participants_remove_third_party_invite_prompt_msg" = "你确定想撤回这个邀请吗？";
@@ -718,7 +718,7 @@
 "settings_three_pids_management_information_part3" = "。";
 "settings_security" = "安全";
 "settings_calls_stun_server_fallback_button" = "允许使用通话辅助服务器作为备用手段";
-"settings_calls_stun_server_fallback_description" = "允许在你的主服务器不能提供时使用通话辅助服务器 %@ 作为备用手段（你的IP地址在通话时会被分享）。";
+"settings_calls_stun_server_fallback_description" = "允许在你的家服务器不能提供时使用通话辅助服务器 %@ 作为备用手段（你的IP地址在通话时会被分享）。";
 "settings_integrations_allow_button" = "管理集成";
 "settings_integrations_allow_description" = "使用集成管理器（%@）来管理机器人，桥接，小插件和贴纸包。\n\n集成管理器会收到设置数据，而且能修改小插件，发送房间邀请以及代表你设置权力级别。";
 "settings_labs_message_reaction" = "用emoji表情回应消息";
@@ -792,7 +792,7 @@
 "camera_unavailable" = "此摄像头在你的设备上无效";
 "photo_library_access_not_granted" = "%@没有权限获取你的照片库，请更改隐私设置";
 "call_no_stun_server_error_title" = "由于错误设置服务器，通话失败";
-"call_no_stun_server_error_message_1" = "请让你的主服务器%@的管理员设置一个TURN服务器以便通话能可靠运行。";
+"call_no_stun_server_error_message_1" = "请让你的家服务器%@的管理员设置一个TURN服务器以便通话能可靠运行。";
 "call_no_stun_server_error_message_2" = "此外，你可以尝试使用在%@的公共服务器，但这将减少可靠性，而且它会把你的IP地址分享给那个服务器。你也可以在设置中管理这个选项";
 "call_no_stun_server_error_use_fallback_button" = "尝试使用%@";
 // Widget
@@ -1088,7 +1088,7 @@
 "people_empty_view_title" = "用户";
 "less" = "较小地";
 "more" = "更多";
-"switch" = "开关";
+"switch" = "切换";
 "joined" = "已加入";
 "store_promotional_text" = "在开放网络上保护隐私的聊天和协作应用程序。去中心化让你掌控一切。没有数据挖掘，没有后门，也没有第三方访问。";
 "social_login_button_title_sign_up" = "使用 %@ 注册";
@@ -1376,7 +1376,7 @@
 "room_details_title_for_dm" = "详细信息";
 
 // AuthenticatedSessionViewControllerFactory
-"authenticated_session_flow_not_supported" = "此应用并不支持你的主服务器的认证机制。";
+"authenticated_session_flow_not_supported" = "此应用并不支持你的家服务器的认证机制。";
 "settings_labs_enable_ringing_for_group_calls" = "群组通话铃声";
 "room_multiple_typing_notification" = "%@ 和其他人";
 "room_no_privileges_to_create_group_call" = "你需要成为管理员或协管员以开始通话。";
@@ -1612,8 +1612,8 @@
 // Login Screen
 "login_create_account" = "创建账户：";
 "login_server_url_placeholder" = "网址（例如 https://matrix.org）";
-"login_home_server_title" = "主服务器网址：";
-"login_home_server_info" = "您的主服务器存储了您所有的对话和账户数据";
+"login_home_server_title" = "家服务器网址：";
+"login_home_server_info" = "您的家服务器存储了您所有的对话和账户数据";
 "login_identity_server_title" = "身份认证服务器网址：";
 "login_identity_server_info" = "Matrix 提供了身份认证服务器以验证邮箱地址等是否属于某个 Matrix ID。目前只有 https://matrix.org 支持。";
 "login_user_id_placeholder" = "Matrix ID（例如 @bob:matrix.org 或 bob）";
@@ -1690,8 +1690,8 @@
 "notice_invalid_attachment" = "无效附件";
 "notice_unsupported_attachment" = "不支持的附件：%@";
 "login_email_info" = "指定邮箱地址可以让其他 Matrix 用户更容易找到您，并允许您可以在未来重置密码。";
-"login_error_no_login_flow" = "我们未能从此主服务器获取认证信息";
-"login_error_do_not_support_login_flows" = "当前我们不支持此主服务器定义的任何或者所有登录流";
+"login_error_no_login_flow" = "我们未能从此家服务器获取认证信息";
+"login_error_do_not_support_login_flows" = "当前我们不支持此家服务器定义的任何或者所有登录流";
 "notice_feedback" = "反馈事件 (id: %@)：%@";
 "notice_redaction" = "%@ 取消了一个事件 (id: %@)";
 "notice_error_unsupported_event" = "不支持的事件";
@@ -1790,7 +1790,7 @@
 "power_level" = "权力级别";
 "network_error_not_reachable" = "请检查你的网络连接";
 "user_id_placeholder" = "例如：@bob:homeserver";
-"ssl_homeserver_url" = "主服务器网址：%@";
+"ssl_homeserver_url" = "家服务器网址：%@";
 // Country picker
 "country_picker_title" = "请选择国家";
 // Language picker
@@ -1915,8 +1915,8 @@
 "account_email_validation_error" = "无法验证邮箱地址。请检查你的电子邮箱并点击邮件中的链接。完成后，请点击继续";
 "login_error_resource_limit_exceeded_title" = "超出资源使用限制";
 "login_error_resource_limit_exceeded_contact_button" = "联系管理员";
-"login_error_resource_limit_exceeded_message_default" = "此主服务器已超出某资源的使用限制。";
-"login_error_resource_limit_exceeded_message_monthly_active_user" = "此主服务器已达到月活跃用户限制。";
+"login_error_resource_limit_exceeded_message_default" = "此家服务器已超出某资源的使用限制。";
+"login_error_resource_limit_exceeded_message_monthly_active_user" = "此家服务器已达到月活跃用户限制。";
 "login_error_resource_limit_exceeded_message_contact" = "\n\n请联系管理员以继续使用本服务。";
 "account_msisdn_validation_message" = "我们通过短信向您发送了一条验证码，请在下方输入它。";
 "room_error_timeline_event_not_found" = "应用程序试图加载此房间时间线中的特定点，但无法找到该时间点";
@@ -2135,11 +2135,11 @@
 "authentication_verify_email_input_title" = "输入你的电子邮件";
 "authentication_cancel_flow_confirmation_message" = "账户还未创建。停止注册流程吗？";
 "authentication_server_selection_generic_error" = "无法在这个URL上找到服务器，请检查其是否正确。";
-"authentication_server_selection_server_url" = "主服务器URL";
+"authentication_server_selection_server_url" = "家服务器URL";
 "authentication_server_selection_register_message" = "你服务器的地址是什么？它就像你全部数据的家";
-"authentication_server_selection_register_title" = "选择你的主服务器";
+"authentication_server_selection_register_title" = "选择你的家服务器";
 "authentication_server_selection_login_message" = "你服务器的地址是什么？";
-"authentication_server_selection_login_title" = "连接到主服务器";
+"authentication_server_selection_login_title" = "连接到家服务器";
 "authentication_server_info_title_login" = "你的对话发生的地方";
 "authentication_login_forgot_password" = "忘记密码";
 "authentication_login_username" = "用户名/电子邮件/电话";
@@ -2285,3 +2285,67 @@
 "deselect_all" = "取消全选";
 "notice_voice_broadcast_ended" = "%@结束了一个语音广播。";
 "notice_voice_broadcast_ended_by_you" = "你结束了一个语音广播。";
+"threads_beta_cancel" = "先不了";
+"threads_beta_enable" = "尝试一下";
+"threads_beta_information" = "使用消息列使讨论保持有序。\n\n消息列帮助你保持聊天不跑题，且易于回溯。 ";
+"threads_beta_title" = "消息列";
+"threads_notice_information" = "实验期间创建的所有消息列会被 <b>显示为普通回复</b>。<br/><br/>这是个一次性的转变，因为消息列现在是Matrix标准的一部分了。";
+"threads_notice_title" = "消息列不再是实验性功能了🎉";
+"threads_empty_show_all_threads" = "显示所有消息列";
+"threads_empty_tip" = "提示：点击一条消息然后点击“消息列”来新建一个消息列。";
+"threads_empty_info_my" = "回复到一个消息列，或者点击一条消息然后点击“消息列”来新建消息列。";
+"room_command_error_unknown_command" = "命令无效或未处理";
+"room_command_change_room_topic_description" = "设置房间话题";
+"room_command_set_user_power_level_description" = "设置用户权限级别";
+"room_command_unban_user_description" = "取消封禁指定id的用户";
+"room_command_invite_user_description" = "邀请指定id用户进入此房间";
+"room_command_kick_user_description" = "从此房间移除指定id用户";
+"room_command_ban_user_description" = "封禁指定id的用户";
+"room_command_part_room_description" = "离开房间";
+"room_command_join_room_description" = "根据地址加入房间";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "更改显示的昵称";
+"room_creation_only_one_email_invite" = "一次性只能邀请一个邮箱地址";
+"authentication_qr_login_failure_device_not_supported" = "不支持链接到此设备。";
+"all_chats_edit_layout_alphabetical_order" = "按照字母顺序排序";
+"all_chats_edit_layout_show_filters" = "显示过滤器";
+"all_chats_edit_layout_show_recents" = "显示最近项目";
+
+// MARK: - Space Selector
+
+"space_selector_title" = "我的空间";
+
+// MARK: - All Chats
+
+"all_chats_title" = "所有聊天";
+"settings_labs_enable_voice_broadcast" = "语音广播";
+"settings_labs_enable_wysiwyg_composer" = "尝试富文本编辑器";
+"settings_labs_enable_new_client_info_feature" = "记录客户端名字、版本和URL来在会话管理器中更方便地分辨会话";
+"settings_labs_enable_new_session_manager" = "新会话管理器";
+"location_sharing_live_error" = "实时位置共享错误";
+"location_sharing_live_loading" = "正在加载实时位置……";
+"location_sharing_live_timer_incoming" = "共享到%@";
+"location_sharing_live_list_item_stop_sharing_action" = "停止";
+"location_sharing_live_list_item_last_update" = "在%@之前更新";
+"location_sharing_live_list_item_sharing_expired" = "共享已过期";
+"location_sharing_live_viewer_title" = "位置";
+"location_sharing_live_map_callout_title" = "共享位置";
+"live_location_sharing_banner_stop" = "停止";
+"live_location_sharing_ended" = "实时位置共享已结束";
+"live_location_sharing_banner_title" = "实时位置共享已开启";
+
+// MARK: Live location sharing
+
+"location_sharing_live_share_title" = "共享实时位置";
+"location_sharing_allow_background_location_message" = "如果你想要实时共享你的位置，Element需要在后台访问你的位置信息。要允许访问，点击设置>位置，然后选择“总是”";
+"location_sharing_invalid_power_level_message" = "要在此房间中实时共享位置，你需要有对应的权限。";
+"settings_labs_enable_live_location_sharing" = "实时位置共享——共享当前位置（活跃开发中，位置暂时还会留在房间历史记录中）";
+"poll_timeline_decryption_error" = "因为解密错误，有的投票可能没有被算进去";
+"settings_labs_enable_auto_report_decryption_errors" = "自动报告解密错误";
+"settings_ui_show_redactions_in_room_history" = "为已被删除的消息显示占位符";
+"settings_enable_room_message_bubbles" = "消息气泡";
+"all_chats_user_menu_settings" = "用户设置";
+// User sessions management
+"user_sessions_settings" = "管理登陆会话";
+"settings_presence_offline_mode_description" = "如果开启此选项，对其他用户来说，你看起来就会像下线了一样，即使你正在使用此软件。";

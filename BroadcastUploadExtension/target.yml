@@ -1,0 +1,42 @@
+name: BroadcastUploadExtension
+
+schemes:
+  BroadcastUploadExtension:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        BroadcastUploadExtension:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      askForAppToLaunch: true
+      config: Debug
+      debugEnabled: false
+      disableMainThreadChecker: true
+      launchAutomaticallySubstyle: 2
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+
+targets:
+  BroadcastUploadExtension:
+    platform: iOS
+    type: app-extension
+
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
+
+    sources:
+    - path: .
+    - path: ../Config/BuildSettings.swift
+    - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift

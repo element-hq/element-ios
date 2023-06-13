@@ -366,6 +366,9 @@
 "room_creation_error_invite_user_by_email_without_identity_server" = "No identity server is configured so you cannot add a participant with an email.";
 "room_creation_dm_error" = "We couldn't create your DM. Please check the users you want to invite and try again.";
 "room_creation_only_one_email_invite" = "You can only invite one email at a time";
+"room_creation_user_not_found_prompt_title" = "Confirmation";
+"room_creation_user_not_found_prompt_message" = "Unable to find profiles for this Matrix ID. Would you like to start a DM anyway?";
+"room_creation_user_not_found_prompt_invite_action" = "Start DM anyway";
 
 // Room recents
 "room_recents_directory_section" = "ROOM DIRECTORY";
@@ -459,6 +462,8 @@ Tap the + to start adding people.";
 "room_participants_invite_prompt_title" = "Confirmation";
 "room_participants_invite_prompt_msg" = "Are you sure you want to invite %@ to this chat?";
 "room_participants_invite_prompt_to_msg" = "Are you sure you want to invite %@ to %@?";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "Unable to find profiles for this Matrix ID. Are you sure you want to invite %@ to %@?";
+"room_participants_invite_anyway" = "Invite anyway";
 "room_participants_filter_room_members" = "Filter room members";
 "room_participants_filter_room_members_for_dm" = "Filter members";
 "room_participants_invite_another_user" = "Search / invite by User ID, Name or email";

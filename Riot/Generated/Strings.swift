@@ -5371,6 +5371,18 @@ public class VectorL10n: NSObject {
   public static var roomCreationTitle: String { 
     return VectorL10n.tr("Vector", "room_creation_title") 
   }
+  /// Start DM anyway
+  public static var roomCreationUserNotFoundPromptInviteAction: String { 
+    return VectorL10n.tr("Vector", "room_creation_user_not_found_prompt_invite_action") 
+  }
+  /// Unable to find profiles for this Matrix ID. Would you like to start a DM anyway?
+  public static var roomCreationUserNotFoundPromptMessage: String { 
+    return VectorL10n.tr("Vector", "room_creation_user_not_found_prompt_message") 
+  }
+  /// Confirmation
+  public static var roomCreationUserNotFoundPromptTitle: String { 
+    return VectorL10n.tr("Vector", "room_creation_user_not_found_prompt_title") 
+  }
   /// A room is already being created. Please wait.
   public static var roomCreationWaitForCreation: String { 
     return VectorL10n.tr("Vector", "room_creation_wait_for_creation") 
@@ -6375,6 +6387,10 @@ public class VectorL10n: NSObject {
   public static var roomParticipantsInviteAnotherUser: String { 
     return VectorL10n.tr("Vector", "room_participants_invite_another_user") 
   }
+  /// Invite anyway
+  public static var roomParticipantsInviteAnyway: String { 
+    return VectorL10n.tr("Vector", "room_participants_invite_anyway") 
+  }
   /// Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'
   public static var roomParticipantsInviteMalformedId: String { 
     return VectorL10n.tr("Vector", "room_participants_invite_malformed_id") 
@@ -6394,6 +6410,10 @@ public class VectorL10n: NSObject {
   /// Are you sure you want to invite %@ to %@?
   public static func roomParticipantsInvitePromptToMsg(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "room_participants_invite_prompt_to_msg", p1, p2)
+  }
+  /// Unable to find profiles for this Matrix ID. Are you sure you want to invite %@ to %@?
+  public static func roomParticipantsInviteUnknownParticipantPromptToMsg(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "room_participants_invite_unknown_participant_prompt_to_msg", p1, p2)
   }
   /// INVITED
   public static var roomParticipantsInvitedSection: String { 

@@ -2947,3 +2947,20 @@
 
 "key_verification_self_verify_security_upgrade_alert_title" = "Aplikasi diperbarui";
 "settings_acceptable_use" = "Kebijakan Penggunaan yang Dapat Diterima";
+"room_command_error_unknown_command" = "Perintah tidak valid atau tidak ditangani";
+"room_command_discard_session_description" = "Memaksa sesi kelompok outbound saat ini di ruang terenkripsi untuk dihapus";
+"room_command_change_room_topic_description" = "Menetapkan topik ruangan";
+"room_command_reset_user_power_level_description" = "Menurunkan pengguna dengan ID yang ditetapkan";
+"room_command_set_user_power_level_description" = "Definisikan tingkat daya pengguna";
+"room_command_unban_user_description" = "Menghilangkan cekalan pengguna dengan ID yang ditetapkan";
+"room_command_ban_user_description" = "Mencekal pengguna dengan ID yang ditetapkan";
+"room_command_kick_user_description" = "Mengeluarkan pengguna dengan ID yang ditetapkan dari ruangan ini";
+"room_command_invite_user_description" = "Mengundang pengguna dengan OD yang ditetapkan ke ruangan saat ini";
+"room_command_part_room_description" = "Tinggalkan ruangan";
+"room_command_join_room_description" = "Bergabung dengan ruangan dengan alamat yang ditetapkan";
+"room_command_emote_description" = "Menampilkan tindakan";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "Mengubah nama tampilan Anda";
+"notice_display_name_changed_to" = "%@ mengubah nama tampilannya menjadi %@";
+"poll_timeline_loading" = "Memuat...";

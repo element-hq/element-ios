@@ -80,8 +80,15 @@
     // Check whether an override rule has been defined with the roomm id as rule id.
     // This kind of rule is created to mute the room
     MXPushRule* rule = [self getOverrideRoomPushRule];
-    if (rule)
+    if (rule && rule.enabled)
     {
+        // Support for MSC3987: The dont_notify push rule action is deprecated.
+        if (rule.actions.count == 0)
+        {
+            return true;
+        }
+        
+        // Support deprecated dont_notify push rule action for compatibility purposes.
         for (MXPushRuleAction *ruleAction in rule.actions)
         {
             if (ruleAction.actionType == MXPushRuleActionTypeDontNotify)
@@ -98,7 +105,7 @@
                         
                         if (key && pattern && [key isEqualToString:@"room_id"] && [pattern isEqualToString:self.roomId])
                         {
-                            return rule.enabled;
+                            return true;
                         }
                     }
                 }
@@ -113,13 +120,20 @@
 {
     // Check push rules at room level
     MXPushRule *rule = [self getRoomPushRule];
-    if (rule)
+    if (rule && rule.enabled)
     {
+        // Support for MSC3987: The dont_notify push rule action is deprecated.
+        if (rule.actions.count == 0)
+        {
+            return true;
+        }
+        
+        // Support deprecated dont_notify push rule action for compatibility purposes.
         for (MXPushRuleAction *ruleAction in rule.actions)
         {
             if (ruleAction.actionType == MXPushRuleActionTypeDontNotify)
             {
-                return rule.enabled;
+                return true;
             }
         }
     }
@@ -178,12 +192,21 @@
         // check if the user did not define one
         BOOL hasDontNotifyRule = NO;
         
-        for (MXPushRuleAction *ruleAction in rule.actions)
+        // Support for MSC3987: The dont_notify push rule action is deprecated.
+        if (rule.actions.count == 0)
         {
-            if (ruleAction.actionType == MXPushRuleActionTypeDontNotify)
+            hasDontNotifyRule = YES;
+        }
+        else
+        {
+            // Support deprecated dont_notify push rule action for compatibility purposes.
+            for (MXPushRuleAction *ruleAction in rule.actions)
             {
-                hasDontNotifyRule = YES;
-                break;
+                if (ruleAction.actionType == MXPushRuleActionTypeDontNotify)
+                {
+                    hasDontNotifyRule = YES;
+                    break;
+                }
             }
         }
         
@@ -256,12 +279,21 @@
         // check if the user did not define one
         BOOL hasDontNotifyRule = NO;
         
-        for (MXPushRuleAction *ruleAction in rule.actions)
+        // Support for MSC3987: The dont_notify push rule action is deprecated.
+        if (rule.actions.count == 0)
         {
-            if (ruleAction.actionType == MXPushRuleActionTypeDontNotify)
+            hasDontNotifyRule = YES;
+        }
+        else
+        {
+            // Support deprecated dont_notify push rule action for compatibility purposes.
+            for (MXPushRuleAction *ruleAction in rule.actions)
             {
-                hasDontNotifyRule = YES;
-                break;
+                if (ruleAction.actionType == MXPushRuleActionTypeDontNotify)
+                {
+                    hasDontNotifyRule = YES;
+                    break;
+                }
             }
         }
         

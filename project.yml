@@ -32,6 +32,7 @@ include:
   - path: RiotShareExtension/target.yml
   - path: SiriIntents/target.yml
   - path: RiotNSE/target.yml
+  - path: BroadcastUploadExtension/target.yml
   - path: DesignKit/target.yml
   - path: RiotSwiftUI/target.yml
   - path: RiotSwiftUI/targetUnitTests.yml
@@ -56,7 +57,7 @@ packages:
     branch: 0.0.1
   WysiwygComposer:
     url: https://github.com/matrix-org/matrix-wysiwyg-composer-swift
-    version: 2.1.0
+    version: 2.2.2
   DeviceKit:
     url: https://github.com/devicekit/DeviceKit
     majorVersion: 4.7.0

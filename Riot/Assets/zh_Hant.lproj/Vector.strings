@@ -619,10 +619,10 @@
 "skip" = "略過";
 "close" = "關閉";
 "store_promotional_text" = "開放網路上的隱私保護聊天和協作應用程式。去中心化機制讓您可自行管控。沒有資料探勘、沒有後門，也不會被第三方存取。";
-"store_full_description" = "Element 是一套新型的通訊和協作應用程式，它提供下列功能：\n\n1. 您可以自行掌控隱私\n2. 可以與 Matrix 網路中的任何人進行通訊，甚至可以與 Slack 等應用程式整合\n3. 保護您免受廣告、資料探勘、後門和封閉平台的侵害\n4. 透過端到端加密和交叉簽署來驗證彼此，互相確保安全\n\nElement 是去中心化的開源軟體，因此與其他通訊和協作應用程式完全不同。\n\nElement 允許您自行架設（或選擇託管）伺服器，使您可針對隱私權，所有權以及對資料和對話內容的完整控制權。您可以連線到所有開放的網路，所以您不是只能與其他 Element 使用者聊天。而且還非常安全。\n\nElement 之所以能夠做到所有這些目標，是因為它使用 Matrix（一套開放、去中心化的通訊標準）運作。\n\nElement 讓您可以自行選擇要將對話放在哪一台伺服器來讓您可自行控制自己的訊息和資料。在 Element 應用程式中，您可以選擇以不同方式託管您的訊息：\n\n1. 在 matrix.org 公開伺服器註冊免費帳號\n2. 使用自行架設的硬體主機上的伺服器來註冊帳號\n3. 訂閱 Element Matrix Services 代管平台，註冊自己的伺服器\n\n為什麼要選擇 Element？\n\n自己擁有自己資料：由您決定將資料與訊息保留在何處。您自己擁有並管理這些資料，而不用讓某些「超大型企業」來探勘您的資料，或將資料提供給第三方。\n\n開放的通訊與協作機制：您可以與 Matrix 網路中的任何人聊天，不管他們使用的是 Element 還是其他 Matrix 應用程式，甚至他們也可以使用像 Slack 、IRC 或 XMPP 之類的其他通訊系統。\n\n超級安全：真正的端對端加密（只有對話中的人才能解開訊息內容），並進行交叉簽署以驗證對話參與者的設備。\n\n完整的通訊：傳訊息、進行語音或視訊通話、分享檔案、畫面，還有大量整合、機器人與小工具。建立聊天室、社群，保持聯繫並完成工作。\n\n無論您身在何處都可保持聯繫：無論您身在何處，都可以透過 https://element.io/app 在所有裝置與網路取得完全同步的訊息記錄來保持聯繫。";
+"store_full_description" = "Element 是一套新型的通訊和協作應用程式，它提供下列功能：\n\n1. 您可以自行掌控隱私\n2. 可以與 Matrix 網路中的任何人進行通訊，甚至可以與 Slack 等應用程式整合\n3. 保護您免受廣告、資料探勘、後門和封閉平台的侵害\n4. 透過端到端加密和交叉簽署來驗證彼此，互相確保安全\n\nElement 是去中心化的開放原始碼軟體，因此與其他通訊和協作應用程式完全不同。\n\nElement 允許您自行架設（或選擇託管）伺服器，使您可針對隱私權，所有權以及對資料和對話內容的完整控制權。您可以連線到所有開放的網路，所以您不是只能與其他 Element 使用者聊天。而且還非常安全。\n\nElement 之所以能夠做到所有這些目標，是因為它使用 Matrix（一套開放、去中心化的通訊標準）運作。\n\nElement 讓您可以自行選擇要將對話放在哪一台伺服器來讓您可自行控制自己的訊息和資料。在 Element 應用程式中，您可以選擇以不同方式託管您的訊息：\n\n1. 在 matrix.org 公開伺服器註冊免費帳號\n2. 使用自行架設的硬體主機上的伺服器來註冊帳號\n3. 訂閱 Element Matrix Services 代管平台，註冊自己的伺服器\n\n為什麼要選擇 Element？\n\n自己擁有自己資料：由您決定將資料與訊息保留在何處。您自己擁有並管理這些資料，而不用讓某些「超大型企業」來探勘您的資料，或將資料提供給第三方。\n\n開放的通訊與協作機制：您可以與 Matrix 網路中的任何人聊天，不管他們使用的是 Element 還是其他 Matrix 應用程式，甚至他們也可以使用像 Slack 、IRC 或 XMPP 之類的其他通訊系統。\n\n超級安全：真正的端對端加密（只有對話中的人才能解開訊息內容），並進行交叉簽署以驗證對話參與者的設備。\n\n完整的通訊：傳訊息、進行語音或視訊通話、分享檔案、畫面，還有大量整合、機器人與小工具。建立聊天室、社群，保持聯繫並完成工作。\n\n無論您身在何處都可保持聯繫：無論您身在何處，都可以透過 https://element.io/app 在所有裝置與網路取得完全同步的訊息記錄來保持聯繫。";
 // String for App Store
 "store_short_description" = "去中心化的安全通訊／VoIP 軟體";
-"settings_three_pids_management_information_part1" = "您可以在 ";
+"settings_three_pids_management_information_part1" = "在此管理你可以用作登入或回復帳戶的電郵地址或電話號碼。你也可控制誰可以用這些資料找到你。 ";
 "external_link_confirmation_message" = "此連結 %@ 將帶您到另一網頁：%@\n\n確定要前往嗎？";
 "external_link_confirmation_title" = "請確認此連結";
 "media_type_accessibility_sticker" = "貼圖";
@@ -2406,7 +2406,7 @@
 // Analytics
 "analytics_prompt_title" = "協助改善 %@";
 "call_no_stun_server_error_use_fallback_button" = "嘗試使用 %@";
-"call_no_stun_server_error_message_2" = "或是您也可以試著使用公開伺服器 %@，但可能不夠可靠，而且會跟該伺服器分享您的 IP 位址。您也可以在設定中管理這個";
+"call_no_stun_server_error_message_2" = "或是您也可以試著使用公開伺服器 %@，但可能不夠可靠，而且會跟該伺服器分享您的 IP 位址。您也可以在設定中管理此設定";
 "call_no_stun_server_error_message_1" = "請聯繫您家伺服器 %@ 的管理員建立一套 TURN 伺服器，使通話能更穩定運作。";
 "call_no_stun_server_error_title" = "由於伺服器設定錯誤，無法通話";
 "call_jitsi_unable_to_start" = "無法建立會議通話";
@@ -2868,3 +2868,20 @@
 
 "key_verification_self_verify_security_upgrade_alert_title" = "已更新程式";
 "settings_acceptable_use" = "可接受使用政策";
+"room_command_error_unknown_command" = "無效或是無法處理的指令";
+"room_command_discard_session_description" = "強制使現行在已加密聊天室的外部工作階段失效";
+"room_command_change_room_topic_description" = "設定聊天室主題";
+"room_command_reset_user_power_level_description" = "使用 ID 降級超級使用者";
+"room_command_set_user_power_level_description" = "定義超級權限使用者";
+"room_command_unban_user_description" = "使用 ID 解除已禁止使用者";
+"room_command_ban_user_description" = "使用 ID 來禁止使用者";
+"room_command_kick_user_description" = "使用 ID 移除使用者離開此聊天室";
+"room_command_invite_user_description" = "使用 ID 邀請成員加入此聊天室";
+"room_command_part_room_description" = "離開聊天室";
+"room_command_join_room_description" = "使用網址位置加入聊天室";
+"room_command_emote_description" = "顯示動作";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "變更您的顯示名稱";
+"notice_display_name_changed_to" = "%@ 將顯示名稱變更為 %@";
+"poll_timeline_loading" = "載入中 ...";

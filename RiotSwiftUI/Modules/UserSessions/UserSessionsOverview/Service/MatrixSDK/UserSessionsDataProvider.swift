@@ -57,8 +57,17 @@ class UserSessionsDataProvider: UserSessionsDataProviderProtocol {
         guard let deviceInfo = deviceInfo else {
             return .permanentlyUnverified
         }
-
-        guard session.crypto?.crossSigning.canCrossSign == true else {
+        
+        // When the app is launched offline the cross signing state is "notBootstrapped"
+        // In this edge case the verification state returned is `.unknown` since we cannot say more even for the current session.
+        guard
+            let crossSigning = session.crypto?.crossSigning,
+            crossSigning.state.rawValue > MXCrossSigningState.notBootstrapped.rawValue
+        else {
+            return .unknown
+        }
+        
+        guard crossSigning.canCrossSign else {
             return deviceInfo.deviceId == session.myDeviceId ? .unverified : .unknown
         }
         
