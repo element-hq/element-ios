@@ -2945,3 +2945,20 @@
 
 "key_verification_self_verify_security_upgrade_alert_title" = "Застосунок оновлено";
 "settings_acceptable_use" = "Політика прийнятного користування";
+"room_command_error_unknown_command" = "Недійсна і необроблена команда";
+"room_command_discard_session_description" = "Примусово відхиляє поточний вихідний сеанс групи в зашифрованій кімнаті";
+"room_command_change_room_topic_description" = "Встановлює тему кімнати";
+"room_command_reset_user_power_level_description" = "Скинути рівень доступу користувача із вказаним ID";
+"room_command_set_user_power_level_description" = "Визначити рівень повноважень користувача";
+"room_command_unban_user_description" = "Розблоковує користувача з указаним ID";
+"room_command_ban_user_description" = "Блокує користувача з указаним ID";
+"room_command_kick_user_description" = "Вилучає користувача з указаним ID з цієї кімнати";
+"room_command_invite_user_description" = "Запрошує користувача зі вказаним ID до кімнати";
+"room_command_part_room_description" = "Вийти з кімнати";
+"room_command_join_room_description" = "Приєднується до кімнати із вказаною адресою";
+"room_command_emote_description" = "Показує дію";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "Змінює ваш нік";
+"notice_display_name_changed_to" = "%@ змінили своє показуване ім'я на %@";
+"poll_timeline_loading" = "Завантаження...";
