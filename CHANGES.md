@@ -1,3 +1,27 @@
+## Changes in 1.10.13 (2023-06-13)
+
+✨ Features
+
+- Increase max. length of voice message recordings to 5m ([#7582](https://github.com/vector-im/element-ios/pull/7582))
+- Broadcast Upload Extension added to the app targets to allow Jitsi screen sharing feature. ([#7566](https://github.com/vector-im/element-ios/issues/7566))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.26.11](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.26.11)).
+- Prompt the user when the invited MatrixId is not recognized ([#7558](https://github.com/vector-im/element-ios/issues/7558))
+- MSC3987 implementation: the 'dont_notify' action for a push_rule is now deprecated and replaced by an empty action list. ([#7576](https://github.com/vector-im/element-ios/issues/7576))
+
+🐛 Bugfixes
+
+- Device manager: fix offline state for user's sessions overview. ([#7562](https://github.com/vector-im/element-ios/pull/7562))
+- Prevents user avatar from disappearing due to incorrect width. ([#7587](https://github.com/vector-im/element-ios/pull/7587))
+- App crashes when we make audio and video calls ([#7529](https://github.com/vector-im/element-ios/issues/7529))
+- Timeline: Room creation intro cell now correctly adjusts to light / dark theme changes. ([#7554](https://github.com/vector-im/element-ios/issues/7554))
+- Labs: Fix RTE sometimes inserting characters in wrong locations after multiple new lines ([#7570](https://github.com/vector-im/element-ios/issues/7570))
+- Labs: RTE: Fix a crash when creating a new direct chat ([#7577](https://github.com/vector-im/element-ios/issues/7577))
+- Fixed crashes when mentioning users without display names ([#7579](https://github.com/vector-im/element-ios/issues/7579))
+
+
 ## Changes in 1.10.12 (2023-05-16)
 
 ✨ Features
