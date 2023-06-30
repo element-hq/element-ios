@@ -2676,3 +2676,9 @@
 "room_command_change_room_topic_description" = "Sätter rummets ämne";
 "room_command_discard_session_description" = "Tvingar den aktuella utgående gruppsessionen i ett krypterat rum att kasseras";
 "room_command_error_unknown_command" = "Ogiltigt eller obehandlat kommando";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "App uppdaterad";
+"key_verification_self_verify_security_upgrade_alert_message" = "Säker meddelandehantering har förbättrats med den senaste uppdateringen. Vänligen verifiera din enhet igen.";
+"device_verification_self_verify_open_on_other_device_title" = "Öppna %@ på din andra enhet";
