@@ -2265,3 +2265,91 @@
 // Room Access Settings
 "room_access_settings_screen_nav_title" = "Доступ к комнате";
 "spaces_coming_soon_detail" = "Эта функция еще не реализована здесь, но она в разработке. На данный момент вы можете сделать это с помощью %@ на своем компьютере.";
+
+// Unverified sessions
+"key_verification_alert_title" = "У вас есть не подтвержденные сессии";
+"key_verification_scan_qr_code_title" = "Сканируйте QR-код";
+"home_context_menu_favourite" = "Любимые";
+"spaces_add_space_title" = "Создать пространство";
+"room_details_promote_room_title" = "Продвигать комнату";
+"room_suggestion_settings_screen_title" = "Сделать комнату предлагаемой в пространстве";
+"analytics_prompt_terms_link_new_user" = "здесь";
+"create_room_suggest_room" = "Предложения для пользователей пространства";
+"room_info_back_button_title" = "Информация о комнате";
+"home_context_menu_make_dm" = "Перейти к людям";
+"create_room_processing" = "Создание комнаты";
+"home_context_menu_unmute" = "Снять заглушку";
+
+// MARK: - Room invite
+
+"room_invite_to_space_option_title" = "К %@";
+"analytics_prompt_yes" = "Да, все классно";
+"create_room_section_footer_type_private" = "Только приглашенные люди могут искать и вступать.";
+"home_context_menu_make_room" = "Перейти к комнатам";
+"create_room_suggest_room_footer" = "Предлагаемые комнаты выдвинуты для участников как лучший выбор для вступления.";
+"home_context_menu_notifications" = "Уведомления";
+"analytics_prompt_terms_link_upgrade" = "здесь";
+"device_verification_self_verify_open_on_other_device_title" = "Откройте %@ на другом вашем устройстве";
+"create_room_section_footer_type_public" = "Только приглашенные люди могут искать и вступать, не только люди из пространства.";
+"home_context_menu_unfavourite" = "Удалить из любимых";
+"home_context_menu_normal_priority" = "Нормальный приоритет";
+"home_context_menu_mute" = "Заглушить";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Улучшение комнаты";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Улучшить";
+"key_backup_recover_from_private_key_progress" = "%@%% закончено";
+"room_access_settings_screen_upgrade_alert_title" = "Улучшить комнату";
+"share_extension_low_quality_video_message" = "Отправьте в %@ для лучшего качества или отправьте в пониженном качестве.";
+"settings_acceptable_use" = "Принимаемые политики пользования";
+"room_suggestion_settings_screen_message" = "Предлагаемые комнаты рекламируются среди участников пространства как подходящие для присоединения.";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Вы можете прочитать все наши условия %@.";
+"key_verification_alert_body" = "Перепроверьте надежность сохранности аккаунта.";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Синхронизация ваших разговоров";
+"home_context_menu_mark_as_unread" = "Пометить как непрочитанное";
+
+// MARK: Sign out warning
+
+"sign_out" = "Выйти";
+"room_command_unban_user_description" = "Разблокирует пользователя с указанным ID";
+"device_verification_self_verify_open_on_other_device_information" = "Вам нужно подтвердить эту сессию для того, чтобы прочитать защищенную историю сообщений\n\nОткройте Element на одном из ваших прочих устройств и действуйте по инструкции.";
+"room_command_change_room_topic_description" = "Указывает тему комнаты";
+"room_access_settings_screen_upgrade_required" = "Требуется улучшение";
+"key_verification_scan_qr_code_information_other_user" = "Наведите камеру на QR-код, отображенном на вашем устройстве для подтверждения ваших сессий";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "Предложить комнату";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Прочитать все наши условия %@. Они подходят?";
+"key_verification_scan_qr_code_information_other_session" = "Наведите камеру на QR-код, отображенном на другом вашем устройстве для подтверждения вашей сессии";
+"key_verification_scan_qr_code_information_other_device" = "Наведите камеру на QR-код, отображенном на другом вашем устройстве для подтверждения этой сессии";
+"create_room_type_restricted" = "Участники пространства";
+"home_context_menu_low_priority" = "Низкий приоритет";
+"share_invite_link_space_text" = "Хэй, вступай в это пространство на %@";
+"create_room_promotion_header" = "ПРОДВИЖЕНИЕ";
+"create_room_show_in_directory_footer" = "Это может помочь людям искать и вступать.";
+"space_invite_not_enough_permission" = "У вас нет разрешения для приглашения людей в это пространство";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "Изменяет отображаемое имя пользователя";
+"room_command_emote_description" = "Отображает действие";
+"room_command_join_room_description" = "Присоединяться к комнате с указанным адресом";
+"room_command_part_room_description" = "Покинуть комнату";
+"room_command_invite_user_description" = "Добавляет пользователя с указанным ID в текущую комнату";
+"room_command_kick_user_description" = "Удаляет пользователя с указанным ID из этой комнаты";
+"room_command_ban_user_description" = "Блокирует пользователя с указанным ID";
+"room_command_set_user_power_level_description" = "Назначает уровень силы пользователя";
+"room_command_reset_user_power_level_description" = "Разжалует пользователя с указанным ID";
+"room_command_discard_session_description" = "Принудительно отбрасывает текущий исходящий групповой сеанс в зашифрованной комнате";
+"room_command_error_unknown_command" = "Некорректная или необработанная команда";
+
+// Legacy to Rust security upgrade
+
+"key_verification_self_verify_security_upgrade_alert_title" = "Приложение обновлено";
+"key_verification_self_verify_security_upgrade_alert_message" = "Безопасное общение может быть улучшено с новым обновлением. Пожалуйста, проверьте ваше устройство.";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Нет доступа к существующей %@ сессии?";
+"key_verification_scan_qr_code_information_new_session" = "Наведите камеру на QR-код, отображенном на другом вашем устройстве для подтверждения вашей новой сессии";
+"create_room_section_footer_type_restricted" = "Все в пространстве могут искать и вступать.";
+"launch_loading_delay_warning" = "Это может занимать больше времени.\nСпасибо за терпение.";
