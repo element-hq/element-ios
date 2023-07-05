@@ -2709,3 +2709,8 @@
 "room_command_change_display_name_description" = "Muudab sinu kuvatavat nime";
 "notice_display_name_changed_to" = "%@ muutis oma kuvatavaks nimeks %@";
 "poll_timeline_loading" = "Laadin...";
+"room_creation_user_not_found_prompt_title" = "Kinnitus";
+"room_creation_user_not_found_prompt_invite_action" = "Ikkagi alusta vestlust";
+"room_creation_user_not_found_prompt_message" = "Sellele Matrix'i kasutajatunnuse profiili ei leidu. Kas sa ikkagi tahaksid temaga vestlust alustada?";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "Sellele Matrix'i kasutajatunnuse profiili ei leidu. Kas sa ikkagi tahaksid saata kutset kasutajale %@ jututuppa %@?";
+"room_participants_invite_anyway" = "Kutsu siiski";
