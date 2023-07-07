@@ -2771,3 +2771,8 @@
 "notice_display_name_changed_to" = "%@ hat den Anzeigenamen zu %@ geändert";
 "poll_timeline_loading" = "Lade …";
 "room_command_discard_session_description" = "Erzwingt das Verferfen der aktuell ausgehende Gruppensitzung in einem verschlüsseltem Raum";
+"room_creation_user_not_found_prompt_title" = "Bestätigung";
+"room_creation_user_not_found_prompt_message" = "Wir konnten kein Profil für diese Matrix-ID finden. Möchtest du dennoch eine Direktnachricht beginnen?";
+"room_creation_user_not_found_prompt_invite_action" = "Dennoch DM beginnen";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "Wir konnten kein Profil für diese Matrix-ID finden. Möchtest du wirklich %@ nach %@ einladen?";
+"room_participants_invite_anyway" = "Dennoch einladen";
