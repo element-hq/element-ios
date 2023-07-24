@@ -2682,3 +2682,6 @@
 "key_verification_self_verify_security_upgrade_alert_title" = "App uppdaterad";
 "key_verification_self_verify_security_upgrade_alert_message" = "Säker meddelandehantering har förbättrats med den senaste uppdateringen. Vänligen verifiera din enhet igen.";
 "device_verification_self_verify_open_on_other_device_title" = "Öppna %@ på din andra enhet";
+"device_verification_self_verify_wait_recover_secrets_additional_help" = "Kan du inte komma åt en befintlig %@-session?";
+"key_verification_scan_qr_code_title" = "Skanna QR-kod";
+"device_verification_self_verify_open_on_other_device_information" = "Du behöver verifiera den här sessionen för att kunna läsa din säkra meddelandehistorik.\n\nÖppna Element på en av dina andra enheter och följ instruktionerna.";
