@@ -2685,3 +2685,22 @@
 "device_verification_self_verify_wait_recover_secrets_additional_help" = "Kan du inte komma åt en befintlig %@-session?";
 "key_verification_scan_qr_code_title" = "Skanna QR-kod";
 "device_verification_self_verify_open_on_other_device_information" = "Du behöver verifiera den här sessionen för att kunna läsa din säkra meddelandehistorik.\n\nÖppna Element på en av dina andra enheter och följ instruktionerna.";
+"key_verification_scan_qr_code_information_other_user" = "Rikta kameran mot QR-koden som visas på deras enhet för att verifiera deras session";
+"room_waiting_other_participants_title" = "Väntar på att användare ska gå med i %@";
+"pill_message_from" = "Meddelande från %@";
+"pill_message_in" = "Meddelande i %@";
+"notice_display_name_changed_to" = "%@ bytte sitt visningsnamn till %@";
+
+// MARK: - Launch loading
+
+"launch_loading_generic" = "Synkar dina konversationer";
+"launch_loading_delay_warning" = "Detta kan ta lite längre tid.\nTack för ditt tålamod.";
+"key_verification_scan_qr_code_information_other_device" = "Rikta kameran mot QR-koden som visas på din andra enhet för att verifiera den här sessionen";
+"room_waiting_other_participants_message" = "När inbjudna användare har gått med i %@ kommer du att kunna chatta och rummet kommer att totalsträckskrypteras";
+"poll_timeline_loading" = "Laddar …";
+
+// Pills
+"pill_room_fallback_display_name" = "Utrymme/rum";
+"pill_message" = "Meddelande";
+"key_verification_scan_qr_code_information_new_session" = "Rikta kameran mot QR-koden som visas på din andra enhet för att verifiera din nya session";
+"key_verification_scan_qr_code_information_other_session" = "Rikta kameran mot QR-koden som visas på din andra enhet för att verifiera din session";
