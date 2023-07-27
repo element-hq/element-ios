@@ -361,13 +361,6 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 #pragma mark - Sync filter
 
 /**
- Call this method at an appropriate time to attempt dehydrating to a new backup device
- */
-- (void)attemptDeviceDehydrationWithKeyData:(NSData *)keyData
-                                    success:(void (^)(void))success
-                                    failure:(void (^)(NSError *error))failure;
-
-/**
  Handle unauthenticated errors from  the server triggering hard/soft logouts as appropriate.
  */
 - (void)handleUnauthenticatedWithError:(MXError *)error isSoftLogout:(BOOL)isSoftLogout isRefreshTokenAuth:(BOOL)isRefreshTokenAuth andCompletion:(void (^)(void))completion;

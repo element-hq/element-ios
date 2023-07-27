@@ -24,6 +24,8 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
     
     private let recoveryService: MXRecoveryService
     
+    private let dehydrationService: DehydrationService?
+    
     // MARK: Public
     
     let recoveryGoal: SecretsRecoveryGoal
@@ -39,8 +41,9 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
     
     // MARK: - Setup
     
-    init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal) {
+    init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal, dehydrationService: DehydrationService?) {
         self.recoveryService = recoveryService
+        self.dehydrationService = dehydrationService
         self.recoveryGoal = recoveryGoal
     }
 
@@ -83,6 +86,10 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
                 }
                 self.update(viewState: .loaded)
                 self.coordinatorDelegate?.secretsRecoveryWithKeyViewModelDidRecover(self)
+                
+                Task {
+                    await self.dehydrationService?.runDeviceDehydrationFlow(privateKeyData: privateKey)
+                }
             }, failure: { [weak self] error in
                 guard let self = self else {
                     return

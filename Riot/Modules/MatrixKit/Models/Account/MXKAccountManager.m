@@ -71,7 +71,6 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
     if (self)
     {
         _storeClass = [MXFileStore class];
-        _dehydrationService = [MXDehydrationService new];
         _savingAccountsEnabled = YES;
         
         // Migrate old account file to new format
