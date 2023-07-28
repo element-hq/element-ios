@@ -406,8 +406,8 @@
 "settings_ui_language" = "Sprache";
 // Events formatter
 "event_formatter_member_updates" = "%tu Änderungen der Mitgliedschaft";
-"contacts_user_directory_section" = "NUTZER VERZEICHNIS";
-"contacts_user_directory_offline_section" = "NUTZER VERZEICHNIS (offline)";
+"contacts_user_directory_section" = "NUTZERVERZEICHNIS";
+"contacts_user_directory_offline_section" = "NUTZERVERZEICHNIS (offline)";
 "auth_home_server_placeholder" = "URL (z.B. https://matrix.org)";
 "auth_identity_server_placeholder" = "URL (z. B. https://vector.im)";
 "room_ongoing_conference_call_close" = "Schließen";
