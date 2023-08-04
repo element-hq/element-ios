@@ -2962,3 +2962,8 @@
 "room_command_change_display_name_description" = "Змінює ваш нік";
 "notice_display_name_changed_to" = "%@ змінили своє показуване ім'я на %@";
 "poll_timeline_loading" = "Завантаження...";
+"room_creation_user_not_found_prompt_invite_action" = "Усе одно розпочати приватну бесіду";
+"room_participants_invite_anyway" = "Усе одно запросити";
+"room_creation_user_not_found_prompt_title" = "Підтвердження";
+"room_creation_user_not_found_prompt_message" = "Не вдалося знайти профілі для цього Matrix ID. Усе одно хочете розпочати приватну бесіду?";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "Не вдалося знайти профілі для цього Matrix ID. Ви впевнені, що хочете запросити %@ до %@?";
