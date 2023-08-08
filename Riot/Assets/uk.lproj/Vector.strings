@@ -184,7 +184,7 @@
 "settings_remove_prompt_title" = "Підтвердження";
 "settings_surname" = "Прізвище";
 "settings_first_name" = "Ім’я";
-"settings_display_name" = "Показуване ім’я";
+"settings_display_name" = "Псевдонім";
 "settings_profile_picture" = "Зображення профілю";
 "settings_sign_out_e2e_warn" = "Ви втратите всі ваші ключі наскрізного шифрування. Це означає що ви більше не будете мати змогу читати старі повідомлення у зашифрованих кімнатах на цьому пристрої.";
 "settings_sign_out_confirmation" = "Ви впевнені?";
@@ -433,7 +433,7 @@
 "room_widget_permission_theme_permission" = "Ваша тема";
 "room_widget_permission_user_id_permission" = "Ваш ID користувача";
 "room_widget_permission_avatar_url_permission" = "URL-адреса вашого аватара";
-"room_widget_permission_display_name_permission" = "Ваше показуване імʼя";
+"room_widget_permission_display_name_permission" = "Ваш псевдонім";
 "room_widget_permission_creator_info_title" = "Цей віджет додано:";
 
 // Room widget permissions
@@ -1129,7 +1129,7 @@
 "settings_show_url_previews" = "Попередній перегляд вебсайтів";
 "settings_ui_theme_picker_message_match_system_theme" = "«Авто» застосовує тему вашого пристрою";
 "settings_ui_theme_picker_message_invert_colours" = "«Авто» застосовує налаштування вашого пристрою «Інвертувати кольори»";
-"settings_messages_containing_display_name" = "Моє показуване імʼя";
+"settings_messages_containing_display_name" = "Мій псевдонім";
 "settings_discovery_three_pid_details_title_phone_number" = "Керувати номером телефону";
 "settings_discovery_three_pid_details_title_email" = "Керувати е-поштою";
 "settings_discovery_error_message" = "Сталася помилка. Повторіть спробу.";
@@ -1866,7 +1866,7 @@
 "login_prompt_email_token" = "Введіть ключ підтвердження електронної пошти:";
 "login_email_placeholder" = "Адреса е-пошти";
 "login_email_info" = "Вкажіть адресу електронної пошти, щоб інші користувачі могли легше знаходити вас на Matrix і надання вам можливості відновити пароль у майбутньому.";
-"login_display_name_placeholder" = "Видиме ім'я (наприклад Bob Obson)";
+"login_display_name_placeholder" = "Псевдонім (наприклад Bob Obson)";
 "login_optional_field" = "необов'язково";
 "login_password_placeholder" = "Пароль";
 "login_user_id_placeholder" = "Ідентифікатор Matrix (наприклад @bob:matrix.org або bob)";
@@ -2113,10 +2113,10 @@
 "notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ робить майбутню історію повідомлень видимою всім від часу їхнього приєднання.";
 "notice_room_history_visible_to_members_from_joined_point" = "%@ робить майбутню історію кімнати видимою всім учасникам кімнати від часу їхнього приєднання.";
 "notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@ робить майбутню історію повідомлень видимою всім від часу їхнього запрошення.";
-"notice_room_history_visible_to_members_from_invited_point" = "%@ робить майбутню історію кімнати видимою усім учасникам кімнати від часу їхнього запрошення.";
-"notice_room_history_visible_to_members_for_dm" = "%@ робить майбутню історію повідомлень видимою усім учасникам кімнати.";
-"notice_room_history_visible_to_members" = "%@ робить майбутню історію кімнати видимою усім учасникам кімнати.";
-"notice_room_history_visible_to_anyone" = "%@ робить майбутню історію кімнати видимою усім.";
+"notice_room_history_visible_to_members_from_invited_point" = "%@ робить майбутню історію кімнати видимою всім учасникам кімнати від часу їхнього запрошення.";
+"notice_room_history_visible_to_members_for_dm" = "%@ робить майбутню історію повідомлень видимою всім учасникам кімнати.";
+"notice_room_history_visible_to_members" = "%@ робить майбутню історію кімнати видимою всім учасникам кімнати.";
+"notice_room_history_visible_to_anyone" = "%@ робить майбутню історію кімнати видимою всім.";
 "notice_redaction" = "%@ редагує подію (id: %@)";
 "notice_feedback" = "Подія відгуку (id: %@): %@";
 "notice_room_related_groups" = "Групи пов'язані з цією кімнатою: %@";
@@ -2136,9 +2136,9 @@
 "notice_room_name_changed_for_dm" = "%@ змінює назву на %@.";
 "notice_room_name_changed" = "%@ змінює назву кімнати на %@.";
 "notice_topic_changed" = "%@ змінює тему на «%@».";
-"notice_display_name_removed" = "%@ вилучає своє показуване ім'я";
-"notice_display_name_changed_from" = "%@ змінює своє показуване ім'я з %@ на %@";
-"notice_display_name_set" = "%@ встановлює своїм показуваним іменем %@";
+"notice_display_name_removed" = "%@ вилучає свій псевдонім";
+"notice_display_name_changed_from" = "%@ змінює свій псевдонім з %@ на %@";
+"notice_display_name_set" = "%@ встановлює своїм псевдонімом %@";
 "notice_room_withdraw" = "%@ анульовує запрошення для %@";
 "notice_room_kick" = "%@ вилучає %@";
 "notice_room_reject" = "%@ відхиляє запрошення";
@@ -2194,7 +2194,7 @@
 "notification_settings_per_room_notifications" = "Сповіщення від кожної кімнати";
 "notification_settings_per_sender_notifications" = "Сповіщення про кожного відправника";
 "notification_settings_contain_my_user_name" = "Сповіщати звуком про повідомлення, що містять моє ім'я користиувача";
-"notification_settings_contain_my_display_name" = "Сповіщати звуком про повідомлення, що містять моє показуване ім'я";
+"notification_settings_contain_my_display_name" = "Сповіщати звуком про повідомлення з моїм псевдонімом";
 "notification_settings_just_sent_to_me" = "Сповіщати звуком про надіслані лише мені повідомлення";
 "notification_settings_invite_to_a_new_room" = "Сповіщати про запрошення до нових кімнат";
 "notification_settings_people_join_leave_rooms" = "Сповіщати, коли люди приєднуються чи виходять з кімнат";
@@ -2209,7 +2209,7 @@
 "account_error_email_wrong_title" = "Неправильна адреса е-пошти";
 "account_error_matrix_session_is_not_opened" = "Сеанс Matrix не відкрито";
 "account_error_picture_change_failed" = "Не вдалося змінити зображення";
-"account_error_display_name_change_failed" = "Не вдалося змінити показуване ім'я";
+"account_error_display_name_change_failed" = "Не вдалося змінити псевдонім";
 "account_msisdn_validation_error" = "Не вдалося перевірити номер телефону.";
 "account_email_validation_title" = "Очікування перевірки";
 "account_msisdn_validation_title" = "Очікування перевірки";
@@ -2241,12 +2241,12 @@
 "e2e_passphrase_enter" = "Введіть парольну фразу";
 "e2e_passphrase_empty" = "Парольна фраза не повинна бути порожньою";
 "e2e_passphrase_confirm" = "Підтвердити парольну фразу";
-"notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "Ви зробили майбутні повідомлення кімнати видимими будь-кому від часу їхнього приєднання.";
-"notice_room_history_visible_to_members_from_joined_point_by_you" = "Ви зробили майбутню історію кімнати видимою усім учасникам кімнати від часу їхнього приєднання.";
+"notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "Ви зробили майбутні повідомлення кімнати видимими всім від часу їхнього приєднання.";
+"notice_room_history_visible_to_members_from_joined_point_by_you" = "Ви зробили майбутню історію кімнати видимою всім учасникам кімнати від часу їхнього приєднання.";
 "notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "Ви зробили майбутні повідомлення кімнати видимими будь-кому від часу запрошення їх.";
-"notice_room_history_visible_to_members_from_invited_point_by_you" = "Ви зробили майбутню історію кімнати видимою усім учасникам кімнати від часу запрошення їх.";
-"notice_room_history_visible_to_members_by_you_for_dm" = "Ви зробили майбутні повідомлення кімнати видимими усім учасникам кімнати.";
-"notice_room_history_visible_to_members_by_you" = "Ви зробили майбутню історію кімнати видимою усім учасникам кімнати.";
+"notice_room_history_visible_to_members_from_invited_point_by_you" = "Ви зробили майбутню історію кімнати видимою всім учасникам кімнати від часу запрошення їх.";
+"notice_room_history_visible_to_members_by_you_for_dm" = "Ви зробили майбутні повідомлення кімнати видимими всім учасникам кімнати.";
+"notice_room_history_visible_to_members_by_you" = "Ви зробили майбутню історію кімнати видимою всім учасникам кімнати.";
 "notice_room_history_visible_to_anyone_by_you" = "Ви зробили майбутню історію кімнати видимою будь-кому.";
 "notice_room_created_by_you" = "Ви створили й сконфігурували кімнату.";
 "notice_profile_change_redacted_by_you" = "Ви оновили свій профіль %@";
@@ -2261,9 +2261,9 @@
 "notice_room_name_changed_by_you_for_dm" = "Ви змінили назву на %@.";
 "notice_room_name_changed_by_you" = "Ви змінили назву кімнати на %@.";
 "notice_topic_changed_by_you" = "Ви змінили тему на «%@».";
-"notice_display_name_removed_by_you" = "Ви вилучили показуване ім'я";
-"notice_display_name_changed_from_by_you" = "Ви змінили показуване ім'я з %@ на %@";
-"notice_display_name_set_by_you" = "Ви вказали показуваним іменем %@";
+"notice_display_name_removed_by_you" = "Ви вилучили псевдонім";
+"notice_display_name_changed_from_by_you" = "Ви змінили псевдонім з %@ на %@";
+"notice_display_name_set_by_you" = "Ви налаштували псевдонімом %@";
 "notice_conference_call_finished" = "Голосовий груповий виклик завершено";
 "notice_conference_call_started" = "Груповий голосовий виклик розпочато";
 "notice_conference_call_request" = "%@ запрошує до групового голосового виклику";
@@ -2467,11 +2467,11 @@
 "onboarding_avatar_accessibility_label" = "Зображення профілю";
 "onboarding_avatar_message" = "Час додати обличчя до імені";
 "onboarding_avatar_title" = "Додати зображення профілю";
-"onboarding_display_name_max_length" = "Ваше показуване ім'я повинно складатися з менш ніж 256 символів";
+"onboarding_display_name_max_length" = "Ваш псевдонім повинен складатися з менш ніж 256 символів";
 "onboarding_display_name_hint" = "Ви можете змінити його пізніше";
-"onboarding_display_name_placeholder" = "Показуване ім'я";
+"onboarding_display_name_placeholder" = "Псевдонім";
 "onboarding_display_name_message" = "Його буде показано у надісланих повідомленнях.";
-"onboarding_display_name_title" = "Виберіть показуване ім'я";
+"onboarding_display_name_title" = "Оберіть псевдонім";
 "onboarding_personalization_skip" = "Пропустити цей крок";
 "onboarding_personalization_save" = "Зберегти й продовжити";
 "onboarding_congratulations_home_button" = "На головну";
@@ -2960,7 +2960,7 @@
 
 // Room commands descriptions
 "room_command_change_display_name_description" = "Змінює ваш нік";
-"notice_display_name_changed_to" = "%@ змінили своє показуване ім'я на %@";
+"notice_display_name_changed_to" = "%@ змінили свій псевдонім на %@";
 "poll_timeline_loading" = "Завантаження...";
 "room_creation_user_not_found_prompt_invite_action" = "Усе одно розпочати приватну бесіду";
 "room_participants_invite_anyway" = "Усе одно запросити";
