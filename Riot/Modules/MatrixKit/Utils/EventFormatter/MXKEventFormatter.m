@@ -830,15 +830,10 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
         }
         case MXEventTypeRoomCreate:
         {
-            NSString *creatorId;
-            MXJSONModelSetString(creatorId, event.content[@"creator"]);
-            
-            if (!creatorId)
-            {
-                // Room version 11 removes `creator` in favour of `sender`.
-                // https://github.com/matrix-org/matrix-spec-proposals/pull/2175
-                creatorId = event.sender;
-            }
+            // Room version 11 removes `creator` in favour of `sender`.
+            // https://github.com/matrix-org/matrix-spec-proposals/pull/2175
+            // Just use the sender as it is possible to create a v11 room and spoof the `creator`.
+            NSString *creatorId = event.sender;
             
             if ([creatorId isEqualToString:mxSession.myUserId])
             {
