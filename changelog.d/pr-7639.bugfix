@@ -1,0 +1,1 @@
+Fix bug in SSO URL generation that was non-compliant with the spec.
