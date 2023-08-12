@@ -104,8 +104,21 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
         return introViewController
     }
     
+    private var dehydrationService: DehydrationService? {
+        if self.session.vc_homeserverConfiguration().encryption.deviceDehydrationEnabled {
+            return self.session.crypto.dehydrationService
+        }
+        
+        return nil
+    }
+    
     private func showSetupKey(passphraseOnly: Bool, passphrase: String? = nil) {
-        let coordinator = SecretsSetupRecoveryKeyCoordinator(recoveryService: self.recoveryService, passphrase: passphrase, passphraseOnly: passphraseOnly, allowOverwrite: allowOverwrite, cancellable: self.cancellable)
+        let coordinator = SecretsSetupRecoveryKeyCoordinator(recoveryService: self.recoveryService,
+                                                             passphrase: passphrase,
+                                                             passphraseOnly: passphraseOnly,
+                                                             allowOverwrite: allowOverwrite,
+                                                             cancellable: self.cancellable,
+                                                             dehydrationService: dehydrationService)
         coordinator.delegate = self
         coordinator.start()
         

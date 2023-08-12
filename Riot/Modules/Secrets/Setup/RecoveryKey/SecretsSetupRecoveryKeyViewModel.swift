@@ -28,6 +28,7 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
     private let passphrase: String?
     private let passphraseOnly: Bool
     private let allowOverwrite: Bool
+    private let dehydrationService: DehydrationService?
     
     // MARK: Public
 
@@ -36,11 +37,12 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
     
     // MARK: - Setup
     
-    init(recoveryService: MXRecoveryService, passphrase: String?, passphraseOnly: Bool, allowOverwrite: Bool = false) {
+    init(recoveryService: MXRecoveryService, passphrase: String?, passphraseOnly: Bool, allowOverwrite: Bool = false, dehydrationService: DehydrationService?) {
         self.recoveryService = recoveryService
         self.passphrase = passphrase
         self.passphraseOnly = passphraseOnly
         self.allowOverwrite = allowOverwrite
+        self.dehydrationService = dehydrationService
     }
     
     // MARK: - Public
@@ -76,6 +78,10 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
                 
         self.recoveryService.createRecovery(forSecrets: nil, withPassphrase: self.passphrase, createServicesBackups: true, success: { secretStorageKeyCreationInfo in
             self.update(viewState: .recoveryCreated(secretStorageKeyCreationInfo.recoveryKey))
+            
+            Task {
+                await self.dehydrationService?.runDeviceDehydrationFlow(privateKeyData: secretStorageKeyCreationInfo.privateKey)
+            }
         }, failure: { error in
             self.update(viewState: .error(error))
         })

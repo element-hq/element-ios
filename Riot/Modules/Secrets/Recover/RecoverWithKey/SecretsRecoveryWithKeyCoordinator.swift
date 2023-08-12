@@ -34,9 +34,9 @@ final class SecretsRecoveryWithKeyCoordinator: SecretsRecoveryWithKeyCoordinator
     
     // MARK: - Setup
     
-    init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal, cancellable: Bool) {
+    init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal, cancellable: Bool, dehydrationService: DehydrationService?) {
         
-        let secretsRecoveryWithKeyViewModel = SecretsRecoveryWithKeyViewModel(recoveryService: recoveryService, recoveryGoal: recoveryGoal)
+        let secretsRecoveryWithKeyViewModel = SecretsRecoveryWithKeyViewModel(recoveryService: recoveryService, recoveryGoal: recoveryGoal, dehydrationService: dehydrationService)
         let secretsRecoveryWithKeyViewController = SecretsRecoveryWithKeyViewController.instantiate(with: secretsRecoveryWithKeyViewModel, cancellable: cancellable)
         self.secretsRecoveryWithKeyViewController = secretsRecoveryWithKeyViewController
         self.secretsRecoveryWithKeyViewModel = secretsRecoveryWithKeyViewModel
