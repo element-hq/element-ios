@@ -50,7 +50,7 @@ final class SSOAuthenticationService: NSObject {
         
         var ssoRedirectPath = SSOURLConstants.Paths.redirect
         
-        if let identityProvider = identityProvider {
+        if let identityProvider = identityProvider, !identityProvider.isEmpty {
             ssoRedirectPath.append("/\(identityProvider)")
         }
         

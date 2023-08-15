@@ -50,11 +50,14 @@ final class HomeserverConfigurationBuilder: NSObject {
         } else {
             secureBackupSetupMethods = VectorWellKnownBackupSetupMethod.allCases
         }
+        
+        let deviceDehydrationEnabled = wellKnown?.jsonDictionary()["org.matrix.msc3814"] as? Bool == true
 
         let encryptionConfiguration = HomeserverEncryptionConfiguration(isE2EEByDefaultEnabled: isE2EEByDefaultEnabled,
                                                                         isSecureBackupRequired: isSecureBackupRequired,
                                                                         secureBackupSetupMethods: secureBackupSetupMethods,
-                                                                        outboundKeysPreSharingMode: outboundKeysPreSharingMode)
+                                                                        outboundKeysPreSharingMode: outboundKeysPreSharingMode,
+                                                                        deviceDehydrationEnabled: deviceDehydrationEnabled)
         
         // Jitsi configuration
         let jitsiPreferredDomain: String?

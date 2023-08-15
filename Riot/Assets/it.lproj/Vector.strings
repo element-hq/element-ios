@@ -274,7 +274,7 @@
 "room_title_members" = "%@ membri";
 "room_title_one_member" = "1 membro";
 // Room Preview
-"room_preview_invitation_format" = "Sei stato invitato ad entrare in questa stanza da %@";
+"room_preview_invitation_format" = "Sei stato/a invitato/a ad entrare in questa stanza da %@";
 "room_preview_subtitle" = "Questa è l'anteprima della stanza. Le interazioni sono disabilitate.";
 "room_preview_unlinked_email_warning" = "Questo invito è stato spedito a %@, che non è associato a questo account. Puoi aggiungere questa email al tuo account o provare ad accedere con un account differente.";
 "room_preview_try_join_an_unknown_room" = "Stai provando ad accedere a %@. Desideri entrare per partecipare alla discussione?";
@@ -457,7 +457,7 @@
 "group_home_multi_members_format" = "%tu membri";
 "group_home_one_room_format" = "1 stanza";
 "group_home_multi_rooms_format" = "%tu stanze";
-"group_invitation_format" = "%@ ti ha invitato ad unirti a questa comunità";
+"group_invitation_format" = "%@ ti ha invitato/a ad unirti a questa comunità";
 // Group participants
 "group_participants_add_participant" = "Aggiungi membri";
 "group_participants_leave_prompt_title" = "Lascia la stanza";
@@ -649,7 +649,7 @@
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Attendo";
 "close" = "Chiudi";
 "auth_forgot_password_error_no_configured_identity_server" = "Non è stato configurato alcun server d'identità: aggiungine uno per ripristinare la password dell'account Matrix.";
-"auth_softlogout_signed_out" = "Sei uscito";
+"auth_softlogout_signed_out" = "Sei disconnesso/a";
 "auth_softlogout_sign_in" = "Accedi";
 "auth_softlogout_reason" = "L'amministratore dell'Home Server (%1$@) ti ha disconnesso dal tuo account %2$@ (%3$@).";
 "auth_softlogout_recover_encryption_keys" = "Accedi per recuperare le chiavi crittografiche archiviate su questo dispositivo. Le chiavi ti servono per poter leggere i tuoi messaggi cifrati su altri dispositivi.";
@@ -1164,7 +1164,7 @@
 "biometrics_cant_unlocked_alert_message_login" = "Riaccedi";
 "biometrics_cant_unlocked_alert_message_retry" = "Riprova";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Controllo di altre possibilità di verifica...";
-"joined" = "Entrato";
+"joined" = "Entrato/a";
 "switch" = "Cambia";
 "more" = "Altro";
 "pin_protection_choose_pin_welcome_after_login" = "Bentornato/a.";
@@ -1832,7 +1832,7 @@
 "room_error_cannot_load_timeline" = "Caricamento storico dei messaggi fallito";
 "room_error_timeline_event_not_found_title" = "Caricamento della posizione nello storico fallito";
 "room_error_timeline_event_not_found" = "L'applicazione ha cercato di caricare un punto specifico dello storico dei messaggi in questo canale, ma non è riuscita a trovarlo";
-"room_left" = "Sei uscito dalla stanza";
+"room_left" = "Sei uscito/a dalla stanza";
 "room_no_power_to_create_conference_call" = "Hai bisogno del permesso per invitare a iniziare una conferenza in questo canale";
 "room_no_conference_call_in_encrypted_rooms" = "Le chiamate in conferenza non sono supportate nei canali criptati";
 // Reply to message
@@ -1906,7 +1906,7 @@
 // Language picker
 "language_picker_title" = "Scegli una lingua";
 "language_picker_default_language" = "Predefinito (%@)";
-"notice_room_invite" = "%@ invitato %@";
+"notice_room_invite" = "%@ ha invitato %@";
 "notice_room_third_party_invite" = "%@ ha invitato %@ a unirsi al canale";
 "notice_room_third_party_registered_invite" = "%@ ha accettato l'invito per %@";
 "notice_room_third_party_revoked_invite" = "%@ ha ritirato l'invito per %@ a unirsi al canale";
@@ -1944,7 +1944,7 @@
 "login" = "Entra";
 "create_account" = "Crea utente";
 "membership_invite" = "Invitati";
-"membership_leave" = "Uscito";
+"membership_leave" = "Uscito/a";
 "membership_ban" = "Espulso";
 "num_members_one" = "%@ utente";
 "num_members_other" = "%@ utenti";
@@ -1979,7 +1979,7 @@
 "notification_settings_contain_my_user_name" = "Notifica con un suono i messaggi che contengono il mio nome utente";
 "notification_settings_contain_my_display_name" = "Notifica con un suono i messaggi che contengono il mio nome completo";
 "notification_settings_just_sent_to_me" = "Notifica con un suono i messaggi inviati solo a me";
-"notification_settings_invite_to_a_new_room" = "Notifica quando sono invitato in un nuovo canale";
+"notification_settings_invite_to_a_new_room" = "Avvisami quando sono invitato/a in una nuova stanza";
 "notification_settings_people_join_leave_rooms" = "Notifica quando gli utenti entrano o escono dai canali";
 "notification_settings_receive_a_call" = "Notifica quando ricevo una chiamata";
 "notification_settings_suppress_from_bots" = "Sopprimi le notifiche dai bot";
@@ -2009,12 +2009,12 @@
 "notice_encryption_enabled_unknown_algorithm" = "%1$@ ha attivato la crittografia end-to-end (algoritmo %2$@ non riconosciuto).";
 // Notice Events with "You"
 "notice_room_invite_by_you" = "Hai invitato %@";
-"notice_room_invite_you" = "%@ ti ha invitato";
+"notice_room_invite_you" = "%@ ti ha invitato/a";
 "notice_room_third_party_invite_by_you" = "Hai mandato un invito a %@ a unirsi alla stanza";
 "notice_room_third_party_registered_invite_by_you" = "Hai accettato l'invito per %@";
 "notice_room_third_party_revoked_invite_by_you" = "Hai revocato l'invito per %@ a unirsi alla stanza";
-"notice_room_join_by_you" = "Sei entrato";
-"notice_room_leave_by_you" = "Sei uscito";
+"notice_room_join_by_you" = "Sei entrato/a";
+"notice_room_leave_by_you" = "Sei uscito/a";
 "notice_room_reject_by_you" = "Hai rifiutato l'invito";
 "notice_room_kick_by_you" = "Hai rimosso %@";
 "notice_room_unban_by_you" = "Hai riammesso %@";
@@ -2049,7 +2049,7 @@
 "notice_room_join_rule_public" = "%@ ha reso la stanza pubblica.";
 "notice_room_join_rule_public_by_you" = "Hai reso la stanza pubblica.";
 "notice_room_name_removed_for_dm" = "%@ ha rimosso il nome";
-"notice_room_created_for_dm" = "%@ è entrato.";
+"notice_room_created_for_dm" = "%@ è entrato/a.";
 "notice_room_join_rule_invite_for_dm" = "%@ l'ha resa solo su invito.";
 "notice_room_join_rule_invite_by_you_for_dm" = "L'hai resa solo su invito.";
 "notice_room_join_rule_public_for_dm" = "%@ l'ha resa pubblica.";
@@ -2059,7 +2059,7 @@
 "notice_room_history_visible_to_members_for_dm" = "%@ ha reso visibili i messaggi futuri a tutti i membri della stanza.";
 "notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@ ha reso visibili i messaggi futuri a chiunque, dal momento dell'invito.";
 "notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ ha reso visibili i messaggi futuri a chiunque, dal momento dell'entrata.";
-"room_left_for_dm" = "Sei uscito";
+"room_left_for_dm" = "Sei uscito/a";
 "notice_room_third_party_invite_for_dm" = "%@ ha invitato %@";
 "notice_room_third_party_revoked_invite_for_dm" = "%@ ha revocato l'invito per %@";
 "notice_room_name_changed_for_dm" = "%@ ha cambiato il nome in %@.";
@@ -2067,7 +2067,7 @@
 "notice_room_third_party_revoked_invite_by_you_for_dm" = "Hai revocato l'invito per %@";
 "notice_room_name_changed_by_you_for_dm" = "Hai cambiato il nome in %@.";
 "notice_room_name_removed_by_you_for_dm" = "Hai rimosso il nome";
-"notice_room_created_by_you_for_dm" = "Sei entrato.";
+"notice_room_created_by_you_for_dm" = "Sei entrato/a.";
 "notice_room_history_visible_to_members_by_you_for_dm" = "Hai reso visibili i messaggi futuri a tutti i membri della stanza.";
 "notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "Hai reso visibili i messaggi futuri a chiunque, dal momento dell'invito.";
 "notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "Hai reso visibili i messaggi futuri a chiunque, dal momento dell'entrata.";
@@ -2096,7 +2096,7 @@
 "attachment_small_with_resolution" = "Piccolo %@ (~%@)";
 "attachment_size_prompt_message" = "Puoi disattivarlo nelle impostazioni.";
 "attachment_size_prompt_title" = "Conferma dimensione da inviare";
-"room_displayname_all_other_members_left" = "%@ (Uscito)";
+"room_displayname_all_other_members_left" = "%@ (Uscito/a)";
 "attachment_unsupported_preview_message" = "Questo tipo di file non è supportato.";
 "attachment_unsupported_preview_title" = "Anteprima non disponibile";
 "message_reply_to_sender_sent_their_location" = "ha condiviso la sua posizione.";
@@ -2273,7 +2273,7 @@
 "location_sharing_live_list_item_last_update_invalid" = "Ultimo aggiornamento sconosciuto";
 "location_sharing_live_list_item_last_update" = "Aggiornato %@ fa";
 "location_sharing_live_list_item_sharing_expired" = "Condivisione scaduta";
-"location_sharing_live_list_item_time_left" = "%@ è uscito";
+"location_sharing_live_list_item_time_left" = "%@ è uscito/a";
 "location_sharing_live_viewer_title" = "Posizione";
 "location_sharing_live_map_callout_title" = "Condividi posizione";
 "bug_report_logs_description" = "Per diagnosticare i problemi, i registri di questo client verranno inviati con questo rapporto di errore. Se preferisci inviare solo il testo soprastante, deseleziona:";
@@ -2737,3 +2737,8 @@
 "room_command_change_display_name_description" = "Cambia il tuo nome visualizzato";
 "notice_display_name_changed_to" = "%@ ha cambiato il suo nome visualizzato in %@";
 "poll_timeline_loading" = "Caricamento...";
+"room_creation_user_not_found_prompt_title" = "Conferma";
+"room_creation_user_not_found_prompt_invite_action" = "Inizia il messaggio lo stesso";
+"room_participants_invite_anyway" = "Invita lo stesso";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "Impossibile trovare profili con questo ID Matrix. Vuoi davvero invitare %@ in %@?";
+"room_creation_user_not_found_prompt_message" = "Impossibile trovare profili con questo ID Matrix. Vuoi comunque iniziare un messaggio diretto?";

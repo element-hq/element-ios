@@ -34,8 +34,8 @@ final class SecretsRecoveryWithPassphraseCoordinator: SecretsRecoveryWithPassphr
     
     // MARK: - Setup
     
-    init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal, cancellable: Bool) {
-        let secretsRecoveryWithPassphraseViewModel = SecretsRecoveryWithPassphraseViewModel(recoveryService: recoveryService, recoveryGoal: recoveryGoal)
+    init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal, cancellable: Bool, dehydrationService: DehydrationService?) {
+        let secretsRecoveryWithPassphraseViewModel = SecretsRecoveryWithPassphraseViewModel(recoveryService: recoveryService, recoveryGoal: recoveryGoal, dehydrationService: dehydrationService)
         let secretsRecoveryWithPassphraseViewController = SecretsRecoveryWithPassphraseViewController.instantiate(with: secretsRecoveryWithPassphraseViewModel, cancellable: cancellable)
         self.secretsRecoveryWithPassphraseViewController = secretsRecoveryWithPassphraseViewController
         self.secretsRecoveryWithPassphraseViewModel = secretsRecoveryWithPassphraseViewModel

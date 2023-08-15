@@ -29,8 +29,6 @@ options:
 include:
   - path: Riot/target.yml
   - path: RiotTests/target.yml
-  - path: RiotShareExtension/target.yml
-  - path: SiriIntents/target.yml
   - path: RiotNSE/target.yml
   - path: BroadcastUploadExtension/target.yml
   - path: DesignKit/target.yml
@@ -39,6 +37,10 @@ include:
   - path: RiotSwiftUI/targetUITests.yml
   - path: CommonKit/target.yml
   - path: CommonKit/targetUnitTests.yml
+  # Disabled due to crypto corruption issues.
+  # https://github.com/vector-im/element-ios/issues/7618
+  # - path: RiotShareExtension/target.yml
+  # - path: SiriIntents/target.yml
 
 packages:
   AnalyticsEvents:

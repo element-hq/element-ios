@@ -85,14 +85,28 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     
     // MARK: - Private
     
+    private var dehydrationService: DehydrationService? {
+        if self.session.vc_homeserverConfiguration().encryption.deviceDehydrationEnabled {
+            return self.session.crypto.dehydrationService
+        }
+        
+        return nil
+    }
+    
     private func createRecoverFromKeyCoordinator() -> SecretsRecoveryWithKeyCoordinator {
-        let coordinator = SecretsRecoveryWithKeyCoordinator(recoveryService: self.session.crypto.recoveryService, recoveryGoal: self.recoveryGoal, cancellable: self.cancellable)
+        let coordinator = SecretsRecoveryWithKeyCoordinator(recoveryService: self.session.crypto.recoveryService,
+                                                            recoveryGoal: self.recoveryGoal,
+                                                            cancellable: self.cancellable,
+                                                            dehydrationService: dehydrationService)
         coordinator.delegate = self
         return coordinator
     }
     
     private func createRecoverFromPassphraseCoordinator() -> SecretsRecoveryWithPassphraseCoordinator {
-        let coordinator = SecretsRecoveryWithPassphraseCoordinator(recoveryService: self.session.crypto.recoveryService, recoveryGoal: self.recoveryGoal, cancellable: self.cancellable)
+        let coordinator = SecretsRecoveryWithPassphraseCoordinator(recoveryService: self.session.crypto.recoveryService,
+                                                                   recoveryGoal: self.recoveryGoal,
+                                                                   cancellable: self.cancellable,
+                                                                   dehydrationService: dehydrationService)
         coordinator.delegate = self
         return coordinator
     }
