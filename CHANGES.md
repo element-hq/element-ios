@@ -1,3 +1,16 @@
+## Changes in 1.11.0 (2023-08-15)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.27.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.27.0)).
+- Disable Siri, Share and Reply (from NSE) Extensions. ([#7618](https://github.com/vector-im/element-ios/issues/7618))
+
+🐛 Bugfixes
+
+- Fix bug in SSO URL generation that was non-compliant with the spec. ([#7639](https://github.com/vector-im/element-ios/pull/7639))
+- Fix a crash when opening v11 rooms. ([#7633](https://github.com/vector-im/element-ios/issues/7633))
+
+
 ## Changes in 1.10.14 (2023-06-21)
 
 🙌 Improvements
