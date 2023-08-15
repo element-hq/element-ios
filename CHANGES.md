@@ -1,5 +1,9 @@
 ## Changes in 1.11.0 (2023-08-15)
 
+✨ Features
+
+- Integrate Device Dehydration v2 through the Crypto SDK ([#7630](https://github.com/vector-im/element-ios/pull/7630))
+
 🙌 Improvements
 
 - Upgrade MatrixSDK version ([v0.27.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.27.0)).
