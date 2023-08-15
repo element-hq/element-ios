@@ -44,7 +44,7 @@
 #import "ContactDetailsViewController.h"
 #import "RoomInputToolbarView.h"
 #import "NSArray+Element.h"
-#import "ShareItemSender.h"
+#import "ShareItemSenderProtocol.h"
 #import "Contact.h"
 #import "RoomTimelineCellProvider.h"
 #import "PlainRoomTimelineCellProvider.h"

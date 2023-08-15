@@ -799,7 +799,9 @@ class NotificationService: UNNotificationServiceExtension {
             return Constants.toBeRemovedNotificationCategoryIdentifier
         }
         
-        return "QUICK_REPLY"
+        // Don't return QUICK_REPLY here as there is an issue
+        // with crypto corruption when sending from extensions.
+        return nil
     }
     
     /// Attempts to send trigger a VoIP push for the given event

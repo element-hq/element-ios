@@ -830,38 +830,37 @@ static NSString *const kRepliedTextPattern = @"<mx-reply>.*<blockquote>.*<br>(.*
         }
         case MXEventTypeRoomCreate:
         {
-            NSString *creatorId;
-            MXJSONModelSetString(creatorId, event.content[@"creator"]);
+            // Room version 11 removes `creator` in favour of `sender`.
+            // https://github.com/matrix-org/matrix-spec-proposals/pull/2175
+            // Just use the sender as it is possible to create a v11 room and spoof the `creator`.
+            NSString *creatorId = event.sender;
             
-            if (creatorId)
+            if ([creatorId isEqualToString:mxSession.myUserId])
             {
-                if ([creatorId isEqualToString:mxSession.myUserId])
+                if (isRoomDirect)
                 {
-                    if (isRoomDirect)
-                    {
-                        displayText = [VectorL10n noticeRoomCreatedByYouForDm];
-                    }
-                    else
-                    {
-                        displayText = [VectorL10n noticeRoomCreatedByYou];
-                    }
+                    displayText = [VectorL10n noticeRoomCreatedByYouForDm];
                 }
                 else
                 {
-                    if (isRoomDirect)
-                    {
-                        displayText = [VectorL10n noticeRoomCreatedForDm:(roomState ? [roomState.members memberName:creatorId] : creatorId)];
-                    }
-                    else
-                    {
-                        displayText = [VectorL10n noticeRoomCreated:(roomState ? [roomState.members memberName:creatorId] : creatorId)];
-                    }
+                    displayText = [VectorL10n noticeRoomCreatedByYou];
                 }
-                // Append redacted info if any
-                if (redactedInfo)
+            }
+            else
+            {
+                if (isRoomDirect)
                 {
-                    displayText = [NSString stringWithFormat:@"%@ %@", displayText, redactedInfo];
+                    displayText = [VectorL10n noticeRoomCreatedForDm:(roomState ? [roomState.members memberName:creatorId] : creatorId)];
                 }
+                else
+                {
+                    displayText = [VectorL10n noticeRoomCreated:(roomState ? [roomState.members memberName:creatorId] : creatorId)];
+                }
+            }
+            // Append redacted info if any
+            if (redactedInfo)
+            {
+                displayText = [NSString stringWithFormat:@"%@ %@", displayText, redactedInfo];
             }
             break;
         }

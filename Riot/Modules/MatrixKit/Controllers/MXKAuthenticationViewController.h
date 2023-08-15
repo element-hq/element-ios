@@ -305,15 +305,5 @@
  */
 - (void)showAuthenticationFallBackView;
 
-#pragma mark - Device rehydration
-
-/**
- Call this method at an appropriate time to attempt rehydrating from an existing dehydrated device
- @param keyData Secret key data
- @param credentials Account credentials
- */
-
-- (void)attemptDeviceRehydrationWithKeyData:(NSData *)keyData credentials:(MXCredentials *)credentials;
-
 @end
 

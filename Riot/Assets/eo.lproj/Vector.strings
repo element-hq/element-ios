@@ -1968,7 +1968,7 @@
 "notice_encrypted_message" = "Ĉifrita mesaĝo";
 "notice_room_related_groups" = "Grupoj rilataj al ĉi tiu ĉambro estas: %@";
 "notice_room_aliases_for_dm" = "La kromnomoj estas: %@";
-"notice_room_aliases" = "Kromnomoj de la ĉamrbo estas: %@";
+"notice_room_aliases" = "Kromnomoj de la ĉambro estas: %@";
 "notice_room_power_level_event_requirement" = "La minimumaj povniveloj rilataj al okazoj estas:";
 "notice_room_power_level_acting_requirement" = "La minimuma povnivelo, kiun uzanto bezonas antaŭ agi, estas:";
 "notice_room_power_level_intro_for_dm" = "La povniveloj de ĉambranoj estas:";

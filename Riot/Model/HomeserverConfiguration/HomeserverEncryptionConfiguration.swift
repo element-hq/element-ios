@@ -23,15 +23,18 @@ final class HomeserverEncryptionConfiguration: NSObject {
     let isSecureBackupRequired: Bool
     let secureBackupSetupMethods: [VectorWellKnownBackupSetupMethod]
     let outboundKeysPreSharingMode: MXKKeyPreSharingStrategy
+    let deviceDehydrationEnabled: Bool
 
     init(isE2EEByDefaultEnabled: Bool,
          isSecureBackupRequired: Bool,
          secureBackupSetupMethods: [VectorWellKnownBackupSetupMethod],
-         outboundKeysPreSharingMode: MXKKeyPreSharingStrategy) {
+         outboundKeysPreSharingMode: MXKKeyPreSharingStrategy,
+         deviceDehydrationEnabled: Bool) {
         self.isE2EEByDefaultEnabled = isE2EEByDefaultEnabled
         self.isSecureBackupRequired = isSecureBackupRequired
         self.outboundKeysPreSharingMode = outboundKeysPreSharingMode
         self.secureBackupSetupMethods = secureBackupSetupMethods
+        self.deviceDehydrationEnabled = deviceDehydrationEnabled
 
         super.init()
     }
