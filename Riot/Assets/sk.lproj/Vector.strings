@@ -2960,3 +2960,8 @@
 "room_command_change_display_name_description" = "Mení vaše zobrazované meno / prezývku";
 "notice_display_name_changed_to" = "%@ zmenil/a svoje zobrazované meno na %@";
 "poll_timeline_loading" = "Načítavanie…";
+"room_creation_user_not_found_prompt_title" = "Potvrdenie";
+"room_creation_user_not_found_prompt_invite_action" = "Spustiť konverzáciu aj tak";
+"room_participants_invite_anyway" = "Napriek tomu pozvať";
+"room_creation_user_not_found_prompt_message" = "Nie je možné nájsť používateľské profily pre toto Matrix ID. Chcete aj tak poslať priamu správu?";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "Nie je možné nájsť profily pre toto Matrix ID. Ste si istí, že chcete pozvať %@ do %@?";
