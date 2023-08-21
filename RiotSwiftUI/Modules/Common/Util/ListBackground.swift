@@ -49,10 +49,4 @@ extension View {
     func listBackgroundColor(_ color: Color) -> some View {
         modifier(ListBackgroundModifier(color: color))
     }
-    
-    /// Finds a `UICollectionView` from a `SwiftUI.List`, or `SwiftUI.List` child.
-    /// Stop gap until https://github.com/siteline/SwiftUI-Introspect/pull/169
-    func introspectCollectionView(customize: @escaping (UICollectionView) -> Void) -> some View {
-        introspect(selector: TargetViewSelector.ancestorOrSiblingContaining, customize: customize)
-    }
 }
