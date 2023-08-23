@@ -33,6 +33,7 @@ final class RiotSettings: NSObject {
         static let enableUISIAutoReporting = "enableUISIAutoReporting"
         static let enableLiveLocationSharing = "enableLiveLocationSharing"
         static let showIPAddressesInSessionsManager = "showIPAddressesInSessionsManager"
+        static let isAuthenticatedWithOIDC = "isAuthenticatedWithOIDC"
     }
     
     static let shared = RiotSettings()
@@ -73,6 +74,9 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "identityserverurl", defaultValue: BuildSettings.serverConfigDefaultIdentityServerUrlString, storage: defaults)
     var identityServerUrlString
+    
+    @UserDefault(key: UserDefaultsKeys.isAuthenticatedWithOIDC, defaultValue: false, storage: defaults)
+    var isAuthenticatedWithOIDC
     
     // MARK: Notifications
     

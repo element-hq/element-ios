@@ -607,8 +607,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             [tmpSections addObject:sectionLabs];
         }
     }
-    
-    if (BuildSettings.settingsScreenAllowDeactivatingAccount)
+        
+    if (BuildSettings.settingsScreenAllowDeactivatingAccount && !RiotSettings.shared.isAuthenticatedWithOIDC)
     {
         Section *sectionDeactivate = [Section sectionWithTag:SECTION_TAG_DEACTIVATE_ACCOUNT];
         [sectionDeactivate addRowWithTag:0];

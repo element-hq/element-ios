@@ -290,9 +290,16 @@ class AuthenticationService: NSObject {
         // Get the login flow
         let loginFlowResponse = try await client.getLoginSession()
         
-        let identityProviders = loginFlowResponse.flows?.compactMap { $0 as? MXLoginSSOFlow }.first?.identityProviders ?? []
+        let loginFlow = loginFlowResponse.flows?.compactMap { $0 as? MXLoginSSOFlow }.first
+        var identityProviders = loginFlow?.ssoIdentityProviders ?? []
+        if identityProviders.isEmpty {
+            // Provide a backup for homeservers that support SSO but don't offer any identity providers
+            // https://spec.matrix.org/latest/client-server-api/#client-login-via-sso
+            identityProviders = [SSOIdentityProvider(name: "SSO", brand: nil, iconURL: nil, isOIDC: loginFlow?.isOIDC ?? false)]
+        }
+        
         return LoginFlowResult(supportedLoginTypes: loginFlowResponse.flows?.compactMap { $0 } ?? [],
-                               ssoIdentityProviders: identityProviders.sorted { $0.name < $1.name }.map(\.ssoIdentityProvider),
+                               ssoIdentityProviders: identityProviders.sorted { $0.name < $1.name },
                                homeserverAddress: client.homeserver)
     }
     
@@ -309,7 +316,14 @@ class AuthenticationService: NSObject {
 }
 
 extension MXLoginSSOIdentityProvider {
-    var ssoIdentityProvider: SSOIdentityProvider {
-        SSOIdentityProvider(id: identifier, name: name, brand: brand, iconURL: icon)
+    @objc func makeSSOIdentityProvider(isOIDC: Bool) -> SSOIdentityProvider {
+        SSOIdentityProvider(id: identifier, name: name, brand: brand, iconURL: icon, isOIDC: isOIDC)
     }
 }
+
+extension MXLoginSSOFlow {
+    @objc var ssoIdentityProviders: [SSOIdentityProvider] {
+        identityProviders.map { $0.makeSSOIdentityProvider(isOIDC: isOIDC)}
+    }
+}
+

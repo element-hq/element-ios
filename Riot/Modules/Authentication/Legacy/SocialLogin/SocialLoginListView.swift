@@ -61,7 +61,7 @@ final class SocialLoginListView: UIView, NibLoadable {
     
     // MARK: - Public            
     
-    func update(with identityProviders: [MXLoginSSOIdentityProvider], mode: SocialLoginButtonMode) {
+    func update(with identityProviders: [SSOIdentityProvider], mode: SocialLoginButtonMode) {
         self.mode = mode
         
         let title: String
@@ -89,7 +89,7 @@ final class SocialLoginListView: UIView, NibLoadable {
         self.buttons = buttons
     }
         
-    static func contentViewHeight(identityProviders: [MXLoginSSOIdentityProvider],
+    static func contentViewHeight(identityProviders: [SSOIdentityProvider],
                                   mode: SocialLoginButtonMode,
                                   fitting width: CGFloat) -> CGFloat {
         let sizingView = self.sizingView
@@ -113,7 +113,7 @@ final class SocialLoginListView: UIView, NibLoadable {
         self.buttons = []
     }
         
-    private func socialLoginButtons(for identityProviders: [MXLoginSSOIdentityProvider], mode: SocialLoginButtonMode) -> [SocialLoginButton] {
+    private func socialLoginButtons(for identityProviders: [SSOIdentityProvider], mode: SocialLoginButtonMode) -> [SocialLoginButton] {
         
         var buttons: [SocialLoginButton] = []
         
@@ -122,7 +122,7 @@ final class SocialLoginListView: UIView, NibLoadable {
             if let firstIdentityProviderBrand = firstIdentityProvider.brand, let secondIdentityProviderBrand = secondIdentityProvider.brand {
                 return firstIdentityProviderBrand < secondIdentityProviderBrand
             } else {
-                return firstIdentityProvider.identifier < secondIdentityProvider.identifier
+                return firstIdentityProvider.id < secondIdentityProvider.id
             }
         }
         

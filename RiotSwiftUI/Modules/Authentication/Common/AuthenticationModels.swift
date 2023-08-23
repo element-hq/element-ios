@@ -112,11 +112,14 @@ class HomeserverAddress: NSObject {
     let brand: String?
     /// The icon field is an optional field that points to an icon representing the identity provider. If present then it must be an HTTPS URL to an image resource.
     let iconURL: String?
+    /// Dertermines if this provider uses OIDC
+    let isOIDC: Bool
     
-    init(id: String, name: String, brand: String?, iconURL: String?) {
+    init(id: String = "", name: String, brand: String?, iconURL: String?, isOIDC: Bool = false) {
         self.id = id
         self.name = name
         self.brand = brand
         self.iconURL = iconURL
+        self.isOIDC = isOIDC
     }
 }

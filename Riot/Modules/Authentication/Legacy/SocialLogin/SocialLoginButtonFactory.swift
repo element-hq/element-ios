@@ -28,7 +28,7 @@ class SocialLoginButtonFactory {
     
     // MARK - Public
             
-    func build(with identityProvider: MXLoginSSOIdentityProvider, mode: SocialLoginButtonMode) -> SocialLoginButton {
+    func build(with identityProvider: SSOIdentityProvider, mode: SocialLoginButtonMode) -> SocialLoginButton {
         let button = SocialLoginButton()
         
         let defaultStyle: SocialLoginButtonStyle
@@ -37,7 +37,7 @@ class SocialLoginButtonFactory {
         let buildDefaultButtonStyles: () -> (SocialLoginButtonStyle, [String: SocialLoginButtonStyle]) = {
             let image: SourceImage?
             
-            if let imageStringURL = identityProvider.icon, let imageURL = URL(string: imageStringURL) {
+            if let imageStringURL = identityProvider.iconURL, let imageURL = URL(string: imageStringURL) {
                 image = .remote(imageURL)
             } else {
                 image = nil
@@ -71,7 +71,7 @@ class SocialLoginButtonFactory {
         
         let title = self.buildButtonTitle(with: identityProvider.name, mode: mode)
         
-        let viewData = SocialLoginButtonViewData(identityProvider: identityProvider.ssoIdentityProvider,
+        let viewData = SocialLoginButtonViewData(identityProvider: identityProvider,
                                                  title: title,
                                                  defaultStyle: defaultStyle,
                                                  themeStyles: styles)

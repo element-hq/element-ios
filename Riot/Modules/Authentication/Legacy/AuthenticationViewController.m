@@ -1524,7 +1524,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 - (CGFloat)socialLoginViewHeightFittingWidth:(CGFloat)width
 {
-    NSArray<MXLoginSSOIdentityProvider*> *identityProviders =  self.currentLoginSSOFlow.identityProviders;
+    NSArray<SSOIdentityProvider*> *identityProviders =  self.currentLoginSSOFlow.ssoIdentityProviders;
     
     if (!identityProviders.count && self.socialLoginListView)
     {
@@ -1546,7 +1546,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         listView.delegate = self;
     }
     
-    [listView updateWith:loginSSOFlow.identityProviders mode:mode];
+    [listView updateWith: loginSSOFlow.ssoIdentityProviders mode:mode];
     
     [self refreshContentViewHeightConstraint];
 }

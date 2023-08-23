@@ -681,6 +681,8 @@ extension AuthenticationCoordinator: SSOAuthenticationPresenterDelegate {
             return
         }
         
+        RiotSettings.shared.isAuthenticatedWithOIDC = identityProvider?.isOIDC ?? false
+
         Task { await handleLoginToken(token, using: loginWizard) }
     }
     

@@ -2190,6 +2190,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     [TimelinePollProvider.shared reset];
     
+    RiotSettings.shared.isAuthenticatedWithOIDC = NO;
+    
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack
     for (MXKAccount *account in MXKAccountManager.sharedManager.accounts)
