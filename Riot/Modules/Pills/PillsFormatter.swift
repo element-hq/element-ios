@@ -197,12 +197,14 @@ class PillsFormatter: NSObject {
                 guard let roomMember = roomState.members.member(withUserId: userId) else {
                     return
                 }
+                
+                let displayName = roomMember.displayname ?? userId
 
                 pill.data?.items = [
                     .avatar(url: roomMember.avatarUrl,
-                            string: roomMember.displayname,
-                            matrixId: roomMember.userId),
-                    .text(roomMember.displayname)
+                            string: displayName,
+                            matrixId: userId),
+                    .text(displayName)
                 ]
             default:
                 break
