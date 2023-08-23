@@ -295,7 +295,7 @@ class AuthenticationService: NSObject {
         if identityProviders.isEmpty {
             // Provide a backup for homeservers that support SSO but don't offer any identity providers
             // https://spec.matrix.org/latest/client-server-api/#client-login-via-sso
-            identityProviders = [SSOIdentityProvider(name: "SSO", brand: nil, iconURL: nil, isOIDC: loginFlow?.isOIDC ?? false)]
+            identityProviders = [SSOIdentityProvider(name: "SSO", brand: nil, iconURL: nil, isOIDC: loginFlow?.delegatedOIDCCompatibility ?? false)]
         }
         
         return LoginFlowResult(supportedLoginTypes: loginFlowResponse.flows?.compactMap { $0 } ?? [],
@@ -323,7 +323,7 @@ extension MXLoginSSOIdentityProvider {
 
 extension MXLoginSSOFlow {
     @objc var ssoIdentityProviders: [SSOIdentityProvider] {
-        identityProviders.map { $0.makeSSOIdentityProvider(isOIDC: isOIDC)}
+        identityProviders.map { $0.makeSSOIdentityProvider(isOIDC: delegatedOIDCCompatibility)}
     }
 }
 
