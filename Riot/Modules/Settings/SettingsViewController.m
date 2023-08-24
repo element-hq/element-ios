@@ -608,7 +608,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         }
     }
     
-    if (BuildSettings.settingsScreenAllowDeactivatingAccount)
+    if (BuildSettings.settingsScreenAllowDeactivatingAccount && !self.mainSession.homeserverWellknown.authentication)
     {
         Section *sectionDeactivate = [Section sectionWithTag:SECTION_TAG_DEACTIVATE_ACCOUNT];
         [sectionDeactivate addRowWithTag:0];
