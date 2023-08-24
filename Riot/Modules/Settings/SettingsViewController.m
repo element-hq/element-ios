@@ -365,7 +365,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         [sectionUserSettings addRowWithTag: USER_SETTINGS_PHONENUMBERS_OFFSET + index];
     }
-    if (BuildSettings.settingsScreenAllowAddingEmailThreepids)
+    if (BuildSettings.settingsScreenAllowAddingEmailThreepids &&
+        // If the threePidChanges is nil we assume the capability to be true
+        (!self.mainSession.homeserverCapabilities.threePidChanges ||
+         self.mainSession.homeserverCapabilities.threePidChanges.enabled))
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_EMAIL_INDEX];
     }
