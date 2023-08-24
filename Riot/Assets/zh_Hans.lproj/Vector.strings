@@ -2357,3 +2357,4 @@
 "room_command_emote_description" = "显示动作";
 "threads_discourage_information_2" = "\n\n无论如何，启用消息列吗？";
 "settings_timeline" = "时间线";
+"settings_labs_enable_threads" = "允许消息线程";
