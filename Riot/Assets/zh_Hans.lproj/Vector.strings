@@ -2358,3 +2358,4 @@
 "threads_discourage_information_2" = "\n\n无论如何，启用消息列吗？";
 "settings_timeline" = "时间线";
 "settings_labs_enable_threads" = "允许消息线程";
+"settings_labs_use_only_latest_user_avatar_and_name" = "在历史消息中显示用户的最新头像和昵称";
