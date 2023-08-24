@@ -2352,3 +2352,4 @@
 "room_creation_user_not_found_prompt_title" = "确认";
 "room_creation_user_not_found_prompt_message" = "无法找到此Matrix ID的profiles。你仍然想开始私信吗？";
 "room_creation_user_not_found_prompt_invite_action" = "无论如何都要开始私信";
+"room_participants_invite_anyway" = "无论如何，邀请";
