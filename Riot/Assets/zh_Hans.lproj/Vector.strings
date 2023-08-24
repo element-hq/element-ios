@@ -2353,5 +2353,7 @@
 "room_creation_user_not_found_prompt_message" = "无法找到此Matrix ID的profiles。你仍然想开始私信吗？";
 "room_creation_user_not_found_prompt_invite_action" = "无论如何都要开始私信";
 "room_participants_invite_anyway" = "无论如何，邀请";
-"threads_discourage_information_1" = "你的主服务器目前不支持消息线程，所以此功能可能不可靠。有的线程中的消息可能不一定可用。 ";
+"threads_discourage_information_1" = "你的家服务器目前不支持消息列，所以此功能可能不可靠。有的消息列消息不一定可用。 ";
 "room_command_emote_description" = "显示动作";
+"threads_discourage_information_2" = "\n\n无论如何，启用消息列吗？";
+"settings_timeline" = "时间线";
