@@ -7791,6 +7791,18 @@ public class VectorL10n: NSObject {
   public static var settingsLinks: String { 
     return VectorL10n.tr("Vector", "settings_links") 
   }
+  /// Manage
+  public static var settingsManageAccountAction: String { 
+    return VectorL10n.tr("Vector", "settings_manage_account_action") 
+  }
+  /// Manage your account at %@
+  public static func settingsManageAccountDescription(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_manage_account_description", p1)
+  }
+  /// Account
+  public static var settingsManageAccountTitle: String { 
+    return VectorL10n.tr("Vector", "settings_manage_account_title") 
+  }
   /// Mark all messages as read
   public static var settingsMarkAllAsRead: String { 
     return VectorL10n.tr("Vector", "settings_mark_all_as_read") 
