@@ -2349,3 +2349,6 @@
 // User sessions management
 "user_sessions_settings" = "管理登陆会话";
 "settings_presence_offline_mode_description" = "如果开启此选项，对其他用户来说，你看起来就会像下线了一样，即使你正在使用此软件。";
+"room_creation_user_not_found_prompt_title" = "确认";
+"room_creation_user_not_found_prompt_message" = "无法找到此Matrix ID的profiles。你仍然想开始私信吗？";
+"room_creation_user_not_found_prompt_invite_action" = "无论如何都要开始私信";
