@@ -2358,4 +2358,12 @@
 "threads_discourage_information_2" = "\n\n无论如何，启用消息列吗？";
 "settings_timeline" = "时间线";
 "settings_labs_enable_threads" = "消息列消息";
-"settings_labs_use_only_latest_user_avatar_and_name" = "在历史消息中显示用户的最新头像和昵称";
+"settings_labs_use_only_latest_user_avatar_and_name" = "在消息历史中显示用户的最新头像和名称";
+"manage_session_name_hint" = "自定义会话名称能帮你更轻松地识别设备。";
+"manage_session_rename" = "重命名会话";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "请注意，与你通信的人也可以看到会话名称。%@";
+"manage_session_sign_out_other_sessions" = "登出全部其他会话";
+"settings_presence_offline_mode" = "离线模式";
+"room_details_polls" = "投票历史";
+"settings_labs_enable_new_app_layout" = "新版应用布局";
