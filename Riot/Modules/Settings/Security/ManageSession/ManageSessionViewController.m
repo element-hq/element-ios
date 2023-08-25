@@ -656,6 +656,20 @@ enum {
 
 - (void)removeDevice
 {
+    NSURL *logoutURL = [self.mainSession.homeserverWellknown.authentication getMasLogoutDeviceURLFromDeviceID:device.deviceId];
+    if (logoutURL)
+    {
+        [UIApplication.sharedApplication openURL:logoutURL options:@{} completionHandler:nil];
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        [self removeDeviceThroughAPI];
+    }
+}
+
+-(void) removeDeviceThroughAPI
+{
     [self startActivityIndicator];
     self.view.userInteractionEnabled = NO;
     

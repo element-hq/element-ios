@@ -123,7 +123,11 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
                 if sessionInfo.isCurrent {
                     self.showLogoutConfirmationForCurrentSession()
                 } else {
-                    self.showLogoutConfirmation(for: [sessionInfo])
+                    if let logoutURL = self.parameters.session.homeserverWellknown.authentication?.getMasLogoutDeviceURL(fromDeviceID: sessionInfo.id) {
+                        self.openMasLogoutURL(logoutURL)
+                    } else {
+                        self.showLogoutConfirmation(for: [sessionInfo])
+                    }
                 }
             case let .showSessionStateInfo(sessionInfo):
                 self.showInfoSheet(parameters: .init(userSessionInfo: sessionInfo, parentSize: self.toPresentable().view.bounds.size))
@@ -180,6 +184,11 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
                                                                 filter: filter,
                                                                 title: title)
         return UserOtherSessionsCoordinator(parameters: parameters)
+    }
+    
+    private func openMasLogoutURL(_ url: URL) {
+        UIApplication.shared.open(url)
+        popToSessionsOverview()
     }
     
     /// Shows a confirmation dialog to the user to sign out of a session.
