@@ -123,7 +123,7 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
                 if sessionInfo.isCurrent {
                     self.showLogoutConfirmationForCurrentSession()
                 } else {
-                    if let logoutURL = self.parameters.session.homeserverWellknown.authentication?.getMasLogoutDeviceURL(fromDeviceID: sessionInfo.id) {
+                    if let logoutURL = self.parameters.session.homeserverWellknown.authentication?.getLogoutDeviceURL(fromID: sessionInfo.id) {
                         self.openMasLogoutURL(logoutURL)
                     } else {
                         self.showLogoutConfirmation(for: [sessionInfo])

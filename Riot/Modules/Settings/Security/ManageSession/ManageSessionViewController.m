@@ -656,7 +656,7 @@ enum {
 
 - (void)removeDevice
 {
-    NSURL *logoutURL = [self.mainSession.homeserverWellknown.authentication getMasLogoutDeviceURLFromDeviceID:device.deviceId];
+    NSURL *logoutURL = [self.mainSession.homeserverWellknown.authentication getLogoutDeviceURLFromID:device.deviceId];
     if (logoutURL)
     {
         [UIApplication.sharedApplication openURL:logoutURL options:@{} completionHandler:nil];
