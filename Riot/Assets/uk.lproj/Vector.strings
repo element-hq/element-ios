@@ -2967,3 +2967,6 @@
 "room_creation_user_not_found_prompt_title" = "Підтвердження";
 "room_creation_user_not_found_prompt_message" = "Не вдалося знайти профілі для цього Matrix ID. Усе одно хочете розпочати приватну бесіду?";
 "room_participants_invite_unknown_participant_prompt_to_msg" = "Не вдалося знайти профілі для цього Matrix ID. Ви впевнені, що хочете запросити %@ до %@?";
+"settings_manage_account_title" = "Обліковий запис";
+"settings_manage_account_action" = "Керувати обліковим записом";
+"settings_manage_account_description" = "Керувати обліковим записом у %@";
