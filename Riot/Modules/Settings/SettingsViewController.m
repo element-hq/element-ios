@@ -3920,8 +3920,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 - (void)onManageAccountTap
 {
-    // TODO
-    // Open a web view with the account url
+    NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
+    if (url) {
+        SFSafariViewController *accountVC = [[SFSafariViewController alloc] initWithURL: url];
+        [self presentViewController:accountVC animated:YES completion:nil];
+    }
 }
 
 - (void)showThemePicker

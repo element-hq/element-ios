@@ -749,7 +749,7 @@ Tap the + to start adding people.";
 "settings_three_pids_management_information_part2" = "Discovery";
 "settings_three_pids_management_information_part3" = ".";
 "settings_manage_account_title" = "Account";
-"settings_manage_account_action" = "Manage";
+"settings_manage_account_action" = "Manage account";
 "settings_manage_account_description" = "Manage your account at %@";
 
 "settings_confirm_media_size" = "Confirm size when sending";
