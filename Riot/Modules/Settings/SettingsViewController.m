@@ -50,6 +50,7 @@ typedef NS_ENUM(NSUInteger, SECTION_TAG)
 {
     SECTION_TAG_SIGN_OUT = 0,
     SECTION_TAG_USER_SETTINGS,
+    SECTION_TAG_ACCOUNT,
     SECTION_TAG_SENDING_MEDIA,
     SECTION_TAG_LINKS,
     SECTION_TAG_SECURITY,
@@ -183,6 +184,11 @@ typedef NS_ENUM(NSUInteger, SECURITY)
 {
     SECURITY_BUTTON_INDEX = 0,
     DEVICE_MANAGER_INDEX
+};
+
+typedef NS_ENUM(NSUInteger, ACCOUNT)
+{
+    ACCOUNT_MANAGE_INDEX = 0,
 };
 
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
@@ -386,6 +392,16 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
+    
+    NSString *manageAccountURL = self.mainSession.homeserverWellknown.authentication.account;
+    if (manageAccountURL)
+    {
+        Section *account = [Section sectionWithTag: SECTION_TAG_ACCOUNT];
+        [account addRowWithTag:ACCOUNT_MANAGE_INDEX];
+        account.headerTitle = [VectorL10n settingsManageAccountTitle];
+        account.footerTitle = [VectorL10n settingsManageAccountDescription:manageAccountURL];
+        [tmpSections addObject:account];
+    }
         
     if (BuildSettings.settingsScreenShowConfirmMediaSize)
     {
@@ -2629,6 +2645,17 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         
         cell = deactivateAccountBtnCell;
     }
+    else if (section == SECTION_TAG_ACCOUNT)
+    {
+        switch (row)
+        {
+            case ACCOUNT_MANAGE_INDEX:
+                cell = [self getDefaultTableViewCell:tableView];
+                cell.textLabel.text = [VectorL10n settingsManageAccountAction];
+                [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+                break;
+        }
+    }
 
     return cell;
 }
@@ -2975,6 +3002,14 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                     break;
                 case NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX:
                     [self showNotificationSettings:NotificationSettingsScreenOther];
+                    break;
+            }
+        }
+        else if (section == SECTION_TAG_ACCOUNT)
+        {
+            switch(row) {
+                case ACCOUNT_MANAGE_INDEX:
+                    [self onManageAccountTap];
                     break;
             }
         }
@@ -3883,6 +3918,14 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [singleImagePickerPresenter presentFrom:self sourceView:sourceView sourceRect:sourceView.bounds animated:YES];
         
         self.imagePickerPresenter = singleImagePickerPresenter;
+    }
+}
+
+- (void)onManageAccountTap
+{
+    NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
+    if (url) {
+        [UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil];
     }
 }
 
