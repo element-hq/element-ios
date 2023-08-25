@@ -7791,7 +7791,7 @@ public class VectorL10n: NSObject {
   public static var settingsLinks: String { 
     return VectorL10n.tr("Vector", "settings_links") 
   }
-  /// Manage
+  /// Manage account
   public static var settingsManageAccountAction: String { 
     return VectorL10n.tr("Vector", "settings_manage_account_action") 
   }

@@ -3922,8 +3922,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
     if (url) {
-        SFSafariViewController *accountVC = [[SFSafariViewController alloc] initWithURL: url];
-        [self presentViewController:accountVC animated:YES completion:nil];
+        [UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil];
     }
 }
 
