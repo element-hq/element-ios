@@ -2968,3 +2968,5 @@
 "settings_manage_account_title" = "Účet";
 "settings_manage_account_action" = "Spravovať účet";
 "settings_manage_account_description" = "Spravujte svoj účet na %@";
+"manage_session_redirect" = "Budete presmerovaní na poskytovateľa overovania vášho servera, aby ste dokončili odhlásenie.";
+"manage_session_redirect_error" = "Funkcia aktuálne nie je dostupná. Obráťte sa na správcu vášho domovského servera";
