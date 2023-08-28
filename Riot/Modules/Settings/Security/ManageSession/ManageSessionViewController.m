@@ -656,16 +656,48 @@ enum {
 
 - (void)removeDevice
 {
-    NSURL *logoutURL = [self.mainSession.homeserverWellknown.authentication getLogoutDeviceURLFromID:device.deviceId];
-    if (logoutURL)
+    MXWellKnownAuthentication *authentication = self.mainSession.homeserverWellknown.authentication;
+    if (authentication)
     {
-        [UIApplication.sharedApplication openURL:logoutURL options:@{} completionHandler:nil];
-        [self withdrawViewControllerAnimated:YES completion:nil];
+        NSURL *logoutURL = [authentication getLogoutDeviceURLFromID:device.deviceId];
+        if (logoutURL)
+        {
+            [self removeDeviceRedirectWithURL:logoutURL];
+        }
+        else
+        {
+            [self showRemoveDeviceRedirectError];
+        }
     }
     else
     {
         [self removeDeviceThroughAPI];
     }
+}
+
+-(void) removeDeviceRedirectWithURL: (NSURL * _Nonnull) url
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: [VectorL10n manageSessionRedirect] message: nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    __weak typeof(self) weakSelf = self;
+    UIAlertAction *action = [UIAlertAction actionWithTitle:[VectorL10n ok]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler: ^(UIAlertAction * action) {
+        [UIApplication.sharedApplication openURL:url options:@{} completionHandler:^(BOOL success) {
+            if (success && weakSelf)
+            {
+                [weakSelf withdrawViewControllerAnimated:YES completion:nil];
+            }
+        }];
+    }];
+    [alert addAction: action];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void) showRemoveDeviceRedirectError
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: [VectorL10n manageSessionRedirectError] message: nil preferredStyle:UIAlertControllerStyleAlert];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 -(void) removeDeviceThroughAPI
