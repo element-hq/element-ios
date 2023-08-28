@@ -2717,3 +2717,5 @@
 "settings_manage_account_title" = "Kasutajakonto";
 "settings_manage_account_action" = "Halda kasutajakontot";
 "settings_manage_account_description" = "Halda kasutajakontot koduserveris %@";
+"manage_session_redirect" = "Järgmiseks suuname sind sinu serveriteenuse autentijale ning seal saad sa väljalogimise lõpuni viia.";
+"manage_session_redirect_error" = "See funktsionaalsus pole hetkel saadaval. Lisateavet saad oma koduserveri haldajalt";
