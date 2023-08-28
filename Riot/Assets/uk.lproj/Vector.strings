@@ -2970,3 +2970,5 @@
 "settings_manage_account_title" = "Обліковий запис";
 "settings_manage_account_action" = "Керувати обліковим записом";
 "settings_manage_account_description" = "Керувати обліковим записом у %@";
+"manage_session_redirect" = "Вас буде перенаправлено до постачальника автентифікації вашого сервера для завершення виходу.";
+"manage_session_redirect_error" = "Функціональність наразі недоступна. Зверніться до адміністратора вашого домашнього сервера";
