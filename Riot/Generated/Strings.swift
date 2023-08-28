@@ -3667,6 +3667,14 @@ public class VectorL10n: NSObject {
   public static var manageSessionNotTrusted: String { 
     return VectorL10n.tr("Vector", "manage_session_not_trusted") 
   }
+  /// You will be redirected to your server's authentication provider to complete sign out.
+  public static var manageSessionRedirect: String { 
+    return VectorL10n.tr("Vector", "manage_session_redirect") 
+  }
+  /// Functionality currently unavailable. Please contact your homeserver admin
+  public static var manageSessionRedirectError: String { 
+    return VectorL10n.tr("Vector", "manage_session_redirect_error") 
+  }
   /// Rename session
   public static var manageSessionRename: String { 
     return VectorL10n.tr("Vector", "manage_session_rename") 
