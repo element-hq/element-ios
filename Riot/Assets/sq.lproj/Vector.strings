@@ -2752,3 +2752,8 @@
 "room_participants_invite_unknown_participant_prompt_to_msg" = "S’arrihet të gjenden profile për këtë ID Matrix. Jeni i sigurt se doni të ftohet %@ te %@?";
 "room_participants_invite_anyway" = "Ftoje, sido qoftë";
 "poll_timeline_loading" = "Po ngarkohet…";
+"settings_manage_account_description" = "Administroni llogarinë tuaj në %@";
+"manage_session_redirect_error" = "Funksion që s’mund të kihet aktualisht. Ju lutemi, lidhuni me përgjegjësin e shërbyesit tuaj Home";
+"settings_manage_account_title" = "Llogari";
+"settings_manage_account_action" = "Administroni llogari";
+"manage_session_redirect" = "Do të ridrejtoheni te shërbimi i mirëfilltësimit të shërbyesit tuaj, për të plotësuar daljen nga llogaria.";
