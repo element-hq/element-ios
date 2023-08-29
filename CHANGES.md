@@ -1,3 +1,22 @@
+## Changes in 1.11.1 (2023-08-29)
+
+✨ Features
+
+- New settings cell to manage your account through MAS if the home server allows it. ([#7653](https://github.com/vector-im/element-ios/issues/7653))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.27.1](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.27.1)).
+
+🐛 Bugfixes
+
+- Prevent mention crashes when room members are missing display names (objc interop) ([#7649](https://github.com/vector-im/element-ios/pull/7649))
+- Add email UI is hidden if the 3 pid changes capability is disabled. ([#7645](https://github.com/vector-im/element-ios/issues/7645))
+- You can now log out from other sessions using MAS on supported OIDC home servers. ([#7646](https://github.com/vector-im/element-ios/issues/7646))
+- Deactivate account is hidden for servers with OIDC auth. ([#7648](https://github.com/vector-im/element-ios/issues/7648))
+- Prevent pill crashes when room members are missing display names (objc interop) ([#7651](https://github.com/vector-im/element-ios/issues/7651))
+
+
 ## Changes in 1.11.0 (2023-08-15)
 
 ✨ Features
