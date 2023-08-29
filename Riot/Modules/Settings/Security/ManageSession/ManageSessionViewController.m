@@ -656,6 +656,52 @@ enum {
 
 - (void)removeDevice
 {
+    MXWellKnownAuthentication *authentication = self.mainSession.homeserverWellknown.authentication;
+    if (authentication)
+    {
+        NSURL *logoutURL = [authentication getLogoutDeviceURLFromID:device.deviceId];
+        if (logoutURL)
+        {
+            [self removeDeviceRedirectWithURL:logoutURL];
+        }
+        else
+        {
+            [self showRemoveDeviceRedirectError];
+        }
+    }
+    else
+    {
+        [self removeDeviceThroughAPI];
+    }
+}
+
+-(void) removeDeviceRedirectWithURL: (NSURL * _Nonnull) url
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: [VectorL10n manageSessionRedirect] message: nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    __weak typeof(self) weakSelf = self;
+    UIAlertAction *action = [UIAlertAction actionWithTitle:[VectorL10n ok]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler: ^(UIAlertAction * action) {
+        [UIApplication.sharedApplication openURL:url options:@{} completionHandler:^(BOOL success) {
+            if (success && weakSelf)
+            {
+                [weakSelf withdrawViewControllerAnimated:YES completion:nil];
+            }
+        }];
+    }];
+    [alert addAction: action];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void) showRemoveDeviceRedirectError
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: [VectorL10n manageSessionRedirectError] message: nil preferredStyle:UIAlertControllerStyleAlert];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void) removeDeviceThroughAPI
+{
     [self startActivityIndicator];
     self.view.userInteractionEnabled = NO;
     
