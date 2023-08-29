@@ -120,16 +120,28 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
             case let .renameSession(sessionInfo):
                 self.showRenameSessionScreen(for: sessionInfo)
             case let .logoutOfSession(sessionInfo):
-                if sessionInfo.isCurrent {
-                    self.showLogoutConfirmationForCurrentSession()
-                } else {
-                    self.showLogoutConfirmation(for: [sessionInfo])
-                }
+                self.handleLogoutOfSession(sessionInfo: sessionInfo)
             case let .showSessionStateInfo(sessionInfo):
                 self.showInfoSheet(parameters: .init(userSessionInfo: sessionInfo, parentSize: self.toPresentable().view.bounds.size))
             }
         }
         pushScreen(with: coordinator)
+    }
+    
+    private func handleLogoutOfSession(sessionInfo: UserSessionInfo) {
+        if sessionInfo.isCurrent {
+            self.showLogoutConfirmationForCurrentSession()
+        } else {
+            if let authentication = self.parameters.session.homeserverWellknown.authentication {
+                if let logoutURL = authentication.getLogoutDeviceURL(fromID: sessionInfo.id) {
+                    self.openDeviceLogoutRedirectURL(logoutURL)
+                } else {
+                    self.showDeviceLogoutRedirectError()
+                }
+            } else {
+                self.showLogoutConfirmation(for: [sessionInfo])
+            }
+        }
     }
 
     /// Shows the QR login screen.
@@ -180,6 +192,26 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
                                                                 filter: filter,
                                                                 title: title)
         return UserOtherSessionsCoordinator(parameters: parameters)
+    }
+    
+    private func openDeviceLogoutRedirectURL(_ url: URL) {
+        let alert = UIAlertController(title: VectorL10n.manageSessionRedirect, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default) { [weak self] _ in
+            UIApplication.shared.open(url) { [weak self] success in
+                guard success else {
+                    return
+                }
+                self?.popToSessionsOverview()
+            }
+        })
+        alert.popoverPresentationController?.sourceView = toPresentable().view
+        navigationRouter.present(alert, animated: true)
+    }
+    
+    private func showDeviceLogoutRedirectError() {
+        let alert = UIAlertController(title: VectorL10n.manageSessionRedirectError, message: nil, preferredStyle: .alert)
+        alert.popoverPresentationController?.sourceView = toPresentable().view
+        navigationRouter.present(alert, animated: true)
     }
     
     /// Shows a confirmation dialog to the user to sign out of a session.

@@ -3667,6 +3667,14 @@ public class VectorL10n: NSObject {
   public static var manageSessionNotTrusted: String { 
     return VectorL10n.tr("Vector", "manage_session_not_trusted") 
   }
+  /// You will be redirected to your server's authentication provider to complete sign out.
+  public static var manageSessionRedirect: String { 
+    return VectorL10n.tr("Vector", "manage_session_redirect") 
+  }
+  /// Functionality currently unavailable. Please contact your homeserver admin
+  public static var manageSessionRedirectError: String { 
+    return VectorL10n.tr("Vector", "manage_session_redirect_error") 
+  }
   /// Rename session
   public static var manageSessionRename: String { 
     return VectorL10n.tr("Vector", "manage_session_rename") 
@@ -7790,6 +7798,18 @@ public class VectorL10n: NSObject {
   /// LINKS
   public static var settingsLinks: String { 
     return VectorL10n.tr("Vector", "settings_links") 
+  }
+  /// Manage account
+  public static var settingsManageAccountAction: String { 
+    return VectorL10n.tr("Vector", "settings_manage_account_action") 
+  }
+  /// Manage your account at %@
+  public static func settingsManageAccountDescription(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_manage_account_description", p1)
+  }
+  /// Account
+  public static var settingsManageAccountTitle: String { 
+    return VectorL10n.tr("Vector", "settings_manage_account_title") 
   }
   /// Mark all messages as read
   public static var settingsMarkAllAsRead: String { 

@@ -748,6 +748,9 @@ Tap the + to start adding people.";
 "settings_three_pids_management_information_part1" = "Manage which email addresses or phone numbers you can use to log in or recover your account here. Control who can find you in ";
 "settings_three_pids_management_information_part2" = "Discovery";
 "settings_three_pids_management_information_part3" = ".";
+"settings_manage_account_title" = "Account";
+"settings_manage_account_action" = "Manage account";
+"settings_manage_account_description" = "Manage your account at %@";
 
 "settings_confirm_media_size" = "Confirm size when sending";
 "settings_confirm_media_size_description" = "When this is on, you’ll be asked to confirm what size images and videos will be sent as.";
@@ -964,6 +967,8 @@ Tap the + to start adding people.";
 "manage_session_trusted" = "Trusted by you";
 "manage_session_not_trusted" = "Not trusted";
 "manage_session_sign_out" = "Sign out of this session";
+"manage_session_redirect" = "You will be redirected to your server's authentication provider to complete sign out.";
+"manage_session_redirect_error" = "Functionality currently unavailable. Please contact your homeserver admin";
 "manage_session_rename" = "Rename session";
 "manage_session_sign_out_other_sessions" = "Sign out of all other sessions";
 // User sessions management

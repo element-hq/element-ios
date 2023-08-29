@@ -207,8 +207,14 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
 
     func mention(_ member: MXRoomMember) {
-        self.wysiwygViewModel.setMention(url: MXTools.permalinkToUser(withUserId: member.userId),
-                                         name: member.displayname,
+        guard let userId = member.userId else {
+            return
+        }
+        
+        let displayName = member.displayname ?? userId
+        
+        self.wysiwygViewModel.setMention(url: MXTools.permalinkToUser(withUserId: userId),
+                                         name: displayName,
                                          mentionType: .user)
     }
 
