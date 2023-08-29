@@ -2745,3 +2745,5 @@
 "settings_manage_account_title" = "Account";
 "settings_manage_account_action" = "Gestisci account";
 "settings_manage_account_description" = "Gestisci il tuo account su %@";
+"manage_session_redirect" = "Verrai reindirizzato al fornitore di autenticazione del tuo server per completare la disconnessione.";
+"manage_session_redirect_error" = "Funzionalità attualmente non disponibile. Contatta l'amministratore del tuo homeserver";
