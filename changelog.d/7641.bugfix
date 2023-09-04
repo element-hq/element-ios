@@ -1,0 +1,1 @@
+Fix an issue where rooms were not correctly sorted after forwarding a message.
