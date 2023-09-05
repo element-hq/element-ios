@@ -56,6 +56,7 @@ class ForwardingShareItemSender: NSObject, ShareItemSenderProtocol {
                 case .failure(let innerError):
                     errors.append(innerError)
                 default:
+                    room.summary.resetLastMessage(nil, failure: nil, commit: false)
                     break
                 }
                 
