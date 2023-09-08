@@ -32,6 +32,7 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
     private var errorPresenter: MXKErrorPresentation
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
+    private var presentationAnchor: UIWindow?
     
     /// The root coordinator for user session management.
     private weak var sessionsOverviewCoordinator: UserSessionsOverviewCoordinator?
@@ -49,6 +50,7 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
         navigationRouter = parameters.router
         errorPresenter = MXKErrorAlertPresentation()
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: parameters.router.toPresentable())
+        presentationAnchor = parameters.router.toPresentable().view.window
     }
     
     // MARK: - Private
@@ -195,14 +197,19 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
     }
     
     private func openDeviceLogoutRedirectURL(_ url: URL) {
+        guard let window = self.presentationAnchor else {
+            MXLog.error("The window is missing.")
+            return
+        }
+        
         let alert = UIAlertController(title: VectorL10n.manageSessionRedirect, message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default) { [weak self] _ in
-            UIApplication.shared.open(url) { [weak self] success in
-                guard success else {
-                    return
-                }
+            let was = ASWebAuthenticationSession(url: url, callbackURLScheme: "app") { _, _ in
                 self?.popToSessionsOverview()
+
             }
+            was.presentationContextProvider = self
+            was.start()
         })
         alert.popoverPresentationController?.sourceView = toPresentable().view
         navigationRouter.present(alert, animated: true)
@@ -545,5 +552,14 @@ private extension UserOtherSessionsFilter {
         case .all:
             return ""
         }
+    }
+}
+
+// MARK: ASWebAuthenticationPresentationContextProviding
+
+extension UserSessionsFlowCoordinator: ASWebAuthenticationPresentationContextProviding {
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        // we have checked this earlier
+        return self.presentationAnchor!
     }
 }

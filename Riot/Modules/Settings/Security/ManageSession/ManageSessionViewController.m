@@ -683,12 +683,20 @@ enum {
     UIAlertAction *action = [UIAlertAction actionWithTitle:[VectorL10n ok]
                                                      style:UIAlertActionStyleDefault
                                                    handler: ^(UIAlertAction * action) {
-        [UIApplication.sharedApplication openURL:url options:@{} completionHandler:^(BOOL success) {
-            if (success && weakSelf)
-            {
-                [weakSelf withdrawViewControllerAnimated:YES completion:nil];
-            }
+
+        ASWebAuthenticationSession *was = [[ASWebAuthenticationSession alloc]initWithURL:url callbackURLScheme:@"app" completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+                if (!error && weakSelf)
+                {
+                    [weakSelf withdrawViewControllerAnimated:YES completion:nil];
+                }
         }];
+
+        if (@available(iOS 13, *)) {
+            was.presentationContextProvider = self;
+        }
+
+        [was start];
+
     }];
     [alert addAction: action];
     [self presentViewController:alert animated:YES completion:nil];
@@ -753,6 +761,12 @@ enum {
 - (void)userVerificationCoordinatorBridgePresenterDelegateDidComplete:(UserVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     [self reloadDeviceWithCompletion:^{}];
+}
+
+#pragma mark - ASWebAuthenticationPresentationContextProviding
+
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session  API_AVAILABLE(ios(13.0)){
+    return self.view.window;
 }
 
 @end

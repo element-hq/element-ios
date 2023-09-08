@@ -3925,7 +3925,14 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
     if (url) {
-        [UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil];
+        ASWebAuthenticationSession *was = [[ASWebAuthenticationSession alloc]initWithURL:url callbackURLScheme:@"app" completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        }];
+
+        if (@available(iOS 13, *)) {
+            was.presentationContextProvider = self;
+        }
+        
+        [was start]
     }
 }
 
@@ -4599,6 +4606,12 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     self.userSessionsFlowCoordinatorBridgePresenter = userSessionsFlowCoordinatorBridgePresenter;
 
     [self.userSessionsFlowCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
+}
+
+#pragma mark - ASWebAuthenticationPresentationContextProviding
+
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session  API_AVAILABLE(ios(13.0)){
+    return self.view.window;
 }
 
 @end
