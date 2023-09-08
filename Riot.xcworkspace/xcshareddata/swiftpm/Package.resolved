@@ -1,95 +1,88 @@
 {
-  "pins" : [
-    {
-      "identity" : "devicekit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/devicekit/DeviceKit",
-      "state" : {
-        "revision" : "20e0991f3975916ab0f6d58db84d8bc64f883537",
-        "version" : "4.7.0"
+  "object": {
+    "pins": [
+      {
+        "package": "DeviceKit",
+        "repositoryURL": "https://github.com/devicekit/DeviceKit",
+        "state": {
+          "branch": null,
+          "revision": "20e0991f3975916ab0f6d58db84d8bc64f883537",
+          "version": "4.7.0"
+        }
+      },
+      {
+        "package": "DTCoreText",
+        "repositoryURL": "https://github.com/Cocoanetics/DTCoreText",
+        "state": {
+          "branch": null,
+          "revision": "9d2d4d2296e5d2d852a7d3c592b817d913a5d020",
+          "version": "1.6.27"
+        }
+      },
+      {
+        "package": "DTFoundation",
+        "repositoryURL": "https://github.com/Cocoanetics/DTFoundation.git",
+        "state": {
+          "branch": null,
+          "revision": "76062513434421cb6c8a1ae1d4f8368a7ebc2da3",
+          "version": "1.7.18"
+        }
+      },
+      {
+        "package": "MapLibre GL Native",
+        "repositoryURL": "https://github.com/maplibre/maplibre-gl-native-distribution",
+        "state": {
+          "branch": null,
+          "revision": "d761956e81e74d8bdbfba31e0ec3a75616190658",
+          "version": "5.12.2"
+        }
+      },
+      {
+        "package": "AnalyticsEvents",
+        "repositoryURL": "https://github.com/matrix-org/matrix-analytics-events",
+        "state": {
+          "branch": null,
+          "revision": "2f5fa5f1e2f6c6ae1a47c33d953a3ce289167eb0",
+          "version": "0.5.0"
+        }
+      },
+      {
+        "package": "WysiwygComposer",
+        "repositoryURL": "https://github.com/matrix-org/matrix-wysiwyg-composer-swift",
+        "state": {
+          "branch": null,
+          "revision": "1100b217c04d096dfe072afb4484660ff794d805",
+          "version": "2.2.2"
+        }
+      },
+      {
+        "package": "YbridOgg",
+        "repositoryURL": "https://github.com/vector-im/ogg-swift.git",
+        "state": {
+          "branch": null,
+          "revision": "9d82ed838404f10b607a1a1689f404563e9115c3",
+          "version": "0.8.3"
+        }
+      },
+      {
+        "package": "YbridOpus",
+        "repositoryURL": "https://github.com/vector-im/opus-swift",
+        "state": {
+          "branch": null,
+          "revision": "11f1887767cbc87c4b64b789ee830b779cc744cb",
+          "version": "0.8.4"
+        }
+      },
+      {
+        "package": "swift-collections",
+        "repositoryURL": "https://github.com/apple/swift-collections",
+        "state": {
+          "branch": null,
+          "revision": "48254824bb4248676bf7ce56014ff57b142b77eb",
+          "version": "1.0.2"
+        }
       }
-    },
-    {
-      "identity" : "dtcoretext",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Cocoanetics/DTCoreText",
-      "state" : {
-        "revision" : "9d2d4d2296e5d2d852a7d3c592b817d913a5d020",
-        "version" : "1.6.27"
-      }
-    },
-    {
-      "identity" : "dtfoundation",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Cocoanetics/DTFoundation.git",
-      "state" : {
-        "revision" : "76062513434421cb6c8a1ae1d4f8368a7ebc2da3",
-        "version" : "1.7.18"
-      }
-    },
-    {
-      "identity" : "maplibre-gl-native-distribution",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/maplibre/maplibre-gl-native-distribution",
-      "state" : {
-        "revision" : "d761956e81e74d8bdbfba31e0ec3a75616190658",
-        "version" : "5.12.2"
-      }
-    },
-    {
-      "identity" : "matrix-analytics-events",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/matrix-org/matrix-analytics-events",
-      "state" : {
-        "revision" : "2f5fa5f1e2f6c6ae1a47c33d953a3ce289167eb0",
-        "version" : "0.5.0"
-      }
-    },
-    {
-      "identity" : "matrix-wysiwyg-composer-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/matrix-org/matrix-wysiwyg-composer-swift",
-      "state" : {
-        "revision" : "1100b217c04d096dfe072afb4484660ff794d805",
-        "version" : "2.2.2"
-      }
-    },
-    {
-      "identity" : "ogg-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vector-im/ogg-swift.git",
-      "state" : {
-        "revision" : "9d82ed838404f10b607a1a1689f404563e9115c3",
-        "version" : "0.8.3"
-      }
-    },
-    {
-      "identity" : "opus-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vector-im/opus-swift",
-      "state" : {
-        "revision" : "11f1887767cbc87c4b64b789ee830b779cc744cb",
-        "version" : "0.8.4"
-      }
-    },
-    {
-      "identity" : "swift-collections",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-collections",
-      "state" : {
-        "revision" : "48254824bb4248676bf7ce56014ff57b142b77eb",
-        "version" : "1.0.2"
-      }
-    },
-    {
-      "identity" : "swift-ogg",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vector-im/swift-ogg",
-      "state" : {
-        "branch" : "0.0.1",
-        "revision" : "e9a9e7601da662fd8b97d93781ff5c60b4becf88"
-      }
-    }
-  ],
-  "version" : 2
+    ]
+  },
+  "version": 1
 }

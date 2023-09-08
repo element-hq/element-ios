@@ -684,7 +684,7 @@ enum {
                                                      style:UIAlertActionStyleDefault
                                                    handler: ^(UIAlertAction * action) {
 
-        ASWebAuthenticationSession *was = [[ASWebAuthenticationSession alloc]initWithURL:url callbackURLScheme:@"app" completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        ASWebAuthenticationSession *was = [[ASWebAuthenticationSession alloc]initWithURL:url callbackURLScheme:NULL completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
                 if (!error && weakSelf)
                 {
                     [weakSelf withdrawViewControllerAnimated:YES completion:nil];

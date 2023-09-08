@@ -3925,14 +3925,14 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
     if (url) {
-        ASWebAuthenticationSession *was = [[ASWebAuthenticationSession alloc]initWithURL:url callbackURLScheme:@"app" completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        ASWebAuthenticationSession *was = [[ASWebAuthenticationSession alloc]initWithURL:url callbackURLScheme:NULL completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         }];
 
         if (@available(iOS 13, *)) {
             was.presentationContextProvider = self;
         }
         
-        [was start]
+        [was start];
     }
 }
 

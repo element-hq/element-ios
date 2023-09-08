@@ -204,7 +204,7 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
         
         let alert = UIAlertController(title: VectorL10n.manageSessionRedirect, message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default) { [weak self] _ in
-            let was = ASWebAuthenticationSession(url: url, callbackURLScheme: "app") { _, _ in
+            let was = ASWebAuthenticationSession(url: url, callbackURLScheme: nil) { _, _ in
                 self?.popToSessionsOverview()
 
             }
