@@ -81,7 +81,7 @@ Once the framework is built using `./build_crypto_xcframework.sh` you will have 
     s.version               = "0.3.12"
 ```
 
-Then in the element-ios `Podfile`, add the following line under side the existing `pod 'MatrixSDK' [..]`:
+Then in the element-ios `Podfile`, add the following line under the existing `pod 'MatrixSDK' [..]`:
 
 ```
 pod 'MatrixSDKCrypto', :path => '../matrix-rust-sdk/MatrixSDKCrypto.podspec'
