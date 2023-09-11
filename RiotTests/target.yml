@@ -61,6 +61,7 @@ targets:
     - path: .
     - path: ../Config/Configurable.swift
     - path: ../Config/BuildSettings.swift
+    - path: ../Config/MDMSettings.swift
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Managers/AppInfo/AppInfo.swift
     - path: ../Riot/Managers/AppInfo/AppVersion.swift

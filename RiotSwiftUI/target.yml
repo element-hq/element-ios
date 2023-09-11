@@ -52,6 +52,7 @@ targets:
     - path: ../Riot/Managers/Theme/
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Config/BuildSettings.swift
+    - path: ../Config/MDMSettings.swift
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
     - path: ../Riot/Categories/String.swift
     - path: ../Riot/Categories/Character.swift
