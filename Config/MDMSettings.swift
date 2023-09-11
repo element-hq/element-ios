@@ -41,8 +41,11 @@ enum MDMSettings {
     
     static private func valueForKey(_ key: Key) -> Any? {
         guard let managedConfiguration = UserDefaults.standard.dictionary(forKey: appleManagedConfigurationKey) else {
+            print("MDM configuration missing")
             return nil
         }
+        
+        print("Retrieved MDM configuration: \(managedConfiguration)")
         
         return managedConfiguration[key.rawValue]
     }
