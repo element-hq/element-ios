@@ -204,7 +204,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate,
 ServiceTermsModalCoordinatorBridgePresenterDelegate,
 TableViewSectionsDelegate,
 ThreadsBetaCoordinatorBridgePresenterDelegate,
-ChangePasswordCoordinatorBridgePresenterDelegate>
+ChangePasswordCoordinatorBridgePresenterDelegate,
+SSOAuthenticationPresenterDelegate>
 {
     // Current alert (if any).
     __weak UIAlertController *currentAlert;
@@ -299,6 +300,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 @property (nonatomic) BOOL serviceTermsModalShouldCheckAccessForContactsOnAccept;
 @property (nonatomic) BOOL isPreparingIdentityService;
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) SSOAuthenticationPresenter *ssoAuthenticationPresenter;
 
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
@@ -3925,14 +3928,12 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     NSURL *url = [NSURL URLWithString: self.mainSession.homeserverWellknown.authentication.account];
     if (url) {
-        ASWebAuthenticationSession *was = [[ASWebAuthenticationSession alloc]initWithURL:url callbackURLScheme:NULL completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
-        }];
-
-        if (@available(iOS 13, *)) {
-            was.presentationContextProvider = self;
-        }
+        SSOAccountService *service = [[SSOAccountService alloc] initWithAccountURL:url];
+        SSOAuthenticationPresenter *presenter = [[SSOAuthenticationPresenter alloc] initWithSsoAuthenticationService:service];
+        presenter.delegate = self;
+        self.ssoAuthenticationPresenter = presenter;
         
-        [was start];
+        [presenter presentForIdentityProvider:nil with:@"" from:self animated:YES];
     }
 }
 
@@ -4608,10 +4609,26 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     [self.userSessionsFlowCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
-#pragma mark - ASWebAuthenticationPresentationContextProviding
+#pragma mark - SSOAuthenticationPresenterDelegate
 
-- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session  API_AVAILABLE(ios(13.0)){
-    return self.view.window;
+- (void)ssoAuthenticationPresenterDidCancel:(SSOAuthenticationPresenter *)presenter
+{
+    self.ssoAuthenticationPresenter = nil;
+    MXLogDebug(@"OIDC account management complete.")
+}
+
+- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationDidFailWithError:(NSError *)error
+{
+    self.ssoAuthenticationPresenter = nil;
+    MXLogError(@"OIDC account management failed.")
+}
+
+- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter
+  authenticationSucceededWithToken:(NSString *)token
+             usingIdentityProvider:(SSOIdentityProvider *)identityProvider
+{
+    self.ssoAuthenticationPresenter = nil;
+    MXLogWarning(@"Unexpected callback after OIDC account management.")
 }
 
 @end

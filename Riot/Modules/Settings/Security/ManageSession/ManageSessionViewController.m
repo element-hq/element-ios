@@ -45,7 +45,7 @@ enum {
 };
 
 
-@interface ManageSessionViewController () <UserVerificationCoordinatorBridgePresenterDelegate>
+@interface ManageSessionViewController () <UserVerificationCoordinatorBridgePresenterDelegate, SSOAuthenticationPresenterDelegate>
 {
     // The device to display
     MXDevice *device;
@@ -63,6 +63,8 @@ enum {
 @property (nonatomic, strong) UserVerificationCoordinatorBridgePresenter *userVerificationCoordinatorBridgePresenter;
 
 @property (nonatomic, strong) ReauthenticationCoordinatorBridgePresenter *reauthenticationCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) SSOAuthenticationPresenter *ssoAuthenticationPresenter;
 
 @end
 
@@ -679,25 +681,19 @@ enum {
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle: [VectorL10n manageSessionRedirect] message: nil preferredStyle:UIAlertControllerStyleAlert];
     
-    __weak typeof(self) weakSelf = self;
+    MXWeakify(self);
     UIAlertAction *action = [UIAlertAction actionWithTitle:[VectorL10n ok]
                                                      style:UIAlertActionStyleDefault
                                                    handler: ^(UIAlertAction * action) {
-
-        ASWebAuthenticationSession *was = [[ASWebAuthenticationSession alloc]initWithURL:url callbackURLScheme:NULL completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
-                if (!error && weakSelf)
-                {
-                    [weakSelf withdrawViewControllerAnimated:YES completion:nil];
-                }
-        }];
-
-        if (@available(iOS 13, *)) {
-            was.presentationContextProvider = self;
-        }
-
-        [was start];
-
+        MXStrongifyAndReturnIfNil(self);
+        SSOAccountService *service = [[SSOAccountService alloc] initWithAccountURL:url];
+        SSOAuthenticationPresenter *presenter = [[SSOAuthenticationPresenter alloc] initWithSsoAuthenticationService:service];
+        presenter.delegate = self;
+        self.ssoAuthenticationPresenter = presenter;
+        
+        [presenter presentForIdentityProvider:nil with:@"" from:self animated:YES];
     }];
+    
     [alert addAction: action];
     [self presentViewController:alert animated:YES completion:nil];
 }
@@ -763,10 +759,27 @@ enum {
     [self reloadDeviceWithCompletion:^{}];
 }
 
-#pragma mark - ASWebAuthenticationPresentationContextProviding
+#pragma mark - SSOAuthenticationPresenterDelegate
 
-- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session  API_AVAILABLE(ios(13.0)){
-    return self.view.window;
+- (void)ssoAuthenticationPresenterDidCancel:(SSOAuthenticationPresenter *)presenter
+{
+    self.ssoAuthenticationPresenter = nil;
+    MXLogDebug(@"OIDC account management complete.")
+    [self withdrawViewControllerAnimated:YES completion:nil];
+}
+
+- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationDidFailWithError:(NSError *)error
+{
+    self.ssoAuthenticationPresenter = nil;
+    MXLogError(@"OIDC account management failed.")
+}
+
+- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter
+  authenticationSucceededWithToken:(NSString *)token
+             usingIdentityProvider:(SSOIdentityProvider *)identityProvider
+{
+    self.ssoAuthenticationPresenter = nil;
+    MXLogWarning(@"Unexpected callback after OIDC account management.")
 }
 
 @end

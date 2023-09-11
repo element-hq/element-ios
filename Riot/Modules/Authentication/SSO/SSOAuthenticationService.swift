@@ -22,8 +22,16 @@ enum SSOAuthenticationServiceError: Error {
     case unknown
 }
 
+@objc protocol SSOAuthenticationServiceProtocol {
+    var callBackURLScheme: String? { get }
+
+    func authenticationURL(for identityProvider: String?, transactionId: String) -> URL?
+
+    func loginToken(from url: URL) -> String?
+}
+
 @objcMembers
-final class SSOAuthenticationService: NSObject {
+final class SSOAuthenticationService: NSObject, SSOAuthenticationServiceProtocol {
     
     // MARK: - Constants
     
