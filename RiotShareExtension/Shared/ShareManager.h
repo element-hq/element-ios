@@ -36,7 +36,9 @@ typedef NS_ENUM(NSUInteger, ShareManagerResult) {
 @property (nonatomic, copy) void (^completionCallback)(ShareManagerResult);
 
 - (instancetype)initWithShareItemSender:(id<ShareItemSenderProtocol>)itemSender
-                                   type:(ShareManagerType)type;
+                                   type:(ShareManagerType)type
+                                   session:(nullable MXSession*)session;
+
 
 - (UIViewController *)mainViewController;
 

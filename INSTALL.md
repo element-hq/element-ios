@@ -71,6 +71,25 @@ Be sure to use compatible branches for Element iOS and MatrixSDK. For example, i
 
 **Important**: By working with [XcodeGen](https://github.com/yonaskolb/XcodeGen) you will need to use the _New Build System_ in Xcode, to have your some of the xcconfig variables taken into account. It should be enabled by default on the latest Xcode versions, but if you need to enable it go to Xcode menu and select `File > Workspace Settings… > Build System` and then choose `New Build System`.
 
+- **Running a local rust MatrixCryptoSDK locally**
+
+If you want to debug locally or test local changes of the rust `MatrixSDKCrypto` with a local `MatrixSDK`, you must checkout [matrix-rust-sdk](https://github.com/matrix-org/matrix-rust-sdk), and follow the [instructions in the repository](https://github.com/matrix-org/matrix-rust-sdk/tree/main/bindings/apple).
+
+Once the framework is built using `./build_crypto_xcframework.sh` you will have to move `bindings/apple/MatrixSDKCrypto-Local.podspec` to the root of the `matrix-rust-sdk` folder and rename it to `MatrixSDKCrypto.podspec` then update `s.version` with the current pod version:
+
+```
+    s.version               = "0.3.12"
+```
+
+Then in the element-ios `Podfile`, add the following line under the existing `pod 'MatrixSDK' [..]`:
+
+```
+pod 'MatrixSDKCrypto', :path => '../matrix-rust-sdk/MatrixSDKCrypto.podspec'
+```
+
+Run `pod install` to refresh all.
+
+
 ### `$matrixSDKVersion` Modification
 
 Every time you change the `$matrixSDKVersion` variable in the `Podfile`, you have to run the `pod install` command again.

@@ -31,6 +31,8 @@
 
 @property (nonatomic, strong, readonly) ShareViewController *shareViewController;
 
+@property (nonatomic) BOOL useCustomSession;
+@property (nonatomic, strong) MXSession* session;
 @property (nonatomic, strong) MXKAccount *userAccount;
 @property (nonatomic, strong) MXFileStore *fileStore;
 
@@ -51,11 +53,14 @@ static MXSession *fakeSession;
 
 - (instancetype)initWithShareItemSender:(id<ShareItemSenderProtocol>)itemSender
                                    type:(ShareManagerType)type
+                                session:(MXSession*)session
 {
     if (self = [super init])
     {
         _shareItemSender = itemSender;
         _shareItemSender.delegate = self;
+        _session = session;
+        _useCustomSession = _session == nil;
         
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(checkUserAccount) name:kMXKAccountManagerDidRemoveAccountNotification object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(checkUserAccount) name:NSExtensionHostWillEnterForegroundNotification object:nil];
@@ -71,7 +76,20 @@ static MXSession *fakeSession;
         [NSBundle mxk_setLanguage:language];
         [NSBundle mxk_setFallbackLanguage:@"en"];
         
-        [self checkUserAccount];
+        if (!_useCustomSession)
+        {
+            // If we don't use a custom session, we can initialize the shareViewController with our existing session
+            self.userAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+            ShareDataSource *roomDataSource = [[ShareDataSource alloc] initWithFileStore:_session.store
+                                                                                 session:_session];
+            
+            [self.shareViewController configureWithState:ShareViewControllerAccountStateConfigured
+                                          roomDataSource:roomDataSource];
+        }
+        else
+        {
+            [self checkUserAccount];
+        }
     }
     
     return self;
@@ -95,32 +113,23 @@ static MXSession *fakeSession;
         MXStrongifyAndReturnIfNil(self);
         [self.userAccount handleUnauthenticatedWithError:error isSoftLogout:isSoftLogout isRefreshTokenAuth:isRefreshTokenAuth andCompletion:completion];
     }];
-    MXSession *session = [[MXSession alloc] initWithMatrixRestClient:restClient];
-    [MXFileStore setPreloadOptions:0];
-    
-    MXWeakify(session);
-    [session setStore:self.fileStore success:^{
-        MXStrongifyAndReturnIfNil(session);
-        
-        self.selectedRooms = [NSMutableArray array];
-        for (NSString *roomIdentifier in roomIdentifiers) {
-            MXRoom *room = [MXRoom loadRoomFromStore:self.fileStore withRoomId:roomIdentifier matrixSession:session];
-            if (room) {
-                [self.selectedRooms addObject:room];
-            }
-        }
-        
-        [self.shareItemSender sendItemsToRooms:self.selectedRooms success:^{
-            self.selectedRooms = nil;
-            self.completionCallback(ShareManagerResultFinished);
-        } failure:^(NSArray<NSError *> *errors) {
-            self.selectedRooms = nil;
-            [self showFailureAlert:[VectorL10n roomEventFailedToSend]];
+    if (self.useCustomSession || !self.session)
+    {
+        MXSession* session = [[MXSession alloc] initWithMatrixRestClient:restClient];
+        [MXFileStore setPreloadOptions:0];
+                
+        MXWeakify(session);
+        [session setStore:self.fileStore success:^{
+            MXStrongifyAndReturnIfNil(session);
+            [self shareForRoomIdentifiers:roomIdentifiers usingSession:session];
+        } failure:^(NSError *error) {
+            MXLogError(@"[ShareManager] Failed preparing matrix session");
         }];
-        
-    } failure:^(NSError *error) {
-        MXLogError(@"[ShareManager] Failed preparing matrix session");
-    }];
+    }
+    else
+    {
+        [self shareForRoomIdentifiers:roomIdentifiers usingSession:self.session];
+    }
 }
 
 - (void)shareViewControllerDidRequestDismissal:(ShareViewController *)shareViewController
@@ -141,6 +150,25 @@ static MXSession *fakeSession;
 }
 
 #pragma mark - Private
+
+- (void)shareForRoomIdentifiers:(NSSet<NSString *> *)roomIdentifiers usingSession:(MXSession*)session
+{
+    self.selectedRooms = [NSMutableArray array];
+    for (NSString *roomIdentifier in roomIdentifiers) {
+        MXRoom *room = [MXRoom loadRoomFromStore:session.store withRoomId:roomIdentifier matrixSession:session];
+        if (room) {
+            [self.selectedRooms addObject:room];
+        }
+    }
+    
+    [self.shareItemSender sendItemsToRooms:self.selectedRooms success:^{
+        self.selectedRooms = nil;
+        self.completionCallback(ShareManagerResultFinished);
+    } failure:^(NSArray<NSError *> *errors) {
+        self.selectedRooms = nil;
+        [self showFailureAlert:[VectorL10n roomEventFailedToSend]];
+    }];
+}
 
 - (void)showFailureAlert:(NSString *)title
 {

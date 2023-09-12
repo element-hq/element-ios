@@ -371,23 +371,24 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         [sectionUserSettings addRowWithTag: USER_SETTINGS_PHONENUMBERS_OFFSET + index];
     }
-    if (BuildSettings.settingsScreenAllowAddingEmailThreepids &&
-        // If the threePidChanges is nil we assume the capability to be true
-        (!self.mainSession.homeserverCapabilities.threePidChanges ||
-         self.mainSession.homeserverCapabilities.threePidChanges.enabled))
-    {
-        [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_EMAIL_INDEX];
-    }
-    if (BuildSettings.settingsScreenAllowAddingPhoneThreepids)
-    {
-        [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_PHONENUMBER_INDEX];
-    }
-    if (BuildSettings.settingsScreenShowThreepidExplanatory)
-    {
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart1] attributes:@{}];
-        [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart2] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
-        [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart3] attributes:@{}]];
-        sectionUserSettings.attributedFooterTitle = attributedString;
+    // If the threePidChanges is nil we assume the capability to be true
+    if (!self.mainSession.homeserverCapabilities.threePidChanges ||
+        self.mainSession.homeserverCapabilities.threePidChanges.enabled) {
+        if (BuildSettings.settingsScreenAllowAddingEmailThreepids)
+        {
+            [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_EMAIL_INDEX];
+        }
+        if (BuildSettings.settingsScreenAllowAddingPhoneThreepids)
+        {
+            [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_PHONENUMBER_INDEX];
+        }
+        if (BuildSettings.settingsScreenShowThreepidExplanatory)
+        {
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart1] attributes:@{}];
+            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart2] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
+            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart3] attributes:@{}]];
+            sectionUserSettings.attributedFooterTitle = attributedString;
+        }
     }
     
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
