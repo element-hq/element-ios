@@ -39,7 +39,10 @@ final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
         self.parameters = parameters
         service = parameters.service
         
-        viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: parameters.service, settingsService: RiotSettings.shared)
+        let shouldShowDeviceLogout = parameters.session.homeserverWellknown.authentication == nil
+        viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: parameters.service,
+                                                  settingsService: RiotSettings.shared,
+                                                  showDeviceLogout: shouldShowDeviceLogout)
         
         hostingViewController = VectorHostingController(rootView: UserSessionsOverview(viewModel: viewModel.context))
         hostingViewController.vc_setLargeTitleDisplayMode(.never)
