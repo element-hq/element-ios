@@ -38,5 +38,6 @@ targets:
     sources:
     - path: .
     - path: ../Config/BuildSettings.swift
+    - path: ../Config/MDMSettings.swift
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift

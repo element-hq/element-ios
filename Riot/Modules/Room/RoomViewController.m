@@ -4577,7 +4577,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     ForwardingShareItemSender *shareItemSender = [[ForwardingShareItemSender alloc] initWithEvent:selectedEvent];
     self.shareManager = [[ShareManager alloc] initWithShareItemSender:shareItemSender
-                                                                 type:ShareManagerTypeForward];
+                                                                 type:ShareManagerTypeForward
+                                                              session:self.mainSession];
     
     MXWeakify(self);
     [self.shareManager setCompletionCallback:^(ShareManagerResult result) {
