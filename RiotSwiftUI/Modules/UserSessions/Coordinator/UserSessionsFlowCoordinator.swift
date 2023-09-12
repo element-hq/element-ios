@@ -188,9 +188,11 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
     private func createOtherSessionsCoordinator(sessionInfos: [UserSessionInfo],
                                                 filterBy filter: UserOtherSessionsFilter,
                                                 title: String) -> UserOtherSessionsCoordinator {
+        let shouldShowDeviceLogout = parameters.session.homeserverWellknown.authentication == nil
         let parameters = UserOtherSessionsCoordinatorParameters(sessionInfos: sessionInfos,
                                                                 filter: filter,
-                                                                title: title)
+                                                                title: title,
+                                                                showDeviceLogout: shouldShowDeviceLogout)
         return UserOtherSessionsCoordinator(parameters: parameters)
     }
     

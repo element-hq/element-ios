@@ -24,6 +24,7 @@ struct UserOtherSessionsToolbar: ToolbarContent {
     @Binding var isShowLocationEnabled: Bool
     let allItemsSelected: Bool
     let sessionCount: Int
+    let showDeviceLogout: Bool
     let onToggleSelection: () -> Void
     let onSignOut: () -> Void
     
@@ -94,7 +95,7 @@ struct UserOtherSessionsToolbar: ToolbarContent {
                     Label(showLocationInfo: isShowLocationEnabled)
                 }
                 
-                if sessionCount > 0 {
+                if sessionCount > 0, showDeviceLogout {
                     DestructiveButton {
                         onSignOut()
                     } label: {

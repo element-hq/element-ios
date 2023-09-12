@@ -28,6 +28,7 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
     init(sessionInfos: [UserSessionInfo],
          filter: UserOtherSessionsFilter,
          title: String,
+         showDeviceLogout: Bool,
          settingsService: UserSessionSettingsProtocol) {
         self.sessionInfos = sessionInfos
         defaultTitle = title
@@ -41,7 +42,8 @@ class UserOtherSessionsViewModel: UserOtherSessionsViewModelType, UserOtherSessi
                                                                 emptyItemsTitle: filter.userOtherSessionsViewEmptyResultsTitle,
                                                                 allItemsSelected: false,
                                                                 enableSignOutButton: false,
-                                                                showLocationInfo: settingsService.showIPAddressesInSessionsManager))
+                                                                showLocationInfo: settingsService.showIPAddressesInSessionsManager,
+                                                                showDeviceLogout: showDeviceLogout))
     }
     
     // MARK: - Public
