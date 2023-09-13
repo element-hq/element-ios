@@ -63,7 +63,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoInactiveSessions,
                                                        allItemsSelected: false,
                                                        enableSignOutButton: false,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -81,7 +82,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: false,
                                                        enableSignOutButton: false,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -104,7 +106,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoUnverifiedSessions,
                                                        allItemsSelected: false,
                                                        enableSignOutButton: false,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(expectedItems.count, 2)
         XCTAssertEqual(sut.state, expectedState)
     }
@@ -123,7 +126,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoVerifiedSessions,
                                                        allItemsSelected: false,
                                                        enableSignOutButton: false,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -139,7 +143,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoVerifiedSessions,
                                                        allItemsSelected: false,
                                                        enableSignOutButton: false,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -155,7 +160,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoUnverifiedSessions,
                                                        allItemsSelected: false,
                                                        enableSignOutButton: false,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -171,7 +177,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: VectorL10n.userOtherSessionNoInactiveSessions,
                                                        allItemsSelected: false,
                                                        enableSignOutButton: false,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -192,7 +199,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: true,
                                                        enableSignOutButton: true,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -213,7 +221,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: false,
                                                        enableSignOutButton: false,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -233,7 +242,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: false,
                                                        enableSignOutButton: true,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -253,7 +263,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: true,
                                                        enableSignOutButton: true,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -273,7 +284,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: false,
                                                        enableSignOutButton: false,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -296,7 +308,8 @@ class UserOtherSessionsViewModelTests: XCTestCase {
                                                        emptyItemsTitle: "",
                                                        allItemsSelected: false,
                                                        enableSignOutButton: false,
-                                                       showLocationInfo: false)
+                                                       showLocationInfo: false,
+                                                       showDeviceLogout: true)
         XCTAssertEqual(sut.state, expectedState)
     }
     
@@ -352,6 +365,7 @@ class UserOtherSessionsViewModelTests: XCTestCase {
         UserOtherSessionsViewModel(sessionInfos: sessionInfos,
                                    filter: filter,
                                    title: title,
+                                   showDeviceLogout: true,
                                    settingsService: MockUserSessionSettings())
     }
     

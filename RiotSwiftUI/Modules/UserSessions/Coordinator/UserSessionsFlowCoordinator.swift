@@ -32,6 +32,7 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
     private var errorPresenter: MXKErrorPresentation
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol
     private var loadingIndicator: UserIndicator?
+    private var ssoAuthenticationPresenter: SSOAuthenticationPresenter?
     
     /// The root coordinator for user session management.
     private weak var sessionsOverviewCoordinator: UserSessionsOverviewCoordinator?
@@ -188,21 +189,25 @@ final class UserSessionsFlowCoordinator: NSObject, Coordinator, Presentable {
     private func createOtherSessionsCoordinator(sessionInfos: [UserSessionInfo],
                                                 filterBy filter: UserOtherSessionsFilter,
                                                 title: String) -> UserOtherSessionsCoordinator {
+        let shouldShowDeviceLogout = parameters.session.homeserverWellknown.authentication == nil
         let parameters = UserOtherSessionsCoordinatorParameters(sessionInfos: sessionInfos,
                                                                 filter: filter,
-                                                                title: title)
+                                                                title: title,
+                                                                showDeviceLogout: shouldShowDeviceLogout)
         return UserOtherSessionsCoordinator(parameters: parameters)
     }
     
     private func openDeviceLogoutRedirectURL(_ url: URL) {
         let alert = UIAlertController(title: VectorL10n.manageSessionRedirect, message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default) { [weak self] _ in
-            UIApplication.shared.open(url) { [weak self] success in
-                guard success else {
-                    return
-                }
-                self?.popToSessionsOverview()
-            }
+            guard let self else { return }
+            
+            let service = SSOAccountService(accountURL: url)
+            let presenter = SSOAuthenticationPresenter(ssoAuthenticationService: service)
+            presenter.delegate = self
+            self.ssoAuthenticationPresenter = presenter
+            
+            presenter.present(forIdentityProvider: nil, with: "", from: self.toPresentable(), animated: true)
         })
         alert.popoverPresentationController?.sourceView = toPresentable().view
         navigationRouter.present(alert, animated: true)
@@ -545,5 +550,27 @@ private extension UserOtherSessionsFilter {
         case .all:
             return ""
         }
+    }
+}
+
+// MARK: ASWebAuthenticationPresentationContextProviding
+
+extension UserSessionsFlowCoordinator: SSOAuthenticationPresenterDelegate {
+    func ssoAuthenticationPresenterDidCancel(_ presenter: SSOAuthenticationPresenter) {
+        ssoAuthenticationPresenter = nil
+        MXLog.info("OIDC account management complete.")
+        popToSessionsOverview()
+    }
+    
+    func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter, authenticationDidFailWithError error: Error) {
+        ssoAuthenticationPresenter = nil
+        MXLog.error("OIDC account management failed.")
+    }
+    
+    func ssoAuthenticationPresenter(_ presenter: SSOAuthenticationPresenter,
+                                    authenticationSucceededWithToken token: String,
+                                    usingIdentityProvider identityProvider: SSOIdentityProvider?) {
+        ssoAuthenticationPresenter = nil
+        MXLog.warning("Unexpected callback after OIDC account management.")
     }
 }

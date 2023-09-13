@@ -37,7 +37,7 @@ final class SSOAuthenticationPresenter: NSObject {
     
     // MARK: - Properties
     
-    private let ssoAuthenticationService: SSOAuthenticationService
+    private let ssoAuthenticationService: SSOAuthenticationServiceProtocol
     
     // MARK: Private
     
@@ -53,7 +53,7 @@ final class SSOAuthenticationPresenter: NSObject {
     
     // MARK: - Setup
     
-    init(ssoAuthenticationService: SSOAuthenticationService) {
+    init(ssoAuthenticationService: SSOAuthenticationServiceProtocol) {
         self.ssoAuthenticationService = ssoAuthenticationService
         super.init()
     }

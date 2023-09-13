@@ -51,6 +51,7 @@ struct UserSessionsOverviewViewState: BindableState {
     var showLoadingIndicator = false
     var linkDeviceButtonVisible = false
     var showLocationInfo: Bool
+    var showDeviceLogout: Bool
 }
 
 enum UserSessionsOverviewViewAction {

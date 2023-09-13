@@ -60,6 +60,7 @@ struct UserOtherSessions: View {
                                                                   set: { _ in withAnimation { viewModel.send(viewAction: .showLocationInfo) } }),
                                      allItemsSelected: viewModel.viewState.allItemsSelected,
                                      sessionCount: viewModel.viewState.sessionItems.count,
+                                     showDeviceLogout: viewModel.viewState.showDeviceLogout,
                                      onToggleSelection: { viewModel.send(viewAction: .toggleAllSelection) },
                                      onSignOut: { viewModel.send(viewAction: .logoutAllUserSessions) })
         }

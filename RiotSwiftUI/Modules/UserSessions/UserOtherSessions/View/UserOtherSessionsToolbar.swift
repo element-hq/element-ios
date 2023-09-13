@@ -24,6 +24,7 @@ struct UserOtherSessionsToolbar: ToolbarContent {
     @Binding var isShowLocationEnabled: Bool
     let allItemsSelected: Bool
     let sessionCount: Int
+    let showDeviceLogout: Bool
     let onToggleSelection: () -> Void
     let onSignOut: () -> Void
     
@@ -81,12 +82,14 @@ struct UserOtherSessionsToolbar: ToolbarContent {
     private func optionsMenu() -> some View {
         Button { } label: {
             Menu {
-                Button {
-                    isEditModeEnabled = true
-                } label: {
-                    Label(VectorL10n.userOtherSessionMenuSelectSessions, systemImage: "checkmark.circle")
+                if showDeviceLogout { // As you can only sign out the selected sessions, we don't allow selection when you're unable to sign out devices.
+                    Button {
+                        isEditModeEnabled = true
+                    } label: {
+                        Label(VectorL10n.userOtherSessionMenuSelectSessions, systemImage: "checkmark.circle")
+                    }
+                    .disabled(sessionCount == 0)
                 }
-                .disabled(sessionCount == 0)
                 
                 Button {
                     isShowLocationEnabled.toggle()
@@ -94,7 +97,7 @@ struct UserOtherSessionsToolbar: ToolbarContent {
                     Label(showLocationInfo: isShowLocationEnabled)
                 }
                 
-                if sessionCount > 0 {
+                if sessionCount > 0, showDeviceLogout {
                     DestructiveButton {
                         onSignOut()
                     } label: {

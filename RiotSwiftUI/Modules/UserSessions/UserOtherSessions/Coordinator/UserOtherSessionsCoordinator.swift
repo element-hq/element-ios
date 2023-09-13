@@ -21,6 +21,7 @@ struct UserOtherSessionsCoordinatorParameters {
     let sessionInfos: [UserSessionInfo]
     let filter: UserOtherSessionsFilter
     let title: String
+    let showDeviceLogout: Bool
 }
 
 final class UserOtherSessionsCoordinator: Coordinator, Presentable {
@@ -40,6 +41,7 @@ final class UserOtherSessionsCoordinator: Coordinator, Presentable {
         let viewModel = UserOtherSessionsViewModel(sessionInfos: parameters.sessionInfos,
                                                    filter: parameters.filter,
                                                    title: parameters.title,
+                                                   showDeviceLogout: parameters.showDeviceLogout,
                                                    settingsService: RiotSettings.shared)
         let view = UserOtherSessions(viewModel: viewModel.context)
         userOtherSessionsViewModel = viewModel
