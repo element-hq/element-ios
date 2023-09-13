@@ -24,11 +24,11 @@ class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSess
     
     var completion: ((UserSessionsOverviewViewModelResult) -> Void)?
 
-    init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol, settingsService: UserSessionSettingsProtocol) {
+    init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol, settingsService: UserSessionSettingsProtocol, showDeviceLogout: Bool) {
         self.userSessionsOverviewService = userSessionsOverviewService
         self.settingsService = settingsService
         
-        super.init(initialViewState: .init(showLocationInfo: settingsService.showIPAddressesInSessionsManager))
+        super.init(initialViewState: .init(showLocationInfo: settingsService.showIPAddressesInSessionsManager, showDeviceLogout: showDeviceLogout))
         
         userSessionsOverviewService.overviewDataPublisher.sink { [weak self] overviewData in
             self?.updateViewState(with: overviewData)

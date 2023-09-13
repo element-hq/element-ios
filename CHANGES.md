@@ -1,3 +1,11 @@
+## Changes in 1.11.3 (2023-09-13)
+
+🐛 Bugfixes
+
+- Show OIDC account management UI using embedded browser instead of system browser. ([#7671](https://github.com/vector-im/element-ios/issues/7671))
+- Hide Sign Out X/All Sessions buttons in the Device Manager when using OIDC. ([#7672](https://github.com/vector-im/element-ios/issues/7672))
+
+
 ## Changes in 1.11.2 (2023-09-12)
 
 🙌 Improvements

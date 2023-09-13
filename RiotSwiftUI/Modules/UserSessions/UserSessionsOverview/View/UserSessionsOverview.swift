@@ -125,7 +125,7 @@ struct UserSessionsOverview: View {
                     Label(VectorL10n.signOut, systemImage: "rectangle.portrait.and.arrow.right.fill")
                 }
             }
-            if viewModel.viewState.otherSessionsViewData.count > 0 {
+            if viewModel.viewState.otherSessionsViewData.count > 0, viewModel.viewState.showDeviceLogout {
                 DestructiveButton {
                     viewModel.send(viewAction: .logoutOtherSessions)
                 } label: {
@@ -149,10 +149,12 @@ struct UserSessionsOverview: View {
                 Label(showLocationInfo: viewModel.viewState.showLocationInfo)
             }
             
-            DestructiveButton {
-                viewModel.send(viewAction: .logoutOtherSessions)
-            } label: {
-                Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(viewModel.viewState.otherSessionsViewData.count)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
+            if viewModel.viewState.showDeviceLogout {
+                DestructiveButton {
+                    viewModel.send(viewAction: .logoutOtherSessions)
+                } label: {
+                    Label(VectorL10n.userOtherSessionMenuSignOutSessions(String(viewModel.viewState.otherSessionsViewData.count)), systemImage: "rectangle.portrait.and.arrow.forward.fill")
+                }
             }
         } label: {
             menuImage

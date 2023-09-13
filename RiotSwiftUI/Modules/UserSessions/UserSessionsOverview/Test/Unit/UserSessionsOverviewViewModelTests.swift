@@ -21,7 +21,9 @@ import XCTest
 
 class UserSessionsOverviewViewModelTests: XCTestCase {
     func testInitialStateEmpty() {
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService(), settingsService: MockUserSessionSettings())
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService(),
+                                                      settingsService: MockUserSessionSettings(),
+                                                      showDeviceLogout: true)
         
         XCTAssertNil(viewModel.state.currentSessionViewData)
         XCTAssertTrue(viewModel.state.unverifiedSessionsViewData.isEmpty)
@@ -31,7 +33,9 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
     }
     
     func testLoadOnDidAppear() {
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService(), settingsService: MockUserSessionSettings())
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService(),
+                                                      settingsService: MockUserSessionSettings(),
+                                                      showDeviceLogout: true)
         viewModel.process(viewAction: .viewAppeared)
         
         XCTAssertNotNil(viewModel.state.currentSessionViewData)
@@ -42,7 +46,9 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
     }
     
     func testSimpleActionProcessing() {
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService(), settingsService: MockUserSessionSettings())
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: MockUserSessionsOverviewService(),
+                                                      settingsService: MockUserSessionSettings(),
+                                                      showDeviceLogout: true)
         
         var result: UserSessionsOverviewViewModelResult?
         viewModel.completion = { action in
@@ -69,7 +75,9 @@ class UserSessionsOverviewViewModelTests: XCTestCase {
         let service = MockUserSessionsOverviewService()
         service.updateOverviewData { _ in }
         
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service, settingsService: MockUserSessionSettings())
+        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service,
+                                                      settingsService: MockUserSessionSettings(),
+                                                      showDeviceLogout: true)
         
         var result: UserSessionsOverviewViewModelResult?
         viewModel.completion = { action in

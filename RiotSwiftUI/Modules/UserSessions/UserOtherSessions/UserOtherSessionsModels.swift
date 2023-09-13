@@ -43,6 +43,7 @@ struct UserOtherSessionsViewState: BindableState, Equatable {
     var allItemsSelected: Bool
     var enableSignOutButton: Bool
     var showLocationInfo: Bool
+    var showDeviceLogout: Bool
 }
 
 struct UserOtherSessionsBindings: Equatable {
