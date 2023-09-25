@@ -210,7 +210,7 @@
 "room_delete_unsent_messages" = "Xoá các tin nhắn chưa được gửi";
 "room_event_action_copy" = "Sao chép";
 "room_event_action_quote" = "Trích dẫn";
-"room_event_action_redact" = "Biên tập lại";
+"room_event_action_redact" = "Xóa";
 "room_event_action_more" = "Thêm";
 "room_event_action_share" = "Chia sẻ";
 "room_event_action_permalink" = "Liên kết";
@@ -1898,7 +1898,7 @@
 "send" = "Gửi";
 "copy_button_name" = "Sao chép";
 "resend" = "Gửi lại";
-"redact" = "Biên tập lại";
+"redact" = "Xóa";
 "share" = "Chia sẻ";
 "set_power_level" = "Độ nhiệt huyết";
 "delete" = "Xoá";

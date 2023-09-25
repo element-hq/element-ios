@@ -2704,3 +2704,13 @@
 "pill_message" = "Meddelande";
 "key_verification_scan_qr_code_information_new_session" = "Rikta kameran mot QR-koden som visas på din andra enhet för att verifiera din nya session";
 "key_verification_scan_qr_code_information_other_session" = "Rikta kameran mot QR-koden som visas på din andra enhet för att verifiera din session";
+"room_creation_user_not_found_prompt_title" = "Bekräftelse";
+"room_creation_user_not_found_prompt_message" = "Kunde inte hitta profiler för det här Matrix-ID:t. Vill du starta en DM ändå?";
+"room_creation_user_not_found_prompt_invite_action" = "Starta en DM ändå";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "Kunde inte hitta profiler för det här Matrix-ID:t. Är du säker på att du vill bjuda in %@ till %@?";
+"room_participants_invite_anyway" = "Bjud in ändå";
+"settings_manage_account_title" = "Konto";
+"settings_manage_account_action" = "Hantera konto";
+"settings_manage_account_description" = "Hantera ditt konto på %@";
+"manage_session_redirect" = "Du kommer att omdirigeras till din servers autentiseringsleverantör för att fortsätta utloggning.";
+"manage_session_redirect_error" = "Funktion för närvarande otillgänglig. Vänligen kontakta din hemserveradministratör";

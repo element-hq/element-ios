@@ -2742,3 +2742,8 @@
 "room_participants_invite_anyway" = "Invita lo stesso";
 "room_participants_invite_unknown_participant_prompt_to_msg" = "Impossibile trovare profili con questo ID Matrix. Vuoi davvero invitare %@ in %@?";
 "room_creation_user_not_found_prompt_message" = "Impossibile trovare profili con questo ID Matrix. Vuoi comunque iniziare un messaggio diretto?";
+"settings_manage_account_title" = "Account";
+"settings_manage_account_action" = "Gestisci account";
+"settings_manage_account_description" = "Gestisci il tuo account su %@";
+"manage_session_redirect" = "Verrai reindirizzato al fornitore di autenticazione del tuo server per completare la disconnessione.";
+"manage_session_redirect_error" = "Funzionalità attualmente non disponibile. Contatta l'amministratore del tuo homeserver";
