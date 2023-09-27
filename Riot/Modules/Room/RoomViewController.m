@@ -1942,7 +1942,9 @@ static CGSize kThreadListBarButtonItemImageSize;
             
             if (self.supportCallOption)
             {
-                if (self.roomDataSource.room.summary.membersCount.joined == 2 && self.roomDataSource.room.isDirect)
+                if (self.roomDataSource.room.summary.membersCount.joined == 2
+                    && self.roomDataSource.room.isDirect
+                    && !self.mainSession.vc_homeserverConfiguration.jitsi.useFor1To1Calls)
                 {
                     //  voice call button for Matrix call
                     UIBarButtonItem *itemVoice = [[UIBarButtonItem alloc] initWithImage:AssetImages.voiceCallHangonIcon.image
@@ -5038,7 +5040,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     else
     {
-        if (self.roomDataSource.room.summary.membersCount.joined == 2 && self.roomDataSource.room.isDirect)
+        if (self.roomDataSource.room.summary.membersCount.joined == 2
+            && self.roomDataSource.room.isDirect
+            && !self.mainSession.vc_homeserverConfiguration.jitsi.useFor1To1Calls)
         {
             //  Matrix call
             [self.roomDataSource.room placeCallWithVideo:video success:nil failure:nil];
