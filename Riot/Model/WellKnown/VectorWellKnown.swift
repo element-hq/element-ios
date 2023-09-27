@@ -74,7 +74,8 @@ extension VectorWellKnownEncryptionConfiguration: Decodable {
 
 // MARK: - Jitsi
 struct VectorWellKnownJitsiConfiguration: Decodable {
-    
     /// Default Jitsi server
     let preferredDomain: String?
+    /// Override native calling with Jitsi for 1:1 calls.
+    let useFor1To1Calls: Bool?
 }

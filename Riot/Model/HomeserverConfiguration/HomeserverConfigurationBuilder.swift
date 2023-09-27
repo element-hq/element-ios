@@ -72,6 +72,8 @@ final class HomeserverConfigurationBuilder: NSObject {
             jitsiServerURL = hardcodedJitsiServerURL
         }
         
+        let useJitsiFor1To1Calls = vectorWellKnownJitsiConfiguration?.useFor1To1Calls
+        
         // Tile server configuration
         
         let tileServerMapStyleURL: URL
@@ -87,7 +89,8 @@ final class HomeserverConfigurationBuilder: NSObject {
         // Create HomeserverConfiguration
         
         let jitsiConfiguration = HomeserverJitsiConfiguration(serverDomain: jitsiPreferredDomain,
-                                                              serverURL: jitsiServerURL)
+                                                              serverURL: jitsiServerURL,
+                                                              useFor1To1Calls: useJitsiFor1To1Calls)
                 
         return HomeserverConfiguration(jitsi: jitsiConfiguration,
                                        encryption: encryptionConfiguration,
