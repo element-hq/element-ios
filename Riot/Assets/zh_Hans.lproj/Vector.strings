@@ -2367,3 +2367,35 @@
 "settings_presence_offline_mode" = "离线模式";
 "room_details_polls" = "投票历史";
 "settings_labs_enable_new_app_layout" = "新版应用布局";
+"room_details_access_row_title" = "访问";
+"room_access_settings_screen_restricted_message" = "让房间中的任何人都能找到并加入。\n您会被要求确认哪些房间。";
+"room_access_settings_screen_upgrade_required" = "需要升级";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "未找到该 Matrix ID 的配置文件。您确定要邀请 %@ 到 %@？";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "自动邀请成员加入新房间";
+"room_preview_decline_invitation_options" = "您想拒绝邀请还是忽略该用户？";
+"room_access_settings_screen_title" = "谁能进入当前房间？";
+"room_access_settings_screen_message" = "决定谁能找到并加入 %@。";
+"room_access_settings_screen_edit_spaces" = "编辑房间";
+"room_access_settings_screen_public_message" = "任何人都可以找到并加入。";
+"settings_presence" = "存在";
+"room_details_promote_room_suggest_title" = "推荐给房间成员";
+"settings_push_rules_error" = "更新您的个性化通知时发生错误。请再试一次。";
+"room_access_settings_screen_private_message" = "只有受邀者才能找到并加入。";
+"room_access_settings_screen_upgrade_alert_message" = "%@ 中的任何人都能找到并加入此房间，无需手动邀请所有人。您可随时在房间设置中进行更改。";
+"room_access_settings_screen_upgrade_alert_note" = "请注意，升级后将创建一个新版本的房间。当前所有信息都将保留在房间中。";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "升级";
+"settings_acceptable_use" = "可接受使用政策";
+"room_command_reset_user_power_level_description" = "删除指定 id 的用户";
+"settings_manage_account_title" = "账户";
+"settings_manage_account_action" = "账户管理";
+"settings_manage_account_description" = "在 %@ 管理您的账户";
+"manage_session_redirect" = "您将被跳转到服务器的身份验证提供商，以完成注销。";
+"manage_session_redirect_error" = "功能目前不可用。请联系您的主服务器管理员";
+"room_details_promote_room_title" = "推广室";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "进入房间";
+"room_access_settings_screen_upgrade_alert_title" = "升级房间";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "上级房间中的任何人都能找到并加入此房间，无需手动邀请所有人。您可随时在房间设置中进行更改。";
+"room_access_settings_screen_upgrade_alert_upgrading" = "升级房间";
+"room_access_settings_screen_setting_room_access" = "设置房间权限";
