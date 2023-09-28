@@ -2399,3 +2399,9 @@
 "room_access_settings_screen_upgrade_alert_message_no_param" = "上级房间中的任何人都能找到并加入此房间，无需手动邀请所有人。您可随时在房间设置中进行更改。";
 "room_access_settings_screen_upgrade_alert_upgrading" = "升级房间";
 "room_access_settings_screen_setting_room_access" = "设置房间权限";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "建议房间";
+"room_access_space_chooser_known_spaces_section" = "您知道的包含 %@ 的空间";
+"room_access_space_chooser_other_spaces_section_info" = "这些很可能是 %@ 的管理员参与。";
+"room_access_space_chooser_other_spaces_section" = "其他空间或房间";
