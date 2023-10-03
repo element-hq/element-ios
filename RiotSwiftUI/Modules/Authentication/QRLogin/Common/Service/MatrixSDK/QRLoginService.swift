@@ -265,19 +265,7 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
         
         MXLog.debug("[QRLoginService] Got acess token")
         
-        let session = sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false)
-        
-        let cryptoResult = await withCheckedContinuation { continuation in
-            session.enableCrypto(true) { response in
-                continuation.resume(returning: response)
-            }
-        }
-        
-        guard case .success = cryptoResult else {
-            MXLog.error("[QRLoginService] Failed enabling crypto")
-            await teardownRendezvous(state: .failed(error: .rendezvousFailed))
-            return
-        }
+        let session = await createSession(credentials: credentials, client: client)
         
         MXLog.debug("[QRLoginService] Session created, sending device details")
         let successPayload = flow == .SETUP_ADDITIONAL_DEVICE_V1
@@ -361,6 +349,28 @@ class QRLoginService: NSObject, QRLoginServiceProtocol {
 
         MXLog.debug("[QRLoginService] Login flow finished, returning session")
         state = .completed(session: session, securityCompleted: true)
+    }
+    
+    private func createSession(credentials: MXCredentials, client: AuthenticationRestClient) async -> MXSession {
+        let session = await sessionCreator.createSession(credentials: credentials, client: client, removeOtherAccounts: false)
+        
+        if session.state == .storeDataReady {
+            return session
+        }
+        
+        await withCheckedContinuation { continuation in
+            NotificationCenter.default.addObserver(forName: NSNotification.Name.mxSessionStateDidChange, object: session, queue: nil) { notification in
+                guard let session = notification.object as? MXSession else {
+                    fatalError()
+                }
+                
+                if session.state == .storeDataReady {
+                    continuation.resume()
+                }
+            }
+        }
+        
+        return session
     }
     
     private func declineRendezvous() async {
