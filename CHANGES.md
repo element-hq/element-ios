@@ -1,3 +1,11 @@
+## Changes in 1.11.4 (2023-10-04)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.27.3](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.27.3)).
+- Allow the use of Jitsi for 1:1 calls via a well-known configuration flag. ([#7684](https://github.com/vector-im/element-ios/issues/7684))
+
+
 ## Changes in 1.11.3 (2023-09-13)
 
 🐛 Bugfixes
