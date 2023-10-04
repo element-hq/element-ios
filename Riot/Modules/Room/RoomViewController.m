@@ -3121,15 +3121,16 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)displayNewDirectChatWithTargetUser:(nonnull MXUser*)directChatTargetUser session:(nonnull MXSession*)session
 {
+    // `[displayRoom:]` may require the session, setting it here before calling it
+    [self addMatrixSession:session];
+
     // Release existing room data source or preview
     [self displayRoom:nil];
     
     self.directChatTargetUser = directChatTargetUser;
     
     self.eventsAcknowledgementEnabled = NO;
-    
-    [self addMatrixSession:session];
-    
+
     [self refreshRoomTitle];
     [self refreshRoomInputToolbar];
 }
