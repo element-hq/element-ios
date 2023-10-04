@@ -2349,3 +2349,21 @@
 // User sessions management
 "user_sessions_settings" = "管理登陆会话";
 "settings_presence_offline_mode_description" = "如果开启此选项，对其他用户来说，你看起来就会像下线了一样，即使你正在使用此软件。";
+"room_creation_user_not_found_prompt_title" = "确认";
+"room_creation_user_not_found_prompt_message" = "无法找到此Matrix ID的profiles。你仍然想开始私信吗？";
+"room_creation_user_not_found_prompt_invite_action" = "无论如何都要开始私信";
+"room_participants_invite_anyway" = "无论如何，邀请";
+"threads_discourage_information_1" = "你的家服务器目前不支持消息列，所以此功能可能不可靠。有的消息列消息不一定可用。 ";
+"room_command_emote_description" = "显示动作";
+"threads_discourage_information_2" = "\n\n无论如何，启用消息列吗？";
+"settings_timeline" = "时间线";
+"settings_labs_enable_threads" = "消息列消息";
+"settings_labs_use_only_latest_user_avatar_and_name" = "在消息历史中显示用户的最新头像和名称";
+"manage_session_name_hint" = "自定义会话名称能帮你更轻松地识别设备。";
+"manage_session_rename" = "重命名会话";
+/* The placeholder will be replaces with manage_session_name_info_link */
+"manage_session_name_info" = "请注意，与你通信的人也可以看到会话名称。%@";
+"manage_session_sign_out_other_sessions" = "登出全部其他会话";
+"settings_presence_offline_mode" = "离线模式";
+"room_details_polls" = "投票历史";
+"settings_labs_enable_new_app_layout" = "新版应用布局";

@@ -2714,3 +2714,8 @@
 "room_creation_user_not_found_prompt_message" = "Sellele Matrix'i kasutajatunnuse profiili ei leidu. Kas sa ikkagi tahaksid temaga vestlust alustada?";
 "room_participants_invite_unknown_participant_prompt_to_msg" = "Sellele Matrix'i kasutajatunnuse profiili ei leidu. Kas sa ikkagi tahaksid saata kutset kasutajale %@ jututuppa %@?";
 "room_participants_invite_anyway" = "Kutsu siiski";
+"settings_manage_account_title" = "Kasutajakonto";
+"settings_manage_account_action" = "Halda kasutajakontot";
+"settings_manage_account_description" = "Halda kasutajakontot koduserveris %@";
+"manage_session_redirect" = "Järgmiseks suuname sind sinu serveriteenuse autentijale ning seal saad sa väljalogimise lõpuni viia.";
+"manage_session_redirect_error" = "See funktsionaalsus pole hetkel saadaval. Lisateavet saad oma koduserveri haldajalt";

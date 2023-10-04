@@ -801,7 +801,7 @@
 "directory_server_all_native_rooms" = "Усі кімнати сервера Matrix";
 "group_participants_invite_malformed_id_title" = "Помилка запрошення";
 "group_participants_remove_prompt_msg" = "Ви справді хочете вилучити %@ з цієї групи?";
-"room_notifs_settings_encrypted_room_notice" = "Зверніть увагу, що сповіщення про згадки та ключові слова недоступні в зашифрованих кімнатах на мобільних пристроях.";
+"room_notifs_settings_encrypted_room_notice" = "Зауважте, що сповіщення про згадки та ключові слова недоступні в зашифрованих кімнатах на мобільних пристроях.";
 "room_notifs_settings_account_settings" = "Налаштування облікового запису";
 "room_notifs_settings_manage_notifications" = "Ви можете керувати сповіщеннями у %@";
 "room_notifs_settings_cancel_action" = "Скасувати";
@@ -2548,7 +2548,7 @@
 "room_accessibility_record_voice_message_hint" = "Двічі торкніться й утримуйте для запису.";
 "room_accessibility_record_voice_message" = "Записати голосове повідомлення";
 "location_sharing_live_lab_promotion_activation" = "Увімкнути надсилання геоданих наживо";
-"location_sharing_live_lab_promotion_text" = "Зверніть увагу: це експериментальна функція, яка використовує тимчасову реалізацію, яка дозволяє іншим людям у кімнаті постійно бачити історію поширеного вами місця перебування.";
+"location_sharing_live_lab_promotion_text" = "Зауважте: це експериментальна функція, яка використовує тимчасову реалізацію, що дозволяє іншим людям у кімнаті постійно бачити історію поширеного вами місця перебування.";
 "location_sharing_live_lab_promotion_title" = "Надсилання місця перебування наживо";
 "location_sharing_map_credits_title" = "© Авторське право";
 "room_info_back_button_title" = "Відомості кімнати";
@@ -2967,3 +2967,8 @@
 "room_creation_user_not_found_prompt_title" = "Підтвердження";
 "room_creation_user_not_found_prompt_message" = "Не вдалося знайти профілі для цього Matrix ID. Усе одно хочете розпочати приватну бесіду?";
 "room_participants_invite_unknown_participant_prompt_to_msg" = "Не вдалося знайти профілі для цього Matrix ID. Ви впевнені, що хочете запросити %@ до %@?";
+"settings_manage_account_title" = "Обліковий запис";
+"settings_manage_account_action" = "Керувати обліковим записом";
+"settings_manage_account_description" = "Керувати обліковим записом у %@";
+"manage_session_redirect" = "Вас буде перенаправлено до постачальника автентифікації вашого сервера для завершення виходу.";
+"manage_session_redirect_error" = "Функціональність наразі недоступна. Зверніться до адміністратора вашого домашнього сервера";

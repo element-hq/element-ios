@@ -2776,3 +2776,8 @@
 "room_creation_user_not_found_prompt_invite_action" = "Dennoch DM beginnen";
 "room_participants_invite_unknown_participant_prompt_to_msg" = "Wir konnten kein Profil für diese Matrix-ID finden. Möchtest du wirklich %@ nach %@ einladen?";
 "room_participants_invite_anyway" = "Dennoch einladen";
+"settings_manage_account_title" = "Konto";
+"settings_manage_account_description" = "Verwalte dein Konto bei %@";
+"settings_manage_account_action" = "Konto verwalten";
+"manage_session_redirect" = "Du wirst zum Authentifizierungsdienst deines Servers weitergeleitet, um das Abmelden abzuschließen.";
+"manage_session_redirect_error" = "Funktion aktuell nicht verfügbar. Bitte kontaktiere deine Home-Server-Administration";

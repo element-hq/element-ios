@@ -2851,3 +2851,13 @@
 "user_session_verified_session_description" = "Sesje zweryfikowane są wszędzie, gdzie korzystasz z Element po wprowadzeniu swojego hasła lub zweryfikowaniu swojej tożsamości za pomocą innej sesji zweryfikowanej.\n\nTo oznacza, że posiadasz wszystkie niezbędne klucze wymagane do odblokowania swoich zaszyfrowanych wiadomości i oznajmiasz innym użytkownikom, że ufasz tej sesji.";
 "space_invite_nav_title" = "Zaproszenie do przestrzeni";
 "user_other_session_unverified_sessions_header_subtitle" = "Dla wzmocnienia bezpiecznych wiadomości, zweryfikuj swoje sesje i wyloguj się ze wszystkich sesji, których nie rozpoznajesz lub nie używasz.";
+"manage_session_redirect" = "Zostaniesz przekierowany do swojego dostawcy uwierzytelniania, aby zakończyć logowanie.";
+"manage_session_redirect_error" = "Funkcja obecnie niedostępna. Skontaktuj się ze swoim administratorem serwera domowego";
+"room_creation_user_not_found_prompt_title" = "Potwierdzenie";
+"room_creation_user_not_found_prompt_message" = "Nie można znaleźć profili dla poniższych ID Matrix. Czy chcesz rozpocząć wiadomość prywatną mimo to?";
+"room_creation_user_not_found_prompt_invite_action" = "Rozpocznij wiadomość prywatną mimo to";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "Nie można znaleźć profili dla poniższych ID Matrix. Czy na pewno chcesz zaprosić %@ do %@?";
+"room_participants_invite_anyway" = "Zaproś mimo to";
+"settings_manage_account_title" = "Konto";
+"settings_manage_account_action" = "Zarządzaj kontem";
+"settings_manage_account_description" = "Zarządzaj swoim kontem w %@";

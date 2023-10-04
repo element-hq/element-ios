@@ -2964,3 +2964,13 @@
 "room_command_change_display_name_description" = "Mengubah nama tampilan Anda";
 "notice_display_name_changed_to" = "%@ mengubah nama tampilannya menjadi %@";
 "poll_timeline_loading" = "Memuat...";
+"room_creation_user_not_found_prompt_message" = "Tidak dapat mencari profil untuk ID Matrix ini. Apakah Anda masih ingin membuat percakapan langsung?";
+"room_creation_user_not_found_prompt_title" = "Konfirmasi";
+"room_creation_user_not_found_prompt_invite_action" = "Tetap buat percakapan langsung";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "Tidak dapat mencari profil untuk ID Matrix ini. Apakah Anda masih ingin mengundang %@ ke %@?";
+"room_participants_invite_anyway" = "Tetap undang";
+"settings_manage_account_title" = "Akun";
+"settings_manage_account_action" = "Kelola akun";
+"settings_manage_account_description" = "Kelola akun Anda di %@";
+"manage_session_redirect" = "Anda akan dialihkan ke penyedia autentikasi server Anda untuk menyelesaikan proses keluar.";
+"manage_session_redirect_error" = "Fungsi saat ini tidak tersedia. Silakan hubungi admin homeserver Anda";

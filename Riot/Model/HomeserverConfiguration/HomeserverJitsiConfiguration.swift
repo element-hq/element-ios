@@ -21,10 +21,12 @@ import Foundation
 final class HomeserverJitsiConfiguration: NSObject {
     let serverDomain: String?
     let serverURL: URL?
+    let useFor1To1Calls: Bool
     
-    init(serverDomain: String?, serverURL: URL?) {
+    init(serverDomain: String?, serverURL: URL?, useFor1To1Calls: Bool?) {
         self.serverDomain = serverDomain
         self.serverURL = serverURL
+        self.useFor1To1Calls = useFor1To1Calls ?? false
         
         super.init()
     }

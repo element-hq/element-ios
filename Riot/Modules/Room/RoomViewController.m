@@ -1942,7 +1942,9 @@ static CGSize kThreadListBarButtonItemImageSize;
             
             if (self.supportCallOption)
             {
-                if (self.roomDataSource.room.summary.membersCount.joined == 2 && self.roomDataSource.room.isDirect)
+                if (self.roomDataSource.room.summary.membersCount.joined == 2
+                    && self.roomDataSource.room.isDirect
+                    && !self.mainSession.vc_homeserverConfiguration.jitsi.useFor1To1Calls)
                 {
                     //  voice call button for Matrix call
                     UIBarButtonItem *itemVoice = [[UIBarButtonItem alloc] initWithImage:AssetImages.voiceCallHangonIcon.image
@@ -3119,15 +3121,16 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)displayNewDirectChatWithTargetUser:(nonnull MXUser*)directChatTargetUser session:(nonnull MXSession*)session
 {
+    // `[displayRoom:]` may require the session, setting it here before calling it
+    [self addMatrixSession:session];
+
     // Release existing room data source or preview
     [self displayRoom:nil];
     
     self.directChatTargetUser = directChatTargetUser;
     
     self.eventsAcknowledgementEnabled = NO;
-    
-    [self addMatrixSession:session];
-    
+
     [self refreshRoomTitle];
     [self refreshRoomInputToolbar];
 }
@@ -5038,7 +5041,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
     else
     {
-        if (self.roomDataSource.room.summary.membersCount.joined == 2 && self.roomDataSource.room.isDirect)
+        if (self.roomDataSource.room.summary.membersCount.joined == 2
+            && self.roomDataSource.room.isDirect
+            && !self.mainSession.vc_homeserverConfiguration.jitsi.useFor1To1Calls)
         {
             //  Matrix call
             [self.roomDataSource.room placeCallWithVideo:video success:nil failure:nil];
