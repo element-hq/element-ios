@@ -2965,3 +2965,8 @@
 "room_participants_invite_anyway" = "Napriek tomu pozvať";
 "room_creation_user_not_found_prompt_message" = "Nie je možné nájsť používateľské profily pre toto Matrix ID. Chcete aj tak poslať priamu správu?";
 "room_participants_invite_unknown_participant_prompt_to_msg" = "Nie je možné nájsť profily pre toto Matrix ID. Ste si istí, že chcete pozvať %@ do %@?";
+"settings_manage_account_title" = "Účet";
+"settings_manage_account_action" = "Spravovať účet";
+"settings_manage_account_description" = "Spravujte svoj účet na %@";
+"manage_session_redirect" = "Budete presmerovaní na poskytovateľa overovania vášho servera, aby ste dokončili odhlásenie.";
+"manage_session_redirect_error" = "Funkcia aktuálne nie je dostupná. Obráťte sa na správcu vášho domovského servera";
