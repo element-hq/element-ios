@@ -1,0 +1,1 @@
+Remove registered observer kMXKAccountAPNSActivityDidChangeNotification in dealloc of SettingsViewController

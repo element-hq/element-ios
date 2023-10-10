@@ -340,6 +340,15 @@ SSOAuthenticationPresenterDelegate>
     self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenSettings];
 }
 
+- (void)dealloc {
+    // Remove observers
+    if (pushInfoUpdateObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:pushInfoUpdateObserver name:kMXKAccountAPNSActivityDidChangeNotification object:nil];
+        pushInfoUpdateObserver = nil;
+    }
+}
+
 - (void)updateSections
 {
     NSMutableArray<Section*> *tmpSections = [NSMutableArray arrayWithCapacity:SECTION_TAG_DEACTIVATE_ACCOUNT + 1];
