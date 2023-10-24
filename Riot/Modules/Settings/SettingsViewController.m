@@ -347,6 +347,9 @@ SSOAuthenticationPresenterDelegate>
         [[NSNotificationCenter defaultCenter] removeObserver:pushInfoUpdateObserver name:kMXKAccountAPNSActivityDidChangeNotification object:nil];
         pushInfoUpdateObserver = nil;
     }
+
+    // Fix for destroy not being called
+    [self destroy];
 }
 
 - (void)updateSections
