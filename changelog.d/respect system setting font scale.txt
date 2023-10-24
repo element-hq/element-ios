@@ -1,0 +1,1 @@
+Adjust font size dynamically on room’s messages and All Chats tab buttons when user change the setting in System settings.

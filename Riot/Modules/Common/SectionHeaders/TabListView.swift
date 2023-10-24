@@ -170,6 +170,8 @@ class TabListView: UIView {
         var itemViews: [UIButton] = []
         for (index, item) in items.enumerated() {
             let button = UIButton(type: .system)
+            // Automatically adjust button font size dynamically when user change the setting.
+            button.vc_adjustsFontForContentSizeCategory = true
             button.titleLabel?.font = itemFont
             button.setTitle(item.text, for: .normal)
             button.setImage(item.icon?.withRenderingMode(.alwaysTemplate), for: .normal)

@@ -27,6 +27,29 @@
 
 @implementation MXKMessageTextView
 
+// Automatically adjust message font size dynamically when user change the setting.
+- (id)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer
+{
+    self = [super initWithFrame:frame textContainer:textContainer];
+    
+    if (self) {
+        [self setAdjustsFontForContentSizeCategory:YES];
+    }
+    
+    return self;
+}
+
+// Automatically adjust message font size dynamically when user change the setting.
+- (id)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    
+    if (self) {
+        [self setAdjustsFontForContentSizeCategory:YES];
+    }
+    
+    return self;
+}
+
 - (BOOL)canBecomeFirstResponder
 {
     return NO;
@@ -78,6 +101,9 @@
         // forcing the layoutManager to redraw the glyphs at all NSAttachment positions.
         [self vc_invalidateTextAttachmentsDisplay];
     }
+    
+    // Set text type to prefered font to respect user text size
+    self.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 - (void)registerPillView:(UIView *)pillView
