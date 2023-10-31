@@ -32,6 +32,7 @@ If you have already everything installed, opening the project workspace in Xcode
 ```
 $ xcodegen                  # Create the xcodeproj with all project source files
 $ pod install               # Create the xcworkspace with all project dependencies
+$ brew bundle               # set up mint & sentry cli
 $ open Riot.xcworkspace     # Open Xcode
 ```
 
