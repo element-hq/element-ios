@@ -17,13 +17,13 @@
 
 // App identity
 BUNDLE_DISPLAY_NAME = Element Alpha
-BASE_BUNDLE_IDENTIFIER = im.vector.app.alpha
-APPLICATION_GROUP_IDENTIFIER = group.im.vector.alpha
+BASE_BUNDLE_IDENTIFIER = com.superhero.chat.alpha
+APPLICATION_GROUP_IDENTIFIER = com.superhero.alpha
 APPLICATION_SCHEME = element
 
 
 // Team
-DEVELOPMENT_TEAM = 7J4U792NQT
+DEVELOPMENT_TEAM = 8H7FGC266S
 
 
 // Provisioning profiles
