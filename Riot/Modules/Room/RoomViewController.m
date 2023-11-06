@@ -8053,7 +8053,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         self.removeJitsiWidgetView.delegate = nil;
         
         //  end active call if exists
-        if ([self isRoomHavingAJitsiCallForWidgetId:jitsiWidget.widgetId])
+        if ([self isRoomHavingAJitsiCall])
         {
             [self endActiveJitsiCall];
         }
