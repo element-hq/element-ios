@@ -5947,6 +5947,10 @@ static CGSize kThreadListBarButtonItemImageSize;
             [self refreshRoomTitle];
             //  Remove Jitsi widget view update
             [self refreshRemoveJitsiWidgetView];
+            // End call if the widget is removed
+            if ([self isRoomHavingAJitsiCall]) {
+                [self endActiveJitsiCall];
+            }
         }
     }];
 }
