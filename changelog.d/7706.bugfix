@@ -1,0 +1,1 @@
+If a Jitsi call in a room is ongoing when the Jitsi widget is removed from such room the call ends.
