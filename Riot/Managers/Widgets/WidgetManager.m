@@ -413,7 +413,10 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                 // Broadcast the generic notification
                 [[NSNotificationCenter defaultCenter] postNotificationName:kWidgetManagerDidUpdateWidgetNotification object:widget];
                 // End jitsi call if a active call exists and widget has been updated to not be active
-                if ([[AppDelegate theDelegate].callPresenter.jitsiVC.widget.widgetId isEqualToString: widget.widgetId] && !widget.isActive) {
+                if ([[AppDelegate theDelegate].callPresenter.jitsiVC.widget.widgetId isEqualToString: widget.widgetId] &&
+                     [[AppDelegate theDelegate].callPresenter.jitsiVC.widget.roomId isEqualToString: event.roomId] &&
+                     !widget.isActive)
+                {
                     [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
                 }
             }
