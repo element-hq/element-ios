@@ -1190,3 +1190,11 @@
 "room_creation_user_not_found_prompt_invite_action" = "ابدأ الرسالة المباشرة على أي حال";
 "room_participants_invite_unknown_participant_prompt_to_msg" = "تعذر العثور على هذه الهوية على مُعَرِّف Matrix. هل أنت متأكد أنك تريد دعوة %@ إلى %@؟";
 "room_participants_invite_anyway" = "ادعُ بأي حال";
+"threads_empty_tip" = "نصيحة: انقر فوق رسالة واستخدم 'موضوع' لبدء رسالة جديدة.";
+
+// Pills
+"pill_room_fallback_display_name" = "المساحة/الغرفة";
+"room_command_discard_session_description" = "يجبر على تجاهل الجلسة الجماعية الصادرة حاليا في غرفة مشفرة";
+"room_command_error_unknown_command" = "أمر غير صالح أو غير معالَج";
+"threads_empty_info_all" = "المواضيع تساعد في الحفاظ على محادثاتك ذات موضوع معين وتسهل تتبعها.";
+"threads_empty_info_my" = "الرد على موضوع قائم أو النقر فوق الرسالة واستخدم خاصية 'الموضوع' لبدء رِسَالَة جديد.";
