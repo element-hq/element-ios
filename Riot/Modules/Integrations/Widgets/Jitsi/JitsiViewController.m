@@ -321,7 +321,7 @@ static NSString * _Nonnull kJitsiFeatureFlagScreenSharingEnabled = @"ios.screens
 
 - (void)conferenceTerminated:(NSDictionary *)data
 {
-    // If the call if terminated by a moderator the error key contains the "conference.destroyed" value
+    // If the call is terminated by a moderator the error key contains the "conference.destroyed" value
     if (data[kJitsiDataErrorKey] != nil)
     {
         MXLogDebug(@"[JitsiViewController] conferenceTerminated - data: %@", data);
