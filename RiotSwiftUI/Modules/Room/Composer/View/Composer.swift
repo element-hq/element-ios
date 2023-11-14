@@ -143,7 +143,7 @@ struct Composer: View {
                     placeholder: viewModel.viewState.placeholder ?? "",
                     viewModel: wysiwygViewModel,
                     itemProviderHelper: nil,
-                    keyCommandHandler: nil,
+                    keyCommandHandler: handleKeyCommand,
                     pasteHandler: nil
                 )
                 .onAppear {
@@ -216,6 +216,17 @@ struct Composer: View {
             withAnimation(.easeInOut(duration: 0.15)) {
                 isActionButtonShowing = !isEmpty
             }
+        }
+    }
+    
+    func handleKeyCommand(_ keyCommand: WysiwygKeyCommand) -> Bool {
+        switch keyCommand {
+        case .enter:
+            sendMessageAction(wysiwygViewModel.content)
+            wysiwygViewModel.clearContent()
+            return true
+        case .shiftEnter:
+            return false
         }
     }
     
