@@ -59,10 +59,10 @@ packages:
     branch: 0.0.1
   WysiwygComposer:
     url: https://github.com/matrix-org/matrix-wysiwyg-composer-swift
-    version: 2.2.2
+    version: 2.15.0
   DeviceKit:
     url: https://github.com/devicekit/DeviceKit
     majorVersion: 4.7.0
   DTCoreText:
     url: https://github.com/Cocoanetics/DTCoreText
-    version: 1.6.27
+    version: 1.6.26

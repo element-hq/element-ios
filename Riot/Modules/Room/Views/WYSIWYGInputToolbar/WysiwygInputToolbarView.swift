@@ -150,8 +150,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         return (delegate as? RoomInputToolbarViewDelegate) ?? nil
     }
 
-    private var permalinkReplacer: PermalinkReplacer? {
-        return (delegate as? PermalinkReplacer)
+    private var permalinkReplacer: MentionReplacer? {
+        return (delegate as? MentionReplacer)
     }
     
     override func awakeFromNib() {
@@ -238,7 +238,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             self?.handleViewModelResult(result)
         }
         wysiwygViewModel.plainTextMode = !RiotSettings.shared.enableWysiwygTextFormatting
-        wysiwygViewModel.permalinkReplacer = permalinkReplacer
+        wysiwygViewModel.mentionReplacer = permalinkReplacer
 
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
 

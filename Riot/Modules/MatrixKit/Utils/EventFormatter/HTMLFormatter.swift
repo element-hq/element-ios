@@ -47,7 +47,6 @@ class HTMLFormatter: NSObject {
 
         var options: [AnyHashable: Any] = [
             DTUseiOS6Attributes: true,
-            DTDefaultFontDescriptor: font.fontDescriptor,
             DTDefaultLinkDecoration: false,
             DTDefaultLinkColor: ThemeService.shared().theme.colors.links,
             DTWillFlushBlockCallBack: sanitizeCallback

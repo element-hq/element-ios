@@ -140,11 +140,12 @@ struct Composer: View {
             }
             HStack(alignment: shouldFixRoundCorner ? .top : .center, spacing: 0) {
                 WysiwygComposerView(
-                    focused: $viewModel.focused,
-                    viewModel: wysiwygViewModel
+                    placeholder: viewModel.viewState.placeholder ?? "",
+                    viewModel: wysiwygViewModel,
+                    itemProviderHelper: nil,
+                    keyCommandHandler: nil,
+                    pasteHandler: nil
                 )
-                .tintColor(theme.colors.accent)
-                .placeholder(viewModel.viewState.placeholder, color: theme.colors.tertiaryContent)
                 .onAppear {
                     if wysiwygViewModel.isContentEmpty {
                         wysiwygViewModel.setup()
