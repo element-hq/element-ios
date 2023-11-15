@@ -146,6 +146,7 @@ struct Composer: View {
                     keyCommandHandler: handleKeyCommand,
                     pasteHandler: nil
                 )
+                .tint(theme.colors.accent)
                 .onAppear {
                     if wysiwygViewModel.isContentEmpty {
                         wysiwygViewModel.setup()
