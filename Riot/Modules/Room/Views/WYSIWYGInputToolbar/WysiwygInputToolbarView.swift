@@ -192,6 +192,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
     
     func showKeyboard() {
+        self.wysiwygViewModel.textView.becomeFirstResponder()
         self.viewModel.showKeyboard()
     }
     
