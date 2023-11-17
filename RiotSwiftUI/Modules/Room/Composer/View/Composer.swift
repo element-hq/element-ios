@@ -142,7 +142,7 @@ struct Composer: View {
                     )
                     .clipped()
                     .tint(theme.colors.accent)
-                    .focused($focused, equals: true)
+                    .focused($focused)
                     .onChange(of: focused) { newValue in
                         viewModel.focused = newValue
                     }
