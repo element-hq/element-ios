@@ -156,7 +156,7 @@ extension FormatItem {
 
 extension FormatType {
     /// Convenience method to map it to the external ViewModel action
-    var action: WysiwygAction {
+    var action: ComposerAction {
         switch self {
         case .bold:
             return .bold
@@ -230,6 +230,7 @@ enum ComposerViewAction: Equatable {
     case linkTapped(linkAction: LinkAction)
     case storeSelection(selection: NSRange)
     case suggestion(pattern: SuggestionPattern?)
+    case sendMessage
 }
 
 enum ComposerViewModelResult: Equatable {
@@ -237,6 +238,7 @@ enum ComposerViewModelResult: Equatable {
     case contentDidChange(isEmpty: Bool)
     case linkTapped(LinkAction: LinkAction)
     case suggestion(pattern: SuggestionPattern?)
+    case sendMessage
 }
 
 final class LinkActionWrapper: NSObject {

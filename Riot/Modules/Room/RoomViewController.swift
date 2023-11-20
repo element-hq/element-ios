@@ -384,8 +384,8 @@ extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
 }
 
 // MARK: - PermalinkReplacer
-extension RoomViewController: PermalinkReplacer {
-    public func replacementForLink(_ url: String, text: String) -> NSAttributedString? {
+extension RoomViewController: MentionReplacer {
+    public func replacementForMention(_ url: String, text: String) -> NSAttributedString? {
         guard #available(iOS 15.0, *),
               let url = URL(string: url),
               let session = roomDataSource.mxSession,

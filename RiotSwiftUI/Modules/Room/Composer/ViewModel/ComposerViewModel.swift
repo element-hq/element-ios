@@ -92,6 +92,8 @@ final class ComposerViewModel: ComposerViewModelType, ComposerViewModelProtocol 
             selectionToRestore = selection
         case let .suggestion(pattern: pattern):
             callback?(.suggestion(pattern: pattern))
+        case .sendMessage:
+            callback?(.sendMessage)
         }
     }
     

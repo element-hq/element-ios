@@ -140,11 +140,20 @@ struct Composer: View {
             }
             HStack(alignment: shouldFixRoundCorner ? .top : .center, spacing: 0) {
                 WysiwygComposerView(
-                    focused: $viewModel.focused,
-                    viewModel: wysiwygViewModel
+                    placeholder: viewModel.viewState.placeholder ?? "",
+                    placeholderColor: theme.colors.tertiaryContent,
+                    viewModel: wysiwygViewModel, itemProviderHelper: EmptyWysiwygProviderHelper(),
+                    keyCommandHandler: { keyCommand in
+                        switch keyCommand {
+                        case .enter:
+                            viewModel.send(viewAction: .sendMessage)
+                            return true
+                        case .shiftEnter:
+                            return false
+                        }
+                    },
+                    pasteHandler: { _ in }
                 )
-                .tintColor(theme.colors.accent)
-                .placeholder(viewModel.viewState.placeholder, color: theme.colors.tertiaryContent)
                 .onAppear {
                     if wysiwygViewModel.isContentEmpty {
                         wysiwygViewModel.setup()
@@ -316,5 +325,11 @@ struct Composer_Previews: PreviewProvider {
     static let stateRenderer = MockComposerScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
+    }
+}
+
+private struct EmptyWysiwygProviderHelper: WysiwygItemProviderHelper {
+    func isPasteSupported(for itemProvider: NSItemProvider) -> Bool {
+        false
     }
 }

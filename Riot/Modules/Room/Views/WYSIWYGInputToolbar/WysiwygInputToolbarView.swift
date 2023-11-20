@@ -150,8 +150,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         return (delegate as? RoomInputToolbarViewDelegate) ?? nil
     }
 
-    private var permalinkReplacer: PermalinkReplacer? {
-        return (delegate as? PermalinkReplacer)
+    private var mentionReplacer: MentionReplacer? {
+        return (delegate as? MentionReplacer)
     }
     
     override func awakeFromNib() {
@@ -227,7 +227,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     private func setupComposerIfNeeded() {
         guard hostingViewController == nil,
               let toolbarViewDelegate,
-              let permalinkReplacer else { return }
+              let mentionReplacer else { return }
 
         viewModel = ComposerViewModel(
             initialViewState: ComposerViewState(textFormattingEnabled: RiotSettings.shared.enableWysiwygTextFormatting,
@@ -238,7 +238,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             self?.handleViewModelResult(result)
         }
         wysiwygViewModel.plainTextMode = !RiotSettings.shared.enableWysiwygTextFormatting
-        wysiwygViewModel.permalinkReplacer = permalinkReplacer
+        wysiwygViewModel.mentionReplacer = mentionReplacer
 
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
 
@@ -422,6 +422,10 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             toolbarViewDelegate?.didSendLinkAction(LinkActionWrapper(linkAction))
         case let .suggestion(pattern):
             toolbarViewDelegate?.didDetectTextPattern(SuggestionPatternWrapper(pattern))
+        case .sendMessage:
+            let content = wysiwygViewModel.content
+            sendWysiwygMessage(content: content)
+            wysiwygViewModel.clearContent()
         }
     }
     
