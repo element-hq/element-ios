@@ -4056,26 +4056,6 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self cancelEventSelection];
             }]];
         }
-
-        if (!isJitsiCallEvent && !selectedEvent.isTimelinePollEvent &&
-            selectedEvent.eventType != MXEventTypeBeaconInfo)
-        {
-            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeQuote
-                                            action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionQuote]
-                                                                            style:UIAlertActionStyleDefault
-                                                                          handler:^(UIAlertAction * action) {
-                MXStrongifyAndReturnIfNil(self);
-                
-                [self cancelEventSelection];
-
-                // Quote the message a la Markdown into the input toolbar composer
-                NSString *prefix = [self.inputToolbarView.textMessage length] ? [NSString stringWithFormat:@"%@\n", self.inputToolbarView.textMessage] : @"";
-                self.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@>%@\n\n", prefix, selectedComponent.textMessage];
-                
-                // And display the keyboard
-                [self.inputToolbarView becomeFirstResponder];
-            }]];
-        }
         
         if (selectedEvent.sentState == MXEventSentStateSent &&
             !selectedEvent.isTimelinePollEvent &&

@@ -25,7 +25,6 @@ enum EventMenuItemType: Int {
     case cancelSending
     case cancelDownloading
     case saveMedia
-    case quote
     case forward
     case permalink
     case share
