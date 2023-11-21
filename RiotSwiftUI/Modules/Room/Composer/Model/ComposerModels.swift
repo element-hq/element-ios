@@ -156,7 +156,7 @@ extension FormatItem {
 
 extension FormatType {
     /// Convenience method to map it to the external ViewModel action
-    var action: WysiwygAction {
+    var action: ComposerAction {
         switch self {
         case .bold:
             return .bold

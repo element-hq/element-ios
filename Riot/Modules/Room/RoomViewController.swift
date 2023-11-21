@@ -200,15 +200,7 @@ extension RoomViewController {
                 optionalTextView?.becomeFirstResponder()
                 originalRect = wysiwygInputToolbar.convert(wysiwygInputToolbar.frame, to: view)
             }
-            // This tirggers a SwiftUI update that is handled correctly on iOS 16, but needs to be dispatchted async on older versions
-            // Dispatching on iOS 16 instead causes some weird SwiftUI update behaviours
-            if #available(iOS 16, *) {
-                wysiwygInputToolbar.showKeyboard()
-            } else {
-                DispatchQueue.main.async {
-                    wysiwygInputToolbar.showKeyboard()
-                }
-            }
+
             roomInputToolbarContainer.removeFromSuperview()
             let dimmingView = UIView()
             dimmingView.translatesAutoresizingMaskIntoConstraints = false
@@ -235,7 +227,18 @@ extension RoomViewController {
             }
             let panGesture = UIPanGestureRecognizer(target: self, action: #selector(didPanRoomToolbarContainer(_ :)))
             roomInputToolbarContainer.addGestureRecognizer(panGesture)
-            optionalTextView?.removeFromSuperview()
+            if let optionalTextView {
+                // This tirggers a SwiftUI update that is handled correctly on iOS 16, but needs to be dispatchted async on older versions
+                // Dispatching on iOS 16 instead causes some weird SwiftUI update behaviours
+                if #available(iOS 16, *) {
+                    wysiwygInputToolbar.showKeyboard()
+                } else {
+                    DispatchQueue.main.async {
+                        wysiwygInputToolbar.showKeyboard()
+                    }
+                }
+                optionalTextView.removeFromSuperview()
+            }
         } else {
             let originalRect = wysiwygInputToolbar.convert(wysiwygInputToolbar.frame, to: view)
             var optionalTextView: UITextView?
@@ -244,7 +247,6 @@ extension RoomViewController {
                 optionalTextView = textView
                 self.view.window?.addSubview(textView)
                 optionalTextView?.becomeFirstResponder()
-                wysiwygInputToolbar.showKeyboard()
             }
             self.roomInputToolbarContainer.removeFromSuperview()
             maximisedToolbarDimmingView?.removeFromSuperview()
@@ -257,7 +259,10 @@ extension RoomViewController {
                 self.view.layoutIfNeeded()
             }
             roomInputToolbarContainer.gestureRecognizers?.removeAll()
-            optionalTextView?.removeFromSuperview()
+            if let optionalTextView {
+                wysiwygInputToolbar.showKeyboard()
+                optionalTextView.removeFromSuperview()
+            }
         }
     }
     
@@ -384,8 +389,8 @@ extension RoomViewController: ComposerLinkActionBridgePresenterDelegate {
 }
 
 // MARK: - PermalinkReplacer
-extension RoomViewController: PermalinkReplacer {
-    public func replacementForLink(_ url: String, text: String) -> NSAttributedString? {
+extension RoomViewController: MentionReplacer {
+    public func replacementForMention(_ url: String, text: String) -> NSAttributedString? {
         guard #available(iOS 15.0, *),
               let url = URL(string: url),
               let session = roomDataSource.mxSession,
