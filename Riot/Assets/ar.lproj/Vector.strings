@@ -1107,7 +1107,7 @@
 "authentication_qr_login_failure_device_not_supported" = "الربط مع هذا الجهاز غير مَدعُومَ.";
 "threads_action_my_threads" = "مواضيعي";
 "threads_beta_title" = "مواضيع";
-"room_title_members" = "% أعضاء";
+"room_title_members" = "%@ أعضاء";
 "settings_sending_media" = "إرسال الصور ومقاطع الفيديو";
 
 // MARK: Password policy errors
