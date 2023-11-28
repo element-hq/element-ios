@@ -32,6 +32,7 @@ struct Composer: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     @State private var isActionButtonShowing = false
+    @FocusState private var focused: Bool
 
     private let horizontalPadding: CGFloat = 12
     private let borderHeight: CGFloat = 40
@@ -58,17 +59,8 @@ struct Composer: View {
         viewModel.viewState.shouldDisplayContext ? contextBannerHeight + standardVerticalPadding + verticalComponentSpacing : 0
     }
 
-    /// Computes the total height of the composer (excluding the RTE formatting bar).
-    /// This height includes the text view, as well as the context banner
-    /// and user suggestion list when displayed.
-    private var composerHeight: CGFloat {
-        wysiwygViewModel.idealHeight
-        + composerTopPadding
-        + composerVerticalPadding
-        // Extra padding added on top of the VStack containing the composer
-        + standardVerticalPadding
-        + additionalHeightForContextBanner
-    }
+    /// the total height of the composer (excluding the RTE formatting bar).
+    @State private var composerHeight: CGFloat = .zero
     
     private var cornerRadius: CGFloat {
         if shouldFixRoundCorner {
@@ -139,20 +131,39 @@ struct Composer: View {
                 .padding(.horizontal, horizontalPadding)
             }
             HStack(alignment: shouldFixRoundCorner ? .top : .center, spacing: 0) {
-                WysiwygComposerView(
-                    focused: $viewModel.focused,
-                    viewModel: wysiwygViewModel
-                )
-                .tintColor(theme.colors.accent)
-                .placeholder(viewModel.viewState.placeholder, color: theme.colors.tertiaryContent)
-                .onAppear {
-                    if wysiwygViewModel.isContentEmpty {
-                        wysiwygViewModel.setup()
+                // Use a GeometryReader to force the composer to fill the HStack
+                GeometryReader { _ in
+                    WysiwygComposerView(
+                        placeholder: viewModel.viewState.placeholder ?? "",
+                        viewModel: wysiwygViewModel,
+                        itemProviderHelper: nil,
+                        keyCommandHandler: handleKeyCommand,
+                        pasteHandler: nil
+                    )
+                    .clipped()
+                    .tint(theme.colors.accent)
+                    .focused($focused)
+                    .onChange(of: focused) { newValue in
+                        viewModel.focused = newValue
+                    }
+                    .onChange(of: viewModel.focused) { newValue in
+                        guard focused != newValue else { return }
+                        focused = newValue
+                    }
+                    .onAppear {
+                        if wysiwygViewModel.isContentEmpty {
+                            wysiwygViewModel.setup()
+                        }
                     }
                 }
+                
                 if !viewModel.viewState.isMinimiseForced {
                     Button {
-                        wysiwygViewModel.maximised.toggle()
+                        viewModel.focused = true
+                        // Use a dispatched block so the focus state will be up to date when the composer size changes.
+                        DispatchQueue.main.async {
+                            wysiwygViewModel.maximised.toggle()
+                        }
                     } label: {
                         Image(toggleButtonImageName)
                             .resizable()
@@ -167,15 +178,14 @@ struct Composer: View {
             .padding(.horizontal, horizontalPadding)
             .padding(.top, composerTopPadding)
             .padding(.bottom, composerVerticalPadding)
+            .layoutPriority(1)
         }
         .clipShape(rect)
         .overlay(rect.stroke(borderColor, lineWidth: 1))
         .animation(.easeInOut(duration: resizeAnimationDuration), value: wysiwygViewModel.idealHeight)
         .padding(.top, standardVerticalPadding)
         .onTapGesture {
-            if viewModel.focused {
-                viewModel.focused = true
-            }
+            viewModel.focused = true
         }
     }
     
@@ -216,6 +226,29 @@ struct Composer: View {
                 isActionButtonShowing = !isEmpty
             }
         }
+    }
+    
+    func handleKeyCommand(_ keyCommand: WysiwygKeyCommand) -> Bool {
+        switch keyCommand {
+        case .enter:
+            sendMessageAction(wysiwygViewModel.content)
+            wysiwygViewModel.clearContent()
+            return true
+        case .shiftEnter:
+            return false
+        }
+    }
+    
+    /// Computes the total height of the composer (excluding the RTE formatting bar).
+    /// This height includes the text view, as well as the context banner
+    /// and user suggestion list when displayed.
+    private func updateComposerHeight(idealHeight: CGFloat) {
+        composerHeight = idealHeight
+            + composerTopPadding
+            + composerVerticalPadding
+            // Extra padding added on top of the VStack containing the composer
+            + standardVerticalPadding
+            + additionalHeightForContextBanner
     }
     
     // MARK: Public
@@ -286,6 +319,15 @@ struct Composer: View {
         }
         .onChange(of: wysiwygViewModel.suggestionPattern) { newValue in
             sendMentionPattern(pattern: newValue)
+        }
+        .onChange(of: wysiwygViewModel.idealHeight) { newValue in
+            updateComposerHeight(idealHeight: newValue)
+        }
+        .onChange(of: viewModel.viewState.shouldDisplayContext) { _ in
+            updateComposerHeight(idealHeight: wysiwygViewModel.idealHeight)
+        }
+        .task {
+            updateComposerHeight(idealHeight: wysiwygViewModel.idealHeight)
         }
     }
     

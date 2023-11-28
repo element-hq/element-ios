@@ -135,8 +135,8 @@
 "directory_cell_title" = "Duyệt danh mục";
 "directory_cell_description" = "%tu phòng";
 "directory_search_results_title" = "Kết quả duyệt danh mục";
-"directory_search_results" = "%tu kết quả được tìm thấy cho %@";
-"directory_search_results_more_than" = ">%tu kết quả được tìm thấy cho %@";
+"directory_search_results" = "%1$tu kết quả được tìm thấy cho %2$@";
+"directory_search_results_more_than" = ">%1$tu kết quả được tìm thấy cho %2$@";
 "directory_searching_title" = "Đang tìm danh mục…";
 "directory_search_fail" = "Không thể tìm nạp dữ liệu";
 // Contacts

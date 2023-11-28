@@ -1,3 +1,24 @@
+## Changes in 1.11.5 (2023-11-28)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.27.4](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.27.4)).
+- Upgrade Rich Text Editor version. ([v2.18.0](https://github.com/matrix-org/matrix-rich-text-editor/releases/tag/2.18.0))
+
+🐛 Bugfixes
+
+- Call destroy in dealloc to remove all observers of SettingsViewController ([#7697](https://github.com/vector-im/element-ios/pull/7697))
+- Editing a message that ends with an emoji now works as expected. ([#7681](https://github.com/vector-im/element-ios/issues/7681))
+- The "Quote" action has been removed from the menu of the selected message. ([#7691](https://github.com/vector-im/element-ios/issues/7691))
+- The slide to end call for everyone button for the Jitsi widget now also ends the call for the current user. ([#7704](https://github.com/vector-im/element-ios/issues/7704))
+- If a Jitsi call in a room is ongoing when the Jitsi widget is removed from such room the call ends. ([#7706](https://github.com/vector-im/element-ios/issues/7706))
+- If a moderator ends a Jitsi call for everyone the call is now dismissed. ([#7709](https://github.com/vector-im/element-ios/issues/7709))
+
+⚠️ API Changes
+
+- Drop support for iOS 14, raising the deployment target to iOS 15 to support the latest Rich Text Editor version. ([#7711](https://github.com/vector-im/element-ios/pull/7711))
+
+
 ## Changes in 1.11.4 (2023-10-04)
 
 🙌 Improvements
