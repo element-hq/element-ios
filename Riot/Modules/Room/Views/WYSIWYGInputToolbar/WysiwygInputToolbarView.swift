@@ -140,6 +140,20 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         wysiwygViewModel.maxCompressedHeight
     }
     
+    override func paste(_ sender: Any?) {
+        let pasteboard = MXKPasteboardManager.shared.pasteboard
+        let types = pasteboard.types.map { UTI(rawValue: $0) }
+        
+        // Minimise the composer and dismiss the keyboard if it's an image, a video or a file
+        if types.contains(where: { $0.conforms(to: .image) || $0.conforms(to: .movie) || $0.conforms(to: .video) || $0.conforms(to: .application) }) {
+            wysiwygViewModel.maximised = false
+            DispatchQueue.main.async {
+                self.viewModel.dismissKeyboard()
+            }
+        }
+        super.paste(sender)
+    }
+    
     // MARK: - Setup
     
     override class func instantiate() -> MXKRoomInputToolbarView! {
@@ -150,8 +164,8 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
         return (delegate as? RoomInputToolbarViewDelegate) ?? nil
     }
 
-    private var permalinkReplacer: PermalinkReplacer? {
-        return (delegate as? PermalinkReplacer)
+    private var permalinkReplacer: MentionReplacer? {
+        return (delegate as? MentionReplacer)
     }
     
     override func awakeFromNib() {
@@ -192,6 +206,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
     }
     
     func showKeyboard() {
+        self.wysiwygViewModel.textView.becomeFirstResponder()
         self.viewModel.showKeyboard()
     }
     
@@ -238,7 +253,7 @@ class WysiwygInputToolbarView: MXKRoomInputToolbarView, NibLoadable, HtmlRoomInp
             self?.handleViewModelResult(result)
         }
         wysiwygViewModel.plainTextMode = !RiotSettings.shared.enableWysiwygTextFormatting
-        wysiwygViewModel.permalinkReplacer = permalinkReplacer
+        wysiwygViewModel.mentionReplacer = permalinkReplacer
 
         inputAccessoryViewForKeyboard = UIView(frame: .zero)
 

@@ -340,6 +340,11 @@ SSOAuthenticationPresenterDelegate>
     self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenSettings];
 }
 
+- (void)dealloc {
+    // Fix for destroy not being called
+    [self destroy];
+}
+
 - (void)updateSections
 {
     NSMutableArray<Section*> *tmpSections = [NSMutableArray arrayWithCapacity:SECTION_TAG_DEACTIVATE_ACCOUNT + 1];

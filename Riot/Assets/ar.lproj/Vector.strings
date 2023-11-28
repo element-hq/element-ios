@@ -1083,3 +1083,118 @@
 // Others
 "or" = "أو";
 "accessibility_selected" = "تم تحديده";
+"media_type_accessibility_sticker" = "مُلصَق";
+"unknown_devices_call_anyway" = "اتصل على أي حال";
+"notice_voice_broadcast_ended_by_you" = "لقد أنهيت بث صوتي.";
+"thread_copy_link_to_thread" = "نسخ الرابط إلى الموضوع";
+"pill_message_in" = "رسالة في %@";
+"room_accessibility_record_voice_message" = "قم بتسجيل رسالة صوتية";
+"media_type_accessibility_image" = "صُورَة";
+"pill_message" = "رِسَالَة";
+"pill_message_from" = "رسالة من %@";
+
+// Room commands descriptions
+"room_command_change_display_name_description" = "قم بتغيير اسم العرض الخاص بك";
+"room_command_emote_description" = "يعرض الإجراء";
+"room_command_join_room_description" = "ينضم إلى الغرفة بالعنوان المعطى";
+"room_command_part_room_description" = "مغادرة الغرفة";
+"room_command_invite_user_description" = "يدعو المستخدم بالمعرف المعطى للانضمام إلى الغرفة الحالية";
+"room_command_set_user_power_level_description" = "تعريف مستوى الصلاحية للمستخدم";
+"room_title_multiple_active_members" = "%@/%@ أعضاء نشطين";
+"room_first_message_placeholder" = "أرسل أول رسالة لك…";
+"threads_empty_title" = "حافظ على تنظيم المناقشات باستخدام المواضيع";
+"message_from_a_thread" = "من موضوع";
+"authentication_qr_login_failure_device_not_supported" = "الربط مع هذا الجهاز غير مَدعُومَ.";
+"threads_action_my_threads" = "مواضيعي";
+"threads_beta_title" = "مواضيع";
+"room_title_members" = "%@ أعضاء";
+"settings_sending_media" = "إرسال الصور ومقاطع الفيديو";
+
+// MARK: Password policy errors
+"password_policy_too_short_pwd_error" = "كلمة مرور قصيرة جدً";
+"password_policy_weak_pwd_error" = "هذه كلمة المرور ضعيفة جدًا. يجب أن تحتوي على ما لا يقل عن 8 أحرف، بما في ذلك حرف كبير، حرف صغير، رقم وحرف خاص واحد على الأقل.";
+"threads_beta_information_link" = "تعلم أكثر";
+"room_title_one_member" = "عضو واحد";
+
+// MARK: Threads
+"room_thread_title" = "موضوع";
+"threads_beta_cancel" = "ليس الآن";
+"media_type_accessibility_audio" = "صَوت";
+"unknown_devices_answer_anyway" = "أجب على أي حال";
+"threads_notice_done" = "فهمت";
+"notice_voice_broadcast_ended" = "%@ أنهى بثًا صوتيًا.";
+"authentication_login_with_qr" = "تسجيل الدخول بواسطة رمز الاستجابة السريعة";
+"authentication_qr_login_start_step2" = "الإعدَادَات -> الأمَان والخُصُوصِيَّة";
+"authentication_qr_login_start_need_alternative" = "هل تحتاج إلى طريقة بديلة؟";
+"authentication_qr_login_start_subtitle" = "استخدم الكاميرا على هذا الجهاز لمسح رمز الاستجابة السريعة المعروض على جهازك الآخر:";
+"authentication_qr_login_start_step1" = "افتج برنامج Element على جهازك الأخر";
+"authentication_qr_login_start_display_qr" = "عرض رمز الاستجابة السريعة على هذا الجهاز";
+"authentication_qr_login_display_step2" = "اختر 'تسجيل الدخول بواسطة رمز الاستجابة السريعة'";
+"authentication_qr_login_confirm_title" = "تم إنشاء اتصال آمن";
+"authentication_qr_login_loading_connecting_device" = "الاتصال بالجهاز";
+"authentication_qr_login_loading_waiting_signin" = "انتظر حتى يقوم الجهاز بتسجيل الدخول.";
+"authentication_qr_login_loading_signed_in" = "تم تسجيل دخولك على جهازك الآخر.";
+"authentication_qr_login_failure_title" = "فشل الربط";
+"authentication_qr_login_failure_invalid_qr" = "رمز الاستجابة السريعة غير صالح.";
+"authentication_qr_login_failure_retry" = "حاول مرة أخرى";
+"room_accessibility_record_voice_message_hint" = "انقر مزدوجًا واستمر في الضغط للتسجيل.";
+"media_type_accessibility_file" = "مَلَفّ";
+"unknown_devices_title" = "الجلسات المجهولة";
+"room_title_invite_members" = "ادعو الأعضاء";
+"settings_user_settings" = "إعدَادَات المُستَخدِم";
+"notice_voice_broadcast_live" = "بث مباشر";
+"room_no_privileges_to_create_group_call" = "يجب أن تكون مشرفًا أو مديرًا لبدء مكالمة.";
+"external_link_confirmation_title" = "قم بالتحقق تكرارا من هذا الرابط";
+"unknown_devices_verify" = "تحقق…";
+"settings_links" = "روابط";
+"room_creation_only_one_email_invite" = "يمكنك دعوة بريد إلكتروني واحد فقط في كل مرة";
+"room_command_kick_user_description" = "يزيل المستخدم بالمعرف من هذه الغرفة";
+"room_command_ban_user_description" = "يمنع المستخدم بالمعرف المعطى";
+"room_command_unban_user_description" = "يلغي الحظر عن المستخدم بالمعرف المعطى";
+"room_command_reset_user_power_level_description" = "إلغاء صلاحيات المستخدم بالمعرف المعطى";
+"room_command_change_room_topic_description" = "تعيين موضوع الغرفة";
+"threads_title" = "مواضيع";
+"threads_action_all_threads" = "جميع المواضيع";
+"threads_notice_title" = "المواضيع لم تعد تجريبية 🎉";
+"threads_empty_show_all_threads" = "عرض جميع المواضيع";
+"threads_beta_enable" = "جربها";
+"media_type_accessibility_video" = "مَقطَع مَرئي";
+"media_type_accessibility_location" = "مَوقِع جُغرَافِيّ";
+"room_multiple_typing_notification" = "%@ وغيرهم";
+
+// Unknown devices
+"unknown_devices_alert_title" = "الغرفة تحتوي على جلسات مجهولة";
+"unknown_devices_send_anyway" = "أرسل على أي حال";
+"room_title_one_active_member" = "%@/%@ عضو نشط";
+
+// Room Title
+"room_title_new_room" = "غرفة جديدة";
+
+// Settings
+"settings_title" = "الإعدَادَات";
+"notice_error_unformattable_event" = "** غير قادر على عرض الرسالة. يُرجى الإبلاغ عن خلل";
+"authentication_qr_login_start_step3" = "حَّدِد 'اربط الجهاز'";
+"authentication_qr_login_start_title" = "امسح رمز الاستجابة السريعة";
+"authentication_qr_login_start_step4" = "حَّدِد 'إظهَر رمز الQR الموجود في الجهاز'";
+"authentication_qr_login_display_title" = "ربط جهاز";
+"authentication_qr_login_display_subtitle" = "امسح رمز الاستجابة السريعة أدناه باستخدام جهازك الذي تم تسجيل الخروج منه.";
+"authentication_qr_login_display_step1" = "افتح تطبيق Element على جهازك الآخر";
+"authentication_qr_login_scan_title" = "امسح رمز الاستجابة السريعة";
+"authentication_qr_login_failure_request_denied" = "تم رفض الطلب على الجهاز الآخر.";
+"authentication_qr_login_failure_request_timed_out" = "لم يتم الانتهاء من الربط في الوقت المطلوب.";
+"authentication_qr_login_scan_subtitle" = "ضع رمز الاستجابة السريعة في المربع أدناه";
+"authentication_qr_login_confirm_subtitle" = "تأكد أن الرمز أدناه متطابق مع جهازك الآخر:";
+"authentication_qr_login_confirm_alert" = "يرجى التأكد من مصدر هذا الرمز. من خلال ربط الأجهزة، ستمنح الشخص الأخر الصلاحية الكاملة على حسابك.";
+"room_creation_user_not_found_prompt_title" = "تَأكيد";
+"room_creation_user_not_found_prompt_message" = "تعذر العثور على الهوية على مُعَرِّف Matrix. هل ترغب في بدء رسالة مباشرة على أي حال؟";
+"room_creation_user_not_found_prompt_invite_action" = "ابدأ الرسالة المباشرة على أي حال";
+"room_participants_invite_unknown_participant_prompt_to_msg" = "تعذر العثور على هذه الهوية على مُعَرِّف Matrix. هل أنت متأكد أنك تريد دعوة %@ إلى %@؟";
+"room_participants_invite_anyway" = "ادعُ بأي حال";
+"threads_empty_tip" = "نصيحة: انقر فوق رسالة واستخدم 'موضوع' لبدء رسالة جديدة.";
+
+// Pills
+"pill_room_fallback_display_name" = "المساحة/الغرفة";
+"room_command_discard_session_description" = "يجبر على تجاهل الجلسة الجماعية الصادرة حاليا في غرفة مشفرة";
+"room_command_error_unknown_command" = "أمر غير صالح أو غير معالَج";
+"threads_empty_info_all" = "المواضيع تساعد في الحفاظ على محادثاتك ذات موضوع معين وتسهل تتبعها.";
+"threads_empty_info_my" = "الرد على موضوع قائم أو النقر فوق الرسالة واستخدم خاصية 'الموضوع' لبدء رِسَالَة جديد.";

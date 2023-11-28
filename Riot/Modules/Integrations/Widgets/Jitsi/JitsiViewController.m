@@ -321,26 +321,25 @@ static NSString * _Nonnull kJitsiFeatureFlagScreenSharingEnabled = @"ios.screens
 
 - (void)conferenceTerminated:(NSDictionary *)data
 {
+    // If the call is terminated by a moderator the error key contains the "conference.destroyed" value
     if (data[kJitsiDataErrorKey] != nil)
     {
         MXLogDebug(@"[JitsiViewController] conferenceTerminated - data: %@", data);
     }
-    else
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            // The conference is over. Let the delegate close this view controller.
-            if (self.delegate)
-            {
-                [self.delegate jitsiViewController:self dismissViewJitsiController:nil];
-            }
-            else
-            {
-                // Do it ourself
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-        });
-    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        // The conference is over. Let the delegate close this view controller.
+        if (self.delegate)
+        {
+            [self.delegate jitsiViewController:self dismissViewJitsiController:nil];
+        }
+        else
+        {
+            // Do it ourself
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    });
 }
 
 - (void)enterPictureInPicture:(NSDictionary *)data
