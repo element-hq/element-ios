@@ -1,1 +1,0 @@
-Call destroy in dealloc to remove all observers of SettingsViewController
