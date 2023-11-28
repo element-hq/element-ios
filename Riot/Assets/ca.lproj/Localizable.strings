@@ -1,7 +1,7 @@
 /* New message from a specific person, not referencing a room */
 "MSG_FROM_USER" = "%@ ha enviat un missatge";
 /* New message from a specific person in a named room */
-"MSG_FROM_USER_IN_ROOM" = "%@ publicat a %@";
+"MSG_FROM_USER_IN_ROOM" = "%@ ha publicat a %@";
 /* New message from a specific person, not referencing a room. Content included. */
 "MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
 /* New message from a specific person in a named room. Content included. */
@@ -14,19 +14,19 @@
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ ha publicat una foto %@ a %@";
 /* Multiple unread messages in a room */
-"UNREAD_IN_ROOM" = "%@ nous missatges a %@";
+"UNREAD_IN_ROOM" = "%@ missatges nous a %@";
 /* Multiple unread messages from a specific person, not referencing a room */
-"MSGS_FROM_USER" = "%@ nou missatge a %@";
+"MSGS_FROM_USER" = "%@ missatge nou a %@";
 /* Multiple unread messages from two people */
-"MSGS_FROM_TWO_USERS" = "%@ nous missatges de %@ i %@";
+"MSGS_FROM_TWO_USERS" = "%@ missatges nous de: %@ i %@";
 /* Multiple unread messages from three people */
-"MSGS_FROM_THREE_USERS" = "%@ nous missatges de %@, %@ i %@";
+"MSGS_FROM_THREE_USERS" = "%@ missatges nous de: %@, %@ i %@";
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
-"MSGS_FROM_TWO_PLUS_USERS" = "%@ nous missatges de %@, %@ i altres";
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ missatges nous de: %@, %@ i altres";
 /* Multiple messages in two rooms */
-"MSGS_IN_TWO_ROOMS" = "%@ nous missatges a %@ i %@";
+"MSGS_IN_TWO_ROOMS" = "%@ missatges nous a %@ i %@";
 /* Look, stuff's happened, alright? Just open the app. */
-"MSGS_IN_TWO_PLUS_ROOMS" = "%@ nous missatges a %@, %@ i altres";
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ missatges nous a %@, %@ i altres";
 /* A user has invited you to a chat */
 "USER_INVITE_TO_CHAT" = "%@ t'ha convidat a xatejar";
 /* A user has invited you to an (unamed) group chat */
@@ -34,17 +34,17 @@
 /* A user has invited you to a named room */
 "USER_INVITE_TO_NAMED_ROOM" = "%@ t'ha convidat a %@";
 /* Incoming one-to-one voice call */
-"VOICE_CALL_FROM_USER" = "Trucada de %@";
+"VOICE_CALL_FROM_USER" = "Trucada de: %@";
 /* Incoming one-to-one video call */
-"VIDEO_CALL_FROM_USER" = "Vídeo trucada de %@";
+"VIDEO_CALL_FROM_USER" = "Videotrucada de: %@";
 /* Incoming unnamed voice conference invite from a specific person */
-"VOICE_CONF_FROM_USER" = "Trucada grupal de %@";
+"VOICE_CONF_FROM_USER" = "Trucada grupal de: %@";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "Vídeo trucada grupal de %@";
+"VIDEO_CONF_FROM_USER" = "Videotrucada grupal de: %@";
 /* Incoming named voice conference invite from a specific person */
-"VOICE_CONF_NAMED_FROM_USER" = "Trucada grupal de %@: '%@'";
+"VOICE_CONF_NAMED_FROM_USER" = "Trucada grupal de: %@: '%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "Vídeo trucada grupal de %@: '%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "Videotrucada grupal de: %@: '%@'";
 /* A single unread message in a room */
 "SINGLE_UNREAD_IN_ROOM" = "Has rebut un missatge a %@";
 /* A single unread message */
@@ -56,7 +56,7 @@
 /* New message indicator on unknown room */
 "MESSAGE" = "Missatge";
 /* New message indicator from a DM */
-"MESSAGE_FROM_X" = "Missatge de %@";
+"MESSAGE_FROM_X" = "Missatge de: %@";
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "Missatge a %@";
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ vol verificar";
@@ -90,10 +90,10 @@
 "REACTION_FROM_USER" = "%@ ha reaccionat amb %@";
 
 /* New message with hidden content due to PIN enabled */
-"MESSAGE_PROTECTED" = "Nou missatge";
+"MESSAGE_PROTECTED" = "Missatge nou";
 
 /* New file message from a specific person, not referencing a room. */
-"LOCATION_FROM_USER" = "%@ ha compartit la localització";
+"LOCATION_FROM_USER" = "%@ ha compartit la ubicació";
 
 /* New file message from a specific person, not referencing a room. */
 "FILE_FROM_USER" = "%@ ha enviat un fitxer %@";
@@ -113,10 +113,13 @@
 "PICTURE_FROM_USER" = "%@ ha enviat una foto";
 
 /* New message reply from a specific person in a named room. */
-"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ respost a %@";
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ ha respost a %@";
 
 /* New message reply from a specific person, not referencing a room. */
-"REPLY_FROM_USER_TITLE" = "%@ respost";
+"REPLY_FROM_USER_TITLE" = "%@ ha respost";
 /** General **/
 
 "Notification" = "Notificació";
+
+/* New voice broadcast from a specific person, not referencing a room. */
+"VOICE_BROADCAST_FROM_USER" = "%@ ha iniciat una retransmissió de veu";
